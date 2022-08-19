@@ -1,31 +1,31 @@
-#N canvas 352 155 1015 532 12;
+#N canvas 231 76 1015 532 12;
 #X declare -path else;
 #X obj 210 325 *~;
-#X obj 231 277 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 231 277 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 228 303 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 260 395 nbx 8 20 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 14
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 260 450 nbx 8 20 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 14
--228856 -1 -1 -999 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 377 455 RMS (dB);
 #X text 374 398 RMS (linear);
 #X obj 210 243 osc~ 500;
 #X text 310 303 (linear);
-#N canvas 333 131 1042 568 RMS 0;
+#N canvas 324 131 1042 568 RMS 0;
 #X obj 224 309 / 1024;
 #X obj 224 384 sqrt;
-#X floatatom 224 349 8 0 0 0 - - -;
+#X floatatom 224 349 8 0 0 0 - - - 0;
 #X msg 224 451 \; rms const \$1;
-#X floatatom 224 265 8 0 0 0 - - -;
-#X obj 136 35 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 133 61 0 0 0 0 - - -;
+#X floatatom 224 265 8 0 0 0 - - - 0;
+#X obj 136 35 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 133 61 0 0 0 0 - - - 0;
 #X obj 66 301 osc~ 500;
 #X obj 115 370 *~;
-#X obj 481 287 cnv 15 498 238 empty empty empty 20 12 0 14 -233017
--66577 0;
+#X obj 481 287 cnv 15 498 238 empty empty empty 20 12 0 14 #e0e0e0
+#404040 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array sine 1027 float 0;
 #X array rms 1027 float 0;
@@ -35,9 +35,9 @@
 #X text 468 398 0;
 #X text 462 515 -1;
 #X obj 224 425 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 115 426 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 24 424 RMS (linear);
 #X obj 115 400 rms~;
 #X obj 224 161 loop 1024;
@@ -82,9 +82,9 @@ the root mean square line for this period window.;
 #X connect 33 3 20 0;
 #X restore 810 192 pd RMS;
 #X obj 123 394 nbx 8 20 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 14
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 123 447 nbx 8 20 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 14
--228856 -1 -1 -999 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 123 369 peak~ 4096;
 #X obj 260 367 rms~ 4096;
 #X obj 260 423 lin2db;
@@ -92,18 +92,17 @@ the root mean square line for this period window.;
 #X obj 569 143 noise~;
 #X obj 660 179 env~;
 #X obj 660 207 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 95.411 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 92 250 setdsp~ 1;
 #X obj 569 182 rms~ -db;
 #X obj 569 209 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -4.58902 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 618 354 noise~;
 #X obj 618 468 print~;
-#X obj 585 438 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 585 438 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X msg 687 347 linear;
 #X msg 704 371 db;
-#X obj 618 433 display~;
 #X text 51 24 Peak amplitude is the highest absolute amplitude in a
 time window \, and RMS is given as a root mean square \, which is useful
 for signals that vary from negative to positive \, as it is the case
@@ -132,6 +131,7 @@ of RMS that is "moving". This means it returns a different RMS value
 for each sample \, according to an analysis done in the previous samples.
 Check more info about every object here in their help files., f 62
 ;
+#X obj 618 433 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
 #X connect 0 0 12 0;
 #X connect 0 0 13 0;
 #X connect 1 0 2 0;
@@ -147,9 +147,9 @@ Check more info about every object here in their help files., f 62
 #X connect 16 0 20 0;
 #X connect 17 0 18 0;
 #X connect 20 0 21 0;
-#X connect 22 0 36 0;
+#X connect 22 0 35 0;
 #X connect 24 0 23 0;
-#X connect 25 0 36 0;
-#X connect 26 0 36 0;
-#X connect 27 0 23 0;
-#X connect 36 0 27 0;
+#X connect 25 0 35 0;
+#X connect 26 0 35 0;
+#X connect 35 0 41 0;
+#X connect 41 0 23 0;

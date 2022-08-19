@@ -41,7 +41,6 @@ at a secondary outlet though and you can use this to create rhythymic
 patterns. One way to implement a bang divider is presented to the right
 with a counter and [select]., f 76;
 #X obj 572 367 out~;
-#X obj 581 299 display~;
 #X obj 728 200 imp~ 1;
 #X obj 728 260 pulsediv~ 4;
 #X obj 581 270 pulsecount~ 4;
@@ -53,6 +52,7 @@ with a counter and [select]., f 76;
 divides signal triggers (an impulse in the example below). The objects
 [pulsecount~] and [match~] also implement the same idea., f 31;
 #X obj 671 304 brown~;
+#X obj 581 299 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
 #X connect 1 0 4 0;
 #X connect 3 0 4 0;
 #X connect 4 0 8 0;
@@ -77,13 +77,13 @@ divides signal triggers (an impulse in the example below). The objects
 #X connect 23 0 24 1;
 #X connect 25 0 22 0;
 #X connect 25 1 16 0;
-#X connect 28 0 32 0;
-#X connect 29 0 30 0;
-#X connect 29 0 31 0;
-#X connect 30 0 33 0;
-#X connect 31 0 28 0;
-#X connect 32 0 27 0;
-#X connect 32 1 27 1;
-#X connect 33 0 34 1;
-#X connect 34 0 35 0;
-#X connect 37 0 34 0;
+#X connect 28 0 29 0;
+#X connect 28 0 30 0;
+#X connect 29 0 32 0;
+#X connect 30 0 37 0;
+#X connect 31 0 27 0;
+#X connect 31 1 27 1;
+#X connect 32 0 33 1;
+#X connect 33 0 34 0;
+#X connect 36 0 33 0;
+#X connect 37 0 31 0;

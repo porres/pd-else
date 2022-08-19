@@ -1,15 +1,8 @@
-#N canvas 373 68 975 519 12;
+#N canvas 253 48 975 519 12;
 #X declare -path else;
-#X obj 246 266 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.330709 256;
-#X obj 246 335 display~;
-#X obj 249 243 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 4200 1;
-#X obj 109 335 display~;
 #X obj 109 302 tabosc4~ \$0-table;
-#X obj 690 390 display~;
 #N canvas 797 150 450 300 table 0;
-#X obj 55 77 cnv 15 298 198 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 55 77 cnv 15 298 198 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-table 67 float 0;
@@ -19,12 +12,11 @@
 f 26;
 #X restore 452 306 pd table;
 #X obj 690 363 tabread4~ \$0-table;
-#X obj 642 450 display~;
 #X obj 246 301 table~ \$0-table;
-#X obj 642 322 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 48.8504 256;
-#X obj 645 296 hsl 128 15 0 66 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 9400 1;
+#X obj 642 322 nbx 5 17 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 13
+#dcdcdc #000000 #000000 0 256;
+#X obj 645 294 hsl 128 19 0 66 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X text 34 168 In this mode \, it relates to [tabosc4~] \, which can
 be used as a table reader with the phase input. Compare below and see
 how they provide the same results.;
@@ -34,8 +26,8 @@ they should not be accessed. Thus \, the index input from 0 to 1 ignores
 the guard points.;
 #X obj 642 423 table~ \$0-table 0 1;
 #X msg 569 364 guard \$1;
-#X obj 569 345 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 569 335 tgl 19 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 493 223 When not in guard point mode \, [table~] access all
 indexes from 0 to 66 \, but when in guard points mode it works just
 as [tabread4~] and ignores the first and last index.;
@@ -58,15 +50,23 @@ existence of guard points and do not read all indexes.;
 table \, so accessing index 0 gives the same output as index 1! They
 can also only read up to n-2 \, which is supposed to be the same as
 index 1 \, but do not read the last index (n-1).;
-#X connect 0 0 4 1;
-#X connect 0 0 9 0;
-#X connect 2 0 0 0;
-#X connect 4 0 3 0;
-#X connect 7 0 5 0;
-#X connect 9 0 1 0;
-#X connect 10 0 7 0;
-#X connect 10 0 14 0;
-#X connect 11 0 10 0;
-#X connect 14 0 8 0;
-#X connect 15 0 14 0;
-#X connect 16 0 15 0;
+#X obj 246 266 nbx 5 17 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 13
+#dcdcdc #000000 #000000 0 256;
+#X obj 249 239 hsl 128 19 0 66 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 246 335 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X obj 109 335 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X obj 642 450 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X obj 690 390 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X connect 0 0 20 0;
+#X connect 2 0 22 0;
+#X connect 3 0 19 0;
+#X connect 4 0 2 0;
+#X connect 4 0 8 0;
+#X connect 5 0 4 0;
+#X connect 8 0 21 0;
+#X connect 9 0 8 0;
+#X connect 10 0 9 0;
+#X connect 17 0 0 1;
+#X connect 17 0 3 0;
+#X connect 18 0 17 0;

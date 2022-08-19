@@ -1,10 +1,10 @@
 #N canvas 619 77 565 438 12;
 #X declare -path else;
-#X floatatom 346 105 5 0 0 0 - - -;
-#X obj 88 179 nbx 5 14 64 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 2048 256;
-#X obj 202 179 nbx 2 14 1 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 4 256;
+#X floatatom 346 105 5 0 0 0 - - - 0;
+#X obj 88 179 nbx 5 14 64 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
+#X obj 202 179 nbx 2 14 1 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #N canvas 353 23 518 586 Hamming 0;
 #X text 86 67 1;
 #X text 85 182 0;
@@ -12,11 +12,11 @@
 #X obj 124 328 samplerate~;
 #X msg 190 375 0.5;
 #X obj 124 377 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 21.5332 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 116 293 trigger bang bang bang;
-#X obj 116 272 bng 15 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
--1;
-#X obj 101 76 cnv 15 198 118 empty empty empty 20 12 0 14 -228856 -66577
+#X obj 116 272 bng 15 250 50 0 empty empty empty 0 -6 0 8 #dcdcdc #000000
+#000000;
+#X obj 101 76 cnv 15 198 118 empty empty empty 20 12 0 14 #dcdcdc #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-hamming 2048 float 0;
@@ -48,11 +48,11 @@
 #X text 90 153 0;
 #X obj 109 283 samplerate~;
 #X obj 109 332 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 21.5332 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 101 248 trigger bang bang bang;
-#X obj 101 227 bng 15 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
--1;
-#X obj 106 47 cnv 15 198 118 empty empty empty 20 12 0 14 -228856 -66577
+#X obj 101 227 bng 15 250 50 0 empty empty empty 0 -6 0 8 #dcdcdc #000000
+#000000;
+#X obj 106 47 cnv 15 198 118 empty empty empty 20 12 0 14 #dcdcdc #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-cosine 2048 float 0;
@@ -83,7 +83,7 @@
 #X text 34 27 1;
 #X text 33 142 0;
 #X text 50 158 0;
-#X obj 49 36 cnv 15 198 118 empty empty empty 20 12 0 14 -228856 -66577
+#X obj 49 36 cnv 15 198 118 empty empty empty 20 12 0 14 #dcdcdc #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-welch 2048 float 0;
@@ -160,7 +160,7 @@
 #N canvas 444 241 589 301 Barlett 0;
 #X text 60 82 1;
 #X text 59 197 0;
-#X obj 75 91 cnv 15 198 118 empty empty empty 20 12 0 14 -228856 -66577
+#X obj 75 91 cnv 15 198 118 empty empty empty 20 12 0 14 #dcdcdc #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-barlett 2048 float 0;
@@ -169,7 +169,7 @@
 #X obj 368 236 tabwrite~ \$0-barlett;
 #X obj 389 93 samplerate~;
 #X obj 389 142 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 21.5332 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 389 117 / 2048;
 #X obj 366 65 t b b b;
 #X obj 366 39 loadbang;
@@ -191,7 +191,7 @@
 #N canvas 455 28 352 514 Connes 0;
 #X text 49 31 1;
 #X text 48 146 0;
-#X obj 64 40 cnv 15 198 118 empty empty empty 20 12 0 14 -228856 -66577
+#X obj 64 40 cnv 15 198 118 empty empty empty 20 12 0 14 #dcdcdc #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-connes 2048 float 0;
@@ -232,11 +232,11 @@
 #X text 43 165 0;
 #X obj 370 103 samplerate~;
 #X obj 370 152 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 21.5332 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 295 68 trigger bang bang bang;
-#X obj 295 47 bng 15 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
--1;
-#X obj 59 59 cnv 15 198 118 empty empty empty 20 12 0 14 -228856 -66577
+#X obj 295 47 bng 15 250 50 0 empty empty empty 0 -6 0 8 #dcdcdc #000000
+#000000;
+#X obj 59 59 cnv 15 198 118 empty empty empty 20 12 0 14 #dcdcdc #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-blackman 2048 float 0;
@@ -279,10 +279,10 @@
 #X text 43 36 1;
 #X text 42 151 0;
 #X obj 67 356 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 21.5332 256;
-#X obj 45 251 bng 15 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
--1;
-#X obj 58 44 cnv 15 198 118 empty empty empty 20 12 0 14 -228856 -66577
+#dcdcdc #000000 #000000 0 256;
+#X obj 45 251 bng 15 250 50 0 empty empty empty 0 -6 0 8 #dcdcdc #000000
+#000000;
+#X obj 58 44 cnv 15 198 118 empty empty empty 20 12 0 14 #dcdcdc #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-lanczos 2048 float 0;
@@ -325,16 +325,16 @@
 #X connect 23 0 24 0;
 #X connect 24 0 2 0;
 #X restore 416 350 pd Lanczos;
-#N canvas 687 136 496 629 Gaussian 0;
+#N canvas 687 117 496 629 Gaussian 0;
 #X text 119 38 1;
 #X text 118 153 0;
 #X obj 154 318 samplerate~;
 #X obj 154 367 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 21.5332 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 79 289 trigger bang bang bang;
-#X obj 79 268 bng 15 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
--1;
-#X obj 134 46 cnv 15 198 118 empty empty empty 20 12 0 14 -228856 -66577
+#X obj 79 268 bng 15 250 50 0 empty empty empty 0 -6 0 8 #dcdcdc #000000
+#000000;
+#X obj 134 46 cnv 15 198 118 empty empty empty 20 12 0 14 #dcdcdc #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-gauss 2048 float 0;
@@ -346,13 +346,13 @@
 #X msg 245 318 0;
 #X obj 154 420 -~ 0.5;
 #X obj 79 559 tabwrite~ \$0-gauss;
-#X obj 163 228 hsl 128 15 4 20 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 163 228 hsl 128 15 4 20 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 160 254 trigger bang float;
 #X text 300 227 X;
 #X text 150 186 the X parameter defines the steepness of the curve
 , f 26;
-#X floatatom 283 435 5 0 0 0 - - -;
+#X floatatom 283 435 5 0 0 0 - - - 0;
 #X obj 258 494 expr~ exp(-$v1*$v1);
 #X obj 258 466 *~ 4;
 #X connect 2 0 9 0;
@@ -392,7 +392,6 @@ Open the subpatch to see how it is done., f 39;
 #X obj 72 220 hann~;
 #X obj 460 156 hann~;
 #X obj 460 130 sig~ 1;
-#X obj 460 256 display~;
 #X obj 112 282 /~;
 #X msg 205 144 set \$1 \$2;
 #X obj 237 80 r \$0-overlap;
@@ -414,28 +413,29 @@ the block size to the overlap number \, but now also to this normalization
 factor. Other window types require another factor dependent on the
 average., f 42;
 #X obj 460 191 *~;
+#X obj 460 256 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
 #X connect 0 0 3 0;
 #X connect 0 1 3 1;
 #X connect 1 0 4 0;
 #X connect 3 0 5 0;
 #X connect 4 0 0 0;
-#X connect 5 0 9 0;
-#X connect 6 0 24 0;
-#X connect 6 0 24 1;
+#X connect 5 0 8 0;
+#X connect 6 0 23 0;
+#X connect 6 0 23 1;
 #X connect 7 0 6 0;
-#X connect 9 0 2 0;
-#X connect 10 0 14 0;
-#X connect 11 0 13 1;
-#X connect 12 0 13 0;
-#X connect 13 0 10 0;
-#X connect 15 0 16 1;
-#X connect 16 0 9 1;
-#X connect 18 0 21 0;
-#X connect 18 0 22 1;
-#X connect 20 0 16 0;
-#X connect 21 0 22 0;
-#X connect 22 0 8 0;
-#X connect 24 0 22 0;
+#X connect 8 0 2 0;
+#X connect 9 0 13 0;
+#X connect 10 0 12 1;
+#X connect 11 0 12 0;
+#X connect 12 0 9 0;
+#X connect 14 0 15 1;
+#X connect 15 0 8 1;
+#X connect 17 0 20 0;
+#X connect 17 0 21 1;
+#X connect 19 0 15 0;
+#X connect 20 0 21 0;
+#X connect 21 0 24 0;
+#X connect 23 0 21 0;
 #X restore 346 168 pd normalize;
 #X obj 202 142 initmess 4;
 #X obj 88 140 initmess 2048;

@@ -26,10 +26,6 @@
 #X obj 814 310 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X obj 535 64 out~;
-#X obj 780 203 display~;
-#X obj 902 203 display~;
-#X obj 201 211 display~;
-#X obj 84 212 display~;
 #X obj 184 371 imp~ 1;
 #X obj 184 403 trig.delay~ 700;
 #X obj 97 435 out~;
@@ -40,11 +36,7 @@
 alternates between entre 0 e 1 at irregular time intervals, f 32;
 #X obj 631 460 randpulse~ 0.5 0.25;
 #X obj 631 521 gatehold~ 500;
-#X obj 631 487 display~ 8;
-#X obj 631 553 display~ 8;
 #X obj 811 459 randpulse~ 0.5 0.25;
-#X obj 811 486 display~ 8;
-#X obj 811 552 display~ 8;
 #X obj 811 520 trighold~ 500;
 #X text 510 375 The [gatehold~] object holds (or 'delays') a gate value
 for a certain amount of time (specified in ms) after the gate has closed.
@@ -70,26 +62,34 @@ are called 'gates' \, which can be thought of as on/off switches \,
 like a toggle. Below we have [impulse~] and [gate~] at a low frequency
 of 1 Hz \, so they can be considered a kind of LFO (low frequency oscillator).
 We'll see other kinds of LFOs next., f 64;
+#X obj 631 553 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X obj 811 552 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X obj 631 487 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X obj 811 486 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X obj 780 203 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X obj 902 203 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X obj 201 211 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X obj 84 212 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
 #X connect 0 0 12 0;
 #X connect 1 0 20 0;
 #X connect 2 0 20 1;
 #X connect 3 0 4 0;
-#X connect 4 0 21 0;
+#X connect 4 0 41 0;
 #X connect 5 0 6 0;
-#X connect 6 0 22 0;
+#X connect 6 0 42 0;
 #X connect 7 0 13 0;
 #X connect 8 0 10 0;
 #X connect 9 0 11 0;
-#X connect 12 0 23 0;
-#X connect 13 0 24 0;
+#X connect 12 0 43 0;
+#X connect 13 0 44 0;
 #X connect 16 0 19 0;
 #X connect 17 0 18 0;
-#X connect 25 0 26 0;
-#X connect 25 0 27 0;
-#X connect 26 0 27 1;
-#X connect 32 0 34 0;
-#X connect 33 0 35 0;
-#X connect 34 0 33 0;
-#X connect 36 0 37 0;
-#X connect 37 0 39 0;
-#X connect 39 0 38 0;
+#X connect 21 0 22 0;
+#X connect 21 0 23 0;
+#X connect 22 0 23 1;
+#X connect 28 0 39 0;
+#X connect 29 0 37 0;
+#X connect 30 0 40 0;
+#X connect 31 0 38 0;
+#X connect 39 0 29 0;
+#X connect 40 0 31 0;

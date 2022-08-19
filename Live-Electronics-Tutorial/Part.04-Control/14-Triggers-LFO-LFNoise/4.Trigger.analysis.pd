@@ -29,7 +29,6 @@ changes its direction., f 20;
 #X text 569 85 [above~] sends an impulse when a signal raises above
 a given threshold (left outlet) and an impulse when it falls back (right
 outlet)., f 29;
-#X obj 450 302 display~ 8;
 #X obj 450 237 rampnoise~ 5;
 #X obj 450 271 schmitt~ -0.5 0.5;
 #X text 597 221 [schmitt~] is a Schmitt trigger. When the input is
@@ -45,11 +44,12 @@ gate to impulses., f 28;
 #X obj 471 367 pulse~ 1;
 #X text 573 388 [match~] is like select and sends impulses at corresponding
 outlets., f 23;
-#X obj 474 603 display~;
 #X obj 474 571 pulsecount~;
 #X obj 474 541 impulse~ 1;
 #X text 588 553 [pulsecount~] counts the number of trigger inputs,
 f 24;
+#X obj 450 302 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X obj 474 603 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
 #X connect 2 0 1 0;
 #X connect 2 1 1 1;
 #X connect 3 0 2 0;
@@ -63,10 +63,10 @@ f 24;
 #X connect 17 0 19 0;
 #X connect 17 1 19 1;
 #X connect 18 0 17 0;
-#X connect 22 0 23 0;
-#X connect 23 0 21 0;
+#X connect 21 0 22 0;
+#X connect 22 0 32 0;
+#X connect 26 0 25 0;
+#X connect 26 1 25 1;
 #X connect 27 0 26 0;
-#X connect 27 1 26 1;
-#X connect 28 0 27 0;
-#X connect 31 0 30 0;
-#X connect 32 0 31 0;
+#X connect 29 0 33 0;
+#X connect 30 0 29 0;

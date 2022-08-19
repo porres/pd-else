@@ -1,4 +1,4 @@
-#N canvas 478 123 908 484 12;
+#N canvas 337 82 908 484 12;
 #X declare -path else;
 #X obj 199 262 +~;
 #X obj 242 264 +~ 1;
@@ -6,8 +6,6 @@
 #X obj 543 193 +~;
 #X obj 599 196 +~ 1;
 #X obj 543 162 sig~ 0;
-#X obj 199 297 display~;
-#X obj 543 265 display~;
 #X obj 343 211 setdsp~ 1;
 #X text 49 64 All processes in a chain of audio objects are performed
 "at once" for each block. So if an output signal is inserted back as
@@ -33,7 +31,7 @@ error that says: "DSP loop detected (some tilde objects not scheduled)".
 #X obj 152 148 outlet~;
 #X connect 0 0 1 0;
 #X restore 610 404 pd fb;
-#N canvas 840 55 522 258 subpatch 0;
+#N canvas 797 81 522 258 subpatch 0;
 #X obj 105 62 inlet~;
 #X obj 106 174 outlet~;
 #X obj 105 95 s~ \$0-x;
@@ -48,14 +46,16 @@ subpatches in the parent patch \, so this doesn't work., f 30;
 #X text 94 262 infinite loop:;
 #X text 534 318 The subpatch below has send~/receive~ but it also generates
 an infinite loop, f 38;
+#X obj 199 297 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X obj 543 265 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
 #X connect 0 0 1 0;
-#X connect 0 0 6 0;
+#X connect 0 0 20 0;
 #X connect 1 0 0 1;
 #X connect 2 0 0 0;
-#X connect 3 0 7 0;
-#X connect 3 0 10 0;
+#X connect 3 0 8 0;
+#X connect 3 0 21 0;
 #X connect 4 0 3 1;
 #X connect 5 0 3 0;
-#X connect 11 0 4 0;
-#X connect 17 0 18 0;
-#X connect 18 0 17 0;
+#X connect 9 0 4 0;
+#X connect 15 0 16 0;
+#X connect 16 0 15 0;

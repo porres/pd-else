@@ -1,4 +1,4 @@
-#N canvas 329 89 905 684 12;
+#N canvas 329 62 905 684 12;
 #X declare -path else;
 #X obj 518 508 *~;
 #X obj 555 554 +~;
@@ -6,10 +6,10 @@
 #X obj 461 426 *~;
 #X obj 600 475 *~;
 #X obj 642 210 expr 1000 / $f1;
-#X obj 618 180 nbx 5 14 5 500 0 0 empty \$0-size empty 0 -8 0 10 -228856
--1 -1 75 256;
-#X floatatom 642 240 6 0 0 0 - - -;
-#X text 719 323 Hz;
+#X obj 618 180 nbx 5 14 5 500 0 0 empty \$0-size empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
+#X floatatom 642 240 6 0 0 0 - - - 0;
+#X text 818 326 Hz;
 #X obj 555 593 out~;
 #X obj 536 448 envelope~;
 #X obj 744 539 envelope~;
@@ -31,13 +31,12 @@ subtracting the ratio from 1 instead. Now that we have the adjusted
 ratio/transposition frequency \, we multiply it by the grain size frequency.
 , f 53;
 #X obj 762 174 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-cents empty 0 -8
-0 10 -228856 -1 -1 -400 256;
-#X floatatom 762 272 9 0 0 0 - - -;
-#X floatatom 762 222 5 0 0 0 - - -;
+0 10 #dcdcdc #000000 #000000 0 256;
+#X floatatom 762 272 9 0 0 0 - - - 0;
+#X floatatom 762 222 5 0 0 0 - - - 0;
 #X obj 762 197 cents2ratio;
 #X obj 762 245 expr 1 - $f1;
 #X obj 744 298 *~;
-#X obj 744 322 display~;
 #X text 691 233 grain freq., f 5;
 #X text 623 159 grain size;
 #X text 674 178 (ms);
@@ -52,7 +51,7 @@ ratio/transposition frequency \, we multiply it by the grain size frequency.
 #X obj 491 117 delwrite~ \$0-buffer 500;
 #X obj 464 248 out~;
 #X obj 504 175 nbx 5 14 -2400 2400 0 0 empty \$0-cents empty 0 -8 0
-10 -228856 -1 -1 -400 256;
+10 #dcdcdc #000000 #000000 0 256;
 #X text 497 154 transposition;
 #X obj 464 206 pitch.shift~;
 #X text 34 550 Again \, we have two overlapping grains and we're done.
@@ -70,14 +69,15 @@ ramp speeds up. For up and down ramps \, we can use a simple [phasor~]
 object \, but the relationship is inverted - because a positive frequency
 (an ascending ramp) lowers the pitch and a negative frequency (descending
 ramp) raises the pitch., f 56;
+#X obj 744 326 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
 #X connect 0 0 1 0;
 #X connect 1 0 9 0;
 #X connect 2 0 1 1;
-#X connect 3 0 36 0;
-#X connect 4 0 37 0;
+#X connect 3 0 35 0;
+#X connect 4 0 36 0;
 #X connect 5 0 7 0;
 #X connect 6 0 5 0;
-#X connect 6 0 38 0;
+#X connect 6 0 37 0;
 #X connect 7 0 28 0;
 #X connect 10 0 0 1;
 #X connect 11 0 2 1;
@@ -92,18 +92,18 @@ ramp) raises the pitch., f 56;
 #X connect 25 0 27 0;
 #X connect 26 0 25 0;
 #X connect 27 0 24 0;
-#X connect 28 0 29 0;
-#X connect 29 0 40 0;
-#X connect 29 0 39 0;
-#X connect 36 0 0 0;
-#X connect 37 0 2 0;
-#X connect 38 0 3 1;
-#X connect 38 0 4 1;
-#X connect 39 0 4 0;
-#X connect 39 0 11 0;
-#X connect 40 0 3 0;
-#X connect 40 0 10 0;
-#X connect 43 0 45 1;
-#X connect 45 0 42 0;
-#X connect 48 0 41 0;
-#X connect 48 0 45 0;
+#X connect 28 0 49 0;
+#X connect 35 0 0 0;
+#X connect 36 0 2 0;
+#X connect 37 0 3 1;
+#X connect 37 0 4 1;
+#X connect 38 0 4 0;
+#X connect 38 0 11 0;
+#X connect 39 0 3 0;
+#X connect 39 0 10 0;
+#X connect 42 0 44 1;
+#X connect 44 0 41 0;
+#X connect 47 0 40 0;
+#X connect 47 0 44 0;
+#X connect 49 0 39 0;
+#X connect 49 0 38 0;

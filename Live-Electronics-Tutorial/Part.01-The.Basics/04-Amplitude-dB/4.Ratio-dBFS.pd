@@ -1,4 +1,4 @@
-#N canvas 404 144 931 453 12;
+#N canvas 324 78 931 453 12;
 #X declare -path else;
 #X obj 177 178 expr pow(10 \, $f1 / 20);
 #X text 157 149 dB;
@@ -7,22 +7,22 @@
 #X msg 137 111 -100;
 #X msg 300 111 100;
 #X obj 177 150 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X msg 98 111 -500;
 #X msg 177 111 0;
 #X obj 620 244 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 18 -6 0
-10 -228856 -1 -1 2 256;
+10 #dcdcdc #000000 #000000 0 256;
 #X obj 620 303 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 6.0206 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 696 301 dB;
 #X obj 620 364 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 18 -6 0
-10 -228856 -1 -1 2 256;
+10 #dcdcdc #000000 #000000 0 256;
 #X obj 620 187 loadbang;
 #X obj 620 272 lin2db;
 #X obj 620 334 db2lin;
 #X msg 620 212 2;
 #X obj 177 255 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 18 -6 0
-10 -228856 -1 -1 0 256;
+10 #dcdcdc #000000 #000000 0 256;
 #X obj 177 284 expr log10($f1) * 20;
 #X text 149 313 dB;
 #X msg 185 214 1;

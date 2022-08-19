@@ -1,18 +1,16 @@
-#N canvas 456 109 1001 636 12;
+#N canvas 217 48 1001 636 12;
 #X declare -path else;
 #X obj 660 346 lop~;
-#X obj 199 320 osc~;
-#X obj 199 260 sig~ 440;
+#X obj 189 320 osc~;
+#X obj 189 260 sig~ 440;
 #X obj 617 302 noise~;
 #X obj 688 290 hsl 128 15 100 1000 1 0 empty cutoff empty -2 -8 0 10
--228856 -1 -1 0 1;
-#X floatatom 685 316 5 0 0 0 - - -;
+#dcdcdc #000000 #000000 0 1;
+#X floatatom 685 316 5 0 0 0 - - - 0;
 #X text 724 316 hz;
-#X obj 199 355 out~;
+#X obj 189 355 out~;
 #X obj 660 386 out~;
-#X obj 199 287 display~;
-#X text 242 288 <=;
-#X text 260 287 audio signal controlling the frequency, f 13;
+#X text 288 287 audio signal controlling the frequency, f 13;
 #X text 48 121 The idea is that it's not necessary to have a high time
 resolution for control data input. So we use control objects to control
 the patch's parameters and save on CPU power. But there are cases where
@@ -58,10 +56,12 @@ rate \, this structure (where control messages can only affect a block
 of audio once) generates in practice an intrinsical control rate for
 Pd that also depends on the block size and sample rate!;
 #X obj 808 32 declare -path else;
+#X obj 189 287 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X text 260 287 <--;
 #X connect 0 0 8 0;
 #X connect 1 0 7 0;
-#X connect 2 0 9 0;
+#X connect 2 0 19 0;
 #X connect 3 0 0 0;
 #X connect 4 0 5 0;
 #X connect 5 0 0 1;
-#X connect 9 0 1 0;
+#X connect 19 0 1 0;

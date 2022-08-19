@@ -18,7 +18,6 @@ rate LFO object with classical built in waveforms., f 59;
 #X obj 43 197 noise~;
 #X obj 101 181 rescale~ 500 1500;
 #X obj 101 154 osc~ 0.1;
-#X obj 101 209 display~ 7;
 #X obj 78 241 vcf~ 10;
 #X text 477 13 Below we have the [bp~] bandpass filter \, a native
 object that only accepts control messages for its central frequency.
@@ -29,7 +28,6 @@ object from ELSE is also useful for remapping control data.;
 audio signals into a new control range (here it maps the -1 to 1 input
 range to an output range from 500 to 1500)., f 25;
 #X obj 460 197 setdsp~;
-#X obj 558 238 display~;
 #X obj 51 26 declare -path else;
 #X text 19 67 "LFOs" (Low Frequency Oscillators) are just any oscillator
 running at a low frequency \, simple as that! We use them to control
@@ -46,12 +44,14 @@ as a "LFO'. And not that ELSE has a control [phasor] object., f 31
 #X text 16 415 -------------------------------------------------------------------------------------------------------------------------------
 , f 127;
 #X obj 511 493 out~;
-#X obj 412 508 display~;
 #X obj 451 456 pimp~ 0.5;
 #X text 635 452 [pimp~] from ELSE combines [phasor~] and [imp~] (a
 trigger). The impulse is given at period trasitions. This is useful
 at low frequencies and we'll see applications for it in this tutorial.
 Check its help file., f 36;
+#X obj 412 508 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X obj 558 238 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X obj 101 209 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
 #X connect 1 0 8 0;
 #X connect 2 0 3 0;
 #X connect 3 0 7 0;
@@ -59,11 +59,11 @@ Check its help file., f 36;
 #X connect 5 0 4 0;
 #X connect 7 0 4 1;
 #X connect 8 0 2 0;
-#X connect 10 0 19 0;
-#X connect 11 0 15 0;
-#X connect 12 0 14 0;
+#X connect 10 0 29 0;
+#X connect 11 0 14 0;
+#X connect 12 0 30 0;
 #X connect 13 0 12 0;
-#X connect 14 0 15 1;
-#X connect 15 0 0 0;
-#X connect 29 0 28 0;
-#X connect 29 1 27 0;
+#X connect 14 0 0 0;
+#X connect 26 0 28 0;
+#X connect 26 1 25 0;
+#X connect 30 0 14 1;

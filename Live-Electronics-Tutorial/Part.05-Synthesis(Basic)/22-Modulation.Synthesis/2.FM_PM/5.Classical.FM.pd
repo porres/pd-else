@@ -1,4 +1,4 @@
-#N canvas 502 91 941 481 12;
+#N canvas 425 91 941 481 12;
 #X declare -path else;
 #X obj 577 248 sine~;
 #X obj 626 248 *~;
@@ -19,7 +19,6 @@
 #dcdcdc #000000 #000000 0 1;
 #X obj 328 29 declare -path else;
 #X obj 624 143 f2s~ 10 0.5;
-#X obj 577 177 display~ 8;
 #X text 639 324 <= Deviation is the amplitude of the modulator oscillator.
 , f 30;
 #X obj 664 258 f2s~ 10;
@@ -49,27 +48,28 @@ the peak phase deviation. This is clearly a special case for FM so
 it relates to Phase Modulation., f 64;
 #X text 614 57 <= Carrier Frequency;
 #X text 684 113 <= Harmonic Ratio;
-#X text 650 180 <= Modulation Frequency;
+#X text 650 177 <= Modulation Frequency;
 #X text 807 222 Deviation;
 #X text 816 243 ModFreq;
 #X text 805 227 __________;
 #X text 722 233 <== Index =;
 #X obj 728 383 initmess \; \$0-carrier 200 \; \$0-ratio 0.5 \; \$0-index
 5;
+#X obj 577 177 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
 #X connect 0 0 3 0;
 #X connect 1 0 3 1;
-#X connect 2 0 16 0;
+#X connect 2 0 15 0;
 #X connect 3 0 7 1;
-#X connect 4 0 14 0;
+#X connect 4 0 33 0;
 #X connect 5 0 13 0;
-#X connect 6 0 17 0;
+#X connect 6 0 16 0;
 #X connect 7 0 8 0;
 #X connect 8 0 9 0;
 #X connect 10 0 2 0;
 #X connect 11 0 5 0;
 #X connect 13 0 4 1;
-#X connect 14 0 0 0;
-#X connect 14 0 1 0;
-#X connect 16 0 1 1;
-#X connect 17 0 4 0;
-#X connect 17 0 7 0;
+#X connect 15 0 1 1;
+#X connect 16 0 4 0;
+#X connect 16 0 7 0;
+#X connect 33 0 0 0;
+#X connect 33 0 1 0;

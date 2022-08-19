@@ -34,9 +34,6 @@ by its argument (500 ms in the right example)., f 44;
 #X obj 687 381 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X obj 549 377 display;
-#X obj 621 207 display~;
-#X obj 261 204 display~;
-#X obj 345 203 display~;
 #X text 21 17 Other objects from the ELSE library convert pulses into
 impulses and vice versa. The [trig2bang~] object converts impulses
 to a bang. See below.;
@@ -47,9 +44,12 @@ to a bang. See below.;
 #X text 183 310 the [impseq~] object is actually an impulse sequencer
 with many features as we'll see later \, but it can be used to convert
 a bang to an impulse., f 33;
+#X obj 261 204 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X obj 345 203 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X obj 621 207 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
 #X connect 0 0 5 0;
 #X connect 0 1 7 0;
-#X connect 1 0 26 0;
+#X connect 1 0 30 0;
 #X connect 2 0 0 0;
 #X connect 2 0 13 0;
 #X connect 3 0 4 0;
@@ -57,13 +57,13 @@ a bang to an impulse., f 33;
 #X connect 7 0 8 0;
 #X connect 9 0 1 0;
 #X connect 9 0 10 0;
-#X connect 10 0 27 0;
+#X connect 10 0 31 0;
 #X connect 13 0 3 0;
 #X connect 15 0 16 0;
-#X connect 16 0 25 0;
+#X connect 16 0 32 0;
 #X connect 18 0 19 0;
 #X connect 19 0 24 0;
 #X connect 21 0 23 0;
 #X connect 22 0 21 0;
-#X connect 29 0 31 0;
-#X connect 30 0 29 0;
+#X connect 26 0 28 0;
+#X connect 27 0 26 0;

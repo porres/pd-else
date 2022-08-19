@@ -1,4 +1,4 @@
-#N canvas 478 82 933 671 12;
+#N canvas 321 23 933 671 12;
 #X declare -path else;
 #X obj 133 357 +~;
 #X obj 81 319 phasor~;
@@ -11,10 +11,10 @@
 #X msg 106 155 \$1 10;
 #X obj 106 129 pow 4;
 #X obj 77 61 inlet~;
-#X obj 109 105 hsl 100 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 155 193 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
-1;
+#X obj 109 105 hsl 100 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 155 193 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 153 254 tabwrite~ waveshaping;
 #X obj 155 214 metro 220;
 #X obj 254 91 loadbang;
@@ -37,8 +37,8 @@ indice-fm 628.319 \; pd dsp 1;
 #X connect 11 0 8 0;
 #X coords 0 -1 1 1 120 25 2 100 100;
 #X restore 133 416 pd gain;
-#X obj 203 493 cnv 15 198 138 empty empty empty 20 12 0 14 -228856
--66577 0;
+#X obj 203 493 cnv 15 198 138 empty empty empty 20 12 0 14 #dcdcdc
+#404040 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array waveshaping 700 float 1;
 #A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -68,9 +68,9 @@ indice-fm 628.319 \; pd dsp 1;
 #X text 180 618 -1;
 #X text 185 555 0;
 #X obj 81 297 nbx 4 14 -1e+37 1e+37 0 1 empty portadora empty 0 -8
-0 10 -228856 -1 -1 0.1 256;
+0 10 #dcdcdc #000000 #000000 0.1 256;
 #X obj 151 270 nbx 4 14 -1e+37 1e+37 0 1 empty moduladora empty 0 -8
-0 10 -228856 -1 -1 200 256;
+0 10 #dcdcdc #000000 #000000 200 256;
 #X obj 310 345 +~;
 #N canvas 227 235 427 341 gain 0;
 #X obj 77 211 *~;
@@ -79,8 +79,8 @@ indice-fm 628.319 \; pd dsp 1;
 #X msg 106 155 \$1 10;
 #X obj 106 129 pow 4;
 #X obj 77 61 inlet~;
-#X obj 109 105 hsl 100 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 109 105 hsl 100 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 153 254 throw~ out;
 #X text 137 104 gain;
 #X connect 0 0 1 0;
@@ -95,10 +95,10 @@ indice-fm 628.319 \; pd dsp 1;
 #X restore 310 399 pd gain;
 #X obj 328 306 phasor~;
 #X obj 328 284 nbx 4 14 -1e+37 1e+37 0 1 empty portadora empty 0 -8
-0 10 -228856 -1 -1 0.1 256;
+0 10 #dcdcdc #000000 #000000 0.1 256;
 #X obj 270 302 osc~;
 #X obj 270 280 nbx 4 14 -1e+37 1e+37 0 1 empty moduladora empty 0 -8
-0 10 -228856 -1 -1 200 256;
+0 10 #dcdcdc #000000 #000000 200 256;
 #X text 266 248 Waveshaping;
 #X obj 310 371 cos~;
 #X text 471 172 0 Hz FM & PM:;
@@ -125,8 +125,8 @@ signal in the Waveshaping example as a "DC-Offset" modulation., f
 #X msg 106 155 \$1 10;
 #X obj 106 129 pow 4;
 #X obj 77 61 inlet~;
-#X obj 109 105 hsl 100 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 109 105 hsl 100 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 153 254 throw~ out;
 #X text 137 104 gain;
 #X connect 0 0 1 0;
@@ -140,12 +140,12 @@ signal in the Waveshaping example as a "DC-Offset" modulation., f
 #X coords 0 -1 1 1 120 25 2 100 100;
 #X restore 592 609 pd gain;
 #X obj 592 545 *~;
-#X obj 656 505 nbx 6 14 0 1e+37 0 1 empty indice empty 0 -8 0 10 -228856
--1 -1 0.5 256;
+#X obj 656 505 nbx 6 14 0 1e+37 0 1 empty indice empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0.5 256;
 #X obj 592 482 nbx 4 14 -1e+37 1e+37 0 1 empty moduladora empty 0 -8
-0 10 -228856 -1 -1 200 256;
-#X obj 659 478 hsl 128 15 0 2 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+0 10 #dcdcdc #000000 #000000 200 256;
+#X obj 659 478 hsl 128 15 0 2 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X text 533 578 0 Hz PM;
 #X obj 656 535 f2s~ 10;
 #X text 629 578 Transfer Function;
@@ -159,8 +159,8 @@ signal in the Waveshaping example as a "DC-Offset" modulation., f
 #X msg 106 155 \$1 10;
 #X obj 106 129 pow 4;
 #X obj 77 61 inlet~;
-#X obj 109 105 hsl 100 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 109 105 hsl 100 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 153 254 throw~ out;
 #X text 137 104 gain;
 #X connect 0 0 1 0;
@@ -174,13 +174,13 @@ signal in the Waveshaping example as a "DC-Offset" modulation., f
 #X coords 0 -1 1 1 120 25 2 100 100;
 #X restore 598 424 pd gain;
 #X obj 598 313 nbx 4 14 -1e+37 1e+37 0 1 empty moduladora empty 0 -8
-0 10 -228856 -1 -1 200 256;
+0 10 #dcdcdc #000000 #000000 200 256;
 #X obj 598 361 *~;
 #X obj 662 330 nbx 8 14 0 1e+37 0 1 empty indice-fm empty 0 -8 0 10
--228856 -1 -1 628.319 256;
+#dcdcdc #000000 #000000 628.319 256;
 #X text 535 392 0 Hz FM;
-#X obj 665 305 hsl 128 15 0 1260 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 665 305 hsl 128 15 0 1260 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 662 358 f2s~ 10;
 #X text 748 330 Index;
 #X obj 598 337 sine~;

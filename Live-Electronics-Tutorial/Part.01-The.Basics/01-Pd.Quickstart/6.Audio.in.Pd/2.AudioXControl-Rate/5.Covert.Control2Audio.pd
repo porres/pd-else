@@ -12,7 +12,6 @@
 #X obj 284 124 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X floatatom 284 147 5 0 0 0 - - - 0;
-#X obj 284 200 display~;
 #X obj 215 448 metro 1 1 samps;
 #X text 37 241 But then we have the [vline~] object \, which offers
 a more accurate conversion. It is mostly a line/envelope generator
@@ -35,6 +34,7 @@ generating a block of audio with one random value per sample \, but
 #X text 238 422 <= start metronome;
 #X text 216 125 click =>;
 #X text 41 470 click =>;
+#X obj 284 200 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
 #X connect 0 0 6 0;
 #X connect 1 0 5 0;
 #X connect 1 0 6 0;
@@ -42,8 +42,8 @@ generating a block of audio with one random value per sample \, but
 #X connect 3 0 5 0;
 #X connect 4 0 0 0;
 #X connect 4 0 3 0;
-#X connect 7 0 10 0;
+#X connect 7 0 21 0;
 #X connect 8 0 9 0;
 #X connect 9 0 7 0;
-#X connect 11 0 2 0;
-#X connect 18 0 11 0;
+#X connect 10 0 2 0;
+#X connect 17 0 10 0;

@@ -1,9 +1,9 @@
-#N canvas 421 23 827 629 12;
+#N canvas 421 23 826 563 12;
 #X declare -path else;
 #X obj 500 156 impulse~ 300;
 #X text 558 133 Hz;
 #X obj 275 182 nbx 5 14 1 100 0 1 empty empty empty 0 -8 0 10 #dcdcdc
-#000000 #000000 24 256;
+#000000 #000000 17 256;
 #X obj 194 259 cnv 15 198 138 empty empty empty 20 12 0 14 #dcdcdc
 #404040 0;
 #N canvas 0 22 474 324 (subpatch) 0;
@@ -13,7 +13,7 @@
 #X text 176 256 1;
 #X text 171 381 -1;
 #X obj 58 260 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 79 256;
+#dcdcdc #000000 #000000 62 256;
 #X obj 58 321 out~;
 #X obj 516 194 out~;
 #X obj 500 264 graph~;
@@ -24,19 +24,12 @@
 #X obj 609 509 dac~;
 #X obj 609 443 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 36 51 Not a surprise \, but here's another waveform you can
-generate with a sum of partials \, but that you'd need an infinite
-sum to generate a perfect waveform., f 52;
-#X text 36 102 In the case of impulses \, all partials need to have
-the same amplitude \, and this means that an impulse contains all frequencies
-equally distributed. See [pd impulse] for more., f 52;
 #X text 58 179 enter the number of harmonics:;
-#N canvas 334 220 531 395 Impulse 0;
+#N canvas 334 220 534 415 Impulse 0;
 #X obj 83 24 inlet;
 #X floatatom 83 58 5 0 0 0 - - - 0;
 #X msg 161 282 normalize 1;
 #X obj 161 253 trigger bang anything;
-#X obj 161 200 list prepend sinesum 4096;
 #X obj 161 226 list trim;
 #X text 156 56 Impulse: all partials are equal to 1!;
 #X obj 83 86 trigger bang float bang;
@@ -44,19 +37,22 @@ equally distributed. See [pd impulse] for more., f 52;
 #X msg 162 140 append 1;
 #X obj 162 114 until;
 #X obj 305 318 send impulse;
+#X obj 161 200 list prepend cosinesum 4096 0;
+#X text 280 103 cosinesum is like sinesum but the first argument sets
+the DC component (0 in this case)., f 30;
 #X connect 0 0 1 0;
-#X connect 1 0 7 0;
-#X connect 2 0 11 0;
+#X connect 1 0 6 0;
+#X connect 2 0 10 0;
 #X connect 3 0 2 0;
-#X connect 3 1 11 0;
-#X connect 4 0 5 0;
-#X connect 5 0 3 0;
-#X connect 7 0 8 0;
-#X connect 7 1 10 0;
-#X connect 7 2 8 1;
-#X connect 8 0 4 0;
+#X connect 3 1 10 0;
+#X connect 4 0 3 0;
+#X connect 6 0 7 0;
+#X connect 6 1 9 0;
+#X connect 6 2 7 1;
+#X connect 7 0 11 0;
+#X connect 8 0 7 0;
 #X connect 9 0 8 0;
-#X connect 10 0 9 0;
+#X connect 11 0 4 0;
 #X restore 275 212 pd Impulse;
 #X text 54 433 A perfect impulse occurs when we have only one single
 sample with a value other than 0 (usually 1). This type of signal is
@@ -65,20 +61,24 @@ audio rate timing resolution., f 73;
 #X text 54 485 The [impseq~] external from ELSE generates a sequence
 of impulses. By default \, it generates an impulse with an amplitude
 of 1 \, and we can use bangs to generate it., f 73;
-#X text 425 57 The [impulse~] (or [imp~] for short) object from ELSE
-is an impulse oscillator that generated a single sample with a value
-of 1 at the beginning of each period., f 49;
 #X obj 636 14 declare -path else;
 #X obj 58 288 tabosc4~ impulse;
-#X obj 574 579 gbuzz~;
-#X text 198 566 See also [gbuzz~] \, an impulse oscillator that you
-can set the number of partials for band limiting -->, f 52;
+#X text 36 51 Not a surprise \, but here's another waveform you can
+generate with a sum of partials. And \, also \, you'd need an infinite
+sum to generate a perfect waveform., f 54;
+#X text 36 102 In the case of impulses we have a sum of cosines and
+all partials need to have the same amplitude \, which means that an
+impulse contains all frequencies equally distributed. See [pd impulse]
+for more., f 54;
+#X text 449 52 The [impulse~] (or [imp~] for short) object from ELSE
+is an impulse oscillator that generates a single sample with a value
+of 1 at the beginning of each period., f 49;
 #X connect 0 0 9 0;
 #X connect 0 0 10 0;
-#X connect 2 0 19 0;
-#X connect 7 0 24 0;
+#X connect 2 0 17 0;
+#X connect 7 0 21 0;
 #X connect 11 0 0 0;
 #X connect 13 0 14 1;
 #X connect 13 0 14 0;
 #X connect 15 0 13 0;
-#X connect 24 0 8 0;
+#X connect 21 0 8 0;

@@ -1,6 +1,6 @@
-#N canvas 466 56 934 594 12;
+#N canvas 432 56 934 594 12;
 #X declare -path else;
-#X floatatom 281 278 5 0 0 0 - - -;
+#X floatatom 281 278 5 0 0 0 - - - 0;
 #N canvas 262 23 567 466 FFT-iFFT 0;
 #X obj 85 119 rfft~;
 #X obj 85 15 inlet~;
@@ -53,10 +53,9 @@ series)., f 40;
 #X connect 7 0 5 1;
 #X connect 8 0 7 0;
 #X restore 152 350 pd FFT-iFFT;
-#X obj 152 389 display~;
 #X obj 152 315 sig~;
 #X obj 152 285 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 13 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 57 306 setdsp~;
 #X text 63 499 LATENCY: FFT analysis and resynthesis produces a latency
 equal to the hop size (number of samples between overlaps)., f 46
@@ -97,9 +96,10 @@ though. Open the subpatch below to the left for more details. Then
 check the sawtooth being transformed to the frequency domain and back
 and open the subprach to the right for more details., f 48;
 #X obj 672 43 declare -path else;
+#X obj 152 389 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
-#X connect 4 0 5 0;
-#X connect 6 0 4 0;
-#X connect 7 0 6 0;
+#X connect 4 0 17 0;
+#X connect 5 0 4 0;
+#X connect 6 0 5 0;

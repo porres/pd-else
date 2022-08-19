@@ -1,4 +1,4 @@
-#N canvas 442 83 980 635 12;
+#N canvas 386 83 980 635 12;
 #X declare -path else;
 #X obj 262 408 *;
 #X obj 262 431 display;
@@ -6,14 +6,14 @@
 #X msg 262 382 64;
 #X obj 546 168 setdsp~ 1;
 #X obj 664 180 osc~ 440;
-#X obj 639 181 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 639 181 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 83 427 display;
 #X obj 83 398 blocksize~ -ms;
 #X obj 180 181 display;
 #X obj 180 152 blocksize~;
 #X obj 664 209 print~ áudio;
-#X floatatom 770 183 5 0 0 0 - - -;
+#X floatatom 770 183 5 0 0 0 - - - 0;
 #X text 209 184 <=;
 #X text 33 44 For the CPU to not compute every sample one at a time
 \, audio signals are usually processed in chucks \, or in a "block".
@@ -27,8 +27,8 @@ size in the patch.;
 #X text 103 585 standard block size:;
 #N canvas 325 309 632 267 [block~] 0;
 #X obj 119 172 osc~ 440;
-#X obj 69 128 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 69 128 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X obj 119 209 print~;
 #X obj 45 61 display;
 #X obj 45 30 blocksize~;
@@ -44,18 +44,17 @@ illustration., f 48;
 #X connect 1 0 2 0;
 #X connect 4 0 3 0;
 #X restore 699 597 pd [block~];
-#N canvas 905 271 483 502 [switch~] 0;
+#N canvas 883 244 483 502 [switch~] 0;
 #X obj 206 395 osc~ 440;
-#X obj 104 240 tgl 30 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X floatatom 104 278 5 0 0 0 - - -;
+#X obj 104 240 tgl 30 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
+#X floatatom 104 278 5 0 0 0 - - - 0;
 #X obj 300 320 display;
 #X text 51 247 On/Off;
 #X obj 300 291 blocksize~;
-#X obj 206 431 display~ 6;
 #X text 341 322 samples;
-#X obj 156 249 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 156 249 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 156 323 switch~ 128;
 #X text 39 33 This subpatch has a block size of 128 set with [switch~].
 But you need to turn the process on with the toggle in order for the
@@ -67,11 +66,12 @@ it off right away afterwards to save CPU., f 57;
 #X text 39 164 For the bang message to work like that \, the audio
 dsp needs to be on and the [switch~] object cannot be on., f 57;
 #X text 182 248 <= compute just a block of audio;
-#X connect 0 0 6 0;
+#X obj 206 431 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
+#X connect 0 0 13 0;
 #X connect 1 0 2 0;
-#X connect 2 0 9 0;
+#X connect 2 0 8 0;
 #X connect 5 0 3 0;
-#X connect 8 0 9 0;
+#X connect 7 0 8 0;
 #X restore 787 597 pd [switch~];
 #X obj 255 585 block~ 64;
 #X text 120 183 samples;

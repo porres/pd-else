@@ -1,4 +1,4 @@
-#N canvas 323 107 1020 566 12;
+#N canvas 294 54 1020 566 12;
 #X declare -path else;
 #X obj 542 312 s harm;
 #X msg 542 287 0;
@@ -22,7 +22,7 @@
 #X array \$0-wavetable 515 float 0;
 #X coords 0 1 514 -1 250 140 1 0 0;
 #X restore 652 284 graph;
-#X obj 101 406 nbx 4 18 -1e+37 1e+37 0 1 empty empty empty 0 -8 0 10
+#X obj 91 406 nbx 4 18 -1e+37 1e+37 0 1 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 293 256;
 #X text 634 278 1;
 #X text 630 413 -1;
@@ -115,7 +115,7 @@
 #X connect 5 0 1 1;
 #X connect 6 0 3 0;
 #X connect 6 0 5 0;
-#X restore 272 441 pd sequencer;
+#X restore 292 442 pd sequencer;
 #X obj 526 151 cnv 1 1 1 empty empty 1st 0 0 0 14 #fcfcfc #404040 0
 ;
 #X obj 577 151 cnv 1 1 1 empty empty 2nd 0 0 0 14 #fcfcfc #404040 0
@@ -142,15 +142,15 @@
 #X text 527 121 |;
 #X obj 508 192 pack2 float float float float float float float float
 , f 62;
-#X obj 272 478 out~;
+#X obj 292 482 out~;
 #X obj 508 165 nbx 4 18 -1e+37 1e+37 0 0 empty harm empty 0 -8 0 10
 #b8c8dc #000000 #000000 0 256;
-#X msg 508 455 normalize;
+#X msg 508 458 normalize;
 #X obj 508 348 list prepend sinesum 512, f 12;
-#X obj 508 390 list trim;
-#X obj 583 447 display;
-#X obj 508 423 t b a;
-#X obj 101 482 out~;
+#X obj 508 391 list trim;
+#X obj 589 457 display;
+#X obj 508 423 t b a, f 12;
+#X obj 91 482 out~;
 #X text 35 21 In this example we use [tabosc4~] \, a native object
 that uses an array as a waveform. We generate a waveform with the "sinesum"
 message sent to an array \, which needs an array size that's a power
@@ -166,7 +166,7 @@ box represents the amplitude of a partial from our partials list \,
 and draws a waveform composed of these 8 partials., f 60;
 #X text 35 346 Test the resulting sound below with a frequency input
 or from a sequencer driving [tabosc4~]., f 60;
-#X text 154 406 Hz;
+#X text 144 406 Hz;
 #X text 35 210 The sinesum message is specially designed to generate
 waveforms for [tabosc4~]. In this example \, the table is drawn with
 512 points plus 3 extra points \, which are needed for interpolation
@@ -178,8 +178,8 @@ for now it concerns a 4 point interpolation \, hence the "4" in [tabosc4~].
 ;
 #X text 533 83 --------------- Partial Amplitude list --------------------
 ;
-#X obj 583 484 send \$0-wavetable;
-#X obj 101 439 tabosc4~ \$0-wavetable;
+#X obj 589 504 send \$0-wavetable;
+#X obj 91 442 tabosc4~ \$0-wavetable;
 #X obj 818 28 declare -path else;
 #X text 35 159 Note that after sending the list of partials \, we do
 normalize the array. A subpatch also normalizes the partials for us
