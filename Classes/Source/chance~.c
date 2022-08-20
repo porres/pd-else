@@ -16,6 +16,8 @@ typedef struct _chance{
     int            x_id;
 }t_chance;
 
+static t_class *chance_class;
+
 static void chance_seed(t_chance *x, t_symbol *s, int ac, t_atom *av){
     random_init(&x->x_rstate, get_seed(s, ac, av, x->x_id));
 }
