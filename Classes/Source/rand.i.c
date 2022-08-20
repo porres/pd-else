@@ -6,27 +6,25 @@
 static t_class *randi_class;
 
 typedef struct _randi{
-    t_object        x_obj;
-    t_random_state  x_rstate;
-    t_float         x_min;
-    t_float         x_max;
+    t_object       x_obj;
+    t_random_state x_rstate;
+    t_float        x_min;
+    t_float        x_max;
+    int            x_id;
 }t_randi;
 
-static unsigned int instanc_n = 0;
-
 static void randi_seed(t_randi *x, t_symbol *s, int ac, t_atom *av){
-    random_init(&x->x_rstate, get_seed(s, ac, av, ++instanc_n));
+    random_init(&x->x_rstate, get_seed(s, ac, av, x->x_id));
 }
 
 static void randi_bang(t_randi *x){
-    int min = (int)x->x_min; // Output LOW
-    int max = (int)x->x_max + 1; // Output HIGH
+    int min = (int)x->x_min, max = (int)x->x_max + 1;
     if(min > max){
         int temp = min;
         min = max;
         max = temp;
     }
-    int range = max - min; // range
+    int range = max - min;
     int random = min;
     if(range){
         uint32_t *s1 = &x->x_rstate.s1;
@@ -40,6 +38,7 @@ static void randi_bang(t_randi *x){
 
 static void *randi_new(t_symbol *s, int ac, t_atom *av){
     t_randi *x = (t_randi *)pd_new(randi_class);
+    x->x_id = random_get_id();
     randi_seed(x, s, 0, NULL);
     int flagset = 0, numargs = 0;
     while(ac){

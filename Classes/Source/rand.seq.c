@@ -12,9 +12,8 @@ typedef struct _rand_seq{
     int            *x_ovalues;  // number of outputs of each value
     t_random_state  x_rstate;
     t_outlet       *x_bang_outlet;
+    int             x_id;
 }t_rand_seq;
-
-static unsigned int instanc_n = 0;
 
 static t_class *rand_seq_class;
 
@@ -42,7 +41,7 @@ static void rand_seq_n(t_rand_seq *x, t_float f){
 }
 
 static void rand_seq_seed(t_rand_seq *x, t_symbol *s, int ac, t_atom *av){
-    random_init(&x->x_rstate, get_seed(s, ac, av, ++instanc_n));
+    random_init(&x->x_rstate, get_seed(s, ac, av, x->x_id));
 }
 
 static void rand_seq_bang(t_rand_seq *x){
@@ -133,6 +132,7 @@ static void rand_seq_eq(t_rand_seq *x, t_float f){
 static t_rand_seq *rand_seq_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_rand_seq *x = (t_rand_seq *)pd_new(rand_seq_class);
+    x->x_id = random_get_id();
     x->x_nvalues = 1;
     rand_seq_seed(x, s, 0, NULL);
     if(ac){

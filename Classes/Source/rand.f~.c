@@ -13,12 +13,11 @@ typedef struct _randf{
     t_int           x_trig_bang;
     t_inlet        *x_low_let;
     t_inlet        *x_high_let;
+    int             x_id;
 }t_randf;
 
-static unsigned int instanc_n = 0;
-
 static void randf_seed(t_randf *x, t_symbol *s, int ac, t_atom *av){
-    random_init(&x->x_rstate, get_seed(s, ac, av, ++instanc_n));
+    random_init(&x->x_rstate, get_seed(s, ac, av, x->x_id));
 }
 
 static void randf_bang(t_randf *x){
@@ -84,6 +83,7 @@ static void *randf_free(t_randf *x){
 static void *randf_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_randf *x = (t_randf *)pd_new(randf_class);
+    x->x_id = random_get_id();
     randf_seed(x, s, 0, NULL);
     float low = -1, high = 1;
     if(ac){

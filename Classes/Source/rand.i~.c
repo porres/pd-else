@@ -13,12 +13,11 @@ typedef struct _randi{
     t_int           x_trig_bang;
     t_inlet        *x_low_let;
     t_inlet        *x_high_let;
+    int             x_id;
 }t_randi;
 
-static unsigned int instanc_n = 0;
-
 static void randi_seed(t_randi *x, t_symbol *s, int ac, t_atom *av){
-    random_init(&x->x_rstate, get_seed(s, ac, av, ++instanc_n));
+    random_init(&x->x_rstate, get_seed(s, ac, av, x->x_id));
 }
 
 static void randi_bang(t_randi *x){
@@ -86,6 +85,7 @@ static void *randi_free(t_randi *x){
 static void *randi_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_randi *x = (t_randi *)pd_new(randi_class);
+    x->x_id = random_get_id();
     randi_seed(x, s, 0, NULL);
     float low = 0, high = 1;
     if(ac){

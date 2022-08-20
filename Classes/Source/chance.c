@@ -13,13 +13,12 @@ typedef struct _chance{
     int         x_ac;
     int         x_bytes;
     int         x_coin;
+    int         x_id;
     float       x_chance;
     t_float     x_range;
     t_outlet  **x_outs;
     t_outlet   *x_out_index;
 }t_chance;
-
-static unsigned int instanc_n = 0;
 
 static void chance_output(t_chance *x, t_floatarg f){
     int n;
@@ -60,12 +59,13 @@ static void chance_list(t_chance *x, t_symbol *s, int argc, t_atom *argv){
 }
 
 static void chance_seed(t_chance *x, t_symbol *s, int ac, t_atom *av){
-    random_init(&x->x_rstate, get_seed(s, ac, av, ++instanc_n));
+    random_init(&x->x_rstate, get_seed(s, ac, av, x->x_id));
 }
 
 static void *chance_new(t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     t_chance *x = (t_chance *)pd_new(chance_class);
+    x->x_id = random_get_id();
     x->x_range = 0;
     x->x_index = 0;
     x->x_coin = 0;

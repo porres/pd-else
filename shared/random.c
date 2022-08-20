@@ -4,6 +4,13 @@
 #include <m_pd.h>
 #include "random.h"
 
+
+static int instance_number = 0;
+
+int random_get_id(void){
+    return(++instance_number);
+}
+    
 uint32_t random_trand(uint32_t *s1, uint32_t *s2, uint32_t *s3){
 // Provided for speed in inner loops where the state variables are loaded into registers.
 // Thus updating the instance variables can be postponed until the end of the loop.
@@ -33,9 +40,9 @@ int32_t random_hash(int32_t inKey){
     return((int32_t)hash);
 }
 
-void random_init(t_random_state* rstate, float f){
+void random_init(t_random_state* rstate, int seed){
 	// humans tend to use small seeds - mess up the bits
-	uint32_t seedval = (uint32_t)random_hash((int)f);
+	uint32_t seedval = (uint32_t)random_hash(seed);
 	uint32_t *s1 = &rstate->s1;
 	uint32_t *s2 = &rstate->s2;
 	uint32_t *s3 = &rstate->s3;
@@ -52,12 +59,7 @@ void random_init(t_random_state* rstate, float f){
         *s3 = 1821928721U;
 }
 
-unsigned int get_seed(t_symbol *s, int ac, t_atom *av, int n){
+int get_seed(t_symbol *s, int ac, t_atom *av, int n){
     s = NULL;
-    unsigned int timeval;
-    if(ac && av->a_type == A_FLOAT)
-        timeval = (unsigned int)(atom_getfloat(av));
-    else
-        timeval = (unsigned int)(time(NULL)*151*n);
-    return(timeval);
+    return(ac ? atom_getint(av) : (int)(time(NULL)*n));
 }
