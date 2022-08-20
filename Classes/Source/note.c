@@ -24,9 +24,9 @@ static t_pd *notesink = 0;
 static void note_getrect(t_gobj *z, t_glist *gl, int *xp1, int *yp1, int *xp2, int *yp2);
 
 typedef struct _edit_proxy{
-    t_object    p_obj;
-    t_symbol   *p_sym;
-    t_clock    *p_clock;
+    t_object      p_obj;
+    t_symbol     *p_sym;
+    t_clock      *p_clock;
     struct _note *p_cnv;
 }t_edit_proxy;
 
@@ -202,17 +202,17 @@ static void note_adjust_justification(t_note *x){
 }
 
 static void note_draw(t_note *x){
-//    post("note_draw");
 //    post("x->x_bbset = %d", x->x_bbset);
     x->x_cv = glist_getcanvas(x->x_glist);
     if(x->x_bg_flag && x->x_bbset){ // draw bg only if initialized
-//        post("draw bg");
+        int x1, y1, x2, y2;
+        note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
         sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags [list bg%lx all%lx] -outline %s -fill %s\n",
             (unsigned long)x->x_cv,
             text_xpix((t_text *)x, x->x_glist),
             text_ypix((t_text *)x, x->x_glist),
-            x->x_x2 + x->x_zoom * 2,
-            x->x_y2 + x->x_zoom * 2,
+            x2 + x->x_zoom * 2,
+            y2 + x->x_zoom * 2,
             (unsigned long)x, (unsigned long)x,
             x->x_bgcolor, x->x_bgcolor);
     }
@@ -397,10 +397,8 @@ static void note_vis(t_gobj *z, t_glist *glist, int vis){
 static void note__bbox_callback(t_note *x, t_symbol *bindsym,
 t_floatarg x1, t_floatarg y1, t_floatarg x2, t_floatarg y2){
     x->x_text_width = x2-x1;
-//    post("note__bbox_callback");
     bindsym = NULL;
     if(!x->x_bbset || (x->x_height != (y2-y1))){ // redraw
-//        post("bbox redraw");
         x->x_height = y2-y1, x->x_y1 = y1, x->x_y2 = y2;
         if(x->x_resized)
             x->x_width = x->x_max_pixwidth, x->x_x2 = x1 + x->x_max_pixwidth;
@@ -480,12 +478,15 @@ static void handle__motion_callback(t_handle *ch, t_floatarg f1, t_floatarg f2){
     if(ch->h_clicked){ // dragging handle
         t_note *x = ch->h_master;
         int dx = (int)f1;
+//        post("dx = %d", dx);
         f2 = 0; // avoid warning
         int x1, y1, x2, y2;
         note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+//        post("x1 (%d) x2 (%d) y1 (%d) y2 (%d)", x1, x2, y1, y2);
         x->x_x1 = x1, x->x_x2 = x2;
         x->x_y1 = y1, x->x_y2 = y2;
-        int newx = x2 + dx;
+        int newx = x2 + dx; //* x->x_zoom;
+//        post("newx = x2 + dx --> %d", newx);
         if(newx > x1 + NOTE_MINSIZE){ // update outline
             sys_vgui(".x%lx.c coords %lx_outline %d %d %d %d\n", (unsigned long)x->x_cv,
                 (unsigned long)x, x->x_x1, x->x_y1, x->x_newx2 = newx, x->x_y2);
@@ -935,8 +936,7 @@ static void note_zoom(t_note *x, t_floatarg zoom){
     x->x_zoom = (int)zoom;
     float mul = zoom == 1. ? 0.5 : 2.;
     x->x_max_pixwidth = (int)((float)x->x_max_pixwidth * mul);
-    float fontsize = (float)x->x_fontsize * mul;
-    note_fontsize(x, fontsize);
+    note_fontsize(x, (float)x->x_fontsize * mul);
 }
 
 //------------------- Properties --------------------------------------------------------
