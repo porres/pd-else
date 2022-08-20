@@ -1,4 +1,9 @@
 
+compilar via bash:
+- baixar o zip (tar não funciona)
+- jogar no 'sources'
+- bash vai.else.sh
+
 -------------------------------------------------------------------------
 
 make install objectsdir=../
