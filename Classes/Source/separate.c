@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifndef _WIN32
+#include "s_utf8.h"
+#endif
+
 typedef struct _separate{
     t_object    x_obj;
     t_symbol   *x_separator;
