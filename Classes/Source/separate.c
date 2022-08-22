@@ -3,7 +3,6 @@
 #include "m_pd.h"
 #include <stdlib.h>
 #include <string.h>
-#include <s_utf8.h>
 
 typedef struct _separate{
     t_object    x_obj;

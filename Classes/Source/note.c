@@ -2,7 +2,6 @@
 
 #include <string.h>
 #include <ctype.h>
-#include "s_utf8.h"
 #include "m_pd.h"
 #include "g_canvas.h"
 
