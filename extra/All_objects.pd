@@ -1,9 +1,9 @@
-#N struct 1006-cell float x float y float cellsize float color;
-#N struct 1007-point float x0 float y0 float xs float ys float fg float
+#N struct 1004-cell float x float y float cellsize float color;
+#N struct 1005-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1026-point float x0 float y0 float size float fg float in
+#N struct 1024-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1067-slot float x float y float slotsize float color float
+#N struct 1065-slot float x float y float slotsize float color float
 width float bordercolor;
 #N canvas 561 36 530 463 10;
 #N canvas 347 36 974 668 GUI 0;
@@ -429,34 +429,35 @@ width float bordercolor;
 #X obj 61 51 else/sfont~;
 #X restore 191 285 pd Sampler_synth;
 #N canvas 700 41 378 497 Oscillators 0;
-#X obj 74 17 else/cosine~;
-#X obj 74 45 else/impulse~;
-#X obj 74 72 else/impulse2~;
-#X obj 176 72 else/imp2~;
-#X obj 176 43 else/imp~;
-#X obj 74 99 else/parabolic~;
-#X obj 74 127 else/pulse~;
-#X obj 74 155 else/saw~;
-#X obj 74 184 else/saw2~;
-#X obj 74 212 else/oscbank~;
-#X obj 74 240 else/oscbank2~;
-#X obj 74 268 else/sine~;
-#X obj 74 296 else/square~;
-#X obj 75 325 else/tri~;
-#X obj 75 353 else/vsaw~;
-#X obj 75 403 else/pmosc~;
-#X obj 75 431 else/wavetable~;
-#X obj 189 431 else/wt~;
-#X obj 75 487 else/bl.imp~;
-#X obj 75 515 else/bl.imp2~;
-#X obj 75 543 else/bl.saw~;
-#X obj 75 571 else/bl.saw2~;
-#X obj 75 604 else/bl.square~;
-#X obj 75 633 else/bl.tri~;
-#X obj 75 660 else/bl.vsaw~;
-#X obj 75 688 else/bl.wavetable~;
-#X obj 75 377 else/gaussian~;
-#X obj 76 458 else/blip~;
+#X obj 74 37 else/cosine~;
+#X obj 74 65 else/impulse~;
+#X obj 74 92 else/impulse2~;
+#X obj 176 92 else/imp2~;
+#X obj 176 63 else/imp~;
+#X obj 74 119 else/parabolic~;
+#X obj 74 147 else/pulse~;
+#X obj 74 175 else/saw~;
+#X obj 74 204 else/saw2~;
+#X obj 74 232 else/oscbank~;
+#X obj 74 260 else/oscbank2~;
+#X obj 74 288 else/sine~;
+#X obj 74 316 else/square~;
+#X obj 75 345 else/tri~;
+#X obj 75 373 else/vsaw~;
+#X obj 75 423 else/pmosc~;
+#X obj 75 451 else/wavetable~;
+#X obj 189 451 else/wt~;
+#X obj 75 537 else/bl.imp~;
+#X obj 75 565 else/bl.imp2~;
+#X obj 75 593 else/bl.saw~;
+#X obj 75 621 else/bl.saw2~;
+#X obj 75 654 else/bl.square~;
+#X obj 75 683 else/bl.tri~;
+#X obj 75 710 else/bl.vsaw~;
+#X obj 75 738 else/bl.wavetable~;
+#X obj 75 397 else/gaussian~;
+#X obj 76 508 else/blip~;
+#X obj 76 479 bl.osc~;
 #X restore 300 285 pd Oscillators;
 #N canvas 980 70 314 479 Noise 0;
 #X obj 87 49 else/brown~;
