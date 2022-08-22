@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include "m_pd.h"
 #include "g_canvas.h"
+#include "s_utf8.h"
 
 #define NOTE_MINSIZE       8
 #define NOTE_HANDLE_WIDTH  8
