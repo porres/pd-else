@@ -16,7 +16,7 @@ make install objectsdir=../ arch= x86_64 extension=d_amd64
 
 --------------------------------------------------------------------------------------
 
-./deken upload -v 1.0-0_rc2-with_live_electronics_tutorial else --no-source-error
+./deken upload -v 1.0-0_rc3-with_live_electronics_tutorial else --no-source-error
 
 --------------------------------------------------------------------------------------
 
