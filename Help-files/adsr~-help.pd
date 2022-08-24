@@ -1,4 +1,4 @@
-#N canvas 550 23 565 694 10;
+#N canvas 0 37 593 945 10;
 #X obj 5 362 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 5 507 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -60,7 +60,6 @@
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #X obj 90 210 osc~ 440;
-#X text 227 369 - gate values, f 43;
 #X obj 216 180 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X obj 271 180 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -355,12 +354,6 @@ linear envelopes from [adsr~]'s output.;
 #X restore 490 326 pd fader~;
 #X obj 5 562 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 68 88 [adsr~] is an attack/decay/sustain/release gated envelope.
-At a gate on (transition from 0 to any value) \, the attack ramp is
-generated \, then a decay ramp goes to the sustain point (specified
-as a ratio of the gate value). A gate off (transition from any value
-to 0) makes [adsr~] go to 0 at the specified release time in ms.,
-f 68;
 #N canvas 707 84 494 456 log 0;
 #X obj 409 181 else/setdsp~;
 #X text 349 106 see also:;
@@ -402,18 +395,24 @@ is set with the -log flag or "log" message., f 65;
 #X obj 381 322 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X text 398 322 done;
+#X text 68 88 [adsr~] is an attack/decay/sustain/release gated envelope.
+At gate on (transition from 0 to any value) \, the attack ramp is generated
+\, then a decay ramp goes to the sustain point (specified as a ratio
+of the gate value). At gate off (transition from any value to 0) \,
+[adsr~] goes to 0 at the specified release time in ms., f 68;
+#X text 227 369 - gate value, f 43;
 #X connect 12 0 11 0;
 #X connect 14 0 13 0;
-#X connect 25 0 70 0;
+#X connect 25 0 69 0;
 #X connect 35 0 12 0;
-#X connect 37 0 66 1;
-#X connect 38 0 66 2;
-#X connect 41 0 66 3;
-#X connect 42 0 66 4;
-#X connect 60 0 61 0;
-#X connect 61 0 78 0;
-#X connect 66 0 12 1;
-#X connect 66 0 14 0;
-#X connect 66 1 60 0;
-#X connect 70 0 66 0;
-#X connect 78 0 79 0;
+#X connect 36 0 65 1;
+#X connect 37 0 65 2;
+#X connect 40 0 65 3;
+#X connect 41 0 65 4;
+#X connect 59 0 60 0;
+#X connect 60 0 76 0;
+#X connect 65 0 12 1;
+#X connect 65 0 14 0;
+#X connect 65 1 59 0;
+#X connect 69 0 65 0;
+#X connect 76 0 77 0;

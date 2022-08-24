@@ -1,4 +1,4 @@
-#N canvas 480 23 562 479 10;
+#N canvas 0 37 580 945 10;
 #X obj 4 301 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 362 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -34,7 +34,6 @@
 0;
 #X obj 128 314 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 155 431 1) float - initial threshold (default 0), f 49;
 #X obj 4 5 cnv 15 301 42 empty empty above 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -46,21 +45,25 @@
 #000000 #000000;
 #X obj 128 397 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 49 93 [above] sends a bang on its left output when it detects
-a float raising above and over a threshold. Conversely \, it outputs
-a bang in its right outlet when the signal falls back to the threshold
-or below it. You can set the threshold value with the argument or the
-2nd inlet., f 64;
 #X obj 217 178 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
 #X obj 214 236 else/above 64;
 #X obj 214 209 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X text 171 341 float - set threshold, f 37;
-#X text 176 373 bang - when raises above a threshold;
-#X text 176 397 bang - when falls back or below a threshold;
 #X text 171 313 float - input float, f 37;
-#X connect 24 0 26 0;
-#X connect 25 0 20 0;
-#X connect 25 1 21 0;
-#X connect 26 0 25 0;
+#X text 49 93 [above] sends a bang to the left outlet when the left
+inlet is above the threshold value. Conversely \, it sends a bang to
+the right outlet when the left inlet falls back to the threshold value
+or below it. The threshold value can be set via the argument or the
+2nd inlet. value with the argument or the 2nd inlet., f 64;
+#X text 171 341 float - threshold value, f 37;
+#X text 155 431 1) float - initial threshold value (default 0), f
+49;
+#X text 176 373 bang - when left inlet value rises above the threshold
+value;
+#X text 176 397 bang - when left inlet falls back to or below the threshold
+;
+#X connect 22 0 24 0;
+#X connect 23 0 19 0;
+#X connect 23 1 20 0;
+#X connect 24 0 23 0;

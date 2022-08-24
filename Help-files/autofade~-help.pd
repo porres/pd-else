@@ -1,4 +1,4 @@
-#N canvas 483 31 561 547 10;
+#N canvas 0 37 589 945 10;
 #X obj 4 292 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 398 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -365,7 +365,6 @@ the fading curves available, f 32;
 \, hann \, lin \, hannsin \, linsin> (default: quartic), f 47;
 #X text 226 457 -;
 #X text 154 458 1) symbol;
-#X text 226 485 - fade time in ms (default 0), f 49;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
@@ -388,7 +387,6 @@ the fading curves available, f 32;
 #X text 241 159 gate;
 #X obj 246 177 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
-#X text 226 348 - fade time in ms, f 44;
 #X text 133 348 fade <float>;
 #X text 225 303 - gate: "fade in" if != 0 \, "fade out" otherwise;
 #X obj 369 182 else/gray~;
@@ -407,15 +405,17 @@ the fading curves available, f 32;
 #X obj 233 232 else/out~;
 #X text 35 82 [autofade~] is an automatic fade in/out for multichannel
 inputs. It responds to a gate control and uses internal lookup tables
-for 7 different fading curves. A gate on happens when the last input
-value was zero and the incoming value isn't. A gate off happens when
+for 7 different fading curves. A gate-on happens when the last input
+value was zero and the incoming value isn't. A gate-off happens when
 the last value was a non-zero value and the incoming value is 0! The
 maximum gain depends on the gate on level., f 80;
-#X connect 14 0 38 0;
-#X connect 16 0 48 1;
-#X connect 38 0 48 0;
-#X connect 40 0 48 0;
-#X connect 44 0 48 2;
-#X connect 48 0 54 0;
-#X connect 48 1 54 1;
-#X connect 48 2 51 0;
+#X text 226 348 - fade in/out time in ms, f 44;
+#X text 226 485 - fade in/out time in ms (default 0), f 49;
+#X connect 14 0 37 0;
+#X connect 16 0 46 1;
+#X connect 37 0 46 0;
+#X connect 39 0 46 0;
+#X connect 42 0 46 2;
+#X connect 46 0 52 0;
+#X connect 46 1 52 1;
+#X connect 46 2 49 0;

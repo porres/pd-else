@@ -1,4 +1,4 @@
-#N canvas 541 23 563 559 10;
+#N canvas 0 37 580 922 10;
 #X obj 4 277 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 427 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -101,8 +101,6 @@ b2 * y[n-2];
 #X connect 15 0 16 0;
 #X connect 17 0 3 0;
 #X restore 429 238 pd filter formula \; and response;
-#X text 229 379 - central frequency in Hertz;
-#X text 118 490 1) float - central frequency in Hertz (default 0);
 #X msg 197 121 clear;
 #X text 230 303 - clears filter's memory if you blow it up;
 #X text 205 338 bw;
@@ -188,7 +186,7 @@ or 'bw', f 65;
 -0.54307 -0.529232 -0.515821 -0.502835 -0.490253 -0.478065 -0.466256
 -0.454823 -0.443742 -0.433012 -0.42261 -0.412533 -0.402764 -0.393295
 -0.384112 -0.375207 -0.366569 -0.358185 -0.35005 -0.342153 -0.334484
--0.327037 -0.319799 -0.312767 -0.305932 -0.299285 -0.292821 -0.286533
+-0.327037 -0.319799 -0.312768 -0.305932 -0.299285 -0.292821 -0.286533
 -0.280414 -0.274457 -0.268658 -0.263011 -0.25751 -0.25215 -0.246928
 -0.241837 -0.236873 -0.232032 -0.227309 -0.222703 -0.218206 -0.213817
 -0.209533 -0.205349 -0.201263 -0.197271 -0.193371 -0.189561 -0.185835
@@ -477,10 +475,12 @@ graph below)., f 69;
 #X connect 22 0 24 1;
 #X connect 24 0 0 1;
 #X restore 476 195 pd example;
-#X connect 17 0 50 0;
-#X connect 18 0 50 1;
-#X connect 19 0 50 2;
-#X connect 27 0 50 0;
+#X text 229 379 - central frequency in Hz;
+#X text 118 490 1) float - central frequency in Hz (default 0);
+#X connect 17 0 48 0;
+#X connect 18 0 48 1;
+#X connect 19 0 48 2;
+#X connect 27 0 48 0;
 #X connect 28 0 27 0;
-#X connect 34 0 50 0;
-#X connect 50 0 8 0;
+#X connect 32 0 48 0;
+#X connect 48 0 8 0;

@@ -1,4 +1,4 @@
-#N canvas 486 23 564 578 10;
+#N canvas 0 37 590 945 10;
 #X obj 4 551 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 4 330 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
@@ -49,7 +49,6 @@
 #dcdcdc #000000 #000000 0 256;
 #X obj 251 188 nbx 5 14 0 100 0 0 empty empty empty 0 -8 0 10 #dcdcdc
 #000000 #000000 0 256;
-#X text 191 338 signal - signal input to the filter, f 49;
 #X text 307 188 Delay time (ms);
 #X text 387 211 Decay time (ms);
 #N canvas 522 182 855 362 Details 0;
@@ -131,12 +130,9 @@ the expression: a = exp(log(0.001) * D/t60).;
 #X connect 56 0 59 0;
 #X connect 59 0 4 0;
 #X restore 438 287 pd Details and \; Filter Equation;
-#X text 156 411 float/signal - delay time (im ms), f 54;
-#X text 156 436 float/signal - decay time (in ms), f 54;
 #X text 111 495 1) float - maximum and initial delay time in ms (default
 0), f 60;
 #X text 111 512 2) float - decay time in ms (default 0), f 60;
-#X text 240 354 - changes the maximum delay size (in ms), f 42;
 #X text 147 354 size <float>;
 #X text 198 371 clear - clears the delay buffer, f 48;
 #X obj 190 162 else/pulse~ 1 0.25;
@@ -166,15 +162,19 @@ also change that with the "gain" message., f 72;
 #X restore 459 262 pd gain mode;
 #X text 146 388 gain <float>;
 #X obj 175 232 else/allpass.rev~ 100 1000;
-#X text 61 89 Use [allpass.rev~] as a reverberator \, allpass filter
+#X text 61 89 [allpass.rev~] serves as a reverberator \, allpass filter
 and delay. By default \, you can set a delay time and a reverberation/decay
 time in ms ("t60") \, which is the time the impulse takes to fall 60dB
 in energy (but you can change this parameter to a gain coefficient).
 , f 67;
+#X text 191 338 signal - signal to be filtered, f 49;
+#X text 240 354 - changes the max delay size (in ms), f 42;
+#X text 156 411 float/signal - delay time in ms, f 54;
+#X text 156 436 float/signal - decay time in ms, f 54;
 #X connect 9 0 10 0;
-#X connect 10 0 43 0;
-#X connect 24 0 43 2;
-#X connect 25 0 38 0;
-#X connect 37 0 10 1;
-#X connect 38 0 43 1;
-#X connect 43 0 11 0;
+#X connect 10 0 39 0;
+#X connect 24 0 39 2;
+#X connect 25 0 34 0;
+#X connect 33 0 10 1;
+#X connect 34 0 39 1;
+#X connect 39 0 11 0;

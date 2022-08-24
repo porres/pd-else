@@ -1,4 +1,4 @@
-#N canvas 506 32 565 591 10;
+#N canvas 0 37 582 945 10;
 #X obj 5 346 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 5 430 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -276,11 +276,6 @@ linear envelopes from [asr~]'s output.;
 #X restore 486 310 pd fader~;
 #X obj 5 490 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 68 86 [asr~] is an attack/sustain/release gated envelope. At
-a gate on (transition from 0 to any value) \, [asr~] goes from 0 to
-that value at the specified attack time in ms. A gate off (transition
-from any value to 0) makes [asr~] go to 0 at the specified release
-time in ms., f 69;
 #N canvas 845 52 494 456 log 0;
 #X obj 390 182 else/setdsp~;
 #X text 349 106 see also:;
@@ -318,6 +313,11 @@ mode is set with the -log flag or "log" message., f 65;
 #X text 239 369 - non zero sets to "log" mode \, "linear" otherwise
 ;
 #X text 163 499 -log: sets to log mode (default \, linear);
+#X text 68 86 [asr~] is an attack/sustain/release gated envelope. At
+gate on (transition from 0 to any value) \, [asr~] goes from 0 to the
+gate value at the specified attack time in ms. At gate off (transition
+from any value to 0) [asr~] goes to 0 at the specified release time
+in ms., f 69;
 #X connect 12 0 11 0;
 #X connect 14 0 13 0;
 #X connect 27 0 44 0;
