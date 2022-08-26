@@ -1,4 +1,4 @@
-#N canvas 600 30 566 578 10;
+#N canvas 600 32 566 578 10;
 #X obj 4 285 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 435 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -95,7 +95,6 @@ below. The graph considers a sample rate of 44.1Khz.;
 #X connect 13 0 3 0;
 #X connect 17 0 18 0;
 #X restore 429 244 pd filter formula \; and response;
-#X text 229 387 - central frequency in Hertz;
 #X text 118 504 1) float - central frequency in Hertz (default 0);
 #X msg 175 127 clear;
 #X text 230 311 - clears filter's memory if you blow it up;
@@ -154,10 +153,11 @@ Unlike [else/resonant~] \, it has a maximum and constant gain at 0dB.
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 304 3 graph;
-#X connect 14 0 43 0;
-#X connect 15 0 43 1;
-#X connect 16 0 43 2;
-#X connect 24 0 43 0;
+#X text 229 387 - central frequency in Hz;
+#X connect 14 0 42 0;
+#X connect 15 0 42 1;
+#X connect 16 0 42 2;
+#X connect 24 0 42 0;
 #X connect 25 0 24 0;
-#X connect 31 0 43 0;
-#X connect 43 0 8 0;
+#X connect 30 0 42 0;
+#X connect 42 0 8 0;

@@ -1,4 +1,4 @@
-#N canvas 596 37 563 629 10;
+#N canvas 0 37 620 945 10;
 #X obj 4 308 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 495 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -279,8 +279,6 @@ control all the parameters. They are:, f 35;
 bandpass \, resonant \, bandstop \, eq \, lowshelf \, highshelf \,
 off>. It takes 3 more optional arguments that set: frequency \, Q/Slope
 and gain, f 55;
-#X text 187 349 - sets frequency \, Q/Slope and gain and outputs coefficients
-;
 #X text 187 453 - sets "Q" or "Slope" and outputs coefficients, f
 57;
 #X text 115 366 qs <float>;
@@ -288,6 +286,8 @@ and gain, f 55;
 57;
 #X text 103 381 gain <float>;
 #X text 187 381 - sets gain in db and outputs coefficients, f 57;
+#X text 187 345 - sets frequency \, Q/Slope and gain \, and then outputs
+coefficients, f 62;
 #X connect 37 0 39 0;
 #X connect 38 0 37 0;
 #X connect 40 0 55 0;

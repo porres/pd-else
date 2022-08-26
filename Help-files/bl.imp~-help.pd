@@ -1,4 +1,4 @@
-#N canvas 520 23 559 442 10;
+#N canvas 0 37 588 945 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -60,9 +60,9 @@
 #X obj 229 186 else/out~;
 #X text 173 372 1) float;
 #X text 239 391 - initial phase offset (default 0);
-#X text 239 372 - frequency in hertz (default 0);
 #X text 173 391 2) float;
 #X text 60 87 [bl.imp~] is an impulse oscillator like [else/imp~] \,
 but it is bandlimited.;
+#X text 239 372 - frequency in Hz (default 0);
 #X connect 12 0 33 0;
 #X connect 33 0 34 0;

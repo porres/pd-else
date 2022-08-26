@@ -1,4 +1,4 @@
-#N canvas 528 34 561 522 10;
+#N canvas 0 37 576 945 10;
 #X listbox 50 327 44 0 0 0 - - - 10;
 #X obj 308 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
@@ -86,7 +86,6 @@ types: "eq \, lowshelf and highshelf).;
 0;
 #X text 137 452 -dim <float \, float>: width \, height (default: 450
 \, 150);
-#X text 137 468 -type <fsymbol>: filter type (default: "eq");
 #X obj 50 141 else/bicoeff;
 #N canvas 232 147 940 485 see_also 0;
 #X obj 649 44 else/bandpass~;
@@ -116,4 +115,5 @@ as in the example below). Click on it and drag it around., f 66;
 #X text 180 373 sets filter type: <allpass \, lowpass \, highpass \,
 bandpass \, resonant \, bandstop \, eq \, lowshelf \, highshelf>.,
 f 57;
-#X connect 26 0 0 0;
+#X text 137 468 -type <symbol>: filter type (default: "eq");
+#X connect 25 0 0 0;
