@@ -78,22 +78,22 @@ a reproducible output.;
 #X text 199 140 generate a random series;
 #X msg 108 140 seed 123;
 #X msg 68 140 seed;
+#X obj 174 169 else/loop -b 12;
+#X obj 174 229 else/group 12;
+#X obj 174 202 else/rand.i -seed 123 10 20;
 #X text 93 15 The example below generates a sequence of 12 numbers.
 By default \, [rand.i] loads a unique seed value based on system every
 time you open the patch. Each copy of the object has its own unique
 seed. You can set a specific seed that reproduces the same sequence
-with the 'seed' message or third argument \, which can be any integer
+with the 'seed' message or '-seed' flag \, which can be any integer
 number. A 'seed' message without a float resets the seed to a unique
 value based on the system time., f 53;
-#X obj 174 202 else/rand.i 10 20 123;
-#X obj 174 169 else/loop -b 12;
-#X obj 174 229 else/group 12;
-#X connect 0 0 7 0;
-#X connect 3 0 6 0;
-#X connect 4 0 6 0;
-#X connect 6 0 8 0;
+#X connect 0 0 5 0;
+#X connect 3 0 7 0;
+#X connect 4 0 7 0;
+#X connect 5 0 7 0;
+#X connect 6 0 1 0;
 #X connect 7 0 6 0;
-#X connect 8 0 1 0;
 #X restore 463 203 pd example;
 #N canvas 529 124 603 329 seed 0;
 #X text 26 21 Pseudo random number generators aren't true random number
