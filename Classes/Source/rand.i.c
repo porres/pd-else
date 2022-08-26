@@ -53,24 +53,16 @@ static void *randi_new(t_symbol *s, int ac, t_atom *av){
             else
                 goto errstate;
         }
-        else{
-            switch(numargs){
-                case 0: x->x_min = atom_getintarg(0, ac, av);
-                    numargs++;
-                    ac--;
-                    av++;
-                    break;
-                case 1: x->x_max = atom_getintarg(0, ac, av);
-                    numargs++;
-                    ac--;
-                    av++;
-                    break;
-                default:
-                    ac--;
-                    av++;
-                    break;
-            };
+        else if(ac == 1){
+            x->x_max = atom_getintarg(0, ac, av);
+            ac--, av++;
         }
+        else if(ac == 2){
+            x->x_min = atom_getintarg(0, ac--, av++);
+            x->x_max = atom_getintarg(1, ac--, av++);
+        }
+        else
+            goto errstate;
     }
     floatinlet_new((t_object *)x, &x->x_min);
     floatinlet_new((t_object *)x, &x->x_max);
