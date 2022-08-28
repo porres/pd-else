@@ -1,4 +1,4 @@
-#N canvas 466 65 559 493 10;
+#N canvas 0 65 558 945 10;
 #X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -38,7 +38,6 @@
 0;
 #X obj 3 374 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X text 154 298 float/signal - frequency in hz, f 60;
 #X obj 121 41 cnv 4 4 4 empty empty wavetable 0 28 2 18 #e0e0e0 #000000
 0;
 #X obj 432 244 else/wavetable~;
@@ -69,8 +68,6 @@
 ;
 #X obj 123 352 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 155 333 float/signal - phase sync (ressets internal phase)
-;
 #X text 155 353 float/signal - phase offset (modulation input), f
 50;
 #X text 164 444 3) float;
@@ -87,5 +84,7 @@ waveform;
 makes the object quite inefficient CPU wise \, but is an easy way to
 implement a bandlimited oscillator. This object also minimizes aliasing
 caused by hard sync and phase modulation., f 74;
-#X connect 10 0 38 0;
-#X connect 38 0 16 0;
+#X text 155 333 float/signal - phase sync (resets internal phase);
+#X text 154 298 float/signal - frequency in Hz, f 60;
+#X connect 10 0 36 0;
+#X connect 36 0 16 0;

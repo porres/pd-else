@@ -1,4 +1,4 @@
-#N canvas 474 54 561 478 10;
+#N canvas 0 37 558 945 10;
 #X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -54,18 +54,17 @@
 ;
 #X text 164 327 float/signal - phase offset (modulation input);
 #X text 165 285 float/signal - pulse width (from 0 to 1);
-#X text 164 264 float/signal - frequency in hz;
 #X text 267 360 square wave signal;
-#X text 164 307 float/signal - phase sync (ressets internal phase)
-;
 #X text 168 394 1) float;
 #X text 168 413 2) float;
 #X text 168 431 3) float;
-#X text 237 394 - frequency in hertz (default 0);
 #X text 237 413 - initial pulse width (default 0.5);
 #X text 237 431 - initial phase offset (default 0);
 #X obj 229 154 else/bl.square~ 400;
 #X text 60 89 [bl.square~] is a square oscillator like [else/square~]
 \, but it is bandlimited.;
-#X connect 11 0 39 0;
-#X connect 39 0 17 0;
+#X text 237 394 - frequency in Hz (default 0);
+#X text 164 264 float/signal - frequency in Hz;
+#X text 164 307 float/signal - phase sync (resets internal phase);
+#X connect 11 0 36 0;
+#X connect 36 0 17 0;

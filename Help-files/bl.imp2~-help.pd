@@ -1,4 +1,4 @@
-#N canvas 517 56 564 548 10;
+#N canvas 0 65 585 917 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -58,9 +58,6 @@ in the way it handles it \, this object does not have any arguments.
 ;
 #X text 164 387 float/signal - phase offset (modulation input);
 #X text 165 345 float/signal - pulse width (from 0 to 1);
-#X text 164 324 float/signal - frequency in hz;
-#X text 164 367 float/signal - phase sync (ressets internal phase)
-;
 #X obj 125 40 cnv 4 4 4 empty empty two-sided 0 28 2 18 #e0e0e0 #000000
 0;
 #X text 60 87 [bl.imp2~] is a two sided impulse oscillator like [else/imp2~]
@@ -71,8 +68,10 @@ implement a bandlimited oscillator., f 67;
 #X text 182 476 2) float;
 #X text 182 494 3) float;
 #X text 241 494 - initial phase offset (default 0);
-#X text 241 476 - initial width (default 0.5);
-#X text 241 457 - frequency in hertz (default 0);
 #X obj 229 215 else/bl.imp2~ 400 0.2;
-#X connect 11 0 42 0;
-#X connect 42 0 18 0;
+#X text 241 457 - frequency in Hz (default 0);
+#X text 241 476 - initial pulse width (default 0.5);
+#X text 164 324 float/signal - frequency in Hz;
+#X text 164 367 float/signal - phase sync (resets internal phase);
+#X connect 11 0 38 0;
+#X connect 38 0 18 0;

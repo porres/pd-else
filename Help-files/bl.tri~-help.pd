@@ -1,4 +1,4 @@
-#N canvas 439 44 563 447 10;
+#N canvas 0 37 558 917 10;
 #X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -46,7 +46,6 @@
 #X obj 123 260 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 165 261 float/signal -;
-#X text 269 261 frequency in hz;
 #X obj 122 282 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 165 303 float/signal -;
@@ -54,15 +53,16 @@
 ;
 #X text 206 335 signal -;
 #X text 270 303 phase offset (modulation input);
-#X text 270 283 phase sync (ressets internal phase);
 #X text 165 283 float/signal -;
 #X text 267 335 triangular wave signal;
 #X text 184 374 1) float;
 #X text 243 393 - initial phase offset (default 0);
-#X text 243 374 - frequency in hertz (default 0);
 #X text 184 393 2) float;
 #X obj 229 151 else/bl.tri~ 400;
 #X text 60 89 [bl.tri~] is a triangular oscillator like [else/tri~]
 \, but it is bandlimited., f 61;
-#X connect 11 0 38 0;
-#X connect 38 0 17 0;
+#X text 243 374 - frequency in Hz (default 0);
+#X text 270 283 phase sync (resets internal phase);
+#X text 269 261 frequency in Hz;
+#X connect 11 0 35 0;
+#X connect 35 0 17 0;

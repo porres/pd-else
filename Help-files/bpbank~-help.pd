@@ -1,4 +1,4 @@
-#N canvas 392 23 564 582 10;
+#N canvas 0 65 558 917 10;
 #X obj 4 278 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 380 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -82,14 +82,10 @@ list of ramp time for each filter in the bank.;
 #X restore 304 3 graph;
 #X text 104 436 -amp <list>: sets list of amplitudes for all filters
 , f 57;
-#X text 104 452 -q <list>: sets list of phases for all filters, f
-57;
 #X text 104 467 -ramp <list>: sets list of ramp time for all filters
 , f 57;
 #X text 104 483 -rampall <float>: sets ramp time for all filters,
 f 57;
-#X text 93 361 rampall float>;
-#X text 188 361 - sets ramp time for all filters in the bank;
 #X obj 206 177 else/bpbank~ -freq 200 500 900 1700 -q 1.5 5 20 9 -amp
 2 1.5 2 1, f 36;
 #X text 27 218 see also:;
@@ -105,5 +101,9 @@ f 57;
 #X text 189 286 - signal to be filtered via a bank of bandpass filters
 ;
 #X text 189 389 - the signal filtered by the bank of filters;
-#X connect 13 0 42 0;
-#X connect 42 0 14 0;
+#X text 93 361 rampall <float>;
+#X text 104 452 -q <list>: sets list of resonance (Q) for all filters
+, f 57;
+#X text 188 361 - ramp time for all filters in the bank;
+#X connect 13 0 39 0;
+#X connect 39 0 14 0;

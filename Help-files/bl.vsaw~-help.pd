@@ -1,4 +1,4 @@
-#N canvas 502 58 562 479 10;
+#N canvas 0 65 558 945 10;
 #X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -52,9 +52,6 @@
 #X obj 122 327 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 164 328 float/signal - phase offset (modulation input);
-#X text 164 265 float/signal - frequency in hz;
-#X text 164 308 float/signal - phase sync (ressets internal phase)
-;
 #X obj 229 154 else/bl.vsaw~;
 #X obj 121 41 cnv 4 4 4 empty empty sawtooth-triangle 0 28 2 18 #e0e0e0
 #000000 0;
@@ -62,11 +59,13 @@
 #X text 174 411 2) float;
 #X text 174 427 3) float;
 #X text 233 427 - initial phase offset (default 0);
-#X text 233 395 - frequency in hertz (default 0), f 34;
 #X text 233 411 - initial width (default 0), f 34;
 #X text 165 286 float/signal - pulse width (from 0 to 1);
 #X text 60 89 [bl.vsaw~] is a variable sawtooth waveform oscillator
 that also becomes a triangular osccilator just like [else/vsaw~] \,
 but it is bandlimited., f 71;
-#X connect 10 0 31 0;
-#X connect 31 0 16 0;
+#X text 233 395 - frequency in Hz (default 0), f 34;
+#X text 164 265 float/signal - frequency in Hz;
+#X text 164 308 float/signal - phase sync (resets internal phase);
+#X connect 10 0 29 0;
+#X connect 29 0 16 0;
