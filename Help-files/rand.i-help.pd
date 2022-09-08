@@ -1,4 +1,4 @@
-#N canvas 475 24 563 498 10;
+#N canvas 475 24 563 490 10;
 #X obj 2 3 cnv 15 301 42 empty empty rand.i 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -10,7 +10,7 @@
 0;
 #X obj 223 39 cnv 4 4 4 empty empty generator 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 3 465 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 3 461 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 4 346 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
@@ -27,7 +27,6 @@
 #dcdcdc #000000 #000000 0 256;
 #X text 136 280 seed <float>;
 #X text 225 357 - random values;
-#X text 99 422 1) list -;
 #X obj 111 302 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 111 323 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
@@ -133,15 +132,14 @@ repeat the output., f 52;
 0;
 #X text 135 388 -seed <float>: seed value (default: unique internal)
 ;
-#X text 164 421 floats set random's range \, 2 floats sets minimum
-and maximum - no arguments loads default values (0 and 1). 1 float
-sets maximum value (and lowest value is set to 0).;
 #X text 15 168 see also:;
 #X obj 15 190 else/rand.i~;
 #X obj 15 215 else/rand.f;
-#X connect 11 0 39 0;
+#X text 166 421 1) float - minimum (default 0);
+#X text 166 438 2) float - maximum (default 1);
+#X connect 11 0 38 0;
 #X connect 12 0 11 0;
-#X connect 20 0 39 1;
-#X connect 21 0 39 2;
-#X connect 25 0 39 0;
-#X connect 39 0 40 0;
+#X connect 19 0 38 1;
+#X connect 20 0 38 2;
+#X connect 24 0 38 0;
+#X connect 38 0 39 0;
