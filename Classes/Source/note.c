@@ -192,12 +192,16 @@ static void note_draw_inlet(t_note *x){
 static void note_adjust_justification(t_note *x){
     int move = 0;
     if(x->x_textjust && x->x_resized){
-        move = x->x_max_pixwidth - x->x_text_width;
+        move = (x->x_max_pixwidth / x->x_zoom) - (x->x_text_width / x->x_zoom);
         if(x->x_textjust == 1) // center
             move/=2;
     }
-    if(move)
-        sys_vgui(".x%lx.c moveto txt%lx  %d %d\n", x->x_cv, (unsigned long)x, x->x_x1+move*x->x_zoom, x->x_y1);
+    if(move){
+        int x1, y1, x2, y2;
+        note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+        // getrect
+        sys_vgui(".x%lx.c moveto txt%lx  %d %d\n", x->x_cv, (unsigned long)x, x1+move*x->x_zoom, y1);
+    }
 }
 
 static void note_draw(t_note *x){
@@ -549,7 +553,7 @@ static void note_save(t_gobj *z, t_binbuf *b){
         (int)x->x_obj.te_ypix,
         atom_getsymbol(binbuf_getvec(bb)),
         x->x_max_pixwidth / x->x_zoom,
-        x->x_fontsize / x->x_zoom,
+        x->x_fontsize,
         x->x_fontname,
         x->x_rcv_raw,
         x->x_fontface,
