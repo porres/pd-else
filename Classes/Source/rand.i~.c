@@ -99,13 +99,14 @@ static void *randi_new(t_symbol *s, int ac, t_atom *av){
             else
                 goto errstate;
         }
-        if(ac == 1)
-            high = atom_getfloat(av);
-        else if(ac >= 2){
-            low = atom_getfloatarg(0, ac, av);
-            high = atom_getfloatarg(1, ac, av);
+        if(ac && av->a_type == A_FLOAT){
+            low = atom_getintarg(0, ac, av);
+            ac--, av++;
+            if(ac && av->a_type == A_FLOAT){
+                high = atom_getintarg(0, ac, av);
+                ac--, av++;
+            }
         }
-        else goto errstate;
     }
     x->x_lastin = 0;
     x->x_low_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);

@@ -126,9 +126,10 @@ outlet index number instead., f 70;
 #000000 #000000;
 #X obj 129 169 else/display;
 #X obj 129 139 else/chance -index 50 25 25;
-#X text 61 28 With the -index flag \, the index number is output (from
+#X text 61 27 With the -index flag \, the index number is output (from
 1). Below there's a 50% chance of "1" being output and 25% chance for
-each "2" and "3"., f 49;
+each "2" and "3". Use this to get an item from a list/array/sequence.
+, f 49;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X restore 481 194 pd index;
@@ -227,7 +228,7 @@ repeat the output., f 52;
 #X connect 20 1 15 0;
 #X connect 20 2 17 0;
 #X connect 21 0 20 0;
-#X restore 487 217 pd seed;
+#X restore 487 216 pd seed;
 #X text 135 406 -seed <float>: seed value (default: unique internal)
 ;
 #X text 229 276 - a float sets seed \, no float sets a unique internal
