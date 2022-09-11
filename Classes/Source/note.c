@@ -137,6 +137,23 @@ static void note_initialize(t_note *x){
     x->x_init = 1;
 }
 
+static void note_draw_outline(t_note *x){
+    if(x->x_bbset && x->x_edit){
+        int x1, y1, x2, y2;
+        note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags [list %lx_outline all%lx] -width %d -outline %s\n",
+            (unsigned long)x->x_cv,
+            x1,
+            y1,
+            x2 + 2*x->x_zoom,
+            y2 + 2*x->x_zoom,
+            (unsigned long)x, // %lx_outline
+            (unsigned long)x, // all%lx
+            x->x_zoom,
+            x->x_select ? "blue" : "black");
+    }
+}
+
 static void note_draw_handle(t_note *x){
 //    post("draw handle");
     t_handle *ch = (t_handle *)x->x_handle;
@@ -157,7 +174,8 @@ static void note_draw_handle(t_note *x){
             x2 + 2*x->x_zoom,
             y1,
             NOTE_HANDLE_WIDTH*x->x_zoom,
-            x->x_height + 2*x->x_zoom,
+//            y2 + 2*x->x_zoom,
+            x->x_height + 1 + 2*x->x_zoom,
             ch->h_pathname,
             (unsigned long)x,
             (unsigned long)x);
@@ -171,23 +189,6 @@ static void note_draw_inlet(t_note *x){
         sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lx_in all%lx]\n",
             cv, xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom)-x->x_zoom,
             (unsigned long)x, (unsigned long)x);
-    }
-}
-
-static void note_draw_outline(t_note *x){
-    if(x->x_bbset && x->x_edit){
-        int x1, y1, x2, y2;
-        note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags [list %lx_outline all%lx] -width %d -outline %s\n",
-            (unsigned long)x->x_cv,
-            x1,
-            y1,
-            x2,
-            y2,
-            (unsigned long)x, // %lx_outline
-            (unsigned long)x, // all%lx
-            x->x_zoom,
-            x->x_select ? "blue" : "black");
     }
 }
 
@@ -214,8 +215,8 @@ static void note_draw(t_note *x){
             (unsigned long)x->x_cv,
             text_xpix((t_text *)x, x->x_glist),
             text_ypix((t_text *)x, x->x_glist),
-            x2 + x->x_zoom * 2,
-            y2 + x->x_zoom * 2,
+            x2 + 2*x->x_zoom,
+            y2 + 2*x->x_zoom,
             (unsigned long)x, (unsigned long)x,
             x->x_bgcolor, x->x_bgcolor);
     }
@@ -907,7 +908,6 @@ static void note_bold(t_note *x, t_float f){
     }
 }
 
-
 static void note_bg_flag(t_note *x, t_float f){
     int bgflag = (int)(f != 0);
     if(x->x_bg_flag != bgflag){
@@ -948,7 +948,6 @@ void note_properties(t_gobj *z, t_glist *gl){
     t_note *x = (t_note *)z;
     note_get_rcv(x);
     char buffer[512];
-    
     sprintf(buffer, "note_properties %%s {%s} %d %d %d %d %d %d {%s} {%s} {%s}\n",
         x->x_fontname->s_name,
         x->x_fontsize,
