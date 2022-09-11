@@ -104,6 +104,7 @@ typedef struct _handle{
 
 // helper functions
 static void note_initialize(t_note *x){
+//    post("initialize");
     t_binbuf *bb = x->x_obj.te_binbuf;
     int n_args = binbuf_getnatom(bb) - 1; // number of arguments
     if(x->x_text_flag){ // let's get the text from the attribute
@@ -154,12 +155,9 @@ static void note_draw_outline(t_note *x){
     }
 }
 
-static void note_draw_handle(t_note *x){
-//    post("draw handle");
-    t_handle *ch = (t_handle *)x->x_handle;
+static void note_draw_handle(t_note *x){    t_handle *ch = (t_handle *)x->x_handle;
     sys_vgui("destroy %s\n", ch->h_pathname); // always destroy, bad hack, improve
     if(x->x_edit){
-//        post("note_draw_handle");
         int x1, y1, x2, y2;
         note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
         if(x->x_resized)
@@ -173,8 +171,7 @@ static void note_draw_handle(t_note *x){
             x->x_cv,
             x2 + 2*x->x_zoom,
             y1,
-            NOTE_HANDLE_WIDTH*x->x_zoom,
-//            y2 + 2*x->x_zoom,
+            NOTE_HANDLE_WIDTH + 2*x->x_zoom,
             x->x_height + 1 + 2*x->x_zoom,
             ch->h_pathname,
             (unsigned long)x,
@@ -199,14 +196,12 @@ static void note_adjust_justification(t_note *x){
         if(x->x_textjust == 1) // center
             move/=2;
     }
-    if(move){
-//        post("move (%d) / max_pixwidth (%d) / text_width (%d)", move, x->x_max_pixwidth, x->x_text_width);
+    if(move)
         sys_vgui(".x%lx.c moveto txt%lx  %d %d\n", x->x_cv, (unsigned long)x, x->x_x1+move*x->x_zoom, x->x_y1);
-    }
 }
 
 static void note_draw(t_note *x){
-//    post("x->x_bbset = %d", x->x_bbset);
+//    post("NOTE DRAW");
     x->x_cv = glist_getcanvas(x->x_glist);
     if(x->x_bg_flag && x->x_bbset){ // draw bg only if initialized
         int x1, y1, x2, y2;
@@ -231,7 +226,7 @@ static void note_draw(t_note *x){
         text_xpix((t_text *)x, x->x_glist) + x->x_zoom, // %d
         text_ypix((t_text *)x, x->x_glist) + x->x_zoom, // %d
         x->x_fontname->s_name, // {%s}
-        x->x_fontsize, // -%d
+        x->x_fontsize * x->x_zoom, // -%d
         x->x_select ? "blue" : x->x_color, // %s
         x->x_bufsize, // %.
         x->x_buf, // *s
@@ -307,7 +302,6 @@ static void note_dograb(t_note *x){
 }
 
 static void note_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
-//    post("note_getrect");
     t_note *x = (t_note *)z;
     float x1, y1, x2, y2;
     x1 = text_xpix((t_text *)x, glist);
@@ -315,7 +309,6 @@ static void note_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2
     if(x->x_resized)
         x->x_width = x->x_max_pixwidth;
     int min_size = NOTE_MINSIZE;
-// no fucking zoom
     if(x->x_width < min_size)
         x->x_width = min_size;
     if(x->x_height < min_size)
@@ -336,7 +329,10 @@ static void note_displace(t_gobj *z, t_glist *glist, int dx, int dy){
         t_text *t = (t_text *)z;
         t->te_xpix += dx, x->x_x1 += dx, x->x_x2 += dx;
         t->te_ypix += dy, x->x_y1 += dy, x->x_y2 += dy;
-        sys_vgui(".x%lx.c move all%lx %d %d\n", x->x_cv, (unsigned long)x, dx*x->x_zoom, dy*x->x_zoom);
+        sys_vgui(".x%lx.c move all%lx %d %d\n",
+            x->x_cv, (unsigned long)x,
+            dx*x->x_zoom,
+            dy*x->x_zoom);
         canvas_fixlinesfor(x->x_cv, t);
     }
 }
@@ -384,7 +380,7 @@ static void note_delete(t_gobj *z, t_glist *glist){
 }
 
 static void note_vis(t_gobj *z, t_glist *glist, int vis){
-//    post("vis = %d", vis);
+//    post("VIS = %d", vis);
     t_note *x = (t_note *)z;
     x->x_cv = glist_getcanvas(x->x_glist = glist);
     if(!x->x_init)
@@ -403,7 +399,9 @@ t_floatarg x1, t_floatarg y1, t_floatarg x2, t_floatarg y2){
     x->x_text_width = x2-x1;
     bindsym = NULL;
     if(!x->x_bbset || (x->x_height != (y2-y1))){ // redraw
-        x->x_height = y2-y1, x->x_y1 = y1, x->x_y2 = y2;
+        x->x_height = y2-y1;
+        x->x_y1 = y1;
+        x->x_y2 = y2;
         if(x->x_resized)
             x->x_width = x->x_max_pixwidth, x->x_x2 = x1 + x->x_max_pixwidth;
         else
@@ -482,18 +480,15 @@ static void handle__motion_callback(t_handle *ch, t_floatarg f1, t_floatarg f2){
     if(ch->h_clicked){ // dragging handle
         t_note *x = ch->h_master;
         int dx = (int)f1;
-//        post("dx = %d", dx);
         f2 = 0; // avoid warning
         int x1, y1, x2, y2;
         note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
-//        post("x1 (%d) x2 (%d) y1 (%d) y2 (%d)", x1, x2, y1, y2);
         x->x_x1 = x1, x->x_x2 = x2;
         x->x_y1 = y1, x->x_y2 = y2;
-        int newx = x2 + dx; //* x->x_zoom;
-//        post("newx = x2 + dx --> %d", newx);
+        int newx = x2 + dx;
         if(newx > x1 + NOTE_MINSIZE){ // update outline
             sys_vgui(".x%lx.c coords %lx_outline %d %d %d %d\n", (unsigned long)x->x_cv,
-                (unsigned long)x, x->x_x1, x->x_y1, x->x_newx2 = newx, x->x_y2);
+                (unsigned long)x, x->x_x1, x->x_y1, (x->x_newx2 = newx) + 2*x->x_zoom, x->x_y2 + 2*x->x_zoom);
         }
     }
 }
@@ -884,7 +879,7 @@ static void note_fontname(t_note *x, t_symbol *name){
 static void note_fontsize(t_note *x, t_floatarg f){
     int size = (int)f < 5 ? 5 : (int)f;
     if(x->x_fontsize != size){
-        x->x_fontsize = size;
+        x->x_fontsize = size; // * x->x_zoom;
         x->x_bbset = 0;
         note_redraw(x);
     }
@@ -939,7 +934,8 @@ static void note_zoom(t_note *x, t_floatarg zoom){
     x->x_zoom = (int)zoom;
     float mul = zoom == 1. ? 0.5 : 2.;
     x->x_max_pixwidth = (int)((float)x->x_max_pixwidth * mul);
-    note_fontsize(x, (float)x->x_fontsize * mul);
+    note_redraw(x);
+//    note_fontsize(x, (float)x->x_fontsize * mul);
 }
 
 //------------------- Properties --------------------------------------------------------
@@ -1120,7 +1116,6 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     t_atom at;
     SETSYMBOL(&at, gensym("note"));
     binbuf_restore(x->x_binbuf, 1, &at);
-    
 ////////////////////////////////// GET ARGS ///////////////////////////////////////////
     if(ac){
         if(ac && av->a_type == A_FLOAT){ // 1ST Width
@@ -1339,7 +1334,6 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
         x->x_max_pixwidth = 425;
     if(x->x_max_pixwidth != 425) // improve
         x->x_resized = 1;
-    x->x_fontsize *= x->x_zoom;
     x->x_max_pixwidth *= x->x_zoom;
     x->x_fontface = x->x_fontface < 0 ? 0 : (x->x_fontface > 3 ? 3 : x->x_fontface);
     x->x_bold = x->x_fontface == 1 || x->x_fontface == 3;
@@ -1678,5 +1672,4 @@ void note_setup(void){
      "    }\n"
      "    set_col_example $id\n"
      "}\n");
-
 }
