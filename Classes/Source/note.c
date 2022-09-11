@@ -155,7 +155,7 @@ static void note_draw_handle(t_note *x){
         sys_vgui(".x%lx.c create window %d %d -anchor nw -width %d -height %d -window %s -tags [list handle%lx all%lx]\n",
             x->x_cv,
             x2 + 2*x->x_zoom,
-            y1 + x->x_zoom,
+            y1,
             NOTE_HANDLE_WIDTH*x->x_zoom,
             x->x_height + 2*x->x_zoom,
             ch->h_pathname,
@@ -967,7 +967,6 @@ static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     x->x_changed = 0;
     t_float temp_f;
-    
     if(atom_getsymbolarg(0, ac, av) != x->x_fontname){
         x->x_changed = 1;
         x->x_fontname = atom_getsymbolarg(0, ac, av);
@@ -979,21 +978,17 @@ static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
         x->x_changed = 1;
         x->x_fontsize = (int)temp_f;
     }
-
     int bold = atom_getfloatarg(2, ac, av);
     if(bold != x->x_bold){
         x->x_changed = 1;
         x->x_bold = bold;
     }
-    
     int italic = atom_getfloatarg(3, ac, av);
     if(italic != x->x_italic){
         x->x_changed = 1;
         x->x_italic = italic;
     }
-    
     x->x_fontface = bold + 2 * italic;
-    
     temp_f = atom_getfloatarg(4, ac, av);
     int just = temp_f < 0 ? 0 : (temp_f > 2 ? 2 : (int)temp_f);
     if(just != x->x_textjust){
@@ -1010,23 +1005,25 @@ static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
         x->x_bg_flag = bgflag;
         x->x_changed = 1;
     }
-    
     t_symbol* bg_color = atom_getsymbolarg(7, ac, av);
     if(strcmp(x->x_bgcolor, bg_color->s_name)){
         strcpy(x->x_bgcolor, bg_color->s_name);
         x->x_changed = 1;
-        sscanf(bg_color->s_name, "%2hx%2hx%2hx", x->x_bg, x->x_bg + 1, x->x_bg + 2);
+        sscanf(bg_color->s_name, "%2hx%2hx%2hx",
+            (unsigned short *)(x->x_bg),
+            (unsigned short *)(x->x_bg + 1),
+            (unsigned short *)(x->x_bg + 2));
     }
-    
     t_symbol* fg_color = atom_getsymbolarg(8, ac, av);
     if(strcmp(x->x_color, fg_color->s_name)){
         strcpy(x->x_color, fg_color->s_name);
         x->x_changed = 1;
-        sscanf(fg_color->s_name, "%2hx%2hx%2hx", &x->x_red, &x->x_green, &x->x_blue);
+        sscanf(fg_color->s_name, "%2hx%2hx%2hx",
+            (unsigned short *)(&x->x_red),
+            (unsigned short *)(&x->x_green),
+            (unsigned short *)(&x->x_blue));
     }
-
     note_receive(x, atom_getsymbolarg(9, ac, av));
-    
     if(x->x_changed){
         canvas_dirty(x->x_glist, 1);
         note_redraw(x);
