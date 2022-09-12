@@ -70,13 +70,11 @@
 ;
 #X text 129 344 color <f \, f \, f>;
 #X obj 216 152 else/note 131 20 Times empty 3 150 0 0 1 230 235 240
-1 1 1 Hi \, I'm the [note] object!;
+1 1 Hi \, I'm the [note] object!;
 #X text 115 157 the default [else/note], f 11;
 #N canvas 410 87 865 574 details 0;
-#X obj 179 314 else/note 101 50 times empty 0 0 0 0 0 190 90 200 1
-0 1 note;
 #X obj 546 390 else/note 171 50 Dejavu\ Sans\ Mono \$0-note 0 0 0 0
-0 255 255 255 0 0 0 note;
+0 255 255 255 0 0 note;
 #X msg 659 199 set hi \, append there;
 #X msg 669 222 set note \, prepend this;
 #X msg 680 245 set note;
@@ -85,7 +83,7 @@
 #X obj 537 177 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X msg 263 274 bgcolor 190 90 200;
-#X msg 35 244 bg \$1;
+#X msg 25 244 bg \$1;
 #X text 62 69 You can edit the properties of [note] with messages.
 , f 15;
 #X text 59 394 After setting a background color you can use the 'bg'
@@ -114,8 +112,8 @@ anymore and the inlet is show again., f 74;
 #X obj 77 218 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X msg 110 191 italic \$1;
-#X msg 634 137 color 200 0 0;
-#X msg 646 159 color 0 0 0;
+#X msg 630 137 color 200 0 0;
+#X msg 642 159 color 0 0 0;
 #X text 497 481 Note: when in edit mode \, you can click on the object
 to select it and then press <F5> to copy the text from [else/note]
 into a vanilla comment box. So far \, this is the only way to copy
@@ -133,44 +131,46 @@ for what you requested \, and you'll have no idea which one it is.
 So just be sure you have the fonts you want properly installed., f
 62;
 #X msg 398 278 outline \$1;
-#X obj 35 218 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#X obj 25 218 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X obj 398 254 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X msg 257 252 bgcolor 200 200 100;
-#X connect 2 0 5 0;
-#X connect 3 0 5 0;
-#X connect 4 0 5 0;
+#X obj 179 314 else/note 425 30 Menlo empty 0 0 0 0 0 255 255 255 0
+0 note;
+#X connect 1 0 4 0;
+#X connect 2 0 4 0;
+#X connect 3 0 4 0;
+#X connect 5 0 4 0;
 #X connect 6 0 5 0;
-#X connect 7 0 6 0;
-#X connect 8 0 0 0;
-#X connect 9 0 0 0;
-#X connect 12 0 13 0;
-#X connect 13 0 1 0;
-#X connect 15 0 0 0;
-#X connect 16 0 0 0;
-#X connect 17 0 0 0;
-#X connect 18 0 0 0;
-#X connect 19 0 0 0;
-#X connect 20 0 0 0;
-#X connect 21 0 0 0;
-#X connect 22 0 0 0;
-#X connect 23 0 0 0;
-#X connect 24 0 27 0;
-#X connect 25 0 0 0;
-#X connect 26 0 25 0;
-#X connect 27 0 0 0;
-#X connect 28 0 5 0;
-#X connect 29 0 5 0;
-#X connect 31 0 0 0;
-#X connect 34 0 0 0;
-#X connect 35 0 9 0;
-#X connect 36 0 34 0;
-#X connect 37 0 0 0;
+#X connect 7 0 37 0;
+#X connect 8 0 37 0;
+#X connect 11 0 12 0;
+#X connect 12 0 0 0;
+#X connect 14 0 37 0;
+#X connect 15 0 37 0;
+#X connect 16 0 37 0;
+#X connect 17 0 37 0;
+#X connect 18 0 37 0;
+#X connect 19 0 37 0;
+#X connect 20 0 37 0;
+#X connect 21 0 37 0;
+#X connect 22 0 37 0;
+#X connect 23 0 26 0;
+#X connect 24 0 37 0;
+#X connect 25 0 24 0;
+#X connect 26 0 37 0;
+#X connect 27 0 4 0;
+#X connect 28 0 4 0;
+#X connect 30 0 37 0;
+#X connect 33 0 37 0;
+#X connect 34 0 8 0;
+#X connect 35 0 33 0;
+#X connect 36 0 37 0;
 #X restore 477 148 pd details;
 #N canvas 696 89 443 408 +details 0;
 #X obj 104 290 else/note 229 20 dejavu\ sans\ mono empty 0 0 0 0 0
-200 200 200 1 1 0 Note can be justified in different ways;
+200 200 200 1 1 Note can be justified in different ways;
 #X obj 104 173 vradio 15 1 0 3 empty empty empty 0 -8 0 10 #dcdcdc
 #000000 #000000 0;
 #X floatatom 104 230 3 0 0 0 - - - 0;
@@ -192,26 +192,26 @@ to the point where you release the mouse button., f 66;
 #X connect 2 0 7 0;
 #X connect 7 0 0 0;
 #X restore 471 167 pd +details;
-#N canvas 647 100 599 505 examples 0;
+#N canvas 647 100 597 500 examples 0;
 #X msg 205 24 set 1 \\\, 2;
 #X msg 417 62 prepend 1 \\\, 2 \\\,;
 #X msg 398 24 set 3 \\\, 4!;
 #X msg 223 62 append \\\, 3 \\\, 4!;
 #X obj 205 97 else/note 120 16 dejavu\ sans\ mono empty 0 0 0 0 0 255
-255 255 0 0 0 note;
+255 255 0 0 note;
 #X obj 398 97 else/note 120 16 dejavu\ sans\ mono empty 0 0 0 0 0 255
-255 255 0 0 0 note;
+255 255 0 0 note;
 #X msg 64 212 set カラオケ, f 11;
 #X obj 64 242 else/note 243 60 dejavu\ sans\ mono empty 0 20 25 30
-1 225 215 215 1 0 0 カラオケ;
+1 225 215 215 1 0 カラオケ;
 #X obj 351 194 else/note 151 50 dejavu\ sans\ mono empty 0 160 40 50
-0 225 215 215 0 0 0 عَلَيْكُمْ ٱلسَّلَامُ;
+0 225 215 215 0 0 عَلَيْكُمْ ٱلسَّلَامُ;
 #X msg 359 346 set 晚安, f 8;
 #X obj 359 371 else/note 166 80 dejavu\ sans\ mono empty 1 200 205
-210 1 75 85 95 1 0 0 晚安;
+210 1 75 85 95 1 0 晚安;
 #X msg 90 335 set हिन्दी;
 #X obj 90 365 else/note 425 80 dejavu\ sans\ mono empty 0 200 100 100
-0 200 200 200 0 0 0 हिन्दी;
+0 200 200 200 0 0 हिन्दी;
 #X msg 351 156 set عَلَيْكُمْ \, append ٱلسَّلَامُ
 ;
 #X text 51 39 You can use backslash to escape symbols like '$' \, commas
