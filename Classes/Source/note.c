@@ -1189,7 +1189,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
                                                                 ac--, av++;
                                                                 if(ac && av->a_type == A_FLOAT){ // 15th Outline
                                                                     x->x_outline = (int)(av->a_w.w_float != 0);
-                                                                    ac--, av++;
+//                                                                    ac--, av++;
                                                                 }
                                                             }
                                                         }
@@ -1273,61 +1273,6 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
                         else
                             goto errstate;
                     }
-                    else if(sym == gensym("-bold")){
-                        if((ac-i) >= 2){
-                            x->x_flag = 1, i++;
-                            if(av[i].a_type == A_FLOAT)
-                                x->x_bold  = (int)av[i].a_w.w_float != 0;
-                            else
-                                goto errstate;
-                        }
-                        else
-                            goto errstate;
-                    }
-                    else if(sym == gensym("-italic")){
-                        if((ac-i) >= 2){
-                            x->x_flag = 1, i++;
-                            if(av[i].a_type == A_FLOAT)
-                                x->x_italic  = (int)av[i].a_w.w_float != 0;
-                            else
-                                goto errstate;
-                        }
-                        else
-                            goto errstate;
-                    }
-                    else if(sym == gensym("-underline")){
-                        if((ac-i) >= 2){
-                            x->x_flag = 1, i++;
-                            if(av[i].a_type == A_FLOAT)
-                                x->x_underline = (int)(av[i].a_w.w_float != 0);
-                            else
-                                goto errstate;
-                        }
-                        else
-                            goto errstate;
-                    }
-                    else if(sym == gensym("-underline")){
-                        if((ac-i) >= 2){
-                            x->x_flag = 1, i++;
-                            if(av[i].a_type == A_FLOAT)
-                                x->x_outline = (int)(av[i].a_w.w_float != 0);
-                            else
-                                goto errstate;
-                        }
-                        else
-                            goto errstate;
-                    }
-                    else if(sym == gensym("-bg")){
-                        if((ac-i) >= 2){
-                            x->x_flag = 1, i++;
-                            if(av[i].a_type == A_FLOAT)
-                                x->x_bg_flag = (int)(av[i].a_w.w_float != 0);
-                            else
-                                goto errstate;
-                        }
-                        else
-                            goto errstate;
-                    }
                     else if(sym == gensym("-just")){
                         if((ac-i) >= 2){
                             x->x_flag = 1, i++;
@@ -1341,6 +1286,16 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
                         else
                             goto errstate;
                     }
+                    else if(sym == gensym("-bold"))
+                        x->x_flag = 1, x->x_bold = 1;
+                    else if(sym == gensym("-italic"))
+                        x->x_flag = 1, x->x_italic = 1;
+                    else if(sym == gensym("-underline"))
+                        x->x_flag = 1, x->x_underline = 1;
+                    else if(sym == gensym("-outline"))
+                        x->x_flag = 1, x->x_outline = 1;
+                    else if(sym == gensym("-bg"))
+                        x->x_flag = 1, x->x_bg_flag = 1;
                     else if(sym == gensym("-note")){
                         if((ac-i) >= 2){
                             x->x_flag = x->x_text_flag = 1;
@@ -1372,8 +1327,10 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
         x->x_resized = 1;
     x->x_max_pixwidth *= x->x_zoom;
     x->x_fontface = x->x_fontface < 0 ? 0 : (x->x_fontface > 3 ? 3 : x->x_fontface);
-    x->x_bold = x->x_fontface == 1 || x->x_fontface == 3;
-    x->x_italic = x->x_fontface > 1;
+    if(x->x_fontface){
+        x->x_bold = x->x_fontface == 1 || x->x_fontface == 3;
+        x->x_italic = x->x_fontface > 1;
+    }
     x->x_red = x->x_red > 255 ? 255 : x->x_red < 0 ? 0 : x->x_red;
     x->x_green = x->x_green > 255 ? 255 : x->x_green < 0 ? 0 : x->x_green;
     x->x_blue = x->x_blue > 255 ? 255 : x->x_blue < 0 ? 0 : x->x_blue;

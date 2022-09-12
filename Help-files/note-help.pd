@@ -1,10 +1,10 @@
-#N canvas 466 55 565 583 10;
+#N canvas 466 55 563 581 10;
 #X obj 2 418 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 2 444 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X text 158 424 (none);
-#X obj 4 556 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 4 553 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
@@ -235,12 +235,11 @@ italic \, underline and justification., f 68;
 255 255 0 0 0 note;
 #X text 129 386 outline <float>;
 #X text 227 386 - non zero sets an outline, f 51;
-#X text 62 481 -font <symbol> (default: 'dejavu sans mono' or 'menlo'
-for mac) | -bold <float> (default 0) | -italic <float> (default 0)
-| -size <float> (default patch's) | -just <float> (default 0) | -color
-<f \, f \, f> (default 0 0 0) | -bgcolor <f \, f \, f> (default 255
-255 255) | -bg <float> (default 0) | -outline <float> (default 0) |
-@note <anything>: sets note (default "note") | -underline <float> (default
-0) | @receive <symbol> (default 'empty'), f 79;
 #X text 356 159 <-- right click for properties, f 15;
 #X text 93 157 <--;
+#X text 67 484 -font <symbol> (default: 'dejavu sans mono' or 'menlo'
+for mac) | -bold | -italic | -size <float> (default patch's) | -just
+<float> (default 0) | -color <f \, f \, f> (default 0 0 0) | -bgcolor
+<f \, f \, f> (default 255 255 255) | -bg | -outline | -note <anything>:
+sets note (default "note") | -underline | @receive <symbol> (default
+'empty'), f 77;
