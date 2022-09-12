@@ -1,4 +1,4 @@
-// Based on our work in comment from cyclone
+// Based on our work in comment from cyclone, which is now also based on this?
 
 #include <string.h>
 #include <ctype.h>
@@ -80,7 +80,7 @@ typedef struct _note{
     int             x_rcv_set;
     int             x_flag;
     int             x_r_flag;
-    int             x_old;
+//    int             x_old;
     int             x_text_flag;
     int             x_text_n;
     int             x_text_size;
@@ -91,6 +91,7 @@ typedef struct _note{
     int             x_underline;
     int             x_bg_flag;
     int             x_textjust; // 0: left, 1: center, 2: right
+    int             x_outline;
     t_pd           *x_handle;
 }t_note;
 
@@ -120,7 +121,7 @@ static void note_initialize(t_note *x){
         freebytes(av, ac*sizeof(t_atom));
     }
     else{
-        int n = x->x_old ? 8 : 14;
+        int n = 15; // = x->x_old ? 8 : 15;
         if(n_args > n){
             int ac = n_args - n;
             t_atom* av = (t_atom *)getbytes(ac*sizeof(t_atom));
@@ -139,7 +140,7 @@ static void note_initialize(t_note *x){
 }
 
 static void note_draw_outline(t_note *x){
-    if(x->x_bbset && x->x_edit){
+    if(x->x_bbset && (x->x_edit || x->x_outline)){
         int x1, y1, x2, y2;
         note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
         sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags [list %lx_outline all%lx] -width %d -outline %s\n",
@@ -546,7 +547,7 @@ static void note_save(t_gobj *z, t_binbuf *b){
         note_initialize(x);
     t_binbuf *bb = x->x_obj.te_binbuf;
     note_get_rcv(x);
-    binbuf_addv(b, "ssiisiissiiiiiiiiii",
+    binbuf_addv(b, "ssiisiissiiiiiiiiiii",
         gensym("#X"),
         gensym("obj"),
         (int)x->x_obj.te_xpix,
@@ -565,7 +566,8 @@ static void note_save(t_gobj *z, t_binbuf *b){
         (int)x->x_bg[1],
         (int)x->x_bg[2],
         x->x_bg_flag,
-        x->x_textjust);
+        x->x_textjust,
+        x->x_outline);
     binbuf_addbinbuf(b, x->x_binbuf); // the actual note
     binbuf_addv(b, ";");
 }
@@ -747,14 +749,16 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
             if(edit){
                 note_draw_handle(p->p_cnv); // fix weird bug????
                 note_draw_inlet(p->p_cnv);
-                note_draw_outline(p->p_cnv);
+                if(!p->p_cnv->x_outline)
+                    note_draw_outline(p->p_cnv);
             }
             else{
                 t_canvas *cv = glist_getcanvas(p->p_cnv->x_glist);
                 t_handle *ch = (t_handle *)p->p_cnv->x_handle;
                 unsigned long x = (unsigned long)p->p_cnv;
                 sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
-                sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
+                if(!p->p_cnv->x_outline)
+                    sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
                 sys_vgui("destroy %s\n", ch->h_pathname); // always destroy, bad hack, improve
             }
         }
@@ -869,6 +873,18 @@ static void note_bgcolor(t_note *x, t_float r, t_float g, t_float b){
         sprintf(x->x_bgcolor, "#%2.2x%2.2x%2.2x", x->x_bg[0] = red, x->x_bg[1] = green, x->x_bg[2] = blue);
         if(gobj_shouldvis((t_gobj *)x, x->x_glist) && glist_isvisible(x->x_glist))
             sys_vgui(".x%lx.c itemconfigure bg%lx -fill %s\n", x->x_cv, (unsigned long)x, x->x_bgcolor);
+    }
+}
+
+static void note_outline(t_note *x, t_floatarg outline){
+    if(outline != x->x_outline){
+//        post("dif");
+        x->x_outline = outline;
+//        x->x_bbset = 0;
+        if(x->x_outline)
+            note_draw_outline(x);
+        else
+            sys_vgui(".x%lx.c delete %lx_outline\n", (unsigned long)x->x_cv, (unsigned long)x);
     }
 }
 
@@ -1089,12 +1105,13 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     x->x_buf = 0;
     x->x_keynum = 0;
     x->x_keysym = NULL;
-    x->x_rcv_set = x->x_flag = x->x_r_flag = x->x_old = 0;
+    x->x_rcv_set = x->x_flag = x->x_r_flag = 0; // x->x_old = 0;
     x->x_text_n = x->x_text_size = x->x_text_width = 0;
     x->x_max_pixwidth = 425;
     x->x_width = x->x_height = 0;
     x->x_fontsize = 0;
     x->x_bbpending = 0;
+    x->x_outline = 0;
     x->x_textjust = x->x_fontface = x->x_bold = x->x_italic = 0;
     x->x_red = x->x_green = x->x_blue = x->x_bufsize = 0;
     x->x_bg_flag = x->x_changed = x->x_init = x->x_resized = 0;
@@ -1170,6 +1187,10 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
                                                                 int textjust = (int)(av->a_w.w_float);
                                                                 x->x_textjust = textjust < 0 ? 0 : textjust > 2 ? 2 : textjust;
                                                                 ac--, av++;
+                                                                if(ac && av->a_type == A_FLOAT){ // 15th Outline
+                                                                    x->x_outline = (int)(av->a_w.w_float != 0);
+                                                                    ac--, av++;
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -1285,6 +1306,17 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
                         else
                             goto errstate;
                     }
+                    else if(sym == gensym("-underline")){
+                        if((ac-i) >= 2){
+                            x->x_flag = 1, i++;
+                            if(av[i].a_type == A_FLOAT)
+                                x->x_outline = (int)(av[i].a_w.w_float != 0);
+                            else
+                                goto errstate;
+                        }
+                        else
+                            goto errstate;
+                    }
                     else if(sym == gensym("-bg")){
                         if((ac-i) >= 2){
                             x->x_flag = 1, i++;
@@ -1364,6 +1396,7 @@ void note_setup(void){
         sizeof(t_note), CLASS_DEFAULT, A_GIMME, 0);
     class_addfloat(note_class, note_float);
     class_addlist(note_class, note_list);
+    class_addmethod(note_class, (t_method)note_outline, gensym("outline"), A_FLOAT, 0);
     class_addmethod(note_class, (t_method)note_fontname, gensym("font"), A_SYMBOL, 0);
     class_addmethod(note_class, (t_method)note_receive, gensym("receive"), A_SYMBOL, 0);
     class_addmethod(note_class, (t_method)note_fontsize, gensym("size"), A_FLOAT, 0);
