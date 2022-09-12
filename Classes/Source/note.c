@@ -156,13 +156,15 @@ static void note_draw_outline(t_note *x){
     }
 }
 
-static void note_draw_handle(t_note *x){    t_handle *ch = (t_handle *)x->x_handle;
+static void note_draw_handle(t_note *x){
+//    post("draw handle");
+    t_handle *ch = (t_handle *)x->x_handle;
     sys_vgui("destroy %s\n", ch->h_pathname); // always destroy, bad hack, improve
     if(x->x_edit){
         int x1, y1, x2, y2;
         note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
         if(x->x_resized)
-            x2 = x1 + x->x_max_pixwidth;
+            x2 = x1 + x->x_max_pixwidth * x->x_zoom;
         sys_vgui("canvas %s -width %d -height %d -bg %s -cursor sb_h_double_arrow\n",
             ch->h_pathname, NOTE_HANDLE_WIDTH, x->x_height, "black");
         sys_vgui("bind %s <Button> {pdsend [concat %s _click 1 \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
@@ -181,32 +183,36 @@ static void note_draw_handle(t_note *x){    t_handle *ch = (t_handle *)x->x_hand
 }
 
 static void note_draw_inlet(t_note *x){
-    if(x->x_edit &&  x->x_receive == &s_){
-        t_canvas *cv = glist_getcanvas(x->x_glist);
-        int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lx_in all%lx]\n",
-            cv, xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom)-x->x_zoom,
-            (unsigned long)x, (unsigned long)x);
+    if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+        if(x->x_edit &&  x->x_receive == &s_){
+            t_canvas *cv = glist_getcanvas(x->x_glist);
+            int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
+            sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lx_in all%lx]\n",
+                cv, xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom)-x->x_zoom,
+                (unsigned long)x, (unsigned long)x);
+        }
     }
 }
 
 static void note_adjust_justification(t_note *x){
-    int move = 0;
-    if(x->x_textjust && x->x_resized){
-        move = (x->x_max_pixwidth / x->x_zoom) - (x->x_text_width / x->x_zoom);
-        if(x->x_textjust == 1) // center
-            move/=2;
-    }
-    if(move){
-        int x1, y1, x2, y2;
-        note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
-        // getrect
-        sys_vgui(".x%lx.c moveto txt%lx  %d %d\n", x->x_cv, (unsigned long)x, x1+move*x->x_zoom, y1);
+    if(gobj_shouldvis((t_gobj *)x, x->x_glist) && glist_isvisible(x->x_glist)){
+        int move = 0;
+        if(x->x_textjust && x->x_resized){
+            move = x->x_max_pixwidth - (x->x_text_width / x->x_zoom);
+            if(x->x_textjust == 1) // center
+                move/=2;
+        }
+        if(move){
+            int x1, y1, x2, y2;
+            note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+            // getrect
+            sys_vgui(".x%lx.c moveto txt%lx  %d %d\n", x->x_cv, (unsigned long)x, x1+move*x->x_zoom, y1);
+        }
     }
 }
 
 static void note_draw(t_note *x){
-//    post("NOTE DRAW");
+    post("NOTE DRAW");
     x->x_cv = glist_getcanvas(x->x_glist);
     if(x->x_bg_flag && x->x_bbset){ // draw bg only if initialized
         int x1, y1, x2, y2;
@@ -217,8 +223,10 @@ static void note_draw(t_note *x){
             text_ypix((t_text *)x, x->x_glist),
             x2 + 2*x->x_zoom,
             y2 + 2*x->x_zoom,
-            (unsigned long)x, (unsigned long)x,
-            x->x_bgcolor, x->x_bgcolor);
+            (unsigned long)x,
+            (unsigned long)x,
+            x->x_outline ? "black" : x->x_bgcolor,
+            x->x_bgcolor);
     }
     char buf[NOTE_OUTBUFSIZE], *outbuf, *outp;
     outp = outbuf = buf;
@@ -235,7 +243,7 @@ static void note_draw(t_note *x){
         x->x_select ? "blue" : x->x_color, // %s
         x->x_bufsize, // %.
         x->x_buf, // *s
-        x->x_max_pixwidth, // %d
+        x->x_max_pixwidth * x->x_zoom, // %d
         x->x_bold ? "bold" : "normal",
         x->x_italic ? "italic" : "roman", //
         x->x_textjust == 0 ? "left" : x->x_textjust == 1 ? "center" : "right");
@@ -250,11 +258,16 @@ static void note_draw(t_note *x){
 }
 
 static void note_update(t_note *x){
+//    post("update");
     char buf[NOTE_OUTBUFSIZE], *outbuf, *outp;
     unsigned long cv = (unsigned long)x->x_cv;
     outp = outbuf = buf;
-    sprintf(outp, "note_update .x%lx.c txt%lx {%.*s} %d\n", cv, (unsigned long)x,
-        x->x_bufsize, x->x_buf, x->x_max_pixwidth);
+    sprintf(outp, "note_update .x%lx.c txt%lx {%.*s} %d\n",
+        cv,
+        (unsigned long)x,
+        x->x_bufsize,
+        x->x_buf,
+        x->x_max_pixwidth * x->x_zoom);
     outp += strlen(outp);
     if(x->x_active){
         if(x->x_selend > x->x_selstart){ // <= TEXT SELECTION!!!!
@@ -273,8 +286,7 @@ static void note_update(t_note *x){
         }
         outp += strlen(outp);
     }
-    sprintf(outp, "note_bbox %s .x%lx.c txt%lx\n",
-        x->x_bindsym->s_name, cv, (unsigned long)x);
+    sprintf(outp, "note_bbox %s .x%lx.c txt%lx\n", x->x_bindsym->s_name, cv, (unsigned long)x);
     x->x_bbpending = 1;
     sys_gui(outbuf);
     if(outbuf != buf)
@@ -284,15 +296,17 @@ static void note_update(t_note *x){
 
 static void note_erase(t_note *x){
     sys_vgui(".x%lx.c delete all%lx\n", x->x_cv, (unsigned long)x);
-    t_handle *ch = (t_handle *)x->x_handle;
-    sys_vgui("destroy %s\n", ch->h_pathname);
+//    t_handle *ch = (t_handle *)x->x_handle;
+//    sys_vgui("destroy %s\n", ch->h_pathname);
+    sys_vgui("destroy %s\n", ((t_handle *)x->x_handle)->h_pathname);
 }
 
 static void note_redraw(t_note *x){ // <= improve, not necessary for all cases
-     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
-         note_erase(x);
-         note_draw(x);
-     }
+//    post("REDRAW");
+    if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+        note_erase(x);
+        note_draw(x);
+    }
 }
 
 static void note_grabbedkey(void *z, t_floatarg f){
@@ -312,7 +326,7 @@ static void note_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2
     x1 = text_xpix((t_text *)x, glist);
     y1 = text_ypix((t_text *)x, glist);
     if(x->x_resized)
-        x->x_width = x->x_max_pixwidth;
+        x->x_width = x->x_max_pixwidth * x->x_zoom;
     int min_size = NOTE_MINSIZE;
     if(x->x_width < min_size)
         x->x_width = min_size;
@@ -401,14 +415,17 @@ static void note_vis(t_gobj *z, t_glist *glist, int vis){
 
 static void note__bbox_callback(t_note *x, t_symbol *bindsym,
 t_floatarg x1, t_floatarg y1, t_floatarg x2, t_floatarg y2){
-    x->x_text_width = x2-x1;
     bindsym = NULL;
-    if(!x->x_bbset || (x->x_height != (y2-y1))){ // redraw
+    if(!x->x_bbset || (x->x_height != (y2-y1)) || x->x_text_width != (x2-x1)){ // redraw
+        x->x_text_width = x2-x1;
+//        post("-----> if(!x->x_bbset || (x->x_height != (y2-y1))){ // redraw <-----");
         x->x_height = y2-y1;
         x->x_y1 = y1;
         x->x_y2 = y2;
-        if(x->x_resized)
-            x->x_width = x->x_max_pixwidth, x->x_x2 = x1 + x->x_max_pixwidth;
+        if(x->x_resized){
+            x->x_width = x->x_max_pixwidth * x->x_zoom;
+            x->x_x2 = x1 + x->x_max_pixwidth * x->x_zoom;
+        }
         else
             x->x_width = x2-x1, x->x_x2 = x2;
         x->x_x1 = x1;
@@ -472,7 +489,7 @@ static void handle__click_callback(t_handle *ch, t_floatarg f){
         if(x->x_x2 != x->x_newx2){
             x->x_resized = 1;
             x->x_x2 = x->x_newx2;
-            x->x_max_pixwidth = x->x_newx2 - x->x_x1;
+            x->x_max_pixwidth = (x->x_newx2 - x->x_x1) / x->x_zoom;
             note_redraw(x); // needed to call bbox callback
         }
     }
@@ -553,7 +570,7 @@ static void note_save(t_gobj *z, t_binbuf *b){
         (int)x->x_obj.te_xpix,
         (int)x->x_obj.te_ypix,
         atom_getsymbol(binbuf_getvec(bb)),
-        x->x_max_pixwidth / x->x_zoom,
+        x->x_resized ? x->x_max_pixwidth : 0,
         x->x_fontsize,
         x->x_fontname,
         x->x_rcv_raw,
@@ -578,7 +595,7 @@ static void note_key(t_note *x){
     }
     int i, newsize, ndel, n = x->x_keynum;
     if(n){
-    //        post("note_float => input character = [%c], n = %d", n, n);
+//        post("note_float => input character = [%c], n = %d", n, n);
         if (n == '\r')
             n = '\n';
         if (n == '\b'){  // backspace
@@ -777,7 +794,7 @@ static void note_receive(t_note *x, t_symbol *s){
         x->x_rcv_raw = s;
         x->x_receive = rcv;
         if(x->x_receive == &s_){
-            if(x->x_edit && glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
+            if(x->x_edit)
                 note_draw_inlet(x);
         }
         else{
@@ -871,7 +888,11 @@ static void note_bgcolor(t_note *x, t_float r, t_float g, t_float b){
     else if(x->x_bg[0] != red || x->x_bg[1] != green || x->x_bg[2] != blue){
         sprintf(x->x_bgcolor, "#%2.2x%2.2x%2.2x", x->x_bg[0] = red, x->x_bg[1] = green, x->x_bg[2] = blue);
         if(gobj_shouldvis((t_gobj *)x, x->x_glist) && glist_isvisible(x->x_glist))
-            sys_vgui(".x%lx.c itemconfigure bg%lx -fill %s\n", x->x_cv, (unsigned long)x, x->x_bgcolor);
+            sys_vgui(".x%lx.c itemconfigure bg%lx -outline %s -fill %s\n",
+            x->x_cv,
+            (unsigned long)x,
+            x->x_outline ? "black" : x->x_bgcolor,
+            x->x_bgcolor);
     }
 }
 
@@ -914,14 +935,24 @@ static void note_bold(t_note *x, t_float f){
 
 static void note_outline(t_note *x, t_floatarg outline){
     if(outline != x->x_outline){
-//        post("dif");
         x->x_outline = outline;
-//        x->x_bbset = 0;
-        if(x->x_outline)
-            note_draw_outline(x);
-        else
-            sys_vgui(".x%lx.c delete %lx_outline\n", (unsigned long)x->x_cv, (unsigned long)x);
-            x->x_fontface = x->x_bold + 2 * x->x_italic + 4 * x->x_outline;
+        x->x_fontface = x->x_bold + 2 * x->x_italic + 4 * x->x_outline;
+        if(gobj_shouldvis((t_gobj *)x, x->x_glist) && glist_isvisible(x->x_glist)){
+            if(x->x_outline){
+                note_draw_outline(x);
+                if(x->x_bg_flag)
+                    sys_vgui(".x%lx.c itemconfigure bg%lx -outline black\n", x->x_cv, (unsigned long)x);
+            }
+            else{
+                sys_vgui(".x%lx.c delete %lx_outline\n", (unsigned long)x->x_cv, (unsigned long)x);
+                if(x->x_bg_flag){
+                    sys_vgui(".x%lx.c itemconfigure bg%lx -outline %s\n",
+                    x->x_cv,
+                    (unsigned long)x,
+                    x->x_bgcolor);
+                }
+            }
+        }
     }
 }
 
@@ -954,10 +985,7 @@ static void note_just(t_note *x, t_float f){
 
 static void note_zoom(t_note *x, t_floatarg zoom){
     x->x_zoom = (int)zoom;
-    float mul = zoom == 1. ? 0.5 : 2.;
-    x->x_max_pixwidth = (int)((float)x->x_max_pixwidth * mul);
     note_redraw(x);
-//    note_fontsize(x, (float)x->x_fontsize * mul);
 }
 
 //------------------- Properties --------------------------------------------------------
@@ -1110,7 +1138,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     x->x_keysym = NULL;
     x->x_rcv_set = x->x_flag = x->x_r_flag = 0; // x->x_old = 0;
     x->x_text_n = x->x_text_size = x->x_text_width = 0;
-    x->x_max_pixwidth = 425;
+    x->x_max_pixwidth = 0;
     x->x_width = x->x_height = 0;
     x->x_fontsize = 0;
     x->x_bbpending = 0;
@@ -1318,11 +1346,10 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     }
     if(x->x_fontsize < 1)
         x->x_fontsize = glist_getfont(x->x_glist);
-    if(x->x_max_pixwidth <= 0)
-        x->x_max_pixwidth = 425;
-    if(x->x_max_pixwidth != 425) // improve
+    if(x->x_max_pixwidth != 0)
         x->x_resized = 1;
-    x->x_max_pixwidth *= x->x_zoom;
+    else
+        x->x_max_pixwidth = 425;
     x->x_fontface = x->x_fontface < 0 ? 0 : (x->x_fontface > 7 ? 7 : x->x_fontface);
     if(x->x_fontface){
         x->x_bold = x->x_fontface == 1 || x->x_fontface == 3 || x->x_fontface == 5 || x->x_fontface == 7;
