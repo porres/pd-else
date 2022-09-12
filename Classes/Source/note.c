@@ -121,7 +121,7 @@ static void note_initialize(t_note *x){
         freebytes(av, ac*sizeof(t_atom));
     }
     else{
-        int n = 15; // = x->x_old ? 8 : 15;
+        int n = 14; // = x->x_old ? 8 : 14;
         if(n_args > n){
             int ac = n_args - n;
             t_atom* av = (t_atom *)getbytes(ac*sizeof(t_atom));
@@ -547,7 +547,7 @@ static void note_save(t_gobj *z, t_binbuf *b){
         note_initialize(x);
     t_binbuf *bb = x->x_obj.te_binbuf;
     note_get_rcv(x);
-    binbuf_addv(b, "ssiisiissiiiiiiiiiii",
+    binbuf_addv(b, "ssiisiissiiiiiiiiii",
         gensym("#X"),
         gensym("obj"),
         (int)x->x_obj.te_xpix,
@@ -566,8 +566,7 @@ static void note_save(t_gobj *z, t_binbuf *b){
         (int)x->x_bg[1],
         (int)x->x_bg[2],
         x->x_bg_flag,
-        x->x_textjust,
-        x->x_outline);
+        x->x_textjust);
     binbuf_addbinbuf(b, x->x_binbuf); // the actual note
     binbuf_addv(b, ";");
 }
@@ -876,18 +875,6 @@ static void note_bgcolor(t_note *x, t_float r, t_float g, t_float b){
     }
 }
 
-static void note_outline(t_note *x, t_floatarg outline){
-    if(outline != x->x_outline){
-//        post("dif");
-        x->x_outline = outline;
-//        x->x_bbset = 0;
-        if(x->x_outline)
-            note_draw_outline(x);
-        else
-            sys_vgui(".x%lx.c delete %lx_outline\n", (unsigned long)x->x_cv, (unsigned long)x);
-    }
-}
-
 static void note_fontname(t_note *x, t_symbol *name){
     if(name != x->x_fontname){
         x->x_fontname = name;
@@ -911,6 +898,7 @@ static void note_italic(t_note *x, t_float f){
         x->x_italic = italic;
         x->x_bbset = 0;
         note_redraw(x);
+        x->x_fontface = x->x_bold + 2 * x->x_italic + 4 * x->x_outline;
     }
 }
 
@@ -920,6 +908,20 @@ static void note_bold(t_note *x, t_float f){
         x->x_bold = bold;
         x->x_bbset = 0;
         note_redraw(x);
+        x->x_fontface = x->x_bold + 2 * x->x_italic + 4 * x->x_outline;
+    }
+}
+
+static void note_outline(t_note *x, t_floatarg outline){
+    if(outline != x->x_outline){
+//        post("dif");
+        x->x_outline = outline;
+//        x->x_bbset = 0;
+        if(x->x_outline)
+            note_draw_outline(x);
+        else
+            sys_vgui(".x%lx.c delete %lx_outline\n", (unsigned long)x->x_cv, (unsigned long)x);
+            x->x_fontface = x->x_bold + 2 * x->x_italic + 4 * x->x_outline;
     }
 }
 
@@ -1003,7 +1005,6 @@ static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
         x->x_changed = 1;
         x->x_italic = italic;
     }
-    x->x_fontface = bold + 2 * italic;
     temp_f = atom_getfloatarg(4, ac, av);
     int just = temp_f < 0 ? 0 : (temp_f > 2 ? 2 : (int)temp_f);
     if(just != x->x_textjust){
@@ -1039,10 +1040,12 @@ static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
             (unsigned short *)(&x->x_blue));
     }
     note_receive(x, atom_getsymbolarg(9, ac, av));
+    int outline = 0; // get outline value
     if(x->x_changed){
         canvas_dirty(x->x_glist, 1);
         note_redraw(x);
     }
+    x->x_fontface = bold + 2 * italic + 4 * outline;
 }
 
 //-------------------------------------------------------------------------------------
@@ -1111,8 +1114,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     x->x_width = x->x_height = 0;
     x->x_fontsize = 0;
     x->x_bbpending = 0;
-    x->x_outline = 0;
-    x->x_textjust = x->x_fontface = x->x_bold = x->x_italic = 0;
+    x->x_textjust = x->x_fontface = x->x_bold = x->x_italic = x->x_outline = 0;
     x->x_red = x->x_green = x->x_blue = x->x_bufsize = 0;
     x->x_bg_flag = x->x_changed = x->x_init = x->x_resized = 0;
     x->x_bg[0] = x->x_bg[1] = x->x_bg[2] = 255;
@@ -1186,11 +1188,6 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
                                                             if(ac && av->a_type == A_FLOAT){ // 14th Justification
                                                                 int textjust = (int)(av->a_w.w_float);
                                                                 x->x_textjust = textjust < 0 ? 0 : textjust > 2 ? 2 : textjust;
-                                                                ac--, av++;
-                                                                if(ac && av->a_type == A_FLOAT){ // 15th Outline
-                                                                    x->x_outline = (int)(av->a_w.w_float != 0);
-//                                                                    ac--, av++;
-                                                                }
                                                             }
                                                         }
                                                     }
@@ -1205,7 +1202,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
                 }
             }
         }
-        else{ // 1st is not a float, so we must be dealing with attributes!!!
+        else{ // 1st is not a float, so we must be dealing with attributes/flags!!!
             int i, comlen = 0; // length of note list
             for(i = 0; i < ac; i++){
                 if(av[i].a_type == A_SYMBOL){
@@ -1326,10 +1323,11 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     if(x->x_max_pixwidth != 425) // improve
         x->x_resized = 1;
     x->x_max_pixwidth *= x->x_zoom;
-    x->x_fontface = x->x_fontface < 0 ? 0 : (x->x_fontface > 3 ? 3 : x->x_fontface);
+    x->x_fontface = x->x_fontface < 0 ? 0 : (x->x_fontface > 7 ? 7 : x->x_fontface);
     if(x->x_fontface){
-        x->x_bold = x->x_fontface == 1 || x->x_fontface == 3;
-        x->x_italic = x->x_fontface > 1;
+        x->x_bold = x->x_fontface == 1 || x->x_fontface == 3 || x->x_fontface == 5 || x->x_fontface == 7;
+        x->x_italic = x->x_fontface == 2 || x->x_fontface == 3 || x->x_fontface >= 6;
+        x->x_outline = x->x_fontface >= 4;
     }
     x->x_red = x->x_red > 255 ? 255 : x->x_red < 0 ? 0 : x->x_red;
     x->x_green = x->x_green > 255 ? 255 : x->x_green < 0 ? 0 : x->x_green;
