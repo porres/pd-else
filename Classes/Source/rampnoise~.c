@@ -85,7 +85,7 @@ static void *rampnoise_new(t_symbol *s, int ac, t_atom *av){
 // default parameters
     t_float hz = 0;
     int numargs = 0;
-    while(ac){
+    if(ac){
         if(av->a_type == A_SYMBOL){
             if(ac >= 2 && atom_getsymbol(av) == gensym("-seed")){
                 t_atom at[1];
@@ -96,19 +96,8 @@ static void *rampnoise_new(t_symbol *s, int ac, t_atom *av){
             else
                 goto errstate;
         }
-        else{
-            switch(numargs){
-                case 0: hz = atom_getfloat(av);
-                    numargs++;
-                    ac--;
-                    av++;
-                    break;
-                default:
-                    ac--;
-                    av++;
-                    break;
-            };
-        }
+        else if(av->a_type == A_FLOAT)
+            hz = atom_getfloat(av);
     }
     if(hz >= 0)
         x->x_phase = 1.;
