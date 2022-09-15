@@ -1033,12 +1033,16 @@ static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
         x->x_changed = 1;
         x->x_italic = italic;
     }
-    temp_f = atom_getfloatarg(4, ac, av);
-    int just = temp_f < 0 ? 0 : (temp_f > 2 ? 2 : (int)temp_f);
+
+    t_symbol* just_sym = atom_getsymbolarg(4, ac, av);
+    int just = 0;
+    if(!strcmp(just_sym->s_name, "Center")) just = 1;
+    if(!strcmp(just_sym->s_name, "Right")) just = 2;
     if(just != x->x_textjust){
         x->x_changed = 1;
         x->x_textjust = just;
     }
+    
     int underline = (int)(atom_getfloatarg(5, ac, av) != 0);
     if(x->x_underline != underline){
         x->x_changed = 1;
@@ -1415,7 +1419,7 @@ void note_setup(void){
     class_addmethod(handle_class, (t_method)handle__click_callback, gensym("_click"), A_FLOAT, 0);
     class_addmethod(handle_class, (t_method)handle__motion_callback, gensym("_motion"), A_FLOAT, A_FLOAT, 0);
 
-    sys_gui("proc note_bbox {target cvname tag} {\n\
+     sys_gui("proc note_bbox {target cvname tag} {\n\
             pdsend \"$target _bbox $target [$cvname bbox $tag]\"}\n"
 // LATER think about window vs canvas coords
             "proc note_click {target cvname x y tag} {\n\
@@ -1470,7 +1474,6 @@ void note_setup(void){
     "    global $var_fg\n"
     "    global $var_rcv\n"
     "\n"
-             
     "    set cmd [concat $id ok \\\n"
     "        [string map {\" \" {\\ } \";\" \"\" \",\" \"\" \"\\\\\" \"\" \"\\{\" \"\" \"\\}\" \"\"} [eval concat $$var_name]] \\\n"
     "        [eval concat $$var_size] \\\n"
@@ -1520,7 +1523,7 @@ void note_setup(void){
     "    set $var_bold $bold\n"
     "    set $var_italic $italic\n"
     "    set $var_underline $underline\n"
-    "    set $var_just $just\n"
+    "    set $var_just [lindex {Left Center Right} $just]\n"
     "    set $var_bg_flag $bg_flag\n"
     "    set $var_bg $bg\n"
     "    set $var_fg $fg\n"
@@ -1541,9 +1544,11 @@ void note_setup(void){
     "\n"
     "    frame $id.show_bg\n"
     "    pack $id.show_bg -side top\n"
+    "    tk_optionMenu $id.show_bg.just $var_just Left Center Right\n"
     "    label $id.show_bg.lbg -text \"Fill background:\"\n"
     "    checkbutton $id.show_bg.bg -variable $var_bg_flag \n"
-    "    pack $id.show_bg.lbg $id.show_bg.bg -side left\n"
+    "    label $id.show_bg.lbj -text \"Justification:\"\n"
+    "    pack $id.show_bg.lbg $id.show_bg.bg $id.show_bg.lbj $id.show_bg.just -side left\n"
     "\n"
     "    frame $id.ul_bg\n"
     "    pack $id.ul_bg -side top\n"
