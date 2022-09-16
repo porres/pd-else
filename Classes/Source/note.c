@@ -1032,7 +1032,27 @@ void note_properties(t_gobj *z, t_glist *gl){
 }
 
 static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
+    s = NULL; // received when applying changes in properties
+    t_atom undo[11];
+    SETSYMBOL(undo+0, x->x_fontname);
+    SETFLOAT(undo+1, x->x_fontsize);
+    SETFLOAT(undo+2, x->x_max_pixwidth);
+    SETFLOAT(undo+3, x->x_bold);
+    SETFLOAT(undo+4, x->x_italic);
+    t_symbol *justification = NULL;
+    if(x->x_textjust == 0)
+        justification = gensym("Left");
+    else if(x->x_textjust == 1)
+        justification = gensym("Center");
+    else if(x->x_textjust == 1)
+        justification = gensym("Right");
+    SETSYMBOL(undo+5, justification);
+    SETFLOAT(undo+6, x->x_underline);
+    SETFLOAT(undo+7, x->x_bg_flag);
+    SETSYMBOL(undo+8, gensym(x->x_bgcolor));
+    SETSYMBOL(undo+9, gensym(x->x_color));
+    SETFLOAT(undo+10, x->x_outline);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("ok"), 11, undo, ac, av);
     x->x_changed = 0;
     t_float temp_f;
     if(atom_getsymbolarg(0, ac, av) != x->x_fontname){
@@ -1123,7 +1143,8 @@ static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
         free(hex);
     }
     int outline = atom_getfloatarg(10, ac, av);
-    note_outline(x, outline);
+    if(x->x_outline != outline)
+        note_outline(x, outline);
     if(x->x_changed){
         canvas_dirty(x->x_glist, 1);
         note_redraw(x);
