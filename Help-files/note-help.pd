@@ -88,13 +88,6 @@
 flag to turn it off or on again., f 62;
 #X obj 546 327 loadbang;
 #X msg 546 352 receive \\\$0-note;
-#X text 399 44 When in edit mode \, [note] shows its inlet and an outline.
-The [note] object below has a receive symbol \, so you can send messages
-to it via a [send] object. In this case \, the inlet is suppressed
-\, so we don't see it. Besides the properties window \, the receive
-symbol can be set with the receive message or the @receive attribute.
-If you set a receive name as "empty" then it it can't receive messages
-anymore and the inlet is show again., f 74;
 #X msg 179 27 size 50;
 #X msg 187 47 size 30;
 #X msg 201 75 font times;
@@ -112,11 +105,6 @@ anymore and the inlet is show again., f 74;
 #X msg 110 191 italic \$1;
 #X msg 630 137 color 200 0 0;
 #X msg 642 159 color 0 0 0;
-#X text 497 481 Note: when in edit mode \, you can click on the object
-to select it and then press <F5> to copy the text from [else/note]
-into a vanilla comment box. So far \, this is the only way to copy
-the text from note into Pd (control+c / control+v doesn't work).,
-f 53;
 #X msg 237 177 font Menlo;
 #X text 59 425 [note] uses "Dejavu Sans Mono" as its default font \,
 just like Pd. But \, as of version 0.51-3 \, Pd uses 'Menlo' as its
@@ -128,45 +116,58 @@ some other font you have on your system instead that it thinks is best
 for what you requested \, and you'll have no idea which one it is.
 So just be sure you have the fonts you want properly installed., f
 62;
-#X msg 398 278 outline \$1;
 #X obj 25 218 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
-#000000 0 1;
-#X obj 398 254 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X msg 257 252 bgcolor 200 200 100;
 #X obj 179 314 else/note 0 50 Menlo empty 0 0 0 0 0 255 255 255 0 0
 note;
 #X obj 546 390 else/note 0 50 Menlo \$0-note 0 0 0 0 0 255 255 255
 0 0 note;
+#X msg 456 202 outline \$1;
+#X obj 456 178 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
+#X text 399 28 When in edit mode \, [note] shows its inlet and an outline.
+You can always see the outline if you use the "outline" message or
+flag. The [note] object below has a receive symbol \, so you can send
+messages to it via a [send] object. In this case \, the inlet is suppressed
+\, so we don't see it. Besides the properties window \, the receive
+symbol can be set with the receive message or the @receive attribute.
+If you set a receive name as "empty" then it it can't receive messages
+anymore and the inlet is show again., f 74;
+#X text 497 479 Note: when in edit mode \, you can click on the text
+to select it and then press <F5> to copy the text from [else/note]
+into a vanilla comment box. So far \, this is the only way to copy
+the text from note into Pd (control+c / control+v doesn't work).,
+f 53;
 #X connect 0 0 3 0;
 #X connect 1 0 3 0;
 #X connect 2 0 3 0;
 #X connect 4 0 3 0;
 #X connect 5 0 4 0;
-#X connect 6 0 36 0;
-#X connect 7 0 36 0;
+#X connect 6 0 32 0;
+#X connect 7 0 32 0;
 #X connect 10 0 11 0;
-#X connect 11 0 37 0;
-#X connect 13 0 36 0;
-#X connect 14 0 36 0;
-#X connect 15 0 36 0;
-#X connect 16 0 36 0;
-#X connect 17 0 36 0;
-#X connect 18 0 36 0;
-#X connect 19 0 36 0;
-#X connect 20 0 36 0;
-#X connect 21 0 36 0;
-#X connect 22 0 25 0;
-#X connect 23 0 36 0;
-#X connect 24 0 23 0;
-#X connect 25 0 36 0;
+#X connect 11 0 33 0;
+#X connect 12 0 32 0;
+#X connect 13 0 32 0;
+#X connect 14 0 32 0;
+#X connect 15 0 32 0;
+#X connect 16 0 32 0;
+#X connect 17 0 32 0;
+#X connect 18 0 32 0;
+#X connect 19 0 32 0;
+#X connect 20 0 32 0;
+#X connect 21 0 24 0;
+#X connect 22 0 32 0;
+#X connect 23 0 22 0;
+#X connect 24 0 32 0;
+#X connect 25 0 3 0;
 #X connect 26 0 3 0;
-#X connect 27 0 3 0;
-#X connect 29 0 36 0;
-#X connect 32 0 36 0;
-#X connect 33 0 7 0;
-#X connect 34 0 32 0;
-#X connect 35 0 36 0;
+#X connect 27 0 32 0;
+#X connect 30 0 7 0;
+#X connect 31 0 32 0;
+#X connect 34 0 3 0;
+#X connect 35 0 34 0;
 #X restore 477 148 pd details;
 #N canvas 553 129 582 418 +details 0;
 #X obj 75 300 else/note 0 20 dejavu\ sans\ mono empty 0 0 0 0 0 200
