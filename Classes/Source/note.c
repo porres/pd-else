@@ -1107,13 +1107,13 @@ static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
         x->x_bg[2] = (char)((rgb) & 0xFF);
         free(hex);
     }
-    t_symbol* fg_color = atom_getsymbolarg(9, ac, av);
+    t_symbol *fg_color = atom_getsymbolarg(9, ac, av);
     if(strcmp(x->x_color, fg_color->s_name)){
         strcpy(x->x_color, fg_color->s_name);
         x->x_changed = 1;
-        char* hex = malloc(strlen(bg_color->s_name+1) + 2);
+        char* hex = malloc(strlen(fg_color->s_name+1) + 2);
         char* ptr;
-        strcpy(hex + 2, bg_color->s_name + 1);
+        strcpy(hex + 2, fg_color->s_name + 1);
         hex[0] = '0';
         hex[1] = 'x';
         long int rgb = strtoll(hex, &ptr, 0);
