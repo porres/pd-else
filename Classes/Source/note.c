@@ -1018,7 +1018,7 @@ void note_properties(t_gobj *z, t_glist *gl){
     sprintf(buffer, "note_properties %%s {%s} %d %d %d %d %d %d %d {%s} {%s} {%s} %d \n",
         x->x_fontname->s_name,
         x->x_fontsize,
-        x->x_width,
+        x->x_resized ? x->x_max_pixwidth : 0,
         x->x_bold,
         x->x_italic,
         x->x_textjust,
