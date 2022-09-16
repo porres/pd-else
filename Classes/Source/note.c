@@ -959,7 +959,7 @@ static void note_outline(t_note *x, t_floatarg outline){
         x->x_outline = outline;
         x->x_fontface = x->x_bold + 2 * x->x_italic + 4 * x->x_outline;
         if(gobj_shouldvis((t_gobj *)x, x->x_glist) && glist_isvisible(x->x_glist)){
-            if(x->x_outline){
+            if(x->x_outline || x->x_edit){
                 note_draw_outline(x);
                 if(x->x_bg_flag)
                     sys_vgui(".x%lx.c itemconfigure bg%lx -outline black\n", x->x_cv, (unsigned long)x);
