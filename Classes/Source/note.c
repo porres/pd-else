@@ -213,7 +213,7 @@ static void note_adjust_justification(t_note *x){
 }
 
 static void note_draw(t_note *x){
-    post("NOTE DRAW");
+//    post("NOTE DRAW");
     x->x_cv = glist_getcanvas(x->x_glist);
     if(x->x_bg_flag && x->x_bbset){ // draw bg only if initialized
         int x1, y1, x2, y2;
@@ -934,6 +934,26 @@ static void note_bold(t_note *x, t_float f){
     }
 }
 
+static void note_width(t_note *x, t_floatarg width){
+    if(width <= 0){
+        if(x->x_resized){
+            x->x_resized = 0;
+            x->x_max_pixwidth = 425;
+            x->x_width = x->x_text_width; // ????
+            note_redraw(x);
+        }
+    }
+    else{
+        if(width < 8)
+            width = 8; // min width
+        if(x->x_max_pixwidth != width){
+            x->x_max_pixwidth = width;
+            x->x_resized = 1;
+            note_redraw(x);
+        }
+    }
+}
+
 static void note_outline(t_note *x, t_floatarg outline){
     if(outline != x->x_outline){
         x->x_outline = outline;
@@ -1416,6 +1436,7 @@ void note_setup(void){
         sizeof(t_note), CLASS_DEFAULT, A_GIMME, 0);
     class_addfloat(note_class, note_float);
     class_addlist(note_class, note_list);
+    class_addmethod(note_class, (t_method)note_width, gensym("width"), A_FLOAT, 0);
     class_addmethod(note_class, (t_method)note_outline, gensym("outline"), A_FLOAT, 0);
     class_addmethod(note_class, (t_method)note_fontname, gensym("font"), A_SYMBOL, 0);
     class_addmethod(note_class, (t_method)note_receive, gensym("receive"), A_SYMBOL, 0);
