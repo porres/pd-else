@@ -1735,7 +1735,6 @@ void note_setup(void){
      "    global $var_var_bg\n"
      "    set var_var_fg [concat var_fg_$vid]\n"
      "    global $var_var_fg\n"
-     "    set var_var_fg [concat var_outline_$vid]\n"
      "\n"
      "    if { [eval concat $$var_col_field] == 0 } { set $var_var_bg $presetcol }\n"
      "    if { [eval concat $$var_col_field] == 1 } { set $var_var_fg $presetcol }\n"
