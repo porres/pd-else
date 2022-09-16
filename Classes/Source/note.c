@@ -1031,7 +1031,6 @@ void note_properties(t_gobj *z, t_glist *gl){
     gfxstub_new(&x->x_obj.ob_pd, x, buffer);
 }
 
-
 static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     x->x_changed = 0;
@@ -1047,13 +1046,24 @@ static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
         x->x_changed = 1;
         x->x_fontsize = (int)temp_f;
     }
-    
     int width = atom_getfloatarg(2, ac, av);
-    if(x->x_width != width){
-        x->x_changed = 1;
-        x->x_width = width;
+    if(width <= 0){
+        if(x->x_resized){
+            x->x_changed = 1;
+            x->x_resized = 0;
+            x->x_max_pixwidth = 425;
+            x->x_width = x->x_text_width;
+        }
     }
-    
+    else{
+        if(width < 8)
+            width = 8; // min width
+        if(x->x_max_pixwidth != width){
+            x->x_changed = 1;
+            x->x_max_pixwidth = width;
+            x->x_resized = 1;
+        }
+    }
     int bold = atom_getfloatarg(3, ac, av);
     if(bold != x->x_bold){
         x->x_changed = 1;
@@ -1064,7 +1074,6 @@ static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
         x->x_changed = 1;
         x->x_italic = italic;
     }
-
     t_symbol* just_sym = atom_getsymbolarg(5, ac, av);
     int just = 0;
     if(!strcmp(just_sym->s_name, "Center")) just = 1;
@@ -1073,7 +1082,6 @@ static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
         x->x_changed = 1;
         x->x_textjust = just;
     }
-
     int underline = (int)(atom_getfloatarg(6, ac, av) != 0);
     if(x->x_underline != underline){
         x->x_changed = 1;
@@ -1084,26 +1092,21 @@ static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
         x->x_bg_flag = bgflag;
         x->x_changed = 1;
     }
-    
     t_symbol* bg_color = atom_getsymbolarg(8, ac, av);
     if(strcmp(x->x_bgcolor, bg_color->s_name)){
         strcpy(x->x_bgcolor, bg_color->s_name);
         x->x_changed = 1;
-        
         char* hex = malloc(strlen(bg_color->s_name+1) + 2);
         char* ptr;
         strcpy(hex + 2, bg_color->s_name + 1);
         hex[0] = '0';
         hex[1] = 'x';
-        
         long int rgb = strtoll(hex, &ptr, 0);
         x->x_bg[0] = (char)((rgb >> 16) & 0xFF);
         x->x_bg[1] = (char)((rgb >> 8) & 0xFF);
         x->x_bg[2] = (char)((rgb) & 0xFF);
-        
         free(hex);
     }
-    
     t_symbol* fg_color = atom_getsymbolarg(9, ac, av);
     if(strcmp(x->x_color, fg_color->s_name)){
         strcpy(x->x_color, fg_color->s_name);
@@ -1113,24 +1116,18 @@ static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
         strcpy(hex + 2, bg_color->s_name + 1);
         hex[0] = '0';
         hex[1] = 'x';
-        
         long int rgb = strtoll(hex, &ptr, 0);
         x->x_red = (char)((rgb >> 16) & 0xFF);
         x->x_green = (char)((rgb >> 8) & 0xFF);
         x->x_blue = (char)((rgb) & 0xFF);
-        
         free(hex);
     }
-
-
     int outline = atom_getfloatarg(10, ac, av);
     note_outline(x, outline);
-
     if(x->x_changed){
         canvas_dirty(x->x_glist, 1);
         note_redraw(x);
     }
-    
     x->x_fontface = bold + 2 * italic + 4 * outline;
 }
 
