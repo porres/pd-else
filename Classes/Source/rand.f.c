@@ -41,7 +41,6 @@ static void *randf_new(t_symbol *s, int ac, t_atom *av){
     t_randf *x = (t_randf *)pd_new(randf_class);
     x->x_id = random_get_id();
     randf_seed(x, s, 0, NULL);
-    int numargs = 0;
     x->x_min = 0;
     x->x_max = 1;
     while(ac){
