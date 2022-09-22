@@ -57,6 +57,7 @@ cents2ratio.class.sources := Classes/Source/cents2ratio.c
 changed.class.sources := Classes/Source/changed.c
 gcd.class.sources := Classes/Source/gcd.c
 dir.class.sources := Classes/Source/dir.c
+datetime.class.sources := Classes/Source/datetime.c
 default.class.sources := Classes/Source/default.c
 dollsym.class.sources := Classes/Source/dollsym.c
 floor.class.sources := Classes/Source/floor.c
