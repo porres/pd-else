@@ -277,11 +277,11 @@ shared/random.c
     brown~.class.sources := Classes/Source/brown~.c $(randmagic)
 
 rand := shared/random.c
-	white~.class.sources := Classes/Source/white~.c $(rand)
+    white~.class.sources := Classes/Source/white~.c $(rand)
     pink~.class.sources := Classes/Source/pink~.c $(rand)
     gray~.class.sources := Classes/Source/gray~.c $(rand)
     pluck~.class.sources := Classes/Source/pluck~.c $(rand)
-    rand.seq.class.sources := Classes/Source/rand.seq.c $(rand)
+    rand.u.class.sources := Classes/Source/rand.u.c $(rand)
     rand.i.class.sources := Classes/Source/rand.i.c $(rand)
     rand.i~.class.sources := Classes/Source/rand.i~.c $(rand)
     rand.f.class.sources := Classes/Source/rand.f.c $(rand)
