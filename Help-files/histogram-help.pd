@@ -1,17 +1,17 @@
-#N canvas 547 23 563 639 10;
-#X obj 5 295 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+#N canvas 547 23 561 638 10;
+#X obj 5 289 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 5 450 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+#X obj 5 443 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 5 578 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 5 612 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 308 3 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
+#X obj 308 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 307 2 pd;
+#X restore 307 3 pd;
 #X obj 347 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
 #X obj 23 39 cnv 4 4 4 empty empty Probability\\\ distribution\\\ histogram
@@ -26,85 +26,102 @@
 0;
 #X obj 504 25 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 101 456 cnv 17 3 37 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 111 454 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 102 304 cnv 17 3 138 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c
+#X obj 112 297 cnv 17 3 138 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c
 0;
-#X obj 101 499 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 111 477 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 5 3 cnv 15 301 42 empty empty histogram 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 4 3 graph;
-#X obj 214 166 hradio 18 1 0 8 empty empty empty 0 -8 0 10 #dfdfdf
+#X obj 207 158 hradio 18 1 0 8 empty empty empty 0 -8 0 10 #dfdfdf
 #000000 #000000 0;
-#X obj 184 195 bng 20 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
-#000000 #000000;
-#X msg 265 199 clear;
-#X obj 214 194 else/display 3;
-#X text 176 303 bang - random weighted index based on created histogram
-;
-#X text 170 319 float - positive integer to record into histogram,
+#X msg 258 191 clear;
+#X obj 207 186 else/display 3;
+#X text 180 297 float - positive integer to record into histogram,
 f 56;
-#X text 176 335 list - note on pitch to record into histogram, f 55
+#X text 186 313 list - note on pitch to record into histogram, f 55
 ;
 #X obj 5 526 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 158 534 -size <float>: sets table size (default 128);
-#X text 170 457 float - weighted random index at bangs, f 54;
-#X text 176 474 list - table values at 'export' message, f 53;
-#X text 170 499 float - number of occurances at 'query' message, f
-54;
-#X text 170 350 clear - clears histogram table, f 56;
-#X text 164 396 export - export histogram table as a list, f 57;
-#X text 122 380 query <float> - query number of occurances of an index
+#X text 128 534 -size <float>: sets table size (default 128);
+#X text 180 328 clear - clears histogram table, f 56;
+#X text 174 359 export - export histogram table as a list, f 57;
+#X text 132 343 query <float> - query number of occurances of an index
 , f 64;
-#X text 128 411 size <float> - clears and resizes table, f 63;
-#X text 122 426 name <symbol> - sets extetnal table name, f 64;
-#X text 154 587 1) symbol - set external table name (default internal)
-;
-#X text 63 87 [histogram] records into a table how many times it received
-a positive integer number (treated as indexes \, floats are truncated).
-A bang then choses weighted random values from the histogram table
-by treating the occurances as a probability distribution. A list input
-is treated as MIDI note messages and only note ons are recorded.,
-f 70;
-#X obj 214 230 else/histogram -size 8;
-#X msg 127 196 export;
-#X obj 214 259 else/display;
-#X text 158 554 -seed <float>: sets seed (default unique);
-#X text 128 365 seed <float> - sets seed \, no float sets internal
-unique, f 63;
-#N canvas 467 129 772 382 example 0;
-#X obj 81 59 keyboard 17 80 2 3 0 0 empty empty;
-#X obj 81 272 else/histogram;
-#X obj 45 151 bng 18 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
-#000000;
-#X obj 81 309 else/display 3;
-#X msg 116 174 query 60;
-#X obj 162 309 else/display 3;
-#X text 179 168 query for occurrances (output in right outlet), f
+#X text 138 404 size <float> - clears and resizes table, f 63;
+#X obj 207 222 else/histogram -size 8;
+#A saved;
+#X msg 145 176 export;
+#X obj 271 248 else/display;
+#N canvas 487 125 685 423 example 0;
+#X obj 66 59 keyboard 17 80 2 3 0 0 empty empty;
+#X msg 91 172 query 60;
+#X text 154 166 query for occurrances (output in right outlet), f
 24;
-#X text 78 32 list input works for note on messages;
-#N canvas 242 235 450 278 (subpatch) 0;
-#X array \$0-histo 128 float 0;
-#X coords 0 1 127 0 300 140 1 0 0;
-#X restore 414 128 graph;
-#X msg 141 235 name \\\$0-histo;
-#X msg 127 203 clear;
-#X text 241 228 set name for external table, f 14;
-#X connect 0 0 1 0;
-#X connect 1 0 3 0;
-#X connect 1 1 5 0;
-#X connect 2 0 1 0;
-#X connect 4 0 1 0;
-#X connect 9 0 1 0;
-#X connect 10 0 1 0;
-#X restore 462 256 pd example;
-#X connect 18 0 21 0;
-#X connect 19 0 37 0;
-#X connect 20 0 37 0;
-#X connect 21 0 37 0;
-#X connect 37 0 39 0;
-#X connect 38 0 37 0;
+#X text 63 32 list input works for note on messages;
+#X msg 102 204 clear;
+#X obj 66 242 else/histogram;
+#A saved;
+#X listbox 66 277 10 0 0 0 - - - 0;
+#X obj 66 310 tabwrite \$0-table;
+#X obj 204 253 array define \$0-table 128;
+#X f 13;
+#X obj 147 272 else/display;
+#X text 36 347 [histogram] creates an internal table that you can export
+\, but you can also use the left output to treat the data and write
+into an external table., f 50;
+#X obj 376 111 keyboard 17 80 2 3 0 0 empty empty;
+#X obj 435 283 bng 18 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#000000 #000000;
+#X obj 435 340 else/display 3;
+#X text 365 67 If you set a table name to [histogram] you can use it
+in [rand.d] \, for instance., f 41;
+#X obj 376 236 else/histogram \$0-histo;
+#A saved;
+#X obj 435 313 else/rand.d \$0-histo;
+#X msg 401 207 clear;
+#X connect 0 0 5 0;
+#X connect 1 0 5 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 5 2 9 0;
+#X connect 6 0 7 0;
+#X connect 11 0 15 0;
+#X connect 12 0 16 0;
+#X connect 16 0 13 0;
+#X connect 17 0 15 0;
+#X restore 459 250 pd example;
+#X text 26 181 see also:;
+#X obj 25 205 array random;
+#X obj 25 227 else/rand.d;
+#X text 132 419 name <symbol> - sets table name, f 64;
+#X text 164 587 1) symbol - set table name (default internal);
+#X text 132 374 import <list> - import histogram data as a list, f
+64;
+#X text 132 389 embed <float> - non zero embeds histogram data with
+the patch, f 64;
+#X text 128 552 -embed: embeds histogram data with the patch (default
+don't);
+#X obj 25 250 else/rand.u;
+#X text 77 88 [histogram] records into a table how many times it received
+a positive integer number (treated as indexes \, floats are truncated).
+A list input is treated as MIDI note messages and only note ons are
+recorded.;
+#X listbox 207 251 7 0 0 0 - - - 12;
+#X obj 111 501 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X text 180 502 float - number of occurances at 'query' message, f
+54;
+#X text 186 478 list - table values at 'export' message, f 53;
+#X text 186 456 list - occurances and index after input, f 53;
+#X text 302 192 clears the memory;
+#X connect 18 0 20 0;
+#X connect 19 0 29 0;
+#X connect 20 0 29 0;
+#X connect 29 0 43 0;
+#X connect 29 1 31 0;
+#X connect 30 0 29 0;

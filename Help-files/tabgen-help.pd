@@ -1,0 +1,174 @@
+#N canvas 421 34 559 405 10;
+#X obj 1 372 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+14 #dcdcdc #404040 0;
+#X obj 1 211 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+#dcdcdc #000000 0;
+#X obj 1 297 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+13 #dcdcdc #000000 0;
+#X obj 1 327 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+0 13 #dcdcdc #000000 0;
+#X obj 93 220 cnv 17 3 72 empty \$0-pddp.cnv.let.0 0 5 9 0 16 #dcdcdc
+#9c9c9c 0;
+#X text 132 336 1) float;
+#X text 214 305 (none);
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 304 3 pd;
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
+0;
+#X obj 22 40 cnv 4 4 4 empty empty Table\\\ generator 0 28 2 18 #e0e0e0
+#000000 0;
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 2 3 cnv 15 301 42 empty empty tabgen 20 20 2 37 #e0e0e0 #000000
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#X text 126 352 2) symbol;
+#X text 194 336 - (optional) sets array size at initialization, f
+48;
+#X text 194 352 - set table name (default none), f 48;
+#X text 108 247 size <float>;
+#X text 132 219 anything;
+#X text 108 260 set <symbol>;
+#X text 194 260 - sets table name, f 52;
+#X text 194 245 - resizes table (needs to re generate table), f 52
+;
+#X msg 273 131 gauss 0.25;
+#X msg 286 156 clear;
+#X obj 273 181 else/tabgen \$0-table;
+#X text 150 275 clear;
+#X text 194 275 - clear table, f 52;
+#X text 194 219 -;
+#X text 206 219 commands to generate functions: gauss \, sin \, sinc
+\, noise \, hanning \, hamming (details in [pd examples]), f 50;
+#X text 59 86 [tabgen] is an abstraction that generates different functions
+for a given table name., f 65;
+#X obj 80 148 cnv 15 138 48 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-table 256 float 0;
+#X coords 0 1 255 0 140 50 1 0 0;
+#X restore 79 147 graph;
+#N canvas 787 118 304 226 examples 0;
+#N canvas 264 86 535 252 gauss 0;
+#X msg 67 153 gauss \$1;
+#X obj 70 97 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dfdfdf
+#000000 #000000 0 1;
+#X obj 231 102 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-gauss 256 float 2;
+#X coords 0 1 256 -1 200 100 1 0 0;
+#X restore 230 101 graph;
+#X text 127 122 sigma;
+#X floatatom 67 122 9 0 0 0 - - - 0;
+#X text 83 32 The 'gauss <float>' message creates a gaussian function
+and the argument sets the sigma value (from 0 to 1)., f 55;
+#X obj 67 187 else/tabgen \$0-gauss;
+#X connect 0 0 7 0;
+#X connect 1 0 5 0;
+#X connect 5 0 0 0;
+#X restore 100 66 pd gauss;
+#N canvas 419 97 635 382 sin 0;
+#X obj 401 47 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-sin 256 float 0;
+#X coords 0 1 255 -1 200 100 1 0 0;
+#X restore 400 46 graph;
+#X msg 108 262 sin 0.25 1 0.25;
+#X msg 128 307 sin 1/1 1/1 1/4 7/4 1 0;
+#X msg 38 121 sin;
+#X obj 79 341 else/tabgen \$0-sin;
+#X msg 119 285 sin 1 1 0.5 2.3 1 0.25;
+#X msg 79 193 sin 1 1 0.5 2 0.5 0.75;
+#X msg 99 239 sin 0.25 1 0;
+#X msg 67 171 sin 4 1 0;
+#X msg 90 216 sin 0.5 1 0;
+#X text 69 122 by default it generates a single sinusoid cycle;
+#X msg 54 148 sin 1 1 0;
+#X text 122 148 same as above;
+#X text 133 170 4 cycles;
+#X text 224 193 summing 2 sinusoids;
+#X text 169 215 1/2 cycle (doesn't have to be integers)e;
+#X text 185 239 1/4 cycle;
+#X text 26 25 The 'sin <list>' message creates a series of sinusoids.
+Each sinusoid is specified by 3 values \, which are \; - number of
+cycles \; - amplitude \; - initial phase (0-1) \;, f 56;
+#X text 211 261 1/4 cycle starting at 0.25 initial phase;
+#X text 263 285 summing inharmonic sinusoids;
+#X text 281 306 ratios are also allowed;
+#X connect 2 0 5 0;
+#X connect 3 0 5 0;
+#X connect 4 0 5 0;
+#X connect 6 0 5 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 0;
+#X connect 9 0 5 0;
+#X connect 10 0 5 0;
+#X connect 12 0 5 0;
+#X restore 100 87 pd sin;
+#N canvas 264 86 523 262 sinc 0;
+#X obj 231 102 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-sinc 256 float 0;
+#X coords 0 1 255 -1 200 100 1 0 0;
+#X restore 230 101 graph;
+#X msg 67 98 sinc 4;
+#X obj 67 187 else/tabgen \$0-sinc;
+#X msg 82 125 sinc 8;
+#X msg 92 155 sinc 8 1;
+#X text 67 21 The 'sinc <list>' message draws a sinc function. The
+1st argument sets the number of times the function reaches zero on
+both sides. An additional optional non zero argument considers only
+the right side.;
+#X connect 2 0 3 0;
+#X connect 4 0 3 0;
+#X connect 5 0 3 0;
+#X restore 100 127 pd sinc;
+#N canvas 264 86 449 184 noise 0;
+#X obj 194 42 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-noise 256 float 0;
+#X coords 0 1 255 -1 200 100 1 0 0;
+#X restore 193 41 graph;
+#X msg 45 79 noise;
+#X obj 45 122 else/tabgen \$0-noise;
+#X text 45 24 The 'noise' message populates the table with noise.,
+f 20;
+#X connect 2 0 3 0;
+#X restore 100 107 pd noise;
+#N canvas 264 86 523 262 FFT-windows 0;
+#X obj 223 117 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-windows 256 float 0;
+#X coords 0 1 255 -1 200 100 1 0 0;
+#X restore 222 116 graph;
+#X obj 61 183 else/tabgen \$0-windows;
+#X msg 61 124 hanning;
+#X msg 77 153 hamming;
+#X text 89 48 These commands draw FFT window functions \, for now only
+'hanning' and 'hamming'., f 41;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X restore 100 149 pd FFT-windows;
+#X text 67 21 open subpatches for details on all functions., f 27
+;
+#X restore 445 180 pd examples;
+#X connect 26 0 28 0;
+#X connect 27 0 28 0;
