@@ -3,7 +3,7 @@
 #include "m_pd.h"
 #include <time.h>
 
-/* #if (defined __WIN32__)
+#if (defined __WIN32__)
 # if (defined __i386__) && (defined __MINGW32__)
 // unless compiling under mingw/32bit, we want USE_TIMEB in redmond-land
 # else
@@ -19,7 +19,7 @@
 #include <sys/timeb.h>
 #else
 #include <sys/time.h>
-#endif*/
+#endif
 
 static t_class *time_class;
 

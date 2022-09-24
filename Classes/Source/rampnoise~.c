@@ -84,7 +84,6 @@ static void *rampnoise_new(t_symbol *s, int ac, t_atom *av){
     rampnoise_seed(x, s, 0, NULL);
 // default parameters
     t_float hz = 0;
-    int numargs = 0;
     if(ac){
         if(av->a_type == A_SYMBOL){
             if(ac >= 2 && atom_getsymbol(av) == gensym("-seed")){
