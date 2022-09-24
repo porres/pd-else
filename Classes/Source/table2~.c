@@ -21,31 +21,36 @@ typedef struct _table2{
 static t_class *table2_class;
 
 static void table2_interp(t_table2 *x, t_floatarg f){
-	x->x_interp_mode = (int)f;
-    buffer_setminsize(x->x_buffer, x->x_interp_mode > 0 ? 4 : 1);
+	x->x_interp_mode = f < 0 ? 0 : f;
+	x->x_interp_mode = x->x_interp_mode > 7 ? 7 : x->x_interp_mode;
+    buffer_setminsize(x->x_buffer, x->x_interp_mode >= 4 ? 4 : 1);
     buffer_playcheck(x->x_buffer);
 }
 
 static void table2_set_linear(t_table2 *x){
-    table2_interp(x, 0);
-}
-
-static void table2_set_cubic(t_table2 *x){
     table2_interp(x, 1);
 }
 
+/*static void table2_set_cosine(t_table2 *x){
+    table2_interp(x, 3);
+}*/
+
+static void table2_set_cubic(t_table2 *x){
+    table2_interp(x, 4);
+}
+
 static void table2_set_spline(t_table2 *x){
-    table2_interp(x, 2);
+    table2_interp(x, 5);
 }
 
 static void table2_set_hermite(t_table2 *x, t_floatarg bias, t_floatarg tension){
     x->x_bias = bias;
     x->x_tension = tension;
-    table2_interp(x, 3);
+    table2_interp(x, 6);
 }
 
 static void table2_set_lagrange(t_table2 *x){
-    table2_interp(x, 4);
+    table2_interp(x, 7);
 }
 
 static void table2_set(t_table2 *x, t_symbol *s){
@@ -93,13 +98,13 @@ static void table2_set(t_table2 *x, t_symbol *s){
 static void table2_linear(t_table2 *x, t_int *outp, t_float *xin, int nblock, int nch, int maxindex, t_word **vectable){
     x = NULL;
 	int iblock;
-	for(iblock = 0; iblock < nblock; iblock++){
+	for (iblock = 0; iblock < nblock; iblock++){
 		double phase = (double)(*xin++);
 		double spos = 0;
 		double epos = 0;
 		BOUNDS_CHECK();
 		INDEX_2PT(double);
-		while(ch--){
+		while (ch--){
 			t_word *vp = vectable[ch];
 			t_float *out = (t_float *)(outp[ch]);
 			if(vp){
@@ -114,16 +119,44 @@ static void table2_linear(t_table2 *x, t_int *outp, t_float *xin, int nblock, in
 	return;
 }
 
+/*static void table2_cosine(t_table2 *x, t_int *outp, t_float *xin,
+int nblock, int nch, int maxindex, t_word **vectable){
+    x = NULL;
+	int iblock;
+	for(iblock = 0; iblock < nblock; iblock++){
+		t_float phase = *xin++;
+		t_float spos = 0;
+		t_float epos = 0;
+		BOUNDS_CHECK();
+		INDEX_2PT(double);
+		while(ch--){
+			t_word *vp = vectable[ch];
+			t_float *out = (t_float *)(outp[ch]);
+			if(vp){
+				a = (double)vp[ndx].w_float;
+				b = (double)vp[ndx1].w_float;
+				frac = (1 - cos(frac * M_PI)) / 2.0;
+				out[iblock] = (t_float)(a * (1 - frac) + b * (frac));
+			}
+			else
+                out[iblock] = 0;
+		}
+		
+	}
+	return;
+}*/
+
 static void table2_cubic(t_table2 *x, t_int *outp, t_float *xin,
 int nblock, int nch, int maxindex, t_word **vectable){
     x = NULL;
-	for(int iblock = 0; iblock < nblock; iblock++){
+	int iblock;
+	for (iblock = 0; iblock < nblock; iblock++){
 		t_float phase = *xin++;
 		t_float spos = 0;
 		t_float epos = 0;
 		BOUNDS_CHECK();
 		INDEX_4PT();
-		while(ch--){
+		while (ch--){
 			t_word *vp = vectable[ch];
 			t_float *out = (t_float *)(outp[ch]);
 			if(vp){
@@ -137,9 +170,9 @@ int nblock, int nch, int maxindex, t_word **vectable){
 				p2 = c - a;
 				out[iblock] = (t_float)(b+frac*(p2+frac*(p1+frac*p0)));	
 			}
-			else
-                out[iblock] = 0;
+			else out[iblock] = 0;
 		}
+		
 	}
 	return;
 }
@@ -148,13 +181,13 @@ static void table2_spline(t_table2 *x, t_int *outp, t_float *xin,
 int nblock, int nch, int maxindex, t_word **vectable){
     x = NULL;
 	int iblock;
-	for(iblock = 0; iblock < nblock; iblock++){
+	for (iblock = 0; iblock < nblock; iblock++){
 		t_float phase = *xin++;
 		t_float spos = 0;
 		t_float epos = 0;
 		BOUNDS_CHECK();
 		INDEX_4PT();
-		while(ch--){
+		while (ch--){
 			t_word *vp = vectable[ch];
 			t_float *out = (t_float *)(outp[ch]);
 			if(vp){
@@ -179,7 +212,7 @@ int nblock, int nch, int maxindex, t_word **vectable){
 static void table2_hermite(t_table2 *x, t_int *outp, t_float *xin,
 int nblock, int nch, int maxindex, t_word **vectable){
 	int iblock;
-	for(iblock = 0; iblock < nblock; iblock++){
+	for (iblock = 0; iblock < nblock; iblock++){
 		t_float phase = *xin++;
 		t_float spos = 0;
 		t_float epos = 0;
@@ -220,13 +253,13 @@ static void table2_lagrange(t_table2 *x, t_int *outp, t_float *xin,
 int nblock, int nch, int maxindex, t_word **vectable){
     x = NULL;
 	int iblock;
-	for(iblock = 0; iblock < nblock; iblock++){
+	for (iblock = 0; iblock < nblock; iblock++){
 		t_float phase = *xin++;
 		t_float spos = 0;
 		t_float epos = 0;
 		BOUNDS_CHECK();
 		INDEX_4PT();
-		while(ch--){
+		while (ch--){
 			t_word *vp = vectable[ch];
 			t_float *out = (t_float *)(outp[ch]);
 			if(vp){
@@ -249,22 +282,40 @@ int nblock, int nch, int maxindex, t_word **vectable){
 }
 
 static t_int *table2_perform(t_int *w){
-	static void (* const wif[])(t_table2 *x, t_int *outp, t_float *xin, int nblock, int nch,
-    int maxindex, t_word **vectable) ={ // jump table for interpolation functions
-   		table2_linear, table2_cubic, table2_spline, table2_hermite, table2_lagrange
+    // The jump table; "wif" = "table2 interpolation functions."
+	static void (* const wif[])(t_table2 *x, t_int *outp, t_float *xin,
+    int nblock, int nch, int maxindex, t_word **vectable) =
+	{
+   		NULL,
+    	table2_linear,
+    	NULL,
+    	NULL, // table2_cosine,
+    	table2_cubic,
+    	table2_spline,
+    	table2_hermite,
+    	table2_lagrange
     };
     t_table2 *x = (t_table2 *)(w[1]);
     int nblock = (int)(w[2]);
     t_buffer * c = x->x_buffer;
     t_int *outp = (t_int *)x->x_ovecs;
     int nch = c->c_numchans;
-    if(c->c_playable) // call interpolation function (also performs block loop)
-		wif[x->x_interp_mode](x, outp, x->x_in, nblock, nch, c->c_npts - 1, c->c_vectors);
+    if(c->c_playable){
+		int npts = c->c_npts;
+		t_word **vectable = c->c_vectors;
+        t_float *xin = x->x_in;
+		int maxindex = npts - 1;
+		int interp_mode = x->x_interp_mode;
+		/* Choose interpolation function from jump table. The interpolation functions also
+        perform the block loop in order not to make a bunch of per-sample decisions. */
+		wif[interp_mode](x, outp, xin, nblock, nch, maxindex, vectable);
+    }
     else{
         int ch = nch;
-        while(ch--){
+        while (ch--){
             t_float *out = (t_float *)outp[ch];
-            while(nblock--)
+            int n = nblock;
+            while(n--)
                 *out++ = 0;
         }
     }
@@ -353,7 +404,7 @@ static void *table2_new(t_symbol *s, int ac, t_atom * av){
     x->x_numouts = numouts;
     // allocating output vectors
     x->x_ovecs = getbytes(x->x_numouts * sizeof(*x->x_ovecs));
-	table2_interp(x, 4);
+	table2_interp(x, 7);
 	x->x_bias = bias;
 	x->x_tension = tension;
 	for(int i = 0; i < numouts; i++)
@@ -371,9 +422,9 @@ void table2_tilde_setup(void){
     class_addmethod(table2_class, (t_method)table2_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(table2_class, (t_method)table2_set, gensym("set"), A_SYMBOL, 0);
     class_addmethod(table2_class, (t_method)table2_set_lagrange, gensym("lagrange"), 0);
+//    class_addmethod(table2_class, (t_method)table2_set_cosine, gensym("cosine"), 0);
     class_addmethod(table2_class, (t_method)table2_set_cubic, gensym("cubic"), 0);
     class_addmethod(table2_class, (t_method)table2_set_linear, gensym("linear"), 0);
     class_addmethod(table2_class, (t_method)table2_set_spline, gensym("spline"), 0);
-    class_addmethod(table2_class, (t_method)table2_set_hermite, gensym("hermite"),
-        A_FLOAT, A_FLOAT, 0);
+    class_addmethod(table2_class, (t_method)table2_set_hermite, gensym("hermite"), A_FLOAT, A_FLOAT, 0);
 }
