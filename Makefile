@@ -282,6 +282,7 @@ rand := shared/random.c
     gray~.class.sources := Classes/Source/gray~.c $(rand)
     pluck~.class.sources := Classes/Source/pluck~.c $(rand)
     rand.u.class.sources := Classes/Source/rand.u.c $(rand)
+    rand.hist.class.sources := Classes/Source/rand.hist.c $(rand)
     rand.i.class.sources := Classes/Source/rand.i.c $(rand)
     rand.i~.class.sources := Classes/Source/rand.i~.c $(rand)
     rand.f.class.sources := Classes/Source/rand.f.c $(rand)
