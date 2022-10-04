@@ -47,12 +47,9 @@
 ;
 #X msg 273 131 gauss 0.25;
 #X msg 286 156 clear;
-#X obj 273 181 else/tabgen \$0-table;
 #X text 150 275 clear;
 #X text 194 275 - clear table, f 52;
 #X text 194 219 -;
-#X text 206 219 commands to generate functions: gauss \, sin \, sinc
-\, noise \, hanning \, hamming (details in [pd examples]), f 50;
 #X text 59 86 [tabgen] is an abstraction that generates different functions
 for a given table name., f 65;
 #X obj 80 148 cnv 15 138 48 empty empty empty 20 12 0 14 #e0e0e0 #404040
@@ -61,7 +58,7 @@ for a given table name., f 65;
 #X array \$0-table 256 float 0;
 #X coords 0 1 255 0 140 50 1 0 0;
 #X restore 79 147 graph;
-#N canvas 787 118 304 226 examples 0;
+#N canvas 787 118 299 210 examples 0;
 #N canvas 264 86 535 252 gauss 0;
 #X msg 67 153 gauss \$1;
 #X obj 70 97 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dfdfdf
@@ -152,23 +149,45 @@ the right side.;
 f 20;
 #X connect 2 0 3 0;
 #X restore 100 107 pd noise;
-#N canvas 264 86 523 262 FFT-windows 0;
-#X obj 223 117 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
+#N canvas 408 120 712 227 FFT-windows 0;
+#X obj 201 95 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-windows 256 float 0;
 #X coords 0 1 255 -1 200 100 1 0 0;
-#X restore 222 116 graph;
-#X obj 61 183 else/tabgen \$0-windows;
-#X msg 61 124 hanning;
-#X msg 77 153 hamming;
-#X text 89 48 These commands draw FFT window functions \, for now only
-'hanning' and 'hamming'., f 41;
-#X connect 3 0 2 0;
-#X connect 4 0 2 0;
+#X restore 200 94 graph;
+#X msg 31 43 hanning;
+#X msg 41 66 hamming;
+#X text 174 35 These commands draw FFT window functions \, for now
+only 'hanning' and 'hamming'., f 41;
+#X msg 54 88 blackman;
+#X msg 65 111 triangle;
+#X msg 74 133 welch;
+#X obj 31 162 else/tabgen \$0-windows;
+#X obj 495 168 else/tabgen \$0-windows;
+#X msg 515 142 kaiser;
+#X msg 495 113 kaiser \$1;
+#X obj 498 66 hsl 128 15 3 60 1 0 empty empty empty -2 -8 0 10 #dfdfdf
+#000000 #000000 0 1;
+#X text 476 25 The kaiser window takes an alpha value argument (default
+6), f 32;
+#X floatatom 495 89 7 0 0 0 - - - 0;
+#X connect 2 0 8 0;
+#X connect 3 0 8 0;
+#X connect 5 0 8 0;
+#X connect 6 0 8 0;
+#X connect 7 0 8 0;
+#X connect 10 0 9 0;
+#X connect 11 0 9 0;
+#X connect 12 0 14 0;
+#X connect 14 0 11 0;
 #X restore 100 149 pd FFT-windows;
 #X text 67 21 open subpatches for details on all functions., f 27
 ;
-#X restore 445 180 pd examples;
-#X connect 26 0 28 0;
-#X connect 27 0 28 0;
+#X restore 452 176 pd examples;
+#X obj 273 181 else/tabgen \$0-table;
+#X text 206 219 commands to generate functions (example: gauss \, sin
+\, sinc \, noise \, hanning \, etc - details in [pd examples], f 52
+;
+#X connect 26 0 35 0;
+#X connect 27 0 35 0;
