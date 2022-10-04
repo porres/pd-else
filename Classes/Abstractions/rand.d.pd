@@ -1,4 +1,4 @@
-#N canvas 282 33 609 660 10;
+#N canvas 552 28 609 660 10;
 #X obj 55 27 inlet;
 #X obj 328 612 outlet;
 #X obj 328 233 unpack symbol float float;

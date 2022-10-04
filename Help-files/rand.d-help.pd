@@ -1,4 +1,4 @@
-#N canvas 408 23 563 602 10;
+#N canvas 432 23 563 604 10;
 #X obj 169 188 bng 18 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
 #X floatatom 221 227 5 0 1e+13 0 - - - 0;
@@ -1302,9 +1302,8 @@ to generate a histogram. Note that the bigger the number of iterations
 #X connect 12 0 1 0;
 #X connect 13 0 1 0;
 #X connect 18 0 14 0;
-#X restore 384 288 pd test;
+#X restore 484 287 pd test;
 #X text 155 524 1) symbol - sets table name (default none), f 48;
-#X obj 24 279 else/rand.u;
 #X text 21 89 [rand.d] is an abstraction based on [array quantile]
 and generates random numbers that follow a probability density function
 (given by an array). A float input (like from an external random source)
@@ -1314,7 +1313,7 @@ is from 0 to 127 by default \, but you can change that with the 2nd
 and 3rd argument or the 2nd or 3rd inlet. The output resolution is
 the range divided by the table maximum index (127 in the example below
 \, so the 0-127 range outputs integers)., f 86;
-#N canvas 446 110 676 344 example-1 0;
+#N canvas 539 93 676 344 example-1 0;
 #X obj 134 187 bng 18 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
 #X text 160 184 get random number, f 11;
@@ -1340,7 +1339,7 @@ it notes., f 44;
 #X connect 4 0 10 0;
 #X connect 6 0 5 0;
 #X connect 10 0 2 0;
-#X restore 452 274 pd example-1;
+#X restore 392 274 pd example-1;
 #N canvas 601 122 512 338 example-2 0;
 #X floatatom 66 138 7 0 0 0 - - - 0;
 #X floatatom 66 198 7 0 0 0 - - - 0;
@@ -2594,8 +2593,9 @@ around the middle of the curve., f 69;
 #X connect 6 0 11 0;
 #X connect 12 0 1 0;
 #X connect 13 0 0 0;
-#X restore 452 297 pd example-2;
+#X restore 392 297 pd example-2;
 #X text 216 343 - (range from 0-127) get quantile, f 53;
+#X obj 24 279 else/rand.hist;
 #X connect 0 0 37 0;
 #X connect 1 0 37 1;
 #X connect 2 0 37 2;
