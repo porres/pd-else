@@ -1,4 +1,4 @@
-#N canvas 477 64 559 405 10;
+#N canvas 430 41 559 405 10;
 #X obj 1 372 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 #dcdcdc #404040 0;
 #X obj 1 211 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
@@ -50,8 +50,6 @@
 #X text 150 275 clear;
 #X text 194 275 - clear table, f 52;
 #X text 194 219 -;
-#X text 206 219 commands to generate functions: gauss \, sin \, sinc
-\, noise \, hanning \, hamming (details in [pd examples]), f 50;
 #X text 59 86 [tabgen] is an abstraction that generates different functions
 for a given table name., f 65;
 #X obj 80 148 cnv 15 138 48 empty empty empty 20 12 0 14 #e0e0e0 #404040
@@ -60,27 +58,31 @@ for a given table name., f 65;
 #X array \$0-table 256 float 0;
 #X coords 0 1 255 0 140 50 1 0 0;
 #X restore 79 147 graph;
-#N canvas 787 118 298 260 examples 0;
-#N canvas 264 86 535 252 gauss 0;
+#N canvas 787 118 289 237 examples 0;
+#N canvas 571 149 561 312 gauss 0;
 #X msg 67 153 gauss \$1;
 #X obj 70 97 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dfdfdf
 #000000 #000000 0 1;
-#X obj 231 102 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
+#X obj 255 126 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array \$0-gauss 256 float 2;
-#X coords 0 1 256 -1 200 100 1 0 0;
-#X restore 230 101 graph;
+#X array \$0-gauss 256 float 0;
+#X coords 0 1 255 -1 200 100 1 0 0;
+#X restore 254 125 graph;
 #X text 127 122 sigma;
 #X floatatom 67 122 9 0 0 0 - - - 0;
-#X text 83 32 The 'gauss <float>' message creates a gaussian function
-and the argument sets the sigma value (from 0 to 1)., f 55;
-#X obj 67 187 else/tabgen \$0-gauss;
-#X connect 0 0 7 0;
+#X obj 67 227 else/tabgen \$0-gauss;
+#X msg 85 188 noise \, apply gauss 0.5;
+#X text 83 26 The 'gauss <float>' message creates a gaussian function
+and the argument sets the sigma value (from 0 to 1). You can also use
+the 'apply' command to apply an envelope existing values in a table.
+, f 63;
+#X connect 0 0 6 0;
 #X connect 1 0 5 0;
 #X connect 5 0 0 0;
-#X restore 100 66 pd gauss;
-#N canvas 419 97 635 382 sin 0;
+#X connect 7 0 6 0;
+#X restore 100 106 pd gauss;
+#N canvas 625 135 630 445 sin 0;
 #X obj 401 47 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -90,7 +92,6 @@ and the argument sets the sigma value (from 0 to 1)., f 55;
 #X msg 108 262 sin 0.25 1 0.25;
 #X msg 128 307 sin 1/1 1/1 1/4 7/4 1 0;
 #X msg 38 121 sin;
-#X obj 79 341 else/tabgen \$0-sin;
 #X msg 119 285 sin 1 1 0.5 2.3 1 0.25;
 #X msg 79 193 sin 1 1 0.5 2 0.5 0.75;
 #X msg 99 239 sin 0.25 1 0;
@@ -109,16 +110,23 @@ cycles \; - amplitude \; - initial phase (0-1) \;, f 56;
 #X text 211 261 1/4 cycle starting at 0.25 initial phase;
 #X text 263 285 summing inharmonic sinusoids;
 #X text 281 306 ratios are also allowed;
-#X connect 2 0 5 0;
-#X connect 3 0 5 0;
-#X connect 4 0 5 0;
-#X connect 6 0 5 0;
-#X connect 7 0 5 0;
-#X connect 8 0 5 0;
-#X connect 9 0 5 0;
-#X connect 10 0 5 0;
-#X connect 12 0 5 0;
-#X restore 100 123 pd sin;
+#X obj 79 391 else/tabgen \$0-sin;
+#X msg 137 352 noise \, apply sin 0.25 0.25;
+#X text 327 333 You can also use the 'apply' command to apply an envelope
+existing values in a table. In this case the 'sin' command takes only
+two values which is the number of cycles and initial phase of a single
+sinusoid., f 36;
+#X connect 2 0 21 0;
+#X connect 3 0 21 0;
+#X connect 4 0 21 0;
+#X connect 5 0 21 0;
+#X connect 6 0 21 0;
+#X connect 7 0 21 0;
+#X connect 8 0 21 0;
+#X connect 9 0 21 0;
+#X connect 11 0 21 0;
+#X connect 22 0 21 0;
+#X restore 100 163 pd sin;
 #N canvas 264 86 523 262 sinc 0;
 #X obj 231 102 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
@@ -137,7 +145,7 @@ the right side.;
 #X connect 2 0 3 0;
 #X connect 4 0 3 0;
 #X connect 5 0 3 0;
-#X restore 100 163 pd sinc;
+#X restore 100 86 pd sinc;
 #N canvas 264 86 449 184 noise 0;
 #X obj 194 42 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
@@ -150,8 +158,8 @@ the right side.;
 #X text 45 24 The 'noise' message populates the table with noise.,
 f 20;
 #X connect 2 0 3 0;
-#X restore 100 143 pd noise;
-#N canvas 408 120 712 227 FFT-windows 0;
+#X restore 100 66 pd noise;
+#N canvas 470 116 709 299 FFT-windows 0;
 #X obj 201 95 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -174,6 +182,11 @@ only 'hanning' and 'hamming'., f 41;
 6), f 32;
 #X floatatom 495 89 7 0 0 0 - - - 0;
 #X msg 65 111 tri;
+#X obj 152 253 else/tabgen \$0-windows;
+#X msg 152 225 noise \, apply welch;
+#X text 311 229 You can also use the 'apply' command to apply an envelope
+existing values in a table with all these windowing functions., f
+46;
 #X connect 2 0 7 0;
 #X connect 3 0 7 0;
 #X connect 5 0 7 0;
@@ -183,26 +196,30 @@ only 'hanning' and 'hamming'., f 41;
 #X connect 11 0 13 0;
 #X connect 13 0 10 0;
 #X connect 14 0 7 0;
+#X connect 16 0 15 0;
 #X restore 100 183 pd FFT-windows;
 #X text 67 21 open subpatches for details on all functions., f 27
 ;
 #N canvas 264 86 528 252 trapezoid 0;
-#X obj 231 102 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
+#X obj 292 110 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-trap 256 float 0;
 #X coords 0 1 255 -1 200 100 1 0 0;
-#X restore 230 101 graph;
-#X obj 66 157 else/tabgen \$0-trap;
-#X text 65 22 The 'trapezoid <float \, float>' message creates a trapezoid.
-It has a default value of 0.1 and 0.9 and these parameters control
-\, respectively \, the phase points where the upwards ramp ends and
-the downwards curve starts.;
+#X restore 291 109 graph;
 #X msg 66 103 trap 0.1 0.7;
 #X msg 86 131 trap 0.5 0.9;
-#X connect 4 0 2 0;
-#X connect 5 0 2 0;
-#X restore 100 85 pd trapezoid;
+#X msg 96 159 noise \, apply trap 0.5 0.9;
+#X obj 66 187 else/tabgen \$0-trap;
+#X text 33 21 The 'trapezoid <float \, float>' message creates a trapezoid.
+It has a default value of 0.1 and 0.9 and these parameters control
+\, respectively \, the phase points where the upwards ramp ends and
+the downwards curve starts. You can also use the 'apply' command to
+apply an envelope existing values in a table., f 76;
+#X connect 2 0 5 0;
+#X connect 3 0 5 0;
+#X connect 4 0 5 0;
+#X restore 100 125 pd trapezoid;
 #N canvas 264 86 528 252 vsaw 0;
 #X obj 231 102 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
@@ -210,17 +227,22 @@ the downwards curve starts.;
 #X array \$0-vsaw 256 float 0;
 #X coords 0 1 255 -1 200 100 1 0 0;
 #X restore 230 101 graph;
-#X msg 61 139 vsaw \$1;
-#X obj 64 109 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dfdfdf
+#X msg 41 129 vsaw \$1;
+#X obj 44 99 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dfdfdf
 #000000 #000000 0 1;
-#X obj 61 168 else/tabgen \$0-vsaw;
-#X text 65 22 The 'vsaw <float>' message creates a variable triangle.
+#X obj 41 204 else/tabgen \$0-vsaw;
+#X msg 53 169 noise \, apply vsaw 0.8;
+#X text 52 21 The 'vsaw <float>' message creates a variable triangle.
 It has a default value of 0.5 \, which controls the phase point with
-the maximum value.;
+the maximum value. You can also use the 'apply' command to apply an
+envelope existing values in a table.;
 #X connect 2 0 4 0;
 #X connect 3 0 2 0;
-#X restore 100 104 pd vsaw;
-#X restore 445 180 pd examples;
+#X connect 5 0 4 0;
+#X restore 100 144 pd vsaw;
+#X restore 461 176 pd examples;
 #X obj 273 181 else/tabgen \$0-table;
-#X connect 26 0 36 0;
-#X connect 27 0 36 0;
+#X text 206 219 commands to generate functions: (details in [pd examples])
+, f 41;
+#X connect 26 0 35 0;
+#X connect 27 0 35 0;
