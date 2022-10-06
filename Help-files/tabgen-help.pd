@@ -52,13 +52,13 @@
 #X text 194 219 -;
 #X text 59 86 [tabgen] is an abstraction that generates different functions
 for a given table name., f 65;
-#X obj 80 148 cnv 15 138 48 empty empty empty 20 12 0 14 #e0e0e0 #404040
+#X obj 73 143 cnv 15 138 48 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-table 256 float 0;
 #X coords 0 1 255 0 140 50 1 0 0;
-#X restore 79 147 graph;
-#N canvas 787 118 289 237 examples 1;
+#X restore 72 142 graph;
+#N canvas 787 118 289 237 examples 0;
 #N canvas 571 149 561 312 gauss 0;
 #X msg 67 153 gauss \$1;
 #X obj 70 97 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dfdfdf
@@ -82,50 +82,56 @@ the 'apply' command to apply an envelope existing values in a table.
 #X connect 5 0 0 0;
 #X connect 7 0 6 0;
 #X restore 100 106 pd gauss;
-#N canvas 625 135 630 445 sin 0;
+#N canvas 625 135 640 494 sin 0;
 #X obj 401 47 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-sin 256 float 0;
 #X coords 0 1 255 -1 200 100 1 0 0;
 #X restore 400 46 graph;
-#X msg 108 262 sin 0.25 1 0.25;
-#X msg 128 307 sin 1/1 1/1 1/4 7/4 1 0;
-#X msg 38 121 sin;
-#X msg 119 285 sin 1 1 0.5 2.3 1 0.25;
-#X msg 79 193 sin 1 1 0.5 2 0.5 0.75;
-#X msg 99 239 sin 0.25 1 0;
-#X msg 67 171 sin 4 1 0;
-#X msg 90 216 sin 0.5 1 0;
-#X text 69 122 by default it generates a single sinusoid cycle;
-#X msg 54 148 sin 1 1 0;
-#X text 122 148 same as above;
-#X text 133 170 4 cycles;
-#X text 224 193 summing 2 sinusoids;
-#X text 169 215 1/2 cycle (doesn't have to be integers)e;
-#X text 185 239 1/4 cycle;
-#X text 26 25 The 'sin <list>' message creates a series of sinusoids.
+#X msg 33 172 sin;
+#X msg 92 267 sin 1 1 0.5 2 0.5 0.75;
+#X text 61 172 by default it generates a single sinusoid cycle;
+#X text 102 196 same as above;
+#X text 237 267 summing 2 sinusoids;
+#X text 169 292 1/4 cycle;
+#X text 212 318 1/4 cycle starting at 0.25 initial phase;
+#X text 279 348 summing inharmonic sinusoids;
+#X text 285 369 ratios are also allowed;
+#X msg 148 399 noise \, apply sin 0.25 0.25;
+#X msg 54 196 sin 1;
+#X msg 67 219 sin 4;
+#X text 106 219 4 cycles (default;
+#X msg 79 241 sin 0.5 0.5;
+#X obj 79 451 else/tabgen \$0-sin;
+#X text 28 18 The 'sin <list>' message creates a series of sinusoids.
 Each sinusoid is specified by 3 values \, which are \; - number of
-cycles \; - amplitude \; - initial phase (0-1) \;, f 56;
-#X text 211 261 1/4 cycle starting at 0.25 initial phase;
-#X text 263 285 summing inharmonic sinusoids;
-#X text 281 306 ratios are also allowed;
-#X obj 79 391 else/tabgen \$0-sin;
-#X msg 137 352 noise \, apply sin 0.25 0.25;
-#X text 327 333 You can also use the 'apply' command to apply an envelope
+cycles \; - initial phase (0-1) \; - amplitude - default \;, f 56
+;
+#X text 158 240 half a cycle (doesn't have to be integers) starting
+at phase 0.5, f 64;
+#X msg 110 292 sin 0.25;
+#X msg 123 318 sin 0.25 0.25;
+#X msg 135 348 sin 1 0.5 1 2.3 0.25 1;
+#X msg 144 370 sin 1/1 0 1/4 7/4 0 1;
+#X text 22 82 for a single sinusoid - that is a list of only 3 values
+- the phase and amplitude are optional and the default values are \,
+respectively \, 0 and 1 \, but for more than 2 sinusoids \, all arguments
+are necessary.;
+#X text 319 394 You can also use the 'apply' command to apply an envelope
 existing values in a table. In this case the 'sin' command takes only
 two values which is the number of cycles and initial phase of a single
-sinusoid., f 36;
-#X connect 2 0 21 0;
-#X connect 3 0 21 0;
-#X connect 4 0 21 0;
-#X connect 5 0 21 0;
-#X connect 6 0 21 0;
-#X connect 7 0 21 0;
-#X connect 8 0 21 0;
-#X connect 9 0 21 0;
-#X connect 11 0 21 0;
-#X connect 22 0 21 0;
+sinusoid (the amplitude is always 1)., f 49;
+#X connect 2 0 16 0;
+#X connect 3 0 16 0;
+#X connect 11 0 16 0;
+#X connect 12 0 16 0;
+#X connect 13 0 16 0;
+#X connect 15 0 16 0;
+#X connect 19 0 16 0;
+#X connect 20 0 16 0;
+#X connect 21 0 16 0;
+#X connect 22 0 16 0;
 #X restore 100 163 pd sin;
 #N canvas 264 86 523 262 sinc 0;
 #X obj 231 102 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
@@ -159,7 +165,7 @@ the right side.;
 f 20;
 #X connect 2 0 3 0;
 #X restore 100 66 pd noise;
-#N canvas 470 116 709 299 FFT-windows 0;
+#N canvas 470 116 708 331 FFT-windows 0;
 #X obj 201 95 cnv 15 198 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -172,7 +178,7 @@ f 20;
 only 'hanning' and 'hamming'., f 41;
 #X msg 59 76 blackman;
 #X msg 79 125 welch;
-#X obj 36 236 else/tabgen \$0-windows;
+#X obj 36 256 else/tabgen \$0-windows;
 #X obj 495 168 else/tabgen \$0-windows;
 #X msg 515 142 kaiser;
 #X msg 495 113 kaiser \$1;
@@ -190,6 +196,11 @@ existing values in a table with all these windowing functions., f
 #X msg 92 174 lanczos;
 #X msg 86 150 connes;
 #X msg 99 203 sin 0.5;
+#X msg 107 229 gauss 0.4;
+#X text 151 204 *;
+#X text 168 231 *, f 2;
+#X text 134 298 * gaussian and sine can also be used to generate FFT
+windows., f 62;
 #X connect 2 0 7 0;
 #X connect 3 0 7 0;
 #X connect 5 0 7 0;
@@ -203,6 +214,7 @@ existing values in a table with all these windowing functions., f
 #X connect 18 0 7 0;
 #X connect 19 0 7 0;
 #X connect 20 0 7 0;
+#X connect 21 0 7 0;
 #X restore 100 183 pd FFT-windows;
 #X text 67 21 open subpatches for details on all functions., f 27
 ;
@@ -246,7 +258,7 @@ envelope existing values in a table.;
 #X connect 3 0 2 0;
 #X connect 5 0 4 0;
 #X restore 100 144 pd vsaw;
-#X restore 463 178 pd examples;
+#X restore 463 181 pd examples;
 #X obj 273 181 else/tabgen \$0-table;
 #X text 206 219 commands to generate functions: (details in [pd examples])
 , f 41;
