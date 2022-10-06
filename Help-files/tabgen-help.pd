@@ -1,4 +1,4 @@
-#N canvas 430 41 559 405 10;
+#N canvas 449 84 559 405 10;
 #X obj 1 372 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 #dcdcdc #404040 0;
 #X obj 1 211 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
@@ -58,7 +58,7 @@ for a given table name., f 65;
 #X array \$0-table 256 float 0;
 #X coords 0 1 255 0 140 50 1 0 0;
 #X restore 79 147 graph;
-#N canvas 787 118 289 237 examples 0;
+#N canvas 787 118 289 237 examples 1;
 #N canvas 571 149 561 312 gauss 0;
 #X msg 67 153 gauss \$1;
 #X obj 70 97 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dfdfdf
@@ -166,13 +166,13 @@ f 20;
 #X array \$0-windows 256 float 0;
 #X coords 0 1 255 -1 200 100 1 0 0;
 #X restore 200 94 graph;
-#X msg 31 43 hanning;
-#X msg 41 66 hamming;
+#X msg 36 27 hanning;
+#X msg 46 51 hamming;
 #X text 174 35 These commands draw FFT window functions \, for now
 only 'hanning' and 'hamming'., f 41;
-#X msg 54 88 blackman;
-#X msg 74 133 welch;
-#X obj 31 162 else/tabgen \$0-windows;
+#X msg 59 76 blackman;
+#X msg 79 125 welch;
+#X obj 36 236 else/tabgen \$0-windows;
 #X obj 495 168 else/tabgen \$0-windows;
 #X msg 515 142 kaiser;
 #X msg 495 113 kaiser \$1;
@@ -181,12 +181,15 @@ only 'hanning' and 'hamming'., f 41;
 #X text 476 25 The kaiser window takes an alpha value argument (default
 6), f 32;
 #X floatatom 495 89 7 0 0 0 - - - 0;
-#X msg 65 111 tri;
-#X obj 152 253 else/tabgen \$0-windows;
-#X msg 152 225 noise \, apply welch;
-#X text 311 229 You can also use the 'apply' command to apply an envelope
+#X msg 70 101 tri;
+#X obj 208 256 else/tabgen \$0-windows;
+#X msg 208 228 noise \, apply welch;
+#X text 367 232 You can also use the 'apply' command to apply an envelope
 existing values in a table with all these windowing functions., f
 46;
+#X msg 92 174 lanczos;
+#X msg 86 150 connes;
+#X msg 99 203 sin 0.5;
 #X connect 2 0 7 0;
 #X connect 3 0 7 0;
 #X connect 5 0 7 0;
@@ -197,6 +200,9 @@ existing values in a table with all these windowing functions., f
 #X connect 13 0 10 0;
 #X connect 14 0 7 0;
 #X connect 16 0 15 0;
+#X connect 18 0 7 0;
+#X connect 19 0 7 0;
+#X connect 20 0 7 0;
 #X restore 100 183 pd FFT-windows;
 #X text 67 21 open subpatches for details on all functions., f 27
 ;
@@ -240,7 +246,7 @@ envelope existing values in a table.;
 #X connect 3 0 2 0;
 #X connect 5 0 4 0;
 #X restore 100 144 pd vsaw;
-#X restore 461 176 pd examples;
+#X restore 463 178 pd examples;
 #X obj 273 181 else/tabgen \$0-table;
 #X text 206 219 commands to generate functions: (details in [pd examples])
 , f 41;
