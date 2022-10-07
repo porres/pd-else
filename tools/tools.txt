@@ -25,9 +25,9 @@ LC_ALL=C find . -type f -name '*.pd' -exec sed -i '' s/else\\///g {} +
 --------------------------------------------------------------------------------------
 
 
--------------------------------------------------------------------------
+-----------------------------------------------------------------------------
 Operating System	CPU-architecture		filename
--------------------------------------------------------------------------
+-----------------------------------------------------------------------------
 Linux			unspecified (any architecture)	my_lib.pd_linux
 Linux 			i386 (Intel/AMD 32bit)		my_lib.l_i386
 Linux			amd64 (Intel/AMD 64bit)		my_lib.l_amd64
@@ -44,6 +44,5 @@ macOS			arm64 (Apple Silicon)		my_lib.d_arm64
 Windows			unspecified (any architecture)	my_lib.dll
 Windows			i386 (Intel/AMD 32bit)		my_lib.m_i386
 Windows			amd64 (Intel/AMD 64bit)		my_lib.m_amd64
-
 
 --------------------------------------------------------------------------------------
