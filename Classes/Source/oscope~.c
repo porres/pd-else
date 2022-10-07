@@ -559,7 +559,7 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
 
 static void scope_zoom(t_scope *x, t_floatarg zoom){
     float mul = (zoom == 1. ? 0.5 : 2.);
-    scope_dim(x, (float)x->x_width*mul, (float)x->x_height*mul);
+    x->x_width*=mul, x->x_height*=mul;
     x->x_zoom = (int)zoom;
 }
 
@@ -861,7 +861,7 @@ static void scope_properties(t_gobj *z, t_glist *owner){
         cal_min_max %d %d bfs_min_max %d %d \
         del_mins %d \
         #%06x #%06x #%06x\n",
-        x->x_width, x->x_height,
+        x->x_width/x->x_zoom, x->x_height/x->x_zoom,
         x->x_period, x->x_bufsize,
         x->x_min, x->x_max,
         x->x_delay, x->x_drawstyle,
