@@ -1,4 +1,4 @@
-#N canvas 547 23 561 646 10;
+#N canvas 432 23 561 646 10;
 #X obj 5 297 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 5 451 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -74,16 +74,21 @@ f 56;
 #X text 36 347 [histogram] creates an internal table that you can export
 \, but you can also use the left output to treat the data and write
 into an external table., f 50;
-#X obj 376 111 keyboard 17 80 2 3 0 0 empty empty;
-#X obj 435 283 bng 18 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#X obj 377 69 keyboard 17 80 2 3 0 0 empty empty;
+#X obj 435 232 bng 18 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
-#X obj 435 340 else/display 3;
-#X text 365 67 If you set a table name to [histogram] you can use it
+#X obj 435 289 else/display 3;
+#X text 366 25 If you set a table name to [histogram] you can use it
 in [rand.d] \, for instance., f 41;
-#X obj 376 236 else/histogram \$0-histo;
+#X obj 377 194 else/histogram \$0-histo;
 #A saved;
-#X obj 435 313 else/rand.d \$0-histo;
-#X msg 401 207 clear;
+#X obj 435 262 else/rand.d \$0-histo;
+#X msg 402 165 clear;
+#X obj 502 319 bng 18 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#000000 #000000;
+#X obj 502 376 else/display 3;
+#X obj 502 349 array random \$0-histo;
+#X text 379 350 or [array random];
 #X connect 0 0 5 0;
 #X connect 1 0 5 0;
 #X connect 4 0 5 0;
@@ -94,6 +99,8 @@ in [rand.d] \, for instance., f 41;
 #X connect 12 0 16 0;
 #X connect 16 0 13 0;
 #X connect 17 0 15 0;
+#X connect 18 0 20 0;
+#X connect 20 0 19 0;
 #X restore 464 250 pd example;
 #X text 22 187 see also:;
 #X obj 21 211 array random;
