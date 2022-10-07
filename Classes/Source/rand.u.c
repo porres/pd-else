@@ -87,6 +87,7 @@ static t_rand_u *rand_u_new(t_symbol *s, int ac, t_atom *av){
     }
     x->x_ovalues = (int*)getbytes(x->x_size*sizeof(int));
     memset(x->x_ovalues, 0x0, x->x_size*sizeof(int));
+    inlet_new((t_object *)x, (t_pd *)x, &s_float, gensym("size"));
     outlet_new(&x->x_obj, &s_float);
     x->x_bang_outlet = outlet_new(&x->x_obj, &s_bang);
     return(x);
