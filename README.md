@@ -4,9 +4,9 @@
 
 ### for the Pure Data programming language
 
-### Version: 1.0-0 RC-3 (release candidate #3) With Live Electronics Tutorial. 
+### Version: 1.0-0 RC-4 (release candidate #3) With Live Electronics Tutorial. 
 
-### Released August 22nd 2022
+### Released October 10th 2022
 
 
 
@@ -108,12 +108,14 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 --------------------------------------------------------------------------
 
-## Current Object list (459 objects):
+## Current Object list (464 objects):
 
-**ASSORTED: [02]**
+**ASSORTED: [04]**
 
 - [else]
 - [chrono]
+- [datetime]
+- [tabgen]
 
 **FFT: [02]**
 
@@ -545,14 +547,17 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [glide~]
 - [glide2~]
 
-**CONTROL: RANDOM: [15]**
+**CONTROL: RANDOM/STOCHASTIC: [18]**
 
 - [rand.f]
 - [rand.f~]
 - [rand.i]
 - [rand.i~]
 - [rand.list]
-- [rand.seq]
+- [rand.u]
+- [rand.d]
+- [histogram]
+- [rand.hist]
 - [markov]
 - [drunkard~]
 - [drunkard]

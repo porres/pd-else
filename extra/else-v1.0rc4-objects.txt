@@ -92,6 +92,7 @@ crusher~	x
 ctl.in	x
 ctl.out	x
 cusp~ 	x
+datetime	x
 db2lin	x
 db2lin~	x
 dec2frac	x
@@ -175,6 +176,7 @@ hex2dec	x
 highpass~	x
 highshelf~	x
 hip.bw~	x
+histogram	x
 hot	x
 hz2rad	x
 ikeda~	x
@@ -323,12 +325,14 @@ rad2hz	x
 ramp~	x
 rampnoise	x
 rampnoise~	x
+rand.d	x
 rand.f	x
 rand.f~	x
+rand.hist	x
 rand.i	x
 rand.i~	x
 rand.list	x
-rand.seq	x
+rand.u	x
 randpulse	x
 randpulse~	x
 randpulse2	x
@@ -420,6 +424,7 @@ symbol2any	x
 sysrt.in	x
 sysrt.out	x
 t2	x
+tabgen	x
 table~	x
 tabplayer~	x
 tabwriter~	x

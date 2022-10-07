@@ -7,6 +7,29 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 ----------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------
+1.0-0 Release Candidate 4:
+----------------------------------------------------------------------------
+
+**LIBRARY:**
+
+Breaking changes:
+- swapped rightmost inlets for [polymetro] and [polymetro~] (they were in a different order than the arguments)
+- [rand.f]/[rand.f~]/[rand.i]/[rand.i~] - changed and simplified arguments to just take min/max values (also fixed issues/bugs in loading arguments in some of them).
+- [rand.seq] removed, use now the new [rand.hist] object instead, which is quite similar (in a sense it's like the object has been renamed)
+- [chance] removed index mode (use [rand.hist] instead).
+
+Enhancements/fixes:
+- [numbox~]: fixed zooming bugs.
+- fixed [limit] input for float and symbol (by consequence fixing granulator abstractions like [grain.synth~]).
+- [stepnoise~] fixed loading frequency argument as a float (not an int).
+- [note]: We finally have a decent properties window!!! Fixed some issues with zooming. Fixed flags. Fixed saving parameters. Added outline parameter. Added width parameter (this was only set before via dragging the handle in edit mode). Improved drawing the handle. Fixed resizing when max width wasn't set. Added undo.
+- 6 new objects for a total of 464: [datetime], [rand.d], [rand.u], [rand.hist], [histogram] and [tabgen].  
+
+**TUTORIAL:**
+- new examples and updates for new objects: [rand.d], [rand.u], [rand.hist], [histogram] and [tabgen]. Total number of examples is now 481!
+- 20-Stochastic section revised
+
+----------------------------------------------------------------------------
 1.0-0 Release Candidate 3:
 ----------------------------------------------------------------------------
 
