@@ -362,7 +362,6 @@ static void scope_vis(t_gobj *z, t_glist *glist, int vis){
     // this was needed to avooid some tcl erros
         sys_vgui("destroy %s\n", sh->h_pathname);
     if(vis){
-//        post("vis");
         sprintf(sh->h_pathname, ".x%lx.h%lx", (unsigned long)x->x_cv, (unsigned long)sh);
         sys_vgui(".x%lx.c bind all%lx <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", x->x_cv, x, x->x_bindsym->s_name);
         int bufsize = x->x_bufsize;
@@ -371,10 +370,8 @@ static void scope_vis(t_gobj *z, t_glist *glist, int vis){
         x->x_bufsize = bufsize;
         scope_draw_handle(x, x->x_edit);
     }
-    else{
-//        post("not vis");
+    else
         sys_vgui(".x%lx.c delete all%lx\n", (unsigned long)x->x_cv, x);
-    }
 }
 
 static int scope_click(t_gobj *z, t_glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
@@ -506,8 +503,10 @@ static void scope_dim(t_scope *x, t_float w, t_float h){
     if(x->x_width != width || x->x_height != height){
         x->x_width = width*x->x_zoom, x->x_height = height*x->x_zoom;
         sys_vgui(".x%lx.c delete all%lx\n", (unsigned long)glist_getcanvas(x->x_glist), x);
-        if(gobj_shouldvis((t_gobj *)x, x->x_glist) && glist_isvisible(x->x_glist))
+        if(gobj_shouldvis((t_gobj *)x, x->x_glist) && glist_isvisible(x->x_glist)){
             scope_draw_all(x);
+            scope_draw_handle(x, x->x_edit);
+        }
         canvas_fixlinesfor(x->x_glist, (t_text *)x);
     }
 }
@@ -559,7 +558,6 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
 
 static void scope_zoom(t_scope *x, t_floatarg zoom){
     float mul = (zoom == 1. ? 0.5 : 2.);
-//    scope_dim(x, (float)x->x_width*mul, (float)x->x_height*mul);
     x->x_width*=mul, x->x_height*=mul;
     x->x_zoom = (int)zoom;
 }
@@ -605,24 +603,14 @@ static t_int *scope_perform(t_int *w){
     int nblock = (int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
-//    t_float *out = (t_float *)(w[5]);
     if(!x->x_xymode || x->x_frozen){ // do nothing
-//        for(int n = 0; n < nblock; n++)
-//            out[n] = in1[n];
         return(w+6);
     }
     if(!gobj_shouldvis((t_gobj *)x, x->x_glist) || !glist_isvisible(x->x_glist)){
-//        for(int n = 0; n < nblock; n++)
-//            out[n] = in1[n];
         return(w+6);
     }
     int bufphase = x->x_bufphase;
     int bufsize = x->x_bufsize;
-/*    int bufsize = (int)*x->x_signalscalar;
-    if(bufsize != x->x_bufsize){
-        scope_bufsize(x, bufsize);
-        bufsize = x->x_bufsize;
-    }*/
     if(bufphase < bufsize){
         if(x->x_precount >= nblock)
             x->x_precount -= nblock;
@@ -898,36 +886,24 @@ static void scope_ok(t_scope *x, t_symbol *s, int ac, t_atom *av){
     SETFLOAT(undo+7, x->x_drawstyle);
     SETFLOAT(undo+8, x->x_trigmode);
     SETFLOAT(undo+9, x->x_triglevel);
-    int bgcol = ((int)x->x_bg[0] << 16) + ((int)x->x_bg[1] << 8) + (int)x->x_bg[2];
-    int grcol = ((int)x->x_gg[0] << 16) + ((int)x->x_gg[1] << 8) + (int)x->x_gg[2];
-    int fgcol = ((int)x->x_fg[0] << 16) + ((int)x->x_fg[1] << 8) + (int)x->x_fg[2];
-    SETFLOAT(undo+10, bgcol);
-    SETFLOAT(undo+11, grcol);
-    SETFLOAT(undo+12, fgcol);
+    SETFLOAT(undo+10, ((int)x->x_bg[0] << 16) + ((int)x->x_bg[1] << 8) + (int)x->x_bg[2]);
+    SETFLOAT(undo+11, ((int)x->x_gg[0] << 16) + ((int)x->x_gg[1] << 8) + (int)x->x_gg[2]);
+    SETFLOAT(undo+12, ((int)x->x_fg[0] << 16) + ((int)x->x_fg[1] << 8) + (int)x->x_fg[2]);
     SETSYMBOL(undo+13, x->x_receive);
     pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 14, undo, ac, av);
-    int width = (int)atom_getintarg(0, ac, av);
-    int height = (int)atom_getintarg(1, ac, av);
-    int period = (int)atom_getintarg(2, ac, av);
-    int bufsize = (int)atom_getintarg(3, ac, av);
+    int width = atom_getintarg(0, ac, av);
+    int height = atom_getintarg(1, ac, av);
+    int period = atom_getintarg(2, ac, av);
+    int bufsize = atom_getintarg(3, ac, av);
     float minval = (float)atom_getfloatarg(4, ac, av);
     float maxval = (float)atom_getfloatarg(5, ac, av);
-    int delay = (int)atom_getintarg(6, ac, av);
-    int drawstyle = (int)atom_getintarg(7, ac, av);
-    int trigmode = (int)atom_getintarg(8, ac, av);
-    float triglevel = (float)atom_getfloatarg(9, ac, av);
-    bgcol = (int)scope_getcolorarg(10, ac, av);
-    grcol = (int)scope_getcolorarg(11, ac, av);
-    fgcol = (int)scope_getcolorarg(12, ac, av);
-    int bgred = (bgcol & 0xFF0000) >> 16;
-    int bggreen = (bgcol & 0x00FF00) >> 8;
-    int bgblue = (bgcol & 0x0000FF);
-    int grred = (grcol & 0xFF0000) >> 16;
-    int grgreen = (grcol & 0x00FF00) >> 8;
-    int grblue = (grcol & 0x0000FF);
-    int fgred = (fgcol & 0xFF0000) >> 16;
-    int fggreen = (fgcol & 0x00FF00) >> 8;
-    int fgblue = (fgcol & 0x0000FF);
+    int delay = atom_getintarg(6, ac, av);
+    int drawstyle = atom_getintarg(7, ac, av);
+    int trigmode = atom_getintarg(8, ac, av);
+    int triglevel = atom_getintarg(9, ac, av);
+    int bgcol = (int)scope_getcolorarg(10, ac, av);
+    int grcol = (int)scope_getcolorarg(11, ac, av);
+    int fgcol = (int)scope_getcolorarg(12, ac, av);
     t_symbol *rcv = atom_getsymbolarg(13, ac, av);
     scope_period(x, period);
     scope_bufsize(x, bufsize);
@@ -937,6 +913,15 @@ static void scope_ok(t_scope *x, t_symbol *s, int ac, t_atom *av){
     scope_receive(x, rcv);
     scope_trigger(x, trigmode);
     scope_triglevel(x, triglevel);
+    int bgred = (bgcol & 0xFF0000) >> 16;
+    int bggreen = (bgcol & 0x00FF00) >> 8;
+    int bgblue = (bgcol & 0x0000FF);
+    int grred = (grcol & 0xFF0000) >> 16;
+    int grgreen = (grcol & 0x00FF00) >> 8;
+    int grblue = (grcol & 0x0000FF);
+    int fgred = (fgcol & 0xFF0000) >> 16;
+    int fggreen = (fgcol & 0x00FF00) >> 8;
+    int fgblue = (fgcol & 0x0000FF);
     scope_bgcolor(x, bgred, bggreen, bgblue);
     scope_gridcolor(x, grred, grgreen, grblue);
     scope_fgcolor(x, fgred, fggreen, fgblue);
