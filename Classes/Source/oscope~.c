@@ -559,6 +559,7 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
 
 static void scope_zoom(t_scope *x, t_floatarg zoom){
     float mul = (zoom == 1. ? 0.5 : 2.);
+//    scope_dim(x, (float)x->x_width*mul, (float)x->x_height*mul);
     x->x_width*=mul, x->x_height*=mul;
     x->x_zoom = (int)zoom;
 }
@@ -881,11 +882,30 @@ static int scope_getcolorarg(int index, int ac, t_atom *av){
         if('#' == s->s_name[0])
             return(strtol(s->s_name+1, 0, 16));
     }
-    return(0);
+    return(atom_getintarg(index, ac, av));
 }
 
 static void scope_ok(t_scope *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
+    t_atom undo[14];
+    SETFLOAT(undo+0, x->x_width);
+    SETFLOAT(undo+1, x->x_height);
+    SETFLOAT(undo+2, x->x_period);
+    SETFLOAT(undo+3, x->x_bufsize);
+    SETFLOAT(undo+4, x->x_min);
+    SETFLOAT(undo+5, x->x_max);
+    SETFLOAT(undo+6, x->x_delay);
+    SETFLOAT(undo+7, x->x_drawstyle);
+    SETFLOAT(undo+8, x->x_trigmode);
+    SETFLOAT(undo+9, x->x_triglevel);
+    int bgcol = ((int)x->x_bg[0] << 16) + ((int)x->x_bg[1] << 8) + (int)x->x_bg[2];
+    int grcol = ((int)x->x_gg[0] << 16) + ((int)x->x_gg[1] << 8) + (int)x->x_gg[2];
+    int fgcol = ((int)x->x_fg[0] << 16) + ((int)x->x_fg[1] << 8) + (int)x->x_fg[2];
+    SETFLOAT(undo+10, bgcol);
+    SETFLOAT(undo+11, grcol);
+    SETFLOAT(undo+12, fgcol);
+    SETSYMBOL(undo+13, x->x_receive);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 14, undo, ac, av);
     int width = (int)atom_getintarg(0, ac, av);
     int height = (int)atom_getintarg(1, ac, av);
     int period = (int)atom_getintarg(2, ac, av);
@@ -896,9 +916,9 @@ static void scope_ok(t_scope *x, t_symbol *s, int ac, t_atom *av){
     int drawstyle = (int)atom_getintarg(7, ac, av);
     int trigmode = (int)atom_getintarg(8, ac, av);
     float triglevel = (float)atom_getfloatarg(9, ac, av);
-    int bgcol = (int)scope_getcolorarg(10, ac, av);
-    int grcol = (int)scope_getcolorarg(11, ac, av);
-    int fgcol = (int)scope_getcolorarg(12, ac, av);
+    bgcol = (int)scope_getcolorarg(10, ac, av);
+    grcol = (int)scope_getcolorarg(11, ac, av);
+    fgcol = (int)scope_getcolorarg(12, ac, av);
     int bgred = (bgcol & 0xFF0000) >> 16;
     int bggreen = (bgcol & 0x00FF00) >> 8;
     int bgblue = (bgcol & 0x0000FF);
