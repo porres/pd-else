@@ -423,7 +423,6 @@ swap2	x
 symbol2any	x
 sysrt.in	x
 sysrt.out	x
-t2	x
 tabgen	x
 table~	x
 tabplayer~	x
