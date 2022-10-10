@@ -19,10 +19,16 @@ Breaking changes:
 - [chance] removed index mode (use [rand.hist] instead).
 
 Enhancements/fixes:
+- [button]: fixed drawing outlet when zoomed
+- [wrap2]/[fold]: fixed repeated output.
+- [swap2]: fixed left input.
+- [xmod~]: fixed '-pm' flag.
+- [canvas.file]: takes now anythings (this also fixes 'open' message to [play.file~])
+- [oscope~]: fixed zooming and resizing issues plus other minor details.
 - [numbox~]: fixed zooming bugs.
 - fixed [limit] input for float and symbol (by consequence fixing granulator abstractions like [grain.synth~]).
 - [stepnoise~] fixed loading frequency argument as a float (not an int).
-- [note]: We finally have a decent properties window!!! Fixed some issues with zooming. Fixed flags. Fixed saving parameters. Added outline parameter. Added width parameter (this was only set before via dragging the handle in edit mode). Improved drawing the handle. Fixed resizing when max width wasn't set. Added undo.
+- [note]: We finally have a decent properties window (thanks to Tim Schoen)!!! Fixed some issues with zooming. Fixed flags. Fixed saving parameters. Added outline parameter. Added width parameter (this was only set before via dragging the handle in edit mode). Improved drawing the handle. Fixed resizing when max width wasn't set. Added undo.
 - 6 new objects for a total of 464: [datetime], [rand.d], [rand.u], [rand.hist], [histogram] and [tabgen].  
 
 **TUTORIAL:**
