@@ -158,7 +158,6 @@ static void note_draw_outline(t_note *x){
 }
 
 static void note_draw_handle(t_note *x){
-//    post("draw handle");
     t_handle *ch = (t_handle *)x->x_handle;
     sys_vgui("destroy %s\n", ch->h_pathname); // always destroy, bad hack, improve
     if(x->x_edit){
@@ -297,13 +296,10 @@ static void note_update(t_note *x){
 
 static void note_erase(t_note *x){
     sys_vgui(".x%lx.c delete all%lx\n", x->x_cv, (unsigned long)x);
-//    t_handle *ch = (t_handle *)x->x_handle;
-//    sys_vgui("destroy %s\n", ch->h_pathname);
     sys_vgui("destroy %s\n", ((t_handle *)x->x_handle)->h_pathname);
 }
 
 static void note_redraw(t_note *x){ // <= improve, not necessary for all cases
-//    post("REDRAW");
     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
         note_erase(x);
         note_draw(x);
@@ -419,7 +415,6 @@ t_floatarg x1, t_floatarg y1, t_floatarg x2, t_floatarg y2){
     bindsym = NULL;
     if(!x->x_bbset || (x->x_height != (y2-y1)) || x->x_text_width != (x2-x1)){ // redraw
         x->x_text_width = x2-x1;
-//        post("-----> if(!x->x_bbset || (x->x_height != (y2-y1))){ // redraw <-----");
         x->x_height = y2-y1;
         x->x_y1 = y1;
         x->x_y2 = y2;
@@ -437,7 +432,6 @@ t_floatarg x1, t_floatarg y1, t_floatarg x2, t_floatarg y2){
 }
 
 static void note__click_callback(t_note *x, t_symbol *s, int ac, t_atom *av){
-//    post("note__click_callback");
     s = NULL;
     int xx, ndx;
     if(ac == 8 && av[0].a_type == A_SYMBOL && av[1].a_type == A_FLOAT
@@ -457,7 +451,6 @@ static void note__click_callback(t_note *x, t_symbol *s, int ac, t_atom *av){
     if(x->x_glist->gl_edit){
         if(x->x_active){
             if(ndx >= 0 && ndx <= x->x_bufsize){
-//                post("ndx = %d", ndx);
                 x->x_start_ndx = x->x_end_ndx = ndx;
                 int byte_ndx = 0;
                 for(int i = 0; i < ndx; i++)
@@ -483,14 +476,23 @@ static void note__click_callback(t_note *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void handle__click_callback(t_handle *ch, t_floatarg f){
-//    post("handle__click_callback");
     int click = (int)f;
     t_note *x = ch->h_master;
     if(ch->h_clicked && click == 0){ // Released the handle
         if(x->x_x2 != x->x_newx2){
             x->x_resized = 1;
             x->x_x2 = x->x_newx2;
-            x->x_max_pixwidth = (x->x_newx2 - x->x_x1) / x->x_zoom;
+            t_atom undo[1];
+            SETFLOAT(undo+0, x->x_max_pixwidth);
+            int pixwidth = (x->x_newx2 - x->x_x1) / x->x_zoom;
+            t_atom redo[1];
+            SETFLOAT(redo+0, pixwidth);
+            pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("width"), 1, undo, 1, redo);
+            if(pixwidth < 8)
+                pixwidth = 8; // min width
+            x->x_changed = 1;
+            x->x_max_pixwidth = pixwidth;
+            x->x_resized = 1;
             note_redraw(x); // needed to call bbox callback
         }
     }
@@ -934,7 +936,11 @@ static void note_bold(t_note *x, t_float f){
     }
 }
 
-static void note_width(t_note *x, t_floatarg width){
+static void note_width(t_note *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(ac != 1)
+        return;
+    int width = atom_getintarg(0, ac, av);
     if(width <= 0){
         if(x->x_resized){
             x->x_resized = 0;
@@ -1454,7 +1460,7 @@ void note_setup(void){
         sizeof(t_note), CLASS_DEFAULT, A_GIMME, 0);
     class_addfloat(note_class, note_float);
     class_addlist(note_class, note_list);
-    class_addmethod(note_class, (t_method)note_width, gensym("width"), A_FLOAT, 0);
+    class_addmethod(note_class, (t_method)note_width, gensym("width"), A_GIMME, 0);
     class_addmethod(note_class, (t_method)note_outline, gensym("outline"), A_FLOAT, 0);
     class_addmethod(note_class, (t_method)note_fontname, gensym("font"), A_SYMBOL, 0);
     class_addmethod(note_class, (t_method)note_receive, gensym("receive"), A_SYMBOL, 0);
