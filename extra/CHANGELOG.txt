@@ -24,7 +24,7 @@ Enhancements/fixes:
 - [swap2]: fixed left input.
 - [xmod~]: fixed '-pm' flag.
 - [canvas.file]: takes now anythings (this also fixes 'open' message to [play.file~])
-- [oscope~]: fixed zooming and resizing issues plus other minor details. Added undo.
+- [oscope~]: fixed zooming and resizing issues plus other minor cosmetic details. Added outline. Added undo.
 - [numbox~]: fixed zooming bugs.
 - fixed [limit] input for float and symbol (by consequence fixing granulator abstractions like [grain.synth~]).
 - [stepnoise~] fixed loading frequency argument as a float (not an int).
