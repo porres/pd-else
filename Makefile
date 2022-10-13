@@ -27,7 +27,6 @@ openfile.class.sources := Classes/Source/openfile.c
 colors.class.sources := Classes/Source/colors.c
 gui.class.sources := Classes/Source/gui.c
 note.class.sources := Classes/Source/note.c
-numbox~.class.sources := Classes/Source/numbox~.c
 
 # control:
 args.class.sources := Classes/Source/args.c

@@ -325,8 +325,8 @@ static void numbox_properties(t_gobj *z, t_glist *owner){ // called in right cli
     t_numbox *x = (t_numbox *)z;
     char buf[800];
     sprintf(buf, "::dialog_numbox::pdtk_numbox_dialog %%s -------dimensions(digits)(pix):------- \
-        %d %d %d %d %d %d %s %s %.4f %.4f\n", x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE,
-        x->x_ramp_ms, x->x_rate, x->x_bg->s_name, x->x_fg->s_name, x->x_min, x->x_max);
+        %d %d %d %d %d %d %f %s %s %.4f %.4f\n", x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE,
+        x->x_ramp_ms, x->x_rate, x->x_set_val, x->x_bg->s_name, x->x_fg->s_name, x->x_min, x->x_max);
     gfxstub_new(&x->x_obj.ob_pd, x, buf); // no idea what this does...
 }
 
