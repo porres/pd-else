@@ -565,8 +565,8 @@ static void handle__click_callback(t_handle *sh, t_floatarg f){
         SETFLOAT(undo+0, x->x_width);
         SETFLOAT(undo+1, x->x_height);
         t_atom redo[2];
-        float width = (x->x_width+sh->h_dragx)/x->x_zoom;
-        float height = (x->x_height+sh->h_dragy)/x->x_zoom;
+        int width = (x->x_width+sh->h_dragx)/x->x_zoom;
+        int height = (x->x_height+sh->h_dragy)/x->x_zoom;
         SETFLOAT(redo+0, width);
         SETFLOAT(redo+1, height);
         pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dim"), 2, undo, 2, redo);
