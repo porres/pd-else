@@ -555,19 +555,6 @@ static void keyboard_zoom(t_keyboard *x, t_floatarg zoom){
 }
 
 // ------------------------ GUI Behaviour -----------------------------
-static void keyboard_set_properties(t_keyboard *x, float space, float height, float oct,
-        float low_c, float vel, float tgl){
-    x->x_space = (space < 7) ? 7 : space; // key width
-    x->x_height = (height < 10) ? 10 : height;
-    x->x_octaves = oct < 1 ? 1 : oct > 10 ? 10 : oct;
-    x->x_low_c = low_c < 0 ? 0 : low_c > 8 ? 8 : low_c;
-    x->x_norm = vel < 0 ? 0 : vel > 127 ? 127 : vel;
-    x->x_toggle_mode = (tgl != 0);
-    x->x_width = ((int)(x->x_space)) * 7 * (int)x->x_octaves;
-    x->x_first_c = ((int)(x->x_low_c * 12)) + 12;
-    canvas_dirty(x->x_glist, 1);
-}
-
 void keyboard_properties(t_gobj *z, t_glist *owner){ // load Properties
     owner = NULL;
     t_keyboard *x = (t_keyboard *)z;
@@ -623,11 +610,53 @@ static void keyboard_apply(t_keyboard *x, t_symbol *s, int ac, t_atom *av){ // A
     float oct = atom_getfloatarg(2, ac, av);
     float low_c = atom_getfloatarg(3, ac, av);
     float norm = atom_getfloatarg(4, ac, av);
-    float tgl = atom_getfloatarg(5, ac, av);
-    keyboard_send(x, atom_getsymbolarg(6, ac, av));
-    keyboard_receive(x, atom_getsymbolarg(7, ac, av));
-    keyboard_set_properties(x, w, h, oct, low_c, norm, tgl);
-    keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
+    float tgl = (atom_getfloatarg(5, ac, av) != 0);
+    t_symbol *snd = atom_getsymbolarg(6, ac, av);
+    t_symbol *rcv = atom_getsymbolarg(7, ac, av);
+    int changed = 0;
+    if(w < 7)
+        w = 7;
+    if(x->x_space != w){
+        changed = 1;
+        x->x_space = w;
+    }
+    if(h < 10)
+        h = 10;
+    if(x->x_height != h){
+        changed = 1;
+        x->x_height = h;
+    }
+    oct = oct < 1 ? 1 : oct > 10 ? 10 : oct;
+    if(x->x_octaves != oct){
+        changed = 1;
+        x->x_octaves = oct;
+    }
+    low_c = low_c < 0 ? 0 : low_c > 8 ? 8 : low_c;
+    if(x->x_low_c != low_c){
+        changed = 1;
+        x->x_low_c = low_c;
+    }
+    norm = norm < 0 ? 0 : norm > 127 ? 127 : norm;
+    if(x->x_norm != norm){
+        changed = 1;
+        x->x_norm = norm;
+    }
+    if(x->x_toggle_mode != tgl){
+        changed = 1;
+        x->x_toggle_mode = tgl;
+    }
+    if(x->x_snd_raw != snd)
+        changed = 1;
+    if(x->x_rcv_raw != rcv)
+        changed = 1;
+    if(changed){
+        x->x_width = ((int)(x->x_space)) * 7 * (int)x->x_octaves;
+        x->x_first_c = ((int)(x->x_low_c * 12)) + 12;
+        keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
+        keyboard_send(x, snd);
+        keyboard_receive(x, rcv);
+        canvas_dirty(x->x_glist, 1);
+    }
 }
 
 // ------------------------ Free / New / Setup ------------------------------
