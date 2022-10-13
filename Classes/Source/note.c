@@ -493,6 +493,7 @@ static void handle__click_callback(t_handle *ch, t_floatarg f){
             x->x_changed = 1;
             x->x_max_pixwidth = pixwidth;
             x->x_resized = 1;
+            canvas_dirty(x->x_glist, 1);
             note_redraw(x); // needed to call bbox callback
         }
     }

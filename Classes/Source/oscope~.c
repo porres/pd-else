@@ -565,14 +565,15 @@ static void handle__click_callback(t_handle *sh, t_floatarg f){
         SETFLOAT(undo+0, x->x_width);
         SETFLOAT(undo+1, x->x_height);
         t_atom redo[2];
-        int width = (x->x_width+sh->h_dragx)/x->x_zoom;
-        int height = (x->x_height+sh->h_dragy)/x->x_zoom;
+        int width = (int)((x->x_width+sh->h_dragx)/x->x_zoom);
+        int height = (int)((x->x_height+sh->h_dragy)/x->x_zoom);
         SETFLOAT(redo+0, width);
         SETFLOAT(redo+1, height);
         pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dim"), 2, undo, 2, redo);
         scope_dim(x, NULL, 2, redo);
         scope_draw_handle(x, 1);
         scope_select((t_gobj *)x, x->x_glist, x->x_select);
+        canvas_dirty(x->x_cv, 1);
     }
     else if(!sh->h_dragon && click){
         int x1, y1, x2, y2;
