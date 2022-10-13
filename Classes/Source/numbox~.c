@@ -362,6 +362,7 @@ static void numbox_dialog(t_numbox *x, t_symbol *s, int ac, t_atom *av){
     numbox_width(x, width);
     numbox_size(x, size);
     canvas_fixlinesfor(x->x_glist, (t_text*)x);
+    canvas_dirty(x->x_glist, 1);
 }
 
 static void numbox_save(t_gobj *z, t_binbuf *b){
