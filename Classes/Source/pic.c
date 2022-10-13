@@ -457,6 +457,14 @@ void pic_properties(t_gobj *z, t_glist *gl){
 
 static void pic_ok(t_pic *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
+    t_atom undo[6];
+    SETSYMBOL(undo+0, x->x_filename);
+    SETFLOAT(undo+1, x->x_outline);
+    SETFLOAT(undo+2, x->x_size);
+    SETFLOAT(undo+3, x->x_latch);
+    SETSYMBOL(undo+4, x->x_snd_raw);
+    SETSYMBOL(undo+5, x->x_rcv_raw);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("ok"), 6, undo, ac, av);
     pic_open(x, atom_getsymbolarg(0, ac, av));
     pic_outline(x, atom_getfloatarg(1, ac, av));
     pic_size(x, atom_getfloatarg(2, ac, av));
