@@ -103,7 +103,7 @@ static t_int *cosine_perform_sig(t_int *w){
 }
 
 static void cosine_dsp(t_cosine *x, t_signal **sp){
-    x->x_hasfeeders = magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal); // magic feeder flag
+    x->x_hasfeeders = inlet_connection((t_object *)x, x->x_glist, 1, &s_signal); // magic feeder flag
     x->x_sr = sp[0]->s_sr;
     if (x->x_hasfeeders){
         dsp_add(cosine_perform_sig, 6, x, sp[0]->s_n,

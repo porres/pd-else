@@ -139,7 +139,7 @@ static t_int *pimp_perform(t_int *w){
 }
 
 static void pimp_dsp(t_pimp *x, t_signal **sp){
-    x->x_hasfeeders = magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal); // magic feeder flag
+    x->x_hasfeeders = inlet_connection((t_object *)x, x->x_glist, 1, &s_signal); // magic feeder flag
     x->x_sr = sp[0]->s_sr;
     if(x->x_hasfeeders){
         dsp_add(pimp_perform, 7, x, sp[0]->s_n,

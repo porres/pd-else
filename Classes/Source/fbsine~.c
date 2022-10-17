@@ -128,7 +128,7 @@ static t_int *fbsine_perform(t_int *w){
 }
 
 static void fbsine_dsp(t_fbsine *x, t_signal **sp){
-    x->x_hasfeeders = magic_inlet_connection((t_object *)x, x->x_glist, 2, &s_signal); // magic feeder flag
+    x->x_hasfeeders = inlet_connection((t_object *)x, x->x_glist, 2, &s_signal); // magic feeder flag
     x->x_sr = sp[0]->s_sr;
     if (x->x_hasfeeders){
         dsp_add(fbsine_perform, 7, x, sp[0]->s_n,

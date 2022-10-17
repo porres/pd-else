@@ -443,7 +443,7 @@ static t_int *tabplayer_perform(t_int *w){
 static void tabplayer_dsp(t_play *x, t_signal **sp){
     buffer_checkdsp(x->x_buffer);
     unsigned long long npts = x->x_buffer->c_npts;
-    x->x_hasfeeders = magic_inlet_connection((t_object *)x, x->x_glist, 0, &s_signal);
+    x->x_hasfeeders = inlet_connection((t_object *)x, x->x_glist, 0, &s_signal);
     t_float pdksr = sp[0]->s_sr * 0.001;
     if(x->x_sr_khz != pdksr)
         x->x_sr_ratio = (double)(x->x_array_sr_khz/(x->x_sr_khz = pdksr));

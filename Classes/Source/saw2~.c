@@ -111,7 +111,7 @@ static t_int *saw2_perform_sig(t_int *w)
 }
 
 static void saw2_dsp(t_saw2 *x, t_signal **sp){
-    x->x_hasfeeders = magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal); // magic feeder flag
+    x->x_hasfeeders = inlet_connection((t_object *)x, x->x_glist, 1, &s_signal); // magic feeder flag
     x->x_sr = sp[0]->s_sr;
     if (x->x_hasfeeders){
         dsp_add(saw2_perform_sig, 6, x, sp[0]->s_n,

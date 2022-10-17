@@ -767,8 +767,8 @@ static t_int *scope_perform(t_int *w){
 
 static void scope_dsp(t_scope *x, t_signal **sp){
     x->x_ksr = sp[0]->s_sr * 0.001;
-    int xfeeder = magic_inlet_connection((t_object *)x, x->x_glist, 0, &s_signal);
-    int yfeeder = magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal);
+    int xfeeder = inlet_connection((t_object *)x, x->x_glist, 0, &s_signal);
+    int yfeeder = inlet_connection((t_object *)x, x->x_glist, 1, &s_signal);
     int xymode = xfeeder + 2 * yfeeder;
     if(xymode != x->x_xymode){
         x->x_xymode = xymode;

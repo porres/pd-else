@@ -397,7 +397,7 @@ static t_int *numbox_perform(t_int *w){
 }
 
 static void numbox_dsp(t_numbox *x, t_signal **sp){
-    x->x_outmode = !magic_inlet_connection((t_object *)x, x->x_glist, 0, &s_signal);
+    x->x_outmode = !inlet_connection((t_object *)x, x->x_glist, 0, &s_signal);
     x->x_sr_khz = sp[0]->s_sr * 0.001;
     dsp_add(numbox_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, (t_int)sp[0]->s_n);
 }
