@@ -1,3 +1,5 @@
+#include "m_imp.h" // for obj_findsignalscalar
+
 #define MAGIC_NAN 0x7FFFFFFFul
 
 union magic_ui32_fl{
