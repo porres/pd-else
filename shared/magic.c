@@ -5,7 +5,7 @@
 #include <g_canvas.h>
 #include <stdint.h>
 
-int magic_inlet_connection(t_object *x, t_glist *glist, int inno, t_symbol *outsym){
+int inlet_connection(t_object *x, t_glist *glist, int inno, t_symbol *outsym){
     t_linetraverser t;
     linetraverser_start(&t, glist);
     while(linetraverser_next(&t))
