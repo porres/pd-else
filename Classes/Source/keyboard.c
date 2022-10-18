@@ -224,32 +224,28 @@ static void keyboard_mouserelease(t_keyboard* x){
 
 // ------------------------ GUI SHIT-----------------------------
 static void keyboard_erase(t_keyboard *x, t_glist *glist){
-    t_canvas *cv = glist_getcanvas(glist);
-    sys_vgui(".x%lx.c delete %xrr\n", cv, x);
-    sys_vgui(".x%lx.c delete %lx_in1\n", cv, x);
-    sys_vgui(".x%lx.c delete %lx_in2\n", cv, x);
-    sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
+    sys_vgui(".x%lx.c delete %lxALL\n", glist_getcanvas(glist), x);
 }
 
 static void keyboard_draw_io_let(t_keyboard *x){
     t_canvas *cv = glist_getcanvas(x->x_glist);
     int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
     if(x->x_edit && x->x_receive == &s_){
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_in1\n",
-            cv, xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom), x);
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_in2\n",
-            cv, xpos+x->x_width, ypos, xpos+x->x_width-(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom), x);
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lx_in1 %lxALL]\n",
+            cv, xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom), x, x);
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lx_in2 %lxALL]\n",
+            cv, xpos+x->x_width*x->x_zoom, ypos, xpos+x->x_width*x->x_zoom-(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom), x, x);
     }
     if(x->x_edit && x->x_send == &s_)
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
-            cv, xpos, ypos+x->x_height, xpos+IOWIDTH*x->x_zoom, ypos+x->x_height-IHEIGHT*x->x_zoom, x);
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lx_out %lxALL]\n",
+            cv, xpos, ypos+x->x_height*x->x_zoom, xpos+IOWIDTH*x->x_zoom, ypos+x->x_height*x->x_zoom-IHEIGHT*x->x_zoom, x, x);
 }
 
 static void keyboard_draw(t_keyboard *x, t_glist* glist){
     int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
     t_canvas *cv = glist_getcanvas(x->x_glist);
-    sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %xrr\n", // Main rectangle
-        cv, xpos, ypos, xpos + x->x_width, ypos + x->x_height, x);
+    sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags [list %xrr %lxALL]\n", // Main rectangle
+        cv, xpos, ypos, xpos + x->x_width*x->x_zoom, ypos + x->x_height*x->x_zoom, x, x);
     int i, wcount, bcount;
     wcount = bcount = 0;
     for(i = 0 ; i < x->x_octaves * 12 ; i++){ // white keys 1st (blacks overlay it)
@@ -257,14 +253,15 @@ static void keyboard_draw(t_keyboard *x, t_glist* glist){
         if(key != 1 && key != 3 && key != 6 && key != 8 && key != 10){
             int on = x->x_tgl_notes[x->x_first_c+i];
             int c4 = x->x_first_c + i == 60;
-            sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags {%xrrk%d %xrr} -fill %s\n",
+            sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags [list %xrrk%d %xrr %lxALL] -fill %s\n",
                 cv,
-                xpos + wcount * (int)x->x_space,
+                xpos + wcount * (int)x->x_space*x->x_zoom,
                 ypos,
-                xpos + (wcount + 1) * (int)x->x_space,
-                ypos + x->x_height,
+                xpos + (wcount + 1) * (int)x->x_space*x->x_zoom,
+                ypos + x->x_height*x->x_zoom,
                 x,
                 i,
+                x,
                 x,
                 on ? WHITE_ON : c4 ? MIDDLE_C : WHITE_OFF);
             wcount++;
@@ -278,14 +275,15 @@ static void keyboard_draw(t_keyboard *x, t_glist* glist){
         }
         if(key == 1 || key == 3 || key ==6 || key == 8 || key == 10){
             int on = x->x_tgl_notes[x->x_first_c+i];
-            sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags {%xrrk%d %xrr} -fill %s\n",
+            sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags [list %xrrk%d %xrr %lxALL] -fill %s\n",
                      cv,
-                     xpos + ((bcount + 1) * (int)x->x_space) - ((int)(x->x_space / 3.f)) ,
+                     xpos + ((bcount + 1) * (int)x->x_space)*x->x_zoom - ((int)(x->x_space*x->x_zoom / 3.f)) ,
                      ypos,
-                     xpos + ((bcount + 1) * (int)x->x_space) + ((int)(x->x_space / 3.f)) ,
-                     ypos + x->x_height * 2/3,
+                     xpos + ((bcount + 1) * (int)x->x_space)*x->x_zoom + ((int)(x->x_space*x->x_zoom / 3.f)) ,
+                     ypos + x->x_height*x->x_zoom * 2/3,
                      x,
                      i,
+                     x,
                      x,
                      on ? BLACK_ON : BLACK_OFF);
             bcount++;
@@ -306,12 +304,8 @@ static void keyboard_getrect(t_gobj *z, t_glist *owner, int *xp1, int *yp1, int 
 
 void keyboard_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     t_keyboard *x = (t_keyboard *)z;
-    t_canvas *cv = glist_getcanvas(glist);
     x->x_obj.te_xpix += dx, x->x_obj.te_ypix += dy;
-    sys_vgui(".x%lx.c move %xrr %d %d\n", cv, x, dx * x->x_zoom, dy * x->x_zoom);
-    sys_vgui(".x%lx.c move %lx_in1 %d %d\n", cv, x, dx * x->x_zoom, dy * x->x_zoom);
-    sys_vgui(".x%lx.c move %lx_in2 %d %d\n", cv, x, dx * x->x_zoom, dy * x->x_zoom);
-    sys_vgui(".x%lx.c move %lx_out %d %d\n", cv, x, dx * x->x_zoom, dy * x->x_zoom);
+    sys_vgui(".x%lx.c move %lxALL %d %d\n", glist_getcanvas(glist), x, dx*x->x_zoom, dy*x->x_zoom);
     canvas_fixlinesfor(glist, (t_text *)x);
 }
 
@@ -544,14 +538,7 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
 }
 
 static void keyboard_zoom(t_keyboard *x, t_floatarg zoom){
-    if(!glist_isvisible(x->x_glist) || !gobj_shouldvis((t_gobj *)x, x->x_glist))
-        return;
-    float mul = zoom == 1.0 ? 0.5 : 2.0;
-    x->x_space = (int)((float)x->x_space * mul);
-    x->x_width = (int)((float)x->x_width * mul);
-    x->x_height = (int)((float)x->x_height * mul);
     x->x_zoom = (int)zoom;
-    keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
 }
 
 // ------------------------ GUI Behaviour -----------------------------
@@ -582,8 +569,8 @@ static void keyboard_save(t_gobj *z, t_binbuf *b){
         (int)x->x_obj.te_xpix,
         (int)x->x_obj.te_ypix,
         atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)),
-        (int)x->x_space / x->x_zoom,
-        (int)x->x_height / x->x_zoom,
+        (int)x->x_space,
+        (int)x->x_height,
         (int)x->x_octaves,
         (int)x->x_low_c,
         (int)x->x_toggle_mode,
