@@ -29,8 +29,7 @@ typedef struct _function{
     int             x_width;
     int             x_height;
     int             x_init;
-    int             x_numdots;
-    int             x_grabbed;      // for moving points
+    int             x_grabbed; // for moving points
     int             x_shift;       
     int             x_snd_set;
     int             x_rcv_set;
@@ -55,136 +54,120 @@ typedef struct _function{
 
 static void function_bang(t_function *x);
 
-// DRAW FUNCTIONS //////////////////////////////////////////////////////////////////////////////
-static void function_draw_in_outlet(t_function *x){
+//////////////////////// DRAWING ////////////////////////////////////////////////////////
+static void function_draw_iolet(t_function *x){
     int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
     t_canvas *cv =  glist_getcanvas(x->x_glist);
-    if(x->x_edit && x->x_receive == &s_) // Intlet
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_in\n",
-            cv, xpos, ypos, xpos+IOWIDTH*x->x_zoom, ypos+IHEIGHT*x->x_zoom, x);
+    if(x->x_edit && x->x_receive == &s_) // Inlet
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lx_in %lx_all]\n",
+            cv, xpos, ypos, xpos+IOWIDTH*x->x_zoom, ypos+IHEIGHT*x->x_zoom, x, x);
     if(x->x_edit && x->x_send == &s_) // Outlet
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
-            cv, xpos, ypos+x->x_height, xpos+IOWIDTH*x->x_zoom, ypos+x->x_height-IHEIGHT*x->x_zoom, x);
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lx_out %lx_all]\n",
+            cv, xpos, ypos+x->x_height, xpos+IOWIDTH*x->x_zoom, ypos+x->x_height-IHEIGHT*x->x_zoom, x, x);
 }
 
 static void function_draw_dots(t_function *x, t_glist *glist){
     float range = x->x_max - x->x_min;
-    float min =  x->x_min;
+    float min = x->x_min;
     int yvalue;
     float xscale = x->x_width/x->x_dur[x->x_n_states];
     float yscale = x->x_height;
-    int i = 0, xpos = text_xpix(&x->x_obj, glist), ypos = (int)(text_ypix(&x->x_obj, glist) + x->x_height);
+    int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist) + x->x_height;
     char fgcolor[20];
     sprintf(fgcolor, "#%2.2x%2.2x%2.2x", x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
     char bgcolor[20];
     sprintf(bgcolor, "#%2.2x%2.2x%2.2x", x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
-    t_canvas *cv = glist_getcanvas(glist);
-    for(i = 0; i <= x->x_n_states; i++){
+    for(int i = 0; i <= x->x_n_states; i++){
         yvalue = (int)((x->x_points[i] - min) / range * yscale);
-        sys_vgui(".x%lx.c create oval %d %d %d %d -width %d -tags %lx_dots%d -outline %s -fill %s\n",
-            cv,
+        sys_vgui(".x%lx.c create oval %d %d %d %d -width %d -tags [list %lx_dots %lx_all] -outline %s -fill %s\n",
+            glist_getcanvas(glist),
             xpos + (int)(x->x_dur[i]*xscale) - 3*x->x_zoom,
             ypos - yvalue - 3*x->x_zoom,
             xpos + (int)(x->x_dur[i]*xscale) + 3*x->x_zoom,
             ypos - yvalue + 3*x->x_zoom,
-            2 * x->x_zoom,
+            2*x->x_zoom,
             x,
-            i,
+            x,
             fgcolor,
             bgcolor);
     }
-    x->x_numdots = i;
 }
 
 static void function_draw(t_function *x, t_glist *glist){
     float range = x->x_max - x->x_min;
-    float min =  x->x_min;
+    float min = x->x_min;
     t_canvas *cv = glist_getcanvas(x->x_glist);
-    int xpos = text_xpix(&x->x_obj, glist);
-    int ypos = (int)text_ypix(&x->x_obj, glist);
+    int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
     char bgcolor[20];
     sprintf(bgcolor, "#%2.2x%2.2x%2.2x", x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
     char fgcolor[20];
     sprintf(fgcolor, "#%2.2x%2.2x%2.2x", x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
     float xscale = x->x_width / x->x_dur[x->x_n_states];
     float yscale = x->x_height;
-    sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline black -tags %lx_rect -fill %s\n", cv, // RECTANGLE
-        xpos, ypos, xpos+x->x_width, ypos+x->x_height, x->x_zoom, x, bgcolor);
-    sys_vgui(".x%lx.c create line", cv); // LINES
+    // background
+    sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline black -tags [list %lx_rect %lx_all] -fill %s\n",
+        cv,
+        xpos,
+        ypos,
+        xpos+x->x_width,
+        ypos+x->x_height,
+        x->x_zoom,
+        x,
+        x,
+        bgcolor);
+    // function line
+    sys_vgui(".x%lx.c create line ", cv);
     for(int i = 0; i <= x->x_n_states; i++)
-        sys_vgui(" %d %d ", (int)(xpos + x->x_dur[i]*xscale),
-                 (int)(ypos + x->x_height - (x->x_points[i]-min) / range*yscale));
-    sys_vgui(" -tags %lx_line -fill %s -width %d\n", x, fgcolor, 2*x->x_zoom);
+        sys_vgui("%d %d ", (int)(xpos + x->x_dur[i]*xscale),
+            (int)(ypos + x->x_height - (x->x_points[i]-min) / range*yscale));
+    sys_vgui("-tags [list %lx_line %lx_all] -fill %s -width %d\n", x, x, fgcolor, 2*x->x_zoom);
     function_draw_dots(x, glist);
-    function_draw_in_outlet(x);
-    if(x->x_sel)
-        sys_vgui(".x%lx.c itemconfigure %lx_rect -outline blue\n", cv, x);
-    else
-        sys_vgui(".x%lx.c itemconfigure %lx_rect -outline black\n", cv, x);
-}
-
-static void function_delete_dots(t_function *x, t_glist *glist){
-    for(int i = 0; i <= x->x_numdots; i++)
-        sys_vgui(".x%lx.c delete %lx_dots%d\n", glist_getcanvas(glist), x, i);
+    function_draw_iolet(x);
+    sys_vgui(".x%lx.c itemconfigure %lx_rect -outline %s\n", cv, x, x->x_sel ? "blue" : "black");
 }
 
 static void function_erase(t_function* x, t_glist* glist){
-    t_canvas *cv = glist_getcanvas(glist);
-    sys_vgui(".x%lx.c delete %lx_in\n", cv, x); // delete inlet
-    sys_vgui(".x%lx.c delete %lx_out\n", cv, x); // delete outlet
-    sys_vgui(".x%lx.c delete %lx_rect\n", cv, x); // delete rectangle
-    sys_vgui(".x%lx.c delete %lx_line\n", cv, x); // delete lines
-    function_delete_dots(x, glist);
+    sys_vgui(".x%lx.c delete %lx_all\n", glist_getcanvas(glist), x);
 }
 
 static void function_update(t_function *x, t_glist *glist){
-    int xpos = text_xpix(&x->x_obj, glist);
-    int ypos = text_ypix(&x->x_obj, glist);
+    int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
     float range = x->x_max - x->x_min;
     float min =  x->x_min;
     t_canvas *cv = glist_getcanvas(glist);
-    sys_vgui(".x%lx.c coords %lx_rect %d %d %d %d\n", cv, x, xpos, ypos,
-        xpos + x->x_width, ypos + x->x_height);
+    sys_vgui(".x%lx.c coords %lx_rect %d %d %d %d\n",
+        cv, x, xpos, ypos, xpos+x->x_width, ypos+x->x_height);
     float xscale = x->x_width / x->x_dur[x->x_n_states];
     float yscale = x->x_height;
-    sys_vgui(".x%lx.c coords %lx_line", cv, x);
+    sys_vgui(".x%lx.c coords %lx_line ", cv, x);
     for(int i = 0; i <= x->x_n_states; i++)
-        sys_vgui(" %d %d ",(int)(xpos + x->x_dur[i]*xscale),
-                 (int)(ypos + x->x_height - (x->x_points[i] - min) / range*yscale));
+        sys_vgui("%d %d ",(int)(xpos + x->x_dur[i]*xscale),
+        (int)(ypos + x->x_height - (x->x_points[i] - min) / range*yscale));
     sys_vgui("\n");
-    function_delete_dots(x, glist);
+    sys_vgui(".x%lx.c delete %lx_dots\n", glist_getcanvas(glist), x);
     function_draw_dots(x, glist);
-    function_draw_in_outlet(x);
+    function_draw_iolet(x);
 }
 
 // ------------------------ widgetbehaviour----------------------------- 
 static void function_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
     t_function* x = (t_function*)z;
     int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
-    *xp1 = xpos;
-    *yp1 = ypos;
-    *xp2 = xpos + x->x_width;
-    *yp2 = ypos + x->x_height;
+    *xp1 = xpos, *yp1 = ypos;
+    *xp2 = xpos + x->x_width, *yp2 = ypos + x->x_height;
 }
 
 static void function_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     t_function *x = (t_function *)z;
-    x->x_obj.te_xpix += dx;
-    x->x_obj.te_ypix += dy;
-    t_canvas *cv = glist_getcanvas(x->x_glist);
-    sys_vgui(".x%lx.c move %lx_rect %d %d\n", cv, x, dx * x->x_zoom, dy * x->x_zoom);
-    sys_vgui(".x%lx.c move %lx_line %d %d\n", cv, x, dx * x->x_zoom, dy * x->x_zoom);
-    sys_vgui(".x%lx.c move %lx_in %d %d\n", cv, x, dx * x->x_zoom, dy * x->x_zoom);
-    sys_vgui(".x%lx.c move %lx_out %d %d\n", cv, x, dx * x->x_zoom, dy * x->x_zoom);
-    for(int i = 0; i <= x->x_n_states; i++)
-        sys_vgui(".x%lx.c move %lx_dots%d %d %d\n", cv, x, i, dx * x->x_zoom, dy * x->x_zoom);
+    x->x_obj.te_xpix += dx, x->x_obj.te_ypix += dy;
+    sys_vgui(".x%lx.c move %lx_all %d %d\n", glist_getcanvas(x->x_glist), x, dx*x->x_zoom, dy*x->x_zoom);
     canvas_fixlinesfor(glist, (t_text*)x);
 }
 
-static void function_select(t_gobj *z, t_glist *glist, int selected){
+static void function_select(t_gobj *z, t_glist *glist, int sel){
     t_function *x = (t_function *)z;
     t_canvas *cv = glist_getcanvas(glist);
-    if((x->x_sel = selected))
+    if((x->x_sel = sel))
         sys_vgui(".x%lx.c itemconfigure %lx_rect -outline blue\n", cv, x);
     else
         sys_vgui(".x%lx.c itemconfigure %lx_rect -outline black\n", cv, x);
@@ -613,8 +596,8 @@ static void function_min(t_function *x, t_floatarg f){
     if(f <= x->x_min_point){
         if(x->x_min != f){
             x->x_min = f;
-        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
-            function_update(x, x->x_glist);
+            if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
+                function_update(x, x->x_glist);
         }
     }
 }
@@ -674,7 +657,7 @@ static void function_send(t_function *x, t_symbol *s){
         x->x_snd_set = 1;
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
             if(x->x_send == &s_)
-                function_draw_in_outlet(x);
+                function_draw_iolet(x);
             else
                 sys_vgui(".x%lx.c delete %lx_out\n", glist_getcanvas(x->x_glist), x);
         }
@@ -694,7 +677,7 @@ static void function_receive(t_function *x, t_symbol *s){
         x->x_receive = rcv;
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
             if(x->x_receive == &s_)
-                function_draw_in_outlet(x);
+                function_draw_iolet(x);
             else
                 sys_vgui(".x%lx.c delete %lx_in\n", glist_getcanvas(x->x_glist), x);
         }
@@ -713,9 +696,8 @@ static void function_fgcolor(t_function *x, t_floatarg red, t_floatarg green, t_
             t_canvas *cv = glist_getcanvas(x->x_glist);
             sys_vgui(".x%lx.c itemconfigure %lx_line -fill #%2.2x%2.2x%2.2x\n", cv,
                 x, x->x_fgcolor[0] = r, x->x_fgcolor[1] = g, x->x_fgcolor[2] = b);
-            for(int i = 0; i <= x->x_n_states; i++)
-                sys_vgui(".x%lx.c itemconfigure %lx_dots%d -outline #%2.2x%2.2x%2.2x\n", cv,
-                         x, i, x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
+            sys_vgui(".x%lx.c itemconfigure %lx_dots -outline #%2.2x%2.2x%2.2x\n", cv,
+                x, x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
         }
     }
 }
@@ -732,9 +714,8 @@ static void function_bgcolor(t_function *x, t_floatarg red, t_floatarg green, t_
             t_canvas *cv = glist_getcanvas(x->x_glist);
             sys_vgui(".x%lx.c itemconfigure %lx_rect -fill #%2.2x%2.2x%2.2x\n", cv,
                 x, x->x_bgcolor[0] = r, x->x_bgcolor[1] = g, x->x_bgcolor[2] = b);
-            for(int i = 0; i <= x->x_n_states; i++)
-                sys_vgui(".x%lx.c itemconfigure %lx_dots%d -fill #%2.2x%2.2x%2.2x\n", cv,
-                         x, i, x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+            sys_vgui(".x%lx.c itemconfigure %lx_dots -fill #%2.2x%2.2x%2.2x\n", cv,
+                x, x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
         }
     }
 }
@@ -771,7 +752,7 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
         if(p->p_cnv->x_edit != edit){
             p->p_cnv->x_edit = edit;
             if(edit)
-                function_draw_in_outlet(p->p_cnv);
+                function_draw_iolet(p->p_cnv);
             else{
                 t_canvas *cv = glist_getcanvas(p->p_cnv->x_glist);
                 sys_vgui(".x%lx.c delete %lx_in\n", cv, p->p_cnv);
