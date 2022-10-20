@@ -29,7 +29,7 @@ typedef struct _function{
     int             x_width;
     int             x_height;
     int             x_init;
-    int             x_grabbed; // for moving points
+    int             x_grabbed; // number of grabbed point, for moving it/deleting it
     int             x_shift;       
     int             x_snd_set;
     int             x_rcv_set;
@@ -181,7 +181,7 @@ static void function_vis(t_gobj *z, t_glist *glist, int vis){
     vis ? function_draw((t_function*)z, glist) : function_erase((t_function*)z, glist);
 }
 
-static void function_followpointer(t_function* x,t_glist* glist){
+static void function_move_dot(t_function* x, t_glist* glist){
     float dur;
     float xscale = x->x_dur[x->x_n_states] / x->x_width;
     float range = x->x_max - x->x_min;
@@ -198,67 +198,66 @@ static void function_followpointer(t_function* x,t_glist* glist){
     grabbed = grabbed < 0.0 ? 0.0 : grabbed > 1.0 ? 1.0 : grabbed;
     x->x_points[x->x_grabbed] = grabbed * range + min;
     function_bang(x);
+    function_update(x, glist);
 }
 
 static void function_motion(t_function *x, t_floatarg dx, t_floatarg dy){
     if(x->x_shift)
-        x->x_pointer_x += dx * 0.1, x->x_pointer_y += dy * 0.1;
-    else
-        x->x_pointer_x += dx, x->x_pointer_y += dy;
-    function_followpointer(x, x->x_glist);
-    function_update(x, x->x_glist);
+        dx *= 0.1, dy *= 0.1;
+    x->x_pointer_x += dx, x->x_pointer_y += dy;
+    function_move_dot(x, x->x_glist);
 }
 
 static void function_key(t_function *x, t_floatarg f){
-    if(f == 8.0 && x->x_grabbed > 0 && x->x_grabbed < x->x_n_states){
+    if(f == 8.0 && x->x_grabbed > 0 && x->x_grabbed < x->x_n_states){ // delete dot
         for(int i = x->x_grabbed; i <= x->x_n_states; i++){
             x->x_dur[i] = x->x_dur[i+1];
             x->x_points[i] = x->x_points[i+1];
         }
         x->x_n_states--;
-        x->x_grabbed--;
+        x->x_grabbed = -1;
         function_update(x, x->x_glist);
         function_bang(x);
     }
 }
 
-static void function_next_dot(t_function *x, t_glist *glist, int dot_x,int dot_y){
-    int i, insertpos = -1;
+static void function_create_dot(t_function *x, t_glist *glist, int dot_x,int dot_y){
+    x->x_grabbed = -1;
     float tval, minval = 100000000000000000000.0; // stupidly high number
     float range = x->x_max - x->x_min;
     float min =  x->x_min;
     float xpos = (float)text_xpix(&x->x_obj, glist), ypos = (float)text_ypix(&x->x_obj, glist);
-    if(dot_x > xpos + x->x_width)
+    if(dot_x > xpos + x->x_width) // bullshit?
         dot_x = xpos + x->x_width;
     float xscale = x->x_width / x->x_dur[x->x_n_states];
     float yscale = x->x_height;
-    for(i = 0; i <= x->x_n_states; i++){
+    for(int i = 0; i <= x->x_n_states; i++){
         float dx2 = (xpos + (x->x_dur[i] * xscale)) - dot_x;
         float dy2 = (ypos + yscale - ((x->x_points[i] - min) / range * yscale)) - dot_y;
         tval = sqrt(dx2*dx2 + dy2*dy2);
         if(tval <= minval){
             minval = tval;
-            insertpos = i;
+            x->x_grabbed = i;
         }
     }
-    if(minval > 8 && insertpos >= 0){ // decide if we want to make a new one
-        while(((xpos + (x->x_dur[insertpos] * xscale)) - dot_x) < 0)
-            insertpos++;
-        while(((xpos + (x->x_dur[insertpos-1] * xscale)) - dot_x) > 0)
-            insertpos--;
-        for(i = x->x_n_states; i >= insertpos; i--){
+    if(minval > 8 && x->x_grabbed >= 0){ // create and grab new dot
+        while(((xpos + x->x_dur[x->x_grabbed] * xscale) - dot_x) < 0)
+            x->x_grabbed++;
+        while(((xpos + x->x_dur[x->x_grabbed-1] * xscale) - dot_x) > 0)
+            x->x_grabbed--;
+        for(int i = x->x_n_states; i >= x->x_grabbed; i--){
             x->x_dur[i+1] = x->x_dur[i];
             x->x_points[i+1] = x->x_points[i];
         }
-        x->x_dur[insertpos] = (float)(dot_x-xpos) / x->x_width * x->x_dur[x->x_n_states++];
+        x->x_dur[x->x_grabbed] = (float)(dot_x-xpos) / x->x_width * x->x_dur[x->x_n_states++];
         x->x_pointer_x = dot_x;
         x->x_pointer_y = dot_y;
+        function_move_dot(x, glist);
     }
-    else{
-        x->x_pointer_x = xpos + x->x_dur[insertpos] * x->x_width / x->x_dur[x->x_n_states];
+    else{ // don't create
+        x->x_pointer_x = xpos + x->x_dur[x->x_grabbed] * x->x_width / x->x_dur[x->x_n_states];
         x->x_pointer_y = dot_y;
     }
-    x->x_grabbed = insertpos;
 }
 
 static int function_click(t_function *x, t_glist *gl, int xpos, int ypos, int shift, int alt, int dbl, int doit){
@@ -268,11 +267,9 @@ static int function_click(t_function *x, t_glist *gl, int xpos, int ypos, int sh
             pd_error(x, "[function]: too many lines, maximum is %d", MAX_SIZE);
             return(0);
         }
-        function_next_dot(x, gl, xpos, ypos);
+        function_create_dot(x, gl, xpos, ypos);
         glist_grab(x->x_glist, &x->x_obj.te_g, (t_glistmotionfn)function_motion, (t_glistkeyfn)function_key, xpos, ypos);
         x->x_shift = shift;
-        function_followpointer(x, gl);
-        function_update(x, gl);
     }
     return(1);
 }
