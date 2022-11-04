@@ -108,8 +108,6 @@ sys_gui("set var_scope_del [concat scope_del_$vid]\n");
 sys_gui("global $var_scope_del\n");
 sys_gui("set var_scope_tr_level [concat scope_tr_level_$vid]\n");
 sys_gui("global $var_scope_tr_level\n");
-sys_gui("set var_scope_draw_style [concat scope_draw_style_$vid]\n");
-sys_gui("global $var_scope_draw_style\n");
 sys_gui("set var_scope_width_init [concat scope_width_init_$vid]\n");
 sys_gui("global $var_scope_width_init\n");
 sys_gui("set var_scope_height_init [concat scope_height_init_$vid]\n");
@@ -249,8 +247,6 @@ sys_gui("set var_scope_tr_mode [concat scope_tr_mode_$vid]\n");
 sys_gui("global $var_scope_tr_mode\n");
 sys_gui("set var_scope_tr_level [concat scope_tr_level_$vid]\n");
 sys_gui("global $var_scope_tr_level\n");
-sys_gui("set var_scope_draw_style [concat scope_draw_style_$vid]\n");
-sys_gui("global $var_scope_draw_style\n");
 // receive
 sys_gui("set var_scope_rcv [concat scope_rcv_$vid]\n");
 sys_gui("global $var_scope_rcv\n");
@@ -271,7 +267,6 @@ sys_gui("[eval concat $$var_scope_bufsize] \\\n");
 sys_gui("[eval concat $$var_scope_min_range] \\\n");
 sys_gui("[eval concat $$var_scope_max_range] \\\n");
 sys_gui("[eval concat $$var_scope_del] \\\n");
-sys_gui("[eval concat $$var_scope_draw_style] \\\n");
 sys_gui("[eval concat $$var_scope_tr_mode] \\\n");
 sys_gui("[eval concat $$var_scope_tr_level] \\\n");
 sys_gui("[eval concat $$var_scope_bcol] \\\n");
@@ -296,7 +291,7 @@ sys_gui("proc ::dialog_scope::pdtk_scope_dialog {mytoplevel \\\n");
 sys_gui("dim_header width width_label height height_label \\\n");
 sys_gui("buf_header cal cal_label bufsize bufsize_label \\\n");
 sys_gui("range_header min_range min_range_label max_range max_range_label \\\n");
-sys_gui("del_header del del_label draw_style_header draw_style draw_style_label\\\n");
+sys_gui("del_header del del_label\\\n");
 sys_gui("rcv rcv_label\\\n");
 sys_gui("trg_header tr_mode tr_mode_label tr_level tr_level_label \\\n");
 sys_gui("dim_mins width_min height_min \\\n");
@@ -328,8 +323,6 @@ sys_gui("set var_scope_tr_mode2 [concat scope_tr_mode2_$vid]\n");
 sys_gui("global $var_scope_tr_mode2\n");
 sys_gui("set var_scope_tr_level [concat scope_tr_level_$vid]\n");
 sys_gui("global $var_scope_tr_level\n");
-sys_gui("set var_scope_draw_style [concat scope_draw_style_$vid]\n");
-sys_gui("global $var_scope_draw_style\n");
 // Receive
 sys_gui("set var_scope_rcv [concat scope_rcv_$vid]\n");
 sys_gui("global $var_scope_rcv\n");
@@ -378,7 +371,6 @@ sys_gui("set $var_scope_bufsize $bufsize\n");
 sys_gui("set $var_scope_min_range $min_range\n");
 sys_gui("set $var_scope_max_range $max_range\n");
 sys_gui("set $var_scope_del $del\n");
-sys_gui("set $var_scope_draw_style $draw_style\n");
 // Receive
 sys_gui("if {$rcv == \"empty\"} {set $var_scope_rcv [format \"\"]} else {set $var_scope_rcv [string map {{\\ } \" \"} $rcv]}\n");
 sys_gui("set $var_scope_tr_mode $tr_mode\n");
@@ -412,7 +404,6 @@ sys_gui("set min_range_label [_ \"Lower:\"]\n");
 sys_gui("set max_range_label [_ \"Upper:\"]\n");
 sys_gui("set del_header [_ \"Delay:\"]\n");
 sys_gui("set del_label [_ \"Delay:\"]\n");
-sys_gui("set draw_style_label [_ \"Alternate Drawstyle:\"]\n");
 sys_gui("set rcv_label [_ \"Receive Symbol:\"]\n");
 sys_gui("set tr_mode_label [_ \"Trigger Mode:\"]\n");
 sys_gui("set tr_mode0_label [_ \"None\"]\n");
@@ -495,19 +486,15 @@ sys_gui("-label \"Up\" -command \"::dialog_scope::scope_trigger_mode $mytoplevel
 sys_gui("$mytoplevel.tr_mode_popup add command \\\n");
 sys_gui("-label \"Down\" -command \"::dialog_scope::scope_trigger_mode $mytoplevel 2\"\n");
 sys_gui("bind $mytoplevel.trg.tr_mode.trb <Button> [list tk_popup $mytoplevel.tr_mode_popup %X %Y]\n");
-//delay & drawstyle
+//delay
 sys_gui("labelframe $mytoplevel.misc -borderwidth 1 -pady 8 -text [_ \"Other Settings:\"]\n");
 sys_gui("pack $mytoplevel.misc -side top -pady 5 -fill x\n");
 sys_gui("frame $mytoplevel.misc.fr\n");
 sys_gui("label $mytoplevel.misc.fr.del_lab -text [_ $del_label]\n");
 sys_gui("entry $mytoplevel.misc.fr.del_ent -textvariable $var_scope_del -width 7\n");
 sys_gui("label $mytoplevel.misc.fr.dummy1 -text \"\" -width 4\n");
-sys_gui("label $mytoplevel.misc.fr.draw_style_lab -text [_ $draw_style_label]\n");
-sys_gui("checkbutton $mytoplevel.misc.fr.draw_style_chk -variable $var_scope_draw_style \\\n");
-sys_gui("-command \"::dialog_scope::apply_and_rebind_return $mytoplevel\" \n");
 sys_gui("pack $mytoplevel.misc.fr -side left -expand 1\n");
-sys_gui("pack $mytoplevel.misc.fr.del_lab $mytoplevel.misc.fr.del_ent \\\n");
-sys_gui("$mytoplevel.misc.fr.dummy1 $mytoplevel.misc.fr.draw_style_lab $mytoplevel.misc.fr.draw_style_chk -side left\n");
+sys_gui("pack $mytoplevel.misc.fr.del_lab $mytoplevel.misc.fr.del_ent\n");
 
 // Receive
 sys_gui("labelframe $mytoplevel.rcv -borderwidth 1 -pady 8 -text [_ \"Receive:\"]\n");
@@ -522,7 +509,7 @@ sys_gui("pack $mytoplevel.rcv.fr.rcv_lab $mytoplevel.rcv.fr.rcv_ent -side left \
 sys_gui("labelframe $mytoplevel.colors -borderwidth 1 -text [_ \"Colors:\"] -padx 5 -pady 5\n");
 sys_gui("pack $mytoplevel.colors -fill x\n");
 sys_gui("frame $mytoplevel.colors.scopevis \n");
-sys_gui("pack $mytoplevel.colors.scopevis -side top -pady 10\n");
+sys_gui("pack $mytoplevel.colors.scopevis -side right -pady 30 -padx 15\n"); 
 sys_gui("canvas $mytoplevel.colors.scopevis.cv -width 81 -height 65 \\\n");
 sys_gui("-relief flat -highlightthickness 0\n");
 sys_gui("pack $mytoplevel.colors.scopevis.cv -in $mytoplevel.colors.scopevis\n");
