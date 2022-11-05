@@ -1,4 +1,5 @@
-// [gendyn~]: "Dinamic Stochastic Synthesis" based on Xenakis' GenDyn stuff
+// [gendyn~]: "Dinamic Stochastic Synthesis" based/inspired on Xenakis' GenDyn stuff
+// code by porres, 2022
 
 #include "m_pd.h"
 #include <math.h>
@@ -181,19 +182,18 @@ static void gendyn_interp(t_gendyn* x, t_floatarg f){
 }
 
 static t_int* gendyn_perform(t_int* w){
-    t_gendyn* x = (t_gendyn*)(w[1]);
-    t_float* out = (t_float*)(w[2]);
-    int block = (int)(w[3]);
+    t_gendyn *x = (t_gendyn*)(w[1]);
+    t_float *out = (t_float*)(w[2]);
+    int n = (int)(w[3]);
     double phase = x->x_phase;
     double amp = x->x_amp; // current index amplitude
     double freq = x->x_freq; // current index frequency
     double nextamp = x->x_nextamp;
     double phase_step = x->x_phase_step;
-    for(int i = 0; i < block; i++){ // ++i ????
+    while(n--){
         if(phase >= 1){ // get new value
             phase -= 1;
             amp = x->x_amps[x->x_i], freq = x->x_freqs[x->x_i]; // get values
-//            post("amp = %f / freq = %f", amp, freq);
             double r = gendyn_rand(x, x->x_ad, x->x_ap) * x->x_astep;
             x->x_amps[x->x_i] = gendyn_fold(amp + r, -1.0, 1.0); // update amp
             r = gendyn_rand(x, x->x_fd, x->x_fp) * x->x_fstep;
@@ -203,11 +203,13 @@ static t_int* gendyn_perform(t_int* w){
         }
         phase_step = (x->x_frange  * freq + x->x_minf) * x->x_i_sr;
         phase_step *= x->x_n; // if there are 12 points, multiply speed by 12
+        if(phase_step > 1)
+            phase_step = 1;
         double output = amp;
         if(x->x_interp) // linear interpolation
             output = ((1.0 - phase) * amp) + (phase * nextamp);
         phase += phase_step;
-        out[i] = output;
+        *out++ = output;
     }
     x->x_phase = phase;
     x->x_amp = amp;
@@ -248,7 +250,6 @@ void gendyn_tilde_setup(void){
     class_addmethod(gendyn_class, (t_method)gendyn_freq, gensym("cf"), A_FLOAT, 0);
     class_addmethod(gendyn_class, (t_method)gendyn_bw, gensym("bw_hz"), A_FLOAT, 0);
     class_addmethod(gendyn_class, (t_method)gendyn_bwc, gensym("bw_cents"), A_FLOAT, 0);
-    
     class_addmethod(gendyn_class, (t_method)gendyn_frange, gensym("frange"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(gendyn_class, (t_method)gendyn_step_a, gensym("amp_step"), A_FLOAT, 0);
     class_addmethod(gendyn_class, (t_method)gendyn_step_f, gensym("freq_step"), A_FLOAT, 0);
