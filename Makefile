@@ -276,7 +276,7 @@ shared/random.c
     brown~.class.sources := Classes/Source/brown~.c $(randmagic)
 
 rand := shared/random.c
-    dss~.class.sources := Classes/Source/dss~.c $(rand)
+    gendyn~.class.sources := Classes/Source/gendyn~.c $(rand)
     white~.class.sources := Classes/Source/white~.c $(rand)
     pink~.class.sources := Classes/Source/pink~.c $(rand)
     gray~.class.sources := Classes/Source/gray~.c $(rand)
