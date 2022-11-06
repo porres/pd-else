@@ -10,8 +10,8 @@
 static t_class* gendyn_class;
 
 typedef struct _gendyn{
-    t_object       x_obj;
-    t_random_state x_rstate;
+    t_object       x_obj;          // the object
+    t_random_state x_rstate;       // random generator state
     int            x_id;           // random id value
     int            x_n;            // number of points in the period
     double         x_minf;         // minimum frequency
@@ -28,8 +28,8 @@ typedef struct _gendyn{
     int            x_interp;       // interpolation mode
     double         x_phase;        // running phase
     double         x_phase_step;   // running frequency's phase step
-    int            x_cents;
-    double         x_ratio;
+    int            x_cents;        // flag for bandwidth in cents
+    double         x_ratio;        // converted ratio value from cents
     int            x_i;            // point's index
     double         x_freq;         // current point's frequency
     double         x_amp;          // current point's amplitude
@@ -93,7 +93,7 @@ static double gendyn_rand(t_gendyn *x, int d, double p){
             case 6: // Sinus:
                 // X original a*sin(smp * 2*pi/44100 * b) ie depends on a second oscillator's value-
                 // hmmm, plug this in as a I guess, will automatically accept control rate inputs then!
-                return(2.f * p - 1.f);
+                return(2.0 * p - 1.0);
             default:
                 break;
         }
@@ -172,8 +172,8 @@ static void gendyn_freq_dist(t_gendyn* x, t_floatarg f1, t_floatarg f2){
 
 static void gendyn_dist(t_gendyn* x, t_floatarg f1, t_floatarg f2, t_floatarg f3, t_floatarg f4){
     x->x_ad = f1 < 0 ? 0 : f1 > 6 ? 6 : (int)f1;
-    x->x_fd = f2 < 0 ? 0 : f2 > 6 ? 6 : (int)f2;
-    x->x_ap = f3 < 0.0001 ? 0.0001 : f3 > 1 ? 1 : f3;
+    x->x_ap = f2 < 0.0001 ? 0.0001 : f2 > 1 ? 1 : f2;
+    x->x_fd = f3 < 0 ? 0 : f3 > 6 ? 6 : (int)f3;
     x->x_fp = f4 < 0.0001 ? 0.0001 : f4 > 1 ? 1 : f4;
 }
 
@@ -190,6 +190,7 @@ static t_int* gendyn_perform(t_int* w){
     double freq = x->x_freq; // current index frequency
     double nextamp = x->x_nextamp;
     double phase_step = x->x_phase_step;
+    double output;
     while(n--){
         if(phase >= 1){ // get new value
             phase -= 1;
@@ -205,9 +206,10 @@ static t_int* gendyn_perform(t_int* w){
         phase_step *= x->x_n; // if there are 12 points, multiply speed by 12
         if(phase_step > 1)
             phase_step = 1;
-        double output = amp;
         if(x->x_interp) // linear interpolation
             output = ((1.0 - phase) * amp) + (phase * nextamp);
+        else
+            output = amp;
         phase += phase_step;
         *out++ = output;
     }
