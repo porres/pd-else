@@ -304,7 +304,6 @@ static void *button_new(t_symbol *s, int ac, t_atom *av){
                 else goto errstate;
             }
             else if(s == gensym("-size")){
-                post("hi");
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     w = h = atom_getfloatarg(1, ac, av);
                     ac-=2, av+=2;

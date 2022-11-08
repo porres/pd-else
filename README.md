@@ -4,9 +4,9 @@
 
 ### for the Pure Data programming language
 
-### Version: 1.0-0 RC-4 (release candidate #3) With Live Electronics Tutorial. 
+### Version: 1.0-0 RC-45(release candidate #5) With Live Electronics Tutorial. 
 
-### Released October 13th 2022
+### Unreleased
 
 
 
@@ -27,7 +27,7 @@
 
 ###   About ELSE
 
-This version of ELSE needs **Pd 0.52-1** or above.
+This version of ELSE needs **Pd 0.53-0** or above.
 
 ELSE is a big library of externals that extends the performance Pure Data (Pd) - Miller S. Puckette's realtime computer music environment (download Pd from: http://msp.ucsd.edu/software.html).
 
@@ -108,7 +108,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 --------------------------------------------------------------------------
 
-## Current Object list (464 objects):
+## Current Object list (465 objects):
 
 **ASSORTED: [04]**
 
@@ -459,7 +459,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [bl.vsaw~]
 - [bl.wavetable~]
 
-**SYNTHESIS: CHAOTIC/NOISE GENERATORS: [25]**
+**SYNTHESIS: CHAOTIC/NOISE GENERATORS: [26]**
 
 - [white~] 
 - [brown~] 
@@ -486,6 +486,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [pink~]
 - [xmod~]
 - [xmod2~]
+- [gendyn~] 
 
 **CONTROL: MOUSE INTERACTION [2]**
 

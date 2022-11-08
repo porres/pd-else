@@ -124,7 +124,7 @@ static void gendyn_frange(t_gendyn* x, t_floatarg f1, t_floatarg f2){
     x->x_frange = (x->x_maxf - x->x_minf);
 }
 
-static void gendyn_update_freq(t_gendyn* x, int cents){
+/*static void gendyn_update_freq(t_gendyn* x, int cents){
     if(cents){
         x->x_minf = x->x_cf / x->x_ratio;
         x->x_maxf = x->x_cf * x->x_ratio;
@@ -150,7 +150,7 @@ static void gendyn_bwc(t_gendyn* x, t_floatarg f){
     double cents = f < 0 ? 0 : f;
     x->x_ratio = pow(2, (cents/1200));
     gendyn_update_freq(x, x->x_cents = 1);
-}
+}*/
 
 static void gendyn_step_a(t_gendyn* x, t_floatarg f){ // maximum amplitude step in percentage
     x->x_astep = (f < 0 ? 0 : f > 100 ? 100 : f) / 50;
@@ -202,8 +202,9 @@ static t_int* gendyn_perform(t_int* w){
             x->x_i = (x->x_i + 1) % x->x_n; // next index
             nextamp = x->x_amps[x->x_i]; // next index's amp
         }
-        phase_step = (x->x_frange  * freq + x->x_minf) * x->x_i_sr;
-        phase_step *= x->x_n; // if there are 12 points, multiply speed by 12
+        // need to remap 
+        phase_step = (x->x_frange  * freq + x->x_minf);
+        phase_step *= (x->x_n * x->x_i_sr);
         if(phase_step > 1)
             phase_step = 1;
         if(x->x_interp) // linear interpolation
@@ -227,31 +228,105 @@ static void gendyn_dsp(t_gendyn* x, t_signal** sp){
 }
 
 static void* gendyn_new(t_symbol *s, int ac, t_atom *av){
-    s = NULL;
-    ac = 0;
-    av = NULL;
     t_gendyn* x = (t_gendyn*)pd_new(gendyn_class);
-    x->x_n = 12;
-    x->x_minf = 220, x->x_maxf = 440;
-    x->x_ad = x->x_fd = 0;
-    x->x_ap = x->x_fp = 50;
-    x->x_astep = x->x_fstep = 25;
-    x->x_interp = 1;
-    x->x_cents = 0;
-    x->x_i_sr = 1 / sys_getsr();
+    int n = 12;                     // number of points
+    int ad = 0, fd = 0;             // distribution number
+    double ap = 0.5, fp = 0.5;      // distribution parameter
+    double minf = 220, maxf = 440;  // min/max freq
+    float fstep = 50, astep = 25;   // steps in %
+    int interp = 1;                 // interpolation mode
+    int cents = 0;
     x->x_id = random_get_id();
     gendyn_seed(x, s, 0, NULL);
+    while(ac > 0){
+        if(av->a_type == A_SYMBOL){
+            s = atom_getsymbolarg(0, ac, av);
+            if(s == gensym("-interp")){
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    interp = (int)(atom_getfloatarg(1, ac, av) != 0);
+                    ac-=2, av+=2;
+                }
+                else goto errstate;
+            }
+            else if(ac >= 2 && atom_getsymbol(av) == gensym("-seed")){
+                t_atom at[1];
+                SETFLOAT(at, atom_getfloat(av+1));
+                ac-=2, av+=2;
+                gendyn_seed(x, s, 1, at);
+            }
+            else if(s == gensym("-fstep")){
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    fstep = (atom_getfloatarg(1, ac, av));
+                    ac-=2, av+=2;
+                }
+                else goto errstate;
+            }
+            else if(s == gensym("-astep")){
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    astep = (atom_getfloatarg(1, ac, av));
+                    ac-=2, av+=2;
+                }
+                else goto errstate;
+            }
+            else if(s == gensym("-n")){
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    n = (int)atom_getfloatarg(1, ac, av);
+                    ac-=2, av+=2;
+                }
+                else goto errstate;
+            }
+            else if(s == gensym("-frange")){
+                if(ac >= 3 && (av+1)->a_type == A_FLOAT && (av+2)->a_type == A_FLOAT){
+                    minf = atom_getfloatarg(1, ac, av);
+                    maxf = atom_getfloatarg(2, ac, av);
+                    ac-=3, av+=3;
+                }
+                else goto errstate;
+            }
+            else if(s == gensym("-dist")){
+                if(ac >= 5 && (av+1)->a_type == A_FLOAT && (av+2)->a_type == A_FLOAT
+                && (av+3)->a_type == A_FLOAT && (av+4)->a_type == A_FLOAT){
+                    ad = (int)atom_getfloatarg(1, ac, av);
+                    ad = ad < 0 ? 0 : ad > 6 ? 6 : ad;
+                    ap = (int)atom_getfloatarg(2, ac, av);
+                    ap = ap < 0.0001  ? 0.0001 : ap > 1 ? 1 : ap;
+                    fd = (int)atom_getfloatarg(3, ac, av);
+                    fd = fd < 0 ? 0 : fd > 6 ? 6 : fd;
+                    fp = (int)atom_getfloatarg(4, ac, av);
+                    fp = fp < 0.0001 ? 0.0001 : fp > 1 ? 1 : fp;
+                    ac-=5, av+=5;
+                }
+                else goto errstate;
+            }
+            else goto errstate;
+        }
+        else goto errstate;
+    }
+    x->x_n = n;
+    gendyn_frange(x, minf, maxf);
+    gendyn_step_a(x, astep);
+    gendyn_step_f(x, fstep);
+    x->x_ad = ad;
+    x->x_fd = fd;
+    x->x_ap = ap;
+    x->x_fp = fp;
+    x->x_interp = interp;
+    x->x_cents = cents;
+    x->x_i_sr = 1 / sys_getsr();
     outlet_new(&x->x_obj, gensym("signal"));
     return(x);
+errstate:
+    pd_error(x, "[gendyn~]: improper args");
+    return(NULL);
 }
 
 void gendyn_tilde_setup(void){
     gendyn_class = class_new(gensym("gendyn~"), (t_newmethod)gendyn_new, 0,
         sizeof(t_gendyn), 0, A_GIMME, 0);
     class_addmethod(gendyn_class, (t_method)gendyn_n, gensym("n"), A_FLOAT, 0);
-    class_addmethod(gendyn_class, (t_method)gendyn_freq, gensym("cf"), A_FLOAT, 0);
+/*    class_addmethod(gendyn_class, (t_method)gendyn_freq, gensym("cf"), A_FLOAT, 0);
     class_addmethod(gendyn_class, (t_method)gendyn_bw, gensym("bw_hz"), A_FLOAT, 0);
-    class_addmethod(gendyn_class, (t_method)gendyn_bwc, gensym("bw_cents"), A_FLOAT, 0);
+    class_addmethod(gendyn_class, (t_method)gendyn_bwc, gensym("bw_cents"), A_FLOAT, 0);*/
     class_addmethod(gendyn_class, (t_method)gendyn_frange, gensym("frange"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(gendyn_class, (t_method)gendyn_step_a, gensym("amp_step"), A_FLOAT, 0);
     class_addmethod(gendyn_class, (t_method)gendyn_step_f, gensym("freq_step"), A_FLOAT, 0);

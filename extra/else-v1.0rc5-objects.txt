@@ -156,6 +156,7 @@ gatehold~	x
 gaussian~	x
 gbman~	x
 gcd	x
+gendyn~	x
 giga.rev~	x
 glide	x
 glide~	x
