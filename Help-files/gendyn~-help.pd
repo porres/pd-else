@@ -21,7 +21,6 @@
 #X restore 3 3 graph;
 #X obj 221 160 else/gendyn~;
 #X obj 221 189 else/out~;
-#X text 42 89 [gendyn~] implements "Dynamic Strochastic Synthesis" based on Xenakis' 'GenDyn' algorhythm. The waveform has a given number of points (linearly interpolated by default). The period of each point and its value changes according to a random walk with given distributions., f 79;
 #X text 42 174 see also;
 #X obj 42 193 else/brown;
 #X obj 42 217 else/brown~;
@@ -294,4 +293,5 @@
 #X obj 4 414 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
 #X text 125 423 -n <f> | -frange <f f> | -freq_step <f> | -amp_step <f> | -interp <f> | -seed <f> | -dist <f f f f> |;
 #X text 204 387 - dynamic stochastic synthesis output;
+#X text 42 89 [gendyn~] implements "Dynamic Strochastic Synthesis" based on Xenakis' 'GenDyn' algorhythm. The waveform has a given number of points (linearly interpolated by default). The period of each point and its value changes according to a random walk (a.k.a. brownian motion) with given distributions., f 79;
 #X connect 16 0 17 0;
