@@ -2,8 +2,8 @@
 // code by porres, 2022
 
 #include "m_pd.h"
-#include <math.h>
 #include "random.h"
+#include "buffer.h"
 
 #define MAX_N 128
 
@@ -178,7 +178,7 @@ static void gendyn_dist(t_gendyn* x, t_floatarg f1, t_floatarg f2, t_floatarg f3
 }
 
 static void gendyn_interp(t_gendyn* x, t_floatarg f){
-    x->x_interp = (f != 0);
+    x->x_interp = f < 0 ? 0 : f > 2 ? 2 : (int)f;
 }
 
 static t_int* gendyn_perform(t_int* w){
@@ -207,10 +207,17 @@ static t_int* gendyn_perform(t_int* w){
         phase_step *= (x->x_n * x->x_i_sr);
         if(phase_step > 1)
             phase_step = 1;
-        if(x->x_interp) // linear interpolation
-            output = ((1.0 - phase) * amp) + (phase * nextamp);
-        else
-            output = amp;
+        switch(x->x_interp){
+            case 0: // no interpolation
+                output = amp;
+                break;
+            case 1: // linear
+                output = interp_lin(phase, amp, nextamp);
+                break;
+            case 2: // sin
+                output = interp_sin(phase, amp, nextamp);
+                break;
+        }
         phase += phase_step;
         *out++ = output;
     }
@@ -243,7 +250,7 @@ static void* gendyn_new(t_symbol *s, int ac, t_atom *av){
             s = atom_getsymbolarg(0, ac, av);
             if(s == gensym("-interp")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
-                    interp = (int)(atom_getfloatarg(1, ac, av) != 0);
+                    gendyn_interp(x, atom_getfloatarg(1, ac, av));
                     ac-=2, av+=2;
                 }
                 else goto errstate;
