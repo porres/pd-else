@@ -10,6 +10,10 @@
 
 #define buffer_MAXCHANS 64 //max number of channels
 
+#include <math.h>
+
+#define TWO_PI (3.14159265358979323846 * 2)
+
 typedef struct _buffer{
     //t_sic       s_sic;
     void     *c_owner; //owner of buffer, note i don't know if this actually works
@@ -29,6 +33,7 @@ typedef struct _buffer{
 }t_buffer;
 
 float interp_lin(double frac, double b, double c);
+float interp_sin(double frac, double b, double c);
 float interp_lagrange(double frac, double a, double b, double c, double d);
 float interp_cubic(double frac, double a, double b, double c, double d);
 float interp_spline(double frac, double a, double b, double c, double d);

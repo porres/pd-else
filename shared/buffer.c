@@ -10,6 +10,11 @@ float interp_lin(double frac, double b, double c){
     return((t_float)(b * (1.0 - frac) + c * frac));
 }
 
+float interp_sin(double frac, double b, double c){
+    float f = sin((frac * 0.5 - 0.25) * TWO_PI);
+    return((f * 0.5 + 0.5) * (c - b) + b);
+}
+
 float interp_lagrange(double frac, double a, double b, double c, double d){
     double cminusb = c-b;
     return((t_float)(b + frac * (cminusb - (1. - frac)/6. *

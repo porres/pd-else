@@ -275,8 +275,12 @@ shared/magic.c \
 shared/random.c
     brown~.class.sources := Classes/Source/brown~.c $(randmagic)
 
+randbuf := \
+shared/random.c \
+shared/buffer.c
+    gendyn~.class.sources := Classes/Source/gendyn~.c $(randbuf)
+
 rand := shared/random.c
-    gendyn~.class.sources := Classes/Source/gendyn~.c $(rand)
     white~.class.sources := Classes/Source/white~.c $(rand)
     pink~.class.sources := Classes/Source/pink~.c $(rand)
     gray~.class.sources := Classes/Source/gray~.c $(rand)
