@@ -99,7 +99,7 @@
 #X connect 11 0 12 0;
 #X coords 0 -1 1 1 94 60 2 100 100;
 #X restore 356 48 pd;
-#X obj 166 82 cnv 15 120 28 empty \$0-version 1.0-0\ rc-5 8 14 0 14 #e0e0e0 #404040 0;
+#X obj 166 82 cnv 15 120 28 empty \$0-version 1.0-0\ rc-4 8 14 0 14 #e0e0e0 #404040 0;
 #X obj 90 82 cnv 15 80 28 empty empty Version: 8 14 0 14 #e0e0e0 #404040 0;
 #N canvas 568 23 241 168 FFT 0;
 #X obj 55 52 else/hann~;
@@ -373,7 +373,6 @@
 #X obj 42 70 else/bitnormal~;
 #X restore 34 257 pd DSP(filters);
 #N canvas 709 140 229 403 Buffer/Sampling/Playing/Granulation 0;
-#X obj 59 30 else/table~;
 #X obj 58 54 else/sample~;
 #X obj 58 78 else/player~;
 #X obj 58 103 else/tabplayer~;
@@ -387,6 +386,7 @@
 #X obj 58 303 else/batch.rec~;
 #X obj 58 327 else/batch.write~;
 #X obj 58 352 else/play.file~;
+#X obj 59 30 else/tabreader~;
 #X restore 134 257 pd Buffer/Sampling/Playing/Granulation;
 #N canvas 1011 188 230 109 Granular_synth 0;
 #X obj 62 47 else/grain.synth~;
