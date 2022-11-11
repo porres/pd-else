@@ -271,15 +271,15 @@ shared/buffer.c
     tabplayer~.class.sources = Classes/Source/tabplayer~.c $(bufmagic)
 
 
-randmagic := \
-shared/magic.c \
-shared/random.c
-    brown~.class.sources := Classes/Source/brown~.c $(randmagic)
-
 randbuf := \
 shared/random.c \
 shared/buffer.c
     gendyn~.class.sources := Classes/Source/gendyn~.c $(randbuf)
+
+randmagic := \
+shared/magic.c \
+shared/random.c
+    brown~.class.sources := Classes/Source/brown~.c $(randmagic)
 
 rand := shared/random.c
     white~.class.sources := Classes/Source/white~.c $(rand)
