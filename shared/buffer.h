@@ -17,18 +17,27 @@
 
 #define ONE_SIXTH 0.16666666666666666666667f
 
-#define INDEX_4PT() \
-    int ndxm1, ndx1, ndx2; \
-    double xpos = phase*(double)size + (double)start; \
-    ndx = (int)xpos; \
+#define INDEX_2PT() \
+    double xpos = phase*(double)size; \
+    int ndx = (int)xpos; \
     double frac = xpos - ndx; \
-    if(ndx == endi) ndx = starti; \
-    ndxm1 = ndx - 1; \
-    if(ndxm1 < starti) ndxm1 = endi - 1; \
-    ndx1 = ndx + 1; \
-    if(ndx1 == endi) ndx1 = starti; \
-    ndx2 = ndx1 + 1; \
-    if(ndx2 == endi) ndx2 = starti; \
+    if(ndx == size) ndx = 0; \
+    int ndx1 = ndx + 1; \
+    if(ndx1 == size) ndx1 = 0; \
+    double b = (double)vector[ndx].w_float; \
+    double c = (double)vector[ndx1].w_float;
+
+#define INDEX_4PT() \
+    double xpos = phase*(double)size; \
+    int ndx = (int)xpos; \
+    double frac = xpos - ndx; \
+    if(ndx == size) ndx = 0; \
+    int ndxm1 = ndx - 1; \
+    if(ndxm1 < 0) ndxm1 = size - 1; \
+    int ndx1 = ndx + 1; \
+    if(ndx1 == size) ndx1 = 0; \
+    int ndx2 = ndx1 + 1; \
+    if(ndx2 == size) ndx2 = 0; \
     double a = (double)vector[ndxm1].w_float; \
     double b = (double)vector[ndx].w_float; \
     double c = (double)vector[ndx1].w_float; \
@@ -44,8 +53,7 @@ typedef struct _buffer{
     int         c_playable;
     int         c_minsize;
     int         c_disabled;
-    int         c_single;    // flag for single channel mode
-                             // 0-regular mode, 1-load this particular channel (1-idx)
+    int         c_single;    // flag: 0-regular mode, 1-load this particular channel (1-idx)
                              // should be used with c_numchans == 1
 }t_buffer;
 
