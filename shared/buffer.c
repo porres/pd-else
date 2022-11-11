@@ -17,7 +17,7 @@ float interp_sin(double frac, double b, double c){
 
 float interp_lagrange(double frac, double a, double b, double c, double d){
     double cminusb = c-b;
-    return((t_float)(b + frac * (cminusb - (1. - frac)/6. *
+    return((t_float)(b + frac * (cminusb - (1. - frac)*ONE_SIXTH *
         ((d - a - 3.0*cminusb) * frac + d + 2.0*a - 3.0*b))));
 }
 
