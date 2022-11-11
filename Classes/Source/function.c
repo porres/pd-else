@@ -4,7 +4,7 @@
 
 #include <m_pd.h>
 #include <g_canvas.h>
-#include <math.h>
+#include "buffer.h"
 
 static t_class *function_class, *edit_proxy_class;
 static t_widgetbehavior function_widgetbehavior;
@@ -166,11 +166,8 @@ static void function_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 
 static void function_select(t_gobj *z, t_glist *glist, int sel){
     t_function *x = (t_function *)z;
-    t_canvas *cv = glist_getcanvas(glist);
-    if((x->x_sel = sel))
-        sys_vgui(".x%lx.c itemconfigure %lx_rect -outline blue\n", cv, x);
-    else
-        sys_vgui(".x%lx.c itemconfigure %lx_rect -outline black\n", cv, x);
+    sys_vgui(".x%lx.c itemconfigure %lx_rect -outline %s\n", glist_getcanvas(glist),
+        x, (x->x_sel = sel) ? "blue" : "black");
 }
 
 static void function_delete(t_gobj *z, t_glist *glist){
@@ -464,14 +461,15 @@ static void function_i(t_function *x, t_floatarg f){
         x->x_state--;
     while((x->x_state <  x->x_n_states) && (x->x_dur[x->x_state] < f))
         x->x_state++;
-    float point = x->x_points[x->x_state];
-    float point_m1 = x->x_points[x->x_state-1];
-    float dur = x->x_dur[x->x_state];
+    float b = x->x_points[x->x_state-1];
+    float c = x->x_points[x->x_state];
     float dur_m1 = x->x_dur[x->x_state-1];
-    val = (point_m1 + (f-dur_m1) * (point-point_m1)/(dur-dur_m1));
-    outlet_float(x->x_obj.ob_outlet,val);
+    float dur = x->x_dur[x->x_state];
+    float frac = (f-dur_m1)/(dur-dur_m1);
+    val = interp_lin(frac, b, c);
     if(x->x_send != &s_)
         pd_float(x->x_send->s_thing, val);
+    outlet_float(x->x_obj.ob_outlet, val);
 }
 
 static void function_set_beeakpoints(t_function *x, int ac, t_atom* av){

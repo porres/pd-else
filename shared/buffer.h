@@ -59,6 +59,7 @@ typedef struct _buffer{
 
 float interp_lin(double frac, double b, double c);
 float interp_sin(double frac, double b, double c);
+float interp_pow(double frac, double b, double c, double p);
 float interp_lagrange(double frac, double a, double b, double c, double d);
 float interp_cubic(double frac, double a, double b, double c, double d);
 float interp_spline(double frac, double a, double b, double c, double d);

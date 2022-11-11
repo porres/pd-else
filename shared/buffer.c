@@ -5,14 +5,33 @@
 #include <stdarg.h>
 
 // interpolation
-
 float interp_lin(double frac, double b, double c){
-    return((t_float)(b * (1.0 - frac) + c * frac));
+    return(b + frac * (c-b));
 }
 
 float interp_sin(double frac, double b, double c){
-    float f = sin((frac * 0.5 - 0.25) * TWO_PI);
-    return((f * 0.5 + 0.5) * (c - b) + b);
+    frac = (sin((frac * 0.5 - 0.25) * TWO_PI)) * 0.5 + 0.5;
+    return(b + frac * (c-b));
+}
+
+float interp_pow(double frac, double b, double c, double p){
+    double dif = c-b;
+    if(fabs(p) == 1) // linear
+        return(b + frac * dif);
+    else{
+        if(p >= 0){ // positive exponential
+            if(b < c) // ascending
+                return(b + pow(frac, p) * dif);
+            else // descending (invert)
+                return(b + (1-pow(1-frac, p)) * dif);
+        }
+        else{ // negative exponential
+            if(b < c) // ascending
+                return(b + (1-pow(1-frac, -p)) * dif);
+            else // descending (invert)
+                return(b + pow(frac, -p) * dif);
+        }
+    }
 }
 
 float interp_lagrange(double frac, double a, double b, double c, double d){
