@@ -21,7 +21,6 @@ else.class.sources := Classes/Source/else.c
 button.class.sources := Classes/Source/button.c
 pic.class.sources := Classes/Source/pic.c
 keyboard.class.sources := Classes/Source/keyboard.c
-function.class.sources := Classes/Source/function.c
 pad.class.sources := Classes/Source/pad.c
 openfile.class.sources := Classes/Source/openfile.c
 colors.class.sources := Classes/Source/colors.c
@@ -158,7 +157,6 @@ fdn.rev~.class.sources := Classes/Source/fdn.rev~.c
 floor~.class.sources := Classes/Source/floor~.c
 fold~.class.sources := Classes/Source/fold~.c
 freq.shift~.class.sources := Classes/Source/freq.shift~.c
-function~.class.sources := Classes/Source/function~.c
 gbman~.class.sources := Classes/Source/gbman~.c
 gate2imp~.class.sources := Classes/Source/gate2imp~.c
 giga.rev~.class.sources := Classes/Source/giga.rev~.c
@@ -259,7 +257,10 @@ magic := shared/magic.c
 
 buf := shared/buffer.c
     shaper~.class.sources = Classes/Source/shaper~.c $(buf)
-    table~.class.sources = Classes/Source/table~.c $(buf)
+    tabreader.class.sources = Classes/Source/tabreader.c $(buf)
+    tabreader~.class.sources = Classes/Source/tabreader~.c $(buf)
+	function.class.sources := Classes/Source/function.c $(buf)
+	function~.class.sources := Classes/Source/function~.c $(buf)
     tabwriter~.class.sources = Classes/Source/tabwriter~.c $(buf)
 
 bufmagic := \

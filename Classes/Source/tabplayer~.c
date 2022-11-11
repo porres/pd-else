@@ -4,12 +4,6 @@
 #include "magic.h"
 #include "buffer.h"
 #include <stdlib.h>
-#include <math.h>
-
-#define HALF_PI (3.14159265358979323846 * 0.5)
-
-#define ONE_SIXTH 0.16666666666666666666667f
-#define SHARED_FLT_MAX  1E+36
 
 typedef struct _tabplayer{
     t_object    x_obj;
@@ -147,7 +141,7 @@ static void tabplayer_play(t_play *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac){ // args: start (ms) / end (ms), rate
         float stms = 0;
-        float endms = SHARED_FLT_MAX;
+        float endms =  1E+36; // stupidly high number
         int argnum = 0;
         while(ac){
             if(av->a_type == A_FLOAT){
@@ -246,7 +240,7 @@ static double tabplayer_interp(t_play *x, int ch, double phase){
     t_word **vectable = x->x_buffer->c_vectors; // ??
     t_word *vp = vectable[ch]; // ??
     if(vp){
-        float f,  a,  b,  c,  d, cmb;
+        float f;
         int maxindex = x->x_npts - 3;
         if(phase < 0 || phase > maxindex)
             phase = 0;  // CHECKED: a value 0, not ndx 0 (???)
@@ -262,12 +256,11 @@ static double tabplayer_interp(t_play *x, int ch, double phase){
         else
             f = phase - ndx;
         vp += ndx;
-        a = vp[-1].w_float;
-        b = vp[0].w_float;
-        c = vp[1].w_float;
-        d = vp[2].w_float;
-        cmb = c-b;
-        out = b + f*(cmb - ONE_SIXTH*(1.-f)*((d - a - 3.0f*cmb)*f + (d + 2.0f*a - 3.0f*b)));
+        double a = vp[-1].w_float;
+        double b = vp[0].w_float;
+        double c = vp[1].w_float;
+        double d = vp[2].w_float;
+        out = interp_lagrange(f, a, b, c, d);
     }
     return(out);
 }
@@ -285,8 +278,7 @@ static t_int *tabplayer_perform(t_int *w){
                 float sig_input = *xin++;
                 for(ch = 0; ch < x->x_n_ch; ch++){
                     t_float *output = *(x->x_ovecs+ch);
-                    if(sig_input != 0 && last_sig_input == 0){
-                        // bang
+                    if(sig_input != 0 && last_sig_input == 0){ // bang
                         x->x_position = 0;
                         x->x_playing = x->x_playnew = 1; // start playing
                     }
