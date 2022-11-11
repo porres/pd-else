@@ -442,14 +442,6 @@ static void function_float(t_function *x, t_floatarg f){
         pd_float(x->x_send->s_thing, val);
 }
 
-static float function_interpolate(t_function* x, float f){
-    float point = x->x_points[x->x_state];
-    float point_m1 = x->x_points[x->x_state-1];
-    float dur = x->x_dur[x->x_state];
-    float dur_m1 = x->x_dur[x->x_state-1];
-    return(point_m1 + (f-dur_m1) * (point-point_m1)/(dur-dur_m1));
-}
-
 static void function_i(t_function *x, t_floatarg f){
     float val;
     if(f <= 0){
@@ -472,7 +464,11 @@ static void function_i(t_function *x, t_floatarg f){
         x->x_state--;
     while((x->x_state <  x->x_n_states) && (x->x_dur[x->x_state] < f))
         x->x_state++;
-    val = function_interpolate(x, f);
+    float point = x->x_points[x->x_state];
+    float point_m1 = x->x_points[x->x_state-1];
+    float dur = x->x_dur[x->x_state];
+    float dur_m1 = x->x_dur[x->x_state-1];
+    val = (point_m1 + (f-dur_m1) * (point-point_m1)/(dur-dur_m1));
     outlet_float(x->x_obj.ob_outlet,val);
     if(x->x_send != &s_)
         pd_float(x->x_send->s_thing, val);
