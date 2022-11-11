@@ -1,7 +1,7 @@
 // porres based on cyclone/wave~
 
 #include "m_pd.h"
-#include "shared/buffer.h"
+#include "buffer.h"
 
 typedef struct _tabreader{
     t_object  x_obj;
