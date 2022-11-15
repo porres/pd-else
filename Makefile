@@ -6,7 +6,7 @@
 
 lib.name = else
 
-cflags = -Ishared -DHAVE_STRUCT_TIMESPEC
+cflags = -Ishared -Ishared/aubio/src -DHAVE_STRUCT_TIMESPEC
 
 uname := $(shell uname -s)
 
@@ -235,6 +235,14 @@ xselect2~.class.sources := Classes/Source/xselect2~.c
 wrap2.class.sources := Classes/Source/wrap2.c
 wrap2~.class.sources := Classes/Source/wrap2~.c
 zerocross~.class.sources := Classes/Source/zerocross~.c
+
+aubio := $(wildcard shared/aubio/src/*/*.c) $(wildcard shared/aubio/src/*.c)
+    silencedetect~.class.sources := Classes/Source/silencedetect~.c $(aubio)
+    tempodetect~.class.sources := Classes/Source/tempodetect~.c $(aubio)
+    tssdetect~.class.sources := Classes/Source/tssdetect~.c $(aubio)
+    onsetdetect~.class.sources := Classes/Source/onsetdetect~.c $(aubio)
+    pitchdetect~.class.sources := Classes/Source/pitchdetect~.c $(aubio)
+
 
 magic := shared/magic.c
     sine~.class.sources := Classes/Source/sine~.c $(magic)

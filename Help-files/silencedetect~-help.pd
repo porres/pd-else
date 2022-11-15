@@ -1,0 +1,41 @@
+#N canvas 225 567 515 246 10;
+#X obj 20 115 adc~;
+#X obj 19 279 bng 15 250 50 0 empty empty empty 0 -6 0 8 #fcfcfc #000000
+#000000;
+#X obj 119 279 bng 15 250 50 0 empty empty empty 0 -6 0 8 #fcfcfc #000000
+#000000;
+#X text 140 280 noisy;
+#X text 38 279 quiet;
+#X text 59 169 object creation argument and right input can be used
+to set the noise threshold \, in dB. default value is -90;
+#X text 182 225 this object was written as an exercise and test. note
+that it could also easily be rewritten as a patch.;
+#X obj 19 243 silencedetect~ -90;
+#X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 306 5 pd;
+#X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
+0;
+#X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 516 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 465 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 503 28 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 25 52 cnv 4 4 4 empty empty Outputs\ bangs:\ -\ on\ its\ left\ input\ when\ a\ change\ to\ silence\ is\ detected\ -\ on\ its\ right\ output\ when\ a\ change\ to\ loudness\ is\ detected
+0 28 2 18 #e0e0e0 #000000 0;
+#X obj 4 5 cnv 15 301 42 empty empty silencedetect~ 20 20 2 37 #e0e0e0
+#000000 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 4 5 graph;
+#X connect 0 0 7 0;
+#X connect 0 1 7 0;
+#X connect 7 0 1 0;
+#X connect 7 1 2 0;

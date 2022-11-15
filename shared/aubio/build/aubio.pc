@@ -1,0 +1,10 @@
+prefix=/usr/local
+exec_prefix=/usr/local
+libdir=/usr/local/lib
+includedir=/usr/local/include
+
+Name: aubio
+Description: a library for audio labelling
+Version: 0.5.0-alpha
+Libs: -L${libdir} -laubio
+Cflags: -I${includedir}

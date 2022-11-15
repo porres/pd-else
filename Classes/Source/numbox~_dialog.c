@@ -90,7 +90,7 @@ sys_gui("\n" // Tcl/Tk properties code based on IEMGUI's
             "    }\n"
             "    if {[eval concat $$var_numbox_l2_f1_b0] == 1} {\n"
             "        set $var_numbox_fcol [eval concat $$var_numbox_fcol]\n"
-            "        set helpstring [tk_chooseColor -title [_ \"Foreground color\"] -initialcolor [eval concat $$var_numbox_fcol]]\n"
+            "        set helpstring [tk_chooseColor -title [_ \"Text color\"] -initialcolor [eval concat $$var_numbox_fcol]]\n"
             "        if { $helpstring ne \"\" } {\n"
             "            set $var_numbox_fcol $helpstring }\n"
             "    }\n"
