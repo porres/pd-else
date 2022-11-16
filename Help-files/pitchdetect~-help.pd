@@ -1,8 +1,7 @@
-#N canvas 64 379 812 435 10;
+#N canvas 283 49 737 527 10;
 #X floatatom 151 269 5 0 0 0 - - - 0;
 #X obj 24 213 osc~ 440;
-#X obj 27 156 hsl 128 15 0 127 0 1 empty empty empty -2 -6 0 8 #fcfcfc
-#000000 #000000 5700 1;
+#X obj 27 156 hsl 128 15 0 127 0 1 empty empty empty -2 -6 0 8 #fcfcfc #000000 #000000 6300 1;
 #X obj 24 176 mtof;
 #X floatatom 24 196 5 0 0 0 - - - 0;
 #X obj 23 319 dac~;
@@ -16,61 +15,47 @@
 #X text 69 194 test pitch (Hz);
 #X text 79 399 - bufsize: length of fft window [1024];
 #X text 79 419 - hopsize: block size of each analysis [bufsize/2];
-#X text 339 148 For yin and yinfft methods \, a 'tolerance' message
-can be sent to change the default tolerance value.;
-#X text 493 331 Examples:;
-#X text 80 367 - method: can be 'yin' \, 'yinfft' \, 'mcomb' \, 'fcomb'
-\, 'schmitt' \, or 'default' [default];
+#X text 339 148 For yin and yinfft methods \, a 'tolerance' message can be sent to change the default tolerance value.;
+#X text 451 234 Examples:;
+#X text 80 367 - method: can be 'yin' \, 'yinfft' \, 'mcomb' \, 'fcomb' \, 'schmitt' \, or 'default' [default];
 #X msg 24 134 57;
-#X text 339 183 Values in the range [0. \, 1.] are expected. Higher
-values will avoid incorrect detections \, but also discard some correct
-ones.;
-#X text 75 462 If not specified \, hopsize will be set to half of bufsize.
-Otherwise it should be at most 'bufsize'.;
+#X text 339 183 Values in the range [0. \, 1.] are expected. Higher values will avoid incorrect detections \, but also discard some correct ones.;
+#X text 75 462 If not specified \, hopsize will be set to half of bufsize. Otherwise it should be at most 'bufsize'.;
 #X text 75 441 All arguments are optional.;
-#X text 76 332 The creation arguments can be used to set the pitch
-detection parameters.;
-#X obj 151 245 pitchdetect~ fcomb 1024 128;
-#X obj 567 330 pitchdetect~ yinfft;
-#X obj 567 351 pitchdetect~ yin 1024;
-#X obj 567 373 pitchdetect~ fcomb 256 32;
-#X obj 567 396 pitchdetect~ schmitt 64 64;
-#X obj 567 419 pitchdetect~ mcomb 4096 4000;
-#X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#X text 76 332 The creation arguments can be used to set the pitch detection parameters.;
+#X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 306 5 pd;
-#X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 516 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 465 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 503 28 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 25 52 cnv 4 4 4 empty empty Tracks\ the\ 'pitch'\ or\ fundamental\ frequency\ of\ the\ input\ signal.
-0 28 2 18 #e0e0e0 #000000 0;
-#X obj 4 5 cnv 15 301 42 empty empty pitchdetect~ 20 20 2 37 #e0e0e0
-#000000 0;
+#X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 516 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 465 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 503 28 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 25 52 cnv 4 4 4 empty empty Tracks\ the\ 'pitch'\ or\ fundamental\ frequency\ of\ the\ input\ signal. 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 4 5 cnv 15 301 42 empty empty pitchdetect~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 4 5 graph;
+#X obj 458 290 -pitchdetect~ yinfft;
+#X obj 458 311 -pitchdetect~ yin 1024;
+#X obj 458 333 -pitchdetect~ fcomb 256 32;
+#X obj 458 356 -pitchdetect~ schmitt 64 64;
+#X obj 458 379 -pitchdetect~ mcomb 4096 4000;
+#X obj 457 262 -pitchdetect~ fcomb 1024 128;
+#X obj 151 245 pitchdetect~;
 #X connect 0 0 6 0;
 #X connect 1 0 5 0;
-#X connect 1 0 24 0;
+#X connect 1 0 41 0;
 #X connect 2 0 3 0;
 #X connect 3 0 4 0;
 #X connect 4 0 1 0;
 #X connect 6 0 5 1;
-#X connect 7 0 24 0;
-#X connect 8 0 24 0;
-#X connect 9 0 24 0;
+#X connect 7 0 41 0;
+#X connect 8 0 41 0;
+#X connect 9 0 41 0;
 #X connect 10 0 2 0;
 #X connect 11 0 2 0;
 #X connect 19 0 2 0;
-#X connect 24 0 0 0;
+#X connect 41 0 0 0;
