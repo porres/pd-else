@@ -241,7 +241,7 @@ aubio := $(wildcard shared/aubio/src/*/*.c) $(wildcard shared/aubio/src/*.c)
     tempodetect~.class.sources := Classes/Source/tempodetect~.c $(aubio)
     tssdetect~.class.sources := Classes/Source/tssdetect~.c $(aubio)
     onsetdetect~.class.sources := Classes/Source/onsetdetect~.c $(aubio)
-    pitchdetect~.class.sources := Classes/Source/pitchdetect~.c $(aubio)
+    pitch~.class.sources := Classes/Source/pitch~.c $(aubio)
 
 
 magic := shared/magic.c

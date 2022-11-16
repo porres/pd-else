@@ -1,19 +1,11 @@
-/**
- *
- * a puredata wrapper for aubio pitch detection functions
- *
- * Thanks to Johannes M Zmolnig for writing the excellent HOWTO:
- *       http://iem.kug.ac.at/pd/externals-HOWTO/
- *
- * */
+// a puredata wrapper for aubio pitch detection functions, GNU license
+
 
 #include <m_pd.h>
 #include <aubio/src/aubio.h>
 #include <string.h>
 
 static t_class *pitch_tilde_class;
-
-void pitchdetect_tilde_setup(void);
 
 typedef struct _pitch_tilde{
     t_object x_obj;
@@ -33,7 +25,7 @@ static t_int *pitch_tilde_perform(t_int *w){
     t_sample *in = (t_sample *)(w[2]);
     int n = (int)(w[3]);
     for(int j = 0; j < n; j++){
-        fvec_set_sample(x->vec, in[j], x->pos); // write input to datanew
+        fvec_set_sample(x->vec, in[j], x->pos); // write input to buffer
         if(x->pos == x->hopsize-1){ // time for fft
             // block loop
             aubio_pitch_do(x->o, x->vec, x->pitchvec);
@@ -56,36 +48,35 @@ static void pitch_tilde_tolerance(t_pitch_tilde *x, t_floatarg a){
         aubio_pitch_set_tolerance(x->o, x->tolerance);
     }
     else
-        post("[pitchdetect~] tolerance set to %.2f", aubio_pitch_get_tolerance(x->o));
+        post("[pitch~] tolerance set to %.2f", aubio_pitch_get_tolerance(x->o));
 }
 
-static void *pitch_tilde_new (t_symbol * s, int argc, t_atom *argv){
+static void *pitch_tilde_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_pitch_tilde *x = (t_pitch_tilde *)pd_new(pitch_tilde_class);
     x->method = "default";
     x->bufsize = 2048;
     x->hopsize = x->bufsize / 2;
-    if(argc >= 2){
-        if(argv[1].a_type == A_FLOAT)
-            x->bufsize = (uint_t)(argv[1].a_w.w_float);
-        argc--;
+    if(ac >= 2){
+        if(av[1].a_type == A_FLOAT)
+            x->bufsize = (uint_t)(av[1].a_w.w_float);
+        ac--;
     }
     x->hopsize = x->bufsize / 2;
-    if(argc == 2){
-        if(argv[2].a_type == A_FLOAT)
-            x->hopsize = (uint_t)(argv[2].a_w.w_float);
-        argc--;
+    if(ac == 2){
+        if(av[2].a_type == A_FLOAT)
+            x->hopsize = (uint_t)(av[2].a_w.w_float);
+        ac--;
     }
-    if(argc == 1){
-        if(argv[0].a_type == A_SYMBOL)
-            x->method = (char *)argv[0].a_w.w_symbol->s_name;
+    if(ac == 1){
+        if(av[0].a_type == A_SYMBOL)
+            x->method = (char *)av[0].a_w.w_symbol->s_name;
         else{
-            post("[pitchdetect~]: first argument should be a symbol");
+            post("[pitch~]: first argument should be a symbol");
             return NULL;
         }
     }
-    x->o = new_aubio_pitch(x->method, x->bufsize, x->hopsize,
-      (uint_t)sys_getsr());
+    x->o = new_aubio_pitch(x->method, x->bufsize, x->hopsize, (uint_t)sys_getsr());
     if(x->o == NULL)
         return NULL;
     x->vec = (fvec_t *)new_fvec(x->hopsize);
@@ -101,8 +92,8 @@ void pitch_tilde_del(t_pitch_tilde *x){
     del_fvec(x->pitchvec);
 }
 
-void pitchdetect_tilde_setup (void){
-    pitch_tilde_class = class_new (gensym ("pitchdetect~"), (t_newmethod)pitch_tilde_new,
+void pitch_tilde_setup (void){
+    pitch_tilde_class = class_new (gensym ("pitch~"), (t_newmethod)pitch_tilde_new,
         (t_method)pitch_tilde_del, sizeof(t_pitch_tilde), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(pitch_tilde_class, (t_method)pitch_tilde_dsp, gensym("dsp"), 0);
     class_addmethod(pitch_tilde_class, (t_method)pitch_tilde_tolerance, gensym("tolerance"), A_DEFFLOAT, 0);
