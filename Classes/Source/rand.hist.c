@@ -91,6 +91,8 @@ static void rand_hist_list(t_rand_hist *x, t_symbol*s, int ac, t_atom *av){
             *(x->x_probs + i) = v < 0 ? 0 : v;
         }
         memset(x->x_ovalues, 0x0, x->x_size*sizeof(int));
+        if(!x->x_u_mode)
+            update_candidates(x);
     }
 }
 
