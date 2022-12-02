@@ -267,8 +267,8 @@ buf := shared/buffer.c
     shaper~.class.sources = Classes/Source/shaper~.c $(buf)
     tabreader.class.sources = Classes/Source/tabreader.c $(buf)
     tabreader~.class.sources = Classes/Source/tabreader~.c $(buf)
-	function.class.sources := Classes/Source/function.c $(buf)
-	function~.class.sources := Classes/Source/function~.c $(buf)
+    function.class.sources := Classes/Source/function.c $(buf)
+    function~.class.sources := Classes/Source/function~.c $(buf)
     tabwriter~.class.sources = Classes/Source/tabwriter~.c $(buf)
 
 bufmagic := \
