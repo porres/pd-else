@@ -18,26 +18,30 @@ typedef struct _wavetable{
     t_float   x_sr;
     t_int     x_interp;
 // MAGIC:
-    t_glist  *x_glist; // object list
-    t_float  *x_signalscalar; // right inlet's float field
-    int       x_hasfeeders; // right inlet connection flag
-    t_float   x_phase_sync_float; // float from magic
+    t_glist  *x_glist;              // object list
+    t_float  *x_signalscalar;       // right inlet's float field
+    int       x_hasfeeders;         // right inlet connection flag
+    t_float   x_phase_sync_float;   // float from magic
 }t_wavetable;
 
 static void wavetable_set(t_wavetable *x, t_symbol *s){
     buffer_setarray(x->x_buffer, s);
 }
 
-static void wavetable_lin(t_wavetable *x){
+static void wavetable_none(t_wavetable *x){
     x->x_interp = 0;
 }
 
-static void wavetable_sin(t_wavetable *x){
+static void wavetable_lin(t_wavetable *x){
     x->x_interp = 1;
 }
 
-static void wavetable_lagrange(t_wavetable *x){
+static void wavetable_cos(t_wavetable *x){
     x->x_interp = 2;
+}
+
+static void wavetable_lagrange(t_wavetable *x){
+    x->x_interp = 3;
 }
 
 static t_int *wavetable_perform(t_int *w){
@@ -82,13 +86,17 @@ static t_int *wavetable_perform(t_int *w){
                 phase -= 1.; // wrap deviated phase
             if(vector){
                 int size = (t_int)(x->x_buffer->c_npts);
-                if(x->x_interp == 2){
+                if(x->x_interp == 0){
+                    int ndx = (int)(phase*(double)size);
+                    *out++ = (double)vector[ndx].w_float;
+                }
+                else if(x->x_interp == 3){
                     INDEX_4PT()
                     *out++ = interp_lagrange(frac, a, b, c, d);
                 }
                 else{
                     INDEX_2PT()
-                    *out++ = x->x_interp ? interp_sin(frac, b, c) : interp_lin(frac, b, c);
+                    *out++ = x->x_interp ? interp_cos(frac, b, c) : interp_lin(frac, b, c);
                 }
             }
             else // ??? maybe we dont need "playable"?
@@ -127,19 +135,24 @@ static void *wavetable_new(t_symbol *s, int ac, t_atom *av){
     int nameset = 0, floatarg = 0;
     x->x_freq = x->x_phase = x->x_last_phase_offset = 0.;
     t_float phaseoff = 0;
-    x->x_interp = 2;
+    x->x_interp = 3;
     while(ac){
         if(av->a_type == A_SYMBOL){
             t_symbol *curarg = atom_getsymbol(av);
-            if(curarg == gensym("-lin")){
+            if(curarg == gensym("-none")){
+                if(nameset)
+                    goto errstate;
+                wavetable_none(x), ac--, av++;
+            }
+            else if(curarg == gensym("-lin")){
                 if(nameset)
                     goto errstate;
                 wavetable_lin(x), ac--, av++;
             }
-            else if(curarg == gensym("-sin")){
+            else if(curarg == gensym("-cos")){
                 if(nameset)
                     goto errstate;
-                wavetable_sin(x), ac--, av++;
+                wavetable_cos(x), ac--, av++;
             }
             else{
                 if(nameset || floatarg)
@@ -182,8 +195,9 @@ void wavetable_tilde_setup(void){
         (t_method)wavetable_free, sizeof(t_wavetable), CLASS_DEFAULT, A_GIMME, 0);
     CLASS_MAINSIGNALIN(wavetable_class, t_wavetable, x_freq);
     class_addmethod(wavetable_class, (t_method)wavetable_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(wavetable_class, (t_method)wavetable_none, gensym("none"), 0);
     class_addmethod(wavetable_class, (t_method)wavetable_lin, gensym("lin"), 0);
-    class_addmethod(wavetable_class, (t_method)wavetable_sin, gensym("sin"), 0);
+    class_addmethod(wavetable_class, (t_method)wavetable_cos, gensym("cos"), 0);
     class_addmethod(wavetable_class, (t_method)wavetable_lagrange, gensym("lagrange"), 0);
     class_addmethod(wavetable_class, (t_method)wavetable_set, gensym("set"), A_SYMBOL, 0);
 }

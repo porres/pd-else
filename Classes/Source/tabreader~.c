@@ -23,7 +23,7 @@ static void tabreader_set_linear(t_tabreader *x){
     x->x_i_mode = 1;
 }
 
-static void tabreader_set_sin(t_tabreader *x){
+static void tabreader_set_cos(t_tabreader *x){
     x->x_i_mode = 2;
 }
 
@@ -103,8 +103,8 @@ static t_int *tabreader_perform(t_int *w){
                     case 1: // linear
                         *out++ = interp_lin(frac, b, c);
                         break;
-                    case 2: // sin
-                        *out++ = interp_sin(frac, b, c);
+                    case 2: // cos
+                        *out++ = interp_cos(frac, b, c);
                         break;
                     case 3: // lagrange
                         *out++ = interp_lagrange(frac, a, b, c, d);
@@ -157,10 +157,10 @@ static void *tabreader_new(t_symbol *s, int ac, t_atom * av){
                     goto errstate;
                 tabreader_set_linear(x), ac--, av++;
             }
-            else if(curarg == gensym("-sin")){
+            else if(curarg == gensym("-cos")){
                 if(nameset)
                     goto errstate;
-                tabreader_set_sin(x), ac--, av++;
+                tabreader_set_cos(x), ac--, av++;
             }
             else if(curarg == gensym("-cubic")){
                 if(nameset)
@@ -217,7 +217,7 @@ void tabreader_tilde_setup(void){
     class_addmethod(tabreader_class, (t_method)tabreader_channel, gensym("channel"), A_FLOAT, 0);
     class_addmethod(tabreader_class, (t_method)tabreader_set_nointerp, gensym("none"), 0);
     class_addmethod(tabreader_class, (t_method)tabreader_set_linear, gensym("lin"), 0);
-    class_addmethod(tabreader_class, (t_method)tabreader_set_sin, gensym("sin"), 0);
+    class_addmethod(tabreader_class, (t_method)tabreader_set_cos, gensym("cos"), 0);
     class_addmethod(tabreader_class, (t_method)tabreader_set_lagrange, gensym("lagrange"), 0);
     class_addmethod(tabreader_class, (t_method)tabreader_set_cubic, gensym("cubic"), 0);
     class_addmethod(tabreader_class, (t_method)tabreader_set_spline, gensym("spline"), 0);

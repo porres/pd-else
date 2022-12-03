@@ -9,9 +9,9 @@ float interp_lin(double frac, double b, double c){
     return(b + frac * (c-b));
 }
 
-float interp_sin(double frac, double b, double c){
-    frac = (sin((frac * 0.5 - 0.25) * TWO_PI)) * 0.5 + 0.5;
-    return(b + frac * (c-b));
+float interp_cos(double frac, double b, double c){
+    frac = (cos(frac * -M_PI)) * 0.5 + 0.5;
+    return(c + frac * (b-c));
 }
 
 float interp_pow(double frac, double b, double c, double p){

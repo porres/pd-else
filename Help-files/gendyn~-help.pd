@@ -61,8 +61,8 @@
 #X obj 566 311 vradio 16 1 0 3 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0;
 #X text 586 311 0: no interpolation;
 #X text 586 328 1: linear;
-#X text 586 345 2: sine;
 #X text 34 234 By default \, the points in the waveform are linearly interpolated (1) from one point to the next. You can set it to no interpolation (0) or sine interpolation (2) with the 'interp' message or 'interp' flag. Sine is harsh specially in lower frequencies \, linear creates triangle like shapes and no interpolation is squarish., f 67;
+#X text 586 345 2: cosine;
 #X connect 0 0 6 0;
 #X connect 1 0 6 0;
 #X connect 2 0 6 0;

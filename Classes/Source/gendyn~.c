@@ -214,8 +214,8 @@ static t_int* gendyn_perform(t_int* w){
             case 1: // linear
                 output = interp_lin(phase, amp, nextamp);
                 break;
-            case 2: // sin
-                output = interp_sin(phase, amp, nextamp);
+            case 2: // cos
+                output = interp_cos(phase, amp, nextamp);
                 break;
         }
         phase += phase_step;
