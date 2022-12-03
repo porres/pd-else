@@ -174,6 +174,17 @@ static void *tabreader_new(t_symbol *s, int ac, t_atom * av){
                 else
                     goto errstate;
             }
+            else if(curarg == gensym("-ch")){
+                if(nameset)
+                    goto errstate;
+                if(ac >= 2){
+                    ac--, av++;
+                    ch = atom_getfloat(av);
+                    ac--, av++;
+                }
+                else
+                    goto errstate;
+            }
             else{
                 if(nameset)
                     goto errstate;
@@ -181,8 +192,11 @@ static void *tabreader_new(t_symbol *s, int ac, t_atom * av){
                 nameset = 1, ac--, av++;
             }
         }
-        else
+        else{
+            if(!nameset)
+                goto errstate;
             ch = (int)atom_getfloat(av), ac--, av++;
+        }
     };
     x->x_ch = (ch < 0 ? 1 : ch > 64 ? 64 : ch);
     x->x_buffer = buffer_init((t_class *)x, name, 1, x->x_ch);
