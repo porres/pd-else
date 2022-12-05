@@ -9,6 +9,7 @@ typedef struct _tabreader{
     t_float   x_f; // dummy
     int       x_i_mode;
     int       x_ch;
+    int       x_idx;
     t_float	  x_bias;
     t_float   x_tension;
 }t_tabreader;
@@ -54,6 +55,10 @@ static void tabreader_channel(t_tabreader *x, t_floatarg f){
     buffer_getchannel(x->x_buffer, x->x_ch, 1);
 }
 
+static void tabreader_index(t_tabreader *x, t_floatarg f){
+    x->x_idx = (int)(f != 0);
+}
+
 static t_int *tabreader_perform(t_int *w){
     t_tabreader *x = (t_tabreader *)(w[1]);
     t_sample *in = (t_float *)(w[2]);
@@ -64,12 +69,12 @@ static t_int *tabreader_perform(t_int *w){
     t_word *vp = buf->c_vectors[0];
     while(nblock--){
         if(buf->c_playable){ // ????
-            double phase = (double)(*in++);
-            if(phase < 0)
-                phase = 0;
-            else if(phase >= 1.0)
-                phase = 0;
-            double xpos = phase*npts;
+            double index = (double)(*in++);
+            double xpos = x->x_idx ? index : index*npts;
+            if(xpos < 0)
+                xpos = 0;
+            else if(xpos >= npts)
+                xpos = 0;
             int ndx = (int)xpos;
             if(ndx == npts)
                 ndx = 0;
@@ -142,6 +147,7 @@ static void *tabreader_new(t_symbol *s, int ac, t_atom * av){
     t_tabreader *x = (t_tabreader *)pd_new(tabreader_class);
 	t_symbol *name = s = NULL;
 	int nameset = 0, ch = 1;
+    x->x_idx = 0;
     x->x_bias = x->x_tension = 0;
     x->x_i_mode = 3; // lagrange
 	while(ac){
@@ -197,6 +203,11 @@ static void *tabreader_new(t_symbol *s, int ac, t_atom * av){
                 else
                     goto errstate;
             }
+            else if(curarg == gensym("-index")){
+                if(nameset)
+                    goto errstate;
+                x->x_idx = 1, ac--, av++;
+            }
             else{
                 if(nameset)
                     goto errstate;
@@ -229,6 +240,7 @@ void tabreader_tilde_setup(void){
     class_addmethod(tabreader_class, (t_method)tabreader_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(tabreader_class, (t_method)tabreader_set, gensym("set"), A_SYMBOL, 0);
     class_addmethod(tabreader_class, (t_method)tabreader_channel, gensym("channel"), A_FLOAT, 0);
+    class_addmethod(tabreader_class, (t_method)tabreader_index, gensym("index"), A_FLOAT, 0);
     class_addmethod(tabreader_class, (t_method)tabreader_set_nointerp, gensym("none"), 0);
     class_addmethod(tabreader_class, (t_method)tabreader_set_linear, gensym("lin"), 0);
     class_addmethod(tabreader_class, (t_method)tabreader_set_cos, gensym("cos"), 0);

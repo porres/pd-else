@@ -8,6 +8,7 @@ typedef struct _tabreader{
     t_buffer *x_buffer;
     int       x_i_mode;
     int       x_ch;
+    int       x_idx;
     t_float   x_bias;
     t_float   x_tension;
     t_float   x_value;
@@ -56,12 +57,12 @@ static void tabreader_float(t_tabreader *x, t_float f){
     int npts = buf->c_npts;
     buffer_validate(buf, 1); // 2nd arg for error posting
     if(vp){
-        double phase = (double)(f);
-        double xpos = phase*npts;
-        if(phase < 0)
-            phase = 0;
-        else if(phase >= 1.0)
-            phase = 0;
+        double index = (double)(f);
+        double xpos = x->x_idx ? index : index*npts;
+        if(xpos < 0)
+            xpos = 0;
+        else if(xpos >= npts)
+            xpos = 0;
         int ndx = (int)xpos;
         double frac = xpos - ndx;
         if(ndx == npts)
@@ -87,7 +88,6 @@ static void tabreader_float(t_tabreader *x, t_float f){
                 d = (double)vp[ndx2].w_float;
             }
         }
-//        post("a (%f) b (%f) c (%f) d (%f)", (float)a, (float)b, (float)c, (float)d);
         float out = b; // no interpolation
         switch(x->x_i_mode){
             case 1: // linear
@@ -120,6 +120,10 @@ static void tabreader_channel(t_tabreader *x, t_floatarg f){
     buffer_getchannel(x->x_buffer, x->x_ch, 1);
 }
 
+static void tabreader_index(t_tabreader *x, t_floatarg f){
+    x->x_idx = (int)(f != 0);
+}
+
 static void tabreader_free(t_tabreader *x){
     outlet_free(x->x_outlet);
     buffer_free(x->x_buffer);
@@ -129,6 +133,7 @@ static void *tabreader_new(t_symbol *s, int ac, t_atom * av){
     t_tabreader *x = (t_tabreader *)pd_new(tabreader_class);
     t_symbol *name = s = NULL;
     int nameset = 0;
+    x->x_idx = 0;
     x->x_bias = x->x_tension = 0;
     x->x_i_mode = 3; // lagrange
     int ch = 1;
@@ -185,6 +190,11 @@ static void *tabreader_new(t_symbol *s, int ac, t_atom * av){
                 else
                     goto errstate;
             }
+            else if(curarg == gensym("-index")){
+                if(nameset)
+                    goto errstate;
+                x->x_idx = 1, ac--, av++;
+            }
             else{
                 if(nameset)
                     goto errstate;
@@ -211,11 +221,12 @@ static void *tabreader_new(t_symbol *s, int ac, t_atom * av){
 }
 
 void tabreader_setup(void){
-    tabreader_class = class_new(gensym("tabreader"), (t_newmethod)tabreader_new, (t_method)tabreader_free,
-        sizeof(t_tabreader), 0, A_GIMME, 0);
+    tabreader_class = class_new(gensym("tabreader"), (t_newmethod)tabreader_new,
+        (t_method)tabreader_free, sizeof(t_tabreader), 0, A_GIMME, 0);
     class_addfloat(tabreader_class, tabreader_float);
     class_addmethod(tabreader_class, (t_method)tabreader_set, gensym("set"), A_SYMBOL, 0);
     class_addmethod(tabreader_class, (t_method)tabreader_channel, gensym("channel"), A_FLOAT, 0);
+    class_addmethod(tabreader_class, (t_method)tabreader_index, gensym("index"), A_FLOAT, 0);
     class_addmethod(tabreader_class, (t_method)tabreader_set_nointerp, gensym("none"), 0);
     class_addmethod(tabreader_class, (t_method)tabreader_set_linear, gensym("lin"), 0);
     class_addmethod(tabreader_class, (t_method)tabreader_set_lagrange, gensym("lagrange"), 0);
