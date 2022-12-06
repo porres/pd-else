@@ -40,9 +40,9 @@ static void tabreader_set_spline(t_tabreader *x){
     x->x_i_mode = 5;
 }
 
-static void tabreader_set_hermite(t_tabreader *x, t_floatarg bias, t_floatarg tension){
-    x->x_bias = bias;
+static void tabreader_set_hermite(t_tabreader *x, t_floatarg tension, t_floatarg bias){
     x->x_tension = 0.5 * (1. - tension);
+    x->x_bias = bias;
     x->x_i_mode = 6;
 }
 

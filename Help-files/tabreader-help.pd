@@ -68,7 +68,6 @@
 #X text 182 337 cos - sets to cosine interpolation, f 43;
 #X text 182 323 lin - sets to linear interpolation, f 43;
 #X text 176 308 none - sets to no interpolation, f 54;
-#X text 218 398 sets to hermite interpolation and bias/tension;
 #N canvas 597 28 472 606 multichannel 0;
 #X msg 116 215 channel 1;
 #X msg 126 240 channel 2;
@@ -139,6 +138,7 @@
 #X text 149 457 sets interpolation type (default: lagrange):;
 #X text 128 513 -index: sets to indexed mode;
 #X text 122 294 index <float> - non-zero sets to indexed mode, f 63;
-#X connect 18 0 34 0;
+#X text 218 398 sets to hermite interpolation and tension/bias;
+#X connect 18 0 33 0;
 #X connect 21 0 18 0;
-#X connect 34 0 35 0;
+#X connect 33 0 34 0;
