@@ -10,6 +10,7 @@ typedef struct _tabplayer{
     t_buffer   *x_buffer;
     t_glist    *x_glist;
     int         x_hasfeeders;       // if there's a signal coming in the main inlet
+    int         x_interp;
     int         x_trig_mode;
     float       x_lastin;
     float       x_sr_khz;           // pd's sample rate
@@ -170,6 +171,14 @@ static void tabplayer_play(t_play *x, t_symbol *s, int ac, t_atom *av){
     tabplayer_bang(x);
 }
 
+static void tabplayer_spline(t_play *x){
+    x->x_interp = 0;
+}
+
+static void tabplayer_lagrange(t_play *x){
+    x->x_interp = 1;
+}
+
 static void tabplayer_stop(t_play *x){
     if(x->x_playing){
         x->x_playing = x->x_playnew = 0;
@@ -260,7 +269,10 @@ static double tabplayer_interp(t_play *x, int ch, double phase){
         double b = vp[0].w_float;
         double c = vp[1].w_float;
         double d = vp[2].w_float;
-        out = interp_lagrange(f, a, b, c, d);
+        if(x->x_interp)
+            out = interp_lagrange(f, a, b, c, d);
+        else
+            out = interp_spline(f, a, b, c, d);
     }
     return(out);
 }
@@ -462,6 +474,7 @@ static void *tabplayer_new(t_symbol * s, int ac, t_atom *av){
     t_symbol *arrname = NULL;
     t_float channels = 1;
     t_float fade = 0;
+    x->x_interp = 0;
     t_float range_start = 0;
     t_float range_end = 1;
     x->x_xfade = 0;
@@ -506,6 +519,10 @@ static void *tabplayer_new(t_symbol * s, int ac, t_atom *av){
                 range_start = atom_getfloatarg(1, ac, av);
                 range_end = atom_getfloatarg(2, ac, av);
                 ac-=3, av+=3;
+            }
+            else if(s == gensym("-lagrange") && !argn){
+                x->x_interp = 1;
+                ac--, av++;
             }
             else if(!nameset){
                 arrname = s;
@@ -558,6 +575,8 @@ void tabplayer_tilde_setup(void){
     class_addmethod(tabplayer_class, (t_method)tabplayer_set, gensym("set"), A_SYMBOL, 0);
     class_addmethod(tabplayer_class, (t_method)tabplayer_pos, gensym("pos"), A_FLOAT, 0);
     class_addmethod(tabplayer_class, (t_method)tabplayer_play, gensym("play"), A_GIMME, 0);
+    class_addmethod(tabplayer_class, (t_method)tabplayer_lagrange, gensym("lagrange"), 0);
+    class_addmethod(tabplayer_class, (t_method)tabplayer_spline, gensym("spline"), 0);
     class_addmethod(tabplayer_class, (t_method)tabplayer_stop, gensym("stop"), 0);
     class_addmethod(tabplayer_class, (t_method)tabplayer_pause, gensym("pause"), 0);
     class_addmethod(tabplayer_class, (t_method)tabplayer_resume, gensym("resume"), 0);
