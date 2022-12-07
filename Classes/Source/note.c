@@ -15,9 +15,9 @@
 #define NOTE_OUTBUFSIZE    16384
 
 #if __APPLE__
-char default_font[100] = "Menlo";
+static char default_font[100] = "Menlo";
 #else
-char default_font[100] = "DejaVu Sans Mono";
+static char default_font[100] = "DejaVu Sans Mono";
 #endif
 
 static t_class *note_class, *notesink_class, *handle_class, *edit_proxy_class;
