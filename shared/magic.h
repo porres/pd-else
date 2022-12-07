@@ -7,6 +7,6 @@ union magic_ui32_fl{
 	t_float uif_float;
 };
 
-int inlet_connection(t_object *x, t_glist *glist, int inno, t_symbol *outsym);
-void magic_setnan (t_float *in);
-int magic_isnan (t_float in);
+int else_magic_inlet_connection(t_object *x, t_glist *glist, int inno, t_symbol *outsym);
+void else_magic_setnan (t_float *in);
+int else_magic_isnan (t_float in);

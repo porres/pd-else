@@ -54,12 +54,12 @@ static t_int *wt_perform(t_int *w){
     t_word *vector = x->x_buffer->c_vectors[0];
     if(!x->x_hasfeeders){ // Magic
         t_float *scalar = x->x_signalscalar;
-        if(!magic_isnan(*x->x_signalscalar)){
+        if(!else_magic_isnan(*x->x_signalscalar)){
             t_float input_phase = fmod(*scalar, 1);
             if(input_phase < 0)
                 input_phase += 1;
             x->x_phase = input_phase;
-            magic_setnan(x->x_signalscalar);
+            else_magic_setnan(x->x_signalscalar);
         }
     }
     double phase = x->x_phase;
@@ -114,7 +114,7 @@ static t_int *wt_perform(t_int *w){
 
 static void wt_dsp(t_wt *x, t_signal **sp){
     buffer_checkdsp(x->x_buffer);
-    x->x_hasfeeders = inlet_connection((t_object *)x, x->x_glist, 1, &s_signal);
+    x->x_hasfeeders = else_magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal);
     x->x_sr = sp[0]->s_sr;
     dsp_add(wt_perform, 6, x, sp[0]->s_n,
         sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
