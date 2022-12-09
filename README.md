@@ -6,7 +6,7 @@
 
 ### Version: 1.0-0 RC-5(release candidate #5) With Live Electronics Tutorial. 
 
-### Unreleased
+### Released december 17th 2022
 
 
 

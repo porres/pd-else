@@ -425,8 +425,9 @@ symbol2any	x
 sysrt.in	x
 sysrt.out	x
 tabgen	x
-table~	x
 tabplayer~	x
+tabreader	x
+tabreader~	x
 tabwriter~	x
 tap	x
 tremolo~	x
