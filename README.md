@@ -116,10 +116,11 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [chrono]
 - [datetime]
 
-**TABLE: [02]**
+**TABLE: [03]**
 
 - [tabgen]
 - [tabreader]
+- [tabreader~]
 
 **FFT: [02]**
 
@@ -405,9 +406,8 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [resonant2~]
 - [svfilter~]
 
-**BUFFER/SAMPLING/PLAYING/GRANULATION: [14]**
+**BUFFER/SAMPLING/PLAYING/GRANULATION: [13]**
 
-- [tabreader~]
 - [player~]
 - [gran.player~]
 - [pvoc.player~]

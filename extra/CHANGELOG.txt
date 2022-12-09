@@ -7,6 +7,39 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 ----------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------
+1.0-0 Release Candidate 5:
+----------------------------------------------------------------------------
+
+**LIBRARY:**
+
+Breaking changes:
+- [oscope~]: removed 'drawstyle' mode.
+- [messbox] renamed 'size' message to 'dim', removed undocumented resizing handle (wasn't working well either)
+- [table~] object removed, use [tabreader~] instead which is basically the same thing.
+- [tabplayer~]/[wavetable~] changed default interpolator to spline.
+
+Enhancements/fixes:
+- [numbox~] fixed loading properties window.
+- [keyboard] fixed display in GOP.
+- [oscope~] fixed resizing with handle.
+- [pic]/[pad]/[button]/[keyboard] fixed zooming issues.
+- [messbox]/[bicoeff] added zoom.
+- [rand.i]/[rand.i~] fixed range for negative values.
+- [rand.hist] fixed list input when not in unrepeated mode and clear message.
+- [tabgen] removed stupid cyclone dependency.
+- [wavetable~] new interpolation modes.
+- [scala] fix loading certain files.
+- 3 new objects for a total of 466: [tabreader], [tabreader~] and [gendyn~].  
+
+--------------------------------------
+
+**TUTORIAL:**
+- new examples for newly added objects and a rewritten section with more interpolation modes from tabreader/tabreader~
+- new chapter (21) on "Basic-Signal-Analysis"
+- new chapter (38) for "stochastic synthesis" (this one is basically nothing now but the plan is to improve it with a patch implementation of gendyn~ not to mention add other chapters in this part of "advanced synthesis")
+- Total number of examples is now 491
+
+----------------------------------------------------------------------------
 1.0-0 Release Candidate 4:
 ----------------------------------------------------------------------------
 
