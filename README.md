@@ -4,7 +4,7 @@
 
 ### for the Pure Data programming language
 
-### Version: 1.0-0 RC-45(release candidate #5) With Live Electronics Tutorial. 
+### Version: 1.0-0 RC-5(release candidate #5) With Live Electronics Tutorial. 
 
 ### Unreleased
 
@@ -65,7 +65,7 @@ First build [sfont~] -> check the "sfont~" folder and its README with instructio
 
 ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example:
 
-<pre>make pdincludepath=~/pd-0.52-2/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.52-0 /bin/)</pre>
+<pre>make pdincludepath=~/pd-0.53-0/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.53-0 /bin/)</pre>
 
 * Installing with pdlibbuilder
 
@@ -108,14 +108,18 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 --------------------------------------------------------------------------
 
-## Current Object list (465 objects):
+## Current Object list (466 objects):
 
-**ASSORTED: [04]**
+**ASSORTED: [03]**
 
 - [else]
 - [chrono]
 - [datetime]
+
+**TABLE: [02]**
+
 - [tabgen]
+- [tabreader]
 
 **FFT: [02]**
 
@@ -403,7 +407,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 **BUFFER/SAMPLING/PLAYING/GRANULATION: [14]**
 
-- [table~]
+- [tabreader~]
 - [player~]
 - [gran.player~]
 - [pvoc.player~]
@@ -459,7 +463,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [bl.vsaw~]
 - [bl.wavetable~]
 
-**SYNTHESIS: CHAOTIC/NOISE GENERATORS: [26]**
+**SYNTHESIS: CHAOTIC/STOCHASTIC/NOISE GENERATORS: [26]**
 
 - [white~] 
 - [brown~] 
