@@ -29,6 +29,7 @@ Enhancements/fixes:
 - [tabgen] removed stupid cyclone dependency.
 - [wavetable~] new interpolation modes.
 - [scala] fix loading certain files.
+- [tabgen] allow commands as args.
 - 3 new objects for a total of 466: [tabreader], [tabreader~] and [gendyn~].  
 
 --------------------------------------
