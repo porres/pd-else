@@ -29,7 +29,6 @@
 #X text 108 260 set <symbol>;
 #X text 194 260 - sets table name, f 52;
 #X text 194 245 - resizes table (needs to re generate table), f 52;
-#X msg 273 131 gauss 0.25;
 #X msg 286 156 clear;
 #X text 150 275 clear;
 #X text 194 275 - clear table, f 52;
@@ -206,6 +205,7 @@
 #X text 142 336 -ms: set table size to ms (default points);
 #X text 114 400 3) anything;
 #X text 194 400 - commands to generate functions (default none), f 48;
-#X obj 273 185 else/tabgen 1024 \$0-table gauss;
-#X connect 26 0 40 0;
-#X connect 27 0 40 0;
+#X obj 273 185 else/tabgen 1024 \$0-table gauss 0.25;
+#X msg 273 131 gauss 0.15;
+#X connect 26 0 39 0;
+#X connect 40 0 39 0;
