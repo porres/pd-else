@@ -141,7 +141,6 @@ cusp~.class.sources := Classes/Source/cusp~.c
 db2lin~.class.sources := Classes/Source/db2lin~.c
 decay~.class.sources := Classes/Source/decay~.c
 decay2~.class.sources := Classes/Source/decay2~.c
-del~.class.sources := Classes/Source/del~.c
 downsample~.class.sources := Classes/Source/downsample~.c
 drive~.class.sources := Classes/Source/drive~.c
 detect~.class.sources := Classes/Source/detect~.c
@@ -270,6 +269,7 @@ buf := shared/buffer.c
     function.class.sources := Classes/Source/function.c $(buf)
     function~.class.sources := Classes/Source/function~.c $(buf)
     tabwriter~.class.sources = Classes/Source/tabwriter~.c $(buf)
+    del~.class.sources := Classes/Source/del~.c $(buf)
 
 bufmagic := \
 shared/magic.c \
