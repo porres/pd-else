@@ -1,4 +1,4 @@
-#N canvas 689 61 533 438 12;
+#N canvas 644 55 533 438 12;
 #X declare -path else;
 #X obj 267 29 declare -path else;
 #X obj 99 293 wavetable~;
@@ -10,7 +10,7 @@
 #X text 182 262 none \, linear and cosine;
 #X text 182 292 none \, linear \, cosine \, spline and lagrange;
 #X text 182 202 linear;
-#X text 182 231 lagrange;
 #X text 69 330 it's inconsistent \, I know \, but the plan is to change this.;
 #X text 102 359 The [tabreader]/[tabreader~] objects are the only ones that offer more options \, which are: none \, linear \, cosine \, lagrange \, spline \, cubic and the general hermite interpolator., f 49;
 #X text 182 174 spline (default) \, lagrange;
+#X text 182 231 spline;
