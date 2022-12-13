@@ -17,7 +17,7 @@ Breaking changes:
 - [oscope~]: removed 'drawstyle' mode.
 - [messbox] renamed 'size' message to 'dim', removed undocumented resizing handle (wasn't working well either)
 - [table~] object removed, use [tabreader~] instead which is basically the same thing.
-- [tabplayer~]/[wavetable~] changed default interpolator to spline.
+- [tabplayer~]/[wavetable~]/[del~] changed default interpolator to spline.
 
 Enhancements/fixes:
 - [numbox~] fixed loading properties window.
