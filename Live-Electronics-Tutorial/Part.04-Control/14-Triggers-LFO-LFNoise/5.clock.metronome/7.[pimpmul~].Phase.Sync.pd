@@ -38,7 +38,7 @@
 #X text 200 162 multiplier;
 #X text 384 14 One way to deal with this is to rely on the phase and manipulate it directly with [pimpmul~] (pimp~ multiplier) from ELSE that multiplies (or divides if the value is inverted) for phase and it works for either [phasor~] or [pimp~]. Like [pimp~] \, the [pimpmul~] object has a right outlet that outputs an impulse at period transitions. Since an impulse is a trigger \, you can think of this as a [clock] object at a signal rate and [pimpmul~] as a synced clock multiplier for signal rate. You can also generate polyrhythms with this. Check its help file., f 70;
 #X obj 683 494 tabreader~;
-#X text 130 453 Note that you can use [phasor~] in conjunction to [tabreader~] and other objects to generate many waveforms and also envelopes or even play samples. We'll see how to do all that in the next sections of this tutorial. So don't think that this is only useful if you need impulses or phase ramps!, f 64;
+#X text 122 448 Note that you can use [phasor~] in conjunction to [tabreader~] (an object that's properly introduced later on in this tutorial) and other objects to generate many waveforms and also envelopes or even play samples. We'll see how to do all that in the next sections of this tutorial. So don't think that this is only useful if you need impulses or phase ramps!, f 64;
 #X connect 1 0 2 0;
 #X connect 1 1 14 0;
 #X connect 2 1 15 0;
