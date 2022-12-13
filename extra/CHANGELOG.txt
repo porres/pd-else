@@ -27,10 +27,9 @@ Enhancements/fixes:
 - [messbox]/[bicoeff] added zoom.
 - [rand.i]/[rand.i~] fixed range for negative values.
 - [rand.hist] fixed list input when not in unrepeated mode and clear message.
-- [tabgen] removed stupid cyclone dependency.
+- [tabgen] removed stupid cyclone dependency & allow commands as args.
 - [wavetable~] new interpolation modes.
 - [scala] fix loading certain files.
-- [tabgen] allow commands as args.
 - [spread] now takes lists, which allows 'keyboard split'.
 - 3 new objects for a total of 466: [tabreader], [tabreader~] and [gendyn~].  
 
