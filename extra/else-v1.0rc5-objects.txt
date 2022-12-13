@@ -326,7 +326,7 @@ rad2hz	x
 ramp~	x
 rampnoise	x
 rampnoise~	x
-rand.d	x
+rand.dist	x
 rand.f	x
 rand.f~	x
 rand.hist	x

@@ -13,6 +13,7 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 **LIBRARY:**
 
 Breaking changes:
+- newly included [rand.d] renamed to [rand.dist]
 - [oscope~]: removed 'drawstyle' mode.
 - [messbox] renamed 'size' message to 'dim', removed undocumented resizing handle (wasn't working well either)
 - [table~] object removed, use [tabreader~] instead which is basically the same thing.

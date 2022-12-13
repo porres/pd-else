@@ -4,7 +4,7 @@
 
 ### for the Pure Data programming language
 
-### Version: 1.0-0 RC-5(release candidate #5) With Live Electronics Tutorial. 
+### Version: 1.0-0 RC-5 (release candidate #5) With Live Electronics Tutorial. 
 
 ### Released december 17th 2022
 
@@ -560,7 +560,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [rand.i~]
 - [rand.list]
 - [rand.u]
-- [rand.d]
+- [rand.dist]
 - [histogram]
 - [rand.hist]
 - [markov]
