@@ -35,7 +35,7 @@ static void spread_mode(t_spread *x, t_floatarg f){
 
 static void spread_list(t_spread *x, t_symbol*s, int ac, t_atom *av){
     s = NULL;
-    if(!ac)
+    if(!ac || (av)->a_type != A_FLOAT)
         return;
     for(int n = 0; n < x->x_ac; n++){
         if(x->x_mode){
