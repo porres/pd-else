@@ -1,4 +1,4 @@
-#N canvas 706 23 561 682 12;
+#N canvas 532 23 561 682 12;
 #X declare -path else;
 #X obj 308 301 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 326 451 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
@@ -19,7 +19,7 @@
 #X text 32 164 This object also fixes a bug present in [delwrite~] \, [delread~] and [delread4~] when the read and write objects have different block sizes mentioned earlier., f 71;
 #X obj 308 331 del~ out -samps \$0-del 22050;
 #X text 449 355 same as 500 ms, f 7;
-#X text 32 57 The [del~] object from ELSE basically comprises both [delwrite~] and [dlread4~]. This object behaves like [delwrite~] if created as [del~ in] \, and as [delred4~] if created as [del~ out]. It even uses the same interpolation method (lagrange) but also offers more functionalitites not present in the native delay objects (at least yet) \, like being able to resize the delay line in [del~ in] and also "freeze" the recording. We can also set the delay time in samples instead of ms., f 71;
+#X text 32 57 The [del~] object from ELSE basically comprises both [delwrite~] and [dlread4~]. This object behaves like [delwrite~] if created as [del~ in] \, and as [delred4~] if created as [del~ out]. It uses a different interpolation method (apline) and offers more functionalitites not present in the native delay objects (at least yet) \, like being able to resize the delay line in [del~ in] and also "freeze" the recording. We can also set the delay time in samples instead of ms., f 71;
 #X connect 0 0 17 0;
 #X connect 1 0 8 0;
 #X connect 6 0 2 0;
