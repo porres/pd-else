@@ -147,8 +147,6 @@ detect~.class.sources := Classes/Source/detect~.c
 envgen~.class.sources := Classes/Source/envgen~.c
 eq~.class.sources := Classes/Source/eq~.c
 fader~.class.sources := Classes/Source/fader~.c
-fbdelay~.class.sources := Classes/Source/fbdelay~.c
-ffdelay~.class.sources := Classes/Source/ffdelay~.c
 fbsine2~.class.sources := Classes/Source/fbsine2~.c
 float2sig~.class.sources := Classes/Source/float2sig~.c
 f2s~.class.sources := Classes/Aliases/f2s~.c
@@ -270,6 +268,8 @@ buf := shared/buffer.c
     function~.class.sources := Classes/Source/function~.c $(buf)
     tabwriter~.class.sources = Classes/Source/tabwriter~.c $(buf)
     del~.class.sources := Classes/Source/del~.c $(buf)
+    fbdelay~.class.sources := Classes/Source/fbdelay~.c $(buf)
+    ffdelay~.class.sources := Classes/Source/ffdelay~.c $(buf)
 
 bufmagic := \
 shared/magic.c \
