@@ -30,6 +30,7 @@ Enhancements/fixes:
 - [wavetable~] new interpolation modes.
 - [scala] fix loading certain files.
 - [tabgen] allow commands as args.
+- [spread] now takes lists, which allows 'keyboard split'.
 - 3 new objects for a total of 466: [tabreader], [tabreader~] and [gendyn~].  
 
 --------------------------------------
@@ -38,7 +39,7 @@ Enhancements/fixes:
 - new examples for newly added objects and a rewritten section with more interpolation modes from tabreader/tabreader~
 - new chapter (21) on "Basic-Signal-Analysis"
 - new chapter (38) for "stochastic synthesis" (this one is basically nothing now but the plan is to improve it with a patch implementation of gendyn~ not to mention add other chapters in this part of "advanced synthesis")
-- Total number of examples is now 491
+- Total number of examples is now 492
 
 ----------------------------------------------------------------------------
 1.0-0 Release Candidate 4:
