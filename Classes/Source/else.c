@@ -12,7 +12,7 @@ static int printed;
 
 static int min_major = 0;
 static int min_minor = 53;
-static int min_bugfix = 0;
+static int min_bugfix = 1;
 
 static int else_major = 1;
 static int else_minor = 0;
