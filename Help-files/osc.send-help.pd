@@ -19,12 +19,12 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X text 21 156 see also:;
+#X text 21 186 see also:;
 #X obj 400 215 else/display;
 #X obj 192 186 hsl 136 16 0 1 0 0 empty empty empty -2 -8 0 10 #dfdfdf #000000 #000000 0 1;
-#X obj 18 178 else/osc.send;
-#X obj 19 222 else/osc.route;
-#X obj 19 200 else/osc.parse;
+#X obj 18 208 else/osc.send;
+#X obj 19 252 else/osc.route;
+#X obj 19 230 else/osc.parse;
 #X msg 189 209 /slider \$1;
 #X obj 103 358 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 43 88 [osc.send] sends OSC messages over the network and is an abstraction based on [osc.format] and [netsend]., f 78;

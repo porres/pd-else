@@ -1,4 +1,9 @@
-// stolen from mr peach
+// stolen from mrpeach
+
+// Copyright (C) 2006-2011 Martin Peach
+// slightly modified, renamed and greatly and vastly simplified by Porres 2023
+
+// GNU license
 
 /* oscroute.c 20060424 by Martin Peach, based on OSCroute and OSC-pattern-match.c. */
 /* OSCroute.c header follows: */
