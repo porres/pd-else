@@ -99,9 +99,10 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 ### Acknowledgements
 
-​	Special thanks to Flávio Luis Schiavoni, for helping me out in a few things when I first started coding and collaborating with the objects: [median~] and [keyboard]. 
+​	Flávio Luis Schiavoni helped me out in a few things when I first started coding and collaborated with the objects: [median~] and [keyboard]. Lucas Cordiviola is an active tester and has helped countless times with compilation issues for windows. 
 
-​	I'd also like to thank my Cyclone buddies Derek Kwan and Matt Barber, cause I started learning how to code externals with them as part of the cyclone team. Other developers of cyclone need to be praised, like Czaja, the original author, as I did steal quite a bit from cyclone into ELSE. I'd like to give a special thanks for Matt Barber for developing the "magic" in cyclone that I'm using here and also collaborating to ELSE with the objects: [float2bits], [brown~], [gray~], [perlin~], [pinknoise~] and [blip~].
+
+​	I'd also like to thank my Cyclone buddies Derek Kwan and Matt Barber, cause I started learning how to code externals with them as part of the cyclone team. Other developers of cyclone need to be praised, like Czaja, the original author, as I did steal quite a bit from cyclone into ELSE. I'd like to give a special thanks for Matt Barber for developing the "magic" in cyclone that I'm using here and also collaborating to ELSE with the objects: [float2bits], [brown~], [gray~], [perlin~], [pink~] and [blip~].
 
 ​	Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of ELSE for other systemas as well as ELSE for Camomile. See: <https://github.com/porres/Camomile-ELSE>.
 ​	
