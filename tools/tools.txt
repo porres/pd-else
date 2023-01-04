@@ -6,6 +6,10 @@ compilar via bash:
 
 -------------------------------------------------------------------------
 
+git submodule update --init --recursive
+
+-------------------------------------------------------------------------
+
 make install objectsdir=../
 
 make install objectsdir=../ arch="arm64 x86_64" extension=d_fat

@@ -4,13 +4,13 @@
 
 ### for the Pure Data programming language
 
-### Version: 1.0-0 RC-5 (release candidate #5) With Live Electronics Tutorial. 
+### Version: 1.0-0 RC-6 (release candidate #6) With Live Electronics Tutorial. 
 
-### Released december 17th 2022
+### Released january 10th 2023
 
 
 
-	Copyright © 2017-2022 Alexandre Torres Porres
+	Copyright © 2017-2023 Alexandre Torres Porres
 
 
 
@@ -19,7 +19,7 @@
    terms of the Do What The Fuck You Want To Public License, Version 2,
    as published by Sam Hocevar. See License.txt <https://github.com/porres/pd-else/blob/master/License.txt> and <http://www.wtfpl.net/> for more details
 
-   Other licenses may apply for specific objects and this is informed in the source code (example: the [giga.rev~] object).
+   Other licenses may apply for specific objects and this is informed in the source code (examples: [giga.rev~], [pdlua] and [sfont~]).
 
 
 
@@ -35,11 +35,13 @@ ELSE provides a cohesive system for computer music, it also serves as a basis fo
 
 ​Note that you can also download Camomile with support for ELSE externals, see <https://github.com/emviveros/Camomile-ELSE/releases>.
 
-​ELSE is also part of the <https://github.com/timothyschoen/PlugData> project, which is a fork of Pd that loads as a standalone or VST with a revamped GUI.
+​ELSE is also part of PlugData by Timothy Schoen, which is a fork of Pd that loads as a standalone or VST with a revamped GUI. ELSE has received collaboration from Tim and others involved with PlugData and many objects have been included in ELSE just so they are supported in PlugData, most notably the [pdlua] external.
+​
+​See also: 
+- <https://github.com/timothyschoen/PlugData>
+- <https://github.com/agraef/pd-lua>
 
 ​This project is still in an experimental phase (currently at a 'release candidate' phase), where  changes may occur and backwards compatibility is not guaranteed until a final and more stable release is available. 
-
-
 
 --------------------------------------------------------------------------
 
@@ -103,7 +105,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 ​	Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of ELSE for other systemas as well as ELSE for Camomile. See: <https://github.com/porres/Camomile-ELSE>.
 ​	
-​	For Last, Timothy Schoen is doing a great job with PlugData, a project based on camomile that includes ELSE. Timothy has also helped me fix many ELSE related issues and coded first versions of compiled band limited oscillators. PlugData is also a fork of Pd with a revamped GUI. See: <https://github.com/timothyschoen/PlugData>.
+​	For Last, Timothy Schoen is doing a great job with PlugData, a project based on camomile that includes ELSE. Timothy has also helped me fix many ELSE related issues and coded first versions of compiled band limited oscillators. PlugData is also a fork of Pd with a revamped GUI. See: <https://github.com/timothyschoen/PlugData>. Also because of PlugData, ALbert Graef has collaborated getting [pdlua] into PlugData and into ELSE by extension.
 
 
 --------------------------------------------------------------------------
