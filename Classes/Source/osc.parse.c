@@ -1,4 +1,7 @@
-// stolen from mrpeach
+// stolen from mrpeach's routeOSC
+
+// Copyright (C) 2006-2011 Martin Peach
+// slightly modified, renamed and greatly and vastly simplified by Porres 2023
 
 /* oscparse is like dumpOSC but outputs a list consisting of a single symbol for the path  */
 /* and a list of floats and/or symbols for the data, and adds an outlet for a time delay. */
