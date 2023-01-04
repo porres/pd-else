@@ -6,7 +6,10 @@
 
 lib.name = else
 
-cflags = -Ishared -Ishared/aubio/src -DHAVE_STRUCT_TIMESPEC
+luaflags=-DMAKE_LIB -Ilua/lua
+aubioflags=-Ishared/aubio/src
+
+cflags = -Ishared -DHAVE_STRUCT_TIMESPEC ${luaflags}
 
 uname := $(shell uname -s)
 
@@ -244,6 +247,8 @@ zerocross~.class.sources := Classes/Source/zerocross~.c
 #    onsetdetect~.class.sources := Classes/Source/onsetdetect~.c $(aubio)
 #    pitch~.class.sources := Classes/Source/pitch~.c $(aubio)
 
+ lua := lua/lua/onelua.c
+    pdlua.class.sources := lua/pd-lua/pdlua.c
 
 magic := shared/magic.c
     sine~.class.sources := Classes/Source/sine~.c $(magic)
