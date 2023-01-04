@@ -344,8 +344,6 @@ $(wildcard *.txt) \
 README.pdf \
 lua/pd-lua/pdlua/pd.lua
 
-datadirs = extra/pdlua
-
 #########################################################################
 
 # include Makefile.pdlibbuilder from submodule directory 'pd-lib-builder'
