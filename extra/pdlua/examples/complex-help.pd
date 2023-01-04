@@ -1,0 +1,7 @@
+#N canvas 604 187 450 282 10;
+#X text 55 55 These two attempt to load a lua module named "complex".;
+#X text 64 206 Several different Lua modules named 'complex' are available \, for example: http://philippe.castagliola.free.fr/LUA/complex.html;
+#X text 56 165 If they fail the paths searched will be shown in the Pd console.;
+#X text 56 71 If they succeed they will print a list of items in the module.;
+#X obj 144 112 pdluax complex;
+#X obj 143 142 complex;

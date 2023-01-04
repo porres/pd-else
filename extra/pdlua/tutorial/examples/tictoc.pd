@@ -1,0 +1,31 @@
+#N canvas 922 336 452 303 12;
+#X obj 129 33 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 129 57 tictoc 1000;
+#X obj 89 106 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 243 106 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 170 214 noteout 10;
+#X msg 244 22 500;
+#X msg 278 22 250;
+#X msg 312 22 100;
+#X msg 346 22 50;
+#X msg 203 22 1000;
+#X msg 89 130 32;
+#X msg 243 130 33;
+#X obj 170 182 makenote 64 50;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 1 3 0;
+#X connect 2 0 10 0;
+#X connect 3 0 11 0;
+#X connect 5 0 1 1;
+#X connect 6 0 1 1;
+#X connect 7 0 1 1;
+#X connect 8 0 1 1;
+#X connect 9 0 1 1;
+#X connect 10 0 12 0;
+#X connect 11 0 12 0;
+#X connect 12 0 4 0;
+#X connect 12 1 4 1;

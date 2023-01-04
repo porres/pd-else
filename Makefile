@@ -341,7 +341,10 @@ $(wildcard Classes/Abs_components/*.pd) \
 $(wildcard Help-files/*.pd) \
 $(wildcard extra/*.*) \
 $(wildcard *.txt) \
-README.pdf
+README.pdf \
+lua/pd-lua/pdlua/pd.lua
+
+datadirs = extra/pdlua
 
 #########################################################################
 

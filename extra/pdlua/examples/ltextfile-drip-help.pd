@@ -1,0 +1,76 @@
+#N canvas 480 515 796 478 10;
+#X msg 145 184 open test.txt;
+#X obj 184 223 openpanel;
+#X obj 122 208 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 95 66 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X floatatom 125 165 5 0 0 0 - - -;
+#X msg 163 202 open tewt.txt;
+#X obj 553 336 print EOF;
+#X msg 203 242 rewind;
+#X text 393 323 bang when no more lines;
+#X text 252 241 rewind file to zero;
+#X text 477 274 argument is a file name to be opened;
+#X text 227 430 written in pd_lua by Martin Peach 2012/09/17;
+#X text 239 183 open a file by name;
+#X text 249 201 nonexistent file prints an error;
+#X text 245 222 choose a file to open;
+#X obj 201 380 s word;
+#X obj 63 8 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+;
+#X obj 126 15 + 500;
+#X obj 126 -8 random 700;
+#X obj -7 1 r ready;
+#X msg 20 70 stop;
+#X obj -7 25 t b b;
+#X obj -7 49 delay 1000;
+#X text 213 142 ltextfile-drip reads a text file. Incoming bangs cause
+it to spit out sentences from the file in sequence.;
+#X obj 251 342 print dripped->;
+#X obj 154 66 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 319 388 print punctuation->;
+#X obj 95 134 spigot;
+#X obj 128 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X floatatom 194 58 5 0 0 0 - - -;
+#X obj 251 307 ltextfile-drip ../a_modest_proposal_gutenberg_1080.txt
+;
+#X obj 95 92 delay 10;
+#X symbolatom 252 363 80 0 0 0 - - -;
+#X obj 63 38 metro 20000;
+#X obj 144 341 route bang;
+#X obj 144 401 print empty_line;
+#X obj 20 156 delay 60000;
+#X connect 0 0 30 0;
+#X connect 1 0 30 0;
+#X connect 2 0 1 0;
+#X connect 3 0 31 0;
+#X connect 3 0 36 0;
+#X connect 4 0 30 0;
+#X connect 5 0 30 0;
+#X connect 7 0 30 0;
+#X connect 16 0 33 0;
+#X connect 18 0 17 0;
+#X connect 19 0 21 0;
+#X connect 20 0 36 0;
+#X connect 21 0 22 0;
+#X connect 21 1 20 0;
+#X connect 22 0 3 0;
+#X connect 25 0 30 0;
+#X connect 27 0 30 0;
+#X connect 28 0 27 1;
+#X connect 29 0 31 1;
+#X connect 30 0 24 0;
+#X connect 30 0 32 0;
+#X connect 30 0 34 0;
+#X connect 30 1 26 0;
+#X connect 30 2 6 0;
+#X connect 30 2 7 0;
+#X connect 31 0 27 0;
+#X connect 33 0 30 0;
+#X connect 34 0 35 0;
+#X connect 34 0 3 0;
+#X connect 34 1 15 0;
+#X connect 36 0 3 0;

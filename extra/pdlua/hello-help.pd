@@ -1,0 +1,7 @@
+#N canvas 532 126 434 225 10;
+#X declare -lib pdlua;
+#X obj 172 171 pdlua;
+#X obj 235 29 declare -lib pdlua;
+#X text 42 66 This is a simple help file for a silly 'hello' external written in lua that is loaded with the [pdlua] library.;
+#X obj 171 122 hello;
+#X text 136 171 See:;

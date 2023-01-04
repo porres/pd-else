@@ -1,0 +1,20 @@
+#N canvas 863 346 453 305 12;
+#X obj 92 82 foo;
+#X obj 92 58 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X floatatom 92 111 5 0 0 0 - - -, f 5;
+#X obj 257 58 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X floatatom 257 111 5 0 0 0 - - -, f 5;
+#X text 120 56 <-- click me! -->;
+#X obj 327 58 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X floatatom 327 111 5 0 0 0 - - -, f 5;
+#X obj 257 82 foo 5;
+#X obj 327 82 foo 0 5;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 3 0 8 0;
+#X connect 6 0 9 0;
+#X connect 8 0 4 0;
+#X connect 9 0 7 0;
