@@ -84,6 +84,7 @@ float2bits.class.sources := Classes/Source/float2bits.c
 panic.class.sources := Classes/Source/panic.c
 pgm.in.class.sources := Classes/Source/pgm.in.c
 pgm.out.class.sources := Classes/Source/pgm.out.c
+pipe2.class.sources := Classes/Source/pipe2.c
 bend.in.class.sources := Classes/Source/bend.in.c
 bend.out.class.sources := Classes/Source/bend.out.c
 pack2.class.sources := Classes/Source/pack2.c

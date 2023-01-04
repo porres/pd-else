@@ -1,4 +1,4 @@
-#N canvas 486 44 561 464 10;
+#N canvas 534 64 561 464 10;
 #X obj 4 338 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 373 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 408 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -35,9 +35,9 @@
 #X obj 160 220 else/osc.format;
 #X obj 160 270 else/osc.parse;
 #X obj 16 272 else/osc.parse;
-#X text 58 88 [osc.format] is similar to Vanilla's [oscformat] but does it in a different way and is treated by [osc.parse]. This is still way too simple and experimental. It is used in the [osc.send] abstraction., f 67;
 #X text 228 195 <-- message to be formated as an OSC message;
 #X text 229 383 - formatted OSC message;
+#X text 58 88 [osc.format] is similar to Vanilla's [oscformat] but in a different way. This is still way too simple and experimental. It is used in the [osc.send] abstraction and can be used for edge and lower level cases., f 67;
 #X connect 17 0 30 0;
 #X connect 24 0 28 0;
 #X connect 25 0 24 0;
