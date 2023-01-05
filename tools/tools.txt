@@ -10,13 +10,13 @@ git submodule update --init --recursive
 
 -------------------------------------------------------------------------
 
-make installplus objectsdir=../
+make CPPFLAGS=-DELSE installplus objectsdir=../
 
-make installplus objectsdir=../ arch="arm64 x86_64" extension=d_fat
+make CPPFLAGS=-DELSE installplus objectsdir=../ arch="arm64 x86_64" extension=d_fat
 
-make installplus objectsdir=../ arch=i386 extension=d_i386
+make CPPFLAGS=-DELSE installplus objectsdir=../ arch=i386 extension=d_i386
 
-make installplus objectsdir=../ arch= x86_64 extension=d_amd64
+make CPPFLAGS=-DELSE installplus objectsdir=../ arch= x86_64 extension=d_amd64
 
 --------------------------------------------------------------------------------------
 

@@ -53,11 +53,10 @@
 #X floatatom 88 130 5 0 0 0 - - - 12;
 #X text 158 119 You can change the base and range with messages or flags. Microtonal base pitch is also possible. You can also use [ftom] to set a base value according to a hertz input (or also [mtof] for range input). After setting new base/range values you have to send a bang to generate a new list., f 51;
 #X text 383 276 pelog scale;
-#X text 54 462 Objects you can use [scale2freq] with:;
-#X obj 71 498 else/oscbank2~;
-#X obj 171 498 else/resonbank~;
-#X obj 275 498 else/bpbank~;
-#X obj 361 498 else/pvretune~~;
+#X text 93 461 Objects you can use [scale2freq] with:;
+#X obj 110 497 else/oscbank2~;
+#X obj 210 497 else/resonbank~;
+#X obj 314 497 else/bpbank~;
 #X connect 0 0 1 0;
 #X connect 2 0 8 0;
 #X connect 3 0 2 0;
@@ -72,11 +71,11 @@
 #X text 165 475 list - scale in cents;
 #X text 16 195 see also:;
 #X obj 17 215 else/scales;
-#X text 224 323 - scale in cents to convert to a frequency list;
 #X text 194 323 bang;
 #X obj 17 236 else/scale2cents;
 #X obj 17 258 else/scala;
 #X text 62 89 [scale2freq] gets a scale as a list of cents values \, a base/fundamental pitch and outputs a list of frequency in hertz between a minimum and maximum value. Below we use [eqdiv] to generate a scale. Use it to feed values to things like [resonbank~] \, [oscbank2~] or [pvretune~]., f 71;
+#X text 224 323 - generate frequency list;
 #X connect 17 0 18 0;
 #X connect 19 0 21 0;
 #X connect 20 0 19 0;
