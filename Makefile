@@ -7,6 +7,16 @@
 lib.name = else
 
 luaflags=-DMAKE_LIB -Ilua/lua
+define forDarwin
+luaflags += -DLUA_USE_MACOSX
+endef
+define forLinux
+luaflags += -DLUA_USE_LINUX
+endef
+define forWindows
+luaflags += -DLUA_USE_WINDOWS
+endef
+
 aubioflags=-Ishared/aubio/src
 
 cflags = -Ishared -DHAVE_STRUCT_TIMESPEC ${luaflags}
