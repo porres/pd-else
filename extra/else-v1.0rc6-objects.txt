@@ -170,7 +170,6 @@ gran.player~	x
 graph~	x
 gray~	x
 group	x
-gui	x
 hann~	x
 henon~	x
 hex2dec	x
