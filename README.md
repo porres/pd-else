@@ -111,13 +111,15 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 --------------------------------------------------------------------------
 
-## Current Object list (466 objects):
+## Current Object list (474 objects):
 
-**ASSORTED: [03]**
+**ASSORTED: [05]**
 
 - [else]
 - [chrono]
 - [datetime]
+- [pdlua]
+- [pdluax]
 
 **TABLE: [03]**
 
@@ -130,9 +132,10 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [hann~]
 - [bin.shift~]
 
-**TUNING/NOTES: [18]**
+**TUNING/NOTES: [19]**
 
 - [scales]
+- [sclae2freq]
 - [scala]
 - [autotune]
 - [autotune2]
@@ -255,6 +258,14 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [mono]
 - [voices]
 - [suspedal]
+
+**OSC: [05]**
+
+- [osc.route]
+- [osc.format]
+- [osc.parse]
+- [osc.send]
+- [osc.receive]
 
 **MATH: FUNCTIONS: [32]**
 

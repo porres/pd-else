@@ -266,6 +266,11 @@ op	x
 op~	x
 openfile	x
 order	x
+osc.format	x
+osc.parse	x
+osc.receive	x
+osc.route	x
+osc.send	x
 oscbank~	x
 oscbank2~	x
 oscope~	x
@@ -279,8 +284,10 @@ pan2~	x
 pan4~	x
 pan8~	x
 panic	x
-parabolic~	x
+parabolic~	x	x
 pattern	x
+pdlua	x
+pdluax	x
 peak~	x
 perlin~	x
 pgm.in	x
@@ -376,6 +383,7 @@ saw~	x
 saw2~	x
 scala	x
 scale2cents	x
+sclae2freq	x
 scales	x
 score	x
 score2	x

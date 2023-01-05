@@ -10,13 +10,13 @@ git submodule update --init --recursive
 
 -------------------------------------------------------------------------
 
-make install objectsdir=../
+make installplus objectsdir=../
 
-make install objectsdir=../ arch="arm64 x86_64" extension=d_fat
+make installplus objectsdir=../ arch="arm64 x86_64" extension=d_fat
 
-make install objectsdir=../ arch=i386 extension=d_i386
+make installplus objectsdir=../ arch=i386 extension=d_i386
 
-make install objectsdir=../ arch= x86_64 extension=d_amd64
+make installplus objectsdir=../ arch= x86_64 extension=d_amd64
 
 --------------------------------------------------------------------------------------
 
