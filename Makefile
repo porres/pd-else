@@ -330,6 +330,10 @@ file := shared/elsefile.c
 
 smagic := shared/magic.c
     oscope~.class.sources := Classes/Source/oscope~.c $(smagic)
+    
+define forWindows
+  ldlibs += -lws2_32 
+endef
 
 #########################################################################
 
@@ -342,10 +346,14 @@ $(wildcard Help-files/*.pd) \
 $(wildcard extra/*.*) \
 $(wildcard *.txt) \
 README.pdf \
-lua/pd-lua/pdlua/pd.lua
+./lua/pd-lua/pd.lua
 
 #########################################################################
 
 # include Makefile.pdlibbuilder from submodule directory 'pd-lib-builder'
 PDLIBBUILDER_DIR=pd-lib-builder/
 include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
+
+installplus: install 
+	cp -r ./folders/Live-Electronics-Tutorial "${installpath}"/Live-Electronics-Tutorial;
+	cp -r ./folders/pdlua "${installpath}"/pdlua;
