@@ -915,7 +915,7 @@ static void midi_write(t_midi *x, t_symbol *s){
     if(s && s != &s_)
         midi_dowrite(x, s);
     else  // creation arg is a default elsefile name
-        elsefile_panel_save(x->x_elsefilehandle, canvas_getdir(x->x_canvas), x->x_defname); // always start in canvas dir
+        panel_save(x->x_elsefilehandle, canvas_getdir(x->x_canvas), x->x_defname); // always start in canvas dir
 }
 
 static void midi_free(t_midi *x){
