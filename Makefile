@@ -363,6 +363,8 @@ README.pdf \
 PDLIBBUILDER_DIR=pd-lib-builder/
 include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 
+install: installplus
+
 installplus: install 
 	cp -r ./folders/Live-Electronics-Tutorial "${installpath}"/Live-Electronics-Tutorial;
 	cp -r ./folders/pdlua "${installpath}"/pdlua;
