@@ -1,69 +1,38 @@
-#N canvas 0 0 453 370 10;
+#N canvas 474 23 453 370 10;
+#X declare -lib pdlua;
 #N canvas 0 0 450 300 \$0-swarm-visualisation 0;
-#X obj 155 111 bng 8 250 50 0 \$0-bang-s \$0-1-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 164 85 bng 8 250 50 0 \$0-bang-s \$0-2-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 150 139 bng 8 250 50 0 \$0-bang-s \$0-3-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 121 102 bng 8 250 50 0 \$0-bang-s \$0-4-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 118 102 bng 8 250 50 0 \$0-bang-s \$0-5-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 129 145 bng 8 250 50 0 \$0-bang-s \$0-6-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 129 147 bng 8 250 50 0 \$0-bang-s \$0-7-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 128 101 bng 8 250 50 0 \$0-bang-s \$0-8-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 128 94 bng 8 250 50 0 \$0-bang-s \$0-9-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 97 124 bng 8 250 50 0 \$0-bang-s \$0-10-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 172 134 bng 8 250 50 0 \$0-bang-s \$0-11-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 125 146 bng 8 250 50 0 \$0-bang-s \$0-12-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 125 96 bng 8 250 50 0 \$0-bang-s \$0-13-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 94 126 bng 8 250 50 0 \$0-bang-s \$0-14-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 116 101 bng 8 250 50 0 \$0-bang-s \$0-15-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 107 107 bng 8 250 50 0 \$0-bang-s \$0-16-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 126 147 bng 8 250 50 0 \$0-bang-s \$0-17-r empty 17 7 0 10 -4034
--1 -1;
-#X obj 125 148 bng 8 250 50 0 \$0-bang-s \$0-18-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 156 119 bng 8 250 50 0 \$0-bang-s \$0-19-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 103 92 bng 8 250 50 0 \$0-bang-s \$0-20-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 156 122 bng 8 250 50 0 \$0-bang-s \$0-21-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 117 146 bng 8 250 50 0 \$0-bang-s \$0-22-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 116 104 bng 8 250 50 0 \$0-bang-s \$0-23-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 130 155 bng 8 250 50 0 \$0-bang-s \$0-24-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 118 100 bng 8 250 50 0 \$0-bang-s \$0-25-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 159 82 bng 8 250 50 0 \$0-bang-s \$0-26-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 126 157 bng 8 250 50 0 \$0-bang-s \$0-27-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 125 157 bng 8 250 50 0 \$0-bang-s \$0-28-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 119 147 bng 8 250 50 0 \$0-bang-s \$0-29-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 150 125 bng 8 250 50 0 \$0-bang-s \$0-30-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 150 125 bng 8 250 50 0 \$0-bang-s \$0-31-r empty 17 7 0 10 -258113
--1 -1;
-#X obj 155 103 bng 8 250 50 0 \$0-bang-s \$0-32-r empty 17 7 0 10 -258113
--1 -1;
+#X obj 155 111 bng 8 250 50 0 \$0-bang-s \$0-1-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 164 85 bng 8 250 50 0 \$0-bang-s \$0-2-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 150 139 bng 8 250 50 0 \$0-bang-s \$0-3-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 121 102 bng 8 250 50 0 \$0-bang-s \$0-4-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 118 102 bng 8 250 50 0 \$0-bang-s \$0-5-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 129 145 bng 8 250 50 0 \$0-bang-s \$0-6-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 129 147 bng 8 250 50 0 \$0-bang-s \$0-7-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 128 101 bng 8 250 50 0 \$0-bang-s \$0-8-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 128 94 bng 8 250 50 0 \$0-bang-s \$0-9-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 97 124 bng 8 250 50 0 \$0-bang-s \$0-10-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 172 134 bng 8 250 50 0 \$0-bang-s \$0-11-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 125 146 bng 8 250 50 0 \$0-bang-s \$0-12-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 125 96 bng 8 250 50 0 \$0-bang-s \$0-13-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 94 126 bng 8 250 50 0 \$0-bang-s \$0-14-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 116 101 bng 8 250 50 0 \$0-bang-s \$0-15-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 107 107 bng 8 250 50 0 \$0-bang-s \$0-16-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 126 147 bng 8 250 50 0 \$0-bang-s \$0-17-r empty 17 7 0 10 #00fc04 #000000 #000000;
+#X obj 125 148 bng 8 250 50 0 \$0-bang-s \$0-18-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 156 119 bng 8 250 50 0 \$0-bang-s \$0-19-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 103 92 bng 8 250 50 0 \$0-bang-s \$0-20-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 156 122 bng 8 250 50 0 \$0-bang-s \$0-21-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 117 146 bng 8 250 50 0 \$0-bang-s \$0-22-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 116 104 bng 8 250 50 0 \$0-bang-s \$0-23-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 130 155 bng 8 250 50 0 \$0-bang-s \$0-24-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 118 100 bng 8 250 50 0 \$0-bang-s \$0-25-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 159 82 bng 8 250 50 0 \$0-bang-s \$0-26-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 126 157 bng 8 250 50 0 \$0-bang-s \$0-27-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 125 157 bng 8 250 50 0 \$0-bang-s \$0-28-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 119 147 bng 8 250 50 0 \$0-bang-s \$0-29-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 150 125 bng 8 250 50 0 \$0-bang-s \$0-30-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 150 125 bng 8 250 50 0 \$0-bang-s \$0-31-r empty 17 7 0 10 #fc0400 #000000 #000000;
+#X obj 155 103 bng 8 250 50 0 \$0-bang-s \$0-32-r empty 17 7 0 10 #fc0400 #000000 #000000;
 #X coords 0 -1 1 1 200 200 2 0 0;
 #X restore 220 31 pd \$0-swarm-visualisation;
 #X obj 15 202 + 100;
@@ -71,10 +40,8 @@
 #X obj 25 255 pack f f s;
 #X obj 31 231 makefilename \$0-%d-r;
 #X msg 25 279 \; \$3 pos \$1 \$2;
-#X obj 13 4 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
-;
-#X obj 29 57 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 13 4 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
+#X obj 29 57 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X msg 75 72 randomize;
 #X obj 85 178 * 100;
 #X obj 16 179 * 100;
@@ -635,6 +602,7 @@
 #X restore 133 282 pd \$0-audio;
 #X obj 13 33 metro 40;
 #X text 181 309 boids-style swarm in pd with Lua;
+#X obj 270 263 declare -lib pdlua;
 #X connect 1 0 3 0;
 #X connect 2 0 3 1;
 #X connect 3 0 5 0;

@@ -1,20 +1,19 @@
-#N canvas 863 346 453 305 12;
-#X obj 92 82 foo;
-#X obj 92 58 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X floatatom 92 111 5 0 0 0 - - -, f 5;
-#X obj 257 58 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X floatatom 257 111 5 0 0 0 - - -, f 5;
-#X text 120 56 <-- click me! -->;
-#X obj 327 58 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X floatatom 327 111 5 0 0 0 - - -, f 5;
-#X obj 257 82 foo 5;
-#X obj 327 82 foo 0 5;
+#N canvas 615 228 452 257 12;
+#X declare -lib pdlua;
+#X obj 87 150 foo;
+#X obj 87 116 bng 20 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000 #000000;
+#X floatatom 87 180 5 0 0 0 - - - 0;
+#X floatatom 247 179 5 0 0 0 - - - 0;
+#X text 115 114 <-- click me! -->;
+#X floatatom 317 179 5 0 0 0 - - - 0;
+#X obj 247 149 foo 5;
+#X obj 317 149 foo 0 5;
+#X obj 197 44 declare -lib pdlua;
+#X obj 247 115 bng 20 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000 #000000;
+#X obj 317 115 bng 20 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000 #000000;
 #X connect 0 0 2 0;
 #X connect 1 0 0 0;
-#X connect 3 0 8 0;
-#X connect 6 0 9 0;
-#X connect 8 0 4 0;
-#X connect 9 0 7 0;
+#X connect 6 0 3 0;
+#X connect 7 0 5 0;
+#X connect 9 0 6 0;
+#X connect 10 0 7 0;

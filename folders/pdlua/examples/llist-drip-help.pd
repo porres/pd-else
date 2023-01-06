@@ -1,16 +1,13 @@
-#N canvas 390 515 588 334 10;
+#N canvas 379 292 588 334 10;
 #X declare -lib pdlua;
 #X obj 199 247 llist-drip;
-#X obj 89 10 import pdlua;
 #X msg 99 130 1 2 3 a b c;
 #X msg 121 152 list twig branch root;
-#X floatatom 77 109 5 0 0 0 - - -;
+#X floatatom 77 109 5 0 0 0 - - - 0;
 #X obj 199 274 print dripped;
-#X symbolatom 36 68 10 0 0 0 - - -;
-#X obj 36 44 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 56 89 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X symbolatom 36 68 10 0 0 0 - - - 0;
+#X obj 36 44 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 56 89 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X msg 187 218 alpha;
 #X msg 165 196 list alpha;
 #X text 227 42 [llist-drip] outputs any input as a sequence;
@@ -22,13 +19,14 @@
 #X text 229 217 <- a message is taken to be a oone-element list;
 #X text 178 130 <- a list beginning with a float is still a list;
 #X text 137 81 <- any single items are passed through unchanged;
-#X connect 0 0 5 0;
+#X obj 387 9 declare -lib pdlua;
+#X connect 0 0 4 0;
+#X connect 1 0 0 0;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;
-#X connect 4 0 0 0;
-#X connect 6 0 0 0;
-#X connect 7 0 6 0;
+#X connect 5 0 0 0;
+#X connect 6 0 5 0;
+#X connect 7 0 0 0;
 #X connect 8 0 0 0;
 #X connect 9 0 0 0;
-#X connect 10 0 0 0;
-#X connect 13 0 0 0;
+#X connect 12 0 0 0;
