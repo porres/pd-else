@@ -1,12 +1,18 @@
 
-cflags = -Ishared -DHAVE_STRUCT_TIMESPEC
+# Homebrew support (pdlib-builder assumes Fink)
+ifneq ($(HOMEBREW_PREFIX),)
+EXTRA_INCLUDES = -I$(HOMEBREW_PREFIX)/include
+EXTRA_LDFLAGS = -L$(HOMEBREW_PREFIX)/lib
+endif
+
+cflags = $(EXTRA_INCLUDES) -Ishared -DHAVE_STRUCT_TIMESPEC
 
 lib.name = sfont~
 
 file := ../shared/elsefile.c 
 sfont~.class.sources := sfont~.c $(file)
 
-ldlibs = -lfluidsynth
+ldlibs = $(EXTRA_LDFLAGS) -lfluidsynth
 
 datafiles = sfont~-help.pd
 datadirs = sf
