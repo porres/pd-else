@@ -412,7 +412,7 @@ static void rec_doread(t_rec *x, t_symbol *fname){
         binbuf_free(bb);
     }
     else
-        elsefile_panel_click_open(x->x_elsefilehandle);
+        panel_click_open(x->x_elsefilehandle);
 }
 
 static int rec_writetrack(t_rec *x, t_rec_track *tp, FILE *fp){
@@ -511,7 +511,7 @@ static void rec_read(t_rec *x, t_symbol *s){
     if(s && s != &s_)
         rec_doread(x, s);
     else
-        elsefile_panel_click_open(x->x_elsefilehandle);
+        panel_click_open(x->x_elsefilehandle);
 }
 
 static void rec_write(t_rec *x, t_symbol *s){
@@ -522,7 +522,7 @@ static void rec_write(t_rec *x, t_symbol *s){
 }
 
 static void rec_click(t_rec *x){
-    elsefile_panel_click_open(x->x_elsefilehandle);
+    panel_click_open(x->x_elsefilehandle);
 }
 
 static void rec_free(t_rec *x){
