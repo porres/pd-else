@@ -6,7 +6,7 @@
 
 lib.name = else
 
-luaflags=-DMAKE_LIB -Ilua/lua
+luaflags=-DMAKE_LIB -Ilua/lua -DELSE
 define forDarwin
 luaflags += -DLUA_USE_MACOSX
 endef
