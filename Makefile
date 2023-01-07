@@ -366,5 +366,5 @@ include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 install: installplus
 
 installplus: install 
-	cp -r ./folders/Live-Electronics-Tutorial "${installpath}"/Live-Electronics-Tutorial;
-	cp -r ./folders/pdlua "${installpath}"/pdlua;
+	cp -r ./folders "${installpath}";
+	cp -r ./sfont~/sf "${installpath}"/sf;
