@@ -364,6 +364,6 @@ include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 
 install: installplus
 
-installplus: install 
+installplus:
 	cp -r ./extra/ "${installpath}";
 	cp -r ./sfont~/sf "${installpath}"/sf;
