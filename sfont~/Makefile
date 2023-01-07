@@ -12,7 +12,7 @@ lib.name = sfont~
 file := ../shared/elsefile.c 
 sfont~.class.sources := sfont~.c $(file)
 
-ldlibs = -lfluidsynth
+ldlibs = $(EXTRA_LDFLAGS) -lfluidsynth
 
 datafiles = sfont~-help.pd
 datadirs = sf
