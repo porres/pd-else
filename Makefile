@@ -352,7 +352,6 @@ datafiles = \
 $(wildcard Classes/Abstractions/*.pd) \
 $(wildcard Classes/Abs_components/*.pd) \
 $(wildcard Help-files/*.pd) \
-$(wildcard extra/*.*) \
 $(wildcard *.txt) \
 README.pdf \
 ./lua/pd-lua/pd.lua
@@ -366,5 +365,5 @@ include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 install: installplus
 
 installplus: install 
-	cp -r ./folders "${installpath}";
+	cp -r ./extra/ "${installpath}";
 	cp -r ./sfont~/sf "${installpath}"/sf;
