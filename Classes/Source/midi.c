@@ -733,7 +733,7 @@ mfreadfailed:
 }
 
 static void midi_click(t_midi *x){
-    panel_click_open(x->x_elsefilehandle);
+    elsefile_panel_click_open(x->x_elsefilehandle);
 }
 
 static int midi_mfwrite(t_midi *x, char *path){
@@ -812,7 +812,7 @@ static void midi_textread(t_midi *x, char *path){
     t_binbuf *bb;
     bb = binbuf_new();
     if(binbuf_read(bb, path, "", 0)) // CHECKED no complaint, open dialog presented
-        panel_click_open(x->x_elsefilehandle);  // LATER rethink
+        elsefile_panel_click_open(x->x_elsefilehandle);  // LATER rethink
     else{
         int nlines = /* CHECKED absolute timestamps */
             midi_fromatoms(x, binbuf_getnatom(bb), binbuf_getvec(bb));
@@ -908,7 +908,7 @@ static void midi_read(t_midi *x, t_symbol *s){
     if(s && s != &s_)
         midi_doread(x, s);
     else
-        panel_click_open(x->x_elsefilehandle);
+        elsefile_panel_click_open(x->x_elsefilehandle);
 }
 
 static void midi_write(t_midi *x, t_symbol *s){
