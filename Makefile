@@ -365,5 +365,5 @@ include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 install: installplus
 
 installplus:
-	cp -r ./extra/ "${installpath}";
+	cp -r ./lua/pd-lua/pdlua "${installpath}"/pdlua;
 	cp -r ./sfont~/sf "${installpath}"/sf;
