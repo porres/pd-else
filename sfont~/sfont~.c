@@ -73,7 +73,7 @@ typedef struct _sfont{
 static void sfont_float(t_sfont *x, t_float f);
 
 static void sfont_getversion(void){
-    post("[sfont~] version 1.0-rc2 (using fluidsynth %s)", FLUIDSYNTH_VERSION);
+    post("[sfont~] version 1.0-rc6 (using fluidsynth %s)", FLUIDSYNTH_VERSION);
 }
 
 static void sfont_verbose(t_sfont *x, t_floatarg f){
