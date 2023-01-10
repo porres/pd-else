@@ -6,6 +6,30 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 
 ----------------------------------------------------------------------------
 
+
+----------------------------------------------------------------------------
+1.0-0 Release Candidate 6:
+----------------------------------------------------------------------------
+
+**LIBRARY:**
+
+Breaking changes:
+- [scales] - removed 3rd outlet (no more 'cents' output), 2nd outlet also removed (a new message changes the mode to output midi pitches instead).
+- [pipe2], this is now a compiled object and you there's no more 'clear'/'flush' messages.
+- deleted [gui] object (never liked it and it was a request by someone who's not really using it)
+
+Enhancements/fixes:
+- [pipe2] fixed time management bug.
+- [eqdiv] fixed loading arguments.
+- [resonbank~]: added 'decayall'/'ampall' messages/flags.
+- 8 new objects for a total of 473: [sclae2freq], [osc.route], [osc.parse], [osc.format], [osc.send], [osc.receive], [pdlua] and [pdluax].  
+
+--------------------------------------
+
+**TUTORIAL:**
+- Updated OSC section, total number of examples is now 494.
+
+
 ----------------------------------------------------------------------------
 1.0-0 Release Candidate 5:
 ----------------------------------------------------------------------------

@@ -256,8 +256,8 @@ zerocross~.class.sources := Classes/Source/zerocross~.c
 #    onsetdetect~.class.sources := Classes/Source/onsetdetect~.c $(aubio)
 #    pitch~.class.sources := Classes/Source/pitch~.c $(aubio)
 
- lua := lua/lua/onelua.c
-    pdlua.class.sources := lua/pd-lua/pdlua.c $(lua)
+ lua := pd-lua/lua/onelua.c
+    pdlua.class.sources := pd-lua/pd-lua/pdlua.c $(lua)
 
 magic := shared/magic.c
     sine~.class.sources := Classes/Source/sine~.c $(magic)
@@ -365,5 +365,5 @@ include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 install: installplus
 
 installplus:
-	cp -r ./lua/pd-lua/pdlua "${installpath}"/pdlua;
+	cp -r ./pd-lua/pd-lua/pdlua "${installpath}"/pdlua;
 	cp -r ./sfont~/sf "${installpath}"/sf;
