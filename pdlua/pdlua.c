@@ -1698,7 +1698,7 @@ static int pdlua_loader_pathwise
 #endif
 
 #define xstr(s) str(s)
-#define str(...) #__VA_ARGS__
+#define str(s) #s
 
 /** Start the Lua runtime and register our loader hook. */
 #ifdef _WIN32
@@ -1735,7 +1735,7 @@ void pdlua_setup(void)
 #endif
     if (strlen(pdlua_version) == 0) {
       // NOTE: This should be set from the Makefile, otherwise we fall back to:
-      pdlua_version = "0.11.0";
+      pdlua_version = "0.11.1";
     }
     snprintf(pdluaver, MAXPDSTRING-1, "pdlua %s (GPL) 2008 Claude Heiland-Allen, 2014 Martin Peach et al.", pdlua_version);
     snprintf(compiled, MAXPDSTRING-1, "pdlua: compiled for pd-%d.%d on %s",
