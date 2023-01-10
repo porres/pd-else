@@ -1,0 +1,12 @@
+
+return function (self, sel, atoms)
+   self.inlets = 1
+   self.outlets = 1
+   self.counter = type(atoms[1]) == "number" and atoms[1] or 0
+   self.step = type(atoms[2]) == "number" and atoms[2] or 1
+   function self:in_1_bang()
+      self:outlet(1, "float", {self.counter})
+      self.counter = self.counter + self.step
+   end
+   return true
+end

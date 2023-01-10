@@ -1,0 +1,4 @@
+#N canvas 548 202 362 152 12;
+#X obj 102 78 pdlua;
+#X msg 102 49 load loadtest.lua;
+#X connect 1 0 0 0;
