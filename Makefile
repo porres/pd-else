@@ -257,7 +257,7 @@ zerocross~.class.sources := Classes/Source/zerocross~.c
 #    pitch~.class.sources := Classes/Source/pitch~.c $(aubio)
 
  lua := pd-lua/lua/onelua.c
-    pdlua.class.sources := pd-lua/pd-lua/pdlua.c $(lua)
+    pdlua.class.sources := pd-lua/pdlua.c $(lua)
 
 magic := shared/magic.c
     sine~.class.sources := Classes/Source/sine~.c $(magic)
