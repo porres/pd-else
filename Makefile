@@ -354,7 +354,7 @@ $(wildcard Classes/Abs_components/*.pd) \
 $(wildcard Help-files/*.pd) \
 $(wildcard *.txt) \
 README.pdf \
-./pd-lua/pd.lua
+./lua/pd-lua/pd.lua
 
 #########################################################################
 
@@ -365,5 +365,5 @@ include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 install: installplus
 
 installplus:
-	cp -r ./pd-lua/pdlua "${installpath}"/pdlua;
+	cp -r ./pd-lua/pd-lua/pdlua "${installpath}"/pdlua;
 	cp -r ./sfont~/sf "${installpath}"/sf;
