@@ -256,8 +256,8 @@ zerocross~.class.sources := Classes/Source/zerocross~.c
 #    onsetdetect~.class.sources := Classes/Source/onsetdetect~.c $(aubio)
 #    pitch~.class.sources := Classes/Source/pitch~.c $(aubio)
 
- lua := pd-lua/lua/onelua.c
-    pdlua.class.sources := pd-lua/pdlua.c $(lua)
+ lua := pdlua/onelua.c
+    pdlua.class.sources := pdlua/pdlua.c $(lua)
 
 magic := shared/magic.c
     sine~.class.sources := Classes/Source/sine~.c $(magic)
@@ -354,7 +354,7 @@ $(wildcard Classes/Abs_components/*.pd) \
 $(wildcard Help-files/*.pd) \
 $(wildcard *.txt) \
 README.pdf \
-./pd-lua/pd.lua
+./pdlua/pd.lua
 
 #########################################################################
 
@@ -365,5 +365,5 @@ include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 install: installplus
 
 installplus:
-	cp -r ./pd-lua/pdlua "${installpath}"/pdlua;
+	cp -r ./extra "${installpath}";
 	cp -r ./sfont~/sf "${installpath}"/sf;
