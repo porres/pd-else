@@ -1,0 +1,14 @@
+#N canvas 495 142 521 256 12;
+#X declare -lib pdlua;
+#X floatatom 107 163 5 0 0 0 - - - 0;
+#X floatatom 272 163 5 0 0 0 - - - 0;
+#X text 135 98 <-- click me! -->;
+#X obj 107 134 pdluax foo;
+#X obj 272 134 pdluax foo 0 5;
+#X obj 107 99 bng 20 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000 #000000;
+#X obj 272 99 bng 20 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000 #000000;
+#X obj 279 41 declare -lib pdlua;
+#X connect 3 0 0 0;
+#X connect 4 0 1 0;
+#X connect 5 0 3 0;
+#X connect 6 0 4 0;
