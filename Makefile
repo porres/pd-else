@@ -353,6 +353,7 @@ $(wildcard Classes/Abstractions/*.pd) \
 $(wildcard Classes/Abs_components/*.pd) \
 $(wildcard Help-files/*.pd) \
 $(wildcard *.txt) \
+$(wildcard extra/*.*) \
 README.pdf \
 ./pdlua/pd.lua
 
@@ -365,5 +366,4 @@ include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 install: installplus
 
 installplus:
-	cp -r ./extra "${installpath}";
-	cp -r ./sfont~/sf "${installpath}"/sf;
+	cp -r ./pdlua/pdlua "${installpath}"/pdlua;
