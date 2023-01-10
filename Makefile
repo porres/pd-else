@@ -256,7 +256,7 @@ zerocross~.class.sources := Classes/Source/zerocross~.c
 #    onsetdetect~.class.sources := Classes/Source/onsetdetect~.c $(aubio)
 #    pitch~.class.sources := Classes/Source/pitch~.c $(aubio)
 
- lua := pdlua/onelua.c
+ lua := pdlua/lua/onelua.c
     pdlua.class.sources := pdlua/pdlua.c $(lua)
 
 magic := shared/magic.c

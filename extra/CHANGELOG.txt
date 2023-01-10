@@ -22,7 +22,8 @@ Enhancements/fixes:
 - [pipe2] fixed time management bug.
 - [eqdiv] fixed loading arguments.
 - [resonbank~]: added 'decayall'/'ampall' messages/flags.
-- 8 new objects for a total of 473: [sclae2freq], [osc.route], [osc.parse], [osc.format], [osc.send], [osc.receive], [pdlua] and [pdluax].  
+- 8 new objects for a total of 473: [sclae2freq], [osc.route], [osc.parse], [osc.format], [osc.send], [osc.receive], [pdlua] and [pdluax] (these aren't really part of ELSE but were included [version 0.11.1]).
+
 
 --------------------------------------
 

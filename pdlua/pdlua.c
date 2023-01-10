@@ -42,9 +42,9 @@
 #include <unistd.h>
 #endif
 /* we use Lua */
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
+#include "lua/lua.h"
+#include "lua/lauxlib.h"
+#include "lua/lualib.h"
 
 /* we use Pd */
 #include "m_pd.h"
