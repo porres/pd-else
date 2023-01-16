@@ -4,9 +4,9 @@
 
 ### for the Pure Data programming language
 
-### Version: 1.0-0 RC-6 (release candidate #6) With Live Electronics Tutorial. 
+### Version: 1.0-0 RC-7 (release candidate #7) With Live Electronics Tutorial. 
 
-### Released january 10th 2023
+### Unreleased
 
 
 
