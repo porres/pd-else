@@ -103,7 +103,7 @@ static t_int *wt_perform(t_int *w){
                 }
                 else{
                     INDEX_2PT()
-                    *out++ = x->x_interp ? interp_cos(frac, b, c) : interp_lin(frac, b, c);
+                    *out++ = x->x_interp == 2 ? interp_cos(frac, b, c) : interp_lin(frac, b, c);
                 }
             }
             else // ??? maybe we dont need "playable"?
