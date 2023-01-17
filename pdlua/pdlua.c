@@ -469,10 +469,81 @@ static t_pdlua *pdlua_new
     }
     PDLUA_DEBUG("pdlua_new: start with stack top %d", lua_gettop(__L));
     lua_getglobal(__L, "pd");
+    lua_getfield(__L, -1, "_checkbase");
+    lua_pushstring(__L, s->s_name);
+    lua_pcall(__L, 1, 1, 0);
+    int needs_base = lua_toboolean(__L, -1);
+    lua_pop(__L, 1); /* pop boolean */
+    /* have to load the .pd_lua file for basename if another class is owning it */
+    if(needs_base) {
+        char                buf[MAXPDSTRING];
+        char                *ptr;
+        t_pdlua_readerdata  reader;
+        t_canvas* current = canvas_getcurrent();
+        int fd = canvas_open(current, s->s_name, ".pd_lua", buf, &ptr, MAXPDSTRING, 1);
+        if (fd >= 0)
+        {
+            PDLUA_DEBUG("basename open: stack top %d", lua_gettop(__L));
+            /* save old loadname, restore later in case of
+             * nested loading */ 
+            int n, load_name_save, load_path_save;
+            lua_getfield(__L, -1, "_loadname");
+            load_name_save = luaL_ref(__L, LUA_REGISTRYINDEX);
+            lua_pushnil(__L);
+            lua_setfield(__L, -2, "_loadname");
+            lua_getfield(__L, -1, "_loadpath");
+            load_path_save = luaL_ref(__L, LUA_REGISTRYINDEX);
+            lua_pushstring(__L, buf);
+            lua_setfield(__L, -2, "_loadpath");
+            
+            PDLUA_DEBUG("pdlua_new (basename load) path is %s", buf);
+            //pdlua_setpathname(o, buf);/* change the scriptname to include its path 
+            pdlua_setrequirepath(__L, buf);
+            class_set_extern_dir(gensym(buf));
+            strncpy(buf, s->s_name, MAXPDSTRING - 8);
+            strcat(buf, ".pd_lua");
+            reader.fd = fd;
+            n = lua_gettop(__L);
+#if LUA_VERSION_NUM	< 502
+            if (lua_load(__L, pdlua_reader, &reader, buf))
+#else // 5.2 style
+            if (lua_load(__L, pdlua_reader, &reader, buf, NULL))
+#endif // LUA_VERSION_NUM	< 502
+            {
+                close(fd);
+                pdlua_clearrequirepath(__L);
+                lua_error(__L);
+            }
+            else
+            {
+                if (lua_pcall(__L, 0, LUA_MULTRET, 0))
+                {
+                    pd_error(NULL, "lua: error running `%s':\n%s", buf, lua_tostring(__L, -1));
+                    lua_pop(__L, 1);
+                    close(fd);
+                    pdlua_clearrequirepath(__L);
+                }
+                else
+                {
+                    /* succeeded */
+                    close(fd);
+                    pdlua_clearrequirepath(__L);
+                }
+            }
+            class_set_extern_dir(&s_);
+            lua_settop(__L, n); /* discard results of load */
+            lua_rawgeti(__L, LUA_REGISTRYINDEX, load_path_save);
+            lua_setfield(__L, -2, "_loadpath");
+            luaL_unref(__L, LUA_REGISTRYINDEX, load_path_save);
+            lua_rawgeti(__L, LUA_REGISTRYINDEX, load_name_save);
+            lua_setfield(__L, -2, "_loadname");
+            luaL_unref(__L, LUA_REGISTRYINDEX, load_name_save);
+        }
+        else pd_error(NULL, "lua: error loading `%s': canvas_open() failed", buf);
+    }
+    PDLUA_DEBUG("pdlua_new: after load script. stack top %d", lua_gettop(__L));
     lua_getfield(__L, -1, "_constructor");
-    /* ag: We need to use the basename of the object name here, in case a path
-       is specified (cf. pdlua_loader_pathwise below). */
-    lua_pushstring(__L, basename(s->s_name));
+    lua_pushstring(__L, s->s_name);
     pdlua_pushatomtable(argc, argv);
     PDLUA_DEBUG("pdlua_new: before lua_pcall(L, 2, 1, 0) stack top %d", lua_gettop(__L));
     if (lua_pcall(__L, 2, 1, 0))
@@ -736,6 +807,28 @@ static int pdlua_object_createoutlets(lua_State *L)
     }
     PDLUA_DEBUG("pdlua_object_createoutlets: end stack top is %d", lua_gettop(L));
     return 0;
+}
+
+/* get canvas path of an object */
+static int pdlua_object_canvaspath(lua_State *L)
+/**< Lua interpreter state.
+  * \par Inputs:
+  * \li \c 1 Pd object pointer.
+  * \par Outputs:
+  * \li \c 1 Canvas path string.
+  * */
+{
+    PDLUA_DEBUG("pdlua_object_canvaspath: stack top is %d", lua_gettop(L));
+    if (lua_islightuserdata(L, 1))
+    {
+        t_pdlua *o = lua_touserdata(L, 1);
+        if (o)
+        {
+           lua_pushstring(L, canvas_getdir(o->canvas)->s_name);
+        }
+    }
+    PDLUA_DEBUG("pdlua_object_canvaspath: end stack top is %d", lua_gettop(L));
+    return 1;
 }
 
 /** Lua object receive creation. */
@@ -1420,6 +1513,77 @@ static void pdlua_clearrequirepath
     PDLUA_DEBUG("pdlua_clearrequirepath: end. stack top %d", lua_gettop(L));
 }
 
+/** Run a Lua script using class path */
+static int pdlua_dofilex(lua_State *L)
+/**< Lua interpreter state.
+  * \par Inputs:
+  * \li \c 1 Pd class pointer.
+  * \li \c 2 Filename string.
+  * \par Outputs:
+  * \li \c * Determined by the script.
+  * */
+{
+    char                buf[MAXPDSTRING];
+    char                *ptr;
+    t_pdlua_readerdata  reader;
+    int                 fd;
+    int                 n;
+    const char          *filename;
+    t_class             *c;
+
+    PDLUA_DEBUG("pdlua_dofilex: stack top %d", lua_gettop(L));
+    n = lua_gettop(L);
+    if (lua_islightuserdata(L, 1))
+    {
+        c = lua_touserdata(L, 1);
+        if (c)
+        {
+            filename = luaL_optstring(L, 2, NULL);
+            fd = sys_trytoopenone(c->c_externdir->s_name, filename, "",
+              buf, &ptr, MAXPDSTRING, 1);
+            if (fd >= 0)
+            {
+                PDLUA_DEBUG("pdlua_dofilex path is %s", buf);
+                pdlua_setrequirepath(L, buf);
+                reader.fd = fd;
+#if LUA_VERSION_NUM	< 502
+                if (lua_load(L, pdlua_reader, &reader, filename))
+#else // 5.2 style
+                if (lua_load(L, pdlua_reader, &reader, filename, NULL))
+#endif // LUA_VERSION_NUM	< 502
+                {
+                    close(fd);
+                    pdlua_clearrequirepath(L);
+                    lua_error(L);
+                }
+                else
+                {
+                    if (lua_pcall(L, 0, LUA_MULTRET, 0))
+                    {
+                        pd_error(NULL, "lua: error running `%s':\n%s", filename, lua_tostring(L, -1));
+                        lua_pop(L, 1);
+                        close(fd);
+                        pdlua_clearrequirepath(L);
+                    }
+                    else
+                    {
+                        /* succeeded */
+                        close(fd);
+                        pdlua_clearrequirepath(L);
+                    }
+                }
+            }
+            else pd_error(NULL, "lua: error loading `%s': sys_trytoopenone() failed", filename);
+        }
+        else pd_error(NULL, "lua: error in class:dofilex() - class is null");
+    }
+    else pd_error(NULL, "lua: error in class:dofilex() - object is wrong type");
+    lua_pushstring(L, buf); /* return the path as well so we can open it later with pdlua_menu_open() */
+    PDLUA_DEBUG("pdlua_dofilex end. stack top is %d", lua_gettop(L));
+ 
+    return lua_gettop(L) - n;
+}
+
 /** Run a Lua script using Pd's path. */
 static int pdlua_dofile(lua_State *L)
 /**< Lua interpreter state.
@@ -1517,6 +1681,9 @@ static void pdlua_init(lua_State *L)
     lua_pushstring(L, "_createoutlets");
     lua_pushcfunction(L, pdlua_object_createoutlets);
     lua_settable(L, -3);
+    lua_pushstring(L, "_canvaspath");
+    lua_pushcfunction(L, pdlua_object_canvaspath);
+    lua_settable(L, -3);
     lua_pushstring(L, "_destroy");
     lua_pushcfunction(L, pdlua_object_free);
     lua_settable(L, -3);
@@ -1546,6 +1713,9 @@ static void pdlua_init(lua_State *L)
     lua_settable(L, -3);
     lua_pushstring(L, "_dofile");
     lua_pushcfunction(L, pdlua_dofile);
+    lua_settable(L, -3);
+    lua_pushstring(L, "_dofilex");
+    lua_pushcfunction(L, pdlua_dofilex);
     lua_settable(L, -3);
     lua_pushstring(L, "send");
     lua_pushcfunction(L, pdlua_send);
@@ -1589,27 +1759,6 @@ static int pdlua_loader_fromfd
     t_pdlua_readerdata  reader;
 
     PDLUA_DEBUG("pdlua_loader: stack top %d", lua_gettop(__L));
-    // First check whether the class has already been created under a
-    // different path.
-    lua_getglobal(__L, "pd");
-    lua_getfield(__L, -1, "_check");
-    lua_pushstring(__L, name);
-    // We expect false here, indicating that the class hasn't been registered
-    // yet and thus we can safely go ahead and load the file. Everything else
-    // indicates an error. To be on the safe side, we also assume this if the
-    // call fails or returns anything else but a boolean value.
-    int res = lua_pcall(__L, 1, 1, 0) ||
-      !lua_isboolean(__L, -1) || lua_toboolean(__L, -1);
-    lua_pop(__L, 2);/* pop the result and the global "pd" */
-    // If res indicates an error, there's really nothing that we can do except
-    // bail out with failure. Everything else will leave the loader in an
-    // unstable state and wreak havoc further down the line. Thus we can't
-    // create the object even if the basename class was registered earlier.
-    if (res) {
-      pd_error(NULL, "lua: error loading `%s': class already exists", name);
-      return 0;
-    }
-    // If we come here we're good; go ahead and load the Lua source.
     class_set_extern_dir(gensym(dirbuf));
     pdlua_setrequirepath(__L, dirbuf);
     reader.fd = fd;
@@ -1632,6 +1781,48 @@ static int pdlua_loader_fromfd
     return 1;
 }
 
+static int pdlua_loader_wrappath
+(
+    int         fd, /**< file-descriptor of .pd_lua file */
+    const char *name, /**< The name of the script (without .pd_lua extension). */
+    const char *dirbuf /**< The name of the directory the .pd_lua files lives in */
+)
+{
+  int result = 0;
+  if (fd>=0)
+  {
+    const char* basenamep = basename(name);
+    int load_name_save = 0, load_path_save;
+    const int is_loadname = basenamep > name;
+    lua_getglobal(__L, "pd");
+    if (is_loadname)
+    {
+      /* save old loadname, restore later in case of
+       * nested loading */
+      lua_getfield(__L, -1, "_loadname");
+      load_name_save = luaL_ref(__L, LUA_REGISTRYINDEX);
+      lua_pushstring(__L, name);
+      lua_setfield(__L, -2, "_loadname");
+    }
+    lua_getfield(__L, -1, "_loadpath");
+    load_path_save = luaL_ref(__L, LUA_REGISTRYINDEX);
+    lua_pushstring(__L, dirbuf);
+    lua_setfield(__L, -2, "_loadpath");
+    result=pdlua_loader_fromfd(fd, basenamep, dirbuf);
+    lua_rawgeti(__L, LUA_REGISTRYINDEX, load_path_save);
+    lua_setfield(__L, -2, "_loadpath");
+    luaL_unref(__L, LUA_REGISTRYINDEX, load_path_save);
+    if (is_loadname) {
+      lua_rawgeti(__L, LUA_REGISTRYINDEX, load_name_save);
+      lua_setfield(__L, -2, "_loadname");
+      luaL_unref(__L, LUA_REGISTRYINDEX, load_name_save);
+    }
+    lua_pop(__L, 1);
+    sys_close(fd);
+  }
+  return result;
+}
+
 static int pdlua_loader_legacy
 (
     t_canvas    *canvas, /**< Pd canvas to use to find the script. */
@@ -1641,15 +1832,9 @@ static int pdlua_loader_legacy
     char                dirbuf[MAXPDSTRING];
     char                *ptr;
     int                 fd;
-    int result = 0;
 
     fd = canvas_open(canvas, name, ".pd_lua", dirbuf, &ptr, MAXPDSTRING, 1);
-    if (fd>=0)
-    {
-      result=pdlua_loader_fromfd(fd, basename(name), dirbuf);
-      sys_close(fd);
-    }
-    return result;
+    return pdlua_loader_wrappath(fd, name, dirbuf);
 }
 
 static int pdlua_loader_pathwise
@@ -1662,7 +1847,6 @@ static int pdlua_loader_pathwise
     char                dirbuf[MAXPDSTRING];
     char                *ptr;
     int                 fd;
-    int result = 0;
 
     if(!path)
     {
@@ -1671,17 +1855,10 @@ static int pdlua_loader_pathwise
     }
     /* ag: Try loading <path>/<classname>.pd_lua (experimental).
        sys_trytoopenone will correctly find the file in a subdirectory if a
-       path is given, and it will then return that subdir in dirbuf. Thus we
-       need to determine the basename of the script file so that it gets
-       loaded correctly. */
+       path is given, and it will then return that subdir in dirbuf. */
     fd = sys_trytoopenone(path, objectname, ".pd_lua",
       dirbuf, &ptr, MAXPDSTRING, 1);
-    if (fd>=0)
-    {
-      result=pdlua_loader_fromfd(fd, basename(objectname), dirbuf);
-      sys_close(fd);
-    }
-    return result;
+    return pdlua_loader_wrappath(fd, objectname, dirbuf);
 }
 
 
@@ -1735,7 +1912,7 @@ void pdlua_setup(void)
 #endif
     if (strlen(pdlua_version) == 0) {
       // NOTE: This should be set from the Makefile, otherwise we fall back to:
-      pdlua_version = "0.11.1";
+      pdlua_version = "0.11.3";
     }
     snprintf(pdluaver, MAXPDSTRING-1, "pdlua %s (GPL) 2008 Claude Heiland-Allen, 2014 Martin Peach et al.", pdlua_version);
     snprintf(compiled, MAXPDSTRING-1, "pdlua: compiled for pd-%d.%d on %s",

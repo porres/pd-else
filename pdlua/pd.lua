@@ -19,10 +19,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 --]]
 
 -- storage for Pd C<->Lua interaction
-pd._classes = { }
+pd._classes = { } -- take absolute paths and turn them into classes
+pd._pathnames = { } -- look up absolute path by creation name
 pd._objects = { }
 pd._clocks = { }
 pd._receives = { }
+pd._loadpath = ""
 
 -- add a path to Lua's "require" search paths
 pd._setrequirepath = function(path)
@@ -43,15 +45,16 @@ pd._clearrequirepath = function()
   package.cpath = pd._packagecpath
 end
 
--- check whether a class already exists
-pd._check = function (name)
-  return nil ~= pd._classes[name]
+-- check if we need to register a basename class first
+pd._checkbase = function (name)
+  return pd._pathnames[name] == true
 end
 
 -- constructor dispatcher
 pd._constructor = function (name, atoms)
-  if nil ~= pd._classes[name] then
-    local o = pd._classes[name]:new():construct(name, atoms)
+  local fullpath = pd._pathnames[name]
+  if nil ~= pd._classes[fullpath] then
+    local o = pd._classes[fullpath]:new():construct(name, atoms)
     if o then
       pd._objects[o._object] = o
       return o._object
@@ -238,25 +241,42 @@ end
 pd.Class = pd.Prototype:new()
 
 function pd.Class:register(name)
-  if nil ~= pd._classes[name] then    -- already registered
-    return pd._classes[name]          -- return existing
-  else
-    self._class = pd._register(name)  -- register new class
-    pd._classes[name] = self          -- record registration
-    self._name = name
-    if name == "pdlua" then
-      self._scriptname = "pd.lua"
-    else
-      self._scriptname = name .. ".pd_lua"
-    end -- mrpeach 20111027
-    return self                       -- return new
+  -- if already registered, return existing
+  local regname
+  local fullpath = pd._loadpath .. '/'
+  local fullname = fullpath .. name
+
+  if nil ~= pd._classes[fullname] then
+    return pd._classes[fullname]
   end
+  if pd._loadname then
+    -- don't alter existing classes of basename,
+    -- if another file has ownership of basename
+    if not pd._pathnames[name] then
+      pd._pathnames[name] = true
+    end
+    regname = pd._loadname
+  else
+    regname = name
+  end
+  pd._pathnames[regname] = fullname
+  pd._classes[fullname] = self       -- record registration
+  self._class = pd._register(name)  -- register new class
+  self._name = name
+  self._loadpath = fullpath
+  if name == "pdlua" then
+    self._scriptname = "pd.lua"
+  else
+    self._scriptname = name .. ".pd_lua"
+  end -- mrpeach 20111027
+  return self                       -- return new
 end
 
 function pd.Class:construct(sel, atoms)
   self._object = pd._create(self._class)
   self.inlets = 0
   self.outlets = 0
+  self._canvaspath = pd._canvaspath(self._object) .. "/"
   if self:initialize(sel, atoms) then
     pd._createinlets(self._object, self.inlets)
     pd._createoutlets(self._object, self.outlets)
@@ -316,8 +336,32 @@ function pd.Class:postinitialize() end
 
 function pd.Class:finalize() end
 
+function pd.Class:dofilex(file)
+  -- in case of register being called, make sure
+  -- classes in other paths aren't getting affected
+  -- save old loadname in case of weird nesting loading
+  local namesave = pd._loadname
+  local pathsave = pd._loadpath
+  pd._loadname = nil
+  pd._loadpath = self._loadpath
+  local f, path = pd._dofilex(self._class, file)
+  pd._loadname = namesave
+  pd._loadpath = pathsave
+  return f, path
+end
+
 function pd.Class:dofile(file)
-  return pd._dofile(self._object, file)
+  -- in case of register being called, make sure
+  -- classes in other paths aren't getting affected
+  -- save old loadname in case of weird nesting loading
+  local namesave = pd._loadname
+  local pathsave = pd._loadpath
+  pd._loadname = nil
+  pd._loadpath = self._loadpath
+  local f, path = pd._dofile(self._object, file)
+  pd._loadname = namesave
+  pd._loadpath = pathsave
+  return f, path
 end
 
 function pd.Class:error(msg)
@@ -357,7 +401,10 @@ function luax:initialize(sel, atoms)          -- motivation: pd-list 2007-09-23
   end
   local f, pathname = self:dofile(atoms[1] .. ".pd_luax")
   if f and pathname then
-    self._scriptname = pathname .. '/' .. atoms[1] .. ".pd_luax" -- mrpeach 20120201
+    local function basename(str)
+      return string.gsub(str, "(.*/)(.*)", "%2")
+    end
+    self._scriptname = pathname .. '/' .. basename(atoms[1]) .. ".pd_luax" -- mrpeach 20120201
     local atomstail = { }          -- munge for better lua<->luax compatibility
     for i,_ in ipairs(atoms) do                  
       if i > 1 then

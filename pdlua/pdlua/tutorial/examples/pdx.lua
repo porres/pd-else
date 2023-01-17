@@ -67,7 +67,7 @@ local function pdluax(self, sel, atoms)
       -- reload message, check that any extra argument matches the class name
       if atoms[1] == nil or atoms[1] == self._name then
 	 pd.post(string.format("pdx: reloading %s", self._name))
-	 self:dofile(self._scriptname)
+	 self:dofilex(self._scriptname)
 	 -- update the object's finalizer and restore our own, in case
 	 -- anything has changed there
 	 if self.finalize ~= finalize then
