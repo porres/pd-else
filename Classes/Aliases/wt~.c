@@ -16,6 +16,8 @@ typedef struct _wt{
     t_inlet  *x_inlet_sync;
     t_outlet *x_outlet;
     t_float   x_sr;
+    t_float   x_offset;
+    t_float   x_size;
     t_int     x_interp;
 // MAGIC:
     t_glist  *x_glist;              // object list
@@ -23,6 +25,40 @@ typedef struct _wt{
     int       x_hasfeeders;         // right inlet connection flag
     t_float   x_phase_sync_float;   // float from magic
 }t_wt;
+
+#define INDEX_2PT() \
+    double xpos = phase*(double)size; \
+    int ndx = (int)xpos; \
+    double frac = xpos - ndx; \
+    if(ndx == size) ndx = 0; \
+    int ndx1 = ndx + 1; \
+    if(ndx1 == size) ndx1 = 0; \
+    double b = (double)vector[ndx + offset].w_float; \
+    double c = (double)vector[ndx1 + offset].w_float;
+
+#define INDEX_4PT() \
+    double xpos = phase*(double)size; \
+    int ndx = (int)xpos; \
+    double frac = xpos - ndx; \
+    if(ndx == size) ndx = 0; \
+    int ndxm1 = ndx - 1; \
+    if(ndxm1 < 0) ndxm1 = size - 1; \
+    int ndx1 = ndx + 1; \
+    if(ndx1 == size) ndx1 = 0; \
+    int ndx2 = ndx1 + 1; \
+    if(ndx2 == size) ndx2 = 0; \
+    double a = (double)vector[ndxm1 + offset].w_float; \
+    double b = (double)vector[ndx + offset].w_float; \
+    double c = (double)vector[ndx1 + offset].w_float; \
+    double d = (double)vector[ndx2 + offset].w_float;
+
+static void wt_offset(t_wt *x, t_float f){
+    x->x_offset = f;
+}
+
+static void wt_size(t_wt *x, t_float f){
+    x->x_size = f;
+}
 
 static void wt_set(t_wt *x, t_symbol *s){
     buffer_setarray(x->x_buffer, s);
@@ -89,7 +125,9 @@ static t_int *wt_perform(t_int *w){
             if(phase >= 1)
                 phase -= 1.; // wrap deviated phase
             if(vector){
-                int size = (t_int)(x->x_buffer->c_npts);
+                int npts = (t_int)(x->x_buffer->c_npts);
+                int size = x->x_size > npts ? npts : x->x_size < 4 ? npts : x->x_size;
+                int offset =  x->x_offset;
                 if(x->x_interp == 0){
                     int ndx = (int)(phase*(double)size);
                     *out++ = (double)vector[ndx].w_float;
@@ -198,7 +236,7 @@ static void *wt_new(t_symbol *s, int ac, t_atom *av){
     x->x_buffer = buffer_init((t_class *)x, name, 1, 0);
     return(x);
     errstate:
-        post("wavetable~: improper args");
+        post("wt~: improper args");
         return NULL;
 }
 
@@ -212,6 +250,8 @@ void wt_tilde_setup(void){
     class_addmethod(wt_class, (t_method)wt_cos, gensym("cos"), 0);
     class_addmethod(wt_class, (t_method)wt_lagrange, gensym("lagrange"), 0);
     class_addmethod(wt_class, (t_method)wt_spline, gensym("spline"), 0);
+    class_addmethod(wt_class, (t_method)wt_size, gensym("size"), A_FLOAT, 0);
+    class_addmethod(wt_class, (t_method)wt_offset, gensym("offset"), A_FLOAT, 0);
     class_addmethod(wt_class, (t_method)wt_set, gensym("set"), A_SYMBOL, 0);
     class_sethelpsymbol(wt_class, gensym("wavetable~"));
 }
