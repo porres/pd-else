@@ -126,22 +126,30 @@ static t_int *wavetable_perform(t_int *w){
                 phase -= 1.; // wrap deviated phase
             if(vector){
                 int npts = (t_int)(x->x_buffer->c_npts);
-                int size = x->x_size > npts ? npts : x->x_size < 4 ? npts : x->x_size;
-                int offset =  x->x_offset;
-                if(x->x_interp == 0){
-                    int ndx = (int)(phase*(double)size);
-                    *out++ = (double)vector[ndx].w_float;
-                }
-                else if(x->x_interp >= 3){
-                    INDEX_4PT()
-                    if(x->x_interp == 3)
-                        *out++ = interp_lagrange(frac, a, b, c, d);
-                    else
-                        *out++ = interp_spline(frac, a, b, c, d);
-                }
+                if(npts < 4) // minimum table size is 4 points.
+                    *out++ = 0;
                 else{
-                    INDEX_2PT()
-                    *out++ = x->x_interp == 2 ? interp_cos(frac, b, c) : interp_lin(frac, b, c);
+                    int size = x->x_size > npts ? npts : x->x_size < 0 ? npts : x->x_size;
+                    if(size < 4)
+                        size = 4;
+                    int offset =  x->x_offset;
+                    if((offset + size) > npts)
+                        offset = npts - size;
+                    if(x->x_interp == 0){
+                        int ndx = (int)(phase*(double)size);
+                        *out++ = (double)vector[ndx].w_float;
+                    }
+                    else if(x->x_interp >= 3){
+                        INDEX_4PT()
+                        if(x->x_interp == 3)
+                            *out++ = interp_lagrange(frac, a, b, c, d);
+                        else
+                            *out++ = interp_spline(frac, a, b, c, d);
+                    }
+                    else{
+                        INDEX_2PT()
+                        *out++ = x->x_interp == 2 ? interp_cos(frac, b, c) : interp_lin(frac, b, c);
+                    }
                 }
             }
             else // ??? maybe we dont need "playable"?
@@ -159,6 +167,8 @@ static t_int *wavetable_perform(t_int *w){
 
 static void wavetable_dsp(t_wavetable *x, t_signal **sp){
     buffer_checkdsp(x->x_buffer);
+    if(x->x_buffer->c_playable && x->x_buffer->c_npts < 4)
+        pd_error(x, "[wavetable~]: table too small, minimum size is 4");
     x->x_hasfeeders = else_magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal);
     x->x_sr = sp[0]->s_sr;
     dsp_add(wavetable_perform, 6, x, sp[0]->s_n,
@@ -181,6 +191,7 @@ static void *wavetable_new(t_symbol *s, int ac, t_atom *av){
     x->x_freq = x->x_phase = x->x_last_phase_offset = 0.;
     t_float phaseoff = 0;
     x->x_interp = 4;
+    x->x_size = -1;
     while(ac){
         if(av->a_type == A_SYMBOL){
             t_symbol *curarg = atom_getsymbol(av);
@@ -203,6 +214,21 @@ static void *wavetable_new(t_symbol *s, int ac, t_atom *av){
                 if(nameset)
                     goto errstate;
                 wavetable_lagrange(x), ac--, av++;
+            }
+            else if(curarg == gensym("-offset")){
+                ac--, av++;
+                if(nameset)
+                    goto errstate;
+                x->x_offset = atom_getfloatarg(0, ac, av);
+                ac--, av++;
+            }
+            else if(curarg == gensym("-size")){
+                ac--, av++;
+                if(nameset)
+                    goto errstate;
+                x->x_size = atom_getfloatarg(0, ac, av);
+                ac--, av++;
+
             }
             else{
                 if(nameset || floatarg)
