@@ -2,7 +2,7 @@
 #X obj 256 168 keycode;
 #X text 22 13 outputs keycodes based on key presses and key releases;
 #X text 23 49 this is based on the physical key location \, so it will be layout-independent;
-#X text 87 128 right outlet: keycode;
+#X text 83 116 right outlet: keycode;
 #X text 80 97 left outlet: 1 or 0 for press or release;
 #X floatatom 245 204 5 0 0 0 - - - 0;
 #X floatatom 308 198 5 0 0 0 - - - 0;
@@ -12,6 +12,7 @@
 #X msg 199 260 Release;
 #X obj 189 322 list trim;
 #X obj 189 350 print keycode;
+#X text 9 135 codes correspond to USB HID usage tables \, from here: https://github.com/depp/keycode;
 #X connect 0 0 5 0;
 #X connect 0 0 7 0;
 #X connect 0 1 6 0;
