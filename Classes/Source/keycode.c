@@ -144,11 +144,11 @@ void keycode_setup(void)
     /* Tk stores the actual code in the high byte on MacOs, hopefully bitfield
      * layout doesn't change too much based on compiler or something */
     #ifdef __APPLE__
-    sys_vgui("bind all <KeyPress> {+ pdsend \"#keycode 1 [expr %k >> 24]\"}\n");
-    sys_vgui("bind all <KeyRelease> {+ pdsend \"#keycode 0 [expr %k >> 24]\"}\n");
+    sys_vgui("bind all <KeyPress> {+ pdsend \"#keycode 1 [expr %%k >> 24]\"}\n");
+    sys_vgui("bind all <KeyRelease> {+ pdsend \"#keycode 0 [expr %%k >> 24]\"}\n");
     #else /* __APPLE__ */
-    sys_vgui("bind all <KeyPress> {+ pdsend \"#keycode 1 %k\"}\n");
-    sys_vgui("bind all <KeyPress> {+ pdsend \"#keycode 0 %k\"}\n");
+    sys_vgui("bind all <KeyPress> {+ pdsend \"#keycode 1 %%k\"}\n");
+    sys_vgui("bind all <KeyPress> {+ pdsend \"#keycode 0 %%k\"}\n");
     #endif /* NOT __APPLE__ */
 }
 
