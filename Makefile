@@ -74,6 +74,7 @@ fold.class.sources := Classes/Source/fold.c
 hot.class.sources := Classes/Source/hot.c
 hz2rad.class.sources := Classes/Source/hz2rad.c
 initmess.class.sources := Classes/Source/initmess.c
+keycode.class.sources := Classes/Source/keycode.c
 lb.class.sources := Classes/Aliases/lb.c
 limit.class.sources := Classes/Source/limit.c
 loadbanger.class.sources := Classes/Source/loadbanger.c
