@@ -13,7 +13,7 @@ const unsigned char KEYCODE_TO_HID[128] = {
 unsigned keycode_to_hid(unsigned scancode) {
     if (scancode >= 128)
         return 0;
-    return KEYCODE_MACOS_TO_HID[scancode];
+    return KEYCODE_TO_HID[scancode];
 }
 #elif defined _WIN32
 const unsigned char KEYCODE_TO_HID[256] = {
@@ -43,6 +43,7 @@ const unsigned char KEYCODE_TO_HID[256] = {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };
+
 unsigned keycode_to_hid(unsigned scancode) {
     /* xorg differs from kernel values */
     scancode -= 8;
@@ -136,6 +137,8 @@ void keycode_setup(void)
         (t_newmethod)keycode_new, (t_method)keycode_free,
         sizeof(t_keycode), CLASS_NOINLET, 0);
     class_addlist(keycode_class, keycode_list);
+    /* we have already been called from a different path */
+    if (object_list) return;
     objectlist_class = class_new(NULL, 0, 0, sizeof(t_objectlist), CLASS_PD, 0);
     class_addlist(objectlist_class, object_list_iterate);
     object_list = (t_objectlist *)pd_new(objectlist_class);
@@ -144,11 +147,11 @@ void keycode_setup(void)
     /* Tk stores the actual code in the high byte on MacOs, hopefully bitfield
      * layout doesn't change too much based on compiler or something */
     #ifdef __APPLE__
-    sys_vgui("bind all <KeyPress> {+ pdsend \"#keycode 1 [expr %k >> 24]\"}\n");
-    sys_vgui("bind all <KeyRelease> {+ pdsend \"#keycode 0 [expr %k >> 24]\"}\n");
+    sys_vgui("bind all <KeyPress> {+ pdsend \"#keycode 1 [expr %%k >> 24]\"}\n");
+    sys_vgui("bind all <KeyRelease> {+ pdsend \"#keycode 0 [expr %%k >> 24]\"}\n");
     #else /* __APPLE__ */
-    sys_vgui("bind all <KeyPress> {+ pdsend \"#keycode 1 %k\"}\n");
-    sys_vgui("bind all <KeyPress> {+ pdsend \"#keycode 0 %k\"}\n");
+    sys_vgui("bind all <KeyPress> {+ pdsend \"#keycode 1 %%k\"}\n");
+    sys_vgui("bind all <KeyPress> {+ pdsend \"#keycode 0 %%k\"}\n");
     #endif /* NOT __APPLE__ */
 }
 
