@@ -106,7 +106,7 @@ static void *keycode_new(void)
 {
     t_keycode *x = (t_keycode *)pd_new(keycode_class);
     x->x_outlet1 = outlet_new(&x->x_obj, &s_float);
-    x->x_outlet2 = outlet_new(&x->x_obj, &s_symbol);
+    x->x_outlet2 = outlet_new(&x->x_obj, &s_float);
     object_list_bind(&x->x_obj.ob_pd);
     return (x);
 }
@@ -119,6 +119,10 @@ static void keycode_list(t_keycode *x, t_symbol *s, int ac, t_atom *av)
 
 static void object_list_iterate(t_objectlist *x, t_symbol *s, int argc, t_atom *argv) {
     t_listelem *e;
+    if (argc < 2) {
+        pd_error(0, "keycode: not enough args");
+        return;
+    }
     argv[1].a_w.w_float = keycode_to_hid(argv[1].a_w.w_float);
     for (e = x->b_list; e; e = e->e_next)
         pd_list(e->e_who, s, argc, argv);
@@ -151,7 +155,7 @@ void keycode_setup(void)
     sys_vgui("bind all <KeyRelease> {+ pdsend \"#keycode 0 [expr %%k >> 24]\"}\n");
     #else /* __APPLE__ */
     sys_vgui("bind all <KeyPress> {+ pdsend \"#keycode 1 %%k\"}\n");
-    sys_vgui("bind all <KeyPress> {+ pdsend \"#keycode 0 %%k\"}\n");
+    sys_vgui("bind all <KeyRelease> {+ pdsend \"#keycode 0 %%k\"}\n");
     #endif /* NOT __APPLE__ */
 }
 
