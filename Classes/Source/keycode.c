@@ -2,7 +2,7 @@
 
 /* common mapping for every platform, from https://github.com/depp/keycode */
 #ifdef __APPLE__
-const unsigned char KEYCODE_MACOS_TO_HID[128] = {
+const unsigned char KEYCODE_TO_HID[128] = {
     4,22,7,9,11,10,29,27,6,25,0,5,20,26,8,21,28,23,30,31,32,33,35,34,46,38,36,
     45,37,39,48,18,24,47,12,19,158,15,13,52,14,51,49,54,56,17,16,55,43,44,53,42,
     0,41,231,227,225,57,226,224,229,230,228,0,108,220,0,85,0,87,0,216,0,0,127,
@@ -13,7 +13,7 @@ const unsigned char KEYCODE_MACOS_TO_HID[128] = {
 unsigned keycode_to_hid(unsigned scancode) {
     if (scancode >= 128)
         return 0;
-    return KEYCODE_MACOS_TO_HID[scancode];
+    return KEYCODE_TO_HID[scancode];
 }
 #elif defined _WIN32
 const unsigned char KEYCODE_TO_HID[256] = {
@@ -43,6 +43,7 @@ const unsigned char KEYCODE_TO_HID[256] = {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };
+
 unsigned keycode_to_hid(unsigned scancode) {
     /* xorg differs from kernel values */
     scancode -= 8;
@@ -136,6 +137,8 @@ void keycode_setup(void)
         (t_newmethod)keycode_new, (t_method)keycode_free,
         sizeof(t_keycode), CLASS_NOINLET, 0);
     class_addlist(keycode_class, keycode_list);
+    /* we have already been called from a different path */
+    if (object_list) return;
     objectlist_class = class_new(NULL, 0, 0, sizeof(t_objectlist), CLASS_PD, 0);
     class_addlist(objectlist_class, object_list_iterate);
     object_list = (t_objectlist *)pd_new(objectlist_class);
