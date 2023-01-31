@@ -10,6 +10,3 @@
 #X text 9 135 codes correspond to USB HID usage tables \, from here: https://github.com/depp/keycode;
 #X connect 0 0 5 0;
 #X connect 0 1 6 0;
-#X connect 0 1 8 1;
-#X connect 5 0 8 0;
-#X connect 8 0 7 0;
