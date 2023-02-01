@@ -1,4 +1,4 @@
-#N canvas 550 23 561 711 10;
+#N canvas 459 23 561 711 10;
 #X obj 5 362 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 5 527 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 5 610 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -202,11 +202,10 @@
 #X text 19 16 [adsr~] has a right outlet that sends a status value (1 when the envelope starts and 0 when it ends). This can be useful for different things \, but particularly to turn on and off the DSP processing of a subpatch or abstraction with [switch~]., f 62;
 #X text 19 67 In the case of turning [switch~] on or off \, this only works for control data input \, because if the audio engine is off you can't use it to turn it on., f 62;
 #X obj 71 311 else/out~;
-#X msg 129 124 0.25;
-#X msg 143 151 0;
-#X text 162 123 gate on;
-#X text 171 150 gate off;
-#X obj 129 175 sig~;
+#X msg 143 161 0;
+#X text 162 133 gate on;
+#X text 171 160 gate off;
+#X msg 129 134 127;
 #X connect 1 0 0 0;
 #X connect 2 0 10 0;
 #X connect 3 0 2 0;
@@ -214,9 +213,8 @@
 #X connect 7 0 2 1;
 #X connect 7 0 4 0;
 #X connect 7 1 1 0;
-#X connect 11 0 15 0;
-#X connect 12 0 15 0;
-#X connect 15 0 7 0;
+#X connect 11 0 7 0;
+#X connect 14 0 7 0;
 #X restore 490 231 pd status;
 #X text 216 556 - envelope status (on: 1 / off: 0);
 #X obj 162 208 else/adsr~ 1000 500 0.5 1000, f 37;
