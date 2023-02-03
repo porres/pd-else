@@ -16,6 +16,7 @@ typedef struct _polyblep{
     t_float pulse_width;    // Pulse width for square, morph-to-saw for triangle
     t_float phase;          // The current phase of the oscillator.
     t_float freq_in_seconds_per_sample;
+    t_int midi;
     t_float sr;
     t_float last_phase_offset;
 }t_polyblep;
@@ -29,6 +30,10 @@ typedef struct blsaw{
 }t_blsaw;
 
 t_class *bl_saw;
+
+static void blsaw_midi(t_polyblep *x, t_floatarg f){
+    x->midi = (int)(f == 0);
+}
 
 static t_float phasewrap(t_float phase){
     while(phase < 0.0)
@@ -70,6 +75,8 @@ static t_int* blsaw_perform(t_int *w) {
         t_float freq = *freq_vec++;
         t_float sync = *sync_vec++;
         t_float phase_offset = *phase_vec++;
+        if(x->midi)
+            freq = pow(2, (freq - 69)/12) * 440;
         x->freq_in_seconds_per_sample = freq / x->sr; // Update frequency
         t_float y;
         if(sync > 0 && sync <= 1){ // Phase sync
@@ -108,7 +115,13 @@ static void* blsaw_new(t_symbol *s, int ac, t_atom *av){
     x->x_polyblep.pulse_width = 0;
     x->x_polyblep.freq_in_seconds_per_sample = 0;
     x->x_polyblep.phase = 0.0;
+    x->x_polyblep.midi = 0;
     t_float init_freq = 0, init_phase = 0;
+    if(ac && av->a_type == A_SYMBOL){
+        if(atom_getsymbol(av) == gensym("-m"))
+            x->x_polyblep.midi = 1;
+        ac--, av++;
+    }
     if(ac && av->a_type == A_FLOAT){
         init_freq = av->a_w.w_float;
         ac--; av++;
@@ -134,5 +147,6 @@ void setup_bl0x2esaw_tilde(void){
     bl_saw = class_new(gensym("bl.saw~"), (t_newmethod)blsaw_new,
         (t_method)blsaw_free, sizeof(t_blsaw), 0, A_GIMME, A_NULL);
     CLASS_MAINSIGNALIN(bl_saw, t_blsaw, x_f);
+    class_addmethod(bl_saw, (t_method)blsaw_midi, gensym("midi"), A_DEFFLOAT, 0);
     class_addmethod(bl_saw, (t_method)blsaw_dsp, gensym("dsp"), A_NULL);
 }
