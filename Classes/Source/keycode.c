@@ -33,7 +33,7 @@ static const unsigned char KEYCODE_TO_HID[256] = {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };
 
-static unsigned layout;
+static HKL layout;
 
 static unsigned keycode_to_hid(unsigned scancode) {
     scancode = MapVirtualKeyEx(scancode, MAPVK_VK_TO_VSC, layout);
