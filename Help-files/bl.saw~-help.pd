@@ -1,57 +1,37 @@
 #N canvas 500 38 561 439 10;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 4 pd;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 121 41 cnv 4 4 4 empty empty sawtooth 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 203 41 cnv 4 4 4 empty empty oscillator 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 3 410 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X obj 229 118 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 121 41 cnv 4 4 4 empty empty sawtooth 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 203 41 cnv 4 4 4 empty empty oscillator 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 3 410 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 229 118 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 289 117 <= hz;
-#X obj 3 4 cnv 15 301 42 empty empty bl.saw~ 20 20 2 37 #e0e0e0 #000000
-0;
+#X obj 3 4 cnv 15 301 42 empty empty bl.saw~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X obj 22 41 cnv 4 4 4 empty empty Bandlimited 0 28 2 18 #e0e0e0 #000000
-0;
-#X text 452 174 see also:;
+#X obj 22 41 cnv 4 4 4 empty empty Bandlimited 0 28 2 18 #e0e0e0 #000000 0;
+#X text 44 158 see also:;
 #X obj 229 178 else/out~;
-#X obj 3 357 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 452 196 else/saw~;
-#X obj 3 247 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 3 321 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 122 330 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 122 255 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
+#X obj 3 357 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 44 180 else/saw~;
+#X obj 3 247 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 321 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 122 330 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 122 255 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 165 256 float/signal -;
 #X text 269 256 frequency in hz;
-#X obj 122 277 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
-;
+#X obj 122 277 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 165 298 float/signal -;
-#X obj 122 297 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
-;
+#X obj 122 297 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 201 330 signal -;
 #X text 270 298 phase offset (modulation input);
 #X text 270 278 phase sync (ressets internal phase);
@@ -62,7 +42,7 @@
 #X text 218 369 - frequency in hertz (default 0);
 #X text 159 388 2) float;
 #X obj 229 143 else/bl.saw~ 400;
-#X text 60 88 [bl.saw~] is a sawtooth oscillator like [else/saw~] \,
-but it is bandlimited., f 56;
+#X text 60 88 [bl.saw~] is a sawtooth oscillator like [else/saw~] \, but it is bandlimited., f 56;
+#X obj 45 208 else/bl.saw2~;
 #X connect 11 0 38 0;
 #X connect 38 0 17 0;

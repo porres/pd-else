@@ -20,8 +20,8 @@
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X obj 22 40 cnv 4 4 4 empty empty Bandlimited 0 28 2 18 #e0e0e0 #000000 0;
-#X text 452 186 see also:;
-#X obj 452 208 else/imp~;
+#X text 30 144 see also:;
+#X obj 30 166 else/imp~;
 #X obj 3 252 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 3 287 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 104 296 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
@@ -35,5 +35,7 @@
 #X text 173 332 1) float;
 #X text 239 332 - frequency in hertz (default 0);
 #X text 60 87 [bl.imp~] is an impulse oscillator like [else/imp~] \, but it is bandlimited.;
+#X obj 30 187 else/bl.imp2~;
+#X obj 30 208 else/blip~;
 #X connect 12 0 27 0;
 #X connect 27 0 28 0;

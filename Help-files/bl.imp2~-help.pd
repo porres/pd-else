@@ -35,6 +35,10 @@
 #X text 60 87 [bl.imp2~] is a two sided impulse oscillator like [else/imp2~] \, but it is bandlimited with the upsampling/filtering technique. This makes the object quite inefficient CPU wise \, but is an easy way to implement a bandlimited oscillator., f 67;
 #X text 182 397 1) float;
 #X text 241 397 - frequency in hertz (default 0);
-#X obj 229 215 else/bl.imp2~ 400;
-#X connect 11 0 32 0;
-#X connect 32 0 18 0;
+#X text 25 220 see also:;
+#X obj 25 284 else/blip~;
+#X obj 25 263 else/bl.imp~;
+#X obj 25 242 else/imp2~;
+#X obj 229 215 else/bl.imp2~;
+#X connect 11 0 36 0;
+#X connect 36 0 18 0;
