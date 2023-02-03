@@ -1,6 +1,8 @@
+// seb shader 2023
+
 #include "m_pd.h"
 
-/* common mapping for every platform, from https://github.com/depp/keycode */
+// common mapping for every platform, from https://github.com/depp/keycode 
 #ifdef __APPLE__
 
 static const unsigned char KEYCODE_TO_HID[128] = {
@@ -13,7 +15,7 @@ static const unsigned char KEYCODE_TO_HID[128] = {
 };
 
 static unsigned keycode_to_hid(unsigned scancode) {
-    if (scancode >= 128)
+    if(scancode >= 128)
         return 0;
     return KEYCODE_TO_HID[scancode];
 }
@@ -35,11 +37,11 @@ static const unsigned char KEYCODE_TO_HID[256] = {
 
 static HKL layout;
 
-static unsigned keycode_to_hid(unsigned scancode) {
+static unsigned keycode_to_hid(unsigned scancode){
     scancode = MapVirtualKeyEx(scancode, MAPVK_VK_TO_VSC, layout);
-    if (scancode >= 256)
-        return 0;
-    return KEYCODE_TO_HID[scancode];
+    if(scancode >= 256)
+        return(0);
+    return(KEYCODE_TO_HID[scancode]);
 }
 
 #else
@@ -56,10 +58,10 @@ static const unsigned char KEYCODE_TO_HID[256] = {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };
 
-static unsigned keycode_to_hid(unsigned scancode) {
-    /* xorg differs from kernel values */
+static unsigned keycode_to_hid(unsigned scancode){
+    // xorg differs from kernel values
     scancode -= 8;
-    if (scancode >= 256)
+    if(scancode >= 256)
         return 0;
     return KEYCODE_TO_HID[scancode];
 }
@@ -68,25 +70,22 @@ static unsigned keycode_to_hid(unsigned scancode) {
 
 static t_class *keycode_class;
 
-typedef struct _keycode
-{
+typedef struct _keycode{
     t_object x_obj;
     t_outlet *x_outlet1;
     t_outlet *x_outlet2;
-} t_keycode;
+}t_keycode;
 
-/* keep our own list of objects */
-typedef struct _listelem
-{
+// keep our own list of objects
+typedef struct _listelem{
     t_pd *e_who;
     struct _listelem *e_next;
-} t_listelem;
+}t_listelem;
 
-typedef struct _objectlist
-{
+typedef struct _objectlist{
     t_pd b_pd;
     t_listelem *b_list;
-} t_objectlist;
+}t_objectlist;
 
 static t_objectlist *object_list;
 
@@ -98,80 +97,73 @@ static void object_list_bind(t_pd *x) {
 }
 
 static void object_list_unbind(t_pd *x) {
-    t_listelem *e, *e2; 
-
-    if ((e = object_list->b_list)->e_who == x)
-    {
+    t_listelem *e, *e2;
+    if((e = object_list->b_list)->e_who == x){
         object_list->b_list = e->e_next;
         freebytes(e, sizeof(t_listelem));
         return;
     }
     for (;(e2 = e->e_next); e = e2)
-        if (e2->e_who == x)
-    {
-        e->e_next = e2->e_next;
-        freebytes(e2, sizeof(t_listelem));
-        return;
-    }
+        if (e2->e_who == x){
+            e->e_next = e2->e_next;
+            freebytes(e2, sizeof(t_listelem));
+            return;
+        }
 }
 
-static void *keycode_new(void)
-{
+static void *keycode_new(void){
     t_keycode *x = (t_keycode *)pd_new(keycode_class);
     x->x_outlet1 = outlet_new(&x->x_obj, &s_float);
     x->x_outlet2 = outlet_new(&x->x_obj, &s_float);
     object_list_bind(&x->x_obj.ob_pd);
-    return (x);
+    return(x);
 }
 
-static void keycode_list(t_keycode *x, t_symbol *s, int ac, t_atom *av)
-{
+static void keycode_list(t_keycode *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     outlet_float(x->x_outlet2, atom_getfloatarg(1, ac, av));
     outlet_float(x->x_outlet1, atom_getfloatarg(0, ac, av));
 }
 
 static void object_list_iterate(t_objectlist *x, t_symbol *s, int argc, t_atom *argv) {
     t_listelem *e;
-    if (argc < 2) {
+    if (argc < 2){
         pd_error(0, "keycode: not enough args");
         return;
     }
     argv[1].a_w.w_float = keycode_to_hid(argv[1].a_w.w_float);
-    for (e = x->b_list; e; e = e->e_next)
+    for(e = x->b_list; e; e = e->e_next)
         pd_list(e->e_who, s, argc, argv);
 }
 
-static void keycode_free(t_keycode *x)
-{
+static void keycode_free(t_keycode *x){
     object_list_unbind(&x->x_obj.ob_pd);
 }
 
-void keycode_setup(void)
-{
-    /* since it's a singleton, I won't keep track of the class */
+void keycode_setup(void){
+    // since it's a singleton, I won't keep track of the class
     t_class *objectlist_class;
-    keycode_class = class_new(gensym("keycode"),
-        (t_newmethod)keycode_new, (t_method)keycode_free,
-        sizeof(t_keycode), CLASS_NOINLET, 0);
+    keycode_class = class_new(gensym("keycode"), (t_newmethod)keycode_new,
+        (t_method)keycode_free, sizeof(t_keycode), CLASS_NOINLET, 0);
     class_addlist(keycode_class, keycode_list);
-    /* we have already been called from a different path */
+    // we have already been called from a different path
     if (object_list) return;
     objectlist_class = class_new(NULL, 0, 0, sizeof(t_objectlist), CLASS_PD, 0);
     class_addlist(objectlist_class, object_list_iterate);
     object_list = (t_objectlist *)pd_new(objectlist_class);
     object_list->b_list = NULL;
     pd_bind(&object_list->b_pd, gensym("#keycode"));
-    /* Tk stores the actual code in the high byte on MacOs, hopefully bitfield
-     * layout doesn't change too much based on compiler or something */
+    // Tk stores the actual code in the high byte on MacOs, hopefully bitfield
+    // layout doesn't change too much based on compiler or something
     #ifdef __APPLE__
     sys_vgui("bind all <KeyPress> {+ pdsend \"#keycode 1 [expr %%k >> 24]\"}\n");
     sys_vgui("bind all <KeyRelease> {+ pdsend \"#keycode 0 [expr %%k >> 24]\"}\n");
-    #else /* __APPLE__ */
+    #else
     #ifdef _WIN32
     layout = GetKeyboardLayout(0);
-    #endif /* _WIN32 */
+    #endif
     sys_vgui("bind all <KeyPress> {+ pdsend \"#keycode 1 %%k\"}\n");
     sys_vgui("bind all <KeyRelease> {+ pdsend \"#keycode 0 %%k\"}\n");
-    #endif /* NOT __APPLE__ */
+    #endif
 }
 
