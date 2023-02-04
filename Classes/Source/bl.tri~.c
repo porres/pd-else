@@ -32,7 +32,7 @@ typedef struct bltri{
 t_class *bl_tri;
 
 static void bltri_midi(t_polyblep *x, t_floatarg f){
-    x->midi = (int)(f == 0);
+    x->midi = (int)(f != 0);
 }
 
 static t_float phasewrap(t_float phase){
