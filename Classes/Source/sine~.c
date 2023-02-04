@@ -144,7 +144,7 @@ static void *sine_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_sine *x = (t_sine *)pd_new(sine_class);
     t_float f1 = 0, f2 = 0;
-    x->midi = 0;
+    x->midi = x->soft = 0;
     while(ac && av->a_type == A_SYMBOL){
         if(atom_getsymbol(av) == gensym("-m"))
             x->midi = 1;

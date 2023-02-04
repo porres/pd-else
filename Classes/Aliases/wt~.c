@@ -1,4 +1,4 @@
-// Porres 2018-2023
+// Porres 2018
 
 #include "m_pd.h"
 #include "magic.h"
@@ -15,6 +15,8 @@ typedef struct _wt{
     t_inlet  *x_inlet_phase;
     t_inlet  *x_inlet_sync;
     t_outlet *x_outlet;
+    t_int midi;
+    t_int soft;
     t_float   x_sr;
     t_float   x_offset;
     t_float   x_size;
@@ -84,6 +86,14 @@ static void wt_spline(t_wt *x){
     x->x_interp = 4;
 }
 
+static void wt_midi(t_wt *x, t_floatarg f){
+    x->midi = (int)(f != 0);
+}
+
+static void wt_soft(t_wt *x, t_floatarg f){
+    x->soft = (int)(f != 0);
+}
+
 static t_int *wt_perform(t_int *w){
     t_wt *x = (t_wt *)(w[1]);
     int n = (t_int)(w[2]);
@@ -108,16 +118,24 @@ static t_int *wt_perform(t_int *w){
     while(n--){
         if(x->x_buffer->c_playable){
             double hz = *in1++;
+            if(x->midi)
+                hz = pow(2, (hz - 69)/12) * 440;
             double phase_offset = (double)*in3++;
             double phase_step = hz / sr; // phase_step
             phase_step = phase_step > 0.5 ? 0.5 : phase_step < -0.5 ? -0.5 : phase_step; // clip nyq
+            if(x->soft)
+                phase_step *= (x->soft);
             double phase_dev = phase_offset - last_phase_offset;
             if(phase_dev >= 1 || phase_dev <= -1)
                 phase_dev = fmod(phase_dev, 1); // wrap
             if(x->x_hasfeeders){ // signal connected, no magic
                 t_float trig = *in2++;
-                if(trig > 0 && trig <= 1)
-                    phase = trig;
+                if(trig > 0 && trig <= 1){
+                    if(x->soft)
+                        x->soft = x->soft == 1 ? -1 : 1;
+                    else
+                        phase = trig;
+                }
             }
             phase = phase + phase_dev;
             if(phase <= 0)
@@ -192,6 +210,7 @@ static void *wt_new(t_symbol *s, int ac, t_atom *av){
     t_float phaseoff = 0;
     x->x_interp = 4;
     x->x_size = -1;
+    x->midi = x->soft = 0;
     while(ac){
         if(av->a_type == A_SYMBOL){
             t_symbol *curarg = atom_getsymbol(av);
@@ -228,7 +247,18 @@ static void *wt_new(t_symbol *s, int ac, t_atom *av){
                     goto errstate;
                 x->x_size = atom_getfloatarg(0, ac, av);
                 ac--, av++;
-
+            }
+            else if(curarg == gensym("-m")){
+                ac--, av++;
+                if(nameset)
+                    goto errstate;
+                x->midi = 1;
+            }
+            else if(curarg == gensym("-soft")){
+                ac--, av++;
+                if(nameset)
+                    goto errstate;
+                x->soft = 1;
             }
             else{
                 if(nameset || floatarg)
@@ -278,6 +308,8 @@ void wt_tilde_setup(void){
     class_addmethod(wt_class, (t_method)wt_spline, gensym("spline"), 0);
     class_addmethod(wt_class, (t_method)wt_size, gensym("size"), A_FLOAT, 0);
     class_addmethod(wt_class, (t_method)wt_offset, gensym("offset"), A_FLOAT, 0);
+    class_addmethod(wt_class, (t_method)wt_soft, gensym("soft"), A_DEFFLOAT, 0);
+    class_addmethod(wt_class, (t_method)wt_midi, gensym("midi"), A_DEFFLOAT, 0);
     class_addmethod(wt_class, (t_method)wt_set, gensym("set"), A_SYMBOL, 0);
     class_sethelpsymbol(wt_class, gensym("wavetable~"));
 }
