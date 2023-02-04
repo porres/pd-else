@@ -18,6 +18,7 @@ typedef struct _polyblep{
     t_float freq_in_seconds_per_sample;
     t_int midi;
     t_float sr;
+    t_int soft;
     t_float last_phase_offset;
 }t_polyblep;
 
@@ -32,8 +33,12 @@ typedef struct blsquare{
 
 t_class *bl_square;
 
-static void blsquare_midi(t_polyblep *x, t_floatarg f){
-    x->midi = (int)(f != 0);
+static void blsquare_midi(t_blsquare *x, t_floatarg f){
+    x->x_polyblep.midi = (int)(f != 0);
+}
+
+static void blsquare_soft(t_blsquare *x, t_floatarg f){
+    x->x_polyblep.soft = (int)(f != 0);
 }
 
 static t_float phasewrap(t_float phase){
@@ -84,10 +89,15 @@ static t_int* blsquare_perform(t_int *w) {
         x->freq_in_seconds_per_sample = freq / x->sr; // Update frequency
         // Update pulse width, limit between 0 and 1
         x->pulse_width = fmax(fmin(0.9999, pulse_width), 0.0001);
-        t_float y;
+        if(x->soft)
+            x->freq_in_seconds_per_sample *= x->soft;
         if(sync > 0 && sync <= 1){ // Phase sync
-            x->phase = sync;
-            x->phase = phasewrap(x->phase);
+            if(x->soft)
+                x->soft = x->soft == 1 ? -1 : 1;
+            else{
+                x->phase = sync;
+                x->phase = phasewrap(x->phase);
+            }
         }
         else{ // Phase modulation
             double phase_dev = phase_offset - x->last_phase_offset;
@@ -95,7 +105,7 @@ static t_int* blsquare_perform(t_int *w) {
                 phase_dev = fmod(phase_dev, 1);
             x->phase = phasewrap(x->phase + phase_dev);
         }
-        y = sqr(x);
+        t_float y = sqr(x);
         x->phase += x->freq_in_seconds_per_sample;
         x->phase = phasewrap(x->phase);
         x->last_phase_offset = phase_offset;
@@ -123,10 +133,13 @@ static void* blsquare_new(t_symbol *s, int ac, t_atom *av){
     x->x_polyblep.freq_in_seconds_per_sample = 0;
     x->x_polyblep.phase = 0.0;
     x->x_polyblep.midi = 0;
+    x->x_polyblep.soft = 0;
     t_float init_freq = 0, init_phase = 0;
-    if(ac && av->a_type == A_SYMBOL){
+    while(ac && av->a_type == A_SYMBOL){
         if(atom_getsymbol(av) == gensym("-m"))
             x->x_polyblep.midi = 1;
+        else if(atom_getsymbol(av) == gensym("-soft"))
+            x->x_polyblep.soft = 1;
         ac--, av++;
     }
     if(ac && av->a_type == A_FLOAT){
@@ -156,6 +169,7 @@ void setup_bl0x2esquare_tilde(void){
     bl_square = class_new(gensym("bl.square~"), (t_newmethod)blsquare_new,
         (t_method)blsquare_free, sizeof(t_blsquare), 0, A_GIMME, A_NULL);
     CLASS_MAINSIGNALIN(bl_square, t_blsquare, x_f);
+    class_addmethod(bl_square, (t_method)blsquare_soft, gensym("soft"), A_DEFFLOAT, 0);
     class_addmethod(bl_square, (t_method)blsquare_midi, gensym("midi"), A_DEFFLOAT, 0);
     class_addmethod(bl_square, (t_method)blsquare_dsp, gensym("dsp"), A_NULL);
 }
