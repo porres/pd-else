@@ -32,7 +32,7 @@ typedef struct blsaw2{
 t_class *bl_saw2;
 
 static void blsaw2_midi(t_polyblep *x, t_floatarg f){
-    x->midi = (int)(f == 0);
+    x->midi = (int)(f != 0);
 }
 
 static t_float phasewrap(t_float phase){

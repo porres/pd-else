@@ -364,7 +364,7 @@ static t_int *blosc_perform_imp(t_int *w){
 }
 
 static void blosc_midi(t_blosc *x, t_floatarg f){
-    x->midi = (int)(f == 0);
+    x->midi = (int)(f != 0);
 }
 
 static void blosc_phase(t_blosc *x, t_float f){

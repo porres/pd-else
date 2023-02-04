@@ -270,7 +270,7 @@ static t_int *blimp_perform_imp(t_int *w){
 }
 
 static void blimp_midi(t_blimp *x, t_floatarg f){
-    x->midi = (int)(f == 0);
+    x->midi = (int)(f != 0);
 }
 
 static void blimp_phase(t_blimp *x, t_float f){
