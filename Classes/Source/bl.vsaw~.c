@@ -17,6 +17,7 @@ typedef struct _polyblep{
     t_float phase;          // The current phase of the oscillator.
     t_float freq_in_seconds_per_sample;
     t_int midi;
+    t_int soft;
     t_float sr;
     t_float last_phase_offset;
 }t_polyblep;
@@ -32,8 +33,12 @@ typedef struct blvsaw{
 
 t_class *bl_vsaw;
 
-static void blvsaw_midi(t_polyblep *x, t_floatarg f){
-    x->midi = (int)(f != 0);
+static void blvsaw_midi(t_blvsaw *x, t_floatarg f){
+    x->x_polyblep.midi = (int)(f != 0);
+}
+
+static void blvsaw_soft(t_blvsaw *x, t_floatarg f){
+    x->x_polyblep.soft = (int)(f != 0);
 }
 
 static t_float phasewrap(t_float phase){
@@ -94,13 +99,18 @@ static t_int* blvsaw_perform(t_int *w) {
         t_float pulse_width = *width_vec++;
         if(x->midi)
             freq = pow(2, (freq - 69)/12) * 440;
-        x->freq_in_seconds_per_sample = freq / x->sr; // Update frequency
         // Update pulse width, limit between 0 and 1
         x->pulse_width = fmax(fmin(0.9999, pulse_width), 0.0001);
-        t_float y;
+        x->freq_in_seconds_per_sample = freq / x->sr; // Update frequency
+        if(x->soft)
+            x->freq_in_seconds_per_sample *= x->soft;
         if(sync > 0 && sync <= 1){ // Phase sync
-            x->phase = sync;
-            x->phase = phasewrap(x->phase);
+            if(x->soft)
+                x->soft = x->soft == 1 ? -1 : 1;
+            else{
+                x->phase = sync;
+                x->phase = phasewrap(x->phase);
+            }
         }
         else{ // Phase modulation
             double phase_dev = phase_offset - x->last_phase_offset;
@@ -108,7 +118,7 @@ static t_int* blvsaw_perform(t_int *w) {
                 phase_dev = fmod(phase_dev, 1);
             x->phase = phasewrap(x->phase + phase_dev);
         }
-        y = vsaw(x);
+        t_float y = vsaw(x);
         x->phase += x->freq_in_seconds_per_sample;
         x->phase = phasewrap(x->phase);
         x->last_phase_offset = phase_offset;
@@ -136,10 +146,13 @@ static void* blvsaw_new(t_symbol *s, int ac, t_atom *av){
     x->x_polyblep.freq_in_seconds_per_sample = 0;
     x->x_polyblep.phase = 0.0;
     x->x_polyblep.midi = 0;
+    x->x_polyblep.soft = 0;
     t_float init_freq = 0, init_phase = 0;
-    if(ac && av->a_type == A_SYMBOL){
+    while(ac && av->a_type == A_SYMBOL){
         if(atom_getsymbol(av) == gensym("-m"))
             x->x_polyblep.midi = 1;
+        else if(atom_getsymbol(av) == gensym("-soft"))
+            x->x_polyblep.soft = 1;
         ac--, av++;
     }
     if(ac && av->a_type == A_FLOAT){
@@ -169,6 +182,7 @@ void setup_bl0x2evsaw_tilde(void){
     bl_vsaw = class_new(gensym("bl.vsaw~"), (t_newmethod)blvsaw_new,
         (t_method)blvsaw_free, sizeof(t_blvsaw), 0, A_GIMME, A_NULL);
     CLASS_MAINSIGNALIN(bl_vsaw, t_blvsaw, x_f);
+    class_addmethod(bl_vsaw, (t_method)blvsaw_soft, gensym("soft"), A_DEFFLOAT, 0);
     class_addmethod(bl_vsaw, (t_method)blvsaw_midi, gensym("midi"), A_DEFFLOAT, 0);
     class_addmethod(bl_vsaw, (t_method)blvsaw_dsp, gensym("dsp"), A_NULL);
 }
