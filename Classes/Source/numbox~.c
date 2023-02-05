@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "compat.h"
+
 #define MINDIGITS      1
 #define MAX_NUMBOX_LEN 32
 #define MINSIZE        8
