@@ -6,6 +6,10 @@
 
 lib.name = else
 
+# set this to no to exclude pdlua from build/install
+luamake = yes
+
+ifeq ($(luamake),yes)
 luaflags=-DMAKE_LIB -Ilua/lua -DELSE
 define forDarwin
 luaflags += -DLUA_USE_MACOSX
@@ -16,6 +20,7 @@ endef
 define forWindows
 luaflags += -DLUA_USE_WINDOWS
 endef
+endif
 
 aubioflags=-Ishared/aubio/src
 
@@ -257,8 +262,10 @@ zerocross~.class.sources := Classes/Source/zerocross~.c
 #    onsetdetect~.class.sources := Classes/Source/onsetdetect~.c $(aubio)
 #    pitch~.class.sources := Classes/Source/pitch~.c $(aubio)
 
+ifeq ($(luamake),yes)
  lua := pdlua/lua/onelua.c
     pdlua.class.sources := pdlua/pdlua.c $(lua)
+endif
 
 magic := shared/magic.c
     sine~.class.sources := Classes/Source/sine~.c $(magic)
@@ -349,14 +356,17 @@ endef
 
 # extra files
 
+ifeq ($(luamake),yes)
+pdlua_data = ./pdlua/pd.lua
+endif
+
 datafiles = \
 $(wildcard Classes/Abstractions/*.pd) \
 $(wildcard Classes/Abs_components/*.pd) \
 $(wildcard Help-files/*.pd) \
 $(wildcard *.txt) \
 $(wildcard extra/*.*) \
-README.pdf \
-./pdlua/pd.lua
+README.pdf $(pdlua_data)
 
 #########################################################################
 
@@ -367,4 +377,8 @@ include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 install: installplus
 
 installplus:
-	cp -r ./pdlua/pdlua "${installpath}"/pdlua;
+ifeq ($(luamake),yes)
+	cp -r ./pdlua/pdlua "${installpath}"/pdlua
+else
+	rm -f "${installpath}"/pdlua*.pd
+endif
