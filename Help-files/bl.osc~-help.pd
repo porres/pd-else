@@ -179,7 +179,7 @@
 #X floatatom 271 142 4 0 0 0 - - - 0;
 #X text 254 118 0;
 #X obj 271 166 else/float2sig~ 10;
-#X text 240 235 Note that out of phase sawtooth waveforms do not cancel each other, f 23;
+#X text 254 250 Note that out of phase sawtooth waveforms do not cancel each other, f 23;
 #X obj 90 154 else/bl.osc~ saw 10 220 0.5;
 #X obj 136 192 else/bl.osc~ saw 10 220;
 #X obj 492 150 else/bl.osc~ saw 10 200, f 12;
