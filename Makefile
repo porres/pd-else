@@ -360,7 +360,7 @@ ifeq ($(luamake),yes)
 pdlua_data = ./pdlua/pd.lua
 endif
 
-datafiles = \
+extrafiles = \
 $(wildcard Classes/Abstractions/*.pd) \
 $(wildcard Classes/Abs_components/*.pd) \
 $(wildcard Help-files/*.pd) \
@@ -377,6 +377,7 @@ include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 install: installplus
 
 installplus:
+	for v in $(extrafiles); do $(INSTALL_DATA) "$$v" "$(installpath)"; done
 ifeq ($(luamake),yes)
 	cp -r ./pdlua/pdlua "${installpath}"/pdlua
 else
