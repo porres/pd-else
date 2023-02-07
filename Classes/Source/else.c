@@ -53,10 +53,12 @@ void print_else_obj(t_else_obj *x){
         post("(you have %d.%d-%d, you're good!)", major, minor, bugfix);
     }
     else{
+#ifndef PDL2ORK
         pd_error(x, "- ELSE %d.%d-%d %s-%d needs at least Pd %d.%d-%d",
             else_major, else_minor, else_bugfix, STATUS, status_number,
             min_major, min_minor, min_bugfix);
         pd_error(x, "(you have %d.%d-%d, please upgrade)", major, minor, bugfix);
+#endif
     }
     post("-------------------------------------------------------------------");
     post("- NOTE: This library also includes a tutorial that depends");
