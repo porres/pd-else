@@ -1,4 +1,4 @@
-#N canvas 491 23 561 654 10;
+#N canvas 440 23 561 654 10;
 #X declare -path else;
 #X msg 315 292 about;
 #X obj 3 624 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
@@ -25,7 +25,6 @@
 #X obj 4 592 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
 #X obj 93 497 cnv 17 3 32 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 93 546 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
-#X text 222 601 (none);
 #X text 127 496 about;
 #X text 115 513 version;
 #X text 133 546 list;
@@ -49,9 +48,10 @@
 #X text 168 547 - ELSE version (major \, minor \, bugfix \, status \, status number);
 #X text 168 567 - Pd version (Fork \, version);
 #X text 63 182 The else binary does nothing but give some basic information about the ELSE library in Pd's window at creation time (but only once if multiple else objects are loaded). It accepts the "about" message that prints this basic information (version \, release date \, etc) on the terminal on demand and also accepts the "version" message that outputs the version information of ELSE as a list as well as Pd's running version., f 71;
-#X connect 0 0 30 0;
+#X text 112 601 1) float - non zero prevents printing on the terminal when loading, f 66;
+#X connect 0 0 29 0;
+#X connect 24 0 29 0;
 #X connect 25 0 30 0;
-#X connect 26 0 31 0;
-#X connect 30 0 26 0;
-#X connect 30 1 39 0;
-#X connect 31 0 28 0;
+#X connect 29 0 25 0;
+#X connect 29 1 38 0;
+#X connect 30 0 27 0;

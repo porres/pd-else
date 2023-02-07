@@ -32,12 +32,12 @@ static void else_obj_version(t_else_obj *x){
     SETFLOAT(at+4, status_number);
     outlet_list(x->x_obj.te_outlet,  &s_list, ac, at);
     int major = 0, minor = 0, bugfix = 0;
-    #ifdef PD_L2ORK_VERSION
+#ifdef PD_L2ORK_VERSION
     SETSYMBOL(at, gensym("Pd-L2ork"));
     SETSYMBOL(at+1, gensym(PD_L2ORK_VERSION));
     outlet_list(x->x_out2,  &s_list, 2, at);
     return;
-    #endif
+#endif
     sys_getversion(&major, &minor, &bugfix);
     SETSYMBOL(at, gensym("Pd"));
     SETFLOAT(at+1, major);
@@ -93,8 +93,9 @@ static void else_obj_about(t_else_obj *x){
     print_else_obj(x);
 }
 
-static void *else_obj_new(void){
+static void *else_obj_new(t_floatarg f1){
     t_else_obj *x = (t_else_obj *)pd_new(else_obj_class);
+    printed = f1 != 0;
     if(!printed){
         else_obj_about(x);
         printed = 1;
@@ -105,7 +106,7 @@ static void *else_obj_new(void){
 }
 
 void else_setup(void){
-    else_obj_class = class_new(gensym("else"), else_obj_new, 0, sizeof(t_else_obj), 0, 0);
+    else_obj_class = class_new(gensym("else"), (t_newmethod)else_obj_new, 0, sizeof(t_else_obj), 0, A_DEFFLOAT, 0);
     t_else_obj *x = (t_else_obj *)pd_new(else_obj_class);
     class_addmethod(else_obj_class, (t_method)else_obj_about, gensym("about"), 0);
     class_addmethod(else_obj_class, (t_method)else_obj_version, gensym("version"), 0);

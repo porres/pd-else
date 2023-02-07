@@ -45,7 +45,7 @@
 #X connect 20 0 18 0;
 #X connect 20 0 19 0;
 #X restore 159 77 pd set_GUI;
-#N canvas 389 180 275 208 GUI 0;
+#N canvas 389 180 600 262 GUI 1;
 #X obj 103 116 hsl 89 20 0 1 0 0 \$0-slider \$0-set-slider volume 17 9 0 14 #dcdcdc #000000 #000000 0 1;
 #N canvas 565 338 514 332 DSP 0;
 #X obj 100 100 tgl 16 0 \$0-dsp-toggle \$0-dsp-toggle-set empty 19 8 0 12 #dcdcdc #7c7c7c #fcfcfc 0 1;
@@ -222,6 +222,18 @@
 #X connect 9 0 4 0;
 #X coords 0 -1 1 1 52 16 2 100 100;
 #X restore 142 100 pd mute;
+#X obj 456 183 s \$0-set-slider;
+#X msg 339 136 pos 100 115;
+#X msg 456 136 pos 103 116;
+#X obj 247 77 loadbang;
+#X msg 247 100 version;
+#X obj 339 81 else/route2 Pd-L2ork;
+#X obj 247 122 else/else 1;
+#X connect 4 0 3 0;
+#X connect 5 0 3 0;
+#X connect 7 0 9 0;
+#X connect 8 0 4 0;
+#X connect 8 1 5 0;
 #X coords 0 -1 1 1 94 36 2 100 100;
 #X restore 260 105 pd GUI;
 #N canvas 959 100 407 422 Gui_control 0;
