@@ -3,7 +3,8 @@
 #include "m_pd.h"
 
 typedef struct else_obj{
-    t_object x_obj;
+    t_object  x_obj;
+    t_outlet *x_out2;
 }t_else_obj;
 
 t_class *else_obj_class;
@@ -30,6 +31,19 @@ static void else_obj_version(t_else_obj *x){
     SETSYMBOL(at+3, gensym(STATUS));
     SETFLOAT(at+4, status_number);
     outlet_list(x->x_obj.te_outlet,  &s_list, ac, at);
+    int major = 0, minor = 0, bugfix = 0;
+    #ifdef PD_L2ORK_VERSION
+    SETSYMBOL(at, gensym("Pd-L2ork"));
+    SETSYMBOL(at+1, gensym(PD_L2ORK_VERSION));
+    outlet_list(x->x_out2,  &s_list, 2, at);
+    return;
+    #endif
+    sys_getversion(&major, &minor, &bugfix);
+    SETSYMBOL(at, gensym("Pd"));
+    SETFLOAT(at+1, major);
+    SETFLOAT(at+2, minor);
+    SETFLOAT(at+3, bugfix);
+    outlet_list(x->x_out2,  &s_list, 4, at);
 }
 
 void print_else_obj(t_else_obj *x){
@@ -86,6 +100,7 @@ static void *else_obj_new(void){
         printed = 1;
     }
     outlet_new((t_object *)x, 0);
+    x->x_out2 = outlet_new((t_object *)x, &s_list);
     return(x);
 }
 
