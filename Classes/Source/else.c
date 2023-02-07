@@ -53,16 +53,18 @@ void print_else_obj(t_else_obj *x){
         post("(you have %d.%d-%d, you're good!)", major, minor, bugfix);
     }
     else{
+#ifndef PDL2ORK
         pd_error(x, "- ELSE %d.%d-%d %s-%d needs at least Pd %d.%d-%d",
             else_major, else_minor, else_bugfix, STATUS, status_number,
             min_major, min_minor, min_bugfix);
         pd_error(x, "(you have %d.%d-%d, please upgrade)", major, minor, bugfix);
+#endif
     }
     post("-------------------------------------------------------------------");
-    post("- NOTE: This library also includes a tutorial that depends");
-    post("on this library by Alexandre Torres Porres!!!");
-    post("Find the \"Live-Electronics-Tutorial\" folder inside the \"else\"");
-    post("folder. Please check its README on how to install it!");
+    post("- NOTE: There's an accompanying tutorial by Alexandre Torres");
+    post("Porres which we recommend. You can find the tutorial under");
+    post("\"Live-Electronics-Tutorial\" at: https://github.com/porres/pd-else");
+    post("Please check its README on how to install it!");
     post("-------------------------------------------------------------------");
     post("- ALSO NOTE: Loading this binary did not install the ELSE library");
     post("you still need to add it to the \"preferences=>path\"");
