@@ -25,25 +25,29 @@ static int status_number = 7;
 static void else_obj_version(t_else_obj *x){
     int ac = 5;
     t_atom at[5];
+#ifdef PD_FLAVOR
+    SETSYMBOL(at, gensym(PD_FLAVOR));
+#ifdef PD_L2ORK_VERSION
+    SETSYMBOL(at+1, gensym(PD_L2ORK_VERSION));
+#endif
+    outlet_list(x->x_out3,  &s_list, 2, at);
+#else
+    outlet_symbol(x->x_out3, gensym("Pd-Vanilla"));
+#endif
+    
+    int major = 0, minor = 0, bugfix = 0;
+    sys_getversion(&major, &minor, &bugfix);
+    SETFLOAT(at+1, major);
+    SETFLOAT(at+2, minor);
+    SETFLOAT(at+3, bugfix);
+    outlet_list(x->x_out2,  &s_list, 4, at);
+    
     SETFLOAT(at, else_major);
     SETFLOAT(at+1, else_minor);
     SETFLOAT(at+2, else_bugfix);
     SETSYMBOL(at+3, gensym(STATUS));
     SETFLOAT(at+4, status_number);
     outlet_list(x->x_obj.te_outlet,  &s_list, ac, at);
-    int major = 0, minor = 0, bugfix = 0;
-#ifdef PD_L2ORK_VERSION
-    SETSYMBOL(at, gensym("Pd-L2ork"));
-    SETSYMBOL(at+1, gensym(PD_L2ORK_VERSION));
-    outlet_list(x->x_out2,  &s_list, 2, at);
-    return;
-#endif
-    sys_getversion(&major, &minor, &bugfix);
-    SETSYMBOL(at, gensym("Pd"));
-    SETFLOAT(at+1, major);
-    SETFLOAT(at+2, minor);
-    SETFLOAT(at+3, bugfix);
-    outlet_list(x->x_out2,  &s_list, 4, at);
 }
 
 void print_else_obj(t_else_obj *x){

@@ -3,7 +3,7 @@
 #X obj 54 227 *~;
 #X obj 105 36 inlet~;
 #X obj 106 226 *~;
-#N canvas 150 171 687 504 set_GUI 0;
+#N canvas 150 171 649 301 set_GUI 1;
 #X obj 66 225 s \$0-set-slider;
 #X obj 98 18 inlet;
 #X obj 66 191 clip 0 1;
