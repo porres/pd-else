@@ -16,7 +16,7 @@ static void dsp_float(t_dsp_tilde *x, t_floatarg f){
     x = NULL;
     t_atom at[1];
     SETFLOAT(at, f != 0);
-    pd_anything(gensym("pd")->s_thing, gensym("dsp"), 1, at);
+    typedmess(gensym("pd")->s_thing, gensym("dsp"), 1, at);
 }
 
 static void dsp_loadbang(t_dsp_tilde *x, t_floatarg action){
