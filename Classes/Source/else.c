@@ -5,6 +5,7 @@
 typedef struct else_obj{
     t_object  x_obj;
     t_outlet *x_out2;
+    t_outlet *x_out3;
 }t_else_obj;
 
 t_class *else_obj_class;
