@@ -107,6 +107,7 @@ static void *else_obj_new(t_floatarg f1){
     }
     outlet_new((t_object *)x, 0);
     x->x_out2 = outlet_new((t_object *)x, &s_list);
+    x->x_out3 = outlet_new((t_object *)x, &s_list);
     return(x);
 }
 
