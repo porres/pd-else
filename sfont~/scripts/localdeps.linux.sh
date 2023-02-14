@@ -15,7 +15,7 @@ exclude_paths=
 
 
 #default exclude/include paths
-exclude_paths="*/libc.so.*:*/libarmmem.*.so.*:*/libdl.so.*:*/libglib-.*.so.*:*/libgomp.so.*:*/libgthread.*.so.*:*/libm.so.*:*/libpthread.*.so.*:*/libpthread.so.*:*/libstdc++.so.*:*/libgcc_s.so.*:*/libpcre.so.*:*/libz.so.*"
+exclude_paths="*/libc.so.*:*/libarmmem.*.so.*:*/libdl.so.*:*/libglib-.*.so.*:*/libgomp.so.*:*/libgthread.*.so.*:*/libm.so.*:*/libpthread.*.so.*:*/libpthread.so.*:*/libstdc++.so.*:*/libgcc_s.so.*:*/libz.so.*"
 include_paths="/*"
 
 # UTILITIES
