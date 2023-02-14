@@ -30,6 +30,8 @@ static void else_obj_version(t_else_obj *x){
     SETSYMBOL(at, gensym(PD_FLAVOR));
 #ifdef PD_L2ORK_VERSION
     SETSYMBOL(at+1, gensym(PD_L2ORK_VERSION));
+#elseif PD_PLUGDATA_VERSION
+    SETSYMBOL(at+1, gensym(PD_PLUGDATA_VERSION));
 #endif
     outlet_list(x->x_out3,  &s_list, 2, at);
 #else

@@ -78,12 +78,12 @@ Cross compiling is also possible with something like this
 
 [sfont~] can also be built and installed separately; check the "sfont~" folder and its README with instructions.
 
-But the easiest way is to build and install sfont~ from the toplevel source directory using the special sfont and sfont-install targets:
+But the easiest way is to build and install [sfont~] from the toplevel source directory using the special 'sfont' and 'sfont-install' targets:
 
 <pre>make sfont pdincludepath=~/pd-0.53-1/src/</pre>
 <pre>make sfont-install objectsdir=~/else-build</pre>
 
-This also makes sure that sfont~ gets added to the else library directory, so that the included help patch works without further ado.
+This also makes sure [sfont~] gets added to the else library directory, so that the included help patch works without further ado.
 
 --------------------------------------------------------------------------
 
