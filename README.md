@@ -17,7 +17,7 @@ Copyright © 2017-2023 Alexandre Torres Porres
 
 This work is free. You can redistribute it and/or modify it under the terms of the Do What The Fuck You Want To Public License, Version 2, as published by Sam Hocevar. See License.txt <https://github.com/porres/pd-else/blob/master/License.txt> and <http://www.wtfpl.net/> for more details
 
-Other licenses may apply for specific objects and this is informed in the source code (examples: [giga.rev~], [pdlua] and [sfont~]).
+Other licenses may apply for specific objects and this is informed in the source code (examples: [giga.rev~], [sfont~]).
 
 
 
@@ -31,29 +31,25 @@ ELSE is a big library of externals that extends the performance Pure Data (Pd) -
 
 ELSE provides a cohesive system for computer music, it also serves as a basis for an Live Electronics Tutorial by the same author, yours truly, Alexandre Torres Porres. This library's repository resides at <https://github.com/porres/pd-else/>. This tutorial is also found as part of the download of the ELSE library. Look for the 'Live-Electronics-Tutorial' folder inside it and also check its README on how to install it.
 
-​Note that you can also download Camomile with support for ELSE externals, see <https://github.com/emviveros/Camomile-ELSE/releases>.
+Note that you can also download Camomile with support for ELSE externals, see <https://github.com/emviveros/Camomile-ELSE/releases>.
 
-​ELSE is also part of PlugData by Timothy Schoen, which is a fork of Pd that loads as a standalone or VST with a revamped GUI. ELSE has received collaboration from Tim and others involved with PlugData and many objects have been included in ELSE just so they are supported in PlugData, most notably the [pdlua] external.
-​
-​See also: 
-- <https://github.com/timothyschoen/PlugData>
-- <https://github.com/agraef/pd-lua>
+ELSE is also part of PlugData by Timothy Schoen, which is a fork of Pd that loads as a standalone or VST with a revamped GUI. ELSE has received collaboration from Tim and others involved with PlugData and many objects have been included in ELSE just so they are supported in PlugData. ​See: <https://github.com/timothyschoen/PlugData>
 
-​This project is still in an experimental phase (currently at a 'release candidate' phase), where  changes may occur and backwards compatibility is not guaranteed until a final and more stable release is available. 
+This project is still in an experimental phase (currently at a 'release candidate' phase), where  changes may occur and backwards compatibility is not guaranteed until a final and more stable release is available. 
 
 --------------------------------------------------------------------------
 
 ### Downloading ELSE:
 
-​You can get ELSE from https://github.com/porres/pd-else/releases - where all releases are available, but ELSE is also found via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else'). In any case, you should download the folder to a place Pd automatically searches for, and the common place is the **~/documents/pd/externals** folder. Instructions on how to install and build ELSE are provided below.
+You can get ELSE from https://github.com/porres/pd-else/releases - where all releases are available, but ELSE is also found via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else'). In any case, you should download the folder to a place Pd automatically searches for, and the common place is the **~/Documents/Pd/externals** folder. Instructions on how to install and build ELSE are provided below.
 
 --------------------------------------------------------------------------
 
 ### Installing ELSE:
 
-​ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path or use **[declare -path else]**. ELSE comes with a binary that you can use load via "Preferences => Startup" or with [declare -lib else], but all that this does is print information of what version of ELSE you have when you open Pd. You can also just load the 'else' external for that same purpose, check its help file. 
+ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path or use **[declare -path else]**. ELSE comes with a binary that you can use load via "Preferences => Startup" or with [declare -lib else], but all that this does is print information of what version of ELSE you have when you open Pd. You can also just load the 'else' external for that same purpose, check its help file. 
 
-​It is important to stress this library runs in Pd Vanilla 0.52-1 or above and is not compatible to forks like the long dead "Pd Extended" and its new reincarnations "Pd-L2ork/Purr Data". Nevertheless, ELSE is included in the PlugData fork --> <https://github.com/timothyschoen/PlugData>.
+It is important to stress this library runs in Pd Vanilla 0.52-1 or above and is not compatible to forks like the long dead "Pd Extended" and its new reincarnations "Pd-L2ork/Purr Data". Nevertheless, ELSE is included in the PlugData fork --> <https://github.com/timothyschoen/PlugData>, and a port of ELSE to Purr Data is currently underway --> https://github.com/agraef/purr-data/tree/pd-else.
 
 --------------------------------------------------------------------------
 
@@ -110,20 +106,18 @@ I'd also like to thank my Cyclone buddies Derek Kwan and Matt Barber, cause I st
 
 Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of ELSE for other systemas as well as ELSE for Camomile. See: <https://github.com/porres/Camomile-ELSE>.
 ​	
-For Last, Timothy Schoen is doing a great job with PlugData, a project based on camomile that includes ELSE. Timothy has also helped me fix many ELSE related issues and coded first versions of compiled band limited oscillators. PlugData is also a fork of Pd with a revamped GUI. See: <https://github.com/timothyschoen/PlugData>. Also because of PlugData, Albert Graef has collaborated getting [pdlua] into PlugData and into ELSE by extension.
+For Last, Timothy Schoen is doing a great job with PlugData, a project based on camomile that includes ELSE. Timothy has also helped me fix many ELSE related issues and coded first versions of compiled band limited oscillators. PlugData is also a fork of Pd with a revamped GUI. See: <https://github.com/timothyschoen/PlugData>.
 
 
 --------------------------------------------------------------------------
 
 ## Current Object list (474 objects):
 
-**ASSORTED: [05]**
+**ASSORTED: [03]**
 
 - [else]
 - [chrono]
 - [datetime]
-- [pdlua]
-- [pdluax]
 
 **TABLE: [03]**
 
@@ -591,7 +585,7 @@ For Last, Timothy Schoen is doing a great job with PlugData, a project based on 
 - [lfnoise]
 - [stepnoise]
 - [rampnoise]
- 
+
 **CONTROL: CONTROL RATE LFOs [5]**
 
 - [lfo]
