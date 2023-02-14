@@ -10,16 +10,14 @@
 
 
 
-	Copyright © 2017-2023 Alexandre Torres Porres
+Copyright © 2017-2023 Alexandre Torres Porres
 
 
 
 
-   This work is free. You can redistribute it and/or modify it under the
-   terms of the Do What The Fuck You Want To Public License, Version 2,
-   as published by Sam Hocevar. See License.txt <https://github.com/porres/pd-else/blob/master/License.txt> and <http://www.wtfpl.net/> for more details
+This work is free. You can redistribute it and/or modify it under the terms of the Do What The Fuck You Want To Public License, Version 2, as published by Sam Hocevar. See License.txt <https://github.com/porres/pd-else/blob/master/License.txt> and <http://www.wtfpl.net/> for more details
 
-   Other licenses may apply for specific objects and this is informed in the source code (examples: [giga.rev~], [pdlua] and [sfont~]).
+Other licenses may apply for specific objects and this is informed in the source code (examples: [giga.rev~], [pdlua] and [sfont~]).
 
 
 
@@ -47,39 +45,45 @@ ELSE provides a cohesive system for computer music, it also serves as a basis fo
 
 ### Downloading ELSE:
 
-​	You can get ELSE from https://github.com/porres/pd-else/releases - where all releases are available, but ELSE is also found via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else'). In any case, you should download the folder to a place Pd automatically searches for, and the common place is the **~/documents/pd/externals** folder. Instructions on how to install and build ELSE are provided below.
-
-
+​You can get ELSE from https://github.com/porres/pd-else/releases - where all releases are available, but ELSE is also found via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else'). In any case, you should download the folder to a place Pd automatically searches for, and the common place is the **~/documents/pd/externals** folder. Instructions on how to install and build ELSE are provided below.
 
 --------------------------------------------------------------------------
 
 ### Installing ELSE:
 
-​	ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path or use **[declare -path else]**. ELSE comes with a binary that you can use load via "Preferences => Startup" or with [declare -lib else], but all that this does is print information of what version of ELSE you have when you open Pd. You can also just load the 'else' external for that same purpose, check its help file. 
+​ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path or use **[declare -path else]**. ELSE comes with a binary that you can use load via "Preferences => Startup" or with [declare -lib else], but all that this does is print information of what version of ELSE you have when you open Pd. You can also just load the 'else' external for that same purpose, check its help file. 
 
-​	It is important to stress this library runs in Pd Vanilla 0.52-1 or above and is not compatible to forks like the long dead "Pd Extended" and its new reincarnations "Pd-L2ork/Purr Data". Nevertheless, ELSE is included in the PlugData fork --> <https://github.com/timothyschoen/PlugData>.
+​It is important to stress this library runs in Pd Vanilla 0.52-1 or above and is not compatible to forks like the long dead "Pd Extended" and its new reincarnations "Pd-L2ork/Purr Data". Nevertheless, ELSE is included in the PlugData fork --> <https://github.com/timothyschoen/PlugData>.
 
 --------------------------------------------------------------------------
 
 #### Building ELSE for Pd Vanilla:
 
-First build [sfont~] -> check the "sfont~" folder and its README with instructions. 
+ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example (assuming the unpacked Pd package is in ~/pd-0.53-1; for Windows/MinGW add `pdbinpath=~/pd-0.53-1/bin/`):
 
-ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example:
+<pre>make pdincludepath=~/pd-0.53-1/src/</pre>
 
-<pre>make pdincludepath=~/pd-0.53-1/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.53-1 /bin/)</pre>
+##### Installing with pdlibbuilder
 
-* Installing with pdlibbuilder
+Go to the pd-else folder and use "objectsdir" to set an *absolute* path for your build, something like:
 
-Go to the pd-else folder and use "objectsdir" to set a relative path for your build, something like:
-
-<pre>make install objectsdir=../else-build</pre>
-Then move it to your preferred install folder for Pd and add it to the path.
+<pre>make install objectsdir=~/else-build</pre>
+Then move it from there to your preferred install folder for Pd and add it to the path.
 
 Cross compiling is also possible with something like this
 
-<pre>make CC=arm-linux-gnueabihf-gcc target.arch=arm7l install objectsdir=../</pre>
+<pre>make CC=arm-linux-gnueabihf-gcc target.arch=arm7l install objectsdir=~/else-build</pre>
 
+##### Installing sfont~
+
+[sfont~] can also be built and installed separately; check the "sfont~" folder and its README with instructions.
+
+But the easiest way is to build and install sfont~ from the toplevel source directory using the special sfont and sfont-install targets:
+
+<pre>make sfont pdincludepath=~/pd-0.53-1/src/</pre>
+<pre>make sfont-install objectsdir=~/else-build</pre>
+
+This also makes sure that sfont~ gets added to the else library directory, so that the included help patch works without further ado.
 
 --------------------------------------------------------------------------
 
@@ -99,14 +103,14 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 ### Acknowledgements
 
-​	Flávio Luis Schiavoni helped me out in a few things when I first started coding and collaborated with the objects: [median~] and [keyboard]. Lucas Cordiviola is an active tester and has helped countless times with compilation issues for windows. 
+Flávio Luis Schiavoni helped me out in a few things when I first started coding and collaborated with the objects: [median~] and [keyboard]. Lucas Cordiviola is an active tester and has helped countless times with compilation issues for windows. 
 
 
-​	I'd also like to thank my Cyclone buddies Derek Kwan and Matt Barber, cause I started learning how to code externals with them as part of the cyclone team. Other developers of cyclone need to be praised, like Czaja, the original author, as I did steal quite a bit from cyclone into ELSE. I'd like to give a special thanks for Matt Barber for developing the "magic" in cyclone that I'm using here and also collaborating to ELSE with the objects: [float2bits], [brown~], [gray~], [perlin~], [pink~] and [blip~].
+I'd also like to thank my Cyclone buddies Derek Kwan and Matt Barber, cause I started learning how to code externals with them as part of the cyclone team. Other developers of cyclone need to be praised, like Czaja, the original author, as I did steal quite a bit from cyclone into ELSE. I'd like to give a special thanks for Matt Barber for developing the "magic" in cyclone that I'm using here and also collaborating to ELSE with the objects: [float2bits], [brown~], [gray~], [perlin~], [pink~] and [blip~].
 
-​	Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of ELSE for other systemas as well as ELSE for Camomile. See: <https://github.com/porres/Camomile-ELSE>.
+Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of ELSE for other systemas as well as ELSE for Camomile. See: <https://github.com/porres/Camomile-ELSE>.
 ​	
-​	For Last, Timothy Schoen is doing a great job with PlugData, a project based on camomile that includes ELSE. Timothy has also helped me fix many ELSE related issues and coded first versions of compiled band limited oscillators. PlugData is also a fork of Pd with a revamped GUI. See: <https://github.com/timothyschoen/PlugData>. Also because of PlugData, ALbert Graef has collaborated getting [pdlua] into PlugData and into ELSE by extension.
+For Last, Timothy Schoen is doing a great job with PlugData, a project based on camomile that includes ELSE. Timothy has also helped me fix many ELSE related issues and coded first versions of compiled band limited oscillators. PlugData is also a fork of Pd with a revamped GUI. See: <https://github.com/timothyschoen/PlugData>. Also because of PlugData, Albert Graef has collaborated getting [pdlua] into PlugData and into ELSE by extension.
 
 
 --------------------------------------------------------------------------

@@ -374,6 +374,22 @@ README.pdf $(pdlua_data)
 PDLIBBUILDER_DIR=pd-lib-builder/
 include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 
+# sfont subtargets. These let you build, install, and clean sfont~ without
+# going into the sfont~ subdir. It also makes sure that sfont~ gets installed
+# into the else (rather than its own sfont~) directory, so that the help patch
+# will work as intended. Note that to make that work, any target installation
+# directory (PDLIBDIR, objectsdir) should be specified as an absolute path.
+# E.g.: make install sfont-install objectsdir=/usr/lib/pd/extra
+
+sfont:
+	$(MAKE) -C sfont~
+
+sfont-install:
+	$(MAKE) -C sfont~ install installpath="$(DESTDIR)$(PDLIBDIR)/else"
+
+sfont-clean:
+	$(MAKE) -C sfont~ clean
+
 install: installplus
 
 installplus:
