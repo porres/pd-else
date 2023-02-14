@@ -220,7 +220,7 @@
 #X obj 162 208 else/adsr~ 1000 500 0.5 1000, f 37;
 #X text 179 402 bang;
 #X text 217 402 - trigger/retrigger, f 46;
-#N canvas 413 187 665 392 retrigger 0;
+#N canvas 553 121 665 515 retrigger 0;
 #X obj 70 262 *~;
 #X obj 47 200 osc~ 440;
 #X obj 188 239 else/sig2float~;
@@ -247,6 +247,8 @@
 #X text 16 75 A bang considers the last non zero float value as the gate value \, and the default value is "127"!, f 60;
 #X floatatom 127 165 5 0 0 0 - - - 0;
 #X msg 63 142 0;
+#X text 86 424 Note: the [envgen~] object has a retrigger mode which allows you to set a retrigger time in ms. Hence \, if you want to have a more versatile ADSR object with this functionality \, please use this more general and all purpose envelope generator. Check its help file for more details on how its retrigger mode works., f 89;
+#X obj 425 470 else/envgen~;
 #X connect 0 0 6 0;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;
