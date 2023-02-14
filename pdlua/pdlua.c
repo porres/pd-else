@@ -1912,7 +1912,7 @@ void pdlua_setup(void)
 #endif
     if (strlen(pdlua_version) == 0) {
       // NOTE: This should be set from the Makefile, otherwise we fall back to:
-      pdlua_version = "0.11.3";
+      pdlua_version = "0.11.5";
     }
     snprintf(pdluaver, MAXPDSTRING-1, "pdlua %s (GPL) 2008 Claude Heiland-Allen, 2014 Martin Peach et al.", pdlua_version);
     snprintf(compiled, MAXPDSTRING-1, "pdlua: compiled for pd-%d.%d on %s",
@@ -2031,7 +2031,7 @@ void pdlua_setup(void)
     nw_gui_vmess = dlsym(RTLD_DEFAULT, "gui_vmess");
 #endif
     if (nw_gui_vmess)
-      post("pdlua: using JavaScript interface (Pd-l2ork nw.js version)");
+      post("pdlua: using JavaScript interface (nw.js)");
 #endif
 
 }

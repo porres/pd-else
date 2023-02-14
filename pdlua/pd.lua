@@ -243,7 +243,11 @@ pd.Class = pd.Prototype:new()
 function pd.Class:register(name)
   -- if already registered, return existing
   local regname
-  local fullpath = pd._loadpath .. '/'
+  -- Those trailing slashes keep piling up, thus we need to check whether
+  -- pd._loadpath already has one. This is only a temporary kludge until a
+  -- proper fix is deployed. -ag 2023-02-02
+  local fullpath = string.sub(pd._loadpath, -1) == "/" and pd._loadpath or
+     (pd._loadpath .. '/')
   local fullname = fullpath .. name
 
   if nil ~= pd._classes[fullname] then
