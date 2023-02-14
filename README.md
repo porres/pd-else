@@ -115,7 +115,7 @@ For Last, Timothy Schoen is doing a great job with PlugData, a project based on 
 
 --------------------------------------------------------------------------
 
-## Current Object list (473 objects):
+## Current Object list (474 objects):
 
 **ASSORTED: [05]**
 
@@ -158,7 +158,7 @@ For Last, Timothy Schoen is doing a great job with PlugData, a project based on 
 - [note2pitch]
 - [note2dur]
 
-**PATCH/SUBPATCH MANAGEMENT: [21]**
+**PATCH/SUBPATCH MANAGEMENT: [20]**
 
 - [args]
 - [meter]
@@ -178,7 +178,6 @@ For Last, Timothy Schoen is doing a great job with PlugData, a project based on 
 - [canvas.file]
 - [canvas.vis]
 - [canvas.setname]
-- [canvas.name]
 - [canvas.zoom]
 - [loadbanger] / [lb]
 
@@ -510,10 +509,12 @@ For Last, Timothy Schoen is doing a great job with PlugData, a project based on 
 - [xmod2~]
 - [gendyn~] 
 
-**CONTROL: MOUSE INTERACTION [2]**
+**CONTROL: MOUSE/KEYBOARD INTERACTION [4]**
 
 - [mouse]
 - [canvas.mouse]
+- [keycode]
+- [keymap]
 
 **CONTROL: FADER/PANNING/ROUTING: [15]**
 

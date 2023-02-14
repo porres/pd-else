@@ -384,10 +384,6 @@
 #X obj 83 697 else/pink~;
 #X obj 84 32 else/gendyn~;
 #X restore 395 285 pd Noise;
-#N canvas 410 296 313 165 Control(Mouse_interaction) 0;
-#X obj 84 52 else/mouse;
-#X obj 85 80 else/canvas.mouse;
-#X restore 61 314 pd Control(Mouse_interaction);
 #N canvas 910 76 289 487 Control(Fader/Panning/Routing) 0;
 #X obj 86 117 else/balance~;
 #X obj 86 145 else/pan2~;
@@ -404,7 +400,7 @@
 #X obj 86 68 else/autofade~;
 #X obj 86 91 else/autofade2~;
 #X obj 85 45 else/fader~;
-#X restore 245 314 pd Control(Fader/Panning/Routing);
+#X restore 286 314 pd Control(Fader/Panning/Routing);
 #N canvas 457 71 333 288 Control(Sequencers) 0;
 #X obj 91 39 else/euclid;
 #X obj 91 62 else/score;
@@ -614,4 +610,10 @@
 #X obj 64 144 else/osc.send;
 #X obj 64 176 else/osc.receive;
 #X restore 83 203 pd OSC;
+#N canvas 410 296 313 226 Control(Mouse/keyboard_interaction) 0;
+#X obj 84 52 else/mouse;
+#X obj 85 80 else/canvas.mouse;
+#X obj 85 112 else/keycode;
+#X obj 85 142 else/keymap;
+#X restore 41 314 pd Control(Mouse/keyboard_interaction);
 #X connect 2 0 1 0;

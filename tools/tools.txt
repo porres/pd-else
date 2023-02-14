@@ -4,6 +4,8 @@ compilar via bash:
 - jogar no 'sources'
 - bash vai.else.sh
 
+Joga fora o armv7 e versões 32 bits
+
 -------------------------------------------------------------------------
 
 git submodule update --init --recursive
