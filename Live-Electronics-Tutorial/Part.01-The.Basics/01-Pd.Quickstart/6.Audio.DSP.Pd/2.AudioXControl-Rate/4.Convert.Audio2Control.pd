@@ -52,7 +52,7 @@ and can get any sample within a block via an offset parameter., f
 #X text 28 26 The native [snapshot~] object converts audio to control
 data when it receives a bang \, sent here by the [metro] at a fixed
 rate of 200 ms. ELSE has the [sig2float~] object \, which is more convenient
-(whetre the rate is set as an argument) and has more features., f
+(where the rate is set as an argument) and has more features., f
 50;
 #X text 423 248 Note that graphic objects in Pd \, when activated via
 keyboard \, mouse or MIDI input \, always send data in sync with a
