@@ -8,7 +8,7 @@ Joga fora o armv7 e versões 32 bits
 
 -------------------------------------------------------------------------
 
-git submodule update --init --recursive
+make install sfont-install pdincludepath=../pure-data/src objectsdir=../
 
 -------------------------------------------------------------------------
 
