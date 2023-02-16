@@ -433,6 +433,11 @@ For Last, Timothy Schoen is doing a great job with PlugData, a project based on 
 - [tabwriter~]
 - [sample~]
 
+**SYNTHESIS: SINTHESIZERS: [02]**
+
+- [sfont~]
+- [plaits~]
+
 **SYNTHESIS: GRANULAR SYNTHESIS: [01]**
 
 - [grain.synth~]
@@ -440,10 +445,6 @@ For Last, Timothy Schoen is doing a great job with PlugData, a project based on 
 **SYNTHESIS: PHYSICAL MODELLING: [01]**
 
 - [pluck~]
-
-**SYNTHESIS: SAMPLE SYNTHESIZER: [01]**
-
-- [sfont~]
 
 **SYNTHESIS: OSCILLATORS (DETERMINISTIC GENERATORS): [26]**
 
@@ -635,7 +636,7 @@ For Last, Timothy Schoen is doing a great job with PlugData, a project based on 
 - [tempo]
 - [tempo~]
 
-**ANALYSIS: [14]**
+**ANALYSIS: [15]**
 
 - [changed~]
 - [changed2~]
@@ -651,6 +652,7 @@ For Last, Timothy Schoen is doing a great job with PlugData, a project based on 
 - [mov.rms~]
 - [vu~]
 - [zerocross~]
+- [beat~]
 
 **GUI: [36]**
 

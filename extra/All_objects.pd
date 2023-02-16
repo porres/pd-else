@@ -3,7 +3,6 @@
 #N struct 1024-point float x0 float y0 float size float fg float in float grid;
 #N struct 1065-slot float x float y float slotsize float color float width float bordercolor;
 #N canvas 505 56 530 463 10;
-#X declare -lib pdlua;
 #N canvas 347 36 974 668 GUI 0;
 #X text 40 146 [biplot];
 #X text 196 83 [pic] =>;
@@ -322,9 +321,6 @@
 #N canvas 452 259 220 145 Physical_Modelling 0;
 #X obj 56 51 else/pluck~;
 #X restore 52 285 pd Physical_Modelling;
-#N canvas 630 244 220 145 Sampler_synth 0;
-#X obj 73 57 else/sfont~;
-#X restore 191 285 pd Sampler_synth;
 #N canvas 700 41 378 497 Oscillators 0;
 #X obj 74 37 else/cosine~;
 #X obj 74 65 else/impulse~;
@@ -495,6 +491,7 @@
 #X obj 71 301 else/vu~;
 #X obj 71 327 else/zerocross~;
 #X obj 71 173 else/tap;
+#X obj 71 352 else/beat~;
 #X restore 350 399 pd Analysis;
 #X text 7 428 =====================================================================================, f 85;
 #X text 7 122 =====================================================================================, f 85;
@@ -590,13 +587,10 @@
 #X obj 70 21 else/swap2;
 #X obj 71 141 else/route2;
 #X restore 219 177 pd Message_management;
-#N canvas 522 132 229 229 Assorted 0;
+#N canvas 522 132 214 147 Assorted 0;
 #X obj 73 30 else/else;
 #X obj 67 58 else/chrono;
 #X obj 61 88 else/datetime;
-#X obj 57 122 declare -lib pdlua;
-#X obj 66 147 pdlua;
-#X obj 114 147 pdluax;
 #X restore 15 152 pd Assorted;
 #N canvas 835 177 265 205 Table 0;
 #X obj 90 61 else/tabgen;
@@ -616,4 +610,8 @@
 #X obj 85 112 else/keycode;
 #X obj 85 142 else/keymap;
 #X restore 41 314 pd Control(Mouse/keyboard_interaction);
+#N canvas 630 244 220 145 Synthesizers 0;
+#X obj 73 57 else/sfont~;
+#X obj 72 86 else/plaits~;
+#X restore 194 285 pd Synthesizers;
 #X connect 2 0 1 0;

@@ -21,6 +21,7 @@ bandstop~	x
 bangdiv	x
 batch.rec~	x
 batch.write~	x
+beat~	x
 bend.in	x
 bend.out	x
 bicoeff	x
@@ -286,8 +287,6 @@ pan8~	x
 panic	x
 parabolic~	x	x
 pattern	x
-pdlua	x
-pdluax	x
 peak~	x
 perlin~	x
 pgm.in	x
@@ -305,6 +304,7 @@ pinknoise~	x
 pipe2	x
 pitch2note	x
 pitch.shift~	x
+plaits~	x
 plate.rev~	x
 play.file~	x
 player~	x
