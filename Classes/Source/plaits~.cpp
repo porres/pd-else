@@ -128,17 +128,12 @@ void plts_trigger_mode(t_plts *x, t_floatarg f){
 }
 
 static float plts_get_pitch(t_plts *x, t_floatarg f){
-    switch(x->pitch_mode){
-        case 0: // hz
-            return(log2f(f/440) + 0.75);
-        break;
-        case 1: // midi
-            return((f - 60) / 12);
-        break;
-        case 2: // CV (V/oct)
-            return(f);
-        break;
-    }
+    if(x->pitch_mode == 0)
+        return(log2f(f/440) + 0.75);
+    else if(x->pitch_mode == 1)
+        return((f - 60) / 12);
+    else
+        return(f);
 }
 
 t_int *plts_perform(t_int *w){
