@@ -7,11 +7,9 @@
 lib.name = else
 
 aubioflags = -Ishared/aubio/src
+plaitsflags = -DTEST -Wno-unused-local-typedefs -I.
 
-cflags = -Ishared -DHAVE_STRUCT_TIMESPEC $(aubioflags)
-
-# ?????????????????????????
-# cflags = -DTEST -Wno-unused-local-typedefs -I./
+cflags = -Ishared -DHAVE_STRUCT_TIMESPEC $(aubioflags) $(plaitsflags)
 
 uname := $(shell uname -s)
 
