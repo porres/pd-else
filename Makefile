@@ -6,25 +6,9 @@
 
 lib.name = else
 
-# set this to no to exclude pdlua from build/install
-luamake = yes
-
-ifeq ($(luamake),yes)
-luaflags=-DMAKE_LIB -Ilua/lua -DELSE
-define forDarwin
-luaflags += -DLUA_USE_MACOSX
-endef
-define forLinux
-luaflags += -DLUA_USE_LINUX
-endef
-define forWindows
-luaflags += -DLUA_USE_WINDOWS
-endef
-endif
-
 aubioflags=-Ishared/aubio/src
 
-cflags = -Ishared -DHAVE_STRUCT_TIMESPEC ${luaflags}
+cflags = -Ishared -DHAVE_STRUCT_TIMESPEC
 
 uname := $(shell uname -s)
 
@@ -262,11 +246,6 @@ aubio := $(wildcard shared/aubio/src/*/*.c) $(wildcard shared/aubio/src/*.c)
 #    onsetdetect~.class.sources := Classes/Source/onsetdetect~.c $(aubio)
 #    pitch~.class.sources := Classes/Source/pitch~.c $(aubio)
 
-ifeq ($(luamake),yes)
- lua := pdlua/lua/onelua.c
-    pdlua.class.sources := pdlua/pdlua.c $(lua)
-endif
-
 magic := shared/magic.c
     sine~.class.sources := Classes/Source/sine~.c $(magic)
     cosine~.class.sources := Classes/Source/cosine~.c $(magic)
@@ -356,17 +335,13 @@ endef
 
 # extra files
 
-ifeq ($(luamake),yes)
-pdlua_data = ./pdlua/pd.lua
-endif
-
 extrafiles = \
 $(wildcard Classes/Abstractions/*.pd) \
 $(wildcard Classes/Abs_components/*.pd) \
 $(wildcard Help-files/*.pd) \
 $(wildcard *.txt) \
 $(wildcard extra/*.*) \
-README.pdf $(pdlua_data)
+README.pdf
 
 #########################################################################
 
@@ -394,8 +369,3 @@ install: installplus
 
 installplus:
 	for v in $(extrafiles); do $(INSTALL_DATA) "$$v" "$(installpath)"; done
-ifeq ($(luamake),yes)
-	cp -r ./pdlua/pdlua "${installpath}"/pdlua
-else
-	rm -f "${installpath}"/pdlua*.pd
-endif
