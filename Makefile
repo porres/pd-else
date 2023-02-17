@@ -8,7 +8,12 @@ lib.name = else
 
 aubioflags = -Ishared/aubio/src
 
-cflags = -Ishared -DHAVE_STRUCT_TIMESPEC $(aubioflags) $(plaitsflags)
+define forDarwin
+# old pdlibbuilder in plaits~ gets the target architecture(s) wrong
+plaitsflags = arch="$(target.arch)"
+endef
+
+cflags = -Ishared -DHAVE_STRUCT_TIMESPEC $(aubioflags)
 
 uname := $(shell uname -s)
 
@@ -369,13 +374,13 @@ sfont-clean:
 # E.g.: make install plaits-install objectsdir=/usr/lib/pd/extra
 
 plaits:
-	$(MAKE) -C plaits~
+	$(MAKE) -C plaits~ $(plaitsflags)
 
 plaits-install:
-	$(MAKE) -C plaits~ install installpath="$(DESTDIR)$(PDLIBDIR)/else"
+	$(MAKE) -C plaits~ install installpath="$(DESTDIR)$(PDLIBDIR)/else" $(plaitsflags)
 
 plaits-clean:
-	$(MAKE) -C plaits~ clean
+	$(MAKE) -C plaits~ clean $(plaitsflags)
 
 install: installplus
 

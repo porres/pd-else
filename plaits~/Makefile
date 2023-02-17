@@ -39,7 +39,7 @@ class.sources = plaits~.cpp
 # all extra files to be included in binary distribution of the library
 # datafiles = plaits~-help.pd README.md
 
-cflags = -DTEST -Wno-unused-local-typedefs -I./
+cflags = -DTEST -Wno-unused-local-typedefs -I$(shell pwd)
 
 # include Makefile.pdlibbuilder from submodule directory 'pd-lib-builder'
 PDLIBBUILDER_DIR=pd-lib-builder/
