@@ -50,7 +50,7 @@
 #X obj 87 300 else/tap;
 #X text 56 338 BPM;
 #X obj 87 163 else/beat~ 0.5;
-#X text 65 20 Testing on a rhythmic loop \, kind of a crazy one \, so it doesn't work right :);
+#X text 65 20 Testing on a rhythmic loop \, but in a kind of a crazy/complex one not in "plain" 4/4 just to see how it handles it.;
 #X connect 0 0 5 0;
 #X connect 0 0 7 0;
 #X connect 2 0 3 0;
