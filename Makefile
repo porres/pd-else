@@ -365,6 +365,18 @@ sfont-install:
 sfont-clean:
 	$(MAKE) -C sfont~ clean
 
+# Same for plaits.
+# E.g.: make install plaits-install objectsdir=/usr/lib/pd/extra
+
+plaits:
+	$(MAKE) -C plaits~
+
+plaits-install:
+	$(MAKE) -C plaits~ install installpath="$(DESTDIR)$(PDLIBDIR)/else"
+
+plaits-clean:
+	$(MAKE) -C plaits~ clean
+
 install: installplus
 
 installplus:
