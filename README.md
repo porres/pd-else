@@ -70,16 +70,16 @@ Cross compiling is also possible with something like this
 
 <pre>make CC=arm-linux-gnueabihf-gcc target.arch=arm7l install objectsdir=~/else-build</pre>
 
-##### Installing sfont~
+##### Installing sfont~ and plaits~
 
-[sfont~] can also be built and installed separately; check the "sfont~" folder and its README with instructions.
+For technical reasons these objects reside in their own subdirectories of the ELSE source directory, so a normal build as described above will skip them. If you want to build and install these separately, check the "sfont~" and "plaits~" folders and their READMEs with instructions.
 
-But the easiest way is to build and install [sfont~] from the toplevel source directory using the special 'sfont' and 'sfont-install' targets:
+But the easiest (and recommended) way is to build and install those objects from the toplevel source directory using the special 'sfont' and 'plaits' targets:
 
-<pre>make sfont pdincludepath=~/pd-0.53-1/src/</pre>
-<pre>make sfont-install objectsdir=~/else-build</pre>
+<pre>make sfont plaits pdincludepath=~/pd-0.53-1/src/</pre>
+<pre>make sfont-install plaits-install objectsdir=~/else-build</pre>
 
-This also makes sure [sfont~] gets added to the else library directory, so that the included help patch works without further ado.
+This also makes sure that [sfont~] and [plaits~] get added to the else library directory instead of their own subdirectories, so that the included help patches work without further ado.
 
 --------------------------------------------------------------------------
 
