@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build-linux:
+  Linux-Build:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,9 +15,15 @@ jobs:
     - name: Install PureData
       run: sudo apt-get install puredata -y 
 
-    - name: Downloads pd-Sources
+    - name: Downloads pd-Sources 
       run: | 
-        git clone https://github.com/pure-data/pure-data
+        PD_URL=$(curl -L -s https://api.github.com/repos/pure-data/pure-data/tags | grep zipball_url | grep -v latest | grep -v pd-0.52 | grep -v tagtest | head -n 1 | cut -d '"' -f 4)
+        curl -L -o pure-data.zip $PD_URL
+        unzip pure-data.zip
+        rm pure-data.zip
+        mv pure-data-* pure-data
+        
+        
 
     - name: Install FluidSynth deps
       run: sudo apt install cmake libglib2.0-dev libsndfile1-dev patchelf -y
@@ -70,14 +76,8 @@ jobs:
         mv -v ./else-Linux/sfont~/* ./else-Linux/
         rm -rf ./else-Linux/sfont~
         
-       
-    # # create zip file
-    # - name: Create Zip
-    #   run: zip -r else-Linux.zip ./else-Linux/*
-
-    # upload zip file
     - name: Upload Zip
       uses: actions/upload-artifact@v3
       with:
-        name: else-1.0-rc6_Linux64
+        name: else-MAIN-LINUX64-Bits
         path: ./else-Linux/*
