@@ -22,7 +22,7 @@ static unsigned keycode_to_hid(unsigned scancode) {
 
 #elif defined _WIN32
 
-#include <Windows.h>
+#include <windows.h>
 
 static const unsigned char KEYCODE_TO_HID[256] = {
     0,41,30,31,32,33,34,35,36,37,38,39,45,46,42,43,20,26,8,21,23,28,24,12,18,19,
