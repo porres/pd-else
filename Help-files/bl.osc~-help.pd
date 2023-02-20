@@ -1,4 +1,4 @@
-#N canvas 416 28 560 544 10;
+#N canvas 416 28 571 594 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
@@ -12,10 +12,10 @@
 #X obj 123 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 3 260 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 3 398 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
-#X obj 3 434 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 13 482 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
 #X obj 123 407 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 122 268 cnv 17 3 75 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
-#X obj 3 517 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 13 565 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
 #X text 155 266 float/signal -;
 #X text 255 266 frequency in hz;
 #X obj 123 351 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
@@ -30,7 +30,7 @@
 #X obj 22 40 cnv 4 4 4 empty empty Bandlimited 0 28 2 18 #e0e0e0 #000000 0;
 #X text 264 138 <-- hz;
 #X obj 123 373 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0;
-#X text 162 496 - initial phase offset (default 0), f 61;
+#X text 172 544 - initial phase offset (default 0), f 61;
 #N canvas 611 58 517 609 example 0;
 #X floatatom 171 126 9 0 0 0 - - - 0;
 #X obj 174 93 hsl 128 15 50 2000 1 0 empty empty empty -2 -8 0 10 #dfdfdf #000000 #000000 0 1;
@@ -63,15 +63,15 @@
 #X connect 14 0 12 0;
 #X connect 14 0 13 0;
 #X restore 473 230 pd example;
-#X text 99 445 1) symbol;
-#X text 161 445 -;
+#X text 109 493 1) symbol;
+#X text 171 493 -;
 #X text 191 352 signal -;
 #X text 256 352 phase sync (impulse ressets internal phase);
 #X text 257 407 bandlimited oscillator signal;
-#X text 105 463 2) float;
-#X text 105 480 3) float;
-#X text 105 496 4) float;
-#X text 162 463 - number of partials (default 1), f 61;
+#X text 115 511 2) float;
+#X text 115 528 3) float;
+#X text 115 544 4) float;
+#X text 172 511 - number of partials (default 1), f 61;
 #X text 191 374 signal -;
 #X text 173 283 n <float> -;
 #X text 255 283 set number of partials (rewrites all tables);
@@ -127,7 +127,7 @@
 #X connect 3 0 5 0;
 #X connect 5 0 4 0;
 #X restore 491 165 pd midi;
-#X text 162 480 - frequency in midi or hertz (default 0), f 61;
+#X text 172 528 - frequency in midi or hertz (default 0), f 61;
 #N canvas 494 66 707 453 sync 0;
 #X obj 72 214 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 72 182 else/sig2float~;
@@ -165,7 +165,7 @@
 #X connect 21 0 1 0;
 #X connect 22 0 3 0;
 #X restore 491 186 pd sync;
-#X text 174 445 sets waveform (obligatory): saw \, saw2 \, tri \, square and imp);
+#X text 184 493 sets waveform (obligatory): saw \, saw2 \, tri \, square and imp);
 #N canvas 325 174 737 337 phase 0;
 #X obj 492 203 else/out~;
 #X text 577 154 Phase Modulation:;
@@ -196,5 +196,8 @@
 #X text 255 298 non zero sets to frequency input in MIDI pitch;
 #X text 155 314 soft <float> -;
 #X text 255 314 non zero sets to soft sync mode;
+#X obj 3 433 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
+#X text 133 443 -m: sets frequency input in MIDI pitch (default hertz);
+#X text 133 458 -soft: sets to soft sync mode (default hard);
 #X connect 20 0 50 0;
 #X connect 50 0 23 0;

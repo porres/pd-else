@@ -1,4 +1,4 @@
-#N canvas 642 23 566 623 10;
+#N canvas 559 23 566 623 10;
 #X obj 5 357 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 5 460 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 5 548 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -209,7 +209,6 @@
 #X restore 486 251 pd status;
 #X obj 5 520 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
 #X text 68 86 [asr~] is an attack/sustain/release gated envelope. At a gate on (transition from 0 to any value) \, [asr~] goes from 0 to that value at the specified attack time in ms. A gate off (transition from any value to 0) makes [asr~] go to 0 at the specified release time in ms., f 69;
-#X text 163 529 -log: sets to log mode (default \, linear);
 #X obj 25 325 else/envgen~;
 #N canvas 687 174 481 424 float 0;
 #X obj 56 290 *~;
@@ -266,6 +265,7 @@
 #X text 227 382 - gate values in MIDI velocity range (0-127 is 0-1);
 #X text 147 398 lin <float>;
 #X text 227 398 - non zero sets to "lin" mode \, "log" otherwise;
+#X text 163 529 -lin: sets to lin mode (default 'log');
 #X connect 12 0 11 0;
 #X connect 14 0 13 0;
 #X connect 36 0 12 0;
@@ -273,5 +273,5 @@
 #X connect 39 0 43 2;
 #X connect 43 0 12 1;
 #X connect 43 0 14 0;
-#X connect 56 0 58 0;
-#X connect 58 0 43 0;
+#X connect 55 0 57 0;
+#X connect 57 0 43 0;

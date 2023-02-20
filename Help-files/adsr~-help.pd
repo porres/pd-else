@@ -276,7 +276,6 @@
 #X obj 162 186 sig~;
 #X obj 5 582 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
 #X text 68 88 [adsr~] is an attack/decay/sustain/release gated envelope. At a gate on (transition from 0 to any value) \, the attack ramp is generated \, then a decay ramp goes to the sustain point (specified as a ratio of the gate value). A gate off (transition from any value to 0) makes [adsr~] go to 0 at the specified release time in ms., f 68;
-#X text 163 592 -log: sets to log mode (default \, linear);
 #X obj 381 294 sel 0;
 #X obj 381 322 bng 19 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #X text 406 326 done;
@@ -338,6 +337,7 @@
 #X restore 495 210 pd float;
 #X text 217 386 - gate values in MIDI velocity range (0-127 is 0-1);
 #X obj 23 327 else/envgen~;
+#X text 163 592 -lin: sets to lin mode (default 'log');
 #X connect 12 0 11 0;
 #X connect 14 0 13 0;
 #X connect 23 0 65 0;
@@ -347,9 +347,9 @@
 #X connect 39 0 61 3;
 #X connect 40 0 61 4;
 #X connect 55 0 56 0;
-#X connect 56 0 69 0;
+#X connect 56 0 68 0;
 #X connect 61 0 12 1;
 #X connect 61 0 14 0;
 #X connect 61 1 55 0;
 #X connect 65 0 61 0;
-#X connect 69 0 70 0;
+#X connect 68 0 69 0;

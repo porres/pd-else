@@ -1,4 +1,4 @@
-#N canvas 435 41 560 587 10;
+#N canvas 435 41 560 579 10;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
@@ -11,7 +11,7 @@
 #X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 203 41 cnv 4 4 4 empty empty oscillator 0 28 2 18 #e0e0e0 #000000 0;
-#X obj 3 556 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 3 549 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
 #X obj 229 162 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 3 4 cnv 15 301 42 empty empty bl.saw~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -20,7 +20,7 @@
 #X obj 22 41 cnv 4 4 4 empty empty Bandlimited 0 28 2 18 #e0e0e0 #000000 0;
 #X text 44 192 see also:;
 #X obj 229 222 else/out~;
-#X obj 3 503 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 496 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
 #X obj 44 214 else/saw~;
 #X obj 3 291 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 3 402 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
@@ -33,9 +33,9 @@
 #X text 270 359 phase sync (ressets internal phase);
 #X text 165 359 float/signal -;
 #X text 267 411 sawtooth wave signal;
-#X text 159 515 1) float;
-#X text 218 534 - initial phase offset (default 0);
-#X text 159 534 2) float;
+#X text 159 508 1) float;
+#X text 218 527 - initial phase offset (default 0);
+#X text 159 527 2) float;
 #X obj 229 187 else/bl.saw~ 400;
 #X obj 45 240 else/bl.saw2~;
 #N canvas 670 106 449 354 midi 0;
@@ -55,7 +55,7 @@
 #X text 164 318 midi <float> -;
 #X text 257 318 non zero sets to frequency input in MIDI pitch;
 #X text 164 302 float/signal - frequency in hz or midi;
-#X text 218 515 - frequency in midi pitch or hertz (default 0);
+#X text 218 508 - frequency in midi pitch or hertz (default 0);
 #N canvas 448 51 707 453 sync 0;
 #X obj 72 214 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 72 182 else/sig2float~;
@@ -144,8 +144,8 @@
 #X restore 413 251 pd phase modulation;
 #X text 164 336 soft <float> -;
 #X text 257 336 non zero sets to soft sync mode;
-#X text 133 456 -m: sets frequency input in MIDI pitch (default hertz);
-#X text 133 471 -soft: sets to soft sync mode (default hard);
+#X text 133 454 -m: sets frequency input in MIDI pitch (default hertz);
+#X text 133 469 -soft: sets to soft sync mode (default hard);
 #X text 289 161 <-- frequency;
 #X connect 11 0 33 0;
 #X connect 33 0 16 0;
