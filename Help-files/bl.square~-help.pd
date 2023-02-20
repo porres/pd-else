@@ -129,7 +129,7 @@
 #X connect 20 0 1 0;
 #X connect 22 0 3 0;
 #X restore 483 237 pd sync;
-#X text 46 88 [bl.square~] is a sawtooth oscillator like [else/square~] \, but it is bandlimited. Use [square~] mostly if you need a perfect square wave \, which is usually the case when you want a LFO. The [bl.square~] version is for proper synthesis as it is anti-aliased. This version also has input for pitch in MIDI and no way to sync at control rate., f 71;
+#X text 46 88 [bl.square~] is a square oscillator like [else/square~] \, but it is bandlimited. Use [square~] mostly if you need a perfect square wave \, which is usually the case when you want a LFO. The [bl.square~] version is for proper synthesis as it is anti-aliased. This version also has input for pitch in MIDI and no way to sync at control rate., f 71;
 #X text 281 168 <- frequency;
 #X obj 122 300 cnv 17 3 47 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 164 318 midi <float> -;

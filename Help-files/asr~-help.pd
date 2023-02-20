@@ -26,8 +26,8 @@
 #X text 140 439 float/signal;
 #X text 226 438 - release time in ms;
 #X text 238 469 - envelope signal;
-#X text 144 554 1) float - attack time in ms (default 0);
-#X text 144 574 2) float - release time in ms (default 0);
+#X text 144 554 1) float - attack time in ms (default 10);
+#X text 144 574 2) float - release time in ms (default 10);
 #X obj 249 40 cnv 4 4 4 empty empty envelope 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
