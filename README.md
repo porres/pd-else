@@ -101,15 +101,13 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 Flávio Luis Schiavoni helped me out in a few things when I first started coding and collaborated with the objects: [median~] and [keyboard]. Lucas Cordiviola is an active tester and has helped countless times with compilation issues for windows. 
 
-
 I'd also like to thank my Cyclone buddies Derek Kwan and Matt Barber, cause I started learning how to code externals with them as part of the cyclone team. Other developers of cyclone need to be praised, like Czaja, the original author, as I did steal quite a bit from cyclone into ELSE. I'd like to give a special thanks for Matt Barber for developing the "magic" in cyclone that I'm using here and also collaborating to ELSE with the objects: [float2bits], [brown~], [gray~], [perlin~], [pink~] and [blip~].
 
-Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of ELSE for other systemas as well as ELSE for Camomile. See: <https://github.com/porres/Camomile-ELSE>.
+Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of ELSE for other systems as well as ELSE for Camomile. See: <https://github.com/porres/Camomile-ELSE>.
 
-Albert Graef from Purr Data is doing a great job helping port ELSE so it builds and runs on Purr Data (still experimental and a long way to go). He's also doing several valuable contributions to the code and being helpful in general in this process - check <https://github.com/agraef/purr-data/releases/tag/2.19.2+ELSE>
-​	
+Albert Graef from Purr Data is doing a great job helping port ELSE so it builds and runs on Purr Data (still experimental and a long way to go). He's also doing several valuable contributions to the code and being helpful in general in this process - check <https://github.com/agraef/purr-data/releases/tag/2.19.2+ELSE>.
+
 For Last, Timothy Schoen is doing an amazing jaw dropping job with PlugData, a project based on camomile that includes ELSE. Timothy has also helped me fix many ELSE related issues and coded first versions of compiled band limited oscillators. PlugData is also a fork of Pd with a revamped GUI. See: <https://github.com/timothyschoen/PlugData>.
-
 
 --------------------------------------------------------------------------
 
