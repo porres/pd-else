@@ -41,7 +41,7 @@ typedef struct _plts{
     char shared_buffer[16384];
     t_outlet *x_out1;
     t_outlet *x_out2;
-    t_outlet *x_out_model;
+    t_outlet *x_info_out;
 }t_plts;
 
 extern "C"  { // Pure data methods, needed because we are using C++
@@ -60,6 +60,9 @@ extern "C"  { // Pure data methods, needed because we are using C++
     void plts_midi(t_plts *x);
     void plts_hz(t_plts *x);
     void plts_cv(t_plts *x);
+    void plts_voct(t_plts *x);
+    void plts_dump(t_plts *x);
+    void plts_print(t_plts *x);
     void plts_trigger_mode(t_plts *x, t_floatarg f);
 }
 
@@ -82,9 +85,40 @@ static const char* modelLabels[16] = {
     "Analog hi-hat",
 };
 
+void plts_print(t_plts *x){
+    post("[plaits~] settings:");
+    post("- name: %s", modelLabels[x->model]);
+    post("- harmonics: %f", x->harmonics);
+    post("- timbre: %f", x->timbre);
+    post("- morph: %f", x->morph);
+    post("- trigger: %d", x->trigger_mode);
+    post("- cutoff: %f", x->lpg_cutoff);
+    post("- decay: %f", x->decay);
+}
+
+void plts_dump(t_plts *x){
+    t_atom at[1];
+    SETSYMBOL(at, gensym(modelLabels[x->model]));
+    outlet_anything(x->x_info_out, gensym("name"), 1, at);
+    SETFLOAT(at, x->harmonics);
+    outlet_anything(x->x_info_out, gensym("harmonics"), 1, at);
+    SETFLOAT(at, x->timbre);
+    outlet_anything(x->x_info_out, gensym("timbre"), 1, at);
+    SETFLOAT(at, x->morph);
+    outlet_anything(x->x_info_out, gensym("morph"), 1, at);
+    SETFLOAT(at, x->trigger_mode);
+    outlet_anything(x->x_info_out, gensym("trigger"), 1, at);
+    SETFLOAT(at, x->lpg_cutoff);
+    outlet_anything(x->x_info_out, gensym("cutoff"), 1, at);
+    SETFLOAT(at, x->decay);
+    outlet_anything(x->x_info_out, gensym("decay"), 1, at);
+}
+
 void plts_model(t_plts *x, t_floatarg f){
     x->model = f < 0 ? 0 : f > 15 ? 15 : (int)f;
-    outlet_symbol(x->x_out_model, gensym(modelLabels[x->model]));
+    t_atom at[1];
+    SETSYMBOL(at, gensym(modelLabels[x->model]));
+    outlet_anything(x->x_info_out, gensym("name"), 1, at);
 }
 
 void plts_harmonics(t_plts *x, t_floatarg f){
@@ -123,6 +157,10 @@ void plts_cv(t_plts *x){
     x->pitch_mode = 2;
 }
 
+void plts_voct(t_plts *x){
+    x->pitch_mode = 3;
+}
+
 void plts_trigger_mode(t_plts *x, t_floatarg f){
     x->trigger_mode = (int)(f != 0);
 }
@@ -132,6 +170,8 @@ static float plts_get_pitch(t_plts *x, t_floatarg f){
         return(log2f(f/440) + 0.75);
     else if(x->pitch_mode == 1)
         return((f - 60) / 12);
+    else if(x->pitch_mode == 2)
+        return(f*5);
     else
         return(f);
 }
@@ -206,7 +246,7 @@ void plts_free(t_plts *x){
     x->voice.FreeEngines();
     outlet_free(x->x_out1);
     outlet_free(x->x_out2);
-    outlet_free(x->x_out_model);
+    outlet_free(x->x_info_out);
 }
 
 void *plts_new(t_symbol *s, int ac, t_atom *av){
@@ -248,6 +288,8 @@ void *plts_new(t_symbol *s, int ac, t_atom *av){
                 x->pitch_mode = 1;
             else if(sym == gensym("-cv"))
                 x->pitch_mode = 2;
+            else if(sym == gensym("-voct"))
+                x->pitch_mode = 3;
             else if(sym == gensym("-model")){
                 if((av)->a_type == A_FLOAT){
                     t_float m = atom_getfloat(av);
@@ -288,7 +330,7 @@ void *plts_new(t_symbol *s, int ac, t_atom *av){
     }
     x->x_out1 = outlet_new(&x->x_obj, &s_signal);
     x->x_out2 = outlet_new(&x->x_obj, &s_signal);
-    x->x_out_model = outlet_new(&x->x_obj, &s_symbol);
+    x->x_info_out = outlet_new(&x->x_obj, &s_symbol);
     return(void *)x;
 errstate:
     pd_error(x, "[plaits~]: improper args");
@@ -309,6 +351,9 @@ void plaits_tilde_setup(void){
     class_addmethod(plts_class, (t_method)plts_lpg_cutoff, gensym("cutoff"), A_DEFFLOAT, A_NULL);
     class_addmethod(plts_class, (t_method)plts_decay, gensym("decay"), A_DEFFLOAT, A_NULL);
     class_addmethod(plts_class, (t_method)plts_cv, gensym("cv"), A_NULL);
+    class_addmethod(plts_class, (t_method)plts_voct, gensym("voct"), A_NULL);
     class_addmethod(plts_class, (t_method)plts_midi, gensym("midi"), A_NULL);
     class_addmethod(plts_class, (t_method)plts_hz, gensym("hz"), A_NULL);
+    class_addmethod(plts_class, (t_method)plts_dump, gensym("dump"), A_NULL);
+    class_addmethod(plts_class, (t_method)plts_print, gensym("print"), A_NULL);
 }
