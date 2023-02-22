@@ -136,7 +136,7 @@ static void* blsquare_new(t_symbol *s, int ac, t_atom *av){
     x->x_polyblep.soft = 0;
     t_float init_freq = 0, init_phase = 0;
     while(ac && av->a_type == A_SYMBOL){
-        if(atom_getsymbol(av) == gensym("-m"))
+        if(atom_getsymbol(av) == gensym("-midi"))
             x->x_polyblep.midi = 1;
         else if(atom_getsymbol(av) == gensym("-soft"))
             x->x_polyblep.soft = 1;

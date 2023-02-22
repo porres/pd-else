@@ -248,7 +248,7 @@ static void *wavetable_new(t_symbol *s, int ac, t_atom *av){
                 x->x_size = atom_getfloatarg(0, ac, av);
                 ac--, av++;
             }
-            else if(curarg == gensym("-m")){
+            else if(curarg == gensym("-midi")){
                 ac--, av++;
                 if(nameset)
                     goto errstate;

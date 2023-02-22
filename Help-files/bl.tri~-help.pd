@@ -22,16 +22,16 @@
 #X obj 27 240 else/tri~;
 #X obj 229 181 else/bl.tri~ 400;
 #N canvas 670 106 449 354 midi 0;
-#X text 40 27 By default \, frequency input is in hertz \, but if you use the 'midi' message or '-m' flag you can change it to MIDI pitch input \, where it is not really bound to the 0 to 127 range \, neither it has to be integers. This is just like using [mtof~]...;
 #X msg 150 150 midi \$1;
 #X obj 150 121 tgl 19 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X floatatom 174 186 7 0 0 0 - - - 0;
 #X obj 150 250 else/out~;
-#X obj 150 219 else/bl.tri~ -m 60;
-#X connect 1 0 5 0;
-#X connect 2 0 1 0;
-#X connect 3 0 5 0;
-#X connect 5 0 4 0;
+#X obj 150 219 else/bl.tri~ -midi 60;
+#X text 40 27 By default \, frequency input is in hertz \, but if you use the 'midi' message or '-midi' flag you can change it to MIDI pitch input \, where it is not really bound to the 0 to 127 range \, neither it has to be integers. This is just like using [mtof~]...;
+#X connect 0 0 4 0;
+#X connect 1 0 0 0;
+#X connect 2 0 4 0;
+#X connect 4 0 3 0;
 #X restore 487 207 pd midi;
 #X obj 3 545 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
 #X obj 3 492 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -56,7 +56,6 @@
 #X text 218 504 - frequency in midi pitch or hertz (default 0);
 #X text 164 327 soft <float> -;
 #X text 257 327 non zero sets to soft sync mode;
-#X text 133 445 -m: sets frequency input in MIDI pitch (default hertz);
 #X text 133 460 -soft: sets to soft sync mode (default hard);
 #N canvas 448 51 707 453 sync 0;
 #X obj 72 214 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc #000000 #000000 0 1;
@@ -123,5 +122,6 @@
 #X text 289 155 <- frequency;
 #X text 267 402 triangle wave signal;
 #X text 46 88 [bl.tri~] is a triangle oscillator like [else/tri~] \, but it is bandlimited. Use [tri~] mostly if you need a perfect triangular wave \, which is usually the case when you want a LFO. The [bl.tri~] version is for proper synthesis as it is anti-aliased. This version also has input for pitch in MIDI and no way to sync at control rate., f 75;
+#X text 133 445 -midi: sets frequency input in MIDI pitch (default hertz);
 #X connect 10 0 17 0;
 #X connect 17 0 15 0;

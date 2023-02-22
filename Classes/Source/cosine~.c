@@ -146,7 +146,7 @@ static void *cosine_new(t_symbol *s, int ac, t_atom *av){
     t_float f1 = 0, f2 = 0;
     x->midi = 0;
     while(ac && av->a_type == A_SYMBOL){
-        if(atom_getsymbol(av) == gensym("-m"))
+        if(atom_getsymbol(av) == gensym("-midi"))
             x->midi = 1;
         else if(atom_getsymbol(av) == gensym("-soft"))
             x->soft = 1;

@@ -193,7 +193,7 @@ static void *pimp_new(t_symbol *s, int ac, t_atom *av){
     x->midi = 0;
     t_float init_freq = 0, init_phase = 0;
     while(ac && av->a_type == A_SYMBOL){
-        if(atom_getsymbol(av) == gensym("-m"))
+        if(atom_getsymbol(av) == gensym("-midi"))
             x->midi = 1;
         else if(atom_getsymbol(av) == gensym("-soft"))
             x->soft = 1;
