@@ -249,6 +249,8 @@
 #X msg 196 402 dump;
 #X msg 246 402 print;
 #X obj 273 440 print info;
+#X text 423 414 Click on this link for the official manual from Mutable Instruments:, f 35;
+#X obj 623 427 else/openfile -h https://pichenettes.github.io/mutable-instruments-documentation/modules/plaits/manual/# Manual;
 #X connect 16 0 44 0;
 #X connect 18 0 44 0;
 #X connect 20 0 21 0;
