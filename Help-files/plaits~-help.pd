@@ -36,7 +36,6 @@
 #X text 167 579 3) float - timbre (default 0), f 50;
 #X text 167 594 4) float - morph (default 0), f 50;
 #X obj 4 488 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
-#X text 119 494 -cv/-midi: set to pitch input in CV or MIDI (default hz);
 #X text 119 509 -model <float>: set model number (default 0), f 56;
 #X text 119 524 -trigger: set to trigger mode (default regular), f 56;
 #X text 214 257 bang;
@@ -58,7 +57,7 @@
 #X text 167 609 5) float - cutoff (default 0.5), f 50;
 #X text 167 624 6) float - decay (default 0.5), f 50;
 #X obj 219 150 else/plaits~ 500;
-#X text 54 87 [plaits~] is based the "plaits" module from Mutable Instruments., f 64;
+#X text 54 87 [plaits~] is based on the "plaits" module from Mutable Instruments., f 64;
 #N canvas 554 110 653 382 frequency 0;
 #X obj 137 311 else/out~;
 #X text 198 162 F#4;
@@ -69,7 +68,7 @@
 #X obj 420 270 else/out~;
 #X obj 431 232 else/plaits~ -midi;
 #X text 389 56 [plaits~] takes signal input for frequency in each mode and you can use it to perform FM., f 33;
-#X obj 474 179 else/sine~ -m;
+#X obj 474 179 else/sine~ -midi;
 #X obj 474 203 *~ 30;
 #X obj 474 152 +~ 7.1;
 #X msg 144 162 cv \, 0.1;
@@ -272,6 +271,7 @@
 #X text 248 299 - set model number (0-15) and output name;
 #X text 248 397 - output information on rightmost outlet;
 #X text 214 397 dump;
-#X connect 1 0 54 0;
-#X connect 54 0 0 0;
-#X connect 54 1 0 1;
+#X text 119 494 -cv/-midi/-voct: set to pitch input in CV \, MIDI \, or voct (default hz), f 71;
+#X connect 1 0 53 0;
+#X connect 53 0 0 0;
+#X connect 53 1 0 1;
