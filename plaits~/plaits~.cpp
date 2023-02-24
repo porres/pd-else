@@ -2,6 +2,8 @@
 // MIT Liscense
 
 #include "m_pd.h"
+#include "g_canvas.h"
+#include <stdint.h>
 #include "plaits/dsp/dsp.h"
 #include "plaits/dsp/engine/engine.h"
 #include "plaits/dsp/voice.h"
@@ -10,6 +12,7 @@ static t_class *plts_class;
 
 typedef struct _plts{
     t_object x_obj;
+    t_glist  *x_glist;
     t_sample pitch_in;
     t_int model;
     t_float pitch;
@@ -39,6 +42,7 @@ typedef struct _plts{
     plaits::Patch patch;
     plaits::Modulations modulations;
     char shared_buffer[16384];
+    t_inlet *x_level_in;
     t_outlet *x_out1;
     t_outlet *x_out2;
     t_outlet *x_info_out;
@@ -179,9 +183,10 @@ static float plts_get_pitch(t_plts *x, t_floatarg f){
 t_int *plts_perform(t_int *w){
     t_plts *x = (t_plts *) (w[1]);
     t_sample *pitch_inlet = (t_sample *) (w[2]);
-    t_sample *out = (t_sample *) (w[3]);
-    t_sample *aux = (t_sample *) (w[4]);
-    int n = (int)(w[5]); // Determine block size
+    t_sample *level = (t_sample *) (w[3]);
+    t_sample *out = (t_sample *) (w[4]);
+    t_sample *aux = (t_sample *) (w[5]);
+    int n = (int)(w[6]); // Determine block size
     if(n != x->last_n){
         if(n > 24){ // Plaits uses a block size of 24 max
             int block_size = 24;
@@ -221,6 +226,7 @@ t_int *plts_perform(t_int *w){
         float pitch = plts_get_pitch(x, pitch_inlet[x->block_size * j]); // get pitch
         pitch += x->pitch_correction;
         x->patch.note = 60.f + pitch * 12.f;
+        x->modulations.level = level[x->block_size * j];
         if(x->trigger){ // Message trigger
             x->modulations.trigger = 1.0f;
             x->trigger = false;
@@ -234,16 +240,29 @@ t_int *plts_perform(t_int *w){
             aux[i + (x->block_size * j)] = output[i].aux / 32768.0f;
         }
     }
-    return(w+6);
+    return(w+7);
+}
+
+int connected_inlet(t_object *x, t_glist *glist, int inno, t_symbol *outsym){
+    t_linetraverser t;
+    linetraverser_start(&t, glist);
+    while(linetraverser_next(&t))
+        if(t.tr_ob2 == x && t.tr_inno == inno &&
+        (!outsym || outsym == outlet_getsymbol(t.tr_outlet)))
+            return (1);
+    return(0);
 }
 
 void plts_dsp(t_plts *x, t_signal **sp){
     x->pitch_correction = log2f(48000.f / sys_getsr());
-    dsp_add(plts_perform, 5, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[0]->s_n);
+    x->level_active = connected_inlet((t_object *)x, x->x_glist, 1, &s_signal);
+    dsp_add(plts_perform, 6, x, sp[0]->s_vec, sp[1]->s_vec,
+        sp[2]->s_vec, sp[3]->s_vec, sp[0]->s_n);
 }
 
 void plts_free(t_plts *x){
     x->voice.FreeEngines();
+    inlet_free(x->x_level_in);
     outlet_free(x->x_out1);
     outlet_free(x->x_out2);
     outlet_free(x->x_info_out);
@@ -254,6 +273,7 @@ void *plts_new(t_symbol *s, int ac, t_atom *av){
     t_plts *x = (t_plts *)pd_new(plts_class);
     stmlib::BufferAllocator allocator(x->shared_buffer, sizeof(x->shared_buffer));
     x->voice.Init(&allocator);
+    x->x_glist = (t_glist *)canvas_getcurrent();
     int floatarg = 0;
     x->patch.engine = 0;
     x->patch.lpg_colour = 0.5f;
@@ -328,6 +348,7 @@ void *plts_new(t_symbol *s, int ac, t_atom *av){
             }
         }
     }
+    x->x_level_in = inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym ("signal"));
     x->x_out1 = outlet_new(&x->x_obj, &s_signal);
     x->x_out2 = outlet_new(&x->x_obj, &s_signal);
     x->x_info_out = outlet_new(&x->x_obj, &s_symbol);

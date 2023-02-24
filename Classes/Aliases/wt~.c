@@ -1,4 +1,4 @@
-// Porres 2018
+// Porres 2018-2023
 
 #include "m_pd.h"
 #include "magic.h"
@@ -248,7 +248,7 @@ static void *wt_new(t_symbol *s, int ac, t_atom *av){
                 x->x_size = atom_getfloatarg(0, ac, av);
                 ac--, av++;
             }
-            else if(curarg == gensym("-m")){
+            else if(curarg == gensym("-midi")){
                 ac--, av++;
                 if(nameset)
                     goto errstate;
@@ -313,3 +313,5 @@ void wt_tilde_setup(void){
     class_addmethod(wt_class, (t_method)wt_set, gensym("set"), A_SYMBOL, 0);
     class_sethelpsymbol(wt_class, gensym("wavetable~"));
 }
+
+
