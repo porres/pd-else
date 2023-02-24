@@ -31,6 +31,7 @@ typedef struct _plts{
     bool timbre_active;
     bool morph_active;
     bool trigger_mode;
+    bool tr_conntected;
     bool level_active;
     t_int block_size;
     t_int block_count;
@@ -42,6 +43,7 @@ typedef struct _plts{
     plaits::Patch patch;
     plaits::Modulations modulations;
     char shared_buffer[16384];
+    t_inlet *x_trig_in;
     t_inlet *x_level_in;
     t_outlet *x_out1;
     t_outlet *x_out2;
@@ -95,7 +97,7 @@ void plts_print(t_plts *x){
     post("- harmonics: %f", x->harmonics);
     post("- timbre: %f", x->timbre);
     post("- morph: %f", x->morph);
-    post("- trigger: %d", x->trigger_mode);
+    post("- trigger: %d", (x->trigger_mode || x->tr_conntected));
     post("- cutoff: %f", x->lpg_cutoff);
     post("- decay: %f", x->decay);
 }
@@ -110,7 +112,7 @@ void plts_dump(t_plts *x){
     outlet_anything(x->x_info_out, gensym("timbre"), 1, at);
     SETFLOAT(at, x->morph);
     outlet_anything(x->x_info_out, gensym("morph"), 1, at);
-    SETFLOAT(at, x->trigger_mode);
+    SETFLOAT(at, (x->trigger_mode || x->tr_conntected));
     outlet_anything(x->x_info_out, gensym("trigger"), 1, at);
     SETFLOAT(at, x->lpg_cutoff);
     outlet_anything(x->x_info_out, gensym("cutoff"), 1, at);
@@ -183,10 +185,11 @@ static float plts_get_pitch(t_plts *x, t_floatarg f){
 t_int *plts_perform(t_int *w){
     t_plts *x = (t_plts *) (w[1]);
     t_sample *pitch_inlet = (t_sample *) (w[2]);
-    t_sample *level = (t_sample *) (w[3]);
-    t_sample *out = (t_sample *) (w[4]);
-    t_sample *aux = (t_sample *) (w[5]);
-    int n = (int)(w[6]); // Determine block size
+    t_sample *trig = (t_sample *) (w[3]);
+    t_sample *level = (t_sample *) (w[4]);
+    t_sample *out = (t_sample *) (w[5]);
+    t_sample *aux = (t_sample *) (w[6]);
+    int n = (int)(w[7]); // Determine block size
     if(n != x->last_n){
         if(n > 24){ // Plaits uses a block size of 24 max
             int block_size = 24;
@@ -214,7 +217,7 @@ t_int *plts_perform(t_int *w){
     x->patch.morph = x->morph;
     x->patch.lpg_colour = x->lpg_cutoff;
     x->patch.decay = x->decay;
-    x->modulations.trigger_patched = x->trigger_mode;
+    x->modulations.trigger_patched = (x->trigger_mode || x->tr_conntected);
     x->patch.frequency_modulation_amount = x->mod_fm;
     x->patch.timbre_modulation_amount = x->mod_timbre;
     x->patch.morph_modulation_amount = x->mod_morph;
@@ -227,12 +230,16 @@ t_int *plts_perform(t_int *w){
         pitch += x->pitch_correction;
         x->patch.note = 60.f + pitch * 12.f;
         x->modulations.level = level[x->block_size * j];
-        if(x->trigger){ // Message trigger
-            x->modulations.trigger = 1.0f;
-            x->trigger = false;
+        if(!x->tr_conntected){ // no signal connected
+            if(x->trigger){ // Message trigger (bang)
+                x->modulations.trigger = 1.0f;
+                x->trigger = false;
+            }
+            else
+                x->modulations.trigger = 0.0f;
         }
         else
-            x->modulations.trigger = 0.0f;
+            x->modulations.trigger = (trig[x->block_size * j] != 0);
         plaits::Voice::Frame output[x->block_size];
         x->voice.Render(x->patch, x->modulations, output, x->block_size);
         for(int i = 0; i < x->block_size; i++){
@@ -240,7 +247,7 @@ t_int *plts_perform(t_int *w){
             aux[i + (x->block_size * j)] = output[i].aux / 32768.0f;
         }
     }
-    return(w+7);
+    return(w+8);
 }
 
 int connected_inlet(t_object *x, t_glist *glist, int inno, t_symbol *outsym){
@@ -255,13 +262,15 @@ int connected_inlet(t_object *x, t_glist *glist, int inno, t_symbol *outsym){
 
 void plts_dsp(t_plts *x, t_signal **sp){
     x->pitch_correction = log2f(48000.f / sys_getsr());
-    x->level_active = connected_inlet((t_object *)x, x->x_glist, 1, &s_signal);
-    dsp_add(plts_perform, 6, x, sp[0]->s_vec, sp[1]->s_vec,
-        sp[2]->s_vec, sp[3]->s_vec, sp[0]->s_n);
+    x->tr_conntected = connected_inlet((t_object *)x, x->x_glist, 1, &s_signal);
+    x->level_active = connected_inlet((t_object *)x, x->x_glist, 2, &s_signal);
+    dsp_add(plts_perform, 7, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec,
+        sp[3]->s_vec, sp[4]->s_vec, sp[0]->s_n);
 }
 
 void plts_free(t_plts *x){
     x->voice.FreeEngines();
+    inlet_free(x->x_trig_in);
     inlet_free(x->x_level_in);
     outlet_free(x->x_out1);
     outlet_free(x->x_out2);
@@ -295,6 +304,7 @@ void *plts_new(t_symbol *s, int ac, t_atom *av){
     x->timbre_active = false;
     x->morph_active = false;
     x->trigger_mode = false;
+    x->tr_conntected = false;
     x->level_active = false;
     x->last_engine = 0;
     x->last_engine_perform = 0;
@@ -348,6 +358,7 @@ void *plts_new(t_symbol *s, int ac, t_atom *av){
             }
         }
     }
+    x->x_trig_in = inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym ("signal"));
     x->x_level_in = inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym ("signal"));
     x->x_out1 = outlet_new(&x->x_obj, &s_signal);
     x->x_out2 = outlet_new(&x->x_obj, &s_signal);
