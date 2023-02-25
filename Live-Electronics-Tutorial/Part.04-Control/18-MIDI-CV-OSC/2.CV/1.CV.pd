@@ -14,7 +14,7 @@
 #X obj 90 442 bng 19 250 50 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000;
 #X text 196 352 gate;
 #X text 296 351 "CV";
-#X text 44 189 In ELSE \, both an impulse or pulse can be considered a trigger \, but in the modular world \, a trigger is mostly an impulse \, which acts like a 'bang' and fires a process like playing a sample \, changing the value of a sequence or triggering a timed envelope. A gate is an on/off switch \, just like a toggle - that is a pulse. The proper ‘CV’ is just the process of controlling any parameter with a voltage value \, much like controlling anything in Pd with an audio signal \, but bound to the voltage range. Let's check object that are relative to these 3 types of control here in Pd., f 64;
+#X text 44 189 In ELSE \, both an impulse or pulse can be considered a trigger \, but in the modular world \, a trigger is mostly an impulse \, which acts like a 'bang' and fires a process like playing a sample \, changing the value of a sequence or triggering a timed envelope. A gate is an on/off switch \, just like a toggle - that is a pulse. The proper ‘CV’ is just the process of controlling any parameter with a voltage value \, much like controlling anything in Pd with an audio signal \, but bound to the voltage range in the modular system instead. Let's check object that are relative to these 3 types of control here in Pd., f 64;
 #X connect 4 0 2 0;
 #X connect 5 0 10 0;
 #X connect 6 0 7 0;

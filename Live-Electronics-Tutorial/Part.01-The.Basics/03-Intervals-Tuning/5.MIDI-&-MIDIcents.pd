@@ -1,4 +1,4 @@
-#N canvas 61 29 1273 587 12;
+#N canvas 101 93 1273 587 12;
 #X declare -path else;
 #X obj 501 148 ftom;
 #X obj 583 109 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 18 -6 0 10 #dcdcdc #000000 #000000 0 256;
@@ -63,8 +63,8 @@
 #X text 1102 260 MIDI with MIDI-Cents;
 #X text 925 217 conversion;
 #X obj 1076 484 out~;
-#X obj 1076 458 sine~ -m 60;
 #X text 931 448 Note that many oscillators in ELSE have input for MIDI pitch. Check help file of [sine~] for example., f 16;
+#X obj 1076 458 sine~ -midi 60;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
 #X connect 1 0 50 0;
@@ -93,4 +93,4 @@
 #X connect 46 1 47 0;
 #X connect 50 0 58 0;
 #X connect 50 1 59 0;
-#X connect 63 0 62 0;
+#X connect 64 0 62 0;
