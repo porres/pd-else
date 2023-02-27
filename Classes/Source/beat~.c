@@ -20,7 +20,7 @@ typedef struct _beat{
     aubio_tempo_t *x_t;
     fvec_t        *x_vec;
     fvec_t        *x_out;
-    t_outlet      *x_bangout;
+    t_outlet      *x_bpmout;
 }t_beat;
 
 static const char* modelLabels[9] ={
@@ -60,7 +60,6 @@ void beat_hop(t_beat *x, t_floatarg f){
 
 void beat_thresh(t_beat *x, t_floatarg f){
     float thresh = (f < 0.01) ? 0.01 : (f > 1.) ? 1. : f;
-//    post("thresh = %f", thresh);
     aubio_tempo_set_threshold(x->x_t, thresh);
 }
 
@@ -72,15 +71,16 @@ static t_int *beat_perform(t_int *w){
     t_beat *x = (t_beat *)(w[1]);
     t_sample *in = (t_sample *)(w[2]);
     int n = (int)(w[3]);
-    for(int j = 0; j < n; j++){ // write input to datanew
-        fvec_set_sample(x->x_vec, in[j], x->x_pos);
-        if(x->x_pos == x->x_hopsize-1){  // time for fft
+    for(int i = 0; i < n; i++){ // write input to datanew
+        fvec_set_sample(x->x_vec, in[i], x->x_pos);
+        if(x->x_pos < x->x_hopsize-1)
+            x->x_pos++;
+        else{  // time for fft
             aubio_tempo_do(x->x_t, x->x_vec, x->x_out);
             if(x->x_out->data[0])
-                outlet_bang(x->x_bangout);
-            x->x_pos = -1; // so it will be zero next j loop
+                outlet_float(x->x_bpmout, aubio_tempo_get_bpm(x->x_t));
+            x->x_pos = 0;
         }
-        x->x_pos++;
     }
     return(w+4);
 }
@@ -156,8 +156,7 @@ static void *beat_new(t_symbol *s, int ac, t_atom *av){
     aubio_tempo_set_silence(x->x_t, silence);
     x->x_out = (fvec_t *)new_fvec(2);
     x->x_vec = (fvec_t *)new_fvec(x->x_hopsize);
-    inlet_new((t_object *)x, (t_pd *)x, &s_float, gensym("thresh"));
-    x->x_bangout = outlet_new(&x->x_obj, &s_bang);
+    x->x_bpmout = outlet_new(&x->x_obj, &s_float);
     return(void *)x;
 errstate:
     pd_error(x, "[beat~]: improper args");
