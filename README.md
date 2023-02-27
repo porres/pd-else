@@ -6,12 +6,10 @@
 
 ### Version: 1.0-0 RC-7 (release candidate #7) With Live Electronics Tutorial. 
 
-### Unreleased
-
+### Released: March 1st 2023
 
 
 Copyright © 2017-2023 Alexandre Torres Porres
-
 
 
 
@@ -25,7 +23,7 @@ Other licenses may apply for specific objects and this is informed in the source
 
 ###   About ELSE
 
-This version of ELSE needs **Pd 0.53-1** or above.
+This version of ELSE needs **Pd 0.53-2** or above.
 
 ELSE is a big library of externals that extends the performance Pure Data (Pd) - Miller S. Puckette's realtime computer music environment (download Pd from: http://msp.ucsd.edu/software.html).
 
@@ -57,7 +55,7 @@ It is important to stress this library runs in Pd Vanilla 0.52-1 or above and is
 
 ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example (assuming the unpacked Pd package is in ~/pd-0.53-1; for Windows/MinGW add `pdbinpath=~/pd-0.53-1/bin/`):
 
-<pre>make pdincludepath=~/pd-0.53-1/src/</pre>
+<pre>make pdincludepath=~/pd-0.53-2/src/</pre>
 
 ##### Installing with pdlibbuilder
 
