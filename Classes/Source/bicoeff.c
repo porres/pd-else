@@ -41,18 +41,36 @@ static void bicoeff_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 }
 
 static void bicoeff_select(t_gobj *z, t_glist *glist, int state){
+    t_bicoeff *x = (t_bicoeff *)z;
     glist = NULL;
-    sys_vgui("::bicoeff::select %s %d\n", ((t_bicoeff *)z)->x_my, state);
+    if(state)
+        sys_vgui("%s itemconfigure frame%s -outline blue\n", x->x_tkcanvas, x->x_tag);
+    else
+        sys_vgui("%s itemconfigure frame%s -outline black\n", x->x_tkcanvas, x->x_tag);
 }
 
 void bicoeff_delete(t_gobj *z, t_glist *glist){
     canvas_deletelinesfor(glist, (t_text *)z);
 }
 
+static void bicoeff_erase(t_bicoeff* x){
+    sys_vgui("%s delete %s\n", x->x_tkcanvas, x->x_tag);
+}
+
+/*proc bicoeff::eraseme {my} {
+    variable ${my}::tkcanvas
+    variable ${my}::tag
+    variable mys_in_tkcanvas
+    $tkcanvas delete $tag
+    set mys_in_tkcanvas($tkcanvas) \
+        [lsearch -all -inline -not -exact $mys_in_tkcanvas($tkcanvas) $my]
+}
+*/
+
 static void bicoeff_vis(t_gobj *z, t_glist *glist, int vis){
     t_bicoeff* x = (t_bicoeff*)z;
+    snprintf(x->x_tkcanvas, MAXPDSTRING, ".x%lx.c", (long unsigned int)glist_getcanvas(glist));
     if(vis){
-        snprintf(x->x_tkcanvas, MAXPDSTRING, ".x%lx.c", (long unsigned int)glist_getcanvas(glist));
         sys_vgui("bicoeff::drawme %s %s %s %s %d %d %d %d %s\n",
             x->x_my,
             x->x_tkcanvas,
@@ -65,7 +83,7 @@ static void bicoeff_vis(t_gobj *z, t_glist *glist, int vis){
             x->x_type->s_name);
     }
     else
-        sys_vgui("bicoeff::eraseme %s\n", x->x_my);
+        bicoeff_erase(x);
     // send current samplerate to the GUI for calculation of biquad coeffs
     t_float samplerate = sys_getsr();
     if(samplerate > 0)  // samplerate is sometimes 0, ignore that
@@ -149,7 +167,7 @@ static void bicoeff_resonant(t_bicoeff *x, t_symbol *s, int ac, t_atom* av){
 }
 
 static void bicoeff_dim(t_bicoeff *x, t_floatarg f1, t_floatarg f2){
-    x->x_width = f1 < 50 ? 50 : (int)(f1);
+    x->x_width = f1 < 100 ? 100 : (int)(f1);
     x->x_height = f2 < 50 ? 50 : (int)(f2);
     sys_vgui("bicoeff::eraseme %s\n", x->x_my);
     snprintf(x->x_tkcanvas, MAXPDSTRING, ".x%lx.c", (long unsigned int)glist_getcanvas(x->x_glist));
@@ -221,8 +239,8 @@ static void *bicoeff_new(t_symbol *s, int ac, t_atom* av){
         }
         else goto errstate;
     }
-    x->x_width = width;
-    x->x_height = height;
+    x->x_width = width < 100 ? 100 : width;
+    x->x_height = height < 50 ? 50 : height;
     x->x_type = type;
     x->x_glist = (t_glist*)canvas_getcurrent();
     x->x_zoom = x->x_glist->gl_zoom;
