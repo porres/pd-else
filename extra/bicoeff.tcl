@@ -700,8 +700,8 @@ proc bicoeff::new {my canvas rname t x1 y1 x2 y2} {
         variable previousx 0
         variable previousy 0
 
-        variable filtergain 75 ;# the unit is pixels, 0-200, 100 means no gain
-
+        variable filtergain 0;
+        
         # coefficients for [biquad~]
         variable a1 0
         variable a2 0
@@ -709,6 +709,9 @@ proc bicoeff::new {my canvas rname t x1 y1 x2 y2} {
         variable b1 0
         variable b2 0
     }
+
+    variable ${my}::filtergain
+    set filtergain [expr ( $y2 - $y1 ) / 2]; 
 
     variable ${my}::receive_name $rname
     variable ${my}::tag $t
