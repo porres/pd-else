@@ -246,10 +246,6 @@ zerocross~.class.sources := Classes/Source/zerocross~.c
 
 aubio := $(wildcard shared/aubio/src/*/*.c) $(wildcard shared/aubio/src/*.c)
     beat~.class.sources := Classes/Source/beat~.c $(aubio)
-#    silencedetect~.class.sources := Classes/Source/silencedetect~.c $(aubio)
-#    tssdetect~.class.sources := Classes/Source/tssdetect~.c $(aubio)
-#    onsetdetect~.class.sources := Classes/Source/onsetdetect~.c $(aubio)
-#    pitch~.class.sources := Classes/Source/pitch~.c $(aubio)
 
 magic := shared/magic.c
     sine~.class.sources := Classes/Source/sine~.c $(magic)
