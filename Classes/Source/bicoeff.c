@@ -149,19 +149,32 @@ static void bicoeff_resonant(t_bicoeff *x, t_symbol *s, int ac, t_atom* av){
 }
 
 static void bicoeff_dim(t_bicoeff *x, t_floatarg f1, t_floatarg f2){
-    x->x_width = (int)(f1);
-    x->x_height = (int)(f2);
+    x->x_width = f1 < 50 ? 50 : (int)(f1);
+    x->x_height = f2 < 50 ? 50 : (int)(f2);
+    sys_vgui("bicoeff::eraseme %s\n", x->x_my);
+    snprintf(x->x_tkcanvas, MAXPDSTRING, ".x%lx.c", (long unsigned int)glist_getcanvas(x->x_glist));
+    sys_vgui("bicoeff::drawme %s %s %s %s %d %d %d %d %s\n",
+        x->x_my,
+        x->x_tkcanvas,
+        x->x_bind_name->s_name,
+        x->x_tag,
+        text_xpix(&x->x_obj, x->x_glist),
+        text_ypix(&x->x_obj, x->x_glist),
+        text_xpix(&x->x_obj, x->x_glist)+x->x_width*x->x_zoom,
+        text_ypix(&x->x_obj, x->x_glist)+x->x_height*x->x_zoom,
+        x->x_type->s_name);
 }
 
-/*static void bicoeff_coeff(t_bicoeff *x, int ac, t_atom *av){
+/*static void bicoeff_coeff(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     if(ac == 5){
-        t_float a1 = atom_getfloat(av);
-        t_float a2 = atom_getfloat(av + 1);
-        t_float b0 = atom_getfloat(av + 2);
-        t_float b1 = atom_getfloat(av + 3);
-        t_float b2 = atom_getfloat(av + 4);
-//        sys_vgui("::biplot::coefficients %s %g %g %g %g %g\n", x->x_my, a1, a2, b0, b1, b2);
-//        biplot_biquad_callback(x, s, ac, av);
+        t_float a1 = atom_getfloat(av+0);
+        t_float a2 = atom_getfloat(av+1);
+        t_float b0 = atom_getfloat(av+2);
+        t_float b1 = atom_getfloat(av+3);
+        t_float b2 = atom_getfloat(av+4);
+        sys_vgui("::bicoeff::coefficients %s %g %g %g %g %g\n", x->x_my, a1, a2, b0, b1, b2);
+        outlet_list(x->x_obj.ob_outlet, &s_list, ac, av);
     }
 }*/
 
@@ -255,6 +268,7 @@ void bicoeff_setup(void){
     class_addmethod(bicoeff_class, (t_method)bicoeff_eq, gensym("eq"), A_GIMME, 0);
     class_addmethod(bicoeff_class, (t_method)bicoeff_resonant, gensym("resonant"), A_GIMME, 0);
     class_addmethod(bicoeff_class, (t_method)bicoeff_biquad_callback, gensym("biquad"), A_GIMME, 0);
+//    class_addmethod(bicoeff_class, (t_method)bicoeff_coeff, gensym("coeff"), A_GIMME, 0);
     class_addmethod(bicoeff_class, (t_method)bicoeff_zoom, gensym("zoom"), A_CANT, 0);
     // widget behavior
     bicoeff_widgetbehavior.w_getrectfn  = bicoeff_getrect;
