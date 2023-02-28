@@ -860,34 +860,3 @@ proc bicoeff::coefficients {my aa1 aa2 bb0 bb1 bb2} {
     variable ${my}::b2 $bb2
     drawgraph $my
 }
-
-# sets up the class
-proc bicoeff::setup {} {
-    bind PatchWindow <<EditMode>> {+bicoeff::set_for_editmode %W}
-
-# if not loading within Pd, then create a window and canvas to work with
-    if {[llength [info procs ::pdtk_post]] == 0} {
-        set my ::FAKEDMY
-        set mytoplevel .
-        set tkcanvas .c
-        set tag FAKEDTAG
-        catch {console show}
-        puts stderr "setting up as standalone dev mode!"
-
-# this stuff creates a dev skeleton
-        set ::cursor_runmode_nothing center_ptr
-        array set ::editmode [list $mytoplevel 0]
-        array set bicoeff::mys_in_tkcanvas [list $tkcanvas $my]
-        proc ::pdtk_post {args} {puts stderr "pdtk_post $args"}
-        proc ::pdsend {args} {puts stderr "pdsend $args"}
-        proc ::tkcanvas_name {mytoplevel} "return $tkcanvas"
-
-        wm geometry . 400x400+500+40
-        canvas $tkcanvas
-        pack $tkcanvas -side left -expand 1 -fill both
-        bicoeff::drawme $my $tkcanvas FAKE_RECEIVE_NAME $tag 30.0 30.0 330.0 230.0 "peaking"
-        bicoeff::set_for_editmode .
-    }
-}
-
-bicoeff::setup
