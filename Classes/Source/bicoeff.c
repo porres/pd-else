@@ -53,37 +53,118 @@ void bicoeff_delete(t_gobj *z, t_glist *glist){
     canvas_deletelinesfor(glist, (t_text *)z);
 }
 
-static void bicoeff_erase(t_bicoeff* x){
-    sys_vgui("%s delete %s\n", x->x_tkcanvas, x->x_tag);
-}
-
-/*proc bicoeff::eraseme {my} {
+/*proc bicoeff::drawme {my canvas name t x1 y1 x2 y2 filtertype} {
+//    x->x_my,
+//    x->x_tkcanvas,
+//    x->x_bind_name->s_name,
+//    x->x_tag,
+//    x1,
+//   y1,
+//    x2,
+//    y2,
+//    x->x_type->s_name);
+// if the $my namespace already exists, that means we already
+// have an instance active and setup.
+    if {[namespace exists $my]} {
+        update $my $canvas $x1 $y1 $x2 $y2
+    } else {
+        new $my $canvas $name $t $x1 $y1 $x2 $y2
+    }
     variable ${my}::tkcanvas
+    variable ${my}::receive_name
     variable ${my}::tag
+    variable ${my}::framex1
+    variable ${my}::framey1
+    variable ${my}::framex2
+    variable ${my}::framey2
+    variable ${my}::filterx1
+    variable ${my}::filterx2
+    variable ${my}::midpoint
     variable mys_in_tkcanvas
-    $tkcanvas delete $tag
-    set mys_in_tkcanvas($tkcanvas) \
-        [lsearch -all -inline -not -exact $mys_in_tkcanvas($tkcanvas) $my]
-}
-*/
+    variable markercolor
+    variable markercolor
+    
+    set fillx [expr $framex1 + 100]
+
+# background
+    $tkcanvas create rectangle $framex1 $framey1 $framex2 $framey2 \
+        -outline "black" -fill "white" \
+        -tags [list $tag frame$tag]
+    
+# graph fill (gray)
+    $tkcanvas create polygon $framex1 $midpoint $framex2 $midpoint \
+        $framex2 $framey2 $framex1 $framey2 \
+        -fill "#dcdcdc" \
+        -tags [list $tag response$tag responsefill$tag]
+
+# zero line/equator
+    $tkcanvas create line $framex1 $midpoint $framex2 $midpoint \
+        -fill $markercolor \
+        -tags [list $tag zeroline$tag]
+        
+# magnitude response graph line
+    $tkcanvas create line $framex1 $midpoint $framex2 $midpoint \
+        -fill "black" -width 1 \
+        -tags [list $tag response$tag responseline$tag]
+    
+# phase response graph line
+#    $tkcanvas create line $framex1 $midpoint $framex2 $midpoint \
+        -fill "black" -width 1 \
+        -tags [list $tag response$tag phaseline$tag]
+
+# bandwidth box left side
+    $tkcanvas create line $filterx1 $framey1 $filterx1 $framey2 \
+        -fill $markercolor \
+        -tags [list $tag lines$tag band$tag bandleft$tag bandedges$tag]
+# bandwidth box right side
+    $tkcanvas create line $filterx2 $framey1 $filterx2 $framey2 \
+        -fill $markercolor \
+        -tags [list $tag lines$tag band$tag bandright$tag bandedges$tag]
+
+# inlet/outlet
+    set inletx [expr $framex1 + 7]
+    set inlety [expr $framey1 + 2]
+    set outletx [expr $framex2 - 7]
+    set outlety [expr $framey2 - 2]
+    
+#inlet
+    $tkcanvas create rectangle $framex1 $framey1 $inletx $inlety \
+        -outline "black" -fill "black" \
+        -tags [list $tag inlet$tag]
+        
+#outlet
+    $tkcanvas create rectangle $framex1 $outlety $inletx $framey2 \
+        -outline "black" -fill "black" \
+        -tags [list $tag outlet$tag]
+
+    setfiltertype $my $filtertype
+
+# run to set things up
+    stop_editing $my
+    lappend mys_in_tkcanvas($tkcanvas) $my
+    set_for_editmode [winfo toplevel $tkcanvas]
+}*/
+
 
 static void bicoeff_vis(t_gobj *z, t_glist *glist, int vis){
     t_bicoeff* x = (t_bicoeff*)z;
     snprintf(x->x_tkcanvas, MAXPDSTRING, ".x%lx.c", (long unsigned int)glist_getcanvas(glist));
     if(vis){
+        int x1, y1, x2, y2;
+        bicoeff_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
         sys_vgui("bicoeff::drawme %s %s %s %s %d %d %d %d %s\n",
             x->x_my,
             x->x_tkcanvas,
             x->x_bind_name->s_name,
             x->x_tag,
-            text_xpix(&x->x_obj, glist),
-            text_ypix(&x->x_obj, glist),
-            text_xpix(&x->x_obj, glist)+x->x_width*x->x_zoom,
-            text_ypix(&x->x_obj, glist)+x->x_height*x->x_zoom,
+            x1,
+            y1,
+            x2,
+            y2,
             x->x_type->s_name);
     }
     else
-        bicoeff_erase(x);
+        sys_vgui("%s delete %s\n", x->x_tkcanvas, x->x_tag);
     // send current samplerate to the GUI for calculation of biquad coeffs
     t_float samplerate = sys_getsr();
     if(samplerate > 0)  // samplerate is sometimes 0, ignore that
@@ -169,17 +250,19 @@ static void bicoeff_resonant(t_bicoeff *x, t_symbol *s, int ac, t_atom* av){
 static void bicoeff_dim(t_bicoeff *x, t_floatarg f1, t_floatarg f2){
     x->x_width = f1 < 100 ? 100 : (int)(f1);
     x->x_height = f2 < 50 ? 50 : (int)(f2);
-    sys_vgui("bicoeff::eraseme %s\n", x->x_my);
+    sys_vgui("%s delete %s\n", x->x_tkcanvas, x->x_tag);
     snprintf(x->x_tkcanvas, MAXPDSTRING, ".x%lx.c", (long unsigned int)glist_getcanvas(x->x_glist));
+    int x1, y1, x2, y2;
+    bicoeff_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
     sys_vgui("bicoeff::drawme %s %s %s %s %d %d %d %d %s\n",
         x->x_my,
         x->x_tkcanvas,
         x->x_bind_name->s_name,
         x->x_tag,
-        text_xpix(&x->x_obj, x->x_glist),
-        text_ypix(&x->x_obj, x->x_glist),
-        text_xpix(&x->x_obj, x->x_glist)+x->x_width*x->x_zoom,
-        text_ypix(&x->x_obj, x->x_glist)+x->x_height*x->x_zoom,
+        x1,
+        y1,
+        x2,
+        y2,
         x->x_type->s_name);
 }
 

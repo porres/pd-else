@@ -700,7 +700,7 @@ proc bicoeff::new {my canvas rname t x1 y1 x2 y2} {
         variable previousx 0
         variable previousy 0
 
-        variable filtergain 100 ;# the unit is pixels, 0-200, 100 means no gain
+        variable filtergain 75 ;# the unit is pixels, 0-200, 100 means no gain
 
         # coefficients for [biquad~]
         variable a1 0
