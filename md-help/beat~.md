@@ -11,7 +11,7 @@ pdcategory: ELSE, Analysis
 arguments:
   - type: float
     description: level threshold
-    default: 0
+    default: 0.01
   - type: float
     description: set window size
     default: 1024
@@ -37,7 +37,7 @@ outlets:
 
 methods:
   - type: mode <float>
-    description: set mode (0 to 9)
+    description: set mode (0 to 8)
   - type: thresh <float>
     description: set threshold (0.1 to 1)
   - type: silence <float>

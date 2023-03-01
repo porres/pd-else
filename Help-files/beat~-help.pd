@@ -79,7 +79,6 @@
 #X connect 21 0 14 0;
 #X connect 21 1 15 0;
 #X restore 460 213 pd example;
-#X text 235 265 set mode (0 to 9);
 #X text 142 265 mode <float> -;
 #X text 130 279 thresh <float> -;
 #X text 124 293 silence <float> -;
@@ -102,7 +101,8 @@
 #X text 73 87 [beat~] takes an input signal and outputs a detected BPM value., f 52;
 #X text 220 435 - level threshold (default 0.01), f 34;
 #X text 235 279 set threshold (0.01 to 1);
+#X text 235 265 set mode (0 to 8);
+#X connect 12 0 41 0;
 #X connect 12 0 42 0;
-#X connect 12 0 43 0;
 #X connect 24 0 12 0;
-#X connect 42 0 0 0;
+#X connect 41 0 0 0;
