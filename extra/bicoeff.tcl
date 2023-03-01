@@ -18,7 +18,6 @@ namespace eval bicoeff:: {
     
     # colors
     variable markercolor "#bbbbcc"
-    variable selectcolor "blue"
 
     variable filters_with_bw_lines [list "highshelf" "lowshelf" "peaking" "allpass"]
 }
@@ -701,7 +700,7 @@ proc bicoeff::new {my canvas rname t x1 y1 x2 y2} {
         variable previousx 0
         variable previousy 0
 
-        variable filtergain 75 ;# the unit is pixels, 0-200, 100 means no gain
+        variable filtergain 0
 
         # coefficients for [biquad~]
         variable a1 0
@@ -710,6 +709,9 @@ proc bicoeff::new {my canvas rname t x1 y1 x2 y2} {
         variable b1 0
         variable b2 0
     }
+
+    variable ${my}::filtergain
+    set filtergain [expr ($y2 - $y1) / 2]; 
 
     variable ${my}::receive_name $rname
     variable ${my}::tag $t
@@ -739,15 +741,6 @@ proc bicoeff::update {my canvas x1 y1 x2 y2} {
 
     variable ${my}::filterwidth [expr $filterx2 - $filterx1]
     variable ${my}::filtercenter [expr $filterx1 + ($filterwidth/2)]
-}
-
-proc bicoeff::eraseme {my} {
-    variable ${my}::tkcanvas
-    variable ${my}::tag
-    variable mys_in_tkcanvas
-    $tkcanvas delete $tag
-    set mys_in_tkcanvas($tkcanvas) \
-        [lsearch -all -inline -not -exact $mys_in_tkcanvas($tkcanvas) $my]
 }
 
 proc bicoeff::setfiltertype {my filtertype} {
@@ -837,18 +830,6 @@ proc bicoeff::drawme {my canvas name t x1 y1 x2 y2 filtertype} {
     stop_editing $my
     lappend mys_in_tkcanvas($tkcanvas) $my
     set_for_editmode [winfo toplevel $tkcanvas]
-}
-
-proc bicoeff::select {my state} {
-    variable ${my}::tkcanvas
-    variable ${my}::tag
-    variable selectcolor
-    variable markercolor
-    if {$state} {
-        $tkcanvas itemconfigure frame$tag -outline $selectcolor -width 1
-     } else {
-        $tkcanvas itemconfigure frame$tag -outline "black" -width 1
-     }
 }
 
 # sets the biquad coefficients from a list in the first inlet

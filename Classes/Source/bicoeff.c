@@ -30,6 +30,15 @@ static void bicoeff_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *
     *yp2 = text_ypix(&x->x_obj, glist) + x->x_height*x->x_zoom;
 }
 
+static void bicoeff_save(t_gobj *z, t_binbuf *b){
+  t_bicoeff *x = (t_bicoeff *)z;
+  binbuf_addv(b, "ssiisiis", gensym("#X"),gensym("obj"),
+    (int)x->x_obj.te_xpix, (int)x->x_obj.te_ypix,
+    atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)),
+    x->x_width, x->x_height, x->x_type);
+  binbuf_addv(b, ";");
+}
+
 static void bicoeff_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     t_bicoeff *x = (t_bicoeff *)z;
     x->x_obj.te_xpix += dx, x->x_obj.te_ypix += dy;
@@ -41,8 +50,12 @@ static void bicoeff_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 }
 
 static void bicoeff_select(t_gobj *z, t_glist *glist, int state){
+    t_bicoeff *x = (t_bicoeff *)z;
     glist = NULL;
-    sys_vgui("::bicoeff::select %s %d\n", ((t_bicoeff *)z)->x_my, state);
+    if(state)
+        sys_vgui("%s itemconfigure frame%s -outline blue\n", x->x_tkcanvas, x->x_tag);
+    else
+        sys_vgui("%s itemconfigure frame%s -outline black\n", x->x_tkcanvas, x->x_tag);
 }
 
 void bicoeff_delete(t_gobj *z, t_glist *glist){
@@ -51,21 +64,23 @@ void bicoeff_delete(t_gobj *z, t_glist *glist){
 
 static void bicoeff_vis(t_gobj *z, t_glist *glist, int vis){
     t_bicoeff* x = (t_bicoeff*)z;
+    snprintf(x->x_tkcanvas, MAXPDSTRING, ".x%lx.c", (long unsigned int)glist_getcanvas(glist));
     if(vis){
-        snprintf(x->x_tkcanvas, MAXPDSTRING, ".x%lx.c", (long unsigned int)glist_getcanvas(glist));
+        int x1, y1, x2, y2;
+        bicoeff_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
         sys_vgui("bicoeff::drawme %s %s %s %s %d %d %d %d %s\n",
             x->x_my,
             x->x_tkcanvas,
             x->x_bind_name->s_name,
             x->x_tag,
-            text_xpix(&x->x_obj, glist),
-            text_ypix(&x->x_obj, glist),
-            text_xpix(&x->x_obj, glist)+x->x_width*x->x_zoom,
-            text_ypix(&x->x_obj, glist)+x->x_height*x->x_zoom,
+            x1,
+            y1,
+            x2,
+            y2,
             x->x_type->s_name);
     }
     else
-        sys_vgui("bicoeff::eraseme %s\n", x->x_my);
+        sys_vgui("%s delete %s\n", x->x_tkcanvas, x->x_tag);
     // send current samplerate to the GUI for calculation of biquad coeffs
     t_float samplerate = sys_getsr();
     if(samplerate > 0)  // samplerate is sometimes 0, ignore that
@@ -149,8 +164,23 @@ static void bicoeff_resonant(t_bicoeff *x, t_symbol *s, int ac, t_atom* av){
 }
 
 static void bicoeff_dim(t_bicoeff *x, t_floatarg f1, t_floatarg f2){
-    x->x_width = (int)(f1);
-    x->x_height = (int)(f2);
+    x->x_width = f1 < 200 ? 200 : (int)(f1);
+    x->x_height = f2 < 100 ? 100 : (int)(f2);
+    
+    sys_vgui("%s delete %s\n", x->x_tkcanvas, x->x_tag);
+    snprintf(x->x_tkcanvas, MAXPDSTRING, ".x%lx.c", (long unsigned int)glist_getcanvas(x->x_glist));
+    int x1, y1, x2, y2;
+    bicoeff_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+    sys_vgui("bicoeff::drawme %s %s %s %s %d %d %d %d %s\n",
+        x->x_my,
+        x->x_tkcanvas,
+        x->x_bind_name->s_name,
+        x->x_tag,
+        x1,
+        y1,
+        x2,
+        y2,
+        x->x_type->s_name);
 }
 
 /*static void bicoeff_coeff(t_bicoeff *x, int ac, t_atom *av){
@@ -208,8 +238,8 @@ static void *bicoeff_new(t_symbol *s, int ac, t_atom* av){
         }
         else goto errstate;
     }
-    x->x_width = width;
-    x->x_height = height;
+    x->x_width = width < 200 ? 200 : width;
+    x->x_height = height < 100 ? 100 : height;
     x->x_type = type;
     x->x_glist = (t_glist*)canvas_getcurrent();
     x->x_zoom = x->x_glist->gl_zoom;
@@ -265,6 +295,6 @@ void bicoeff_setup(void){
     bicoeff_widgetbehavior.w_visfn      = bicoeff_vis;
     bicoeff_widgetbehavior.w_clickfn    = NULL;
     class_setwidget(bicoeff_class, &bicoeff_widgetbehavior);
-//    class_setsavefn(bicoeff_class, &bicoeff_save);
+    class_setsavefn(bicoeff_class, bicoeff_save);
     sys_vgui("eval [read [open {%s/bicoeff.tcl}]]\n", bicoeff_class->c_externdir->s_name);
 }
