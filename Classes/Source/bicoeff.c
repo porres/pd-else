@@ -183,19 +183,18 @@ static void bicoeff_dim(t_bicoeff *x, t_floatarg f1, t_floatarg f2){
         x->x_type->s_name);
 }
 
-/*static void bicoeff_coeff(t_bicoeff *x, int ac, t_atom *av){
+/*static void bicoeff_coeff(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
     if(ac == 5){
         t_float a1 = atom_getfloat(av);
         t_float a2 = atom_getfloat(av + 1);
         t_float b0 = atom_getfloat(av + 2);
         t_float b1 = atom_getfloat(av + 3);
         t_float b2 = atom_getfloat(av + 4);
-//        sys_vgui("::biplot::coefficients %s %g %g %g %g %g\n", x->x_my, a1, a2, b0, b1, b2);
+//        sys_vgui("::bicoeff::coefficients %s %g %g %g %g %g\n", x->x_my, a1, a2, b0, b1, b2);
 //        biplot_biquad_callback(x, s, ac, av);
     }
 }*/
 
-// new/free/setup -----------------------------------
 static void *bicoeff_new(t_symbol *s, int ac, t_atom* av){
     s = NULL;
     t_bicoeff *x = (t_bicoeff *)pd_new(bicoeff_class);
@@ -284,6 +283,7 @@ void bicoeff_setup(void){
     class_addmethod(bicoeff_class, (t_method)bicoeff_notch, gensym("bandstop"), A_GIMME, 0);
     class_addmethod(bicoeff_class, (t_method)bicoeff_eq, gensym("eq"), A_GIMME, 0);
     class_addmethod(bicoeff_class, (t_method)bicoeff_resonant, gensym("resonant"), A_GIMME, 0);
+//    class_addmethod(bicoeff_class, (t_method)bicoeff_coeff, gensym("coeff"), A_GIMME, 0);
     class_addmethod(bicoeff_class, (t_method)bicoeff_biquad_callback, gensym("biquad"), A_GIMME, 0);
     class_addmethod(bicoeff_class, (t_method)bicoeff_zoom, gensym("zoom"), A_CANT, 0);
     // widget behavior
