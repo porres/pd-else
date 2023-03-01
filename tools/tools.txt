@@ -8,7 +8,7 @@ Joga fora o armv7 e versões 32 bits
 
 -------------------------------------------------------------------------
 
-make install sfont-install plaits-install objectsdir=$(pwd)/..
+make install sfont-install plaits-install objectsdir=$(pwd)/.. arch="arm64 x86_64" extension=d_fat
 
 -------------------------------------------------------------------------
 
