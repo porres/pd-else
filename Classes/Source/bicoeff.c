@@ -41,130 +41,31 @@ static void bicoeff_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 }
 
 static void bicoeff_select(t_gobj *z, t_glist *glist, int state){
-    t_bicoeff *x = (t_bicoeff *)z;
     glist = NULL;
-    if(state)
-        sys_vgui("%s itemconfigure frame%s -outline blue\n", x->x_tkcanvas, x->x_tag);
-    else
-        sys_vgui("%s itemconfigure frame%s -outline black\n", x->x_tkcanvas, x->x_tag);
+    sys_vgui("::bicoeff::select %s %d\n", ((t_bicoeff *)z)->x_my, state);
 }
 
 void bicoeff_delete(t_gobj *z, t_glist *glist){
     canvas_deletelinesfor(glist, (t_text *)z);
 }
 
-/*proc bicoeff::drawme {my canvas name t x1 y1 x2 y2 filtertype} {
-//    x->x_my,
-//    x->x_tkcanvas,
-//    x->x_bind_name->s_name,
-//    x->x_tag,
-//    x1,
-//   y1,
-//    x2,
-//    y2,
-//    x->x_type->s_name);
-// if the $my namespace already exists, that means we already
-// have an instance active and setup.
-    if {[namespace exists $my]} {
-        update $my $canvas $x1 $y1 $x2 $y2
-    } else {
-        new $my $canvas $name $t $x1 $y1 $x2 $y2
-    }
-    variable ${my}::tkcanvas
-    variable ${my}::receive_name
-    variable ${my}::tag
-    variable ${my}::framex1
-    variable ${my}::framey1
-    variable ${my}::framex2
-    variable ${my}::framey2
-    variable ${my}::filterx1
-    variable ${my}::filterx2
-    variable ${my}::midpoint
-    variable mys_in_tkcanvas
-    variable markercolor
-    variable markercolor
-    
-    set fillx [expr $framex1 + 100]
-
-# background
-    $tkcanvas create rectangle $framex1 $framey1 $framex2 $framey2 \
-        -outline "black" -fill "white" \
-        -tags [list $tag frame$tag]
-    
-# graph fill (gray)
-    $tkcanvas create polygon $framex1 $midpoint $framex2 $midpoint \
-        $framex2 $framey2 $framex1 $framey2 \
-        -fill "#dcdcdc" \
-        -tags [list $tag response$tag responsefill$tag]
-
-# zero line/equator
-    $tkcanvas create line $framex1 $midpoint $framex2 $midpoint \
-        -fill $markercolor \
-        -tags [list $tag zeroline$tag]
-        
-# magnitude response graph line
-    $tkcanvas create line $framex1 $midpoint $framex2 $midpoint \
-        -fill "black" -width 1 \
-        -tags [list $tag response$tag responseline$tag]
-    
-# phase response graph line
-#    $tkcanvas create line $framex1 $midpoint $framex2 $midpoint \
-        -fill "black" -width 1 \
-        -tags [list $tag response$tag phaseline$tag]
-
-# bandwidth box left side
-    $tkcanvas create line $filterx1 $framey1 $filterx1 $framey2 \
-        -fill $markercolor \
-        -tags [list $tag lines$tag band$tag bandleft$tag bandedges$tag]
-# bandwidth box right side
-    $tkcanvas create line $filterx2 $framey1 $filterx2 $framey2 \
-        -fill $markercolor \
-        -tags [list $tag lines$tag band$tag bandright$tag bandedges$tag]
-
-# inlet/outlet
-    set inletx [expr $framex1 + 7]
-    set inlety [expr $framey1 + 2]
-    set outletx [expr $framex2 - 7]
-    set outlety [expr $framey2 - 2]
-    
-#inlet
-    $tkcanvas create rectangle $framex1 $framey1 $inletx $inlety \
-        -outline "black" -fill "black" \
-        -tags [list $tag inlet$tag]
-        
-#outlet
-    $tkcanvas create rectangle $framex1 $outlety $inletx $framey2 \
-        -outline "black" -fill "black" \
-        -tags [list $tag outlet$tag]
-
-    setfiltertype $my $filtertype
-
-# run to set things up
-    stop_editing $my
-    lappend mys_in_tkcanvas($tkcanvas) $my
-    set_for_editmode [winfo toplevel $tkcanvas]
-}*/
-
-
 static void bicoeff_vis(t_gobj *z, t_glist *glist, int vis){
     t_bicoeff* x = (t_bicoeff*)z;
-    snprintf(x->x_tkcanvas, MAXPDSTRING, ".x%lx.c", (long unsigned int)glist_getcanvas(glist));
     if(vis){
-        int x1, y1, x2, y2;
-        bicoeff_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+        snprintf(x->x_tkcanvas, MAXPDSTRING, ".x%lx.c", (long unsigned int)glist_getcanvas(glist));
         sys_vgui("bicoeff::drawme %s %s %s %s %d %d %d %d %s\n",
             x->x_my,
             x->x_tkcanvas,
             x->x_bind_name->s_name,
             x->x_tag,
-            x1,
-            y1,
-            x2,
-            y2,
+            text_xpix(&x->x_obj, glist),
+            text_ypix(&x->x_obj, glist),
+            text_xpix(&x->x_obj, glist)+x->x_width*x->x_zoom,
+            text_ypix(&x->x_obj, glist)+x->x_height*x->x_zoom,
             x->x_type->s_name);
     }
     else
-        sys_vgui("%s delete %s\n", x->x_tkcanvas, x->x_tag);
+        sys_vgui("bicoeff::eraseme %s\n", x->x_my);
     // send current samplerate to the GUI for calculation of biquad coeffs
     t_float samplerate = sys_getsr();
     if(samplerate > 0)  // samplerate is sometimes 0, ignore that
@@ -248,34 +149,19 @@ static void bicoeff_resonant(t_bicoeff *x, t_symbol *s, int ac, t_atom* av){
 }
 
 static void bicoeff_dim(t_bicoeff *x, t_floatarg f1, t_floatarg f2){
-    x->x_width = f1 < 100 ? 100 : (int)(f1);
-    x->x_height = f2 < 50 ? 50 : (int)(f2);
-    sys_vgui("%s delete %s\n", x->x_tkcanvas, x->x_tag);
-    snprintf(x->x_tkcanvas, MAXPDSTRING, ".x%lx.c", (long unsigned int)glist_getcanvas(x->x_glist));
-    int x1, y1, x2, y2;
-    bicoeff_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
-    sys_vgui("bicoeff::drawme %s %s %s %s %d %d %d %d %s\n",
-        x->x_my,
-        x->x_tkcanvas,
-        x->x_bind_name->s_name,
-        x->x_tag,
-        x1,
-        y1,
-        x2,
-        y2,
-        x->x_type->s_name);
+    x->x_width = (int)(f1);
+    x->x_height = (int)(f2);
 }
 
-/*static void bicoeff_coeff(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
+/*static void bicoeff_coeff(t_bicoeff *x, int ac, t_atom *av){
     if(ac == 5){
-        t_float a1 = atom_getfloat(av+0);
-        t_float a2 = atom_getfloat(av+1);
-        t_float b0 = atom_getfloat(av+2);
-        t_float b1 = atom_getfloat(av+3);
-        t_float b2 = atom_getfloat(av+4);
-        sys_vgui("::bicoeff::coefficients %s %g %g %g %g %g\n", x->x_my, a1, a2, b0, b1, b2);
-        outlet_list(x->x_obj.ob_outlet, &s_list, ac, av);
+        t_float a1 = atom_getfloat(av);
+        t_float a2 = atom_getfloat(av + 1);
+        t_float b0 = atom_getfloat(av + 2);
+        t_float b1 = atom_getfloat(av + 3);
+        t_float b2 = atom_getfloat(av + 4);
+//        sys_vgui("::biplot::coefficients %s %g %g %g %g %g\n", x->x_my, a1, a2, b0, b1, b2);
+//        biplot_biquad_callback(x, s, ac, av);
     }
 }*/
 
@@ -322,8 +208,8 @@ static void *bicoeff_new(t_symbol *s, int ac, t_atom* av){
         }
         else goto errstate;
     }
-    x->x_width = width < 100 ? 100 : width;
-    x->x_height = height < 50 ? 50 : height;
+    x->x_width = width;
+    x->x_height = height;
     x->x_type = type;
     x->x_glist = (t_glist*)canvas_getcurrent();
     x->x_zoom = x->x_glist->gl_zoom;
@@ -369,7 +255,6 @@ void bicoeff_setup(void){
     class_addmethod(bicoeff_class, (t_method)bicoeff_eq, gensym("eq"), A_GIMME, 0);
     class_addmethod(bicoeff_class, (t_method)bicoeff_resonant, gensym("resonant"), A_GIMME, 0);
     class_addmethod(bicoeff_class, (t_method)bicoeff_biquad_callback, gensym("biquad"), A_GIMME, 0);
-//    class_addmethod(bicoeff_class, (t_method)bicoeff_coeff, gensym("coeff"), A_GIMME, 0);
     class_addmethod(bicoeff_class, (t_method)bicoeff_zoom, gensym("zoom"), A_CANT, 0);
     // widget behavior
     bicoeff_widgetbehavior.w_getrectfn  = bicoeff_getrect;
