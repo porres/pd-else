@@ -111,7 +111,7 @@ For Last, Timothy Schoen is doing an amazing jaw dropping job with PlugData, a p
 
 --------------------------------------------------------------------------
 
-## Current Object list (474 objects):
+## Current Object list (475 objects):
 
 **ASSORTED: [03]**
 
@@ -171,6 +171,7 @@ For Last, Timothy Schoen is doing an amazing jaw dropping job with PlugData, a p
 - [canvas.edit]
 - [canvas.file]
 - [canvas.vis]
+- [canvas.name]
 - [canvas.setname]
 - [canvas.zoom]
 - [loadbanger] / [lb]
