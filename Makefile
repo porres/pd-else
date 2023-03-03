@@ -50,6 +50,7 @@ canvas.edit.class.sources := Classes/Source/canvas.edit.c
 canvas.file.class.sources := Classes/Source/canvas.file.c
 canvas.gop.class.sources := Classes/Source/canvas.gop.c
 canvas.mouse.class.sources := Classes/Source/canvas.mouse.c
+canvas.name.class.sources := Classes/Source/canvas.name.c
 canvas.pos.class.sources := Classes/Source/canvas.pos.c
 canvas.setname.class.sources := Classes/Source/canvas.setname.c
 canvas.vis.class.sources := Classes/Source/canvas.vis.c
