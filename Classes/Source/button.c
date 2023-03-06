@@ -145,6 +145,21 @@ static void button_bang(t_button *x){
         button_flash(x);
 }
 
+static void button_set(t_button *x, t_floatarg f){
+    if(x->x_mode != 2){
+        int state = (int)(f != 0);
+        if(x->x_state != state){
+            x->x_state = state;
+            if(x->x_state)
+                sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n",
+                    glist_getcanvas(x->x_glist), x, x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
+            else
+                sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n",
+                    glist_getcanvas(x->x_glist), x, x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+        }
+    }
+}
+
 static void button_float(t_button *x, t_floatarg f){
     if(x->x_mode != 2){
         int state = (int)(f != 0);
@@ -439,7 +454,7 @@ void button_setup(void){
     class_addmethod(button_class, (t_method)button_size, gensym("size"), A_FLOAT, 0);
     class_addmethod(button_class, (t_method)button_width, gensym("width"), A_FLOAT, 0);
     class_addmethod(button_class, (t_method)button_height, gensym("height"), A_FLOAT, 0);
-//    class_addmethod(button_class, (t_method)button_mode, gensym("mode"), A_FLOAT, 0);
+    class_addmethod(button_class, (t_method)button_set, gensym("set"), A_FLOAT, 0);
     class_addmethod(button_class, (t_method)button_bng, gensym("bng"), 0);
     class_addmethod(button_class, (t_method)button_tgl, gensym("tgl"), 0);
     class_addmethod(button_class, (t_method)button_latch, gensym("latch"), 0);
