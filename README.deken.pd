@@ -1,0 +1,14 @@
+#N canvas 637 121 611 343 10;
+#X obj 69 66 cnv 11 476 17 empty empty Please restart pure data after installing the plugin
+2 9 0 14 -184748 -262144 0;
+#X text 130 149 [completion-plugin] version 0.46.0 [completion-plugin]
+finished scanning externals;
+#X text 75 101 After restarting you can confirm in the console window
+the plugin was successfully loaded by seeing something like that:;
+#X obj 69 190 cnv 11 476 17 empty empty see the help file 2 9 0
+14 -34555 -262144 0;
+#X obj 69 18 cnv 11 278 17 empty empty Pure Data Auto Complete Tcl plugin
+2 9 0 14 -33289 -262144 0;
+#X text 133 275 File->Preferences->Auto Complete settings;
+#X text 70 226 You can open the help file by clicking on the "Help"
+button after going to;
