@@ -15,7 +15,7 @@ proc category_menu::load_menutree {} {
     return $menutree
 }
 
-proc menu_send_item {w x y item} {
+proc menu_send_else_obj {w x y item} {
     pdsend "$w obj $x $y else/$item"
 }
 
@@ -35,7 +35,7 @@ proc category_menu::create {mymenu} {
                 # interpret the dash in the -label to make it a separator
                 $mymenu.$category.$subcategory add command \
                     -label [regsub -all {^\-$} $item {−}] \
-                    -command "menu_send_item \$::focused_window \$::popup_xcanvas \$::popup_ycanvas {$item}"
+                    -command "menu_send_else_obj \$::focused_window \$::popup_xcanvas \$::popup_ycanvas {$item}"
             }
         }
     }

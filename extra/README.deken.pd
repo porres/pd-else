@@ -1,0 +1,18 @@
+#N canvas 641 91 471 503 12;
+#X obj 122 245 else;
+#X obj 45 22 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 44 21 pd;
+#X obj 84 29 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 197 29 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 217 29 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 254 29 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 203 44 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 241 44 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X text 307 31 by Porres & others;
+#X text 164 246 <-- check its help file;
+#X text 45 95 Hey \, you downloaded the 'ELSE' library from 'deken' \, nice! This A library with separate binaries \, so you need to add its path to your search paths. You can also load the 'else' binary as a library \, which will give you some information on the terminal and install a browser plugin. BUT MAKE SURE YOU DOWNLOADED IT TO THE "documents/pd/externals" folder so the plugin is loaded correctly. You can also do this by creating the [else] external as below., f 53;
+#X text 46 287 ELSE is shipped with a huge and general computer music tutorial that depends on the library. Find the folder named Live-Electronics-Tutorial inside the else folder and check its readme., f 54;
+#X text 45 366 Please consider supporting this project by paying me a monthly coffe on Patreon.;
+#X text 48 426 ELSE is also part of the amazing PlugData project by Tim Schoen., f 53;
