@@ -1,6 +1,7 @@
 // porres
 
 #include "m_pd.h"
+#include "m_imp.h"
 
 typedef struct else_obj{
     t_object  x_obj;
@@ -10,7 +11,7 @@ typedef struct else_obj{
 
 t_class *else_obj_class;
 
-static int printed;
+//static int printed;
 
 static int min_major = 0;
 static int min_minor = 53;
@@ -21,7 +22,11 @@ static int else_minor = 0;
 static int else_bugfix = 0;
 
 #define STATUS "rc"
-static int status_number = 7;
+static int status_number = 8;
+
+static void else_obj_dir(t_else_obj *x){
+    outlet_symbol(x->x_obj.te_outlet, else_obj_class->c_externdir);
+}
 
 static void else_obj_version(t_else_obj *x){
     int ac = 5;
@@ -53,7 +58,7 @@ static void else_obj_version(t_else_obj *x){
     outlet_list(x->x_obj.te_outlet,  &s_list, ac, at);
 }
 
-void print_else_obj(t_else_obj *x){
+void else_obj_about(t_else_obj *x){
     int major = 0, minor = 0, bugfix = 0;
     sys_getversion(&major, &minor, &bugfix);
     post("");
@@ -96,17 +101,8 @@ void print_else_obj(t_else_obj *x){
     post("");
 }
 
-static void else_obj_about(t_else_obj *x){
-    print_else_obj(x);
-}
-
-static void *else_obj_new(t_floatarg f1){
+static void *else_obj_new(void){
     t_else_obj *x = (t_else_obj *)pd_new(else_obj_class);
-    printed = f1 != 0;
-    if(!printed){
-        else_obj_about(x);
-        printed = 1;
-    }
     outlet_new((t_object *)x, 0);
     x->x_out2 = outlet_new((t_object *)x, &s_list);
     x->x_out3 = outlet_new((t_object *)x, &s_list);
@@ -114,12 +110,16 @@ static void *else_obj_new(t_floatarg f1){
 }
 
 void else_setup(void){
-    else_obj_class = class_new(gensym("else"), (t_newmethod)else_obj_new, 0, sizeof(t_else_obj), 0, A_DEFFLOAT, 0);
+    else_obj_class = class_new(gensym("else"), (t_newmethod)else_obj_new, 0, sizeof(t_else_obj), 0, 0);
     t_else_obj *x = (t_else_obj *)pd_new(else_obj_class);
     class_addmethod(else_obj_class, (t_method)else_obj_about, gensym("about"), 0);
     class_addmethod(else_obj_class, (t_method)else_obj_version, gensym("version"), 0);
-   if(!printed){
-       print_else_obj(x);
-       printed = 1;
-    }
+    class_addmethod(else_obj_class, (t_method)else_obj_dir, gensym("dir"), 0);
+//    if(!printed){ // ????
+        else_obj_about(x);
+//        printed = 1;
+//    }
+//    char else_dir[MAXPDSTRING];
+//    strcpy(else_dir, else_obj_class->c_externdir->s_name);
+    sys_vgui("eval [read [open [file join %s else-browser.tcl]]]\n", else_obj_class->c_externdir->s_name);
 }
