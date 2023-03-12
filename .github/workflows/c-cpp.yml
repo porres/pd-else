@@ -3,7 +3,7 @@ name: C/C++ CI
 on:
   push:
     branches: [ "master" ]
-    paths-ignore: ['md-help/**', 'Help-files/**']
+    paths-ignore: ['md-help/**']
   pull_request:
     branches: [ "master" ]
     paths-ignore: ['md-help/**', 'Help-files/**']
