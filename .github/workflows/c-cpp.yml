@@ -3,8 +3,10 @@ name: C/C++ CI
 on:
   push:
     branches: [ "master" ]
+    paths-ignore: ['md-help/**', 'Help-files/**']
   pull_request:
     branches: [ "master" ]
+    paths-ignore: ['md-help/**', 'Help-files/**']
 
 jobs:
   Linux-Build:
