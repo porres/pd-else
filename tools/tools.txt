@@ -28,6 +28,16 @@ make install objectsdir=../ arch= x86_64 extension=d_amd64
 
 --------------------------------------------------------------------------------------
 
+Revert commits 
+
+https://github.com/pure-data/pure-data/pull/1917#issuecomment-1470404530
+
+For git reset --hard HEAD~1 
+
+--------------------------------------------------------------------------------------
+
+codespell
+
 LC_ALL=C find . -type f -name '*.pd' -exec sed -i '' s/else\\///g {} +
 
 --------------------------------------------------------------------------------------
