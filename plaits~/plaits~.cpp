@@ -128,15 +128,15 @@ void plts_model(t_plts *x, t_floatarg f){
 }
 
 void plts_harmonics(t_plts *x, t_floatarg f){
-    x->harmonics = f;
+    x->harmonics = f < 0 ? 0 : f > 1 ? 1 : f;
 }
 
 void plts_timbre(t_plts *x, t_floatarg f){
-    x->timbre = f;
+    x->timbre = f < 0 ? 0 : f > 1 ? 1 : f;
 }
 
 void plts_morph(t_plts *x, t_floatarg f){
-    x->morph = f;
+    x->morph = f < 0 ? 0 : f > 1 ? 1 : f;
 }
 
 void plts_bang(t_plts *x){
@@ -144,7 +144,7 @@ void plts_bang(t_plts *x){
 }
 
 void plts_lpg_cutoff(t_plts *x, t_floatarg f){
-    x->lpg_cutoff = f;
+    x->lpg_cutoff = f < 0 ? 0 : f > 1 ? 1 : f;
 }
 
 void plts_decay(t_plts *x, t_floatarg f){
