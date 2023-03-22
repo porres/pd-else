@@ -148,7 +148,7 @@ void plts_lpg_cutoff(t_plts *x, t_floatarg f){
 }
 
 void plts_decay(t_plts *x, t_floatarg f){
-    x->decay = f;
+    x->decay = f < 0 ? 0 : f > 1 ? 1 : f;
 }
 
 void plts_hz(t_plts *x){
@@ -172,8 +172,10 @@ void plts_trigger_mode(t_plts *x, t_floatarg f){
 }
 
 static float plts_get_pitch(t_plts *x, t_floatarg f){
-    if(x->pitch_mode == 0)
-        return(log2f(f/440) + 0.75);
+    if(x->pitch_mode == 0){
+        f = log2f(f/440) + 0.75;
+        return(f < 0 ? f * -1 : f);
+    }
     else if(x->pitch_mode == 1)
         return((f - 60) / 12);
     else if(x->pitch_mode == 2)
