@@ -173,8 +173,8 @@ void plts_trigger_mode(t_plts *x, t_floatarg f){
 
 static float plts_get_pitch(t_plts *x, t_floatarg f){
     if(x->pitch_mode == 0){
-        f = log2f(f/440) + 0.75;
-        return(f < 0 ? f * -1 : f);
+        f = log2f((f < 0 ? f * -1 : f)/440) + 0.75;
+        return(f);
     }
     else if(x->pitch_mode == 1)
         return((f - 60) / 12);
