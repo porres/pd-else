@@ -258,8 +258,12 @@ static void numbox_motion(t_numbox *x, t_floatarg dx, t_floatarg dy, t_floatarg 
 }
 
 static int numbox_newclick(t_gobj *z, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
-    dbl = alt = 0;
+    alt = 0;
     t_numbox* x = (t_numbox *)z;
+    if(dbl){
+        numbox_float(x, x->x_set_val);
+        return(1);
+    }
     if(doit && x->x_outmode){
         x->x_inc = shift ? 0.01 : 1;
         x->x_clicked = 1;
