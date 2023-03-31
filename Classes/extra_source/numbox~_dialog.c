@@ -216,7 +216,7 @@ sys_gui("\n" // Tcl/Tk properties code based on IEMGUI's
             "\n"
             "    set $var_numbox_l2_f1_b0 0\n"
             "\n"
-            "    set numbox_type [_ \"[numbox~]\"]\n"
+            "    set numbox_type [_ \"numbox~\"]\n"
             "    set wdt_label [_ \"Width (digits):\"]\n"
             "    set hgt_label [_ \"Font Size:\"]\n"
             "    toplevel $mytoplevel -class DialogWindow\n"
