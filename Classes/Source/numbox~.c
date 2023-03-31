@@ -149,7 +149,7 @@ static void numbox_ramp(t_numbox *x, t_floatarg f){
 }
 
 static void numbox_float(t_numbox *x, t_floatarg f){ // set float value and update GUI
-    t_float ftocompare = f < x-x_min ? x-x_min : f > x-x_max ? x-x_max : f;
+    t_float ftocompare = f < x->x_min ? x->x_min : f > x->x_max ? x->x_max : f;
     if(memcmp(&ftocompare, &x->x_out_val, sizeof(ftocompare))){ // bitwise comparison
         x->x_out_val = ftocompare;
         if(x->x_outmode){
