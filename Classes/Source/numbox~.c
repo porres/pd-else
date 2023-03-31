@@ -149,7 +149,7 @@ static void numbox_ramp(t_numbox *x, t_floatarg f){
 }
 
 static void numbox_float(t_numbox *x, t_floatarg f){ // set float value and update GUI
-    t_float ftocompare = f;
+    t_float ftocompare = f < x-x_min ? x-x_min : f > x-x_max ? x-x_max : f;
     if(memcmp(&ftocompare, &x->x_out_val, sizeof(ftocompare))){ // bitwise comparison
         x->x_out_val = ftocompare;
         if(x->x_outmode){
@@ -160,7 +160,7 @@ static void numbox_float(t_numbox *x, t_floatarg f){ // set float value and upda
     }
 }
 
-static void numbox_set(t_numbox *x, t_symbol *s, int ac, t_atom *av){
+static void numbox_init(t_numbox *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(!ac)
         x->x_set_val = x->x_out_val;
@@ -362,8 +362,8 @@ static void numbox_dialog(t_numbox *x, t_symbol *s, int ac, t_atom *av){
     numbox_rate(x, rate);
     numbox_range(x, min, max);
     t_atom at[1];
-    SETFLOAT(at,initial);
-    numbox_set(x, NULL, 1, at);
+    SETFLOAT(at, initial);
+    numbox_init(x, NULL, 1, at);
     SETSYMBOL(at, bgcolor);
     numbox_bg(x, NULL, 1, at);
     SETSYMBOL(at, fgcolor);
@@ -542,7 +542,7 @@ void numbox_tilde_setup(void){
     class_addmethod(numbox_class, (t_method)numbox_width, gensym("width"), A_FLOAT, 0);
     class_addmethod(numbox_class, (t_method)numbox_size, gensym("size"), A_FLOAT, 0);
     class_addmethod(numbox_class, (t_method)numbox_range, gensym("range"), A_FLOAT, A_FLOAT, 0);
-    class_addmethod(numbox_class, (t_method)numbox_set, gensym("set"), A_GIMME, 0);
+    class_addmethod(numbox_class, (t_method)numbox_init, gensym("init"), A_GIMME, 0);
     class_addmethod(numbox_class, (t_method)numbox_bg, gensym("bgcolor"), A_GIMME, 0);
     class_addmethod(numbox_class, (t_method)numbox_fg, gensym("fgcolor"), A_GIMME, 0);
     class_addmethod(numbox_class, (t_method)numbox_zoom, gensym("zoom"), A_CANT, 0);
