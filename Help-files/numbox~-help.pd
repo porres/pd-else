@@ -1,4 +1,4 @@
-#N canvas 409 23 568 623 10;
+#N canvas 628 23 568 623 10;
 #X obj 2 4 cnv 15 301 42 empty empty numbox~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -58,7 +58,6 @@
 #X text 60 87 [numbox~] is a signal GUI number box. It can be used to display/monitor signal values at a fixed rate or generate them with a ramp time., f 71;
 #X text 349 130 <-- click and drag;
 #X text 227 433 - input when monitoring or generated values instead;
-#X text 105 480 -set <float>: sets initial generating value, f 71;
 #X text 227 288 -;
 #X text 239 288 sets initialization and generating value with given float or sets current value if no float is given., f 51;
 #N canvas 648 73 464 571 basic 0;
@@ -116,6 +115,7 @@
 #X connect 8 0 0 0;
 #X restore 454 218 pd +parameters;
 #X text 144 288 init <float>;
+#X text 105 480 -init <float>: sets initial generating value (default 0), f 71;
 #X connect 19 0 18 0;
 #X connect 20 0 50 0;
 #X connect 50 0 21 0;
