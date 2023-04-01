@@ -102,7 +102,7 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
                             x->x_maxout = argval;
                             break;
                         case 2:
-                            x->x_exp = argval < 0 ? 0 : argval;
+                            x->x_exp = argval;
                             break;
                         default:
                             break;
