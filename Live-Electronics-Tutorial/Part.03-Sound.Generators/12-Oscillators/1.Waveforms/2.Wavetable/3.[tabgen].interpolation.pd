@@ -35,7 +35,7 @@
 #X text 686 245 cosine: 2 point;
 #X text 612 73 The 'lin' and 'cos' modes are 2 point interpolation methods. They need a single guard point which is a copy of the first point at the end \, which is also done internally., f 63;
 #X text 834 148 The "linear" method draws a line between the two points. The "cosine" method draws half of a cosine cycle to connect the points. Check the difference with a table that only has 4 points in total., f 36;
-#X text 22 428 By default \, [wavetable~] uses a different 4 point interpolation method than [tabosc4~]'s \, called 'spline'. Unlike 'sinesum' \, [tabgen] doesn't generate extra (guard) points and [wavetable~] doesn't need them. These extra points are just copies: you have a copy of the last point in the beggining \, and a copy of the first two in the end (we'll see this in detail later on). Such copies are made internally in [wavetable~] so the table should not have them (hence \, sinesum is not suited for [wavetable~])., f 76;
+#X text 22 428 By default \, [wavetable~] uses a different 4 point interpolation method than [tabosc4~]'s \, called 'spline'. Unlike 'sinesum' \, [tabgen] doesn't generate extra (guard) points and [wavetable~] doesn't need them. These extra points are just copies: you have a copy of the last point in the beginning \, and a copy of the first two in the end (we'll see this in detail later on). Such copies are made internally in [wavetable~] so the table should not have them (hence \, sinesum is not suited for [wavetable~])., f 76;
 #X text 612 20 Besides spline \, [wavetable~] also has 'lagrange' and other interpolation modes: 'lin' (linear) and 'cos' (cosine). You can also choose no interpolation ar all., f 63;
 #X text 666 158 default: 4 point;
 #X msg 614 157 spline;
