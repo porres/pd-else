@@ -5,7 +5,7 @@
 #X obj 94 493 bl.saw~;
 #X obj 94 579 out~;
 #X obj 94 539 *~;
-#X text 39 17 Onset or attack detection is when we analyze a signal and find the moment that a musical note started. Usually \, the beggining of a note in a accoustic musical instrument produces an unstable sound for a short moment before reaching a pitched stability. This happens \, for instance \, when hammering a piano string or plucking a guitar. We call these components 'transients' and they can be recognized by a quick increase in amplitude and non-periodic (and/or noisy) components., f 69;
+#X text 39 17 Onset or attack detection is when we analyze a signal and find the moment that a musical note started. Usually \, the beginning of a note in a accoustic musical instrument produces an unstable sound for a short moment before reaching a pitched stability. This happens \, for instance \, when hammering a piano string or plucking a guitar. We call these components 'transients' and they can be recognized by a quick increase in amplitude and non-periodic (and/or noisy) components., f 69;
 #X obj 94 383 sigmund~ -npts 2048 -hop 256 notes, f 19;
 #X obj 332 212 rand.f 200 500;
 #X obj 332 296 bl.saw~;

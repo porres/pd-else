@@ -127,7 +127,7 @@
 #X obj 314 404 else/display;
 #X text 177 263 characters separated by a minus sign in brackets indicate the range of characters to match to, f 48;
 #X msg 130 302 /[!BA] 1;
-#X text 191 303 an exclamation in the beggining of brackets negates the list and matches to any other character, f 34;
+#X text 191 303 an exclamation in the beginning of brackets negates the list and matches to any other character, f 34;
 #X msg 136 323 /[!A] !;
 #X obj 638 149 else/display;
 #X obj 708 149 else/display;
