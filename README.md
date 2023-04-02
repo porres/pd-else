@@ -133,7 +133,7 @@ For Last, Timothy Schoen is doing an amazing jaw dropping job with PlugData, a p
 **TUNING/NOTES: [19]**
 
 - [scales]
-- [sclae2freq]
+- [scale2freq]
 - [scala]
 - [autotune]
 - [autotune2]

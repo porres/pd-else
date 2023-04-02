@@ -384,7 +384,7 @@ saw~	x
 saw2~	x
 scala	x
 scale2cents	x
-sclae2freq	x
+scale2freq	x
 scales	x
 score	x
 score2	x
