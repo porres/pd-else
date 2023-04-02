@@ -4,7 +4,7 @@
 #X text 49 24 The vanilla object [biquad~] is a general filter that
 can act as several types depending on its coefficients. The "biquad"
 term is an abbreviation of "biquadratic" \, since the filter is described
-as a biquadratic polinomial., f 76;
+as a biquadratic polynomial., f 76;
 #X text 49 74 This is not a friendly filter and generating coefficients
 for [biquad~] is not trivial for musicians \, but the [bicoeff] object
 from ELSE generates coefficients for nine filter types from Robert
