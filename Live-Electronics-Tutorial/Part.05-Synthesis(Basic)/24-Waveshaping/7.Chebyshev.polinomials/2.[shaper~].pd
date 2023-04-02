@@ -8,7 +8,7 @@
 #X obj 127 543 out~;
 #X obj 127 384 graph~ 500 13;
 #X obj 127 343 shaper~ 0.5 0.7 0.2 0.5 0.5 0.3;
-#X text 39 53 The [shaper~] object also generates chebyshev transfer
+#X text 39 53 The [shaper~] object also generates Chebyshev transfer
 functions from a list of coefficients \, starting with the fundamental
 "t1". The waveform with the actual components is only given when the
 input amplitude is from -1 to 1 \, for other amplitude values we have
