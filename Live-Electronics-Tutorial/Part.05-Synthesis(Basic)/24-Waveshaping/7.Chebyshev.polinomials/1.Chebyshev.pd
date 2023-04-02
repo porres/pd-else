@@ -255,9 +255,9 @@ t7[$f1] * c7 + t8[$f1] * c8 + t9[$f1] * c9 + t10[$f1] * c10 + t11[$f1]
 #X text 698 320 We can listen to the result with [shaper~]. The "output_\$0"
 table is the result of a sine wave through the transfer function.,
 f 33;
-#X text 441 394 The formulas for each polinomial is given in this subpatch:
+#X text 441 394 The formulas for each polynomial is given in this subpatch:
 , f 37;
-#N canvas 193 76 1279 736 polinomials 0;
+#N canvas 193 76 1279 736 polynomials 0;
 #X text 578 119 T2(x);
 #X text 1129 117 T4(x);
 #X text 165 271 T5(x);
@@ -438,12 +438,12 @@ f 33;
 #X connect 90 2 11 0;
 #X connect 90 2 78 0;
 #X connect 91 0 9 0;
-#X restore 605 413 pd polinomials;
+#X restore 605 413 pd polynomials;
 #X obj 837 416 hsl 100 20 0 1 0 0 \$0-amp empty empty -2 -8 0 10 -228856
 -1 -1 9900 1;
 #X text 856 418 Amplitude;
 #X obj 824 588 declare -path else;
-#X text 37 319 Chebyshev polinomials as transfer functions generate
+#X text 37 319 Chebyshev polynomials as transfer functions generate
 harmonics for a sine wave input. For instance \, t2 generates the 2nd
 harmonic (an octave above) \, t5 the 5th and so on - t0 generates a
 DC component (0 Hz) and t1 is a linear function (hence \, the original
