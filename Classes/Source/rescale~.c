@@ -12,6 +12,10 @@ typedef struct _rescale{
     t_float   x_exp;
     t_int     x_mode;
     t_int     x_clip;
+    t_float   x_minin;
+    t_float   x_maxin;
+    t_float   x_minout;
+    t_float   x_maxout;
 }t_rescale;
 
 static t_class *rescale_class;
@@ -22,6 +26,39 @@ void rescale_exp(t_rescale *x, t_floatarg f){
 
 static void rescale_clip(t_rescale *x, t_floatarg f){
     x->x_clip = f != 0;
+}
+
+static float convert(t_rescale *x, float f){
+    float minin = x->x_minin;
+    float minout = x->x_minout;
+    float maxout = x->x_maxout;
+    float rangein = x->x_maxin - minin;
+    float rangeout = maxout - minout;
+    float e = x->x_exp;
+    if(f == minin)
+        return(minout);
+    if(f == x->x_maxin)
+        return(maxout);
+    if(x->x_clip){
+        if(f < minin)
+            return(minout);
+        else if(f > x->x_maxin)
+            return(maxout);
+    }
+    if(e == 0) // linear
+        return(minout + rangeout * (f-minin)/rangein);
+    float p = (f-minin)/rangein; // position
+    if(e == 1){ // 'log'
+        if((minout <= 0 && maxout >= 0) || (minout >= 0 && maxout <= 0)){
+            pd_error(x, "[rescale~]: output range cannot contain '0' in log mode");
+            return(0);
+        }
+        return(exp(p * log(maxout / minout)) * minout);
+    }
+    if(e > 0) // exponential
+        return(pow(p, e) * rangeout + minout);
+    else // negative exponential
+        return((1 - pow(1-p, -e)) * rangeout + minout);
 }
 
 static t_int *rescale_perform2(t_int *w){
@@ -35,35 +72,11 @@ static t_int *rescale_perform2(t_int *w){
     t_float *out = (t_float *)(w[8]);
     while(n--){
         float f = *in1++;
-        float il = *in2++; // Input LOW
-        float ih = *in3++; // Input HIGH
-        float ol = *in4++; // Output LOW
-        float oh = *in5++; // Output HIGH
-        float rangein = ih - il;
-        float rangeout = oh - ol;
-        float exp = x->x_exp;
-        float r;
-        if(x->x_clip){
-            if(f < il)
-                f = il;
-            if(f > ih)
-                f = ih;
-        }
-        if(f == il)
-            r = ol;
-        else if(f == ih)
-            r = oh;
-        else if(fabs(exp) == 1) // linear
-            r = ol + rangeout * (f-il)/rangein;
-        else if(exp >= 0){ // positive exponential
-            float p = (f-il)/rangein;
-            r = ol + rangeout * copysign(pow(fabs(p), exp), p);
-        }
-        else{ // negative exponential
-            float p = 1-(f-il)/rangein;
-            r = ol + rangeout * (1-copysign(pow(fabs(p), -exp), p));
-        }
-        *out++ = r;
+        x->x_minin = *in2++; // Input LOW
+        x->x_maxin = *in3++; // Input HIGH
+        x->x_minout = *in4++; // Output LOW
+        x->x_maxout = *in5++; // Output HIGH
+        *out++ = convert(x, f);
     }
     return(w+9);
 }
@@ -77,32 +90,9 @@ static t_int *rescale_perform1(t_int *w){
     t_float *out = (t_float *)(w[6]);
     while(n--){
         float f = *in1++;
-        float ol = *in2++; // Output LOW
-        float oh = *in3++; // Output HIGH
-        float rangeout = oh - ol;
-        float exp = x->x_exp;
-        float r;
-        if(x->x_clip){
-            if(f < -1)
-                f = -1;
-            if(f > 1)
-                f = 1;
-        }
-        if(f == -1)
-            r = ol;
-        else if(f == 1)
-            r = oh;
-        else if(fabs(exp) == 1) // linear
-            r = ol + rangeout * (f+1)*0.5;
-        else if(exp >= 0){ // positive exponential
-            float p = (f+1)*0.5;
-            r = ol + rangeout * copysign(pow(fabs(p), exp), p);
-        }
-        else{ // negative exponential
-            float p = 1-(f+1)*0.5;
-            r = ol + rangeout * (1-copysign(pow(fabs(p), -exp), p));
-        }
-        *out++ = r;
+        x->x_minout = *in2++; // Output LOW
+        x->x_maxout = *in3++; // Output HIGH
+        *out++ = convert(x, f);
     }
     return(w+7);
 }
@@ -132,10 +122,10 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_rescale *x = (t_rescale *)pd_new(rescale_class);
     t_float min_in, max_in, min_out, max_out;
-    min_in = -1;
-    max_in = 1;
-    min_out = 0;
-    max_out = 1;
+    x->x_minin = -1;
+    x->x_maxin = 1;
+    x->x_minout = 0;
+    x->x_maxout = 1;
     x->x_exp = 1;
     x->x_mode = 0;
     x->x_clip = 0;
@@ -208,20 +198,20 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
     }
     if(numargs <= 3){
         x->x_inlet_1 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-            pd_float((t_pd *)x->x_inlet_1, min_out);
+            pd_float((t_pd *)x->x_inlet_1, x->x_minout = min_out);
         x->x_inlet_2 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-            pd_float((t_pd *)x->x_inlet_2, max_out);
+            pd_float((t_pd *)x->x_inlet_2, x->x_maxout = max_out);
     }
     else{
         x->x_mode = 1;
         x->x_inlet_1 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-            pd_float((t_pd *)x->x_inlet_1, min_in);
+            pd_float((t_pd *)x->x_inlet_1, x->x_minin = min_in);
         x->x_inlet_2 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-            pd_float((t_pd *)x->x_inlet_2, max_in);
+            pd_float((t_pd *)x->x_inlet_2, x->x_maxin = max_in);
         x->x_inlet_3 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-            pd_float((t_pd *)x->x_inlet_3, min_out);
+            pd_float((t_pd *)x->x_inlet_3, x->x_minout = min_out);
         x->x_inlet_4 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-            pd_float((t_pd *)x->x_inlet_4, max_out);
+            pd_float((t_pd *)x->x_inlet_4, x->x_maxout = max_out);
     }
     outlet_new((t_object *)x, &s_signal);
     return(x);

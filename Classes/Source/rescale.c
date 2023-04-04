@@ -25,29 +25,34 @@ static void rescale_clip(t_rescale *x, t_floatarg f){
 static float convert(t_rescale *x, float f){
     float minin = x->x_minin;
     float minout = x->x_minout;
+    float maxout = x->x_maxout;
     float rangein = x->x_maxin - minin;
-    float rangeout = x->x_maxout - minout;
-    float exp = x->x_exp;
+    float rangeout = maxout - minout;
+    float e = x->x_exp;
     if(f == minin)
         return(minout);
     if(f == x->x_maxin)
-        return(x->x_maxout);
+        return(maxout);
     if(x->x_clip){
         if(f < minin)
             return(minout);
         else if(f > x->x_maxin)
-            return(x->x_maxout);
+            return(maxout);
     }
-    if(fabs(exp) == 1) // linear
+    if(e == 0) // linear
         return(minout + rangeout * (f-minin)/rangein);
-    else if(exp >= 0){ // exponential
-        float p = (f-minin)/rangein;
-        return(minout + rangeout * copysign(pow(fabs(p), exp), p));
+    float p = (f-minin)/rangein; // position
+    if(e == 1){ // 'log'
+        if((minout <= 0 && maxout >= 0) || (minout >= 0 && maxout <= 0)){
+            pd_error(x, "[rescale]: output range cannot contain '0' in log mode");
+            return(0);
+        }
+        return(exp(p * log(maxout / minout)) * minout);
     }
-    else{ // negative exponential
-        float p = 1 - ((f-minin)/rangein);
-        return(minout + (rangeout * (1 - copysign(pow(fabs(p), -exp), p))));
-    }
+    if(e > 0) // exponential
+        return(pow(p, e) * rangeout + minout);
+    else // negative exponential
+        return((1 - pow(1-p, -e)) * rangeout + minout);
 }
 
 static void rescale_list(t_rescale *x, t_symbol *s, int ac, t_atom *av){
@@ -80,7 +85,7 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
     x->x_maxin = 127;
     x->x_minout = 0;
     x->x_maxout = 1;
-    x->x_exp = 1.f;
+    x->x_exp = 0.f;
     t_int numargs = 0;
     if(ac > 0){
         if(av->a_type == A_SYMBOL){
