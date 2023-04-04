@@ -58,7 +58,7 @@ static float convert(t_rescale *x, float f){
 static void rescale_list(t_rescale *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 0)
-        outlet_float(x->x_outlet, convert(x, x->x_f));
+        post("[rescale]: no method for bang");
     else if(ac == 1)
         outlet_float(x->x_obj.ob_outlet, convert(x, atom_getfloat(av)));
     else{
@@ -68,10 +68,6 @@ static void rescale_list(t_rescale *x, t_symbol *s, int ac, t_atom *av){
         outlet_list(x->x_obj.ob_outlet, &s_list, ac, at);
         free(at);
     }
-}
-
-static void rescale_set(t_rescale *x, t_floatarg f){
-    x->x_f = f;
 }
 
 static void rescale_exp(t_rescale *x, t_floatarg f){
@@ -173,7 +169,6 @@ void rescale_setup(void){
     rescale_class = class_new(gensym("rescale"), (t_newmethod)rescale_new, 0,
         sizeof(t_rescale), 0, A_GIMME, 0);
     class_addlist(rescale_class, (t_method)rescale_list);
-    class_addmethod(rescale_class, (t_method)rescale_set, gensym("set"), A_DEFFLOAT,0 );
     class_addmethod(rescale_class, (t_method)rescale_exp, gensym("exp"), A_DEFFLOAT, 0);
     class_addmethod(rescale_class, (t_method)rescale_clip, gensym("clip"), A_FLOAT, 0);
 }
