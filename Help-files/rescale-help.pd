@@ -178,7 +178,7 @@
 #X obj 45 273 else/rescale~;
 #X obj 178 248 else/rescale -1 1;
 #X obj 178 159 else/initmess 16 63 127;
-#N canvas 288 93 975 347 log/exponential 0;
+#N canvas 287 248 975 347 log/exponential 0;
 #X floatatom 488 130 10 1 1.2 0 - - - 0;
 #X obj 464 63 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 693 169 cnv 15 198 138 empty empty empty 20 12 0 14 #e0e0e0 #404040 0;

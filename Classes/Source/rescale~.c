@@ -126,7 +126,7 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
     x->x_maxin = 1;
     x->x_minout = 0;
     x->x_maxout = 1;
-    x->x_exp = 1;
+    x->x_exp = 0;
     x->x_mode = 0;
     x->x_clip = 0;
     t_int numargs = 0;
