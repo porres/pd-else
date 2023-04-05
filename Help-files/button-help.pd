@@ -103,7 +103,7 @@
 #X connect 13 0 0 0;
 #X connect 14 0 0 0;
 #X restore 479 197 pd modes;
-#N canvas 822 119 417 361 exmaple 0;
+#N canvas 822 119 417 361 example 0;
 #X obj 135 119 else/button 60 25 220 220 220 128 128 159 1;
 #X obj 135 184 sel 0 1;
 #X obj 154 279 s \$0-note;
@@ -118,7 +118,7 @@
 #X connect 4 0 2 0;
 #X connect 5 0 1 0;
 #X connect 6 0 2 0;
-#X restore 467 239 pd exmaple;
+#X restore 467 239 pd example;
 #X text 192 282 bang;
 #X text 213 474 -bng: set to bang mode (default: latch);
 #X text 213 489 -tgl: set to toggle mode (default: latch);
