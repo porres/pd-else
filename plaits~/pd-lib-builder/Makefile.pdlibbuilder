@@ -200,11 +200,11 @@ version = 0.5.1
 # CFLAGS:
 # Compiler flags which are not strictly required for building. Compiler flags
 # defined by Makefile.pdlibbuilder for warning, optimization and architecture
-# specification are overriden by CFLAGS.
+# specification are overridden by CFLAGS.
 #
 # LDFLAGS:
 # Linker flags which are not strictly required for building. Linker flags
-# defined by Makefile.pdlibbuilder for architecture specification are overriden
+# defined by Makefile.pdlibbuilder for architecture specification are overridden
 # by LDFLAGS.
 #
 # CC and CXX:
@@ -501,7 +501,7 @@ endif
 
 
 # Set architecture-dependent cflags, mainly for Linux. For Mac and Windows,
-# arch.c.flags are overriden below.
+# arch.c.flags are overridden below.
 
 # Raspberry Pi 1st generation
 ifeq ($(target.arch), armv6l)
@@ -674,7 +674,7 @@ pdincludepathwithspaces := $(if $(word 2, $(PDINCLUDEDIR)), $(PDINCLUDEDIR))
 # From GNU make docs: 'Users expect to be able to specify CFLAGS freely
 # themselves.' So we use CFLAGS to define options which  are not strictly
 # required for compilation: optimizations, architecture specifications, and
-# warnings. CFLAGS can be safely overriden using a make command argument.
+# warnings. CFLAGS can be safely overridden using a make command argument.
 # Variables cflags, ldflags and ldlibs may be defined in including makefile.
 
 optimization.flags = -O3 -ffast-math -funroll-loops -fomit-frame-pointer
