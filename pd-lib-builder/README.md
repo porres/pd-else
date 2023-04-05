@@ -83,7 +83,7 @@ advanced compilation see tips-tricks.md.
 
 The project is versioned in MAJOR.MINOR.BUGFIX format (see http://semver.org),
 and maintained at https://github.com/pure-data/pd-lib-builder. Pd lib developers
-are invited to regulary check for updates, and to contribute and discuss
+are invited to regularly check for updates, and to contribute and discuss
 improvements here. If you really need to distribute a personalized version with
 your library, rename Makefile.pdlibbuilder to avoid confusion.
 
