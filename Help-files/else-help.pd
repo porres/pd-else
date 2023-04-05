@@ -50,7 +50,7 @@
 #X text 168 628 - Pd flavor information;
 #X obj 315 448 else/format ELSE %d.%d-%d_%s-%d;
 #X msg 100 320 dir;
-#X obj 100 378 print ELSE's dirctory is;
+#X obj 100 378 print ELSE's directory is;
 #X text 121 582 symbol;
 #X text 168 583 - ELSE's directory when receiving 'dir' message;
 #X obj 100 346 else;
