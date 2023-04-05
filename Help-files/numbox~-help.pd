@@ -73,7 +73,7 @@
 #X floatatom 141 121 5 0 500 0 - - - 12;
 #X msg 188 123 ramp \$1;
 #X floatatom 188 94 5 0 500 0 - - - 12;
-#X text 45 442 When in generating mode \, you can click to activate the box and type in a number then hit enter. You can also drag the mouse up pr down or use up/down arrows to increment/decrement values. If shift is pressed when clicking on the box the mouse draging or up/down arrows incremente/decrement in hundredths., f 61;
+#X text 45 442 When in generating mode \, you can click to activate the box and type in a number then hit enter. You can also drag the mouse up or down or use up/down arrows to increment/decrement values. If shift is pressed when clicking on the box the mouse dragging or up/down arrows incremente/decrement in hundredths., f 61;
 #X msg 241 94 range -100 100;
 #X text 45 515 You can set a minimum and maximum range that limits values \, but only for dragging and using up/down arrows. This is set via the 'range' message \, -range flag or via properties., f 61;
 #X text 315 176 double click to restore initial state, f 14;
