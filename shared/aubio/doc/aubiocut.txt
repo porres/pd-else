@@ -50,7 +50,7 @@ OPTIONS
   --cut-until-nslices n  How many extra slices should be added at the end of
   each slice (default 0).
 
-  --create-first  Alway create first slice.
+  --create-first  Always create first slice.
 
   -h, --help  Print a short help message and exit.
 

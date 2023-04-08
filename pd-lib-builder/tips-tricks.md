@@ -214,7 +214,7 @@ git submodule update
 #### Drawbacks
 `git submodule` has a number of drawbacks:
 - it requires special commands to synchronize the submodules, in addition to
-  synching your repository.
+  syncing your repository.
 - you must make sure to use an URL for the submodule that is accessible to your
   potential users. e.g. using `git@github.com:pure-data/pd-lib-builder` is bad,
   because it requires everybody who wants to checkout your sources to have a
