@@ -5,16 +5,16 @@
 #include <stdarg.h>
 
 // interpolation
-float interp_lin(double frac, double b, double c){
+double interp_lin(double frac, double b, double c){
     return(b + frac * (c-b));
 }
 
-float interp_cos(double frac, double b, double c){
+double interp_cos(double frac, double b, double c){
     frac = (cos(frac * -M_PI)) * 0.5 + 0.5;
     return(c + frac * (b-c));
 }
 
-float interp_pow(double frac, double b, double c, double p){
+double interp_pow(double frac, double b, double c, double p){
     double dif = c-b;
     if(fabs(p) == 1) // linear
         return(b + frac * dif);
@@ -34,27 +34,27 @@ float interp_pow(double frac, double b, double c, double p){
     }
 }
 
-float interp_lagrange(double frac, double a, double b, double c, double d){
+double interp_lagrange(double frac, double a, double b, double c, double d){
     double cminusb = c-b;
     return((t_float)(b + frac * (cminusb - (1. - frac)*ONE_SIXTH *
         ((d - a - 3.0*cminusb) * frac + d + 2.0*a - 3.0*b))));
 }
 
-float interp_cubic(double frac, double a, double b, double c, double d){
+double interp_cubic(double frac, double a, double b, double c, double d){
     double p0 = d - a + b - c;
     double p1 = a - b - p0;
     double p2 = c - a;
-    return((t_float)(b + frac*(p2 + frac*(p1 + frac*p0))));
+    return(b + frac*(p2 + frac*(p1 + frac*p0)));
 }
 
-float interp_spline(double frac, double a, double b, double c, double d){
+double interp_spline(double frac, double a, double b, double c, double d){
     double p0 = 0.5*(d - a) + 1.5*(b - c);
     double p2 = 0.5*(c - a);
     double p1 = a - b + p2 - p0;
-    return((t_float)(b + frac*(p2 + frac * (p1 + frac*p0))));
+    return(b + frac*(p2 + frac * (p1 + frac*p0)));
 }
 
-float interp_hermite(double frac, double a, double b, double c, double d,
+double interp_hermite(double frac, double a, double b, double c, double d,
 double bias, double tension){
     double frac2 = frac*frac;
     double frac3 = frac*frac2;
@@ -67,7 +67,7 @@ double bias, double tension){
     double p0 = 2*p2 - frac2 + 1.;
     double p1 = p2 - frac2 + frac;
     double p3 = frac2 - 2*p2;
-    return((t_float)(p0*b + p1*m0 + p2*m1 + p3*c));
+    return(p0*b + p1*m0 + p2*m1 + p3*c);
 }
 
 // on failure *bufsize is not modified

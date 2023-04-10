@@ -31,13 +31,13 @@ typedef struct _buffer{
                              // should be used with c_numchans == 1
 }t_buffer;
 
-float interp_lin(double frac, double b, double c);
-float interp_cos(double frac, double b, double c);
-float interp_pow(double frac, double b, double c, double p);
-float interp_lagrange(double frac, double a, double b, double c, double d);
-float interp_cubic(double frac, double a, double b, double c, double d);
-float interp_spline(double frac, double a, double b, double c, double d);
-float interp_hermite(double frac, double a, double b, double c, double d,
+double interp_lin(double frac, double b, double c);
+double interp_cos(double frac, double b, double c);
+double interp_pow(double frac, double b, double c, double p);
+double interp_lagrange(double frac, double a, double b, double c, double d);
+double interp_cubic(double frac, double a, double b, double c, double d);
+double interp_spline(double frac, double a, double b, double c, double d);
+double interp_hermite(double frac, double a, double b, double c, double d,
     double bias, double tension);
 
 void buffer_bug(char *fmt, ...);
