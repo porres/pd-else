@@ -24,9 +24,9 @@ static int else_bugfix = 0;
 #define STATUS "rc"
 static int status_number = 8;
 
-static void else_obj_dir(t_else_obj *x){
+/*static void else_obj_dir(t_else_obj *x){
     outlet_symbol(x->x_obj.te_outlet, else_obj_class->c_externdir);
-}
+}*/
 
 static void else_obj_version(t_else_obj *x){
     int ac = 5;
@@ -114,12 +114,12 @@ void else_setup(void){
     t_else_obj *x = (t_else_obj *)pd_new(else_obj_class);
     class_addmethod(else_obj_class, (t_method)else_obj_about, gensym("about"), 0);
     class_addmethod(else_obj_class, (t_method)else_obj_version, gensym("version"), 0);
-    class_addmethod(else_obj_class, (t_method)else_obj_dir, gensym("dir"), 0);
+//    class_addmethod(else_obj_class, (t_method)else_obj_dir, gensym("dir"), 0);
 //    if(!printed){ // ????
         else_obj_about(x);
 //        printed = 1;
 //    }
 //    char else_dir[MAXPDSTRING];
 //    strcpy(else_dir, else_obj_class->c_externdir->s_name);
-    sys_vgui("eval [read [open [file join %s else-browser.tcl]]]\n", else_obj_class->c_externdir->s_name);
+//    sys_vgui("eval [read [open [file join %s else-browser.tcl]]]\n", else_obj_class->c_externdir->s_name);
 }
