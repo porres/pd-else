@@ -29,8 +29,6 @@ ELSE is a big library of externals that extends the performance Pure Data (Pd) -
 
 ELSE provides a cohesive system for computer music, it also serves as a basis for an Live Electronics Tutorial by the same author, yours truly, Alexandre Torres Porres. This library's repository resides at <https://github.com/porres/pd-else/>. This tutorial is also found as part of the download of the ELSE library. Look for the 'Live-Electronics-Tutorial' folder inside it and also check its README on how to install it.
 
-Note that you can also download Camomile with support for ELSE externals, see <https://github.com/emviveros/Camomile-ELSE/releases>.
-
 ELSE is also part of PlugData by Timothy Schoen, which is a fork of Pd that loads as a standalone or VST with a revamped GUI. ELSE has received collaboration from Tim and others involved with PlugData and many objects have been included in ELSE just so they are supported in PlugData. ​See: <https://github.com/timothyschoen/PlugData>
 
 This project is still in an experimental phase (currently at a 'release candidate' phase), where  changes may occur and backwards compatibility is not guaranteed until a final and more stable release is available. 
@@ -103,11 +101,9 @@ I'd also like to thank my Cyclone buddies Derek Kwan and Matt Barber, cause I st
 
 Lucarda is always helpful testing stuff for Windows and more. Seb shader is a tcl/tk master that helped me a lot with this (which I know next to nothing) and is responsible for the [keycode] object.
 
-Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of ELSE for other systems as well as ELSE for Camomile. See: <https://github.com/porres/Camomile-ELSE>.
-
 Albert Graef from Purr Data is doing a great job helping port ELSE so it builds and runs on Purr Data (still experimental and a long way to go). He's also doing several valuable contributions to the code and being helpful in general in this process - check <https://github.com/agraef/purr-data/releases/tag/2.19.2+ELSE>.
 
-For Last, Timothy Schoen is doing an amazing jaw dropping job with PlugData, a project based on camomile that includes ELSE. Timothy has also helped me fix many ELSE related issues and coded first versions of compiled band limited oscillators. PlugData is also a fork of Pd with a revamped GUI. See: <https://github.com/timothyschoen/PlugData>.
+Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of ELSE for other systems as well as ELSE for Camomile and libpd projects, which opened the way for PlugData by Timothy Schoen, who's doing an amazing jaw dropping job with this project based on camomile that includes ELSE. Timothy has also helped me fix many ELSE related issues and coded first versions of compiled band limited oscillators. PlugData is also a fork of Pd with a revamped GUI. See: <https://github.com/timothyschoen/PlugData>.
 
 --------------------------------------------------------------------------
 
