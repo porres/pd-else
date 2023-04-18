@@ -28,7 +28,7 @@ jobs:
         
 
     - name: Install FluidSynth deps
-      run: sudo apt install cmake libglib2.0-dev libsndfile1-dev patchelf -y
+      run: sudo apt install cmake libglib2.0-dev libpcre++-dev libsndfile1-dev patchelf -y
 
     - name: Download and build FluidSynth
       run: | 
