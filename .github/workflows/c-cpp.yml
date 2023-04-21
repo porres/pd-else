@@ -125,7 +125,8 @@ jobs:
       run: | 
         mkdir ./else-Windows 
         cd sfont~
-        make scripts/localdeps.win.sh extension=m_amd64
+        make extension=m_amd64
+        make localdep_windows
         cd ..
         cp sfont~/* ./else-Windows
 
