@@ -9,6 +9,10 @@ on:
     paths-ignore: ['md-help/**', 'Help-files/**']
 
 jobs:
+
+# ===============================================================
+# ===============================================================
+# ===============================================================
   Linux-Build:
     runs-on: ubuntu-latest
     steps:
@@ -23,7 +27,7 @@ jobs:
         unzip pure-data.zip
         rm pure-data.zip
         mv pure-data-* pure-data
-        
+
     - name: Install FluidSynth deps
       run: sudo apt install cmake libglib2.0-dev libpcre++-dev libsndfile1-dev patchelf -y
 
@@ -54,10 +58,15 @@ jobs:
         sudo ldconfig 
         sudo ldconfig -v
 
-    - name: Linux script
+    - name: Build sfont~
       run: |
         cd sfont~
         make PDLIBDIR=${{github.workspace}}/else-Linux/ localdep_linux
+
+    - name: Build plaits~
+      run: |
+
+
         
     - name: Compile Objects
       run: make PDINCLUDEDIR=./pure-data/src/
@@ -85,7 +94,6 @@ jobs:
 # ===============================================================
 # ===============================================================
 
-
   Windows-Build:  
     runs-on: windows-latest
     timeout-minutes: 15
@@ -112,20 +120,26 @@ jobs:
         choco install puredata --yes
 
     - if: runner.os == 'Windows'
-      name: Download and build FluidSynth
+      name: Build sfont
       shell: msys2 {0}
       run: | 
         mkdir ./else-Windows 
         cd sfont~
-        make scripts/localdeps.win.sh
-        cd .. 
-        make 
+        make scripts/localdeps.win.sh extension=m_amd64
+        cd ..
+        cp sfont~/* ./else-Windows
+
+    - if: runner.os == 'Windows'
+      name: Build pd-else
+      shell: msys2 {0}
+      run: |
+        make extension=m_amd64 
 
     - if: runner.os == 'Windows'
       name: Create Library Folder
       shell: msys2 {0}
       run: |
-        cp *.dll ./else-Windows
+        cp *.m_amd64 ./else-Windows
         cp Help-files/* ./else-Windows
         cp Classes/libpd-abs/* ./else-Windows
         cp Classes/Abstractions/* ./else-Windows
@@ -133,11 +147,15 @@ jobs:
         cp -r Live-Electronics-Tutorial ./else-Windows
         cp extra/* ./else-Windows
         cp README.pdf ./else-Windows
-        mv -v ./else-Windows/sfont~/* ./else-Windows/
-        rm -rf ./else-Windows/sfont~
+        mkdir ./else-Windows/sfont~
+        mv -v ./sfont~/* ./else-Windows/sfont~
 
     - name: Upload Zip
       uses: actions/upload-artifact@v3
       with:
         name: else-WINDOWS64-Bits
         path: ./else-Windows/*
+
+# ===============================================================
+# ===============================================================
+# ===============================================================
