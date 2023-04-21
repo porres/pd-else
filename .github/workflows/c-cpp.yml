@@ -106,7 +106,9 @@ jobs:
         mkdir py4pd_WIN64
         choco install puredata --yes
 
-    - name: Downloads pd-Sources 
+    - if: runner.os == 'Windows'
+      name: "Downloads pd-Sources"
+      uses: msys2/setup-msys2@v2
       run: | 
         PD_URL=$(curl -L -s https://api.github.com/repos/pure-data/pure-data/tags | grep zipball_url | grep -v latest | grep -v pd-0.52 | grep -v tagtest | head -n 1 | cut -d '"' -f 4)
         curl -L -o pure-data.zip $PD_URL
