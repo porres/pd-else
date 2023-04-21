@@ -83,7 +83,6 @@ jobs:
 
   Windows-Build:  
     runs-on: windows-latest
-    if: ${{ github.event.inputs.Windows == 'true' }}
     timeout-minutes: 15
     steps:
     - uses: actions/checkout@v3
