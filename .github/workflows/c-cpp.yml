@@ -98,7 +98,7 @@ jobs:
       name: "Install mingw deps"
       uses: msys2/setup-msys2@v2
       with:
-          install: make autoconf automake libtool mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-ntldd-git libtool mingw-w64-x86_64-libwinpthread-git mingw-w64-x86_64-libsystre mingw-w64-x86_64-dlfcn  mingw-w64-x86_64-fluidsynth  mingw-w64-x86_64-grep
+          install: make autoconf automake libtool mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-ntldd-git libtool mingw-w64-x86_64-libwinpthread-git mingw-w64-x86_64-libsystre mingw-w64-x86_64-dlfcn  mingw-w64-x86_64-fluidsynth  mingw-w64-x86_64-grep unzip
           update: false
 
     - name: Configure Environment
@@ -107,8 +107,8 @@ jobs:
         choco install puredata --yes
 
     - if: runner.os == 'Windows'
-      name: "Downloads pd-Sources"
-      uses: msys2/setup-msys2@v2
+      name: Build pd-else
+      shell: msys2 {0}
       run: | 
         PD_URL=$(curl -L -s https://api.github.com/repos/pure-data/pure-data/tags | grep zipball_url | grep -v latest | grep -v pd-0.52 | grep -v tagtest | head -n 1 | cut -d '"' -f 4)
         curl -L -o pure-data.zip $PD_URL
@@ -116,7 +116,9 @@ jobs:
         rm pure-data.zip
         mv pure-data-* pure-data
 
-    - name: Download and build FluidSynth
+    - if: runner.os == 'Windows'
+      name: Download and build FluidSynth
+      shell: msys2 {0}
       run: | 
         mkdir ./else-Windows 
         cd sfont~
