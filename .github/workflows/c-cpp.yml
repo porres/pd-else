@@ -98,7 +98,7 @@ jobs:
       name: "Install mingw deps"
       uses: msys2/setup-msys2@v2
       with:
-          install: make autoconf automake libtool mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-ntldd-git libtool mingw-w64-x86_64-libwinpthread-git mingw-w64-x86_64-libsystre mingw-w64-x86_64-dlfcn pacman -S mingw-w64-x86_64-fluidsynth pacman -S mingw-w64-x86_64-grep
+          install: make autoconf automake libtool mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-ntldd-git libtool mingw-w64-x86_64-libwinpthread-git mingw-w64-x86_64-libsystre mingw-w64-x86_64-dlfcn  mingw-w64-x86_64-fluidsynth  mingw-w64-x86_64-grep
           update: false
 
     - name: Configure Environment
