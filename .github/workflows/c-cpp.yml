@@ -122,15 +122,6 @@ jobs:
       run: | 
         mkdir ./else-Windows 
         cd sfont~
-        URL=$(curl -L -s https://api.github.com/repos/FluidSynth/fluidsynth/releases/latest | grep zipball_url | cut -d '"' -f 4)
-        curl -L -o fluidsynth.zip $URL
-        unzip fluidsynth.zip
-        rm fluidsynth.zip
-        mv FluidSynth-* FluidSynth
-        cd FluidSynth
-        mkdir build
-        cd build
-        cmake -Denable-libsndfile=on -Denable-jack=off -Denable-alsa=off -Denable-oss=off -Denable-pulseaudio=off -Denable-ladspa=off -Denable-aufile=off -Denable-network=off -Denable-ipv6=off -Denable-getopt=off -Denable-sdl2=off -Denable-threads=off ..
         make 
         cd ../..
         make PDINCLUDEDIR=${{github.workspace}}/pure-data/src
