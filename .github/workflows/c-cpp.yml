@@ -123,5 +123,5 @@ jobs:
         mkdir ./else-Windows 
         cd sfont~
         make 
-        cd ../..
+        cd .. 
         make PDINCLUDEDIR=${{github.workspace}}/pure-data/src
