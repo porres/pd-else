@@ -47,8 +47,9 @@ jobs:
         sudo ldconfig -v
         sudo make install
         cd ../..
-        make PDINCLUDEDIR=${{github.workspace}}/pure-data/src
+        make 
         
+    # PDINCLUDEDIR=${{github.workspace}}/pure-data/src  
     - name: Add Dynamic libraries 
       run: |
         sudo sh -c 'echo "/lib/x86_64-linux-gnu/" >> /etc/ld.so.conf'
@@ -60,7 +61,7 @@ jobs:
     - name: Linux script
       run: |
         cd sfont~
-        make PDLIBDIR=${{github.workspace}}/else-Linux/ localdep_linux
+        make localdep_linux
         
     - name: Compile Objects
       run: make PDINCLUDEDIR=./pure-data/src/
