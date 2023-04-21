@@ -124,4 +124,4 @@ jobs:
         cd sfont~
         make 
         cd .. 
-        make PDINCLUDEDIR=${{github.workspace}}/pure-data/src
+        make 
