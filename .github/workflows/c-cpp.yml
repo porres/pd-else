@@ -128,7 +128,6 @@ jobs:
         make extension=m_amd64
         make localdep_windows
         cd ..
-        cp sfont~/* ./else-Windows
 
     - if: runner.os == 'Windows'
       name: Build pd-else
@@ -149,7 +148,7 @@ jobs:
         cp extra/* ./else-Windows
         cp README.pdf ./else-Windows
         mkdir ./else-Windows/sfont~
-        mv -v ./sfont~/* ./else-Windows/sfont~
+        cp -vr ./sfont~/* ./else-Windows/sfont~
 
     - name: Upload Zip
       uses: actions/upload-artifact@v3
