@@ -46,9 +46,12 @@ jobs:
         sudo ldconfig /lib/x86_64-linux-gnu/
         sudo ldconfig -v
         sudo make install
-        cd ../..
+
+
+    - name: Make Else
+      run: | 
         make 
-        
+
     # PDINCLUDEDIR=${{github.workspace}}/pure-data/src  
     - name: Add Dynamic libraries 
       run: |
@@ -79,8 +82,8 @@ jobs:
         mv -v ./else-Linux/sfont~/* ./else-Linux/
         rm -rf ./else-Linux/sfont~
         
-    - name: Upload Zip
-      uses: actions/upload-artifact@v3
-      with:
-        name: else-MAIN-LINUX64-Bits
-        path: ./else-Linux/*
+    # - name: Upload Zip
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: else-MAIN-LINUX64-Bits
+    #     path: ./else-Linux/*
