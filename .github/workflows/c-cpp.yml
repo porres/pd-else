@@ -126,9 +126,16 @@ jobs:
         mkdir ./else-Windows 
         cd sfont~
         make extension=m_amd64
-        make localdep_windows
+        ./scripts/localdeps.win.sh sfont~.m_amd64
         cd ..
-
+    
+    - if: runner.os == 'Windows'
+      name: Build plaits~
+      shell: msys2 {0}
+      run: | 
+        cd plaits~
+        make extension=m_amd64
+        
     - if: runner.os == 'Windows'
       name: Build pd-else
       shell: msys2 {0}
@@ -145,10 +152,11 @@ jobs:
         cp Classes/Abstractions/* ./else-Windows
         cp Classes/Abs_components/* ./else-Windows
         cp -r Live-Electronics-Tutorial ./else-Windows
+        cp plaits~/*.m_amd64 ./else-Windows
         cp extra/* ./else-Windows
         cp README.pdf ./else-Windows
-        mkdir ./else-Windows/sfont~
-        cp -vr ./sfont~/* ./else-Windows/sfont~
+        cp -vr ./sfont~/* ./else-Windows/
+        cd else-Windows
 
     - name: Upload Zip
       uses: actions/upload-artifact@v3
