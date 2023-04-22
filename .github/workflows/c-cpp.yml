@@ -13,82 +13,83 @@ jobs:
 # ===============================================================
 # ===============================================================
 # ===============================================================
-  # Linux-Build:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #   - name: Install PureData
-  #     run: sudo apt-get install puredata -y 
+  Linux-Build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install PureData
+      run: sudo apt-get install puredata -y 
 
-  #   - name: Downloads pd-Sources 
-  #     run: | 
-  #       PD_URL=$(curl -L -s https://api.github.com/repos/pure-data/pure-data/tags | grep zipball_url | grep -v latest | grep -v pd-0.52 | grep -v tagtest | head -n 1 | cut -d '"' -f 4)
-  #       curl -L -o pure-data.zip $PD_URL
-  #       unzip pure-data.zip
-  #       rm pure-data.zip
-  #       mv pure-data-* pure-data
+    - name: Downloads pd-Sources 
+      run: | 
+        PD_URL=$(curl -L -s https://api.github.com/repos/pure-data/pure-data/tags | grep zipball_url | grep -v latest | grep -v pd-0.52 | grep -v tagtest | head -n 1 | cut -d '"' -f 4)
+        curl -L -o pure-data.zip $PD_URL
+        unzip pure-data.zip
+        rm pure-data.zip
+        mv pure-data-* pure-data
 
-  #   - name: Install FluidSynth deps
-  #     run: sudo apt install cmake libglib2.0-dev libpcre++-dev libsndfile1-dev patchelf -y
+    - name: Install FluidSynth deps
+      run: sudo apt install cmake libglib2.0-dev libpcre++-dev libsndfile1-dev patchelf -y
 
-  #   - name: Download and build FluidSynth
-  #     run: | 
-  #       mkdir ./else-Linux 
-  #       cd sfont~
-  #       URL=$(curl -L -s https://api.github.com/repos/FluidSynth/fluidsynth/releases/latest | grep zipball_url | cut -d '"' -f 4)
-  #       curl -L -o fluidsynth.zip $URL
-  #       unzip fluidsynth.zip
-  #       rm fluidsynth.zip
-  #       mv FluidSynth-* FluidSynth
-  #       cd FluidSynth
-  #       mkdir build
-  #       cd build
-  #       cmake -Denable-libsndfile=on -Denable-jack=off -Denable-alsa=off -Denable-oss=off -Denable-pulseaudio=off -Denable-ladspa=off -Denable-aufile=off -Denable-network=off -Denable-ipv6=off -Denable-getopt=off -Denable-sdl2=off -Denable-threads=off ..
-  #       sudo ldconfig /lib/x86_64-linux-gnu/
-  #       sudo ldconfig -v
-  #       sudo make install
-  #       cd ../..
-  #       make PDINCLUDEDIR=${{github.workspace}}/pure-data/src
+    - name: build FluidSynth
+      run: | 
+        mkdir ./else-Linux 
+        cd sfont~
+        URL=$(curl -L -s https://api.github.com/repos/FluidSynth/fluidsynth/releases/latest | grep zipball_url | cut -d '"' -f 4)
+        curl -L -o fluidsynth.zip $URL
+        unzip fluidsynth.zip
+        rm fluidsynth.zip
+        mv FluidSynth-* FluidSynth
+        cd FluidSynth
+        mkdir build
+        cd build
+        cmake -Denable-libsndfile=on -Denable-jack=off -Denable-alsa=off -Denable-oss=off -Denable-pulseaudio=off -Denable-ladspa=off -Denable-aufile=off -Denable-network=off -Denable-ipv6=off -Denable-getopt=off -Denable-sdl2=off -Denable-threads=off ..
+        sudo ldconfig /lib/x86_64-linux-gnu/
+        sudo ldconfig -v
+        sudo make install 
+    
+    - name: Add Dynamic libraries 
+      run: |
+        sudo sh -c 'echo "/lib/x86_64-linux-gnu/" >> /etc/ld.so.conf'
+        sudo sh -c 'echo "/lib64/" >> /etc/ld.so.conf'
+        sudo sh -c 'echo "/usr/local/lib/" >> /etc/ld.so.conf'
+        sudo ldconfig 
+        sudo ldconfig -v
+
+    - name: Build sfont~
+      run: |
+        cd sfont~
+        make PDLIBDIR=${{github.workspace}}/else-Linux/ localdep_linux
+
+    - name: Build plaits~
+      run: |
+        cd plaits~
+        make PDINCLUDEDIR=${{github.workspace}}/pure-data/src 
+
+    - name: Build pd-else
+      run: | 
+        make PDINCLUDEDIR=./pure-data/src/
+
+    - name: Create Library Folder
+      run: | 
+        cp *.pd_linux ./else-Linux
+        cp Help-files/* ./else-Linux
+        cp Classes/libpd-abs/* ./else-Linux
+        cp Classes/Abstractions/* ./else-Linux
+        cp Classes/Abs_components/* ./else-Linux
+        cp -r Live-Electronics-Tutorial ./else-Linux
+        cp plaits~/*.pd_linux ./else-Linux
+        ./sfont~/scripts/localdeps.linux.sh ./else-Linux/sfont~.pd_linux
+        cp extra/* ./else-Linux
+        cp README.pdf ./else-Linux
+        mv -v ./else-Linux/sfont~/* ./else-Linux/
+        rm -rf ./else-Linux/sfont~
         
-  #   - name: Add Dynamic libraries 
-  #     run: |
-  #       sudo sh -c 'echo "/lib/x86_64-linux-gnu/" >> /etc/ld.so.conf'
-  #       sudo sh -c 'echo "/lib64/" >> /etc/ld.so.conf'
-  #       sudo sh -c 'echo "/usr/local/lib/" >> /etc/ld.so.conf'
-  #       sudo ldconfig 
-  #       sudo ldconfig -v
-
-  #   - name: Build sfont~
-  #     run: |
-  #       cd sfont~
-  #       make PDLIBDIR=${{github.workspace}}/else-Linux/ localdep_linux
-
-  #   - name: Build plaits~
-  #     run: |
-
-
-        
-  #   - name: Compile Objects
-  #     run: make PDINCLUDEDIR=./pure-data/src/
-
-  #   - name: Create Library Folder
-  #     run: | 
-  #       cp *.pd_linux ./else-Linux
-  #       cp Help-files/* ./else-Linux
-  #       cp Classes/libpd-abs/* ./else-Linux
-  #       cp Classes/Abstractions/* ./else-Linux
-  #       cp Classes/Abs_components/* ./else-Linux
-  #       cp -r Live-Electronics-Tutorial ./else-Linux
-  #       cp extra/* ./else-Linux
-  #       cp README.pdf ./else-Linux
-  #       mv -v ./else-Linux/sfont~/* ./else-Linux/
-  #       rm -rf ./else-Linux/sfont~
-        
-  #   - name: Upload Zip
-  #     uses: actions/upload-artifact@v3
-  #     with:
-  #       name: else-MAIN-LINUX64-Bits
-  #       path: ./else-Linux/*
+    - name: Upload Zip
+      uses: actions/upload-artifact@v3
+      with:
+        name: else-MAIN-LINUX64-Bits
+        path: ./else-Linux/*
 
 # ===============================================================
 # ===============================================================
