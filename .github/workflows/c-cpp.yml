@@ -120,7 +120,7 @@ jobs:
         choco install puredata --yes
 
     - if: runner.os == 'Windows'
-      name: Build sfont
+      name: Build sfont~
       shell: msys2 {0}
       run: | 
         mkdir ./else-Windows 
@@ -151,10 +151,12 @@ jobs:
         cp Classes/libpd-abs/* ./else-Windows
         cp Classes/Abstractions/* ./else-Windows
         cp Classes/Abs_components/* ./else-Windows
+        mkdir ./else-Windows/sf
+        cp sfont~/sf/* ./else-Windows/sf
         cp -r Live-Electronics-Tutorial ./else-Windows
         cp plaits~/*.m_amd64 ./else-Windows
         cp sfont~/*.m_amd64 ./else-Windows
-        ./sfont~/scripts/localdeps.win.sh ./else-Windows/sfont~.m_amd64
+        cp sfont~/sfont-compiled/*.w64 ./else-Windows
         cp extra/* ./else-Windows
         cp README.pdf ./else-Windows
         
@@ -167,3 +169,5 @@ jobs:
 # ===============================================================
 # ===============================================================
 # ===============================================================
+
+
