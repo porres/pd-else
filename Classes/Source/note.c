@@ -542,7 +542,7 @@ static void note_get_rcv(t_note* x){
                 if(x->x_r_flag){ // we got a receive flag, let's get it
                     for(i = 0;  i <= n_args; i++){
                         atom_string(binbuf_getvec(bb) + i, buf, 128);
-                        if(gensym(buf) == gensym("@receive")){
+                        if(gensym(buf) == gensym("-receive")){
                             i++;
                             atom_string(binbuf_getvec(bb) + i, buf, 128);
                             x->x_rcv_raw = gensym(buf);
