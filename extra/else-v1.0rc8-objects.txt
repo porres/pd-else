@@ -194,6 +194,7 @@ iterate 	x
 keyboard	x
 keycode	x
 keymap	x
+knob	x
 lag~	x
 lag2~	x
 lastvalue	x

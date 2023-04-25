@@ -25,6 +25,7 @@ uname := $(shell uname -s)
 else.class.sources := Classes/Source/else.c
 
 # GUI:
+knob.class.sources := Classes/Source/knob.c
 button.class.sources := Classes/Source/button.c
 pic.class.sources := Classes/Source/pic.c
 keyboard.class.sources := Classes/Source/keyboard.c

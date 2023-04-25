@@ -107,7 +107,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 --------------------------------------------------------------------------
 
-## Current Object list (475 objects):
+## Current Object list (476 objects):
 
 **ASSORTED: [03]**
 
@@ -651,8 +651,9 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 - [zerocross~]
 - [beat~]
 
-**GUI: [36]**
+**GUI: [37]**
 
+- [knob]
 - [numbox~]
 - [drum.seq]
 - [bicoeff]
