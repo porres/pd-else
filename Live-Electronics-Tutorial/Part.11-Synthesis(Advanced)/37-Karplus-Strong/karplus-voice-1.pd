@@ -47,7 +47,7 @@
 #X text 177 181 <=== use instance number to pick;
 #X obj 83 91 random 500;
 #X obj 51 117 pipe;
-#X text 163 93 <= attack at a random value in ms;
+#X text 163 93 <= attack at a random value im ms;
 #X obj 51 63 t f b;
 #X obj 434 467 display;
 #X obj 458 152 f \$0;
