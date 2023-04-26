@@ -2,12 +2,9 @@
 
 #include <math.h>
 #include "m_pd.h"
+#include "buffer.h"
 
 #define DELSIZE 1048576
-
-#ifndef M_PI
-#define M_PI 3.1415926535897932384626433832795
-#endif
 
 static t_class *fdelay_class;
 
@@ -32,13 +29,6 @@ typedef struct _fdelay{
     float       dcIn;
 	float       dcOut;
 }t_fdelay;
-
-static float interp_spline(float frac, float a, float b, float c, float d){
-    float p0 = 0.5f * (d - a - b - c) + (b - c);
-    float p2 = 0.5f * (c - a);
-    float p1 = a - b + p2 - p0;
-    return(b + frac*(p2 + frac * (p1 + frac*p0)));
-}
 
 static void fdelay_cutoff(t_fdelay *x, t_floatarg f){
     x->x_cutoff = f < 20.0 ? 20.0 : f > 20000.0 ? 20000.0 : f;
@@ -88,8 +78,7 @@ static t_int *fdelay_perform(t_int *w){
         t_float in = dry;
         t_float time = tin[i];
         t_float fb = fbin[i];
-// freeze check
-        if(x->x_freeze){
+        if(x->x_freeze){ // freeze check
             in = 0;
             fb = fb >= 0 ? 1 : -1;
         }
@@ -105,11 +94,11 @@ static t_int *fdelay_perform(t_int *w){
 		x->x_readPos = x->x_writePos - delayLong;
 		x->x_readPos &= x->x_delayMask;
 // read from delay line with interpolation
-        float inm1 = x->x_delay[(x->x_readPos - 1) & x->x_delayMask];
-        float inm0 = x->x_delay[(x->x_readPos + 0) & x->x_delayMask];
-        float inp1 = x->x_delay[(x->x_readPos + 1) & x->x_delayMask];
-        float inp2 = x->x_delay[(x->x_readPos + 2) & x->x_delayMask];
-        float del = interp_spline(frac, inm1, inm0, inp1, inp2);
+        float a = x->x_delay[(x->x_readPos - 1) & x->x_delayMask];
+        float b = x->x_delay[(x->x_readPos + 0) & x->x_delayMask];
+        float c = x->x_delay[(x->x_readPos + 1) & x->x_delayMask];
+        float d = x->x_delay[(x->x_readPos + 2) & x->x_delayMask];
+        float del = interp_spline(frac, a, b, c, d);
 // lowpass resonant filter
         float filter = A1*del + A2*x->X1 + A3*x->X2 - B1*x->Y1 - B2*x->Y2;
         x->X2 = x->X1;
