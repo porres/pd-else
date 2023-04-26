@@ -135,7 +135,8 @@ fbdelay~	x
 fbsine~	x
 fbsine2~	x
 fdn.rev~	x
-ffdelay ~	x
+ffdelay~	x
+filterdelay~	x
 flanger~	x
 float2bits	x
 float2sig~	x

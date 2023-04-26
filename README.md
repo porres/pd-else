@@ -107,7 +107,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 --------------------------------------------------------------------------
 
-## Current Object list (476 objects):
+## Current Object list (477 objects):
 
 **ASSORTED: [03]**
 
@@ -339,15 +339,11 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 - [loop]
 
-**AUDIO PROCESSING: ASSORTED [24]**
+**AUDIO PROCESSING: ASSORTED [20]**
 
 - [downsample~]
 - [conv~]
 - [chorus~]
-- [del~]
-- [fbdelay~]
-- [ffdelay~]
-- [rdelay~]
 - [shaper~]
 - [crusher~]
 - [drive~]
@@ -365,6 +361,14 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 - [freeze~]
 - [pvoc.freeze~]
 - [phaser~]
+
+**AUDIO PROCESSING: DELAY [5]**
+
+- [del~]
+- [fbdelay~]
+- [ffdelay~]
+- [rdelay~]
+- [filterdelay~]
 
 **AUDIO PROCESSING: DYNAMICS [05]**
 
