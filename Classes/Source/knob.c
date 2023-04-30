@@ -720,7 +720,7 @@ static void knob_receive(t_knob *x, t_symbol *s){
         t_symbol *old_rcv = x->x_rcv;
         x->x_rcv_raw = s;
         x->x_rcv = rcv;
-        if(old_rcv != &s_)
+        if(old_rcv != &s_ && old_rcv != gensym("empty"))
             pd_unbind(&x->x_obj.ob_pd, old_rcv);
         if(x->x_rcv != &s_)
             pd_bind(&x->x_obj.ob_pd, x->x_rcv);
@@ -787,24 +787,26 @@ static void knob_properties(t_gobj *z, t_glist *owner){
     owner = NULL;
     t_knob *x = (t_knob *)z;
     char buffer[512];
-    sprintf(buffer, "knob_dialog %%s %g %g %g %g %g %d {%s} {%s} %d %g {%s} {%s} %d %d %d %d %d\n",
+    sprintf(buffer, "knob_dialog %%s %g %g %g %g %d {%s} {%s} %d %g {%s} {%s} {%s} %d %d %d %d %d %d\n",
         (float)(x->x_size / x->x_zoom),
-        (float)MIN_SIZE,
         x->x_min,
         x->x_max,
         x->x_init,
         x->x_circular,
-        x->x_snd->s_name,
-        x->x_rcv->s_name,
+        x->x_snd_raw->s_name,
+        x->x_rcv_raw->s_name,
         x->x_expmode,
         x->x_exp,
         x->x_bg->s_name,
         x->x_fg->s_name,
+        x->x_mg->s_name,
         x->x_discrete,
         x->x_ticks,
         x->x_arc,
         x->x_range,
-        x->x_offset);
+        x->x_offset,
+        x->x_outline
+);
     gfxstub_new(&x->x_obj.ob_pd, x, buffer);
 }
 
@@ -819,14 +821,15 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     x->x_outline = atom_getintarg(6, ac, av);
     float exp = atom_getfloatarg(7, ac, av);
     t_symbol *bg = atom_getsymbolarg(8, ac, av);
-    t_symbol *fg = atom_getsymbolarg(9, ac, av);
-    x->x_circular = atom_getintarg(10, ac, av);
-    int ticks = atom_getintarg(11, ac, av);
-    x->x_discrete = atom_getintarg(12, ac, av);
-    int arc = atom_getintarg(13, ac, av) != 0;
-    int range = atom_getintarg(14, ac, av);
-    int offset = atom_getintarg(15, ac, av);
-    t_atom undo[16];
+    t_symbol *mg = atom_getsymbolarg(9, ac, av);
+    t_symbol *fg = atom_getsymbolarg(10, ac, av);
+    x->x_circular = atom_getintarg(11, ac, av);
+    int ticks = atom_getintarg(12, ac, av);
+    x->x_discrete = atom_getintarg(13, ac, av);
+    int arc = atom_getintarg(14, ac, av) != 0;
+    int range = atom_getintarg(15, ac, av);
+    int offset = atom_getintarg(16, ac, av);
+    t_atom undo[17];
     SETFLOAT(undo+0, x->x_size);
     SETFLOAT(undo+1, x->x_min);
     SETFLOAT(undo+2, x->x_max);
@@ -836,14 +839,15 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     SETFLOAT(undo+6, x->x_outline);
     SETFLOAT(undo+7, x->x_log ? 1 : x->x_exp);
     SETSYMBOL(undo+8, x->x_bg);
-    SETSYMBOL(undo+9, x->x_fg);
-    SETFLOAT(undo+10, x->x_circular);
-    SETFLOAT(undo+11, x->x_ticks);
-    SETFLOAT(undo+12, x->x_discrete);
-    SETFLOAT(undo+13, x->x_arc);
-    SETFLOAT(undo+14, x->x_range);
-    SETFLOAT(undo+15, x->x_offset);
-    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 16, undo, ac, av);
+    SETSYMBOL(undo+9, x->x_mg);
+    SETSYMBOL(undo+10, x->x_fg);
+    SETFLOAT(undo+11, x->x_circular);
+    SETFLOAT(undo+12, x->x_ticks);
+    SETFLOAT(undo+13, x->x_discrete);
+    SETFLOAT(undo+14, x->x_arc);
+    SETFLOAT(undo+15, x->x_range);
+    SETFLOAT(undo+16, x->x_offset);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 17, undo, ac, av);
     x->x_exp = 1;
     if(!exp)
         knob_log(x, 1);
@@ -855,6 +859,8 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     knob_bgcolor(x, NULL, 1, at);
     SETSYMBOL(at, fg);
     knob_fgcolor(x, NULL, 1, at);
+    SETSYMBOL(at, mg);
+    knob_mgcolor(x, NULL, 1, at);
     knob_angle(x, (float)range, (float)offset);
     knob_arc(x, (float)arc);
     knob_size(x, (float)size);
@@ -1279,7 +1285,7 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_log, gensym("log"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_discrete, gensym("discrete"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_bgcolor, gensym("bgcolor"), A_GIMME, 0);
-    class_addmethod(knob_class, (t_method)knob_mgcolor, gensym("mgcolor"), A_GIMME, 0);
+    class_addmethod(knob_class, (t_method)knob_mgcolor, gensym("arccolor"), A_GIMME, 0);
     class_addmethod(knob_class, (t_method)knob_fgcolor, gensym("fgcolor"), A_GIMME, 0);
     class_addmethod(knob_class, (t_method)knob_send, gensym("send"), A_DEFSYM, 0);
     class_addmethod(knob_class, (t_method)knob_receive, gensym("receive"), A_DEFSYM, 0);
@@ -1303,5 +1309,5 @@ void knob_setup(void){
     class_setwidget(knob_class, &knob_widgetbehavior);
     class_setsavefn(knob_class, knob_save);
     class_setpropertiesfn(knob_class, knob_properties);
-    #include "../extra_source/knob_dialog.h"
+    #include "knob_dialog.h"
 }
