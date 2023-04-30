@@ -1,4 +1,4 @@
-// Porres 2016
+// Porres 2016 - 2023
  
 #include "m_pd.h"
 #include <math.h>
@@ -11,7 +11,6 @@ typedef struct _rescale{
     t_outlet   *x_outlet;
     int         x_clip;
     int         x_log;
-    float       x_f;
     float       x_minin;
     float       x_maxin;
     float       x_minout;
@@ -34,10 +33,18 @@ static float convert(t_rescale *x, float f){
     if(f == x->x_maxin)
         return(maxout);
     if(x->x_clip){
-        if(f < minin)
-            return(minout);
-        else if(f > x->x_maxin)
-            return(maxout);
+        if(rangeout < 0){
+            if(f > minin)
+                return(minout);
+            else if(f < x->x_maxin)
+                return(maxout);
+        }
+        else{
+            if(f < minin)
+                return(minout);
+            else if(f > x->x_maxin)
+                return(maxout);
+        }
     }
     float p = (f-minin)/rangein; // position
     if(x->x_log){ // 'log'
@@ -48,7 +55,7 @@ static float convert(t_rescale *x, float f){
         return(exp(p * log(maxout / minout)) * minout);
     }
     if(fabs(x->x_exp) == 1 || x->x_exp == 0) // linear
-        return(minout + rangeout * (f-minin)/rangein);
+        return(minout + rangeout * p);
     if(x->x_exp > 0) // exponential
         return(pow(p, x->x_exp) * rangeout + minout);
     else // negative exponential
@@ -92,12 +99,13 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
     x->x_maxout = 1;
     x->x_exp = 0.f;
     x->x_log = 0;
+    x->x_clip = 1;
     t_int numargs = 0;
     while(ac){
         if(av->a_type == A_SYMBOL){
             t_symbol *sym = atom_getsymbol(av);
-            if(sym == gensym("-clip") && !numargs)
-                x->x_clip = 1;
+            if(sym == gensym("-noclip") && !numargs)
+                x->x_clip = 0;
             else if(sym == gensym("-log") && !numargs)
                 x->x_log = 1;
             else if(ac >= 2 && sym == gensym("-exp") && !numargs){
@@ -147,6 +155,6 @@ void rescale_setup(void){
     class_addlist(rescale_class, (t_method)rescale_list);
     class_addmethod(rescale_class, (t_method)rescale_in, gensym("in"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(rescale_class, (t_method)rescale_exp, gensym("exp"), A_FLOAT, 0);
-    class_addmethod(rescale_class, (t_method)rescale_clip, gensym("clip"), A_FLOAT, 0);
     class_addmethod(rescale_class, (t_method)rescale_log, gensym("log"), A_FLOAT, 0);
+    class_addmethod(rescale_class, (t_method)rescale_clip, gensym("clip"), A_FLOAT, 0);
 }

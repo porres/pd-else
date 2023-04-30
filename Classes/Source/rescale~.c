@@ -48,21 +48,29 @@ static float convert(t_rescale *x, float f){
     if(f == x->x_maxin)
         return(maxout);
     if(x->x_clip){
-        if(f < minin)
-            return(minout);
-        else if(f > x->x_maxin)
-            return(maxout);
+        if(rangeout < 0){
+            if(f > minin)
+                return(minout);
+            else if(f < x->x_maxin)
+                return(maxout);
+        }
+        else{
+            if(f < minin)
+                return(minout);
+            else if(f > x->x_maxin)
+                return(maxout);
+        }
     }
     float p = (f-minin)/rangein; // position
     if(x->x_log){ // 'log'
         if((minout <= 0 && maxout >= 0) || (minout >= 0 && maxout <= 0)){
-            pd_error(x, "[rescale~]: output range cannot contain '0' in log mode");
+            pd_error(x, "[rescale~: output range cannot contain '0' in log mode");
             return(0);
         }
         return(exp(p * log(maxout / minout)) * minout);
     }
     if(fabs(x->x_exp) == 1 || x->x_exp == 0) // linear
-        return(minout + rangeout * (f-minin)/rangein);
+        return(minout + rangeout * p);
     if(x->x_exp > 0) // exponential
         return(pow(p, x->x_exp) * rangeout + minout);
     else // negative exponential
