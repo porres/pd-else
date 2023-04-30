@@ -1309,5 +1309,5 @@ void knob_setup(void){
     class_setwidget(knob_class, &knob_widgetbehavior);
     class_setsavefn(knob_class, knob_save);
     class_setpropertiesfn(knob_class, knob_properties);
-    #include "knob_dialog.h"
+    #include "../extra_source/knob_dialog.h"
 }
