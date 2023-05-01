@@ -1,6 +1,7 @@
 // Porres 2016
  
 #include "m_pd.h"
+#include <stdlib.h>
 
 #define TWO_PI (2 * 3.14159265358979323846)
 
