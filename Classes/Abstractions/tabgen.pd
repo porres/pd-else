@@ -189,7 +189,7 @@
 #X msg 68 131 const 0;
 #X msg 30 250 1 \$1;
 #X obj 165 244 else/rescale -1 1;
-#X msg 247 180 -in 0 \$1;
+#X msg 247 180 in 0 \$1;
 #X connect 0 0 22 0;
 #X connect 0 1 8 1;
 #X connect 1 0 8 0;
