@@ -4,9 +4,9 @@
 
 ### for the Pure Data programming language
 
-### Version: 1.0-0 RC-7 (release candidate #7) With Live Electronics Tutorial. 
+### Version: 1.0-0 RC-8 (release candidate #7) With Live Electronics Tutorial. 
 
-### Released: March 1st 2023
+### Released: May 10th 2023
 
 
 Copyright © 2017-2023 Alexandre Torres Porres

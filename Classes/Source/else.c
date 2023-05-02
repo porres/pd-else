@@ -88,12 +88,12 @@ void else_obj_about(t_else_obj *x){
     }
     post("-------------------------------------------------------------------");
     post("- NOTE: There's an accompanying tutorial by Alexandre Torres");
-    post("Porres which we recommend. You can find the tutorial under");
-    post("\"Live-Electronics-Tutorial\" at: https://github.com/porres/pd-else");
+    post("You can find it as part of the ELSE library download, look for the");
+    post("\"Live-Electronics-Tutorial\" folde inside the ELSE folder.");
     post("Please check its README on how to install it!");
     post("-------------------------------------------------------------------");
     post("- ALSO NOTE: Loading this binary did not install the ELSE library");
-    post("you still need to add it to the \"preferences=>path\"");
+    post("you still need to add it to the \"preferences => path\"");
     post("or use [declare -path else]");
     post("-------------------------------------------------------------------");
     post("  -----> ELSE - EL Locus Solus' Externals for Pure Data <-----");
