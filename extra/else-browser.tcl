@@ -7,12 +7,18 @@ namespace eval category_menu {
 
 proc category_menu::load_menutree {} {
     set pathfirst [lindex $::sys_searchpath 0]
-    set file [list $pathfirst else else_tree.tcl]
-    set f [open [file join {*}$file]]
-    set menutree [read $f]
-    close $f
-    unset f        
-    return $menutree
+    set filelist [list $pathfirst else else_tree.tcl]
+    set filename [file join {*}$filelist]
+    if {[file exist $filename]} {
+        set f [open $filename]
+        set menutree [read $f]
+        close $f
+        unset f        
+        ::pdwindow::post "ELSE's object browser-plugin loaded via the 'else' binary\n"
+        return $menutree
+    } else {
+        ::pdwindow::post "ELSE's object browser-plugin not found in $filename\n"  
+    }
 }
 
 proc menu_send_else_obj {w x y item} {
@@ -43,4 +49,3 @@ proc category_menu::create {mymenu} {
 
 category_menu::create .popup
 
-::pdwindow::post "ELSE's object browser-plugin loaded via the 'else' binary\n"
