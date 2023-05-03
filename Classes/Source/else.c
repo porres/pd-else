@@ -2,6 +2,7 @@
 
 #include "m_pd.h"
 #include "m_imp.h"
+#include <string.h>
 
 typedef struct else_obj{
     t_object  x_obj;

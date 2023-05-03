@@ -39,6 +39,6 @@ static void *rad2hz_new(void){
 
 void rad2hz_setup(void){
     rad2hz_class = class_new(gensym("rad2hz"), (t_newmethod)rad2hz_new,
-        0, sizeof(t_rad2hz),0, 0);
+        0, sizeof(t_rad2hz), 0, 0);
     class_addlist(rad2hz_class,(t_method)rad2hz_list);
 }

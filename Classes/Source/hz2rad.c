@@ -1,6 +1,7 @@
 // Porres 2016
  
 #include "m_pd.h"
+#include <stdlib.h>
 
 #define TWO_PI (2 * 3.14159265358979323846)
 
@@ -30,7 +31,7 @@ static void hz2rad_list(t_hz2rad *x, t_symbol *s, int ac, t_atom *av){
     }
 }
 
-static void *hz2rad_new(t_floatarg f){
+static void *hz2rad_new(void){
     t_hz2rad *x = (t_hz2rad *) pd_new(hz2rad_class);
     x->x_outlet = outlet_new(&x->x_obj, 0);
     return(x);
@@ -38,6 +39,6 @@ static void *hz2rad_new(t_floatarg f){
 
 void hz2rad_setup(void){
     hz2rad_class = class_new(gensym("hz2rad"), (t_newmethod)hz2rad_new,
-        0, sizeof(t_hz2rad),0, A_DEFFLOAT, 0);
+        0, sizeof(t_hz2rad), 0, 0);
     class_addlist(hz2rad_class,(t_method)hz2rad_list);
 }
