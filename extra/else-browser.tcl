@@ -17,7 +17,7 @@ proc category_menu::load_menutree {} {
         ::pdwindow::post "ELSE's object browser-plugin loaded via the 'else' binary\n"
         return $menutree
     } else {
-        ::pdwindow::post "ELSE's object browser-plugin not found in $filename\n"  
+        ::pdwindow::post "ELSE's object browser-plugin not found in <$filename>. Please install the \"else\" folder in your ~/documents/pd/externals folder so the plugin can be loaded."  
     }
 }
 
