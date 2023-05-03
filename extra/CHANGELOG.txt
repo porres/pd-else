@@ -33,6 +33,7 @@ Enhancements/fixes:
 - [plaits~] fixed parameter's out of range issues
 - [graph~]/[spectrograph~] do not allow mouse clicks on arrays no more...
 - [sfont~] fixed compilation for linux manjaro.
+- [canvas.mouse] A third argument allows output even in edit mode.
 - 2 new objects for a total of 477: [knob] (yay, finally a knob) and [filterdelay~].
 
 --------------------------------------
