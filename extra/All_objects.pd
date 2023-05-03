@@ -2,7 +2,7 @@
 #N struct 1005-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
 #N struct 1024-point float x0 float y0 float size float fg float in float grid;
 #N struct 1065-slot float x float y float slotsize float color float width float bordercolor;
-#N canvas 397 58 531 462 10;
+#N canvas 453 56 531 462 10;
 #N canvas 347 36 974 668 GUI 0;
 #X text 40 146 [biplot];
 #X text 196 83 [pic] =>;
@@ -24,7 +24,7 @@
 #X text 491 669 [meter2~];
 #X text 578 669 [meter4~];
 #X text 691 669 [meter8~];
-#X text 617 940 [setdsp~];
+#X text 617 972 [setdsp~];
 #X text 99 36 [mtx.ctl];
 #X text 265 475 [circle];
 #X text 757 938 [messbox];
@@ -49,7 +49,7 @@
 #X obj 754 880 else/drum.seq;
 #X obj 47 930 else/graph~;
 #X obj 259 930 else/spectrograph~;
-#X obj 623 959 else/setdsp~;
+#X obj 623 991 else/setdsp~;
 #X obj 762 959 else/messbox 150 50 235 235 235 0 0 0 0 10;
 #X obj 854 1054 else/button 20 20 255 255 255 128 128 159 0;
 #X obj 832 1109 else/note 51 20 helvetica empty 0 0 0 0 0 255 255 255 0 0 note;
@@ -70,6 +70,8 @@
 #X text 540 1444 [bicoeff];
 #X text 798 1201 [numbox~] ->;
 #X obj 884 1202 numbox~ 6 10 100 #C0C0C4 #440008 10 0 0 0;
+#X obj 615 866 else/knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0;
+#X text 561 874 [knob];
 #X restore 431 399 pd GUI;
 #X obj 399 72 switch~;
 #X obj 399 56 r \$0-s;

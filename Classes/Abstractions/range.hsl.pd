@@ -62,14 +62,14 @@
 #X obj 101 47 inlet;
 #X obj 101 235 outlet;
 #X obj 101 182 else/rescale 0 1;
-#X obj 126 150 else/pack2 -in f f;
 #X obj 196 110 r \$0-max;
 #X obj 167 89 r \$0-min;
+#X obj 126 150 else/pack2 in f f;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
-#X connect 3 0 2 0;
-#X connect 4 0 3 2;
-#X connect 5 0 3 1;
+#X connect 3 0 5 2;
+#X connect 4 0 5 1;
+#X connect 5 0 2 0;
 #X restore 75 203 pd list;
 #X obj 307 67 r \$0-mode;
 #X obj 238 141 route 0 1 2 3;
