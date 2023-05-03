@@ -1,6 +1,6 @@
 {else
     {gui
-        {mtx.tcl pic pad function colors openfile biplot slider2d circle keyboard range.hsl mix2~ mix4~ meter~ meter2~ meter4~ meter8~ drum.seq graph~ spectrograph~ setdsp~ messbox button out1~ out~ out4~ out8~ gain~ gain2~ display numbox~ zbiplot oscope~ multi.vsl bicoeff}}        
+        {knob mtx.tcl pic pad function colors openfile biplot slider2d circle keyboard range.hsl mix2~ mix4~ meter~ meter2~ meter4~ meter8~ drum.seq graph~ spectrograph~ setdsp~ messbox button out1~ out~ out4~ out8~ gain~ gain2~ display numbox~ zbiplot oscope~ multi.vsl bicoeff}}        
     {oscillators
         {sine~ cosine~ saw~ saw2~ square~ tri~ vsaw~ pulse~ impulse~ impulse2~ parabolic~ oscbank~ oscbank2~ gaussian~ pmosc~ wavetable~ bl.osc~ bl.blip~ bl.imp~ bl.imp2~ bl.saw~ bl.saw2~ bl.square~ bl.tri~ bl.vsaw~ bl.wavetable~}}
     {synths
@@ -30,7 +30,9 @@
     {math:\ logic
         {loop}}
     {fx:\ assorted
-        {downsample~ conv~ chorus~ del~\ in del~\ out fbdelay~ ffdelay~ shaper~ crusher~ power~ drive~ flanger~ freq.shift~ pitch.shift~ ping.pong~ phaser~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~}}
+        {downsample~ conv~ chorus~ shaper~ crusher~ power~ drive~ flanger~ freq.shift~ pitch.shift~ ping.pong~ phaser~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~}}
+    {fx:\ delays
+        {del~\ in del~\ out fbdelay~ ffdelay~ filterdelay~}}
     {fx:\ filters
         {allpass.2nd~ allpass.filt~ bitnormal~ comb.filt~ lop2~ lop.bw~ hip.bw~ biquads~ bandpass~ bandstop~ crossover~ bpbank~ bicoeff2 brickwall~ eq~ highpass~ highshelf~ lowpass~ lowshelf~ mov.avg~ resonbank~ resonbank2~ resonant~ resonant2~ svfilter~}}
     {fx:\ reverberators

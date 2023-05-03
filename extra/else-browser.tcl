@@ -6,8 +6,8 @@ namespace eval category_menu {
 }
 
 proc category_menu::load_menutree {} {
-    set path [string trim $::sys_searchpath "\{ \}"]
-    set file [list $path else else_tree.tcl]
+    set pathfirst [lindex $::sys_searchpath 0]
+    set file [list $pathfirst else else_tree.tcl]
     set f [open [file join {*}$file]]
     set menutree [read $f]
     close $f
