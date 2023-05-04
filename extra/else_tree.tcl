@@ -34,7 +34,7 @@
     {fx:\ assorted
         {downsample~ conv~ chorus~ shaper~ crusher~ power~ drive~ flanger~ freq.shift~ pitch.shift~ ping.pong~ phaser~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~}}
     {fx:\ delays
-        {del~\ in del~\ out fbdelay~ ffdelay~ filterdelay~}}
+        {del~\ in del~\ out fbdelay~ ffdelay~ filterdelay~ revdelay~}}
     {fx:\ filters
         {allpass.2nd~ allpass.filt~ bitnormal~ comb.filt~ lop2~ lop.bw~ hip.bw~ biquads~ bandpass~ bandstop~ crossover~ bpbank~ bicoeff2 brickwall~ eq~ highpass~ highshelf~ lowpass~ lowshelf~ mov.avg~ resonbank~ resonbank2~ resonant~ resonant2~ svfilter~}}
     {fx:\ reverberators

@@ -14,6 +14,7 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 **LIBRARY:**
 
 Breaking changes:
+- [rdelay~] renamed to [revdelay~]
 - [rescale]/[rescale~] drastic changes have been made to these objects, kind of a new one altogether, changed arguments, flags and now it always only has 2 inlets.
 - [hz2rad]/[rad2hz] removed argument, set and bang method.
 - [canvas.name] no more '-w' flag as it is now the default and only option.

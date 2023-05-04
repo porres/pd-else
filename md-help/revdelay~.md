@@ -1,5 +1,5 @@
 ---
-title: rdelay~
+title: revdelay~
 
 description: reverse delay 
 
@@ -32,4 +32,4 @@ methods:
 draft: false
 ---
 
-[rdelay~] is a reverse delay effect. It takes a size amount in ms to play backwards from a delay line (default 1000 ms).
+[revdelay~] is a reverse delay effect. It takes a size amount in ms to play backwards from a delay line (default 1000 ms).
