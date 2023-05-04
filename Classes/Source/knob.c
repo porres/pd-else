@@ -876,6 +876,8 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     int range = atom_getintarg(17, ac, av);
     int offset = atom_getintarg(18, ac, av);
     knob_config_io(x, glist_getcanvas(x->x_glist)); // for outline
+    if(x->x_circular && x->x_jump)
+        x->x_jump = 0;
     if(expmode == 0){
         knob_log(x, 0);
         knob_exp(x, 0.0f);
@@ -905,6 +907,7 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
         knob_init(x, NULL, 1, at);
     }
 }
+
 
 // --------------- click + motion stuff --------------------
 
@@ -1020,12 +1023,7 @@ static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int s
         pd_bind(&x->x_obj.ob_pd, gensym("#keyname")); // listen to key events
         knob_config_wcenter(x, glist_getcanvas(x->x_glist), x->x_clicked = 1);
         x->x_shift = shift;
-        if(x->x_circular){
-//            if(x->x_jump){
-                xm = xpix;
-                ym = ypix;
-/*            }
-            else{ // did not work
+        if(x->x_circular && !x->x_jump){
                 float start = (x->x_start_angle / 90.0 - 1) * HALF_PI;
                 float range = x->x_range / 180.0 * M_PI;
                 float angle = start + x->x_pos * range; // pos angle
@@ -1035,7 +1033,6 @@ static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int s
                 int yp = y0 + radius + rint(radius * sin(angle)); // circle point x coordinate
                 xm = xp;
                 ym = yp;
-            }*/
         }
         else{
             if(x->x_jump){

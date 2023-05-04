@@ -195,7 +195,7 @@ sys_gui("\n"
 "        set applycmd \"::dialog_knob::apply $mytoplevel\"\n"
 "    }\n"
 "\n"
-        
+
 // knobstyle 1st top entries
 "    frame $mytoplevel.para.knobstyle -padx 20 -pady 1\n"
 "\n"
@@ -226,6 +226,21 @@ sys_gui("\n"
 "    label $mytoplevel.para.knobstyle.jump.lab -text [_ \"Jump on Click: \"]\n"
 "    checkbutton $mytoplevel.para.knobstyle.jump.ent -variable ::dialog_knob::var_jump($vid) -width 5\n"
 "    pack $mytoplevel.para.knobstyle.jump.ent $mytoplevel.para.knobstyle.jump.lab -side right -anchor e\n"
+// Define a function to be called when the circular checkbutton is toggled
+// Here we'll make the jump checkbox inactive
+// It seems like this callback gets called before the value gets toggled, hence the inverted behaviour
+"   proc toggle_circular {vid mytoplevel} {"
+"    if {$::dialog_knob::var_circular($vid) == 0} {"
+"       $mytoplevel.para.knobstyle.jump.ent configure -state disabled\n"
+"      } else {"
+"       $mytoplevel.para.knobstyle.jump.ent configure -state normal\n"
+"     }\n"
+"   }\n"
+"    if {$::dialog_knob::var_circular($vid) == 1} {\n"
+"       $mytoplevel.para.knobstyle.jump.ent configure -state disabled\n"
+"    }\n"
+// Bind the toggle_checkbutton function to the checkbutton
+"    bind $mytoplevel.para.knobstyle.move.mode <Button-1> \"toggle_circular $vid $mytoplevel\" \n"
 // Entry for Outline (Checkbox)
 "    frame $mytoplevel.para.knobstyle.outline\n"
 "    label $mytoplevel.para.knobstyle.outline.lab -text [_ \"Show Outline: \"]\n"
@@ -239,7 +254,7 @@ sys_gui("\n"
 "    grid $mytoplevel.para.knobstyle.jump -row 1 -column 1 -sticky e -padx {5 0}\n"
 "    grid $mytoplevel.para.knobstyle.outline -row 2 -column 1 -sticky e -padx {5 0}\n"
 "    pack $mytoplevel.para.knobstyle -side top -fill x\n"
-        
+
 // Checkbox for discrete mode
 "    labelframe $mytoplevel.discrete\n"
 "    frame $mytoplevel.discrete.toggle\n"
@@ -343,7 +358,7 @@ sys_gui("\n"
 "        pack $mytoplevel.s_r.receive.lab $mytoplevel.s_r.receive.ent -side left \\\n"
 "            -fill x -expand 1\n"
 "    }\n"
-        
+
 // Frame for colors section
 "    labelframe $mytoplevel.colors -borderwidth 1 -text [_ \"Colors\"] -padx 5 -pady 5\n"
 "    pack $mytoplevel.colors -fill x\n"
