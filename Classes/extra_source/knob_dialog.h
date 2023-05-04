@@ -39,8 +39,8 @@ sys_gui("\n"
 "\n"
 "    switch -- $::dialog_knob::var_colortype($vid) {\n"
 "        0 { set ::dialog_knob::var_color_background($vid) $presetcol }\n"
-"        1 { set ::dialog_knob::var_color_foreground($vid) $presetcol }\n"
-"        2 { set ::dialog_knob::var_color_arc($vid) $presetcol }\n"
+"        1 { set ::dialog_knob::var_color_arc($vid) $presetcol }\n"
+"        2 { set ::dialog_knob::var_color_foreground($vid) $presetcol }\n"
 "    }\n"
 "    if {$::windowingsystem eq \"aqua\"} {\n"
 "    ::dialog_knob::apply_and_rebind_return $mytoplevel \n"
@@ -129,7 +129,6 @@ sys_gui("\n"
 "}\n"
 
 
-
 // tcl/tk entry function called from Pd
 "proc knob_dialog {mytoplevel \\\n"
 "                                       wdt \\\n"
@@ -196,37 +195,51 @@ sys_gui("\n"
 "        set applycmd \"::dialog_knob::apply $mytoplevel\"\n"
 "    }\n"
 "\n"
-// style
+        
+// knobstyle 1st top entries
 "    frame $mytoplevel.para.knobstyle -padx 20 -pady 1\n"
 "\n"
+// Entry for size
+"    frame $mytoplevel.para.knobstyle.dim \n"
+"    label $mytoplevel.para.knobstyle.dim.w_lab -text \"Size:\"\n"
+"    entry $mytoplevel.para.knobstyle.dim.w_ent -textvariable ::dialog_knob::var_size($vid) -width 4\n"
+"    label $mytoplevel.para.knobstyle.dim.dummy1 -text \"\" -width 1\n"
+"    pack $mytoplevel.para.knobstyle.dim.w_lab $mytoplevel.para.knobstyle.dim.w_ent -side left\n"
 // Entry for initial value
 "    frame $mytoplevel.para.knobstyle.initial \n"
 "    label $mytoplevel.para.knobstyle.initial.lab -text [_ \"Initial Value\"]\n"
 "    entry $mytoplevel.para.knobstyle.initial.ent -textvariable ::dialog_knob::var_initial($vid) -width 4\n"
 "    pack $mytoplevel.para.knobstyle.initial.lab -side left -expand 0 -ipadx 4\n"
 "    pack $mytoplevel.para.knobstyle.initial.ent -side left -expand 0 -ipadx 10\n"
-"    destroy $mytoplevel.para.knobstyle.stdy_jmp\n"
-// Checkbox for circular drag
-"    frame $mytoplevel.para.knobstyle.move \n"
-"    label $mytoplevel.para.knobstyle.move.lab -text [_ \"Circular drag:\"]\n"
-"    checkbutton $mytoplevel.para.knobstyle.move.mode -variable ::dialog_knob::var_circular($vid) -width 5\n"
-"    pack $mytoplevel.para.knobstyle.move.mode $mytoplevel.para.knobstyle.move.lab -side right -anchor e\n"
-// Checkbox for arc
+// Entry for Arc (Checkbox)
 "    frame $mytoplevel.para.knobstyle.arc\n"
-"    label $mytoplevel.para.knobstyle.arc.lab -text [_ \"Arc: \"]\n"
+"    label $mytoplevel.para.knobstyle.arc.lab -text [_ \"Show Arc: \"]\n"
 "    checkbutton $mytoplevel.para.knobstyle.arc.ent -variable ::dialog_knob::var_arc_shown($vid) -width 5\n"
 "    pack $mytoplevel.para.knobstyle.arc.ent $mytoplevel.para.knobstyle.arc.lab -side right -anchor e\n"
-// Checkbox for outline
-"    frame $mytoplevel.para.knobstyle.outline\n"
-"    label $mytoplevel.para.knobstyle.outline.lab -text [_ \"Show outline: \"]\n"
-"    checkbutton $mytoplevel.para.knobstyle.outline.ent -variable ::dialog_knob::var_outline_shown($vid) -width 5\n"
-"    pack $mytoplevel.para.knobstyle.outline.ent $mytoplevel.para.knobstyle.outline.lab -side right -anchor e\n"
-
+// Entry for Circular Drag (Checkbox)
+"    frame $mytoplevel.para.knobstyle.move \n"
+"    label $mytoplevel.para.knobstyle.move.lab -text [_ \"Circular Drag:\"]\n"
+"    checkbutton $mytoplevel.para.knobstyle.move.mode -variable ::dialog_knob::var_circular($vid) -width 5\n"
+"    pack $mytoplevel.para.knobstyle.move.mode $mytoplevel.para.knobstyle.move.lab -side right -anchor e\n"
+// Entry for Jump on Click(Checkbox)
 "    frame $mytoplevel.para.knobstyle.jump\n"
-"    label $mytoplevel.para.knobstyle.jump.lab -text [_ \"Jump on click: \"]\n"
+"    label $mytoplevel.para.knobstyle.jump.lab -text [_ \"Jump on Click: \"]\n"
 "    checkbutton $mytoplevel.para.knobstyle.jump.ent -variable ::dialog_knob::var_jump($vid) -width 5\n"
 "    pack $mytoplevel.para.knobstyle.jump.ent $mytoplevel.para.knobstyle.jump.lab -side right -anchor e\n"
-
+// Entry for Outline (Checkbox)
+"    frame $mytoplevel.para.knobstyle.outline\n"
+"    label $mytoplevel.para.knobstyle.outline.lab -text [_ \"Show Outline: \"]\n"
+"    checkbutton $mytoplevel.para.knobstyle.outline.ent -variable ::dialog_knob::var_outline_shown($vid) -width 5\n"
+"    pack $mytoplevel.para.knobstyle.outline.ent $mytoplevel.para.knobstyle.outline.lab -side right -anchor e\n"
+// Align items to grid
+"    grid $mytoplevel.para.knobstyle.dim -row 0 -column 0 -sticky e -padx {5 0}\n"
+"    grid $mytoplevel.para.knobstyle.initial -row 1 -column 0 -sticky e -padx {5 0}\n"
+"    grid $mytoplevel.para.knobstyle.arc -row 2 -column 0 -sticky e -padx {5 0}\n"
+"    grid $mytoplevel.para.knobstyle.move -row 0 -column 1 -sticky e -padx {5 0} \n"
+"    grid $mytoplevel.para.knobstyle.jump -row 1 -column 1 -sticky e -padx {5 0}\n"
+"    grid $mytoplevel.para.knobstyle.outline -row 2 -column 1 -sticky e -padx {5 0}\n"
+"    pack $mytoplevel.para.knobstyle -side top -fill x\n"
+        
 // Checkbox for discrete mode
 "    labelframe $mytoplevel.discrete\n"
 "    frame $mytoplevel.discrete.toggle\n"
@@ -241,20 +254,6 @@ sys_gui("\n"
 "    pack $mytoplevel.discrete.toggle $mytoplevel.discrete.ticks -side right\n"
 "    pack $mytoplevel.discrete -side top -fill x\n"
 "    $mytoplevel.discrete config -borderwidth 1 -pady 4 -padx 26 -text \"Ticks:\"\n"
-// Entry for size
-"    frame $mytoplevel.para.knobstyle.dim \n"
-"    label $mytoplevel.para.knobstyle.dim.w_lab -text \"Size:\"\n"
-"    entry $mytoplevel.para.knobstyle.dim.w_ent -textvariable ::dialog_knob::var_size($vid) -width 4\n"
-"    label $mytoplevel.para.knobstyle.dim.dummy1 -text \"\" -width 1\n"
-"    pack $mytoplevel.para.knobstyle.dim.w_lab $mytoplevel.para.knobstyle.dim.w_ent -side left\n"
-// Align items to grid
-"    grid $mytoplevel.para.knobstyle.dim -row 0 -column 0 -sticky e -padx {5 0}\n"
-"    grid $mytoplevel.para.knobstyle.initial -row 1 -column 0 -sticky e -padx {5 0}\n"
-"    grid $mytoplevel.para.knobstyle.outline -row 2 -column 0 -sticky e -padx {5 0}\n"
-"    grid $mytoplevel.para.knobstyle.move -row 0 -column 1 -sticky e -padx {5 0} \n"
-"    grid $mytoplevel.para.knobstyle.arc -row 1 -column 1 -sticky e -padx {5 0}\n"
-"    grid $mytoplevel.para.knobstyle.jump -row 2 -column 1 -sticky e -padx {5 0}\n"
-"    pack $mytoplevel.para.knobstyle -side top -fill x\n"
 // Frane for range section
 "    labelframe $mytoplevel.rng\n"
 "    pack $mytoplevel.rng -side top -fill x\n"
@@ -344,6 +343,7 @@ sys_gui("\n"
 "        pack $mytoplevel.s_r.receive.lab $mytoplevel.s_r.receive.ent -side left \\\n"
 "            -fill x -expand 1\n"
 "    }\n"
+        
 // Frame for colors section
 "    labelframe $mytoplevel.colors -borderwidth 1 -text [_ \"Colors\"] -padx 5 -pady 5\n"
 "    pack $mytoplevel.colors -fill x\n"
@@ -355,10 +355,10 @@ sys_gui("\n"
 "        -text [_ \"Background\"] -justify left\n"
 "    radiobutton $mytoplevel.colors.select.radio1 \\\n"
 "        -value 1 -variable ::dialog_knob::var_colortype($vid) \\\n"
-"        -text [_ \"Front\"] -justify left\n"
+"        -text [_ \"Arc Background\"] -justify left\n"
 "    radiobutton $mytoplevel.colors.select.radio2 \\\n"
 "        -value 2 -variable ::dialog_knob::var_colortype($vid) \\\n"
-"        -text [_ \"Arc\"] -justify left\n"
+"        -text [_ \"Front\"] -justify left\n"
 "    pack $mytoplevel.colors.select.radio0 $mytoplevel.colors.select.radio1 $mytoplevel.colors.select.radio2 -side left\n"
 "    frame $mytoplevel.colors.sections\n"
 "    pack $mytoplevel.colors.sections -side top\n"

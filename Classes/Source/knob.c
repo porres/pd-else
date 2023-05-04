@@ -875,7 +875,7 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     int arc = atom_getintarg(16, ac, av) != 0;
     int range = atom_getintarg(17, ac, av);
     int offset = atom_getintarg(18, ac, av);
-
+    knob_config_io(x, glist_getcanvas(x->x_glist)); // for outline
     if(expmode == 0)
         knob_exp(x, 0.0f);
     if(expmode == 1)
