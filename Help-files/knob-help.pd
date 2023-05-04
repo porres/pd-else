@@ -1,4 +1,4 @@
-#N canvas 416 23 564 642 10;
+#N canvas 482 23 564 642 10;
 #X obj 2 4 cnv 15 301 42 empty empty knob 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -55,7 +55,7 @@
 #X obj 131 251 else/knob 50 0 127 0 0 empty empty #dfdfdf #afafaf black 0 0 0 0 1 320 0 0;
 #X obj 236 252 else/knob 50 -50 50 0 0 empty empty #dfdfdf #afafaf black 0 0 0 0 1 320 0 0;
 #X obj 878 265 else/knob 150 0 127 0 0 empty empty #ffffff #606060 #c00402 0 0 0 0 1 320 0 0;
-#X obj 535 200 else/knob 100 0 127 0 0 empty empty #dfdfdf #afafaf black 0 1 0 0 1 360 0 0;
+#X obj 535 200 else/knob 100 0 127 0 0 empty empty #dfdfdf #afafaf black 0 0 0 0 1 360 0 0;
 #X obj 44 146 loadbang;
 #X text 19 6 By default \, the angular range is 320 degrees. The object also draws an 'arc' by default \, with its own background color \, which is useful to dislay the initial and final position. You can change this with the 'arc' or 'angle' messages \, proerties or flags. A full 360 degree is possible and the arc is then useful to differentiate from the fully turned down (background color) to the turned up [knob] (foreground color). The efault range is 0 to 127 but you can change that in the same way. A float sets and outputs values \, which get clipped to the [knob]'s range. A 'set' message only sets the value (no output)., f 65;
 #X text 19 345 The 'init' message sets the initial value for when the object is loaded (0 by default). Unlike iemguis \, this value is not output when loading the patch \, so you need [loadbang] if you want that. If you only send it 'init' \, then [knob] saves the current state by capturing the current value as the initialization value. This initial value is also where the arc starts \, hence \, in the examle above to the right \, it starts in the top middle position. Double clicking on the object restores to the initial state., f 65;
@@ -100,13 +100,13 @@
 #X connect 41 0 28 0;
 #X restore 495 106 pd basic;
 #N canvas 422 73 772 634 +parameters 0;
-#X obj 327 123 else/knob 90 0 1 4 1 empty empty #9a9f9c #feffc6 #402420 2 0 2 0 0 320 0 0;
+#X obj 327 123 else/knob 90 0 1 4 0 empty empty #9a9f9c #feffc6 #402420 0 0 2 0 0 320 0 0;
 #X obj 574 98 else/rescale;
 #X floatatom 327 232 11 0 0 0 - - - 12;
 #X msg 327 86 exp \$1;
 #X floatatom 327 59 5 0 0 0 - - - 0;
 #X obj 327 31 else/initmess 4;
-#X obj 564 438 else/knob 110 110 1760 1 440 empty empty #202020 #bbbbbb #00faff 320 0 0 0 1 320 0 1;
+#X obj 564 438 else/knob 110 110 1760 1 440 empty empty #202020 #bbbbbb #00faff 0 0 0 0 1 320 0 0;
 #X floatatom 564 572 11 0 0 0 - - - 12;
 #X floatatom 200 288 4 0 0 0 - \$0-discrete - 16;
 #X msg 172 129 discrete \$1;
