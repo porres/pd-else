@@ -580,6 +580,10 @@ ifeq ($(system), Darwin)
     arch := i386 x86_64
     version.flag ?= -mmacosx-version-min=10.5
   endif
+  ifeq ($(target.arch), arm64)
+      arch := $(target.arch)
+      version.flag ?= -mmacosx-version-min=11.0
+  endif
   arch.c.flags := $(addprefix -arch , $(arch)) $(version.flag)
   arch.ld.flags := $(arch.c.flags)
 endif

@@ -9,20 +9,25 @@ proc category_menu::load_menutree {} {
     set pathfirst [lindex $::sys_searchpath 0]
     set filelist [list $pathfirst else else_tree.tcl]
     set filename [file join {*}$filelist]
-    if {[file exist $filename]} {
+    if {[file exist $filename]} {  
         set f [open $filename]
         set menutree [read $f]
         close $f
         unset f        
         ::pdwindow::post "ELSE's object browser-plugin loaded via the 'else' binary\n"
-        return $menutree
+        return $menutree 
     } else {
         ::pdwindow::post "ELSE's object browser-plugin not found in <$filename>. Please install the \"else\" folder in your ~/documents/pd/externals folder so the plugin can be loaded."  
     }
 }
 
 proc menu_send_else_obj {w x y item} {
-    pdsend "$w obj $x $y else/$item"
+    if {$item eq "else"} {  
+        pdsend "$w obj $x $y $item"
+    } else {
+        pdsend "$w obj $x $y else/$item"
+#        pdsend "$w obj $x $y $item"
+    } 
 }
 
 proc category_menu::create {mymenu} {

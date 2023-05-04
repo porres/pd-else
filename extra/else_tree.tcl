@@ -29,10 +29,12 @@
         {sr~ nyquist~ pi e}}
     {math:\ logic
         {loop}}
+    {analysis
+        {changed~ changed2~ detect~ lastvalue median~ range range~ tap peak~ rms~ mov.rms~ vu~ zerocross~ beat~}}
     {fx:\ assorted
         {downsample~ conv~ chorus~ shaper~ crusher~ power~ drive~ flanger~ freq.shift~ pitch.shift~ ping.pong~ phaser~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~}}
     {fx:\ delays
-        {del~\ in del~\ out fbdelay~ ffdelay~ filterdelay~}}
+        {del~\ in del~\ out fbdelay~ ffdelay~ filterdelay~ revdelay~}}
     {fx:\ filters
         {allpass.2nd~ allpass.filt~ bitnormal~ comb.filt~ lop2~ lop.bw~ hip.bw~ biquads~ bandpass~ bandstop~ crossover~ bpbank~ bicoeff2 brickwall~ eq~ highpass~ highshelf~ lowpass~ lowshelf~ mov.avg~ resonbank~ resonbank2~ resonant~ resonant2~ svfilter~}}
     {fx:\ reverberators
@@ -51,18 +53,16 @@
         {fader~ autofade~ autofade2~ balance~ pan2~ pan4~ pan8~ spread~ rotate~ xfade~ xgate~ xgate2~ xselect~ xselect2~ mtx~}}
     {control:\ sequencers
         {euclid score score2 pattern sequencer sequencer~ impseq~ rec rec2}}
-    {control:\ envelopes
-        {adsr~ asr~ decay~ decay2~ envelope~ envgen~}}
     {control:\ lfo
         {phasor pimp lfo impulse pulse}}
-    {control\ random/stochastic
-        {rand.f rand.f~ rand.i rand.i~ rand.list rand.u rand.dist histogram rand.hist brown drunkard drunkard~ randpulse randpulse2 rampnoise lfnoise markov}}
+    {control:\ envelopes
+        {adsr~ asr~ decay~ decay2~ envelope~ envgen~}}
     {control:\ line\ generators
         {function~ ramp~ glide~ glide2~ glide glide2 slew slew2 slew~ slew2~ lag~ lag2~ susloop~}}
+    {control\ random/stochastic
+        {rand.f rand.f~ rand.i rand.i~ rand.list rand.u rand.dist histogram rand.hist brown drunkard drunkard~ randpulse randpulse2 rampnoise lfnoise markov}}
     {control:\ triggers
         {above above~ bangdiv chance dust~ dust2~ gatehold~ gate2imp~ pimp~ pimpmul~ pulsecount~ pulsediv~ sh~ schmitt schmitt~ status status~ trig.delay~ trig.delay2~ toggleff~ timed.gate~ timed.gate match~ trig2bang~ trig2bang trighold~}}
     {control:\ clocks
         {speed clock tempo tempo~ metronome polymetro polymetro~}}    
-    {analysis
-        {changed~ changed2~ detect~ lastvalue median~ range range~ tap peak~ rms~ mov.rms~ vu~ zerocross~ beat~}}
 }

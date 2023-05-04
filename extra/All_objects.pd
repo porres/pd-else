@@ -85,7 +85,7 @@
 #X obj 104 138 nbx 3 16 -1e+37 1e+37 0 0 \$0-x \$0-x empty 0 -8 0 14 #fcfcfc #000000 #000000 0 256;
 #X obj 157 137 else/note 425 14 Menlo empty 0 255 50 85 1 255 50 85 0 0 CPU;
 #X obj 129 110 else/note 425 12 Menlo empty 1 40 35 60 0 255 50 85 0 0 <-- Test;
-#X obj 273 101 else/else;
+#X obj 273 101 else;
 #X msg 272 54 version;
 #X obj 276 26 loadbang;
 #X obj 251 135 format symbol %d.%d-%d\ %s-%d;
@@ -587,7 +587,7 @@
 #X obj 71 141 else/route2;
 #X restore 219 177 pd Message_management;
 #N canvas 522 132 214 147 Assorted 0;
-#X obj 73 30 else/else;
+#X obj 73 30 else;
 #X obj 67 58 else/chrono;
 #X obj 61 88 else/datetime;
 #X restore 15 152 pd Assorted;
@@ -618,7 +618,7 @@
 #X obj 212 49 else/del~ out \$0x;
 #X obj 101 75 else/fbdelay~;
 #X obj 101 101 else/ffdelay~;
-#X obj 101 127 else/rdelay~;
+#X obj 101 127 else/revdelay~;
 #X obj 102 153 else/filterdelay~;
 #X restore 219 230 pd DSP(delays);
 #X connect 2 0 1 0;

@@ -364,10 +364,10 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 **AUDIO PROCESSING: DELAY [5]**
 
-- [del~]
+- [del~ in] / [del~ out]
 - [fbdelay~]
 - [ffdelay~]
-- [rdelay~]
+- [revdelay~]
 - [filterdelay~]
 
 **AUDIO PROCESSING: DYNAMICS [05]**
