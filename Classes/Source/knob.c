@@ -809,7 +809,7 @@ static void knob_properties(t_gobj *z, t_glist *owner){
     owner = NULL;
     t_knob *x = (t_knob *)z;
     char buffer[512];
-    sprintf(buffer, "knob_dialog %%s %g %g %g %g %d {%s} {%s} %d %g {%s} {%s} {%s} %d %d %d %d %d %d\n",
+    sprintf(buffer, "knob_dialog %%s %g %g %g %g %d {%s} {%s} %d %g %d {%s} {%s} {%s} %d %d %d %d %d %d\n",
         (float)(x->x_size / x->x_zoom),
         x->x_min,
         x->x_max,
@@ -819,6 +819,7 @@ static void knob_properties(t_gobj *z, t_glist *owner){
         x->x_rcv_raw->s_name,
         x->x_expmode,
         x->x_exp,
+        x->x_jump,
         x->x_bg->s_name,
         x->x_fg->s_name,
         x->x_mg->s_name,
@@ -842,16 +843,19 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     t_symbol* rcv = atom_getsymbolarg(5, ac, av);
     x->x_outline = atom_getintarg(6, ac, av);
     float exp = atom_getfloatarg(7, ac, av);
-    t_symbol *bg = atom_getsymbolarg(8, ac, av);
-    t_symbol *mg = atom_getsymbolarg(9, ac, av);
-    t_symbol *fg = atom_getsymbolarg(10, ac, av);
-    x->x_circular = atom_getintarg(11, ac, av);
-    int ticks = atom_getintarg(12, ac, av);
-    x->x_discrete = atom_getintarg(13, ac, av);
-    int arc = atom_getintarg(14, ac, av) != 0;
-    int range = atom_getintarg(15, ac, av);
-    int offset = atom_getintarg(16, ac, av);
-    t_atom undo[17];
+    int expmode = atom_getintarg(8, ac, av);
+    int jump = atom_getintarg(9, ac, av);
+    t_symbol *bg = atom_getsymbolarg(10, ac, av);
+    t_symbol *mg = atom_getsymbolarg(11, ac, av);
+    t_symbol *fg = atom_getsymbolarg(12, ac, av);
+    x->x_circular = atom_getintarg(13, ac, av);
+    int ticks = atom_getintarg(14, ac, av);
+    x->x_discrete = atom_getintarg(15, ac, av);
+    int arc = atom_getintarg(16, ac, av) != 0;
+    int range = atom_getintarg(17, ac, av);
+    int offset = atom_getintarg(18, ac, av);
+
+    t_atom undo[19];
     SETFLOAT(undo+0, x->x_size);
     SETFLOAT(undo+1, x->x_min);
     SETFLOAT(undo+2, x->x_max);
@@ -860,23 +864,33 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     SETSYMBOL(undo+5, x->x_rcv);
     SETFLOAT(undo+6, x->x_outline);
     SETFLOAT(undo+7, x->x_log ? 1 : x->x_exp);
-    SETSYMBOL(undo+8, x->x_bg);
-    SETSYMBOL(undo+9, x->x_mg);
-    SETSYMBOL(undo+10, x->x_fg);
-    SETFLOAT(undo+11, x->x_circular);
-    SETFLOAT(undo+12, x->x_ticks);
-    SETFLOAT(undo+13, x->x_discrete);
-    SETFLOAT(undo+14, x->x_arc);
-    SETFLOAT(undo+15, x->x_range);
-    SETFLOAT(undo+16, x->x_offset);
-    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 17, undo, ac, av);
-    
-    x->x_min = (double)min;
-    x->x_max = (double)max;
+    SETFLOAT(undo+8, x->x_expmode);
+    SETFLOAT(undo+9, x->x_jump);
+    SETSYMBOL(undo+10, x->x_bg);
+    SETSYMBOL(undo+11, x->x_mg);
+    SETSYMBOL(undo+12, x->x_fg);
+    SETFLOAT(undo+13, x->x_circular);
+    SETFLOAT(undo+14, x->x_ticks);
+    SETFLOAT(undo+15, x->x_discrete);
+    SETFLOAT(undo+16, x->x_arc);
+    SETFLOAT(undo+17, x->x_range);
+    SETFLOAT(undo+18, x->x_offset);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 19, undo, ac, av);
 
-    knob_log(x, exp == 1.0f);
-    if(exp != 1.0f)
+    knob_range(x, min, max);
+
+    if(expmode == 0)
+    {
+        knob_exp(x, 0.0f);
+    }
+    if(expmode == 1)
+    {
+        knob_log(x, 1);
+    }
+    if(expmode == 2)
+    {
         knob_exp(x, exp);
+    }
 
     knob_ticks(x, ticks);
     t_atom at[1];
