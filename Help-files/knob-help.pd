@@ -214,4 +214,5 @@
 #X text 89 560 -size <float> | -init <float> | -range <float \, float> | -bgcolor <list> | -mgcolor <list> | -fgcolor <list> | -noarc | -outline | -circular | -angle <float> | -offset <float> | -send <symbol> | -receive <symbol> | -ticks <float> | -circular | -discrete | -jump, f 73;
 #X text 135 502 jump <float>;
 #X text 218 502 - non zero sets to jump on click mode (default: 0), f 54;
+#X text 38 111 THIS OBJECT IS STILL EXPERIMENTAL!!!!, f 20;
 #X connect 60 0 24 0;
