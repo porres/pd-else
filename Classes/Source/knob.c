@@ -835,26 +835,6 @@ static void knob_properties(t_gobj *z, t_glist *owner){
 
 static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    int size = (int)atom_getintarg(0, ac, av);
-    float min = atom_getfloatarg(1, ac, av);
-    float max = atom_getfloatarg(2, ac, av);
-    double init = atom_getfloatarg(3, ac, av);
-    t_symbol* snd = atom_getsymbolarg(4, ac, av);
-    t_symbol* rcv = atom_getsymbolarg(5, ac, av);
-    x->x_outline = atom_getintarg(6, ac, av);
-    float exp = atom_getfloatarg(7, ac, av);
-    int expmode = atom_getintarg(8, ac, av);
-    int jump = atom_getintarg(9, ac, av);
-    t_symbol *bg = atom_getsymbolarg(10, ac, av);
-    t_symbol *mg = atom_getsymbolarg(11, ac, av);
-    t_symbol *fg = atom_getsymbolarg(12, ac, av);
-    x->x_circular = atom_getintarg(13, ac, av);
-    int ticks = atom_getintarg(14, ac, av);
-    x->x_discrete = atom_getintarg(15, ac, av);
-    int arc = atom_getintarg(16, ac, av) != 0;
-    int range = atom_getintarg(17, ac, av);
-    int offset = atom_getintarg(18, ac, av);
-
     t_atom undo[19];
     SETFLOAT(undo+0, x->x_size);
     SETFLOAT(undo+1, x->x_min);
@@ -876,22 +856,33 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     SETFLOAT(undo+17, x->x_range);
     SETFLOAT(undo+18, x->x_offset);
     pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 19, undo, ac, av);
-
-    knob_range(x, min, max);
+    int size = (int)atom_getintarg(0, ac, av);
+    float min = atom_getfloatarg(1, ac, av);
+    float max = atom_getfloatarg(2, ac, av);
+    double init = atom_getfloatarg(3, ac, av);
+    t_symbol* snd = atom_getsymbolarg(4, ac, av);
+    t_symbol* rcv = atom_getsymbolarg(5, ac, av);
+    x->x_outline = atom_getintarg(6, ac, av);
+    float exp = atom_getfloatarg(7, ac, av);
+    int expmode = atom_getintarg(8, ac, av);
+    x->x_jump = atom_getintarg(9, ac, av);
+    t_symbol *bg = atom_getsymbolarg(10, ac, av);
+    t_symbol *mg = atom_getsymbolarg(11, ac, av);
+    t_symbol *fg = atom_getsymbolarg(12, ac, av);
+    x->x_circular = atom_getintarg(13, ac, av);
+    int ticks = atom_getintarg(14, ac, av);
+    x->x_discrete = atom_getintarg(15, ac, av);
+    int arc = atom_getintarg(16, ac, av) != 0;
+    int range = atom_getintarg(17, ac, av);
+    int offset = atom_getintarg(18, ac, av);
 
     if(expmode == 0)
-    {
         knob_exp(x, 0.0f);
-    }
     if(expmode == 1)
-    {
         knob_log(x, 1);
-    }
     if(expmode == 2)
-    {
         knob_exp(x, exp);
-    }
-
+    knob_range(x, min, max);
     knob_ticks(x, ticks);
     t_atom at[1];
     SETSYMBOL(at, bg);
