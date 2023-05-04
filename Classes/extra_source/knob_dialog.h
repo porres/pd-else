@@ -228,6 +228,7 @@ sys_gui("\n"
 "    pack $mytoplevel.para.knobstyle.jump.ent $mytoplevel.para.knobstyle.jump.lab -side right -anchor e\n"
 // Define a function to be called when the circular checkbutton is toggled
 // Here we'll make the jump checkbox inactive
+// It seems like this callback gets called before the value gets toggled, hence the inverted behaviour
 "   proc toggle_circular {vid mytoplevel} {"
 "    if {$::dialog_knob::var_circular($vid) == 0} {"
 "       $mytoplevel.para.knobstyle.jump.ent configure -state disabled\n"
@@ -235,6 +236,9 @@ sys_gui("\n"
 "       $mytoplevel.para.knobstyle.jump.ent configure -state normal\n"
 "     }\n"
 "   }\n"
+"    if {$::dialog_knob::var_circular($vid) == 1} {\n"
+"       $mytoplevel.para.knobstyle.jump.ent configure -state disabled\n"
+"    }\n"
 // Bind the toggle_checkbutton function to the checkbutton
 "    bind $mytoplevel.para.knobstyle.move.mode <Button-1> \"toggle_circular $vid $mytoplevel\" \n"
 // Entry for Outline (Checkbox)
