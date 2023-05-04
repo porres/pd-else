@@ -1,5 +1,5 @@
-// by Porres and Tim Schoen
-// based on the knob proposal for vanilla by Ant1, Porres and others
+// By Porres and Tim Schoen
+// Based on the knob proposal for vanilla by Ant1, Porres and others
 
 #include "m_pd.h"
 #include "g_canvas.h"
@@ -876,12 +876,16 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     int range = atom_getintarg(17, ac, av);
     int offset = atom_getintarg(18, ac, av);
     knob_config_io(x, glist_getcanvas(x->x_glist)); // for outline
-    if(expmode == 0)
+    if(expmode == 0){
+        knob_log(x, 0);
         knob_exp(x, 0.0f);
+    }
     if(expmode == 1)
         knob_log(x, 1);
-    if(expmode == 2)
+    if(expmode == 2){
+        knob_log(x, 0);
         knob_exp(x, exp);
+    }
     knob_range(x, min, max);
     knob_ticks(x, ticks);
     t_atom at[1];
