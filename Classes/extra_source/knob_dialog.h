@@ -206,11 +206,29 @@ sys_gui("\n"
 "    pack $mytoplevel.para.knobstyle.initial.lab -side left -expand 0 -ipadx 4\n"
 "    pack $mytoplevel.para.knobstyle.initial.ent -side left -expand 0 -ipadx 10\n"
 "    destroy $mytoplevel.para.knobstyle.stdy_jmp\n"
+// Checkbox for jump on click
+"    frame $mytoplevel.para.knobstyle.jump\n"
+"    label $mytoplevel.para.knobstyle.jump.lab -text [_ \"Jump on click: \"]\n"
+"    checkbutton $mytoplevel.para.knobstyle.jump.ent -variable ::dialog_knob::var_jump($vid) -width 5\n"
+"    pack $mytoplevel.para.knobstyle.jump.ent $mytoplevel.para.knobstyle.jump.lab -side right -anchor e\n"
+"    if { $::dialog_knob::var_circular($vid) == 1 } {\n"
+"       $mytoplevel.para.knobstyle.jump.ent configure -state disabled\n"
+"    }\n"
 // Checkbox for circular drag
 "    frame $mytoplevel.para.knobstyle.move \n"
 "    label $mytoplevel.para.knobstyle.move.lab -text [_ \"Circular drag:\"]\n"
 "    checkbutton $mytoplevel.para.knobstyle.move.mode -variable ::dialog_knob::var_circular($vid) -width 5\n"
 "    pack $mytoplevel.para.knobstyle.move.mode $mytoplevel.para.knobstyle.move.lab -side right -anchor e\n"
+//  define a function to be called when the checkbutton is toggled
+"   proc toggle_circular {vid mytoplevel} {"
+"    if {$::dialog_knob::var_circular($vid) == 0} {"
+"       $mytoplevel.para.knobstyle.jump.ent configure -state disabled\n"
+"      } else {"
+"       $mytoplevel.para.knobstyle.jump.ent configure -state normal\n"
+"     }\n"
+"   }\n"
+// bind the toggle_checkbutton function to the checkbutton
+" bind $mytoplevel.para.knobstyle.move.mode <Button-1> \"toggle_circular $vid $mytoplevel\" \n"
 // Checkbox for arc
 "    frame $mytoplevel.para.knobstyle.arc\n"
 "    label $mytoplevel.para.knobstyle.arc.lab -text [_ \"Arc: \"]\n"
@@ -221,12 +239,6 @@ sys_gui("\n"
 "    label $mytoplevel.para.knobstyle.outline.lab -text [_ \"Show outline: \"]\n"
 "    checkbutton $mytoplevel.para.knobstyle.outline.ent -variable ::dialog_knob::var_outline_shown($vid) -width 5\n"
 "    pack $mytoplevel.para.knobstyle.outline.ent $mytoplevel.para.knobstyle.outline.lab -side right -anchor e\n"
-
-"    frame $mytoplevel.para.knobstyle.jump\n"
-"    label $mytoplevel.para.knobstyle.jump.lab -text [_ \"Jump on click: \"]\n"
-"    checkbutton $mytoplevel.para.knobstyle.jump.ent -variable ::dialog_knob::var_jump($vid) -width 5\n"
-"    pack $mytoplevel.para.knobstyle.jump.ent $mytoplevel.para.knobstyle.jump.lab -side right -anchor e\n"
-
 // Checkbox for discrete mode
 "    labelframe $mytoplevel.discrete\n"
 "    frame $mytoplevel.discrete.toggle\n"
