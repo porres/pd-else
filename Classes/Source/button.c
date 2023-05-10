@@ -390,7 +390,7 @@ static void *button_new(t_symbol *s, int ac, t_atom *av){
                 }
                 else goto errstate;
             }
-            else if(s == gensym("-tgl")){
+            else if(s == gensym("-toggle")){
                     x->x_mode = 1;
                     ac--, av++;
             }
@@ -455,8 +455,8 @@ void button_setup(void){
     class_addmethod(button_class, (t_method)button_width, gensym("width"), A_FLOAT, 0);
     class_addmethod(button_class, (t_method)button_height, gensym("height"), A_FLOAT, 0);
     class_addmethod(button_class, (t_method)button_set, gensym("set"), A_FLOAT, 0);
-    class_addmethod(button_class, (t_method)button_bng, gensym("bng"), 0);
-    class_addmethod(button_class, (t_method)button_tgl, gensym("tgl"), 0);
+    class_addmethod(button_class, (t_method)button_bng, gensym("bang"), 0);
+    class_addmethod(button_class, (t_method)button_tgl, gensym("toggle"), 0);
     class_addmethod(button_class, (t_method)button_latch, gensym("latch"), 0);
     class_addmethod(button_class, (t_method)button_bgcolor, gensym("bgcolor"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(button_class, (t_method)button_fgcolor, gensym("fgcolor"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
