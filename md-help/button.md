@@ -31,9 +31,9 @@ outlets:
     description: latch status (on=1 or off=0)
 
 flags:
-- name: -bng
+- name: -bang
   description: sets to bang mode (default latch)
-- name: -tgl
+- name: -toggle
 description: sets to toggle mode (default latch)
 - name: -dim <float, float>
   description: x/y dimensions (default = 20, 20)
@@ -47,9 +47,9 @@ description: sets to toggle mode (default latch)
 methods:
   - type: latch
    description: sets to latch mode
-   - type: tgl
+   - type: toggle
     description: sets to toggle mode
-    - type: bng
+    - type: bang
      description: sets to bang mode
   - type: dim <f, f>
     description: sets horizontal and vertical size in pixels

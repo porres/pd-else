@@ -1153,7 +1153,6 @@
 #X connect 2 0 8 2;
 #X connect 2 0 7 2;
 #X connect 2 0 14 0;
-#X connect 2 0 15 4;
 #X connect 3 0 10 0;
 #X connect 5 0 10 1;
 #X connect 6 0 8 0;
