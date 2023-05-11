@@ -36,10 +36,12 @@ common.sources = stmlib/dsp/units.cc \
 # input source file (class name == source file basename)
 class.sources = plaits~.cpp
 
-# all extra files to be included in binary distribution of the library
-# datafiles = plaits~-help.pd README.md
-
 cflags = -DTEST -Wno-unused-local-typedefs -I$(shell pwd)
+
+# all extra files to be included in binary distribution of the library
+define forDarwin
+  cflags += -I /usr/include/c++/v1 -stdlib=libc++ -mmacosx-version-min=10.9
+endef
 
 # include Makefile.pdlibbuilder from submodule directory 'pd-lib-builder'
 PDLIBBUILDER_DIR=pd-lib-builder/
