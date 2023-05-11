@@ -194,30 +194,30 @@ jobs:
     - name: Build sfont~
       run: |
         cd sfont~
-        make extension=m_darwin
-        ./scripts/localdeps.macos.sh sfont~.m_darwin
+        make extension=d_amd64
+        ./scripts/localdeps.macos.sh sfont~.d_amd64
 
     - name: Build plaits~
       run: |
         cd plaits~
-        make 
+        make extension=d_amd64
 
     - name: Build pd-else
       run: |
-        make extension=m_darwin
+        make extension=d_amd64
       continue-on-error: true
 
     - name: Create Library Folder
       run: |
         mkdir else-MacOS
-        cp *.m_darwin ./else-MacOS
+        cp *.d_amd64 ./else-MacOS
         cp Help-files/* ./else-MacOS
         cp Classes/libpd-abs/* ./else-MacOS
         cp Classes/Abstractions/* ./else-MacOS
         cp Classes/Abs_components/* ./else-MacOS
         mkdir ./else-MacOS/sf
-        cp plaits~/*.m_darwin ./else-MacOS
-        cp sfont~/*.m_darwin ./else-MacOS
+        cp plaits~/*.d_amd64 ./else-MacOS
+        cp sfont~/*.d_amd64 ./else-MacOS
         cp sfont~/sfont-compiled/*.d_fat ./else-MacOS
         cp extra/* ./else-MacOS
         cp README.pdf ./else-MacOS
