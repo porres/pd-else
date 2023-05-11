@@ -91,9 +91,9 @@ jobs:
         name: else
         path: ./else-Linux/*
 
-# ===============================================================
-# ===============================================================
-# ===============================================================
+# # ===============================================================
+# # ===============================================================
+# # ===============================================================
 
   Windows-Build:  
     runs-on: windows-latest
@@ -170,5 +170,60 @@ jobs:
 # ===============================================================
 # ===============================================================
 # ===============================================================
+  Mac-Intel:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+        fetch-depth: 0
 
+    - name: set Enviroment
+      run: |
+        brew install --cask pd
+        brew install fluidsynth pkg-config
 
+    # - name: Downloads pd-Sources 
+      # run: | 
+        # PD_URL=$(curl -L -s https://api.github.com/repos/pure-data/pure-data/tags | grep zipball_url | grep -v latest | grep -v pd-0.52 | grep -v tagtest | head -n 1 | cut -d '"' -f 4)
+        # curl -L -o pure-data.zip $PD_URL
+        # unzip pure-data.zip
+        # rm pure-data.zip
+        # mv pure-data-* pure-data
+
+    - name: Build sfont~
+      run: |
+        cd sfont~
+        make extension=m_darwin
+        ./scripts/localdeps.macos.sh sfont~.m_darwin
+
+    - name: Build plaits~
+      run: |
+        cd plaits~
+        make 
+
+    - name: Build pd-else
+      run: |
+        make extension=m_darwin
+      continue-on-error: true
+
+    - name: Create Library Folder
+      run: |
+        mkdir else-MacOS
+        cp *.m_darwin ./else-MacOS
+        cp Help-files/* ./else-MacOS
+        cp Classes/libpd-abs/* ./else-MacOS
+        cp Classes/Abstractions/* ./else-MacOS
+        cp Classes/Abs_components/* ./else-MacOS
+        mkdir ./else-MacOS/sf
+        cp plaits~/*.m_darwin ./else-MacOS
+        cp sfont~/*.m_darwin ./else-MacOS
+        cp sfont~/sfont-compiled/*.d_fat ./else-MacOS
+        cp extra/* ./else-MacOS
+        cp README.pdf ./else-MacOS
+
+    - name: Upload Zip
+      uses: actions/upload-artifact@v3
+      with:
+        name: else
+        path: ./else-MacOS/*
