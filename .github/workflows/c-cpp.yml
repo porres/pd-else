@@ -238,16 +238,16 @@ jobs:
         brew install --cask pd
         brew install fluidsynth pkg-config
         
-    - name: Build sfont~
-      run: |
-        cd sfont~
-        make extension=d_amd64 -arch arm64 
-        ./scripts/localdeps.macos.sh sfont~.d_arm64
-
-    # - name: Build plaits~
+    # - name: Build sfont~
     #   run: |
-    #     cd plaits~
-    #     make extension=d_amd64
+    #     cd sfont~
+    #     make extension=d_amd64 -arch arm64 
+    #     ./scripts/localdeps.macos.sh sfont~.d_arm64
+
+    - name: Build plaits~
+      run: |
+        cd plaits~
+        make extension=d_amd64 -arch arm64 
 
 
     # - name: Build pd-else
