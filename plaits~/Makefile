@@ -45,7 +45,7 @@ endef
 
 # I want to add one flag for M1 Macs, something like -arm64, how can I get if the make parameter is set?
 ifeq ($(ARM_VERSION), 1) # this means that when I run make ARM_VERSION=1, it will add the flag
-  cflags += -arch arm64
+  target.arch = arm64
 endif
 
 # include Makefile.pdlibbuilder from submodule directory 'pd-lib-builder'
