@@ -59,27 +59,27 @@ jobs:
     - name: Build sfont~
       run: |
         cd sfont~
-        make PDLIBDIR=${{github.workspace}}/else-Linux/ localdep_linux
+        make PDLIBDIR=${{github.workspace}}/else-Linux/ extension=l_amd64 localdep_linux 
 
     - name: Build plaits~
       run: |
         cd plaits~
-        make PDINCLUDEDIR=${{github.workspace}}/pure-data/src 
-
+        make PDINCLUDEDIR=${{github.workspace}}/pure-data/src extension=l_amd64
+ 
     - name: Build pd-else
       run: | 
-        make PDINCLUDEDIR=./pure-data/src/
+        make PDINCLUDEDIR=./pure-data/src/ extension=l_amd64
 
     - name: Create Library Folder
       run: | 
-        cp *.pd_linux ./else-Linux
+        cp *.l_amd64 ./else-Linux
         cp Help-files/* ./else-Linux
         cp Classes/libpd-abs/* ./else-Linux
         cp Classes/Abstractions/* ./else-Linux
         cp Classes/Abs_components/* ./else-Linux
         cp -r Live-Electronics-Tutorial ./else-Linux
-        cp plaits~/*.pd_linux ./else-Linux
-        ./sfont~/scripts/localdeps.linux.sh ./else-Linux/sfont~.pd_linux
+        cp plaits~/*.l_amd64 ./else-Linux
+        ./sfont~/scripts/localdeps.linux.sh ./else-Linux/sfont~.l_amd64
         cp extra/* ./else-Linux
         cp README.pdf ./else-Linux
         mv -v ./else-Linux/sfont~/* ./else-Linux/
