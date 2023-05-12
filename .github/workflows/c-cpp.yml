@@ -234,20 +234,15 @@ jobs:
         fetch-depth: 0
 
     - name: set Enviroment
-        #brew install --cask pd
-        #brew install fluidsynth pkg-config
       run: |
+        brew install --cask pd
+        brew install fluidsynth pkg-config
         
-        brew install --arch=arm64 gcc
-
-
-
-
-    # - name: Build sfont~
-    #   run: |
-    #     cd sfont~
-    #     make extension=d_amd64 -arch arm64 -arch x86_64
-    #     ./scripts/localdeps.macos.sh sfont~.d_amd64
+    - name: Build sfont~
+      run: |
+        cd sfont~
+        make extension=d_amd64 -arch arm64 
+        ./scripts/localdeps.macos.sh sfont~.d_arm64
 
     # - name: Build plaits~
     #   run: |
