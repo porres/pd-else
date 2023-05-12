@@ -234,9 +234,10 @@ jobs:
         fetch-depth: 0
 
     - name: set Enviroment
+        #brew install --cask pd
+        #brew install fluidsynth pkg-config
       run: |
-        brew install --cask pd
-        brew install fluidsynth pkg-config
+        
         brew install --arch=arm64 gcc
 
 
