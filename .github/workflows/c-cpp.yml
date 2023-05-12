@@ -13,164 +13,219 @@ jobs:
 # ===============================================================
 # ===============================================================
 # ===============================================================
-  Linux-Build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Install PureData
-      run: sudo apt-get install puredata -y 
+#   Linux-Build:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@v3
+#     - name: Install PureData
+#       run: sudo apt-get install puredata -y 
 
-    - name: Downloads pd-Sources 
-      run: | 
-        PD_URL=$(curl -L -s https://api.github.com/repos/pure-data/pure-data/tags | grep zipball_url | grep -v latest | grep -v pd-0.52 | grep -v tagtest | head -n 1 | cut -d '"' -f 4)
-        curl -L -o pure-data.zip $PD_URL
-        unzip pure-data.zip
-        rm pure-data.zip
-        mv pure-data-* pure-data
+#     - name: Downloads pd-Sources 
+#       run: | 
+#         PD_URL=$(curl -L -s https://api.github.com/repos/pure-data/pure-data/tags | grep zipball_url | grep -v latest | grep -v pd-0.52 | grep -v tagtest | head -n 1 | cut -d '"' -f 4)
+#         curl -L -o pure-data.zip $PD_URL
+#         unzip pure-data.zip
+#         rm pure-data.zip
+#         mv pure-data-* pure-data
 
-    - name: Install FluidSynth deps
-      run: sudo apt install cmake libglib2.0-dev libpcre++-dev libsndfile1-dev patchelf -y
+#     - name: Install FluidSynth deps
+#       run: sudo apt install cmake libglib2.0-dev libpcre++-dev libsndfile1-dev patchelf -y
 
-    - name: build FluidSynth
-      run: | 
-        mkdir ./else-Linux 
-        cd sfont~
-        URL=$(curl -L -s https://api.github.com/repos/FluidSynth/fluidsynth/releases/latest | grep zipball_url | cut -d '"' -f 4)
-        curl -L -o fluidsynth.zip $URL
-        unzip fluidsynth.zip
-        rm fluidsynth.zip
-        mv FluidSynth-* FluidSynth
-        cd FluidSynth
-        mkdir build
-        cd build
-        cmake -Denable-libsndfile=on -Denable-jack=off -Denable-alsa=off -Denable-oss=off -Denable-pulseaudio=off -Denable-ladspa=off -Denable-aufile=off -Denable-network=off -Denable-ipv6=off -Denable-getopt=off -Denable-sdl2=off -Denable-threads=off ..
-        sudo ldconfig /lib/x86_64-linux-gnu/
-        sudo ldconfig -v
-        sudo make install 
+#     - name: build FluidSynth
+#       run: | 
+#         mkdir ./else-Linux 
+#         cd sfont~
+#         URL=$(curl -L -s https://api.github.com/repos/FluidSynth/fluidsynth/releases/latest | grep zipball_url | cut -d '"' -f 4)
+#         curl -L -o fluidsynth.zip $URL
+#         unzip fluidsynth.zip
+#         rm fluidsynth.zip
+#         mv FluidSynth-* FluidSynth
+#         cd FluidSynth
+#         mkdir build
+#         cd build
+#         cmake -Denable-libsndfile=on -Denable-jack=off -Denable-alsa=off -Denable-oss=off -Denable-pulseaudio=off -Denable-ladspa=off -Denable-aufile=off -Denable-network=off -Denable-ipv6=off -Denable-getopt=off -Denable-sdl2=off -Denable-threads=off ..
+#         sudo ldconfig /lib/x86_64-linux-gnu/
+#         sudo ldconfig -v
+#         sudo make install 
     
-    - name: Add Dynamic libraries 
-      run: |
-        sudo sh -c 'echo "/lib/x86_64-linux-gnu/" >> /etc/ld.so.conf'
-        sudo sh -c 'echo "/lib64/" >> /etc/ld.so.conf'
-        sudo sh -c 'echo "/usr/local/lib/" >> /etc/ld.so.conf'
-        sudo ldconfig 
-        sudo ldconfig -v
+#     - name: Add Dynamic libraries 
+#       run: |
+#         sudo sh -c 'echo "/lib/x86_64-linux-gnu/" >> /etc/ld.so.conf'
+#         sudo sh -c 'echo "/lib64/" >> /etc/ld.so.conf'
+#         sudo sh -c 'echo "/usr/local/lib/" >> /etc/ld.so.conf'
+#         sudo ldconfig 
+#         sudo ldconfig -v
 
-    - name: Build sfont~
-      run: |
-        cd sfont~
-        make PDLIBDIR=${{github.workspace}}/else-Linux/ extension=l_amd64 localdep_linux 
+#     - name: Build sfont~
+#       run: |
+#         cd sfont~
+#         make PDLIBDIR=${{github.workspace}}/else-Linux/ extension=l_amd64 localdep_linux 
 
-    - name: Build plaits~
-      run: |
-        cd plaits~
-        make PDINCLUDEDIR=${{github.workspace}}/pure-data/src extension=l_amd64
+#     - name: Build plaits~
+#       run: |
+#         cd plaits~
+#         make PDINCLUDEDIR=${{github.workspace}}/pure-data/src extension=l_amd64
  
-    - name: Build pd-else
-      run: | 
-        make PDINCLUDEDIR=./pure-data/src/ extension=l_amd64
+#     - name: Build pd-else
+#       run: | 
+#         make PDINCLUDEDIR=./pure-data/src/ extension=l_amd64
 
-    - name: Create Library Folder
-      run: | 
-        cp *.l_amd64 ./else-Linux
-        cp Help-files/* ./else-Linux
-        cp Classes/libpd-abs/* ./else-Linux
-        cp Classes/Abstractions/* ./else-Linux
-        cp Classes/Abs_components/* ./else-Linux
-        cp -r Live-Electronics-Tutorial ./else-Linux
-        cp plaits~/*.l_amd64 ./else-Linux
-        ./sfont~/scripts/localdeps.linux.sh ./else-Linux/sfont~.l_amd64
-        cp extra/* ./else-Linux
-        cp README.pdf ./else-Linux
-        mv -v ./else-Linux/sfont~/* ./else-Linux/
-        rm -rf ./else-Linux/sfont~
+#     - name: Create Library Folder
+#       run: | 
+#         cp *.l_amd64 ./else-Linux
+#         cp Help-files/* ./else-Linux
+#         cp Classes/libpd-abs/* ./else-Linux
+#         cp Classes/Abstractions/* ./else-Linux
+#         cp Classes/Abs_components/* ./else-Linux
+#         cp -r Live-Electronics-Tutorial ./else-Linux
+#         cp plaits~/*.l_amd64 ./else-Linux
+#         ./sfont~/scripts/localdeps.linux.sh ./else-Linux/sfont~.l_amd64
+#         cp extra/* ./else-Linux
+#         cp README.pdf ./else-Linux
+#         mv -v ./else-Linux/sfont~/* ./else-Linux/
+#         rm -rf ./else-Linux/sfont~
         
-    - name: Upload Zip
-      uses: actions/upload-artifact@v3
-      with:
-        name: else
-        path: ./else-Linux/*
+#     - name: Upload Zip
+#       uses: actions/upload-artifact@v3
+#       with:
+#         name: else
+#         path: ./else-Linux/*
 
-# # ===============================================================
-# # ===============================================================
-# # ===============================================================
+# # # ===============================================================
+# # # ===============================================================
+# # # ===============================================================
 
-  Windows-Build:  
-    runs-on: windows-latest
-    timeout-minutes: 15
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: recursive
-        fetch-depth: 0
+#   Windows-Build:  
+#     runs-on: windows-latest
+#     timeout-minutes: 15
+#     steps:
+#     - uses: actions/checkout@v3
+#       with:
+#         submodules: recursive
+#         fetch-depth: 0
 
-    - uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+#     - uses: actions/setup-python@v4
+#       with:
+#         python-version: '3.10'
 
-    - if: runner.os == 'Windows'
-      name: "Install mingw deps"
-      uses: msys2/setup-msys2@v2
-      with:
-          install: make autoconf automake libtool mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-ntldd-git libtool mingw-w64-x86_64-libwinpthread-git mingw-w64-x86_64-libsystre mingw-w64-x86_64-dlfcn  mingw-w64-x86_64-fluidsynth  mingw-w64-x86_64-grep unzip
-          update: false
+#     - if: runner.os == 'Windows'
+#       name: "Install mingw deps"
+#       uses: msys2/setup-msys2@v2
+#       with:
+#           install: make autoconf automake libtool mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-ntldd-git libtool mingw-w64-x86_64-libwinpthread-git mingw-w64-x86_64-libsystre mingw-w64-x86_64-dlfcn  mingw-w64-x86_64-fluidsynth  mingw-w64-x86_64-grep unzip
+#           update: false
 
-    - name: Configure Environment
-      run: |
-        mkdir py4pd_WIN64
-        choco install puredata --yes
+#     - name: Configure Environment
+#       run: |
+#         mkdir py4pd_WIN64
+#         choco install puredata --yes
 
-    - if: runner.os == 'Windows'
-      name: Build sfont~
-      shell: msys2 {0}
-      run: | 
-        mkdir ./else-Windows 
-        cd sfont~
-        make extension=m_amd64
-        ./scripts/localdeps.win.sh sfont~.m_amd64
-        cd ..
+#     - if: runner.os == 'Windows'
+#       name: Build sfont~
+#       shell: msys2 {0}
+#       run: | 
+#         mkdir ./else-Windows 
+#         cd sfont~
+#         make extension=m_amd64
+#         ./scripts/localdeps.win.sh sfont~.m_amd64
+#         cd ..
     
-    - if: runner.os == 'Windows'
-      name: Build plaits~
-      shell: msys2 {0}
-      run: | 
-        cd plaits~
-        make extension=m_amd64
+#     - if: runner.os == 'Windows'
+#       name: Build plaits~
+#       shell: msys2 {0}
+#       run: | 
+#         cd plaits~
+#         make extension=m_amd64
         
-    - if: runner.os == 'Windows'
-      name: Build pd-else
-      shell: msys2 {0}
-      run: |
-        make extension=m_amd64 
+#     - if: runner.os == 'Windows'
+#       name: Build pd-else
+#       shell: msys2 {0}
+#       run: |
+#         make extension=m_amd64 
 
-    - if: runner.os == 'Windows'
-      name: Create Library Folder
-      shell: msys2 {0}
-      run: |
-        cp *.m_amd64 ./else-Windows
-        cp Help-files/* ./else-Windows
-        cp Classes/libpd-abs/* ./else-Windows
-        cp Classes/Abstractions/* ./else-Windows
-        cp Classes/Abs_components/* ./else-Windows
-        mkdir ./else-Windows/sf
-        cp sfont~/sf/* ./else-Windows/sf
-        cp -r Live-Electronics-Tutorial ./else-Windows
-        cp plaits~/*.m_amd64 ./else-Windows
-        cp sfont~/*.m_amd64 ./else-Windows
-        cp sfont~/sfont-compiled/*.w64 ./else-Windows
-        cp extra/* ./else-Windows
-        cp README.pdf ./else-Windows
+#     - if: runner.os == 'Windows'
+#       name: Create Library Folder
+#       shell: msys2 {0}
+#       run: |
+#         cp *.m_amd64 ./else-Windows
+#         cp Help-files/* ./else-Windows
+#         cp Classes/libpd-abs/* ./else-Windows
+#         cp Classes/Abstractions/* ./else-Windows
+#         cp Classes/Abs_components/* ./else-Windows
+#         mkdir ./else-Windows/sf
+#         cp sfont~/sf/* ./else-Windows/sf
+#         cp -r Live-Electronics-Tutorial ./else-Windows
+#         cp plaits~/*.m_amd64 ./else-Windows
+#         cp sfont~/*.m_amd64 ./else-Windows
+#         cp sfont~/sfont-compiled/*.w64 ./else-Windows
+#         cp extra/* ./else-Windows
+#         cp README.pdf ./else-Windows
         
-    - name: Upload Zip
-      uses: actions/upload-artifact@v3
-      with:
-        name: else
-        path: ./else-Windows/*
+#     - name: Upload Zip
+#       uses: actions/upload-artifact@v3
+#       with:
+#         name: else
+#         path: ./else-Windows/*
+
+# # ===============================================================
+# # ===============================================================
+# # ===============================================================
+#   Mac-Intel:
+#     runs-on: macos-latest
+#     steps:
+#     - uses: actions/checkout@v3
+#       with:
+#         submodules: recursive
+#         fetch-depth: 0
+
+#     - name: set Enviroment
+#       run: |
+#         brew install --cask pd
+#         brew install fluidsynth pkg-config
+
+#     - name: Build sfont~
+#       run: |
+#         cd sfont~
+#         make extension=d_amd64
+#         ./scripts/localdeps.macos.sh sfont~.d_amd64
+
+#     - name: Build plaits~
+#       run: |
+#         cd plaits~
+#         make extension=d_amd64
+
+
+#     - name: Build pd-else
+#       run: |
+#         make extension=d_amd64
+
+#     - name: Create Library Folder
+#       run: |
+#         mkdir else-MacOS
+#         cp *.d_amd64 ./else-MacOS
+#         cp Help-files/* ./else-MacOS
+#         cp Classes/libpd-abs/* ./else-MacOS
+#         cp Classes/Abstractions/* ./else-MacOS
+#         cp Classes/Abs_components/* ./else-MacOS
+#         mkdir ./else-MacOS/sf
+#         cp plaits~/*.d_amd64 ./else-MacOS
+#         cp sfont~/*.d_amd64 ./else-MacOS
+#         cp sfont~/sfont-compiled/*.d_amd64 ./else-MacOS
+#         mkdir ./else-MacOS/amd64
+#         cp sfont~/amd64/*.dylib ./else-MacOS/amd64
+#         cp extra/* ./else-MacOS
+#         cp README.pdf ./else-MacOS
+
+#     - name: Upload Zip
+#       uses: actions/upload-artifact@v3
+#       with:
+#         name: else
+#         path: ./else-MacOS/*
 
 # ===============================================================
 # ===============================================================
 # ===============================================================
-  Mac-Intel:
+  Mac-ARM:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
@@ -182,50 +237,46 @@ jobs:
       run: |
         brew install --cask pd
         brew install fluidsynth pkg-config
-
-    # - name: Downloads pd-Sources 
-      # run: | 
-        # PD_URL=$(curl -L -s https://api.github.com/repos/pure-data/pure-data/tags | grep zipball_url | grep -v latest | grep -v pd-0.52 | grep -v tagtest | head -n 1 | cut -d '"' -f 4)
-        # curl -L -o pure-data.zip $PD_URL
-        # unzip pure-data.zip
-        # rm pure-data.zip
-        # mv pure-data-* pure-data
-
-    - name: Build sfont~
-      run: |
-        cd sfont~
-        make extension=d_amd64
-        ./scripts/localdeps.macos.sh sfont~.d_amd64
-
-    - name: Build plaits~
-      run: |
-        cd plaits~
-        make extension=d_amd64
+        brew install --arch=arm64 gcc
 
 
-    - name: Build pd-else
-      run: |
-        make extension=d_amd64
 
-    - name: Create Library Folder
-      run: |
-        mkdir else-MacOS
-        cp *.d_amd64 ./else-MacOS
-        cp Help-files/* ./else-MacOS
-        cp Classes/libpd-abs/* ./else-MacOS
-        cp Classes/Abstractions/* ./else-MacOS
-        cp Classes/Abs_components/* ./else-MacOS
-        mkdir ./else-MacOS/sf
-        cp plaits~/*.d_amd64 ./else-MacOS
-        cp sfont~/*.d_amd64 ./else-MacOS
-        cp sfont~/sfont-compiled/*.d_amd64 ./else-MacOS
-        mkdir ./else-MacOS/amd64
-        cp sfont~/amd64/*.dylib ./else-MacOS/amd64
-        cp extra/* ./else-MacOS
-        cp README.pdf ./else-MacOS
 
-    - name: Upload Zip
-      uses: actions/upload-artifact@v3
-      with:
-        name: else
-        path: ./else-MacOS/*
+    # - name: Build sfont~
+    #   run: |
+    #     cd sfont~
+    #     make extension=d_amd64 -arch arm64 -arch x86_64
+    #     ./scripts/localdeps.macos.sh sfont~.d_amd64
+
+    # - name: Build plaits~
+    #   run: |
+    #     cd plaits~
+    #     make extension=d_amd64
+
+
+    # - name: Build pd-else
+    #   run: |
+    #     make extension=d_amd64
+
+    # - name: Create Library Folder
+    #   run: |
+    #     mkdir else-MacOS
+    #     cp *.d_amd64 ./else-MacOS
+    #     cp Help-files/* ./else-MacOS
+    #     cp Classes/libpd-abs/* ./else-MacOS
+    #     cp Classes/Abstractions/* ./else-MacOS
+    #     cp Classes/Abs_components/* ./else-MacOS
+    #     mkdir ./else-MacOS/sf
+    #     cp plaits~/*.d_amd64 ./else-MacOS
+    #     cp sfont~/*.d_amd64 ./else-MacOS
+    #     cp sfont~/sfont-compiled/*.d_amd64 ./else-MacOS
+    #     mkdir ./else-MacOS/amd64
+    #     cp sfont~/amd64/*.dylib ./else-MacOS/amd64
+    #     cp extra/* ./else-MacOS
+    #     cp README.pdf ./else-MacOS
+
+    # - name: Upload Zip
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: else
+    #     path: ./else-MacOS/*
