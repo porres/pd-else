@@ -43,6 +43,13 @@ define forDarwin
   cflags += -I /usr/include/c++/v1 -stdlib=libc++ -mmacosx-version-min=10.9
 endef
 
+# I want to add one flag for M1 Macs, something like -arm64, how can I get if the make parameter is set?
+ifeq ($(arm64), 1)
+  cflags += -arm64
+endif
+
+
+
 # include Makefile.pdlibbuilder from submodule directory 'pd-lib-builder'
 PDLIBBUILDER_DIR=pd-lib-builder/
 include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
