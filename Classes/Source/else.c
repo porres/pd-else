@@ -113,7 +113,7 @@ void else_setup(void){
     class_addmethod(else_obj_class, (t_method)else_obj_about, gensym("about"), 0);
     class_addmethod(else_obj_class, (t_method)else_obj_version, gensym("version"), 0);
     else_obj_about(x);
-    char else_dir[MAXPDSTRING];
-    strcpy(else_dir, else_obj_class->c_externdir->s_name);
-    sys_vgui("eval [read [open [file join %s else-browser.tcl]]]\n", else_obj_class->c_externdir->s_name);
+    char plugin[MAXPDSTRING];
+    sprintf(plugin, "%s/else-browser.tcl", else_obj_class->c_externdir->s_name);
+    pdgui_vmess("load_plugin_script", "s", plugin);
 }
