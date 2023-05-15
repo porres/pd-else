@@ -7,7 +7,7 @@ common.sources = stmlib/dsp/units.cc \
                  plaits/dsp/voice.cc \
                  plaits/dsp/engine/additive_engine.cc \
                  plaits/dsp/engine/bass_drum_engine.cc \
-                 plaits/dsp/engine/chord_engine.cc \
+                 plaits/dsp/engine/chord_engine.cc \
                  plaits/dsp/engine/fm_engine.cc \
                  plaits/dsp/engine/grain_engine.cc \
                  plaits/dsp/engine/hi_hat_engine.cc \
@@ -18,7 +18,7 @@ common.sources = stmlib/dsp/units.cc \
                  plaits/dsp/engine/speech_engine.cc \
                  plaits/dsp/engine/string_engine.cc \
                  plaits/dsp/engine/swarm_engine.cc \
-                 plaits/dsp/engine/virtual_analog_engine.cc \
+                 plaits/dsp/engine/virtual_analog_engine.cc \
                  plaits/dsp/engine/waveshaping_engine.cc \
                  plaits/dsp/engine/wavetable_engine.cc \
                  plaits/dsp/speech/lpc_speech_synth.cc \

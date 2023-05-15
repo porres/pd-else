@@ -522,7 +522,7 @@ ifeq ($(system), Darwin)
     cxx.flags := -fcheck-new
   endif
   ifeq ($(extension), d_fat)
-    arch := i386 x86_64
+    arch := i386 x86_64 arm64
   else
     arch := $(target.arch)
   endif
