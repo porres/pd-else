@@ -6,7 +6,7 @@
 
 ### Version: 1.0-0 RC-8 (release candidate #8) With Live Electronics Tutorial. 
 
-### Released: May 20th 2023
+### Released: May 16th 2023
 
 
 Copyright © 2017-2023 Alexandre Torres Porres

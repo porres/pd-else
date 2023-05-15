@@ -62,7 +62,7 @@ void else_obj_about(t_else_obj *x){
     post("-------------------------------------------------------------------");
     post("  -----> ELSE - EL Locus Solus' Externals for Pure Data <-----");
     post("-------------------------------------------------------------------");
-    post("- Version: %d.%d-%d %s-%d; Released may 10th 2023", else_major, else_minor, else_bugfix, STATUS, status_number);
+    post("- Version: %d.%d-%d %s-%d; Released may 16th 2023", else_major, else_minor, else_bugfix, STATUS, status_number);
     post("- Author: Alexandre Torres Porres");
     post("- Repository: https://github.com/porres/pd-else");
     post("- License: Do What The Fuck You Want To Public License");
@@ -112,7 +112,11 @@ void else_setup(void){
     class_addmethod(else_obj_class, (t_method)else_obj_about, gensym("about"), 0);
     class_addmethod(else_obj_class, (t_method)else_obj_version, gensym("version"), 0);
     else_obj_about(x);
-/*    char plugin[MAXPDSTRING];
-    sprintf(plugin, "%s/object_browser.tcl", else_obj_class->c_externdir->s_name);
-    pdgui_vmess("load_plugin_script", "s", plugin);*/
+/*    int major = 0, minor = 0, bugfix = 0;
+    sys_getversion(&major, &minor, &bugfix);
+    if(minor >= 54){
+        char plugin[MAXPDSTRING];
+        sprintf(plugin, "%s/object_browser.tcl", else_obj_class->c_externdir->s_name);
+        pdgui_vmess("load_plugin_script", "s", plugin);
+    }*/
 }
