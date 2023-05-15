@@ -4,9 +4,9 @@
 
 ### for the Pure Data programming language
 
-### Version: 1.0-0 RC-8 (release candidate #7) With Live Electronics Tutorial. 
+### Version: 1.0-0 RC-8 (release candidate #8) With Live Electronics Tutorial. 
 
-### Released: May 17th 2023
+### Released: May 20th 2023
 
 
 Copyright © 2017-2023 Alexandre Torres Porres
@@ -45,7 +45,9 @@ You can get ELSE from https://github.com/porres/pd-else/releases - where all rel
 
 ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path or use **[declare -path else]**. ELSE comes with a binary that you can use load via "Preferences => Startup" or with [declare -lib else], but all that this does is print information of what version of ELSE you have when you open Pd. You can also just load the 'else' external for that same purpose, check its help file. 
 
-It is important to stress this library runs in Pd Vanilla 0.52-1 or above and is not compatible to forks like the long dead "Pd Extended" and its new reincarnations "Pd-L2ork/Purr Data". Nevertheless, ELSE is included in the PlugData fork --> <https://github.com/timothyschoen/PlugData>, and a port of ELSE to Purr Data is currently underway --> https://github.com/agraef/purr-data/tree/pd-else.
+But it's important that you add ELSE's path in Preferences ==> Path, so it loads an object browser plugin!
+
+It might still be important to stress this library runs in Pd Vanilla and is not compatible to forks like the long dead "Pd Extended" and its new reincarnations "Pd-L2ork/Purr Data". Nevertheless, ELSE is included in the PlugData fork --> <https://github.com/timothyschoen/PlugData>, and a port of ELSE to Purr Data was started aome time ago and there's a chance it might evolve into full support, see --> https://github.com/agraef/purr-data/tree/pd-else.
 
 --------------------------------------------------------------------------
 
@@ -101,7 +103,7 @@ I'd also like to thank my Cyclone buddies Derek Kwan and Matt Barber, cause I st
 
 Lucarda is always helpful testing stuff for Windows and more. Seb shader is a tcl/tk master that helped me a lot with this (which I know next to nothing) and is responsible for the [keycode] object.
 
-Albert Graef from Purr Data is doing a great job helping port ELSE so it builds and runs on Purr Data (still experimental and a long way to go). He's also doing several valuable contributions to the code and being helpful in general in this process - check <https://github.com/agraef/purr-data/releases/tag/2.19.2+ELSE>.
+Albert Graef from Purr Data is working on a port of ELSE so it builds and runs on Purr Data (still experimental and a long way to go). He's also doing several valuable contributions to the code and being helpful in general in this process - check <https://github.com/agraef/purr-data/releases/tag/2.19.2+ELSE>.
 
 Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of ELSE for other systems as well as ELSE for Camomile and libpd projects, which opened the way for PlugData by Timothy Schoen, who's doing an amazing jaw dropping job with this project based on camomile that includes ELSE. Timothy has also helped me fix many ELSE related issues and coded first versions of compiled band limited oscillators. PlugData is also a fork of Pd with a revamped GUI. See: <https://github.com/timothyschoen/PlugData>.
 
