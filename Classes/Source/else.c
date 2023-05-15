@@ -90,9 +90,8 @@ void else_obj_about(t_else_obj *x){
     post("Please check its README on how to install it!");
     post("-------------------------------------------------------------------");
     post("- ALSO NOTE: Loading this binary did not install the ELSE library");
-    post("you still need to add it to the \"preferences => path\"");
-    post("or use [declare -path else]. But it did install a plugin for");
-    post("browsing ELSE's objects when right clicking on a patch canvas!");
+    post("you must add it to the \"preferences => path\" in order to use the");
+    post("browser plugin and load objects without a prefix");
     post("-------------------------------------------------------------------");
     post("  -----> ELSE - EL Locus Solus' Externals for Pure Data <-----");
     post("-------------------------------------------------------------------");
@@ -113,7 +112,7 @@ void else_setup(void){
     class_addmethod(else_obj_class, (t_method)else_obj_about, gensym("about"), 0);
     class_addmethod(else_obj_class, (t_method)else_obj_version, gensym("version"), 0);
     else_obj_about(x);
-    char plugin[MAXPDSTRING];
+/*    char plugin[MAXPDSTRING];
     sprintf(plugin, "%s/object_browser.tcl", else_obj_class->c_externdir->s_name);
-    pdgui_vmess("load_plugin_script", "s", plugin);
+    pdgui_vmess("load_plugin_script", "s", plugin);*/
 }
