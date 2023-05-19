@@ -21,20 +21,24 @@ Breaking changes:
 - [numbox~] 'set' method renamed to 'init', input values are now clipped to min/max range
 
 Enhancements/fixes:
-- [else]: now loads a browser tcl/tk plugin for browsing ELSE's object and adding them to your patch when right clicking anywhere on a patch. Fixed the warning to say that the Live-Electronics-Tutorial is part of the downloaded package. The object was also simplified to not print info all the time and the argument was removed.
+- There's now a browser tcl/tk plugin for browsing ELSE's object and adding them to your patch when right clicking anywhere on a patch. In order for it to work, the 'else' folder needs to be added to the search paths in Preferences-->Path.
+- Added "github actions" to compile for 64 bits linux, windows and mac (no apple silicon yet). This means people can easily download a build for the latest hardcore bleeding edge version on the master repository. 
+- [else] Fixed the warning to say that the Live-Electronics-Tutorial is part of the downloaded package. The object was also simplified to not print info all the time and the argument was removed.
 - [rad2hz] fixed result output.
 - [rescale]/[rescale~] fixed clip mode when range is inverted, added log mode.
 - [dir] open message without a symbol opens the directory where the binary resides
 - [fbdelay~] fixed regression bug from rc5 where this was blowing up
 - [openfile] now opens files from search paths, not only in the patch's directory
 - [numbox~] implemented a new double click feature that sets to the 'init' value and fixed a zooming issue.
-- [keyboard] fixed a zooming issue.
+- [keyboard] fixed zooming issues.
 - [button] added toggle/bang mode, bang/float/set messages.
 - [note] fixed setting receive name from properties and loading receive flag.
-- [plaits~] fixed parameter's out of range issues
-- [graph~]/[spectrograph~] do not allow mouse clicks on arrays no more...
-- [sfont~] fixed compilation for linux manjaro.
+- [plaits~] fixed parameter's out of range issues and added a binary that actually works for M1.
+- [sfont~] fixed compilation and binary for Linux Manjaro.
+- [graph~]/[spectrograph~] do not allow mouse clicks on arrays no more.
 - [canvas.mouse] A third argument allows output even in edit mode.
+- [ramp~] fixed crash when min is higher than max.
+- [note2pitch] fixed regression bug from rc7 where output was just wrong most of the times.
 - 2 new objects for a total of 477: [knob] (yay, finally a knob) and [filterdelay~].
 
 --------------------------------------

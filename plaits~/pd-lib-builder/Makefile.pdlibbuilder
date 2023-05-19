@@ -370,6 +370,78 @@ Makefile.pdlibbuilder = true
 
 
 ################################################################################
+### variables: library name and version ########################################
+################################################################################
+
+
+# strip possibles spaces from lib.name, they mess up calculated file names
+lib.name := $(strip $(lib.name))
+
+# if meta file exists, check library version
+metafile := $(wildcard $(lib.name)-meta.pd)
+
+ifdef metafile
+  lib.version := $(shell sed -n \
+    's|^\#X text [0-9][0-9]* [0-9][0-9]* VERSION \(.*\);|\1|p' \
+    $(metafile))
+endif
+
+
+################################################################################
+### variables: files ###########################################################
+################################################################################
+
+
+#=== sources ===================================================================
+
+
+# (re)define <classname>.class.sources using file names in class.sources
+
+define add-class-source
+$(notdir $(basename $v)).class.sources += $v
+endef
+
+$(foreach v, $(class.sources), $(eval $(add-class-source)))
+
+# derive class names from <classname>.class.sources variables
+sourcevariables := $(filter %.class.sources, $(.VARIABLES))
+classes := $(basename $(basename $(sourcevariables)))
+
+# accumulate all source files specified in makefile
+classes.sources := $(sort $(foreach v, $(sourcevariables), $($v)))
+all.sources := $(classes.sources) $(lib.setup.sources) \
+  $(shared.sources) $(common.sources)
+
+
+#=== object files ==============================================================
+
+
+# construct object filenames from all C and C++ source file names
+classes.objects := $(addsuffix .o, $(basename $(classes.sources)))
+common.objects := $(addsuffix .o, $(basename $(common.sources)))
+shared.objects := $(addsuffix .o, $(basename $(shared.sources)))
+lib.setup.objects := $(addsuffix .o, $(basename $(lib.setup.sources)))
+all.objects = $(classes.objects) $(common.objects) $(shared.objects) \
+  $(lib.setup.objects)
+
+
+#=== executables ===============================================================
+
+
+# use recursive variables here because executable extension is not yet known
+
+# construct class executable names from class names
+classes.executables = $(addsuffix .$(extension), $(classes))
+
+# construct shared lib executable name if shared sources are defined
+ifdef shared.sources
+  shared.lib = lib$(lib.name).$(shared.extension)
+else
+  shared.lib =
+endif
+
+
+################################################################################
 ### target platform detection ##################################################
 ################################################################################
 
@@ -493,7 +565,7 @@ ifeq ($(system), Linux)
   cxx.ldflags := -rdynamic -shared -fPIC -Wl,-rpath,"\$$ORIGIN",--enable-new-dtags
   cxx.ldlibs := -lc -lm -lstdc++
   shared.extension = so
-  shared.ldflags = -rdynamic -fPIC -shared -Wl,-soname,$(shared.lib)
+  shared.ldflags := -rdynamic -fPIC -shared -Wl,-soname,$(shared.lib)
 endif
 
 
@@ -648,7 +720,7 @@ depcheck.flags := $(cpp.flags) $(cflags)
 LDFLAGS := $(arch.ld.flags)
 
 # now add the same ld flags to shared dynamic lib
-shared.ldflags += $(LDFLAGS)
+shared.ldflags := $(shared.ldflags) $(LDFLAGS)
 
 # accumulated flags for C compiler / linker
 c.flags := $(cpp.flags) $(c.flags) $(cflags) $(CFLAGS)
@@ -659,82 +731,6 @@ c.ldlibs := $(c.ldlibs) $(ldlibs)
 cxx.flags := $(cpp.flags) $(cxx.flags) $(cflags) $(CFLAGS)
 cxx.ldflags := $(cxx.ldflags) $(ldflags) $(LDFLAGS)
 cxx.ldlibs := $(cxx.ldlibs) $(ldlibs)
-
-
-################################################################################
-### variables: library name and version ########################################
-################################################################################
-
-
-# strip possibles spaces from lib.name, they mess up calculated file names
-lib.name := $(strip $(lib.name))
-
-# if meta file exists, check library version
-metafile := $(wildcard $(lib.name)-meta.pd)
-
-ifdef metafile
-  lib.version := $(shell sed -n \
-    's|^\#X text [0-9][0-9]* [0-9][0-9]* VERSION \(.*\);|\1|p' \
-    $(metafile))
-endif
-
-
-################################################################################
-### variables: files ###########################################################
-################################################################################
-
-
-#=== sources ===================================================================
-
-
-# (re)define <classname>.class.sources using file names in class.sources
-
-define add-class-source
-$(notdir $(basename $v)).class.sources += $v
-endef
-
-$(foreach v, $(class.sources), $(eval $(add-class-source)))
-
-# derive class names from <classname>.class.sources variables
-sourcevariables := $(filter %.class.sources, $(.VARIABLES))
-classes := $(basename $(basename $(sourcevariables)))
-
-# accumulate all source files specified in makefile
-classes.sources := $(sort $(foreach v, $(sourcevariables), $($v)))
-all.sources := $(classes.sources) $(lib.setup.sources) \
-  $(shared.sources) $(common.sources)
-
-
-#=== object files ==============================================================
-
-
-# construct object filenames from all C and C++ source file names
-classes.objects := $(addsuffix .o, $(basename $(classes.sources)))
-common.objects := $(addsuffix .o, $(basename $(common.sources)))
-shared.objects := $(addsuffix .o, $(basename $(shared.sources)))
-lib.setup.objects := $(addsuffix .o, $(basename $(lib.setup.sources)))
-all.objects = $(classes.objects) $(common.objects) $(shared.objects) \
-  $(lib.setup.objects)
-
-
-#=== executables ===============================================================
-
-
-# construct class executable names from class names
-classes.executables := $(addsuffix .$(extension), $(classes))
-
-# Construct shared lib executable name if shared sources are defined. If
-# extension and shared extension are not identical, use both to facilitate co-
-# installation for different platforms, like .m_i386.dll and .m_amd64.dll.
-ifdef shared.sources
-  ifeq ($(extension), $(shared.extension))
-    shared.lib = lib$(lib.name).$(shared.extension)
-  else
-    shared.lib = lib$(lib.name).$(extension).$(shared.extension)
-  endif
-else
-  shared.lib :=
-endif
 
 
 ################################################################################
@@ -921,13 +917,13 @@ endif
 define link-shared
   $(compile-$1) \
   $(shared.ldflags) \
-  -o $(shared.lib) $(shared.objects) \
+  -o lib$(lib.name).$(shared.extension) $(shared.objects) \
   $($1.ldlibs) $(shared.ldlibs)
 endef
 
 # rule for linking objects in shared executable
 # build recipe is in macro 'link-shared'
-$(shared.lib): $(shared.objects)
+lib$(lib.name).$(shared.extension): $(shared.objects)
 	$(info ++++ info: linking objects in shared lib $@)
 	$(if $(filter %.cc %.cpp, $(shared.sources)), \
         $(call link-shared,cxx), \
