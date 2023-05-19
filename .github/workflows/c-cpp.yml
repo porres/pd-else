@@ -247,7 +247,7 @@ jobs:
     - name: Build plaits~
       run: |
         cd plaits~
-        make extension=d_amd64 
+        make extension=d_arm64 
 
 
     # - name: Build pd-else
