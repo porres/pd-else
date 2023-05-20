@@ -348,6 +348,11 @@ $(wildcard *.txt) \
 $(wildcard extra/*.*) \
 README.pdf
 
+# Change the arch to arm64 if the extension is d_arm64
+ifeq ($(extension),d_arm64)
+  override arch := arm64
+endif
+
 #########################################################################
 
 # include Makefile.pdlibbuilder from submodule directory 'pd-lib-builder'
