@@ -43,6 +43,11 @@ define forDarwin
   cflags += -I /usr/include/c++/v1 -stdlib=libc++ -mmacosx-version-min=10.9
 endef
 
+# Change the arch to arm64 if the extension is d_arm64
+ifeq ($(extension),d_arm64)
+  override arch := arm64
+endif
+
 # include Makefile.pdlibbuilder from submodule directory 'pd-lib-builder'
 PDLIBBUILDER_DIR=pd-lib-builder/
 include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
