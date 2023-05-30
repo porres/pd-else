@@ -2,7 +2,7 @@
 #N struct 1005-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
 #N struct 1024-point float x0 float y0 float size float fg float in float grid;
 #N struct 1065-slot float x float y float slotsize float color float width float bordercolor;
-#N canvas 453 56 531 462 10;
+#N canvas 497 51 531 462 10;
 #N canvas 347 36 974 668 GUI 0;
 #X text 40 146 [biplot];
 #X text 196 83 [pic] =>;
@@ -100,7 +100,7 @@
 #X connect 11 0 12 0;
 #X coords 0 -1 1 1 94 60 2 100 100;
 #X restore 366 48 pd;
-#X obj 100 82 cnv 15 170 28 empty empty Version:\ 1.0-0\ rc-8 8 14 0 14 #e0e0e0 #404040 0;
+#X obj 100 82 cnv 15 170 28 empty empty Version:\ 1.0-0\ rc-9 8 14 0 14 #e0e0e0 #404040 0;
 #N canvas 568 23 241 168 FFT 0;
 #X obj 55 52 else/hann~;
 #X obj 55 78 else/bin.shift~;
@@ -396,7 +396,7 @@
 #X obj 86 91 else/autofade2~;
 #X obj 85 45 else/fader~;
 #X restore 286 314 pd Control(Fader/Panning/Routing);
-#N canvas 457 71 333 288 Control(Sequencers) 0;
+#N canvas 457 71 333 326 Control(Sequencers) 0;
 #X obj 91 39 else/euclid;
 #X obj 91 62 else/score;
 #X obj 91 84 else/score2;
@@ -404,8 +404,9 @@
 #X obj 91 134 else/sequencer;
 #X obj 91 159 else/sequencer~;
 #X obj 91 184 else/impseq~;
-#X obj 92 207 else/rec;
-#X obj 92 231 else/rec2 \$0-name;
+#X obj 92 237 else/rec;
+#X obj 92 261 else/rec2 \$0-name;
+#X obj 91 208 else/phaseseq~;
 #X restore 30 343 pd Control(Sequencers);
 #N canvas 653 78 261 244 Control(Envelopes) 0;
 #X obj 78 40 else/adsr~;

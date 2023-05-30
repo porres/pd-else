@@ -4,9 +4,9 @@
 
 ### for the Pure Data programming language
 
-### Version: 1.0-0 RC-8 (release candidate #8) With Live Electronics Tutorial. 
+### Version: 1.0-0 RC-9 (release candidate #9) With Live Electronics Tutorial. 
 
-### Released: May 16th 2023
+### Unreleased
 
 
 Copyright © 2017-2023 Alexandre Torres Porres
@@ -109,7 +109,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 --------------------------------------------------------------------------
 
-## Current Object list (477 objects):
+## Current Object list (478 objects):
 
 **ASSORTED: [03]**
 
@@ -532,7 +532,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 - [xselect2~]
 - [mtx~]
 
-**CONTROL: SEQUENCERS: [9]**
+**CONTROL: SEQUENCERS: [10]**
 
 - [euclid]
 - [score]
@@ -541,6 +541,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 - [sequencer]
 - [sequencer~]
 - [impseq~]
+- [phaseseq~]
 - [rec]
 - [rec2]
 
