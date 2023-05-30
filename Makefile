@@ -200,6 +200,7 @@ pan2~.class.sources := Classes/Source/pan2~.c
 pan4~.class.sources := Classes/Source/pan4~.c
 peak~.class.sources := Classes/Source/peak~.c
 pmosc~.class.sources := Classes/Source/pmosc~.c
+phaseseq~.class.sources := Classes/Source/phaseseq~.c
 pulsecount~.class.sources := Classes/Source/pulsecount~.c
 pimpmul~.class.sources := Classes/Source/pimpmul~.c
 pulsediv~.class.sources := Classes/Source/pulsediv~.c
