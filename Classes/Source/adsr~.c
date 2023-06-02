@@ -86,6 +86,7 @@ static t_int *adsr_perform(t_int *w){
         if(n_release < 1)
             n_release = 1;
         double coef_r = 1. / n_release;
+        double a_coef = exp(LOG001 / n_release);
 // Gate status / get incr & nleft values!
         t_int audio_gate = (input_gate != 0);
         t_int control_gate = (x->x_f_gate != 0);
@@ -136,20 +137,17 @@ static t_int *adsr_perform(t_int *w){
         }
 // "release" phase
         else{
-            if(!x->x_log){ // linear
-                if(nleft > 0){ // "release" not over
+            if(nleft > 0){ // "release" not over
+                if(x->x_log)
+                    *out++ = last = target + a_coef*(last - target);
+                else
                     *out++ = last += incr;
-                    nleft--;
-                }
-                else{ // "release" over
-                    if(status)
-                        outlet_float(x->x_out2, status = 0);
-                    *out++ = last = 0;
-                }
+                nleft--;
             }
-            else{
-                double a = exp(LOG001 / n_release);
-                *out++ = last = target + a*(last - target);
+            else{ // "release" over
+                if(status)
+                    outlet_float(x->x_out2, status = 0);
+                *out++ = last = 0;
             }
         }
     };
