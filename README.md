@@ -109,24 +109,26 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 --------------------------------------------------------------------------
 
-## Current Object list (478 objects):
+## Current Object list (480 objects):
 
-**ASSORTED: [03]**
+**ASSORTED, the library binary: [01]**
 
 - [else]
+
+**TIME: [02]**
 - [chrono]
 - [datetime]
+
+**FFT: [02]**
+
+- [hann~]
+- [bin.shift~]
 
 **TABLE: [03]**
 
 - [tabgen]
 - [tabreader]
 - [tabreader~]
-
-**FFT: [02]**
-
-- [hann~]
-- [bin.shift~]
 
 **TUNING/NOTES: [19]**
 
@@ -150,7 +152,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 - [note2pitch]
 - [note2dur]
 
-**PATCH/SUBPATCH MANAGEMENT: [20]**
+**PATCH/SUBPATCH MANAGEMENT: [21]**
 
 - [args]
 - [meter]
@@ -449,7 +451,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 - [pluck~]
 
-**SYNTHESIS: OSCILLATORS (DETERMINISTIC GENERATORS): [26]**
+**SYNTHESIS: OSCILLATORS (DETERMINISTIC GENERATORS): [27]**
 
 - [cosine~]
 - [impulse~] / [imp~]
@@ -460,6 +462,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 - [saw2~]
 - [oscbank~]
 - [oscbank2~]
+- [oscnoise~]
 - [sine~]
 - [square~]
 - [tri~]
@@ -532,7 +535,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 - [xselect2~]
 - [mtx~]
 
-**CONTROL: SEQUENCERS: [10]**
+**CONTROL: SEQUENCERS: [11]**
 
 - [euclid]
 - [score]
@@ -540,6 +543,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 - [pattern]
 - [sequencer]
 - [sequencer~]
+- [phaseseq~]
 - [impseq~]
 - [phaseseq~]
 - [rec]
