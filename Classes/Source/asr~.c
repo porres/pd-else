@@ -60,7 +60,7 @@ static t_int *asr_perform(t_int *w){
         t_float n_release = roundf(release * x->x_sr_khz);
         if(n_release < 1)
             (n_release) = 1;
-        double coef_r = 1. / n_release;
+        double r_coef = exp(LOG001 / n_release);
 // Get incr & nleft values!
         if((audio_gate || (x->x_f_gate != 0)) != gate_status){ // gate status change
             gate_status = audio_gate || x->x_f_gate;
@@ -72,7 +72,7 @@ static t_int *asr_perform(t_int *w){
                 nleft = n_attack;
             }
             else{ // gate closed, set release incr
-                incr =  -(last * coef_r);
+                incr =  -(last / n_release);
                 nleft = n_release;
             }
         }
@@ -93,20 +93,17 @@ static t_int *asr_perform(t_int *w){
         }
 // "release" phase
         else{
-            if(!x->x_log){ // linear
-                if(nleft > 0){ // "release" not over
+            if(nleft > 0){ // "release" not over
+                if(x->x_log)
+                    *out++ = last = target + r_coef*(last - target);
+                else
                     *out++ = last += incr;
-                    nleft--;
-                }
-                else{ // "release" over
-                    if(status)
-                        outlet_float(x->x_out2, status = 0);
-                    *out++ = last = 0;
-                }
+                nleft--;
             }
-            else{
-                double a = exp(LOG001 / n_release);
-                *out++ = last = target + a*(last - target);
+            else{ // "release" over
+                if(status)
+                    outlet_float(x->x_out2, status = 0);
+                *out++ = last = 0;
             }
         }
     };

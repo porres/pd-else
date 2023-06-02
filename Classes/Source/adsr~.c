@@ -81,12 +81,13 @@ static t_int *adsr_perform(t_int *w){
         t_float n_decay = roundf(decay * x->x_sr_khz);
         if(n_decay < 1)
             n_decay = 1;
-        double coef_d = 1. / n_decay;
         t_float n_release = roundf(release * x->x_sr_khz);
         if(n_release < 1)
             n_release = 1;
         double coef_r = 1. / n_release;
-        double a_coef = exp(LOG001 / n_release);
+        double a_coef = exp(LOG001 / n_attack);
+        double d_coef = exp(LOG001 / n_decay);
+        double r_coef = exp(LOG001 / n_release);
 // Gate status / get incr & nleft values!
         t_int audio_gate = (input_gate != 0);
         t_int control_gate = (x->x_f_gate != 0);
@@ -116,19 +117,15 @@ static t_int *adsr_perform(t_int *w){
             if(nleft > 0){ // "attack + decay" not over
                 if(!x->x_log){ // linear
                     if(nleft <= n_decay) // attack is over, update incr
-                        incr = ((target * sustain_point) - target) * coef_d;
+                        incr = ((target * sustain_point) - target) / n_decay;
                     *out++ = last += incr;
                 }
                 else{
-                    if(nleft <= n_decay){ // decay
-                        double a = exp(LOG001 / n_decay);
+                    if(nleft <= n_decay) // decay
                         *out++ = last = (target * sustain_point) +
-                            a*(last - (target * sustain_point));
-                    }
-                    else{
-                        double a = exp(LOG001 / n_attack);
-                        *out++ = last = target + a*(last - target);
-                    }
+                            d_coef*(last - (target * sustain_point));
+                    else
+                        *out++ = last = target + a_coef*(last - target);
                 }
                 nleft--;
             }
@@ -139,7 +136,7 @@ static t_int *adsr_perform(t_int *w){
         else{
             if(nleft > 0){ // "release" not over
                 if(x->x_log)
-                    *out++ = last = target + a_coef*(last - target);
+                    *out++ = last = target + r_coef*(last - target);
                 else
                     *out++ = last += incr;
                 nleft--;
