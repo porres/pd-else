@@ -83,7 +83,7 @@ static void *stepnoise_new(t_symbol *s, int ac, t_atom *av){
             else
                 goto errstate;
         }
-        else if(av->a_type == A_FLOAT)
+        if(av->a_type == A_FLOAT)
            hz = atom_getfloat(av);
     }
     if(hz >= 0)
