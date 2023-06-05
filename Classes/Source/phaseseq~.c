@@ -16,6 +16,7 @@ typedef struct _phaseseq{
     int         x_index;
     t_float     x_dummy;
     t_outlet   *x_out;
+    t_outlet   *x_out_i;
 }t_phaseseq;
 
 static void phaseseq_set(t_phaseseq *x, t_symbol *s, int ac, t_atom * av){
@@ -30,39 +31,55 @@ static t_int *phaseseq_perform(t_int *w){
     t_phaseseq *x = (t_phaseseq *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in = (t_float *)(w[3]);
-    t_float *out = (t_float *)(w[4]);
+    t_float *out1 = (t_float *)(w[4]);
+    t_float *out2 = (t_float *)(w[5]);
     float lastphase = x->x_lastphase;
     while(nblock--){
         double phase = *in++;
+        double delta = (phase - lastphase);
+        int dir = (phase - lastphase) > 0;
+        int transition = fabs(delta) > 0.5;
         if(x->x_length){
             int trig = 0;
-            if(x->x_seq[x->x_index] == 0 && (phase - lastphase) < 0)
+            if(transition){
+                if(x->x_seq[x->x_index] == 0)
+                    trig = 1;
+            }
+            else if(phase == x->x_seq[x->x_index])
                 trig = 1;
-            else if(phase >= x->x_seq[x->x_index] && lastphase < x->x_seq[x->x_index])
-                trig = 1;
+            else{
+                if(dir && phase > x->x_seq[x->x_index] && lastphase < x->x_seq[x->x_index])
+                    trig = 1;
+                else if(!dir && phase < x->x_seq[x->x_index] && lastphase > x->x_seq[x->x_index])
+                    trig = 1;
+            }
             if(trig){
-                *out++ = 1.;
+                *out1++ = 1.;
                 x->x_index++;
                 if(x->x_index == x->x_length)
                     x->x_index = 0;
             }
             else
-                *out++ = 0.;
+                *out1++ = 0.;
+            *out2++ = x->x_index;
         }
-        else
-            *out++ = 0.;
+        else{
+            *out1++ = 0.;
+            *out2++ = 0.;
+        }
         lastphase = phase;
     }
     x->x_lastphase = lastphase;
-    return(w+5);
+    return(w+6);
 }
 
 static void phaseseq_dsp(t_phaseseq *x, t_signal **sp){
-    dsp_add(phaseseq_perform, 4, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
+    dsp_add(phaseseq_perform, 5, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
 }
 
 static void *phaseseq_free(t_phaseseq *x){
     outlet_free(x->x_out);
+    outlet_free(x->x_out_i);
     return(void *)x;
 }
 
@@ -74,6 +91,7 @@ static void *phaseseq_new(t_symbol *s, int ac, t_atom *av){
     for(int i = 0; i < ac; i++)
         x->x_seq[i] = atom_getfloatarg(i, ac, av);
     x->x_out = outlet_new(&x->x_obj, &s_signal);
+    x->x_out_i = outlet_new(&x->x_obj, &s_signal);
     return(x);
 }
 
