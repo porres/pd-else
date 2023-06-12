@@ -85,9 +85,9 @@
 #X obj 67 328 else/display 7;
 #X obj 279 377 else/plate.rev~ 50 0.6 0.25 0.8 0.8, f 18;
 #X text 64 28 In this example [keyboard] displays randomly generated notes and driving 4 voices. Also see that each voice subpatch has [adsr~]'s status outlet to control the DSP status for that subpatch - open and check it. You should also try pd's [clone] object for managing polyphonic synths., f 72;
-#X msg 308 157 set 48 127;
-#X msg 308 180 set 48 0;
-#X text 385 162 set message does not output values, f 18;
+#X msg 261 151 set 48 127;
+#X msg 261 174 set 48 0;
+#X text 337 146 set message does not output values, f 27;
 #X text 96 536 hint: you can also create a list of note on + velocity and send to the left inlet. In the same way as other pd object \, this distributes to both inlets.;
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
@@ -201,7 +201,7 @@
 #X connect 13 1 8 1;
 #X connect 15 0 9 0;
 #X connect 16 0 9 0;
-#X restore 480 183 pd example;
+#X restore 479 163 pd example;
 #X text 190 133 octave up;
 #X text 212 161 octave down;
 #X text 246 534 - velocity of MIDI note value, f 47;
@@ -361,7 +361,7 @@
 #X connect 10 0 3 0;
 #X connect 12 0 11 0;
 #X connect 12 1 11 1;
-#X restore 486 203 pd toggle;
+#X restore 485 183 pd toggle;
 #X text 196 488 flush;
 #X text 246 404 - set keyboard height, f 47;
 #X text 246 446 - set number of lowest C (e.g. 4 = C4), f 47;
@@ -522,7 +522,7 @@
 #X connect 6 0 2 0;
 #X connect 8 0 7 0;
 #X connect 8 1 7 1;
-#X restore 491 223 pd shift;
+#X restore 491 203 pd shift;
 #N canvas 729 72 482 443 normalize 0;
 #X obj 47 164 else/keyboard 19 80 3 3 0 0 empty empty;
 #N canvas 870 145 477 340 voice 0;
@@ -713,7 +713,7 @@
 #X text 83 234 Note that when you set a receive or send symbol \, the corresponding inlets/outlet do not get drawn when you're in edit mode. This is an indicative that the object has a send or receive symbol., f 67;
 #X connect 1 0 2 0;
 #X connect 5 0 7 0;
-#X restore 499 132 pd more details;
+#X restore 497 132 pd more details;
 #X f 7;
 #X obj 302 157 else/rand.i 48 72;
 #X text 17 255 see also:;
@@ -723,15 +723,16 @@
 #X text 166 362 off <list>;
 #X text 246 362 - list MIDI Notes to be off with velocity of 0, f 47;
 #N canvas 846 100 462 340 on/off 0;
-#X obj 64 191 else/keyboard 17 80 3 3 0 0 empty empty;
+#X obj 64 192 else/keyboard 17 80 3 3 1 0 empty empty;
 #X msg 64 100 on 55 65 70 74 77;
 #X msg 84 130 off 55 70 74;
 #X msg 94 151 off 65 77;
 #X text 53 37 The 'on' message expects a list of MIDI pitches that are set as note on messages with a velocity of 127 \, while 'off' send note of messages for its list of pitches.;
+#X text 197 105 If you're on toggle mode you can click on the notes that are on to set them off. If not in toggle mode you can use shift+click instead., f 35;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;
-#X restore 487 163 pd on/off;
+#X restore 485 223 pd on/off;
 #X text 118 376 set <float \, float>;
 #X text 246 376 - set note (pitch/velocity) without output, f 47;
 #N canvas 474 82 640 304 keyboard-split 0;
