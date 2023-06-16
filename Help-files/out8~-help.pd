@@ -171,8 +171,8 @@
 #N canvas 477 417 534 169 see 0;
 #X text 83 34 See also:;
 #X obj 342 78 else/out4~;
-#X obj 105 78 else/out1~;
 #X obj 222 78 else/out~;
+#X obj 105 78 else/out.mc~;
 #X restore 473 217 pd see also;
 #X obj 216 183 else/out8~ 1 0;
 #X obj 303 150 else/brown~;

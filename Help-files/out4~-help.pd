@@ -161,8 +161,8 @@
 #N canvas 477 417 534 169 see 0;
 #X obj 342 78 else/out8~;
 #X text 83 34 See also:;
-#X obj 105 77 else/out1~;
 #X obj 222 77 else/out~;
+#X obj 105 77 else/out.mc~;
 #X restore 473 211 pd see also;
 #X text 98 280 set <float>;
 #X text 80 86 [out4~] is a convenient quadraphonic input/output abstraction. It has controls for mute \, DSP on/off \, ramp time \, maximum gain and scaling mode. Note that you need to specify at least 4 output channels in preferences => audio., f 62;
