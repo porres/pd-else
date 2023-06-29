@@ -1,49 +1,30 @@
-#N canvas 493 97 566 395 10;
-#X obj 3 260 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 3 298 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 3 335 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 142 308 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 143 269 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X text 198 345 (none);
-#X obj 3 366 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X obj 208 131 hsl 180 15 -10 10 0 0 empty empty empty -2 -8 0 10 #dcdcdc
-#000000 #000000 0 1;
-#X text 181 308 signal;
-#X obj 3 3 cnv 15 301 42 empty empty ceil~ 20 20 2 37 #e0e0e0 #000000
-0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#N canvas 508 52 566 412 10;
+#X obj 3 274 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 312 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 349 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 142 322 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 143 283 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X text 198 359 (none);
+#X obj 3 380 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 208 145 hsl 180 15 -10 10 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 3 3 cnv 15 301 42 empty empty ceil~ 20 20 2 37 #e0e0e0 #000000 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 23 40 cnv 4 4 4 empty empty Ceil 0 28 2 18 #e0e0e0 #000000 0
-;
-#X obj 63 40 cnv 4 4 4 empty empty function 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 23 40 cnv 4 4 4 empty empty Ceil 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 63 40 cnv 4 4 4 empty empty function 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
-#fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -112,8 +93,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
-0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -125,8 +105,7 @@
 #X obj 136 86 snapshot~;
 #X obj 91 52 del 5;
 #X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 74 126 switch~;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -144,17 +123,31 @@
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 505 71 pd;
-#X obj 205 190 else/ceil~;
-#X text 232 271 - input value;
-#X text 232 308 - ceiled value;
-#X text 162 159 input;
-#X text 153 223 output;
-#X text 88 92 [ceil~] is a ceil math function for signals.;
-#X text 134 60 (for signals);
-#X text 180 271 signal;
-#X obj 205 221 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
-#X obj 205 157 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
-#X connect 7 0 31 0;
-#X connect 22 0 30 0;
-#X connect 31 0 22 0;
+#X restore 505 85 pd;
+#X obj 205 204 else/ceil~;
+#X text 162 173 input;
+#X text 153 237 output;
+#X text 127 61 (for signals);
+#X obj 205 235 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 205 171 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X text 180 285 signal(s) - input value(s);
+#X text 181 322 signal(s) - ceiled value(s);
+#X text 57 91 [ceil~] is a ceil math function for signals. It has support for multichannel connections., f 63;
+#N canvas 795 189 371 312 multichannel 0;
+#X obj 105 130 snake~ in;
+#X listbox 105 104 12 0 0 0 - - - 0;
+#X obj 235 144 setdsp~ 0;
+#X obj 105 163 else/ceil~;
+#X text 100 28 Multichannel support example.;
+#X obj 105 211 else/s2f~;
+#X listbox 105 247 7 0 0 0 - - - 12;
+#X obj 105 75 else/initmess 0.75 1.2;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 3 0 5 0;
+#X connect 5 0 6 0;
+#X connect 7 0 1 0;
+#X restore 417 229 pd multichannel;
+#X connect 7 0 26 0;
+#X connect 21 0 25 0;
+#X connect 26 0 21 0;

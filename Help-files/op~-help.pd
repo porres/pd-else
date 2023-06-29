@@ -1,49 +1,31 @@
 #N canvas 483 51 561 434 10;
-#X obj 4 254 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 326 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 358 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 407 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#X obj 4 254 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 4 326 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 4 358 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 4 407 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 306 3 pd;
-#X obj 346 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 22 40 cnv 4 4 4 empty empty Signal 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 459 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 479 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 516 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 465 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 503 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 4 4 cnv 15 301 42 empty empty op~ 20 20 2 37 #e0e0e0 #000000
-0;
+#X obj 346 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 22 40 cnv 4 4 4 empty empty Signal 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 459 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 479 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 516 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 465 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 503 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 4 4 cnv 15 301 42 empty empty op~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 4 graph;
-#X obj 77 40 cnv 4 4 4 empty empty operator 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 73 334 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 74 263 cnv 17 3 33 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X text 97 386 2) float;
-#X obj 73 301 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X text 126 264 signal - input to operator, f 49;
+#X obj 77 40 cnv 4 4 4 empty empty operator 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 76 334 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 77 263 cnv 17 3 33 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X text 100 386 2) float;
+#X obj 76 301 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X text 129 264 signal - input to operator, f 49;
 #X obj 278 160 sig~ 5;
-#X obj 278 133 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
+#X obj 278 133 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 490 63 else/setdsp~;
 #X obj 278 192 else/op~ == 5;
 #N canvas 388 153 945 563 operators 0;
@@ -108,15 +90,11 @@
 #X obj 852 303 else/op~ >> 3;
 #X obj 518 131 else/op~ & 3;
 #X obj 626 130 else/op~ & 3;
-#X text 567 435 Note that [op~] does not have the same operators as
-[op] because Pd Vanilla already provides many objects for the same
-operations (such as [+~] \, [log~] \, etc...)., f 33;
+#X text 567 435 Note that [op~] does not have the same operators as [op] because Pd Vanilla already provides many objects for the same operations (such as [+~] \, [log~] \, etc...)., f 33;
 #X floatatom 331 411 5 0 0 0 - - - 0;
 #X obj 331 437 sig~ 0;
 #X obj 331 466 else/op~ % 1.1;
-#X text 78 438 The '%' (modulo) operator calls the 'fmod' function
-also found in the expr family of objects. Note that it doesn't correspond
-neither to [%] or [mod] objects from Vanilla., f 39;
+#X text 78 438 The '%' (modulo) operator calls the 'fmod' function also found in the expr family of objects. Note that it doesn't correspond neither to [%] or [mod] objects from Vanilla., f 39;
 #X text 428 465 modulo;
 #X obj 331 500 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
 #X obj 49 337 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
@@ -193,20 +171,12 @@ neither to [%] or [mod] objects from Vanilla., f 39;
 #X msg 391 160 ~;
 #X msg 451 160 >>;
 #X msg 480 160 <<;
-#X text 90 303 float/signal - secondary operator value (ignored for
-bitnot);
-#X text 155 387 - inlet value (default 0) - ignored for bitnot;
-#X text 95 368 1) symbol -;
-#X text 51 85 [op~] is a signal operator (either comparison or bitwise)
-\, which is defined by the first argument. This is more efficient than
-using [expr~] (which also contains all these operators)., f 67;
-#X text 126 336 signal - operator result;
-#X text 113 281 <symbol> -;
-#X text 179 282 operator: > \, < \, >= \, <= \, == \, != \, && \, ||
-\, & \, | \, ~ \, ^ \, >> and <<, f 61;
+#X text 93 303 float/signal - secondary operator value (ignored for bitnot);
+#X text 98 368 1) symbol -;
+#X text 129 336 signal - operator result;
+#X text 116 281 <symbol> -;
 #X msg 514 160 %;
-#X text 167 368 operator: > \, < \, >= \, <= \, == \, != \, && \, ||
-\, & \, | \, ~ \, ^ \, >> \, << or %, f 63;
+#X text 170 368 operator: > \, < \, >= \, <= \, == \, != \, && \, || \, & \, | \, ~ \, ^ \, >> \, << or %, f 63;
 #N canvas 995 261 394 210 see 0;
 #X text 86 35 see also:;
 #X obj 88 54 else/op;
@@ -219,9 +189,12 @@ using [expr~] (which also contains all these operators)., f 67;
 #X obj 233 170 else/quantizer~;
 #X restore 36 222 pd see also;
 #X obj 278 220 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X text 51 85 [op~] is a signal operator where the first argument defines the the type (for either comparison \, bitwise \, logic and modulus operations). This is more efficient than using [expr~] (which also contains all these operators)., f 69;
+#X text 182 282 operator: > \, < \, >= \, <= \, == \, != \, ! \, && \, || \, & \, | \, ~ \, ^ \, >> \, <<, f 61;
+#X text 158 387 - inlet value (default 0) - ignored for bitnot and not;
 #X connect 21 0 24 0;
 #X connect 22 0 21 0;
-#X connect 24 0 50 0;
+#X connect 24 0 47 0;
 #X connect 26 0 24 0;
 #X connect 27 0 24 0;
 #X connect 28 0 24 0;
@@ -236,4 +209,4 @@ using [expr~] (which also contains all these operators)., f 67;
 #X connect 37 0 24 0;
 #X connect 38 0 24 0;
 #X connect 39 0 24 0;
-#X connect 47 0 24 0;
+#X connect 44 0 24 0;
