@@ -1,36 +1,39 @@
-// porres 2018
+// Porres 2017-2023
 
 #include "m_pd.h"
-#include "math.h"
+#include <math.h>
 
-static t_class *trunc_tilde_class;
+static t_class *trunc_class;
 
-typedef struct _trunc_tilde{
-    t_object x_obj;
-}t_trunc_tilde;
+typedef struct _trunc{
+    t_object  x_obj;
+}t_trunc;
 
-static t_int *trunc_tilde_perform(t_int *w){
-    t_int n = (trunc)(w[2]);
-    t_float *in = (t_float *)(w[3]);
-    t_float *out = (t_float *)(w[4]);
-    for(t_int i = 0 ; i < n; i++)
-        out[i] = trunc(in[i]);
-    return(w+5);
+static t_int * trunc_perform(t_int *w){
+    int n = (int)(w[1]);
+    t_float *in = (t_float *)(w[2]);
+    t_float *out = (t_float *)(w[3]);
+    while(n--)
+        *out++ = trunc(*in++);
+    return(w+4);
 }
 
-static void trunc_tilde_dsp(t_trunc_tilde *x, t_signal **sp){
-   dsp_add(trunc_tilde_perform, 4, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
+static void trunc_dsp(t_trunc *x, t_signal **sp){
+    x = NULL;
+    signal_setmultiout(&sp[1], sp[0]->s_nchans);
+    dsp_add(trunc_perform, 3, (t_int)(sp[0]->s_length * sp[0]->s_nchans),
+        sp[0]->s_vec, sp[1]->s_vec);
 }
 
-void * trunc_tilde_new(void){
-    t_trunc_tilde *x = (t_trunc_tilde *) pd_new(trunc_tilde_class);
-    outlet_new((t_object *)x, &s_signal);
+void *trunc_new(void){
+    t_trunc *x = (t_trunc *)pd_new(trunc_class);
+    outlet_new(&x->x_obj, &s_signal);
     return(void *)x;
 }
 
-void trunc_tilde_setup(void) {
-    trunc_tilde_class = class_new(gensym("trunc~"), (t_newmethod)trunc_tilde_new,
-        0, sizeof(t_trunc_tilde), 0, 0);
-    class_addmethod(trunc_tilde_class, nullfn, gensym("signal"), 0);
-    class_addmethod(trunc_tilde_class, (t_method)trunc_tilde_dsp, gensym("dsp"), A_CANT, 0);
+void trunc_tilde_setup(void){
+    trunc_class = class_new(gensym("trunc~"),
+        (t_newmethod) trunc_new, 0, sizeof (t_trunc), CLASS_MULTICHANNEL, 0);
+    class_addmethod(trunc_class, nullfn, gensym("signal"), 0);
+    class_addmethod(trunc_class, (t_method) trunc_dsp, gensym("dsp"), A_CANT, 0);
 }

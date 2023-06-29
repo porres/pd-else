@@ -1,38 +1,39 @@
-// porres 2018
+// Porres 2017-2023
 
 #include "m_pd.h"
-#include "math.h"
+#include <math.h>
 
 static t_class *rint_class;
 
 typedef struct _rint{
-    t_object x_obj;
+    t_object  x_obj;
 }t_rint;
 
 static t_int * rint_perform(t_int *w){
-    int n = (int)(w[2]);
-    t_float *in = (t_float *)(w[3]);
-    t_float *out = (t_float *)(w[4]);
-    for(int i = 0 ; i < n ; i++)
-        out[i] = rint(in[i]);
-    return (w + 5);
+    int n = (int)(w[1]);
+    t_float *in = (t_float *)(w[2]);
+    t_float *out = (t_float *)(w[3]);
+    while(n--)
+        *out++ = rint(*in++);
+    return(w+4);
 }
 
 static void rint_dsp(t_rint *x, t_signal **sp){
-   dsp_add(rint_perform, 4, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
+    x = NULL;
+    signal_setmultiout(&sp[1], sp[0]->s_nchans);
+    dsp_add(rint_perform, 3, (t_int)(sp[0]->s_length * sp[0]->s_nchans),
+        sp[0]->s_vec, sp[1]->s_vec);
 }
 
-void * rint_new(void){
-    t_rint *x = (t_rint *) pd_new(rint_class);
-    outlet_new((t_object *)x, &s_signal);
-    return (void *) x;
+void *rint_new(void){
+    t_rint *x = (t_rint *)pd_new(rint_class);
+    outlet_new(&x->x_obj, &s_signal);
+    return(void *)x;
 }
 
-void rint_tilde_setup(void) {
+void rint_tilde_setup(void){
     rint_class = class_new(gensym("rint~"),
-        (t_newmethod) rint_new, 0, sizeof(t_rint), 0, 0);
+        (t_newmethod) rint_new, 0, sizeof (t_rint), CLASS_MULTICHANNEL, 0);
     class_addmethod(rint_class, nullfn, gensym("signal"), 0);
-    class_addmethod(rint_class, (t_method)rint_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(rint_class, (t_method) rint_dsp, gensym("dsp"), A_CANT, 0);
 }
-
-

@@ -25,8 +25,11 @@ static t_int *db2lin_tilde_perform(t_int *w){
 }
 
 static void db2lin_tilde_dsp(t_db2lin_tilde *x, t_signal **sp){
-   dsp_add(db2lin_tilde_perform, 4, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
+    signal_setmultiout(&sp[1], sp[0]->s_nchans);
+    dsp_add(db2lin_tilde_perform, 4, x, (t_int)(sp[0]->s_length * sp[0]->s_nchans),
+        sp[0]->s_vec, sp[1]->s_vec);
 }
+
 
 void * db2lin_tilde_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
@@ -44,7 +47,7 @@ void * db2lin_tilde_new(t_symbol *s, int ac, t_atom *av){
 
 void db2lin_tilde_setup(void) {
     db2lin_tilde_class = class_new(gensym("db2lin~"), (t_newmethod)db2lin_tilde_new,
-        0, sizeof(t_db2lin_tilde), 0, A_GIMME, 0);
+        0, sizeof(t_db2lin_tilde), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(db2lin_tilde_class, nullfn, gensym("signal"), 0);
     class_addmethod(db2lin_tilde_class, (t_method)db2lin_tilde_dsp, gensym("dsp"), A_CANT, 0);
 }

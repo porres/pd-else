@@ -7,9 +7,6 @@
 
 typedef struct _sin{
     t_object    x_obj;
-    t_float     x_f;
-    t_inlet    *sin;
-    t_outlet   *x_outlet;
 }t_sin;
 
 static t_class *sin_class;
@@ -31,18 +28,20 @@ static t_int *sin_perform(t_int *w){
 
 static void sin_dsp(t_sin *x, t_signal **sp){
     x = NULL;
-    dsp_add(sin_perform, 3, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
+    signal_setmultiout(&sp[1], sp[0]->s_nchans);
+    dsp_add(sin_perform, 3, (t_int)(sp[0]->s_length * sp[0]->s_nchans),
+        sp[0]->s_vec, sp[1]->s_vec);
 }
 
 void *sin_new(void){
     t_sin *x = (t_sin *)pd_new(sin_class);
-    x->x_outlet = outlet_new(&x->x_obj, &s_signal);
+    outlet_new(&x->x_obj, &s_signal);
     return(x);
 }
 
 void sin_tilde_setup(void){
     sin_class = class_new(gensym("sin~"), (t_newmethod)sin_new,
-        0, sizeof(t_sin), CLASS_DEFAULT, 0);
-    CLASS_MAINSIGNALIN(sin_class, t_sin, x_f);
+        0, sizeof(t_sin), CLASS_MULTICHANNEL, 0);
+    class_addmethod(sin_class, nullfn, gensym("signal"), 0);
     class_addmethod(sin_class, (t_method) sin_dsp, gensym("dsp"), A_CANT,  0);
 }
