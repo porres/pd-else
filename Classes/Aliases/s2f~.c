@@ -4,7 +4,6 @@
 
 typedef struct _s2f{
     t_object  x_obj;
-    t_float   x_value;
     int       x_rqoffset;  /* requested */
     int       x_offset;    /* effective (truncated) */
     int       x_stopped;
@@ -15,12 +14,15 @@ typedef struct _s2f{
     int       x_nblock;
     float     x_ksr;
     t_clock  *x_clock;
+// MC
+    int       x_nchans;
+    t_atom    *x_vec;
 }t_s2f;
 
 static t_class *s2f_class;
 
 static void s2f_tick(t_s2f *x){
-    outlet_float(((t_object *)x)->ob_outlet, x->x_value);
+    outlet_list(((t_object *)x)->ob_outlet, &s_list, x->x_nchans, x->x_vec);
 }
 
 static void s2f_bang(t_s2f *x){
@@ -82,7 +84,9 @@ static void s2f_offset(t_s2f *x, t_floatarg f){
 static t_int *s2f_perform(t_int *w){
     t_s2f *x = (t_s2f *)(w[1]);
     t_float *in = (t_float *)(w[2]);
-    x->x_value = in[x->x_offset];
+    t_atom *out = (t_atom *)(w[3]);
+    for(int i = 0; i < x->x_nchans; i++)
+        SETFLOAT(out + i, in[i*x->x_nblock + x->x_offset]);
     if(x->x_on){
         if(x->x_nleft < x->x_nblock){
             clock_delay(x->x_clock, 0);
@@ -91,15 +95,23 @@ static t_int *s2f_perform(t_int *w){
         else
             x->x_nleft -= x->x_nblock;
     }
-    return(w+3);
+    return(w+4);
 }
 
 static void s2f_dsp(t_s2f *x, t_signal **sp){
+    int i, nchans = sp[0]->s_nchans;
     x->x_nblock = sp[0]->s_n;
     x->x_ksr = sp[0]->s_sr * 0.001;
     s2f_correct(x);
     x->x_nleft = x->x_offset;
-    dsp_add(s2f_perform, 2, x, sp[0]->s_vec);
+    if(nchans != x->x_nchans){
+        x->x_vec = (t_atom *)resizebytes(x->x_vec,
+            x->x_nchans * sizeof(t_atom), nchans * sizeof(t_atom));
+        for(i = x->x_nchans; i < nchans; i++)
+            SETFLOAT(x->x_vec + i, 0);
+        x->x_nchans = nchans;
+    }
+    dsp_add(s2f_perform, 3, x, sp[0]->s_vec + (sp[0]->s_n-1), x->x_vec);
 }
 
 static void s2f_free(t_s2f *x){
@@ -112,8 +124,8 @@ static void *s2f_new(t_symbol *s, int argc, t_atom * argv){
     dummy = NULL;
     t_s2f *x = (t_s2f *)pd_new(s2f_class);
     x->x_stopped = 0;
+    x->x_nchans = 1;
     x->x_on = 0;
-    x->x_value = 0;
     x->x_nblock = 64;  // ????
     x->x_ksr = 44.1;  // ????
 	t_float interval, offset, active;
@@ -162,7 +174,7 @@ static void *s2f_new(t_symbol *s, int argc, t_atom * argv){
 
 void s2f_tilde_setup(void){
     s2f_class = class_new(gensym("s2f~"), (t_newmethod)s2f_new,
-        (t_method)s2f_free, sizeof(t_s2f), 0, A_GIMME,0);
+        (t_method)s2f_free, sizeof(t_s2f), CLASS_MULTICHANNEL, A_GIMME,0);
 	class_domainsignalin(s2f_class, -1);
 	class_addfloat(s2f_class, (t_method)s2f_float);
     class_addmethod(s2f_class, (t_method)s2f_dsp, gensym("dsp"), A_CANT, 0);

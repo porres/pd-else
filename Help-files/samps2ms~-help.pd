@@ -1,63 +1,57 @@
-#N canvas 564 108 562 379 10;
-#X obj 3 255 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 3 288 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 3 322 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 128 298 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 3 352 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X obj 201 144 hsl 180 15 0 44100 0 0 empty empty empty -2 -8 0 10
-#dcdcdc #000000 #000000 0 1;
-#X obj 3 3 cnv 15 301 42 empty empty samps2ms~ 20 20 2 37 #e0e0e0 #000000
-0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#N canvas 564 108 562 395 10;
+#X obj 3 265 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 298 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 332 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 128 308 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 3 362 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 201 154 hsl 180 15 0 44100 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 3 3 cnv 15 301 42 empty empty samps2ms~ 20 20 2 37 #e0e0e0 #000000 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 23 40 cnv 4 4 4 empty empty Convert 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 90 40 cnv 4 4 4 empty empty samples 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 156 40 cnv 4 4 4 empty empty to 0 28 2 18 #e0e0e0 #000000 0
-;
-#X obj 181 40 cnv 4 4 4 empty empty ms 0 28 2 18 #e0e0e0 #000000 0
-;
-#X obj 129 265 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X text 176 225 ms;
-#X text 147 170 Samples;
-#X text 194 331 (none);
-#X text 200 298 float;
-#X text 96 116 Conversion expression: ms = 1000*samps/ samplerate.
-;
-#X text 240 265 - time value in number of samples;
-#X text 240 298 - converted value in ms;
-#X text 96 85 [samps2ms~] is a simple abstraction that converts time
-values number of samples to ms., f 53;
-#X text 159 265 float/signal;
-#X obj 198 199 else/samps2ms~;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 23 40 cnv 4 4 4 empty empty Convert 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 90 40 cnv 4 4 4 empty empty samples 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 156 40 cnv 4 4 4 empty empty to 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 181 40 cnv 4 4 4 empty empty ms 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 129 275 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X text 176 235 ms;
+#X text 147 180 Samples;
+#X text 209 341 (none);
+#X text 96 126 Conversion expression: ms = 1000*samps/ samplerate.;
+#X obj 198 209 else/samps2ms~;
 #X obj 493 90 else/setdsp~;
-#X obj 198 170 else/numbox~ 6 12 100 #c0c0c4 #440008 0 0 10 0;
-#X obj 198 225 else/numbox~ 6 12 100 #c0c0c4 #440008 0 0 10 0;
-#X connect 5 0 32 0;
-#X connect 30 0 33 0;
-#X connect 32 0 30 0;
+#X obj 198 180 else/numbox~ 6 12 100 #c0c0c4 #440008 0 0 10 0;
+#X obj 198 235 else/numbox~ 6 12 100 #c0c0c4 #440008 0 0 10 0;
+#N canvas 795 189 371 312 multichannel 0;
+#X obj 105 130 snake~ in;
+#X listbox 105 104 12 0 0 0 - - - 0;
+#X obj 249 144 setdsp~ 0;
+#X text 100 28 Multichannel support example.;
+#X obj 105 211 else/s2f~;
+#X listbox 105 247 14 0 0 0 - - - 12;
+#X obj 105 163 else/samps2ms~;
+#X obj 105 75 else/initmess 44100 22050;
+#X connect 0 0 6 0;
+#X connect 1 0 0 0;
+#X connect 4 0 5 0;
+#X connect 6 0 4 0;
+#X connect 7 0 1 0;
+#X restore 442 231 pd multichannel;
+#X text 96 85 [samps2ms~] is a simple abstraction that converts time values number of samples to ms. It has support for multichannel signals., f 53;
+#X text 159 274 float/signal(s);
+#X text 200 308 signal(s);
+#X text 260 308 - converted value(s) in ms;
+#X text 260 275 - time value(s) in number of samples;
+#X connect 5 0 27 0;
+#X connect 25 0 28 0;
+#X connect 27 0 25 0;
