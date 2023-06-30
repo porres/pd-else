@@ -192,6 +192,7 @@ mtx~.class.sources := Classes/Source/mtx~.c
 match~.class.sources := Classes/Source/match~.c
 mov.avg~.class.sources := Classes/Source/mov.avg~.c
 median~.class.sources := Classes/Source/median~.c
+mix~.class.sources := Classes/Source/mix~.c
 nchs~.class.sources := Classes/Source/nchs~.c
 nyquist~.class.sources := Classes/Source/nyquist~.c
 op~.class.sources := Classes/Source/op~.c
