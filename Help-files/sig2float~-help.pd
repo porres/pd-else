@@ -1,45 +1,26 @@
-#N canvas 444 50 561 547 10;
-#X obj 4 248 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 3 396 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 3 461 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 114 405 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 3 519 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#N canvas 444 50 565 553 10;
+#X obj 4 248 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 396 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 461 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 114 405 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 3 519 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 23 40 cnv 4 4 4 empty empty Convert 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 160 40 cnv 4 4 4 empty empty float 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 139 40 cnv 4 4 4 empty empty to 0 28 2 18 #e0e0e0 #000000 0
-;
-#X obj 3 3 cnv 15 301 42 empty empty sig2float~ 20 20 2 37 #e0e0e0
-#000000 0;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 23 40 cnv 4 4 4 empty empty Convert\ signal(s)\ to\ float(s) 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 3 3 cnv 15 301 42 empty empty sig2float~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
-#fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -108,8 +89,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
-0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -121,8 +101,7 @@
 #X obj 136 86 snapshot~;
 #X obj 91 52 del 5;
 #X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 74 126 switch~;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -141,26 +120,14 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X obj 114 256 cnv 17 3 105 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c
-0;
-#X obj 368 155 nbx 5 14 0 2000 0 0 empty empty empty 0 -8 0 10 #dcdcdc
-#000000 #000000 0 256;
-#X obj 87 40 cnv 4 4 4 empty empty signal 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 257 148 noise~;
-#X text 427 154 ms;
-#X text 365 134 convert time;
-#X text 191 256 signal;
-#X text 197 405 float;
-#X text 238 256 - signal value to convert to float, f 40;
-#X obj 114 369 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
-;
+#X obj 114 256 cnv 17 3 105 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 365 154 nbx 5 14 0 2000 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 254 147 noise~;
+#X text 424 153 ms;
+#X text 362 133 convert time;
+#X obj 114 369 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 197 367 float;
 #X text 238 367 - conversion time in ms, f 40;
-#X text 237 405 - converted float;
-#X text 62 90 [sig2float~] converts signals to floats. The conversion
-occurs at a time rate defined by the 1st argument or right inlet.,
-f 62;
 #X text 131 470 1) float;
 #X text 131 490 2) float;
 #X text 190 470 - self clocking interval in ms (default 0);
@@ -171,47 +138,57 @@ f 62;
 #X text 238 301 - turns on (non-0) or off (0), f 40;
 #X text 238 316 - turns on, f 40;
 #X text 238 331 - turns off, f 40;
-#X obj 257 210 else/display;
+#X obj 254 209 else/display;
 #X text 238 346 - sets sample offset within block, f 40;
 #X text 143 346 offset <float>;
-#X obj 3 433 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
-0;
+#X obj 3 433 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
 #X text 174 442 -off - turns it off (default on);
 #X text 203 271 bang;
 #X text 238 271 - syncs the conversion rate, f 40;
 #X text 161 286 set <float>;
 #X text 238 286 - sets the time without syncing, f 40;
-#X obj 257 182 else/sig2float~ 500;
+#X obj 254 181 else/sig2float~ 500;
 #N canvas 751 309 450 321 sync 0;
-#X obj 287 187 nbx 5 14 0 2000 0 0 empty empty empty 0 -8 0 10 #dcdcdc
-#000000 #000000 0 256;
+#X obj 287 187 nbx 5 14 0 2000 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 170 150 noise~;
 #X obj 170 242 else/display;
 #X text 351 186 ms;
-#X obj 191 180 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
-#000000 #000000;
+#X obj 191 180 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #X obj 170 214 else/sig2float~ 1000;
 #X msg 88 179 set \$1;
-#X obj 88 155 nbx 5 14 0 2000 0 0 empty empty empty 0 -8 0 10 #dcdcdc
-#000000 #000000 0 256;
-#X text 47 46 A bang will reset and sync the conversion rate. Each
-time you set a new rate interval in the right inlet \, it'll also force
-a sync. If you do not want to sync \, you can use the "set" message
-\, in which case the new conversion rate will only be valid at the next
-conversion.;
+#X obj 88 155 nbx 5 14 0 2000 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X text 47 46 A bang will reset and sync the conversion rate. Each time you set a new rate interval in the right inlet \, it'll also force a sync. If you do not want to sync \, you can use the "set" message \, in which case the new conversion rate will only be valid at the next conversion.;
 #X connect 0 0 5 1;
 #X connect 1 0 5 0;
 #X connect 4 0 5 0;
 #X connect 5 0 2 0;
 #X connect 6 0 5 0;
 #X connect 7 0 6 0;
-#X restore 492 203 pd sync;
-#X obj 83 150 noise~;
-#X obj 83 212 else/display;
-#X obj 83 184 else/s2f~ 500;
-#X text 173 184 alias;
-#X connect 20 0 52 1;
-#X connect 22 0 52 0;
-#X connect 52 0 43 0;
-#X connect 54 0 56 0;
-#X connect 56 0 55 0;
+#X restore 491 197 pd sync;
+#X obj 80 149 noise~;
+#X obj 80 211 else/display;
+#X obj 80 183 else/s2f~ 500;
+#X text 170 183 alias;
+#X text 173 256 signal(s);
+#X text 238 256 - signal value(s) to convert to float(s);
+#X text 203 405 list;
+#X text 237 405 - converted float(s) from signal(s);
+#X text 62 90 [sig2float~] converts signals to floats. The conversion occurs at a time rate defined by the 1st argument or right inlet. It has support for multichannel signals., f 62;
+#N canvas 721 228 449 295 multichannel 0;
+#X obj 108 152 snake~ in;
+#X listbox 108 126 12 0 0 0 - - - 0;
+#X obj 269 144 setdsp~ 0;
+#X obj 108 193 else/s2f~;
+#X listbox 108 229 11 0 0 0 - - - 12;
+#X obj 108 97 else/initmess 1 15;
+#X text 70 26 Multichannel support example. When [sig2float~] takes a mutlichannel signal connection it outputs a list of floats with values for all channels., f 49;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 3 0 4 0;
+#X connect 5 0 1 0;
+#X restore 443 218 pd multichannel;
+#X connect 18 0 44 1;
+#X connect 19 0 44 0;
+#X connect 44 0 35 0;
+#X connect 46 0 48 0;
+#X connect 48 0 47 0;

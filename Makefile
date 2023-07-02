@@ -32,7 +32,7 @@ keyboard.class.sources := Classes/Source/keyboard.c
 pad.class.sources := Classes/Source/pad.c
 openfile.class.sources := Classes/Source/openfile.c
 colors.class.sources := Classes/Source/colors.c
-note.class.sources := Classes/Source/note.c
+# note.class.sources := Classes/Source/note.c
 
 # control:
 args.class.sources := Classes/Source/args.c
