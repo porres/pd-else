@@ -43,20 +43,21 @@ int check_isinf(t_float in){
 }
 
 static t_int *bitnormal_perform(t_int *w){
-    int nblock = (int)(w[1]);
+    int n = (int)(w[1]);
     t_float *in = (t_float *)(w[2]);
     t_float *out = (t_float *)(w[3]);
-    while(nblock--){
-        float f = *in++;
+    for(t_int i = 0; i < n; i++){
+        float f =  in[i];
         if(check_isnan(f) || check_isinf(f) || check_denorm(f))
             f = 0;
-        *out++ = f;
+        out[i] = f;
     }
     return(w+4);
 }
 
 static void bitnormal_dsp(t_bitnormal *x, t_signal **sp){
     x = NULL;
+    signal_setmultiout(&sp[1], sp[0]->s_nchans);
     dsp_add(bitnormal_perform, 3, (t_int)(sp[0]->s_length * sp[0]->s_nchans),
         sp[0]->s_vec, sp[1]->s_vec);
 }
