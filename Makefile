@@ -183,6 +183,7 @@ lastvalue~.class.sources := Classes/Source/lastvalue~.c
 latoocarfian~.class.sources := Classes/Source/latoocarfian~.c
 lorenz~.class.sources := Classes/Source/lorenz~.c
 lincong~.class.sources := Classes/Source/lincong~.c
+lin2db~.class.sources := Classes/Source/lin2db~.c
 logistic~.class.sources := Classes/Source/logistic~.c
 loop.class.sources := Classes/Source/loop.c
 lop2~.class.sources := Classes/Source/lop2~.c
