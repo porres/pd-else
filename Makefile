@@ -143,6 +143,7 @@ bl.tri~.class.sources := Classes/Source/bl.tri~.c
 bl.vsaw~.class.sources := Classes/Source/bl.vsaw~.c
 blocksize~.class.sources := Classes/Source/blocksize~.c
 biquads~.class.sources := Classes/Source/biquads~.c
+car2pol~.class.sources := Classes/Source/car2pol~.c
 ceil~.class.sources := Classes/Source/ceil~.c
 cents2ratio~.class.sources := Classes/Source/cents2ratio~.c
 changed~.class.sources := Classes/Source/changed~.c
