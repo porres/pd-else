@@ -31,8 +31,7 @@ void nchs_free(t_nchs *x){
 
 void nchs_tilde_setup(void){
     nchs_tilde_class = class_new(gensym("nchs~"), (t_newmethod)nchs_tilde_new,
-        (t_method)nchs_free, sizeof(t_nchs), 0, 0);
-    class_setdspflags(nchs_tilde_class, CLASS_MULTICHANNEL);
+        (t_method)nchs_free, sizeof(t_nchs), CLASS_MULTICHANNEL, 0);
     class_addmethod(nchs_tilde_class, nullfn, gensym("signal"), 0);
     class_addmethod(nchs_tilde_class, (t_method)nchs_tilde_dsp, gensym("dsp"), A_CANT, 0);
     class_addbang(nchs_tilde_class, (t_method)nchs_bang);

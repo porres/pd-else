@@ -1,4 +1,4 @@
-// based on the code by Matt Barber for cyclone's bitnormal~
+// based on the code by Matt Barber for cyclone's bitsafe~
  
 #include "m_pd.h"
 
@@ -57,7 +57,8 @@ static t_int *bitnormal_perform(t_int *w){
 
 static void bitnormal_dsp(t_bitnormal *x, t_signal **sp){
     x = NULL;
-    dsp_add(bitnormal_perform, 3, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
+    dsp_add(bitnormal_perform, 3, (t_int)(sp[0]->s_length * sp[0]->s_nchans),
+        sp[0]->s_vec, sp[1]->s_vec);
 }
 
 void *bitnormal_new(void){
@@ -68,7 +69,7 @@ void *bitnormal_new(void){
 
 void bitnormal_tilde_setup(void){
     bitnormal_class = class_new(gensym("bitnormal~"), (t_newmethod)bitnormal_new, 0,
-        sizeof(t_bitnormal), CLASS_DEFAULT, 0);
+        sizeof(t_bitnormal), CLASS_MULTICHANNEL, 0);
     class_addmethod(bitnormal_class, nullfn, gensym("signal"), 0);
     class_addmethod(bitnormal_class, (t_method) bitnormal_dsp, gensym("dsp"), A_CANT, 0);
 }
