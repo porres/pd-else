@@ -42,25 +42,28 @@ static t_int *op_perform(t_int *w){
         case 7: // or
             while(n--) *out++ = *in1++ || *in2++;
             break;
-        case 8: // bitand
+        case 8: // not
+            while(n--) *out++ = (!(*in1++));
+            break;
+        case 9: // bitand
             while(n--) *out++ = (t_float)(((int32_t)*in1++) & ((int32_t)*in2++));
             break;
-        case 9: // bitor
+        case 10: // bitor
             while(n--) *out++ = (t_float)(((int32_t)*in1++) | ((int32_t)*in2++));
             break;
-        case 10: // bitnot
+        case 11: // bitnot
             while(n--) *out++ = (t_float)(~((int32_t)*in1++));
             break;
-        case 11: // bitxor
+        case 12: // bitxor
             while(n--) *out++ = (t_float)(((int32_t)*in1++) ^ ((int32_t)*in2++));
             break;
-        case 12: // bit shift left
+        case 13: // bit shift left
             while(n--) *out++ = (t_float)(((int32_t)*in1++) << ((int32_t)*in2++));
             break;
-        case 13: // bit shift right
+        case 14: // bit shift right
             while(n--) *out++ = (t_float)(((int32_t)*in1++) >> ((int32_t)*in2++));
             break;
-        case 14: // %s
+        case 15: // %s
             while(n--){
                 t_float f1 = *in1++, f2 = *in2++;
                 *out++ = f2 == 0 ? 0. : fmod(f1, f2);
@@ -102,38 +105,61 @@ static void op_or(t_op *x){
     x->x_op = 7;
 }
 
-static void op_bitand(t_op *x){
+static void op_not(t_op *x){
     x->x_op = 8;
 }
 
-static void op_bitor(t_op *x){
+static void op_bitand(t_op *x){
     x->x_op = 9;
+}
+
+static void op_bitor(t_op *x){
+    x->x_op = 10;
 }
 
 
 static void op_bitnot(t_op *x){
-    x->x_op = 10;
-}
-
-static void op_bitxor(t_op *x){
     x->x_op = 11;
 }
 
-static void op_bitshift_l(t_op *x){
+static void op_bitxor(t_op *x){
     x->x_op = 12;
 }
 
-static void op_bitshift_r(t_op *x){
+static void op_bitshift_l(t_op *x){
     x->x_op = 13;
 }
 
-static void op_mod(t_op *x){
+static void op_bitshift_r(t_op *x){
     x->x_op = 14;
 }
 
-static void op_dsp(t_op *x, t_signal **sp){
-    dsp_add(op_perform, 5, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[0]->s_n);
+static void op_mod(t_op *x){
+    x->x_op = 15;
 }
+
+static void op_dsp(t_op *x, t_signal **sp){
+    int n1 = sp[0]->s_length * sp[0]->s_nchans,
+        n2 = sp[1]->s_length * sp[1]->s_nchans;
+    int outchans = n2 > n1 ? sp[1]->s_nchans : n1 > 1 ? sp[0]->s_nchans : 1;
+    signal_setmultiout(&sp[2], outchans);
+    t_sample *vec1 = sp[0]->s_vec, *vec2 = sp[1]->s_vec;
+    t_sample *outvec1 = sp[2]->s_vec;
+    int i;
+    if(n1 > n2)
+        for(i = (n1+n2-1)/n2; i--; )
+        {
+            t_int blocksize = (n2 < n1 - i*n2 ? n2 : n1 - i*n2);
+            dsp_add(op_perform, 5, x, vec1 + i * n2, vec2,
+                    outvec1 + i*n2, blocksize);
+        }
+    else for(i = (n1+n2-1)/n1; i--; ){
+        t_int blocksize = (n1 < n2 - i*n1 ? n1 : n2 - i*n1);
+        dsp_add(op_perform, 5, x, vec1, vec2 + i*n1,
+                outvec1 + i*n1, blocksize);
+    }
+}
+
 
 static void *op_new(t_symbol *s, int ac, t_atom *av){
     t_op *x = (t_op *)pd_new(op_class);
@@ -159,20 +185,22 @@ static void *op_new(t_symbol *s, int ac, t_atom *av){
                 x->x_op = 6;
             else if(s == gensym("||"))
                 x->x_op = 7;
-            else if(s == gensym("&"))
+            else if(s == gensym("!"))
                 x->x_op = 8;
-            else if(s == gensym("|"))
+            else if(s == gensym("&"))
                 x->x_op = 9;
-            else if(s == gensym("~"))
+            else if(s == gensym("|"))
                 x->x_op = 10;
-            else if(s == gensym("^"))
+            else if(s == gensym("~"))
                 x->x_op = 11;
-            else if(s == gensym("<<"))
+            else if(s == gensym("^"))
                 x->x_op = 12;
-            else if(s == gensym(">>"))
+            else if(s == gensym("<<"))
                 x->x_op = 13;
-            else if(s == gensym("%"))
+            else if(s == gensym(">>"))
                 x->x_op = 14;
+            else if(s == gensym("%"))
+                x->x_op = 15;
             else
                 goto errstate;
             v = atom_getfloatarg(1, ac, av);
@@ -188,7 +216,7 @@ errstate:
 
 void op_tilde_setup(void){
     op_class = class_new(gensym("op~"), (t_newmethod)op_new, 0,
-        sizeof(t_op), CLASS_DEFAULT, A_GIMME, 0);
+        sizeof(t_op), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(op_class, nullfn, gensym("signal"), 0);
     class_addmethod(op_class, (t_method)op_dsp, gensym("dsp"), 0);
     class_addmethod(op_class, (t_method)op_lt, gensym("<"), 0);
@@ -199,6 +227,7 @@ void op_tilde_setup(void){
     class_addmethod(op_class, (t_method)op_eq, gensym("=="), 0);
     class_addmethod(op_class, (t_method)op_and, gensym("&&"), 0);
     class_addmethod(op_class, (t_method)op_or, gensym("||"), 0);
+    class_addmethod(op_class, (t_method)op_not, gensym("!"), 0);
     class_addmethod(op_class, (t_method)op_bitand, gensym("&"), 0);
     class_addmethod(op_class, (t_method)op_bitor, gensym("|"), 0);
     class_addmethod(op_class, (t_method)op_bitnot, gensym("~"), 0);
