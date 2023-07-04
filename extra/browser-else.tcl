@@ -3,7 +3,7 @@
 
 package require pd_menus
 
-namespace eval category_menu {
+namespace eval category_else_menu {
 }
 
 proc menu_send_else_obj {w x y item} {
@@ -16,7 +16,7 @@ proc menu_send_else_obj {w x y item} {
 }
 
 # set nested list
-proc category_menu::load_menutree {} {
+proc category_else_menu::load_menutree {} {
     set menutree { 
         {else
             {gui
@@ -90,7 +90,7 @@ proc category_menu::load_menutree {} {
     return $menutree
 }
 
-proc category_menu::create {cmdstring code result op} {
+proc category_else_menu::create {cmdstring code result op} {
     set mymenu [lindex $cmdstring 1]
     set x [lindex $cmdstring 3]
     set y [lindex $cmdstring 4]
@@ -115,4 +115,4 @@ proc category_menu::create {cmdstring code result op} {
     }
 }
 
-trace add execution ::pdtk_canvas::create_popup leave category_menu::create
+trace add execution ::pdtk_canvas::create_popup leave category_else_menu::create
