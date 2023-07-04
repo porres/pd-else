@@ -1,95 +1,121 @@
-# generate menu tree for objects with a nested lists
+# generate menu tree for native objects for the canvas right click popup
+# code by Porres and Seb Shader
 
 package require pd_menus
 
 namespace eval category_menu {
 }
 
-# set nested list
+proc category_menu::send_item {w x y item} {
+    switch $item {
+        "Message" {
+            pdsend "$w msg $x $y"
+        }
+        "Number atom box" {
+            pdsend "$w floatatom $x $y 5 0 0 0 - - - 0"
+        }
+        "Symbol atom box" {
+            pdsend "$w symbolatom $x $y 10 0 0 0 - - - 0"
+        }
+        "List box" {
+            pdsend "$w listbox $x $y 20 0 0 0 - - - 0"
+        }
+        "Comment" {
+            pdsend "$w text $x $y"
+        }
+        "Bang" {
+            pdsend "$w obj $x $y bng"
+        }
+        "Toggle" {
+            pdsend "$w obj $x $y tgl"
+        }
+        "Number2" {
+            pdsend "$w obj $x $y nbx"
+        }
+        "Vertical slider" {
+            pdsend "$w obj $x $y vsl"
+        }
+        "Horizontal slider" {
+            pdsend "$w obj $x $y hsl"
+        }
+        "Vertical radio" {
+            pdsend "$w obj $x $y vradio"
+        }
+        "Horizontal radio" {
+            pdsend "$w obj $x $y hradio"
+        }
+        "VU meter" {
+            pdsend "$w obj $x $y vu"
+        }
+        "Canvas" {
+            pdsend "$w obj $x $y cnv"
+        }
+        "Graph" {
+            pdsend "$w graph $x $y"
+        }
+        "Array" {
+            pdsend "$w menuarray $x $y"
+        }
+        default {
+            pdsend "$w obj $x $y $item"
+        }
+    }
+}
+
 proc category_menu::load_menutree {} {
-    set menutree { 
-        {else
-            {gui
-                {knob mtx.tcl pic pad function colors openfile biplot slider2d circle keyboard range.hsl mix2~ mix4~ meter~ meter2~ meter4~ meter8~ drum.seq graph~ spectrograph~ setdsp~ messbox button out1~ out~ out4~ out8~ gain~ gain2~ display numbox~ zbiplot oscope~ multi.vsl bicoeff}}        
-            {oscillators
-                {sine~ cosine~ saw~ saw2~ square~ tri~ vsaw~ pulse~ impulse~ impulse2~ parabolic~ oscbank~ oscbank2~ gaussian~ pmosc~ wavetable~ bl.osc~ bl.blip~ bl.imp~ bl.imp2~ bl.saw~ bl.saw2~ bl.square~ bl.tri~ bl.vsaw~ bl.wavetable~}}
-            {synths
-                {grain.synth~ pluck~ sfont~ plaits~}}
-            {noise\ chaos\ stochastic
-                {gendyn~ white~ pink~ brown~ gray~ lfnoise~ rampnoise~ stepnoise~ randpulse~ randpulse2~ perlin~ fbsine~ fbsine2~ xmod~ xmod2~ crackle~ cusp~ gbmnan~ henon~ ikeda~ latoocarfian~ lorenz~ lincong~ logistic~ quad~ standard~}}
-            {assorted
-                {else chrono datetime}}
-            {fft
-                {hann~ bin.shift~}}  
-            {tuning/scale\ tools 
-                {scales autotune autotune2 makenote2 scala retune eqdiv scale2cents cents2scale cents2frac frac2cents frac2dec dec2frac freq2midi midi2freq note2pitch pitch2note note2dur}}
-            {patch/subpatch\ management
-                {args meter presets blocksize~ fontsize retrieve canvas.active canvas.bounds canvas.file canvas.name canvas.vis canvas.edit canvas.setname canvas.zoom click properties dollsym receiver loadbanger}}
+    set menutree {
+        {add\ object
+            {guis
+                {Message Number\ atom\ box Symbol\ atom\ box List\ box Comment Bang Toggle Number2 Vertical\ slider Horizontal\ slider Vertical\ radio Horizontal\ radio VU\ meter Canvas Graph Array}}
+            {general\ data\ management
+                {bang trigger route swap print float int value symbol makefilename send receive}}
             {list\ management
-                {break order group combine scramble interpolate delete replace morph sort iterate insert reverse rotate sum slice stream merge unmerge amean gmean}}
-            {message\ management
-                {swap2 nmess format unite separate route2 any2symbol symbol2any changed hot limit initmess default message pack2 pick spread router routeall routetype selector stack store pipe2 sig2float~ float2sig~}}
+                {pack unpack list\ append list\ prepend list\ store list\ split list\ trim list\ length list\ fromsymbol list\ tosymbol}}
+            {arrays/tables
+                {tabread tabread4 tabwrite soundfiler table array\ define array\ size array\ sum array\ get array\ set array\ quantile array\ random array\ max array\ min}}
+            {text\ management
+                {qlist textfile text\ define text\ get text\ set text\ insert text\ delete text\ size text\ tolist text\ fromlist text\ search text\ sequence}}
             {file\ management
-                {dir}}
-            {math:\ functions
-                {add add~ median avg mov.avg frac.add frac.mul lcm gcd count ceil ceil~ factor floor floor~ trunc trunc~ rint rint~ quantizer quantizer~ fold fold~ lastvalue mag mag~ sin~ wrap2 wrap2~ op op~ cmul~}}
-            {math:\ conversion
-                {hex2dec dec2hex bpm car2pol car2pol~ pol2car pol2car~ pz2coeff coeff2pz cents2ratio cents2ratio~ ratio2cents ratio2cents~ ms2samps ms2samps~ samps2ms samps2ms~ deg2grad rad2deg db2lin db2lin~ float2bits hz2rad rad2hz lin2db lin2db~ rescale rescale~}}
-            {math:\ constant
-                {sr~ nyquist~ pi e}}
-            {math:\ logic
-                {loop}}
-            {analysis
-                {changed~ changed2~ detect~ lastvalue median~ range range~ tap peak~ rms~ mov.rms~ vu~ zerocross~ beat~}}
-            {fx:\ assorted
-                {downsample~ conv~ chorus~ shaper~ crusher~ power~ drive~ flanger~ freq.shift~ pitch.shift~ ping.pong~ phaser~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~}}
-            {fx:\ delays
-                {del~\ in del~\ out fbdelay~ ffdelay~ filterdelay~ revdelay~}}
-            {fx:\ filters
-                {allpass.2nd~ allpass.filt~ bitnormal~ comb.filt~ lop2~ lop.bw~ hip.bw~ biquads~ bandpass~ bandstop~ crossover~ bpbank~ bicoeff2 brickwall~ eq~ highpass~ highshelf~ lowpass~ lowshelf~ mov.avg~ resonbank~ resonbank2~ resonant~ resonant2~ svfilter~}}
-            {fx:\ reverberators
-                {allpass.rev~ comb.rev~ mono.rev~ stereo.rev~ plate.rev~ giga.rev~ free.rev~ fdn.rev~}}
-            {fx:\ dynamics
-                {compress~ duck~ expand~ noisegate~ norm~}}
-            {table/sampling/players/granulation
-                {buffer tabgen tabreader tabreader~ tabwriter~ tabplayer~ sample~ batch.rec~ batch.write~ rec.file~ player~ gran.player~ pvoc.player~ pvoc.live~ grain.live~ grain.sampler~}}
-            {control:\ MIDI
-                {midi.learn sysrt.in sysrt.out ctl.in ctl.out touch.in touch.out pgm.in pgm.out bend.in bend.out note.in note.out midi.clock noteinfo panic mono voices suspedal keymap}}
-            {control:\ OSC
-                {osc.route osc.format osc.parse osc.send osc.receive}}
-            {control:\ (mouse/keyboard)
-                {mouse canvas.mouse keycode}}
-            {control:\ (fade/pan/route)
-                {fader~ autofade~ autofade2~ balance~ pan2~ pan4~ pan8~ spread~ rotate~ xfade~ xgate~ xgate2~ xselect~ xselect2~ mtx~}}
-            {control:\ sequencers
-                {euclid score score2 pattern sequencer sequencer~ impseq~ rec rec2}}
-            {control:\ lfo
-                {phasor pimp lfo impulse pulse}}
-            {control:\ envelopes
-                {adsr~ asr~ decay~ decay2~ envelope~ envgen~}}
-            {control:\ line\ generators
-                {function~ ramp~ glide~ glide2~ glide glide2 slew slew2 slew~ slew2~ lag~ lag2~ susloop~}}
-            {control\ random/stochastic
-                {rand.f rand.f~ rand.i rand.i~ rand.list rand.u rand.dist histogram rand.hist brown drunkard drunkard~ randpulse randpulse2 rampnoise lfnoise markov}}
-            {control:\ triggers
-                {above above~ bangdiv chance dust~ dust2~ gatehold~ gate2imp~ pimp~ pimpmul~ pulsecount~ pulsediv~ sh~ schmitt schmitt~ status status~ trig.delay~ trig.delay2~ toggleff~ timed.gate~ timed.gate match~ trig2bang~ trig2bang trighold~}}
-            {control:\ clocks
-                {speed clock tempo tempo~ metronome polymetro polymetro~}}    
+                {file\ handle file\ define file\ mkdir file\ which file\ glob file\ stat file\ isdirectory file\ isfile file\ size file\ copy file\ move file\ delete file\ split file\ splitex file\ join file\ splitname}}
+            {time
+                {delay pipe metro line timer cputime realtime}}
+            {logic
+                {select change spigot moses until}}
+            {math
+                {expr clip random + - * / max min > >= < <= == != div mod && || & | << >> sin cos tan atan atan2 wrap abs sqrt exp log pow}}
+            {acoustic\ conversions
+                {mtof ftom rmstodb dbtorms powtodb dbtopow}}
+            {midi/osc
+                {midiin midiout notein noteout ctlin ctlout pgmin pgmout bendin bendout touchin touchout polytouchin polytouchout sysexin midirealtimein makenote stripnote poly oscparse oscformat}}
+            {misc
+                {openpanel savepanel key keyup keyname netsend netreceive fudiparse fudiformat bag trace}}
+            {general\ audio\ tools
+                {snake~\ in snake~\ out adc~ dac~ sig~ line~ vline~ threshold~ env~ snapshot~ vsnapsot~ bang~ samphold~ samplerate~ send~ receive~ throw~ catch~ readsf~ writesf~ print~}}
+            {signal\ math
+                {fft~ ifft~ rfft~ irfft~ expr~ fexpr~ +~ -~ *~ /~ max~ min~ clip~ sqrt~ rsqrt~ wrap~ pow~ exp~ log~ abs~}}
+            {signal\ acoustic\ conversions
+                {mtof~ ftom~ rmstodb~ dbtorms~ powtodb~ dbtopow~}}
+            {audio\ generators/tables
+                {noise~ phasor~ cos~ osc~ tabosc4~ tabplay~ tabwrite~ tabread~ tabread4~ tabsend~ tabreceive~}}
+            {audio\ filters
+                {vcf~ hip~ lop~ slop~ bp~ biquad~ rpole~ rzero~ rzero_rev~ cpole~ czero~ czero_rev~}}
+            {audio\ delay
+                {delwrite~ delread~ delread4~}}
+            {patch/subpatch
+                {loadbang declare savestate clone pdcontrol pd inlet inlet~ outlet outlet~ namecanvas block~ switch~}}
+            {data\ structures
+                {struct drawpolygon filledpolygon drawcurve filledcurve drawnumber drawsymbol drawtext plot scalar pointer get set element getsize setsize append}}
+            {extra
+                {sigmund~ bonk~ choice hilbert~ complex-mod~ loop~ lrshift~ pd~ stdout rev1~ rev2~ rev3~ bob~ output~}}
         }
     }
     return $menutree
 }
 
-proc menu_send_else_obj {w x y item} {
-    if {$item eq "else"} {  
-        pdsend "$w obj $x $y $item"
-    } else {
-        pdsend "$w obj $x $y else/$item"
-#        pdsend "$w obj $x $y $item"
-    } 
-}
-
-proc category_menu::create {mymenu} {
+proc category_menu::create {cmdstring code result op} {
+    set mymenu [lindex $cmdstring 1]
+    set x [lindex $cmdstring 3]
+    set y [lindex $cmdstring 4]
     set menutree [load_menutree]
     $mymenu add separator
     foreach categorylist $menutree {
@@ -105,11 +131,10 @@ proc category_menu::create {mymenu} {
                 # interpret the dash in the -label to make it a separator
                 $mymenu.$category.$subcategory add command \
                     -label [regsub -all {^\-$} $item {−}] \
-                    -command "menu_send_else_obj \$::focused_window \$::popup_xcanvas \$::popup_ycanvas {$item}"
+                    -command "::category_menu::send_item \$::focused_window $x $y {$item}"
             }
         }
     }
-    ::pdwindow::post "ELSE's object browser-plugin loaded\n"
 }
 
-category_menu::create .popup
+trace add execution ::pdtk_canvas::create_popup leave category_menu::create
