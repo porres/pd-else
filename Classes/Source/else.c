@@ -113,6 +113,6 @@ void else_setup(void){
     class_addmethod(else_obj_class, (t_method)else_obj_version, gensym("version"), 0);
     else_obj_about(x);
     char plugin[MAXPDSTRING];
-    sprintf(plugin, "%s/else-browser-plugin.tcl", else_obj_class->c_externdir->s_name);
+    sprintf(plugin, "%s/browser-else.tcl", else_obj_class->c_externdir->s_name);
     pdgui_vmess("load_plugin_script", "s", plugin);
 }
