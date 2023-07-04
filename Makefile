@@ -198,6 +198,7 @@ mix~.class.sources := Classes/Source/mix~.c
 nchs~.class.sources := Classes/Source/nchs~.c
 nyquist~.class.sources := Classes/Source/nyquist~.c
 op~.class.sources := Classes/Source/op~.c
+pol2car~.class.sources := Classes/Source/pol2car~.c
 power~.class.sources := Classes/Source/power~.c
 pan2~.class.sources := Classes/Source/pan2~.c
 pan4~.class.sources := Classes/Source/pan4~.c
