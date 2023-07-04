@@ -3,10 +3,10 @@
 
 package require pd_menus
 
-namespace eval category_menu {
+namespace eval category_menu_vanilla {
 }
 
-proc category_menu::send_item {w x y item} {
+proc category_menu_vanilla::send_item {w x y item} {
     switch $item {
         "Message" {
             pdsend "$w msg $x $y"
@@ -62,9 +62,9 @@ proc category_menu::send_item {w x y item} {
     }
 }
 
-proc category_menu::load_menutree {} {
+proc category_menu_vanilla::load_menutree {} {
     set menutree {
-        {add\ object
+        {vanilla
             {guis
                 {Message Number\ atom\ box Symbol\ atom\ box List\ box Comment Bang Toggle Number2 Vertical\ slider Horizontal\ slider Vertical\ radio Horizontal\ radio VU\ meter Canvas Graph Array}}
             {general\ data\ management
@@ -112,7 +112,7 @@ proc category_menu::load_menutree {} {
     return $menutree
 }
 
-proc category_menu::create {cmdstring code result op} {
+proc category_menu_vanilla::create {cmdstring code result op} {
     set mymenu [lindex $cmdstring 1]
     set x [lindex $cmdstring 3]
     set y [lindex $cmdstring 4]
@@ -131,10 +131,10 @@ proc category_menu::create {cmdstring code result op} {
                 # interpret the dash in the -label to make it a separator
                 $mymenu.$category.$subcategory add command \
                     -label [regsub -all {^\-$} $item {−}] \
-                    -command "::category_menu::send_item \$::focused_window $x $y {$item}"
+                    -command "::category_menu_vanilla::send_item \$::focused_window $x $y {$item}"
             }
         }
     }
 }
 
-trace add execution ::pdtk_canvas::create_popup leave category_menu::create
+trace add execution ::pdtk_canvas::create_popup leave category_menu_vanilla::create
