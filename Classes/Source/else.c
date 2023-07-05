@@ -15,15 +15,15 @@ t_class *else_obj_class;
 //static int printed;
 
 static int min_major = 0;
-static int min_minor = 53;
-static int min_bugfix = 2;
+static int min_minor = 54;
+static int min_bugfix = 0;
 
 static int else_major = 1;
 static int else_minor = 0;
 static int else_bugfix = 0;
 
 #define STATUS "rc"
-static int status_number = 8;
+static int status_number = 9;
 
 static void else_obj_version(t_else_obj *x){
     int ac = 5;
@@ -62,7 +62,7 @@ void else_obj_about(t_else_obj *x){
     post("-------------------------------------------------------------------");
     post("  -----> ELSE - EL Locus Solus' Externals for Pure Data <-----");
     post("-------------------------------------------------------------------");
-    post("- Version: %d.%d-%d %s-%d; Released may 16th 2023", else_major, else_minor, else_bugfix, STATUS, status_number);
+    post("- Version: %d.%d-%d %s-%d; Unreleased", else_major, else_minor, else_bugfix, STATUS, status_number);
     post("- Author: Alexandre Torres Porres");
     post("- Repository: https://github.com/porres/pd-else");
     post("- License: Do What The Fuck You Want To Public License");
@@ -90,8 +90,11 @@ void else_obj_about(t_else_obj *x){
     post("Please check its README on how to install it!");
     post("-------------------------------------------------------------------");
     post("- ALSO NOTE: Loading this binary did not install the ELSE library");
-    post("you must add it to the \"preferences => path\" in order to use the");
-    post("browser plugin and load objects without a prefix");
+    post("you must add it to the \"path preferences\" in order to load objects");
+    post("without a prefix");
+    post("-------------------------------------------------------------------");
+    post("- ALSO ALSO NOTE: Loading this binary did install an object browser");
+    post("plugin for Vanilla and ELSE objects when right clicking on a canvas.");
     post("-------------------------------------------------------------------");
     post("  -----> ELSE - EL Locus Solus' Externals for Pure Data <-----");
     post("-------------------------------------------------------------------");
