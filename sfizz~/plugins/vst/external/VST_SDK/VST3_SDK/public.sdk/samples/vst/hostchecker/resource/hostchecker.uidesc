@@ -1,0 +1,859 @@
+{
+	"vstgui-ui-description": {
+		"version": "1",
+		"variables": {},
+		"bitmaps": {
+			"bypass": {
+				"path": "bypass.png"
+			},
+			"knob": {
+				"path": "knob.png"
+			}
+		},
+		"fonts": {},
+		"colors": {
+			"Background": "#414a4eff",
+			"Focus": "#6565ffff"
+		},
+		"gradients": {
+			"Default TextButton Gradient": [
+				{
+					"rgba": "#dcdcdcff",
+					"start": "0"
+				},
+				{
+					"rgba": "#b4b4b4ff",
+					"start": "1"
+				}
+			],
+			"Default TextButton Gradient Highlighted": [
+				{
+					"rgba": "#b4b4b4ff",
+					"start": "0"
+				},
+				{
+					"rgba": "#646464ff",
+					"start": "1"
+				}
+			]
+		},
+		"control-tags": {
+			"Bypass": "1003",
+			"Copy2Clipboard": "1010",
+			"EditorSize": "2000",
+			"GeneratePeaks": "1001",
+			"Hidden": "1007",
+			"HiddenValue": "1006",
+			"ProcessingLoad": "1000",
+			"Progress": "1008",
+			"ProgressValue": "1009",
+			"Scoring": "1005",
+			"canResize": "1004",
+			"latency": "1002",
+			"NoteExpressionChanged": "1011",
+			"KeyswitchChanged": "1012",
+			"ParamValuesChanged": "1013",
+			"ParamTitlesChanged": "1014"
+		},
+		"custom": {
+			"UIViewInspector": {
+				"windowSize": "116, 251, 607, 836"
+			},
+			"UIEditFrame": {
+				"gridsize": "10",
+				"uidescPath": "/Volumes/maintrunk/public.sdk/samples/vst/hostchecker/resource/hostchecker.uidesc"
+			},
+			"FocusDrawing": {
+				"color": "Focus",
+				"enabled": "true",
+				"width": "2"
+			},
+			"UIGridController": {
+				"Grids": "1x 1,2x 1,5x 5,10x 10,12x 12,15x 15",
+				"Size": "1, 1"
+			},
+			"UITemplateController": {
+				"SelectedTemplate": "HostCheckerEditor"
+			},
+			"UIEditController": {
+				"EditViewScale": "2",
+				"EditorSize": "0, 0, 1449, 782",
+				"SplitViewSize_0_0": "0.6031746031746031411202579874952789396048",
+				"SplitViewSize_0_1": "0.3703703703703703498106847291637677699327",
+				"SplitViewSize_1_0": "0.5634920634920634885389745249995030462742",
+				"SplitViewSize_1_1": "0.4298941798941798841937611541652586311102",
+				"SplitViewSize_2_0": "0.7474120082815735033321402625006157904863",
+				"SplitViewSize_2_1": "0.2491373360938578251921882156239007599652",
+				"TabSwitchValue": "0",
+				"Version": "1"
+			},
+			"UIAttributesController": {},
+			"UIViewCreatorDataSource": {
+				"SelectedRow": "2"
+			},
+			"UITagsDataSource": {
+				"SelectedRow": "12"
+			},
+			"UIColorsDataSource": {
+				"SelectedRow": "-1"
+			},
+			"UIGradientsDataSource": {
+				"SelectedRow": "-1"
+			},
+			"UIBitmapsDataSource": {
+				"SelectedRow": "0"
+			},
+			"UIFontsDataSource": {
+				"SelectedRow": "-1"
+			},
+			"VST3Editor": {
+				"Path": "N:\\SVN\\devpluginset\\public.sdk\\samples\\vst\\hostchecker\\resource\\hostchecker.uidesc"
+			}
+		},
+		"templates": {
+			"HostCheckerEditor": {
+				"attributes": {
+					"autosize": "left right top bottom ",
+					"background-color": "Background",
+					"background-color-draw-style": "filled and stroked",
+					"class": "CViewContainer",
+					"maxSize": "700, 10000",
+					"minSize": "200, 300",
+					"mouse-enabled": "true",
+					"opacity": "1",
+					"origin": "0, 0",
+					"size": "600, 400",
+					"transparent": "false",
+					"wants-focus": "false"
+				},
+				"children": {
+					"CScrollView": {
+						"attributes": {
+							"auto-drag-scrolling": "false",
+							"auto-hide-scrollbars": "false",
+							"autosize": "left right top bottom ",
+							"background-color": "~ WhiteCColor",
+							"background-color-draw-style": "filled and stroked",
+							"bordered": "false",
+							"class": "CScrollView",
+							"container-size": "583, 3211",
+							"custom-view-name": "HostCheckerDataBrowser",
+							"follow-focus-view": "false",
+							"horizontal-scrollbar": "false",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "12, 55",
+							"overlay-scrollbars": "false",
+							"scrollbar-background-color": "~ TransparentCColor",
+							"scrollbar-frame-color": "~ BlackCColor",
+							"scrollbar-scroller-color": "Background",
+							"scrollbar-width": "16",
+							"size": "580, 335",
+							"transparent": "false",
+							"vertical-scrollbar": "true",
+							"wants-focus": "true"
+						}
+					},
+					"CTextLabel": {
+						"attributes": {
+							"autosize": "left top ",
+							"back-color": "~ BlackCColor",
+							"background-offset": "0, 0",
+							"class": "CTextLabel",
+							"default-value": "0.5",
+							"font": "~ NormalFontBig",
+							"font-antialias": "true",
+							"font-color": "~ WhiteCColor",
+							"frame-color": "~ BlackCColor",
+							"frame-width": "1",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "177, 0",
+							"round-rect-radius": "6",
+							"shadow-color": "~ BlackCColor",
+							"size": "122, 20",
+							"style-3D-in": "false",
+							"style-3D-out": "false",
+							"style-no-draw": "false",
+							"style-no-frame": "false",
+							"style-no-text": "false",
+							"style-round-rect": "false",
+							"style-shadow-text": "true",
+							"text-alignment": "left",
+							"text-inset": "0, 0",
+							"text-rotation": "0",
+							"text-shadow-offset": "1, 1",
+							"title": "VST3 HostChecker",
+							"transparent": "true",
+							"value-precision": "2",
+							"wants-focus": "false",
+							"wheel-inc-value": "0.1"
+						}
+					},
+					"COnOffButton": {
+						"attributes": {
+							"autosize": "right top ",
+							"bitmap": "bypass",
+							"class": "COnOffButton",
+							"control-tag": "Bypass",
+							"default-value": "0",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "569, 24",
+							"size": "21, 19",
+							"tooltip": "Bypass (should be in sync with the host bypass button if available)",
+							"transparent": "true",
+							"wants-focus": "true",
+							"wheel-inc-value": "0.1"
+						}
+					},
+					"CViewContainer": {
+						"attributes": {
+							"autosize": "left top ",
+							"background-color": "~ BlackCColor",
+							"background-color-draw-style": "stroked",
+							"class": "CViewContainer",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "10, 2",
+							"size": "107, 51",
+							"transparent": "false",
+							"wants-focus": "false"
+						},
+						"children": {
+							"CTextLabel": {
+								"attributes": {
+									"back-color": "~ GreyCColor",
+									"background-offset": "0, 0",
+									"class": "CTextLabel",
+									"default-value": "0.5",
+									"font": "~ NormalFontVerySmall",
+									"font-antialias": "true",
+									"font-color": "~ WhiteCColor",
+									"frame-color": "~ GreyCColor",
+									"frame-width": "1",
+									"max-value": "1",
+									"min-value": "0",
+									"mouse-enabled": "true",
+									"opacity": "1",
+									"origin": "11, 30",
+									"round-rect-radius": "6",
+									"shadow-color": "~ RedCColor",
+									"size": "24, 11",
+									"style-3D-in": "false",
+									"style-3D-out": "false",
+									"style-no-draw": "false",
+									"style-no-frame": "false",
+									"style-no-text": "false",
+									"style-round-rect": "false",
+									"style-shadow-text": "false",
+									"text-alignment": "center",
+									"text-inset": "0, 0",
+									"text-rotation": "0",
+									"text-shadow-offset": "1, 1",
+									"title": "PL",
+									"transparent": "false",
+									"value-precision": "2",
+									"wants-focus": "false",
+									"wheel-inc-value": "0.1"
+								}
+							},
+							"CAnimKnob": {
+								"attributes": {
+									"angle-range": "270",
+									"angle-start": "135",
+									"autosize": "left top ",
+									"bitmap": "knob",
+									"class": "CAnimKnob",
+									"control-tag": "ProcessingLoad",
+									"default-value": "0",
+									"height-of-one-image": "20",
+									"inverse-bitmap": "false",
+									"max-value": "1",
+									"min-value": "0",
+									"mouse-enabled": "true",
+									"opacity": "1",
+									"origin": "11, 10",
+									"size": "20, 20",
+									"sub-pixmaps": "80",
+									"tooltip": "Processing Load + Test ContextMenu (right-click on it should open Host ContextMenu (if supported))",
+									"transparent": "false",
+									"value-inset": "0",
+									"wants-focus": "true",
+									"wheel-inc-value": "0.1",
+									"zoom-factor": "1.5"
+								}
+							},
+							"CAnimKnob": {
+								"attributes": {
+									"angle-range": "270",
+									"angle-start": "135",
+									"autosize": "left top ",
+									"bitmap": "knob",
+									"class": "CAnimKnob",
+									"control-tag": "GeneratePeaks",
+									"default-value": "0",
+									"height-of-one-image": "20",
+									"inverse-bitmap": "false",
+									"max-value": "1",
+									"min-value": "0",
+									"mouse-enabled": "true",
+									"opacity": "1",
+									"origin": "41, 10",
+									"size": "20, 20",
+									"sub-pixmaps": "80",
+									"tooltip": "Enable Peaks Generation",
+									"transparent": "false",
+									"value-inset": "0",
+									"wants-focus": "true",
+									"wheel-inc-value": "0.1",
+									"zoom-factor": "1.5"
+								}
+							},
+							"CTextLabel": {
+								"attributes": {
+									"autosize": "left top ",
+									"back-color": "~ GreyCColor",
+									"background-offset": "0, 0",
+									"class": "CTextLabel",
+									"default-value": "0.5",
+									"font": "~ NormalFontVerySmall",
+									"font-antialias": "true",
+									"font-color": "~ WhiteCColor",
+									"frame-color": "~ GreyCColor",
+									"frame-width": "1",
+									"max-value": "1",
+									"min-value": "0",
+									"mouse-enabled": "true",
+									"opacity": "1",
+									"origin": "39, 30",
+									"round-rect-radius": "6",
+									"shadow-color": "~ RedCColor",
+									"size": "24, 11",
+									"style-3D-in": "false",
+									"style-3D-out": "false",
+									"style-no-draw": "false",
+									"style-no-frame": "false",
+									"style-no-text": "false",
+									"style-round-rect": "false",
+									"style-shadow-text": "false",
+									"text-alignment": "center",
+									"text-inset": "0, 0",
+									"text-rotation": "0",
+									"text-shadow-offset": "1, 1",
+									"title": "Level",
+									"transparent": "false",
+									"value-precision": "2",
+									"wants-focus": "false",
+									"wheel-inc-value": "0.1"
+								}
+							},
+							"CAnimKnob": {
+								"attributes": {
+									"angle-range": "270",
+									"angle-start": "135",
+									"autosize": "left top ",
+									"bitmap": "knob",
+									"class": "CAnimKnob",
+									"control-tag": "latency",
+									"default-value": "0",
+									"height-of-one-image": "20",
+									"inverse-bitmap": "false",
+									"max-value": "8192",
+									"min-value": "0",
+									"mouse-enabled": "true",
+									"opacity": "1",
+									"origin": "71, 9",
+									"size": "20, 20",
+									"sub-pixmaps": "80",
+									"tooltip": "Test Latency Change (check the Bypass Processor)",
+									"transparent": "false",
+									"value-inset": "0",
+									"wants-focus": "true",
+									"wheel-inc-value": "0.1",
+									"zoom-factor": "1.5"
+								}
+							},
+							"CTextLabel": {
+								"attributes": {
+									"autosize": "left top ",
+									"back-color": "~ GreyCColor",
+									"background-offset": "0, 0",
+									"class": "CTextLabel",
+									"default-value": "0.5",
+									"font": "~ NormalFontVerySmall",
+									"font-antialias": "true",
+									"font-color": "~ WhiteCColor",
+									"frame-color": "~ GreyCColor",
+									"frame-width": "1",
+									"max-value": "1",
+									"min-value": "0",
+									"mouse-enabled": "true",
+									"opacity": "1",
+									"origin": "66, 30",
+									"round-rect-radius": "6",
+									"shadow-color": "~ RedCColor",
+									"size": "35, 11",
+									"style-3D-in": "false",
+									"style-3D-out": "false",
+									"style-no-draw": "true",
+									"style-no-frame": "false",
+									"style-no-text": "false",
+									"style-round-rect": "false",
+									"style-shadow-text": "false",
+									"text-alignment": "center",
+									"text-inset": "0, 0",
+									"text-rotation": "0",
+									"text-shadow-offset": "1, 1",
+									"title": "Latency",
+									"transparent": "false",
+									"value-precision": "2",
+									"wants-focus": "false",
+									"wheel-inc-value": "0.1"
+								}
+							}
+						}
+					},
+					"CViewContainer": {
+						"attributes": {
+							"autosize": "left top ",
+							"background-color": "~ BlackCColor",
+							"background-color-draw-style": "stroked",
+							"class": "CViewContainer",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "118, 2",
+							"size": "54, 51",
+							"transparent": "false",
+							"wants-focus": "false"
+						},
+						"children": {
+							"CTextLabel": {
+								"attributes": {
+									"autosize": "left top ",
+									"back-color": "~ GreyCColor",
+									"background-offset": "0, 0",
+									"class": "CTextLabel",
+									"default-value": "0.5",
+									"font": "~ NormalFontVerySmall",
+									"font-antialias": "true",
+									"font-color": "~ WhiteCColor",
+									"frame-color": "~ GreyCColor",
+									"frame-width": "1",
+									"max-value": "1",
+									"min-value": "0",
+									"mouse-enabled": "true",
+									"opacity": "1",
+									"origin": "10, 30",
+									"round-rect-radius": "6",
+									"shadow-color": "~ RedCColor",
+									"size": "35, 11",
+									"style-3D-in": "false",
+									"style-3D-out": "false",
+									"style-no-draw": "false",
+									"style-no-frame": "false",
+									"style-no-text": "false",
+									"style-round-rect": "false",
+									"style-shadow-text": "false",
+									"text-alignment": "center",
+									"text-inset": "0, 0",
+									"text-rotation": "0",
+									"text-shadow-offset": "1, 1",
+									"title": "Scoring",
+									"transparent": "false",
+									"value-precision": "2",
+									"wants-focus": "false",
+									"wheel-inc-value": "0.1"
+								}
+							},
+							"CParamDisplay": {
+								"attributes": {
+									"autosize": "left top ",
+									"back-color": "~ BlackCColor",
+									"background-offset": "0, 0",
+									"class": "CParamDisplay",
+									"control-tag": "Scoring",
+									"default-value": "0",
+									"font": "~ NormalFontBig",
+									"font-antialias": "true",
+									"font-color": "~ WhiteCColor",
+									"frame-color": "~ BlueCColor",
+									"frame-width": "1",
+									"max-value": "100",
+									"min-value": "0",
+									"mouse-enabled": "false",
+									"opacity": "1",
+									"origin": "11, 8",
+									"round-rect-radius": "6",
+									"shadow-color": "~ RedCColor",
+									"size": "33, 19",
+									"style-3D-in": "true",
+									"style-3D-out": "false",
+									"style-no-draw": "false",
+									"style-no-frame": "false",
+									"style-no-text": "false",
+									"style-round-rect": "false",
+									"style-shadow-text": "false",
+									"text-alignment": "center",
+									"text-inset": "0, 0",
+									"text-rotation": "0",
+									"text-shadow-offset": "1, 1",
+									"tooltip": "Scoring (up to 100)",
+									"transparent": "false",
+									"value-precision": "0",
+									"wants-focus": "false",
+									"wheel-inc-value": "0.1"
+								}
+							}
+						}
+					},
+					"CViewContainer": {
+						"attributes": {
+							"autosize": "left top ",
+							"background-color": "~ BlackCColor",
+							"background-color-draw-style": "stroked",
+							"class": "CViewContainer",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "173, 21",
+							"size": "117, 32",
+							"transparent": "false",
+							"wants-focus": "false"
+						},
+						"children": {
+							"CCheckBox": {
+								"attributes": {
+									"autosize": "left top ",
+									"autosize-to-fit": "false",
+									"boxfill-color": "~ WhiteCColor",
+									"boxframe-color": "~ BlackCColor",
+									"checkmark-color": "~ RedCColor",
+									"class": "CCheckBox",
+									"control-tag": "Progress",
+									"default-value": "0",
+									"draw-crossbox": "false",
+									"font": "~ NormalFontSmaller",
+									"font-color": "~ WhiteCColor",
+									"frame-width": "1",
+									"max-value": "1",
+									"min-value": "0",
+									"mouse-enabled": "true",
+									"opacity": "1",
+									"origin": "2, -2",
+									"round-rect-radius": "0",
+									"size": "66, 20",
+									"title": "Progress",
+									"tooltip": "Click on it to start a Host progress",
+									"transparent": "false",
+									"wants-focus": "true",
+									"wheel-inc-value": "0.1"
+								}
+							},
+							"CCheckBox": {
+								"attributes": {
+									"autosize": "left top ",
+									"autosize-to-fit": "false",
+									"boxfill-color": "~ WhiteCColor",
+									"boxframe-color": "~ BlackCColor",
+									"checkmark-color": "~ RedCColor",
+									"class": "CCheckBox",
+									"control-tag": "Hidden",
+									"default-value": "0",
+									"draw-crossbox": "false",
+									"font": "~ NormalFontSmaller",
+									"font-color": "~ WhiteCColor",
+									"frame-width": "1",
+									"max-value": "1",
+									"min-value": "0",
+									"mouse-enabled": "true",
+									"opacity": "1",
+									"origin": "67, -2",
+									"round-rect-radius": "0",
+									"size": "48, 20",
+									"title": "Hidden",
+									"tooltip": "Click on it to make a specific parameter Hidden or not",
+									"transparent": "false",
+									"wants-focus": "true",
+									"wheel-inc-value": "0.1"
+								}
+							},
+							"CSlider": {
+								"attributes": {
+									"autosize": "left top ",
+									"bitmap-offset": "0, 0",
+									"class": "CSlider",
+									"control-tag": "ProgressValue",
+									"default-value": "0",
+									"draw-back": "false",
+									"draw-back-color": "~ BlackCColor",
+									"draw-frame": "true",
+									"draw-frame-color": "~ GreyCColor",
+									"draw-value": "true",
+									"draw-value-color": "~ WhiteCColor",
+									"draw-value-from-center": "false",
+									"draw-value-inverted": "false",
+									"frame-width": "1",
+									"handle-offset": "0, 0",
+									"max-value": "100",
+									"min-value": "0",
+									"mode": "use global",
+									"mouse-enabled": "false",
+									"opacity": "1",
+									"orientation": "horizontal",
+									"origin": "4, 19",
+									"reverse-orientation": "false",
+									"size": "54, 10",
+									"tooltip": "Progress Value",
+									"transparent": "false",
+									"wants-focus": "false",
+									"wheel-inc-value": "0.1",
+									"zoom-factor": "10"
+								}
+							},
+							"CAnimKnob": {
+								"attributes": {
+									"angle-range": "270",
+									"angle-start": "135",
+									"autosize": "left top ",
+									"bitmap": "knob",
+									"class": "CAnimKnob",
+									"control-tag": "HiddenValue",
+									"default-value": "0",
+									"height-of-one-image": "20",
+									"inverse-bitmap": "false",
+									"max-value": "1",
+									"min-value": "0",
+									"mouse-enabled": "true",
+									"opacity": "1",
+									"origin": "81, 13",
+									"size": "20, 20",
+									"sub-pixmaps": "80",
+									"tooltip": "This is the parameter which will Hidden or not for Host",
+									"transparent": "false",
+									"value-inset": "0",
+									"wants-focus": "false",
+									"wheel-inc-value": "0.1",
+									"zoom-factor": "1.5"
+								}
+							}
+						}
+					},
+					"CViewContainer": {
+						"attributes": {
+							"autosize": "right top ",
+							"background-color": "~ BlackCColor",
+							"background-color-draw-style": "stroked",
+							"class": "CViewContainer",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "439, 2",
+							"size": "126, 51",
+							"transparent": "false",
+							"wants-focus": "false"
+						},
+						"children": {
+							"CCheckBox": {
+								"attributes": {
+									"autosize-to-fit": "false",
+									"boxfill-color": "~ WhiteCColor",
+									"boxframe-color": "~ BlackCColor",
+									"checkmark-color": "~ RedCColor",
+									"class": "CCheckBox",
+									"control-tag": "canResize",
+									"default-value": "1",
+									"draw-crossbox": "false",
+									"font": "~ NormalFontSmaller",
+									"font-color": "~ WhiteCColor",
+									"frame-width": "1",
+									"max-value": "1",
+									"min-value": "0",
+									"mouse-enabled": "true",
+									"opacity": "1",
+									"origin": "25, 1",
+									"round-rect-radius": "0",
+									"size": "80, 20",
+									"title": "CanResize",
+									"tooltip": "Test canResize behaviour (reopen the editor)",
+									"transparent": "false",
+									"wants-focus": "true",
+									"wheel-inc-value": "0.1"
+								}
+							},
+							"CSegmentButton": {
+								"attributes": {
+									"autosize": "left top ",
+									"class": "CSegmentButton",
+									"control-tag": "EditorSize",
+									"default-value": "0.5",
+									"font": "~ NormalFont",
+									"frame-color": "~ BlackCColor",
+									"frame-width": "1",
+									"gradient": "Default TextButton Gradient",
+									"gradient-highlighted": "Default TextButton Gradient Highlighted",
+									"icon-text-margin": "0",
+									"max-value": "1",
+									"min-value": "0",
+									"mouse-enabled": "true",
+									"opacity": "1",
+									"origin": "4, 22",
+									"round-radius": "5",
+									"segment-names": "75%,100%,150%",
+									"selection-mode": "Single",
+									"size": "120, 20",
+									"style": "horizontal",
+									"sub-controller": "EditorSizeController",
+									"text-alignment": "center",
+									"text-color": "~ BlackCColor",
+									"text-color-highlighted": "~ WhiteCColor",
+									"tooltip": "Zoom to different factors the UI",
+									"transparent": "false",
+									"wants-focus": "true",
+									"wheel-inc-value": "0.1"
+								}
+							}
+						}
+					},
+					"CCheckBox": {
+						"attributes": {
+							"autosize-to-fit": "false",
+							"boxfill-color": "~ WhiteCColor",
+							"boxframe-color": "~ BlackCColor",
+							"checkmark-color": "~ RedCColor",
+							"class": "CCheckBox",
+							"control-tag": "KeyswitchChanged",
+							"default-value": "0",
+							"draw-crossbox": "false",
+							"font": "~ NormalFontVerySmall",
+							"font-color": "~ WhiteCColor",
+							"frame-width": "1",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "294, 41",
+							"round-rect-radius": "0",
+							"size": "70, 14",
+							"title": "KS Changed",
+							"tooltip": "Call a restartComponent with kKeyswitchChanged",
+							"transparent": "false",
+							"wants-focus": "true",
+							"wheel-inc-value": "0.1"
+						}
+					},
+					"CCheckBox": {
+						"attributes": {
+							"autosize-to-fit": "false",
+							"boxfill-color": "~ WhiteCColor",
+							"boxframe-color": "~ BlackCColor",
+							"checkmark-color": "~ RedCColor",
+							"class": "CCheckBox",
+							"control-tag": "NoteExpressionChanged",
+							"default-value": "0",
+							"draw-crossbox": "false",
+							"font": "~ NormalFontVerySmall",
+							"font-color": "~ WhiteCColor",
+							"frame-width": "1",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "366, 41",
+							"round-rect-radius": "0",
+							"size": "70, 14",
+							"title": "NE Changed",
+							"tooltip": "Call a restartComponent with kNoteExpressionChanged",
+							"transparent": "false",
+							"wants-focus": "true",
+							"wheel-inc-value": "0.1"
+						}
+					},
+					"CCheckBox": {
+						"attributes": {
+							"autosize-to-fit": "false",
+							"boxfill-color": "~ WhiteCColor",
+							"boxframe-color": "~ BlackCColor",
+							"checkmark-color": "~ RedCColor",
+							"class": "CCheckBox",
+							"control-tag": "ParamValuesChanged",
+							"default-value": "0",
+							"draw-crossbox": "false",
+							"font": "~ NormalFontVerySmall",
+							"font-color": "~ WhiteCColor",
+							"frame-width": "1",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "294, 24",
+							"round-rect-radius": "0",
+							"size": "70, 14",
+							"title": "PV Changed",
+							"tooltip": "Call a restartComponent with kParamValuesChanged",
+							"transparent": "false",
+							"wants-focus": "true",
+							"wheel-inc-value": "0.1"
+						}
+					},
+					"CCheckBox": {
+						"attributes": {
+							"autosize-to-fit": "false",
+							"boxfill-color": "~ WhiteCColor",
+							"boxframe-color": "~ BlackCColor",
+							"checkmark-color": "~ RedCColor",
+							"class": "CCheckBox",
+							"control-tag": "ParamTitlesChanged",
+							"default-value": "0",
+							"draw-crossbox": "false",
+							"font": "~ NormalFontVerySmall",
+							"font-color": "~ WhiteCColor",
+							"frame-width": "1",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "366, 23",
+							"round-rect-radius": "0",
+							"size": "70, 14",
+							"title": "PT Changed",
+							"tooltip": "Call a restartComponent with kParamTitlesChanged",
+							"transparent": "false",
+							"wants-focus": "true",
+							"wheel-inc-value": "0.1"
+						}
+					},
+					"CCheckBox": {
+						"attributes": {
+							"autosize-to-fit": "false",
+							"boxfill-color": "~ WhiteCColor",
+							"boxframe-color": "~ BlackCColor",
+							"checkmark-color": "~ RedCColor",
+							"class": "CCheckBox",
+							"control-tag": "Copy2Clipboard",
+							"default-value": "0",
+							"draw-crossbox": "false",
+							"font": "~ NormalFontVerySmall",
+							"font-color": "~ WhiteCColor",
+							"frame-width": "1",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "366, 5",
+							"round-rect-radius": "0",
+							"size": "70, 14",
+							"title": "To Clipboard",
+							"tooltip": "Copy the current result into the Clipboard",
+							"transparent": "false",
+							"wants-focus": "true",
+							"wheel-inc-value": "0.1"
+						}
+					}
+				}
+			}
+		}
+	}
+}

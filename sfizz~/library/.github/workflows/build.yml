@@ -1,0 +1,509 @@
+name: Build library
+on:
+  push:
+    branches:
+      - 'develop'
+      - 'master'
+    tags:
+      - '[0-9]*'
+  pull_request:
+    branches:
+      - '*'
+  # Manual builds in all branches
+  workflow_dispatch:
+    branches:
+      - '*'
+env:
+  build_type: Release
+
+# defaults:
+# shell: pwsh on windows, bash all the rest
+# working-directory: ${{ github.workspace }}
+
+# FIXME:
+# Tests disabled (again); they were working one day and broken the day after
+# without changes: ./build/tests/sfizz_tests: No such file or directory
+# It didn't work either by specifying the full path (that was OK in previous builds)
+jobs:
+  clang_tidy:
+  # if: ${{ false }}
+    name: Clang Tidy
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install clang-tidy
+    - name: Run
+      run: ./scripts/run_clang_tidy.sh
+
+  build_for_linux:
+  # if: ${{ false }}
+    name: Linux Ubuntu 22.04
+    runs-on: ubuntu-22.04 # abseil (libabsl) is not available in 20.04 repository
+    env:
+      install_name: sfizz-${{ github.ref_name }}-linux
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install \
+          ninja-build \
+          libjack-jackd2-dev
+    - name: Install abseil
+      if: ${{ github.ref_type == 'branch' }}
+      run: |
+        sudo apt-get install \
+          libabsl-dev \
+          libabsl20210324
+    - name: Configure CMake
+      run: |
+        options=(
+          -G Ninja
+          -B build
+          -S .
+          -D CMAKE_BUILD_TYPE=${{ env.build_type }}
+          -D SFIZZ_JACK=ON
+          -D SFIZZ_RENDER=ON
+          -D SFIZZ_SHARED=ON
+          -D SFIZZ_TESTS=ON
+        )
+        if [[ ${{ github.ref_type }} == 'branch' ]]; then
+          options=(
+            ${options[@]}
+            -D SFIZZ_USE_SYSTEM_ABSEIL=ON
+          )
+        fi
+        cmake "${options[@]}"
+        echo "-- github.workspace: ${{ github.workspace }}"
+        echo "-- runner.workspace: ${{ runner.workspace }}"
+    - name: Build tests
+      if: ${{ false }}
+      run: |
+        options=(
+          --build build
+          --config ${{ env.build_type }}
+          --parallel 2
+          --target sfizz_tests
+          --verbose
+        )
+        cmake "${options[@]}"
+    - name: Run tests
+      if: ${{ false }}
+      run: |
+        ./build/tests/sfizz_tests
+        options=(
+          --build-config ${{ env.build_type }}
+          --debug
+          --extra-verbose
+          --output-on-failure
+          --parallel 2
+          --test-dir build
+        )
+        ctest "${options[@]}"
+    - name: Build all
+      run: |
+        options=(
+          --build build
+          --config ${{ env.build_type }}
+          --parallel 2
+          --verbose
+        )
+        cmake "${options[@]}"
+    - name: Create tarball
+      if: ${{ github.ref_type == 'tag' }}
+      run: |
+        DESTDIR="$(pwd)/${{ env.install_name }}" \
+          cmake --build build --config ${{ env.build_type }} --target install
+        tar czvf "${{ env.install_name }}".tar.gz "${{ env.install_name }}"
+    - name: Upload
+      if: ${{ github.ref_type == 'tag' }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: Linux tarball
+        path: "${{ github.workspace }}/${{ env.install_name }}.tar.gz"
+
+  build_for_macos:
+  # if: ${{ false }}
+    name: macOS 11
+    runs-on: macos-11
+    env:
+      install_name: "sfizz-${{ github.ref_name }}-macos"
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: Install dependencies
+      if: ${{ github.ref_type == 'branch' }}
+      run: brew install abseil
+    - name: Configure CMake
+      run: |
+        options=(
+          -B build
+          -S .
+          -D CMAKE_BUILD_TYPE=${{ env.build_type }}
+          -D SFIZZ_SHARED=ON
+          -D SFIZZ_TESTS=ON
+        )
+        if [[ ${{ github.ref_type }} == 'branch' ]]; then
+          options=(
+            ${options[@]}
+            -D SFIZZ_USE_SYSTEM_ABSEIL=ON
+          )
+        fi
+        cmake "${options[@]}"
+        echo "-- runner.workspace: ${{ runner.workspace }}"
+        echo "-- github.workspace: ${{ github.workspace }}"
+    - name: Build tests
+      if: ${{ false }}
+      run: |
+        options=(
+          --build build
+          --config ${{ env.build_type }}
+          --parallel 2
+          --target sfizz_tests
+          --verbose
+        )
+        cmake "${options[@]}"
+    - name: Run tests
+      if: ${{ false }}
+      run: |
+        ./build/tests/sfizz_tests
+        options=(
+          --build-config ${{ env.build_type }}
+          --debug
+          --extra-verbose
+          --output-on-failure
+          --parallel 2
+          --test-dir build
+        )
+        ctest "${options[@]}"
+    - name: Build all
+      run: |
+        options=(
+          --build build
+          --config ${{ env.build_type }}
+          --parallel 2
+          --verbose
+        )
+        cmake "${options[@]}"
+    - name: Create tarball
+      if: ${{ github.ref_type == 'tag' }}
+      run: |
+        DESTDIR="$(pwd)/${{ env.install_name }}" \
+          cmake --build build --config ${{ env.build_type }} --target install
+        tar czvf "${{ env.install_name }}".tar.gz "${{ env.install_name }}"
+    - name: Upload
+      if: ${{ github.ref_type == 'tag' }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: macOS tarball
+        path: "${{ github.workspace }}/${{ env.install_name }}.tar.gz"
+
+  build_for_windows:
+  # if: ${{ false }}
+    name: Windows 2019
+    runs-on: windows-2019
+    strategy:
+      matrix:
+        include:
+        - platform: x86
+          pkg_platform: Win32
+          release_arch: Win32
+          bits: 32
+        - platform: x64
+          pkg_platform: Win64
+          release_arch: x64
+          bits: 64
+    env:
+      install_name: sfizz-${{ github.ref_name }}-win${{ matrix.bits }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: Configure CMake
+      run: |
+        cmake `
+          -G "Visual Studio 16 2019" `
+          -A "${{ matrix.release_arch }}" `
+          -B build `
+          -S . `
+          -D CMAKE_BUILD_TYPE=${{ env.build_type }} `
+          -D SFIZZ_TESTS=ON
+        echo "-- runner.workspace: ${{ runner.workspace }}"
+        echo "-- github.workspace: ${{ github.workspace }}"
+    - name: Build tests
+      if: ${{ false }}
+      run: |
+        cmake `
+          --build build `
+          --config ${{ env.build_type }} `
+          --parallel 2 `
+          --target sfizz_tests `
+          --verbose `
+    - name: Run tests
+      if: ${{ false }}
+      run: |
+        .\build\tests\${{ env.build_type }}\sfizz_tests.exe
+        ctest `
+          --build-config ${{ env.build_type }} `
+          --debug `
+          --extra-verbose `
+          --output-on-failure `
+          --parallel 2 `
+          --test-dir build `
+    - name: Build all
+      run: |
+        cmake `
+          --build build `
+          --config ${{ env.build_type }} `
+          --parallel 2 `
+          --verbose `
+    - name: Create zip package
+      if: ${{ github.ref_type == 'tag' }}
+      run: 7z a "${{ env.install_name }}.zip" ".\build\src\${{ env.build_type }}\sfizz.*"
+    - name: Upload
+      if: ${{ github.ref_type == 'tag' }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.pkg_platform }} zip package
+        path: "${{ github.workspace }}/${{ env.install_name }}.zip"
+
+  archive_source_code:
+    # if: startsWith(github.ref, 'refs/tags/')
+    if: ${{ github.ref_type == 'tag' }}
+    name: Source code archive
+    runs-on: ubuntu-20.04
+    env:
+      install_name: sfizz-${{ github.ref_name }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install python3-pip
+        sudo pip install git-archive-all
+    - name: Archive source code
+      run: |
+        git-archive-all \
+          --prefix="${{ env.install_name }}/" \
+          -9 "${{ github.workspace }}/${{ env.install_name }}.tar.gz"
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: Source code tarball
+        path: "${{ github.workspace }}/${{ env.install_name }}.tar.gz"
+
+  build_for_mingw:
+    if: ${{ false }} # DISABLED TEMPORARILY
+    name: MinGW
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        include:
+        - platform: i686
+          pkg_platform: Win32
+          bits: 32
+        - platform: x86_64
+          pkg_platform: Win64
+          bits: 64
+    container:
+      image: archlinux
+    env:
+      install_name: sfizz-${{ github.ref_name }}-mingw${{ matrix.bits }}
+    steps:
+    - name: Configure pacman repositories
+      run: |
+        cat >>/etc/pacman.conf <<EOF
+        [multilib]
+        Include = /etc/pacman.d/mirrorlist
+        [mingw-w64]
+        SigLevel = Optional TrustAll
+        Server = https://github.com/jpcima/arch-mingw-w64/releases/download/repo.\$arch/
+        EOF
+    - name: Install dependencies
+      run: |
+        packages=(
+          base-devel git ninja wget
+          mingw-w64-{cmake,gcc,pkg-config,libsndfile}
+        )
+        pacman -Sqyu --noconfirm
+        pacman -Sq --needed --noconfirm "${packages[@]}"
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: Fix MinGW headers
+      run: |
+        cp -vf "${{ github.workspace }}"/scripts/mingw_dwrite_3.h \
+          /usr/${{ matrix.platform }}-w64-mingw32/include/dwrite_3.h
+    - name: Configure CMake
+      run: |
+        options=(
+          -G Ninja
+          -B build
+          -S .
+          -D CMAKE_BUILD_TYPE=${{ env.build_type }}
+          -D CMAKE_CXX_STANDARD=17
+          -D ENABLE_LTO=OFF
+          -D SFIZZ_SNDFILE_STATIC=ON
+          -D SFIZZ_JACK=OFF
+        )
+        ${{ matrix.platform }}-w64-mingw32-cmake "${options[@]}"
+    - name: Build
+      run: ${{ matrix.platform }}-w64-mingw32-cmake \
+        --build build --config ${{ env.build_type }} --verbose -j 2
+    - name: Install
+      if: ${{ github.ref_type == 'tag' }}
+      run: |
+        DESTDIR="$(pwd)/${{ env.install_name }}" \
+          ${{ matrix.platform }}-w64-mingw32-cmake \
+          --build build --config ${{ env.build_type }} --target install
+        tar czvf "${{ env.install_name }}".tar.gz "${{ env.install_name }}"
+    - name: Upload
+      if: ${{ github.ref_type == 'tag' }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.pkg_platform }} MinGW tarball
+        path: "${{ github.workspace }}/${{ env.install_name }}.tar.gz"
+
+  build_with_libsndfile:
+  # if: ${{ false }}
+    name: Linux libsndfile
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install \
+          ninja-build \
+          libsndfile1-dev
+    - name: Configure CMake
+      run: |
+        options=(
+          -G Ninja
+          -B build
+          -S .
+          -D CMAKE_BUILD_TYPE=${{ env.build_type }}
+          -D SFIZZ_JACK=OFF
+          -D SFIZZ_RENDER=OFF
+          -D SFIZZ_SHARED=OFF
+          -D SFIZZ_TESTS=ON
+          -D SFIZZ_USE_SNDFILE=ON
+        )
+        cmake "${options[@]}"
+    - name: Build tests
+      if: ${{ false }}
+      run: |
+        options=(
+          --build build
+          --config ${{ env.build_type }}
+          --parallel 2
+          --target sfizz_tests
+          --verbose
+        )
+        cmake "${options[@]}"
+    - name: Run tests
+      if: ${{ false }}
+      run: ./build/tests/sfizz_tests
+
+  build_with_makefile:
+  # if: ${{ false }}
+    name: Linux makefile
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: Build with GNU make
+      run: make -C "${{ github.workspace }}" -f generic.mk -j2
+    - name: Compile a simple program
+      run: |
+        cat <<EOF > "${{ github.workspace }}"/simple.cpp
+        #include <sfizz.hpp>
+        int main() {
+            sfz::Sfizz synth;
+            synth.loadSfzString("", "");
+            return 0;
+        }
+        EOF
+        cat <<EOF > "${{ github.workspace }}"/simple.mk
+        all: simple
+        include generic.mk
+        simple.o: simple.cpp
+        	\$(CXX) \$(CXXFLAGS) \$(SFIZZ_CXX_FLAGS) -c -o \$@ \$<
+        simple: simple.o \$(SFIZZ_TARGET)
+        	\$(CXX) -o \$@ \$^ \$(SFIZZ_LINK_FLAGS) \$(LDFLAGS)
+        EOF
+        make -C "${{ github.workspace }}" -f simple.mk
+
+  deploy:
+    if: ${{ github.ref_type == 'tag' }}
+    runs-on: ubuntu-20.04
+    needs:
+      - build_for_linux
+      # - build_for_mingw
+      - build_for_macos
+      # - build_for_mod
+      - build_for_windows
+      - archive_source_code
+    steps:
+      - name: macOS download
+        uses: actions/download-artifact@v3
+        with:
+          name: macOS tarball
+
+      - name: MinGW 32 download
+        if: ${{ false }} # DISABLED: MinGW 32 build temporarily disabled
+        uses: actions/download-artifact@v3
+        with:
+          name: Win32 MinGW tarball
+
+      - name: MinGW 64 download
+        if: ${{ false }} # DISABLED: MinGW 64 build temporarily disabled
+        uses: actions/download-artifact@v3
+        with:
+          name: Win64 MinGW tarball
+
+      - name: Windows 32 download
+        uses: actions/download-artifact@v3
+        with:
+          name: Win32 zip package
+
+      - name: Windows 64 download
+        uses: actions/download-artifact@v3
+        with:
+          name: Win64 zip package
+
+      - name: Source code download
+        uses: actions/download-artifact@v3
+        with:
+          name: Source code tarball
+
+      - name: Display file information
+        run: ls -lR
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          files: |
+            sfizz-${{ github.ref_name }}-*
+            sfizz-${{ github.ref_name }}.*
