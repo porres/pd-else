@@ -393,6 +393,15 @@ plaits-install:
 
 plaits-clean:
 	$(MAKE) -C plaits~ clean $(plaitsflags)
+    
+sfizz:
+	$(MAKE) -C sfizz~ system=$(system) 
+
+sfizz-install:
+	$(MAKE) -C sfizz~ install exten=$(extension) installpath="$(DESTDIR)$(PDLIBDIR)/else"
+    
+sfizz-clean:
+	$(MAKE) -C sfizz~ clean
 
 install: installplus
 
