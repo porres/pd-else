@@ -398,7 +398,7 @@ sfizz:
 	$(MAKE) -C sfizz~ system=$(system) 
 
 sfizz-install:
-	$(MAKE) -C sfizz~ install exten=$(extension) installpath="$(abspath $(PDLIBDIR))/else"
+	$(MAKE) -C sfizz~ install system=$(system) exten=$(extension) installpath="$(abspath $(PDLIBDIR))/else"
     
 sfizz-clean:
 	$(MAKE) -C sfizz~ clean
