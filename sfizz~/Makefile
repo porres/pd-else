@@ -1,7 +1,8 @@
 
 
 all:
-	./sfizz~make.sh $(system) $(exten) $(installpath)
-
+	./sfizz~make.sh $(system)
+install:
+	./sfizz~install.sh $(exten) $(installpath)
 clean:
-#	rm -rf ./sfizz~/build
+	rm -rf ./sfizz~/build

@@ -39,7 +39,7 @@
 #X text 395 168 5: polyphonic aftertouch and key;
 #X text 395 126 2: controller and value;
 #X text 395 112 1: note and velocity;
-#X text 39 388 test2;
+#X text 39 388 test3;
 #X connect 3 0 22 0;
 #X connect 6 0 23 0;
 #X connect 8 0 11 0;
