@@ -1,0 +1,15 @@
+[submodule "external/abseil-cpp"]
+	path = external/abseil-cpp
+	url = https://github.com/abseil/abseil-cpp.git
+[submodule "external/st_audiofile/thirdparty/dr_libs"]
+	path = external/st_audiofile/thirdparty/dr_libs
+	url = https://github.com/mackron/dr_libs.git
+[submodule "external/st_audiofile/thirdparty/libaiff"]
+	path = external/st_audiofile/thirdparty/libaiff
+	url = https://github.com/sfztools/libaiff.git
+[submodule "external/filesystem"]
+	path = external/filesystem
+	url = https://github.com/gulrak/filesystem.git
+[submodule "external/simde"]
+	path = external/simde
+	url = https://github.com/simd-everywhere/simde.git

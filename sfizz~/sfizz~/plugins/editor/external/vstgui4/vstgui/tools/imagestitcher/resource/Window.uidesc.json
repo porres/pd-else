@@ -1,0 +1,949 @@
+{
+	"vstgui-ui-description": {
+		"version": "1",
+		"bitmaps": {
+			"SliderBackground": {
+				"nineparttiled-offsets": "14, 0, 14, 0",
+				"path": "SliderBackground.png",
+				"data": {
+					"encoding": "base64",
+					"data":
+						"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"
+				}
+			},
+			"SliderBackground_2.0x": {
+				"path": "SliderBackground_2.0x.png",
+				"scale-factor": "2",
+				"data": {
+					"encoding": "base64",
+					"data":
+						"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"
+				}
+			},
+			"SliderHandle": {
+				"path": "SliderHandle.png",
+				"data": {
+					"encoding": "base64",
+					"data":
+						"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"
+				}
+			},
+			"SliderHandle_2.0x": {
+				"path": "SliderHandle_2.0x.png",
+				"scale-factor": "2",
+				"data": {
+					"encoding": "base64",
+					"data":
+						"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"
+				}
+			}
+		},
+		"fonts": {},
+		"colors": {
+			"Focus": "#63bfffc8",
+			"control.frame": "#626262ff",
+			"font.color": "#bcbcbcff",
+			"gradientview.frame": "#00000046",
+			"scrollbar.scroller": "#5f5f5fff",
+			"window.background": "#292929ff"
+		},
+		"gradients": {
+			"Default TextButton Gradient": [
+				{
+					"rgba": "#dcdcdcff",
+					"start": "0"
+				},
+				{
+					"rgba": "#b4b4b4ff",
+					"start": "1"
+				}
+			],
+			"Default TextButton Gradient Highlighted": [
+				{
+					"rgba": "#b4b4b4ff",
+					"start": "0"
+				},
+				{
+					"rgba": "#646464ff",
+					"start": "1"
+				}
+			],
+			"SplitViewSeperatorGradient": [
+				{
+					"rgba": "#242424ff",
+					"start": "0"
+				},
+				{
+					"rgba": "#383838ff",
+					"start": "0.4740542763157894468051267722330521792173"
+				},
+				{
+					"rgba": "#242424ff",
+					"start": "1"
+				}
+			],
+			"gradient": [
+				{
+					"rgba": "#2f2f2fff",
+					"start": "0"
+				},
+				{
+					"rgba": "#202020ff",
+					"start": "1"
+				}
+			]
+		},
+		"control-tags": {
+			"AddPath": "0",
+			"AnimationTime": "5",
+			"DisplayFrame": "3",
+			"Export": "2",
+			"NumFramesPerRow": "6",
+			"RemovePath": "1",
+			"RunAnimation": "4"
+		},
+		"custom": {
+			"UIGridController": {
+				"Grids": "1x 1,5x 5,10x 10,12x 12,15x 15",
+				"Size": "5, 5"
+			},
+			"UITemplateController": {
+				"SelectedTemplate": "Window"
+			},
+			"UIEditController": {
+				"EditViewScale": "1",
+				"EditorSize": "0, 0, 984, 768",
+				"SplitViewSize_0_0": "0.7749326145552560829443677903327625244856",
+				"SplitViewSize_0_1": "0.1981132075471698228419370479969074949622",
+				"SplitViewSize_1_0": "0.4905660377358490586985340087267104536295",
+				"SplitViewSize_1_1": "0.5026954177897574593814056242990773171186",
+				"SplitViewSize_2_0": "0.7997967479674796820177107292693108320236",
+				"SplitViewSize_2_1": "0.1951219512195122018916038086899789050221",
+				"TabSwitchValue": "2",
+				"UI Theme": "Dark",
+				"Version": "1",
+				"ViewBackground": "3"
+			},
+			"UIAttributesController": {},
+			"UIViewCreatorDataSource": {
+				"SelectedRow": "4"
+			},
+			"UIColorsDataSource": {
+				"SelectedRow": "4"
+			},
+			"UIBitmapsDataSource": {
+				"SelectedRow": "2"
+			},
+			"UIGradientsDataSource": {
+				"SelectedRow": "2"
+			},
+			"FocusDrawing": {
+				"color": "Focus",
+				"enabled": "true",
+				"width": "2"
+			},
+			"UIDescFilePath": {
+				"path":
+					"/Users/scheffle/Source/vstgui/vstgui/tools/imagestitcher/resource/Window.uidesc"
+			},
+			"UITagsDataSource": {
+				"SelectedRow": "-1"
+			}
+		},
+		"templates": {
+			"Window": {
+				"attributes": {
+					"autosize": "left right top bottom ",
+					"background-color": "window.background",
+					"background-color-draw-style": "filled and stroked",
+					"class": "CViewContainer",
+					"minSize": "400, 360",
+					"mouse-enabled": "true",
+					"opacity": "1",
+					"origin": "0, 0",
+					"size": "440, 360",
+					"transparent": "true",
+					"wants-focus": "false"
+				},
+				"children": {
+					"CSplitView": {
+						"attributes": {
+							"autosize": "left right top bottom ",
+							"background-color": "window.background",
+							"background-color-draw-style": "filled and stroked",
+							"class": "CSplitView",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"orientation": "horizontal",
+							"origin": "0, 0",
+							"resize-method": "last",
+							"separator-width": "4",
+							"size": "440, 360",
+							"sub-controller": "SplitViewController",
+							"transparent": "false",
+							"wants-focus": "false"
+						},
+						"children": {
+							"CViewContainer": {
+								"attributes": {
+									"autosize": "left right top bottom ",
+									"background-color": "~ BlackCColor",
+									"background-color-draw-style": "filled and stroked",
+									"class": "CViewContainer",
+									"mouse-enabled": "true",
+									"opacity": "1",
+									"origin": "0, 0",
+									"size": "150, 360",
+									"transparent": "true",
+									"wants-focus": "false"
+								},
+								"children": {
+									"CViewContainer": {
+										"attributes": {
+											"autosize": "left right top ",
+											"background-color": "~ BlackCColor",
+											"background-color-draw-style": "filled and stroked",
+											"class": "CViewContainer",
+											"mouse-enabled": "true",
+											"opacity": "1",
+											"origin": "0, 0",
+											"size": "150, 20",
+											"transparent": "true",
+											"wants-focus": "false"
+										},
+										"children": {
+											"CGradientView": {
+												"attributes": {
+													"autosize": "left right top ",
+													"class": "CGradientView",
+													"draw-antialiased": "true",
+													"frame-color": "gradientview.frame",
+													"frame-width": "-1",
+													"gradient": "gradient",
+													"gradient-angle": "0",
+													"gradient-style": "linear",
+													"mouse-enabled": "true",
+													"opacity": "1",
+													"origin": "0, 0",
+													"radial-center": "0.5, 0.5",
+													"radial-radius": "1",
+													"round-rect-radius": "0",
+													"size": "150, 20",
+													"transparent": "false",
+													"wants-focus": "false"
+												}
+											},
+											"CTextLabel": {
+												"attributes": {
+													"autosize": "left right top ",
+													"back-color": "~ TransparentCColor",
+													"background-offset": "0, 0",
+													"class": "CTextLabel",
+													"default-value": "0.5",
+													"font": "~ SystemFont",
+													"font-antialias": "true",
+													"font-color": "font.color",
+													"frame-color": "~ TransparentCColor",
+													"frame-width": "1",
+													"max-value": "1",
+													"min-value": "0",
+													"mouse-enabled": "true",
+													"opacity": "1",
+													"origin": "0, 0",
+													"round-rect-radius": "6",
+													"shadow-color": "~ TransparentCColor",
+													"size": "150, 20",
+													"style-3D-in": "false",
+													"style-3D-out": "false",
+													"style-no-draw": "false",
+													"style-no-frame": "false",
+													"style-no-text": "false",
+													"style-round-rect": "false",
+													"style-shadow-text": "false",
+													"text-alignment": "center",
+													"text-inset": "0, 0",
+													"text-rotation": "0",
+													"text-shadow-offset": "1, 1",
+													"title": "Frames",
+													"transparent": "true",
+													"value-precision": "2",
+													"wants-focus": "false",
+													"wheel-inc-value": "0.1"
+												}
+											}
+										}
+									},
+									"CScrollView": {
+										"attributes": {
+											"auto-drag-scrolling": "true",
+											"auto-hide-scrollbars": "true",
+											"autosize": "left right top bottom ",
+											"background-color": "window.background",
+											"background-color-draw-style": "filled and stroked",
+											"bordered": "false",
+											"class": "CScrollView",
+											"container-size": "150, 1023",
+											"follow-focus-view": "false",
+											"horizontal-scrollbar": "true",
+											"mouse-enabled": "true",
+											"opacity": "1",
+											"origin": "0, 20",
+											"overlay-scrollbars": "true",
+											"scrollbar-background-color": "~ TransparentCColor",
+											"scrollbar-frame-color": "~ TransparentCColor",
+											"scrollbar-scroller-color": "scrollbar.scroller",
+											"scrollbar-width": "14",
+											"size": "150, 320",
+											"sub-controller": "ImageViewController",
+											"transparent": "false",
+											"vertical-scrollbar": "true",
+											"wants-focus": "false"
+										},
+										"children": {
+											"CView": {
+												"attributes": {
+													"class": "CView",
+													"custom-view-name": "ImageView",
+													"mouse-enabled": "true",
+													"opacity": "1",
+													"origin": "0, 0",
+													"size": "150, 1023",
+													"transparent": "false",
+													"wants-focus": "true"
+												}
+											}
+										}
+									},
+									"CViewContainer": {
+										"attributes": {
+											"autosize": "left right bottom ",
+											"background-color": "~ BlackCColor",
+											"background-color-draw-style": "filled and stroked",
+											"class": "CViewContainer",
+											"mouse-enabled": "true",
+											"opacity": "1",
+											"origin": "0, 340",
+											"size": "150, 20",
+											"transparent": "true",
+											"wants-focus": "false"
+										},
+										"children": {
+											"CGradientView": {
+												"attributes": {
+													"autosize": "left right bottom ",
+													"class": "CGradientView",
+													"draw-antialiased": "true",
+													"frame-color": "gradientview.frame",
+													"frame-width": "-1",
+													"gradient": "gradient",
+													"gradient-angle": "0",
+													"gradient-style": "linear",
+													"mouse-enabled": "true",
+													"opacity": "1",
+													"origin": "0, 0",
+													"radial-center": "0.5, 0.5",
+													"radial-radius": "1",
+													"round-rect-radius": "0",
+													"size": "150, 20",
+													"transparent": "false",
+													"wants-focus": "false"
+												}
+											},
+											"CTextButton": {
+												"attributes": {
+													"autosize": "right bottom ",
+													"class": "CTextButton",
+													"control-tag": "AddPath",
+													"default-value": "0.5",
+													"font": "~ SystemFont",
+													"frame-color": "control.frame",
+													"frame-color-highlighted": "control.frame",
+													"frame-width": "-1",
+													"gradient": "Default TextButton Gradient",
+													"gradient-highlighted":
+														"Default TextButton Gradient Highlighted",
+													"icon-position": "left",
+													"icon-text-margin": "0",
+													"kick-style": "false",
+													"max-value": "1",
+													"min-value": "0",
+													"mouse-enabled": "true",
+													"opacity": "1",
+													"origin": "108, 2",
+													"round-radius": "2",
+													"size": "16, 16",
+													"text-alignment": "center",
+													"text-color": "~ BlackCColor",
+													"text-color-highlighted": "~ WhiteCColor",
+													"title": "+",
+													"tooltip": "Add a new frame",
+													"transparent": "false",
+													"wants-focus": "true",
+													"wheel-inc-value": "0.1"
+												}
+											},
+											"CTextButton": {
+												"attributes": {
+													"autosize": "right bottom ",
+													"class": "CTextButton",
+													"control-tag": "RemovePath",
+													"default-value": "0.5",
+													"font": "~ SystemFont",
+													"frame-color": "control.frame",
+													"frame-color-highlighted": "control.frame",
+													"frame-width": "-1",
+													"gradient": "Default TextButton Gradient",
+													"gradient-highlighted":
+														"Default TextButton Gradient Highlighted",
+													"icon-position": "left",
+													"icon-text-margin": "0",
+													"kick-style": "false",
+													"max-value": "1",
+													"min-value": "0",
+													"mouse-enabled": "true",
+													"opacity": "1",
+													"origin": "129, 2",
+													"round-radius": "2",
+													"size": "16, 16",
+													"text-alignment": "center",
+													"text-color": "~ BlackCColor",
+													"text-color-highlighted": "~ WhiteCColor",
+													"title": "-",
+													"tooltip": "Remove selected frame(s)",
+													"transparent": "false",
+													"wants-focus": "true",
+													"wheel-inc-value": "0.1"
+												}
+											}
+										}
+									}
+								}
+							},
+							"CViewContainer": {
+								"attributes": {
+									"background-color": "~ WhiteCColor",
+									"background-color-draw-style": "filled and stroked",
+									"class": "CViewContainer",
+									"mouse-enabled": "true",
+									"opacity": "1",
+									"origin": "154, 0",
+									"size": "286, 360",
+									"sub-controller": "MovieBitmapController",
+									"transparent": "true",
+									"wants-focus": "false"
+								},
+								"children": {
+									"CGradientView": {
+										"attributes": {
+											"autosize": "left right top ",
+											"class": "CGradientView",
+											"draw-antialiased": "true",
+											"frame-color": "gradientview.frame",
+											"frame-width": "1",
+											"gradient": "gradient",
+											"gradient-angle": "0",
+											"gradient-style": "linear",
+											"mouse-enabled": "true",
+											"opacity": "1",
+											"origin": "0, 0",
+											"radial-center": "0.5, 0.5",
+											"radial-radius": "1",
+											"round-rect-radius": "0",
+											"size": "286, 60",
+											"transparent": "false",
+											"wants-focus": "false"
+										}
+									},
+									"CTextLabel": {
+										"attributes": {
+											"autosize": "left top ",
+											"back-color": "~ BlackCColor",
+											"background-offset": "0, 0",
+											"class": "CTextLabel",
+											"default-value": "0.5",
+											"font": "~ SystemFont",
+											"font-antialias": "true",
+											"font-color": "font.color",
+											"frame-color": "~ BlackCColor",
+											"frame-width": "1",
+											"max-value": "1",
+											"min-value": "0",
+											"mouse-enabled": "true",
+											"opacity": "1",
+											"origin": "10, 10",
+											"round-rect-radius": "6",
+											"shadow-color": "~ RedCColor",
+											"size": "90, 20",
+											"style-3D-in": "false",
+											"style-3D-out": "false",
+											"style-no-draw": "false",
+											"style-no-frame": "false",
+											"style-no-text": "false",
+											"style-round-rect": "false",
+											"style-shadow-text": "false",
+											"text-alignment": "left",
+											"text-inset": "0, 0",
+											"text-rotation": "0",
+											"text-shadow-offset": "1, 1",
+											"title": "Display Frame",
+											"transparent": "true",
+											"value-precision": "2",
+											"wants-focus": "false",
+											"wheel-inc-value": "0.1"
+										}
+									},
+									"CSlider": {
+										"attributes": {
+											"autosize": "left right top ",
+											"bitmap": "SliderBackground",
+											"bitmap-offset": "0, 0",
+											"class": "CSlider",
+											"control-tag": "DisplayFrame",
+											"default-value": "0.5",
+											"draw-back": "false",
+											"draw-back-color": "~ BlackCColor",
+											"draw-frame": "false",
+											"draw-frame-color": "~ GreyCColor",
+											"draw-value": "false",
+											"draw-value-color": "~ WhiteCColor",
+											"draw-value-from-center": "false",
+											"draw-value-inverted": "false",
+											"frame-width": "1",
+											"handle-bitmap": "SliderHandle",
+											"handle-offset": "0, 0",
+											"max-value": "1",
+											"min-value": "0",
+											"mode": "free click",
+											"mouse-enabled": "true",
+											"opacity": "1",
+											"orientation": "horizontal",
+											"origin": "100, 10",
+											"reverse-orientation": "false",
+											"size": "106, 20",
+											"transparent": "false",
+											"wants-focus": "true",
+											"wheel-inc-value": "0.1",
+											"zoom-factor": "10"
+										}
+									},
+									"CTextEdit": {
+										"attributes": {
+											"autosize": "right top ",
+											"back-color": "~ TransparentCColor",
+											"background-offset": "0, 0",
+											"class": "CTextEdit",
+											"control-tag": "DisplayFrame",
+											"default-value": "0.5",
+											"font": "~ SystemFont",
+											"font-antialias": "true",
+											"font-color": "font.color",
+											"frame-color": "control.frame",
+											"frame-width": "-1",
+											"immediate-text-change": "false",
+											"max-value": "1",
+											"min-value": "0",
+											"mouse-enabled": "true",
+											"opacity": "1",
+											"origin": "216, 12",
+											"round-rect-radius": "2",
+											"secure-style": "false",
+											"shadow-color": "~ RedCColor",
+											"size": "40, 16",
+											"style-3D-in": "false",
+											"style-3D-out": "false",
+											"style-doubleclick": "false",
+											"style-no-draw": "false",
+											"style-no-frame": "false",
+											"style-no-text": "false",
+											"style-round-rect": "true",
+											"style-shadow-text": "false",
+											"text-alignment": "right",
+											"text-inset": "5, 0",
+											"text-rotation": "0",
+											"text-shadow-offset": "1, 1",
+											"title": "29",
+											"transparent": "false",
+											"value-precision": "2",
+											"wants-focus": "true",
+											"wheel-inc-value": "0.1"
+										}
+									},
+									"CCheckBox": {
+										"attributes": {
+											"autosize-to-fit": "false",
+											"boxfill-color": "~ WhiteCColor",
+											"boxframe-color": "control.frame",
+											"checkmark-color": "~ BlackCColor",
+											"class": "CCheckBox",
+											"control-tag": "RunAnimation",
+											"default-value": "0.5",
+											"draw-crossbox": "true",
+											"font": "~ SystemFont",
+											"font-color": "font.color",
+											"frame-width": "1",
+											"max-value": "1",
+											"min-value": "0",
+											"mouse-enabled": "true",
+											"opacity": "1",
+											"origin": "10, 35",
+											"round-rect-radius": "0",
+											"size": "90, 20",
+											"title": "Animate",
+											"transparent": "false",
+											"wants-focus": "true",
+											"wheel-inc-value": "0.1"
+										}
+									},
+									"CSlider": {
+										"attributes": {
+											"autosize": "left right top ",
+											"bitmap": "SliderBackground",
+											"bitmap-offset": "0, 0",
+											"class": "CSlider",
+											"control-tag": "AnimationTime",
+											"default-value": "0.5",
+											"draw-back": "false",
+											"draw-back-color": "~ BlackCColor",
+											"draw-frame": "false",
+											"draw-frame-color": "~ GreyCColor",
+											"draw-value": "false",
+											"draw-value-color": "~ WhiteCColor",
+											"draw-value-from-center": "false",
+											"draw-value-inverted": "false",
+											"frame-width": "1",
+											"handle-bitmap": "SliderHandle",
+											"handle-offset": "0, 0",
+											"max-value": "1",
+											"min-value": "0",
+											"mode": "free click",
+											"mouse-enabled": "true",
+											"opacity": "1",
+											"orientation": "horizontal",
+											"origin": "100, 35",
+											"reverse-orientation": "false",
+											"size": "106, 20",
+											"transparent": "false",
+											"wants-focus": "true",
+											"wheel-inc-value": "0.1",
+											"zoom-factor": "10"
+										}
+									},
+									"CTextEdit": {
+										"attributes": {
+											"autosize": "right top ",
+											"back-color": "~ TransparentCColor",
+											"background-offset": "0, 0",
+											"class": "CTextEdit",
+											"control-tag": "AnimationTime",
+											"default-value": "0.5",
+											"font": "~ SystemFont",
+											"font-antialias": "true",
+											"font-color": "font.color",
+											"frame-color": "control.frame",
+											"frame-width": "-1",
+											"immediate-text-change": "false",
+											"max-value": "1",
+											"min-value": "0",
+											"mouse-enabled": "true",
+											"opacity": "1",
+											"origin": "216, 37",
+											"round-rect-radius": "2",
+											"secure-style": "false",
+											"shadow-color": "~ RedCColor",
+											"size": "40, 16",
+											"style-3D-in": "false",
+											"style-3D-out": "false",
+											"style-doubleclick": "false",
+											"style-no-draw": "false",
+											"style-no-frame": "false",
+											"style-no-text": "false",
+											"style-round-rect": "true",
+											"style-shadow-text": "false",
+											"text-alignment": "right",
+											"text-inset": "5, 0",
+											"text-rotation": "0",
+											"text-shadow-offset": "1, 1",
+											"title": "16",
+											"transparent": "false",
+											"value-precision": "2",
+											"wants-focus": "true",
+											"wheel-inc-value": "0.1"
+										}
+									},
+									"CTextLabel": {
+										"attributes": {
+											"autosize": "right top ",
+											"back-color": "~ BlackCColor",
+											"background-offset": "0, 0",
+											"class": "CTextLabel",
+											"default-value": "0.5",
+											"font": "~ SystemFont",
+											"font-antialias": "true",
+											"font-color": "font.color",
+											"frame-color": "~ BlackCColor",
+											"frame-width": "1",
+											"max-value": "1",
+											"min-value": "0",
+											"mouse-enabled": "true",
+											"opacity": "1",
+											"origin": "256, 35",
+											"round-rect-radius": "6",
+											"shadow-color": "~ RedCColor",
+											"size": "30, 20",
+											"style-3D-in": "false",
+											"style-3D-out": "false",
+											"style-no-draw": "false",
+											"style-no-frame": "false",
+											"style-no-text": "false",
+											"style-round-rect": "false",
+											"style-shadow-text": "false",
+											"text-alignment": "left",
+											"text-inset": "5, 0",
+											"text-rotation": "0",
+											"text-shadow-offset": "1, 1",
+											"title": "ms",
+											"transparent": "true",
+											"value-precision": "2",
+											"wants-focus": "false",
+											"wheel-inc-value": "0.1"
+										}
+									},
+									"CRowColumnView": {
+										"attributes": {
+											"animate-view-resizing": "false",
+											"autosize": "left right top bottom ",
+											"background-color": "window.background",
+											"background-color-draw-style": "filled and stroked",
+											"class": "CRowColumnView",
+											"equal-size-layout": "center",
+											"hide-clipped-subviews": "false",
+											"margin": "0, 0, 0, 0",
+											"mouse-enabled": "true",
+											"opacity": "1",
+											"origin": "0, 60",
+											"row-style": "true",
+											"size": "286, 280",
+											"spacing": "0",
+											"transparent": "false",
+											"view-resize-animation-time": "200",
+											"wants-focus": "false"
+										},
+										"children": {
+											"CMovieBitmap": {
+												"attributes": {
+													"autosize": "left top ",
+													"class": "CMovieBitmap",
+													"control-tag": "DisplayFrame",
+													"default-value": "0.5",
+													"height-of-one-image": "0",
+													"max-value": "1",
+													"min-value": "0",
+													"mouse-enabled": "true",
+													"opacity": "1",
+													"origin": "13, 0",
+													"size": "260, 270",
+													"sub-pixmaps": "0",
+													"transparent": "false",
+													"wants-focus": "false",
+													"wheel-inc-value": "0.1"
+												}
+											}
+										}
+									},
+									"CViewContainer": {
+										"attributes": {
+											"autosize": "left right bottom ",
+											"background-color": "~ BlackCColor",
+											"background-color-draw-style": "filled and stroked",
+											"class": "CViewContainer",
+											"mouse-enabled": "true",
+											"opacity": "1",
+											"origin": "0, 340",
+											"size": "285, 20",
+											"transparent": "true",
+											"wants-focus": "false"
+										},
+										"children": {
+											"CGradientView": {
+												"attributes": {
+													"autosize": "left right bottom ",
+													"class": "CGradientView",
+													"draw-antialiased": "true",
+													"frame-color": "gradientview.frame",
+													"frame-width": "-1",
+													"gradient": "gradient",
+													"gradient-angle": "0",
+													"gradient-style": "linear",
+													"mouse-enabled": "true",
+													"opacity": "1",
+													"origin": "0, 0",
+													"radial-center": "0.5, 0.5",
+													"radial-radius": "1",
+													"round-rect-radius": "0",
+													"size": "420, 20",
+													"transparent": "false",
+													"wants-focus": "false"
+												}
+											},
+											"CTextButton": {
+												"attributes": {
+													"autosize": "left bottom ",
+													"class": "CTextButton",
+													"control-tag": "Export",
+													"default-value": "0.5",
+													"font": "~ SystemFont",
+													"frame-color": "control.frame",
+													"frame-color-highlighted": "control.frame",
+													"frame-width": "-1",
+													"gradient": "Default TextButton Gradient",
+													"gradient-highlighted":
+														"Default TextButton Gradient Highlighted",
+													"icon-position": "left",
+													"icon-text-margin": "0",
+													"kick-style": "false",
+													"max-value": "1",
+													"min-value": "0",
+													"mouse-enabled": "true",
+													"opacity": "1",
+													"origin": "7, 2",
+													"round-radius": "2",
+													"size": "56, 16",
+													"text-alignment": "center",
+													"text-color": "~ BlackCColor",
+													"text-color-highlighted": "~ WhiteCColor",
+													"title": "Export",
+													"tooltip": "Export stitched image",
+													"transparent": "false",
+													"wants-focus": "true",
+													"wheel-inc-value": "0.1"
+												}
+											},
+											"CTextLabel": {
+												"attributes": {
+													"autosize": "right top ",
+													"back-color": "~ BlackCColor",
+													"background-offset": "0, 0",
+													"class": "CTextLabel",
+													"default-value": "0.5",
+													"font": "~ SystemFont",
+													"font-antialias": "true",
+													"font-color": "font.color",
+													"frame-color": "~ BlackCColor",
+													"frame-width": "1",
+													"max-value": "1",
+													"min-value": "0",
+													"mouse-enabled": "true",
+													"opacity": "1",
+													"origin": "135, 0",
+													"round-rect-radius": "6",
+													"shadow-color": "~ RedCColor",
+													"size": "100, 20",
+													"style-3D-in": "false",
+													"style-3D-out": "false",
+													"style-no-draw": "false",
+													"style-no-frame": "false",
+													"style-no-text": "false",
+													"style-round-rect": "false",
+													"style-shadow-text": "false",
+													"text-alignment": "left",
+													"text-inset": "0, 0",
+													"text-rotation": "0",
+													"text-shadow-offset": "1, 1",
+													"title": "Frames per Row:",
+													"transparent": "true",
+													"value-precision": "2",
+													"wants-focus": "false",
+													"wheel-inc-value": "0.1"
+												}
+											},
+											"CTextEdit": {
+												"attributes": {
+													"autosize": "right top ",
+													"back-color": "~ TransparentCColor",
+													"background-offset": "0, 0",
+													"class": "CTextEdit",
+													"control-tag": "NumFramesPerRow",
+													"default-value": "0.5",
+													"font": "~ SystemFont",
+													"font-antialias": "true",
+													"font-color": "font.color",
+													"frame-color": "control.frame",
+													"frame-width": "-1",
+													"immediate-text-change": "false",
+													"max-value": "1",
+													"min-value": "0",
+													"mouse-enabled": "true",
+													"opacity": "1",
+													"origin": "235, 2",
+													"round-rect-radius": "2",
+													"secure-style": "false",
+													"shadow-color": "~ RedCColor",
+													"size": "40, 16",
+													"style-3D-in": "false",
+													"style-3D-out": "false",
+													"style-doubleclick": "false",
+													"style-no-draw": "false",
+													"style-no-frame": "false",
+													"style-no-text": "false",
+													"style-round-rect": "true",
+													"style-shadow-text": "false",
+													"text-alignment": "right",
+													"text-inset": "5, 0",
+													"text-rotation": "0",
+													"text-shadow-offset": "1, 1",
+													"title": "1",
+													"tooltip": "Set number of frames per row",
+													"transparent": "false",
+													"value-precision": "0",
+													"wants-focus": "true",
+													"wheel-inc-value": "0.1"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"SplitViewSeperatorView": {
+				"attributes": {
+					"autosize": "left right top bottom ",
+					"background-color": "~ BlackCColor",
+					"background-color-draw-style": "filled and stroked",
+					"class": "CViewContainer",
+					"mouse-enabled": "false",
+					"opacity": "1",
+					"origin": "0, 0",
+					"size": "100, 100",
+					"transparent": "true",
+					"wants-focus": "false"
+				},
+				"children": {
+					"CGradientView": {
+						"attributes": {
+							"autosize": "left right top bottom ",
+							"class": "CGradientView",
+							"draw-antialiased": "true",
+							"frame-color": "gradientview.frame",
+							"frame-width": "-1",
+							"gradient": "SplitViewSeperatorGradient",
+							"gradient-angle": "270",
+							"gradient-style": "linear",
+							"mouse-enabled": "false",
+							"opacity": "1",
+							"origin": "0, 0",
+							"radial-center": "0.5, 0.5",
+							"radial-radius": "1",
+							"round-rect-radius": "0",
+							"size": "100, 100",
+							"transparent": "false",
+							"wants-focus": "false"
+						}
+					}
+				}
+			}
+		}
+	}
+}
