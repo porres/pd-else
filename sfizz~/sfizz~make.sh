@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ $1 == "Windows" ]
+if [ $1 = "Windows" ]
     then
         GENERATOR="-G MSYS Makefiles"
 fi	
@@ -35,8 +35,6 @@ BASEFLAGS='
 -DSFIZZ_RELEASE_ASSERTS=OFF
 ' 
 cp ./sfizz_puredata.c ./sfizz~/plugins/puredata/
-cp ./sfizz~-help.pd ./sfizz~/plugins/puredata/
-cp ./example.sfz ./sfizz~/plugins/puredata/
 mkdir -p sfizz~/build
 cd sfizz~/build
 cmake "$GENERATOR" .. $BASEFLAGS
