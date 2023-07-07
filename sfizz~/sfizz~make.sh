@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ $1 == "Windows" ]
+if [ $1 = "Windows" ]
     then
         GENERATOR="-G MSYS Makefiles"
 fi	

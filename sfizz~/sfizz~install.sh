@@ -5,10 +5,10 @@ ext=$2
 objectsdir=$3
 basepath=./sfizz~/build/pd/sfizz
 
-if [[ $system == "Windows" ]]
+if [ $system = "Windows" ]
 then
   baseext=".dll"
-elif [[ $system == "Darwin" ]]
+elif [ $system = "Darwin" ]
 then
   baseext=".pd_darwin"
 else
@@ -16,6 +16,11 @@ else
 fi
 
 mkdir -p $objectsdir
-cp $basepath/sfizz~-help.pd $objectsdir
-cp $basepath/sfizz$baseext $objectsdir/sfizz.$ext
-cp $basepath/example.sfz $objectsdir
+cp ./sfz~-help.pd $objectsdir
+cp $basepath/sfizz$baseext $objectsdir/sfz~.$ext
+cp ./example.sfz $objectsdir
+
+if [ $system = "Windows" ]
+then
+  strip $objectsdir/sfz~.$ext
+fi
