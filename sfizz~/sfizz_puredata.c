@@ -9,6 +9,7 @@ __attribute__((visibility("default")))
 #endif
 
 #include <m_pd.h>
+#include "../shared/elsefile.h"
 #include <sfizz.h>
 #include <sfizz/import/sfizz_import.h>
 #include <unistd.h>
@@ -22,9 +23,10 @@ typedef struct _sfz{
     sfizz_synth_t  *x_synth;
     t_canvas       *x_canvas;
     int             x_midinum;
+    t_elsefile     *x_elsefilehandle;
 }t_sfz;
 
-static void sfz_open(t_sfz *x, t_symbol *name){
+static void sfz_do_open(t_sfz *x, t_symbol *name){
     const char *filename = name->s_name;
     const char *ext = strrchr(filename, '.');
     char realdir[MAXPDSTRING], *realname = NULL;
@@ -48,6 +50,23 @@ static void sfz_open(t_sfz *x, t_symbol *name){
     sys_close(fd);
     chdir(realdir);
     sfizz_load_or_import_file(x->x_synth, realname, NULL);
+}
+
+static void sfz_readhook(t_pd *z, t_symbol *fn, int ac, t_atom *av){
+    ac = 0;
+    av = NULL;
+    sfz_do_open((t_sfz *)z, fn);
+}
+
+static void sfz_click(t_sfz *x){
+    elsefile_panel_click_open(x->x_elsefilehandle);
+}
+
+static void sfz_open(t_sfz *x, t_symbol *s){
+    if(s && s != &s_)
+        sfz_do_open(x, s);
+    else
+        elsefile_panel_click_open(x->x_elsefilehandle);
 }
 
 static void sfz_note(t_sfz* x, t_symbol *s, int ac, t_atom* av){
@@ -168,11 +187,14 @@ static void sfz_dsp(t_sfz* x, t_signal** sp){
 static void sfz_free(t_sfz* x){
     if(x->x_synth)
         sfizz_free(x->x_synth);
+    if(x->x_elsefilehandle)
+        elsefile_free(x->x_elsefilehandle);
 }
 
 static void* sfz_new(t_symbol *s, int ac, t_atom *av){
     (void)s;
     t_sfz* x = (t_sfz*)pd_new(sfz_class);
+    x->x_elsefilehandle = elsefile_new((t_pd *)x, sfz_readhook, 0);
     x->x_canvas = canvas_getcurrent();
     outlet_new(&x->x_obj, &s_signal);
     outlet_new(&x->x_obj, &s_signal);
@@ -200,4 +222,5 @@ void sfz_tilde_setup(){
     class_addmethod(sfz_class, (t_method)sfz_tuningfreq, gensym("tuningfreq"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_panic, gensym("panic"), 0);
     class_addmethod(sfz_class, (t_method)sfz_version, gensym("version"), 0);
+    elsefile_setup();
 }
