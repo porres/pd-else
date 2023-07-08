@@ -46,8 +46,6 @@ typedef struct _sfont{
     fluid_sfont_t      *x_sfont;
     fluid_preset_t     *x_preset;
     t_elsefile         *x_elsefilehandle;
-    t_outlet           *x_out_left;
-    t_outlet           *x_out_right;
     t_canvas           *x_canvas;
     t_symbol           *x_sfname;
     t_symbol           *x_tune_name;
@@ -577,8 +575,8 @@ static void *sfont_new(t_symbol *s, int ac, t_atom *av){
     x->x_canvas = canvas_getcurrent();
     x->x_sysex = x->x_ready = x->x_count = 0;
     x->x_data = x->x_channel = x->x_type = 0;
-    x->x_out_left = outlet_new(&x->x_obj, &s_signal);
-    x->x_out_right = outlet_new(&x->x_obj, &s_signal);
+    outlet_new(&x->x_obj, &s_signal);
+    outlet_new(&x->x_obj, &s_signal);
     x->x_info_out = outlet_new((t_object *)x, gensym("list"));
     x->x_settings = new_fluid_settings();
     if(x->x_settings == NULL){
