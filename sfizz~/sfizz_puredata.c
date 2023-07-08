@@ -222,5 +222,6 @@ void sfz_tilde_setup(){
     class_addmethod(sfz_class, (t_method)sfz_tuningfreq, gensym("tuningfreq"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_panic, gensym("panic"), 0);
     class_addmethod(sfz_class, (t_method)sfz_version, gensym("version"), 0);
+    class_addmethod(sfz_class, (t_method)sfz_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     elsefile_setup();
 }
