@@ -1,2 +1,2 @@
-./sfizz/build
-./sfizz/plugins/puredata/sfizz_puredata.c
+sfizz/build
+sfizz/plugins/puredata/sfizz_puredata.c
