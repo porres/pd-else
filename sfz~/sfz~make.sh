@@ -34,8 +34,8 @@ BASEFLAGS='
 -DSFIZZ_PROFILE_BUILD=OFF
 -DSFIZZ_RELEASE_ASSERTS=OFF
 ' 
-cp ./sfizz_puredata.c ./sfizz~/plugins/puredata/
-mkdir -p sfizz~/build
-cd sfizz~/build
+cp ./sfz~.c ./sfizz/plugins/puredata/sfizz_puredata.c
+mkdir -p sfizz/build
+cd sfizz/build
 cmake "$GENERATOR" .. $BASEFLAGS
 make

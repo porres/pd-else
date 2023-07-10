@@ -3,7 +3,7 @@
 system=$1
 ext=$2 
 objectsdir=$3
-basepath=./sfizz~/build/pd/sfizz
+basepath=./sfizz/build/pd/sfizz
 
 if [ $system = "Windows" ]
 then
