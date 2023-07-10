@@ -206,9 +206,6 @@ static void sfz_flush(t_sfz* x){
         sfizz_send_note_off(x->x_synth, 0, i, 0);
 }
 
-static void sfz_pan(t_sfz* x, t_float f){
-}
-
 static void sfz_version(t_sfz *x){
     (void)x;
     post("[sfz~] uses sfizz version '%s'", SFIZZ_VERSION);
@@ -258,22 +255,21 @@ void sfz_tilde_setup(){
     class_addlist(sfz_class, (t_method)sfz_note);
     class_addmethod(sfz_class, (t_method)sfz_note, gensym("note"), A_GIMME, 0);
     class_addmethod(sfz_class, (t_method)sfz_ctl, gensym("ctl"), A_FLOAT, A_FLOAT, 0);
-    class_addmethod(sfz_class, (t_method)sfz_bend, gensym("bend"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_pgm, gensym("pgm"), A_FLOAT, 0);
+    class_addmethod(sfz_class, (t_method)sfz_bend, gensym("bend"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_touch, gensym("touch"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_polytouch, gensym("polytouch"), A_FLOAT, A_FLOAT, 0);
-    class_addmethod(sfz_class, (t_method)sfz_pan, gensym("pan"), A_FLOAT, 0);
+    class_addmethod(sfz_class, (t_method)sfz_panic, gensym("panic"), 0);
+    class_addmethod(sfz_class, (t_method)sfz_flush, gensym("flush"), 0);
     class_addmethod(sfz_class, (t_method)sfz_open, gensym("open"), A_DEFSYM, 0);
     class_addmethod(sfz_class, (t_method)sfz_scala, gensym("scala"), A_DEFSYM, 0);
     class_addmethod(sfz_class, (t_method)sfz_tuningfreq, gensym("tuningfreq"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_tuningstretch, gensym("tuningstretch"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_base, gensym("base"), A_FLOAT, 0);
-    class_addmethod(sfz_class, (t_method)sfz_volume, gensym("volume"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_scale, gensym("scale"), A_GIMME, 0);
-    class_addmethod(sfz_class, (t_method)sfz_voices, gensym("voices"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_transp, gensym("transp"), A_FLOAT, 0);
-    class_addmethod(sfz_class, (t_method)sfz_panic, gensym("panic"), 0);
-    class_addmethod(sfz_class, (t_method)sfz_flush, gensym("flush"), 0);
+    class_addmethod(sfz_class, (t_method)sfz_volume, gensym("volume"), A_FLOAT, 0);
+    class_addmethod(sfz_class, (t_method)sfz_voices, gensym("voices"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_version, gensym("version"), 0);
 //    class_addmethod(sfz_class, (t_method)sfz_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
 //    elsefile_setup();
