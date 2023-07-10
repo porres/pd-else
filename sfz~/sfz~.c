@@ -183,6 +183,10 @@ static void sfz_polytouch(t_sfz* x, t_float f1, t_float key){
     sfizz_send_poly_aftertouch(x->x_synth, 0, (int)key, f1);
 }
 
+static void sfz_transp(t_sfz* x, t_float f){
+//    sfizz_set_volume(x->x_synth, f);
+}
+
 static void sfz_volume(t_sfz* x, t_float f){
     sfizz_set_volume(x->x_synth, f);
 }
@@ -264,8 +268,10 @@ void sfz_tilde_setup(){
     class_addmethod(sfz_class, (t_method)sfz_tuningfreq, gensym("tuningfreq"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_tuningstretch, gensym("tuningstretch"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_base, gensym("base"), A_FLOAT, 0);
+    class_addmethod(sfz_class, (t_method)sfz_volume, gensym("volume"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_scale, gensym("scale"), A_GIMME, 0);
     class_addmethod(sfz_class, (t_method)sfz_voices, gensym("voices"), A_FLOAT, 0);
+    class_addmethod(sfz_class, (t_method)sfz_transp, gensym("transp"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_panic, gensym("panic"), 0);
     class_addmethod(sfz_class, (t_method)sfz_flush, gensym("flush"), 0);
     class_addmethod(sfz_class, (t_method)sfz_version, gensym("version"), 0);
