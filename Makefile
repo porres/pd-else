@@ -375,34 +375,33 @@ include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 # E.g.: make install sfont-install objectsdir=/usr/lib/pd/extra
 
 sfont:
-	$(MAKE) -C sfont~
+	$(MAKE) -C Code_source/Compiled/sfont~
 
 sfont-install:
-	$(MAKE) -C sfont~ install installpath="$(DESTDIR)$(PDLIBDIR)/else"
+	$(MAKE) -C Code_source/Compiled/sfont~ install installpath="$(DESTDIR)$(PDLIBDIR)/else"
 
 sfont-clean:
-	$(MAKE) -C sfont~ clean
+	$(MAKE) -C Code_source/Compiled/ppppsfont~ clean
 
-# Same for plaits.
-# E.g.: make install plaits-install objectsdir=/usr/lib/pd/extra
+# Same for plaits
 
 plaits:
-	$(MAKE) -C plaits~ $(plaitsflags)
+	$(MAKE) -C Code_source/Compiled/plaits~ $(plaitsflags)
 
 plaits-install:
-	$(MAKE) -C plaits~ install installpath="$(DESTDIR)$(PDLIBDIR)/else" $(plaitsflags)
+	$(MAKE) -C Code_source/Compiled/plaits~ install installpath="$(DESTDIR)$(PDLIBDIR)/else" $(plaitsflags)
 
 plaits-clean:
-	$(MAKE) -C plaits~ clean $(plaitsflags)
+	$(MAKE) -C Code_source/Compiled/plaits~ clean $(plaitsflags)
     
 sfizz:
-	$(MAKE) -C sfz~ system=$(system) 
+	$(MAKE) -C Code_source/Compiled/sfz~ system=$(system) 
 
 sfizz-install:
-	$(MAKE) -C sfz~ install system=$(system) exten=$(extension) installpath="$(abspath $(PDLIBDIR))/else"
+	$(MAKE) -C Code_source/Compiled/sfz~ install system=$(system) exten=$(extension) installpath="$(abspath $(PDLIBDIR))/else"
     
 sfizz-clean:
-	$(MAKE) -C sfz~ clean
+	$(MAKE) -C Code_source/Compiled/sfz~ clean
 
 install: installplus
 
