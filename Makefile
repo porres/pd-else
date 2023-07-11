@@ -6,14 +6,14 @@
 
 lib.name = else
 
-aubioflags = -Ishared/aubio/src
+aubioflags = -ICode_source/shared/aubio/src
 
 define forDarwin
 # old pdlibbuilder in plaits~ gets the target architecture(s) wrong
 plaitsflags = arch="$(target.arch)"
 endef
 
-cflags = -Ishared -DHAVE_STRUCT_TIMESPEC $(aubioflags)
+cflags = -ICode_source/shared -DHAVE_STRUCT_TIMESPEC $(aubioflags)
 
 uname := $(shell uname -s)
 
@@ -251,10 +251,10 @@ wrap2.class.sources := Code_source/Source/wrap2.c
 wrap2~.class.sources := Code_source/Source/wrap2~.c
 zerocross~.class.sources := Code_source/Source/zerocross~.c
 
-aubio := $(wildcard shared/aubio/src/*/*.c) $(wildcard shared/aubio/src/*.c)
+aubio := $(wildcard Code_source/shared/aubio/src/*/*.c) $(wildcard Code_source/shared/aubio/src/*.c)
     beat~.class.sources := Code_source/Source/beat~.c $(aubio)
 
-magic := shared/magic.c
+magic := Code_source/shared/magic.c
     sine~.class.sources := Code_source/Source/sine~.c $(magic)
     cosine~.class.sources := Code_source/Source/cosine~.c $(magic)
     fbsine~.class.sources := Code_source/Source/fbsine~.c $(magic)
@@ -273,7 +273,7 @@ magic := shared/magic.c
     pimp~.class.sources := Code_source/Source/pimp~.c $(magic)
     numbox~.class.sources := Code_source/Source/numbox~.c $(magic)
 
-buf := shared/buffer.c
+buf := Code_source/shared/buffer.c
     shaper~.class.sources = Code_source/Source/shaper~.c $(buf)
     tabreader.class.sources = Code_source/Source/tabreader.c $(buf)
     tabreader~.class.sources = Code_source/Source/tabreader~.c $(buf)
@@ -286,24 +286,24 @@ buf := shared/buffer.c
     filterdelay~.class.sources := Code_source/Source/filterdelay~.c $(buf)
 
 bufmagic := \
-shared/magic.c \
-shared/buffer.c
+Code_source/shared/magic.c \
+Code_source/shared/buffer.c
     wavetable~.class.sources = Code_source/Source/wavetable~.c $(bufmagic)
     wt~.class.sources = Code_source/Aliases/wt~.c $(bufmagic)
     tabplayer~.class.sources = Code_source/Source/tabplayer~.c $(bufmagic)
 
 
 randbuf := \
-shared/random.c \
-shared/buffer.c
+Code_source/shared/random.c \
+Code_source/shared/buffer.c
     gendyn~.class.sources := Code_source/Source/gendyn~.c $(randbuf)
 
 randmagic := \
-shared/magic.c \
-shared/random.c
+Code_source/shared/magic.c \
+Code_source/shared/random.c
     brown~.class.sources := Code_source/Source/brown~.c $(randmagic)
 
-rand := shared/random.c
+rand := Code_source/shared/random.c
     white~.class.sources := Code_source/Source/white~.c $(rand)
     pink~.class.sources := Code_source/Source/pink~.c $(rand)
     gray~.class.sources := Code_source/Source/gray~.c $(rand)
@@ -326,17 +326,17 @@ rand := shared/random.c
     tempo~.class.sources := Code_source/Source/tempo~.c $(rand)
 
 midi := \
-    shared/mifi.c \
-    shared/elsefile.c
+    Code_source/shared/mifi.c \
+    Code_source/shared/elsefile.c
     midi.class.sources := Code_source/Source/midi.c $(midi)
     
-file := shared/elsefile.c
+file := Code_source/shared/elsefile.c
     rec.class.sources := Code_source/Source/rec.c $(file)
 
-smagic := shared/magic.c
+smagic := Code_source/shared/magic.c
     oscope~.class.sources := Code_source/Source/oscope~.c $(smagic)
     
-utf := shared/s_utf8.c
+utf := Code_source/shared/s_utf8.c
 	note.class.sources := Code_source/Source/note.c $(utf)
     
 define forWindows
