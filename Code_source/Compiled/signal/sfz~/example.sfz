@@ -7,8 +7,8 @@ fil_type=lpf_4p
 resonance=3
 cutoff=3000
 oscillator_phase=-1
-cutoff_oncc300=3600
-cutoff_curvecc300=1
+cutoff_oncc1=3600
+cutoff_curvecc1=1
 
 <region>
 sample=*saw
