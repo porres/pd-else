@@ -1,5 +1,5 @@
 // porres 2023
-// This code is based on the sfizz library and is licensed under a BSD 2-clause license.
+// This object is based on the sfizz library and is licensed under a BSD 2-clause license.
 
 #ifdef _WIN32
 #include <io.h>

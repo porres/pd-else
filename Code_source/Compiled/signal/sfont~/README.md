@@ -1,23 +1,12 @@
-* * *
-
-**[sfont~] - A soundfont player for Pure Data based on FluidSynth.**
-
-* * *
-
 ### About:
 
-[sfont~] is an external for Pure Data that loads soundfont files for a fullblown orchestra. It is based on the FluidSynth open source project, a Real-Time SoundFont Software Synthesizer (see <https://www.fluidsynth.org> and <https://github.com/FluidSynth/fluidsynth>). Currently, [sfont~] uses FluidSynth 2.2.7!
-
-Copyright: Alexandre Torres Porres and others
-
-[sfont~] has its own repository (<https://github.com/porres/pd-sfont>) so it can be compiled separately, but it is part of the ELSE library of externals by Alexandre Porres, see <https://github.com/porres/pd-else>.
+[sfont~] is a Pd external  that loads soundfont files based on the FluidSynth, see <https://www.fluidsynth.org>, it is part of the ELSE, see <https://github.com/porres/pd-else>. Copyright: Alexandre Torres Porres and others
 
 --------------------------------------------------------------------------
 
 ### Licence:
 
 Distributed under the GPLv2+, please check the LICENSE file for details.
-
 
 --------------------------------------------------------------------------
 
@@ -121,5 +110,3 @@ The result can be uploaded to Deken, since it runs also on systems where the flu
 Thanks to the **authors of fluidsynth** (<https://github.com/FluidSynth/fluidsynth/blob/master/AUTHORS>). Also thanks for those who worked on previous externals for Pd that loads fluidsynth, such as **Larry Troxler**, author of the [iiwu~] external, which was the basis of the [fluid~] external by **Frank Barknecht** in [04/04/2003]. **Jonathan Wilkes** Ported [fluid~] from Flext/C++ to Pd's API using plain C/pdlibbuilder. **Albert Gräf** expanded the functionality of the object to take more MIDI messages. The Pd-ceammc (<https://github.com/uliss/pure-data>) developers (**Serge Poltavsky** and **Alex Nadzharov**) also have an external named [fluid~] that is not related to the one first created by Barknecht. Both [fluid~] objects were used as inspiration for this [sfont~] external, but [sfont~] has its own design with different and special functionalities. 
 
 Special thanks to **IOhannes Zmölnig** for the magical script that copies the dynamic libraries into the external folder and links them correctly. Thanks to **Lucas Cordiviola** and **Roman Haefeli** for helping on how to build for Mac/Windows/Linux and **others from the pd-list** that also helped.
-
--------------------------------------------------------------------------
