@@ -3,10 +3,6 @@ include(PuredataConfig)
 
 set(PUREDATA_BINARY_DIR "${PROJECT_BINARY_DIR}/pd/sfizz")
 
-set(PUREDATA_RESOURCES
-    "sfizz~-help.pd"
-    "example.sfz")
-
 function(copy_puredata_resources TARGET SOURCE_DIR DESTINATION_DIR)
     set(_deps)
     foreach(res ${PUREDATA_RESOURCES})
