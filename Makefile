@@ -21,6 +21,9 @@ uname := $(shell uname -s)
 # Sources: ##############################################################
 #########################################################################
 
+# shit:
+oldrescale.class.sources := Code_source/extra_source/oldrescale.c
+
 # Lib:
 else.class.sources := Code_source/Compiled/control/else.c
 
@@ -99,7 +102,6 @@ quantizer.class.sources := Code_source/Compiled/control/quantizer.c
 rad2hz.class.sources := Code_source/Compiled/control/rad2hz.c
 ratio2cents.class.sources := Code_source/Compiled/control/ratio2cents.c
 rescale.class.sources := Code_source/Compiled/control/rescale.c
-oldrescale.class.sources := Code_source/Compiled/control/oldrescale.c
 rint.class.sources := Code_source/Compiled/control/rint.c
 router.class.sources := Code_source/Compiled/control/router.c
 route2.class.sources := Code_source/Compiled/control/route2.c
@@ -161,8 +163,6 @@ envgen~.class.sources := Code_source/Compiled/signal/envgen~.c
 eq~.class.sources := Code_source/Compiled/signal/eq~.c
 fader~.class.sources := Code_source/Compiled/signal/fader~.c
 fbsine2~.class.sources := Code_source/Compiled/signal/fbsine2~.c
-float2sig~.class.sources := Code_source/Compiled/signal/float2sig~.c
-f2s~.class.sources := Code_source/extra_source/Aliases/f2s~.c
 fdn.rev~.class.sources := Code_source/Compiled/signal/fdn.rev~.c
 floor~.class.sources := Code_source/Compiled/signal/floor~.c
 fold~.class.sources := Code_source/Compiled/signal/fold~.c
