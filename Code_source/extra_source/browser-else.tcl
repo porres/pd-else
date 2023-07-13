@@ -19,72 +19,82 @@ proc menu_send_else_obj {w x y item} {
 proc category_else_menu::load_menutree {} {
     set menutree { 
         {else
-            {gui
-                {knob mtx.tcl pic pad function colors openfile biplot slider2d circle keyboard range.hsl mix2~ mix4~ meter~ meter2~ meter4~ meter8~ drum.seq graph~ spectrograph~ setdsp~ messbox button out1~ out~ out4~ out8~ gain~ gain2~ display numbox~ zbiplot oscope~ multi.vsl bicoeff}}        
-            {oscillators
-                {sine~ cosine~ saw~ saw2~ square~ tri~ vsaw~ pulse~ impulse~ impulse2~ parabolic~ oscbank~ oscbank2~ gaussian~ pmosc~ wavetable~ bl.osc~ bl.blip~ bl.imp~ bl.imp2~ bl.saw~ bl.saw2~ bl.square~ bl.tri~ bl.vsaw~ bl.wavetable~}}
-            {synths
-                {grain.synth~ pluck~ sfont~ plaits~}}
-            {noise\ chaos\ stochastic
-                {gendyn~ white~ pink~ brown~ gray~ lfnoise~ rampnoise~ stepnoise~ randpulse~ randpulse2~ perlin~ fbsine~ fbsine2~ xmod~ xmod2~ crackle~ cusp~ gbmnan~ henon~ ikeda~ latoocarfian~ lorenz~ lincong~ logistic~ quad~ standard~}}
             {assorted
-                {else chrono datetime}}
+                {else}}
+            {gui
+                {knob mtx.tcl pic pad function colors openfile biplot slider2d circle keyboard range.hsl mix2~ mix4~ meter~ meter2~ meter4~ meter8~ drum.seq graph~ spectrograph~ setdsp~ messbox button out1~ out~ out4~ out8~ gain~ gain2~ display numbox~ zbiplot oscope~ multi.vsl bicoeff}}
+            {time
+                {chrono datetime}}
             {fft
-                {hann~ bin.shift~}}  
-            {tuning/scale\ tools 
-                {scales autotune autotune2 makenote2 scala retune eqdiv scale2cents cents2scale cents2frac frac2cents frac2dec dec2frac freq2midi midi2freq note2pitch pitch2note note2dur}}
+                {hann~ bin.shift~}}
+            {table
+                {buffer tabgen tabreader tabreader~}}
+            {tuning/ notes
+                {scales scale2freq scala autotune autotune2 makenote2 retune eqdiv cents2scale scale2cents cents2frac frac2cents dec2frac frac2dec freq2midi midi2freq note2pitch pitch2note note2dur}}
             {patch/subpatch\ management
-                {args meter presets blocksize~ fontsize retrieve canvas.active canvas.bounds canvas.file canvas.name canvas.vis canvas.edit canvas.setname canvas.zoom click properties dollsym receiver loadbanger}}
-            {list\ management
-                {break order group combine scramble interpolate delete replace morph sort iterate insert reverse rotate sum slice stream merge unmerge amean gmean}}
+                {loadbanger args meter presets dollsym receiver retrieve blocksize~ click properties fontsize canvas.active canvas.bounds canvas.gop canvas.pos canvas.file canvas.edit canvas.vis canvas.name canvas.setname canvas.zoom}}
             {message\ management
-                {swap2 nmess format unite separate route2 any2symbol symbol2any changed hot limit initmess default message pack2 pick spread router routeall routetype selector stack store pipe2 sig2float~ float2sig~}}
+                {format swap2 nmess unite separate symbol2any any2symbol changed hot initmess message default pack2 pick limit spread router route2 routeall routetype selector stack store morph interpolate sig2float~ float2sig~ pipe2}}
+            {list\ management
+                {break order combine delete group iterate insert scramble sort reverse rotate replace sum slice stream merge unmerge amean gmean}}
             {file\ management
                 {dir}}
-            {math:\ functions
-                {add add~ median avg mov.avg frac.add frac.mul lcm gcd count ceil ceil~ factor floor floor~ trunc trunc~ rint rint~ quantizer quantizer~ fold fold~ lastvalue mag mag~ sin~ wrap2 wrap2~ op op~ cmul~}}
-            {math:\ conversion
-                {hex2dec dec2hex bpm car2pol car2pol~ pol2car pol2car~ pz2coeff coeff2pz cents2ratio cents2ratio~ ratio2cents ratio2cents~ ms2samps ms2samps~ samps2ms samps2ms~ deg2grad rad2deg db2lin db2lin~ float2bits hz2rad rad2hz lin2db lin2db~ rescale rescale~}}
-            {math:\ constant
-                {sr~ nyquist~ pi e}}
-            {math:\ logic
-                {loop}}
-            {analysis
-                {changed~ changed2~ detect~ lastvalue median~ range range~ tap peak~ rms~ mov.rms~ vu~ zerocross~ beat~}}
-            {fx:\ assorted
-                {downsample~ conv~ chorus~ shaper~ crusher~ power~ drive~ flanger~ freq.shift~ pitch.shift~ ping.pong~ phaser~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~}}
-            {fx:\ delays
-                {del~\ in del~\ out fbdelay~ ffdelay~ filterdelay~ revdelay~}}
-            {fx:\ filters
-                {allpass.2nd~ allpass.filt~ bitnormal~ comb.filt~ lop2~ lop.bw~ hip.bw~ biquads~ bandpass~ bandstop~ crossover~ bpbank~ bicoeff2 brickwall~ eq~ highpass~ highshelf~ lowpass~ lowshelf~ mov.avg~ resonbank~ resonbank2~ resonant~ resonant2~ svfilter~}}
-            {fx:\ reverberators
-                {allpass.rev~ comb.rev~ mono.rev~ stereo.rev~ plate.rev~ giga.rev~ free.rev~ fdn.rev~}}
-            {fx:\ dynamics
-                {compress~ duck~ expand~ noisegate~ norm~}}
-            {table/sampling/players/granulation
-                {buffer tabgen tabreader tabreader~ tabwriter~ tabplayer~ sample~ batch.rec~ batch.write~ rec.file~ player~ gran.player~ pvoc.player~ pvoc.live~ grain.live~ grain.sampler~}}
-            {control:\ MIDI
-                {midi.learn sysrt.in sysrt.out ctl.in ctl.out touch.in touch.out pgm.in pgm.out bend.in bend.out note.in note.out midi.clock noteinfo panic mono voices suspedal keymap}}
-            {control:\ OSC
+            {midi
+                {midi midi.learn sysrt.in sysrt.out ctl.in ctl.out touch.in touch.out pgm.in pgm.out nemd.in bend.out note.in note.out midi.clock noteinfo panic mono voices suspedal}}
+            {osc
                 {osc.route osc.format osc.parse osc.send osc.receive}}
-            {control:\ (mouse/keyboard)
-                {mouse canvas.mouse keycode}}
-            {control:\ (fade/pan/route)
+            {math\ functions
+                {add add~ median avg mov.avg count gcd lcm frac.add frac.mul ceil ceil~ factor floor floor~ trun trunc~ rint rint~ quantizer quantizer~ fold fold~ lastvalue mag mag~ sin~ wrap2 wrap2~ op op~ cmul~}}
+            {math\ conversion
+                {hex2dec dec2hex bpm car2pol car2pol~ cents2ratio cents2ratio~ ms2samps ms2samps~ db2lin db2lin~ float2bits hz2rad lin2db lin2db~ deg2rad rad2deg pz2coeff coeff2pz rad2hz ratio2cents ratio2cents~ samps2ms samps2ms~ pol2car pol2car~ rescale recale~}}
+            {math\ constant\ values
+                {sr~ nyquist~ pi e}}
+            {logic
+                {loop}}
+            {audio\ tools
+                {nchs~ sum~}}
+            {fx\ assorted
+                {downsample~ conv~ chorus~ shaper~ crusher~ drive~ power~ flanger~ freq.shift~ pitch.shift~ stretch.shift~ stretch.shift~ ping.pong~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~ phaser~}}
+            {fx\ delay
+                {del\ in~ del\ out~ fbdelay~ ffdelay~ revdelay~ filterdelay~}}
+            {fx\ dynamics
+                {compress~ duck~ expand~ noisegate~ norm~}}
+            {fx\ reverberation
+                {allpass.rev~ comb.rev~ echo.rev~ mono.rev~ stereo.rev~ free.rev~ giga.rev~ plate.rev~ fdn.rev~}}
+            {fx\ filters
+                {allpass.2nd~ allpass.filt~ bitnormal~ comb.filt~ lop.bw~ hip.bw~ biquads~ bandpass~ bandstop~ crossover~ bpbank~ bicoeff2 brickwall~ eq~ highpass~ highshelf~ lop2~ lowpass~ lowshelf~ mov.avg~ resonbank~ resonbank2~ resonant~ resonant2~ svfilter~}}
+            {sampling\ playing\ granulation
+                {player~ gran.player~ pvoc.player~ pvoc.live~ batch.rec~ bach.write~ rec.file~ play.file~ tabplayer~ tabwriter~ sample~}}
+            {synthesis:\ synthesizers
+                {sfont~ sfz~ plaits~}}
+            {synthesis:\ granular
+                {grain.synth~}}
+            {synthesis:\ physical\ modelling
+                {pluck~}}
+            {synthesis:\ oscillators
+                {cosine~ impulse~ impulse2~ parabolic~ pulse~ saw~ saw2~ oscbank~ oscbank2~ oscnoise~ sine~ square~ tri~ gaussian~ vsaw~ pmosc~ wavetable~ blip~ bl.osc~ bl.imp~ bl.imp2~ bl.saw~ bl.saw2~ bl.square~ bl.tri~ bl.vsaw~ bl.wavetable~}}
+            {synthesis:\ chaotic\ stochastic\ noise
+                {white~ brown~ perlin~ crackle~ cusp~ fbsine~ fbsine2~ gbman~ gray~ henon~ ikeda~ latoocarfian~ lorenz~ lfnoise~ lincong~ logistic~ quad~ rampnoise~ randpulse~ randpulse2~ standard~ stepnoise~ pink~ xmod~ xmod2~ gendyn~}}
+            {control:\ mouse\ keyboard
+                {mouse canvas.mouse keycode keymap}}
+            {control:\ fade\ pan\ routing
                 {fader~ autofade~ autofade2~ balance~ pan2~ pan4~ pan8~ spread~ rotate~ xfade~ xgate~ xgate2~ xselect~ xselect2~ mtx~}}
             {control:\ sequencers
-                {euclid score score2 pattern sequencer sequencer~ impseq~ rec rec2}}
-            {control:\ lfo
-                {phasor pimp lfo impulse pulse}}
+                {euclid score score2 pattern sequencer sequencer~ phaseseq~ impseq~ rec rec2}}
             {control:\ envelopes
                 {adsr~ asr~ decay~ decay2~ envelope~ envgen~}}
-            {control:\ line\ generators
-                {function~ ramp~ glide~ glide2~ glide glide2 slew slew2 slew~ slew2~ lag~ lag2~ susloop~}}
-            {control\ random/stochastic
-                {rand.f rand.f~ rand.i rand.i~ rand.list rand.u rand.dist histogram rand.hist brown drunkard drunkard~ randpulse randpulse2 rampnoise lfnoise markov}}
+            {control:\ ramp\ line/curve\ generators
+                {ramp~ susloop~ function~ slew slew~ slew2 slew2~ lag~ lag2~ glide glide~ glide2 glide2~}}
+            {control:\ random/stochastic
+                {rand.f rand.f~ rand.i rand.i~ rand.list rand.u rand.dist rand.hist histogram markov drunkard drunkard~ brown randpulse randpulse2 lfnoise stepnoise rampnoise}}
+            {control:\ control\ rate\ lfo
+                {lfo phasor pimp impulse pulse}}
             {control:\ triggers
-                {above above~ bangdiv chance dust~ dust2~ gatehold~ gate2imp~ pimp~ pimpmul~ pulsecount~ pulsediv~ sh~ schmitt schmitt~ status status~ trig.delay~ trig.delay2~ toggleff~ timed.gate~ timed.gate match~ trig2bang~ trig2bang trighold~}}
-            {control:\ clocks
-                {speed clock tempo tempo~ metronome polymetro polymetro~}}    
+                {above above~ bangdiv chance chance~ dust~ dust2~ gatehold~ gate2imp~ pimp~ pimpmul~ pulsecount~ pulsediv~ sh~ schmitt schmitt~ status status~ trig.delay~ trig.delay2~ toggleff~ timed.gate timed.gate~ match~ trig2bang trig2bang~ trighold~}}
+            {control:\ triggers
+                {clock metronome metronome~ polymetro polymetro~ speed tempo tempo~}}
+            {analysis
+                {changed~ changed2~ detect~ lastvalue~ median~ peak~ tap range range~ maxpeak~ rms~ mov.rms~ vu~ zerocross~ beat~}}
         }
     }
     return $menutree

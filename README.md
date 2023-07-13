@@ -115,6 +115,46 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 - [else]
 
+**GUI: [37]**
+
+- [knob]
+- [numbox~]
+- [drum.seq]
+- [bicoeff]
+- [pad]
+- [messbox]
+- [mtx.ctl]
+- [biplot]
+- [zbiplot]
+- [pic]
+- [colors]
+- [function]
+- [circle]
+- [slider2d]
+- [display]
+- [out.mc~]
+- [out~]
+- [out4~]
+- [out8~]
+- [gain~]
+- [gain2~]
+- [button]
+- [keyboard]
+- [graph~]
+- [range.hsl]
+- [multi.vsl]
+- [spectrograph~]
+- [meter~]
+- [meter2~]
+- [meter4~]
+- [meter8~]
+- [note]
+- [mix2~]
+- [mix4~]
+- [setdsp~]
+- [openfile]
+- [oscope~]
+
 **TIME: [02]**
 - [chrono]
 - [datetime]
@@ -124,8 +164,9 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 - [hann~]
 - [bin.shift~]
 
-**TABLE: [03]**
+**TABLE: [04]**
 
+- [buffer]
 - [tabgen]
 - [tabreader]
 - [tabreader~]
@@ -176,7 +217,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 - [canvas.zoom]
 - [loadbanger] / [lb]
 
-**GENERAL MESSAGE MANAGEMENT: [29]**
+**GENERAL MESSAGE MANAGEMENT: [28]**
 
 - [format]
 - [swap2]
@@ -185,7 +226,6 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 - [separate]
 - [symbol2any]
 - [any2symbol]
-- [buffer]
 - [changed]
 - [hot]
 - [initmess]
@@ -427,7 +467,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 - [resonant2~]
 - [svfilter~]
 
-**BUFFER/SAMPLING/PLAYING/GRANULATION: [13]**
+**SAMPLING/PLAYING/GRANULATION: [13]**
 
 - [player~]
 - [gran.player~]
@@ -666,47 +706,6 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 - [vu~]
 - [zerocross~]
 - [beat~]
-
-**GUI: [37]**
-
-- [knob]
-- [numbox~]
-- [drum.seq]
-- [bicoeff]
-- [pad]
-- [messbox]
-- [mtx.ctl]
-- [biplot]
-- [zbiplot]
-- [pic]
-- [colors]
-- [function]
-- [circle]
-- [slider2d]
-- [display]
-- [out.mc~]
-- [out~]
-- [out4~]
-- [out8~]
-- [gain~]
-- [gain2~]
-- [button]
-- [keyboard]
-- [graph~]
-- [range.hsl]
-- [multi.vsl]
-- [spectrograph~]
-- [meter~]
-- [meter2~]
-- [meter4~]
-- [meter8~]
-- [note]
-- [mix2~]
-- [mix4~]
-- [setdsp~]
-- [openfile]
-- [oscope~]
-
 
 --------------------------------------------------------------------------
 
