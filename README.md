@@ -15,7 +15,7 @@ Copyright © 2017-2023 Alexandre Torres Porres
 
 This work is free. You can redistribute it and/or modify it under the terms of the Do What The Fuck You Want To Public License, Version 2, as published by Sam Hocevar. See License.txt <https://github.com/porres/pd-else/blob/master/License.txt> and <http://www.wtfpl.net/> for more details
 
-Other licenses may apply for specific objects and this is informed in the source code (examples: [giga.rev~], [sfont~], [plaits~], etc...).
+Other licenses may apply for specific objects and this is informed in the source code (examples: [giga.rev~], [sfont~], [sfz~], [plaits~], etc...).
 
 
 
@@ -23,7 +23,7 @@ Other licenses may apply for specific objects and this is informed in the source
 
 ###   About ELSE
 
-This version of ELSE needs **Pd 0.53-2** or above.
+This version of ELSE needs **Pd 0.54-0** or above.
 
 ELSE is a big library of externals that extends the performance Pure Data (Pd) - Miller S. Puckette's realtime computer music environment (download Pd from: http://msp.ucsd.edu/software.html).
 
@@ -53,9 +53,9 @@ It might still be important to stress this library runs in Pd Vanilla and is not
 
 #### Building ELSE for Pd Vanilla:
 
-ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example (assuming the unpacked Pd package is in ~/pd-0.53-1; for Windows/MinGW add `pdbinpath=~/pd-0.53-1/bin/`):
+ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example (assuming the unpacked Pd package is in ~/pd-0.54-0; for Windows/MinGW add `pdbinpath=~/pd-0.54-0/bin/`):
 
-<pre>make pdincludepath=~/pd-0.53-2/src/</pre>
+<pre>make pdincludepath=~/pd-0.54-0/src/</pre>
 
 ##### Installing with pdlibbuilder
 
@@ -68,16 +68,16 @@ Cross compiling is also possible with something like this
 
 <pre>make CC=arm-linux-gnueabihf-gcc target.arch=arm7l install objectsdir=~/else-build</pre>
 
-##### Installing sfont~ and plaits~
+##### Installing sfont~, sfz~ and plaits~
 
-For technical reasons these objects reside in their own subdirectories of the ELSE source directory, so a normal build as described above will skip them. If you want to build and install these separately, check the "sfont~" and "plaits~" folders and their READMEs with instructions.
+For technical reasons these objects reside in their own subdirectories of the ELSE source directory, so a normal build as described above will skip them. You cam install these separately and you can also check their subfolders for their own READMEs and instructions.
 
-But the easiest (and recommended) way is to build and install those objects from the toplevel source directory using the special 'sfont' and 'plaits' targets:
+To install them with the rest of ELSE you can build from the toplevel source directory using the special 'sfont', 'sfz' and 'plaits' targets:
 
-<pre>make sfont plaits pdincludepath=~/pd-0.53-1/src/</pre>
-<pre>make sfont-install plaits-install objectsdir=~/else-build</pre>
+<pre>make sfont sfz plaits pdincludepath=~/pd-0.54-0/src/</pre>
+<pre>make sfont-install sfz-install plaits-install objectsdir=~/else-build</pre>
 
-This also makes sure that [sfont~] and [plaits~] get added to the else library directory instead of their own subdirectories, so that the included help patches work without further ado.
+This also makes sure that [sfont~], [sfz~] and [plaits~] get added to the chosen else library directory instead of their own subdirectories.
 
 --------------------------------------------------------------------------
 
@@ -343,6 +343,11 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 - [loop]
 
+**AUDIO TOOLS: [02]**
+
+- [nchs~]
+- [sum~]
+
 **AUDIO PROCESSING: ASSORTED [20]**
 
 - [downsample~]
@@ -438,9 +443,10 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 - [tabwriter~]
 - [sample~]
 
-**SYNTHESIS: SINTHESIZERS: [02]**
+**SYNTHESIS: SINTHESIZERS: [03]**
 
 - [sfont~]
+- [sfz~]
 - [plaits~]
 
 **SYNTHESIS: GRANULAR SYNTHESIS: [01]**
@@ -535,7 +541,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 - [xselect2~]
 - [mtx~]
 
-**CONTROL: SEQUENCERS: [11]**
+**CONTROL: SEQUENCERS: [10]**
 
 - [euclid]
 - [score]
@@ -545,7 +551,6 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 - [sequencer~]
 - [phaseseq~]
 - [impseq~]
-- [phaseseq~]
 - [rec]
 - [rec2]
 
@@ -679,7 +684,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 - [circle]
 - [slider2d]
 - [display]
-- [out1~]
+- [out.mc~]
 - [out~]
 - [out4~]
 - [out8~]

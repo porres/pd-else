@@ -395,13 +395,15 @@ plaits-install:
 plaits-clean:
 	$(MAKE) -C Code_source/Compiled/signal/plaits~ clean $(plaitsflags)
     
-sfizz:
+# Same for sfz    
+
+sfz:
 	$(MAKE) -C Code_source/Compiled/signal/sfz~ system=$(system) 
 
-sfizz-install:
+sfz-install:
 	$(MAKE) -C Code_source/Compiled/signal/sfz~ install system=$(system) exten=$(extension) installpath="$(abspath $(PDLIBDIR))/else"
     
-sfizz-clean:
+sfz-clean:
 	$(MAKE) -C Code_source/Compiled/signal/sfz~ clean
 
 install: installplus
