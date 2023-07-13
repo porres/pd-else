@@ -91,7 +91,7 @@ proc category_else_menu::load_menutree {} {
                 {lfo phasor pimp impulse pulse}}
             {control:\ triggers
                 {above above~ bangdiv chance chance~ dust~ dust2~ gatehold~ gate2imp~ pimp~ pimpmul~ pulsecount~ pulsediv~ sh~ schmitt schmitt~ status status~ trig.delay~ trig.delay2~ toggleff~ timed.gate timed.gate~ match~ trig2bang trig2bang~ trighold~}}
-            {control:\ triggers
+            {control:\ triggers\ clock
                 {clock metronome metronome~ polymetro polymetro~ speed tempo tempo~}}
             {analysis
                 {changed~ changed2~ detect~ lastvalue~ median~ peak~ tap range range~ maxpeak~ rms~ mov.rms~ vu~ zerocross~ beat~}}
