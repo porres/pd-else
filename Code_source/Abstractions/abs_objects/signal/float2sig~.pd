@@ -1,4 +1,5 @@
 #N canvas 557 60 656 424 12;
+#X declare -path else;
 #X msg 162 285 resize \$1;
 #X obj 75 26 inlet;
 #X obj 130 181 list length;
@@ -29,6 +30,7 @@
 #X obj 130 213 t b f;
 #X obj 75 191 t l l;
 #X obj 75 326 clone -do -x 1 float2sig.unit, f 52;
+#X obj 398 79 declare -path else;
 #X connect 0 0 17 0;
 #X connect 1 0 16 0;
 #X connect 2 0 15 0;

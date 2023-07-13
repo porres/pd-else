@@ -350,7 +350,7 @@ endef
 extrafiles = \
 $(wildcard Code_source/Abstractions/abs_objects/control/*.pd) \
 $(wildcard Code_source/Abstractions/abs_objects/signal/*.pd) \
-$(wildcard Code_source/Abstractions/components/*.pd) \
+$(wildcard Code_source/Abstractions/extra_abs/*.pd) \
 $(wildcard Code_source/extra_source/*.tcl) \
 $(wildcard Documentation/Help-files/*.pd) \
 $(wildcard Documentation/extra_files/*.*) \
