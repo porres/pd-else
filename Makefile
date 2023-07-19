@@ -231,6 +231,7 @@ sr~.class.sources := Code_source/Compiled/signal/sr~.c
 status~.class.sources := Code_source/Compiled/signal/status~.c
 standard~.class.sources := Code_source/Compiled/signal/standard~.c
 sum~.class.sources := Code_source/Compiled/signal/sum~.c
+sigs~.class.sources := Code_source/Compiled/signal/sigs~.c
 spread~.class.sources := Code_source/Compiled/signal/spread~.c
 susloop~.class.sources := Code_source/Compiled/signal/susloop~.c
 svfilter~.class.sources := Code_source/Compiled/signal/svfilter~.c

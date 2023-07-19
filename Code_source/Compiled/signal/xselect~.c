@@ -79,11 +79,10 @@ static void xselect_dsp(t_xselect *x, t_signal **sp) {
 }
 
 static void xselect_time(t_xselect *x, t_floatarg ms){
-    int i;
     double last_fade_in_samps = x->x_fade_in_samps;
     ms = ms < 0 ? 0 : ms;
     x->x_fade_in_samps = x->x_sr_khz * ms;
-    for(i = 0; i < x->x_ninlets; i++)
+    for(int i = 0; i < x->x_ninlets; i++)
         if(x->x_counter[i]) // adjust counters
             x->x_counter[i] = x->x_counter[i] / last_fade_in_samps * x->x_fade_in_samps;
 }
