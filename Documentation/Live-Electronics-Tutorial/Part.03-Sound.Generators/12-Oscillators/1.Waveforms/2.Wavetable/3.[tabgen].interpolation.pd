@@ -1,19 +1,19 @@
 #N canvas 191 89 1124 572 12;
 #X declare -path else;
 #X obj 421 19 declare -path else;
-#X obj 106 261 cnv 15 198 138 empty empty empty 20 12 0 14 #dcdcdc #404040 0;
+#X obj 86 270 cnv 15 198 138 empty empty empty 20 12 0 14 #dcdcdc #404040 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array wavetable 512 float 0;
 #X coords 0 1 511 -1 200 140 1 0 0;
-#X restore 105 260 graph;
+#X restore 85 269 graph;
 #X obj 371 242 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 14 #dcdcdc #000000 #000000 0 256;
 #X text 456 240 Hz;
 #X obj 371 312 out~;
-#X obj 127 204 tabgen wavetable;
+#X obj 127 217 tabgen wavetable;
 #X obj 371 274 wavetable~ wavetable 50;
 #X text 21 57 ELSE also provides [tabgen] \, an object that can be used to generate wavetables \, envelopes and more. Check its help file. Below we use it to generate a wave table for [wavetable~]. There are advantages over the 'sinesum' command \, like being able to set arbitrary and non integer partial ratios and initial phase. It can also generate values for any table size., f 79;
-#X obj 127 173 initmess sin 1 0 1 2 0 0.5 3 0 -0.5;
-#X text 385 166 a sinesum waveform, f 9;
+#X obj 127 147 initmess sin 1 0 1 2 0 0.5 3 0 -0.5;
+#X text 385 140 a sinesum waveform, f 9;
 #X obj 875 372 cnv 15 198 148 empty empty empty 20 12 0 14 #e0e0e0 #404040 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-table 4 float 3;
@@ -40,6 +40,8 @@
 #X text 666 158 default: 4 point;
 #X msg 614 157 spline;
 #X text 693 186 4 point;
+#X msg 154 184 noise;
+#X text 205 184 a wild and fun idea \, white noise as a waveform!;
 #X connect 3 0 7 0;
 #X connect 7 0 5 0;
 #X connect 9 0 6 0;
@@ -51,3 +53,4 @@
 #X connect 23 0 14 0;
 #X connect 24 0 23 0;
 #X connect 31 0 23 0;
+#X connect 33 0 6 0;

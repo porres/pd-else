@@ -1,10 +1,8 @@
-#N canvas 321 119 954 594 12;
+#N canvas 262 53 954 594 12;
 #X obj 601 46 lop~;
 #X obj 601 14 noise~;
-#X obj 660 28 hsl 128 15 20 7000 1 0 empty empty empty -2 -8 0 10 #dcdcdc
-#000000 #000000 0 1;
-#X obj 657 55 nbx 8 14 -1e+37 1e+37 0 0 \$0-lop empty empty 0 -8 0
-10 #dcdcdc #000000 #000000 0 256;
+#X obj 660 28 hsl 128 15 20 7000 1 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 657 55 nbx 8 14 -1e+37 1e+37 0 0 \$0-lop empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 746 54 Hz;
 #X obj 601 86 out~;
 #N canvas 446 292 419 303 coefficients 0;
@@ -46,10 +44,8 @@
 #X obj 33 240 display;
 #X obj 33 289 biplot;
 #X obj 601 154 noise~;
-#X obj 660 168 hsl 128 15 20 7000 1 0 empty empty empty -2 -8 0 10
-#dcdcdc #000000 #000000 0 1;
-#X obj 657 195 nbx 8 14 -1e+37 1e+37 0 0 \$0-hip empty empty 0 -8 0
-10 #dcdcdc #000000 #000000 0 256;
+#X obj 660 168 hsl 128 15 20 7000 1 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 657 195 nbx 8 14 -1e+37 1e+37 0 0 \$0-hip empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 746 194 Hz;
 #X obj 601 226 out~;
 #X obj 601 186 hip~;
@@ -57,25 +53,15 @@
 #X obj 58 131 biquad~;
 #X obj 58 155 out~;
 #X text 406 259 [biplot]:;
-#X text 171 18 The [biplot] object from ELSE plots the filter response
-from an input of Biquad coefficients taking into account the theory
-from the last example (check its help file)., f 56;
+#X text 171 18 The [biplot] object from ELSE plots the filter response from an input of Biquad coefficients taking into account the theory from the last example (check its help file)., f 56;
 #X obj 769 89 noise~;
-#X obj 803 55 hsl 128 15 20 15000 1 0 empty empty empty -2 -8 0 10
-#dcdcdc #000000 #000000 0 1;
-#X obj 853 93 nbx 8 14 -1e+37 1e+37 0 0 \$0-lop2 empty empty 0 -8 0
-10 #dcdcdc #000000 #000000 0 256;
+#X obj 803 55 hsl 128 15 20 15000 1 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 853 93 nbx 8 14 -1e+37 1e+37 0 0 \$0-lop2 empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 827 91 Hz;
 #X obj 821 167 out~;
 #X obj 821 127 lop2~;
-#X text 171 67 [lop~] (a 1-pole filter) and [hip~]/[lop2~] (both 1-Pole
-and 1-Zero filters) fit into a biquad system (which is a 2-Pole and
-2-Zero filter)., f 56;
-#X text 172 119 Hence \, we can calculate coefficients and plot the
-filter response with [biplot] from ELSE. Compare the examples to the
-right with [biquad~]. When you set the frequency slider of [lop~] \,
-[biquad~] will correspond to it and you can see the response below.
-Same happens when you set the slider of [hip~] or [lop2~]., f 56;
+#X text 171 67 [lop~] (a 1-pole filter) and [hip~]/[lop2~] (both 1-Pole and 1-Zero filters) fit into a biquad system (which is a 2-Pole and 2-Zero filter)., f 56;
+#X text 172 119 Hence \, we can calculate coefficients and plot the filter response with [biplot] from ELSE. Compare the examples to the right with [biquad~]. When you set the frequency slider of [lop~] \, [biquad~] will correspond to it and you can see the response below. Same happens when you set the slider of [hip~] or [lop2~]., f 56;
 #X connect 0 0 5 0;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;

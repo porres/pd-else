@@ -52,7 +52,7 @@ proc category_else_menu::load_menutree {} {
             {logic
                 {loop}}
             {audio\ tools
-                {nchs~ sum~}}
+                {nchs~ sum~ sigs~}}
             {fx\ assorted
                 {downsample~ conv~ chorus~ shaper~ crusher~ drive~ power~ flanger~ freq.shift~ pitch.shift~ stretch.shift~ stretch.shift~ ping.pong~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~ phaser~}}
             {fx\ delay
@@ -72,9 +72,9 @@ proc category_else_menu::load_menutree {} {
             {synthesis:\ physical\ modelling
                 {pluck~}}
             {synthesis:\ oscillators
-                {cosine~ impulse~ impulse2~ parabolic~ pulse~ saw~ saw2~ oscbank~ oscbank2~ oscnoise~ sine~ square~ tri~ gaussian~ vsaw~ pmosc~ wavetable~ blip~ bl.osc~ bl.imp~ bl.imp2~ bl.saw~ bl.saw2~ bl.square~ bl.tri~ bl.vsaw~ bl.wavetable~}}
+                {cosine~ impulse~ impulse2~ parabolic~ pulse~ saw~ saw2~ oscbank~ oscbank2~ osc.mc~ oscnoise~ sine~ square~ tri~ gaussian~ vsaw~ pmosc~ wavetable~ blip~ bl.osc~ bl.imp~ bl.imp2~ bl.saw~ bl.saw2~ bl.square~ bl.tri~ bl.vsaw~ bl.wavetable~}}
             {synthesis:\ chaotic\ stochastic\ noise
-                {white~ brown~ perlin~ crackle~ cusp~ fbsine~ fbsine2~ gbman~ gray~ henon~ ikeda~ latoocarfian~ lorenz~ lfnoise~ lincong~ logistic~ quad~ rampnoise~ randpulse~ randpulse2~ standard~ stepnoise~ pink~ xmod~ xmod2~ gendyn~}}
+                {white~ brown~ perlin~ crackle~ cusp~ fbsine~ fbsine2~ gbman~ gray~ henon~ ikeda~ latoocarfian~ lorenz~ lfnoise~ lincong~ logistic~ quad~ stepnoise~ stepnoise.mc~ rampnoise~ rampnoise.mc~ randpulse~ randpulse2~ standard~ pink~ xmod~ xmod2~ gendyn~}}
             {control:\ mouse\ keyboard
                 {mouse canvas.mouse keycode keymap}}
             {control:\ fade\ pan\ routing
