@@ -7,27 +7,24 @@ static t_class *wrap2_class;
 
 typedef struct _wrap2{
     t_object   x_obj;
-    t_inlet   *x_low_let;
-    t_inlet   *x_high_let;
+    t_float    x_low;
+    t_float    x_high;
     t_outlet  *x_outlet;
 }t_wrap2;
 
 static t_int *wrap2_perform(t_int *w){
-    int n = (t_int)(w[2]);
-    t_float *in1 = (t_float *)(w[3]);
-    t_float *in2 = (t_float *)(w[4]);
-    t_float *in3 = (t_float *)(w[5]);
-    t_float *out = (t_sample *)(w[6]);
+    t_wrap2 *x = (t_wrap2 *)(w[1]);
+    t_sample *in = (t_sample *)(w[2]);
+    t_sample *out = (t_sample *)(w[3]);
+    int n = (int)(w[4]);
     while(n--){
         t_float output;
-        float input = *in1++;
-        float in_low = *in2++;
-        float in_high = *in3++;
-        float low = in_low;
-        float high = in_high;
+        float input = *in++;
+        float low = x->x_low;
+        float high = x->x_high;
         if(low > high){
-            low = in_high;
-            high = in_low;
+            low = x->x_high;
+            high = x->x_low;
         }
         float range = high - low;
         if(low == high)
@@ -43,19 +40,13 @@ static t_int *wrap2_perform(t_int *w){
         }
         *out++ = output;
     }
-    return (w + 7);
+    return(w+5);
 }
 
 static void wrap2_dsp(t_wrap2 *x, t_signal **sp){
-    dsp_add(wrap2_perform, 6, x, sp[0]->s_n,
-            sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
-}
-
-static void *wrap2_free(t_wrap2 *x){
-    inlet_free(x->x_low_let);
-    inlet_free(x->x_high_let);
-    outlet_free(x->x_outlet);
-    return (void *)x;
+    signal_setmultiout(&sp[1], sp[0]->s_nchans);
+    dsp_add(wrap2_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec,
+        ((t_int)((sp[0])->s_length * (sp[0])->s_nchans)));
 }
 
 static void *wrap2_new(t_symbol *s, int ac, t_atom *av){
@@ -107,12 +98,12 @@ static void *wrap2_new(t_symbol *s, int ac, t_atom *av){
         high = init_low;
     }
 /////////////////////////////////////////////////////////////////////////////////////
-    x->x_low_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_low_let, low);
-    x->x_high_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_high_let, high);
-    x->x_outlet = outlet_new(&x->x_obj, &s_signal);
-    return (x);
+    x->x_low = low;
+    x->x_high = high;
+    floatinlet_new(&x->x_obj, &x->x_low);
+    floatinlet_new(&x->x_obj, &x->x_high);
+    outlet_new(&x->x_obj, &s_signal);
+    return(x);
     errstate:
         pd_error(x, "[wrap2~]: improper args");
         return NULL;
@@ -120,7 +111,7 @@ static void *wrap2_new(t_symbol *s, int ac, t_atom *av){
 
 void wrap2_tilde_setup(void){
     wrap2_class = class_new(gensym("wrap2~"), (t_newmethod)wrap2_new,
-        (t_method)wrap2_free, sizeof(t_wrap2), CLASS_DEFAULT, A_GIMME, 0);
+        0, sizeof(t_wrap2), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(wrap2_class, nullfn, gensym("signal"), 0);
     class_addmethod(wrap2_class, (t_method)wrap2_dsp, gensym("dsp"), A_CANT, 0);
 }
