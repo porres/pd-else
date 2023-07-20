@@ -1009,9 +1009,9 @@ static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
 }
 
 static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
-    alt = 0;
+    dbl = 0;
     t_knob *x = (t_knob *)z;
-    if(dbl){
+    if(alt && doit){
         knob_set(x, x->x_init);
         knob_bang(x);
         return(1);

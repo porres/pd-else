@@ -261,9 +261,9 @@ static void numbox_motion(t_numbox *x, t_floatarg dx, t_floatarg dy, t_floatarg 
 }
 
 static int numbox_newclick(t_gobj *z, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
-    alt = 0;
+    dbl = 0;
     t_numbox* x = (t_numbox *)z;
-    if(dbl){
+    if(alt && doit){
         numbox_float(x, x->x_set_val);
         return(1);
     }
