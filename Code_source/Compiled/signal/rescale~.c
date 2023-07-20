@@ -5,10 +5,6 @@
 
 typedef struct _rescale{
     t_object  x_obj;
-    t_inlet  *x_inlet_1;
-    t_inlet  *x_inlet_2;
-    t_inlet  *x_inlet_3;
-    t_inlet  *x_inlet_4;
     t_float   x_exp;
     int       x_log;
     t_int     x_clip;
@@ -77,31 +73,20 @@ static float convert(t_rescale *x, float f){
         return((1 - pow(1-p, -x->x_exp)) * rangeout + minout);
 }
 
-static t_int *rescale_perform1(t_int *w){
+static t_int *rescale_perform(t_int *w){
     t_rescale *x = (t_rescale *)(w[1]);
-    int n = (int)(w[2]);
-    t_float *in1 = (t_float *)(w[3]);
-    t_float *in2 = (t_float *)(w[4]);
-    t_float *in3 = (t_float *)(w[5]);
-    t_float *out = (t_float *)(w[6]);
-    while(n--){
-        float f = *in1++;
-        x->x_minout = *in2++; // Output LOW
-        x->x_maxout = *in3++; // Output HIGH
-        *out++ = convert(x, f);
-    }
-    return(w+7);
+    t_sample *in = (t_sample *)(w[2]);
+    t_sample *out = (t_sample *)(w[3]);
+    int n = (int)(w[4]);
+    while(n--)
+        *out++ = convert(x, *in++);
+    return(w+5);
 }
 
 static void rescale_dsp(t_rescale *x, t_signal **sp){
-    dsp_add(rescale_perform1, 6, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec,
-        sp[2]->s_vec, sp[3]->s_vec);
-}
-
-static void *rescale_free(t_rescale *x){
-    inlet_free(x->x_inlet_1);
-    inlet_free(x->x_inlet_2);
-    return(void *)x;
+    signal_setmultiout(&sp[1], sp[0]->s_nchans);
+    dsp_add(rescale_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec,
+        ((t_int)((sp[0])->s_length * (sp[0])->s_nchans)));
 }
 
 static void *rescale_new(t_symbol *s, int ac, t_atom *av){
@@ -149,10 +134,8 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
             ac--, av++;
         }
     }
-    x->x_inlet_1 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_inlet_1, x->x_minout = x->x_minout);
-    x->x_inlet_2 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_inlet_2, x->x_maxout = x->x_maxout);
+    floatinlet_new(&x->x_obj, &x->x_minout);
+    floatinlet_new(&x->x_obj, &x->x_maxout);
     outlet_new((t_object *)x, &s_signal);
     return(x);
 errstate:
@@ -162,7 +145,7 @@ errstate:
 
 void rescale_tilde_setup(void){
     rescale_class = class_new(gensym("rescale~"),(t_newmethod)rescale_new,
-        (t_method)rescale_free, sizeof(t_rescale), 0, A_GIMME, 0);
+        0, sizeof(t_rescale), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(rescale_class, nullfn, gensym("signal"), 0);
     class_addmethod(rescale_class, (t_method)rescale_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(rescale_class, (t_method)rescale_in, gensym("in"), A_FLOAT, A_FLOAT, 0);
