@@ -48,18 +48,10 @@ static float convert(t_rescale *x, float f){
     if(f == x->x_maxin)
         return(maxout);
     if(x->x_clip){
-        if(rangeout < 0){
-            if(f > minin)
-                return(minout);
-            else if(f < x->x_maxin)
-                return(maxout);
-        }
-        else{
-            if(f < minin)
-                return(minout);
-            else if(f > x->x_maxin)
-                return(maxout);
-        }
+        if(f < minin)
+            return(minout);
+        else if(f > x->x_maxin)
+            return(maxout);
     }
     float p = (f-minin)/rangein; // position
     if(x->x_log){ // 'log'
