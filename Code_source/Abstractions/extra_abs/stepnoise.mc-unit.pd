@@ -1,0 +1,6 @@
+#N canvas 211 373 329 306 12;
+#X obj 110 86 inlet~;
+#X obj 110 197 outlet~;
+#X obj 110 143 else/stepnoise~;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
