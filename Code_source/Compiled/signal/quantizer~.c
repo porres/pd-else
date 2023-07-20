@@ -8,6 +8,7 @@ static t_class *quantizer_class;
 typedef struct _quantizer{
 	t_object    x_obj;
 	t_float     x_mode;
+    t_float     x_f;
 }t_quantizer;
 
 static void quantizer_mode(t_quantizer *x, t_float f){
@@ -20,14 +21,13 @@ static void quantizer_mode(t_quantizer *x, t_float f){
 
 static t_int *quantizer_perform(t_int *w){
 	t_quantizer *x = (t_quantizer *)(w[1]);
-	t_float *in1 = (t_float *)(w[2]);
-	t_float *in2 = (t_float *)(w[3]);
-	t_float *out = (t_float *)(w[4]);
-	int n = (int)(w[5]);
+    t_sample *input = (t_sample *)(w[2]);
+    t_sample *out = (t_sample *)(w[3]);
+    int n = (int)(w[4]);
 	while(n--){
 		float output, div;
-		float in = *(in1++);
-		float step = *(in2++);
+		float in = *(input++);
+		float step = x->x_f;
 		if(step > 0.){ // quantize
 			div = in/step; // get division
 			if(x->x_mode == 0) // round
@@ -43,12 +43,15 @@ static t_int *quantizer_perform(t_int *w){
 			output = in;
 		*out++ = output;
 	};
-	return(w+6);
+	return(w+5);
 }
 
 static void quantizer_dsp(t_quantizer *x, t_signal **sp){
-	dsp_add(quantizer_perform, 5, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[0]->s_n);
+    signal_setmultiout(&sp[1], sp[0]->s_nchans);
+    dsp_add(quantizer_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec,
+        ((t_int)((sp[0])->s_length * (sp[0])->s_nchans)));
 }
+
 
 static void *quantizer_new(t_symbol *s, int argc, t_atom *argv){
     s = NULL;
@@ -92,7 +95,8 @@ static void *quantizer_new(t_symbol *s, int argc, t_atom *argv){
         x->x_mode = 0;
     if(x->x_mode > 3)
         x->x_mode = 3;
-    pd_float( (t_pd *)inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal), f);
+    x->x_f = f;
+    floatinlet_new(&x->x_obj, &x->x_f);
     outlet_new(&x->x_obj, gensym("signal"));
     return(x);
 errstate:
@@ -102,7 +106,7 @@ errstate:
 
 void quantizer_tilde_setup(void){
 	quantizer_class = class_new(gensym("quantizer~"), (t_newmethod)quantizer_new, 0,
-            sizeof(t_quantizer), 0, A_GIMME, 0);
+            sizeof(t_quantizer), CLASS_MULTICHANNEL, A_GIMME, 0);
 	class_addmethod(quantizer_class, nullfn, gensym("signal"), 0);
 	class_addmethod(quantizer_class, (t_method)quantizer_dsp, gensym("dsp"), A_CANT, 0);
 	class_addmethod(quantizer_class, (t_method)quantizer_mode,  gensym("mode"), A_FLOAT, 0);
