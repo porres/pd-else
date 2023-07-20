@@ -21,9 +21,6 @@ uname := $(shell uname -s)
 # Sources: ##############################################################
 #########################################################################
 
-# shit:
-oldrescale.class.sources := Code_source/extra_source/oldrescale.c
-
 # Lib:
 else.class.sources := Code_source/Compiled/control/else.c
 
