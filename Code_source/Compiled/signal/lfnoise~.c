@@ -104,55 +104,32 @@ static void *lfnoise_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_lfnoise *x = (t_lfnoise *)pd_new(lfnoise_class);
     x->x_id = random_get_id();
-    lfnoise_seed(x, s, 0, NULL);
+    int seeded = 0;
 // default parameters
     t_float hz = 0;
     t_int interp = 0;
     int numargs = 0;
-    while(ac){
-        if(av->a_type == A_SYMBOL){
-            if(ac >= 2 && atom_getsymbol(av) == gensym("-seed")){
-                t_atom at[1];
-                SETFLOAT(at, atom_getfloat(av+1));
-                ac-=2, av+=2;
-                lfnoise_seed(x, s, 1, at);
-            }
-            else
-                goto errstate;
+    if(av->a_type == A_SYMBOL){
+        if(ac >= 2 && atom_getsymbol(av) == gensym("-seed")){
+            t_atom at[1];
+            SETFLOAT(at, atom_getfloat(av+1));
+            ac-=2, av+=2;
+            lfnoise_seed(x, s, 1, at);
+            seeded = 1;
         }
-        else{
-            switch(numargs){
-                case 0: hz = atom_getfloat(av);
-                    numargs++;
-                    ac--;
-                    av++;
-                    break;
-                case 1: interp = atom_getfloat(av) != 0;
-                    numargs++;
-                    ac--;
-                    av++;
-                    break;
-                default:
-                    ac--;
-                    av++;
-                    break;
-            };
-        }
+        else
+            goto errstate;
     }
-    if(hz >= 0)
-        x->x_phase = 1.;
+    if(ac && av->a_type == A_FLOAT)
+        hz = atom_getfloat(av);
+    if(ac && av->a_type == A_FLOAT)
+        interp = atom_getfloat(av) != 0;
     x->x_freq = hz;
     x->x_interp = interp != 0;
-// get 1st output
-    uint32_t *s1 = &x->x_rstate.s1;
-    uint32_t *s2 = &x->x_rstate.s2;
-    uint32_t *s3 = &x->x_rstate.s3;
-    x->x_ynp1 = (t_float)(random_frand(s1, s2, s3));
 // in/out
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     outlet_new(&x->x_obj, &s_signal);
     pd_float((t_pd *)x->x_inlet_sync, 0);
-// done
     return(x);
 errstate:
     pd_error(x, "[lfnoise~]: improper args");
