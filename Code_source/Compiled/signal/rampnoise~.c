@@ -32,8 +32,8 @@ static t_int *rampnoise_perform(t_int *w){
     t_float *in1 = (t_float *)(w[3]);
     t_float *out = (t_sample *)(w[4]);
     double phase = x->x_phase;
-    t_float ynp1 = x->x_ynp1;
     t_float yn = x->x_yn;
+    t_float ynp1 = x->x_ynp1;
     double sr = x->x_sr;
     while(nblock--){
         uint32_t *s1 = &x->x_rstate.s1;
@@ -81,7 +81,7 @@ static void *rampnoise_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_rampnoise *x = (t_rampnoise *)pd_new(rampnoise_class);
     x->x_id = random_get_id();
-    rampnoise_seed(x, s, 0, NULL);
+    int seeded = 0;
 // default parameters
     t_float hz = 0;
     if(ac){
@@ -91,6 +91,7 @@ static void *rampnoise_new(t_symbol *s, int ac, t_atom *av){
                 SETFLOAT(at, atom_getfloat(av+1));
                 ac-=2, av+=2;
                 rampnoise_seed(x, s, 1, at);
+                seeded = 1;
             }
             else
                 goto errstate;
@@ -98,17 +99,10 @@ static void *rampnoise_new(t_symbol *s, int ac, t_atom *av){
         if(av->a_type == A_FLOAT)
             hz = atom_getfloat(av);
     }
-    if(hz >= 0)
-        x->x_phase = 1.;
+    if(!seeded)
+        rampnoise_seed(x, s, 0, NULL);
     x->x_freq = hz;
-// get 1st output
-    uint32_t *s1 = &x->x_rstate.s1;
-    uint32_t *s2 = &x->x_rstate.s2;
-    uint32_t *s3 = &x->x_rstate.s3;
-    x->x_ynp1 = (t_float)(random_frand(s1, s2, s3));
-// in/out
     outlet_new(&x->x_obj, &s_signal);
-// done
     return(x);
 errstate:
     pd_error(x, "[rampnoise~]: improper args");

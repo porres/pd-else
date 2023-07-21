@@ -69,7 +69,7 @@ static void *stepnoise_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_stepnoise *x = (t_stepnoise *)pd_new(stepnoise_class);
     x->x_id = random_get_id();
-    stepnoise_seed(x, s, 0, NULL);
+    int seeded = 0;
 // default parameters
     t_float hz = 0;
     if(ac){
@@ -79,6 +79,7 @@ static void *stepnoise_new(t_symbol *s, int ac, t_atom *av){
                 SETFLOAT(at, atom_getfloat(av+1));
                 ac-=2, av+=2;
                 stepnoise_seed(x, s, 1, at);
+                seeded = 1;
             }
             else
                 goto errstate;
@@ -86,8 +87,8 @@ static void *stepnoise_new(t_symbol *s, int ac, t_atom *av){
         if(av->a_type == A_FLOAT)
            hz = atom_getfloat(av);
     }
-    if(hz >= 0)
-        x->x_phase = 1.;
+    if(!seeded)
+        stepnoise_seed(x, s, 0, NULL);
     x->x_freq = hz;
     outlet_new(&x->x_obj, &s_signal);
     return(x);
