@@ -201,6 +201,7 @@ peak~.class.sources := Code_source/Compiled/signal/peak~.c
 pmosc~.class.sources := Code_source/Compiled/signal/pmosc~.c
 phaseseq~.class.sources := Code_source/Compiled/signal/phaseseq~.c
 pulsecount~.class.sources := Code_source/Compiled/signal/pulsecount~.c
+pick~.class.sources := Code_source/Compiled/signal/pick~.c
 pimpmul~.class.sources := Code_source/Compiled/signal/pimpmul~.c
 pulsediv~.class.sources := Code_source/Compiled/signal/pulsediv~.c
 quad~.class.sources := Code_source/Compiled/signal/quad~.c
