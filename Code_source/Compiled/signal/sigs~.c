@@ -25,16 +25,23 @@ static void *sigs_tilde_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     int i;
     t_sigs *x = (t_sigs *)pd_new(sigs_tilde_class);
-    if(ac >= 1){
+    if(!ac){
+        x->x_vec = (t_atom *)getbytes(2 * sizeof(*x->x_vec));
+        SETFLOAT(x->x_vec, 0);
+        SETFLOAT(x->x_vec+1, 0);
+        x->x_n = 2;
+    }
+    else if(ac == 1){
+        x->x_vec = (t_atom *)getbytes(2 * sizeof(*x->x_vec));
+        SETFLOAT(x->x_vec, atom_getfloat(av));
+        SETFLOAT(x->x_vec+1, 0);
+        x->x_n = 2;
+    }
+    else if(ac >= 2){
         x->x_vec = (t_atom *)getbytes(ac * sizeof(*x->x_vec));
         for(i = 0; i < ac; i++)
             SETFLOAT(x->x_vec + i, atom_getfloat(av + i));
         x->x_n = ac;
-    }
-    else{
-        x->x_vec = (t_atom *)getbytes(sizeof(*x->x_vec));
-        SETFLOAT(x->x_vec, 0);
-        x->x_n = 1;
     }
     for(i = 1; i < x->x_n; i++)
         floatinlet_new(&x->x_obj, &x->x_vec[i].a_w.w_float);
