@@ -79,10 +79,6 @@ jobs:
         make PDINCLUDEDIR=./pure-data/src/ extension=l_amd64
 
     - name: Create Library Folder
-      # ./Code_source/Compiled/signal/sfont~/scripts/localdeps.linux.sh ./else-Linux/sfont~.l_amd64
-      #mv -v ./else-Linux/sfont~/* ./else-Linux/
-      # rename 
-
       run: | 
         cp *.l_amd64 ./else-Linux
         cp ./Documentation/Help-files/* ./else-Linux
@@ -92,6 +88,7 @@ jobs:
         cp -r ./Code_source/Abstractions/libpd/* ./else-Linux
         cp -r ./Documentation/Live-Electronics-Tutorial ./else-Linux
         cp -r ./Code_source/Compiled/signal/plaits~/*.l_amd64 ./else-Linux
+        cp -r ./Code_source/extra_source/*.tcl ./else-Linux
         cp -r ./Code_source/Compiled/signal/sfz~/sfizz/build/pd/sfizz/sfizz.pd_linux ./else-Linux
         mv ./else-Linux/sfizz.pd_linux ./else-Linux/sfz~.l_amd64
         cp -r ./Documentation/extra_files/* ./else-Linux
@@ -224,6 +221,7 @@ jobs:
         cp -r ./Code_source/Compiled/signal/sfz~/sfizz/build/pd/sfizz/*.pd_darwin ./else-MacOS
         mv ./else-MacOS/sfizz.pd_darwin ./else-MacOS/sfz~.d_amd64
         cp -r ./Code_source/Compiled/signal/sfont~/sfont-compiled/* ./else-MacOS
+        cp -r ./Code_source/Compiled/signal/sfont~/sf ./else-MacOS
         
     - name: Upload Zip
       uses: actions/upload-artifact@v3
