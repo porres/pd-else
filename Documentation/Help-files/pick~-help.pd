@@ -20,7 +20,7 @@
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -89,7 +89,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -139,7 +139,7 @@
 #X obj 191 99 else/cusp~ 450;
 #X obj 357 251 else/spectrograph~ 1024 1 1 300 140 100;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -208,7 +208,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -252,11 +252,13 @@
 #X obj 136 165 hradio 16 1 0 5 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0;
 #X obj 136 186 * -1;
 #X obj 234 161 else/sigs~ 1 2 3;
-#X text 37 91 [pick~] picks a channel from a multichannel connection. The channel is specified via argument or float input and is indexed from 1 (0 gives "none"). Negative values count from last to the first element. If you ask for an element number out of the range \, nothing is output., f 70;
 #X obj 234 240 else/pick~ -1;
+#X text 24 245 see also;
+#X obj 24 264 else/pick;
+#X text 37 91 [pick~] picks a channel from a multichannel connection. The channel is specified via argument or float input and is indexed from 1 (0 gives "none"). Negative values count from last to the first element. If you ask for an element number out of the range \, you also get "none"., f 70;
 #X connect 18 0 21 0;
-#X connect 21 0 30 0;
+#X connect 21 0 29 0;
 #X connect 26 0 27 0;
 #X connect 27 0 21 0;
-#X connect 28 0 30 0;
-#X connect 30 0 19 0;
+#X connect 28 0 29 0;
+#X connect 29 0 19 0;
