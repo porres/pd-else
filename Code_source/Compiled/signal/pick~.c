@@ -15,12 +15,27 @@ static void pick_float(t_pick *x, t_floatarg f){
 }
     
 static void pick_dsp(t_pick *x, t_signal **sp){
-    int ch = (x->x_ch < sp[0]->s_nchans ? x->x_ch : sp[0]->s_nchans) - 1;
     signal_setmultiout(&sp[1], 1);
-    if(ch >= 0)
-        dsp_add_copy(sp[0]->s_vec + ch * sp[0]->s_length, sp[1]->s_vec, sp[0]->s_length);
-    else
+    int ch = x->x_ch;
+    if(ch == 0){
         dsp_add_zero(sp[1]->s_vec, sp[0]->s_length);
+        return;
+    }
+    else if(ch > 0){
+        if(ch > x->x_ch){
+            dsp_add_zero(sp[1]->s_vec, sp[0]->s_length);
+            return;
+        }
+        ch--;
+    }
+    else{ // negative
+        ch += sp[0]->s_nchans;
+        if(ch < 0){
+            dsp_add_zero(sp[1]->s_vec, sp[0]->s_length);
+            return;
+        }
+    }
+    dsp_add_copy(sp[0]->s_vec + ch * sp[0]->s_length, sp[1]->s_vec, sp[0]->s_length);
 }
 
 static void *pick_new(t_floatarg f){

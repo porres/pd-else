@@ -19,7 +19,6 @@
 #X text 37 91 [get~] gets one or more channels from a multichannel connection. The channels are indexed from 1 (0 or less gives "none" \, the max channel number value is clipped to the input's channel size). You can give it lists to build or remap the signal arbitrarily like you'd do wtih dollar signs in a message., f 77;
 #X obj 215 162 else/sigs~ 1 2 3;
 #X obj 215 324 else/s2f~;
-#X obj 215 294 else/get~;
 #X obj 4 386 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 3 447 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 3 483 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -36,11 +35,12 @@
 #X msg 115 202 1 2 0 2 1;
 #X obj 236 196 hradio 16 1 0 5 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0;
 #X msg 260 223 3 2 1;
-#X connect 14 0 16 0;
+#X obj 215 294 else/get~ 2;
+#X connect 14 0 32 0;
 #X connect 15 0 11 0;
-#X connect 16 0 15 0;
-#X connect 28 0 16 0;
-#X connect 29 0 28 0;
-#X connect 30 0 28 0;
-#X connect 31 0 28 0;
-#X connect 32 0 28 0;
+#X connect 27 0 32 0;
+#X connect 28 0 27 0;
+#X connect 29 0 27 0;
+#X connect 30 0 27 0;
+#X connect 31 0 27 0;
+#X connect 32 0 15 0;
