@@ -4,10 +4,13 @@
 
 static t_class *remap_class;
 
+#define INPUTLIMIT 32768 // 512 * 64
+
 typedef struct _remap{
     t_object x_obj;
     int      x_n;
     t_atom  *x_vec;
+    float   *x_in[INPUTLIMIT];
 }t_remap;
 
 static void remap_list(t_remap *x, t_symbol *s, int ac, t_atom *av){
@@ -21,23 +24,39 @@ static void remap_list(t_remap *x, t_symbol *s, int ac, t_atom *av){
     canvas_update_dsp();
 }
     
+static t_int *remap_perform(t_int *w){
+    t_remap *x = (t_remap *)(w[1]);
+    t_int n = (t_int)(w[2]);
+    t_int nchans = (t_int)(w[3]);
+    t_sample *in = (t_sample *)(w[4]);
+    t_sample *out = (t_sample *)(w[5]);
+    int i;
+    for(i = 0; i < n*nchans; i++){
+        x->x_in[i] = (&*in++); // copy input
+//        float f = *in++;
+//        post("f = %f", f);
+    }
+    for(i = 0; i < x->x_n; i++){ // channels to copy
+        int ch = x->x_vec[i].a_w.w_float - 1; // get channel number
+        if(ch >= nchans)
+            ch = nchans - 1;
+        for(int j = 0; j < n; j++){ // j is sample number of each channel
+            if(ch >= 0)
+                *out++ = *x->x_in[ch*n + j];
+            else
+                *out++ = 0;
+        }
+    }
+    return(w+6);
+}
+
 static void remap_dsp(t_remap *x, t_signal **sp){
     signal_setmultiout(&sp[1], x->x_n);
-    int length = sp[0]->s_length;
-    for(int i = 0; i < x->x_n; i++){
-        int ch = x->x_vec[i].a_w.w_float;
-        if(ch > sp[0]->s_nchans)
-            ch = sp[0]->s_nchans;
-        ch--;
-        post("----------------");
-        post("ch(%d)*length(%d) = %d", ch, length, ch*length);
-        post("i(%d)*length(%d) = %d", i, length, i*length);
-        if(ch >= 0)
-            dsp_add_copy(sp[0]->s_vec + ch*length, sp[1]->s_vec + i*length, length);
-        else
-            dsp_add_zero(sp[1]->s_vec + i*length, length);
-    }
-    post("");
+    post("x->x_n = %d", x->x_n);
+    post("length = %d", sp[0]->s_length);
+    post("nchans = %d", sp[0]->s_nchans);
+    dsp_add(remap_perform, 5, x, sp[0]->s_length, sp[0]->s_nchans,
+        sp[0]->s_vec, sp[1]->s_vec);
 }
 
 static void *remap_new(t_symbol *s, int ac, t_atom *av){
