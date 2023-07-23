@@ -226,6 +226,7 @@ slew~.class.sources := Code_source/Compiled/signal/slew~.c
 slew2~.class.sources := Code_source/Compiled/signal/slew2~.c
 s2f~.class.sources := Code_source/extra_source/Aliases/s2f~.c
 sequencer~.class.sources := Code_source/Compiled/signal/sequencer~.c
+select~.class.sources := Code_source/Compiled/signal/select~.c
 sr~.class.sources := Code_source/Compiled/signal/sr~.c
 status~.class.sources := Code_source/Compiled/signal/status~.c
 standard~.class.sources := Code_source/Compiled/signal/standard~.c
