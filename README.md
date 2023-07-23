@@ -143,8 +143,8 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     sr~ nyquist~ pi e
 #logic
     loop
-#audio tools
-    nchs~ sum~ pick~ sigs~
+#audio multichannel tools
+    nchs~ pick~ get~ sum~ sigs~
 #fx: assorted
     downsample~ conv~ chorus~ shaper~ crusher~ drive~ power~ flanger~ freq.shift~ pitch.shift~ stretch.shift~ stretch.shift~ ping.pong~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~ phaser~
 #fx: delay
