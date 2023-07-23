@@ -19,21 +19,11 @@ static t_int * sum_perform(t_int *w){
     t_sample *in = (t_sample *)(w[2]);
     t_sample *out = (t_sample *)(w[3]);
     int nchs = (int)(w[4]);
-    int i, j;
-    for(i = 0; i < n; i++){
-        for(j = 0; j < nchs-1; j++)
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < nchs-1; j++)
             out[i] += in[j*n + i];
     }
     return(w+5);
-}
-
-static t_int *nop_perform(t_int *w){
-    t_sample *in = (t_sample *)(w[1]);
-    t_sample *out = (t_sample *)(w[2]);
-    int n = (int)(w[3]);
-    while(n--)
-        *out++ = *in++;
-    return(w+4);
 }
 
 static void sum_dsp(t_sum *x, t_signal **sp){
@@ -44,11 +34,7 @@ static void sum_dsp(t_sum *x, t_signal **sp){
     }
     else{
         signal_setmultiout(&sp[1], sp[0]->s_nchans);
-        int n = sp[0]->s_length * sp[0]->s_nchans;
-        t_sample *in = sp[0]->s_vec;
-        t_sample *out = sp[1]->s_vec;
-        for(int i = 1; i--; )
-            dsp_add(nop_perform, 3, in + i*n, out + i*n, n - i*n);
+        dsp_add_copy(sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_nchans*sp[0]->s_n);
     }
 }
 
