@@ -31,7 +31,7 @@ static void *select_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_select *x = (t_select *)pd_new(select_class);
     x->x_n = 2;
-    x->x_sel = 1;
+    x->x_sel = 0;
     if(ac){
         x->x_n = atom_getfloat(av);
         ac--, av++;

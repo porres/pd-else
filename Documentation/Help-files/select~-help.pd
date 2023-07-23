@@ -124,9 +124,9 @@
 #X obj 112 175 hradio 16 1 0 5 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0;
 #X floatatom 112 198 4 0 0 0 - - - 0;
 #X listbox 213 319 11 0 0 0 - - - 0;
-#X obj 253 191 else/sigs~ 3 2;
+#X obj 259 191 else/sigs~ 3 2;
 #X obj 213 161 else/sigs~ 1 2 3 4 5;
-#X obj 294 224 sig~ 13;
+#X obj 306 224 sig~ 13;
 #X text 195 357 float - input to select;
 #X obj 134 380 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 171 381 signal(s) - input signals to select from;
@@ -134,10 +134,11 @@
 #X text 133 454 1) float - number of input signals (default 2);
 #X text 133 471 2) float - initially selected input (default 0);
 #X text 37 91 [select~] selects an input signal without crossfade and the signals can be of different channel sizes. The number of inputs is set via the 1st argument. The 2nd argument sets the initial input (indexed from 1). The selection is clipped to the number of inputs., f 71;
-#X obj 30 295 else/xselect~;
-#X text 32 270 see also:;
+#X obj 30 287 else/xselect~;
+#X text 32 262 see also:;
 #X obj 213 290 else/s2f~;
-#X obj 213 256 else/select~ 3;
+#X obj 213 256 else/select~ 3 2;
+#X obj 30 310 else/xselect2~;
 #X connect 18 0 19 0;
 #X connect 19 0 34 0;
 #X connect 21 0 34 1;
