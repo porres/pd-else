@@ -166,6 +166,7 @@ fold~.class.sources := Code_source/Compiled/signal/fold~.c
 freq.shift~.class.sources := Code_source/Compiled/signal/freq.shift~.c
 gbman~.class.sources := Code_source/Compiled/signal/gbman~.c
 gate2imp~.class.sources := Code_source/Compiled/signal/gate2imp~.c
+get~.class.sources := Code_source/Compiled/signal/get~.c
 giga.rev~.class.sources := Code_source/Compiled/signal/giga.rev~.c
 glide~.class.sources := Code_source/Compiled/signal/glide~.c
 glide2~.class.sources := Code_source/Compiled/signal/glide2~.c
