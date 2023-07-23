@@ -10,7 +10,6 @@ typedef struct _remap{
     t_object x_obj;
     int      x_n;
     t_atom  *x_vec;
-    float   *x_in[INPUTLIMIT];
 }t_remap;
 
 static void remap_list(t_remap *x, t_symbol *s, int ac, t_atom *av){
@@ -30,19 +29,13 @@ static t_int *remap_perform(t_int *w){
     t_int nchans = (t_int)(w[3]);
     t_sample *in = (t_sample *)(w[4]);
     t_sample *out = (t_sample *)(w[5]);
-    int i;
-    for(i = 0; i < n*nchans; i++){
-        x->x_in[i] = (&*in++); // copy input
-//        float f = *in++;
-//        post("f = %f", f);
-    }
-    for(i = 0; i < x->x_n; i++){ // channels to copy
+    for(int i = 0; i < x->x_n; i++){ // channels to copy
         int ch = x->x_vec[i].a_w.w_float - 1; // get channel number
         if(ch >= nchans)
             ch = nchans - 1;
         for(int j = 0; j < n; j++){ // j is sample number of each channel
             if(ch >= 0)
-                *out++ = *x->x_in[ch*n + j];
+                *out++ = in[ch*n + j];
             else
                 *out++ = 0;
         }
@@ -52,9 +45,9 @@ static t_int *remap_perform(t_int *w){
 
 static void remap_dsp(t_remap *x, t_signal **sp){
     signal_setmultiout(&sp[1], x->x_n);
-    post("x->x_n = %d", x->x_n);
+/*    post("x->x_n = %d", x->x_n);
     post("length = %d", sp[0]->s_length);
-    post("nchans = %d", sp[0]->s_nchans);
+    post("nchans = %d", sp[0]->s_nchans);*/
     dsp_add(remap_perform, 5, x, sp[0]->s_length, sp[0]->s_nchans,
         sp[0]->s_vec, sp[1]->s_vec);
 }
