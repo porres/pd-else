@@ -74,7 +74,7 @@ static void *get_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_get *x = (t_get *)pd_new(get_class);
     x->x_block = x->x_chs = 0;
-    x->x_input = (t_float *)getbytes(sizeof(*x->x_input));
+    x->x_input = (t_float *)getbytes(0);
     if(!ac){
         x->x_vec = (t_float *)getbytes(sizeof(*x->x_vec));
         x->x_vec[0] = 0;
