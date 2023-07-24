@@ -11,31 +11,40 @@ typedef struct _pick{
 
 static void pick_float(t_pick *x, t_floatarg f){
     x->x_ch = f;
-    canvas_update_dsp();
+}
+
+static t_int *pick_perform(t_int *w){
+    t_pick *x = (t_pick *)(w[1]);
+    t_int n = (t_int)(w[2]);
+    t_int nchans = (t_int)(w[3]);
+    t_sample *in = (t_sample *)(w[4]);
+    t_sample *out = (t_sample *)(w[5]);
+    int i, ch = x->x_ch;
+    if(ch == 0 || ch > nchans){
+        for(i = 0; i < n; i++)
+            *out++ = 0;
+    }
+    else if(ch < 0){ // negative
+        ch += nchans;
+        if(ch < 0){
+            for(i = 0; i < n; i++)
+                *out++ = 0;
+        }
+        else
+            for(i = 0; i < n; i++)
+                *out++ = in[ch*n+i];
+    }
+    else{
+        ch--;
+        for(i = 0; i < n; i++)
+            *out++ = in[ch*n+i];
+    }
+    return(w+6);
 }
     
 static void pick_dsp(t_pick *x, t_signal **sp){
     signal_setmultiout(&sp[1], 1);
-    int ch = x->x_ch;
-    if(ch == 0){
-        dsp_add_zero(sp[1]->s_vec, sp[0]->s_length);
-        return;
-    }
-    else if(ch > 0){
-        if(ch > x->x_ch){
-            dsp_add_zero(sp[1]->s_vec, sp[0]->s_length);
-            return;
-        }
-        ch--;
-    }
-    else{ // negative
-        ch += sp[0]->s_nchans;
-        if(ch < 0){
-            dsp_add_zero(sp[1]->s_vec, sp[0]->s_length);
-            return;
-        }
-    }
-    dsp_add_copy(sp[0]->s_vec + ch * sp[0]->s_length, sp[1]->s_vec, sp[0]->s_length);
+    dsp_add(pick_perform, 5, x, sp[0]->s_n, sp[0]->s_nchans, sp[0]->s_vec, sp[1]->s_vec);
 }
 
 static void *pick_new(t_floatarg f){
