@@ -24,6 +24,7 @@ static void get_list(t_get *x, t_symbol *s, int ac, t_atom *av){
         x->x_n = ac;
         for(int i = 0; i < ac; i++)
             x->x_vec[i] = atom_getfloat(av+i);
+        canvas_update_dsp();
     }
     else for(int i = 0; i < ac; i++)
         x->x_vec[i] = atom_getfloat(av+i);
