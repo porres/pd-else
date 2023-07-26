@@ -1,4 +1,4 @@
-#N canvas 326 270 329 390 12;
+#N canvas 132 251 329 390 12;
 #X obj 66 49 inlet~;
 #X obj 66 301 outlet~;
 #X obj 66 247 else/rampnoise~;
