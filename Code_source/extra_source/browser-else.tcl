@@ -52,7 +52,7 @@ proc category_else_menu::load_menutree {} {
             {logic
                 {loop}}
             {audio\ multichannel\ tools
-                {nchs~ pick~ get~ sum~ sigs~ select~}}
+                {nchs~ pick~ get~ sum~ merge~ sigs~ select~}}
             {fx\ assorted
                 {downsample~ conv~ chorus~ shaper~ crusher~ drive~ power~ flanger~ freq.shift~ pitch.shift~ stretch.shift~ stretch.shift~ ping.pong~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~ phaser~}}
             {fx\ delay
@@ -78,7 +78,7 @@ proc category_else_menu::load_menutree {} {
             {control:\ mouse\ keyboard
                 {mouse canvas.mouse keycode keymap}}
             {control:\ fade\ pan\ routing
-                {fader~ autofade~ autofade2~ balance~ pan2~ pan4~ pan8~ spread~ rotate~ xfade~ xgate~ xgate2~ xselect~ xselect2~ mtx~}}
+                {fader~ autofade~ autofade2~ balance~ pan2~ pan4~ pan8~ spread~ rotate~ xfade~ xgate~ xgate2~ xselect~ xselect2~ xselect.mc~ mtx~}}
             {control:\ sequencers
                 {euclid score score2 pattern sequencer sequencer~ phaseseq~ impseq~ rec rec2}}
             {control:\ envelopes
