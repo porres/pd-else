@@ -131,7 +131,7 @@
 #X text 164 374 In this example you can use a MIDI keyboard to feed the [markov] object. With the [combine] object you can generate lists for chords., f 37;
 #X text 255 75 <= MIDI input;
 #X obj 26 49 else/tempo 120 50;
-#X obj 40 334 else/voices -list 4 1;
+#X obj 40 334 else/voices 4 1;
 #X connect 0 0 11 0;
 #X connect 1 0 3 0;
 #X connect 2 0 18 0;

@@ -10,7 +10,7 @@
 #X obj 215 634 outlet;
 #X obj 272 634 outlet;
 #X obj 107 20 inlet;
-#X obj 201 20 inlet;
+#X obj 183 20 inlet;
 #X obj 71 505 pack f 0;
 #X msg 150 427 0;
 #X obj 150 450 v i_\$0;
@@ -33,8 +33,7 @@
 #X obj 215 609 unpack f f;
 #X obj 80 433 r \$0-flush;
 #X obj 71 405 trigger b b;
-#X obj 215 520 expr last_\$0 = notes_\$0[idx_\$0] \; velocities_\$0[idx_\$0]
-;
+#X obj 215 520 expr last_\$0 = notes_\$0[idx_\$0] \; velocities_\$0[idx_\$0];
 #X obj 215 491 sel 1;
 #X obj 215 381 v on_\$0;
 #X text 416 464 note off & new result;
@@ -43,17 +42,14 @@
 #X text 387 433 note on == result;
 #X obj 396 93 v voice_\$0;
 #X obj 234 433 expr idx_\$0 == voice_\$0;
-#X obj 348 247 expr note_\$0>0 && note_\$0<low_\$0 \; notes_\$0[$f1]
-\; $f1;
+#X obj 348 247 expr note_\$0>0 && note_\$0<low_\$0 \; notes_\$0[$f1] \; $f1;
 #X msg 365 189 128;
 #X obj 181 188 trigger bang bang bang;
 #X obj 215 553 - 1;
-#X obj 107 75 expr mode_\$0 \; order_\$0[voice_\$0] = (i_\$0 = i_\$0+1)
-* on_\$0 \; notes_\$0[voice_\$0] = ($f2 + 1) * on_\$0 \; velocities_\$0[voice_\$0]
-= $f3 \; voice_\$0 = $f1 \; on_\$0 = $f3 > 0;
+#X obj 107 75 expr mode_\$0 \; order_\$0[voice_\$0] = (i_\$0 = i_\$0+1) * on_\$0 \; notes_\$0[voice_\$0] = ($f2 + 1) * on_\$0 \; velocities_\$0[voice_\$0] = $f3 \; voice_\$0 = $f1 \; on_\$0 = $f3 > 0;
 #X obj 71 484 - 1;
 #X obj 245 213 else/loop 10;
-#X obj 107 44 else/voices -list -retrig 1 10 1;
+#X obj 107 44 else/voices -retrig 1 10 1;
 #X connect 2 0 42 0;
 #X connect 3 0 42 1;
 #X connect 4 0 23 0;
@@ -114,8 +110,7 @@
 #X obj 145 151 v legato_\$0;
 #X obj 50 78 route float list legato mode flush clear, f 48;
 #X obj 260 121 t b b;
-#X msg 307 173 clear \; notes_\$1 const 0 \; velocities_\$1 const 0
-\; order_\$1 const 0;
+#X msg 307 173 clear \; notes_\$1 const 0 \; velocities_\$1 const 0 \; order_\$1 const 0;
 #X obj 260 256 s \$0-last;
 #X obj 53 215 moses 0;
 #X obj 97 122 unpack;
@@ -196,8 +191,7 @@
 #X obj 80 63 r \$0-velocity;
 #X floatatom 65 290 5 0 0 0 - - - 0;
 #X floatatom 191 149 5 0 0 0 - - - 0;
-#X obj 209 210 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 209 210 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X connect 0 0 4 0;
 #X connect 2 0 1 0;
 #X connect 2 0 11 0;

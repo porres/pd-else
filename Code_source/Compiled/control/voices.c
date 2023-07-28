@@ -324,7 +324,7 @@ static void *voices_new(t_symbol *s, int argc, t_atom *argv){
     t_voice *v;
 // default
     x->x_offset = 0;
-    x->x_list_mode = 0;
+    x->x_list_mode = 1;
     int retrig = 0;
     int n = 1;
     x->x_steal = 0;
@@ -350,8 +350,8 @@ static void *voices_new(t_symbol *s, int argc, t_atom *argv){
                 else
                     goto errstate;
             }
-            else if(cursym == gensym("-list")){
-                x->x_list_mode = 1;
+            else if(cursym == gensym("-split")){
+                x->x_list_mode = 0;
                 argc--, argv++;
             }
             else

@@ -79,7 +79,7 @@ off;
 #X connect 8 1 0 0;
 #X connect 9 0 1 0;
 #X restore 31 117 pd voice;
-#X obj 92 74 else/voices 6 1, f 38;
+#X obj 92 74 else/voices -split 6 1, f 38;
 #N canvas 292 354 342 369 voice 0;
 #X obj 197 123 / 127;
 #X obj 182 228 *~;

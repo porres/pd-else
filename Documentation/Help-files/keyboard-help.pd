@@ -81,7 +81,7 @@
 #X obj 286 416 else/out~;
 #X obj 67 237 else/keyboard 19 80 3 2 0 0 empty empty;
 #X obj 67 153 else/rand.i 36 72;
-#X obj 67 363 else/voices 4 1;
+#X obj 67 363 else/voices -split 4 1;
 #X obj 67 328 else/display 7;
 #X obj 279 377 else/plate.rev~ 50 0.6 0.25 0.8 0.8, f 18;
 #X text 64 28 In this example [keyboard] displays randomly generated notes and driving 4 voices. Also see that each voice subpatch has [adsr~]'s status outlet to control the DSP status for that subpatch - open and check it. You should also try pd's [clone] object for managing polyphonic synths., f 72;
@@ -242,7 +242,7 @@
 #X connect 11 0 6 0;
 #X connect 12 0 7 0;
 #X restore 48 409 pd voice;
-#X obj 48 301 else/voices 4 1;
+#X obj 48 301 else/voices -split 4 1;
 #X msg 48 94 toggle \$1;
 #X obj 48 66 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 48 34 loadbang;
@@ -408,7 +408,7 @@
 #X connect 11 0 6 0;
 #X connect 12 0 7 0;
 #X restore 51 376 pd voice;
-#X obj 51 268 else/voices 4 1;
+#X obj 51 268 else/voices -split 4 1;
 #X msg 51 87 flush;
 #X obj 280 259 catch~ \$0-shift;
 #X text 130 107 Press shift and test this below.;
@@ -557,7 +557,7 @@
 #X connect 11 0 6 0;
 #X connect 12 0 7 0;
 #X restore 47 408 pd voice;
-#X obj 47 300 else/voices 4 1;
+#X obj 47 300 else/voices -split 4 1;
 #X msg 47 104 norm \$1;
 #X floatatom 47 68 5 0 127 0 - - - 0;
 #X obj 47 261 else/display 7;
