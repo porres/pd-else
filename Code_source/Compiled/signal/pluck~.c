@@ -51,7 +51,7 @@ static void pluck_bang(t_pluck *x){
 
 static void pluck_float(t_pluck *x, t_float f){
     if(f != 0){
-        x->x_float_trig = f;
+        x->x_float_trig = f/127;
         pluck_bang(x);
     }
 }
