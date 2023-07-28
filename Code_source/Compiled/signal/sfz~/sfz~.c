@@ -15,6 +15,7 @@ __attribute__((visibility("default")))
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 static t_class* sfz_class;
 
@@ -23,6 +24,10 @@ typedef struct _sfz{
     sfizz_synth_t  *x_synth;
     t_canvas       *x_canvas;
     int             x_midinum;
+    float           x_a4;
+    int             x_base;
+    float           x_ratio;
+    float           x_bratio;
 //    t_elsefile     *x_elsefilehandle;
 }t_sfz;
 
@@ -62,31 +67,6 @@ static void sfz_click(t_sfz *x){
    elsefile_panel_click_open(x->x_elsefilehandle);
 }*/
 
-static void sfz_open(t_sfz *x, t_symbol *s){
-    if(s && s != &s_)
-        sfz_do_open(x, s);
-//    else
-//        elsefile_panel_click_open(x->x_elsefilehandle);
-}
-
-static void sfz_note(t_sfz* x, t_symbol *s, int ac, t_atom* av){
-    (void)s;
-    if(ac == 2 && av[0].a_type == A_FLOAT && av[1].a_type == A_FLOAT) {
-        int key = (int)av[0].a_w.w_float;
-        if(key < 0 || key > 127)
-            return;
-        int vel = av[1].a_w.w_float;
-        if(vel > 0)
-            sfizz_send_note_on(x->x_synth, 0, key, vel);
-        else
-            sfizz_send_note_off(x->x_synth, 0, key, 0);
-    }
-}
-
-static void sfz_base(t_sfz* x, t_float f){
-    sfizz_set_scala_root_key(x->x_synth, (int)f);
-}
-
 static void sfz_scala(t_sfz* x, t_symbol *s){
     if(!sfizz_load_scala_file(x->x_synth, s->s_name))
         post("[sfz~] could not load scala file");
@@ -103,12 +83,31 @@ static void sfz_scale(t_sfz* x, t_symbol *s, int ac, t_atom* av){
         post("[sfz~] could not load scale");
 }
 
-static void sfz_tuningfreq(t_sfz* x, t_float f){
+static void sfz_setfreq(t_sfz* x, t_float f){
     sfizz_set_tuning_frequency(x->x_synth, f);
 }
 
-static void sfz_tuningstretch(t_sfz* x, t_float r){
-    sfizz_load_stretch_tuning_by_ratio(x->x_synth, r);
+static void sfz_a4(t_sfz* x, t_float f){
+    x->x_a4 = f;
+    sfz_setfreq(x, x->x_a4 * x->x_ratio * x->x_bratio);
+}
+
+static void sfz_transp(t_sfz* x, t_float f){
+    x->x_ratio = pow(2, f/1200);
+    sfz_setfreq(x, x->x_a4 * x->x_ratio * x->x_bratio);
+}
+
+static void sfz_base(t_sfz* x, t_float f){
+    x->x_base = (int)f-60;
+    x->x_bratio = pow(2, (float)x->x_base/12.);
+    sfz_setfreq(x, x->x_a4 * x->x_ratio * x->x_bratio);
+}
+
+static void sfz_open(t_sfz *x, t_symbol *s){
+    if(s && s != &s_)
+        sfz_do_open(x, s);
+//    else
+//        elsefile_panel_click_open(x->x_elsefilehandle);
 }
 
 static void sfz_midiin(t_sfz* x, t_float f){
@@ -137,11 +136,11 @@ static void sfz_midiin(t_sfz* x, t_float f){
         case 0x90: // note on
             if(midi[2] == 0)
                 goto noteoff;
-            sfizz_send_note_on(x->x_synth, 0, midi[1], midi[2]);
+            sfizz_send_note_on(x->x_synth, 0, midi[1] - x->x_base, midi[2]);
             break;
         case 0x80: // note off
         noteoff:
-            sfizz_send_note_off(x->x_synth, 0, midi[1], midi[2]);
+            sfizz_send_note_off(x->x_synth, 0, midi[1] - x->x_base, midi[2]);
             break;
         case 0xb0: // controller
             sfizz_send_cc(x->x_synth, 0, midi[1], midi[2]);
@@ -156,6 +155,20 @@ static void sfz_midiin(t_sfz* x, t_float f){
         break;
     }
     x->x_midinum = midinum;
+}
+
+static void sfz_note(t_sfz* x, t_symbol *s, int ac, t_atom* av){
+    (void)s;
+    if(ac == 2 && av[0].a_type == A_FLOAT && av[1].a_type == A_FLOAT) {
+        int key = (int)av[0].a_w.w_float;
+        if(key < 0 || key > 127)
+            return;
+        int vel = av[1].a_w.w_float;
+        if(vel > 0)
+            sfizz_send_note_on(x->x_synth, 0, key - x->x_base, vel);
+        else
+            sfizz_send_note_off(x->x_synth, 0, key - x->x_base, 0);
+    }
 }
 
 static void sfz_ctl(t_sfz* x, t_float f1, t_float f2){
@@ -181,10 +194,6 @@ static void sfz_polytouch(t_sfz* x, t_float f1, t_float key){
     if(key < 0 || key > 127)
         return;
     sfizz_send_poly_aftertouch(x->x_synth, 0, (int)key, f1);
-}
-
-static void sfz_transp(t_sfz* x, t_float f){
-//    sfizz_set_volume(x->x_synth, f);
 }
 
 static void sfz_volume(t_sfz* x, t_float f){
@@ -242,6 +251,9 @@ static void* sfz_new(t_symbol *s, int ac, t_atom *av){
     x->x_synth = sfizz_create_synth();
     sfizz_set_sample_rate(x->x_synth , sys_getsr());
     sfizz_set_samples_per_block(x->x_synth , sys_getblksize());
+    x->x_a4 = 440;
+    x->x_base = 0;
+    x->x_ratio = x->x_bratio = 1.;
     if(ac == 1 && av[0].a_type == A_SYMBOL)
         sfz_open(x, av[0].a_w.w_symbol);
     return(x);
@@ -263,8 +275,8 @@ void sfz_tilde_setup(){
     class_addmethod(sfz_class, (t_method)sfz_flush, gensym("flush"), 0);
     class_addmethod(sfz_class, (t_method)sfz_open, gensym("open"), A_DEFSYM, 0);
     class_addmethod(sfz_class, (t_method)sfz_scala, gensym("scala"), A_DEFSYM, 0);
-    class_addmethod(sfz_class, (t_method)sfz_tuningfreq, gensym("tuningfreq"), A_FLOAT, 0);
-    class_addmethod(sfz_class, (t_method)sfz_tuningstretch, gensym("tuningstretch"), A_FLOAT, 0);
+    class_addmethod(sfz_class, (t_method)sfz_a4, gensym("a4"), A_FLOAT, 0);
+//    class_addmethod(sfz_class, (t_method)sfz_tuningstretch, gensym("tuningstretch"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_base, gensym("base"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_scale, gensym("scale"), A_GIMME, 0);
     class_addmethod(sfz_class, (t_method)sfz_transp, gensym("transp"), A_FLOAT, 0);
