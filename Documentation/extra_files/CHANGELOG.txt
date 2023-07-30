@@ -8,6 +8,48 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 
 
 ----------------------------------------------------------------------------
+1.0-0 Release Candidate 9 Pre/test release:
+----------------------------------------------------------------------------
+
+--------------------------------------
+CHANGELOG:
+--------------------------------------
+
+**LIBRARY:**
+
+Breaking changes:
+- [quantizer~], [rescale~], [fold~] and [wrap2~] no more signal inputs for secondary inlets, only floats.
+- [out1~] removed, use [out.mc~] instead now.
+- [sin~] doesn't take float input anymore.
+- [pluck~] float input is now in the 0-127 range.
+- [voices] -list flag removed as this is now the default mode, use "-split" flag for the old default mode.
+
+Enhancements/fixes/other changes:
+- [knob] and [numbox~], use alt+click instead of double click to restore initial value
+- Added MC (multichannel connection) support for some objects (very few gained it out of the box for being abstractions, lke [gain~]), they are: [ceil~], [floor~], [rint~], [trunc~], [sin~], [cents2ratio~], [ratio2cents~], [db2lin~], [lin2db~] (now a compiled object), [gain~], [samps2ms~], [ms2samps~], [mag~], [pol2car~]/[car2pol~] (now compiled objects), [bitnormal~], [op~], [sig2float~], [float2sig~] (now an abstraction), [rescale~], [fold~], [wrap2~] and [quantizer~].
+- added "not" operation (!) to [op] and [op~].
+- [adsr~] and [asr~] fixed 2nd outlet in log mode.
+- [stepnoise~], [rampnoise~] and [lfnoise~] fixed seed flag
+- [stepnoise~] and [rampnoise~] fixed loading hz argument when there's a 'seed' flag.
+- [rescale] and [rescale~] fixed bug when first argument is higher then the second
+- [slider2d] and [circle], fixed "init" and shipping for macs.
+- 16 new objects: [nchs~], [get~], [pick~], [sum~], [sigs~], [out.mc~], [osc.mc~], [imp.mc~], [rampnoise.mc~], [stepnoise.mc~], [select~], [xselect.mc~], [merge~], [phaseseq~], [oscnoise~] and [sfz~].
+
+Objects count: total of 492 (264 signal objects and 228 control objects)! 
+
+- 280 coded objects (179 signal objects / 101 control objects)
+- 212 abstractions (85 signal objects / 127 control objects)
+
+--------------------------------------
+
+**TUTORIAL:**
+- Revision of Quickstart chapter with new info on MC connections.
+- New examples for new objects in ELSE. Total number of examples is 506
+
+--------------------------------------
+
+
+----------------------------------------------------------------------------
 1.0-0 Release Candidate 8:
 ----------------------------------------------------------------------------
 
