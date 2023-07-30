@@ -12,7 +12,7 @@ make install sfont-install plaits-install objectsdir=$(pwd)/.. arch="arm64 x86_6
 
 make install sfont-install plaits-install objectsdir=$(pwd)/.. arch="arm64 x86_64" extension=d_amd64
 
-make sfizz && make sfizz-install objectsdir=./sfz~
+make sfz && make sfz-install objectsdir=./sfz~
 
 -------------------------------------------------------------------------
 
