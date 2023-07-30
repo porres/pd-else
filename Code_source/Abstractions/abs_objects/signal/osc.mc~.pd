@@ -25,7 +25,7 @@
 #X restore 151 229 pd copy~;
 #X obj 80 345 r \$0-sum;
 #X obj 58 28 else/initmess 1e+09;
-#N canvas 59 223 478 476 check 1;
+#N canvas 268 228 478 476 check 0;
 #X obj 65 25 inlet~;
 #X obj 83 80 else/pick~ 1;
 #X obj 83 148 else/s2f~;
@@ -75,6 +75,7 @@
 #X connect 2 0 10 0;
 #X connect 3 0 1 0;
 #X connect 4 0 12 0;
+#X connect 4 1 13 0;
 #X connect 5 0 1 0;
 #X connect 6 0 8 0;
 #X connect 6 1 7 0;
@@ -87,6 +88,8 @@
 #X connect 13 0 11 0;
 #X connect 13 1 11 0;
 #X restore 97 121 pd route \; init;
+#X text 292 249 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 294 230 Alexandre Torres Porres (2023);
 #X connect 0 0 9 0;
 #X connect 0 1 10 0;
 #X connect 2 0 3 0;
