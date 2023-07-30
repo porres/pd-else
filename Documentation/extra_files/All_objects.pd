@@ -1,7 +1,7 @@
-#N struct 1053-cell float x float y float cellsize float color;
-#N struct 1054-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
-#N struct 1073-point float x0 float y0 float size float fg float in float grid;
-#N struct 1114-slot float x float y float slotsize float color float width float bordercolor;
+#N struct 1004-cell float x float y float cellsize float color;
+#N struct 1005-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
+#N struct 1024-point float x0 float y0 float size float fg float in float grid;
+#N struct 1089-slot float x float y float slotsize float color float width float bordercolor;
 #N canvas 497 51 531 462 10;
 #N canvas 347 36 974 668 GUI 0;
 #X text 40 146 [biplot];
@@ -59,7 +59,6 @@
 #X obj 402 1093 else/out8~;
 #X obj 292 1093 else/out4~;
 #X obj 175 1091 else/out~;
-#X obj 65 1091 else/out1~;
 #X obj 498 1310 else/oscope~ 200 100 256 3 128 -1 1 0 0 0 0 30 30 30 190 190 190 160 160 160 0 empty;
 #X obj 723 1291 else/multi.vsl;
 #X obj 28 1201 else/zbiplot;
@@ -72,6 +71,7 @@
 #X obj 884 1202 numbox~ 6 10 100 #C0C0C4 #440008 10 0 0 0;
 #X obj 615 866 else/knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0;
 #X text 561 874 [knob];
+#X obj 65 1091 else/out.mc~;
 #X restore 431 399 pd GUI;
 #X obj 399 72 switch~;
 #X obj 399 56 r \$0-s;

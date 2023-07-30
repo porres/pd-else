@@ -12,28 +12,17 @@
 #X obj 64 437 highpass~ 500 1;
 #X obj 64 398 clone 4 voice2;
 #X obj 163 139 route tempo;
-#X obj 102 54 bng 20 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
-#000000;
+#X obj 102 54 bng 20 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000 #000000;
 #X obj 102 83 score fantasia.txt;
 #X obj 117 184 *;
 #X obj 225 109 spigot;
-#X obj 264 84 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
-#000000 0 1;
+#X obj 264 84 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000 #000000 0 1;
 #X text 287 84 loop;
 #X msg 54 54 stop;
-#X text 177 18 The [score] object from ELSE is an abstraction based
-on the [text] object. It is similar to using [text sequencer] \, but
-is based on more usual musical syntax with things like time signatures.
-, f 66;
-#X text 345 95 The time stamp syntax specifies the beat number. so
-"1" means "at the head of the first beat" \, "2.75" means 2 beats and
-3 sixteenth notes. The same holds for all measures. This is once again
-the same sequence as before and the time signature is 2/4. Check the
-help files for more info., f 41;
-#X text 254 394 The tempo in bpm is specified inside the score and
-it is output on the mid outler. Poliphonic events can be specified
-by splitting messages with commas., f 51;
-#X obj 64 365 voices -list 4;
+#X text 177 18 The [score] object from ELSE is an abstraction based on the [text] object. It is similar to using [text sequencer] \, but is based on more usual musical syntax with things like time signatures., f 66;
+#X text 345 95 The time stamp syntax specifies the beat number. so "1" means "at the head of the first beat" \, "2.75" means 2 beats and 3 sixteenth notes. The same holds for all measures. This is once again the same sequence as before and the time signature is 2/4. Check the help files for more info., f 41;
+#X text 254 394 The tempo in bpm is specified inside the score and it is output on the mid outler. Poliphonic events can be specified by splitting messages with commas., f 51;
+#X obj 64 365 voices 4;
 #X connect 1 0 3 0;
 #X connect 1 1 3 1;
 #X connect 2 0 22 0;

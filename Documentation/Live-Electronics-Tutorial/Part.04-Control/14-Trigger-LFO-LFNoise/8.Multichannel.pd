@@ -1,0 +1,18 @@
+#N canvas 315 101 731 348 12;
+#X declare -path else;
+#X obj 82 228 out~;
+#X obj 518 41 declare -path else;
+#X obj 82 188 imp.mc~ -sum 1 1.7 2.1 3.9;
+#X text 47 28 The [imp.mc~] object is a bank of impulse generators \, mostly useful for control purposes (that is \, as a bank of LFOs). Similarly we have [rampnoise.mc~] and [stepnoise.mc~] as a bank of noise generators for control purpoes., f 41;
+#X obj 379 126 s2f~;
+#X listbox 379 155 39 0 0 0 - - - 0;
+#X obj 379 99 stepnoise.mc~ 1 1.7 2.1 3.9;
+#X listbox 380 256 41 0 0 0 - - - 0;
+#X obj 380 200 rampnoise.mc~ 1 1.7 2.1 3.9;
+#X obj 380 228 s2f~ 100;
+#X text 47 134 Check all the help files.;
+#X connect 2 0 0 0;
+#X connect 4 0 5 0;
+#X connect 6 0 4 0;
+#X connect 8 0 9 0;
+#X connect 9 0 7 0;
