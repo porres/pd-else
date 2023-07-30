@@ -108,7 +108,6 @@ static void *lfnoise_new(t_symbol *s, int ac, t_atom *av){
 // default parameters
     t_float hz = 0;
     t_int interp = 0;
-    int numargs = 0;
     if(av->a_type == A_SYMBOL){
         if(ac >= 2 && atom_getsymbol(av) == gensym("-seed")){
             t_atom at[1];
