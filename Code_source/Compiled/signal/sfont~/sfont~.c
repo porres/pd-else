@@ -20,7 +20,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
 #include "m_pd.h"
-#include "../shared/elsefile.h"
+#include "../../../shared/elsefile.h"
 
 #include <stdlib.h>
 #include <fluidsynth.h>
