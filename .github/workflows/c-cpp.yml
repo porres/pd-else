@@ -177,9 +177,10 @@ jobs:
        run: |
          mkdir ./else-Windows
          cp -r ./out/else ./else-Windows
-         cp -r Code_source/Compiled/signal/sfont~/out/else/*.* ./else-Windows
-         cp -r Code_source/Compiled/signal/plaits~/out/else/*.* ./else-Windows
-         cp -r Code_source/Compiled/signal/sfz~/out/else/*.* ./else-Windows
+         find . -type d
+#         cp -r Code_source/Compiled/signal/sfont~/out/else/*.* ./else-Windows
+#         cp -r Code_source/Compiled/signal/plaits~/out/else/*.* ./else-Windows
+#         cp -r Code_source/Compiled/signal/sfz~/out/else/*.* ./else-Windows
         
      - name: Upload Zip
        uses: actions/upload-artifact@v3
