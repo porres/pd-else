@@ -122,7 +122,7 @@ jobs:
        name: "Install mingw deps"
        uses: msys2/setup-msys2@v2
        with:
-           install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-ntldd-git     mingw-w64-x86_64-fluidsynth unzip
+           install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-ntldd-git     mingw-w64-x86_64-fluidsynth unzip curl
            update: false
 
 #     - name: Configure Environment
@@ -137,20 +137,21 @@ jobs:
          curl -L -o pure-data.zip http://msp.ucsd.edu/Software/pd-0.54-0.msw.zip
          unzip pure-data.zip
          rm pure-data.zip
-         mv pd-* pd
+         rename  pd-0.54-0 pd pd-0.54-0
+#         mv ./pd-* ./pd
 
      - if: runner.os == 'Windows'
        name: Build pd-else
        shell: msys2 {0}
        run: |
-         make PDDIR=${{github.workspace}}/pd PDLIBDIR=./out extension=m_amd64 install
+         make PDDIR=./pd PDLIBDIR=./out extension=m_amd64 install
 
      - if: runner.os == 'Windows'
        name: Build sfont~
        shell: msys2 {0}
        run: |  
          cd Code_source/Compiled/signal/sfont~/
-         make PDDIR=${{github.workspace}}/pd PDLIBDIR=./out extension=m_amd64 install
+         make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 install
          ./scripts/localdeps.win.sh ./out/else/sfont~.m_amd64
          cd ../../../../
    
@@ -159,15 +160,15 @@ jobs:
        shell: msys2 {0}
        run: | 
          cd Code_source/Compiled/signal/plaits~
-         make PDDIR=${{github.workspace}}/pd PDLIBDIR=./out extension=m_amd64 install
+         make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 install
          cd ../../../../
 
      - if: runner.os == 'Windows'
        name: Build sfz~
        shell: msys2 {0}
        run: |
-         make PDDIR=${{github.workspace}}/pd PDLIBDIR=./out extension=m_amd64 sfz
-         make PDDIR=${{github.workspace}}/pd PDLIBDIR=./out extension=m_amd64 sfz-install
+         make PDDIR=./pd PDLIBDIR=./out extension=m_amd64 sfz
+         make PDDIR=./pd PDLIBDIR=./out extension=m_amd64 sfz-install
          
      - if: runner.os == 'Windows'
        name: Create Library Folder
@@ -177,7 +178,7 @@ jobs:
          cp -r ./out/else ./else-Windows
          cp -r Code_source/Compiled/signal/sfont~/out/else/*.* ./else-Windows
          cp -r Code_source/Compiled/signal/plaits~/out/else/*.* ./else-Windows
-         cp -r plaits~/out/else/*.* ./else-Windows
+         cp -r Code_source/Compiled/signal/sfz~/out/else/*.* ./else-Windows
         
      - name: Upload Zip
        uses: actions/upload-artifact@v3
