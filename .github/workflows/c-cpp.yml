@@ -122,7 +122,7 @@ jobs:
        name: "Install mingw deps"
        uses: msys2/setup-msys2@v2
        with:
-           install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-ntldd-git     mingw-w64-x86_64-fluidsynth unzip curl
+           install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-ntldd-git     mingw-w64-x86_64-fluidsynth mingw64/mingw-w64-x86_64-cmake unzip curl
            update: false
 
 #     - name: Configure Environment
@@ -151,9 +151,10 @@ jobs:
        shell: msys2 {0}
        run: |  
          cd Code_source/Compiled/signal/sfont~/
-         make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 install
-         ./scripts/localdeps.win.sh ./out/else/sfont~.m_amd64
+         make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 localdep_windows
          cd ../../../../
+#         make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 install
+#         ./scripts/localdeps.win.sh ./out/else/sfont~.m_amd64
    
      - if: runner.os == 'Windows'
        name: Build plaits~
