@@ -105,77 +105,87 @@ jobs:
 # # # # ===============================================================
 # # # # ===============================================================
 
-#   Windows-Build:  
-#     runs-on: windows-latest
-#     timeout-minutes: 15
-#     steps:
-#     - uses: actions/checkout@v3
-#       with:
-#         submodules: recursive
-#         fetch-depth: 0
+  Windows-Build:
+     runs-on: windows-latest
+     timeout-minutes: 25
+     steps:
+     - uses: actions/checkout@v3
+       with:
+         submodules: recursive
+         fetch-depth: 0
 
-#     - uses: actions/setup-python@v4
-#       with:
-#         python-version: '3.10'
+     - uses: actions/setup-python@v4
+       with:
+         python-version: '3.10'
 
-#     - if: runner.os == 'Windows'
-#       name: "Install mingw deps"
-#       uses: msys2/setup-msys2@v2
-#       with:
-#           install: make autoconf automake libtool mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-ntldd-git libtool mingw-w64-x86_64-libwinpthread-git mingw-w64-x86_64-libsystre mingw-w64-x86_64-dlfcn  mingw-w64-x86_64-fluidsynth  mingw-w64-x86_64-grep unzip
-#           update: false
+     - if: runner.os == 'Windows'
+       name: "Install mingw deps"
+       uses: msys2/setup-msys2@v2
+       with:
+           install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-ntldd-git     mingw-w64-x86_64-fluidsynth mingw64/mingw-w64-x86_64-cmake unzip curl
+           update: false
 
 #     - name: Configure Environment
 #       run: |
 #         mkdir py4pd_WIN64
 #         choco install puredata --yes
 
-#     - if: runner.os == 'Windows'
-#       name: Build sfont~
-#       shell: msys2 {0}
-#       run: | 
-#         mkdir ./else-Windows 
-#         cd sfont~
-#         make extension=m_amd64
-#         ./scripts/localdeps.win.sh sfont~.m_amd64
-#         cd ..
-    
-#     - if: runner.os == 'Windows'
-#       name: Build plaits~
-#       shell: msys2 {0}
-#       run: | 
-#         cd plaits~
-#         make extension=m_amd64
-        
-#     - if: runner.os == 'Windows'
-#       name: Build pd-else
-#       shell: msys2 {0}
-#       run: |
-#         make extension=m_amd64 
+     - if: runner.os == 'Windows'
+       name: Get Pd
+       shell: msys2 {0}
+       run: | 
+         curl -L -o pure-data.zip http://msp.ucsd.edu/Software/pd-0.54-0.msw.zip
+         unzip pure-data.zip
+         rm pure-data.zip
+         rename  pd-0.54-0 pd pd-0.54-0
+#         mv ./pd-* ./pd
 
-#     - if: runner.os == 'Windows'
-#       name: Create Library Folder
-#       shell: msys2 {0}
-#       run: |
-#         cp *.m_amd64 ./else-Windows
-#         cp Help-files/* ./else-Windows
-#         cp Classes/libpd-abs/* ./else-Windows
-#         cp Classes/Abstractions/* ./else-Windows
-#         cp Classes/Abs_components/* ./else-Windows
-#         mkdir ./else-Windows/sf
-#         cp sfont~/sf/* ./else-Windows/sf
-#         cp -r Live-Electronics-Tutorial ./else-Windows
-#         cp plaits~/*.m_amd64 ./else-Windows
-#         cp sfont~/*.m_amd64 ./else-Windows
-#         cp sfont~/sfont-compiled/*.w64 ./else-Windows
-#         cp extra/* ./else-Windows
-#         cp README.pdf ./else-Windows
+     - if: runner.os == 'Windows'
+       name: Build pd-else
+       shell: msys2 {0}
+       run: |
+         make PDDIR=./pd PDLIBDIR=./out extension=m_amd64 install
+
+     - if: runner.os == 'Windows'
+       name: Build sfont~
+       shell: msys2 {0}
+       run: |  
+         cd Code_source/Compiled/signal/sfont~/
+         make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 localdep_windows
+         cd ../../../../
+#         make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 install
+#         ./scripts/localdeps.win.sh ./out/else/sfont~.m_amd64
+   
+     - if: runner.os == 'Windows'
+       name: Build plaits~
+       shell: msys2 {0}
+       run: | 
+         cd Code_source/Compiled/signal/plaits~
+         make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 install
+         cd ../../../../
+
+     - if: runner.os == 'Windows'
+       name: Build sfz~
+       shell: msys2 {0}
+       run: |
+         make PDDIR=./pd PDLIBDIR=./out extension=m_amd64 sfz
+         make PDDIR=./pd PDLIBDIR=./out extension=m_amd64 sfz-install
+         
+     - if: runner.os == 'Windows'
+       name: Create Library Folder
+       shell: msys2 {0}
+       run: |
+         mkdir ./else-Windows
+         cp -r ./out/else/*.* ./else-Windows
+         cp -r ./Code_source/Compiled/signal/sfont~/out/sfont~/*.* ./else-Windows
+         cp -r ./Code_source/Compiled/signal/plaits~/out/plaits~/*.* ./else-Windows
+
         
-#     - name: Upload Zip
-#       uses: actions/upload-artifact@v3
-#       with:
-#         name: else
-#         path: ./else-Windows/*
+     - name: Upload Zip
+       uses: actions/upload-artifact@v3
+       with:
+         name: else
+         path: ./else-Windows/*
 
 # # ===============================================================
 # # ===============================================================
