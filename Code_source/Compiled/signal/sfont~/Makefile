@@ -14,7 +14,7 @@ sfont~.class.sources := sfont~.c $(file)
 
 ldlibs = $(EXTRA_LDFLAGS) -lfluidsynth
 
-datafiles = sfont~-help.pd
+#datafiles = sfont~-help.pd
 datadirs = sf
 
 # Change the arch to arm64 if the extension is d_arm64
