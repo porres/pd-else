@@ -83,6 +83,7 @@ mouse.class.sources := Code_source/Compiled/control/mouse.c
 noteinfo.class.sources := Code_source/Compiled/control/noteinfo.c
 note.in.class.sources := Code_source/Compiled/control/note.in.c
 note.out.class.sources := Code_source/Compiled/control/note.out.c
+order.class.sources := Code_source/Compiled/control/order.c
 osc.route.class.sources := Code_source/Compiled/control/osc.route.c
 osc.parse.class.sources := Code_source/Compiled/control/osc.parse.c
 osc.format.class.sources := Code_source/Compiled/control/osc.format.c
