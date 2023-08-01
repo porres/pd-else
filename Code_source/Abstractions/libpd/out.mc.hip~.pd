@@ -1,0 +1,7 @@
+#N canvas 498 130 422 245 12;
+#X obj 70 106 hip~ 3;
+#X obj 70 41 inlet~;
+#X obj 70 166 outlet~;
+#X text 153 105 abstraction for out.mc~;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
