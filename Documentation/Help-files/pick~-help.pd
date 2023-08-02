@@ -253,9 +253,10 @@
 #X obj 136 186 * -1;
 #X obj 234 161 else/sigs~ 1 2 3;
 #X obj 234 240 else/pick~ -1;
-#X text 24 245 see also;
-#X obj 24 264 else/pick;
+#X text 24 215 see also;
 #X text 37 91 [pick~] picks a channel from a multichannel connection. The channel is specified via argument or float input and is indexed from 1 (0 gives "none"). Negative values count from last to the first element. If you ask for an element number out of the range \, you also get "none"., f 70;
+#X obj 24 259 else/pick;
+#X obj 24 234 else/get~;
 #X connect 18 0 21 0;
 #X connect 21 0 29 0;
 #X connect 26 0 27 0;
