@@ -60,7 +60,7 @@ static t_int *decay2_perform(t_int *w){
             last2 = yn2;
             b = 1000 * log(1000) / decay;
         }
-        if(attack > 0 && decay > 0){
+        if((attack > 0 && decay > 0) && (attack != decay)){
             t = log(a/b) / (a-b);
             n = fabs(1/(exp(-b*t) - exp(-a*t)));
             *out++ = (yn2 - yn1) * n;
