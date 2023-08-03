@@ -65,7 +65,7 @@ static void *dust2_new(t_symbol *s, int ac, t_atom *av){
             t_atom at[1];
             SETFLOAT(at, atom_getfloat(av+1));
             ac-=2, av+=2;
-            dust_seed(x, s, 1, at);
+            dust2_seed(x, s, 1, at);
         }
         else if(ac >= 2 && atom_getsymbol(av) == gensym("-ch")){
             int n = atom_getint(av+1);
