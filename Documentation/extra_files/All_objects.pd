@@ -593,7 +593,7 @@
 #X obj 73 188 else/delete;
 #X obj 73 213 else/replace;
 #X restore 367 185 pd List_management;
-#N canvas 479 51 252 329 Audio 0;
+#N canvas 479 51 251 364 Audio 0;
 #X obj 87 51 else/nchs~;
 #X obj 87 76 else/pick~;
 #X obj 87 101 else/get~;
@@ -603,6 +603,7 @@
 #X obj 87 240 else/select~;
 #X obj 87 183 else/unmerge~;
 #X obj 87 270 else/slice~;
+#X obj 87 301 else/repeat~;
 #X restore 285 245 pd Audio Multichannel Tools;
 #N canvas 696 90 298 420 Noise/chaotic/stochastic 0;
 #X obj 85 85 else/brown~;

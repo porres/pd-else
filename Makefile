@@ -214,6 +214,7 @@ range~.class.sources := Code_source/Compiled/signal/range~.c
 ratio2cents~.class.sources := Code_source/Compiled/signal/ratio2cents~.c
 rescale~.class.sources := Code_source/Compiled/signal/rescale~.c
 rint~.class.sources := Code_source/Compiled/signal/rint~.c
+repeat~.class.sources := Code_source/Compiled/signal/repeat~.c
 resonant~.class.sources := Code_source/Compiled/signal/resonant~.c
 resonant2~.class.sources := Code_source/Compiled/signal/resonant2~.c
 rms~.class.sources := Code_source/Compiled/signal/rms~.c
