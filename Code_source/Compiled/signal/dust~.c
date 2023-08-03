@@ -89,5 +89,5 @@ void dust_tilde_setup(void){
     CLASS_MAINSIGNALIN(dust_class, t_dust, x_density);
     class_addmethod(dust_class, (t_method)dust_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(dust_class, (t_method)dust_seed, gensym("seed"), A_GIMME, 0);
-    class_addmethod(dust_class, (t_method)dust_ch, gensym("c"), A_DEFFLOAT, 0);
+    class_addmethod(dust_class, (t_method)dust_ch, gensym("ch"), A_DEFFLOAT, 0);
 }
