@@ -85,7 +85,7 @@ static void *dust2_new(t_symbol *s, int ac, t_atom *av){
 
 void dust2_tilde_setup(void){
     dust2_class = class_new(gensym("dust2~"), (t_newmethod)dust2_new,
-        0, sizeof(t_dust2), CLASS_DEFAULT, A_GIMME, 0);
+        0, sizeof(t_dust2), CLASS_MULTICHANNEL, A_GIMME, 0);
     CLASS_MAINSIGNALIN(dust2_class, t_dust2, x_density);
     class_addmethod(dust2_class, (t_method)dust2_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(dust2_class, (t_method)dust2_seed, gensym("seed"), A_GIMME, 0);
