@@ -24,7 +24,7 @@ static t_int *slew_perform(t_int *w){
             float in = in1[j*n + i];
             float limit = in2[i];
             if(limit < 0)
-                *out++ = lastin[j] = in;
+                out[j*n + i] = lastin[j] = in;
             else{
                 limit *= -x->x_sr_rec;
                 float hi = -limit;

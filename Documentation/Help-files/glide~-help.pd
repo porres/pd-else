@@ -1,40 +1,26 @@
-#N canvas 588 23 563 563 10;
-#X obj 4 346 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 441 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 504 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 6 535 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X obj 129 450 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 129 357 cnv 17 3 50 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X text 191 450 signal;
-#X obj 23 41 cnv 4 4 4 empty empty Signal 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 80 41 cnv 4 4 4 empty empty glide/portamento 0 28 2 18 #e0e0e0
-#000000 0;
-#X obj 129 414 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
-;
+#N canvas 536 23 563 563 10;
+#X obj 4 346 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 4 441 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 4 504 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 6 535 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 129 450 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 129 357 cnv 17 3 50 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 23 41 cnv 4 4 4 empty empty Signal 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 80 41 cnv 4 4 4 empty empty glide/portamento 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 129 414 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 155 414 float/signal;
 #X obj 184 275 else/out~;
 #X obj 184 231 *~;
 #X obj 145 158 else/brown~;
-#X obj 304 228 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 #dcdcdc
-#000000 #000000 0 1;
+#X obj 304 228 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 304 200 else/sig2float~;
 #X text 327 321 0;
 #X text 327 222 1;
-#X obj 2 4 cnv 15 301 42 empty empty glide~ 20 20 2 37 #e0e0e0 #000000
-0;
+#X obj 2 4 cnv 15 301 42 empty empty glide~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X text 240 357 - input signal;
 #X text 239 413 - glide time in ms;
-#X text 240 450 - glided signal;
 #N canvas 699 216 522 312 example 0;
 #X obj 80 143 else/glide~ 1000;
 #X obj 80 185 osc~;
@@ -48,43 +34,31 @@
 #X connect 1 0 2 0;
 #X connect 4 0 7 0;
 #X connect 7 0 0 0;
-#X restore 471 288 pd example;
+#X restore 471 266 pd example;
 #X text 185 510 1) float - glide time in ms (default 0);
 #X obj 242 141 else/pulse~ 0.5;
 #X obj 242 170 else/glide~ 1000;
 #X text 197 375 reset;
 #X text 240 375 - resets glide to input value;
-#X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 304 4 pd;
-#X obj 344 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 457 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 477 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 514 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 463 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 501 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
+#X obj 344 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 457 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 477 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 514 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 463 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 501 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 29 257 else/glide2~;
 #X text 22 235 see also:;
-#X text 155 357 float/signal;
-#X text 61 90 [glide~] generates a glide/portamento from its signal
-input changes. The glide time in ms.;
-#N canvas 410 147 532 514 exponential 0;
-#X obj 68 328 cnv 15 398 138 empty empty empty 20 12 0 14 #e0e0e0 #404040
-0;
+#N canvas 727 146 532 514 exponential 0;
+#X obj 68 328 cnv 15 398 138 empty empty empty 20 12 0 14 #e0e0e0 #404040 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-exp 441 float 0;
 #X coords 0 1 440 0 400 140 1 0 0;
 #X restore 67 327 graph;
-#X obj 74 38 bng 20 250 50 1 empty empty empty 17 7 0 10 #dcdcdc #000000
-#000000;
+#X obj 74 38 bng 20 250 50 1 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #X obj 90 83 else/timed.gate~ 5;
 #X obj 75 257 tabwrite~ \$0-exp;
 #X msg 111 124 4;
@@ -95,8 +69,7 @@ input changes. The glide time in ms.;
 #X obj 350 207 else/rescale~;
 #X msg 141 176 exp \$1;
 #X obj 383 33 else/setdsp~;
-#X text 281 146 You can set exponential factors \, much like as in
-[rescale~]. Check it out as well., f 33;
+#X text 281 146 You can set exponential factors \, much like as in [rescale~]. Check it out as well., f 33;
 #X obj 90 206 else/glide~ -exp 4 5;
 #X connect 2 0 3 0;
 #X connect 2 0 4 0;
@@ -108,18 +81,44 @@ input changes. The glide time in ms.;
 #X connect 9 0 7 0;
 #X connect 11 0 14 0;
 #X connect 14 0 4 0;
-#X restore 448 310 pd exponential;
-#X obj 6 476 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
-0;
-#X text 90 483 -exp <float>: sets exponential factor (default '1' \,
-linear);
+#X restore 448 288 pd exponential;
+#X obj 6 476 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
+#X text 90 483 -exp <float>: sets exponential factor (default '1' \, linear);
 #X text 161 391 exp <float>;
 #X text 240 391 - sets exponential factor;
 #X obj 29 281 else/lag~;
 #X obj 29 304 else/slew~;
+#N canvas 725 114 501 448 multichannel 0;
+#X obj 118 229 else/s2f~;
+#X obj 118 43 bng 25 250 50 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000;
+#X obj 118 164 else/rand.f~ 0 1;
+#X obj 341 291 setdsp~;
+#X obj 118 127 else/repeat~ 2;
+#X msg 59 164 set 0 1;
+#X obj 118 260 unpack;
+#X obj 118 291 vsl 18 120 0 1 0 0 empty empty empty 0 -9 0 10 #dfdfdf #000000 #000000 0 1;
+#X obj 151 291 vsl 18 120 0 1 0 0 empty empty empty 0 -9 0 10 #dfdfdf #000000 #000000 0 1;
+#X obj 118 82 else/impseq~;
+#X text 284 97 An example with multichannel support., f 16;
+#X obj 118 200 else/glide~ 500;
+#X connect 0 0 6 0;
+#X connect 1 0 9 0;
+#X connect 2 0 11 0;
+#X connect 4 0 2 0;
+#X connect 5 0 11 0;
+#X connect 6 0 7 0;
+#X connect 6 1 8 0;
+#X connect 9 0 4 0;
+#X connect 11 0 0 0;
+#X restore 442 313 pd multichannel;
+#X text 173 450 signal(s);
+#X text 173 357 signal(s);
+#X text 240 357 - input signal(s);
+#X text 240 450 - glided signal(s);
+#X text 61 90 [glide~] generates a glide/portamento from its signal input changes. The glide time in ms. There's support for multichannel signals., f 53;
+#X connect 11 0 10 0;
 #X connect 12 0 11 0;
-#X connect 13 0 12 0;
-#X connect 15 0 14 0;
-#X connect 25 0 26 0;
-#X connect 26 0 12 1;
-#X connect 26 0 15 0;
+#X connect 14 0 13 0;
+#X connect 22 0 23 0;
+#X connect 23 0 11 1;
+#X connect 23 0 14 0;
