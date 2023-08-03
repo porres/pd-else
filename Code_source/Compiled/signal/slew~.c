@@ -57,7 +57,7 @@ static void *slew_new(t_symbol *s, t_floatarg f){
     s = NULL;
     t_slew *x = (t_slew *)pd_new(slew_class);
 	x->x_limit = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-	pd_float((t_pd *)x->x_limit, f);
+        pd_float((t_pd *)x->x_limit, f);
     outlet_new((t_object *)x, &s_signal);
     x->x_last = 0;
     return(x);
