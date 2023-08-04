@@ -50,16 +50,17 @@ static float glide_get_step(t_glide *x, t_floatarg delta){
 static t_int *glide_perform(t_int *w){
     t_glide *x = (t_glide *)(w[1]);
     int n = (int)(w[2]);
-    t_float *in1 = (t_float *)(w[3]);
-    t_float *in2 = (t_float *)(w[4]);
-    t_float *out = (t_float *)(w[5]);
+    int ch2 = (int)(w[3]);
+    t_float *in1 = (t_float *)(w[4]);
+    t_float *in2 = (t_float *)(w[5]);
+    t_float *out = (t_float *)(w[6]);
     float *last_in = x->x_last_in;
     float *last_out = x->x_last_out;
     float *start = x->x_start;
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0; i < n; i++){
             t_float in = in1[j*n + i];
-            t_float ms = in2[i];
+            t_float ms = ch2 == 1 ? in2[i] : in2[j*n + i];
             if(ms <= 0)
                 ms  = 0;
             x->x_n = (int)roundf(ms * x->x_sr_khz) + 1; // n samples
@@ -68,9 +69,11 @@ static t_int *glide_perform(t_int *w){
             else{
                 float delta = (in - last_out[j]);
                 if(x->x_reset){ // reset
-                    x->x_nleft = 0;
-                    x->x_reset = 0;
                     out[j*n + i] = last_out[j] = last_in[j] = in;
+                    if(j == (x->x_nchans - 1)){
+                        x->x_reset = 0;
+                        x->x_nleft = 0;
+                    }
                 }
                 else if(in != last_in[j]){ // input change, update
                     start[j] = last_out[j];
@@ -94,12 +97,12 @@ static t_int *glide_perform(t_int *w){
     x->x_start = start;
     x->x_last_in = last_in;
     x->x_last_out = last_out;
-    return(w+6);
+    return(w+7);
 }
 
 static void glide_dsp(t_glide *x, t_signal **sp){
     x->x_sr_khz = sp[0]->s_sr * 0.001;
-    int chs = sp[0]->s_nchans, n = sp[0]->s_n;
+    int chs = sp[0]->s_nchans, ch2 = sp[1]->s_nchans, n = sp[0]->s_n;
     signal_setmultiout(&sp[2], chs);
     if(x->x_nchans != chs){
         x->x_last_in = (t_float *)resizebytes(x->x_last_in,
@@ -110,7 +113,12 @@ static void glide_dsp(t_glide *x, t_signal **sp){
             x->x_nchans * sizeof(t_float), chs * sizeof(t_float));
         x->x_nchans = chs;
     }
-    dsp_add(glide_perform, 5, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
+    if(ch2 > 1 && ch2 != x->x_nchans){
+        dsp_add_zero(sp[2]->s_vec, chs*n);
+        pd_error(x, "[glide~]: channel sizes mismatch");
+    }
+    else
+        dsp_add(glide_perform, 6, x, n, ch2, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
 }
 
 static void *glide_free(t_glide *x){
