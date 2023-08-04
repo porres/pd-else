@@ -38,7 +38,7 @@ static t_int *dust_perform(t_int *w){
     for(int i = 0; i < n; i++){
         for(int j = 0; j < x->x_nchans; j++){
         t_float density = chs == 1 ? in1[i] : in1[j*n + i];
-        t_float thresh = density * x->x_sample_dur / x->x_nchans;
+        t_float thresh = density * x->x_sample_dur;
         t_float scale = thresh > 0 ? 1./thresh : 0;
             t_float random = (t_float)(random_frand(s1, s2, s3) * 0.5 + 0.5);
             t_float output = random < thresh ? random * scale : 0;
