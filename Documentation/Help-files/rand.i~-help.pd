@@ -1,4 +1,4 @@
-#N canvas 423 25 561 550 10;
+#N canvas 441 57 561 550 10;
 #X obj 2 3 cnv 15 301 42 empty empty rand.i~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;

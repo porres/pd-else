@@ -15,19 +15,26 @@ typedef struct _randf{
     t_inlet        *x_high_let;
     int             x_id;
     int             x_nchans;
+    int             x_ch;
 }t_randf;
 
 static void randf_seed(t_randf *x, t_symbol *s, int ac, t_atom *av){
     random_init(&x->x_rstate, get_seed(s, ac, av, x->x_id));
 }
 
+static void randf_ch(t_randf *x, t_floatarg f){
+    x->x_ch = f < 1 ? 1 : (int)f;
+    canvas_update_dsp();
+}
+
 static t_int *randf_perform(t_int *w){
     t_randf *x = (t_randf *)(w[1]);
     int n = (t_int)(w[2]);
-    t_float *in1 = (t_float *)(w[3]);
-    t_float *in2 = (t_float *)(w[4]);
-    t_float *in3 = (t_float *)(w[5]);
-    t_float *out = (t_sample *)(w[6]);
+    int chs = (t_int)(w[3]);
+    t_float *in1 = (t_float *)(w[4]);
+    t_float *in2 = (t_float *)(w[5]);
+    t_float *in3 = (t_float *)(w[6]);
+    t_float *out = (t_sample *)(w[7]);
     t_float *lastin = x->x_lastin;
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0; i < n; i++){
@@ -39,7 +46,7 @@ static t_int *randf_perform(t_int *w){
                 out_high = temp;
             }
             int range = out_high - out_low; // Range
-            float trig = in1[j*n + i];
+            float trig = chs == 1 ? in1[i] : in1[j*n + i];
             if(range == 0)
                 x->x_randf[j] = out_low;
             else{
@@ -57,11 +64,13 @@ static t_int *randf_perform(t_int *w){
         }
     }
     x->x_lastin = lastin; // last input
-    return(w+7);
+    return(w+8);
 }
 
 static void randf_dsp(t_randf *x, t_signal **sp){
     int chs = sp[0]->s_nchans, n = sp[0]->s_n;
+    if(chs == 1)
+        chs = x->x_ch;
     signal_setmultiout(&sp[3], chs);
     if(x->x_nchans != chs){
         x->x_randf = (t_float *)resizebytes(x->x_randf,
@@ -70,7 +79,7 @@ static void randf_dsp(t_randf *x, t_signal **sp){
             x->x_nchans * sizeof(t_float), chs * sizeof(t_float));
         x->x_nchans = chs;
     }
-    dsp_add(randf_perform, 6, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+    dsp_add(randf_perform, 7, x, n, sp[0]->s_nchans, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
 static void *randf_free(t_randf *x){
@@ -90,24 +99,28 @@ static void *randf_new(t_symbol *s, int ac, t_atom *av){
     x->x_lastin = (t_float *)getbytes(sizeof(*x->x_lastin));
     randf_seed(x, s, 0, NULL);
     float low = 0, high = 1;
-    if(ac){
-        if(av->a_type == A_SYMBOL){
-            if(ac >= 2 && atom_getsymbol(av) == gensym("-seed")){
-                t_atom at[1];
-                SETFLOAT(at, atom_getfloat(av+1));
-                ac-=2, av+=2;
-                randf_seed(x, s, 1, at);
-            }
-            else
-                goto errstate;
+    x->x_ch = 1;
+    while(av->a_type == A_SYMBOL){
+        if(ac >= 2 && atom_getsymbol(av) == gensym("-seed")){
+            t_atom at[1];
+            SETFLOAT(at, atom_getfloat(av+1));
+            ac-=2, av+=2;
+            randf_seed(x, s, 1, at);
         }
+        else if(ac >= 2 && atom_getsymbol(av) == gensym("-ch")){
+            int n = atom_getint(av+1);
+            x->x_ch = n < 1 ? 1 : n;
+            ac-=2, av+=2;
+        }
+        else
+            goto errstate;
+    }
+    if(ac && av->a_type == A_FLOAT){
+        low = atom_getintarg(0, ac, av);
+        ac--, av++;
         if(ac && av->a_type == A_FLOAT){
-            low = atom_getintarg(0, ac, av);
+            high = atom_getintarg(0, ac, av);
             ac--, av++;
-            if(ac && av->a_type == A_FLOAT){
-                high = atom_getintarg(0, ac, av);
-                ac--, av++;
-            }
         }
     }
     x->x_low_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
@@ -127,5 +140,6 @@ void setup_rand0x2ef_tilde(void){
     class_addmethod(randf_class, nullfn, gensym("signal"), 0);
     class_addmethod(randf_class, (t_method)randf_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(randf_class, (t_method)randf_seed, gensym("seed"), A_GIMME, 0);
+    class_addmethod(randf_class, (t_method)randf_ch, gensym("ch"), A_DEFFLOAT, 0);
 }
 
