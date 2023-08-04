@@ -21,7 +21,7 @@ static void dust_seed(t_dust *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void dust_ch(t_dust *x, t_floatarg f){
-    x->x_nchans = f < 1 ? 1 : (int)f;
+    x->x_ch = f < 1 ? 1 : (int)f;
     canvas_update_dsp();
 }
 
