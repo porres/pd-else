@@ -103,7 +103,7 @@
 #X obj 271 343 vsl 18 120 0 1 0 0 empty empty empty 0 -9 0 10 #dfdfdf #000000 #000000 0 1;
 #X obj 238 238 else/glide~;
 #X obj 301 207 else/sigs~ 150 1500;
-#X text 47 28 If [glide~] has a multichannel input \, it outputs the same number of channels. If the right inlet has a single channel for the glide time in ms \, the value is applied to all channels. If the right inlet is also a multichhanel signal \, then each channel gets its own time value. Note \, however \, that the number of channels need to match the same number of channels from the left input., f 65;
+#X text 47 21 If [glide~] has a multichannel input \, it outputs the same number of channels. If the right inlet has a single channel for the glide time in ms \, the value is applied to all channels. If the right inlet is also a multichhanel signal \, then each channel gets its own time value. Note \, however \, that the number of multichannels in the right inlet needs to match the same number of channels from the left input., f 65;
 #X connect 0 0 3 0;
 #X connect 1 0 6 0;
 #X connect 3 0 4 0;
