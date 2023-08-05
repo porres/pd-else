@@ -11,10 +11,15 @@ typedef struct _randf{
     t_float         x_min;
     t_float         x_max;
     int             x_id;
+    int             x_n;
 }t_randf;
 
 static void randf_seed(t_randf *x, t_symbol *s, int ac, t_atom *av){
     random_init(&x->x_rstate, get_seed(s, ac, av, x->x_id));
+}
+
+static void randf_n(t_randf *x, t_floatarg f){
+    x->x_n = f < 1 ? 1 : (int)f;
 }
 
 static void randf_bang(t_randf *x){
@@ -27,14 +32,21 @@ static void randf_bang(t_randf *x){
     }
     float range = max - min; // range
     float random = min;
-    if(range != 0){
-        uint32_t *s1 = &x->x_rstate.s1;
-        uint32_t *s2 = &x->x_rstate.s2;
-        uint32_t *s3 = &x->x_rstate.s3;
-        t_float noise = (t_float)(random_frand(s1, s2, s3)) * 0.5 + 0.5;
-        random = noise * range + min;
+    t_atom at[x->x_n];
+    for(int i = 0; i < x->x_n; i++){
+        if(range != 0){
+            uint32_t *s1 = &x->x_rstate.s1;
+            uint32_t *s2 = &x->x_rstate.s2;
+            uint32_t *s3 = &x->x_rstate.s3;
+            t_float noise = (t_float)(random_frand(s1, s2, s3)) * 0.5 + 0.5;
+            random = noise * range + min;
+        }
+        SETFLOAT(at+i, random);
     }
-    outlet_float(x->x_obj.ob_outlet, random);
+    if(x->x_n == 1)
+        outlet_float(x->x_obj.ob_outlet, atom_getfloat(at));
+    else
+        outlet_list(x->x_obj.ob_outlet, &s_list, x->x_n, at);
 }
 
 static void *randf_new(t_symbol *s, int ac, t_atom *av){
@@ -43,6 +55,7 @@ static void *randf_new(t_symbol *s, int ac, t_atom *av){
     randf_seed(x, s, 0, NULL);
     x->x_min = 0;
     x->x_max = 1;
+    x->x_n = 1;
     while(ac){
         if(av->a_type == A_SYMBOL){
             if(ac >= 2 && atom_getsymbol(av) == gensym("-seed")){
@@ -50,6 +63,10 @@ static void *randf_new(t_symbol *s, int ac, t_atom *av){
                 SETFLOAT(at, atom_getfloat(av+1));
                 ac-=2, av+=2;
                 randf_seed(x, s, 1, at);
+            }
+            else if(ac >= 2 && atom_getsymbol(av) == gensym("-n")){
+                randf_n(x, atom_getint(av+1));
+                ac-=2, av+=2;
             }
             else
                 goto errstate;
@@ -77,4 +94,5 @@ void setup_rand0x2ef(void){
         sizeof(t_randf), 0, A_GIMME, 0);
     class_addbang(randf_class, (t_method)randf_bang);
     class_addmethod(randf_class, (t_method)randf_seed, gensym("seed"), A_GIMME, 0);
+    class_addmethod(randf_class, (t_method)randf_n, gensym("n"), A_FLOAT, 0);
 }
