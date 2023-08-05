@@ -16,10 +16,15 @@ typedef struct _randf{
     int             x_id;
     int             x_nchans;
     int             x_ch;
+    int             x_trig_bang;
 }t_randf;
 
 static void randf_seed(t_randf *x, t_symbol *s, int ac, t_atom *av){
     random_init(&x->x_rstate, get_seed(s, ac, av, x->x_id));
+}
+
+static void randf_bang(t_randf *x){
+    x->x_trig_bang = 1;
 }
 
 static void randf_ch(t_randf *x, t_floatarg f){
@@ -50,7 +55,14 @@ static t_int *randf_perform(t_int *w){
             if(range == 0)
                 x->x_randf[j] = out_low;
             else{
-                t_int trigger = (trig > 0 && lastin[j] <= 0) || (trig < 0 && lastin[j] >= 0);
+                t_int trigger = 0;
+                if(x->x_trig_bang){
+                    trigger = 1;
+                    if(j == (x->x_nchans - 1))
+                        x->x_trig_bang = 0;
+                }
+                else
+                    trigger = (trig > 0 && lastin[j] <= 0) || (trig < 0 && lastin[j] >= 0);
                 if(trigger){ // update
                     uint32_t *s1 = &x->x_rstate.s1;
                     uint32_t *s2 = &x->x_rstate.s2;
@@ -141,5 +153,6 @@ void setup_rand0x2ef_tilde(void){
     class_addmethod(randf_class, (t_method)randf_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(randf_class, (t_method)randf_seed, gensym("seed"), A_GIMME, 0);
     class_addmethod(randf_class, (t_method)randf_ch, gensym("ch"), A_DEFFLOAT, 0);
+    class_addbang(randf_class, (t_method)randf_bang);
 }
 

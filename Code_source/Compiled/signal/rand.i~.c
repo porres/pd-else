@@ -16,10 +16,15 @@ typedef struct _randi{
     int             x_id;
     int             x_nchans;
     int             x_ch;
+    int             x_trig_bang;
 }t_randi;
 
 static void randi_seed(t_randi *x, t_symbol *s, int ac, t_atom *av){
     random_init(&x->x_rstate, get_seed(s, ac, av, x->x_id));
+}
+
+static void randi_bang(t_randi *x){
+    x->x_trig_bang = 1;
 }
 
 static void randi_ch(t_randi *x, t_floatarg f){
@@ -50,7 +55,14 @@ static t_int *randi_perform(t_int *w){
             if(range == 0)
                 x->x_randi[j] = out_low;
             else{
-                t_int trigger = (trig > 0 && lastin[j] <= 0) || (trig < 0 && lastin[j] >= 0);
+                t_int trigger = 0;
+                if(x->x_trig_bang){
+                    trigger = 1;
+                    if(j == (x->x_nchans - 1))
+                        x->x_trig_bang = 0;
+                }
+                else
+                    trigger = (trig > 0 && lastin[j] <= 0) || (trig < 0 && lastin[j] >= 0);
                 if(trigger){ // update
                     uint32_t *s1 = &x->x_rstate.s1;
                     uint32_t *s2 = &x->x_rstate.s2;
@@ -142,4 +154,5 @@ void setup_rand0x2ei_tilde(void){
     class_addmethod(randi_class, (t_method)randi_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(randi_class, (t_method)randi_seed, gensym("seed"), A_GIMME, 0);
     class_addmethod(randi_class, (t_method)randi_ch, gensym("ch"), A_DEFFLOAT, 0);
+    class_addbang(randi_class, (t_method)randi_bang);
 }
