@@ -93,9 +93,9 @@
 #X obj 256 338 unpack;
 #X obj 256 369 vsl 18 120 0 1 0 0 empty empty empty 0 -9 0 10 #dfdfdf #000000 #000000 0 1;
 #X obj 289 369 vsl 18 120 0 1 0 0 empty empty empty 0 -9 0 10 #dfdfdf #000000 #000000 0 1;
-#X obj 256 264 else/glide~;
-#X obj 319 233 else/sigs~ 150 1500;
 #X text 61 29 If [slew~] has a multichannel input \, it outputs the same number of channels. If the right inlet has a single channel for the slew limit \, the value is applied to all channels. If the right inlet is also a multichhanel signal \, then each channel gets its own limit value. Note \, however \, that the number of multichannels in the right inlet needs to match the same number of channels from the left input., f 65;
+#X obj 256 264 else/slew~;
+#X obj 313 233 else/sigs~ 0.5 1;
 #X connect 0 0 4 0;
 #X connect 1 0 7 0;
 #X connect 3 0 8 0;
@@ -104,12 +104,12 @@
 #X connect 7 0 9 0;
 #X connect 8 0 0 0;
 #X connect 9 0 8 0;
-#X connect 9 0 14 0;
+#X connect 9 0 15 0;
 #X connect 10 0 11 0;
 #X connect 11 0 12 0;
 #X connect 11 1 13 0;
-#X connect 14 0 10 0;
-#X connect 15 0 14 1;
+#X connect 15 0 10 0;
+#X connect 16 0 15 1;
 #X restore 443 331 pd multichannel;
 #X text 153 369 signal(s);
 #X text 147 385 set <list>;
