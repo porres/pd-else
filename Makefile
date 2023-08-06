@@ -362,7 +362,7 @@ $(wildcard Code_source/extra_source/*.tcl) \
 $(wildcard Documentation/Help-files/*.pd) \
 $(wildcard Documentation/extra_files/*.*) \
 $(wildcard *.txt) \
-README.pdf
+Documentation/README.pdf
 
 # Change the arch to arm64 if the extension is d_arm64
 ifeq ($(extension),d_arm64)
