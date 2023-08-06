@@ -207,12 +207,12 @@
 #X connect 8 0 3 0;
 #X connect 10 0 5 0;
 #X restore 75 223 pd sum;
-#X obj 75 175 clone -x -do else/resonclone2 1;
 #X text 344 167 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 346 148 Alexandre Torres Porres (2017);
 #X obj 352 113 declare -path else;
-#X connect 0 0 4 0;
+#X obj 75 175 clone -x -do else/resonbank2.unit 1;
+#X connect 0 0 7 0;
 #X connect 0 1 1 0;
-#X connect 1 0 4 0;
+#X connect 1 0 7 0;
 #X connect 3 0 2 0;
-#X connect 4 0 3 0;
+#X connect 7 0 3 0;
