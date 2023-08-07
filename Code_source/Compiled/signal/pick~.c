@@ -44,7 +44,7 @@ static t_int *pick_perform(t_int *w){
     
 static void pick_dsp(t_pick *x, t_signal **sp){
     signal_setmultiout(&sp[1], 1);
-    dsp_add(pick_perform, 5, x, sp[0]->s_n, sp[0]->s_nchans, sp[0]->s_vec, sp[1]->s_vec);
+    dsp_add(pick_perform, 5, x, (t_int)sp[0]->s_n, (t_int)sp[0]->s_nchans, sp[0]->s_vec, sp[1]->s_vec);
 }
 
 static void *pick_new(t_floatarg f){
