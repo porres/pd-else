@@ -92,7 +92,7 @@ jobs:
         cp -r ./Code_source/Compiled/signal/sfz~/sfizz/build/pd/sfizz/sfizz.pd_linux ./else-Linux
         mv ./else-Linux/sfizz.pd_linux ./else-Linux/sfz~.l_amd64
         cp -r ./Documentation/extra_files/* ./else-Linux
-        cp README.pdf ./else-Linux
+        cp ./Documentation/README.pdf ./else-Linux
         rm -rf ./else-Linux/sfont~
         
     - name: Upload Zip
