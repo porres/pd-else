@@ -69,7 +69,7 @@ static t_int *xselectmc_perform(t_int *w){
 static void xselectmc_dsp(t_xselectmc *x, t_signal **sp){
     signal_setmultiout(&sp[1], x->x_n);
     x->x_sr_khz = sp[0]->s_sr * 0.001;
-    dsp_add(xselectmc_perform, 5, x, sp[0]->s_n, (t_int)sp[0]->s_nchans, sp[0]->s_vec, sp[1]->s_vec);
+    dsp_add(xselectmc_perform, 5, x, (t_int)sp[0]->s_n, (t_int)sp[0]->s_nchans, sp[0]->s_vec, sp[1]->s_vec);
 }
 
 static void *xselectmc_new(t_symbol *s, int ac, t_atom *av){
