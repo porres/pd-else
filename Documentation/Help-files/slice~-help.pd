@@ -20,7 +20,7 @@
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -89,7 +89,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -125,10 +125,10 @@
 #X floatatom 248 277 4 0 0 0 - - - 0;
 #X obj 132 228 hradio 16 1 0 5 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0;
 #X obj 132 249 * -1;
-#X text 44 309 see also;
+#X text 29 295 see also;
 #X text 46 91 [slice~] splits a multichannel signal. The 'n' split point is set via argument or float input. If you slice at 'n' \, the left outlet spits the first 'n' channels and the right outlet sends the remaining channels. If you slice at '-n' \, the right outlet spits the last 'n' channels and the left outlet sends the first channels. If the number of channels is less than the split point \, the whole signal is output to the left if 'n' is positive (and the right outlet outputs zeros) \, and to the right if negative (and the left outlet outputs zeros)., f 76;
 #X obj 230 303 else/slice~ -1;
-#X obj 44 354 else/slice;
+#X obj 31 340 else/slice;
 #X obj 230 330 else/s2f~;
 #X listbox 230 356 10 0 0 0 - - - 0;
 #X obj 311 330 else/s2f~;
@@ -140,7 +140,7 @@
 #X text 157 476 signal - the righft output of the sliced signal;
 #X text 167 511 1) float - slice point (default 0);
 #X obj 230 204 else/sigs~ 1 2 3 4;
-#X obj 45 330 else/unmerge~;
+#X obj 30 316 else/unmerge~;
 #X connect 18 0 19 0;
 #X connect 19 0 24 0;
 #X connect 20 0 21 0;

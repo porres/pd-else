@@ -44,4 +44,3 @@
 #X connect 21 0 20 0;
 #X connect 23 0 24 0;
 #X connect 24 0 20 0;
-#X coords 0 510 1 509 74 39 0;

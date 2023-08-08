@@ -18,7 +18,7 @@
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -87,7 +87,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -119,7 +119,7 @@
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 458 181 pd;
 #X obj 114 359 cnv 17 3 35 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
-#X text 37 268 see also;
+#X text 37 251 see also;
 #X obj 176 289 else/s2f~;
 #X listbox 176 315 10 0 0 0 - - - 0;
 #X obj 255 289 else/s2f~;
@@ -132,7 +132,7 @@
 #X obj 203 213 + 1;
 #X obj 335 288 else/s2f~;
 #X listbox 335 314 10 0 0 0 - - - 0;
-#X obj 37 287 else/unmerge;
+#X obj 37 270 else/unmerge;
 #X obj 203 237 nbx 2 14 1 2 0 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 256;
 #X text 240 237 set number of channels;
 #X text 165 379 float - number of channels in a group;
@@ -149,6 +149,7 @@
 #X text 138 505 2) float;
 #X text 208 506 channel number per outlet (default 1);
 #X text 208 475 number of outlets \, there's an extra outlet for the extra channels, f 50;
+#X obj 37 297 else/slice~;
 #X connect 17 0 18 0;
 #X connect 19 0 20 0;
 #X connect 23 0 17 0;

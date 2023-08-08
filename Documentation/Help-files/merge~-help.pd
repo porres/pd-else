@@ -32,9 +32,9 @@
 #X obj 31 262 else/unmerge~;
 #X obj 31 288 else/merge;
 #X text 80 104 [merge~] merges different signals of different channel lenghts. The number of inlets is set via the argument.;
-#X text 152 394 signals - merged signal;
 #X text 117 430 1) float;
 #X text 177 430 - number of inlets (default and minimum 2);
+#X text 152 394 signals - merged signals;
 #X connect 13 0 11 0;
 #X connect 20 0 13 0;
 #X connect 21 0 20 0;

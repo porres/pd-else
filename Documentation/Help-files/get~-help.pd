@@ -24,7 +24,7 @@
 #X obj 3 483 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
 #X obj 114 456 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 3 521 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
-#X obj 114 398 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 114 398 cnv 17 3 40 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 117 492 1) list;
 #X text 164 399 signals - multichannel signal input to get stuff from;
 #X text 152 456 signal(s) - one or more channels that you got;
@@ -36,6 +36,10 @@
 #X obj 236 196 hradio 16 1 0 5 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0;
 #X msg 260 223 3 2 1;
 #X obj 215 294 else/get~ 2;
+#X text 25 270 see also:;
+#X obj 27 293 else/pick~;
+#X obj 27 317 else/slice~;
+#X obj 27 341 else/unmerge~;
 #X connect 14 0 32 0;
 #X connect 15 0 11 0;
 #X connect 27 0 32 0;
