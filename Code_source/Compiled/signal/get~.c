@@ -62,7 +62,7 @@ static void get_dsp(t_get *x, t_signal **sp){
             x->x_block*x->x_chs * sizeof(t_float), n*chs * sizeof(t_float));
         x->x_block = n, x->x_chs = chs;
     }
-    dsp_add(get_perform, 5, x, n, chs, sp[0]->s_vec, sp[1]->s_vec);
+    dsp_add(get_perform, 5, x, (t_int)n, (t_int)chs, sp[0]->s_vec, sp[1]->s_vec);
 }
 
 void get_free(t_get *x){
