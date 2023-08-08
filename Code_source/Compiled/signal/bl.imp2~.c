@@ -11,8 +11,17 @@
 
 #if _MSC_VER
 #define t_complex _Dcomplex
+#ifndef CMPLX
+#define CMPLX(re,im) (t_complex){re,im}
+#endif
 #else
 #define t_complex complex double
+#ifdef __MINGW32__
+// mingw apparently lacks this macro in complex.h
+#ifndef CMPLX
+#define CMPLX(x, y) __builtin_complex ((double) (x), (double) (y))
+#endif
+#endif
 #endif
 
 // TODO: some of these aren't used
@@ -87,31 +96,31 @@ static t_complex complex_div_f(t_float in1, t_complex in2) {
     double real = (double)in1 / creal(in2);
     double imag = (double)in1 / cimag(in2);
     
-    return (t_complex){real,imag};
+    return CMPLX(real,imag);
 }
 
 static t_complex complex_mult(t_complex in1, t_complex in2) {
     double real = creal(in1) * creal(in2) - cimag(in1) * cimag(in2);
     double imag = creal(in1) * cimag(in2) + creal(in2) * cimag(in1);
-    return (t_complex){real,imag};
+    return CMPLX(real,imag);
 }
 
 static t_complex complex_div(t_complex in1, t_complex in2)
  {
     double real = (creal(in1) * creal(in2) + cimag(in1) * cimag(in2)) / (creal(in2) * creal(in2) + cimag(in2) * cimag(in2));
     double imag = (cimag(in1) * creal(in2) - creal(in1) * cimag(in2)) / (creal(in2) * creal(in2) + cimag(in2) * cimag(in2));
-    return (t_complex){real,imag};
+    return CMPLX(real,imag);
  }
 
 static t_complex complex_subtract(t_complex in1, t_complex in2) {
     double real = creal(in1) - creal(in2);
     double imag = cimag(in1) - cimag(in2);
-    return (t_complex){real,imag};
+    return CMPLX(real,imag);
 }
 
 
 static t_complex complex_with_angle(const t_float angle){
-    return (t_complex){cosf(angle), sinf(angle)};
+    return CMPLX(cosf(angle), sinf(angle));
 }
 
 static t_float complex_norm2(const t_complex x){
@@ -136,8 +145,8 @@ static void set_butter_hp(butter_state states[3], t_float freq){
     t_float omega = 2.0 * tan(M_PI * freq);
     t_complex pole = complex_with_angle( (2*sections + 1) * M_PI / (4*sections)); // first pole of lowpass filter with omega == 1
     t_complex pole_inc = complex_with_angle(M_PI / (2*sections)); // phasor to get to next pole, see Porat p. 331
-    t_complex b = (t_complex){-1.0, 0.0}; // normalize at NY
-    t_complex c = (t_complex){1.0, 0.0};  // all zeros will be at DC
+    t_complex b = CMPLX(-1.0, 0.0); // normalize at NY
+    t_complex c = CMPLX(1.0, 0.0);  // all zeros will be at DC
     for(int i = 0; i < sections; i++){
         butter_state* s = states + i;
         // setup the biquad with the computed pole and zero and unit gain at NY
