@@ -249,6 +249,7 @@ trighold~.class.sources := Code_source/Compiled/signal/trighold~.c
 unmerge~.class.sources := Code_source/Compiled/signal/unmerge~.c
 vu~.class.sources := Code_source/Compiled/signal/vu~.c
 xfade~.class.sources := Code_source/Compiled/signal/xfade~.c
+xfade.mc~.class.sources := Code_source/Compiled/signal/xfade.mc~.c
 xgate~.class.sources := Code_source/Compiled/signal/xgate~.c
 xgate2~.class.sources := Code_source/Compiled/signal/xgate2~.c
 xmod~.class.sources := Code_source/Compiled/signal/xmod~.c
