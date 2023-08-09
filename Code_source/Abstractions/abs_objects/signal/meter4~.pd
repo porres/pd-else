@@ -1,24 +1,17 @@
 #N canvas 372 73 879 425 10;
 #X declare -path else;
-#X obj 51 151 cnv 15 104 134 empty empty empty 20 12 0 14 #e0e0e0 #404040
-0;
-#X obj 108 158 vu 15 120 \$0-R empty -1 -8 0 10 #000000 #000000 1 0
-;
-#X obj 90 158 vu 15 120 \$0-L empty -1 -8 0 10 #000000 #000000 0 0
-;
+#X obj 51 151 cnv 15 104 134 empty empty empty 20 12 0 14 #e0e0e0 #404040 0;
+#X obj 108 158 vu 15 120 \$0-R empty -1 -8 0 10 #000000 #000000 1 0;
+#X obj 90 158 vu 15 120 \$0-L empty -1 -8 0 10 #000000 #000000 0 0;
 #X obj 339 12 inlet~;
 #X obj 428 14 inlet~;
 #X obj 509 272 pack;
 #X obj 551 278 pack;
 #X text 582 204 Part of ELSE \; https://github.com/porres/pd-else;
-#X obj 51 151 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040
-0;
-#X obj 83 151 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040
-0;
-#X obj 51 284 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040
-0;
-#X obj 74 284 cnv 1 7 1 empty empty empty 20 12 0 14 #000000 #404040
-0;
+#X obj 51 151 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040 0;
+#X obj 83 151 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040 0;
+#X obj 51 284 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040 0;
+#X obj 74 284 cnv 1 7 1 empty empty empty 20 12 0 14 #000000 #404040 0;
 #X obj 429 332 outlet~;
 #X obj 339 333 outlet~;
 #X obj 482 334 outlet;
@@ -33,8 +26,7 @@
 #X obj 219 236 outlet;
 #X obj 343 160 v peak_\$0;
 #X obj 345 138 v rms_\$0;
-#X obj 121 107 expr rms_\$0 = $f1 \; if($f1 <= rms_\$0 \, 2000 \, 0)
-\; peak_\$0 = $f2 \; if($f2 <= peak_\$0 \, 2000 \, 0);
+#X obj 121 107 expr rms_\$0 = $f1 \; if($f1 <= rms_\$0 \, 2000 \, 0) \; peak_\$0 = $f2 \; if($f2 <= peak_\$0 \, 2000 \, 0);
 #X connect 0 0 10 0;
 #X connect 1 0 10 1;
 #X connect 2 0 3 0;
@@ -57,8 +49,7 @@
 #X obj 219 236 outlet;
 #X obj 345 138 v rms_r_\$0;
 #X obj 343 160 v peak_r_\$0;
-#X obj 121 107 expr rms_r_\$0 = $f1 \; if($f1 <= rms_r_\$0 \, 2000
-\, 0) \; peak_r_\$0 = $f2 \; if($f2 <= peak_r_\$0 \, 2000 \, 0);
+#X obj 121 107 expr rms_r_\$0 = $f1 \; if($f1 <= rms_r_\$0 \, 2000 \, 0) \; peak_r_\$0 = $f2 \; if($f2 <= peak_r_\$0 \, 2000 \, 0);
 #X connect 0 0 10 0;
 #X connect 1 0 10 1;
 #X connect 2 0 3 0;
@@ -74,10 +65,8 @@
 #X obj 268 14 inlet~;
 #X obj 269 332 outlet~;
 #X obj 179 333 outlet~;
-#X obj 72 158 vu 15 120 \$0-L empty -1 -8 0 10 #000000 #000000 0 0
-;
-#X obj 54 158 vu 15 120 \$0-L empty -1 -8 0 10 #000000 #000000 0 0
-;
+#X obj 72 158 vu 15 120 \$0-L empty -1 -8 0 10 #000000 #000000 0 0;
+#X obj 54 158 vu 15 120 \$0-L empty -1 -8 0 10 #000000 #000000 0 0;
 #N canvas 628 467 496 411 meter 0;
 #X obj 121 63 inlet;
 #X obj 267 63 inlet;
@@ -89,8 +78,7 @@
 #X obj 219 236 outlet;
 #X obj 343 160 v peak_\$0;
 #X obj 345 138 v rms_\$0;
-#X obj 121 107 expr rms_\$0 = $f1 \; if($f1 <= rms_\$0 \, 2000 \, 0)
-\; peak_\$0 = $f2 \; if($f2 <= peak_\$0 \, 2000 \, 0);
+#X obj 121 107 expr rms_\$0 = $f1 \; if($f1 <= rms_\$0 \, 2000 \, 0) \; peak_\$0 = $f2 \; if($f2 <= peak_\$0 \, 2000 \, 0);
 #X connect 0 0 10 0;
 #X connect 1 0 10 1;
 #X connect 2 0 3 0;
@@ -113,8 +101,7 @@
 #X obj 219 236 outlet;
 #X obj 343 160 v peak_\$0;
 #X obj 345 138 v rms_\$0;
-#X obj 121 107 expr rms_\$0 = $f1 \; if($f1 <= rms_\$0 \, 2000 \, 0)
-\; peak_\$0 = $f2 \; if($f2 <= peak_\$0 \, 2000 \, 0);
+#X obj 121 107 expr rms_\$0 = $f1 \; if($f1 <= rms_\$0 \, 2000 \, 0) \; peak_\$0 = $f2 \; if($f2 <= peak_\$0 \, 2000 \, 0);
 #X connect 0 0 10 0;
 #X connect 1 0 10 1;
 #X connect 2 0 3 0;
@@ -126,16 +113,11 @@
 #X connect 10 2 4 0;
 #X connect 10 3 4 1;
 #X restore 196 80 pd meter;
-#X obj 116 151 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040
-0;
-#X obj 149 151 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040
-0;
-#X obj 98 284 cnv 1 7 1 empty empty empty 20 12 0 14 #000000 #404040
-0;
-#X obj 123 284 cnv 1 7 1 empty empty empty 20 12 0 14 #000000 #404040
-0;
-#X obj 149 284 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040
-0;
+#X obj 116 151 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040 0;
+#X obj 149 151 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040 0;
+#X obj 98 284 cnv 1 7 1 empty empty empty 20 12 0 14 #000000 #404040 0;
+#X obj 123 284 cnv 1 7 1 empty empty empty 20 12 0 14 #000000 #404040 0;
+#X obj 149 284 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040 0;
 #X obj 389 267 pack;
 #X obj 441 270 pack;
 #X text 584 185 Alexandre Torres Porres (2019);
@@ -145,6 +127,7 @@
 #X obj 502 46 else/vu~;
 #X obj 482 309 else/merge 4;
 #X obj 658 58 declare -path else;
+#X obj 88 55 snake~ out 4;
 #X connect 3 0 13 0;
 #X connect 3 0 35 0;
 #X connect 4 0 12 0;
@@ -156,7 +139,7 @@
 #X connect 16 0 1 0;
 #X connect 16 1 1 1;
 #X connect 17 0 20 0;
-#X connect 17 0 33 0;
+#X connect 17 0 39 0;
 #X connect 18 0 19 0;
 #X connect 18 0 34 0;
 #X connect 23 0 21 0;
@@ -182,4 +165,8 @@
 #X connect 36 1 6 1;
 #X connect 36 1 16 1;
 #X connect 37 0 14 0;
+#X connect 39 0 33 0;
+#X connect 39 1 34 0;
+#X connect 39 2 35 0;
+#X connect 39 3 36 0;
 #X coords 0 -1 1 1 106 136 2 50 150;

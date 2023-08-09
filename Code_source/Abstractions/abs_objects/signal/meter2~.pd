@@ -1,27 +1,19 @@
 #N canvas 418 74 701 490 10;
 #X declare -path else;
-#X obj 51 151 cnv 15 70 134 empty empty empty 20 12 0 14 #e0e0e0 #404040
-0;
-#X obj 71 157 vu 15 120 \$0-R empty -1 -8 0 10 #000000 #000000 1 0
-;
-#X obj 54 157 vu 15 120 \$0-L empty -1 -8 0 10 #000000 #000000 0 0
-;
+#X obj 51 151 cnv 15 70 134 empty empty empty 20 12 0 14 #e0e0e0 #404040 0;
+#X obj 71 157 vu 15 120 \$0-R empty -1 -8 0 10 #000000 #000000 1 0;
+#X obj 54 157 vu 15 120 \$0-L empty -1 -8 0 10 #000000 #000000 0 0;
 #X obj 169 42 inlet~;
 #X obj 258 44 inlet~;
 #X obj 211 265 pack;
 #X obj 332 267 pack;
 #X text 414 185 Alexandre Torres Porres (2016);
 #X text 412 204 Part of ELSE \; https://github.com/porres/pd-else;
-#X obj 51 151 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040
-0;
-#X obj 115 151 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040
-0;
-#X obj 115 284 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040
-0;
-#X obj 51 284 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040
-0;
-#X obj 82 284 cnv 1 7 1 empty empty empty 20 12 0 14 #000000 #404040
-0;
+#X obj 51 151 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040 0;
+#X obj 115 151 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040 0;
+#X obj 115 284 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040 0;
+#X obj 51 284 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040 0;
+#X obj 82 284 cnv 1 7 1 empty empty empty 20 12 0 14 #000000 #404040 0;
 #X obj 259 332 outlet~;
 #X obj 169 333 outlet~;
 #X obj 311 334 outlet;
@@ -37,8 +29,7 @@
 #X obj 219 236 outlet;
 #X obj 343 160 v peak_\$0;
 #X obj 345 138 v rms_\$0;
-#X obj 121 107 expr rms_\$0 = $f1 \; if($f1 <= rms_\$0 \, 2000 \, 0)
-\; peak_\$0 = $f2 \; if($f2 <= peak_\$0 \, 2000 \, 0);
+#X obj 121 107 expr rms_\$0 = $f1 \; if($f1 <= rms_\$0 \, 2000 \, 0) \; peak_\$0 = $f2 \; if($f2 <= peak_\$0 \, 2000 \, 0);
 #X connect 0 0 10 0;
 #X connect 1 0 10 1;
 #X connect 2 0 3 0;
@@ -61,8 +52,7 @@
 #X obj 219 236 outlet;
 #X obj 345 138 v rms_r_\$0;
 #X obj 343 160 v peak_r_\$0;
-#X obj 121 107 expr rms_r_\$0 = $f1 \; if($f1 <= rms_r_\$0 \, 2000
-\, 0) \; peak_r_\$0 = $f2 \; if($f2 <= peak_r_\$0 \, 2000 \, 0);
+#X obj 121 107 expr rms_r_\$0 = $f1 \; if($f1 <= rms_r_\$0 \, 2000 \, 0) \; peak_r_\$0 = $f2 \; if($f2 <= peak_r_\$0 \, 2000 \, 0);
 #X connect 0 0 10 0;
 #X connect 1 0 10 1;
 #X connect 2 0 3 0;
@@ -77,8 +67,9 @@
 #X obj 187 74 else/vu~;
 #X obj 332 76 else/vu~;
 #X obj 430 103 declare -path else;
+#X obj 53 66 snake~ out;
 #X connect 3 0 15 0;
-#X connect 3 0 20 0;
+#X connect 3 0 23 0;
 #X connect 4 0 14 0;
 #X connect 4 0 21 0;
 #X connect 5 0 17 0;
@@ -96,4 +87,6 @@
 #X connect 21 0 19 0;
 #X connect 21 1 6 1;
 #X connect 21 1 19 1;
+#X connect 23 0 20 0;
+#X connect 23 1 21 0;
 #X coords 0 -1 1 1 72 136 2 50 150;

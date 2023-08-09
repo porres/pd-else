@@ -6,46 +6,53 @@
 
 static t_class *xgate_class;
 
-#define OUTPUTLIMIT 512
+#define MAXOUTS 512
 #define HALF_PI (3.14159265358979323846 * 0.5)
 
-typedef struct _xgate {
-    t_object    x_obj;
-    int         x_ch;
-    int         x_n;
-    int         x_lastch;
-    int         x_n_outs;
-    double      x_fade_n;
-    float       x_sr_khz;
-    int         x_active_ch[OUTPUTLIMIT];
-    int         x_count[OUTPUTLIMIT];
-    float      *x_outs[OUTPUTLIMIT];
-    t_outlet   *x_out_status;
+typedef struct _xgate{
+    t_object  x_obj;
+    int       x_nchs;
+    int       x_n;
+    int       x_lastout;
+    int       x_n_outs;
+    double    x_n_fade; // fade length in samples
+    float     x_sr_khz;
+    int       x_active_out[MAXOUTS];
+    int       x_count[MAXOUTS];
+    float    *x_outs[MAXOUTS];
+    t_outlet *x_out_status;
 }t_xgate;
 
 void xgate_float(t_xgate *x, t_floatarg f){
-  x->x_ch = f < 0 ? 0 : f > x->x_n_outs ? x->x_n_outs : (int)f;
-  if(x->x_ch != x->x_lastch){
-      if(x->x_ch)
-          x->x_active_ch[x->x_ch - 1] = 1;
-      if(x->x_lastch)
-          x->x_active_ch[x->x_lastch - 1] = 0;
-      x->x_lastch = x->x_ch;
-  }
+    int out = f < 0 ? 0 : f > x->x_n_outs ? x->x_n_outs : (int)f;
+    if(x->x_lastout != out){
+        if(out)
+            x->x_active_out[out - 1] = 1;
+        if(x->x_lastout)
+            x->x_active_out[x->x_lastout - 1] = 0;
+        x->x_lastout = out;
+    }
+}
+
+static void xgate_time(t_xgate *x, t_floatarg f){
+    double last_fade_n = x->x_n_fade;
+    x->x_n_fade = (x->x_sr_khz * (f < 0 ? 0 : f)) + 1;
+    for(int n = 0; n < x->x_n_outs; n++)
+        if(x->x_count[n]) // adjust counters
+            x->x_count[n] = (x->x_count[n] / last_fade_n) * x->x_n_fade;
 }
 
 static t_int *xgate_perform(t_int *w){
     t_xgate *x = (t_xgate *)(w[1]);
     t_float *in = (t_float *)(w[2]);
-    int i;
-    for(i = 0; i < x->x_n_outs; i++)
-        x->x_outs[i] = (t_float *)(w[3 + i]); // all outputs
-    for(i = 0; i < x->x_n; i++){
-        float input = in[i];
+    for(int i = 0; i < x->x_n_outs; i++)
+        x->x_outs[i] = (t_float *)(w[3+i]); // outputs
+    for(int i = 0; i < x->x_n * x->x_nchs; i++){
+        t_float input = in[i];
         for(int n = 0; n < x->x_n_outs; n++){
-            if(x->x_active_ch[n] && x->x_count[n] < x->x_fade_n)
+            if(x->x_active_out[n] && x->x_count[n] < x->x_n_fade)
                 x->x_count[n]++;
-            else if(!x->x_active_ch[n] && x->x_count[n] > 0){
+            else if(!x->x_active_out[n] && x->x_count[n] > 0){
                 x->x_count[n]--;
                 if(x->x_count[n] == 0){
                     t_atom at[2];
@@ -54,7 +61,8 @@ static t_int *xgate_perform(t_int *w){
                     outlet_list(x->x_out_status, gensym("list"), 2, at);
                 }
             }
-            *x->x_outs[n]++ = input * sin((x->x_count[n] / x->x_fade_n) * HALF_PI);
+            double amp = sin(x->x_count[n] / x->x_n_fade * HALF_PI);
+            *x->x_outs[n]++ = input * amp;
         }
     }
     return(w+3+x->x_n_outs);
@@ -62,73 +70,41 @@ static t_int *xgate_perform(t_int *w){
 
 static void xgate_dsp(t_xgate *x, t_signal **sp){
     x->x_n = sp[0]->s_n;
+    x->x_nchs = sp[0]->s_nchans;
     x->x_sr_khz = sp[0]->s_sr * 0.001;
     int size = x->x_n_outs + 2;
-    t_int* sigvec = (t_int*)calloc(size, sizeof(t_int));
-    sigvec[0] = (t_int)x;
+    t_int *sigvec = (t_int*)calloc(size, sizeof(t_int));
+    sigvec[0] = (t_int)x; // object
     sigvec[1] = (t_int)sp[0]->s_vec; // in
-    for(int i = 0; i < x->x_n_outs; i++) // outs
+    for(int i = 0; i < x->x_n_outs; i++){ // outs
+        signal_setmultiout(&sp[1+i], x->x_nchs);
         sigvec[2+i] = (t_int)sp[1+i]->s_vec;
+    }
     dsp_addv(xgate_perform, size, (t_int*)sigvec);
     free(sigvec);
 }
 
-static void xgate_time(t_xgate *x, t_floatarg f){
-    float ms = f < 0 ? 0 : f;
-    double last_fade_n = x->x_fade_n;
-    x->x_fade_n = x->x_sr_khz * ms + 1;
-    for(int n = 0; n < x->x_n_outs; n++)
-        if(x->x_count[n]) // adjust counters
-            x->x_count[n] = x->x_count[n] / last_fade_n * x->x_fade_n;
-}
-
-static void *xgate_new(t_symbol *s, int argc, t_atom *argv){
-    s = NULL;
+static void *xgate_new(t_floatarg f1, t_floatarg f2, t_floatarg f3){
     t_xgate *x = (t_xgate *)pd_new(xgate_class);
+    for(int n = 0; n < MAXOUTS; n++){
+        x->x_active_out[n] = 0;
+        x->x_count[n] = 0;
+    }
+    t_float out = f1, ms = f2, init_out = f3;
+    x->x_n_outs = out < 1 ? 1 : out > MAXOUTS ? MAXOUTS : (int)out;
     x->x_sr_khz = sys_getsr() * 0.001;
-    t_float ch = 1, ms = 0, init_channel = 0;
-    int i;
-    int argnum = 0;
-    while(argc){
-        if(argv -> a_type == A_FLOAT) { //if current argument is a float
-            t_float argval = atom_getfloatarg(0, argc, argv);
-            switch(argnum){
-                case 0:
-                    ch = argval;
-                    break;
-                case 1:
-                    ms = argval;
-                    break;
-                case 2:
-                    init_channel = argval;
-                default:
-                    break;
-            };
-        }
-        argnum++;
-        argc--;
-        argv++;
-    };
-    x->x_n_outs = ch < 1 ? 1 : ch;
-    if(x->x_n_outs > OUTPUTLIMIT)
-        x->x_n_outs = OUTPUTLIMIT;
-    for(i = 0; i < x->x_n_outs; i++)
+    x->x_n_fade = x->x_sr_khz * (ms > 0 ? ms : 0) + 1;
+    x->x_lastout = 0;
+    for(int i = 0; i < x->x_n_outs; i++)
         outlet_new(&x->x_obj, gensym("signal"));
     x->x_out_status = outlet_new(&x->x_obj, &s_list);
-    ms = ms > 0 ? ms : 0;
-    x->x_fade_n = x->x_sr_khz * ms + 1;
-    x->x_lastch = 0;
-    for(i = 0; i < OUTPUTLIMIT; i++){
-        x->x_active_ch[i] = 0;
-        x->x_count[i] = 0;
-    }
-    xgate_float(x, init_channel);
+    xgate_float(x, init_out);
     return(x);
 }
 
-void xgate_tilde_setup(void) {
+void xgate_tilde_setup(void){
     xgate_class = class_new(gensym("xgate~"), (t_newmethod)xgate_new, 0,
-        sizeof(t_xgate), CLASS_DEFAULT, A_GIMME, 0);
+        sizeof(t_xgate), CLASS_MULTICHANNEL, A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addfloat(xgate_class, (t_method)xgate_float);
     class_addmethod(xgate_class, nullfn, gensym("signal"), 0);
     class_addmethod(xgate_class, (t_method)xgate_dsp, gensym("dsp"), A_CANT, 0);

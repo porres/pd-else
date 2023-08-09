@@ -170,7 +170,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 #control: mouse/keyboard
     mouse canvas.mouse keycode keymap
 #control: fade/pan/routing
-fader~ autofade~ autofade2~ balance~ pan2~ pan4~ pan8~ spread~ spread.mc~ rotate~ rotate.mc~ xfade~  xfade.mc~ xgate~ xgate2~ xselect~ xselect2~ xselect.mc~ mtx~
+fader~ autofade~ autofade2~ balance~ pan2~ pan4~ pan8~ spread~ spread.mc~ rotate~ rotate.mc~ xfade~  xfade.mc~ xgate~ xgate.mc~ xgate2~ xselect~ xselect2~ xselect.mc~ mtx~
 #control: sequencers
     euclid score score2 pattern sequencer sequencer~ phaseseq~ impseq~ rec rec2
 #control: envelopes
