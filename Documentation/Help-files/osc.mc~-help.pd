@@ -1,11 +1,11 @@
-#N canvas 361 39 559 594 10;
+#N canvas 426 39 559 594 10;
 #X obj 4 344 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 457 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 536 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
 #X obj 113 467 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 4 566 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -74,7 +74,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -183,7 +183,7 @@
 #X text 60 128 The output is also a multichannel signal by default \, but you can “sum” them into a single channel with the “sum” flag or message., f 67;
 #X msg 125 211 sum \$1;
 #X obj 125 184 tgl 19 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
-#N canvas 286 113 499 328 basic 0;
+#N canvas 581 90 494 469 basic 0;
 #X obj 115 201 else/osc.mc~ -sum 440 880 1320;
 #X obj 115 142 else/insert set;
 #X listbox 115 108 20 0 0 0 - - - 0;
@@ -192,6 +192,9 @@
 #X obj 115 232 else/out~;
 #X text 266 67 Instead of multichannel signal inputs you can also send it lists of frequencies (via the 'set' message) or set them via arguments., f 30;
 #X obj 115 167 else/display;
+#X text 126 344 Note that this object is quite similar to, f 25;
+#X text 162 408 The main difference is that [osc.mc~] takes signal inputs., f 31;
+#X obj 234 366 else/oscbank2~;
 #X connect 0 0 5 0;
 #X connect 1 0 7 0;
 #X connect 2 0 1 0;

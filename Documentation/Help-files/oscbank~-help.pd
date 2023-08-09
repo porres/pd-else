@@ -1,4 +1,4 @@
-#N canvas 480 23 562 654 10;
+#N canvas 418 23 562 654 10;
 #X obj 4 326 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 441 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 595 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -63,7 +63,7 @@
 #X text 73 545 -freq <float>: sets fundamental frequency in hz (default 0), f 73;
 #X text 238 332 - fundamental frequency in hz, f 44;
 #X text 62 84 [oscbank~] is a bank made of [sine~] objects. You can set any number of oscillators and control their parameters. Unlike [oscbank2~] \, you have a fundamental frequency input and the frequency of each oscillator is specified as a ratio of that frequency. If you use flags \, the number of elements in the list (such as amplitude list) sets the number of oscillators in the bank \, and you must not use regular arguments in this case., f 71;
-#N canvas 585 95 442 420 multichannel 0;
+#N canvas 585 95 447 404 multichannel 0;
 #X obj 109 281 else/out~;
 #X obj 109 240 else/xselect.mc~ 200 1;
 #X obj 145 165 hradio 16 1 0 4 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0;
