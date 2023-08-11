@@ -47,7 +47,7 @@ static void receiver_proxy_symbol(t_receiver_proxy *p, t_symbol* s){
                 pd_unbind(&x->x_obj.ob_pd, x->x_sym_2);
             x->x_sym_1 = x->x_sym_2 = &s_;
         }
-        pd_bind(&x->x_obj.ob_pd, x->x_sym_1 = s);
+        pd_bind(&x->x_obj.ob_pd, x->x_sym_1 = canvas_realizedollar(x->x_cv, s));
         x->x_bound = 1;
     }
 }
@@ -90,7 +90,7 @@ static void receiver_proxy_list(t_receiver_proxy *p, t_symbol* s, int ac, t_atom
                     }
                     x->x_sym_1 = x->x_sym_2 = &s_;
                 }
-                pd_bind(&x->x_obj.ob_pd, x->x_sym_1 = s);
+                pd_bind(&x->x_obj.ob_pd, x->x_sym_1 = canvas_realizedollar(x->x_cv, s));
                 x->x_bound = 1;
             }
             else{
@@ -106,7 +106,7 @@ static void receiver_proxy_list(t_receiver_proxy *p, t_symbol* s, int ac, t_atom
             if((av+1)->a_type == A_SYMBOL){
                 s = atom_getsymbol(av+1);
                 if(s != &s_){
-                    pd_bind(&x->x_obj.ob_pd, x->x_sym_2 = s);
+                    pd_bind(&x->x_obj.ob_pd, x->x_sym_2 = canvas_realizedollar(x->x_cv, s));
                     x->x_bound = 1;
                 }
                 else{

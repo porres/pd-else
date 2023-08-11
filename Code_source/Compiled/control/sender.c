@@ -13,33 +13,45 @@ typedef struct _sender{
 }t_sender;
 
 static void sender_bang(t_sender *x){
-    if(x->x_sym1 != &s_ && x->x_sym1->s_thing) pd_bang(x->x_sym1->s_thing);
-    if(x->x_sym2 != &s_ && x->x_sym2->s_thing) pd_bang(x->x_sym2->s_thing);
+    t_symbol *sym1 = canvas_realizedollar(x->x_cv, x->x_sym1);
+    t_symbol *sym2 = canvas_realizedollar(x->x_cv, x->x_sym2);
+    if(sym1 != &s_ && x->x_sym1->s_thing) pd_bang(sym1->s_thing);
+    if(sym2 != &s_ && x->x_sym2->s_thing) pd_bang(sym2->s_thing);
 }
 
 static void sender_float(t_sender *x, t_float f){
-    if(x->x_sym1 != &s_ && x->x_sym1->s_thing) pd_float(x->x_sym1->s_thing, f);
-    if(x->x_sym2 != &s_ && x->x_sym2->s_thing) pd_float(x->x_sym2->s_thing, f);
+    t_symbol *sym1 = canvas_realizedollar(x->x_cv, x->x_sym1);
+    t_symbol *sym2 = canvas_realizedollar(x->x_cv, x->x_sym2);
+    if(sym1 != &s_ && x->x_sym1->s_thing) pd_float(sym1->s_thing, f);
+    if(sym2 != &s_ && x->x_sym2->s_thing) pd_float(sym2->s_thing, f);
 }
 
 static void sender_symbol(t_sender *x, t_symbol *s){
-    if(x->x_sym1 != &s_ && x->x_sym1->s_thing) pd_symbol(x->x_sym1->s_thing, s);
-    if(x->x_sym2 != &s_ && x->x_sym2->s_thing) pd_symbol(x->x_sym2->s_thing, s);
+    t_symbol *sym1 = canvas_realizedollar(x->x_cv, x->x_sym1);
+    t_symbol *sym2 = canvas_realizedollar(x->x_cv, x->x_sym2);
+    if(sym1 != &s_ && x->x_sym1->s_thing) pd_symbol(sym1->s_thing, s);
+    if(sym2 != &s_ && x->x_sym2->s_thing) pd_symbol(sym2->s_thing, s);
 }
 
 static void sender_pointer(t_sender *x, t_gpointer *gp){
-    if(x->x_sym1 != &s_ && x->x_sym1->s_thing) pd_pointer(x->x_sym1->s_thing, gp);
-    if(x->x_sym2 != &s_ && x->x_sym2->s_thing) pd_pointer(x->x_sym2->s_thing, gp);
+    t_symbol *sym1 = canvas_realizedollar(x->x_cv, x->x_sym1);
+    t_symbol *sym2 = canvas_realizedollar(x->x_cv, x->x_sym2);
+    if(sym1 != &s_ && x->x_sym1->s_thing) pd_pointer(sym1->s_thing, gp);
+    if(sym2 != &s_ && x->x_sym2->s_thing) pd_pointer(sym2->s_thing, gp);
 }
 
 static void sender_list(t_sender *x, t_symbol *s, int ac, t_atom *av){
-    if(x->x_sym1 != &s_ && x->x_sym1->s_thing) pd_list(x->x_sym1->s_thing, s, ac, av);
-    if(x->x_sym2 != &s_ && x->x_sym2->s_thing) pd_list(x->x_sym2->s_thing, s, ac, av);
+    t_symbol *sym1 = canvas_realizedollar(x->x_cv, x->x_sym1);
+    t_symbol *sym2 = canvas_realizedollar(x->x_cv, x->x_sym2);
+    if(sym1 != &s_ && x->x_sym1->s_thing) pd_list(sym1->s_thing, s, ac, av);
+    if(sym2 != &s_ && x->x_sym2->s_thing) pd_list(sym2->s_thing, s, ac, av);
 }
 
 static void sender_anything(t_sender *x, t_symbol *s, int ac, t_atom *av){
-    if(x->x_sym1 != &s_ && x->x_sym1->s_thing) typedmess(x->x_sym1->s_thing, s, ac, av);
-    if(x->x_sym2 != &s_ && x->x_sym2->s_thing) typedmess(x->x_sym2->s_thing, s, ac, av);
+    t_symbol *sym1 = canvas_realizedollar(x->x_cv, x->x_sym1);
+    t_symbol *sym2 = canvas_realizedollar(x->x_cv, x->x_sym2);
+    if(sym1 != &s_ && x->x_sym1->s_thing) typedmess(sym1->s_thing, s, ac, av);
+    if(sym2 != &s_ && x->x_sym2->s_thing) typedmess(sym2->s_thing, s, ac, av);
 }
 
 static void *sender_new(t_symbol *s, int ac, t_atom *av){
@@ -57,13 +69,13 @@ static void *sender_new(t_symbol *s, int ac, t_atom *av){
     if(ac && (av)->a_type == A_SYMBOL){
         s = atom_getsymbol(av);
         if(s != &s_)
-            x->x_sym1 = canvas_realizedollar(x->x_cv, s);
+            x->x_sym1 = s;
         av++, ac--;
     }
     if(ac && (av)->a_type == A_SYMBOL){
         s = atom_getsymbol(av);
         if(s != &s_){
-            x->x_sym2 = canvas_realizedollar(x->x_cv, s);
+            x->x_sym2 = s;
             symbolinlet_new(&x->x_obj, &x->x_sym2);
         }
     }
