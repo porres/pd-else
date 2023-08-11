@@ -1,6 +1,7 @@
 // porres
 
 #include "m_pd.h"
+#include "g_canvas.h"
 
 static t_class *receiver_class, *receiver_proxy_class;
 
@@ -14,6 +15,7 @@ typedef struct _receiver{
     t_receiver_proxy  x_proxy;
     t_symbol         *x_sym_1;
     t_symbol         *x_sym_2;
+    t_glist          *x_cv;
     int               x_bound;
 }t_receiver;
 
@@ -155,19 +157,23 @@ static void *receiver_new(t_symbol *s, int ac, t_atom *av){
     t_receiver *x = (t_receiver *)pd_new(receiver_class);
     x->x_sym_1 = x->x_sym_2 = &s_;
     x->x_bound = 0;
+    int depth = 0;
+    x->x_cv = canvas_getrootfor(canvas_getcurrent());
     if(ac > 0){
-        if(ac > 2){
+        if(ac > 3){
             pd_error(x, "[receiver]: too many arguments");
             return(NULL);
         }
         if((av)->a_type == A_FLOAT){
-            pd_error(x, "[receiver]: can't take float as an argument");
-            return(NULL);
+            depth = atom_getint(av) < 0 ? 0 : atom_getint(av);
+            av++, ac--;
+            while(depth-- && x->x_cv->gl_owner)
+                x->x_cv = canvas_getrootfor(x->x_cv->gl_owner);
         }
         if((av)->a_type == A_SYMBOL){
             s = atom_getsymbol(av);
             if(s != &s_){
-                pd_bind(&x->x_obj.ob_pd, x->x_sym_1 = s);
+                pd_bind(&x->x_obj.ob_pd, x->x_sym_1 = canvas_realizedollar(x->x_cv, s));
                 x->x_bound = 1;
             }
             else{
@@ -183,7 +189,7 @@ static void *receiver_new(t_symbol *s, int ac, t_atom *av){
             if((av+1)->a_type == A_SYMBOL){
                 s = atom_getsymbol(av+1);
                 if(s != &s_){
-                    pd_bind(&x->x_obj.ob_pd, x->x_sym_2 = s);
+                    pd_bind(&x->x_obj.ob_pd, x->x_sym_2 = canvas_realizedollar(x->x_cv, s));
                     x->x_bound = 1;
                 }
                 else{
