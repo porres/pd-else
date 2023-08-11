@@ -158,7 +158,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 #sampling, playing, granulation
     player~ gran.player~ pvoc.player~ pvoc.live~ batch.rec~ bach.write~ rec.file~ play.file~ tabplayer~ tabwriter~ sample~
 #synthesis: synthesizers
-    sfont~ sfz~ plaits~
+    sfont~ sfz~ plaits~ synth~
 #synthesis: granular
     grain.synth~
 #synthesis: physical modelling

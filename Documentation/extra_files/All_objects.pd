@@ -1,7 +1,7 @@
-#N struct 1004-cell float x float y float cellsize float color;
-#N struct 1005-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
-#N struct 1024-point float x0 float y0 float size float fg float in float grid;
-#N struct 1077-slot float x float y float slotsize float color float width float bordercolor;
+#N struct 1067-cell float x float y float cellsize float color;
+#N struct 1068-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
+#N struct 1087-point float x0 float y0 float size float fg float in float grid;
+#N struct 1140-slot float x float y float slotsize float color float width float bordercolor;
 #N canvas 504 23 532 557 10;
 #N canvas 347 36 974 668 GUI 0;
 #X text 40 146 [biplot];
@@ -534,10 +534,11 @@
 #X obj 85 112 else/keycode;
 #X obj 85 142 else/keymap;
 #X restore 241 369 pd Control(Mouse/keyboard_interaction);
-#N canvas 630 244 220 145 Synthesizers 0;
+#N canvas 848 204 238 207 Synthesizers 0;
 #X obj 72 29 else/plaits~;
 #X obj 73 57 else/sfz~;
 #X obj 72 86 else/sfont~;
+#X obj 73 119 else/synth~;
 #X restore 402 306 pd Synthesizers;
 #N canvas 162 143 414 227 DSP(delays) 0;
 #X obj 101 49 else/del~ in \$0x;

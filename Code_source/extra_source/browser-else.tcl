@@ -66,7 +66,7 @@ proc category_else_menu::load_menutree {} {
             {sampling\ playing\ granulation
                 {player~ gran.player~ pvoc.player~ pvoc.live~ batch.rec~ bach.write~ rec.file~ play.file~ tabplayer~ tabwriter~ sample~}}
             {synthesis:\ synthesizers
-                {sfont~ sfz~ plaits~}}
+                {sfont~ sfz~ plaits~ synth~}}
             {synthesis:\ granular
                 {grain.synth~}}
             {synthesis:\ physical\ modelling
