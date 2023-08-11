@@ -109,7 +109,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 --------------------------------------------------------------------------
 
-## Current Object list (498 objects):
+## Current Object list (501 objects):
 
 #assorted
     else
@@ -124,7 +124,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 #tuning/notes
     scales scale2freq scala autotune autotune2 makenote2 retune eqdiv cents2scale scale2cents cents2frac frac2cents dec2frac frac2dec freq2midi midi2freq note2pitch pitch2note note2dur
 #patch/subpatch management
-    loadbanger args meter presets dollsym receiver retrieve blocksize~ click properties fontsize canvas.active canvas.bounds canvas.gop canvas.pos canvas.file canvas.edit canvas.vis canvas.name canvas.setname canvas.zoom
+    loadbanger args meter presets dollsym sender receiver retrieve blocksize~ click properties fontsize canvas.active canvas.bounds canvas.gop canvas.pos canvas.file canvas.edit canvas.vis canvas.name canvas.setname canvas.zoom
 #message management
     format swap2 nmess unite separate symbol2any any2symbol changed hot initmess message default pack2 pick limit spread router route2 routeall routetype selector stack store morph interpolate sig2float~ float2sig~ pipe2
 #list management

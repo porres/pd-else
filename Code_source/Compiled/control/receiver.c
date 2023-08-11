@@ -159,44 +159,25 @@ static void *receiver_new(t_symbol *s, int ac, t_atom *av){
     x->x_bound = 0;
     int depth = 0;
     x->x_cv = canvas_getrootfor(canvas_getcurrent());
-    if(ac > 0){
-        if(ac > 3){
-            pd_error(x, "[receiver]: too many arguments");
-            return(NULL);
+    if(ac && (av)->a_type == A_FLOAT){
+        depth = atom_getint(av) < 0 ? 0 : atom_getint(av);
+        av++, ac--;
+        while(depth-- && x->x_cv->gl_owner)
+            x->x_cv = canvas_getrootfor(x->x_cv->gl_owner);
+    }
+    if(ac && (av)->a_type == A_SYMBOL){
+        s = atom_getsymbol(av);
+        if(s != &s_){
+            pd_bind(&x->x_obj.ob_pd, x->x_sym_1 = canvas_realizedollar(x->x_cv, s));
+            x->x_bound = 1;
         }
-        if((av)->a_type == A_FLOAT){
-            depth = atom_getint(av) < 0 ? 0 : atom_getint(av);
-            av++, ac--;
-            while(depth-- && x->x_cv->gl_owner)
-                x->x_cv = canvas_getrootfor(x->x_cv->gl_owner);
-        }
-        if((av)->a_type == A_SYMBOL){
-            s = atom_getsymbol(av);
-            if(s != &s_){
-                pd_bind(&x->x_obj.ob_pd, x->x_sym_1 = canvas_realizedollar(x->x_cv, s));
-                x->x_bound = 1;
-            }
-            else{
-                pd_error(x, "[receiver]: invalid symbol");
-                return(NULL);
-            }
-        }
-        if(ac == 2){
-            if((av+1)->a_type == A_FLOAT){
-                pd_error(x, "[receiver]: can't take float as an argument");
-                return(NULL);
-            }
-            if((av+1)->a_type == A_SYMBOL){
-                s = atom_getsymbol(av+1);
-                if(s != &s_){
-                    pd_bind(&x->x_obj.ob_pd, x->x_sym_2 = canvas_realizedollar(x->x_cv, s));
-                    x->x_bound = 1;
-                }
-                else{
-                    pd_error(x, "[receiver]: invalid symbol");
-                    return(NULL);
-                }
-            }
+        av++, ac--;
+    }
+    if(ac && (av)->a_type == A_SYMBOL){
+        s = atom_getsymbol(av);
+        if(s != &s_){
+            pd_bind(&x->x_obj.ob_pd, x->x_sym_2 = canvas_realizedollar(x->x_cv, s));
+            x->x_bound = 1;
         }
     }
     receiver_proxy_init(&x->x_proxy, x);

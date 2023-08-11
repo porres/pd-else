@@ -108,6 +108,7 @@ routetype.class.sources := Code_source/Compiled/control/routetype.c
 receiver.class.sources := Code_source/Compiled/control/receiver.c
 retrieve.class.sources := Code_source/Compiled/control/retrieve.c
 selector.class.sources := Code_source/Compiled/control/selector.c
+sender.class.sources := Code_source/Compiled/control/sender.c
 separate.class.sources := Code_source/Compiled/control/separate.c
 symbol2any.class.sources := Code_source/Compiled/control/symbol2any.c
 slice.class.sources := Code_source/Compiled/control/slice.c

@@ -2,7 +2,7 @@
 #X declare -path else;
 #X obj 88 53 inlet;
 #X obj 88 259 outlet~;
-#N canvas 486 149 540 394 route 0;
+#N canvas 486 149 540 394 route 1;
 #X obj 70 36 inlet;
 #X obj 242 182 else/insert all;
 #X obj 242 292 outlet;
@@ -76,7 +76,7 @@
 #X connect 15 0 1 0;
 #X restore 156 118 pd init;
 #X msg 166 182 resize \$1;
-#N canvas 162 215 473 409 mono-poly 0;
+#N canvas 162 215 473 409 mono-poly 1;
 #X obj 96 50 inlet;
 #X obj 213 348 outlet;
 #X obj 213 50 inlet;
@@ -203,7 +203,7 @@
 #X obj 129 59 inlet;
 #N canvas 119 299 450 300 \$0-clone 0;
 #X obj 100 50 inlet;
-#X obj 100 100 clone -do synth.voice.template 4;
+#X obj 100 100 clone -do synth.voice.template 1;
 #X obj 100 150 outlet~;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
