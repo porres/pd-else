@@ -1,56 +1,39 @@
-#N canvas 559 23 562 420 10;
-#X obj 4 265 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 323 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 358 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 129 332 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 130 273 cnv 17 3 40 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 4 391 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#N canvas 559 23 562 461 10;
+#X obj 4 281 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 4 339 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 4 374 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 129 348 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 130 289 cnv 17 3 40 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 4 428 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 23 40 cnv 4 4 4 empty empty Receive 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 89 40 cnv 4 4 4 empty empty messages 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 3 3 cnv 15 301 42 empty empty receiver 20 20 2 37 #e0e0e0 #000000
-0;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 23 40 cnv 4 4 4 empty empty Receive 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 89 40 cnv 4 4 4 empty empty messages 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 3 3 cnv 15 301 42 empty empty receiver 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X floatatom 218 234 5 0 0 0 - - - 0;
-#X text 176 332 anything;
-#X text 194 302 clear;
-#X msg 307 177 clear;
-#X symbolatom 218 152 8 0 0 0 - - - 0;
-#X obj 101 211 send;
-#X floatatom 79 174 5 0 0 0 - - - 0;
-#X text 188 367 1) list - receive names;
-#X text 231 272 - set receive names;
-#X text 231 302 - clears the receive names;
-#X obj 122 128 else/initmess symbol \$0-x;
-#X obj 218 174 else/dollsym;
-#X text 158 272 symbol/list;
-#N canvas 1000 246 477 346 two-names 0;
+#X floatatom 218 250 5 0 0 0 - - - 0;
+#X text 176 348 anything;
+#X text 194 318 clear;
+#X msg 307 193 clear;
+#X symbolatom 218 168 8 0 0 0 - - - 0;
+#X obj 101 227 send;
+#X floatatom 79 190 5 0 0 0 - - - 0;
+#X text 231 288 - set receive names;
+#X text 231 318 - clears the receive names;
+#X obj 122 144 else/initmess symbol \$0-x;
+#X obj 218 190 else/dollsym;
+#X text 158 288 symbol/list;
+#N canvas 889 246 477 346 two-names 0;
 #X floatatom 51 129 5 0 0 0 - - - 0;
 #X floatatom 161 185 5 0 0 0 - - - 0;
 #X floatatom 52 182 5 0 0 0 - - - 0;
@@ -58,12 +41,8 @@
 #X obj 52 209 s \$0-b;
 #X floatatom 379 133 5 0 0 0 - - - 0;
 #X floatatom 381 186 5 0 0 0 - - - 0;
-#X obj 143 87 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
-#000000;
-#X text 45 26 [receiver] can have up to two receive names. Hence \,
-it receives data sent for two different addresses. This is useful if
-you want to send a message to a group of objects and also individually.
-, f 65;
+#X obj 143 87 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
+#X text 45 26 [receiver] can have up to two receive names. Hence \, it receives data sent for two different addresses. This is useful if you want to send a message to a group of objects and also individually., f 65;
 #X obj 379 160 s \$0-a1;
 #X obj 381 213 s \$0-a2;
 #X floatatom 383 245 5 0 0 0 - - - 0;
@@ -71,8 +50,7 @@ you want to send a message to a group of objects and also individually.
 #X floatatom 52 238 5 0 0 0 - - - 0;
 #X obj 52 265 s \$0-c;
 #X floatatom 144 294 5 0 0 0 - - - 0;
-#X obj 144 214 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
-#000000 #000000;
+#X obj 144 214 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #X obj 161 120 else/message list \$0-a1 \$0-a2;
 #X obj 144 239 else/message list \$0-a1 \$0-a3;
 #X obj 161 155 else/receiver \$0-a \$0-b;
@@ -93,20 +71,36 @@ you want to send a message to a group of objects and also individually.
 #X connect 18 0 20 0;
 #X connect 19 0 1 0;
 #X connect 20 0 15 0;
-#X restore 469 233 pd two-names;
-#X text 67 88 [receiver] is much like vanilla's [receive] \, but can
-have up to two names and has an inlet to set the receive names.;
-#X text 277 151 <= if you type "\$0" \, you need [dollsym];
-#X obj 218 204 else/receiver;
-#X text 200 287 bang;
-#X text 231 287 - spits receive names;
-#X text 231 332 - any received message (or receive names at bangs)
-;
-#X connect 21 0 34 0;
-#X connect 22 0 29 0;
+#X restore 455 217 pd two-names;
+#X text 277 167 <= if you type "\$0" \, you need [dollsym];
+#X obj 218 220 else/receiver;
+#X text 200 303 bang;
+#X text 231 303 - spits receive names;
+#X text 231 348 - any received message (or receive names at bangs);
+#X text 178 383 1) float - optional depth value (default 1);
+#X text 184 403 1) list - up to two receive receive names;
+#X text 63 88 [receiver] is kinda like vanilla's [receive]. It can have up to two names \, has an inlet to set the receive names and at load time can expand dollar symbols according to parent patches., f 63;
+#N canvas 702 163 478 400 depth 0;
+#X floatatom 160 296 5 0 0 0 - - - 0;
+#X obj 160 202 else/dollsym 1;
+#X obj 160 266 else/receiver 1 \\\$0-a;
+#X obj 160 170 symbol \\\$0-a;
+#X obj 160 142 bng 16 250 50 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000;
+#X symbolatom 160 228 10 0 0 0 - - - 0;
+#X text 45 20 I'm lazy to create an abstraction and prove this to you \, but trust me \, you can have a depth argument like in [dollsym] to expand dollar signs according to a parent patch. Check the help file of [dollsym] if you're too confused., f 65;
+#X text 45 74 This is only possible at load time. If you need to send it a symbol name that expands dollars according to the parent patch \, then you need to use [dollsym]. Note that in this case you need to escape dollar signs with a backslash., f 65;
+#X text 68 342 This allows you to get from within an abstraction values sent from loading patch.;
+#X connect 1 0 5 0;
+#X connect 2 0 0 0;
+#X connect 3 0 1 0;
+#X connect 4 0 3 0;
+#X connect 5 0 2 0;
+#X restore 478 241 pd depth;
+#X connect 21 0 32 0;
+#X connect 22 0 28 0;
 #X connect 24 0 23 0;
+#X connect 27 0 23 1;
+#X connect 27 0 32 0;
 #X connect 28 0 23 1;
-#X connect 28 0 34 0;
-#X connect 29 0 23 1;
-#X connect 29 0 34 0;
-#X connect 34 0 18 0;
+#X connect 28 0 32 0;
+#X connect 32 0 18 0;
