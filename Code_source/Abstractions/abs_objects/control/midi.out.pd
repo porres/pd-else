@@ -37,13 +37,13 @@
 #N canvas 452 265 342 286 polytouch 0;
 #X obj 114 55 r \$0-cooked;
 #X obj 114 92 route polytouch;
-#X obj 114 128 else/touch.out -poly;
 #X obj 114 206 midiout;
 #X obj 133 174 s \$0-raw;
+#X obj 114 128 else/ptouch.out;
 #X connect 0 0 1 0;
-#X connect 1 0 2 0;
-#X connect 2 0 3 0;
-#X connect 2 0 4 0;
+#X connect 1 0 4 0;
+#X connect 4 0 2 0;
+#X connect 4 0 3 0;
 #X restore 194 191 pd polytouch;
 #N canvas 452 265 330 244 bend 0;
 #X obj 114 55 r \$0-cooked;
