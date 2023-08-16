@@ -116,6 +116,8 @@ sort.class.sources := Code_source/Compiled/control/sort.c
 spread.class.sources := Code_source/Compiled/control/spread.c
 touch.in.class.sources := Code_source/Compiled/control/touch.in.c
 touch.out.class.sources := Code_source/Compiled/control/touch.out.c
+ptouch.in.class.sources := Code_source/Compiled/control/ptouch.in.c
+ptouch.out.class.sources := Code_source/Compiled/control/ptouch.out.c
 trunc.class.sources := Code_source/Compiled/control/trunc.c
 unmerge.class.sources := Code_source/Compiled/control/unmerge.c
 
