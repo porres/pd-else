@@ -221,7 +221,7 @@ static void voices_list(t_voices *x, t_symbol *s, int ac, t_atom *av){
             }
             else
                 outlet_list(x->x_outs[used_idx], &s_list, ac, av);
-            if(x->x_release > 0){ // free voice
+            if(x->x_release > 0){ // free voice after release time
                 clock_delay(used_pitch->v_clock, x->x_release);
                 clock_delay(x->x_clock, x->x_release);
                 used_pitch->v_released = 1;
@@ -306,8 +306,6 @@ static void voices_steal(t_voices *x, t_float f){
 
 static void voices_release(t_voices *x, t_float f){
     x->x_release = f;
-    if(x->x_release < 0)
-        x->x_release = 0;
 }
 
 static void voices_retrig(t_voices *x, t_float f){
@@ -338,15 +336,8 @@ static void voices_flush(t_voices *x){
                 SETFLOAT(at+1, 0);                              // Note-Off
                 outlet_list(x->x_outs[i], &s_list, 2, at);
             }
-            if(x->x_release > 0){
-                clock_delay(v->v_clock, x->x_release);
-                clock_delay(x->x_clock, x->x_release);
-                v->v_released = 1;
-            }
-            else{
-                v->v_used = v->v_count = v->v_pitch = 0;
-                v->v_pitchsym = NULL;
-            }
+            v->v_used = v->v_count = v->v_pitch = 0; // fuck release time
+            v->v_pitchsym = NULL;
         }
     }
     x->x_count = 0;
@@ -475,6 +466,7 @@ static void *voices_new(t_symbol *s, int ac, t_atom *av){
     }
     x->x_clock = clock_new(x, (t_method)voices_tick);
     x->x_count = 0;
+    floatinlet_new(&x->x_obj, &x->x_release);
     if(x->x_list_mode)
         outlet_new(&x->x_obj, &s_list);
     else{
