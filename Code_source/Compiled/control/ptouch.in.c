@@ -12,7 +12,6 @@ typedef struct _ptouchin{
     unsigned char  x_ptouch;
     unsigned char  x_channel;
     t_outlet      *x_chanout;
-    t_outlet      *x_keyout;
 }t_ptouchin;
 
 static t_class *ptouchin_class;
@@ -40,8 +39,10 @@ static void ptouchin_float(t_ptouchin *x, t_float f){
                     x->x_ready = 1;
                 }
                 else{ // ready
-                    outlet_float(x->x_keyout, val);
-                    outlet_float(((t_object *)x)->ob_outlet, x->x_key);
+                    t_atom at[2];
+                    SETFLOAT(at, x->x_key);
+                    SETFLOAT(at+1, val);
+                    outlet_list(((t_object *)x)->ob_outlet, &s_list, 2, at);
                     x->x_ptouch = x->x_ready = 0;
                 }
             }
@@ -51,8 +52,10 @@ static void ptouchin_float(t_ptouchin *x, t_float f){
                     x->x_ready = 1;
                 }
                 else{
-                    outlet_float(x->x_keyout, val);
-                    outlet_float(((t_object *)x)->ob_outlet, x->x_key);
+                    t_atom at[2];
+                    SETFLOAT(at, x->x_key);
+                    SETFLOAT(at+1, val);
+                    outlet_list(((t_object *)x)->ob_outlet, &s_list, 2, at);
                     x->x_ptouch = x->x_ready = 0;
                 }
             }
@@ -71,7 +74,6 @@ static void *ptouchin_new(t_symbol *s, t_floatarg f){
     x->x_ch = x->x_ch_in = ch;
     floatinlet_new((t_object *)x, &x->x_ch_in);
     outlet_new((t_object *)x, &s_float);
-    x->x_keyout = outlet_new((t_object *)x, &s_float);
     x->x_chanout = outlet_new((t_object *)x, &s_float);
     return(x);
 }
