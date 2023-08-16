@@ -53,16 +53,30 @@ static void notein_float(t_notein *x, t_float f){
         }
         else if(x->x_ready){
             int flag = (x->x_status == 0x90);
-            if(x->x_omni){
+            if(x->x_omni)
                 outlet_float(x->x_chanout, x->x_channel + 1);
-            }
             if(x->x_rel){
-                outlet_float(x->x_velout, bval);
-                outlet_float(x->x_flagout, flag);
+                t_atom at[3];
+                SETFLOAT(at, x->x_pitch);
+                SETFLOAT(at+1, flag);
+                SETFLOAT(at+2, bval);
+                outlet_list(((t_object *)x)->ob_outlet, &s_list, 3, at);
             }
-            else
-               outlet_float(x->x_velout, bval * flag);
-            outlet_float(((t_object *)x)->ob_outlet, x->x_pitch);
+            else{
+                if(flag){ // Note On
+                    t_atom at[2];
+                    SETFLOAT(at, x->x_pitch);
+                    SETFLOAT(at+1, bval);
+                    outlet_list(((t_object *)x)->ob_outlet, &s_list, 2, at);
+                }
+                else{ // Note Off
+                    t_atom at[3];
+                    SETFLOAT(at, x->x_pitch);
+                    SETFLOAT(at+1, 0);
+                    SETFLOAT(at+2, bval);
+                    outlet_list(((t_object *)x)->ob_outlet, &s_list, 3, at);
+                }
+            }
             x->x_ready = 0;
         }
         else if(x->x_status){
@@ -104,10 +118,7 @@ static void *notein_new(t_symbol *s, t_int ac, t_atom *av){
     if(!x->x_omni)
         x->x_channel = (unsigned char)--channel;
     floatinlet_new((t_object *)x, &x->x_ch_in);
-    outlet_new((t_object *)x, &s_float);
-    if(x->x_rel)
-        x->x_flagout = outlet_new((t_object *)x, &s_float);
-    x->x_velout = outlet_new((t_object *)x, &s_float);
+    outlet_new((t_object *)x, &s_list);
     x->x_chanout = outlet_new((t_object *)x, &s_float);
     return(x);
 errstate:
