@@ -57,8 +57,8 @@ static void notein_float(t_notein *x, t_float f){
                 outlet_float(x->x_chanout, x->x_channel + 1);
             }
             if(x->x_rel){
-                outlet_float(x->x_flagout, flag);
                 outlet_float(x->x_velout, bval);
+                outlet_float(x->x_flagout, flag);
             }
             else
                outlet_float(x->x_velout, bval * flag);
@@ -105,9 +105,9 @@ static void *notein_new(t_symbol *s, t_int ac, t_atom *av){
         x->x_channel = (unsigned char)--channel;
     floatinlet_new((t_object *)x, &x->x_ch_in);
     outlet_new((t_object *)x, &s_float);
-    x->x_velout = outlet_new((t_object *)x, &s_float);
     if(x->x_rel)
         x->x_flagout = outlet_new((t_object *)x, &s_float);
+    x->x_velout = outlet_new((t_object *)x, &s_float);
     x->x_chanout = outlet_new((t_object *)x, &s_float);
     return(x);
 errstate:

@@ -66,9 +66,9 @@ static void *noteout_new(t_symbol *s, t_int ac, t_atom *av){
                 goto errstate;
         }
     }
-    floatinlet_new((t_object *)x, &x->x_velocity);
     if(x->x_rel)
         floatinlet_new((t_object *)x, &x->x_flag);
+    floatinlet_new((t_object *)x, &x->x_velocity);
     floatinlet_new((t_object *)x, &x->x_channel);
     outlet_new((t_object *)x, &s_float);
     x->x_channel = (channel > 0 ? channel : 1);
