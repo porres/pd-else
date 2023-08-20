@@ -808,6 +808,8 @@ static void knob_zoom(t_knob *x, t_floatarg f){
 static void knob_properties(t_gobj *z, t_glist *owner){
     owner = NULL;
     t_knob *x = (t_knob *)z;
+    knob_get_snd(x);
+    knob_get_rcv(x);
     char buffer[512];
     sprintf(buffer, "knob_dialog %%s %g %g %g %g %d {%s} {%s} %d %g %d {%s} {%s} {%s} %d %d %d %d %d %d\n",
         (float)(x->x_size / x->x_zoom),
