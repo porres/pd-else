@@ -60,13 +60,13 @@ void ChordEngine::Init(BufferAllocator* allocator) {
   morph_lp_ = 0.0f;
   timbre_lp_ = 0.0f;
   
-  ratios_ = allocator->Allocate<float>(kChordNumChords * kChordNumVoices);
+  ratios_ = allocator->Allocate<float>(kChordNumChords * kChordNumNotes);
 }
 
 void ChordEngine::Reset() {
   for (int i = 0; i < kChordNumChords; ++i) {
-    for (int j = 0; j < kChordNumVoices; ++j) {
-      ratios_[i * kChordNumVoices + j] = SemitonesToRatio(chords[i][j]);
+    for (int j = 0; j < kChordNumNotes; ++j) {
+      ratios_[i * kChordNumNotes + j] = SemitonesToRatio(chords[i][j]);
     }
   }
 }
