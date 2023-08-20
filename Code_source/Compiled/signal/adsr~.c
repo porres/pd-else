@@ -41,6 +41,17 @@ static void adsr_bang(t_adsr *x){
         x->x_retrigger = 1;
 }
 
+static void adsr_gate(t_adsr *x, t_floatarg f){
+    x->x_f_gate = f;
+    if(x->x_f_gate != 0){
+        x->x_last_gate = x->x_f_gate;
+        if(!x->x_status) // trigger it on
+            outlet_float(x->x_out2, x->x_status = 1);
+        else
+            x->x_retrigger = 1;
+    }
+}
+
 static void adsr_float(t_adsr *x, t_floatarg f){
     x->x_f_gate = f / 127;
     if(x->x_f_gate != 0){
@@ -235,8 +246,9 @@ void adsr_tilde_setup(void){
     adsr_class = class_new(gensym("adsr~"), (t_newmethod)adsr_new, 0,
         sizeof(t_adsr), 0, A_GIMME, 0);
     class_addmethod(adsr_class, nullfn, gensym("signal"), 0);
-    class_addmethod(adsr_class, (t_method) adsr_dsp, gensym("dsp"), A_CANT, 0);
-    class_addfloat(adsr_class, (t_method)adsr_float);
+    class_addmethod(adsr_class, (t_method)adsr_dsp, gensym("dsp"), A_CANT, 0);
     class_addbang(adsr_class, (t_method)adsr_bang);
+    class_addfloat(adsr_class, (t_method)adsr_float);
+    class_addmethod(adsr_class, (t_method)adsr_gate, gensym("gate"), A_DEFFLOAT, 0);
     class_addmethod(adsr_class, (t_method)adsr_log, gensym("lin"), A_DEFFLOAT, 0);
 }
