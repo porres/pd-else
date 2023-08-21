@@ -53,7 +53,7 @@ static void ctlin_float(t_ctlin *x, t_float f){
                     x->x_ready = 1;
                 }
                 else{
-                    if(x->x_ctl_in > 0){
+                    if(x->x_ctl_in >= 0){
                         if(x->x_ctl_in == x->x_n){
                             outlet_float(((t_object *)x)->ob_outlet, val);
                             x->x_control = x->x_ready = 0;
