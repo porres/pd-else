@@ -15,11 +15,6 @@ else()
     set(PD_INCLUDE_BASEDIR "${PROJECT_SOURCE_DIR}/plugins/puredata/external/pd/include")
 endif()
 
-#include_directories(
-#    ${elsefile_INCLUDE_DIR}
-#    ${PD_INCLUDE_BASEDIR}
-#)
-
 if(WIN32)
     set(PUREDATA_SUFFIX ".dll")
 elseif(APPLE)
@@ -76,14 +71,13 @@ target_include_directories(elsefile PUBLIC ${elsefile_INCLUDE_DIR})
 function(add_pd_external TARGET)
     add_library("${TARGET}" MODULE ${ARGN})
     target_include_directories("${TARGET}" PRIVATE "${PD_INCLUDE_BASEDIR}")
-    target_link_libraries("${TARGET}" PRIVATE elsefile)  
+    target_link_libraries("${TARGET}" PRIVATE elsefile)
     set_target_properties("${TARGET}" PROPERTIES
         PREFIX ""
         SUFFIX "${PUREDATA_SUFFIX}")
     if(APPLE)
         set_property(TARGET "${TARGET}" APPEND_STRING
             PROPERTY LINK_FLAGS " -Wl,-undefined,suppress,-flat_namespace")
-    elseif(WIN32)
         target_link_libraries("${TARGET}" PRIVATE pdex-implib)
     endif()
 endfunction()
