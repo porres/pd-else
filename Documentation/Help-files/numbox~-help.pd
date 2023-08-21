@@ -1,4 +1,4 @@
-#N canvas 628 23 568 623 10;
+#N canvas 510 23 568 623 10;
 #X obj 2 4 cnv 15 301 42 empty empty numbox~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -76,11 +76,12 @@
 #X text 45 442 When in generating mode \, you can click to activate the box and type in a number then hit enter. You can also drag the mouse up or down or use up/down arrows to increment/decrement values. If shift is pressed when clicking on the box the mouse dragging or up/down arrows incremente/decrement in hundredths., f 61;
 #X msg 241 94 range -100 100;
 #X text 45 515 You can set a minimum and maximum range that limits values \, but only for dragging and using up/down arrows. This is set via the 'range' message \, -range flag or via properties., f 61;
-#X msg 265 149 init;
-#X msg 255 123 init 100;
 #X text 298 149 save current state;
-#X text 45 323 If no signal is connected \, [numbox~] generates signal values with a smoothening ramp in ms (or no ramp if ms is 0) set via the '-ramp' flag \, 'ramp' message or via properties. In this mode you can also set values with a float input. The 'set' message or '-init' flag sets generating value and also the initialization value. If you only send 'init' \, then [numbox~] saves the current state by capturing the current value as the initialization value. You can also set the initialization value via properties. Double clicking on the object restores this initial state., f 61;
 #X text 315 176 alt+click to restore initial state, f 14;
+#X msg 265 149 load;
+#X text 322 126 comment;
+#X msg 255 123 load 100;
+#X text 45 323 If no signal is connected \, [numbox~] generates signal values with a smoothening ramp in ms (or no ramp if ms is 0) set via the '-ramp' flag \, 'ramp' message or via properties. In this mode you can also set values with a float input. The 'load' message or '-load' flag sets generating value at load time (aka initialization value). If you only send 'load' \, then [numbox~] saves the current state by capturing the current value as the load value. You can also set the load value via properties. Double clicking on the object restores this initial load state., f 61;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 0;
@@ -91,8 +92,8 @@
 #X connect 10 0 8 0;
 #X connect 11 0 10 0;
 #X connect 13 0 8 0;
-#X connect 15 0 8 0;
-#X connect 16 0 8 0;
+#X connect 17 0 8 0;
+#X connect 19 0 8 0;
 #X restore 489 194 pd basic;
 #N canvas 719 128 440 327 +parameters 0;
 #X obj 123 236 else/numbox~ 12 30 500 #c2cb8d #162171 10 0 0 0;
@@ -114,8 +115,8 @@
 #X connect 7 0 8 0;
 #X connect 8 0 0 0;
 #X restore 454 218 pd +parameters;
-#X text 144 288 init <float>;
-#X text 105 480 -init <float>: sets initial generating value (default 0), f 71;
+#X text 144 288 load <float>;
+#X text 105 480 -load <float>: sets initial generating value (default 0), f 71;
 #X connect 19 0 18 0;
 #X connect 20 0 50 0;
 #X connect 50 0 21 0;

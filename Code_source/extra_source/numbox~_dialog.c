@@ -262,7 +262,7 @@ sys_gui("\n" // Tcl/Tk properties code based on IEMGUI's
             "    pack $mytoplevel.para -side top -fill x -pady 5\n"
 
             "   frame $mytoplevel.para.initial\n"
-            "       label $mytoplevel.para.initial.lab -text [_ \"Initial Value\"]\n"
+            "       label $mytoplevel.para.initial.lab -text [_ \"Load Value\"]\n"
             "       entry $mytoplevel.para.initial.ent -textvariable $var_numbox_initial -width 6\n"
             "       pack $mytoplevel.para.initial.ent $mytoplevel.para.initial.lab -side right -anchor e\n"
             "   frame $mytoplevel.para.interval\n"

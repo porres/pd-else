@@ -495,7 +495,7 @@ static void *numbox_new(t_symbol *s, int ac, t_atom *av){
                 }
                 else goto errstate;
             }
-            else if(sym == gensym("-set")){
+            else if(sym == gensym("-load")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     x->x_set_val = atom_getfloatarg(1, ac, av);
                     ac-=2, av+=2;
@@ -549,7 +549,7 @@ void numbox_tilde_setup(void){
     class_addmethod(numbox_class, (t_method)numbox_width, gensym("width"), A_FLOAT, 0);
     class_addmethod(numbox_class, (t_method)numbox_size, gensym("size"), A_FLOAT, 0);
     class_addmethod(numbox_class, (t_method)numbox_range, gensym("range"), A_FLOAT, A_FLOAT, 0);
-    class_addmethod(numbox_class, (t_method)numbox_init, gensym("init"), A_GIMME, 0);
+    class_addmethod(numbox_class, (t_method)numbox_init, gensym("load"), A_GIMME, 0);
     class_addmethod(numbox_class, (t_method)numbox_bg, gensym("bgcolor"), A_GIMME, 0);
     class_addmethod(numbox_class, (t_method)numbox_fg, gensym("fgcolor"), A_GIMME, 0);
     class_addmethod(numbox_class, (t_method)numbox_zoom, gensym("zoom"), A_CANT, 0);
