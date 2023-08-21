@@ -9,7 +9,7 @@
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 304 3 pd;
 #X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
-#X obj 22 40 cnv 4 4 4 empty empty SFZ\ sample\ player 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 22 40 cnv 4 4 4 empty empty SFZ\ hybrid\ sample\ player 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
