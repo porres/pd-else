@@ -15,10 +15,10 @@ else()
     set(PD_INCLUDE_BASEDIR "${PROJECT_SOURCE_DIR}/plugins/puredata/external/pd/include")
 endif()
 
-include_directories(
-    ${elsefile_INCLUDE_DIR}
-    ${PD_INCLUDE_BASEDIR}
-)
+#include_directories(
+#    ${elsefile_INCLUDE_DIR}
+#    ${PD_INCLUDE_BASEDIR}
+#)
 
 if(WIN32)
     set(PUREDATA_SUFFIX ".dll")
