@@ -5,6 +5,12 @@
 # If not, contact the sfizz maintainers at https://github.com/sfztools/sfizz
 
 find_path(PD_INCLUDE_BASEDIR "m_pd.h" PATH_SUFFIXES "pd")
+
+include_directories(
+    ${elsefile_INCLUDE_DIR}
+    ${PD_INCLUDE_BASEDIR}
+)
+
 set(PD_IMP_DEF "${PROJECT_SOURCE_DIR}/plugins/puredata/external/pd/bin/pd.def")
 
 if(PD_INCLUDE_BASEDIR)
@@ -61,9 +67,13 @@ if(WIN32)
     add_dependencies(pdex-implib pdex-implib-generated)
 endif()
 
+# Compile the elsefile source file
+add_library(elsefile STATIC ${elsefile_INCLUDE_DIR}/elsefile.c)
+
 function(add_pd_external TARGET)
     add_library("${TARGET}" MODULE ${ARGN})
-    target_include_directories("${TARGET}" PRIVATE "${PD_INCLUDE_BASEDIR}" "${elsefile_INCLUDE_DIR}")
+    target_include_directories("${TARGET}" PRIVATE "${PD_INCLUDE_BASEDIR}")
+    target_link_libraries("${TARGET}" PRIVATE elsefile)  
     set_target_properties("${TARGET}" PROPERTIES
         PREFIX ""
         SUFFIX "${PUREDATA_SUFFIX}")

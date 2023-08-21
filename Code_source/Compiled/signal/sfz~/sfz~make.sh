@@ -38,7 +38,7 @@ BASEFLAGS='
 ' 
 cp ./sfz~.c ./sfizz/plugins/puredata/sfizz_puredata.c
 
-INCLUDE_DIR_RELATIVE="../../../shared/"
+INCLUDE_DIR_RELATIVE="../../../shared"
 INCLUDE_DIR_ABSOLUTE="$(readlink -f $INCLUDE_DIR_RELATIVE)"  # Get the absolute path
 
 # Update the CMake configuration with target_include_directories
