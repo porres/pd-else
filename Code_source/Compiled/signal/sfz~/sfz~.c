@@ -109,8 +109,8 @@ static void sfz_base(t_sfz* x, t_float f){
 static void sfz_open(t_sfz *x, t_symbol *s){
     if(s && s != &s_)
         sfz_do_open(x, s);
-//    else
-//        elsefile_panel_click_open(x->x_elsefilehandle);
+    else
+        elsefile_panel_click_open(x->x_elsefilehandle);
 }
 
 static void sfz_load_string(t_sfz *x, t_symbol *s, int ac, t_atom* av){
