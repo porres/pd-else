@@ -1,5 +1,7 @@
 #!/bin/sh
 
+INCLUDE_DIR="../../../../../../../shared/"
+
 if [ $1 = "Windows" ]
     then
         GENERATOR="-G MSYS Makefiles"
@@ -35,6 +37,11 @@ BASEFLAGS='
 -DSFIZZ_RELEASE_ASSERTS=OFF
 ' 
 cp ./sfz~.c ./sfizz/plugins/puredata/sfizz_puredata.c
+
+# Modify the #include statements in the copied source file
+# Replace "../../../shared/elsefile.h" with the updated path relative to the include directory
+sed -i "s|#include \"../../../shared/elsefile.h\"|#include \"$INCLUDE_DIR/elsefile.h\"|g" ./sfizz/plugins/puredata/sfizz_puredata.c
+
 mkdir -p sfizz/build
 cd sfizz/build
 cmake "$GENERATOR" .. $BASEFLAGS
