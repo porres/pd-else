@@ -63,7 +63,7 @@ endif()
 
 function(add_pd_external TARGET)
     add_library("${TARGET}" MODULE ${ARGN})
-    target_include_directories("${TARGET}" PRIVATE "${PD_INCLUDE_BASEDIR}")
+    target_include_directories("${TARGET}" PRIVATE "${PD_INCLUDE_BASEDIR}" "${elsefile_INCLUDE_DIR}")
     set_target_properties("${TARGET}" PROPERTIES
         PREFIX ""
         SUFFIX "${PUREDATA_SUFFIX}")
