@@ -123,7 +123,7 @@ jobs:
        name: "Install mingw deps"
        uses: msys2/setup-msys2@v2
        with:
-           install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-ntldd-git     mingw-w64-x86_64-fluidsynth mingw64/mingw-w64-x86_64-cmake unzip curl
+           install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-ntldd-git     mingw-w64-x86_64-fluidsynth mingw64/mingw-w64-x86_64-cmake unzip curl sed
            update: false
 
 #     - name: Configure Environment
