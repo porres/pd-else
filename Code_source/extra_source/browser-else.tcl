@@ -11,7 +11,7 @@ proc menu_send_else_obj {w x y item} {
         pdsend "$w obj $x $y $item"
     } else {
         pdsend "$w obj $x $y else/$item"
-#        pdsend "$w obj $x $y $item"
+        pdsend "pd-$item.pd loadbang"
     } 
 }
 
