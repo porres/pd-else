@@ -40,7 +40,9 @@ cp ./sfz~.c ./sfizz/plugins/puredata/sfizz_puredata.c
 
 # Modify the #include statements in the copied source file
 # Replace "../../../shared/elsefile.h" with the updated path relative to the include directory
-sed -i "s|#include \"../../../shared/elsefile.h\"|#include \"$INCLUDE_DIR/elsefile.h\"|g" ./sfizz/plugins/puredata/sfizz_puredata.c
+# use -i.bak for macOS compatibility
+sed -i.bak "s|#include \"../../../shared/elsefile.h\"|#include \"$INCLUDE_DIR/elsefile.h\"|g" ./sfizz/plugins/puredata/sfizz_puredata.c
+rm ./sfizz/plugins/puredata/sfizz_puredata.c.bak
 
 mkdir -p sfizz/build
 cd sfizz/build
