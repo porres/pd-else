@@ -47,4 +47,4 @@ rm ./sfizz/plugins/puredata/sfizz_puredata.c.bak
 mkdir -p sfizz/build
 cd sfizz/build
 cmake "$GENERATOR" .. $BASEFLAGS
-make
+make CFLAGS="-I$INCLUDE_DIR"
