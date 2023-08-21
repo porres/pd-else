@@ -68,7 +68,10 @@ if(WIN32)
 endif()
 
 # Compile the elsefile source file
-add_library(elsefile STATIC ${elsefile_INCLUDE_DIR}/elsefile.c)
+set(elsefile_SRCS ${elsefile_INCLUDE_DIR}/elsefile.c)
+set(elsefile_INCLUDE_DIR ${PD_INCLUDE_BASEDIR})
+add_library(elsefile STATIC ${elsefile_SRCS})
+target_include_directories(elsefile PUBLIC ${elsefile_INCLUDE_DIR})
 
 function(add_pd_external TARGET)
     add_library("${TARGET}" MODULE ${ARGN})
