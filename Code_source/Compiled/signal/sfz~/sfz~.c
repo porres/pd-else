@@ -9,7 +9,7 @@ __attribute__((visibility("default")))
 #endif
 
 #include <m_pd.h>
-//#include "../shared/elsefile.h"
+#include "../../../shared/elsefile.h"
 #include <sfizz.h>
 #include <sfizz/import/sfizz_import.h>
 #include <unistd.h>
@@ -28,7 +28,10 @@ typedef struct _sfz{
     int             x_base;
     float           x_ratio;
     float           x_bratio;
-//    t_elsefile     *x_elsefilehandle;
+    t_binbuf       *x_binbuf;
+    char           *x_buf;
+    int             x_bufsize;
+    t_elsefile     *x_elsefilehandle;
 }t_sfz;
 
 static void sfz_do_open(t_sfz *x, t_symbol *name){
@@ -40,7 +43,7 @@ static void sfz_do_open(t_sfz *x, t_symbol *name){
         ext = "";
         fd = canvas_open(x->x_canvas, filename, ext, realdir, &realname, MAXPDSTRING, 0);
         if(fd < 0){
-            pd_error(x, "[sfz~]: can't find soundfont %s", filename);
+            pd_error(x, "[sfz~]: can't find sfz file %s", filename);
             return;
         }
     }
@@ -48,7 +51,7 @@ static void sfz_do_open(t_sfz *x, t_symbol *name){
         ext = ".sfz"; // let's try sfz
         fd = canvas_open(x->x_canvas, filename, ext, realdir, &realname, MAXPDSTRING, 0);
         if(fd < 0){ // failed
-            pd_error(x, "[sfz~]: can't find soundfont %s", filename);
+            pd_error(x, "[sfz~]: can't find sfz file %s", filename);
             return;
         }
     }
@@ -57,7 +60,7 @@ static void sfz_do_open(t_sfz *x, t_symbol *name){
     sfizz_load_or_import_file(x->x_synth, realname, NULL);
 }
 
-/*static void sfz_readhook(t_pd *z, t_symbol *fn, int ac, t_atom *av){
+static void sfz_readhook(t_pd *z, t_symbol *fn, int ac, t_atom *av){
     ac = 0;
     av = NULL;
     sfz_do_open((t_sfz *)z, fn);
@@ -65,7 +68,7 @@ static void sfz_do_open(t_sfz *x, t_symbol *name){
 
 static void sfz_click(t_sfz *x){
    elsefile_panel_click_open(x->x_elsefilehandle);
-}*/
+}
 
 static void sfz_scala(t_sfz* x, t_symbol *s){
     if(!sfizz_load_scala_file(x->x_synth, s->s_name))
@@ -108,6 +111,17 @@ static void sfz_open(t_sfz *x, t_symbol *s){
         sfz_do_open(x, s);
 //    else
 //        elsefile_panel_click_open(x->x_elsefilehandle);
+}
+
+static void sfz_load_string(t_sfz *x, t_symbol *s, int ac, t_atom* av){
+    (void)s;
+    binbuf_clear(x->x_binbuf);
+    binbuf_restore(x->x_binbuf, ac, av);
+    binbuf_gettext(x->x_binbuf, &x->x_buf, &x->x_bufsize);
+    // binbuf_gettext isn't null terminated
+    x->x_buf[x->x_bufsize] = '\0';
+    // printf("loading sfz string: %s, %d\n", x->x_buf, x->x_bufsize);
+    sfizz_load_string(x->x_synth, ".", x->x_buf);
 }
 
 static void sfz_midiin(t_sfz* x, t_float f){
@@ -237,14 +251,18 @@ static void sfz_dsp(t_sfz* x, t_signal** sp){
 static void sfz_free(t_sfz* x){
     if(x->x_synth)
         sfizz_free(x->x_synth);
-//    if(x->x_elsefilehandle)
-//        elsefile_free(x->x_elsefilehandle);
+    if(x->x_elsefilehandle)
+        elsefile_free(x->x_elsefilehandle);
+    binbuf_free(x->x_binbuf);
+    if(x->x_buf)
+        freebytes(x->x_buf, x->x_bufsize);
 }
 
 static void* sfz_new(t_symbol *s, int ac, t_atom *av){
     (void)s;
     t_sfz* x = (t_sfz*)pd_new(sfz_class);
-//    x->x_elsefilehandle = elsefile_new((t_pd *)x, sfz_readhook, 0);
+    x->x_elsefilehandle = elsefile_new((t_pd *)x, sfz_readhook, 0);
+    x->x_binbuf = binbuf_new();
     x->x_canvas = canvas_getcurrent();
     outlet_new(&x->x_obj, &s_signal);
     outlet_new(&x->x_obj, &s_signal);
@@ -274,6 +292,7 @@ void sfz_tilde_setup(){
     class_addmethod(sfz_class, (t_method)sfz_panic, gensym("panic"), 0);
     class_addmethod(sfz_class, (t_method)sfz_flush, gensym("flush"), 0);
     class_addmethod(sfz_class, (t_method)sfz_open, gensym("open"), A_DEFSYM, 0);
+    class_addmethod(sfz_class, (t_method)sfz_load_string, gensym("set"), A_GIMME, 0);
     class_addmethod(sfz_class, (t_method)sfz_scala, gensym("scala"), A_DEFSYM, 0);
     class_addmethod(sfz_class, (t_method)sfz_a4, gensym("a4"), A_FLOAT, 0);
 //    class_addmethod(sfz_class, (t_method)sfz_tuningstretch, gensym("tuningstretch"), A_FLOAT, 0);
@@ -283,7 +302,7 @@ void sfz_tilde_setup(){
     class_addmethod(sfz_class, (t_method)sfz_volume, gensym("volume"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_voices, gensym("voices"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_version, gensym("version"), 0);
-//    class_addmethod(sfz_class, (t_method)sfz_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
-//    elsefile_setup();
+    class_addmethod(sfz_class, (t_method)sfz_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    elsefile_setup();
 }
 
