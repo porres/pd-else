@@ -78,6 +78,7 @@ function(add_pd_external TARGET)
     if(APPLE)
         set_property(TARGET "${TARGET}" APPEND_STRING
             PROPERTY LINK_FLAGS " -Wl,-undefined,suppress,-flat_namespace")
+    elseif(WIN32)
         target_link_libraries("${TARGET}" PRIVATE pdex-implib)
     endif()
 endfunction()
