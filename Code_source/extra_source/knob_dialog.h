@@ -207,7 +207,7 @@ sys_gui("\n"
 "    pack $mytoplevel.para.knobstyle.dim.w_lab $mytoplevel.para.knobstyle.dim.w_ent -side left\n"
 // Entry for initial value
 "    frame $mytoplevel.para.knobstyle.initial \n"
-"    label $mytoplevel.para.knobstyle.initial.lab -text [_ \"Initial Value\"]\n"
+"    label $mytoplevel.para.knobstyle.initial.lab -text [_ \"Load Value\"]\n"
 "    entry $mytoplevel.para.knobstyle.initial.ent -textvariable ::dialog_knob::var_initial($vid) -width 4\n"
 "    pack $mytoplevel.para.knobstyle.initial.lab -side left -expand 0 -ipadx 4\n"
 "    pack $mytoplevel.para.knobstyle.initial.ent -side left -expand 0 -ipadx 10\n"

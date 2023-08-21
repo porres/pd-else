@@ -1,4 +1,4 @@
-#N canvas 397 23 559 681 10;
+#N canvas 414 23 559 681 10;
 #X obj 182 221 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty sfz~ 20 20 2 37 #e0e0e0 #000000 0;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
@@ -19,11 +19,11 @@
 #X obj 1 285 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlet 8 12 0 13 #dcdcdc #000000 0;
 #X obj 1 573 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 1 623 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12 0 13 #dcdcdc #000000 0;
-#X obj 155 128 else/keyboard 10 53 3 3 0 0 empty empty;
+#X obj 155 128 else/keyboard 14 55 2 4 0 0 empty empty;
 #X obj 77 580 cnv 17 3 17 empty \$0-pddp.cnv.let.n 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 77 600 cnv 17 3 17 empty \$0-pddp.cnv.let.r 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 143 631 1) symbol;
-#X obj 365 103 else/openfile -h https://sfzformat.com/;
+#X obj 384 103 else/openfile -h https://sfzformat.com/;
 #N canvas 668 54 416 538 MIDI-in 0;
 #N canvas 396 60 656 589 MIDI-input 0;
 #X obj 109 116 ctlin;
@@ -164,7 +164,7 @@
 #X connect 6 0 12 0;
 #X connect 12 0 7 0;
 #X connect 12 1 7 1;
-#X restore 469 227 pd MIDI-in;
+#X restore 468 227 pd MIDI-in;
 #N canvas 520 107 634 524 tuning_&_more 0;
 #X msg 81 165 panic;
 #X obj 104 221 hsl 128 15 -1200 1200 0 0 empty empty empty -2 -8 0 10 #dfdfdf #000000 #000000 0 1;
@@ -178,7 +178,7 @@
 #X floatatom 189 265 5 0 0 0 - - - 0;
 #X obj 81 391 else/sfz~ sfz-example;
 #X text 101 122 send note offs for all notes, f 16;
-#N canvas 262 256 630 367 scale 0;
+#N canvas 580 302 630 367 scale 0;
 #X text 87 87 bohlen-pierce;
 #X text 100 108 quarter tones;
 #X obj 41 24 loadbang;
@@ -232,7 +232,7 @@
 #X connect 12 0 10 0;
 #X connect 14 0 10 0;
 #X connect 18 0 10 0;
-#X restore 433 249 pd tuning_&_more;
+#X restore 432 249 pd tuning_&_more;
 #X text 205 631 - sets file to load (default none);
 #N canvas 505 71 657 594 basic 0;
 #X obj 221 515 else/out~;
@@ -253,8 +253,9 @@
 #X msg 243 425 open sfz-example.sfz;
 #X text 379 426 open a file*;
 #X text 353 484 *The .sfz extension is implied for both the open message and the argument., f 40;
-#X text 61 11 The [sfz~] object is based on 'sfizz' \, a SFZ player for the SFZ format. The SFZ format defines how a collection of samples are arranged for performance. It is quite different than a soundfont \, which includes both the samples and the definitions of sample behavior in the same binary file \, while SFZ is a file format which only defines the behavior of musical instruments and does not include the sample content. A “.sfz” definition file is just a text file \, which can be created by any text editor (though for more complex cases with hundreds or thousands of samples \, there are dedicated SFZ creation tools). The ".sfz" file can also not contain any samples and use internal oscillators and also internal processors \, which makes the SFZ a hybrid synthesizer for samples and more., f 92;
-#X text 61 120 Check the 'sfz-example.sfz' file shipped with ELSE and used in this help file \, it doesn't really use any existing sample but internal oscillators and other definitions like ADSR settings and a lowpass filter controlled by a LFO., f 92;
+#X text 61 11 The [sfz~] object is based on 'sfizz' \, a SFZ player for the SFZ format. The SFZ format defines how a collection of samples are arranged for performance. It is quite different than a soundfont \, which includes both the samples and the definitions of sample behavior in the same binary file \, while SFZ is a file format which only defines the behavior of musical instruments and does not include the sample content., f 92;
+#X text 61 72 A “.sfz” file is just a text file \, which can be created by any text editor (though for more complex cases with hundreds or thousands of samples \, there are dedicated SFZ creation tools). The ".sfz" file can also not contain any samples and use internal oscillators and also internal processors \, which makes the SFZ a hybrid synthesizer for samples and more., f 92;
+#X text 61 126 Check the 'sfz-example.sfz' file shipped with ELSE and used in this help file \, it doesn't really use any existing sample but internal oscillators and other definitions like ADSR settings and a lowpass filter controlled by a LFO. The next subpatch shows this better., f 92;
 #X connect 1 0 0 0;
 #X connect 1 1 0 1;
 #X connect 2 0 1 0;
@@ -307,7 +308,6 @@
 #X text 153 581 signal -;
 #X text 153 601 signal -;
 #X text 211 601 right output signal of stereo output, f 39;
-#X text 47 86 [sfz~] is synthesizer for 'SFZ' instruments. For details on the SFZ format \, players and instruments for download \, see:, f 73;
 #N canvas 576 108 452 537 set 0;
 #X obj 117 409 else/out~;
 #X listbox 54 193 8 0 0 0 - - - 12;
@@ -328,7 +328,7 @@
 #X restore 130 193 pd oscillators;
 #X text 46 31 The 'set' message allows you to load a whole .sfz file script. This is well suited for experts who really know what they're doing \, but here are some basic examples., f 62;
 #X obj 130 374 else/sfz~;
-#N canvas 718 236 478 278 load 0;
+#N canvas 718 236 429 278 load 0;
 #X msg 189 185 read sfz-example.sfz;
 #X obj 189 212 text define sfz;
 #X obj 189 159 loadbang;
@@ -339,7 +339,7 @@
 #X obj 61 116 bng 23 250 50 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000;
 #X text 77 34 Here we load the example file into a [text] object just so you can check it out. You can also use [text] to manipulate a string loaded as a file and send it to [sfz~] if you're a real nerd., f 49;
 #X text 92 118 <-- get text and load file as a string;
-#X text 294 212 <-- click to check the file;
+#X text 294 212 <-- click to check the file, f 14;
 #X connect 0 0 1 0;
 #X connect 2 0 0 0;
 #X connect 3 0 5 0;
@@ -376,6 +376,7 @@
 #X connect 8 0 5 0;
 #X connect 9 0 8 0;
 #X restore 492 205 pd set;
+#X text 47 86 [sfz~] is a samole synthesizer for 'SFZ' instruments. For details on the SFZ format \, players and instruments for download \, see:, f 73;
 #X connect 16 0 25 0;
 #X connect 25 0 0 0;
 #X connect 25 1 0 1;
