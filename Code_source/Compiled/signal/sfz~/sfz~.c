@@ -9,7 +9,7 @@ __attribute__((visibility("default")))
 #endif
 
 #include <m_pd.h>
-#include "../../../shared/elsefile.h"
+#include "../../../../../../../shared/elsefile.h"
 #include <sfizz.h>
 #include <sfizz/import/sfizz_import.h>
 #include <unistd.h>
