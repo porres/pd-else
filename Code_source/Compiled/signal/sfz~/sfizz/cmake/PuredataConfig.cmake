@@ -62,19 +62,15 @@ if(WIN32)
     add_dependencies(pdex-implib pdex-implib-generated)
 endif()
 
-if(WIN32)
-    # Compile the elsefile source file
-    set(elsefile_SRCS "${PROJECT_SOURCE_DIR}../../../../../shared/elsefile.c")
-    add_library(elsefile STATIC "${elsefile_SRCS}")
-    target_include_directories(elsefile PUBLIC "${PD_INCLUDE_BASEDIR}")
-endif()
+# Compile the elsefile source file
+set(elsefile_SRCS "${PROJECT_SOURCE_DIR}../../../../../shared/elsefile.c")
+add_library(elsefile STATIC "${elsefile_SRCS}")
+target_include_directories(elsefile PUBLIC "${PD_INCLUDE_BASEDIR}")
 
 function(add_pd_external TARGET)
     add_library("${TARGET}" MODULE ${ARGN})
     target_include_directories("${TARGET}" PRIVATE "${PD_INCLUDE_BASEDIR}")
-    if(WIN32)
-        target_link_libraries("${TARGET}" PRIVATE elsefile)
-    endif()
+    target_link_libraries("${TARGET}" PRIVATE elsefile)
     set_target_properties("${TARGET}" PROPERTIES
         PREFIX ""
         SUFFIX "${PUREDATA_SUFFIX}")
