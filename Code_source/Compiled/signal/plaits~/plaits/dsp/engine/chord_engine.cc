@@ -105,7 +105,7 @@ int ChordEngine::ComputeChordInversion(
     float inversion,
     float* ratios,
     float* amplitudes) {
-  const float* base_ratio = &ratios_[chord_index * kChordNumVoices];
+  const float* base_ratio = &ratios_[chord_index * kChordNumNotes];
   inversion = inversion * float(kChordNumNotes * 5);
 
   MAKE_INTEGRAL_FRACTIONAL(inversion);
