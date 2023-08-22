@@ -38,12 +38,6 @@ BASEFLAGS='
 ' 
 cp ./sfz~.c ./sfizz/plugins/puredata/sfizz_puredata.c
 
-INCLUDE_DIR_RELATIVE="../../../shared"
-INCLUDE_DIR_ABSOLUTE="$(readlink -f $INCLUDE_DIR_RELATIVE)"  # Get the absolute path
-
-# Update the CMake configuration with target_include_directories
-BASEFLAGS="$BASEFLAGS -Delsefile_INCLUDE_DIR=$INCLUDE_DIR_ABSOLUTE"
-
 # Modify the #include statements in the copied source file
 # Replace "../../../shared/elsefile.h" with the updated path relative to the include directory
 # use -i.bak for macOS compatibility
