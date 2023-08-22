@@ -10,7 +10,7 @@ typedef struct _slew2{
     t_inlet  *x_downlet;
     t_inlet  *x_uplet;
     int       x_nchans;
-    float    x_in;
+    float    x_f;
 }t_slew2;
 
 static t_class *slew2_class;
@@ -95,7 +95,7 @@ static void *slew2_new(t_symbol *s, t_floatarg f1, t_floatarg f2){
 void slew2_tilde_setup(void){
     slew2_class = class_new(gensym("slew2~"), (t_newmethod)slew2_new,
         (t_method)slew2_free, sizeof(t_slew2), CLASS_MULTICHANNEL, A_DEFFLOAT, A_DEFFLOAT, 0);
-    CLASS_MAINSIGNALIN(slew2_class, t_slew2, x_in);
+    CLASS_MAINSIGNALIN(slew2_class, t_slew2, x_f);
     class_addmethod(slew2_class, (t_method)slew2_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(slew2_class, (t_method)slew2_set, gensym("set"), A_GIMME, 0);
 }
