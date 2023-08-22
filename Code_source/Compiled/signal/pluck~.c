@@ -56,6 +56,13 @@ static void pluck_float(t_pluck *x, t_float f){
     }
 }
 
+static void asr_gate(t_pluck *x, t_floatarg f){
+    if(f != 0){
+        x->x_float_trig = f;
+        pluck_bang(x);
+    }
+}
+
 static void pluck_clear(t_pluck *x){
     for(unsigned int i = 0; i < x->x_sz; i++)
         x->x_ybuf[i] = 0.;
@@ -413,5 +420,6 @@ void pluck_tilde_setup(void){
     class_addfloat(pluck_class, pluck_float);
     class_addbang(pluck_class, pluck_bang);
     class_addmethod(pluck_class, (t_method)pluck_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(pluck_class, (t_method)pluck_gate, gensym("gate"), A_DEFFLOAT, 0);
     class_addmethod(pluck_class, (t_method)pluck_clear, gensym("clear"), 0);
 }

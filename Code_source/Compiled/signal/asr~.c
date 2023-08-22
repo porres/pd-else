@@ -30,7 +30,7 @@ static void asr_float(t_asr *x, t_floatarg f){
     x->x_f_gate = f/127;
 }
 
-static void adsr_gate(t_asr *x, t_floatarg f){
+static void asr_gate(t_asr *x, t_floatarg f){
     if(f != 0 && !x->x_status) // on
         outlet_float(x->x_out2, x->x_status = 1);
     x->x_f_gate = f;
