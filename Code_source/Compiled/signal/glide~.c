@@ -16,6 +16,7 @@ typedef struct _glide{
     float    *x_delta;
     float    x_sr_khz;
     float    x_exp;
+    float    x_in;
 }t_glide;
 
 static t_class *glide_class;
@@ -190,8 +191,8 @@ errstate:
 void glide_tilde_setup(void){
     glide_class = class_new(gensym("glide~"), (t_newmethod)glide_new,
         (t_method)glide_free, sizeof(t_glide), CLASS_MULTICHANNEL, A_GIMME, 0);
-    class_addmethod(glide_class, nullfn, gensym("signal"), 0);
-    class_addmethod(glide_class, (t_method) glide_dsp, gensym("dsp"), A_CANT, 0);
+    CLASS_MAINSIGNALIN(glide_class, t_glide, x_in);
+    class_addmethod(glide_class, (t_method)glide_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(glide_class, (t_method)glide_reset, gensym("reset"), 0);
     class_addmethod(glide_class, (t_method)glide_exp, gensym("exp"), A_FLOAT, 0);
 }

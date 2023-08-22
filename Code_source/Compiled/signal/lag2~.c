@@ -15,6 +15,7 @@ typedef struct _lag2{
     double     *x_last_out;
     int         x_reset;
     int         x_nchans;
+    float    x_in;
 }t_lag2;
 
 static t_class *lag2_class;
@@ -102,7 +103,7 @@ static void *lag2_new(t_floatarg f1, t_floatarg f2){
 void lag2_tilde_setup(void){
     lag2_class = class_new(gensym("lag2~"), (t_newmethod)lag2_new, (t_method)lag2_free,
         sizeof(t_lag2), CLASS_MULTICHANNEL, A_DEFFLOAT, A_DEFFLOAT, 0);
-    class_addmethod(lag2_class, nullfn, gensym("signal"), 0);
+    CLASS_MAINSIGNALIN(lag2_class, t_lag2, x_in);
     class_addmethod(lag2_class, (t_method)lag2_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(lag2_class, (t_method)lag2_reset, gensym("reset"), 0);
 }
