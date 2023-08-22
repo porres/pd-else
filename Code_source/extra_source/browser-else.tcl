@@ -36,11 +36,11 @@ proc category_else_menu::load_menutree {} {
             {message\ management
                 {format swap2 nmess unite separate symbol2any any2symbol changed hot initmess message default pack2 pick limit spread router route2 routeall routetype selector stack store morph interpolate sig2float~ float2sig~ pipe2}}
             {list\ management
-                {break order combine delete group iterate insert scramble sort reverse rotate replace sum slice stream merge unmerge amean gmean}}
+                {break order combine delete remove equal group iterate insert scramble sort reverse rotate replace sum slice stream merge unmerge amean gmean}}
             {file\ management
                 {dir}}
             {midi
-                {midi midi.learn sysrt.in sysrt.out ctl.in ctl.out touch.in touch.out pgm.in pgm.out nemd.in bend.out note.in note.out midi.clock noteinfo panic mono voices suspedal}}
+                {midi midi.learn midi.in midi.out sysrt.in sysrt.out ctl.in ctl.out touch.in touch.out ptouch.in ptouch.out  pgm.in pgm.out nemd.in bend.out note.in note.out midi.clock noteinfo panic mono voices suspedal}}
             {osc
                 {osc.route osc.format osc.parse osc.send osc.receive}}
             {math\ functions
