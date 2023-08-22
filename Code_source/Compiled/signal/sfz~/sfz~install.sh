@@ -16,9 +16,13 @@ else
 fi
 
 mkdir -p $objectsdir
+#copy the sfz external
 cp $basepath/sfizz$baseext $objectsdir/sfz~.$ext
 
 if [ $system = "Windows" ]
 then
   strip $objectsdir/sfz~.$ext
 fi
+
+#copy sfz example instruments
+cp -r sfz $objectsdir/sfz
