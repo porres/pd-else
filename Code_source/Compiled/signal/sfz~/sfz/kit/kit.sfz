@@ -1,6 +1,6 @@
 
 <region> sample=C4.wav lokey=60 hikey=60 pitch_keycenter=60
-lovel=0 hi
+lovel=0 hivel=127 tune=0
 
 <region> sample=C#4.wav lokey=61 hikey=61 pitch_keycenter=61
 lovel=0 hivel=127 tune=0
