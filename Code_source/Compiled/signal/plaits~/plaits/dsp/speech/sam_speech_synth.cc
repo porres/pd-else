@@ -90,8 +90,8 @@ void SAMSpeechSynth::InterpolatePhonemeData(
   float* formant_amplitude) {
   MAKE_INTEGRAL_FRACTIONAL(phoneme);
 
-  const Phoneme& p_1 = phonemes_[phoneme_integral];
-  const Phoneme& p_2 = phonemes_[phoneme_integral + 1];
+  const Phoneme& p_1 = phonemes_[phoneme_integral % 16];
+  const Phoneme& p_2 = phonemes_[(phoneme_integral + 1) % 16];
 
   formant_shift = 1.0f + formant_shift * 2.5f;
   for (int i = 0; i < kSAMNumFormants; ++i) {

@@ -42,7 +42,9 @@ namespace stmlib {
 
 inline float Interpolate(const float* table, float index, float size) {
   index *= size;
+  if (index == size) { index--; }
   MAKE_INTEGRAL_FRACTIONAL(index)
+  if (!table || index_integral < 0) { return 0; }
   float a = table[index_integral];
   float b = table[index_integral + 1];
   return a + (b - a) * index_fractional;
