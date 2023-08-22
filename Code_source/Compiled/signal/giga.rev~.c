@@ -107,7 +107,7 @@ static inline float diffuser_do(t_diffuser *d, float f){
     if(PD_BADFLOAT(f)) f = 0.0f;
     float y = d->buf[d->idx] + f*d->coeff;
     d->buf[d->idx] = f;
-    d->idx = (d->idx + 1) % d->size;
+    d->idx = ((d->idx + 1) < d->size ? d->idx + 1 : 0);
     return(y);
 }
 
@@ -202,9 +202,9 @@ t_diffuser *diffuser_make(int size, float coeff){
     d->size = size;
     d->coeff = coeff;
     d->idx = 0;
-    d->buf = (float *)t_getbytes(size*sizeof(float));
+    d->buf = (float *)t_getbytes((size+1)*sizeof(float));
     if(!d->buf) return (NULL);
-    for(int i = 0; i < size; i++) d->buf[i] = 0.0;
+    for(int i = 0; i <= size; i++) d->buf[i] = 0.0;
     return(d);
 }
 
