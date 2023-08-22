@@ -56,7 +56,7 @@ static void pluck_float(t_pluck *x, t_float f){
     }
 }
 
-static void asr_gate(t_pluck *x, t_floatarg f){
+static void pluck_gate(t_pluck *x, t_floatarg f){
     if(f != 0){
         x->x_float_trig = f;
         pluck_bang(x);
