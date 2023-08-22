@@ -113,7 +113,7 @@ static void sfz_open(t_sfz *x, t_symbol *s){
         elsefile_panel_click_open(x->x_elsefilehandle);
 }
 
-static void sfz_load_string(t_sfz *x, t_symbol *s, int ac, t_atom* av){
+static void sfz_set(t_sfz *x, t_symbol *s, int ac, t_atom* av){
     (void)s;
     binbuf_clear(x->x_binbuf);
     binbuf_restore(x->x_binbuf, ac, av);
@@ -129,7 +129,8 @@ static void sfz_load_string(t_sfz *x, t_symbol *s, int ac, t_atom* av){
     free(x->x_buf);
     x->x_buf = new_buf;
 
-    sfizz_load_string(x->x_synth, ".", x->x_buf);
+    if(!sfizz_load_string(x->x_synth, ".", x->x_buf))
+        post("[sfz~] could not set sfz string");
 }
 
 static void sfz_midiin(t_sfz* x, t_float f){
@@ -300,7 +301,7 @@ void sfz_tilde_setup(){
     class_addmethod(sfz_class, (t_method)sfz_panic, gensym("panic"), 0);
     class_addmethod(sfz_class, (t_method)sfz_flush, gensym("flush"), 0);
     class_addmethod(sfz_class, (t_method)sfz_open, gensym("open"), A_DEFSYM, 0);
-    class_addmethod(sfz_class, (t_method)sfz_load_string, gensym("set"), A_GIMME, 0);
+    class_addmethod(sfz_class, (t_method)sfz_set, gensym("set"), A_GIMME, 0);
     class_addmethod(sfz_class, (t_method)sfz_scala, gensym("scala"), A_DEFSYM, 0);
     class_addmethod(sfz_class, (t_method)sfz_a4, gensym("a4"), A_FLOAT, 0);
 //    class_addmethod(sfz_class, (t_method)sfz_tuningstretch, gensym("tuningstretch"), A_FLOAT, 0);
