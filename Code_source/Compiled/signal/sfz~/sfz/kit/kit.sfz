@@ -1,36 +1,12 @@
-
-<region> sample=C4.wav lokey=60 hikey=60 pitch_keycenter=60
-lovel=0 hivel=127 tune=0
-
-<region> sample=C#4.wav lokey=61 hikey=61 pitch_keycenter=61
-lovel=0 hivel=127 tune=0
-
-<region> sample=D4.wav lokey=62 hikey=62 pitch_keycenter=62
-lovel=0 hivel=127 tune=0
-
-<region> sample=D#4.wav lokey=63 hikey=63 pitch_keycenter=63
-lovel=0 hivel=127 tune=0
-
-<region> sample=E4.wav lokey=64 hikey=64 pitch_keycenter=64
-lovel=0 hivel=127 tune=0
-
-<region> sample=F4.wav lokey=65 hikey=65 pitch_keycenter=65
-lovel=0 hivel=127 tune=0
-
-<region> sample=F#4.wav lokey=66 hikey=66 pitch_keycenter=66
-lovel=0 hivel=127 tune=0
-
-<region> sample=G4.wav lokey=67 hikey=67 pitch_keycenter=67
-lovel=0 hivel=127 tune=0
-
-<region> sample=G#4.wav lokey=68 hikey=68 pitch_keycenter=68
-lovel=0 hivel=127 tune=0
-
-<region> sample=A4.wav lokey=69 hikey=69 pitch_keycenter=69
-lovel=0 hivel=127 tune=0
-
-<region> sample=A#4.wav lokey=70 hikey=70 pitch_keycenter=70
-lovel=0 hivel=127 tune=0
-
-<region> sample=B4.wav lokey=71 hikey=71 pitch_keycenter=71
-lovel=0 hivel=127 tune=0
+<region> key=60 sample=C4.wav
+<region> key=61 sample=C#4.wav
+<region> key=62 sample=D4.wav
+<region> key=63 sample=D#4.wav
+<region> key=64 sample=E4.wav
+<region> key=65 sample=F4.wav
+<region> key=66 sample=F#4.wav
+<region> key=67 sample=G4.wav
+<region> key=68 sample=G#4.wav
+<region> key=69 sample=A4.wav
+<region> key=70 sample=A#4.wav
+<region> key=71 sample=B4.wav
