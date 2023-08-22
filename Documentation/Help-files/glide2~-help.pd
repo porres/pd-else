@@ -129,10 +129,10 @@
 #X connect 15 0 0 0;
 #X connect 16 0 8 0;
 #X restore 446 309 pd multichannel;
-#X text 164 352 signal(s);
 #X text 163 468 signal(s);
 #X text 164 407 signal(s);
 #X text 164 431 signal(s);
+#X text 129 352 float/signal(s);
 #X connect 28 0 27 0;
 #X connect 29 0 28 0;
 #X connect 31 0 30 0;

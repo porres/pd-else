@@ -3,11 +3,11 @@
 #X obj 4 442 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 475 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
 #X obj 6 507 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
-#X obj 161 451 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
-#X obj 161 372 cnv 17 3 35 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 141 451 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 141 372 cnv 17 3 35 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 23 40 cnv 4 4 4 empty empty non-linear 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 107 40 cnv 4 4 4 empty empty lag 0 28 2 18 #e0e0e0 #000000 0;
-#X obj 161 415 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 141 415 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 184 294 else/out~;
 #X obj 184 250 *~;
 #X obj 151 192 else/brown~;
@@ -19,7 +19,7 @@
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X obj 242 164 else/pulse~ 0.5;
-#X text 270 372 - input signal;
+#X text 286 372 - input signal;
 #N canvas 716 92 505 349 example 0;
 #X obj 81 189 osc~;
 #X obj 81 236 else/out~;
@@ -34,7 +34,7 @@
 #X connect 3 0 6 0;
 #X connect 6 0 0 0;
 #X restore 463 306 pd example;
-#X text 227 390 reset;
+#X text 243 390 reset;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
@@ -46,7 +46,7 @@
 #X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 304 219 else/s2f~;
-#X text 270 390 - resets the filter;
+#X text 286 390 - resets the filter;
 #X text 31 257 see also:;
 #X obj 32 303 else/glide~;
 #N canvas 553 279 542 313 rpole~ 0;
@@ -70,10 +70,10 @@
 #X restore 469 285 pd rpole~;
 #X obj 242 192 else/lag~ 1000;
 #X obj 33 281 else/lag2~;
-#X text 148 486 1) float - lag time in ms (default 0);
+#X text 168 486 1) float - lag time in ms (default 0);
 #X text 52 87 [lag~] is a one pole filter that creates an exponential glide/portamento for its signal input changes. The lag time in ms is how long it takes for the signal to converge to within 0.01% of the target value. Note that the rising ramp is different than the descending ramp \, unlike [glide~]. the same kind of filter is used in other objects from the ELSE library (decay~/asr~/adsr~)., f 73;
-#X text 269 414 - lag time in ms;
-#X text 270 451 - lagged signal;
+#X text 285 414 - lag time in ms;
+#X text 250 451 - lagged signal;
 #X obj 32 323 else/slew~;
 #N canvas 590 164 498 502 multichannel 0;
 #X obj 75 271 else/s2f~;
@@ -106,9 +106,9 @@
 #X connect 13 0 8 0;
 #X connect 14 0 0 0;
 #X restore 433 329 pd multichannel;
-#X text 203 372 signal(s);
-#X text 203 415 signal(s);
-#X text 203 451 signal(s);
+#X text 219 415 signal(s);
+#X text 183 451 signal(s);
+#X text 183 372 float/signal(s);
 #X connect 10 0 9 0;
 #X connect 11 0 10 0;
 #X connect 17 0 34 0;

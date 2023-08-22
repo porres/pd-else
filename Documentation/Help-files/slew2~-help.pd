@@ -25,9 +25,9 @@
 #X obj 4 361 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 460 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 493 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
-#X obj 109 469 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
-#X obj 109 368 cnv 17 3 35 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
-#X obj 109 409 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 96 469 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 96 368 cnv 17 3 35 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 96 409 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 141 385 set <float>;
 #X text 220 470 - slew limited values;
 #X text 220 369 - values to be slew limited, f 46;
@@ -83,7 +83,7 @@
 #X text 165 515 1) float - slew limit speed downwards (default 0);
 #X text 302 161 down;
 #X text 220 410 - speed limit upwards (negative values = no limit);
-#X obj 109 433 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 96 433 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 220 434 - speed limit downwards (negative values = no limit);
 #X obj 126 181 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #X obj 126 207 else/rand.f 0 1;
@@ -126,8 +126,8 @@
 #X restore 443 331 pd multichannel;
 #X text 153 410 signal(s);
 #X text 153 434 signal(s);
-#X text 153 369 signal(s);
 #X text 153 470 signal(s);
+#X text 117 369 float/signal(s);
 #X connect 13 0 16 0;
 #X connect 17 0 29 0;
 #X connect 18 0 29 0;
