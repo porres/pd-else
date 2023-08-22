@@ -30,6 +30,12 @@ static void asr_float(t_asr *x, t_floatarg f){
     x->x_f_gate = f/127;
 }
 
+static void adsr_gate(t_asr *x, t_floatarg f){
+    if(f != 0 && !x->x_status) // on
+        outlet_float(x->x_out2, x->x_status = 1);
+    x->x_f_gate = f;
+}
+
 static void asr_lin(t_asr *x, t_floatarg f){
     x->x_log = (int)(f == 0);
 }
@@ -183,5 +189,6 @@ void asr_tilde_setup(void){
     class_addmethod(asr_class, nullfn, gensym("signal"), 0);
     class_addmethod(asr_class, (t_method) asr_dsp, gensym("dsp"), A_CANT, 0);
     class_addfloat(asr_class, (t_method)asr_float);
+    class_addmethod(asr_class, (t_method)asr_gate, gensym("gate"), A_DEFFLOAT, 0);
     class_addmethod(asr_class, (t_method)asr_lin, gensym("lin"), A_DEFFLOAT, 0);
 }
