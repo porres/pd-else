@@ -118,9 +118,17 @@ static void sfz_load_string(t_sfz *x, t_symbol *s, int ac, t_atom* av){
     binbuf_clear(x->x_binbuf);
     binbuf_restore(x->x_binbuf, ac, av);
     binbuf_gettext(x->x_binbuf, &x->x_buf, &x->x_bufsize);
-    // binbuf_gettext isn't null terminated
-    x->x_buf[x->x_bufsize] = '\0';
-    // printf("loading sfz string: %s, %d\n", x->x_buf, x->x_bufsize);
+    // Allocate memory to null-terminated the binbuf string
+    char* new_buf = (char*)malloc(x->x_bufsize + 1);
+    if (new_buf == NULL) {
+        post("Unable to allocate memory to load sfz string");
+        return;
+    }
+    strncpy(new_buf, x->x_buf, x->x_bufsize);
+    new_buf[x->x_bufsize] = '\0';
+    free(x->x_buf);
+    x->x_buf = new_buf;
+
     sfizz_load_string(x->x_synth, ".", x->x_buf);
 }
 
