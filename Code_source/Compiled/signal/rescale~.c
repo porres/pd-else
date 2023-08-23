@@ -88,6 +88,7 @@ static t_int *rescale_perform(t_int *w){
             t_float in = in1[j*n + i];
             t_float minout = ch2 == 1 ? in2[i] : in2[j*n + i];
             t_float maxout = ch3 == 1 ? in3[i] : in3[j*n + i];
+            
             out[j*n + i] = rescale_convert(x, in, minout, maxout);
         }
     }
@@ -144,9 +145,9 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
             }
             else if(ac >= 3 && sym == gensym("-in") && !numargs){
                 ac--, av++;
-                minout = atom_getfloat(av);
+                x->x_minin = atom_getfloat(av);
                 ac--, av++;
-                maxout = atom_getfloat(av);
+                x->x_maxin = atom_getfloat(av);
             }
             else
                 goto errstate;
