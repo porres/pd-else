@@ -1,6 +1,6 @@
-// Copyright 2016 Olivier Gillet.
+// Copyright 2016 Emilie Gillet.
 //
-// Author: Olivier Gillet (ol.gillet@gmail.com)
+// Author: Emilie Gillet (emilie.o.gillet@gmail.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -64,6 +64,7 @@ inline float InterpolateWave(
     const int16_t* table,
     int32_t index_integral,
     float index_fractional) {
+  if (!table || index_integral < 0) { return 0; }
   float a = static_cast<float>(table[index_integral]);
   float b = static_cast<float>(table[index_integral + 1]);
   float t = index_fractional;
@@ -151,6 +152,7 @@ class WavetableOscillator {
       
       const float p = phase * float(wavetable_size);
       MAKE_INTEGRAL_FRACTIONAL(p);
+      if (p_integral == wavetable_size) { p_integral--; }
       
       const float x0 = InterpolateWave(
           wavetable[waveform_integral], p_integral, p_fractional);

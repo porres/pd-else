@@ -1,8 +1,8 @@
 #!/usr/bin/python2.5
 #
-# Copyright 2016 Olivier Gillet.
+# Copyright 2016 Emilie Gillet.
 #
-# Author: Olivier Gillet (ol.gillet@gmail.com)
+# Author: Emilie Gillet (emilie.o.gillet@gmail.com)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -28,9 +28,9 @@
 #
 # Master resources file.
 
-header = """// Copyright 2016 Olivier Gillet.
+header = """// Copyright 2016 Emilie Gillet.
 //
-// Author: Olivier Gillet (ol.gillet@gmail.com)
+// Author: Emilie Gillet (emilie.o.gillet@gmail.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -67,16 +67,21 @@ includes = """
 #include "stmlib/stmlib.h"
 """
 
+import fm_patches
 import lookup_tables
 import wavetables
 
 create_specialized_manager = True
 
 resources = [
+  (fm_patches.patches,
+   'fm_patches', 'SYX', 'uint8_t', int, False),
   (lookup_tables.lookup_tables,
    'lookup_table', 'LUT', 'float', float, False),
   (lookup_tables.lookup_tables_i16,
    'lookup_table_i16', 'LUT', 'int16_t', int, False),
+  (lookup_tables.lookup_tables_i32,
+   'lookup_table_i32', 'LUT', 'int32_t', int, False),
   (lookup_tables.lookup_tables_i8,
    'lookup_table_i8', 'LUT', 'int8_t', int, False),
   (wavetables.wavetables,
