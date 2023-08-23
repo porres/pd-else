@@ -55,6 +55,7 @@ class GrainEnvelope {
     fm_ = 0.0f;
     amplitude_ = 0.5f;
     previous_size_ratio_ = 0.0f;
+    filter_coefficient_ = 0.0f;
   }
   
   inline void Step(float rate, bool burst_mode, bool start_burst) {
@@ -245,7 +246,7 @@ class SwarmEngine : public Engine {
       bool* already_enveloped);
   
  private:
-  SwarmVoice swarm_voice_[kNumSwarmVoices];
+  SwarmVoice* swarm_voice_;
   
   DISALLOW_COPY_AND_ASSIGN(SwarmEngine);
 };
