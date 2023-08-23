@@ -31,7 +31,6 @@
 #X msg 149 168 1 4 5 4 3 4 5 6;
 #X msg 309 170 4;
 #X msg 267 148 4 5;
-#X text 69 91 [remove] removes one or more number elements from a numeric list. The right inlet or arguments set the elements to remove., f 65;
 #X text 157 392 1) list - elements to remove (default none);
 #X obj 324 227 bng 18 250 50 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000;
 #X text 346 227 none;
@@ -42,6 +41,9 @@
 #X text 204 356 - list with removed elements;
 #X text 28 216 see also;
 #X obj 26 245 else/replace;
+#X text 78 91 [remove] removes one or more number elements from a list. The right inlet or arguments set the elements to remove., f 58;
+#X msg 345 171 symbol x;
+#X msg 73 166 list x y z;
 #X connect 18 0 22 1;
 #X connect 22 0 20 0;
 #X connect 23 0 22 0;
@@ -49,4 +51,6 @@
 #X connect 25 0 22 0;
 #X connect 26 0 18 0;
 #X connect 27 0 18 0;
-#X connect 30 0 22 1;
+#X connect 29 0 22 1;
+#X connect 39 0 18 0;
+#X connect 40 0 22 0;
