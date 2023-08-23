@@ -245,7 +245,7 @@ class SwarmEngine : public Engine {
       bool* already_enveloped);
   
  private:
-  SwarmVoice swarm_voice_[kNumSwarmVoices];
+  SwarmVoice* swarm_voice_;
   
   DISALLOW_COPY_AND_ASSIGN(SwarmEngine);
 };
