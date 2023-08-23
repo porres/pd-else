@@ -1,6 +1,6 @@
-// Copyright 2016 Olivier Gillet.
+// Copyright 2016 Emilie Gillet.
 //
-// Author: Olivier Gillet (ol.gillet@gmail.com)
+// Author: Emilie Gillet (emilie.o.gillet@gmail.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -105,7 +105,7 @@ int ChordEngine::ComputeChordInversion(
     float inversion,
     float* ratios,
     float* amplitudes) {
-  const float* base_ratio = &ratios_[chord_index * kChordNumVoices];
+  const float* base_ratio = &ratios_[chord_index * kChordNumNotes];
   inversion = inversion * float(kChordNumNotes * 5);
 
   MAKE_INTEGRAL_FRACTIONAL(inversion);
