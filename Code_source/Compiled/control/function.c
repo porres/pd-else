@@ -30,7 +30,7 @@ typedef struct _function{
     int             x_sel;
     int             x_width;
     int             x_height;
-    int             x_init;
+    int             x_savestate;
     int             x_grabbed; // number of grabbed point, for moving it/deleting it
     int             x_shift;       
     int             x_snd_set;
@@ -351,7 +351,7 @@ static void function_save(t_gobj *z, t_binbuf *b){
                 (int)x->x_fgcolor[0],
                 (int)x->x_fgcolor[1],
                 (int)x->x_fgcolor[2],
-                x->x_init,
+                x->x_savestate,
                 0, // placeholder
                 0, // placeholder
                 0  // placeholder
@@ -614,10 +614,10 @@ static void function_resize(t_function *x){
     }
 }
 
-static void function_init(t_function *x, t_floatarg f){
+static void function_savestate(t_function *x, t_floatarg f){
     int init = (int)(f != 0);
-    if(x->x_init != init)
-        x->x_init = init;
+    if(x->x_savestate != init)
+        x->x_savestate = init;
 }
 
 static void function_height(t_function *x, t_floatarg f){
@@ -713,10 +713,10 @@ static void function_bgcolor(t_function *x, t_floatarg red, t_floatarg green, t_
     }
 }
 
-static void function_loadbang(t_function *x, t_floatarg action){
-    if(action == LB_LOAD && x->x_init)
+/*static void function_loadbang(t_function *x, t_floatarg action){
+    if(action == LB_LOAD && x->x_savestate)
         function_bang(x);
-}
+}*/
 
 static void function_zoom(t_function *x, t_floatarg zoom){
     float mul = zoom == 1.0 ? 0.5 : 2.0;
@@ -801,7 +801,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
     x->x_height = 100;
     x->x_rcv_set = x->x_snd_set = x->x_flag = x->x_s_flag = x->x_r_flag = 0;
     x->x_receive = x->x_rcv_raw = x->x_send = x->x_snd_raw = &s_;
-    x->x_init = 0;
+    x->x_savestate = 0;
     x->x_min = 0;
     x->x_max = 1;
     x->x_bgcolor[0] = x->x_bgcolor[1] = x->x_bgcolor[2] = 220;
@@ -860,7 +860,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                                                     x->x_fgcolor[2] = (unsigned char)av->a_w.w_float;
                                                     ac--, av++;
                                                     if(ac && av->a_type == A_FLOAT){ // Init
-                                                        x->x_init = (int)(av->a_w.w_float != 0);
+                                                        x->x_savestate = (int)(av->a_w.w_float != 0);
                                                         ac--, av++;
                                                         if(ac && av->a_type == A_FLOAT){ // placeholder
                                                             ac--, av++;
@@ -882,7 +882,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                                                                         }
                                                                         else{
                                                                             envset = 1;
-                                                                            if(x->x_init)
+                                                                            if(x->x_savestate)
                                                                                 function_set_beeakpoints(x, i, av);
                                                                             else
                                                                                 function_set_beeakpoints(x, 3, a);
@@ -919,7 +919,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
             }
             else if(sym == gensym("-init")){
                 x->x_flag = 1;
-                x->x_init = 1;
+                x->x_savestate = 1;
                 ac--, av++;
             }
             else if(sym == gensym("-width")){
@@ -1066,11 +1066,11 @@ void function_setup(void){
     function_class = class_new(gensym("function"), (t_newmethod)function_new,
         (t_method)function_free, sizeof(t_function), 0, A_GIMME,0);
     class_addlist(function_class, function_list);
-    class_addmethod(function_class, (t_method)function_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
+//    class_addmethod(function_class, (t_method)function_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
     class_addmethod(function_class, (t_method)function_resize, gensym("resize"), 0);
     class_addmethod(function_class, (t_method)function_set, gensym("set"), A_GIMME, 0);
     class_addmethod(function_class, (t_method)function_i, gensym("i"), A_FLOAT, 0);
-    class_addmethod(function_class, (t_method)function_init, gensym("init"), A_FLOAT, 0);
+    class_addmethod(function_class, (t_method)function_savestate, gensym("savestate"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_height, gensym("height"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_width, gensym("width"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_min, gensym("min"), A_FLOAT, 0);
