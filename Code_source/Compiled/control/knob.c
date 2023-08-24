@@ -511,7 +511,7 @@ static void knob_save(t_gobj *z, t_binbuf *b){
         atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)));
     knob_get_snd(x);
     knob_get_rcv(x);
-    binbuf_addv(b, "iffffsssssiiiiiiii", // 18 args
+    binbuf_addv(b, "iffffsssssiiiiiiiif", // 19 args
         x->x_size, // 01: i SIZE
         (float)x->x_min, // 02: f min
         (float)x->x_max, // 03: f max
@@ -529,7 +529,8 @@ static void knob_save(t_gobj *z, t_binbuf *b){
         x->x_arc, // 15: i arc
         x->x_range, // 16: i range
         x->x_offset, // 17: i offset
-        x->x_jump); // 17: i offset
+        x->x_jump, // 17: i offset
+        x->x_start); // 18: f start
     binbuf_addv(b, ";");
 }
 
@@ -835,7 +836,7 @@ static void knob_properties(t_gobj *z, t_glist *owner){
     knob_get_snd(x);
     knob_get_rcv(x);
     char buffer[512];
-    sprintf(buffer, "knob_dialog %%s %g %g %g %g %d {%s} {%s} %d %g %d {%s} {%s} {%s} %d %d %d %d %d %d\n",
+    sprintf(buffer, "knob_dialog %%s %g %g %g %g %d {%s} {%s} %d %g %d {%s} {%s} {%s} %d %d %d %d %d %d %g\n",
         (float)(x->x_size / x->x_zoom),
         x->x_min,
         x->x_max,
@@ -854,14 +855,15 @@ static void knob_properties(t_gobj *z, t_glist *owner){
         x->x_arc,
         x->x_range,
         x->x_offset,
-        x->x_outline
-);
+        x->x_outline,
+        x->x_start
+    );
     gfxstub_new(&x->x_obj.ob_pd, x, buffer);
 }
 
 static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    t_atom undo[19];
+    t_atom undo[20];
     SETFLOAT(undo+0, x->x_size);
     SETFLOAT(undo+1, x->x_min);
     SETFLOAT(undo+2, x->x_max);
@@ -881,7 +883,8 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     SETFLOAT(undo+16, x->x_arc);
     SETFLOAT(undo+17, x->x_range);
     SETFLOAT(undo+18, x->x_offset);
-    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 19, undo, ac, av);
+    SETFLOAT(undo+19, x->x_start);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 20, undo, ac, av);
     int size = (int)atom_getintarg(0, ac, av);
     float min = atom_getfloatarg(1, ac, av);
     float max = atom_getfloatarg(2, ac, av);
@@ -901,6 +904,7 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     int arc = atom_getintarg(16, ac, av) != 0;
     int range = atom_getintarg(17, ac, av);
     int offset = atom_getintarg(18, ac, av);
+    float start = atom_getintarg(19, ac, av);
     knob_config_io(x, glist_getcanvas(x->x_glist)); // for outline
     if(expmode == 0){
         knob_log(x, 0);
@@ -929,6 +933,10 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     if(x->x_load != load){
         SETFLOAT(at, load);
         knob_load(x, NULL, 1, at);
+    }
+    if(x->x_start != start){
+        SETFLOAT(at, start);
+        knob_start(x, NULL, 1, at);
     }
 }
 
@@ -1163,6 +1171,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
             angle = atom_getintarg(15, ac, av); // 16: i range
             offset = atom_getintarg(16, ac, av); // 17: i offset
             x->x_jump = atom_getintarg(17, ac, av); // 18: i jump
+            startvalue = atom_getfloatarg(18, ac, av); // 19: f start value
         }
         else{
             while(ac){
@@ -1378,6 +1387,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
         knob_log(x, 1);
     else
         knob_exp(x, exp);
+    x->x_start = startvalue;
     x->x_circular = circular;
     x->x_ticks = ticks < 0 ? 0 : ticks;
     x->x_discrete = discrete;
@@ -1387,7 +1397,6 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     x->x_start_angle = -(x->x_range/2) + x->x_offset;
     x->x_end_angle = x->x_range/2 + x->x_offset;
     x->x_fval = x->x_load = loadvalue;
-    x->x_start = startvalue;
     x->x_pos = knob_getpos(x, x->x_fval);
     x->x_edit = x->x_glist->gl_edit;
     char buf[MAXPDSTRING];
