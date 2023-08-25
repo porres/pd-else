@@ -245,7 +245,7 @@ t_int *plts_perform(t_int *w){
         }
         else
             x->modulations.trigger = (trig[x->block_size * j] != 0);
-        plaits::Voice::Frame output[24];
+        plaits::Voice::Frame output[x->block_size];
         x->voice.Render(x->patch, x->modulations, output, x->block_size);
         for(int i = 0; i < x->block_size; i++){
             out[i + (x->block_size * j)] = output[i].out / 32768.0f;

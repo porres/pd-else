@@ -26,13 +26,15 @@
 //
 // DSP utility routines.
 
+#define TEST
+
 #ifndef STMLIB_UTILS_DSP_DSP_H_
 #define STMLIB_UTILS_DSP_DSP_H_
 
 #include "stmlib/stmlib.h"
 
-#include <cmath>
 #include <math.h>
+#include <cstdint>
 
 namespace stmlib {
 
