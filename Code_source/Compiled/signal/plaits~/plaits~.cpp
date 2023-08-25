@@ -163,10 +163,6 @@ void plts_cv(t_plts *x){
     x->pitch_mode = 2;
 }
 
-void plts_voct(t_plts *x){
-    x->pitch_mode = 3;
-}
-
 void plts_trigger_mode(t_plts *x, t_floatarg f){
     x->trigger_mode = (int)(f != 0);
 }
@@ -178,10 +174,8 @@ static float plts_get_pitch(t_plts *x, t_floatarg f){
     }
     else if(x->pitch_mode == 1)
         return((f - 60) / 12);
-    else if(x->pitch_mode == 2)
-        return(f*5);
     else
-        return(f);
+        return(f*5);
 }
 
 t_int *plts_perform(t_int *w){
@@ -320,8 +314,6 @@ void *plts_new(t_symbol *s, int ac, t_atom *av){
                 x->pitch_mode = 1;
             else if(sym == gensym("-cv"))
                 x->pitch_mode = 2;
-            else if(sym == gensym("-voct"))
-                x->pitch_mode = 3;
             else if(sym == gensym("-model")){
                 if((av)->a_type == A_FLOAT){
                     t_float m = atom_getfloat(av);
@@ -385,7 +377,6 @@ void plaits_tilde_setup(void){
     class_addmethod(plts_class, (t_method)plts_lpg_cutoff, gensym("cutoff"), A_DEFFLOAT, A_NULL);
     class_addmethod(plts_class, (t_method)plts_decay, gensym("decay"), A_DEFFLOAT, A_NULL);
     class_addmethod(plts_class, (t_method)plts_cv, gensym("cv"), A_NULL);
-    class_addmethod(plts_class, (t_method)plts_voct, gensym("voct"), A_NULL);
     class_addmethod(plts_class, (t_method)plts_midi, gensym("midi"), A_NULL);
     class_addmethod(plts_class, (t_method)plts_hz, gensym("hz"), A_NULL);
     class_addmethod(plts_class, (t_method)plts_dump, gensym("dump"), A_NULL);
