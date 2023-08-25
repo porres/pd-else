@@ -69,7 +69,7 @@
 #X text 540 1444 [bicoeff];
 #X text 798 1201 [numbox~] ->;
 #X obj 884 1202 numbox~ 6 10 100 #C0C0C4 #440008 10 0 0 0;
-#X obj 615 866 else/knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0;
+#X obj 615 866 else/knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0;
 #X text 561 874 [knob];
 #X obj 65 1091 else/out.mc~;
 #X restore 150 152 pd GUI;
@@ -538,7 +538,8 @@
 #X obj 84 52 else/mouse;
 #X obj 85 80 else/canvas.mouse;
 #X obj 85 112 else/keycode;
-#X obj 85 142 else/keymap;
+#X obj 83 145 else/keymap;
+#X obj 85 180 else/keypress;
 #X restore 241 369 pd Control(Mouse/keyboard_interaction);
 #N canvas 848 204 238 207 Synthesizers 0;
 #X obj 72 29 else/plaits~;

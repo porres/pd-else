@@ -109,7 +109,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 --------------------------------------------------------------------------
 
-## Current Object list (507 objects):
+## Current Object list (509 objects):
 
 #assorted
     else
@@ -168,7 +168,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 #synthesis: chaotic, stochastic, noise
     white~ brown~ perlin~ crackle~ cusp~ fbsine~ fbsine2~ gbman~ gray~ henon~ ikeda~ latoocarfian~ lorenz~ lfnoise~ lincong~ logistic~ quad~ stepnoise~ stepnoise.mc~ rampnoise~ rampnoise.mc~ randpulse~ randpulse2~ standard~ pink~ xmod~ xmod2~ gendyn~
 #control: mouse/keyboard
-    mouse canvas.mouse keycode keymap
+mouse canvas.mouse keycode keymap keypress
 #control: fade/pan/routing
 fader~ autofade~ autofade2~ balance~ pan2~ pan4~ pan8~ spread~ spread.mc~ rotate~ rotate.mc~ xfade~  xfade.mc~ xgate~ xgate.mc~ xgate2~ xselect~ xselect2~ xselect.mc~ mtx~
 #control: sequencers

@@ -32,7 +32,9 @@ sys_gui("\n"
 "array set ::dialog_knob::var_color_foreground {} ;\n"
 "array set ::dialog_knob::var_color_arc {} ;\n"
 "array set ::dialog_knob::var_colortype {} ;\n"
+"array set ::dialog_knob::var_arcstart {} ;\n"
 "\n"
+        
 // When we click one of the preset colorsc
 "proc ::dialog_knob::preset_col {mytoplevel presetcol} {\n"
 "    set vid [string trimleft $mytoplevel .]\n"
@@ -79,7 +81,8 @@ sys_gui("\n"
 "    return $val\n"
 "}\n"
 "\n"
-// Send current values to Pd
+        
+// Send current values to Pd when "apply"
 "proc ::dialog_knob::apply {mytoplevel} {\n"
 "    set vid [string trimleft $mytoplevel .]\n"
 "\n"
@@ -94,7 +97,7 @@ sys_gui("\n"
 //  Clip number if ticks
 "    set ::dialog_knob::var_ticks($vid) [::dialog_knob::clip $::dialog_knob::var_ticks($vid) 0 360]\n"
 "\n"
-//  Send it to the object
+//  Send to the object
 "    pdsend [concat $mytoplevel dialog \\\n"
 "                $::dialog_knob::var_size($vid) \\\n"
 "                $::dialog_knob::var_range_min($vid) \\\n"
@@ -115,6 +118,7 @@ sys_gui("\n"
 "                $::dialog_knob::var_arc_shown($vid) \\\n"
 "                $::dialog_knob::var_angle_width($vid) \\\n"
 "                $::dialog_knob::var_angle_offset($vid) \\\n"
+"                $::dialog_knob::var_arcstart($vid) \\\n"
 "            ]\n"
 "}\n"
 // On cancel clicked
@@ -128,8 +132,7 @@ sys_gui("\n"
 "    ::dialog_knob::cancel $mytoplevel\n"
 "}\n"
 
-
-// tcl/tk entry function called from Pd
+// tcl/tk entry function called from Pd when asking for properties!
 "proc knob_dialog {mytoplevel \\\n"
 "                                       wdt \\\n"
 "                                       min_rng max_rng \\\n"
@@ -138,12 +141,15 @@ sys_gui("\n"
 "                                       expmode exp jump \\\n"
 "                                       bcol fcol acol \\\n"
 "                                       discrete ticks \\\n"
-"                                       arc_width arc_range arc_offset outline} {\n"
+"                                       arc_width \\\n"
+"                                       angle_range angle_offset \\\n"
+"                                       outline arcstart} {\n"
+//"                                       outline} {\n"
 // The vid indicates the instance ID of this dialog
 "    set vid [string trimleft $mytoplevel .]\n"
 "    set snd [::pdtk_text::unescape $snd]\n"
 "    set rcv [::pdtk_text::unescape $rcv]\n"
-// initialize the array for this dialog instance
+// initialize the array with received values for this dialog instance
 "    set ::dialog_knob::var_size($vid) $wdt\n"
 "\n"
 "    if {$rcv==\"empty\"} {\n"
@@ -173,10 +179,12 @@ sys_gui("\n"
 "    set ::dialog_knob::var_discrete($vid) $discrete\n"
 "    set ::dialog_knob::var_ticks($vid) $ticks\n"
 "    set ::dialog_knob::var_arc_shown($vid) $arc_width\n"
-"    set ::dialog_knob::var_angle_width($vid) $arc_range\n"
-"    set ::dialog_knob::var_angle_offset($vid) $arc_offset\n"
+"    set ::dialog_knob::var_angle_width($vid) $angle_range\n"
+"    set ::dialog_knob::var_angle_offset($vid) $angle_offset\n"
+"    set ::dialog_knob::var_arcstart($vid) $arcstart\n"
 "\n"
-// Initialize dialog window
+        
+// Initialize creation/drawing of properties window
 "    toplevel $mytoplevel -class DialogWindow\n"
 "    wm title $mytoplevel \"knob properties\"\n"
 "    wm group $mytoplevel .\n"
@@ -211,6 +219,14 @@ sys_gui("\n"
 "    entry $mytoplevel.para.knobstyle.initial.ent -textvariable ::dialog_knob::var_initial($vid) -width 4\n"
 "    pack $mytoplevel.para.knobstyle.initial.lab -side left -expand 0 -ipadx 4\n"
 "    pack $mytoplevel.para.knobstyle.initial.ent -side left -expand 0 -ipadx 10\n"
+        
+// Entry for arc start
+"    frame $mytoplevel.para.knobstyle.arcstart \n"
+"    label $mytoplevel.para.knobstyle.arcstart.lab -text [_ \"Arc Start Value\"]\n"
+"    entry $mytoplevel.para.knobstyle.arcstart.ent -textvariable ::dialog_knob::var_arcstart($vid) -width 4\n"
+"    pack $mytoplevel.para.knobstyle.arcstart.lab -side left -expand 0 -ipadx 4\n"
+"    pack $mytoplevel.para.knobstyle.arcstart.ent -side left -expand 0 -ipadx 10\n"
+  
 // Entry for Arc (Checkbox)
 "    frame $mytoplevel.para.knobstyle.arc\n"
 "    label $mytoplevel.para.knobstyle.arc.lab -text [_ \"Show Arc: \"]\n"
@@ -234,7 +250,8 @@ sys_gui("\n"
 // Align items to grid
 "    grid $mytoplevel.para.knobstyle.dim -row 0 -column 0 -sticky e -padx {5 0}\n"
 "    grid $mytoplevel.para.knobstyle.initial -row 1 -column 0 -sticky e -padx {5 0}\n"
-"    grid $mytoplevel.para.knobstyle.arc -row 2 -column 0 -sticky e -padx {5 0}\n"
+"    grid $mytoplevel.para.knobstyle.arcstart -row 2 -column 0 -sticky e -padx {5 0}\n"
+"    grid $mytoplevel.para.knobstyle.arc -row 3 -column 0 -sticky e -padx {5 0}\n"
 "    grid $mytoplevel.para.knobstyle.move -row 0 -column 1 -sticky e -padx {5 0} \n"
 "    grid $mytoplevel.para.knobstyle.jump -row 1 -column 1 -sticky e -padx {5 0}\n"
 "    grid $mytoplevel.para.knobstyle.outline -row 2 -column 1 -sticky e -padx {5 0}\n"
@@ -343,7 +360,7 @@ sys_gui("\n"
 "        pack $mytoplevel.s_r.receive.lab $mytoplevel.s_r.receive.ent -side left \\\n"
 "            -fill x -expand 1\n"
 "    }\n"
-        
+
 // Frame for colors section
 "    labelframe $mytoplevel.colors -borderwidth 1 -text [_ \"Colors\"] -padx 5 -pady 5\n"
 "    pack $mytoplevel.colors -fill x\n"
