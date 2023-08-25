@@ -1,4 +1,4 @@
-// Copyright 2015 Emilie Gillet.
+// Copyright 2021 Emilie Gillet.
 //
 // Author: Emilie Gillet (emilie.o.gillet@gmail.com)
 //
@@ -24,44 +24,47 @@
 //
 // -----------------------------------------------------------------------------
 //
-// Limiter.
+// Virtual analog oscillator with VCF.
 
-#ifndef STMLIB_DSP_LIMITER_H_
-#define STMLIB_DSP_LIMITER_H_
+#ifndef PLAITS_DSP_ENGINE_VIRTUAL_ANALOG_VCF_ENGINE_H_
+#define PLAITS_DSP_ENGINE_VIRTUAL_ANALOG_VCF_ENGINE_H_
 
-#include "stmlib/stmlib.h"
-
-#include <algorithm>
-
-#include "stmlib/dsp/dsp.h"
 #include "stmlib/dsp/filter.h"
 
-namespace stmlib {
+#include "plaits/dsp/engine/engine.h"
+#include "plaits/dsp/oscillator/variable_saw_oscillator.h"
+#include "plaits/dsp/oscillator/variable_shape_oscillator.h"
 
-class Limiter {
+namespace plaits {
+  
+class VirtualAnalogVCFEngine : public Engine {
  public:
-  Limiter() { }
-  ~Limiter() { }
-
-  void Init() {
-    peak_ = 0.5f;
-  }
-
-  void Process(float pre_gain, float* in_out, size_t size) {
-    while (size--) {
-      float s = *in_out * pre_gain;
-      SLOPE(peak_, fabsf(s), 0.05f, 0.00002f);
-      float gain = (peak_ <= 1.0f ? 1.0f : 1.0f / peak_);
-      *in_out++ = s * gain * 0.8f;
-    }
-  }
-
+  VirtualAnalogVCFEngine() { }
+  ~VirtualAnalogVCFEngine() { }
+  
+  virtual void Init(stmlib::BufferAllocator* allocator);
+  virtual void Reset();
+  virtual void LoadUserData(const uint8_t* user_data) { }
+  virtual void Render(const EngineParameters& parameters,
+      float* out,
+      float* aux,
+      size_t size,
+      bool* already_enveloped);
+  
  private:
-  float peak_;
-
-  DISALLOW_COPY_AND_ASSIGN(Limiter);
+  stmlib::Svf svf_[2];
+  VariableShapeOscillator oscillator_;
+  VariableShapeOscillator sub_oscillator_;
+  
+  float previous_cutoff_;
+  float previous_stage2_gain_;
+  float previous_q_;
+  float previous_gain_;
+  float previous_sub_gain_;
+  
+  DISALLOW_COPY_AND_ASSIGN(VirtualAnalogVCFEngine);
 };
 
-}  // namespace stmlib
+}  // namespace plaits
 
-#endif  // STMLIB_DSP_LIMITER_H_
+#endif  // PLAITS_DSP_ENGINE_VIRTUAL_ANALOG_VCF_ENGINE_H_

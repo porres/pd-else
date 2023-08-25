@@ -39,6 +39,11 @@ enum VoiceAllocatorFlags {
   ACTIVE_NOTE = 0x80
 };
 
+enum VoiceStealingMode {
+  VOICE_STEALING_MODE_LRU,
+  VOICE_STEALING_MODE_MRU
+};
+
 template<uint8_t capacity>
 class VoiceAllocator {
  public: 
@@ -48,8 +53,12 @@ class VoiceAllocator {
     size_ = 0;
     Clear();
   }
-
+  
   uint8_t NoteOn(uint8_t note) {
+    return NoteOn(note, VOICE_STEALING_MODE_LRU);
+  }
+
+  uint8_t NoteOn(uint8_t note, VoiceStealingMode voice_stealing_mode) {
     if (size_ == 0) {
       return NOT_ALLOCATED;
     }
@@ -68,12 +77,15 @@ class VoiceAllocator {
         }
       }
     }
-    // If all voices are active, use the least recently played note
+    // If all voices are active, use the least or most recently played note
     // (voice-stealing).
     if (voice == NOT_ALLOCATED) {
       for (uint8_t i = 0; i < capacity; ++i) {
-        if (lru_[i] < size_) {
-          voice = lru_[i];
+        uint8_t candidate = voice_stealing_mode == VOICE_STEALING_MODE_LRU
+            ? i
+            : capacity - 1 - i;
+        if (lru_[candidate] < size_) {
+          voice = lru_[candidate];
         }
       }
     }

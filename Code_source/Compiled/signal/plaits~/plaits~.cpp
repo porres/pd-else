@@ -1,12 +1,13 @@
-// plaits ported to Pd, by Porres 2023
+// plaits ported to Pd, by Porres and tomara 2023
 // MIT Liscense
 
-#include "m_pd.h"
-#include "g_canvas.h"
 #include <stdint.h>
 #include "plaits/dsp/dsp.h"
 #include "plaits/dsp/engine/engine.h"
 #include "plaits/dsp/voice.h"
+
+#include "m_pd.h"
+#include "g_canvas.h"
 
 static t_class *plts_class;
 
@@ -72,7 +73,7 @@ extern "C"  { // Pure data methods, needed because we are using C++
     void plts_trigger_mode(t_plts *x, t_floatarg f);
 }
 
-static const char* modelLabels[16] = {
+static const char* modelLabels[24] = {
     "Pair of classic waveforms",
     "Waveshaping oscillator",
     "Two operator FM",
@@ -89,6 +90,14 @@ static const char* modelLabels[16] = {
     "Analog bass drum",
     "Analog snare drum",
     "Analog hi-hat",
+    "Virtual Analog VCF",
+    "Phase Distortion",
+    "Six Op FM 1",
+    "Six Op FM 2",
+    "Six Op FM 3",
+    "Wave Terrain",
+    "String Machine",
+    "Chiptune"
 };
 
 void plts_print(t_plts *x){
@@ -121,7 +130,7 @@ void plts_dump(t_plts *x){
 }
 
 void plts_model(t_plts *x, t_floatarg f){
-    x->model = f < 0 ? 0 : f > 15 ? 15 : (int)f;
+    x->model = f < 0 ? 0 : f > 23 ? 23 : (int)f;
     t_atom at[1];
     SETSYMBOL(at, gensym(modelLabels[x->model]));
     outlet_anything(x->x_info_out, gensym("name"), 1, at);
@@ -242,7 +251,7 @@ t_int *plts_perform(t_int *w){
         }
         else
             x->modulations.trigger = (trig[x->block_size * j] != 0);
-        plaits::Voice::Frame output[x->block_size];
+        plaits::Voice::Frame output[24];
         x->voice.Render(x->patch, x->modulations, output, x->block_size);
         for(int i = 0; i < x->block_size; i++){
             out[i + (x->block_size * j)] = output[i].out / 32768.0f;

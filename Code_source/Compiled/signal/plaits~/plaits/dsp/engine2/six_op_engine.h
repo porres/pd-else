@@ -1,4 +1,4 @@
-// Copyright 2016 Emilie Gillet.
+// Copyright 2021 Emilie Gillet.
 //
 // Author: Emilie Gillet (emilie.o.gillet@gmail.com)
 //
@@ -24,57 +24,95 @@
 //
 // -----------------------------------------------------------------------------
 //
-// Various flavours of speech synthesis.
+// 6-operator FM synth.
 
-#ifndef PLAITS_DSP_ENGINE_SPEECH_ENGINE_H_
-#define PLAITS_DSP_ENGINE_SPEECH_ENGINE_H_
+#ifndef PLAITS_DSP_ENGINE_SIX_OP_ENGINE_H_
+#define PLAITS_DSP_ENGINE_SIX_OP_ENGINE_H_
 
 #include "stmlib/dsp/hysteresis_quantizer.h"
 
 #include "plaits/dsp/engine/engine.h"
-#include "plaits/dsp/speech/lpc_speech_synth_controller.h"
-#include "plaits/dsp/speech/naive_speech_synth.h"
-#include "plaits/dsp/speech/sam_speech_synth.h"
+#include "plaits/dsp/fm/algorithms.h"
+#include "plaits/dsp/fm/lfo.h"
+#include "plaits/dsp/fm/voice.h"
+#include "plaits/dsp/fm/patch.h"
 
 namespace plaits {
 
-class SpeechEngine : public Engine {
+const int kNumSixOpVoices = 2;
+
+class FMVoice {
  public:
-  SpeechEngine() { }
-  ~SpeechEngine() { }
+  FMVoice() { }
+  ~FMVoice() { }
+  
+  void Init(fm::Algorithms<6>* algorithms, float sample_rate);
+  void LoadPatch(const fm::Patch* patch);
+  void Render(float* buffer, size_t size);
+  
+  inline void UnloadPatch() {
+    patch_ = NULL;
+  }
+  
+  inline const fm::Patch* patch() const {
+    return patch_;
+  }
+  
+  inline fm::Voice<6>::Parameters* mutable_parameters() {
+    return &parameters_;
+  }
+  
+  inline fm::Lfo* mutable_lfo() {
+    return &lfo_;
+  }
+  inline const fm::Lfo& lfo() const {
+    return lfo_;
+  }
+  
+  inline void set_modulations(const fm::Lfo& lfo) {
+    parameters_.pitch_mod = lfo.pitch_mod();
+    parameters_.amp_mod = lfo.amp_mod();
+  }
+  
+ private:
+  const fm::Patch* patch_;
+
+  fm::Lfo lfo_;
+  fm::Voice<6> voice_;
+  fm::Voice<6>::Parameters parameters_;
+  
+  DISALLOW_COPY_AND_ASSIGN(FMVoice);
+};
+
+class SixOpEngine : public Engine {
+ public:
+  SixOpEngine() { }
+  ~SixOpEngine() { }
   
   virtual void Init(stmlib::BufferAllocator* allocator);
   virtual void Reset();
+  virtual void LoadUserData(const uint8_t* user_data);
   virtual void Render(const EngineParameters& parameters,
       float* out,
       float* aux,
       size_t size,
       bool* already_enveloped);
+      
+  void LoadBank(int bank);
   
-  inline void set_prosody_amount(float prosody_amount) {
-    prosody_amount_ = prosody_amount;
-  }
-  
-  inline void set_speed(float speed) {
-    speed_ = speed;
-  }
-
  private:
-  stmlib::HysteresisQuantizer2 word_bank_quantizer_;
+  stmlib::HysteresisQuantizer2 patch_index_quantizer_;
+  fm::Algorithms<6> algorithms_;
+  fm::Patch* patches_;
+  FMVoice voice_[kNumSixOpVoices];
+  float* temp_buffer_;
+  float* acc_buffer_;
+  int active_voice_;
+  int rendered_voice_;
   
-  NaiveSpeechSynth naive_speech_synth_;
-  SAMSpeechSynth sam_speech_synth_;
-  
-  LPCSpeechSynthController lpc_speech_synth_controller_;
-  LPCSpeechSynthWordBank lpc_speech_synth_word_bank_;
-  
-  float* temp_buffer_[2];
-  float prosody_amount_;
-  float speed_;
-  
-  DISALLOW_COPY_AND_ASSIGN(SpeechEngine);
+  DISALLOW_COPY_AND_ASSIGN(SixOpEngine);
 };
 
 }  // namespace plaits
 
-#endif  // PLAITS_DSP_ENGINE_SPEECH_ENGINE_H_
+#endif  // PLAITS_DSP_ENGINE_SIX_OP_ENGINE_H_

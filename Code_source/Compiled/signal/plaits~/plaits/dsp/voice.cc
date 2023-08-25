@@ -34,6 +34,12 @@ namespace plaits {
     using namespace stmlib;
     
     void Voice::FreeEngines() {
+        delete virtual_analog_vcf_engine_;
+        delete phase_distortion_engine_;
+        delete six_op_engine_;
+        delete wave_terrain_engine_;
+        delete string_machine_engine_;
+        delete chiptune_engine_;
         delete virtual_analog_engine_;
         delete waveshaping_engine_;
         delete fm_engine_;
@@ -53,6 +59,12 @@ namespace plaits {
     }
     
     void Voice::Init(BufferAllocator* allocator) {
+        virtual_analog_vcf_engine_ = new VirtualAnalogVCFEngine();
+        phase_distortion_engine_ = new PhaseDistortionEngine();
+        six_op_engine_ = new SixOpEngine();
+        wave_terrain_engine_ = new WaveTerrainEngine();
+        string_machine_engine_ = new StringMachineEngine();
+        chiptune_engine_ = new ChiptuneEngine();
         virtual_analog_engine_ = new VirtualAnalogEngine();
         waveshaping_engine_ = new WaveshapingEngine();
         fm_engine_ = new FMEngine();
@@ -71,6 +83,7 @@ namespace plaits {
         hi_hat_engine_ = new HiHatEngine();
         
         engines_.Init();
+
         engines_.RegisterInstance(virtual_analog_engine_, false, 0.8f, 0.8f);
         engines_.RegisterInstance(waveshaping_engine_, false, 0.7f, 0.6f);
         engines_.RegisterInstance(fm_engine_, false, 0.6f, 0.6f);
@@ -88,13 +101,22 @@ namespace plaits {
         engines_.RegisterInstance(bass_drum_engine_, true, 0.8f, 0.8f);
         engines_.RegisterInstance(snare_drum_engine_, true, 0.8f, 0.8f);
         engines_.RegisterInstance(hi_hat_engine_, true, 0.8f, 0.8f);
+
+        engines_.RegisterInstance(virtual_analog_vcf_engine_, false, 1.0f, 1.0f);
+        engines_.RegisterInstance(phase_distortion_engine_, false, 0.7f, 0.7f);
+        engines_.RegisterInstance(six_op_engine_, true, 1.0f, 1.0f);
+        engines_.RegisterInstance(six_op_engine_, true, 1.0f, 1.0f);
+        engines_.RegisterInstance(six_op_engine_, true, 1.0f, 1.0f);
+        engines_.RegisterInstance(wave_terrain_engine_, false, 0.7f, 0.7f);
+        engines_.RegisterInstance(string_machine_engine_, false, 0.8f, 0.8f);
+        engines_.RegisterInstance(chiptune_engine_, false, 0.5f, 0.5f);
         for (int i = 0; i < engines_.size(); ++i) {
             // All engines will share the same RAM space.
             allocator->Free();
             engines_.get(i)->Init(allocator);
         }
-        
-        engine_quantizer_.Init();
+
+        engine_quantizer_.Init(engines_.size(), 0.05f, true);
         previous_engine_index_ = -1;
         engine_cv_ = 0.0f;
         
@@ -144,9 +166,7 @@ namespace plaits {
         // Engine selection.
         int engine_index = engine_quantizer_.Process(
                                                      patch.engine,
-                                                     engine_cv_,
-                                                     engines_.size(),
-                                                     0.25f);
+                                                     engine_cv_);
         
         Engine* e = engines_.get(engine_index);
         
@@ -186,15 +206,25 @@ namespace plaits {
         CONSTRAIN(p.harmonics, 0.0f, 1.0f);
         
         float internal_envelope_amplitude = 1.0f;
-        if (engine_index == 7) {
+        float internal_envelope_amplitude_timbre = 1.0f;
+        if (engine_index == 15) {
             internal_envelope_amplitude = 2.0f - p.harmonics * 6.0f;
             CONSTRAIN(internal_envelope_amplitude, 0.0f, 1.0f);
             speech_engine_->set_prosody_amount(
-                                               !modulations.trigger_patched || modulations.frequency_patched ?
-                                               0.0f : patch.frequency_modulation_amount);
-            speech_engine_->set_speed(
-                                      !modulations.trigger_patched || modulations.morph_patched ?
-                                      0.0f : patch.morph_modulation_amount);
+                !modulations.trigger_patched || modulations.frequency_patched ?
+                    0.0f : patch.frequency_modulation_amount);
+            speech_engine_->set_speed( 
+                !modulations.trigger_patched || modulations.morph_patched ?
+                    0.0f : patch.morph_modulation_amount);
+        } else if (engine_index == 7) {
+          if (modulations.trigger_patched && !modulations.timbre_patched) {
+            // Disable internal envelope on TIMBRE, and enable the envelope generator
+            // built into the chiptune engine.
+            internal_envelope_amplitude_timbre = 0.0f;
+            chiptune_engine_->set_envelope_shape(patch.timbre_modulation_amount);
+          } else {
+            chiptune_engine_->set_envelope_shape(ChiptuneEngine::NO_ENVELOPE);
+            }
         }
         
         p.note = ApplyModulations(

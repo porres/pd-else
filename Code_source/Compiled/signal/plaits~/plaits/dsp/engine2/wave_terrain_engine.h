@@ -1,4 +1,4 @@
-// Copyright 2016 Emilie Gillet.
+// Copyright 2021 Emilie Gillet.
 //
 // Author: Emilie Gillet (emilie.o.gillet@gmail.com)
 //
@@ -24,24 +24,27 @@
 //
 // -----------------------------------------------------------------------------
 //
-// Various flavours of speech synthesis.
+// Wave terrain synthesis - a 2D function evaluated along an elliptical path of
+// adjustable center and excentricity.
+//
+// This implementation initially used pre-computed terrains stored in flash
+// memory, but even at a poor resolution of 64x64 with 8-bit samples, this
+// takes 4kb per terrain! It turned out that directly evaluating the terrain
+// function on the fly uses less flash, but is also faster than bicubic
+// interpolation of the terrain data.
 
-#ifndef PLAITS_DSP_ENGINE_SPEECH_ENGINE_H_
-#define PLAITS_DSP_ENGINE_SPEECH_ENGINE_H_
-
-#include "stmlib/dsp/hysteresis_quantizer.h"
+#ifndef PLAITS_DSP_ENGINE_WAVE_TERRAIN_ENGINE_H_
+#define PLAITS_DSP_ENGINE_WAVE_TERRAIN_ENGINE_H_
 
 #include "plaits/dsp/engine/engine.h"
-#include "plaits/dsp/speech/lpc_speech_synth_controller.h"
-#include "plaits/dsp/speech/naive_speech_synth.h"
-#include "plaits/dsp/speech/sam_speech_synth.h"
+#include "plaits/dsp/oscillator/sine_oscillator.h"
 
 namespace plaits {
-
-class SpeechEngine : public Engine {
+  
+class WaveTerrainEngine : public Engine {
  public:
-  SpeechEngine() { }
-  ~SpeechEngine() { }
+  WaveTerrainEngine() { }
+  ~WaveTerrainEngine() { }
   
   virtual void Init(stmlib::BufferAllocator* allocator);
   virtual void Reset();
@@ -51,30 +54,19 @@ class SpeechEngine : public Engine {
       size_t size,
       bool* already_enveloped);
   
-  inline void set_prosody_amount(float prosody_amount) {
-    prosody_amount_ = prosody_amount;
-  }
-  
-  inline void set_speed(float speed) {
-    speed_ = speed;
-  }
-
  private:
-  stmlib::HysteresisQuantizer2 word_bank_quantizer_;
+  float Terrain(float x, float y, int terrain_index);
   
-  NaiveSpeechSynth naive_speech_synth_;
-  SAMSpeechSynth sam_speech_synth_;
+  FastSineOscillator path_;
+  float offset_;
+  float terrain_;
   
-  LPCSpeechSynthController lpc_speech_synth_controller_;
-  LPCSpeechSynthWordBank lpc_speech_synth_word_bank_;
+  float* temp_buffer_;
+  const int8_t* user_terrain_;
   
-  float* temp_buffer_[2];
-  float prosody_amount_;
-  float speed_;
-  
-  DISALLOW_COPY_AND_ASSIGN(SpeechEngine);
+  DISALLOW_COPY_AND_ASSIGN(WaveTerrainEngine);
 };
 
 }  // namespace plaits
 
-#endif  // PLAITS_DSP_ENGINE_SPEECH_ENGINE_H_
+#endif  // PLAITS_DSP_ENGINE_WAVE_TERRAIN_ENGINE_H_

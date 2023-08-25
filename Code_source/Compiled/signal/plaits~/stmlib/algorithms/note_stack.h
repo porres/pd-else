@@ -55,6 +55,7 @@ enum NoteStackFlags {
   NOTE_STACK_PRIORITY_LAST,
   NOTE_STACK_PRIORITY_LOW,
   NOTE_STACK_PRIORITY_HIGH,
+  NOTE_STACK_PRIORITY_FIRST,
   NOTE_STACK_FREE_SLOT = 0xff
 };
 
@@ -180,19 +181,22 @@ class NoteStack {
   const NoteEntry& note(uint8_t index) const { return pool_[index]; }
   NoteEntry* mutable_note(uint8_t index) { return &pool_[index]; }
   const NoteEntry& dummy() const { return pool_[0]; }
-  const NoteEntry& note_by_priority(NoteStackFlags priority) {
-    if (size() == 0) {
+  const NoteEntry& note_by_priority(NoteStackFlags priority, uint8_t index=0) {
+    if (size() <= index) {
       return dummy();
     }
     switch (priority) {
       case NOTE_STACK_PRIORITY_LAST:
-        return most_recent_note();
+        return played_note(size() - 1 - index);
       
       case NOTE_STACK_PRIORITY_LOW:
-        return sorted_note(0);
+        return sorted_note(index);
         
       case NOTE_STACK_PRIORITY_HIGH:
-        return sorted_note(size() - 1);
+        return sorted_note(size() - 1 - index);
+
+      case NOTE_STACK_PRIORITY_FIRST:
+        return played_note(index);
       
       default:
         return dummy();

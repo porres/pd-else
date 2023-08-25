@@ -31,6 +31,15 @@ common.sources = stmlib/dsp/units.cc \
                  plaits/dsp/physical_modelling/resonator.cc \
                  plaits/dsp/physical_modelling/pm_string.cc \
                  plaits/dsp/physical_modelling/string_voice.cc \
+				 plaits/dsp/engine2/chiptune_engine.cc \
+				 plaits/dsp/engine2/phase_distortion_engine.cc \
+				 plaits/dsp/engine2/six_op_engine.cc \
+				 plaits/dsp/engine2/string_machine_engine.cc \
+				 plaits/dsp/engine2/virtual_analog_vcf_engine.cc \
+				 plaits/dsp/engine2/wave_terrain_engine.cc \
+				 plaits/dsp/fm/algorithms.cc \
+				 plaits/dsp/fm/dx_units.cc \
+				 plaits/dsp/chords/chord_bank.cc \
                  plaits/resources.cc
 
 # input source file (class name == source file basename)

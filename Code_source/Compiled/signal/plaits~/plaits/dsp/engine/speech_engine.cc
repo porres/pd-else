@@ -43,7 +43,7 @@ void SpeechEngine::Init(BufferAllocator* allocator) {
       LPC_SPEECH_SYNTH_NUM_WORD_BANKS,
       allocator);
   lpc_speech_synth_controller_.Init(&lpc_speech_synth_word_bank_);
-  word_bank_quantizer_.Init();
+  word_bank_quantizer_.Init(LPC_SPEECH_SYNTH_NUM_WORD_BANKS + 1, 0.1f, false);
   
   temp_buffer_[0] = allocator->Allocate<float>(kMaxBlockSize);
   temp_buffer_[1] = allocator->Allocate<float>(kMaxBlockSize);

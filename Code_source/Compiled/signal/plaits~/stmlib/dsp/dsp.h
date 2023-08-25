@@ -42,9 +42,9 @@ namespace stmlib {
 
 inline float Interpolate(const float* table, float index, float size) {
   index *= size;
-  if (index == size) { index--; }
+  if (index == size) { index--; } // FIXME amy (is this right?)
   MAKE_INTEGRAL_FRACTIONAL(index)
-  if (!table || index_integral < 0) { return 0; }
+  if (!table || index_integral < 0) { return 0; } // why do we ever get here?!
   float a = table[index_integral];
   float b = table[index_integral + 1];
   return a + (b - a) * index_fractional;
@@ -74,6 +74,10 @@ inline float InterpolateWrap(const float* table, float index, float size) {
   float a = table[index_integral];
   float b = table[index_integral + 1];
   return a + (b - a) * index_fractional;
+}
+
+inline float SmoothStep(float value) {
+  return value * value * (3.0f - 2.0f * value);
 }
 
 #define ONE_POLE(out, in, coefficient) out += (coefficient) * ((in) - out);

@@ -1,4 +1,4 @@
-// Copyright 2015 Emilie Gillet.
+// Copyright 2021 Emilie Gillet.
 //
 // Author: Emilie Gillet (emilie.o.gillet@gmail.com)
 //
@@ -24,44 +24,92 @@
 //
 // -----------------------------------------------------------------------------
 //
-// Limiter.
+// Various conversion routines for DX7 patch data.
 
-#ifndef STMLIB_DSP_LIMITER_H_
-#define STMLIB_DSP_LIMITER_H_
+#include "plaits/dsp/fm/dx_units.h"
 
-#include "stmlib/stmlib.h"
+namespace plaits {
 
-#include <algorithm>
+namespace fm {
 
-#include "stmlib/dsp/dsp.h"
-#include "stmlib/dsp/filter.h"
-
-namespace stmlib {
-
-class Limiter {
- public:
-  Limiter() { }
-  ~Limiter() { }
-
-  void Init() {
-    peak_ = 0.5f;
-  }
-
-  void Process(float pre_gain, float* in_out, size_t size) {
-    while (size--) {
-      float s = *in_out * pre_gain;
-      SLOPE(peak_, fabsf(s), 0.05f, 0.00002f);
-      float gain = (peak_ <= 1.0f ? 1.0f : 1.0f / peak_);
-      *in_out++ = s * gain * 0.8f;
-    }
-  }
-
- private:
-  float peak_;
-
-  DISALLOW_COPY_AND_ASSIGN(Limiter);
+/* extern */
+const float lut_coarse[32] = {
+ -12.000000f,
+   0.000000f,
+  12.000000f,
+  19.019550f,
+  24.000000f,
+  27.863137f,
+  31.019550f,
+  33.688259f,
+  36.000000f,
+  38.039100f,
+  39.863137f,
+  41.513180f,
+  43.019550f,
+  44.405276f,
+  45.688259f,
+  46.882687f,
+  48.000000f,
+  49.049554f,
+  50.039100f,
+  50.975130f,
+  51.863137f,
+  52.707809f,
+  53.513180f,
+  54.282743f,
+  55.019550f,
+  55.726274f,
+  56.405276f,
+  57.058650f,
+  57.688259f,
+  58.295772f,
+  58.882687f,
+  59.450356f
 };
 
-}  // namespace stmlib
+/* extern */
+const float lut_amp_mod_sensitivity[4] = {
+  0.0f,
+  0.2588f,
+  0.4274f,
+  1.0f
+};
+  
+/* extern */
+const float lut_pitch_mod_sensitivity[8] = {
+  0.0f,
+  0.0781250f,
+  0.1562500f,
+  0.2578125f,
+  0.4296875f,
+  0.7187500f,
+  1.1953125f,
+  2.0f
+};
 
-#endif  // STMLIB_DSP_LIMITER_H_
+/* extern */
+const float lut_cube_root[17] = {
+  0.0f,
+  0.39685062976f,
+  0.50000000000f,
+  0.57235744065f,
+  0.62996081605f,
+  0.67860466725f,
+  0.72112502092f,
+  0.75914745216f,
+  0.79370070937f,
+  0.82548197054f,
+  0.85498810729f,
+  0.88258719406f,
+  0.90856038354f,
+  0.93312785379f,
+  0.95646563396f,
+  0.97871693135f,
+  1.0f
+};
+
+
+}  // namespace fm
+  
+}  // namespace plaits

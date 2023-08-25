@@ -31,8 +31,7 @@
 #include <algorithm>
 
 #include "stmlib/dsp/cosine_oscillator.h"
-
-#include "plaits/resources.h"
+#include "plaits/dsp/oscillator/sine_oscillator.h"
 
 namespace plaits {
 
@@ -73,7 +72,7 @@ void AdditiveEngine::UpdateAmplitudes(
     gain *= gain;
 
     float b = 0.25f + order * bumps;
-    float bump_factor = 1.0f + InterpolateWrap(lut_sine, b, 1024.0f);
+    float bump_factor = 1.0f + Sine(b);
 
     gain *= bump_factor;
     gain *= gain;

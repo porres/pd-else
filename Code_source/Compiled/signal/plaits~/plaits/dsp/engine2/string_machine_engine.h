@@ -1,4 +1,4 @@
-// Copyright 2015 Emilie Gillet.
+// Copyright 2021 Emilie Gillet.
 //
 // Author: Emilie Gillet (emilie.o.gillet@gmail.com)
 //
@@ -24,44 +24,47 @@
 //
 // -----------------------------------------------------------------------------
 //
-// Limiter.
+// String machine emulation with filter and chorus.
 
-#ifndef STMLIB_DSP_LIMITER_H_
-#define STMLIB_DSP_LIMITER_H_
+#ifndef PLAITS_DSP_ENGINE_STRING_MACHINE_ENGINE_H_
+#define PLAITS_DSP_ENGINE_STRING_MACHINE_ENGINE_H_
 
-#include "stmlib/stmlib.h"
-
-#include <algorithm>
-
-#include "stmlib/dsp/dsp.h"
+#include "plaits/dsp/chords/chord_bank.h"
+#include "plaits/dsp/engine/chord_engine.h"
 #include "stmlib/dsp/filter.h"
+#include "plaits/dsp/fx/ensemble.h"
 
-namespace stmlib {
+namespace plaits {
 
-class Limiter {
+class StringMachineEngine : public Engine {
  public:
-  Limiter() { }
-  ~Limiter() { }
-
-  void Init() {
-    peak_ = 0.5f;
-  }
-
-  void Process(float pre_gain, float* in_out, size_t size) {
-    while (size--) {
-      float s = *in_out * pre_gain;
-      SLOPE(peak_, fabsf(s), 0.05f, 0.00002f);
-      float gain = (peak_ <= 1.0f ? 1.0f : 1.0f / peak_);
-      *in_out++ = s * gain * 0.8f;
-    }
-  }
+  StringMachineEngine() { }
+  ~StringMachineEngine() { }
+  
+  virtual void Init(stmlib::BufferAllocator* allocator);
+  virtual void Reset();
+  virtual void LoadUserData(const uint8_t* user_data) { }
+  virtual void Render(const EngineParameters& parameters,
+      float* out,
+      float* aux,
+      size_t size,
+      bool* already_enveloped);
 
  private:
-  float peak_;
-
-  DISALLOW_COPY_AND_ASSIGN(Limiter);
+  void ComputeRegistration(float registration, float* amplitudes);
+  
+  ChordBank chords_;
+  
+  Ensemble ensemble_;
+  StringSynthOscillator divide_down_voice_[kChordNumNotes];
+  stmlib::NaiveSvf svf_[2];
+  
+  float morph_lp_;
+  float timbre_lp_;
+  
+  DISALLOW_COPY_AND_ASSIGN(StringMachineEngine);
 };
 
-}  // namespace stmlib
+}  // namespace plaits
 
-#endif  // STMLIB_DSP_LIMITER_H_
+#endif  // PLAITS_DSP_ENGINE_STRING_MACHINE_ENGINE_H_

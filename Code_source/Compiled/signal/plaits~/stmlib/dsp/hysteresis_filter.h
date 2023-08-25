@@ -1,4 +1,4 @@
-// Copyright 2015 Emilie Gillet.
+// Copyright 2019 Emilie Gillet.
 //
 // Author: Emilie Gillet (emilie.o.gillet@gmail.com)
 //
@@ -24,44 +24,55 @@
 //
 // -----------------------------------------------------------------------------
 //
-// Limiter.
+// Threshold type filter that filters out slow jumps of a value.
 
-#ifndef STMLIB_DSP_LIMITER_H_
-#define STMLIB_DSP_LIMITER_H_
+#ifndef STMLIB_DSP_HYSTERESIS_FILTER_H_
+#define STMLIB_DSP_HYSTERESIS_FILTER_H_
 
 #include "stmlib/stmlib.h"
 
-#include <algorithm>
-
-#include "stmlib/dsp/dsp.h"
-#include "stmlib/dsp/filter.h"
-
 namespace stmlib {
 
-class Limiter {
+class HysteresisFilter {
  public:
-  Limiter() { }
-  ~Limiter() { }
+  HysteresisFilter() { }
+  ~HysteresisFilter() { }
 
-  void Init() {
-    peak_ = 0.5f;
+  void Init(float threshold) {
+    value_ = 0.0f;
+    threshold_ = threshold;
+  }
+  
+  inline float Process(float value) {
+    return Process(value, threshold_);
   }
 
-  void Process(float pre_gain, float* in_out, size_t size) {
-    while (size--) {
-      float s = *in_out * pre_gain;
-      SLOPE(peak_, fabsf(s), 0.05f, 0.00002f);
-      float gain = (peak_ <= 1.0f ? 1.0f : 1.0f / peak_);
-      *in_out++ = s * gain * 0.8f;
+  inline float Process(float value, float threshold) {
+    if (threshold == 0.0f) {
+      value_ = value;
+    } else {
+      float error = value - value_;
+      if (error > threshold) {
+        value_ = value - threshold;
+      } else if (error < -threshold) {
+        value_ = value + threshold;
+      }
     }
+    
+    return value_;
   }
+
+  inline float value() const { return value_; }
 
  private:
-  float peak_;
-
-  DISALLOW_COPY_AND_ASSIGN(Limiter);
+  float value_;
+  float threshold_;
+  
+  DISALLOW_COPY_AND_ASSIGN(HysteresisFilter);
 };
+
 
 }  // namespace stmlib
 
-#endif  // STMLIB_DSP_LIMITER_H_
+#endif  // STMLIB_DSP_HYSTERESIS_FILTER_H_
+

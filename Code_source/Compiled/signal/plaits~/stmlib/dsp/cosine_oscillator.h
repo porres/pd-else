@@ -51,7 +51,7 @@ class CosineOscillator {
     if (mode == COSINE_OSCILLATOR_APPROXIMATE) {
       InitApproximate(frequency);
     } else {
-      iir_coefficient_ = 2.0f * cosf(2.0f * M_PI * frequency);
+      iir_coefficient_ = 2.0f * cosf(2.0f * float(M_PI) * frequency);
       initial_amplitude_ = iir_coefficient_ * 0.25f;
     }
     Start();

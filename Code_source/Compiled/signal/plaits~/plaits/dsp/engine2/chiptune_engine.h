@@ -1,4 +1,4 @@
-// Copyright 2016 Emilie Gillet.
+// Copyright 2021 Emilie Gillet.
 //
 // Author: Emilie Gillet (emilie.o.gillet@gmail.com)
 //
@@ -24,57 +24,56 @@
 //
 // -----------------------------------------------------------------------------
 //
-// Various flavours of speech synthesis.
+// Chiptune waveforms with arpeggiator.
 
-#ifndef PLAITS_DSP_ENGINE_SPEECH_ENGINE_H_
-#define PLAITS_DSP_ENGINE_SPEECH_ENGINE_H_
+#ifndef PLAITS_DSP_ENGINE_CHIPTUNE_ENGINE_H_
+#define PLAITS_DSP_ENGINE_CHIPTUNE_ENGINE_H_
 
-#include "stmlib/dsp/hysteresis_quantizer.h"
-
+#include "plaits/dsp/chords/chord_bank.h"
 #include "plaits/dsp/engine/engine.h"
-#include "plaits/dsp/speech/lpc_speech_synth_controller.h"
-#include "plaits/dsp/speech/naive_speech_synth.h"
-#include "plaits/dsp/speech/sam_speech_synth.h"
+#include "plaits/dsp/engine2/arpeggiator.h"
+#include "plaits/dsp/oscillator/nes_triangle_oscillator.h"
+#include "plaits/dsp/oscillator/super_square_oscillator.h"
 
 namespace plaits {
 
-class SpeechEngine : public Engine {
+class ChiptuneEngine : public Engine {
  public:
-  SpeechEngine() { }
-  ~SpeechEngine() { }
+  ChiptuneEngine() { }
+  ~ChiptuneEngine() { }
+  
+  enum {
+    NO_ENVELOPE = 2
+  };
   
   virtual void Init(stmlib::BufferAllocator* allocator);
   virtual void Reset();
+  virtual void LoadUserData(const uint8_t* user_data) { }
   virtual void Render(const EngineParameters& parameters,
       float* out,
       float* aux,
       size_t size,
       bool* already_enveloped);
   
-  inline void set_prosody_amount(float prosody_amount) {
-    prosody_amount_ = prosody_amount;
+  inline void set_envelope_shape(float envelope_shape) {
+    envelope_shape_ = envelope_shape;
   }
   
-  inline void set_speed(float speed) {
-    speed_ = speed;
-  }
-
  private:
-  stmlib::HysteresisQuantizer2 word_bank_quantizer_;
+  SuperSquareOscillator voice_[kChordNumVoices];
+  NESTriangleOscillator<> bass_;
   
-  NaiveSpeechSynth naive_speech_synth_;
-  SAMSpeechSynth sam_speech_synth_;
+  ChordBank chords_;
+  Arpeggiator arpeggiator_;
+  stmlib::HysteresisQuantizer2 arpeggiator_pattern_selector_;
   
-  LPCSpeechSynthController lpc_speech_synth_controller_;
-  LPCSpeechSynthWordBank lpc_speech_synth_word_bank_;
+  float envelope_shape_;
+  float envelope_state_;
+  float aux_envelope_amount_;
   
-  float* temp_buffer_[2];
-  float prosody_amount_;
-  float speed_;
-  
-  DISALLOW_COPY_AND_ASSIGN(SpeechEngine);
+  DISALLOW_COPY_AND_ASSIGN(ChiptuneEngine);
 };
 
 }  // namespace plaits
 
-#endif  // PLAITS_DSP_ENGINE_SPEECH_ENGINE_H_
+#endif  // PLAITS_DSP_ENGINE_CHIPTUNE_ENGINE_H_
