@@ -1,3 +1,5 @@
+<global> loop_mode=one_shot
+
 <region> key=60 sample=samples/s1.wav
 <region> key=61 sample=samples/s2.wav
 <region> key=62 sample=samples/s3.wav
