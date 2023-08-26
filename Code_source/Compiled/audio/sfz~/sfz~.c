@@ -149,8 +149,6 @@ static void sfz_set(t_sfz *x, t_symbol *s, int ac, t_atom* av){
 
 static void sfz_set_path(t_sfz *x, t_symbol *s, int ac, t_atom* av){
     (void)s;
-    //free(x->x_path_buf);
-
     binbuf_clear(x->x_binbuf);
     binbuf_restore(x->x_binbuf, ac, av);
     binbuf_gettext(x->x_binbuf, &x->x_path_buf, &x->x_path_bufsize);
@@ -160,37 +158,38 @@ static void sfz_set_path(t_sfz *x, t_symbol *s, int ac, t_atom* av){
         return;
     }
 
-    //post("[sfz~] home is: %s", x->x_home->s_name);
-    size_t homeDirLength = strlen(x->x_home->s_name);
+    // Allocate memory to null-terminated the binbuf string
+    char* new_path_buf = (char *)malloc(x->x_path_bufsize + 1);
+    if (new_path_buf == NULL){
+        post("[sfz~] Unable to allocate memory for virtual sfz path");
+        return;
+    }
+    strncpy(new_path_buf, x->x_path_buf, x->x_path_bufsize);
 
-    post("home dir is: %s, with length: %d", x->x_home->s_name, homeDirLength);
+    new_path_buf[x->x_path_bufsize] = '\0';
 
-    char* new_path_buf;
+    free(x->x_path_buf);
+    x->x_path_bufsize = strlen(new_path_buf);
+    x->x_path_buf = new_path_buf;
 
+    // Replace ~ with absolute home path
     if (x->x_path_buf[0] == '~'){
         memmove(x->x_path_buf, x->x_path_buf + 1, x->x_path_bufsize);
 
+        size_t homeDirLength = strlen(x->x_home->s_name);
         x->x_path_bufsize = homeDirLength + x->x_path_bufsize;
-        new_path_buf = (char*)malloc(x->x_path_bufsize);
-        if (new_path_buf == NULL) {
-            post("[sfz~] Unable to allocate memory for virtual sfz path");
+        char* path_with_home = (char*)malloc(x->x_path_bufsize);
+        if (path_with_home == NULL) {
+            post("[sfz~] Unable to allocate memory for virtual sfz relative path");
             return;
         }
-        strcpy(new_path_buf, x->x_home->s_name);
-        strcat(new_path_buf, x->x_path_buf);
-    } else {
-        // Allocate memory to null-terminated the binbuf string
-        new_path_buf = (char*)malloc(x->x_path_bufsize + 1);
-        if (new_path_buf == NULL) {
-            post("[sfz~] Unable to allocate memory for virtual sfz path");
-            return;
-        }
-        strncpy(new_path_buf, x->x_path_buf, x->x_path_bufsize);
+        strcpy(path_with_home, x->x_home->s_name);
+        strcat(path_with_home, x->x_path_buf);
+        free(x->x_path_buf);
+        x->x_path_buf = path_with_home;
     }
-    new_path_buf[x->x_path_bufsize] = '\0';
-    x->x_path_buf = new_path_buf;
 
-    post("[sfz~] setting new path for string load mode: %s", x->x_path_buf);
+    post("[sfz~] Setting new path for string load mode: %s", x->x_path_buf);
 
     if (x->x_bufsize){
         if(!sfizz_load_string(x->x_synth, x->x_path_buf, x->x_buf)){
