@@ -70,7 +70,7 @@ hot.class.sources := Code_source/Compiled/control/hot.c
 hz2rad.class.sources := Code_source/Compiled/control/hz2rad.c
 initmess.class.sources := Code_source/Compiled/control/initmess.c
 keycode.class.sources := Code_source/Compiled/control/keycode.c
-lb.class.sources := Code_source/extra_source/Aliases/lb.c
+lb.class.sources := Code_source/Compiled/extra_source/Aliases/lb.c
 limit.class.sources := Code_source/Compiled/control/limit.c
 loadbanger.class.sources := Code_source/Compiled/control/loadbanger.c
 merge.class.sources := Code_source/Compiled/control/merge.c
@@ -232,7 +232,7 @@ sin~.class.sources := Code_source/Compiled/audio/sin~.c
 sig2float~.class.sources := Code_source/Compiled/audio/sig2float~.c
 slew~.class.sources := Code_source/Compiled/audio/slew~.c
 slew2~.class.sources := Code_source/Compiled/audio/slew2~.c
-s2f~.class.sources := Code_source/extra_source/Aliases/s2f~.c
+s2f~.class.sources := Code_source/Compiled/extra_source/Aliases/s2f~.c
 sequencer~.class.sources := Code_source/Compiled/audio/sequencer~.c
 select~.class.sources := Code_source/Compiled/audio/select~.c
 sr~.class.sources := Code_source/Compiled/audio/sr~.c
@@ -273,9 +273,9 @@ magic := Code_source/shared/magic.c
     cosine~.class.sources := Code_source/Compiled/audio/cosine~.c $(magic)
     fbsine~.class.sources := Code_source/Compiled/audio/fbsine~.c $(magic)
     gaussian~.class.sources := Code_source/Compiled/audio/gaussian~.c $(magic)
-    imp~.class.sources := Code_source/extra_source/Aliases/imp~.c $(magic)
+    imp~.class.sources := Code_source/Compiled/extra_source/Aliases/imp~.c $(magic)
     impulse~.class.sources := Code_source/Compiled/audio/impulse~.c $(magic)
-    imp2~.class.sources := Code_source/extra_source/Aliases/imp2~.c $(magic)
+    imp2~.class.sources := Code_source/Compiled/extra_source/Aliases/imp2~.c $(magic)
     impulse2~.class.sources := Code_source/Compiled/audio/impulse2~.c $(magic)
     parabolic~.class.sources := Code_source/Compiled/audio/parabolic~.c $(magic)
     pulse~.class.sources := Code_source/Compiled/audio/pulse~.c $(magic)
@@ -303,7 +303,7 @@ bufmagic := \
 Code_source/shared/magic.c \
 Code_source/shared/buffer.c
     wavetable~.class.sources = Code_source/Compiled/audio/wavetable~.c $(bufmagic)
-    wt~.class.sources = Code_source/extra_source/Aliases/wt~.c $(bufmagic)
+    wt~.class.sources = Code_source/Compiled/extra_source/Aliases/wt~.c $(bufmagic)
     tabplayer~.class.sources = Code_source/Compiled/audio/tabplayer~.c $(bufmagic)
 
 
@@ -365,7 +365,7 @@ extrafiles = \
 $(wildcard Code_source/Abstractions/control/*.pd) \
 $(wildcard Code_source/Abstractions/audio/*.pd) \
 $(wildcard Code_source/Abstractions/extra_abs/*.pd) \
-$(wildcard Code_source/extra_source/*.tcl) \
+$(wildcard Code_source/Compiled/extra_source/*.tcl) \
 $(wildcard Documentation/Help-files/*.pd) \
 $(wildcard Documentation/extra_files/*.*) \
 $(wildcard *.txt) \
