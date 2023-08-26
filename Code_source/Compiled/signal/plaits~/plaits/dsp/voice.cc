@@ -207,7 +207,7 @@ namespace plaits {
         
         float internal_envelope_amplitude = 1.0f;
         float internal_envelope_amplitude_timbre = 1.0f;
-        if (engine_index == 15) {
+        if (engine_index == 7) {
             internal_envelope_amplitude = 2.0f - p.harmonics * 6.0f;
             CONSTRAIN(internal_envelope_amplitude, 0.0f, 1.0f);
             speech_engine_->set_prosody_amount(
@@ -216,7 +216,7 @@ namespace plaits {
             speech_engine_->set_speed( 
                 !modulations.trigger_patched || modulations.morph_patched ?
                     0.0f : patch.morph_modulation_amount);
-        } else if (engine_index == 7) {
+        } else if (engine_index == 23) {
           if (modulations.trigger_patched && !modulations.timbre_patched) {
             // Disable internal envelope on TIMBRE, and enable the envelope generator
             // built into the chiptune engine.
