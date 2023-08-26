@@ -23,6 +23,7 @@ typedef struct _sfz{
     t_object        x_obj;
     sfizz_synth_t  *x_synth;
     t_canvas       *x_canvas;
+    t_symbol       *x_home;
     int             x_midinum;
     float           x_a4;
     int             x_base;
@@ -132,7 +133,7 @@ static void sfz_set(t_sfz *x, t_symbol *s, int ac, t_atom* av){
     x->x_buf = new_buf;
 
     if (!x->x_path_bufsize){
-        char* new_path_buf = (char*)malloc(1 + 1);
+        char* new_path_buf = (char*)malloc(2);
         if (new_path_buf == NULL) {
             post("Unable to allocate memory for virtual sfz path");
             return;
@@ -148,19 +149,45 @@ static void sfz_set(t_sfz *x, t_symbol *s, int ac, t_atom* av){
 
 static void sfz_set_path(t_sfz *x, t_symbol *s, int ac, t_atom* av){
     (void)s;
+    //free(x->x_path_buf);
+
     binbuf_clear(x->x_binbuf);
     binbuf_restore(x->x_binbuf, ac, av);
     binbuf_gettext(x->x_binbuf, &x->x_path_buf, &x->x_path_bufsize);
 
-    // Allocate memory to null-terminated the binbuf string
-    char* new_path_buf = (char*)malloc(x->x_path_bufsize + 1);
-    if (new_path_buf == NULL) {
-        post("Unable to allocate memory for virtual sfz path");
+    if (x->x_path_bufsize == 0) {
+        post("[sfz~] path is blank");
         return;
     }
-    strncpy(new_path_buf, x->x_path_buf, x->x_path_bufsize);
+
+    //post("[sfz~] home is: %s", x->x_home->s_name);
+    size_t homeDirLength = strlen(x->x_home->s_name);
+
+    post("home dir is: %s, with length: %d", x->x_home->s_name, homeDirLength);
+
+    char* new_path_buf;
+
+    if (x->x_path_buf[0] == '~'){
+        memmove(x->x_path_buf, x->x_path_buf + 1, x->x_path_bufsize);
+
+        x->x_path_bufsize = homeDirLength + x->x_path_bufsize;
+        new_path_buf = (char*)malloc(x->x_path_bufsize);
+        if (new_path_buf == NULL) {
+            post("[sfz~] Unable to allocate memory for virtual sfz path");
+            return;
+        }
+        strcpy(new_path_buf, x->x_home->s_name);
+        strcat(new_path_buf, x->x_path_buf);
+    } else {
+        // Allocate memory to null-terminated the binbuf string
+        new_path_buf = (char*)malloc(x->x_path_bufsize + 1);
+        if (new_path_buf == NULL) {
+            post("[sfz~] Unable to allocate memory for virtual sfz path");
+            return;
+        }
+        strncpy(new_path_buf, x->x_path_buf, x->x_path_bufsize);
+    }
     new_path_buf[x->x_path_bufsize] = '\0';
-    free(x->x_path_buf);
     x->x_path_buf = new_path_buf;
 
     post("[sfz~] setting new path for string load mode: %s", x->x_path_buf);
@@ -316,6 +343,7 @@ static void* sfz_new(t_symbol *s, int ac, t_atom *av){
     x->x_bufsize = 0;
     x->x_path_bufsize = 0;
     x->x_canvas = canvas_getcurrent();
+    x->x_home = gensym(getenv("HOME"));
     outlet_new(&x->x_obj, &s_signal);
     outlet_new(&x->x_obj, &s_signal);
     x->x_synth = sfizz_create_synth();
