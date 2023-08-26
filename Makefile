@@ -122,222 +122,222 @@ trunc.class.sources := Code_source/Compiled/control/trunc.c
 unmerge.class.sources := Code_source/Compiled/control/unmerge.c
 
 # signal:
-above~.class.sources := Code_source/Compiled/signal/above~.c
-add~.class.sources := Code_source/Compiled/signal/add~.c
-allpass.2nd~.class.sources := Code_source/Compiled/signal/allpass.2nd~.c
-allpass.rev~.class.sources := Code_source/Compiled/signal/allpass.rev~.c
-bitnormal~.class.sources := Code_source/Compiled/signal/bitnormal~.c
-comb.rev~.class.sources := Code_source/Compiled/signal/comb.rev~.c
-comb.filt~.class.sources := Code_source/Compiled/signal/comb.filt~.c
-adsr~.class.sources := Code_source/Compiled/signal/adsr~.c
-asr~.class.sources := Code_source/Compiled/signal/asr~.c
-autofade~.class.sources := Code_source/Compiled/signal/autofade~.c
-autofade2~.class.sources := Code_source/Compiled/signal/autofade2~.c
-balance~.class.sources := Code_source/Compiled/signal/balance~.c
-bandpass~.class.sources := Code_source/Compiled/signal/bandpass~.c
-bandstop~.class.sources := Code_source/Compiled/signal/bandstop~.c
-bl.imp~.class.sources := Code_source/Compiled/signal/bl.imp~.c
-bl.imp2~.class.sources := Code_source/Compiled/signal/bl.imp2~.c
-bl.saw~.class.sources := Code_source/Compiled/signal/bl.saw~.c
-bl.saw2~.class.sources := Code_source/Compiled/signal/bl.saw2~.c
-bl.square~.class.sources := Code_source/Compiled/signal/bl.square~.c
-bl.tri~.class.sources := Code_source/Compiled/signal/bl.tri~.c
-bl.vsaw~.class.sources := Code_source/Compiled/signal/bl.vsaw~.c
-blocksize~.class.sources := Code_source/Compiled/signal/blocksize~.c
-biquads~.class.sources := Code_source/Compiled/signal/biquads~.c
-car2pol~.class.sources := Code_source/Compiled/signal/car2pol~.c
-ceil~.class.sources := Code_source/Compiled/signal/ceil~.c
-cents2ratio~.class.sources := Code_source/Compiled/signal/cents2ratio~.c
-changed~.class.sources := Code_source/Compiled/signal/changed~.c
-changed2~.class.sources := Code_source/Compiled/signal/changed2~.c
-cmul~.class.sources := Code_source/Compiled/signal/cmul~.c
-crackle~.class.sources := Code_source/Compiled/signal/crackle~.c
-crossover~.class.sources := Code_source/Compiled/signal/crossover~.c
-cusp~.class.sources := Code_source/Compiled/signal/cusp~.c
-db2lin~.class.sources := Code_source/Compiled/signal/db2lin~.c
-decay~.class.sources := Code_source/Compiled/signal/decay~.c
-decay2~.class.sources := Code_source/Compiled/signal/decay2~.c
-downsample~.class.sources := Code_source/Compiled/signal/downsample~.c
-drive~.class.sources := Code_source/Compiled/signal/drive~.c
-detect~.class.sources := Code_source/Compiled/signal/detect~.c
-envgen~.class.sources := Code_source/Compiled/signal/envgen~.c
-eq~.class.sources := Code_source/Compiled/signal/eq~.c
-fader~.class.sources := Code_source/Compiled/signal/fader~.c
-fbsine2~.class.sources := Code_source/Compiled/signal/fbsine2~.c
-fdn.rev~.class.sources := Code_source/Compiled/signal/fdn.rev~.c
-floor~.class.sources := Code_source/Compiled/signal/floor~.c
-fold~.class.sources := Code_source/Compiled/signal/fold~.c
-freq.shift~.class.sources := Code_source/Compiled/signal/freq.shift~.c
-gbman~.class.sources := Code_source/Compiled/signal/gbman~.c
-gate2imp~.class.sources := Code_source/Compiled/signal/gate2imp~.c
-get~.class.sources := Code_source/Compiled/signal/get~.c
-giga.rev~.class.sources := Code_source/Compiled/signal/giga.rev~.c
-glide~.class.sources := Code_source/Compiled/signal/glide~.c
-glide2~.class.sources := Code_source/Compiled/signal/glide2~.c
-henon~.class.sources := Code_source/Compiled/signal/henon~.c
-highpass~.class.sources := Code_source/Compiled/signal/highpass~.c
-highshelf~.class.sources := Code_source/Compiled/signal/highshelf~.c
-ikeda~.class.sources := Code_source/Compiled/signal/ikeda~.c
-impseq~.class.sources := Code_source/Compiled/signal/impseq~.c
-trunc~.class.sources := Code_source/Compiled/signal/trunc~.c
-lastvalue~.class.sources := Code_source/Compiled/signal/lastvalue~.c
-latoocarfian~.class.sources := Code_source/Compiled/signal/latoocarfian~.c
-lorenz~.class.sources := Code_source/Compiled/signal/lorenz~.c
-lincong~.class.sources := Code_source/Compiled/signal/lincong~.c
-lin2db~.class.sources := Code_source/Compiled/signal/lin2db~.c
-logistic~.class.sources := Code_source/Compiled/signal/logistic~.c
+above~.class.sources := Code_source/Compiled/audio/above~.c
+add~.class.sources := Code_source/Compiled/audio/add~.c
+allpass.2nd~.class.sources := Code_source/Compiled/audio/allpass.2nd~.c
+allpass.rev~.class.sources := Code_source/Compiled/audio/allpass.rev~.c
+bitnormal~.class.sources := Code_source/Compiled/audio/bitnormal~.c
+comb.rev~.class.sources := Code_source/Compiled/audio/comb.rev~.c
+comb.filt~.class.sources := Code_source/Compiled/audio/comb.filt~.c
+adsr~.class.sources := Code_source/Compiled/audio/adsr~.c
+asr~.class.sources := Code_source/Compiled/audio/asr~.c
+autofade~.class.sources := Code_source/Compiled/audio/autofade~.c
+autofade2~.class.sources := Code_source/Compiled/audio/autofade2~.c
+balance~.class.sources := Code_source/Compiled/audio/balance~.c
+bandpass~.class.sources := Code_source/Compiled/audio/bandpass~.c
+bandstop~.class.sources := Code_source/Compiled/audio/bandstop~.c
+bl.imp~.class.sources := Code_source/Compiled/audio/bl.imp~.c
+bl.imp2~.class.sources := Code_source/Compiled/audio/bl.imp2~.c
+bl.saw~.class.sources := Code_source/Compiled/audio/bl.saw~.c
+bl.saw2~.class.sources := Code_source/Compiled/audio/bl.saw2~.c
+bl.square~.class.sources := Code_source/Compiled/audio/bl.square~.c
+bl.tri~.class.sources := Code_source/Compiled/audio/bl.tri~.c
+bl.vsaw~.class.sources := Code_source/Compiled/audio/bl.vsaw~.c
+blocksize~.class.sources := Code_source/Compiled/audio/blocksize~.c
+biquads~.class.sources := Code_source/Compiled/audio/biquads~.c
+car2pol~.class.sources := Code_source/Compiled/audio/car2pol~.c
+ceil~.class.sources := Code_source/Compiled/audio/ceil~.c
+cents2ratio~.class.sources := Code_source/Compiled/audio/cents2ratio~.c
+changed~.class.sources := Code_source/Compiled/audio/changed~.c
+changed2~.class.sources := Code_source/Compiled/audio/changed2~.c
+cmul~.class.sources := Code_source/Compiled/audio/cmul~.c
+crackle~.class.sources := Code_source/Compiled/audio/crackle~.c
+crossover~.class.sources := Code_source/Compiled/audio/crossover~.c
+cusp~.class.sources := Code_source/Compiled/audio/cusp~.c
+db2lin~.class.sources := Code_source/Compiled/audio/db2lin~.c
+decay~.class.sources := Code_source/Compiled/audio/decay~.c
+decay2~.class.sources := Code_source/Compiled/audio/decay2~.c
+downsample~.class.sources := Code_source/Compiled/audio/downsample~.c
+drive~.class.sources := Code_source/Compiled/audio/drive~.c
+detect~.class.sources := Code_source/Compiled/audio/detect~.c
+envgen~.class.sources := Code_source/Compiled/audio/envgen~.c
+eq~.class.sources := Code_source/Compiled/audio/eq~.c
+fader~.class.sources := Code_source/Compiled/audio/fader~.c
+fbsine2~.class.sources := Code_source/Compiled/audio/fbsine2~.c
+fdn.rev~.class.sources := Code_source/Compiled/audio/fdn.rev~.c
+floor~.class.sources := Code_source/Compiled/audio/floor~.c
+fold~.class.sources := Code_source/Compiled/audio/fold~.c
+freq.shift~.class.sources := Code_source/Compiled/audio/freq.shift~.c
+gbman~.class.sources := Code_source/Compiled/audio/gbman~.c
+gate2imp~.class.sources := Code_source/Compiled/audio/gate2imp~.c
+get~.class.sources := Code_source/Compiled/audio/get~.c
+giga.rev~.class.sources := Code_source/Compiled/audio/giga.rev~.c
+glide~.class.sources := Code_source/Compiled/audio/glide~.c
+glide2~.class.sources := Code_source/Compiled/audio/glide2~.c
+henon~.class.sources := Code_source/Compiled/audio/henon~.c
+highpass~.class.sources := Code_source/Compiled/audio/highpass~.c
+highshelf~.class.sources := Code_source/Compiled/audio/highshelf~.c
+ikeda~.class.sources := Code_source/Compiled/audio/ikeda~.c
+impseq~.class.sources := Code_source/Compiled/audio/impseq~.c
+trunc~.class.sources := Code_source/Compiled/audio/trunc~.c
+lastvalue~.class.sources := Code_source/Compiled/audio/lastvalue~.c
+latoocarfian~.class.sources := Code_source/Compiled/audio/latoocarfian~.c
+lorenz~.class.sources := Code_source/Compiled/audio/lorenz~.c
+lincong~.class.sources := Code_source/Compiled/audio/lincong~.c
+lin2db~.class.sources := Code_source/Compiled/audio/lin2db~.c
+logistic~.class.sources := Code_source/Compiled/audio/logistic~.c
 loop.class.sources := Code_source/Compiled/control/loop.c
-lop2~.class.sources := Code_source/Compiled/signal/lop2~.c
-lowpass~.class.sources := Code_source/Compiled/signal/lowpass~.c
-lowshelf~.class.sources := Code_source/Compiled/signal/lowshelf~.c
-mov.rms~.class.sources := Code_source/Compiled/signal/mov.rms~.c
-mtx~.class.sources := Code_source/Compiled/signal/mtx~.c
-match~.class.sources := Code_source/Compiled/signal/match~.c
-mov.avg~.class.sources := Code_source/Compiled/signal/mov.avg~.c
-median~.class.sources := Code_source/Compiled/signal/median~.c
-merge~.class.sources := Code_source/Compiled/signal/merge~.c
-nchs~.class.sources := Code_source/Compiled/signal/nchs~.c
-nyquist~.class.sources := Code_source/Compiled/signal/nyquist~.c
-op~.class.sources := Code_source/Compiled/signal/op~.c
-pol2car~.class.sources := Code_source/Compiled/signal/pol2car~.c
-power~.class.sources := Code_source/Compiled/signal/power~.c
-pan2~.class.sources := Code_source/Compiled/signal/pan2~.c
-pan4~.class.sources := Code_source/Compiled/signal/pan4~.c
-peak~.class.sources := Code_source/Compiled/signal/peak~.c
-pmosc~.class.sources := Code_source/Compiled/signal/pmosc~.c
-phaseseq~.class.sources := Code_source/Compiled/signal/phaseseq~.c
-pulsecount~.class.sources := Code_source/Compiled/signal/pulsecount~.c
-pick~.class.sources := Code_source/Compiled/signal/pick~.c
-pimpmul~.class.sources := Code_source/Compiled/signal/pimpmul~.c
-pulsediv~.class.sources := Code_source/Compiled/signal/pulsediv~.c
-quad~.class.sources := Code_source/Compiled/signal/quad~.c
-quantizer~.class.sources := Code_source/Compiled/signal/quantizer~.c
-ramp~.class.sources := Code_source/Compiled/signal/ramp~.c
-range~.class.sources := Code_source/Compiled/signal/range~.c
-ratio2cents~.class.sources := Code_source/Compiled/signal/ratio2cents~.c
-rescale~.class.sources := Code_source/Compiled/signal/rescale~.c
-rint~.class.sources := Code_source/Compiled/signal/rint~.c
-repeat~.class.sources := Code_source/Compiled/signal/repeat~.c
-resonant~.class.sources := Code_source/Compiled/signal/resonant~.c
-resonant2~.class.sources := Code_source/Compiled/signal/resonant2~.c
-rms~.class.sources := Code_source/Compiled/signal/rms~.c
-rotate~.class.sources := Code_source/Compiled/signal/rotate~.c
-rotate.mc~.class.sources := Code_source/Compiled/signal/rotate.mc~.c
-sh~.class.sources := Code_source/Compiled/signal/sh~.c
-schmitt~.class.sources := Code_source/Compiled/signal/schmitt~.c
-slice~.class.sources := Code_source/Compiled/signal/slice~.c
-lag~.class.sources := Code_source/Compiled/signal/lag~.c
-lag2~.class.sources := Code_source/Compiled/signal/lag2~.c
-sin~.class.sources := Code_source/Compiled/signal/sin~.c
-sig2float~.class.sources := Code_source/Compiled/signal/sig2float~.c
-slew~.class.sources := Code_source/Compiled/signal/slew~.c
-slew2~.class.sources := Code_source/Compiled/signal/slew2~.c
+lop2~.class.sources := Code_source/Compiled/audio/lop2~.c
+lowpass~.class.sources := Code_source/Compiled/audio/lowpass~.c
+lowshelf~.class.sources := Code_source/Compiled/audio/lowshelf~.c
+mov.rms~.class.sources := Code_source/Compiled/audio/mov.rms~.c
+mtx~.class.sources := Code_source/Compiled/audio/mtx~.c
+match~.class.sources := Code_source/Compiled/audio/match~.c
+mov.avg~.class.sources := Code_source/Compiled/audio/mov.avg~.c
+median~.class.sources := Code_source/Compiled/audio/median~.c
+merge~.class.sources := Code_source/Compiled/audio/merge~.c
+nchs~.class.sources := Code_source/Compiled/audio/nchs~.c
+nyquist~.class.sources := Code_source/Compiled/audio/nyquist~.c
+op~.class.sources := Code_source/Compiled/audio/op~.c
+pol2car~.class.sources := Code_source/Compiled/audio/pol2car~.c
+power~.class.sources := Code_source/Compiled/audio/power~.c
+pan2~.class.sources := Code_source/Compiled/audio/pan2~.c
+pan4~.class.sources := Code_source/Compiled/audio/pan4~.c
+peak~.class.sources := Code_source/Compiled/audio/peak~.c
+pmosc~.class.sources := Code_source/Compiled/audio/pmosc~.c
+phaseseq~.class.sources := Code_source/Compiled/audio/phaseseq~.c
+pulsecount~.class.sources := Code_source/Compiled/audio/pulsecount~.c
+pick~.class.sources := Code_source/Compiled/audio/pick~.c
+pimpmul~.class.sources := Code_source/Compiled/audio/pimpmul~.c
+pulsediv~.class.sources := Code_source/Compiled/audio/pulsediv~.c
+quad~.class.sources := Code_source/Compiled/audio/quad~.c
+quantizer~.class.sources := Code_source/Compiled/audio/quantizer~.c
+ramp~.class.sources := Code_source/Compiled/audio/ramp~.c
+range~.class.sources := Code_source/Compiled/audio/range~.c
+ratio2cents~.class.sources := Code_source/Compiled/audio/ratio2cents~.c
+rescale~.class.sources := Code_source/Compiled/audio/rescale~.c
+rint~.class.sources := Code_source/Compiled/audio/rint~.c
+repeat~.class.sources := Code_source/Compiled/audio/repeat~.c
+resonant~.class.sources := Code_source/Compiled/audio/resonant~.c
+resonant2~.class.sources := Code_source/Compiled/audio/resonant2~.c
+rms~.class.sources := Code_source/Compiled/audio/rms~.c
+rotate~.class.sources := Code_source/Compiled/audio/rotate~.c
+rotate.mc~.class.sources := Code_source/Compiled/audio/rotate.mc~.c
+sh~.class.sources := Code_source/Compiled/audio/sh~.c
+schmitt~.class.sources := Code_source/Compiled/audio/schmitt~.c
+slice~.class.sources := Code_source/Compiled/audio/slice~.c
+lag~.class.sources := Code_source/Compiled/audio/lag~.c
+lag2~.class.sources := Code_source/Compiled/audio/lag2~.c
+sin~.class.sources := Code_source/Compiled/audio/sin~.c
+sig2float~.class.sources := Code_source/Compiled/audio/sig2float~.c
+slew~.class.sources := Code_source/Compiled/audio/slew~.c
+slew2~.class.sources := Code_source/Compiled/audio/slew2~.c
 s2f~.class.sources := Code_source/extra_source/Aliases/s2f~.c
-sequencer~.class.sources := Code_source/Compiled/signal/sequencer~.c
-select~.class.sources := Code_source/Compiled/signal/select~.c
-sr~.class.sources := Code_source/Compiled/signal/sr~.c
-status~.class.sources := Code_source/Compiled/signal/status~.c
-standard~.class.sources := Code_source/Compiled/signal/standard~.c
-sum~.class.sources := Code_source/Compiled/signal/sum~.c
-sigs~.class.sources := Code_source/Compiled/signal/sigs~.c
-spread~.class.sources := Code_source/Compiled/signal/spread~.c
-spread.mc~.class.sources := Code_source/Compiled/signal/spread.mc~.c
-susloop~.class.sources := Code_source/Compiled/signal/susloop~.c
-svfilter~.class.sources := Code_source/Compiled/signal/svfilter~.c
-trig.delay~.class.sources := Code_source/Compiled/signal/trig.delay~.c
-trig.delay2~.class.sources := Code_source/Compiled/signal/trig.delay2~.c
-timed.gate~.class.sources := Code_source/Compiled/signal/timed.gate~.c
-toggleff~.class.sources := Code_source/Compiled/signal/toggleff~.c
-trighold~.class.sources := Code_source/Compiled/signal/trighold~.c
-unmerge~.class.sources := Code_source/Compiled/signal/unmerge~.c
-vu~.class.sources := Code_source/Compiled/signal/vu~.c
-xfade~.class.sources := Code_source/Compiled/signal/xfade~.c
-xfade.mc~.class.sources := Code_source/Compiled/signal/xfade.mc~.c
-xgate~.class.sources := Code_source/Compiled/signal/xgate~.c
-xgate.mc~.class.sources := Code_source/Compiled/signal/xgate.mc~.c
-xgate2~.class.sources := Code_source/Compiled/signal/xgate2~.c
-xmod~.class.sources := Code_source/Compiled/signal/xmod~.c
-xmod2~.class.sources := Code_source/Compiled/signal/xmod2~.c
-xselect~.class.sources := Code_source/Compiled/signal/xselect~.c
-xselect.mc~.class.sources := Code_source/Compiled/signal/xselect.mc~.c
-xselect2~.class.sources := Code_source/Compiled/signal/xselect2~.c
+sequencer~.class.sources := Code_source/Compiled/audio/sequencer~.c
+select~.class.sources := Code_source/Compiled/audio/select~.c
+sr~.class.sources := Code_source/Compiled/audio/sr~.c
+status~.class.sources := Code_source/Compiled/audio/status~.c
+standard~.class.sources := Code_source/Compiled/audio/standard~.c
+sum~.class.sources := Code_source/Compiled/audio/sum~.c
+sigs~.class.sources := Code_source/Compiled/audio/sigs~.c
+spread~.class.sources := Code_source/Compiled/audio/spread~.c
+spread.mc~.class.sources := Code_source/Compiled/audio/spread.mc~.c
+susloop~.class.sources := Code_source/Compiled/audio/susloop~.c
+svfilter~.class.sources := Code_source/Compiled/audio/svfilter~.c
+trig.delay~.class.sources := Code_source/Compiled/audio/trig.delay~.c
+trig.delay2~.class.sources := Code_source/Compiled/audio/trig.delay2~.c
+timed.gate~.class.sources := Code_source/Compiled/audio/timed.gate~.c
+toggleff~.class.sources := Code_source/Compiled/audio/toggleff~.c
+trighold~.class.sources := Code_source/Compiled/audio/trighold~.c
+unmerge~.class.sources := Code_source/Compiled/audio/unmerge~.c
+vu~.class.sources := Code_source/Compiled/audio/vu~.c
+xfade~.class.sources := Code_source/Compiled/audio/xfade~.c
+xfade.mc~.class.sources := Code_source/Compiled/audio/xfade.mc~.c
+xgate~.class.sources := Code_source/Compiled/audio/xgate~.c
+xgate.mc~.class.sources := Code_source/Compiled/audio/xgate.mc~.c
+xgate2~.class.sources := Code_source/Compiled/audio/xgate2~.c
+xmod~.class.sources := Code_source/Compiled/audio/xmod~.c
+xmod2~.class.sources := Code_source/Compiled/audio/xmod2~.c
+xselect~.class.sources := Code_source/Compiled/audio/xselect~.c
+xselect.mc~.class.sources := Code_source/Compiled/audio/xselect.mc~.c
+xselect2~.class.sources := Code_source/Compiled/audio/xselect2~.c
 wrap2.class.sources := Code_source/Compiled/control/wrap2.c
-wrap2~.class.sources := Code_source/Compiled/signal/wrap2~.c
-zerocross~.class.sources := Code_source/Compiled/signal/zerocross~.c
+wrap2~.class.sources := Code_source/Compiled/audio/wrap2~.c
+zerocross~.class.sources := Code_source/Compiled/audio/zerocross~.c
 
 aubio := $(wildcard Code_source/shared/aubio/src/*/*.c) $(wildcard Code_source/shared/aubio/src/*.c)
-    beat~.class.sources := Code_source/Compiled/signal/beat~.c $(aubio)
+    beat~.class.sources := Code_source/Compiled/audio/beat~.c $(aubio)
 
 magic := Code_source/shared/magic.c
-    sine~.class.sources := Code_source/Compiled/signal/sine~.c $(magic)
-    cosine~.class.sources := Code_source/Compiled/signal/cosine~.c $(magic)
-    fbsine~.class.sources := Code_source/Compiled/signal/fbsine~.c $(magic)
-    gaussian~.class.sources := Code_source/Compiled/signal/gaussian~.c $(magic)
+    sine~.class.sources := Code_source/Compiled/audio/sine~.c $(magic)
+    cosine~.class.sources := Code_source/Compiled/audio/cosine~.c $(magic)
+    fbsine~.class.sources := Code_source/Compiled/audio/fbsine~.c $(magic)
+    gaussian~.class.sources := Code_source/Compiled/audio/gaussian~.c $(magic)
     imp~.class.sources := Code_source/extra_source/Aliases/imp~.c $(magic)
-    impulse~.class.sources := Code_source/Compiled/signal/impulse~.c $(magic)
+    impulse~.class.sources := Code_source/Compiled/audio/impulse~.c $(magic)
     imp2~.class.sources := Code_source/extra_source/Aliases/imp2~.c $(magic)
-    impulse2~.class.sources := Code_source/Compiled/signal/impulse2~.c $(magic)
-    parabolic~.class.sources := Code_source/Compiled/signal/parabolic~.c $(magic)
-    pulse~.class.sources := Code_source/Compiled/signal/pulse~.c $(magic)
-    saw~.class.sources := Code_source/Compiled/signal/saw~.c $(magic)
-    saw2~.class.sources := Code_source/Compiled/signal/saw2~.c $(magic)
-    square~.class.sources := Code_source/Compiled/signal/square~.c $(magic)
-    tri~.class.sources := Code_source/Compiled/signal/tri~.c $(magic)
-    vsaw~.class.sources := Code_source/Compiled/signal/vsaw~.c $(magic)
-    pimp~.class.sources := Code_source/Compiled/signal/pimp~.c $(magic)
-    numbox~.class.sources := Code_source/Compiled/signal/numbox~.c $(magic)
+    impulse2~.class.sources := Code_source/Compiled/audio/impulse2~.c $(magic)
+    parabolic~.class.sources := Code_source/Compiled/audio/parabolic~.c $(magic)
+    pulse~.class.sources := Code_source/Compiled/audio/pulse~.c $(magic)
+    saw~.class.sources := Code_source/Compiled/audio/saw~.c $(magic)
+    saw2~.class.sources := Code_source/Compiled/audio/saw2~.c $(magic)
+    square~.class.sources := Code_source/Compiled/audio/square~.c $(magic)
+    tri~.class.sources := Code_source/Compiled/audio/tri~.c $(magic)
+    vsaw~.class.sources := Code_source/Compiled/audio/vsaw~.c $(magic)
+    pimp~.class.sources := Code_source/Compiled/audio/pimp~.c $(magic)
+    numbox~.class.sources := Code_source/Compiled/audio/numbox~.c $(magic)
 
 buf := Code_source/shared/buffer.c
-    shaper~.class.sources = Code_source/Compiled/signal/shaper~.c $(buf)
+    shaper~.class.sources = Code_source/Compiled/audio/shaper~.c $(buf)
     tabreader.class.sources = Code_source/Compiled/control/tabreader.c $(buf)
-    tabreader~.class.sources = Code_source/Compiled/signal/tabreader~.c $(buf)
+    tabreader~.class.sources = Code_source/Compiled/audio/tabreader~.c $(buf)
     function.class.sources := Code_source/Compiled/control/function.c $(buf)
-    function~.class.sources := Code_source/Compiled/signal/function~.c $(buf)
-    tabwriter~.class.sources = Code_source/Compiled/signal/tabwriter~.c $(buf)
-    del~.class.sources := Code_source/Compiled/signal/del~.c $(buf)
-    fbdelay~.class.sources := Code_source/Compiled/signal/fbdelay~.c $(buf)
-    ffdelay~.class.sources := Code_source/Compiled/signal/ffdelay~.c $(buf)
-    filterdelay~.class.sources := Code_source/Compiled/signal/filterdelay~.c $(buf)
+    function~.class.sources := Code_source/Compiled/audio/function~.c $(buf)
+    tabwriter~.class.sources = Code_source/Compiled/audio/tabwriter~.c $(buf)
+    del~.class.sources := Code_source/Compiled/audio/del~.c $(buf)
+    fbdelay~.class.sources := Code_source/Compiled/audio/fbdelay~.c $(buf)
+    ffdelay~.class.sources := Code_source/Compiled/audio/ffdelay~.c $(buf)
+    filterdelay~.class.sources := Code_source/Compiled/audio/filterdelay~.c $(buf)
 
 bufmagic := \
 Code_source/shared/magic.c \
 Code_source/shared/buffer.c
-    wavetable~.class.sources = Code_source/Compiled/signal/wavetable~.c $(bufmagic)
+    wavetable~.class.sources = Code_source/Compiled/audio/wavetable~.c $(bufmagic)
     wt~.class.sources = Code_source/extra_source/Aliases/wt~.c $(bufmagic)
-    tabplayer~.class.sources = Code_source/Compiled/signal/tabplayer~.c $(bufmagic)
+    tabplayer~.class.sources = Code_source/Compiled/audio/tabplayer~.c $(bufmagic)
 
 
 randbuf := \
 Code_source/shared/random.c \
 Code_source/shared/buffer.c
-    gendyn~.class.sources := Code_source/Compiled/signal/gendyn~.c $(randbuf)
+    gendyn~.class.sources := Code_source/Compiled/audio/gendyn~.c $(randbuf)
 
 randmagic := \
 Code_source/shared/magic.c \
 Code_source/shared/random.c
-    brown~.class.sources := Code_source/Compiled/signal/brown~.c $(randmagic)
+    brown~.class.sources := Code_source/Compiled/audio/brown~.c $(randmagic)
 
 rand := Code_source/shared/random.c
-    white~.class.sources := Code_source/Compiled/signal/white~.c $(rand)
-    pink~.class.sources := Code_source/Compiled/signal/pink~.c $(rand)
-    gray~.class.sources := Code_source/Compiled/signal/gray~.c $(rand)
-    pluck~.class.sources := Code_source/Compiled/signal/pluck~.c $(rand)
+    white~.class.sources := Code_source/Compiled/audio/white~.c $(rand)
+    pink~.class.sources := Code_source/Compiled/audio/pink~.c $(rand)
+    gray~.class.sources := Code_source/Compiled/audio/gray~.c $(rand)
+    pluck~.class.sources := Code_source/Compiled/audio/pluck~.c $(rand)
     rand.u.class.sources := Code_source/Compiled/control/rand.u.c $(rand)
     rand.hist.class.sources := Code_source/Compiled/control/rand.hist.c $(rand)
     rand.i.class.sources := Code_source/Compiled/control/rand.i.c $(rand)
-    rand.i~.class.sources := Code_source/Compiled/signal/rand.i~.c $(rand)
+    rand.i~.class.sources := Code_source/Compiled/audio/rand.i~.c $(rand)
     rand.f.class.sources := Code_source/Compiled/control/rand.f.c $(rand)
-    rand.f~.class.sources := Code_source/Compiled/signal/rand.f~.c $(rand)
-    randpulse~.class.sources := Code_source/Compiled/signal/randpulse~.c $(rand)
-    randpulse2~.class.sources := Code_source/Compiled/signal/randpulse2~.c $(rand)
-    lfnoise~.class.sources := Code_source/Compiled/signal/lfnoise~.c $(rand)
-    rampnoise~.class.sources := Code_source/Compiled/signal/rampnoise~.c $(rand)
-    stepnoise~.class.sources := Code_source/Compiled/signal/stepnoise~.c $(rand)
-    dust~.class.sources := Code_source/Compiled/signal/dust~.c $(rand)
-    dust2~.class.sources := Code_source/Compiled/signal/dust2~.c $(rand)
+    rand.f~.class.sources := Code_source/Compiled/audio/rand.f~.c $(rand)
+    randpulse~.class.sources := Code_source/Compiled/audio/randpulse~.c $(rand)
+    randpulse2~.class.sources := Code_source/Compiled/audio/randpulse2~.c $(rand)
+    lfnoise~.class.sources := Code_source/Compiled/audio/lfnoise~.c $(rand)
+    rampnoise~.class.sources := Code_source/Compiled/audio/rampnoise~.c $(rand)
+    stepnoise~.class.sources := Code_source/Compiled/audio/stepnoise~.c $(rand)
+    dust~.class.sources := Code_source/Compiled/audio/dust~.c $(rand)
+    dust2~.class.sources := Code_source/Compiled/audio/dust2~.c $(rand)
     chance.class.sources := Code_source/Compiled/control/chance.c $(rand)
-    chance~.class.sources := Code_source/Compiled/signal/chance~.c $(rand)
-    tempo~.class.sources := Code_source/Compiled/signal/tempo~.c $(rand)
+    chance~.class.sources := Code_source/Compiled/audio/chance~.c $(rand)
+    tempo~.class.sources := Code_source/Compiled/audio/tempo~.c $(rand)
 
 midi := \
     Code_source/shared/mifi.c \
@@ -348,7 +348,7 @@ file := Code_source/shared/elsefile.c
     rec.class.sources := Code_source/Compiled/control/rec.c $(file)
 
 smagic := Code_source/shared/magic.c
-    oscope~.class.sources := Code_source/Compiled/signal/oscope~.c $(smagic)
+    oscope~.class.sources := Code_source/Compiled/audio/oscope~.c $(smagic)
     
 utf := Code_source/shared/s_utf8.c
 	note.class.sources := Code_source/Compiled/control/note.c $(utf)
@@ -362,8 +362,8 @@ endef
 # extra files
 
 extrafiles = \
-$(wildcard Code_source/Abstractions/abs_objects/control/*.pd) \
-$(wildcard Code_source/Abstractions/abs_objects/signal/*.pd) \
+$(wildcard Code_source/Abstractions/control/*.pd) \
+$(wildcard Code_source/Abstractions/audio/*.pd) \
 $(wildcard Code_source/Abstractions/extra_abs/*.pd) \
 $(wildcard Code_source/extra_source/*.tcl) \
 $(wildcard Documentation/Help-files/*.pd) \
@@ -390,35 +390,35 @@ include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 # E.g.: make install sfont-install objectsdir=/usr/lib/pd/extra
 
 sfont:
-	$(MAKE) -C Code_source/Compiled/signal/sfont~
+	$(MAKE) -C Code_source/Compiled/audio/sfont~
 
 sfont-install:
-	$(MAKE) -C Code_source/Compiled/signal/sfont~ install installpath="$(DESTDIR)$(PDLIBDIR)/else"
+	$(MAKE) -C Code_source/Compiled/audio/sfont~ install installpath="$(DESTDIR)$(PDLIBDIR)/else"
 
 sfont-clean:
-	$(MAKE) -C Code_source/Compiled/signal/sfont~ clean
+	$(MAKE) -C Code_source/Compiled/audio/sfont~ clean
 
 # Same for plaits
 
 plaits:
-	$(MAKE) -C Code_source/Compiled/signal/plaits~ $(plaitsflags)
+	$(MAKE) -C Code_source/Compiled/audio/plaits~ $(plaitsflags)
 
 plaits-install:
-	$(MAKE) -C Code_source/Compiled/signal/plaits~ install installpath="$(DESTDIR)$(PDLIBDIR)/else" $(plaitsflags)
+	$(MAKE) -C Code_source/Compiled/audio/plaits~ install installpath="$(DESTDIR)$(PDLIBDIR)/else" $(plaitsflags)
 
 plaits-clean:
-	$(MAKE) -C Code_source/Compiled/signal/plaits~ clean $(plaitsflags)
+	$(MAKE) -C Code_source/Compiled/audio/plaits~ clean $(plaitsflags)
     
 # Same for sfz    
 
 sfz:
-	$(MAKE) -C Code_source/Compiled/signal/sfz~ system=$(system) 
+	$(MAKE) -C Code_source/Compiled/audio/sfz~ system=$(system)
 
 sfz-install:
-	$(MAKE) -C Code_source/Compiled/signal/sfz~ install system=$(system) exten=$(extension) installpath="$(abspath $(PDLIBDIR))/else"
+	$(MAKE) -C Code_source/Compiled/audio/sfz~ install system=$(system) exten=$(extension) installpath="$(abspath $(PDLIBDIR))/else"
     
 sfz-clean:
-	$(MAKE) -C Code_source/Compiled/signal/sfz~ clean
+	$(MAKE) -C Code_source/Compiled/audio/sfz~ clean
 
 install: installplus
 
