@@ -78,7 +78,7 @@ extern const int16_t wav_integrated_waves[];
 #define SYX_BANK_2 2
 #define SYX_BANK_2_SIZE 4096
 #define LUT_SINE 0
-#define LUT_SINE_SIZE 1281
+#define LUT_SINE_SIZE 641
 #define LUT_FM_FREQUENCY_QUANTIZER 1
 #define LUT_FM_FREQUENCY_QUANTIZER_SIZE 130
 #define LUT_FOLD 2
@@ -106,7 +106,7 @@ extern const int16_t wav_integrated_waves[];
 #define LUT_LPC_EXCITATION_PULSE 0
 #define LUT_LPC_EXCITATION_PULSE_SIZE 640
 #define WAV_INTEGRATED_WAVES 0
-#define WAV_INTEGRATED_WAVES_SIZE 49920
+#define WAV_INTEGRATED_WAVES_SIZE 25344
 
 }  // namespace plaits
 

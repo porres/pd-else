@@ -50,7 +50,7 @@ void WaveTerrainEngine::Reset() {
   
 }
 
-inline float TerrainLookup(float x, float y, const int16_t* terrain) {
+inline float TerrainLookup(float x, float y, const int8_t* terrain) {
   const int terrain_size = 64;
   const float value_scale = 1.0f / 128.0f;
   const float coord_scale = float(terrain_size - 2) * 0.5f;
@@ -169,6 +169,10 @@ inline float WaveTerrainEngine::Terrain(float x, float y, int terrain_index) {
         return TerrainLookupWT(x, y, 2 - (terrain_index - 5));
       }
       break;
+    case 8:
+      {
+        return TerrainLookup(x, y, user_terrain_);
+      }
   }
   return 0.0f;
 }

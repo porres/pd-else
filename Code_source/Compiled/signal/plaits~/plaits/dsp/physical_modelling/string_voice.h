@@ -32,7 +32,7 @@
 #include "stmlib/dsp/filter.h"
 #include "stmlib/utils/buffer_allocator.h"
 
-#include "plaits/dsp/physical_modelling/pm_string.h"
+#include "plaits/dsp/physical_modelling/string.h"
 
 namespace plaits {
 

@@ -39,17 +39,17 @@ using namespace std;
 using namespace stmlib;
 
 void AdditiveEngine::Init(BufferAllocator* allocator) {
-  fill(
-      &amplitudes_[0],
-      &amplitudes_[kNumHarmonics],
-      0.0f);
+  amplitudes_ = allocator->Allocate<float>(kNumHarmonics);
   for (int i = 0; i < kNumHarmonicOscillators; ++i) {
     harmonic_oscillator_[i].Init();
   }
 }
 
 void AdditiveEngine::Reset() {
-
+  fill(
+      &amplitudes_[0],
+      &amplitudes_[kNumHarmonics],
+      0.0f);
 }
 
 void AdditiveEngine::UpdateAmplitudes(
@@ -82,7 +82,7 @@ void AdditiveEngine::UpdateAmplitudes(
     
     // Warning about the following line: this is not a proper LP filter because
     // of the normalization. But in spite of its strange working, this line
-    // turns out ot be absolutely essential.
+    // turns out to be absolutely essential.
     //
     // I have tried both normalizing the LP-ed spectrum, and LP-ing the
     // normalized spectrum, and both of them cause more annoyances than this

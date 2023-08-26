@@ -49,7 +49,7 @@ void SpeechEngine::Init(BufferAllocator* allocator) {
   temp_buffer_[1] = allocator->Allocate<float>(kMaxBlockSize);
   
   prosody_amount_ = 0.0f;
-  speed_ = 1.0f;
+  speed_ = 0.0f;
 }
 
 void SpeechEngine::Reset() {
@@ -116,8 +116,7 @@ void SpeechEngine::Render(
   } else {
     // Change phonemes/words for LPC.
     const int word_bank = word_bank_quantizer_.Process(
-        (group - 2.0f) * 0.275f,
-        LPC_SPEECH_SYNTH_NUM_WORD_BANKS + 1) - 1;
+        (group - 2.0f) * 0.275f) - 1;
     
     const bool replay_prosody = word_bank >= 0 && \
         !(parameters.trigger & TRIGGER_UNPATCHED);
