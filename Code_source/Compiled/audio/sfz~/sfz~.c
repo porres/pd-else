@@ -29,8 +29,10 @@ typedef struct _sfz{
     float           x_ratio;
     float           x_bratio;
     t_binbuf       *x_binbuf;
-    char           *x_buf;
+    char           *x_buf;             // sfz file as a string
     int             x_bufsize;
+    char           *x_path_buf;        // virtual path for sfz_set
+    int             x_path_bufsize;
     t_elsefile     *x_elsefilehandle;
 }t_sfz;
 
@@ -129,8 +131,47 @@ static void sfz_set(t_sfz *x, t_symbol *s, int ac, t_atom* av){
     free(x->x_buf);
     x->x_buf = new_buf;
 
-    if(!sfizz_load_string(x->x_synth, ".", x->x_buf))
+    if (!x->x_path_bufsize){
+        char* new_path_buf = (char*)malloc(1 + 1);
+        if (new_path_buf == NULL) {
+            post("Unable to allocate memory for virtual sfz path");
+            return;
+        }
+        strncpy(new_path_buf, ".", 2);
+        x->x_path_buf = new_path_buf;
+        x->x_path_bufsize = 2;
+    }
+
+    if(!sfizz_load_string(x->x_synth, x->x_path_buf, x->x_buf))
         post("[sfz~] could not set sfz string");
+}
+
+static void sfz_set_path(t_sfz *x, t_symbol *s, int ac, t_atom* av){
+    (void)s;
+    binbuf_clear(x->x_binbuf);
+    binbuf_restore(x->x_binbuf, ac, av);
+    binbuf_gettext(x->x_binbuf, &x->x_path_buf, &x->x_path_bufsize);
+
+    // Allocate memory to null-terminated the binbuf string
+    char* new_path_buf = (char*)malloc(x->x_path_bufsize + 1);
+    if (new_path_buf == NULL) {
+        post("Unable to allocate memory for virtual sfz path");
+        return;
+    }
+    strncpy(new_path_buf, x->x_path_buf, x->x_path_bufsize);
+    new_path_buf[x->x_path_bufsize] = '\0';
+    free(x->x_path_buf);
+    x->x_path_buf = new_path_buf;
+
+    post("[sfz~] setting new path for string load mode: %s", x->x_path_buf);
+
+    if (x->x_bufsize){
+        if(!sfizz_load_string(x->x_synth, x->x_path_buf, x->x_buf)){
+            post("[sfz~] could not set sfz string");
+        } else {
+            post("[sfz~] reload sfz with new path");
+        }
+    }
 }
 
 static void sfz_midiin(t_sfz* x, t_float f){
@@ -272,6 +313,8 @@ static void* sfz_new(t_symbol *s, int ac, t_atom *av){
     t_sfz* x = (t_sfz*)pd_new(sfz_class);
     x->x_elsefilehandle = elsefile_new((t_pd *)x, sfz_readhook, 0);
     x->x_binbuf = binbuf_new();
+    x->x_bufsize = 0;
+    x->x_path_bufsize = 0;
     x->x_canvas = canvas_getcurrent();
     outlet_new(&x->x_obj, &s_signal);
     outlet_new(&x->x_obj, &s_signal);
@@ -301,7 +344,11 @@ void sfz_tilde_setup(){
     class_addmethod(sfz_class, (t_method)sfz_panic, gensym("panic"), 0);
     class_addmethod(sfz_class, (t_method)sfz_flush, gensym("flush"), 0);
     class_addmethod(sfz_class, (t_method)sfz_open, gensym("open"), A_DEFSYM, 0);
+
+    // "set" and "path" work together. Without "path" the virtual dir is set to "."
     class_addmethod(sfz_class, (t_method)sfz_set, gensym("set"), A_GIMME, 0);
+    class_addmethod(sfz_class, (t_method)sfz_set_path, gensym("path"), A_GIMME, 0);
+
     class_addmethod(sfz_class, (t_method)sfz_scala, gensym("scala"), A_DEFSYM, 0);
     class_addmethod(sfz_class, (t_method)sfz_a4, gensym("a4"), A_FLOAT, 0);
 //    class_addmethod(sfz_class, (t_method)sfz_tuningstretch, gensym("tuningstretch"), A_FLOAT, 0);
