@@ -30,6 +30,7 @@ common.sources = stmlib/dsp/units.cc \
                  plaits/dsp/physical_modelling/modal_voice.cc \
                  plaits/dsp/physical_modelling/resonator.cc \
                  plaits/dsp/physical_modelling/pm_string.cc \
+                 plaits/dsp/physical_modelling/string.cc \
                  plaits/dsp/physical_modelling/string_voice.cc \
 				 plaits/dsp/engine2/chiptune_engine.cc \
 				 plaits/dsp/engine2/phase_distortion_engine.cc \
