@@ -1,5 +1,5 @@
-#N canvas 450 53 562 587 12;
-#X listbox 225 349 9 0 0 0 - - - 0;
+#N canvas 585 58 562 587 12;
+#X listbox 225 348 9 0 0 0 - - - 0;
 #X obj 225 378 print keymap;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -35,8 +35,7 @@
 #X connect 5 0 1 1;
 #X connect 8 0 1 0;
 #X restore 457 373 pd example;
-#X obj 225 320 else/keymap;
-#X floatatom 299 347 5 0 0 0 - - - 0;
+#X floatatom 313 348 5 0 0 0 - - - 0;
 #X text 34 89 [keymap] maps your computer keyboard to MIDI pitches and generates note on/off messages when keys get pressed and released. It works for any keyboard layout. It does not work when in edit mode and autorepeated keys get filtered., f 71;
 #X obj 225 218 tgl 19 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X text 247 217 on/off (on by default);
@@ -44,7 +43,7 @@
 #X obj 254 250 tgl 19 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X text 279 243 always on (default \, only if parent is active), f 24;
 #X text 53 225 octave up/down (you can also use up/down arrow keys), f 14;
-#X text 342 348 transposition;
+#X text 356 348 transposition;
 #X text 34 153 The map has 2 rows \, a lower one from the letter 'z' (in qwerty) that corresponds by default to C3 ('s' being C#3). The other row starts from 'q' and is an octave higher (C4 by default \, and the number '2' is C#4)., f 71;
 #X obj 3 548 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
 #X obj 3 511 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -53,7 +52,6 @@
 #X obj 106 457 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 106 421 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 106 481 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
-#X text 164 521 NONE;
 #X text 149 420 float -;
 #X text 207 420 non zero turns it on \, zero turns it off;
 #X msg 163 269 oct \$1;
@@ -63,12 +61,14 @@
 #X text 207 457 note on/off message;
 #X text 149 482 float -;
 #X text 208 482 transposition value;
+#X text 172 521 1 float - number of octaves up or down;
+#X obj 225 320 else/keymap 1;
 #X connect 0 0 1 0;
-#X connect 14 0 0 0;
-#X connect 14 1 15 0;
-#X connect 17 0 14 0;
-#X connect 19 0 14 0;
-#X connect 20 0 19 0;
-#X connect 35 0 14 0;
-#X connect 36 0 35 0;
-#X connect 37 0 35 0;
+#X connect 16 0 41 0;
+#X connect 18 0 41 0;
+#X connect 19 0 18 0;
+#X connect 33 0 41 0;
+#X connect 34 0 33 0;
+#X connect 35 0 33 0;
+#X connect 41 0 0 0;
+#X connect 41 1 14 0;
