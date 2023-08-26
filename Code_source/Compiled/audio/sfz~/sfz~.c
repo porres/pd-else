@@ -62,7 +62,7 @@ static void sfz_do_open(t_sfz *x, t_symbol *name){
     }
     sys_close(fd);
     x->x_filename_bufsize = strlen(filename);
-    x->x_filename_buf = filename;
+    x->x_filename_buf = (char *)filename;
     x->x_bufsize = 0;
     free(x->x_buf);
     chdir(realdir);
@@ -124,14 +124,12 @@ static void sfz_open(t_sfz *x, t_symbol *s){
 
 static void sfz_set(t_sfz *x, t_symbol *s, int ac, t_atom* av){
     (void)s;
-
     binbuf_clear(x->x_binbuf);
     binbuf_restore(x->x_binbuf, ac, av);
     binbuf_gettext(x->x_binbuf, &x->x_buf, &x->x_bufsize);
-
     // Allocate memory to null-terminated the binbuf string
     char* new_buf = (char*)malloc(x->x_bufsize + 1);
-    if (new_buf == NULL) {
+    if(new_buf == NULL){
         post("[sfz~] unable to allocate memory to load SFZ string");
         return;
     }
@@ -139,10 +137,9 @@ static void sfz_set(t_sfz *x, t_symbol *s, int ac, t_atom* av){
     new_buf[x->x_bufsize] = '\0';
     free(x->x_buf);
     x->x_buf = new_buf;
-
-    if (!x->x_path_bufsize){
+    if(!x->x_path_bufsize){
         char* new_path_buf = (char*)malloc(2);
-        if (new_path_buf == NULL) {
+        if(new_path_buf == NULL){
             post("[sfz~] unable to allocate memory for virtual SFZ path");
             return;
         }
@@ -150,7 +147,6 @@ static void sfz_set(t_sfz *x, t_symbol *s, int ac, t_atom* av){
         x->x_path_buf = new_path_buf;
         x->x_path_bufsize = 2;
     }
-
     if(!sfizz_load_string(x->x_synth, x->x_path_buf, x->x_buf))
         post("[sfz~] could not set SFZ string");
 }
@@ -160,15 +156,13 @@ static void sfz_path(t_sfz *x, t_symbol *s, int ac, t_atom* av){
     binbuf_clear(x->x_binbuf);
     binbuf_restore(x->x_binbuf, ac, av);
     binbuf_gettext(x->x_binbuf, &x->x_path_buf, &x->x_path_bufsize);
-
-    if (x->x_path_bufsize == 0) {
+    if(x->x_path_bufsize == 0){
         post("[sfz~] path is blank");
         return;
     }
-
     // Allocate memory to null-terminate the binbuf string
     char* new_path_buf = (char *)malloc(x->x_path_bufsize + 1);
-    if (new_path_buf == NULL){
+    if(new_path_buf == NULL){
         post("[sfz~] unable to allocate memory for virtual SFZ path");
         return;
     }
@@ -179,15 +173,14 @@ static void sfz_path(t_sfz *x, t_symbol *s, int ac, t_atom* av){
     free(x->x_path_buf);
     x->x_path_bufsize = strlen(new_path_buf);
     x->x_path_buf = new_path_buf;
-
     // Replace ~ with absolute home path
-    if (x->x_path_buf[0] == '~'){
+    if(x->x_path_buf[0] == '~'){
         memmove(x->x_path_buf, x->x_path_buf + 1, x->x_path_bufsize);
 
         size_t homeDirLength = strlen(x->x_home->s_name);
         x->x_path_bufsize = homeDirLength + x->x_path_bufsize;
         char* path_with_home = (char*)malloc(x->x_path_bufsize);
-        if (path_with_home == NULL) {
+        if(path_with_home == NULL){
             post("[sfz~] unable to allocate memory for virtual SFZ relative path");
             return;
         }
@@ -196,13 +189,11 @@ static void sfz_path(t_sfz *x, t_symbol *s, int ac, t_atom* av){
         free(x->x_path_buf);
         x->x_path_buf = path_with_home;
     }
-
-    if (x->x_bufsize == 0){
+    if(x->x_bufsize == 0){
         post("[sfz~] no SFZ string set");
         return;
     }
-
-    if (!sfizz_load_string(x->x_synth, x->x_path_buf, x->x_buf))
+    if(!sfizz_load_string(x->x_synth, x->x_path_buf, x->x_buf))
         post("[sfz~] sfizz error: could not set SFZ string");
 }
 
@@ -318,13 +309,12 @@ static void sfz_version(t_sfz *x){
 
 static void sfz_get(t_sfz *x){
     (void)x;
-    if (x->x_bufsize)
+    if(x->x_bufsize)
         post("[sfz~] running sfz string");
     else if (x->x_filename_bufsize)
         post("[sfz~] sfz file: %s", x->x_filename_buf);
     else
         post("[sfz~] no file loaded");
-    
 }
 
 static t_int* sfz_perform(t_int* w){
@@ -363,9 +353,8 @@ static void* sfz_new(t_symbol *s, int ac, t_atom *av){
     x->x_bufsize = 0;
     x->x_path_bufsize = 0;
     x->x_canvas = canvas_getcurrent();
+
     x->x_home = gensym(getenv("HOME"));
-    outlet_new(&x->x_obj, &s_signal);
-    outlet_new(&x->x_obj, &s_signal);
     x->x_synth = sfizz_create_synth();
     sfizz_set_sample_rate(x->x_synth , sys_getsr());
     sfizz_set_samples_per_block(x->x_synth , sys_getblksize());
@@ -373,9 +362,13 @@ static void* sfz_new(t_symbol *s, int ac, t_atom *av){
     x->x_base = 0;
     x->x_ratio = x->x_bratio = 1.;
     x->x_filename_bufsize = 0;
-    if(ac == 1 && av[0].a_type == A_SYMBOL) {
+    if(ac == 1 && av[0].a_type == A_SYMBOL)
         sfz_open(x, av[0].a_w.w_symbol);
-    }
+    t_atom at[1];
+    SETSYMBOL(at, canvas_getdir(x->x_canvas));
+    sfz_path(x, NULL, 1, at);
+    outlet_new(&x->x_obj, &s_signal);
+    outlet_new(&x->x_obj, &s_signal);
     return(x);
 }
 
