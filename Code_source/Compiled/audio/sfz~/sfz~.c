@@ -22,6 +22,7 @@ static t_class* sfz_class;
 typedef struct _sfz{
     t_object        x_obj;
     sfizz_synth_t  *x_synth;
+    char           *x_home;
     t_canvas       *x_canvas;
     int             x_midinum;
     float           x_a4;
@@ -29,10 +30,10 @@ typedef struct _sfz{
     float           x_ratio;
     float           x_bratio;
     t_binbuf       *x_binbuf;
-    char           *x_buf;             // sfz file as a string
+    char           *x_buf;               // sfz file as a string
     int             x_bufsize;
-    t_symbol       *x_path;            // virtual path for sfz_set
-    t_symbol       *x_dir;             // patch's path
+    char           *x_custom_path;       // custom path for sfz_set
+    char           *x_patch_path;        // patch path 
     char           *x_filename_buf;
     int             x_filename_bufsize;
     t_elsefile     *x_elsefilehandle;
@@ -126,7 +127,7 @@ static void sfz_set(t_sfz *x, t_symbol *s, int ac, t_atom* av){
     binbuf_clear(x->x_binbuf);
     binbuf_restore(x->x_binbuf, ac, av);
     binbuf_gettext(x->x_binbuf, &x->x_buf, &x->x_bufsize);
-    // Allocate memory to null-terminated the binbuf string
+    // Allocate memory to null-terminate the binbuf string
     char* new_buf = (char*)malloc(x->x_bufsize + 1);
     if(new_buf == NULL){
         post("[sfz~] unable to allocate memory to load SFZ string");
@@ -136,25 +137,63 @@ static void sfz_set(t_sfz *x, t_symbol *s, int ac, t_atom* av){
     new_buf[x->x_bufsize] = '\0';
     free(x->x_buf);
     x->x_buf = new_buf;
-    if(!sfizz_load_string(x->x_synth, x->x_path->s_name, x->x_buf))
-        post("[sfz~] could not set SFZ string");
+    if (x->x_custom_path){
+        post("[sfz~] setting SFZ string with custom path");
+        if(!sfizz_load_string(x->x_synth, x->x_custom_path, x->x_buf))
+            post("[sfz~] could not set SFZ string");
+    }else{
+        post("[sfz~] setting SFZ string with patch path");
+        if(!sfizz_load_string(x->x_synth, x->x_patch_path, x->x_buf))
+            post("[sfz~] could not set SFZ string");
+    }
 }
 
 static void sfz_path(t_sfz *x, t_symbol *path){
-/*    if(!path || path == &s_){
-        post("sfz_path no symbol");
-        x->x_path = x->x_dir;
-        post("sfz_path = %s", x->x_path->s_name);
+    // reload sfz string to patch path if it's empty
+    if(strlen(path->s_name) == 0){
+        if(x->x_bufsize > 0){
+            post("[sfz~] setting path to patch: %s", x->x_patch_path);
+            if(!sfizz_load_string(x->x_synth, x->x_patch_path, x->x_buf)){
+                post("[sfz~] could not set SFZ string");
+            }
+        }else{
+            free(x->x_custom_path);
+            x->x_custom_path = x->x_patch_path;
+        }
+        return;
     }
-    
-    char *path_buf = NULL;
-    path_buf = strcat((char *)(path->s_name), "/");
-    post("sfz_path path_buf = %s", path_buf);
-    
-    if(path_buf[strlen(path_buf) - 1] != '/')
-        path_buf = strcat((char *)path_buf, "/");
-    x->x_path = gensym(path_buf);
-    post("sfz_path final path = %s", x->x_path->s_name);*/
+    // add a trailing slash if the returned patch dir doesn't have one
+    char *custom_path_buf;
+    if(path->s_name[strlen(path->s_name)] != '/'){
+        custom_path_buf = (char*)malloc(strlen(path->s_name) + 2);
+        strcpy(custom_path_buf, path->s_name);
+        strcat(custom_path_buf, "/");
+    }else{
+        custom_path_buf = (char*)malloc(strlen(path->s_name) + 1);
+        strcpy(custom_path_buf, path->s_name);
+    }
+
+    // prepend user home dir if the path starts with ~
+    if (custom_path_buf[0] == '~'){
+        memmove(custom_path_buf, custom_path_buf + 2, strlen(custom_path_buf));
+        size_t pathLength = strlen(x->x_home) + strlen(custom_path_buf) + 1;
+        char *custom_path_with_home = (char*)malloc(pathLength);
+        sprintf(custom_path_with_home, "%s%s", x->x_home, custom_path_buf);
+        free(x->x_custom_path);
+        x->x_custom_path = custom_path_with_home;
+        free(custom_path_buf);
+    }else{
+        free(x->x_custom_path);
+        x->x_custom_path = custom_path_buf;
+    }
+
+    // we allow the custom path to be updated, but don't reload a the SFZ script that is empty
+    if (x->x_bufsize == 0)
+        return;
+
+    post("[sfz~] setting custom path to: %s", x->x_custom_path);
+    if(!sfizz_load_string(x->x_synth, x->x_custom_path, x->x_buf))
+        post("[sfz~] could not set SFZ string");
 }
 
 static void sfz_midiin(t_sfz* x, t_float f){
@@ -270,11 +309,11 @@ static void sfz_version(t_sfz *x){
 static void sfz_info(t_sfz *x){
     (void)x;
     if(x->x_bufsize)
-        post("[sfz~] running sfz string");
+        post("[sfz~] SFZ string loaded");
     else if(x->x_filename_bufsize)
-        post("[sfz~] sfz file: %s", x->x_filename_buf);
+        post("[sfz~] SFZ file loaded: %s", x->x_filename_buf);
     else
-        post("[sfz~] no file loaded");
+        post("[sfz~] nothing loaded");
 }
 
 static t_int* sfz_perform(t_int* w){
@@ -311,13 +350,23 @@ static void* sfz_new(t_symbol *s, int ac, t_atom *av){
     x->x_bufsize = 0;
 
     x->x_canvas = canvas_getcurrent();
-    t_symbol *dir = canvas_getdir(x->x_canvas);
-    char *path_buf = (char *)dir->s_name;
-    path_buf = strcat(path_buf, "/");
-    post("init path_buf = %s", path_buf);
-    x->x_dir = x->x_path = gensym(path_buf);
-    post("init x->x_path = %s", x->x_path->s_name);
+    char* home_dir = gensym(getenv("HOME"))->s_name;
 
+    // add a trailing slash if the returned home dir doesn't have one
+    if (home_dir[strlen(home_dir)] != '/'){
+        x->x_home = (char*)malloc(strlen(home_dir) + 2);
+        strcpy(x->x_home, home_dir);
+        strcat(x->x_home, "/");
+    }
+
+    char* canvas_dir = canvas_getdir(x->x_canvas)->s_name;
+
+    // add a trailing slash if the returned patch dir doesn't have one
+    if (canvas_dir[strlen(canvas_dir)] != '/'){
+        x->x_patch_path = (char*)malloc(strlen(canvas_dir) + 2);
+        strcpy(x->x_patch_path, canvas_dir);
+        strcat(x->x_patch_path, "/");
+    }
     x->x_synth = sfizz_create_synth();
     sfizz_set_sample_rate(x->x_synth , sys_getsr());
     sfizz_set_samples_per_block(x->x_synth , sys_getblksize());
