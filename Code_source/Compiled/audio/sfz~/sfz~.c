@@ -137,6 +137,7 @@ static void sfz_set(t_sfz *x, t_symbol *s, int ac, t_atom* av){
     new_buf[x->x_bufsize] = '\0';
     free(x->x_buf);
     x->x_buf = new_buf;
+    /*
     if(!x->x_path_bufsize){
         char* new_path_buf = (char*)malloc(2);
         if(new_path_buf == NULL){
@@ -147,6 +148,7 @@ static void sfz_set(t_sfz *x, t_symbol *s, int ac, t_atom* av){
         x->x_path_buf = new_path_buf;
         x->x_path_bufsize = 2;
     }
+    */
     if(!sfizz_load_string(x->x_synth, x->x_path_buf, x->x_buf))
         post("[sfz~] could not set SFZ string");
 }
@@ -351,8 +353,16 @@ static void* sfz_new(t_symbol *s, int ac, t_atom *av){
     x->x_elsefilehandle = elsefile_new((t_pd *)x, sfz_readhook, 0);
     x->x_binbuf = binbuf_new();
     x->x_bufsize = 0;
-    x->x_path_bufsize = 0;
+
     x->x_canvas = canvas_getcurrent();
+    x->x_path_buf = canvas_getdir(x->x_canvas)->s_name;
+    int len = strlen(x->x_path_buf);
+    if (len > 0 && x->x_path_buf[len - 1] != '/') {
+        x->x_path_buf = strcat(x->x_path_buf, "/");
+    }
+    x->x_path_bufsize = strlen(x->x_path_buf);
+
+    post("[sfz~] DEBUG: canavs dir is: %s, chars: %d", x->x_path_buf, x->x_path_bufsize);
 
     x->x_home = gensym(getenv("HOME"));
     x->x_synth = sfizz_create_synth();
