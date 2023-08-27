@@ -53,13 +53,20 @@
 #include "plaits/dsp/engine/waveshaping_engine.h"
 #include "plaits/dsp/engine/wavetable_engine.h"
 
+#include "plaits/dsp/engine2/chiptune_engine.h"
+#include "plaits/dsp/engine2/phase_distortion_engine.h"
+#include "plaits/dsp/engine2/six_op_engine.h"
+#include "plaits/dsp/engine2/string_machine_engine.h"
+#include "plaits/dsp/engine2/virtual_analog_vcf_engine.h"
+#include "plaits/dsp/engine2/wave_terrain_engine.h"
+
 #include "plaits/dsp/envelope.h"
 
 #include "plaits/dsp/fx/low_pass_gate.h"
 
 namespace plaits {
     
-    const int kMaxEngines = 16;
+    const int kMaxEngines = 24;
     const int kMaxTriggerDelay = 8;
     const int kTriggerDelay = 5;
     
@@ -146,6 +153,9 @@ namespace plaits {
         bool level_patched;
     };
     
+// char (*__foo)[sizeof(HiHatEngine)] = 1;
+
+
     class Voice {
     public:
         Voice() {}
@@ -206,8 +216,15 @@ namespace plaits {
         VirtualAnalogEngine* virtual_analog_engine_;
         WaveshapingEngine* waveshaping_engine_;
         WavetableEngine* wavetable_engine_;
-        
-        stmlib::HysteresisQuantizer engine_quantizer_;
+
+        VirtualAnalogVCFEngine* virtual_analog_vcf_engine_;
+        PhaseDistortionEngine* phase_distortion_engine_;
+        SixOpEngine* six_op_engine_;
+        WaveTerrainEngine* wave_terrain_engine_;
+        StringMachineEngine* string_machine_engine_;
+        ChiptuneEngine* chiptune_engine_;
+
+        stmlib::HysteresisQuantizer2 engine_quantizer_;
         
         int previous_engine_index_;
         float engine_cv_;

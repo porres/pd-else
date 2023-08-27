@@ -72,7 +72,7 @@ static inline float fast_rsqrt_accurate(float fp0) {
   fp1 = _1p5 * fp0 - fp0;
   fp3 = fp2 * fp2;
   if (fp0 < _min) {
-    return fp0 > 0 ? fp2 : 1000.0;
+    return fp0 > 0 ? fp2 : 1000.0f;
   }
   fp3 = _1p5 - fp1 * fp3;
   fp2 = fp2 * fp3;

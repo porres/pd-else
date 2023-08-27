@@ -50,7 +50,7 @@ class Limiter {
   void Process(float pre_gain, float* in_out, size_t size) {
     while (size--) {
       float s = *in_out * pre_gain;
-      SLOPE(peak_, fabs(s), 0.05f, 0.00002f);
+      SLOPE(peak_, fabsf(s), 0.05f, 0.00002f);
       float gain = (peak_ <= 1.0f ? 1.0f : 1.0f / peak_);
       *in_out++ = s * gain * 0.8f;
     }

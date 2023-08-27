@@ -26,7 +26,7 @@
 //
 // Comb filter / KS string. "Lite" version of the implementation used in Rings.
 
-#include "plaits/dsp/physical_modelling/pm_string.h"
+#include "plaits/dsp/physical_modelling/string.h"
 
 #include <cmath>
 

@@ -35,7 +35,7 @@ jobs:
     - name: build FluidSynth
       run: | 
         mkdir ./else-Linux 
-        cd Code_source/Compiled/signal/sfont~
+        cd Code_source/Compiled/audio/sfont~
         URL=$(curl -L -s https://api.github.com/repos/FluidSynth/fluidsynth/releases/latest | grep zipball_url | cut -d '"' -f 4)
         curl -L -o fluidsynth.zip $URL
         unzip fluidsynth.zip
@@ -59,12 +59,12 @@ jobs:
 
     # - name: Build sfont~
     #   run: |
-    #     cd ./Code_source/Compiled/signal/sfont~
+    #     cd ./Code_source/Compiled/audio/sfont~
     #     make PDLIBDIR=${{github.workspace}}/else-Linux/ extension=l_amd64 localdep_linux 
 
     - name: Build pd-sfz~
       run: | 
-        cd ./Code_source/Compiled/signal/sfz~
+        cd ./Code_source/Compiled/audio/sfz~
         make PDINCLUDEDIR=./pure-data/src/ 
         cd ./sfizz/build/pd/sfizz/
         ls 
@@ -72,7 +72,7 @@ jobs:
 
     - name: Build plaits~
       run: |
-        cd ./Code_source/Compiled/signal/plaits~
+        cd ./Code_source/Compiled/audio/plaits~
         make PDINCLUDEDIR=${{github.workspace}}/pure-data/src extension=l_amd64
  
     - name: Build pd-else
@@ -83,14 +83,13 @@ jobs:
       run: | 
         cp *.l_amd64 ./else-Linux
         cp ./Documentation/Help-files/* ./else-Linux
-        cp -r ./Code_source/Abstractions/abs_objects/control/* ./else-Linux
-        cp -r ./Code_source/Abstractions/abs_objects/signal/* ./else-Linux
+        cp -r ./Code_source/Abstractions/control/* ./else-Linux
+        cp -r ./Code_source/Abstractions/audio/* ./else-Linux
         cp -r ./Code_source/Abstractions/extra_abs/* ./else-Linux
-        cp -r ./Code_source/Abstractions/libpd/* ./else-Linux
         cp -r ./Documentation/Live-Electronics-Tutorial ./else-Linux
-        cp -r ./Code_source/Compiled/signal/plaits~/*.l_amd64 ./else-Linux
-        cp -r ./Code_source/extra_source/*.tcl ./else-Linux
-        cp -r ./Code_source/Compiled/signal/sfz~/sfizz/build/pd/sfizz/sfizz.pd_linux ./else-Linux
+        cp -r ./Code_source/Compiled/audio/plaits~/*.l_amd64 ./else-Linux
+        cp -r ./Code_source/Compiled/extra_source/*.tcl ./else-Linux
+        cp -r ./Code_source/Compiled/audio/sfz~/sfizz/build/pd/sfizz/sfizz.pd_linux ./else-Linux
         mv ./else-Linux/sfizz.pd_linux ./else-Linux/sfz~.l_amd64
         cp -r ./Documentation/extra_files/* ./else-Linux
         cp ./Documentation/README.pdf ./else-Linux
@@ -151,7 +150,7 @@ jobs:
        name: Build sfont~
        shell: msys2 {0}
        run: |  
-         cd Code_source/Compiled/signal/sfont~/
+         cd Code_source/Compiled/audio/sfont~/
          make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 localdep_windows
          cd ../../../../
 #         make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 install
@@ -161,7 +160,7 @@ jobs:
        name: Build plaits~
        shell: msys2 {0}
        run: | 
-         cd Code_source/Compiled/signal/plaits~
+         cd Code_source/Compiled/audio/plaits~
          make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 install
          cd ../../../../
 
@@ -178,8 +177,8 @@ jobs:
        run: |
          mkdir ./else-Windows
          cp -r ./out/else/*.* ./else-Windows
-         cp -r ./Code_source/Compiled/signal/sfont~/out/sfont~/*.* ./else-Windows
-         cp -r ./Code_source/Compiled/signal/plaits~/out/plaits~/*.* ./else-Windows
+         cp -r ./Code_source/Compiled/audio/sfont~/out/sfont~/*.* ./else-Windows
+         cp -r ./Code_source/Compiled/audio/plaits~/out/plaits~/*.* ./else-Windows
 
         
      - name: Upload Zip
@@ -212,12 +211,12 @@ jobs:
     #     ./scripts/localdeps.macos.sh sfont~.d_amd64
     - name: Build pd-sfz~
       run: |
-        cd ./Code_source/Compiled/signal/sfz~
+        cd ./Code_source/Compiled/audio/sfz~
         make extension=d_amd64
 
     - name: Build plaits~
       run: |
-        cd ./Code_source/Compiled/signal/plaits~
+        cd ./Code_source/Compiled/audio/plaits~
         make extension=d_amd64
 
     - name: Build pd-else
@@ -228,11 +227,11 @@ jobs:
       run: |
         mkdir else-MacOS
         cp *.d_amd64 ./else-MacOS
-        cp ./Code_source/Compiled/signal/plaits~/*.d_amd64 ./else-MacOS
-        cp -r ./Code_source/Compiled/signal/sfz~/sfizz/build/pd/sfizz/*.pd_darwin ./else-MacOS
+        cp ./Code_source/Compiled/audio/plaits~/*.d_amd64 ./else-MacOS
+        cp -r ./Code_source/Compiled/audio/sfz~/sfizz/build/pd/sfizz/*.pd_darwin ./else-MacOS
         mv ./else-MacOS/sfizz.pd_darwin ./else-MacOS/sfz~.d_amd64
-        cp -r ./Code_source/Compiled/signal/sfont~/sfont-compiled/* ./else-MacOS
-        cp -r ./Code_source/Compiled/signal/sfont~/sf ./else-MacOS
+        cp -r ./Code_source/Compiled/audio/sfont~/sfont-compiled/* ./else-MacOS
+        cp -r ./Code_source/Compiled/audio/sfont~/sf ./else-MacOS
         
     - name: Upload Zip
       uses: actions/upload-artifact@v3
@@ -264,12 +263,12 @@ jobs:
 #        ./scripts/localdeps.macos.sh sfont~.d_arm64
     - name: Build pd-sfz~
       run: |
-        cd ./Code_source/Compiled/signal/sfz~
+        cd ./Code_source/Compiled/audio/sfz~
         make extension=d_arm64
 
     - name: Build plaits~
       run: |
-        cd ./Code_source/Compiled/signal/plaits~
+        cd ./Code_source/Compiled/audio/plaits~
         make extension=d_arm64 
 
 
@@ -281,10 +280,10 @@ jobs:
       run: |
         mkdir else-MacOS
         cp *.d_arm64 ./else-MacOS
-        cp ./Code_source/Compiled/signal/plaits~/*.d_arm64 ./else-MacOS
-        cp -r ./Code_source/Compiled/signal/sfz~/sfizz/build/pd/sfizz/*.pd_darwin ./else-MacOS
+        cp ./Code_source/Compiled/audio/plaits~/*.d_arm64 ./else-MacOS
+        cp -r ./Code_source/Compiled/audio/sfz~/sfizz/build/pd/sfizz/*.pd_darwin ./else-MacOS
         mv ./else-MacOS/sfizz.pd_darwin ./else-MacOS/sfz~.d_arm64
-        cp -r ./Code_source/Compiled/signal/sfont~/sfont-compiled/* ./else-MacOS
+        cp -r ./Code_source/Compiled/audio/sfont~/sfont-compiled/* ./else-MacOS
         
     - name: Upload Zip
       uses: actions/upload-artifact@v3

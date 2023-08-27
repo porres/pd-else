@@ -88,8 +88,8 @@ template<>
 struct Math<double> {
   inline double pi() const { return 3.141592653589793; }
   inline float sqrt_2_div_2() const { return 0.7071067811865476; }
-  inline double cos(double x) { return cos(x); }
-  inline double sin(double x) { return sin(x); }
+  inline double cos(double x) { return std::cos(x); }
+  inline double sin(double x) { return std::sin(x); }
 };
 
 
