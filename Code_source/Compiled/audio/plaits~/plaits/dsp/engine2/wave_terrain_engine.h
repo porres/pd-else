@@ -48,9 +48,9 @@ class WaveTerrainEngine final : public Engine {
   
   virtual void Init(stmlib::BufferAllocator* allocator);
   virtual void Reset();
-  //virtual void LoadUserData(const uint8_t* user_data) {
+  virtual void LoadUserData(const uint8_t* user_data) {
   //  user_terrain_ = (const int8_t*)(user_data);
-  //}
+  }
   virtual void Render(const EngineParameters& parameters,
       float* out,
       float* aux,

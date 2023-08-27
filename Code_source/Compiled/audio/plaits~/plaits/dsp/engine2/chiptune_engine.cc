@@ -109,7 +109,7 @@ void ChiptuneEngine::Render(
   bass_.Render(f0 * 0.5f * root_transposition, aux, size);
   
   // Apply envelope if necessary.
-  if (envelope_shape_ != NO_ENVELOPE) {
+  if (envelope_shape_ != static_cast<float>(NO_ENVELOPE)) {
     const float shape = fabsf(envelope_shape_);
     const float decay = 1.0f - \
         2.0f / kSampleRate * SemitonesToRatio(60.0f * shape) * shape;

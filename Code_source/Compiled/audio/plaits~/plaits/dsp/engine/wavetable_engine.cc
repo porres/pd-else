@@ -70,7 +70,6 @@ void WavetableEngine::Reset() {
   
 }
 
-/*
 void WavetableEngine::LoadUserData(const uint8_t* user_data) {
   for (int bank = 0; bank < kNumBanks; ++bank) {
     for (int wave = 0; wave < kNumWavesPerBank; ++wave) {
@@ -90,7 +89,6 @@ void WavetableEngine::LoadUserData(const uint8_t* user_data) {
     }
   }
 }
-*/
 
 inline float Clamp(float x, float amount) {
   x = x - 0.5f;
