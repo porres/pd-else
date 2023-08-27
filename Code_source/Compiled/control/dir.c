@@ -4,6 +4,7 @@
 #include "g_canvas.h"
 #include "m_imp.h"
 #include <string.h>
+#include <stdlib.h>
 #include <math.h>
 
 #ifdef _MSC_VER
@@ -33,6 +34,7 @@ typedef struct dir{
     t_int       x_n;
     t_int       x_seek;
     t_sortdata  x_inbuf;
+    t_symbol   *x_home;
     t_outlet   *x_out1;
     t_outlet   *x_out2;
     t_outlet   *x_out3;
@@ -156,6 +158,24 @@ static void dir_loadir(t_dir *x, t_symbol *dirname, int init){
 }
 
 static void dir_open(t_dir *x, t_symbol *dirname){
+    
+    char *path_buf = (char *)(dirname->s_name);
+    if(path_buf[0] == '~'){
+        int path_bufsize = strlen(path_buf);
+        memmove(path_buf, path_buf + 1, path_bufsize);
+        path_bufsize += (strlen(x->x_home->s_name));
+        char* path_with_home = (char*)malloc(path_bufsize);
+//        post("path_with_home = %s", path_with_home);
+        if(path_with_home == NULL){
+            post("[sfz~] unable to allocate memory for virtual SFZ relative path");
+            return;
+        }
+        strcpy(path_with_home, x->x_home->s_name);
+        strcat(path_with_home, path_buf);
+        free(path_buf);
+        dirname = gensym(path_with_home);
+    }
+    post("dirname = %s", dirname->s_name);
     dir_loadir(x, dirname, 0);
 }
 
