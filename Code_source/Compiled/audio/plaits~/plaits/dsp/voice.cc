@@ -171,6 +171,10 @@ namespace plaits {
         Engine* e = engines_.get(engine_index);
         
         if (engine_index != previous_engine_index_) {
+            if (engine_index >= 18 && engine_index <= 20) {
+                const uint8_t* data = fm_patches_table[engine_index - 18];
+                e->LoadUserData(data);
+                }
             e->Reset();
             out_post_processor_.Reset();
             previous_engine_index_ = engine_index;
@@ -183,7 +187,8 @@ namespace plaits {
         const PostProcessingSettings& pp_s = e->post_processing_settings;
         
         if (modulations.trigger_patched) {
-            p.trigger = rising_edge ? TRIGGER_RISING_EDGE : TRIGGER_LOW;
+            p.trigger = (rising_edge ? TRIGGER_RISING_EDGE : TRIGGER_LOW) | \
+                        (trigger_state_ ? TRIGGER_HIGH : TRIGGER_LOW);
         } else {
             p.trigger = TRIGGER_UNPATCHED;
         }
@@ -193,9 +198,8 @@ namespace plaits {
         
         decay_envelope_.Process(short_decay * 2.0f);
         
-        const float compressed_level = max(
-                                           1.3f * modulations.level / (0.3f + fabsf(modulations.level)),
-                                           0.0f);
+        float compressed_level = 1.3f * modulations.level / (0.3f + fabsf(modulations.level));
+        CONSTRAIN(compressed_level, 0.0f, 1.0f);
         p.accent = modulations.level_patched ? compressed_level : 0.8f;
         
         bool use_internal_envelope = modulations.trigger_patched;
@@ -245,7 +249,7 @@ namespace plaits {
                                     modulations.timbre_patched,
                                     modulations.timbre,
                                     use_internal_envelope,
-                                    decay_envelope_.value(),
+                                    internal_envelope_amplitude_timbre * decay_envelope_.value(),
                                     0.0f,
                                     0.0f,
                                     1.0f);
@@ -279,6 +283,8 @@ namespace plaits {
                 const float attack = NoteToFrequency(p.note) * float(kBlockSize) * 2.0f;
                 lpg_envelope_.ProcessPing(attack, short_decay, decay_tail, hf);
             }
+        } else {
+            lpg_envelope_.Init();
         }
         
         out_post_processor_.Process(
