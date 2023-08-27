@@ -38,14 +38,14 @@ namespace plaits {
 
 const int kChordNumHarmonics = 3;
 
-class ChordEngine : public Engine {
+class ChordEngine final : public Engine {
  public:
   ChordEngine() { }
   ~ChordEngine() { }
   
   virtual void Init(stmlib::BufferAllocator* allocator);
   virtual void Reset();
-  virtual void LoadUserData(const uint8_t* user_data) { }
+  //virtual void LoadUserData(const uint8_t* user_data) { }
   virtual void Render(const EngineParameters& parameters,
       float* out,
       float* aux,

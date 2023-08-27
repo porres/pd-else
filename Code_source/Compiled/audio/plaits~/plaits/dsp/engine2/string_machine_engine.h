@@ -36,14 +36,14 @@
 
 namespace plaits {
 
-class StringMachineEngine : public Engine {
+class StringMachineEngine final : public Engine {
  public:
   StringMachineEngine() { }
   ~StringMachineEngine() { }
   
   virtual void Init(stmlib::BufferAllocator* allocator);
   virtual void Reset();
-  virtual void LoadUserData(const uint8_t* user_data) { }
+  //virtual void LoadUserData(const uint8_t* user_data) { }
   virtual void Render(const EngineParameters& parameters,
       float* out,
       float* aux,

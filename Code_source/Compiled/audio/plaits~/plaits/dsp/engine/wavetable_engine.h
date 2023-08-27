@@ -34,14 +34,14 @@
 
 namespace plaits {
 
-class WavetableEngine : public Engine {
+class WavetableEngine final : public Engine {
  public:
   WavetableEngine() { }
   ~WavetableEngine() { }
   
   virtual void Init(stmlib::BufferAllocator* allocator);
   virtual void Reset();
-  virtual void LoadUserData(const uint8_t* user_data);
+  //virtual void LoadUserData(const uint8_t* user_data);
   virtual void Render(const EngineParameters& parameters,
       float* out,
       float* aux,
