@@ -23,7 +23,7 @@ typedef struct _sfz{
     t_object        x_obj;
     sfizz_synth_t  *x_synth;
     t_canvas       *x_canvas;
-    t_symbol       *x_home;
+//    t_symbol       *x_home;
     int             x_midinum;
     float           x_a4;
     int             x_base;
@@ -33,7 +33,7 @@ typedef struct _sfz{
     char           *x_buf;             // sfz file as a string
     int             x_bufsize;
     char           *x_path_buf;        // virtual path for sfz_set
-    int             x_path_bufsize;
+//    int             x_path_bufsize;
     char           *x_filename_buf;
     int             x_filename_bufsize;
     t_elsefile     *x_elsefilehandle;
@@ -149,34 +149,21 @@ static void sfz_set(t_sfz *x, t_symbol *s, int ac, t_atom* av){
         x->x_path_bufsize = 2;
     }
     */
+//    post("SET DEBUG x->x_path_buf = %s", x->x_path_buf);
     if(!sfizz_load_string(x->x_synth, x->x_path_buf, x->x_buf))
         post("[sfz~] could not set SFZ string");
 }
 
-static void sfz_path(t_sfz *x, t_symbol *s, int ac, t_atom* av){
-    (void)s;
-    binbuf_clear(x->x_binbuf);
-    binbuf_restore(x->x_binbuf, ac, av);
-    binbuf_gettext(x->x_binbuf, &x->x_path_buf, &x->x_path_bufsize);
-    if(x->x_path_bufsize == 0){
-        post("[sfz~] path is blank");
-        return;
+static void sfz_path(t_sfz *x, t_symbol *path){
+    if(!path || path == &s_){
+        x->x_path_buf = (char *)canvas_getdir(x->x_canvas)->s_name;
+        x->x_path_buf = strcat(x->x_path_buf, "/");
     }
-    // Allocate memory to null-terminate the binbuf string
-    char* new_path_buf = (char *)malloc(x->x_path_bufsize + 1);
-    if(new_path_buf == NULL){
-        post("[sfz~] unable to allocate memory for virtual SFZ path");
-        return;
-    }
-    strncpy(new_path_buf, x->x_path_buf, x->x_path_bufsize);
-
-    new_path_buf[x->x_path_bufsize] = '\0';
-
-    free(x->x_path_buf);
-    x->x_path_bufsize = strlen(new_path_buf);
-    x->x_path_buf = new_path_buf;
-    // Replace ~ with absolute home path
-    if(x->x_path_buf[0] == '~'){
+    x->x_path_buf = (char *)(path->s_name);
+    if(x->x_path_buf[strlen(x->x_path_buf) - 1] != '/')
+        x->x_path_buf = strcat(x->x_path_buf, "/");
+//    post("sfz_path: x->x_path_buf = %s", x->x_path_buf);
+/*    if(x->x_path_buf[0] == '~'){
         memmove(x->x_path_buf, x->x_path_buf + 1, x->x_path_bufsize);
 
         size_t homeDirLength = strlen(x->x_home->s_name);
@@ -190,13 +177,13 @@ static void sfz_path(t_sfz *x, t_symbol *s, int ac, t_atom* av){
         strcat(path_with_home, x->x_path_buf);
         free(x->x_path_buf);
         x->x_path_buf = path_with_home;
-    }
-    if(x->x_bufsize == 0){
+    }*/
+/*    if(x->x_bufsize == 0){
         post("[sfz~] no SFZ string set");
         return;
     }
     if(!sfizz_load_string(x->x_synth, x->x_path_buf, x->x_buf))
-        post("[sfz~] sfizz error: could not set SFZ string");
+        post("[sfz~] sfizz error: could not set SFZ string");*/
 }
 
 static void sfz_midiin(t_sfz* x, t_float f){
@@ -341,8 +328,8 @@ static void sfz_free(t_sfz* x){
     binbuf_free(x->x_binbuf);
     if(x->x_bufsize)
         freebytes(x->x_buf, x->x_bufsize);
-    if(x->x_path_bufsize)
-        freebytes(x->x_path_buf, x->x_path_bufsize);
+//    if(x->x_path_bufsize)
+//        freebytes(x->x_path_buf, x->x_path_bufsize);
     if(x->x_filename_bufsize)
         freebytes(x->x_filename_buf, x->x_filename_bufsize);
 }
@@ -355,16 +342,13 @@ static void* sfz_new(t_symbol *s, int ac, t_atom *av){
     x->x_bufsize = 0;
 
     x->x_canvas = canvas_getcurrent();
-    x->x_path_buf = canvas_getdir(x->x_canvas)->s_name;
-    int len = strlen(x->x_path_buf);
-    if (len > 0 && x->x_path_buf[len - 1] != '/') {
-        x->x_path_buf = strcat(x->x_path_buf, "/");
-    }
-    x->x_path_bufsize = strlen(x->x_path_buf);
+    x->x_path_buf = (char *)canvas_getdir(x->x_canvas)->s_name;
+    x->x_path_buf = strcat(x->x_path_buf, "/");
+//    x->x_path_bufsize = strlen(x->x_path_buf);
 
-    post("[sfz~] DEBUG: canavs dir is: %s, chars: %d", x->x_path_buf, x->x_path_bufsize);
+//    post("[sfz~] DEBUG: canavs dir is: %s", x->x_path_buf);
 
-    x->x_home = gensym(getenv("HOME"));
+//    x->x_home = gensym(getenv("HOME"));
     x->x_synth = sfizz_create_synth();
     sfizz_set_sample_rate(x->x_synth , sys_getsr());
     sfizz_set_samples_per_block(x->x_synth , sys_getblksize());
@@ -374,9 +358,6 @@ static void* sfz_new(t_symbol *s, int ac, t_atom *av){
     x->x_filename_bufsize = 0;
     if(ac == 1 && av[0].a_type == A_SYMBOL)
         sfz_open(x, av[0].a_w.w_symbol);
-    t_atom at[1];
-    SETSYMBOL(at, canvas_getdir(x->x_canvas));
-    sfz_path(x, NULL, 1, at);
     outlet_new(&x->x_obj, &s_signal);
     outlet_new(&x->x_obj, &s_signal);
     return(x);
@@ -398,7 +379,7 @@ void sfz_tilde_setup(){
     class_addmethod(sfz_class, (t_method)sfz_flush, gensym("flush"), 0);
     class_addmethod(sfz_class, (t_method)sfz_open, gensym("open"), A_DEFSYM, 0);
     class_addmethod(sfz_class, (t_method)sfz_set, gensym("set"), A_GIMME, 0);
-    class_addmethod(sfz_class, (t_method)sfz_path, gensym("path"), A_GIMME, 0);
+    class_addmethod(sfz_class, (t_method)sfz_path, gensym("path"), A_DEFSYM, 0);
     class_addmethod(sfz_class, (t_method)sfz_get, gensym("get"), 0);
     class_addmethod(sfz_class, (t_method)sfz_scala, gensym("scala"), A_DEFSYM, 0);
     class_addmethod(sfz_class, (t_method)sfz_a4, gensym("a4"), A_FLOAT, 0);
