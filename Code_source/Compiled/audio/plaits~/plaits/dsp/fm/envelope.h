@@ -160,7 +160,7 @@ class Envelope {
   }
   
   inline float value(int stage, float phase, float start_level) {
-   float from = start_level == PREVIOUS_LEVEL
+   float from = start_level == static_cast<float>(PREVIOUS_LEVEL)
        ? level_[(stage - 1 + num_stages) % num_stages] : start_level;
    float to = level_[stage];
    

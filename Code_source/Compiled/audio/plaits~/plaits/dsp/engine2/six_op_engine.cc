@@ -91,6 +91,7 @@ void SixOpEngine::Reset() {
   
 }
 
+/*
 void SixOpEngine::LoadUserData(const uint8_t* user_data) {
   for (int i = 0; i < kNumPatchesPerBank; ++i) {
     patches_[i].Unpack(user_data + i * fm::Patch::SYX_SIZE);
@@ -99,6 +100,7 @@ void SixOpEngine::LoadUserData(const uint8_t* user_data) {
     voice_[i].UnloadPatch();
   }
 }
+*/
 
 void SixOpEngine::Render(
     const EngineParameters& parameters,

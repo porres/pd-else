@@ -63,13 +63,14 @@ void WavetableEngine::Init(BufferAllocator* allocator) {
 
   diff_out_.Init();
   
-  wave_map_ = allocator->Allocate<const int16_t*>(kNumWavesPerBank);
+  //wave_map_ = allocator->Allocate<const int16_t*>(kNumWavesPerBank);
 }
 
 void WavetableEngine::Reset() {
   
 }
 
+/*
 void WavetableEngine::LoadUserData(const uint8_t* user_data) {
   for (int bank = 0; bank < kNumBanks; ++bank) {
     for (int wave = 0; wave < kNumWavesPerBank; ++wave) {
@@ -89,6 +90,7 @@ void WavetableEngine::LoadUserData(const uint8_t* user_data) {
     }
   }
 }
+*/
 
 inline float Clamp(float x, float amount) {
   x = x - 0.5f;
@@ -98,14 +100,16 @@ inline float Clamp(float x, float amount) {
   return x;
 }
 
+// TODO amy (use wave_map_ and enable user to load their wavetables)
 inline float WavetableEngine::ReadWave(
     int x,
     int y,
     int z,
     int phase_integral,
     float phase_fractional) {
+    int wave = (x + y * 8 + z * kNumWavesPerBank) % kNumWaves;
   return InterpolateWaveHermite(
-      wave_map_[x + y * 8 + z * kNumWavesPerBank],
+      wav_integrated_waves + wave * (kTableSize + 4),
       phase_integral,
       phase_fractional);
 }

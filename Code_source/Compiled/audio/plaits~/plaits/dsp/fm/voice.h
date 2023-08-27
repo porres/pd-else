@@ -240,6 +240,7 @@ class Voice {
     for (int i = 0; i < num_operators; ) {
       const typename Algorithms<num_operators>::RenderCall& call = \
           algorithms_->render_call(patch_->algorithm, i);
+      if (!*call.render_fn) {return;} //FIXME amy (after fm is working)
       (*call.render_fn)(
           &operator_[i],
           &f[i],
