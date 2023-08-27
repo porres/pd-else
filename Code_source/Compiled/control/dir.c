@@ -175,7 +175,6 @@ static void dir_open(t_dir *x, t_symbol *dirname){
         free(path_buf);
         dirname = gensym(path_with_home);
     }
-    post("dirname = %s", dirname->s_name);
     dir_loadir(x, dirname, 0);
 }
 
@@ -256,6 +255,11 @@ static void *dir_new(t_symbol *s, int ac, t_atom* av){
     x->x_seek = 0;
     t_symbol *dirname = x->x_ext = &s_;
     int arg = 0, symarg = 0, depth = 0;
+    #ifdef _WIN32
+        x->x_home = gensym(getenv("USERPROFILE"));
+    #else
+        x->x_home = gensym(getenv("HOME"));
+    #endif
     while(ac > 0){
         if(av->a_type == A_FLOAT && !symarg){
             depth = (int)atom_getfloatarg(0, ac, av);
