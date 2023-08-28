@@ -615,9 +615,9 @@ static void function_resize(t_function *x){
 }
 
 static void function_savestate(t_function *x, t_floatarg f){
-    int init = (int)(f != 0);
-    if(x->x_savestate != init)
-        x->x_savestate = init;
+    int state = (int)(f != 0);
+    if(x->x_savestate != state)
+        x->x_savestate = state;
 }
 
 static void function_height(t_function *x, t_floatarg f){
@@ -712,11 +712,6 @@ static void function_bgcolor(t_function *x, t_floatarg red, t_floatarg green, t_
         }
     }
 }
-
-/*static void function_loadbang(t_function *x, t_floatarg action){
-    if(action == LB_LOAD && x->x_savestate)
-        function_bang(x);
-}*/
 
 static void function_zoom(t_function *x, t_floatarg zoom){
     float mul = zoom == 1.0 ? 0.5 : 2.0;
@@ -917,7 +912,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                 }
                 else goto errstate;
             }
-            else if(sym == gensym("-init")){
+            else if(sym == gensym("-savestate")){
                 x->x_flag = 1;
                 x->x_savestate = 1;
                 ac--, av++;

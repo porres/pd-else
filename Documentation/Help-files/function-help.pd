@@ -225,14 +225,14 @@
 #N canvas 710 87 490 403 savestate 0;
 #X obj 142 209 else/function 200 100 empty empty 0 1 220 220 220 50 50 50 1 0 0 0 0 100 1 100 0.6 350 0.6 250 0;
 #X obj 142 329 else/display;
-#X text 43 27 An odd list of at least 3 floats sets the envelope function. The syntax is the same as the [function~] object (point1 \, period \, point2 \, period \, point3 \, etc.) - an output is then generated with the list values for [envgen~] or [function~]. A bang forces an output of the stored line function.;
 #X msg 142 119 0 100 1 100 0.6 350 0.6 250 0;
 #X msg 167 173 savestate \$1;
 #X obj 167 148 tgl 16 0 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0 1;
+#X text 62 33 With the '-savestate' flag or message the object saves its state when the patch is saved. Unlike iemgui's init \, you don't have a value output when loading a patch so you need to use [loadbang] if you want that.;
 #X connect 0 0 1 0;
+#X connect 2 0 0 0;
 #X connect 3 0 0 0;
-#X connect 4 0 0 0;
-#X connect 5 0 4 0;
+#X connect 4 0 3 0;
 #X restore 468 149 pd savestate;
 #X text 99 592 -height <float> (default 100) | -width <float> (default 200) | -send <symbol> (default none) | -receive <symbol> (default none) | -bgcolor <f \, f \, f> | -fgcolor <f \, f \, f> | -resize <float> | -min <float> (default 0) | -max <float> (default 1) | -savestate | -set <list> (default 0 1000 0)., f 67;
 #X connect 41 0 48 0;
