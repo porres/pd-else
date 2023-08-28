@@ -326,7 +326,7 @@ void *plts_new(t_symbol *s, int ac, t_atom *av){
             else if(sym == gensym("-model")){
                 if((av)->a_type == A_FLOAT){
                     t_float m = atom_getfloat(av);
-                    x->model = m < 0 ? 0 : m > 15 ? 15 : (int)m;
+                    x->model = m < 0 ? 0 : m > 23 ? 23 : (int)m;
                     ac--, av++;
                 }
             }
