@@ -47,7 +47,7 @@ int u8_utf8toucs2(uint16_t *dest, int sz, const char *src, int srcsz);
 int u8_ucs2toutf8(char *dest, int sz, const uint16_t *src, int srcsz);
 
 /* moo: get byte length of character number, or 0 if not supported */
-int u8_wc_nbytes(uint32_t ch);
+int else_u8_wc_nbytes(uint32_t ch);
 
 /* moo: compute required storage for UTF-8 encoding of 's[0..n-1]' */
 int u8_wcs_nbytes(const uint32_t *ucs, int size);
@@ -68,10 +68,10 @@ int u8_charnum(const char *s, int offset);
 uint32_t u8_nextchar(const char *s, int *i);
 
 /* move to next character */
-void u8_inc(const char *s, int *i);
+void else_u8_inc(const char *s, int *i);
 
 /* move to previous character */
-void u8_dec(const char *s, int *i);
+void else_u8_dec(const char *s, int *i);
 
 /* moo: move pointer to next character */
 void u8_inc_ptr(char **sp);

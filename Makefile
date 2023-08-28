@@ -350,7 +350,7 @@ file := Code_source/shared/elsefile.c
 smagic := Code_source/shared/magic.c
     oscope~.class.sources := Code_source/Compiled/audio/oscope~.c $(smagic)
     
-utf := Code_source/shared/s_utf8.c
+utf := Code_source/shared/s_elseutf8.c
 	note.class.sources := Code_source/Compiled/control/note.c $(utf)
     
 define forWindows

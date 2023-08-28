@@ -20,7 +20,7 @@
 #include <string.h>
 #include <stdarg.h>
 
-#include "s_utf8.h"
+#include "s_elseutf8.h"
 
 static const uint32_t offsetsFromUTF8[6] = {
     0x00000000UL, 0x00003080UL, 0x000E2080UL,
@@ -133,7 +133,7 @@ int u8_ucs2toutf8(char *dest, int sz, const uint16_t *src, int srcsz)
 }
 
 /* moo: get byte length of character number, or 0 if not supported */
-int u8_wc_nbytes(uint32_t ch)
+int else_u8_wc_nbytes(uint32_t ch)
 {
   if (ch < 0x80) return 1;
   if (ch < 0x800) return 2;
@@ -252,7 +252,7 @@ int u8_strlen(const char *s)
     return count;
 }
 
-void u8_inc(const char *s, int *i)
+void else_u8_inc(const char *s, int *i)
 {
     if (s[(*i)++] & 0x80) {
         if (!isutf(s[*i])) {
@@ -267,7 +267,7 @@ void u8_inc(const char *s, int *i)
     }
 }
 
-void u8_dec(const char *s, int *i)
+void else_u8_dec(const char *s, int *i)
 {
     (void)(isutf(s[--(*i)]) || isutf(s[--(*i)]) ||
            isutf(s[--(*i)]) || --(*i));
