@@ -38,7 +38,7 @@ typedef struct _knob{
     t_edit_proxy   *x_proxy;
     t_glist        *x_glist;
     int             x_size;
-    t_float         x_pos; // 0-1 normalized position
+    double          x_pos; // 0-1 normalized position
     t_float         x_exp;
     int             x_expmode;
     int             x_log;
@@ -57,7 +57,7 @@ typedef struct _knob{
     int             x_shift;
     int             x_edit;
     int             x_jump;
-    t_float         x_fval;
+    double          x_fval;
     t_symbol       *x_fg;
     t_symbol       *x_mg;
     t_symbol       *x_bg;
@@ -91,8 +91,8 @@ typedef struct _knob{
 // ---------------------- Helper functions ----------------------
 // get value from motion/position
 static t_float knob_getfval(t_knob *x){
-    t_float fval;
-    t_float pos = x->x_pos;
+    double fval;
+    double pos = x->x_pos;
     if(x->x_discrete){ // later just 1 tick case
         t_float ticks = (x->x_ticks < 2 ? 2 : (float)x->x_ticks) - 1;
         pos = rint(pos * ticks) / ticks;
@@ -128,10 +128,10 @@ static t_float knob_getpos(t_knob *x, t_floatarg fval){
             pos = 0;
         }
         else
-            pos = log(fval/x->x_min) / log(x->x_max/x->x_min);
+            pos = (double)log(fval/x->x_min) / (double)log(x->x_max/x->x_min);
     }
     else{
-        pos = (fval - x->x_min) / (x->x_max - x->x_min);
+        pos = (double)(fval - x->x_min) / (double)(x->x_max - x->x_min);
         if(x->x_exp != 0){
             if(x->x_exp > 0)
                 pos = pow(pos, 1.0/x->x_exp);
@@ -299,7 +299,7 @@ static void knob_draw_ticks(t_knob *x, t_glist *glist){
         if(width < 1)
             width = 1;
         width *= 1.5;
-        float pos = knob_getpos(x, x->x_start) * x->x_range;
+        double pos = knob_getpos(x, x->x_start) * x->x_range;
         float w = pos + start; // tick angle
         w *= M_PI/180.0; // in radians
         float dx = r * cos(w), dy = r * sin(w);
@@ -537,7 +537,7 @@ static void knob_save(t_gobj *z, t_binbuf *b){
 // ------------------------ knob methods -----------------------------
 
 static void knob_set(t_knob *x, t_floatarg f){
-    float old = x->x_pos;
+    double old = x->x_pos;
     x->x_fval = f > x->x_max ? x->x_max : f < x->x_min ? x->x_min : f;
     x->x_pos = knob_getpos(x, x->x_fval);
     x->x_fval = knob_getfval(x);
@@ -904,7 +904,7 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     int arc = atom_getintarg(16, ac, av) != 0;
     int range = atom_getintarg(17, ac, av);
     int offset = atom_getintarg(18, ac, av);
-    float start = atom_getintarg(19, ac, av);
+    float start = atom_getfloatarg(19, ac, av);
     knob_config_io(x, glist_getcanvas(x->x_glist)); // for outline
     if(expmode == 0){
         knob_log(x, 0);
