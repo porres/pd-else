@@ -18,27 +18,51 @@ CHANGELOG:
 **LIBRARY:**
 
 Breaking changes:
-- [quantizer~], [rescale~], [fold~] and [wrap2~] no more signal inputs for secondary inlets, only floats.
+- [voices] has been rather drastically redesigned! The "-list" flag was removed as this is now the default mode, use "-split" flag for the old default mode. The retrigger modes were also swapped (the default now is the old "mode 1" (now mode 0). Old mode 0 is now mode 2)! The secondary inlets were removed and it now takes only list messages.
 - [out1~] removed, use [out.mc~] instead now.
-- [sin~] doesn't take float input anymore.
 - [pluck~] float input is now in the 0-127 range.
-- [voices] -list flag removed as this is now the default mode, use "-split" flag for the old default mode.
+- [oscbank~], [oscbank2~], [bpbank~], [resonbank~] and [resonbank2~] removed args for setting the size, list input sets number of oscillators and filters currently.
+- [touch.in] and [touch.out], poly flag removed, use the new [ptouch.in] and [ptouch.out] objects now
+- [note.in] and [note.out], "-rel" flag now has a swapped order of output and [note.in] now outputs lists
+- [makenote2] extra Note On parameters are now clipped and not output
+- [order] only takes list messages now (no more "anythings") and is a compiled object now (which doesn't break anything but hey, that changed).
+- [sin~] doesn't take float input anymore; [crusher~], [quantizer~], [fold~] and [wrap2~] no more signal inputs for secondary inlets, only floats.
+- [knob] 'init' message removed, now you have 'load' (a bit similar)... and now this value is not the 'arc start' anymore.
+- [numbox~] 'init' message removed, now you have 'load' (a bit similar).
+- [function], [slider2d], [circle], [gain~], [gain2~] and [multi.vsl] got 'init' removed and 'savestate' included instead (a bit similar).
+- [plaits~] removed "voct" setting.
 
 Enhancements/fixes/other changes:
+- Improved license by now offering a text with multiple licenses
+- The object browser has been fixed for Pd 0.54-0! There's also an extra object browser entry for Vanilla objects as well (hopefully this one gets integrated into Vanilla itself). Also, fixed loading abstractions with loadbangs
+- Added MC (multichannel connection) support for some objects (very few gained it out of the box for being abstractions, lke [gain~]), they are: [ceil~], [floor~], [rint~], [trunc~], [sin~], [cents2ratio~], [ratio2cents~], [db2lin~], [lin2db~] (now a compiled object), [gain~], [samps2ms~], [ms2samps~], [mag~], [pol2car~]/[car2pol~] (now compiled objects), [bitnormal~], [op~], [sig2float~], [float2sig~] (now an abstraction), [rescale~], [fold~], [wrap2~], [quantizer~], [dust~], [dust2~], [oscbank~], [oscbank2~], [bpbank~], [resonbank~], [resonbank2~], [slew~], [slew2~], [glide~], [glide2~], [lag~], [lag2~], [rand.i~], [rand.f~], [meter2~], [meter4~], [meter8~] and [xgate~].
 - [knob] and [numbox~], use alt+click instead of double click to restore initial value
-- Added MC (multichannel connection) support for some objects (very few gained it out of the box for being abstractions, lke [gain~]), they are: [ceil~], [floor~], [rint~], [trunc~], [sin~], [cents2ratio~], [ratio2cents~], [db2lin~], [lin2db~] (now a compiled object), [gain~], [samps2ms~], [ms2samps~], [mag~], [pol2car~]/[car2pol~] (now compiled objects), [bitnormal~], [op~], [sig2float~], [float2sig~] (now an abstraction), [rescale~], [fold~], [wrap2~] and [quantizer~].
+- [knob] fixed loading send and receive names with dollar signs. Added 'start' message to set arc start independently
+- [decay2~] and [resonant2~] fixed cases where NaN was output.
+- [resonbank2~], fixed it cas this was actually just like [resonbank~], damn... also added new methods.
 - added "not" operation (!) to [op] and [op~].
-- [adsr~] and [asr~] fixed 2nd outlet in log mode.
+- [adsr~] and [asr~] fixed 2nd outlet in log mode, added "gate" message.
+- [pluck~] added "gate" message.
 - [stepnoise~], [rampnoise~] and [lfnoise~] fixed seed flag
 - [stepnoise~] and [rampnoise~] fixed loading hz argument when there's a 'seed' flag.
 - [rescale] and [rescale~] fixed bug when first argument is higher then the second
-- [slider2d] and [circle], fixed "init" and shipping for macs.
-- 16 new objects: [nchs~], [get~], [pick~], [sum~], [sigs~], [out.mc~], [osc.mc~], [imp.mc~], [rampnoise.mc~], [stepnoise.mc~], [select~], [xselect.mc~], [merge~], [phaseseq~], [oscnoise~] and [sfz~].
+- [slider2d] and [circle], fixed "init", shipping for macs and "-range" flag.
+- [rand.f] and [rand.i] can now output lists as well.
+- [makenote2] now allows more complex note off messages with extra arguments.
+- [voices] fixed some issues with the "release time" and repeated or new notes. The list input is now more flexible and can take arbitrary Note On and Note Off information lists as given by [makenote2]. Anything messages now allowed and routed to allocated voices if the pitch matches the first element.
+- [display]: added '-noflash' flag. 
+- [receiver] added a first optional depth argument to expand dollar signs in receive names according to the parent's dollar values. With this it makes it easier to send values to receive symbols in a parent patch.
+- fix [ctl.in] control number filtering
+- [giga.rev~] fixes a crash with room size  = 0
+- [plaits~] fixed some crashing bugs. Added 8 new synthesis modes based on firmware 1.2!
+- [dir] can now expand "~" as the "HOME" directory.
+- [keymap] fixed 'oct' message and added arg to set 'oct'
+- 33 new objects: [osc.mc~], [imp.mc~], [rampnoise.mc~], [stepnoise.mc~] (these first 4 might be deleted soon), [keypress], [remove], [equal], [nchs~], [get~], [pick~], [repeat~], [sum~], [merge~], [unmerge~], [slice~], [sigs~], [out.mc~], [rotate.mc~], [spread.mc~], [xfade.mc~], [select~], [xselect.mc~], [xgate.mc~], [phaseseq~], [oscnoise~], [sender], [ptouch.in], [ptouch.out], [midi.in], [midi.out], [synth~], [voices~] and [sfz~].
 
-Objects count: total of 492 (264 signal objects and 228 control objects)! 
+Objects count: total of 509 (273 signal objects and 236 control objects)! 
 
-- 280 coded objects (179 signal objects / 101 control objects)
-- 212 abstractions (85 signal objects / 127 control objects)
+- 291 coded objects (186 signal objects / 105 control objects)
+- 218 abstractions (87 signal objects / 131 control objects)
 
 --------------------------------------
 
