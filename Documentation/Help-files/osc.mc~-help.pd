@@ -206,6 +206,7 @@
 #X text 135 387 set <list>;
 #X text 211 387 - set frequencies;
 #X text 163 545 1) list - list of frequencies (default 0);
+#X text 34 266 THIS OBJECT IS EXPERIMENTAL AND MIGHT BE DELETED!!!, f 20;
 #X connect 28 0 44 0;
 #X connect 29 0 28 0;
 #X connect 30 0 28 1;
