@@ -295,9 +295,9 @@ void *plts_new(t_symbol *s, int ac, t_atom *av){
     x->model = 0;
     x->pitch = 0;
     x->pitch_correction = log2f(48000.f / sys_getsr());
-    x->harmonics = 0;
-    x->timbre = 0;
-    x->morph = 0;
+    x->harmonics = 0.5f;
+    x->timbre = 0.5f;
+    x->morph = 0.5f;
     x->lpg_cutoff = 0.5f;
     x->pitch_mode = 0;
     x->decay = 0.5f;
