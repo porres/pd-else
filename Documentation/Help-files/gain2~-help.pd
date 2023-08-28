@@ -269,7 +269,6 @@
 #X text 189 348 - mute/unmute, f 58;
 #N canvas 730 201 588 422 savestate 0;
 #X obj 114 61 noise~;
-#X msg 94 28 init 1;
 #X obj 114 114 else/gain2~ 1 0 20 1 0.666667;
 #X obj 134 88 else/brown~;
 #X obj 114 242 else/meter2~;
@@ -278,11 +277,12 @@
 #X obj 325 297 else/presets;
 #A saved -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;;
 #X text 174 127 With the 'savestate' message or '-savestate' flag \, the GUI operates in 'save state mode' \, where it saves the state from the last time the patch was saved. Note that this is only useful for patches and not abstractions. For abstractions oyou should use [savestate] instead \, and also have a look at [presets]. Unlike iemguis \, the value is not output when loading the patch \, use [loadbang] for that.;
-#X connect 0 0 2 0;
-#X connect 1 0 2 0;
-#X connect 2 0 4 0;
-#X connect 2 1 4 1;
-#X connect 3 0 2 1;
+#X msg 94 28 savestate 1;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 1 1 3 1;
+#X connect 2 0 1 1;
+#X connect 8 0 1 0;
 #X restore 461 283 pd savestate;
 #X text 189 421 - non zero sets to init mode, f 58;
 #X text 80 421 savestate <float>;
