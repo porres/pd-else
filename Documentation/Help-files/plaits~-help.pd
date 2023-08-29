@@ -83,7 +83,7 @@
 #X connect 12 0 0 0;
 #X connect 12 1 0 1;
 #X restore 462 148 pd frequency;
-#N canvas 417 90 841 557 +details 1;
+#N canvas 417 90 841 557 +details 0;
 #X obj 101 448 else/out~;
 #X msg 142 253 model \$1;
 #X obj 235 509 else/display;
