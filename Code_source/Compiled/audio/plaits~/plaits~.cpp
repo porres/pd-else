@@ -76,7 +76,7 @@ extern "C"  { // Pure data methods, needed because we are using C++
 static const char* modelLabels[24] = {
     "Pair of classic waveforms",
     "Waveshaping oscillator",
-    "Two operator FM",
+    "Two operators FM",
     "Granular formant oscillator",
     "Harmonic oscillator",
     "Wavetable oscillator",
@@ -92,9 +92,9 @@ static const char* modelLabels[24] = {
     "Analog hi-hat",
     "Virtual Analog VCF",
     "Phase Distortion",
-    "Six Op FM 1",
-    "Six Op FM 2",
-    "Six Op FM 3",
+    "Six operators FM #1",
+    "Six operators FM #2",
+    "Six operators FM #3",
     "Wave Terrain",
     "String Machine",
     "Chiptune"
