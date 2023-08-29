@@ -1,5 +1,4 @@
 // Matt Barber and Porres (2017-2022)
-// Based on SuperCollider's BrownNoise UGen
 
 #include "m_pd.h"
 #include "g_canvas.h"
