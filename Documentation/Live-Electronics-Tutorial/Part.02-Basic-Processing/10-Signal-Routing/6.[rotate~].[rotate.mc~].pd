@@ -1,7 +1,6 @@
-#N canvas 424 23 817 450 12;
+#N canvas 335 23 817 450 12;
 #X declare -path else;
-#X obj 564 270 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 564 270 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X msg 561 239 0;
 #X msg 594 239 0.5;
 #X msg 522 239 -0.5;
@@ -10,18 +9,12 @@
 #X obj 224 103 noise~;
 #X obj 224 212 meter2~;
 #X obj 51 212 meter2~;
-#X obj 292 84 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 292 84 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 289 136 *~ -1;
-#X text 30 13 The rotation process is based on panning. When you have
-two pan objects with the inverted panning parameter \, you can rotate
-the channels. See the patch below., f 69;
+#X text 30 13 The rotation process is based on panning. When you have two pan objects with the inverted panning parameter \, you can rotate the channels. See the patch below., f 69;
 #X obj 138 212 meter2~;
 #X obj 442 295 rotate~;
-#X text 396 150 The [rotate~] object from the ELSE library performs
-this kind of rotation \, but not only in a two channel (stereo) setting.
-You can give it as many more as you want. Check its help file., f
-48;
+#X text 396 150 The [rotate~] object from the ELSE library performs this kind of rotation \, but not only in a two channel (stereo) setting. You can give it as many more as you want. Check its help file., f 48;
 #X obj 465 267 noise~;
 #X obj 84 103 osc~ 440;
 #X obj 442 236 osc~ 440;
@@ -30,6 +23,8 @@ You can give it as many more as you want. Check its help file., f
 #X obj 554 47 declare -path else;
 #X obj 109 379 out~;
 #X obj 424 338 out~;
+#X text 611 338 And for multichannel support \, check, f 20;
+#X obj 647 382 rotate.mc~;
 #X connect 0 0 19 0;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
