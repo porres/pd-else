@@ -62,11 +62,11 @@ void else_obj_about(t_else_obj *x){
     post("-------------------------------------------------------------------");
     post("  -----> ELSE - EL Locus Solus' Externals for Pure Data <-----");
     post("-------------------------------------------------------------------");
-    post("- Version: %d.%d-%d %s-%d; (pre/test release from august 31st 2023)", else_major, else_minor, else_bugfix, STATUS, status_number);
-    post("- Author: Alexandre Torres Porres");
+    post("- Version: %d.%d-%d %s-%d; (Released August 31st 2023)", else_major, else_minor, else_bugfix, STATUS, status_number);
+    post("- Author: Alexandre Torres Porres & others");
     post("- Repository: https://github.com/porres/pd-else");
     post("- License: Do What The Fuck You Want To Public License");
-    post("(unless otherwise noted in particular objects, check the code)");
+    post("(unless otherwise noted in particular objects, check 'license' folder)");
     if((major > min_major)
        || (major == min_major && minor > min_minor)
        || (major == min_major && minor == min_minor && bugfix >= min_bugfix)){
@@ -87,7 +87,7 @@ void else_obj_about(t_else_obj *x){
     post("- NOTE: There's an accompanying tutorial by Alexandre Torres Porres.");
     post("You can find it as part of the ELSE library download, look for the");
     post("\"Live-Electronics-Tutorial\" folder inside the ELSE folder.");
-    post("Please check its README on how to install it!");
+    post("It has a CC license. Please check its README on how to install it!");
     post("-------------------------------------------------------------------");
     post("- ALSO NOTE: Loading this binary did not install the ELSE library");
     post("you must add it to the \"path preferences\" in order to load objects");
