@@ -30,7 +30,7 @@ Breaking changes:
 - [knob] 'init' message removed, now you have 'load' (a bit similar)... and now this value is not the 'arc start' anymore.
 - [numbox~] 'init' message removed, now you have 'load' (a bit similar).
 - [function], [slider2d], [circle], [gain~], [gain2~] and [multi.vsl] got 'init' removed and 'savestate' included instead (a bit similar).
-- [plaits~] removed "voct" setting.
+- [plaits~] removed "voct" setting, default for harmonics, timbre and morph is now 0.5.
 
 Enhancements/fixes/other changes:
 - Improved license by now offering a text with multiple licenses
@@ -54,7 +54,7 @@ Enhancements/fixes/other changes:
 - [receiver] added a first optional depth argument to expand dollar signs in receive names according to the parent's dollar values. With this it makes it easier to send values to receive symbols in a parent patch.
 - fix [ctl.in] control number filtering
 - [giga.rev~] fixes a crash with room size  = 0
-- [plaits~] fixed some crashing bugs. Added 8 new synthesis modes based on firmware 1.2!
+- [plaits~] fixed some crashing bugs. Added 8 new synthesis modes based on firmware 1.2! Improved and updated the help file including a new manual.
 - [dir] can now expand "~" as the "HOME" directory.
 - [keymap] fixed 'oct' message and added arg to set 'oct'
 - 33 new objects: [osc.mc~], [imp.mc~], [rampnoise.mc~], [stepnoise.mc~] (these first 4 might be deleted soon), [keypress], [remove], [equal], [nchs~], [get~], [pick~], [repeat~], [sum~], [merge~], [unmerge~], [slice~], [sigs~], [out.mc~], [rotate.mc~], [spread.mc~], [xfade.mc~], [select~], [xselect.mc~], [xgate.mc~], [phaseseq~], [oscnoise~], [sender], [ptouch.in], [ptouch.out], [midi.in], [midi.out], [synth~], [voices~] and [sfz~].
@@ -68,7 +68,8 @@ Objects count: total of 509 (273 signal objects and 236 control objects)!
 
 **TUTORIAL:**
 - Revision of Quickstart chapter with new info on MC connections.
-- New examples for new objects in ELSE. Total number of examples is 506
+- New examples and revisions to add the new objects in ELSE. Total number of examples is now 509!
+
 
 --------------------------------------
 
