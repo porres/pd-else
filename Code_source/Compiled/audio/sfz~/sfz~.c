@@ -1,5 +1,6 @@
-// porres 2023
+// porres and alex mitchell 2023
 // This object is based on the sfizz library and is licensed under a BSD 2-clause license.
+// you should find a copy of the BSD license in the 'license' folder of the repository.
 
 #ifdef _WIN32
 #include <io.h>

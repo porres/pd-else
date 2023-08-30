@@ -9,14 +9,20 @@
 ### Released August 31st 2023
 
 
-Copyright © 2017-2023 Alexandre Torres Porres
-
+Copyright © 2017-2023 Alexandre Torres Porres and others 
 
 
 This work is free. You can redistribute it and/or modify it under the terms of the Do What The Fuck You Want To Public License, Version 2, as published by Sam Hocevar. See License.txt <https://github.com/porres/pd-else/blob/master/License.txt> and <http://www.wtfpl.net/> for more details
 
-Other licenses may apply for specific objects and this is informed in the source code (examples: [giga.rev~], [sfont~], [sfz~], [plaits~], etc...).
+For details on authorship check the source code. Other licenses also apply for specific objects and this is also informed in the source code. 
+For instance:
+- [beat~], [sfont~], [giga.rev~] are licensed under the GNU GPL library
+- [sfz~] and band limited oscillators like [bl.saw~] are licensed under the BSD 2-Clause library
+- [plaits~], [osc.format], [osc.parse] and [osc.route] are licensed under the MIT library
 
+ELSE comes with a Live Electronics tutorial as part of its documentation written by Alexandre Torres Porres, this work is licensed under a Creative Common (CC} License. 
+
+For copies of the licenses and the terms, please check the 'license' subfolder.
 
 
 --------------------------------------------------------------------------
