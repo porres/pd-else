@@ -22,7 +22,7 @@ This project relies on the build system called "pd-lib-builder" by Katja Vetter 
 
 Go to the pd-else folder and use "objectsdir" to set a relative path for your build, something like:
 
-<pre>make install objectsdir=../fluid-build</pre>
+<pre>make install objectsdir=../else-build</pre>
 
 Then move it to your preferred install folder for Pd and add it to the path.
 
