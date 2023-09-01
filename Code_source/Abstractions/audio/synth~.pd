@@ -1,5 +1,6 @@
 #N canvas 428 116 519 357 12;
 #X declare -path /Users/porres/Desktop/Git/Live-Electronics-Tutorial/Examples/Part.04-Control/18-MIDI-CV-OSC/1.MIDI/3.Monophony.Polyphony;
+#X declare -path /Users/porres/Desktop/Git/pd-else/Code_source/Abstractions/audio;
 #X declare -path else;
 #X obj 88 53 inlet;
 #X obj 88 259 outlet~;
@@ -62,6 +63,7 @@
 #X obj 425 213 pdcontrol;
 #X msg 425 181 sendcanvas obj 425 250 declare -path \$1;
 #X obj 425 250 declare -path /Users/porres/Desktop/Git/Live-Electronics-Tutorial/Examples/Part.04-Control/18-MIDI-CV-OSC/1.MIDI/3.Monophony.Polyphony;
+#X obj 425 250 declare -path /Users/porres/Desktop/Git/pd-else/Code_source/Abstractions/audio;
 #X connect 0 0 15 0;
 #X connect 1 0 9 0;
 #X connect 1 1 2 0;
@@ -100,7 +102,6 @@
 #X msg 309 186 rel \$1;
 #X obj 309 154 r \$0-rel;
 #X obj 213 253 else/voices 1 1;
-#X obj 314 222 print release;
 #X connect 0 0 3 0;
 #X connect 2 0 5 0;
 #X connect 2 0 7 0;
@@ -115,7 +116,6 @@
 #X connect 8 0 9 0;
 #X connect 9 0 1 0;
 #X connect 10 0 12 0;
-#X connect 10 0 13 0;
 #X connect 11 0 10 0;
 #X connect 12 0 1 0;
 #X restore 70 182 pd mono-poly;
@@ -215,7 +215,7 @@
 #X obj 129 59 inlet;
 #N canvas 119 299 450 300 \$0-clone 0;
 #X obj 100 50 inlet;
-#X obj 100 100 clone -do voice-abs 4;
+#X obj 100 100 clone -do synth.voice.template 1;
 #X obj 100 150 outlet~;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
