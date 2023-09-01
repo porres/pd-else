@@ -21,8 +21,8 @@ static void sender_bang(t_sender *x){
 
 static void sender_float(t_sender *x, t_float f){
     t_symbol *sym1 = canvas_realizedollar(x->x_cv, x->x_sym1);
-    t_symbol *sym2 = canvas_realizedollar(x->x_cv, x->x_sym2);
     if(sym1 != &s_ && x->x_sym1->s_thing) pd_float(sym1->s_thing, f);
+    t_symbol *sym2 = canvas_realizedollar(x->x_cv, x->x_sym2);
     if(sym2 != &s_ && x->x_sym2->s_thing) pd_float(sym2->s_thing, f);
 }
 
@@ -69,13 +69,13 @@ static void *sender_new(t_symbol *s, int ac, t_atom *av){
     if(ac && (av)->a_type == A_SYMBOL){
         s = atom_getsymbol(av);
         if(s != &s_)
-            x->x_sym1 = s;
+            x->x_sym1 = canvas_realizedollar(x->x_cv, s);
         av++, ac--;
     }
     if(ac && (av)->a_type == A_SYMBOL){
         s = atom_getsymbol(av);
         if(s != &s_){
-            x->x_sym2 = s;
+            x->x_sym2 = canvas_realizedollar(x->x_cv, s);
             symbolinlet_new(&x->x_obj, &x->x_sym2);
         }
     }
