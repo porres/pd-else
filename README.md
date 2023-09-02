@@ -4,9 +4,9 @@
 
 ### for the Pure Data programming language
 
-### Version: 1.0-0 RC-9 (release candidate #9) With Live Electronics Tutorial. 
+### Version: 1.0-0 RC-10 (release candidate #10) With Live Electronics Tutorial. 
 
-### Released August 31st 2023
+### Unreleased
 
 
 Copyright © 2017-2023 Alexandre Torres Porres and others 
@@ -78,12 +78,12 @@ Cross compiling is also possible with something like this
 
 For technical reasons these objects reside in their own subdirectories of the ELSE source directory, so a normal build as described above will skip them. You cam install these separately and you can also check their subfolders for their own READMEs and instructions.
 
-To install them with the rest of ELSE you can build from the toplevel source directory using the special 'sfont', 'sfz' and 'plaits' targets:
+To install them with the rest of ELSE you can build from the toplevel source directory using the special 'sfont', 'sfz' and 'plaits' targets, such as:
 
-<pre>make sfont sfz plaits pdincludepath=~/pd-0.54-0/src/</pre>
-<pre>make sfont-install sfz-install plaits-install objectsdir=~/else-build</pre>
+<pre>make sfz plaits pdincludepath=~/pd-0.54-0/src/</pre>
+<pre>make sfz-install plaits-install objectsdir=~/else-build</pre>
 
-This also makes sure that [sfont~], [sfz~] and [plaits~] get added to the chosen else library directory instead of their own subdirectories.
+For sfont you should do the same but you also must run a script in the sfont subfolder to copy the needed dependencies, check its readme for more details.
 
 --------------------------------------------------------------------------
 
@@ -115,7 +115,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 --------------------------------------------------------------------------
 
-## Current Object list (509 objects):
+## Current Object list (510 objects):
 
 #assorted
     else
@@ -134,7 +134,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 #message management
     format swap2 nmess unite separate symbol2any any2symbol changed hot initmess message default pack2 pick limit spread router route2 routeall routetype selector stack store morph interpolate sig2float~ float2sig~ pipe2
 #list management
-    break order combine delete remove equal group iterate insert scramble sort reverse rotate replace sum slice stream merge unmerge amean gmean
+    break order combine delete remove equal group iterate insert scramble sort reverse rotate replace sum slice stream merge unmerge amean gmean list.inc
 #file management
     dir
 #midi
