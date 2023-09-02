@@ -29,8 +29,8 @@ typedef struct _adsr{
 
 static t_class *adsr_class;
 
-static void adsr_log(t_adsr *x, t_floatarg f){
-    x->x_log = (int)(f != 0);
+static void adsr_lin(t_adsr *x, t_floatarg f){
+    x->x_log = (int)(f == 0);
 }
 
 static void adsr_bang(t_adsr *x){
@@ -250,5 +250,5 @@ void adsr_tilde_setup(void){
     class_addbang(adsr_class, (t_method)adsr_bang);
     class_addfloat(adsr_class, (t_method)adsr_float);
     class_addmethod(adsr_class, (t_method)adsr_gate, gensym("gate"), A_DEFFLOAT, 0);
-    class_addmethod(adsr_class, (t_method)adsr_log, gensym("lin"), A_DEFFLOAT, 0);
+    class_addmethod(adsr_class, (t_method)adsr_lin, gensym("lin"), A_DEFFLOAT, 0);
 }
