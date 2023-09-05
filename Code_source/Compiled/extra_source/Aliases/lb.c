@@ -7,34 +7,13 @@ typedef struct _lb{
     t_object    x_ob;
     int         x_nouts;
     int         x_init;
+    int         x_fin;
+    t_clock    *x_clock; // clock for 'finalize' flag
     t_outlet  **x_outs;
     t_outlet   *x_outbuf[1];
 }t_lb;
 
 static t_class *lb_class;
-
-static void lb_loadbang(t_lb *x, t_float f){
-    if(x->x_init){
-        if((int)f == LB_INIT){ // == LB_INIT (1) and "-init"
-            int i = x->x_nouts;
-            while(i--)
-                outlet_bang(x->x_outs[i]);
-        }
-    }
-    else if((int)f == LB_LOAD){ // == LB_LOAD (0) and hasn't banged yet (next)
-        int j = x->x_nouts;
-        while(j--)
-            outlet_bang(x->x_outs[j]);
-    }
-}
-
-static void lb_click(t_lb *x, t_floatarg xpos,
-t_floatarg ypos, t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
-    xpos = ypos = shift = ctrl = alt = 0;
-    int i = x->x_nouts;
-    while(i--)
-        outlet_bang(x->x_outs[i]);
-}
 
 static void lb_bang(t_lb *x){
     int i = x->x_nouts;
@@ -42,15 +21,33 @@ static void lb_bang(t_lb *x){
         outlet_bang(x->x_outs[i]);
 }
 
+static void lb_loadbang(t_lb *x, t_float f){
+    if(x->x_init){
+        if((int)f == LB_INIT) // == LB_INIT (1) and "-init"
+            lb_bang(x);
+    }
+    else if((int)f == LB_LOAD){ // == LB_LOAD (0) and hasn't banged yet (next)
+        if(!x->x_fin)
+            lb_bang(x);
+        else
+            clock_delay(x->x_clock, 0);
+    }
+}
+
+static void lb_click(t_lb *x, t_floatarg xpos,
+t_floatarg ypos, t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
+    xpos = ypos = shift = ctrl = alt = 0;
+    lb_bang(x);
+}
+
 static void lb_anything(t_lb *x){
-    int i = x->x_nouts;
-    while(i--)
-        outlet_bang(x->x_outs[i]);
+    lb_bang(x);
 }
 
 static void lb_free(t_lb *x){
     if(x->x_outs != x->x_outbuf)
         freebytes(x->x_outs, x->x_nouts * sizeof(*x->x_outs));
+    clock_free(x->x_clock);
 }
 
 static void *lb_new(t_symbol *s, int argc, t_atom *argv){
@@ -58,7 +55,7 @@ static void *lb_new(t_symbol *s, int argc, t_atom *argv){
     t_lb *x = (t_lb *)pd_new(lb_class);
     int i, nouts = 1;
     t_outlet **outs;
-    x->x_init = 0;
+    x->x_init = x->x_fin = 0;
     t_float float_flag = 0;
 /////////////////////////////////////////////////////////////////////////////////////
     if(argc <= 2){
@@ -73,6 +70,10 @@ static void *lb_new(t_symbol *s, int argc, t_atom *argv){
                     t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
                     if(curarg == gensym("-init")){
                         x->x_init = 1;
+                        argc--, argv++;
+                    }
+                    else if(curarg == gensym("-fin")){
+                        x->x_fin = 1;
                         argc--, argv++;
                     }
                     else
@@ -99,6 +100,7 @@ static void *lb_new(t_symbol *s, int argc, t_atom *argv){
     x->x_outs = (outs ? outs : x->x_outbuf);
     for(i = 0; i < nouts; i++)
         x->x_outs[i] = outlet_new((t_object *)x, &s_bang);
+    x->x_clock = clock_new(x, (t_method)lb_bang);
     return(x);
 errstate:
     pd_error(x, "[lb]: improper args");
