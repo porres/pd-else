@@ -8,7 +8,7 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 
 
 ----------------------------------------------------------------------------
-1.0-0 Release Candidate 9 Pre/test release:
+1.0-0 Release Candidate 9:
 ----------------------------------------------------------------------------
 
 --------------------------------------
