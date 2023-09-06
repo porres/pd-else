@@ -26,8 +26,26 @@ int getPinValue(std::string arg) {
     return result;
 }
 
+std::string replaceString(std::string subject, const std::string& search,
+                          const std::string& replace) {
+    size_t pos = 0;
+    while((pos = subject.find(search, pos)) != std::string::npos) {
+         subject.replace(pos, search.length(), replace);
+         pos += replace.length();
+    }
+    return subject;
+}
+
+
 double getArgumentValue(std::string arg) {
     double result = 0.0f;
+    
+    arg = replaceString(arg, "p", "e-12");
+    arg = replaceString(arg, "n", "e-9");
+    arg = replaceString(arg, "u", "e-6");
+    arg = replaceString(arg, "m", "e-3");
+    arg = replaceString(arg, "k", "e3");
+    
     try {
         result = std::stod(arg);
     } catch (...) {
