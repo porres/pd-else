@@ -8,13 +8,13 @@ struct NetList
     NetList(int nodes) : nets(nodes), states(0)
     {
     }
-
+    
     void addComponent(IComponent * c)
     {
         c->setupNets(nets, states, c->getPinLocs());
         components.push_back(c);
     }
-
+    
     void buildSystem()
     {
         system.setSize(nets);
@@ -22,7 +22,7 @@ struct NetList
         {
             components[i]->stamp(system);
         }
-                
+        
         setStepScale(0);
         system.tStep = 0;
         
@@ -31,14 +31,14 @@ struct NetList
         
         initKLU();
     }
-
+    
     void setTimeStep(double tStepSize)
     {
         for(int i = 0; i < components.size(); ++i)
         {
             components[i]->scaleTime(system.tStep / tStepSize);
         }
-
+        
         system.tStep = tStepSize;
         double stepScale = 1. / system.tStep;
         setStepScale(stepScale);
@@ -65,17 +65,25 @@ struct NetList
         system.time += system.tStep;
         update();
     }
-
+    
     const MNASystem & getMNA() { return system; }
-
-    void clearOutput() { std::fill(system.output.begin(), system.output.end(), 0.0f); }
-    double getOutput(int idx) { return system.output[idx]; }
-    void setBlockDC(bool block_dc) { system.block_dc = block_dc;}
+    
+    void clearOutput() {
+        std::fill(system.output.begin(), system.output.end(), 0.0f);
+    }
+    
+    double getOutput(int idx) {
+        return system.output[idx];
+    }
+    
+    void setBlockDC(bool block_dc) {
+        system.block_dc = block_dc;
+    }
     
     double& addDynamicArgument(std::string arg)
     {
         size_t delimiterPos = arg.find("$s");
-
+        
         int idx = 0;
         // Check if the delimiter was found
         if (delimiterPos != std::string::npos) {
@@ -91,7 +99,7 @@ struct NetList
         return variableArgs.size();
     }
     
-    void setVariableArg(int idx, double value)
+    void setDynamicArgument(int idx, double value)
     {
         variableArgs[idx] = value;
     }
@@ -100,17 +108,17 @@ struct NetList
     {
         maxiter = iter;
     }
-
-        
+    
+    
 protected:
-        
+    
     std::map<int, double> variableArgs;
     
     int nets, states;
     ComponentList components;
-
+    
     MNASystem system;
-
+    
     klu_symbolic* Symbolic;
     klu_numeric* Numeric;
     klu_common Common;
@@ -133,7 +141,7 @@ protected:
             components[i]->update(system);
         }
     }
-
+    
     // return true if we're done
     bool newton()
     {
@@ -144,8 +152,8 @@ protected:
         }
         return done;
     }
-
-
+    
+    
     void updatePre()
     {
         for(int i = 0; i < nets; ++i)
@@ -153,9 +161,9 @@ protected:
             system.b[i].updatePre();
         }
         
-        for(int j = 0; j < nzpointers.size(); ++j)
+        for(int i = 0; i < nzpointers.size(); ++i)
         {
-            nzpointers[j]->updatePre();
+            nzpointers[i]->updatePre();
         }
     }
     
@@ -170,14 +178,15 @@ protected:
         // Full numeric factorization: Only needed once!
         Numeric = klu_factor (&AI[0], &AJ[0], getAValues(), Symbolic, &Common);
     }
-
+    
     void refactorKLU()
-    {        
+    {
         klu_free_symbolic(&Symbolic, &Common);
         klu_free_numeric(&Numeric, &Common);
         
         // Symbolic analysis
         Symbolic = klu_analyze (nets - 1, &AI[0], &AJ[0], &Common);
+        
         // Full numeric factorization: Only needed once!
         Numeric = klu_factor (&AI[0], &AJ[0], getAValues(), Symbolic, &Common);
     }
@@ -200,13 +209,12 @@ protected:
     {
         // Update our factorization or refactor if the last factorization failed
         klu_refactor (&AI[0], &AJ[0], getAValues(), Symbolic, Numeric, &Common);
-
+        
         // Solve the system!
         klu_solve (Symbolic, Numeric, nets - 1, 1, getBValues(), &Common);
-
+        
         for (size_t i = 1; i < nets; i++)
         {
-            //system.xPlot[i] = b[i - 1];
             system.b[i].lu = b[i - 1];
         }
     }
@@ -220,7 +228,7 @@ protected:
         AVal.clear();
         nzpointers.clear();
         int nonzero = 0;
-
+        
         for (size_t i = 1; i < nets; i++)
         {
             for (int j = 1; j < nets; j++)
@@ -229,7 +237,7 @@ protected:
                     nonzero++;
             }
         }
-
+        
         // Allocate memory for CSR format
         b.resize(nets - 1);
         AI.resize(nets);
@@ -239,17 +247,17 @@ protected:
         // Reset nonzeros
         nonzero = 0;
         AI[0] = 0;
-
+        
         // Create our CSR format
         for (size_t i = 1; i < nets; i++)
         {
             b[i - 1] = system.b[i].lu;
-
+            
             for (size_t j = 1; j < nets; j++)
             {
                 system.A[j][i].nonzero = false;
                 bool notzero = system.A[j][i].prelu != 0 || system.A[j][i].gdyn.size() || system.A[j][i].gtimed != 0;
-
+                
                 if (notzero)
                 {
                     system.A[j][i].nonzero = true;
@@ -259,7 +267,7 @@ protected:
                     nonzero++;
                 }
             }
-
+            
             AI[i] = nonzero;
         }
     }
@@ -271,10 +279,10 @@ protected:
         {
             AVal[i] = (*nzpointers[i]).lu;
         }
-
+        
         return &AVal[0];
     }
-
+    
     // List of all values in the B matrix
     double* getBValues()
     {
@@ -282,7 +290,7 @@ protected:
         {
             b[i - 1] = system.b[i].lu;
         }
-
+        
         return &b[0];
     }
 };

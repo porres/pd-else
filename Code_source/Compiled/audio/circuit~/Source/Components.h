@@ -14,14 +14,14 @@ constexpr double vThermal = 0.026;
 struct IComponent
 {
     virtual ~IComponent() {}
-
+    
     // return the number of pins for this component
     virtual int pinCount() = 0;
-
+    
     // return a pointer to array of pin locations
     // NOTE: these will eventually be GUI locations to be unified
     virtual const int* getPinLocs() const = 0;
-
+    
     // setup pins and calculate the size of the full netlist
     // the Component<> will handle this automatically
     //
@@ -29,22 +29,22 @@ struct IComponent
     //  - pins is an array of circuits nodes
     //
     virtual void setupNets(int & netSize, int & states, const int* pins) = 0;
-
+    
     // stamp constants into the matrix
     virtual void stamp(MNASystem& m) = 0;
-
+    
     // this is for allocating state variables
     virtual void setupStates(int & states) {}
-
+    
     // update state variables, only tagged nodes
     // this is intended for fixed-time compatible
     // testing to make sure we can code-gen stuff
     virtual void update(MNASystem& m) {}
-
+    
     // return true if we're done - will keep iterating
     // until all the components are happy
     virtual bool newton(MNASystem& m) { return true; }
-
+    
     // time-step change, for caps to fix their state-variables
     virtual void scaleTime(double told_per_new) {}
 };
@@ -53,26 +53,26 @@ template <int nPins = 0, int nInternalNets = 0>
 struct Component : IComponent
 {
     static const int nNets = nPins + nInternalNets;
-
+    
     int pinLoc[nPins];
     int nets[nNets];
-
+    
     int pinCount() final { return nPins; }
-
+    
     const int* getPinLocs() const final { return pinLoc; }
-
+    
     void setupNets(int & netSize, int & states, const int* pins) final
     {
         for(int i = 0; i < nPins; ++i)
         {
             nets[i] = pins[i];
         }
-
+        
         for(int i = 0; i < nInternalNets; ++i)
         {
             nets[nPins + i] = netSize++;
         }
-
+        
         setupStates(states);
     }
 };
@@ -80,13 +80,13 @@ struct Component : IComponent
 struct Resistor : Component<2>
 {
     double  r;
-
+    
     Resistor(double r, int l0, int l1) : r(r)
     {
         pinLoc[0] = l0;
         pinLoc[1] = l1;
     }
-
+    
     void stamp(MNASystem& m) final
     {
         double g = 1. / r;
@@ -101,13 +101,13 @@ struct VariableResistor : Component<2>
 {
     double& r;
     double g, g_negative;
-
+    
     VariableResistor(double& r, int l0, int l1) : r(r)
     {
         pinLoc[0] = l0;
         pinLoc[1] = l1;
     }
-
+    
     void stamp(MNASystem& m) final
     {
         g = 1. / std::max(r, 1.0);
@@ -132,16 +132,16 @@ struct Capacitor : Component<2, 1>
     double c;
     double stateVar;
     double voltage;
-
+    
     Capacitor(double c, int l0, int l1) : c(c)
     {
         pinLoc[0] = l0;
         pinLoc[1] = l1;
-
+        
         stateVar = 0;
         voltage = 0;
     }
-
+    
     void stamp(MNASystem& m) final
     {
         // we can use a trick here, to get the capacitor to
@@ -166,40 +166,40 @@ struct Capacitor : Component<2, 1>
         // the "half time-step" error here means that our state
         // is 2*c*v - i/t but we fix this for display in update
         // and correct the current-part on time-step changes
-
+        
         // trapezoidal needs another factor of two for the g
         // since c*(v1 - v0) = (i1 + i0)/(2*t), where t = 1/T
         double g = 2*c;
-
+        
         m.stampTimed(+1, nets[0], nets[2]);
         m.stampTimed(-1, nets[1], nets[2]);
-
+        
         m.stampTimed(-g, nets[0], nets[0]);
         m.stampTimed(+g, nets[0], nets[1]);
         m.stampTimed(+g, nets[1], nets[0]);
         m.stampTimed(-g, nets[1], nets[1]);
-
+        
         m.stampStatic(+2*g, nets[2], nets[0]);
         m.stampStatic(-2*g, nets[2], nets[1]);
-
+        
         m.stampStatic(-1, nets[2], nets[2]);
-
+        
         // see the comment about v:C[%d] below
         m.b[nets[2]].gdyn.push_back(&stateVar);
     }
-
+    
     void update(MNASystem& m) final
     {
         stateVar = m.b[nets[2]].lu;
-
+        
         // solve legit voltage from the pins
         voltage = m.b[nets[0]].lu - m.b[nets[1]].lu;
-
+        
         // then we can store this for display here
         // since this value won't be used at this point
         m.b[nets[2]].lu = c*voltage;
     }
-
+    
     void scaleTime(double told_per_new) final
     {
         // the state is 2*c*voltage - i/t0
@@ -225,11 +225,11 @@ struct Inductor : Component<2, 1>
     {
         pinLoc[0] = l0;
         pinLoc[1] = l1;
-
+        
         stateVar = 0;
         voltage = 0;
     }
-
+    
     void stamp(MNASystem& m) final
     {
         m.stampStatic(+1, nets[0], nets[2]); // Naar A->B system
@@ -241,7 +241,7 @@ struct Inductor : Component<2, 1>
         m.A[nets[2]][nets[2]].gdyn.push_back(&g);
         m.b[nets[2]].gdyn.push_back(&stateVar);
     }
-
+    
     void update(MNASystem& m) final
     {
         // solve legit voltage from the pins
@@ -252,7 +252,7 @@ struct Inductor : Component<2, 1>
         else g = 0;
         stateVar = voltage + g * m.b[nets[2]].lu;
     }
-
+    
     void scaleTime(double told_per_new) final
     {
         // I still have to implement this. This function would allow the inductor to remain stable when changing time-steps
@@ -263,21 +263,21 @@ struct Inductor : Component<2, 1>
 struct Voltage : Component<2, 1>
 {
     double v;
-
+    
     Voltage(double v, int l0, int l1) : v(v)
     {
         pinLoc[0] = l0;
         pinLoc[1] = l1;
     }
-
+    
     void stamp(MNASystem& m) final
     {
         m.stampStatic(-1, nets[0], nets[2]);
         m.stampStatic(+1, nets[1], nets[2]);
-
+        
         m.stampStatic(+1, nets[2], nets[0]);
         m.stampStatic(-1, nets[2], nets[1]);
-
+        
         m.b[nets[2]].g = v;
     }
 };
@@ -293,7 +293,7 @@ struct Probe : Component<2, 1>
         {
             prevInSample = state;
         }
-
+        
         // Process a new input sample and return the filtered sample
         double filter(double inputSample) {
             double outputSample = inputSample - prevInSample + alpha * prevOutSample;
@@ -301,7 +301,7 @@ struct Probe : Component<2, 1>
             prevOutSample = outputSample;
             return outputSample;
         }
-
+        
     private:
         double alpha = 0.9997;       // Alpha coefficient for the filter
         double prevInSample = 0.0;  // Previous sample (state)
@@ -316,7 +316,7 @@ struct Probe : Component<2, 1>
         pinLoc[0] = l0;
         pinLoc[1] = l1;
     }
-
+    
     void stamp(MNASystem& m) final
     {
         m.output.resize(outChannel + 1, 0.0);
@@ -325,7 +325,7 @@ struct Probe : Component<2, 1>
         m.stampStatic(-1, nets[2], nets[1]);
         m.stampStatic(-1, nets[2], nets[2]);
     }
-
+    
     void update(MNASystem& m)
     {
         if(!initialised)
@@ -340,7 +340,7 @@ struct Probe : Component<2, 1>
         else {
             m.output[outChannel] += m.b[nets[2]].lu;
         }
-
+        
     }
 };
 
@@ -348,23 +348,23 @@ struct Probe : Component<2, 1>
 struct VariableVoltage : Component<2,1>
 {
     double& v;
-
+    
     VariableVoltage(double& v, int l0, int l1) : v(v)
     {
         pinLoc[0] = l0;
         pinLoc[1] = l1;
     }
-
+    
     void stamp(MNASystem& m) final
     {
         // this is identical to voltage source
         // except voltage is dynanic
         m.stampStatic(-1, nets[0], nets[2]);
         m.stampStatic(+1, nets[1], nets[2]);
-
+        
         m.stampStatic(+1, nets[2], nets[0]);
         m.stampStatic(-1, nets[2], nets[1]);
-
+        
         m.b[nets[2]].gdyn.push_back(&v);
     }
 };
@@ -375,7 +375,7 @@ struct JunctionPN
 {
     // variables
     double geq, ieq, veq;
-
+    
     // parameters
     double is, nvt, rnvt, vcrit;
 };
@@ -398,7 +398,7 @@ void linearizeJunctionPN(JunctionPN & pn, double v)
     double e = pn.is * exp(v * pn.rnvt);
     double i = e - pn.is + gMin * v;
     double g = e * pn.rnvt + gMin;
-
+    
     pn.geq = g;
     pn.ieq = v*g - i;
     pn.veq = v;
@@ -409,47 +409,47 @@ bool newtonJunctionPN(JunctionPN & pn, double v)
 {
     double dv = v - pn.veq;
     if(fabs(dv) < vTolerance) return true;
-
+    
     // check critical voltage and adjust voltage if over
     if(v > pn.vcrit)
     {
         // this formula comes from Qucs documentation
         v = pn.veq + pn.nvt*log((std::max)(pn.is, 1+dv*pn.rnvt));
     }
-
+    
     linearizeJunctionPN(pn, v);
-
+    
     return false;
 }
 
 struct Diode : Component<2, 2>
 {
     JunctionPN  pn;
-
+    
     // should make these parameters
     double rs;
-
+    
     // l0 -->|-- l1 -- parameters default to approx 1N4148
     Diode(int l0, int l1,
-        double rs = 10., double is = 35e-12, double n = 1.24)
-        : rs(rs)
+          double rs = 10., double is = 35e-12, double n = 1.24)
+    : rs(rs)
     {
         pinLoc[0] = l0;
         pinLoc[1] = l1;
-
+        
         initJunctionPN(pn, is, n);
-
+        
         // FIXME: move init to some restart routine?
-
+        
         // initial condition v = 0
         linearizeJunctionPN(pn, 0);
     }
-
+    
     bool newton(MNASystem& m) final
     {
         return newtonJunctionPN(pn, m.b[nets[2]].lu);
     }
-
+    
     void stamp(MNASystem& m) final
     {
         // Diode could be built with 3 extra nodes:
@@ -493,13 +493,13 @@ struct Diode : Component<2, 2>
         m.stampStatic(-1, nets[3], nets[0]);
         m.stampStatic(+1, nets[3], nets[1]);
         m.stampStatic(+1, nets[3], nets[2]);
-
+        
         m.stampStatic(+1, nets[0], nets[3]);
         m.stampStatic(-1, nets[1], nets[3]);
         m.stampStatic(-1, nets[2], nets[3]);
-
+        
         m.stampStatic(rs, nets[3], nets[3]);
-
+        
         m.A[nets[2]][nets[2]].gdyn.push_back(&pn.geq);
         m.b[nets[2]].gdyn.push_back(&pn.ieq);
     }
@@ -509,37 +509,37 @@ struct BJT : Component<3, 4>
 {
     // emitter and collector junctions
     JunctionPN  pnC, pnE;
-
+    
     // forward and reverse alpha
     double af, ar, rsbc, rsbe;
-
+    
     bool pnp;
-
+    
     BJT(int b, int c, int e, bool pnp = false) : pnp(pnp)
     {
         pinLoc[0] = b;
         pinLoc[1] = e;
         pinLoc[2] = c;
-
+        
         // this attempts a 2n3904-style small-signal
         // transistor, although the values are a bit
         // arbitrarily set to "something reasonable"
-
+        
         // forward and reverse beta
         double bf = 220;
         double br = 20;
-
+        
         // forward and reverse alpha
         af = bf / (1 + bf);
         ar = br / (1 + br);
-
+        
         // these are just rb+re and rb+rc
         // this is not necessarily the best way to
         // do anything, but having junction series
         // resistances helps handle degenerate cases
         rsbc = 5.8371;
         rsbe = 8.49471;
-
+        
         //
         // the basic rule is that:
         //  af * ise = ar * isc = is
@@ -551,17 +551,17 @@ struct BJT : Component<3, 4>
         double n = 1.24;
         initJunctionPN(pnE, is / af, n);
         initJunctionPN(pnC, is / ar, n);
-
+        
         linearizeJunctionPN(pnE, 0);
         linearizeJunctionPN(pnC, 0);
     }
-
+    
     bool newton(MNASystem& m) final
     {
         return newtonJunctionPN(pnC, m.b[nets[3]].lu)
-             && newtonJunctionPN(pnE, m.b[nets[4]].lu);
+        && newtonJunctionPN(pnE, m.b[nets[4]].lu);
     }
-
+    
     void stamp(MNASystem& m) final
     {
         // The basic idea here is the same as with diodes
@@ -589,19 +589,19 @@ struct BJT : Component<3, 4>
         // This works just as well, but should be kept
         // in mind when fitting particular transistors.
         //
-
+        
         // diode currents to external base
         m.stampStatic(1-ar, nets[0], nets[5]);
         m.stampStatic(1-af, nets[0], nets[6]);
-
+        
         // diode currents to external collector and emitter
         m.stampStatic(-1, nets[1], nets[5]);
         m.stampStatic(-1, nets[2], nets[6]);
-
+        
         // series resistances
         m.stampStatic(rsbc, nets[5], nets[5]);
         m.stampStatic(rsbe, nets[6], nets[6]);
-
+        
         // current - junction connections
         // for the PNP case we flip the signs of these
         // to flip the diode junctions wrt. the above
@@ -609,36 +609,36 @@ struct BJT : Component<3, 4>
         {
             m.stampStatic(-1, nets[5], nets[3]);
             m.stampStatic(+1, nets[3], nets[5]);
-
+            
             m.stampStatic(-1, nets[6], nets[4]);
             m.stampStatic(+1, nets[4], nets[6]);
-
+            
         }
         else
         {
             m.stampStatic(+1, nets[5], nets[3]);
             m.stampStatic(-1, nets[3], nets[5]);
-
+            
             m.stampStatic(+1, nets[6], nets[4]);
             m.stampStatic(-1, nets[4], nets[6]);
         }
-
+        
         // external voltages to collector current
         m.stampStatic(-1, nets[5], nets[0]);
         m.stampStatic(+1, nets[5], nets[1]);
-
+        
         // external voltages to emitter current
         m.stampStatic(-1, nets[6], nets[0]);
         m.stampStatic(+1, nets[6], nets[2]);
-
+        
         // source transfer currents to external pins
         m.stampStatic(+ar, nets[2], nets[5]);
         m.stampStatic(+af, nets[1], nets[6]);
-
+        
         // dynamic variables
         m.A[nets[3]][nets[3]].gdyn.push_back(&pnC.geq);
         m.b[nets[3]].gdyn.push_back(&pnC.ieq);
-
+        
         m.A[nets[4]][nets[4]].gdyn.push_back(&pnE.geq);
         m.b[nets[4]].gdyn.push_back(&pnE.ieq);
     }
@@ -647,7 +647,7 @@ struct BJT : Component<3, 4>
 struct Transformer final : Component<4, 2>
 {
     double b;
-
+    
     Transformer(double scale, int a, int b, int c, int d) : b(scale)
     {
         pinLoc[0] = a;
@@ -655,8 +655,8 @@ struct Transformer final : Component<4, 2>
         pinLoc[2] = c;
         pinLoc[3] = d;
     }
-
-
+    
+    
     void stamp(MNASystem & m)
     {
         m.stampStatic(1, nets[5], nets[3]);
@@ -675,19 +675,19 @@ struct Transformer final : Component<4, 2>
 
 struct OpAmp final : Component<3, 1>
 {
-
+    
     double amp;
     double g, gv, ngv;
     double Uout, Uin;
     double v, vmax;
-
+    
     OpAmp(double G, double UMax, int a, int b, int c) : g(G), vmax(UMax)
     {
         pinLoc[0] = a;
         pinLoc[1] = b;
         pinLoc[2] = c;
     }
-
+    
     void stamp(MNASystem & m)
     {
         // http://qucs.sourceforge.net/tech/node67.html explains all this
@@ -724,7 +724,7 @@ struct Potentiometer final : Component<3, 0>
         pinLoc[1] = vOut;
         pinLoc[2] = vInvOut;
     }
-
+    
     void stamp(MNASystem & m)
     {
         g = r * 0.5;
@@ -748,18 +748,18 @@ struct Potentiometer final : Component<3, 0>
         ng = -g;
         ing = -ig;
     }
-
+    
 };
 
 
 
 /*
-struct Gyrator final : Component<4>
-{
-    double b;
-
-    Gyrator(ValueTree boxTree, std::vector<String> arguments, std::vector<int> nodes, std::vector<int> pdNodes = std::vector<int>());
-
-    void stamp(MNASystem & m);
-
-}; */
+ struct Gyrator final : Component<4>
+ {
+ double b;
+ 
+ Gyrator(ValueTree boxTree, std::vector<String> arguments, std::vector<int> nodes, std::vector<int> pdNodes = std::vector<int>());
+ 
+ void stamp(MNASystem & m);
+ 
+ }; */

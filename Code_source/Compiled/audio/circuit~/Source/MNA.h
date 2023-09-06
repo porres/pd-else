@@ -26,20 +26,20 @@ struct MNACell
     bool nonzero = false;
     // pointers to dynamic variables, added in once per solve
     std::vector<double*> gdyn;
-
+    
     double  lu, prelu;  // lu-solver values and matrix pre-LU cache
-
+    
     void clear()
     {
         g = 0;
         gtimed = 0;
     }
-
+    
     void initLU(double stepScale)
     {
         prelu = g + gtimed * stepScale;
     }
-
+    
     // restore matrix state and update dynamic values
     void updatePre()
     {
@@ -59,10 +59,10 @@ struct MNASystem
 {
     typedef std::vector<MNACell>    MNAVector;
     typedef std::vector<MNAVector>  MNAMatrix;
-
+    
     MNAMatrix   A;
     MNAVector   b;
-
+    
     double tStep = 0.0f;
     double time = 0.0f;
     std::vector<double> output;
@@ -77,24 +77,24 @@ struct MNASystem
     {
         A.resize(n);
         b.resize(n);
-
+        
         for(unsigned i = 0; i < n; ++i)
         {
             b[i].clear();
             A[i].resize(n);
-
+            
             for(unsigned j = 0; j < n; ++j)
             {
                 A[i][j].clear();
             }
         }
     }
-
+    
     void stampTimed(double g, int r, int c)
     {
         A[r][c].gtimed += g;
     }
-
+    
     void stampStatic(double g, int r, int c)
     {
         A[r][c].g += g;
