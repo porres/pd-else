@@ -16,7 +16,7 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/Libraries/pd.build/pd.cmake)
 project(pd-circuit)
 
 # Define the path to the Pure Data sources (2):
-set_pd_sources(${CMAKE_CURRENT_SOURCE_DIR}/Libraries/pure-data/src)
+set_pd_sources(${CMAKE_CURRENT_SOURCE_DIR}/Libraries)
 
 # Set the output path for the externals (3):  
 set_pd_external_path(${CMAKE_CURRENT_SOURCE_DIR}/binaries/)
@@ -33,6 +33,6 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/Libraries/")
 add_library(klu STATIC ${KLU_SOURCES})
 
 add_library(circuit-simulator STATIC ${CMAKE_CURRENT_SOURCE_DIR}/Source/Simulator.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/Simulator.h ${CMAKE_CURRENT_SOURCE_DIR}/Source/Netlist.h ${CMAKE_CURRENT_SOURCE_DIR}/Source/MNA.h ${CMAKE_CURRENT_SOURCE_DIR}/Source/Components.h)
-target_include_directories(circuit-simulator PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Libraries/pure-data/src)
+target_include_directories(circuit-simulator PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Libraries)
 target_link_libraries(pd-circuit circuit-simulator klu)
 
