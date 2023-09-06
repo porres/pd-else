@@ -265,8 +265,6 @@ wrap2.class.sources := Code_source/Compiled/control/wrap2.c
 wrap2~.class.sources := Code_source/Compiled/audio/wrap2~.c
 zerocross~.class.sources := Code_source/Compiled/audio/zerocross~.c
 
-aubio := $(wildcard Code_source/shared/aubio/src/*/*.c) $(wildcard Code_source/shared/aubio/src/*.c)
-    beat~.class.sources := Code_source/Compiled/audio/beat~.c $(aubio)
 
 magic := Code_source/shared/magic.c
     sine~.class.sources := Code_source/Compiled/audio/sine~.c $(magic)
@@ -419,6 +417,11 @@ sfz-install:
     
 sfz-clean:
 	$(MAKE) -C Code_source/Compiled/audio/sfz~ clean
+
+.PHONY: circuit
+
+circuit:
+	cd Code_source/Compiled/audio/circuit~ && ./build.sh
 
 install: installplus
 

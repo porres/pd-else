@@ -1,0 +1,1394 @@
+EXPORTS
+    ABORT @1
+    IsDebuggerPresent_ @2 DATA
+    PaAsio_GetAvailableBufferSizes @3
+    PaAsio_GetInputChannelName @4
+    PaAsio_GetOutputChannelName @5
+    PaAsio_Initialize @6
+    PaAsio_SetStreamSampleRate @7
+    PaAsio_ShowControlPanel @8
+    PaUtil_AdvanceRingBufferReadIndex @9
+    PaUtil_AdvanceRingBufferWriteIndex @10
+    PaUtil_AllocateMemory @11
+    PaUtil_BeginBufferProcessing @12
+    PaUtil_BeginCpuLoadMeasurement @13
+    PaUtil_CopyInput @14
+    PaUtil_CopyOutput @15
+    PaUtil_CountCurrentlyAllocatedBlocks @16
+    PaUtil_CreateAllocationGroup @17
+    PaUtil_DestroyAllocationGroup @18
+    PaUtil_DeviceIndexToHostApiDeviceIndex @19
+    PaUtil_DummyGetCpuLoad @20
+    PaUtil_DummyGetReadAvailable @21
+    PaUtil_DummyGetWriteAvailable @22
+    PaUtil_DummyRead @23
+    PaUtil_DummyWrite @24
+    PaUtil_EndBufferProcessing @25
+    PaUtil_EndCpuLoadMeasurement @26
+    PaUtil_FlushRingBuffer @27
+    PaUtil_FreeAllAllocations @28
+    PaUtil_FreeMemory @29
+    PaUtil_Generate16BitTriangularDither @30
+    PaUtil_GenerateFloatTriangularDither @31
+    PaUtil_GetBufferProcessorInputLatencyFrames @32
+    PaUtil_GetBufferProcessorOutputLatencyFrames @33
+    PaUtil_GetCpuLoad @34
+    PaUtil_GetHostApiRepresentation @35
+    PaUtil_GetRingBufferReadAvailable @36
+    PaUtil_GetRingBufferReadRegions @37
+    PaUtil_GetRingBufferWriteAvailable @38
+    PaUtil_GetRingBufferWriteRegions @39
+    PaUtil_GetTime @40
+    PaUtil_GroupAllocateMemory @41
+    PaUtil_GroupFreeMemory @42
+    PaUtil_InitializeBufferProcessor @43
+    PaUtil_InitializeClock @44
+    PaUtil_InitializeCpuLoadMeasurer @45
+    PaUtil_InitializeRingBuffer @46
+    PaUtil_InitializeStreamInterface @47
+    PaUtil_InitializeStreamRepresentation @48
+    PaUtil_InitializeTriangularDitherState @49
+    PaUtil_IsBufferProcessorOutputEmpty @50
+    PaUtil_ReadRingBuffer @51
+    PaUtil_ResetBufferProcessor @52
+    PaUtil_ResetCpuLoadMeasurer @53
+    PaUtil_SelectClosestAvailableFormat @54
+    PaUtil_SelectConverter @55
+    PaUtil_SelectZeroer @56
+    PaUtil_Set2ndInputChannel @57
+    PaUtil_Set2ndInputFrameCount @58
+    PaUtil_Set2ndInterleavedInputChannels @59
+    PaUtil_Set2ndInterleavedOutputChannels @60
+    PaUtil_Set2ndNonInterleavedInputChannel @61
+    PaUtil_Set2ndNonInterleavedOutputChannel @62
+    PaUtil_Set2ndOutputChannel @63
+    PaUtil_Set2ndOutputFrameCount @64
+    PaUtil_SetInputChannel @65
+    PaUtil_SetInputFrameCount @66
+    PaUtil_SetInterleavedInputChannels @67
+    PaUtil_SetInterleavedOutputChannels @68
+    PaUtil_SetLastHostErrorInfo @69
+    PaUtil_SetNoInput @70
+    PaUtil_SetNoOutput @71
+    PaUtil_SetNonInterleavedInputChannel @72
+    PaUtil_SetNonInterleavedOutputChannel @73
+    PaUtil_SetOutputChannel @74
+    PaUtil_SetOutputFrameCount @75
+    PaUtil_TerminateBufferProcessor @76
+    PaUtil_TerminateStreamRepresentation @77
+    PaUtil_ValidateStreamPointer @78
+    PaUtil_WriteRingBuffer @79
+    PaUtil_ZeroOutput @80
+    PaWinMME_GetStreamInputHandle @81
+    PaWinMME_GetStreamInputHandleCount @82
+    PaWinMME_GetStreamOutputHandle @83
+    PaWinMME_GetStreamOutputHandleCount @84
+    PaWinMme_Initialize @85
+    PaWinUtil_CoInitialize @86
+    PaWinUtil_CoUninitialize @87
+    PaWin_DefaultChannelMask @88
+    PaWin_InitializeWaveFormatEx @89
+    PaWin_InitializeWaveFormatExtensible @90
+    PaWin_SampleFormatToLinearWaveFormatTag @91
+    Pa_AbortStream @92
+    Pa_CloseStream @93
+    Pa_GetDefaultHostApi @94
+    Pa_GetDefaultInputDevice @95
+    Pa_GetDefaultOutputDevice @96
+    Pa_GetDeviceCount @97
+    Pa_GetDeviceInfo @98
+    Pa_GetErrorText @99
+    Pa_GetHostApiCount @100
+    Pa_GetHostApiInfo @101
+    Pa_GetLastHostErrorInfo @102
+    Pa_GetSampleSize @103
+    Pa_GetStreamCpuLoad @104
+    Pa_GetStreamInfo @105
+    Pa_GetStreamReadAvailable @106
+    Pa_GetStreamTime @107
+    Pa_GetStreamWriteAvailable @108
+    Pa_GetVersion @109
+    Pa_GetVersionText @110
+    Pa_HostApiDeviceIndexToDeviceIndex @111
+    Pa_HostApiTypeIdToHostApiIndex @112
+    Pa_Initialize @113
+    Pa_IsFormatSupported @114
+    Pa_IsStreamActive @115
+    Pa_IsStreamStopped @116
+    Pa_OpenDefaultStream @117
+    Pa_OpenStream @118
+    Pa_ReadStream @119
+    Pa_SetStreamFinishedCallback @120
+    Pa_Sleep @121
+    Pa_StartStream @122
+    Pa_StopStream @123
+    Pa_Terminate @124
+    Pa_WriteStream @125
+    Pm_Abort @126
+    Pm_Close @127
+    Pm_CountDevices @128
+    Pm_Dequeue @129
+    Pm_Enqueue @130
+    Pm_GetDefaultInputDeviceID @131
+    Pm_GetDefaultOutputDeviceID @132
+    Pm_GetDeviceInfo @133
+    Pm_GetErrorText @134
+    Pm_GetHostErrorText @135
+    Pm_HasHostError @136
+    Pm_Initialize @137
+    Pm_OpenInput @138
+    Pm_OpenOutput @139
+    Pm_Poll @140
+    Pm_QueueCreate @141
+    Pm_QueueDestroy @142
+    Pm_QueueEmpty @143
+    Pm_QueueFull @144
+    Pm_QueuePeek @145
+    Pm_Read @146
+    Pm_SetChannelMask @147
+    Pm_SetFilter @148
+    Pm_SetOverflow @149
+    Pm_Synchronize @150
+    Pm_Terminate @151
+    Pm_Write @152
+    Pm_WriteShort @153
+    Pm_WriteSysEx @154
+    Pt_Sleep @155
+    Pt_Start @156
+    Pt_Started @157
+    Pt_Stop @158
+    Pt_Time @159
+    StrTCpyToC @160
+    StrTLen @161
+    _GCC_specific_handler @162
+    _Unwind_Backtrace @163
+    _Unwind_DeleteException @164
+    _Unwind_FindEnclosingFunction @165
+    _Unwind_ForcedUnwind @166
+    _Unwind_GetCFA @167
+    _Unwind_GetDataRelBase @168
+    _Unwind_GetGR @169
+    _Unwind_GetIP @170
+    _Unwind_GetIPInfo @171
+    _Unwind_GetLanguageSpecificData @172
+    _Unwind_GetRegionStart @173
+    _Unwind_GetTextRelBase @174
+    _Unwind_RaiseException @175
+    _Unwind_Resume @176
+    _Unwind_Resume_or_Rethrow @177
+    _Unwind_SetGR @178
+    _Unwind_SetIP @179
+    _Z10ASIOFuturelPv @180
+    _Z14loadAsioDriverPc @181
+    _Z15ASIOGetChannelsPlS_ @182
+    _Z15ASIOOutputReadyv @183
+    _Z16ASIOControlPanelv @184
+    _Z16ASIOGetLatenciesPlS_ @185
+    _Z17ASIOCanSampleRated @186
+    _Z17ASIOCreateBuffersP14ASIOBufferInfollP13ASIOCallbacks @187
+    _Z17ASIOGetBufferSizePlS_S_S_ @188
+    _Z17ASIOGetSampleRatePd @189
+    _Z17ASIOSetSampleRated @190
+    _Z17AsioSampleTypeLOGl @191
+    _Z18ASIODisposeBuffersv @192
+    _Z18ASIOGetChannelInfoP15ASIOChannelInfo @193
+    _Z18ASIOSetClockSourcel @194
+    _Z19ASIOGetClockSourcesP15ASIOClockSourcePl @195
+    _Z21ASIOGetSamplePositionP11ASIOSamplesP13ASIOTimeStamp @196
+    _Z8ASIOExitv @197
+    _Z8ASIOInitP14ASIODriverInfo @198
+    _Z8ASIOStopv @199
+    _Z9ASIOStartv @200
+    _ZN11AsioDrivers10loadDriverEPc @201
+    _ZN11AsioDrivers14getDriverNamesEPPcl @202
+    _ZN11AsioDrivers19removeCurrentDriverEv @203
+    _ZN11AsioDrivers20getCurrentDriverNameEPc @204
+    _ZN11AsioDriversC1Ev @205
+    _ZN11AsioDriversC2Ev @206
+    _ZN11AsioDriversD1Ev @207
+    _ZN11AsioDriversD2Ev @208
+    _ZN14AsioDriverList13asioGetNumDevEv @209
+    _ZN14AsioDriverList14asioOpenDriverEiPPv @210
+    _ZN14AsioDriverList15asioCloseDriverEi @211
+    _ZN14AsioDriverList17asioGetDriverNameEiPci @212
+    _ZN14AsioDriverList17asioGetDriverPathEiPci @213
+    _ZN14AsioDriverList18asioGetDriverCLSIDEiP5_GUID @214
+    _ZN14AsioDriverListC1Ev @215
+    _ZN14AsioDriverListC2Ev @216
+    _ZN14AsioDriverListD1Ev @217
+    _ZN14AsioDriverListD2Ev @218
+    _ZTISt9bad_alloc @219 DATA
+    _ZTISt9exception @220 DATA
+    _ZTSSt9bad_alloc @221 DATA
+    _ZTSSt9exception @222 DATA
+    abs_tilde_perform @223
+    alist_class @224 DATA
+    array_define_class @225 DATA
+    array_define_save @226
+    array_free @227
+    array_getcoordinate @228
+    array_getfields @229
+    array_new @230
+    array_redraw @231
+    array_resize @232
+    array_resize_and_redraw @233
+    asioDrivers @234 DATA
+    atoif @235
+    atom_gensym @236
+    atom_getfloat @237
+    atom_getfloatarg @238
+    atom_getint @239
+    atom_getintarg @240
+    atom_getsymbol @241
+    atom_getsymbolarg @242
+    atom_string @243
+    audio_isopen @244
+    audio_shouldkeepopen @245
+    bang_setup @246
+    binbuf_add @247
+    binbuf_addbinbuf @248
+    binbuf_addsemi @249
+    binbuf_addv @250
+    binbuf_clear @251
+    binbuf_duplicate @252
+    binbuf_eval @253
+    binbuf_evalfile @254
+    binbuf_expanddollsym @255
+    binbuf_free @256
+    binbuf_getnatom @257
+    binbuf_gettext @258
+    binbuf_getvec @259
+    binbuf_new @260
+    binbuf_print @261
+    binbuf_read @262
+    binbuf_read_via_canvas @263
+    binbuf_read_via_path @264
+    binbuf_realizedollsym @265
+    binbuf_resize @266
+    binbuf_restore @267
+    binbuf_savetext @268
+    binbuf_text @269
+    binbuf_write @270
+    bitrv2 @271
+    bitrv208 @272
+    bitrv208neg @273
+    bitrv216 @274
+    bitrv216neg @275
+    bitrv2conj @276
+    block_tilde_setup @277
+    bng_check_minmax @278
+    bng_draw @279
+    bng_draw_config @280
+    bng_draw_erase @281
+    bng_draw_io @282
+    bng_draw_move @283
+    bng_draw_new @284
+    bng_draw_select @285
+    bng_draw_update @286
+    bng_widgetbehavior @287 DATA
+    bug @288
+    canvas_add_for_class @289
+    canvas_addinlet @290
+    canvas_addoutlet @291
+    canvas_atom @292
+    canvas_bng @293
+    canvas_class @294 DATA
+    canvas_closebang @295
+    canvas_connect @296
+    canvas_create_editor @297
+    canvas_dataproperties @298
+    canvas_declare @299
+    canvas_deletelinesfor @300
+    canvas_deletelinesforio @301
+    canvas_destroy_editor @302
+    canvas_dirty @303
+    canvas_disconnect @304
+    canvas_doaddtemplate @305
+    canvas_doclick @306
+    canvas_doconnect @307
+    canvas_dodsp @308
+    canvas_drawredrect @309
+    canvas_dspstate @310 DATA
+    canvas_editmode @311
+    canvas_editor_for_class @312
+    canvas_fattensub @313
+    canvas_finderror @314
+    canvas_fixlinesfor @315
+    canvas_floatatom @316
+    canvas_free @317
+    canvas_getargs @318
+    canvas_getblock @319
+    canvas_getcurrent @320
+    canvas_getcurrentdir @321
+    canvas_getdir @322
+    canvas_getdollarzero @323
+    canvas_getenv @324
+    canvas_getindex @325
+    canvas_getrootfor @326
+    canvas_hdial @327
+    canvas_hitbox @328
+    canvas_hradio @329
+    canvas_hslider @330
+    canvas_iemguis @331
+    canvas_initbang @332
+    canvas_isabstraction @333
+    canvas_isconnected @334
+    canvas_istable @335
+    canvas_key @336
+    canvas_loadbang @337
+    canvas_loadbangsubpatches @338
+    canvas_logerror @339
+    canvas_makebindsym @340
+    canvas_makefilename @341
+    canvas_map @342
+    canvas_menuarray @343
+    canvas_menuclose @344
+    canvas_motion @345
+    canvas_mouse @346
+    canvas_mouseup @347
+    canvas_msg @348
+    canvas_mycnv @349
+    canvas_new @350
+    canvas_noundo @351
+    canvas_numbox @352
+    canvas_obj @353
+    canvas_objfor @354
+    canvas_open @355
+    canvas_path_iterate @356
+    canvas_popabstraction @357
+    canvas_print @358
+    canvas_properties @359
+    canvas_readscalar @360
+    canvas_readwrite_for_class @361
+    canvas_realizedollar @362
+    canvas_redraw @363
+    canvas_redrawallfortemplate @364
+    canvas_redrawallfortemplatecanvas @365
+    canvas_reflecttitle @366
+    canvas_reload @367
+    canvas_rename @368
+    canvas_resortinlets @369
+    canvas_resortoutlets @370
+    canvas_restore @371
+    canvas_restoreconnections @372
+    canvas_resume_dsp @373
+    canvas_rminlet @374
+    canvas_rmoutlet @375
+    canvas_savedeclarationsto @376
+    canvas_selectinrect @377
+    canvas_setargs @378
+    canvas_setcurrent @379
+    canvas_setcursor @380
+    canvas_setdeleting @381
+    canvas_setgraph @382
+    canvas_setundo @383
+    canvas_showtext @384
+    canvas_startmotion @385
+    canvas_stowconnections @386
+    canvas_suspend_dsp @387
+    canvas_symbolatom @388
+    canvas_toggle @389
+    canvas_unsetcurrent @390
+    canvas_update_dsp @391
+    canvas_updatewindowlist @392
+    canvas_vdial @393
+    canvas_vis @394
+    canvas_vradio @395
+    canvas_vslider @396
+    canvas_vumeter @397
+    canvas_whichfind @398 DATA
+    canvas_writescalar @399
+    caps @400 DATA
+    cdft @401
+    cftb040 @402
+    cftb1st @403
+    cftbsub @404
+    cftf040 @405
+    cftf081 @406
+    cftf082 @407
+    cftf161 @408
+    cftf162 @409
+    cftf1st @410
+    cftfsub @411
+    cftfx41 @412
+    cftleaf @413
+    cftmdl1 @414
+    cftmdl2 @415
+    cftrec4 @416
+    cfttree @417
+    cftx020 @418
+    change_setup @419
+    class_addanything @420
+    class_addbang @421
+    class_addcreator @422
+    class_addlist @423
+    class_addmethod @424
+    class_addpointer @425
+    class_addsymbol @426
+    class_doaddfloat @427
+    class_domainsignalin @428
+    class_gethelpdir @429
+    class_gethelpname @430
+    class_getname @431
+    class_getpropertiesfn @432
+    class_getsavefn @433
+    class_isdrawcommand @434
+    class_new @435
+    class_set_extern_dir @436
+    class_setdrawcommand @437
+    class_sethelpsymbol @438
+    class_setparentwidget @439
+    class_setpropertiesfn @440
+    class_setsavefn @441
+    class_setwidget @442
+    clock_delay @443
+    clock_free @444
+    clock_getlogicaltime @445
+    clock_getsystime @446
+    clock_getsystimeafter @447
+    clock_gettimesince @448
+    clock_gettimesincewithunits @449
+    clock_new @450
+    clock_set @451
+    clock_setunit @452
+    clock_unset @453
+    clone_class @454 DATA
+    clone_match @455
+    clone_setn @456
+    clone_setup @457
+    conf_init @458
+    copy_perform @459
+    copybytes @460
+    cos_table @461 DATA
+    curve_class @462 DATA
+    curve_float @463
+    curve_widgetbehavior @464 DATA
+    d_arithmetic_setup @465
+    d_array_setup @466
+    d_ctl_setup @467
+    d_dac_setup @468
+    d_delay_setup @469
+    d_fft_setup @470
+    d_filter_setup @471
+    d_global_setup @472
+    d_math_setup @473
+    d_misc_setup @474
+    d_osc_setup @475
+    d_soundfile_setup @476
+    d_ugen_freepdinstance @477
+    d_ugen_newpdinstance @478
+    d_ugen_setup @479
+    dbtopow @480
+    dbtopow_tilde_class @481 DATA
+    dbtopow_tilde_setup @482
+    dbtorms @483
+    dbtorms_tilde_class @484 DATA
+    dbtorms_tilde_setup @485
+    dctsub @486
+    ddct @487
+    ddst @488
+    descriptors @489 DATA
+    dfct @490
+    dfst @491
+    downsampling_perform_0 @492
+    drawnumber_class @493 DATA
+    drawnumber_float @494
+    drawnumber_widgetbehavior @495 DATA
+    dsp_add @496
+    dsp_add_copy @497
+    dsp_add_plus @498
+    dsp_add_scalarcopy @499
+    dsp_add_zero @500
+    dsp_addv @501
+    dsp_tick @502
+    dstsub @503
+    endpost @504
+    env_tilde_class @505 DATA
+    env_tilde_setup @506
+    error @507
+    eval_func @508
+    eval_sigidx @509
+    eval_store @510
+    eval_tab @511
+    eval_var @512
+    ex_Avg @513
+    ex_Sum @514
+    ex_avg @515
+    ex_dzdetect @516
+    ex_eval @517
+    ex_funcs @518 DATA
+    ex_getsym @519
+    ex_if @520
+    ex_match @521
+    ex_mkvector @522
+    ex_parse @523
+    ex_print @524
+    ex_size @525
+    ex_store @526
+    ex_sum @527
+    ex_symname @528
+    exp_tilde_perform @529
+    expr_donew @530
+    expr_perform @531
+    expr_setup @532
+    expr_tilde_setup @533
+    exprproxy_float @534
+    exprproxy_new @535
+    fexpr_tilde_setup @536
+    fielddesc_cvtfromcoord @537
+    fielddesc_cvttocoord @538
+    fielddesc_getcoord @539
+    fielddesc_setcoord @540
+    find_func @541
+    firstOpenStream_ @542 DATA
+    floatinlet_new @543
+    freebytes @544
+    ftom @545
+    ftom_tilde_class @546 DATA
+    ftom_tilde_setup @547
+    fudiparse_setup @548
+    g_array_setup @549
+    g_bang_setup @550
+    g_canvas_freepdinstance @551
+    g_canvas_newpdinstance @552
+    g_canvas_setup @553
+    g_editor_freepdinstance @554
+    g_editor_newpdinstance @555
+    g_editor_setup @556
+    g_graph_setup @557
+    g_graph_setup_class @558
+    g_guiconnect_setup @559
+    g_hradio_setup @560
+    g_hslider_setup @561
+    g_io_setup @562
+    g_mycanvas_setup @563
+    g_numbox_setup @564
+    g_readwrite_setup @565
+    g_scalar_setup @566
+    g_template_freepdinstance @567
+    g_template_newpdinstance @568
+    g_template_setup @569
+    g_text_setup @570
+    g_toggle_setup @571
+    g_traversal_setup @572
+    g_vradio_setup @573
+    g_vslider_setup @574
+    g_vumeter_setup @575
+    garray_ambigendian @576
+    garray_arraydialog @577
+    garray_arrayviewlist_close @578
+    garray_arrayviewlist_fillpage @579
+    garray_arrayviewlist_new @580
+    garray_class @581 DATA
+    garray_getarray @582
+    garray_getfloatarray @583
+    garray_getfloatwords @584
+    garray_getglist @585
+    garray_getname @586
+    garray_getscalar @587
+    garray_init @588
+    garray_npoints @589
+    garray_properties @590
+    garray_redraw @591
+    garray_resize @592
+    garray_resize_long @593
+    garray_savecontentsto @594
+    garray_setsaveit @595
+    garray_template @596
+    garray_usedindsp @597
+    garray_vec @598
+    garray_widgetbehavior @599 DATA
+    gensym @600
+    get_sys_dacsr @601
+    get_sys_main_advance @602
+    get_sys_schedadvance @603
+    get_sys_schedblocksize @604
+    get_sys_sleepgrain @605
+    get_sys_soundin @606
+    get_sys_soundout @607
+    get_sys_time @608
+    get_sys_time_per_dsp_tick @609
+    getbytes @610
+    getfn @611
+    getoken @612
+    getzbytes @613
+    gfxstub_deleteforkey @614
+    gfxstub_new @615
+    glist_add @616
+    glist_addglist @617
+    glist_arraydialog @618
+    glist_clear @619
+    glist_delete @620
+    glist_deselect @621
+    glist_deselectline @622
+    glist_dpixtodx @623
+    glist_dpixtody @624
+    glist_drawiofor @625
+    glist_eraseiofor @626
+    glist_findgraph @627
+    glist_findrtext @628
+    glist_fontheight @629
+    glist_fontwidth @630
+    glist_getcanvas @631
+    glist_getfont @632
+    glist_getindex @633
+    glist_getnextxy @634
+    glist_getzoom @635
+    glist_glist @636
+    glist_grab @637
+    glist_init @638
+    glist_isgraph @639
+    glist_isselected @640
+    glist_istoplevel @641
+    glist_isvisible @642
+    glist_menu_open @643
+    glist_mergefile @644
+    glist_noselect @645
+    glist_pixelstox @646
+    glist_pixelstoy @647
+    glist_read @648
+    glist_readfrombinbuf @649
+    glist_redraw @650
+    glist_retext @651
+    glist_scalar @652
+    glist_select @653
+    glist_selectall @654
+    glist_selectionindex @655
+    glist_selectline @656
+    glist_sort @657
+    glist_text @658
+    glist_valid @659 DATA
+    glist_writetobinbuf @660
+    glist_xtopixels @661
+    glist_ytopixels @662
+    glob_addtopath @663
+    glob_audio_dialog @664
+    glob_audio_properties @665
+    glob_audio_setapi @666
+    glob_audiostatus @667
+    glob_dsp @668
+    glob_evalfile @669
+    glob_finderror @670
+    glob_findinstance @671
+    glob_foo @672
+    glob_forgetpreferences @673
+    glob_init @674
+    glob_initfromgui @675
+    glob_key @676
+    glob_loadpreferences @677
+    glob_menunew @678
+    glob_meters @679
+    glob_midi_dialog @680
+    glob_midi_properties @681
+    glob_midi_setapi @682
+    glob_path_dialog @683
+    glob_pdobject @684 DATA
+    glob_ping @685
+    glob_plugindispatch @686
+    glob_quit @687
+    glob_savepreferences @688
+    glob_setfilename @689
+    glob_start_path_dialog @690
+    glob_start_startup_dialog @691
+    glob_startup_dialog @692
+    glob_verifyquit @693
+    glob_zoom_open @694
+    gobj_activate @695
+    gobj_click @696
+    gobj_delete @697
+    gobj_displace @698
+    gobj_getrect @699
+    gobj_save @700
+    gobj_select @701
+    gobj_shouldvis @702
+    gobj_vis @703
+    gpointer_check @704
+    gpointer_copy @705
+    gpointer_init @706
+    gpointer_setarray @707
+    gpointer_setglist @708
+    gpointer_unset @709
+    graph_array @710
+    graph_widgetbehavior @711 DATA
+    gstub_cutoff @712
+    gstub_new @713
+    gtemplate_get @714
+    guiconnect_new @715
+    guiconnect_notarget @716
+    hradio_draw @717
+    hradio_draw_config @718
+    hradio_draw_erase @719
+    hradio_draw_io @720
+    hradio_draw_move @721
+    hradio_draw_new @722
+    hradio_draw_select @723
+    hradio_draw_update @724
+    hradio_widgetbehavior @725 DATA
+    hslider_check_minmax @726
+    hslider_check_width @727
+    hslider_draw @728
+    hslider_widgetbehavior @729 DATA
+    iem_fstyletoint @730
+    iem_inttofstyle @731
+    iem_inttosymargs @732
+    iem_symargstoint @733
+    iemgui_all_col2save @734
+    iemgui_all_colfromload @735
+    iemgui_all_dollar2raute @736
+    iemgui_all_dollararg2sym @737
+    iemgui_all_loadcolors @738
+    iemgui_all_raute2dollar @739
+    iemgui_all_sym2dollararg @740
+    iemgui_clip_font @741
+    iemgui_clip_size @742
+    iemgui_color @743
+    iemgui_color_hex @744 DATA
+    iemgui_compatible_colorarg @745
+    iemgui_delete @746
+    iemgui_delta @747
+    iemgui_dialog @748
+    iemgui_displace @749
+    iemgui_dollar2raute @750
+    iemgui_label @751
+    iemgui_label_font @752
+    iemgui_label_pos @753
+    iemgui_modulo_color @754
+    iemgui_new_dogetname @755
+    iemgui_new_getnames @756
+    iemgui_newzoom @757
+    iemgui_pos @758
+    iemgui_properties @759
+    iemgui_raute2dollar @760
+    iemgui_receive @761
+    iemgui_save @762
+    iemgui_select @763
+    iemgui_send @764
+    iemgui_size @765
+    iemgui_verify_snd_ne_rcv @766
+    iemgui_vis @767
+    iemgui_vu_col @768 DATA
+    iemgui_vu_db2i @769 DATA
+    iemgui_vu_scale_str @770 DATA
+    iemgui_zoom @771
+    ilog2 @772
+    inlet_free @773
+    inlet_getsignalindex @774
+    inlet_new @775
+    inmidi_aftertouch @776
+    inmidi_byte @777
+    inmidi_controlchange @778
+    inmidi_noteon @779
+    inmidi_pitchbend @780
+    inmidi_polyaftertouch @781
+    inmidi_programchange @782
+    inmidi_realtimein @783
+    inmidi_sysex @784
+    linetraverser_next @785
+    linetraverser_skipobject @786
+    linetraverser_start @787
+    list_append_class @788 DATA
+    list_fromsymbol_class @789 DATA
+    list_length_class @790 DATA
+    list_prepend_class @791 DATA
+    list_split_class @792 DATA
+    list_store_class @793 DATA
+    list_tosymbol_class @794 DATA
+    list_trim_class @795 DATA
+    log_tilde_perform @796
+    logpost @797
+    m_batchmain @798
+    m_mainloop @799
+    m_pd_setup @800
+    makect @801
+    makeipt @802
+    makewt @803
+    max_default @804
+    max_ex_tab @805
+    max_ex_tab_store @806
+    max_ex_var @807
+    max_ex_var_store @808
+    max_perf8 @809
+    max_perform @810
+    mayer_dofft @811
+    mayer_fft @812
+    mayer_fht @813
+    mayer_ifft @814
+    mayer_realfft @815
+    mayer_realifft @816
+    mess_init @817
+    midi_getdevs @818
+    midi_in_caps @819 DATA
+    midi_in_mapper_caps @820 DATA
+    midi_inhead @821 DATA
+    midi_inqueue @822 DATA
+    midi_intail @823 DATA
+    midi_num_inputs @824 DATA
+    midi_num_outputs @825 DATA
+    midi_out_caps @826 DATA
+    midi_out_mapper_caps @827 DATA
+    midi_outhead @828 DATA
+    midi_outqueue @829 DATA
+    midi_outtail @830 DATA
+    min_perf8 @831
+    min_perform @832
+    minus_perf8 @833
+    minus_perform @834
+    mmio_close_audio @835
+    mmio_do_open_audio @836
+    mmio_getdevs @837
+    mmio_open_audio @838
+    mmio_reportidle @839
+    mmio_send_dacs @840
+    mtof @841
+    mtof_tilde_class @842 DATA
+    mtof_tilde_setup @843
+    my_canvas_draw @844
+    my_canvas_draw_config @845
+    my_canvas_draw_erase @846
+    my_canvas_draw_move @847
+    my_canvas_draw_new @848
+    my_canvas_draw_select @849
+    my_canvas_widgetbehavior @850 DATA
+    my_numbox_calc_fontwidth @851
+    my_numbox_check_minmax @852
+    my_numbox_clip @853
+    my_numbox_draw @854
+    my_numbox_ftoa @855
+    my_numbox_widgetbehavior @856 DATA
+    namelist_append @857
+    namelist_append_files @858
+    namelist_free @859
+    namelist_get @860
+    nd_sysex_inword @861
+    nd_sysex_mode @862 DATA
+    new_anything @863
+    none_synchronize @864
+    none_write_byte @865
+    none_write_short @866
+    nt_logerror @867
+    nt_realdacblksize @868 DATA
+    ntsnd_indev @869 DATA
+    ntsnd_invec @870 DATA
+    ntsnd_outdev @871 DATA
+    ntsnd_outvec @872 DATA
+    nullex @873 DATA
+    nullfn @874
+    obj_connect @875
+    obj_disconnect @876
+    obj_findsignalscalar @877
+    obj_init @878
+    obj_issignalinlet @879
+    obj_issignaloutlet @880
+    obj_list @881
+    obj_moveinletfirst @882
+    obj_moveoutletfirst @883
+    obj_nexttraverseoutlet @884
+    obj_ninlets @885
+    obj_noutlets @886
+    obj_nsiginlets @887
+    obj_nsigoutlets @888
+    obj_saveformat @889
+    obj_sendinlet @890
+    obj_siginletindex @891
+    obj_sigoutletindex @892
+    obj_starttraverseoutlet @893
+    open_soundfile @894
+    open_soundfile_via_canvas @895
+    open_soundfile_via_fd @896
+    open_via_helppath @897
+    open_via_path @898
+    oscformat_setup @899
+    oscparse_setup @900
+    outlet_anything @901
+    outlet_bang @902
+    outlet_float @903
+    outlet_free @904
+    outlet_getsignalindex @905
+    outlet_getsymbol @906
+    outlet_list @907
+    outlet_new @908
+    outlet_pointer @909
+    outlet_setstacklim @910
+    outlet_symbol @911
+    outmidi_aftertouch @912
+    outmidi_byte @913
+    outmidi_controlchange @914
+    outmidi_noteon @915
+    outmidi_pitchbend @916
+    outmidi_polyaftertouch @917
+    outmidi_programchange @918
+    over_perf8 @919
+    over_perform @920
+    paConverters @921 DATA
+    paHostApiInitializers @922 DATA
+    paZeroers @923 DATA
+    pa_close_audio @924
+    pa_getdevs @925
+    pa_open_audio @926
+    pa_open_callback @927
+    pa_send_dacs @928
+    parsetimeunits @929
+    pd_bang @930
+    pd_bind @931
+    pd_canvasmaker @932 DATA
+    pd_checkglist @933
+    pd_checkobject @934
+    pd_compatibilitylevel @935 DATA
+    pd_compiledate @936 DATA
+    pd_compiletime @937 DATA
+    pd_doloadbang @938
+    pd_emptylist @939
+    pd_error @940
+    pd_fft @941
+    pd_findbyclass @942
+    pd_float @943
+    pd_forwardmess @944
+    pd_free @945
+    pd_getcanvaslist @946
+    pd_getdspstate @947
+    pd_getparentwidget @948
+    pd_globallock @949
+    pd_globalunlock @950
+    pd_init @951
+    pd_list @952
+    pd_maininstance @953 DATA
+    pd_new @954
+    pd_newest @955
+    pd_objectmaker @956 DATA
+    pd_pointer @957
+    pd_popsym @958
+    pd_pushsym @959
+    pd_setloadingabstraction @960
+    pd_symbol @961
+    pd_typedmess @962
+    pd_unbind @963
+    pd_version @964 DATA
+    pd_vmess @965
+    pdfloat_setup @966
+    pdint_setup @967
+    pdsymbol_setup @968
+    plot_class @969 DATA
+    plot_float @970
+    plot_widgetbehavior @971 DATA
+    plus_perf8 @972
+    plus_perform @973
+    pm_add_device @974
+    pm_alloc @975
+    pm_descriptor_index @976 DATA
+    pm_descriptor_max @977 DATA
+    pm_fail_fn @978
+    pm_fail_timestamp_fn @979
+    pm_find_default_device @980
+    pm_free @981
+    pm_hosterror @982 DATA
+    pm_hosterror_text @983 DATA
+    pm_init @984
+    pm_initialized @985 DATA
+    pm_none_dictionary @986 DATA
+    pm_read_bytes @987
+    pm_read_short @988
+    pm_success_fn @989
+    pm_term @990
+    pm_winmm_in_dictionary @991 DATA
+    pm_winmm_init @992
+    pm_winmm_out_dictionary @993 DATA
+    pm_winmm_term @994
+    pointerinlet_new @995
+    pointertobinbuf @996
+    post @997
+    postatom @998
+    postfloat @999
+    poststring @1000
+    pow_tilde_perform @1001
+    powtodb @1002
+    powtodb_tilde_class @1003 DATA
+    powtodb_tilde_setup @1004
+    q8_rsqrt @1005
+    q8_sqrt @1006
+    qrsqrt @1007
+    qsqrt @1008
+    rdft @1009
+    resample_dsp @1010
+    resample_free @1011
+    resample_init @1012
+    resamplefrom_dsp @1013
+    resampleto_dsp @1014
+    resizebytes @1015
+    rftbsub @1016
+    rftfsub @1017
+    rint @1018
+    rmstodb @1019
+    rmstodb_tilde_class @1020 DATA
+    rmstodb_tilde_setup @1021
+    route_setup @1022
+    rtext_activate @1023
+    rtext_displace @1024
+    rtext_draw @1025
+    rtext_erase @1026
+    rtext_free @1027
+    rtext_getseltext @1028
+    rtext_gettag @1029
+    rtext_gettext @1030
+    rtext_height @1031
+    rtext_key @1032
+    rtext_mouse @1033
+    rtext_new @1034
+    rtext_retext @1035
+    rtext_select @1036
+    rtext_width @1037
+    s_ @1038 DATA
+    s__N @1039 DATA
+    s__X @1040 DATA
+    s_anything @1041 DATA
+    s_bang @1042 DATA
+    s_float @1043 DATA
+    s_inter_freepdinstance @1044
+    s_inter_newpdinstance @1045
+    s_list @1046 DATA
+    s_pointer @1047 DATA
+    s_signal @1048 DATA
+    s_stuff_freepdinstance @1049
+    s_stuff_newpdinstance @1050
+    s_symbol @1051 DATA
+    s_x @1052 DATA
+    s_y @1053 DATA
+    scalar_class @1054 DATA
+    scalar_define_class @1055 DATA
+    scalar_doclick @1056
+    scalar_getbasexy @1057
+    scalar_new @1058
+    scalar_redraw @1059
+    scalarmax_perf8 @1060
+    scalarmax_perform @1061
+    scalarmin_perf8 @1062
+    scalarmin_perform @1063
+    scalarminus_perf8 @1064
+    scalarminus_perform @1065
+    scalarover_perf8 @1066
+    scalarover_perform @1067
+    scalarplus_perf8 @1068
+    scalarplus_perform @1069
+    scalartimes_perf8 @1070
+    scalartimes_perform @1071
+    sched_audio_callbackfn @1072
+    sched_geteventno @1073
+    sched_reopenmeplease @1074
+    sched_set_using_audio @1075
+    sched_tick @1076
+    select_setup @1077
+    sigbiquad_class @1078 DATA
+    sigbiquad_setup @1079
+    sigbp_class @1080 DATA
+    sigbp_setup @1081
+    sigcpole_class @1082 DATA
+    sigcpole_setup @1083
+    sigczero_class @1084 DATA
+    sigczero_rev_class @1085 DATA
+    sigczero_rev_setup @1086
+    sigczero_setup @1087
+    sighip_class @1088 DATA
+    sighip_setup @1089
+    siglop_class @1090 DATA
+    siglop_setup @1091
+    signal_cleanup @1092
+    signal_compatible @1093
+    signal_makereusable @1094
+    signal_new @1095
+    signal_newfromcontext @1096
+    signal_setborrowed @1097
+    signalinlet_new @1098
+    sigrpole_class @1099 DATA
+    sigrpole_setup @1100
+    sigrsqrt_setup @1101
+    sigrzero_class @1102 DATA
+    sigrzero_rev_class @1103 DATA
+    sigrzero_rev_setup @1104
+    sigrzero_setup @1105
+    sigsamphold_class @1106 DATA
+    sigsamphold_setup @1107
+    sigsqrt_perform @1108
+    sigsqrt_setup @1109
+    sigvcf_class @1110 DATA
+    sigvcf_setup @1111
+    sigwrap_class @1112 DATA
+    sigwrap_setup @1113
+    socketreceiver_free @1114
+    socketreceiver_new @1115
+    socketreceiver_read @1116
+    soundfiler_dowrite @1117
+    startpost @1118
+    swap_setup @1119
+    symbolinlet_new @1120
+    sys_addhist @1121
+    sys_addpollfn @1122
+    sys_advance_samples @1123 DATA
+    sys_argparse @1124
+    sys_audioapi @1125 DATA
+    sys_audioapiopened @1126 DATA
+    sys_audiodevnametonumber @1127
+    sys_audiodevnumbertoname @1128
+    sys_bail @1129
+    sys_bashfilename @1130
+    sys_clearhist @1131
+    sys_close @1132
+    sys_close_audio @1133
+    sys_close_midi @1134
+    sys_closesocket @1135
+    sys_debuglevel @1136 DATA
+    sys_decodedialog @1137
+    sys_defaultfont @1138 DATA
+    sys_defeatrt @1139 DATA
+    sys_do_open_midi @1140
+    sys_doflags @1141
+    sys_exit @1142
+    sys_externalschedlib @1143 DATA
+    sys_externalschedlibname @1144 DATA
+    sys_extraflags @1145 DATA
+    sys_extraflagsstring @1146 DATA
+    sys_fclose @1147
+    sys_findprogdir @1148
+    sys_flags @1149 DATA
+    sys_font @1150 DATA
+    sys_fontheight @1151
+    sys_fontweight @1152 DATA
+    sys_fontwidth @1153
+    sys_fopen @1154
+    sys_get_audio_apis @1155
+    sys_get_audio_devs @1156
+    sys_get_audio_params @1157
+    sys_get_inchannels @1158
+    sys_get_midi_apis @1159
+    sys_get_midi_devs @1160
+    sys_get_midi_params @1161
+    sys_get_outchannels @1162
+    sys_getblksize @1163
+    sys_getmeters @1164
+    sys_getrealtime @1165
+    sys_getsr @1166
+    sys_getversion @1167
+    sys_gui @1168
+    sys_guicmd @1169 DATA
+    sys_guisetportnumber @1170 DATA
+    sys_havegui @1171
+    sys_hipriority @1172 DATA
+    sys_hostfontsize @1173
+    sys_idlehook @1174 DATA
+    sys_inchannels @1175 DATA
+    sys_init_fdpoll @1176
+    sys_initmidiqueue @1177
+    sys_isabsolutepath @1178
+    sys_libdir @1179 DATA
+    sys_listdevs @1180
+    sys_listmididevs @1181
+    sys_load_lib @1182
+    sys_loadlib_iter @1183
+    sys_loadpreferences @1184
+    sys_lock @1185
+    sys_log_error @1186
+    sys_logerror @1187
+    sys_main @1188
+    sys_microsleep @1189
+    sys_midiapi @1190 DATA
+    sys_midibytein @1191
+    sys_mididevnametonumber @1192
+    sys_mididevnumbertoname @1193
+    sys_midiindevlist @1194 DATA
+    sys_midioutdevlist @1195 DATA
+    sys_nearestfontsize @1196
+    sys_nmidiin @1197 DATA
+    sys_nmidiout @1198 DATA
+    sys_noautopatch @1199 DATA
+    sys_noloadbang @1200 DATA
+    sys_nosleep @1201 DATA
+    sys_oktoloadfiles @1202
+    sys_oldtclversion @1203 DATA
+    sys_onloadlist @1204
+    sys_open @1205
+    sys_open_absolute @1206
+    sys_open_midi @1207
+    sys_ouch @1208
+    sys_outchannels @1209 DATA
+    sys_perf @1210 DATA
+    sys_poll_midi @1211
+    sys_pollgui @1212
+    sys_pollmidiinqueue @1213
+    sys_pollmidioutqueue @1214
+    sys_pollmidiqueue @1215
+    sys_pretendguibytes @1216
+    sys_printhist @1217
+    sys_printhook @1218 DATA
+    sys_printtostderr @1219 DATA
+    sys_putmidibyte @1220
+    sys_putmidimess @1221
+    sys_putonloadlist @1222
+    sys_queuegui @1223
+    sys_register_loader @1224
+    sys_reopen_audio @1225
+    sys_reopen_midi @1226
+    sys_reportidle @1227
+    sys_ringbuf_getreadavailable @1228
+    sys_ringbuf_getwriteavailable @1229
+    sys_ringbuf_init @1230
+    sys_ringbuf_read @1231
+    sys_ringbuf_write @1232
+    sys_rmpollfn @1233
+    sys_run_scheduler @1234
+    sys_save_audio_params @1235
+    sys_savepreferences @1236
+    sys_schedadvance @1237 DATA
+    sys_searchpath @1238 DATA
+    sys_send_dacs @1239
+    sys_set_audio_api @1240
+    sys_set_audio_settings @1241
+    sys_set_audio_settings_reopen @1242
+    sys_set_audio_state @1243
+    sys_set_extrapath @1244
+    sys_set_midi_api @1245
+    sys_set_searchpath @1246
+    sys_set_startup @1247
+    sys_setchsr @1248
+    sys_setextrapath @1249
+    sys_setmiditimediff @1250
+    sys_setrealtime @1251
+    sys_setsignalhandlers @1252
+    sys_sleepgrain @1253 DATA
+    sys_sockerror @1254
+    sys_startgui @1255
+    sys_stopgui @1256
+    sys_trylock @1257
+    sys_trytoopenone @1258
+    sys_unbashfilename @1259
+    sys_unixerror @1260
+    sys_unlock @1261
+    sys_unqueuegui @1262
+    sys_usestdpath @1263 DATA
+    sys_verbose @1264 DATA
+    sys_vgui @1265
+    sys_zoom_open @1266 DATA
+    sys_zoomfontheight @1267
+    sys_zoomfontwidth @1268
+    tabwrite_setup @1269
+    template_conform @1270
+    template_find_field @1271
+    template_findbyname @1272
+    template_findcanvas @1273
+    template_free @1274
+    template_getfloat @1275
+    template_getsymbol @1276
+    template_match @1277
+    template_new @1278
+    template_notify @1279
+    template_notifyforscalar @1280
+    template_setfloat @1281
+    template_setsymbol @1282
+    text_class @1283 DATA
+    text_define_bang @1284
+    text_define_set @1285
+    text_delete_class @1286 DATA
+    text_drawborder @1287
+    text_eraseborder @1288
+    text_fromlist_class @1289 DATA
+    text_get_class @1290 DATA
+    text_insert_class @1291 DATA
+    text_save @1292
+    text_search_class @1293 DATA
+    text_sequence_class @1294 DATA
+    text_set_class @1295 DATA
+    text_setto @1296
+    text_size_class @1297 DATA
+    text_template_init @1298
+    text_tolist_class @1299 DATA
+    text_widgetbehavior @1300 DATA
+    text_xpix @1301
+    text_ypix @1302
+    theAsioDriver @1303 DATA
+    threshold_tilde_dsp @1304
+    times_perf8 @1305
+    times_perform @1306
+    toggle_draw @1307
+    toggle_draw_config @1308
+    toggle_draw_erase @1309
+    toggle_draw_io @1310
+    toggle_draw_move @1311
+    toggle_draw_new @1312
+    toggle_draw_select @1313
+    toggle_draw_update @1314
+    toggle_widgetbehavior @1315 DATA
+    u8_charnum @1316
+    u8_dec @1317
+    u8_inc @1318
+    u8_nextchar @1319
+    u8_offset @1320
+    u8_seqlen @1321
+    u8_strlen @1322
+    u8_ucs2toutf8 @1323
+    u8_utf8toucs2 @1324
+    u8_wc_nbytes @1325
+    u8_wc_toutf8 @1326
+    u8_wc_toutf8_nul @1327
+    ugen_add @1328
+    ugen_connect @1329
+    ugen_done_graph @1330
+    ugen_getiosig @1331
+    ugen_getsortno @1332
+    ugen_start @1333
+    ugen_start_graph @1334
+    ugen_stop @1335
+    upsampling_perform_0 @1336
+    upsampling_perform_hold @1337
+    upsampling_perform_linear @1338
+    value_get @1339
+    value_getfloat @1340
+    value_release @1341
+    value_setfloat @1342
+    verbose @1343
+    vinlet_class @1344 DATA
+    vinlet_doprolog @1345
+    vinlet_dspprolog @1346
+    vinlet_getit @1347
+    vinlet_issignal @1348
+    vinlet_perform @1349
+    voutlet_class @1350 DATA
+    voutlet_dspepilog @1351
+    voutlet_dspprolog @1352
+    voutlet_getit @1353
+    voutlet_issignal @1354
+    voutlet_perform @1355
+    vradio_draw @1356
+    vradio_draw_config @1357
+    vradio_draw_erase @1358
+    vradio_draw_io @1359
+    vradio_draw_move @1360
+    vradio_draw_new @1361
+    vradio_draw_select @1362
+    vradio_draw_update @1363
+    vradio_widgetbehavior @1364 DATA
+    vslider_check_height @1365
+    vslider_check_minmax @1366
+    vslider_draw @1367
+    vslider_widgetbehavior @1368 DATA
+    vu_check_height @1369
+    vu_draw @1370
+    vu_widgetbehavior @1371 DATA
+    winmm_time_callback @1372
+    word_free @1373
+    word_init @1374
+    word_restore @1375
+    x_acoustics_setup @1376
+    x_arithmetic_setup @1377
+    x_array_setup @1378
+    x_connective_setup @1379
+    x_gui_setup @1380
+    x_interface_setup @1381
+    x_list_setup @1382
+    x_midi_freepdinstance @1383
+    x_midi_newpdinstance @1384
+    x_midi_setup @1385
+    x_misc_setup @1386
+    x_net_setup @1387
+    x_qlist_setup @1388
+    x_scalar_setup @1389
+    x_time_setup @1390
+    zero_perf8 @1391
+    zero_perform @1392
+    zgetfn @1393
