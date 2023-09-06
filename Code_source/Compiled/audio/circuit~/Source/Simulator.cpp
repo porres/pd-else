@@ -138,6 +138,9 @@ void* netlist_create(int argc, t_atom* argv, double sampleRate)
         else if(!seglist[0].compare("transformer") && seglist.size() > 5) {
             netlistDescription.emplace_back("transformer", std::vector<std::string>{seglist[1]}, std::vector<int>{getPinValue(seglist[2]), getPinValue(seglist[3]), getPinValue(seglist[4]), getPinValue(seglist[5])});
         }
+        else if(!seglist[0].compare("gyrator") && seglist.size() > 5) {
+            netlistDescription.emplace_back("gyrator", std::vector<std::string>{seglist[1]}, std::vector<int>{getPinValue(seglist[2]), getPinValue(seglist[3]), getPinValue(seglist[4]), getPinValue(seglist[5])});
+        }
         else if(!seglist[0].compare("inductor") && seglist.size() > 3) {
             netlistDescription.emplace_back("inductor", std::vector<std::string>{seglist[1]}, std::vector<int>{getPinValue(seglist[2]), getPinValue(seglist[3])});
         }

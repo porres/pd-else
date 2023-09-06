@@ -734,3 +734,31 @@ struct Potentiometer final : Component<3, 0>
         ing = -ig;
     }
 };
+
+struct Gyrator final : Component<4>
+{
+    double r;
+
+    Gyrator(double r, int pin1, int pin2, int pin3, int pin4) : r(r)
+    {
+        pinLoc[0] = pin1;
+        pinLoc[1] = pin2;
+        pinLoc[2] = pin3;
+        pinLoc[3] = pin4;
+    }
+
+    void stamp(MNASystem& m)
+    {
+         m.stampStatic(1./r, nets[0], nets[1]);
+         m.stampStatic(1./r, nets[0], nets[2]);
+         
+         m.stampStatic(-1./r, nets[1], nets[0]);
+         m.stampStatic(1./r, nets[1], nets[3]);
+         
+         m.stampStatic(1./r, nets[2], nets[0]);
+         m.stampStatic(-1./r, nets[2], nets[3]);
+         
+         m.stampStatic(-1./r, nets[3], nets[1]);
+         m.stampStatic(1./r, nets[3], nets[2]);
+    }
+};

@@ -47,6 +47,10 @@ struct NetList
             {
                 addComponent(new Transformer(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]], pinAssignment[pins[2]], pinAssignment[pins[3]]));
             }
+            if(name == "gyrator")
+            {
+                addComponent(new Gyrator(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]], pinAssignment[pins[2]], pinAssignment[pins[3]]));
+            }
             else if(name == "inductor")
             {
                 addComponent(new Inductor(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
