@@ -13,17 +13,19 @@ extern "C"
 {
 #endif
 
-void* create(int argc, t_atom* argv, double sampleRate);
+void* netlist_create(int argc, t_atom* argv, double sampleRate);
+void netlist_free(void* netlist);
 
-void set_input(void* netlist, int idx, double input);
-double get_output(void* netlist, int idx);
-void process(void* net);
+void netlist_set_input(void* netlist, int idx, double input);
+double netlist_get_output(void* netlist, int idx);
+void netlist_tick(void* net);
 
-int num_inlets(void* net);
-int num_outlets(void* netlist);
+int netlist_num_inlets(void* net);
+int netlist_num_outlets(void* netlist);
 
-void set_dc_block(void* netlist, int block);
-void set_iter(void* netlist, int iter);
+void* netlist_reset(void* netlist, double sampleRate);
+void netlist_set_dc_block(void* netlist, int block);
+void netlist_set_iter(void* netlist, int iter);
 
 #ifdef __cplusplus
 }
