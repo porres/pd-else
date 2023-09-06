@@ -151,10 +151,11 @@ protected:
         for(int i = 0; i < nets; ++i)
         {
             system.b[i].updatePre();
-            for(int i = 0; i < nzpointers.size(); ++i)
-            {
-                nzpointers[i]->updatePre();
-            }
+        }
+        
+        for(int j = 0; j < nzpointers.size(); ++j)
+        {
+            nzpointers[j]->updatePre();
         }
     }
     

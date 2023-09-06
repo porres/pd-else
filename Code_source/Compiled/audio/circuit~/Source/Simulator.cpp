@@ -13,8 +13,6 @@
 #include "Netlist.h"
 
 
-
-
 int getPinValue(std::string arg) {
     int result = 0;
     try {
