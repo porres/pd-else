@@ -15,9 +15,6 @@ struct IComponent
 {
     virtual ~IComponent() {}
     
-    // return the number of pins for this component
-    virtual int pinCount() = 0;
-    
     // return a pointer to array of pin locations
     // NOTE: these will eventually be GUI locations to be unified
     virtual const int* getPinLocs() const = 0;
@@ -28,13 +25,10 @@ struct IComponent
     //  - netSize is the current size of the netlist
     //  - pins is an array of circuits nodes
     //
-    virtual void setupNets(int & netSize, int & states, const int* pins) = 0;
+    virtual void setupNets(int & netSize, const int* pins) = 0;
     
     // stamp constants into the matrix
     virtual void stamp(MNASystem& m) = 0;
-    
-    // this is for allocating state variables
-    virtual void setupStates(int & states) {}
     
     // update state variables, only tagged nodes
     // this is intended for fixed-time compatible
@@ -52,16 +46,14 @@ struct IComponent
 template <int nPins = 0, int nInternalNets = 0>
 struct Component : IComponent
 {
-    static const int nNets = nPins + nInternalNets;
+    static constexpr int nNets = nPins + nInternalNets;
     
     int pinLoc[nPins];
     int nets[nNets];
-    
-    int pinCount() final { return nPins; }
-    
+
     const int* getPinLocs() const final { return pinLoc; }
     
-    void setupNets(int & netSize, int & states, const int* pins) final
+    void setupNets(int & netSize, const int* pins) final
     {
         for(int i = 0; i < nPins; ++i)
         {
@@ -72,8 +64,6 @@ struct Component : IComponent
         {
             nets[nPins + i] = netSize++;
         }
-        
-        setupStates(states);
     }
 };
 
@@ -378,49 +368,49 @@ struct JunctionPN
     
     // parameters
     double is, nvt, rnvt, vcrit;
-};
-
-void initJunctionPN(JunctionPN & pn, double is, double n)
-{
-    pn.is = is;
-    pn.nvt = n * vThermal;
-    pn.rnvt = 1 / pn.nvt;
-    pn.vcrit = pn.nvt * log(pn.nvt / (pn.is * sqrt(2.)));
-}
-
-// linearize junction at the specified voltage
-//
-// ideally we could handle series resistance here as well
-// to avoid putting it on a separate node, but not sure how
-// to make that work as it looks like we'd need Lambert-W then
-void linearizeJunctionPN(JunctionPN & pn, double v)
-{
-    double e = pn.is * exp(v * pn.rnvt);
-    double i = e - pn.is + gMin * v;
-    double g = e * pn.rnvt + gMin;
     
-    pn.geq = g;
-    pn.ieq = v*g - i;
-    pn.veq = v;
-}
-
-// returns true if junction is good enough
-bool newtonJunctionPN(JunctionPN & pn, double v)
-{
-    double dv = v - pn.veq;
-    if(fabs(dv) < vTolerance) return true;
-    
-    // check critical voltage and adjust voltage if over
-    if(v > pn.vcrit)
+    void initJunctionPN(double new_is, double n)
     {
-        // this formula comes from Qucs documentation
-        v = pn.veq + pn.nvt*log((std::max)(pn.is, 1+dv*pn.rnvt));
+        is = new_is;
+        nvt = n * vThermal;
+        rnvt = 1 / nvt;
+        vcrit = nvt * log(nvt / (is * sqrt(2.)));
     }
-    
-    linearizeJunctionPN(pn, v);
-    
-    return false;
-}
+
+    // linearize junction at the specified voltage
+    //
+    // ideally we could handle series resistance here as well
+    // to avoid putting it on a separate node, but not sure how
+    // to make that work as it looks like we'd need Lambert-W then
+    void linearizeJunctionPN(double v)
+    {
+        double e = is * exp(v * rnvt);
+        double i = e - is + gMin * v;
+        double g = e * rnvt + gMin;
+        
+        geq = g;
+        ieq = v*g - i;
+        veq = v;
+    }
+
+    // returns true if junction is good enough
+    bool newtonJunctionPN(double v)
+    {
+        double dv = v - veq;
+        if(fabs(dv) < vTolerance) return true;
+        
+        // check critical voltage and adjust voltage if over
+        if(v > vcrit)
+        {
+            // this formula comes from Qucs documentation
+            v = veq + nvt*log((std::max)(is, 1+dv*rnvt));
+        }
+        
+        linearizeJunctionPN(v);
+        
+        return false;
+    }
+};
 
 struct Diode : Component<2, 2>
 {
@@ -437,17 +427,15 @@ struct Diode : Component<2, 2>
         pinLoc[0] = l0;
         pinLoc[1] = l1;
         
-        initJunctionPN(pn, is, n);
-        
-        // FIXME: move init to some restart routine?
+        pn.initJunctionPN(is, n);
         
         // initial condition v = 0
-        linearizeJunctionPN(pn, 0);
+        pn.linearizeJunctionPN(0);
     }
     
     bool newton(MNASystem& m) final
     {
-        return newtonJunctionPN(pn, m.b[nets[2]].lu);
+        return pn.newtonJunctionPN(m.b[nets[2]].lu);
     }
     
     void stamp(MNASystem& m) final
@@ -549,17 +537,16 @@ struct BJT : Component<3, 4>
         //
         double is = 6.734e-15;
         double n = 1.24;
-        initJunctionPN(pnE, is / af, n);
-        initJunctionPN(pnC, is / ar, n);
+        pnE.initJunctionPN(is / af, n);
+        pnC.initJunctionPN(is / ar, n);
         
-        linearizeJunctionPN(pnE, 0);
-        linearizeJunctionPN(pnC, 0);
+        pnE.linearizeJunctionPN(0);
+        pnC.linearizeJunctionPN(0);
     }
     
     bool newton(MNASystem& m) final
     {
-        return newtonJunctionPN(pnC, m.b[nets[3]].lu)
-        && newtonJunctionPN(pnE, m.b[nets[4]].lu);
+        return pnC.newtonJunctionPN(m.b[nets[3]].lu) && pnE.newtonJunctionPN(m.b[nets[4]].lu);
     }
     
     void stamp(MNASystem& m) final
@@ -612,7 +599,6 @@ struct BJT : Component<3, 4>
             
             m.stampStatic(-1, nets[6], nets[4]);
             m.stampStatic(+1, nets[4], nets[6]);
-            
         }
         else
         {
@@ -656,8 +642,7 @@ struct Transformer final : Component<4, 2>
         pinLoc[3] = d;
     }
     
-    
-    void stamp(MNASystem & m)
+    void stamp(MNASystem& m)
     {
         m.stampStatic(1, nets[5], nets[3]);
         m.stampStatic(-1, nets[5], nets[4]);
@@ -688,7 +673,7 @@ struct OpAmp final : Component<3, 1>
         pinLoc[2] = c;
     }
     
-    void stamp(MNASystem & m)
+    void stamp(MNASystem& m)
     {
         // http://qucs.sourceforge.net/tech/node67.html explains all this
         m.stampStatic(-1, nets[3], nets[2]);
@@ -698,7 +683,7 @@ struct OpAmp final : Component<3, 1>
         m.b[nets[3]].gdyn.push_back(&v);
     }
     
-    void update(MNASystem & m)
+    void update(MNASystem& m)
     {
         Uin = m.b[nets[0]].lu - m.b[nets[1]].lu;
         gv = g / (1 + pow(M_PI_2 / vmax * g * Uin, 2)) + 1e-12;
@@ -725,7 +710,7 @@ struct Potentiometer final : Component<3, 0>
         pinLoc[2] = vInvOut;
     }
     
-    void stamp(MNASystem & m)
+    void stamp(MNASystem& m)
     {
         g = r * 0.5;
         ig = r * 0.5;
@@ -740,7 +725,7 @@ struct Potentiometer final : Component<3, 0>
         m.A[nets[2]][nets[0]].gdyn.push_back(&ing);
         m.A[nets[2]][nets[2]].gdyn.push_back(&ig);
     }
-    void update(MNASystem & m)
+    void update(MNASystem& m)
     {
         auto input = std::max(std::min(pos, 0.95), 0.05); // take out the extremes and prevent 0 divides
         g = 1. / (r * input);
@@ -748,18 +733,4 @@ struct Potentiometer final : Component<3, 0>
         ng = -g;
         ing = -ig;
     }
-    
 };
-
-
-
-/*
- struct Gyrator final : Component<4>
- {
- double b;
- 
- Gyrator(ValueTree boxTree, std::vector<String> arguments, std::vector<int> nodes, std::vector<int> pdNodes = std::vector<int>());
- 
- void stamp(MNASystem & m);
- 
- }; */

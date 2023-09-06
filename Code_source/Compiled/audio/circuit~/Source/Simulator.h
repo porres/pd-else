@@ -23,7 +23,7 @@ void netlist_tick(void* net);
 int netlist_num_inlets(void* net);
 int netlist_num_outlets(void* netlist);
 
-void netlist_reset(void* net);
+void* netlist_reset(void* netlist, double sampleRate);
 void netlist_set_dc_block(void* netlist, int block);
 void netlist_set_iter(void* netlist, int iter);
 

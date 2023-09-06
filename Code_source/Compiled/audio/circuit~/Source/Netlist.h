@@ -1,17 +1,74 @@
 #pragma once
 #include <KLU/klu.h>
 
+
+using NetlistDescription = std::vector<std::tuple<std::string, std::vector<std::string>, std::vector<int>>>;
+
 struct NetList
 {
     typedef std::vector<IComponent*> ComponentList;
     
-    NetList(int nodes) : nets(nodes), states(0)
+    NetList(NetlistDescription& description, std::map<int, int> pins) : nets(static_cast<int>(pins.size())), pinAssignment(pins), netlistDescription(description)
     {
+        int numOut = 0;
+        for(auto& [name, args, pins] : netlistDescription)
+        {
+            if(name == "resistor")
+            {
+                if (args[0].rfind("$s", 0) == 0) {
+                    addComponent(new VariableResistor(addDynamicArgument(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
+                }
+                else {
+                    addComponent(new Resistor(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
+                }
+            }
+            else if(name == "capacitor")
+            {
+                addComponent(new Capacitor(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
+            }
+            else if(name == "voltage")
+            {
+                if (args[0].rfind("$s", 0) == 0) {
+                    addComponent(new VariableVoltage(addDynamicArgument(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
+                }
+                else {
+                    addComponent(new Voltage(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
+                }
+            }
+            else if(name == "diode")
+            {
+                addComponent(new Diode(pinAssignment[pins[0]], pinAssignment[pins[1]]));
+            }
+            else if(name == "bjt")
+            {
+                addComponent(new BJT(pinAssignment[pins[0]], pinAssignment[pins[1]], pinAssignment[pins[2]], getArgumentValue(args[0])));
+            }
+            else if(name == "transformer")
+            {
+                addComponent(new Transformer(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]], pinAssignment[pins[2]], pinAssignment[pins[3]]));
+            }
+            else if(name == "inductor")
+            {
+                addComponent(new Inductor(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
+            }
+            else if(name == "opamp")
+            {
+                addComponent(new OpAmp(getArgumentValue(args[0]), getArgumentValue(args[1]), pinAssignment[pins[0]], pinAssignment[pins[1]], pinAssignment[pins[2]]));
+            }
+            else if(name == "potmeter")
+            {
+                addComponent(new Potentiometer(addDynamicArgument(args[0]), getArgumentValue(args[1]), pinAssignment[pins[0]], pinAssignment[pins[1]], pinAssignment[pins[2]]));
+            }
+            else if(name == "probe")
+            {
+                addComponent(new Probe(pinAssignment[pins[0]], pinAssignment[pins[1]], numOut++));
+            }
+        }
     }
     
-    void addComponent(IComponent * c)
+    void addComponent(IComponent* c)
     {
-        c->setupNets(nets, states, c->getPinLocs());
+        c->setupNets(nets, c->getPinLocs());
         components.push_back(c);
     }
     
@@ -66,7 +123,9 @@ struct NetList
         update();
     }
     
-    const MNASystem & getMNA() { return system; }
+    const MNASystem& getMNA() {
+        return system;
+    }
     
     void clearOutput() {
         std::fill(system.output.begin(), system.output.end(), 0.0f);
@@ -94,9 +153,9 @@ struct NetList
         return variableArgs[idx];
     }
     
-    int getNumVariableArgs()
+    int getNumDynamicArguments()
     {
-        return variableArgs.size();
+        return static_cast<int>(variableArgs.size());
     }
     
     void setDynamicArgument(int idx, double value)
@@ -109,30 +168,29 @@ struct NetList
         maxiter = iter;
     }
     
-    
 protected:
-    
-    std::map<int, double> variableArgs;
-    
-    int nets, states;
+        
+    int nets;
     ComponentList components;
     
     MNASystem system;
     
+    // parameters
+    int maxiter         = 20;
+    double solvertol    = 1e-9;
+    bool nochecking     = false;
+    
     klu_symbolic* Symbolic;
     klu_numeric* Numeric;
     klu_common Common;
-    
-    // parameters
-    int maxiter         = 20;
-    double solvertol    = 1e-6;
-    bool nochecking     = false;
     
     std::vector<double> b;
     std::vector<double> AVal;
     std::vector<int> AI;
     std::vector<int> AJ;
     std::vector<MNACell*> nzpointers;
+    
+    std::map<int, double> variableArgs;
     
     void update()
     {
@@ -145,7 +203,7 @@ protected:
     // return true if we're done
     bool newton()
     {
-        bool done = 1;
+        bool done = true;
         for(int i = 0; i < components.size(); ++i)
         {
             done = done && components[i]->newton(system);
@@ -262,7 +320,7 @@ protected:
                 {
                     system.A[j][i].nonzero = true;
                     AVal[nonzero] = system.A[j][i].lu;
-                    AJ[nonzero] = j - 1;
+                    AJ[nonzero] = static_cast<int>(j - 1);
                     nzpointers[nonzero] = &(system.A[j][i]);
                     nonzero++;
                 }
@@ -293,4 +351,40 @@ protected:
         
         return &b[0];
     }
+    
+    
+    double getArgumentValue(std::string arg) {
+        double result = 0.0f;
+        
+        auto replaceString = [](std::string subject, const std::string& search,
+                           const std::string& replace) {
+            size_t pos = 0;
+            while((pos = subject.find(search, pos)) != std::string::npos) {
+                subject.replace(pos, search.length(), replace);
+                pos += replace.length();
+            }
+            return subject;
+        };
+        
+        // Allow writing values as "100u" instead of "100e-6"
+        // This is convenient when describing circuits
+        arg = replaceString(arg, "p", "e-12");
+        arg = replaceString(arg, "n", "e-9");
+        arg = replaceString(arg, "u", "e-6");
+        arg = replaceString(arg, "m", "e-3");
+        arg = replaceString(arg, "k", "e3");
+        
+        try {
+            result = std::stod(arg);
+        } catch (...) {
+            pd_error(NULL, "Invalid circuit description argument");
+        }
+        
+        return result;
+    }
+    
+public:
+    // Netlist state for resetting
+    NetlistDescription netlistDescription;
+    std::map<int, int> pinAssignment;
 };

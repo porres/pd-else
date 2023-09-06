@@ -13,6 +13,7 @@ typedef struct _circuit_tilde {
     int x_numin;
     int x_numout;
     int x_enabled;
+    int x_sr;
     
     t_int **w;
     
@@ -53,7 +54,6 @@ t_int *circuit_tilde_perform(t_int *w)
 
 void circuit_tilde_dsp(t_circuit_tilde *x, t_signal **sp)
 {
-    
     int sum = x->x_numin + x->x_numout;
     x->w = getbytes(sizeof(t_int *) * (sum + 2));
     t_int **w = x->w;
@@ -82,7 +82,7 @@ void circuit_tilde_free(t_circuit_tilde *x)
 void *circuit_tilde_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_circuit_tilde *x = (t_circuit_tilde *)pd_new(circuit_tilde_class);
-    x->x_netlist = netlist_create(argc, argv, 44100.0);
+    x->x_netlist = netlist_create(argc, argv, sys_getsr());
     x->x_numin = netlist_num_inlets(x->x_netlist);
     x->x_numout = netlist_num_outlets(x->x_netlist);
     x->x_enabled = 1;
@@ -114,7 +114,7 @@ void circuit_tilde_dcblock(t_circuit_tilde *x, t_float dcblock) {
 
 
 void circuit_tilde_reset(t_circuit_tilde *x) {
-    netlist_reset(x->x_netlist);
+    x->x_netlist = netlist_reset(x->x_netlist, sys_getsr());
 };
 
 void circuit_tilde_setup(void) {

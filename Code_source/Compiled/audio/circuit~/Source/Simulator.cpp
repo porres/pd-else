@@ -13,6 +13,7 @@
 #include "Netlist.h"
 
 
+// Read pin index from string, error checked
 int getPinValue(std::string arg) {
     int result = 0;
     try {
@@ -24,46 +25,37 @@ int getPinValue(std::string arg) {
     return result;
 }
 
-std::string replaceString(std::string subject, const std::string& search,
-                          const std::string& replace) {
-    size_t pos = 0;
-    while((pos = subject.find(search, pos)) != std::string::npos) {
-        subject.replace(pos, search.length(), replace);
-        pos += replace.length();
-    }
-    return subject;
-}
-
-
-double getArgumentValue(std::string arg) {
-    double result = 0.0f;
-    
-    arg = replaceString(arg, "p", "e-12");
-    arg = replaceString(arg, "n", "e-9");
-    arg = replaceString(arg, "u", "e-6");
-    arg = replaceString(arg, "m", "e-3");
-    arg = replaceString(arg, "k", "e3");
-    
-    try {
-        result = std::stod(arg);
-    } catch (...) {
-        pd_error(NULL, "Invalid circuit description argument");
-    }
-    
-    return result;
-}
-
+// Deallocate netlist
 void netlist_free(void* netlist)
 {
     auto* net = static_cast<NetList*>(netlist);
     delete net;
 }
 
-void netlist_reset(void* net)
+// Create a new netlist with the same components as the old one, for a full state reset
+void* netlist_reset(void* netlist, double sampleRate)
 {
-    // TODO: reset circuit state
+    auto* net = static_cast<NetList*>(netlist);
+    
+    auto description = net->netlistDescription;
+    auto pins = net->pinAssignment;
+    
+    delete net;
+    
+    net = new NetList(description, pins);
+    
+    net->buildSystem();
+    
+    net->setStepScale(0);
+    
+    // get DC solution
+    net->simulateTick();
+    net->setTimeStep(1.0 / sampleRate);
+    
+    return net;
 }
 
+// Construct a netlist from pure-data arguments
 void* netlist_create(int argc, t_atom* argv, double sampleRate)
 {
     // Parse input text from pure-data arguments
@@ -81,7 +73,7 @@ void* netlist_create(int argc, t_atom* argv, double sampleRate)
     std::stringstream netlistStream(argStream.str());
     std::string obj;
     
-    std::vector<std::tuple<std::string, std::vector<std::string>, std::vector<int>>> netlistDescription;
+    NetlistDescription netlistDescription;
     
     // first we split by ;
     while(std::getline(netlistStream,obj,';'))
@@ -171,73 +163,16 @@ void* netlist_create(int argc, t_atom* argv, double sampleRate)
     
     std::sort(allPins.begin(), allPins.end());
     allPins.erase(std::unique(allPins.begin(), allPins.end()), allPins.end());
-    
-    auto* net = new NetList(allPins.size());
-    
+
     std::map<int, int> pinAssignment;
     for(int i = 0; i < allPins.size(); i++)
     {
         pinAssignment[allPins[i]] = i;
     }
     
-    
-    int numOut = 0;
-    for(const auto& [name, args, pins] : netlistDescription)
-    {
-        if(name == "resistor")
-        {
-            if (args[0].rfind("$s", 0) == 0) {
-                net->addComponent(new VariableResistor(net->addDynamicArgument(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
-            }
-            else {
-                net->addComponent(new Resistor(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
-            }
-        }
-        else if(name == "capacitor")
-        {
-            net->addComponent(new Capacitor(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
-        }
-        else if(name == "voltage")
-        {
-            if (args[0].rfind("$s", 0) == 0) {
-                net->addComponent(new VariableVoltage(net->addDynamicArgument(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
-            }
-            else {
-                net->addComponent(new Voltage(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
-            }
-        }
-        else if(name == "diode")
-        {
-            net->addComponent(new Diode(pinAssignment[pins[0]], pinAssignment[pins[1]]));
-        }
-        else if(name == "bjt")
-        {
-            net->addComponent(new BJT(pinAssignment[pins[0]], pinAssignment[pins[1]], pinAssignment[pins[2]], getArgumentValue(args[0])));
-        }
-        else if(name == "transformer")
-        {
-            net->addComponent(new Transformer(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]], pinAssignment[pins[2]], pinAssignment[pins[3]]));
-        }
-        else if(name == "inductor")
-        {
-            net->addComponent(new Inductor(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
-        }
-        else if(name == "opamp")
-        {
-            net->addComponent(new OpAmp(getArgumentValue(args[0]), getArgumentValue(args[1]), pinAssignment[pins[0]], pinAssignment[pins[1]], pinAssignment[pins[2]]));
-        }
-        else if(name == "potmeter")
-        {
-            net->addComponent(new Potentiometer(net->addDynamicArgument(args[0]), getArgumentValue(args[1]), pinAssignment[pins[0]], pinAssignment[pins[1]], pinAssignment[pins[2]]));
-        }
-        else if(name == "probe")
-        {
-            net->addComponent(new Probe(pinAssignment[pins[0]], pinAssignment[pins[1]], numOut++));
-        }
-    }
+    auto* net = new NetList(netlistDescription, pinAssignment);
     
     net->buildSystem();
-    
     net->setStepScale(0);
     
     // get DC solution
@@ -268,12 +203,13 @@ void netlist_tick(void* netlist)
 
 int netlist_num_inlets(void* netlist)
 {
-    return static_cast<NetList*>(netlist)->getNumVariableArgs();
+    return static_cast<NetList*>(netlist)->getNumDynamicArguments();
 }
 
 int netlist_num_outlets(void* netlist)
 {
-    return static_cast<NetList*>(netlist)->getMNA().output.size();
+    auto num_out = static_cast<NetList*>(netlist)->getMNA().output.size();
+    return static_cast<int>(num_out);
 }
 
 void netlist_set_dc_block(void* netlist, int block)
