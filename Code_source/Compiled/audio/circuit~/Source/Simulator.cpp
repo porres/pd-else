@@ -119,7 +119,7 @@ void* netlist_create(int argc, t_atom* argv, double sampleRate)
             netlistDescription.emplace_back("diode", std::vector<std::string>{}, std::vector<int>{getPinValue(seglist[1]), getPinValue(seglist[2])});
         }
         else if(!seglist[0].compare("bjt") && seglist.size() > 3) {
-            netlistDescription.emplace_back("bjt", std::vector<std::string>{seglist[4]}, std::vector<int>{getPinValue(seglist[1]), getPinValue(seglist[2]), getPinValue(seglist[3])});
+            netlistDescription.emplace_back("bjt", std::vector<std::string>{seglist[1]}, std::vector<int>{getPinValue(seglist[2]), getPinValue(seglist[3]), getPinValue(seglist[4])});
         }
         else if(!seglist[0].compare("opamp") && seglist.size() > 3) {
             if(seglist.size() == 4)
