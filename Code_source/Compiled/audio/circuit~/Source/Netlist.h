@@ -1,3 +1,10 @@
+/*
+ // Licenced under the GPL-v3
+ // For information on usage and redistribution, and for a DISCLAIMER OF ALL
+ // WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+ // Originally made by mystran, modified by Timothy Schoen
+ */
+
 #pragma once
 #include <KLU/klu.h>
 
@@ -185,12 +192,12 @@ struct NetList {
         update();
     }
 
-    MNASystem const& getMNA()
+    MNASystem const& getMNA() const
     {
         return system;
     }
 
-    double getOutput(int idx)
+    double getOutput(int idx) const
     {
         return system.output[idx];
     }
@@ -215,17 +222,17 @@ struct NetList {
             system.input[idx] = 0.0f;
             return system.input[idx];
         } catch (...) {
-            auto errorMessage = "circuit~: malformed dynamic argument: " + arg;
+            auto errorMessage = "circuit~: malformed dynamic argument: \"" + arg + "\"";
             pd_error(NULL, errorMessage.c_str());
             system.input[0] = 0.0f;
             return system.input[0];
         }
     }
 
-    int getMaxDynamicArgument()
+    int getMaxDynamicArgument() const
     {
         int max = 0;
-        for (auto& [idx, value] : system.input) {
+        for (const auto& [idx, value] : system.input) {
             max = std::max(idx + 1, max);
         }
 
@@ -237,12 +244,12 @@ struct NetList {
         maxiter = iter;
     }
 
-    int getNumNets()
+    int getNumNets() const
     {
         return nets;
     }
 
-    NetlistDescription getLastNetlist()
+    NetlistDescription getLastNetlist() const
     {
         return lastNetlist;
     }
@@ -256,8 +263,8 @@ protected:
 
     // parameters
     int maxiter = 20;
-    double solvertol = 1e-9;
-    bool nochecking = false;
+    double solvertol = 1e-7;
+    bool nochecking = true;
 
     klu_symbolic* Symbolic;
     klu_numeric* Numeric;
@@ -419,7 +426,7 @@ protected:
         return &b[0];
     }
 
-    double getArgumentValue(std::string arg)
+    double getArgumentValue(std::string arg) const
     {
         double result = 0.0f;
 
@@ -444,7 +451,7 @@ protected:
         try {
             result = std::stod(arg);
         } catch (...) {
-            auto errorMessage = "circuit~: invalid circuit description argument " + arg;
+            auto errorMessage = "circuit~: invalid circuit description argument \"" + arg + "\"";
             pd_error(NULL, errorMessage.c_str());
         }
 

@@ -1,3 +1,10 @@
+/*
+ // Licenced under the GPL-v3
+ // For information on usage and redistribution, and for a DISCLAIMER OF ALL
+ // WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+ // Made by Timothy Schoen and Alexandre Porres
+ */
+
 #include "Simulator.h"
 
 static t_class *circuit_tilde_class;
@@ -84,7 +91,7 @@ void *circuit_tilde_new(t_symbol *s, int argc, t_atom *argv)
     x->x_simulator = simulator_create(argc, argv, sys_getblksize(), sys_getsr());
     x->x_numin = simulator_num_inlets(x->x_simulator);
     x->x_numout = simulator_num_outlets(x->x_simulator);
-    x->x_enabled = 1;
+    x->x_enabled = 0; // Disable circuits by default. You don't want a whole bunch of circuits starting at once usually, and otherwise you can use loadmess
     
     for(int i = 1; i < x->x_numin; i++)
     {
@@ -115,6 +122,12 @@ void circuit_tilde_reset(t_circuit_tilde *x) {
     x->x_simulator = simulator_reset(x->x_simulator, sys_getblksize(), sys_getsr());
 };
 
+void circuit_tilde_bang(t_circuit_tilde *x)
+{
+    x->x_simulator = simulator_reset(x->x_simulator, sys_getblksize(), sys_getsr());
+    x->x_enabled = 1;
+}
+
 void circuit_tilde_setup(void) {
     circuit_tilde_class = class_new(gensym("circuit~"),
                                     (t_newmethod)circuit_tilde_new,
@@ -122,6 +135,9 @@ void circuit_tilde_setup(void) {
                                     sizeof(t_circuit_tilde),
                                     CLASS_DEFAULT,
                                     A_GIMME, 0);
+    
+    // Bang will reset and start the simulation
+    class_addbang(circuit_tilde_class, (t_method)circuit_tilde_bang);
     
     class_addmethod(circuit_tilde_class,
                     (t_method)circuit_tilde_dsp, gensym("dsp"), A_CANT, 0);

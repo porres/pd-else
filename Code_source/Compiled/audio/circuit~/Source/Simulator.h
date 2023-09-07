@@ -1,9 +1,10 @@
-//
-//  CircuitSimulator.hpp
-//  pd-circuit
-//
-//  Created by Timothy Schoen on 05/09/2023.
-//
+/*
+ // Licenced under the GPL-v3
+ // For information on usage and redistribution, and for a DISCLAIMER OF ALL
+ // WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+ // Made by Timothy Schoen
+ */
+
 #include <memory.h>
 #include "m_pd.h"
 

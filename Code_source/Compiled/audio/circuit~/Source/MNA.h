@@ -1,3 +1,9 @@
+/*
+ // Licenced under the GPL-v3
+ // For information on usage and redistribution, and for a DISCLAIMER OF ALL
+ // WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+ // Originally made by mystran, modified by Timothy Schoen
+ */
 #pragma once
 
 //
@@ -54,8 +60,8 @@ struct MNACell {
 // A is stored as a vector of rows, for easy in-place pivots
 //
 struct MNASystem {
-    typedef std::vector<MNACell> MNAVector;
-    typedef std::vector<MNAVector> MNAMatrix;
+    using MNAVector = std::vector<MNACell>;
+    using MNAMatrix = std::vector<MNAVector>;
 
     MNAMatrix A;
     MNAVector b;
