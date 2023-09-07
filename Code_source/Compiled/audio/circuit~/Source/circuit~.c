@@ -27,7 +27,7 @@ t_int *circuit_tilde_perform(t_int *w)
     
     for(int i = 0; i < n; i++)
     {
-        if(x->x_simulator && x->x_enabled)  {
+        if(x->x_enabled)  {
             for(int in = 0; in < x->x_numin; in++)
             {
                 simulator_set_input(x->x_simulator, in, ((t_sample *)w[in + 3])[i]);
@@ -82,7 +82,7 @@ void circuit_tilde_free(t_circuit_tilde *x)
 void *circuit_tilde_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_circuit_tilde *x = (t_circuit_tilde *)pd_new(circuit_tilde_class);
-    x->x_simulator = simulator_create(argc, argv, sys_getsr());
+    x->x_simulator = simulator_create(argc, argv, sys_getblksize(), sys_getsr());
     x->x_numin = simulator_num_inlets(x->x_simulator);
     x->x_numout = simulator_num_outlets(x->x_simulator);
     x->x_enabled = 1;
@@ -112,9 +112,8 @@ void circuit_tilde_dcblock(t_circuit_tilde *x, t_float dcblock) {
     simulator_set_dc_block(x->x_simulator, dcblock);
 };
 
-
 void circuit_tilde_reset(t_circuit_tilde *x) {
-    x->x_simulator = simulator_reset(x->x_simulator, sys_getsr());
+    x->x_simulator = simulator_reset(x->x_simulator, sys_getblksize(), sys_getsr());
 };
 
 void circuit_tilde_setup(void) {

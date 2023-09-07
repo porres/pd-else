@@ -37,11 +37,6 @@ std::pair<std::vector<std::string>, std::vector<int>> getPinsAndArguments(std::v
     return {args, pins};
 }
 
-std::vector<std::string> getArguments(std::vector<std::string> args, int numPins) {
-    
-    
-}
-
 // Deallocate netlist
 void simulator_free(void* netlist)
 {
@@ -50,7 +45,7 @@ void simulator_free(void* netlist)
 }
 
 // Create a new netlist with the same components as the old one, for a full state reset
-void* simulator_reset(void* netlist, double sampleRate)
+void* simulator_reset(void* netlist, int blockSize, double sampleRate)
 {
     auto* net = static_cast<NetList*>(netlist);
     
@@ -58,22 +53,12 @@ void* simulator_reset(void* netlist, double sampleRate)
     auto nNets = net->getNumNets();
     
     delete net;
-    
-    net = new NetList(nNets, lastNetlist);
-    
-    net->buildSystem();
-    
-    net->setStepScale(0);
-    
-    // get DC solution
-    net->simulateTick();
-    net->setTimeStep(1.0 / sampleRate);
-    
-    return net;
+
+    return new NetList(lastNetlist, nNets, blockSize, sampleRate);
 }
 
 // Construct a netlist from pure-data arguments
-void* simulator_create(int argc, t_atom* argv, double sampleRate)
+void* simulator_create(int argc, t_atom* argv, int blockSize, double sampleRate)
 {
     // Parse input text from pure-data arguments
     std::stringstream netlistStream;
@@ -191,40 +176,30 @@ void* simulator_create(int argc, t_atom* argv, double sampleRate)
         }
     }
     
-    auto* net = new NetList(usedPins.size(), netlistDescription);
-    
-    net->buildSystem();
-    net->setStepScale(0);
-    
-    // get DC solution
-    net->simulateTick();
-    net->setTimeStep(1.0 / sampleRate);
-    
-    return net;
+    return new NetList(netlistDescription, usedPins.size(), blockSize, sampleRate);
 }
 
 void simulator_set_input(void* netlist, int idx, double input)
 {
     auto* net = static_cast<NetList*>(netlist);
-    net->setDynamicArgument(idx, input);
+    net->setInput(idx, input);
 }
 
 double simulator_get_output(void* netlist, int idx)
 {
     auto* net = static_cast<NetList*>(netlist);
-    return net->getMNA().output[idx];
+    return net->getOutput(idx);
 }
 
 void simulator_tick(void* netlist)
 {
     auto* net = static_cast<NetList*>(netlist);
-    net->clearOutput();
     net->simulateTick();
 }
 
 int simulator_num_inlets(void* netlist)
 {
-    return static_cast<NetList*>(netlist)->getNumDynamicArguments();
+    return static_cast<NetList*>(netlist)->getMaxDynamicArgument();
 }
 
 int simulator_num_outlets(void* netlist)

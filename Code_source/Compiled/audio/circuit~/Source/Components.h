@@ -309,7 +309,6 @@ struct Probe : Component<2, 1>
     
     void stamp(MNASystem& m) final
     {
-        m.output.resize(outChannel + 1, 0.0);
         // vp + vn - vd = 0
         m.stampStatic(+1, nets[2], nets[0]);
         m.stampStatic(-1, nets[2], nets[1]);

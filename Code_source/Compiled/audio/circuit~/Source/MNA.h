@@ -66,13 +66,9 @@ struct MNASystem
     double tStep = 0.0f;
     double time = 0.0f;
     std::vector<double> output;
+    std::map<int, double> input;
     bool block_dc = true;
-    
-    MNASystem()
-    {
-        output.reserve(8);
-    }
-    
+
     void setSize(int n)
     {
         A.resize(n);

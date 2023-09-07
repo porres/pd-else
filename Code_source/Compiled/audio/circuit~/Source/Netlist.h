@@ -8,7 +8,7 @@ struct NetList
 {
     typedef std::vector<IComponent*> ComponentList;
     
-    NetList(int nNets, NetlistDescription& netlist) : nets(nNets),  lastNetlist(netlist)
+    NetList(NetlistDescription& netlist, int nNets, int numSamples, double sampleRate) : lastNetlist(netlist), nets(nNets), blockSize(numSamples)
     {
         int numOut = 0;
         for(auto& [type, args, pins] : netlist)
@@ -143,20 +143,12 @@ struct NetList
                 }
             }
         }
-    }
-    
-    void addComponent(IComponent* c)
-    {
-        c->setupNets(nets, c->getPinLocs());
-        components.push_back(c);
-    }
-    
-    void buildSystem()
-    {
+        
         system.setSize(nets);
-        for(int i = 0; i < components.size(); ++i)
+        
+        for(auto& c : components)
         {
-            components[i]->stamp(system);
+            c->stamp(system);
         }
         
         setStepScale(0);
@@ -166,6 +158,18 @@ struct NetList
         updateMatrix();
         
         initKLU();
+        
+        system.output.resize(numOut);
+
+        // get DC solution
+        simulateTick();
+        setTimeStep(1.0 / sampleRate);
+    }
+    
+    void addComponent(IComponent* c)
+    {
+        c->setupNets(nets, c->getPinLocs());
+        components.push_back(c);
     }
     
     void setTimeStep(double tStepSize)
@@ -197,6 +201,9 @@ struct NetList
     
     void simulateTick()
     {
+        // Clear last output
+        std::fill(system.output.begin(), system.output.end(), 0.0f);
+        
         solve();
         system.time += system.tStep;
         update();
@@ -206,12 +213,13 @@ struct NetList
         return system;
     }
     
-    void clearOutput() {
-        std::fill(system.output.begin(), system.output.end(), 0.0f);
-    }
-    
     double getOutput(int idx) {
         return system.output[idx];
+    }
+    
+    void setInput(int idx, double value)
+    {
+        system.input[idx] = value;
     }
     
     void setBlockDC(bool block_dc) {
@@ -220,26 +228,32 @@ struct NetList
     
     double& addDynamicArgument(std::string arg)
     {
-        size_t delimiterPos = arg.find("$s");
-        
         int idx = 0;
-        // Check if the delimiter was found
-        if (delimiterPos != std::string::npos) {
-            idx = std::stoi(arg.substr(delimiterPos + 2));
+        try
+        {
+            idx = std::stoi(arg.substr(2)) - 1;
+            if(idx < 0) throw std::range_error("index out of range");
+            system.input[idx] = 0.0f;
+            return system.input[idx];
+        }
+        catch(...)
+        {
+            auto err_message = "Malformed dynamic argument: " + arg;
+            pd_error(NULL, err_message.c_str());
+            system.input[0] = 0.0f;
+            return system.input[0];
+        }
+    }
+    
+    int getMaxDynamicArgument()
+    {
+        int max = 0;
+        for(auto& [idx, value] : system.input)
+        {
+            max = std::max(idx + 1, max);
         }
         
-        variableArgs[idx] = 0.0f;
-        return variableArgs[idx];
-    }
-    
-    int getNumDynamicArguments()
-    {
-        return static_cast<int>(variableArgs.size());
-    }
-    
-    void setDynamicArgument(int idx, double value)
-    {
-        variableArgs[idx] = value;
+        return max;
     }
     
     void setMaxIter(int iter)
@@ -260,6 +274,7 @@ struct NetList
 protected:
         
     int nets;
+    int blockSize;
     ComponentList components;
     
     MNASystem system;
@@ -278,8 +293,6 @@ protected:
     std::vector<int> AI;
     std::vector<int> AJ;
     std::vector<MNACell*> nzpointers;
-    
-    std::map<int, double> variableArgs;
     
     // Netlist state for resetting
     NetlistDescription lastNetlist;
