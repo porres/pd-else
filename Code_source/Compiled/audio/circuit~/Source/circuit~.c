@@ -91,7 +91,7 @@ void *circuit_tilde_new(t_symbol *s, int argc, t_atom *argv)
     x->x_simulator = simulator_create(argc, argv, sys_getblksize(), sys_getsr());
     x->x_numin = simulator_num_inlets(x->x_simulator);
     x->x_numout = simulator_num_outlets(x->x_simulator);
-    x->x_enabled = 0; // Disable circuits by default. You don't want a whole bunch of circuits starting at once usually, and otherwise you can use loadmess
+    x->x_enabled = 1;
     
     for(int i = 1; i < x->x_numin; i++)
     {
