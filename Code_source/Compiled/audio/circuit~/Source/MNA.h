@@ -61,7 +61,6 @@ struct MNASystem {
     MNAVector b;
 
     double tStep = 0.0f;
-    double time = 0.0f;
     std::vector<double> output;
     std::map<int, double> input;
     bool blockDC = true;

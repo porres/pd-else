@@ -182,7 +182,6 @@ struct NetList {
         std::fill(system.output.begin(), system.output.end(), 0.0f);
 
         solve();
-        system.time += system.tStep;
         update();
     }
 
