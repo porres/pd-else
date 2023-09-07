@@ -1,4 +1,12 @@
+/*
+ // Licenced under the GPL-v3
+ // For information on usage and redistribution, and for a DISCLAIMER OF ALL
+ // WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+ // Originally made by mystran, modified by Timothy Schoen
+ */
+
 #pragma once
+
 
 namespace {
 // gMin for diodes etc..

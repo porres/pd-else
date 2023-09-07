@@ -1,3 +1,10 @@
+/*
+ // Licenced under the GPL-v3
+ // For information on usage and redistribution, and for a DISCLAIMER OF ALL
+ // WARRANTIES, see the file, "LICENSE.txt," in this distribution.
+ // Made by Timothy Schoen
+ */
+
 #include <vector>
 #include <string>
 #include <cstdio>
@@ -15,7 +22,6 @@
 // Read pin index from string, error checked
 std::pair<std::vector<std::string>, std::vector<int>> getPinsAndArguments(std::vector<std::string> args, int numPins)
 {
-
     std::vector<int> pins;
 
     for (int i = args.size() - numPins; i < args.size(); i++) {
@@ -92,8 +98,7 @@ void* simulator_create(int argc, t_atom* argv, int blockSize, double sampleRate)
                 arguments.push_back(segment.substr(strBegin, strRange));
             }
         }
-        if (!arguments.size())
-            continue;
+        if (!arguments.size()) continue;
 
         else if (!arguments[0].compare("resistor") && arguments.size() > 3) {
             auto [args, pins] = getPinsAndArguments(arguments, 2);
@@ -132,7 +137,7 @@ void* simulator_create(int argc, t_atom* argv, int blockSize, double sampleRate)
             auto [args, pins] = getPinsAndArguments(arguments, 2);
             netlistDescription.emplace_back(tProbe, args, pins);
         } else {
-            auto errorMessage = "circuit~: netlist format error, unknown identifier" + arguments[0];
+            auto errorMessage = "circuit~: netlist format error, unknown identifier \"" + arguments[0] + "\"";
             pd_error(NULL, errorMessage.c_str());
         }
     }
