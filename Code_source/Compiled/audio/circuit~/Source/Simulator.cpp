@@ -138,6 +138,11 @@ void* simulator_create(int argc, t_atom* argv, int blockSize, double sampleRate)
             auto [args, pins] = getPinsAndArguments(arguments, 3);
             netlistDescription.emplace_back(tPotmeter, args, pins);
         }
+        else if(!arguments[0].compare("current") && arguments.size() > 3)
+        {
+            auto [args, pins] = getPinsAndArguments(arguments, 2);
+            netlistDescription.emplace_back(tCurrent, args, pins);
+        }
         else if(!arguments[0].compare("probe") && arguments.size() > 2)
         {
             auto [args, pins] = getPinsAndArguments(arguments, 2);

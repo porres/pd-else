@@ -25,7 +25,7 @@ struct IComponent
     //  - netSize is the current size of the netlist
     //  - pins is an array of circuits nodes
     //
-    virtual void setupNets(int & netSize, const int* pins) = 0;
+    virtual void setupNets(int& netSize, const int* pins) = 0;
     
     // stamp constants into the matrix
     virtual void stamp(MNASystem& m) = 0;
@@ -53,7 +53,7 @@ struct Component : IComponent
 
     const int* getPinLocs() const final { return pinLoc; }
     
-    void setupNets(int & netSize, const int* pins) final
+    void setupNets(int& netSize, const int* pins) final
     {
         for(int i = 0; i < nPins; ++i)
         {
@@ -109,7 +109,7 @@ struct VariableResistor : Component<2>
         m.A[nets[1]][nets[1]].gdyn.push_back(&g);
     }
     
-    void update(MNASystem& m)
+    void update(MNASystem& m) final
     {
         g = 1. / std::max(r, 1.0);
         g_negative = -g;
@@ -315,7 +315,7 @@ struct Probe : Component<2, 1>
         m.stampStatic(-1, nets[2], nets[2]);
     }
     
-    void update(MNASystem& m)
+    void update(MNASystem& m) final
     {
         if(!initialised)
         {
@@ -641,7 +641,7 @@ struct Transformer final : Component<4, 2>
         pinLoc[3] = d;
     }
     
-    void stamp(MNASystem& m)
+    void stamp(MNASystem& m) final
     {
         m.stampStatic(1, nets[5], nets[3]);
         m.stampStatic(-1, nets[5], nets[4]);
@@ -672,7 +672,7 @@ struct OpAmp final : Component<3, 1>
         pinLoc[2] = c;
     }
     
-    void stamp(MNASystem& m)
+    void stamp(MNASystem& m) final
     {
         // http://qucs.sourceforge.net/tech/node67.html explains all this
         m.stampStatic(-1, nets[3], nets[2]);
@@ -682,7 +682,7 @@ struct OpAmp final : Component<3, 1>
         m.b[nets[3]].gdyn.push_back(&v);
     }
     
-    void update(MNASystem& m)
+    void update(MNASystem& m) final
     {
         Uin = m.b[nets[0]].lu - m.b[nets[1]].lu;
         gv = g / (1 + pow(M_PI_2 / vmax * g * Uin, 2)) + 1e-12;
@@ -709,7 +709,7 @@ struct Potentiometer final : Component<3, 0>
         pinLoc[2] = vInvOut;
     }
     
-    void stamp(MNASystem& m)
+    void stamp(MNASystem& m) final
     {
         g = r * 0.5;
         ig = r * 0.5;
@@ -724,7 +724,8 @@ struct Potentiometer final : Component<3, 0>
         m.A[nets[2]][nets[0]].gdyn.push_back(&ing);
         m.A[nets[2]][nets[2]].gdyn.push_back(&ig);
     }
-    void update(MNASystem& m)
+    
+    void update(MNASystem& m) final
     {
         auto input = std::max(std::min(pos, 0.95), 0.05); // take out the extremes and prevent 0 divides
         g = 1. / (r * input);
@@ -746,7 +747,7 @@ struct Gyrator final : Component<4>
         pinLoc[3] = pin4;
     }
 
-    void stamp(MNASystem& m)
+    void stamp(MNASystem& m) final
     {
          m.stampStatic(1./r, nets[0], nets[1]);
          m.stampStatic(1./r, nets[0], nets[2]);
@@ -759,5 +760,44 @@ struct Gyrator final : Component<4>
          
          m.stampStatic(-1./r, nets[3], nets[1]);
          m.stampStatic(1./r, nets[3], nets[2]);
+    }
+};
+
+struct Current final : Component<2>
+{
+    double a;
+    Current(double ampere, int pin1, int pin2) : a(ampere)
+    {
+        pinLoc[0] = pin1;
+        pinLoc[1] = pin2;
+    }
+    
+    void stamp(MNASystem & m) final
+    {
+        m.b[nets[0]].g = -a;
+        m.b[nets[1]].g = a;
+    }
+};
+
+struct VariableCurrent final : Component<2>
+{
+    double& a;
+    double a_negative;
+    
+    VariableCurrent(double& ampere, int pin1, int pin2) : a(ampere)
+    {
+        pinLoc[0] = pin1;
+        pinLoc[1] = pin2;
+    }
+    
+    void stamp(MNASystem & m) final
+    {
+        m.b[nets[0]].gdyn.push_back(&a_negative);
+        m.b[nets[1]].gdyn.push_back(&a);
+    }
+    
+    void update(MNASystem & m) final
+    {
+        a_negative = -a;
     }
 };

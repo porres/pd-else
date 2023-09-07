@@ -23,6 +23,7 @@ enum ComponentType
     tInductor,
     tOpAmp,
     tPotmeter,
+    tCurrent,
     tProbe
 };
 

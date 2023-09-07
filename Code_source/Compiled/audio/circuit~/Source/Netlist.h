@@ -136,6 +136,20 @@ struct NetList
                     }
                     break;
                 }
+                case tCurrent:
+                {
+                    if(args.size() == 1) {
+                        if (args[0].rfind("$s", 0) == 0) {
+                            addComponent(new VariableCurrent(addDynamicArgument(args[0]), pins[0], pins[1]));
+                        }
+                        else {
+                            addComponent(new Current(getArgumentValue(args[0]), pins[0], pins[1]));
+                        }
+                    }
+                    else {
+                        pd_error(NULL, "circuit~: wrong number of arguments for current");
+                    }
+                }
                 case tProbe:
                 {
                     addComponent(new Probe(pins[0], pins[1], numOut++));
