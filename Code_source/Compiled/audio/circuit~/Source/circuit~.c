@@ -70,7 +70,6 @@ void circuit_tilde_free(t_circuit_tilde *x)
     {
         inlet_free(x->x_in[i-1]);
     }
-    
     for(int i = 0; i < x->x_numout; i++)
     {
         outlet_free(x->x_out[i]);

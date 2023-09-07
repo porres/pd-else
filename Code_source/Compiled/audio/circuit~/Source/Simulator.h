@@ -11,8 +11,7 @@
 
 #ifdef __cplusplus
 
-enum ComponentType
-{
+enum ComponentType {
     tResistor,
     tCapacitor,
     tVoltage,
@@ -27,8 +26,7 @@ enum ComponentType
     tProbe
 };
 
-extern "C"
-{
+extern "C" {
 #endif
 
 void* simulator_create(int argc, t_atom* argv, int blockSize, double sampleRate);
