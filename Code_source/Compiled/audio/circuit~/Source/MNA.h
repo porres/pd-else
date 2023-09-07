@@ -67,7 +67,7 @@ struct MNASystem
     double time = 0.0f;
     std::vector<double> output;
     std::map<int, double> input;
-    bool block_dc = true;
+    bool blockDC = true;
 
     void setSize(int n)
     {

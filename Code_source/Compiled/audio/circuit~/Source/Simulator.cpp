@@ -24,7 +24,7 @@ std::pair<std::vector<std::string>, std::vector<int>> getPinsAndArguments(std::v
         try {
             pin = std::stoi(args[i]);
         } catch (...) {
-            auto err_str = args[0] + ": invalid number of pins";
+            auto err_str = "circuit~: " + args[0] + ", invalid number of pins";
             pd_error(NULL, err_str.c_str());
         }
         
@@ -142,6 +142,10 @@ void* simulator_create(int argc, t_atom* argv, int blockSize, double sampleRate)
         {
             auto [args, pins] = getPinsAndArguments(arguments, 2);
             netlistDescription.emplace_back(tProbe, args, pins);
+        }
+        else {
+            auto errorMessage = "circuit~: netlist format error, unknown identifier" + arguments[0];
+            pd_error(NULL, errorMessage.c_str());
         }
     }
     

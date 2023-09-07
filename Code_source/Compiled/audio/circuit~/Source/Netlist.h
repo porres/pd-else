@@ -26,7 +26,7 @@ struct NetList
                         }
                     }
                     else {
-                        pd_error(NULL, "resistor: invalid number of arguments");
+                        pd_error(NULL, "circuit~: wrong number of arguments for resistor");
                     }
                     break;
                 }
@@ -36,7 +36,7 @@ struct NetList
                         addComponent(new Capacitor(getArgumentValue(args[0]), pins[0], pins[1]));
                     }
                     else {
-                        pd_error(NULL, "capacitor: invalid number of arguments");
+                        pd_error(NULL, "circuit~: wrong number of arguments for capacitor");
                     }
                     break;
                 }
@@ -51,7 +51,7 @@ struct NetList
                         }
                     }
                     else {
-                        pd_error(NULL, "voltage: invalid number of arguments");
+                        pd_error(NULL, "circuit~: wrong number of arguments for voltage");
                     }
                     break;
                 }
@@ -62,7 +62,7 @@ struct NetList
                     }
                     else
                     {
-                        pd_error(NULL, "diode: invalid number of arguments");
+                        pd_error(NULL, "circuit~: wrong number of arguments for diode");
                     }
                     break;
                 }
@@ -72,7 +72,7 @@ struct NetList
                         addComponent(new BJT(pins[0], pins[1], pins[2], getArgumentValue(args[0])));
                     }
                     else {
-                        pd_error(NULL, "bjt: invalid number of arguments");
+                        pd_error(NULL, "circuit~: wrong number of arguments for bjt");
                     }
                     break;
                 }
@@ -82,7 +82,7 @@ struct NetList
                         addComponent(new Transformer(getArgumentValue(args[0]), pins[0], pins[1], pins[2], pins[3]));
                     }
                     else {
-                        pd_error(NULL, "transformer: invalid number of arguments");
+                        pd_error(NULL, "circuit~: wrong number of arguments for transformer");
                     }
                     break;
                 }
@@ -92,7 +92,7 @@ struct NetList
                         addComponent(new Gyrator(getArgumentValue(args[0]), pins[0], pins[1], pins[2], pins[3]));
                     }
                     else {
-                        pd_error(NULL, "gyrator: invalid number of arguments");
+                        pd_error(NULL, "circuit~: wrong number of arguments for gyrator");
                     }
                     break;
                 }
@@ -102,7 +102,7 @@ struct NetList
                         addComponent(new Inductor(getArgumentValue(args[0]), pins[0], pins[1]));
                     }
                     else {
-                        pd_error(NULL, "inductor: invalid number of arguments");
+                        pd_error(NULL, "circuit~: wrong number of arguments for inductor");
                     }
                     break;
                 }
@@ -121,7 +121,7 @@ struct NetList
                         addComponent(new OpAmp(getArgumentValue(args[0]), getArgumentValue(args[1]), pins[0], pins[1], pins[2]));
                     }
                     else {
-                        pd_error(NULL, "opamp: invalid number of arguments");
+                        pd_error(NULL, "circuit~: wrong number of arguments for opamp");
                     }
                     
                     break;
@@ -132,7 +132,7 @@ struct NetList
                         addComponent(new Potentiometer(addDynamicArgument(args[0]), getArgumentValue(args[1]), pins[0], pins[1], pins[2]));
                     }
                     else {
-                        pd_error(NULL, "potmeter: invalid number of arguments");
+                        pd_error(NULL, "circuit~: wrong number of arguments for potmeter");
                     }
                     break;
                 }
@@ -222,8 +222,8 @@ struct NetList
         system.input[idx] = value;
     }
     
-    void setBlockDC(bool block_dc) {
-        system.block_dc = block_dc;
+    void setBlockDC(bool blockDC) {
+        system.blockDC = blockDC;
     }
     
     double& addDynamicArgument(std::string arg)
@@ -238,8 +238,8 @@ struct NetList
         }
         catch(...)
         {
-            auto err_message = "Malformed dynamic argument: " + arg;
-            pd_error(NULL, err_message.c_str());
+            auto errorMessage = "circuit~: malformed dynamic argument: " + arg;
+            pd_error(NULL, errorMessage.c_str());
             system.input[0] = 0.0f;
             return system.input[0];
         }
@@ -482,7 +482,8 @@ protected:
         try {
             result = std::stod(arg);
         } catch (...) {
-            pd_error(NULL, "Invalid circuit description argument");
+            auto errorMessage = "circuit~: invalid circuit description argument " + arg;
+            pd_error(NULL, errorMessage.c_str());
         }
         
         return result;

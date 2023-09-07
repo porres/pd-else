@@ -323,7 +323,7 @@ struct Probe : Component<2, 1>
             initialised = true;
         }
         
-        if(m.block_dc) {
+        if(m.blockDC) {
             m.output[outChannel] += dc_blocker.filter(m.b[nets[2]].lu);
         }
         else {
