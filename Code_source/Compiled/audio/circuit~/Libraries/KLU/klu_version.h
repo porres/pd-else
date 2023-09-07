@@ -1,17 +1,27 @@
+//------------------------------------------------------------------------------
+// KLU/Include/klu_version.h: internal include file for KLU
+//------------------------------------------------------------------------------
+
+// KLU, Copyright (c) 2004-2022, University of Florida.  All Rights Reserved.
+// Authors: Timothy A. Davis and Ekanathan Palamadai.
+// SPDX-License-Identifier: LGPL-2.1+
+
+//------------------------------------------------------------------------------
+
 #ifndef _KLU_VERSION_H
 #define _KLU_VERSION_H
 
 #ifdef DLONG
-#define Int SuiteSparse_long
-#define Int_id SuiteSparse_long_id
-#define Int_MAX SuiteSparse_long_max
+#define Int int64_t
+#define Int_id "%" PRId64
+#define Int_MAX INT64_MAX
 #else
-#define Int int
+#define Int int32_t
 #define Int_id "%d"
-#define Int_MAX INT_MAX
+#define Int_MAX INT32_MAX
 #endif
 
-#define NPRINT
+#define NPRINT  
 
 #define BYTES(type,n) (sizeof (type) * (n))
 #define CEILING(b,u)  (((b)+(u)-1) / (u))
@@ -37,17 +47,18 @@
 }
 
 /* function names */
-#ifdef COMPLEX
+#ifdef COMPLEX 
 
 #ifdef DLONG
 
+// zl: complex int64_t
 #define KLU_scale klu_zl_scale
 #define KLU_solve klu_zl_solve
 #define KLU_tsolve klu_zl_tsolve
 #define KLU_free_numeric klu_zl_free_numeric
 #define KLU_factor klu_zl_factor
 #define KLU_refactor klu_zl_refactor
-#define KLU_kernel_factor klu_zl_kernel_factor
+#define KLU_kernel_factor klu_zl_kernel_factor 
 #define KLU_lsolve klu_zl_lsolve
 #define KLU_ltsolve klu_zl_ltsolve
 #define KLU_usolve klu_zl_usolve
@@ -64,13 +75,14 @@
 
 #else
 
+// z: complex int32_t
 #define KLU_scale klu_z_scale
 #define KLU_solve klu_z_solve
 #define KLU_tsolve klu_z_tsolve
 #define KLU_free_numeric klu_z_free_numeric
 #define KLU_factor klu_z_factor
 #define KLU_refactor klu_z_refactor
-#define KLU_kernel_factor klu_z_kernel_factor
+#define KLU_kernel_factor klu_z_kernel_factor 
 #define KLU_lsolve klu_z_lsolve
 #define KLU_ltsolve klu_z_ltsolve
 #define KLU_usolve klu_z_usolve
@@ -91,13 +103,14 @@
 
 #ifdef DLONG
 
+// l: int64_t
 #define KLU_scale klu_l_scale
 #define KLU_solve klu_l_solve
 #define KLU_tsolve klu_l_tsolve
 #define KLU_free_numeric klu_l_free_numeric
 #define KLU_factor klu_l_factor
 #define KLU_refactor klu_l_refactor
-#define KLU_kernel_factor klu_l_kernel_factor
+#define KLU_kernel_factor klu_l_kernel_factor 
 #define KLU_lsolve klu_l_lsolve
 #define KLU_ltsolve klu_l_ltsolve
 #define KLU_usolve klu_l_usolve
@@ -114,13 +127,14 @@
 
 #else
 
+// no prefix: int32_t
 #define KLU_scale klu_scale
 #define KLU_solve klu_solve
 #define KLU_tsolve klu_tsolve
 #define KLU_free_numeric klu_free_numeric
 #define KLU_factor klu_factor
 #define KLU_refactor klu_refactor
-#define KLU_kernel_factor klu_kernel_factor
+#define KLU_kernel_factor klu_kernel_factor 
 #define KLU_lsolve klu_lsolve
 #define KLU_ltsolve klu_ltsolve
 #define KLU_usolve klu_usolve
@@ -142,6 +156,7 @@
 
 #ifdef DLONG
 
+// l: int64_t
 #define KLU_analyze klu_l_analyze
 #define KLU_analyze_given klu_l_analyze_given
 #define KLU_alloc_symbolic klu_l_alloc_symbolic
@@ -166,6 +181,7 @@
 
 #else
 
+// no prefiex: int64_t
 #define KLU_analyze klu_analyze
 #define KLU_analyze_given klu_analyze_given
 #define KLU_alloc_symbolic klu_alloc_symbolic
@@ -305,10 +321,10 @@ typedef double Unit ;
     that possibility.  ANSI C *does* guarantee that an array of structs has
     the same size as n times the size of one struct.
 
-    The ANSI C99 version of the C language includes a "double _Complex" type.
+    The ANSI C11 version of the C language includes a "double complex" type.
     It should be possible in that case to do the following:
 
-    #define Entry double _Complex
+    #define Entry double complex
 
     and remove the Double_Complex struct.  The macros, below, could then be
     replaced with instrinsic operators.  Note that the #define Real and
@@ -321,7 +337,7 @@ typedef double Unit ;
 
 typedef struct
 {
-	double component [2] ;      /* real and imaginary parts */
+    double component [2] ;      /* real and imaginary parts */
 
 } Double_Complex ;
 
@@ -355,7 +371,7 @@ typedef Double_Complex Unit ;
 #define SPLIT(sz) ((sz) != (double *) NULL)
 
 /* c = (s1) + (s2)*i, if s2 is null, then X is in "packed" format (compatible
- * with Entry and ANSI C99 double _Complex type).  */
+ * with Entry and ANSI C11 double complex type).  */
 /*#define ASSIGN(c,s1,s2,p,split)       \
 { \
     if (split) \
