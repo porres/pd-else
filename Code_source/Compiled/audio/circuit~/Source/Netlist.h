@@ -112,11 +112,11 @@ struct NetList
                     {
                         addComponent(new OpAmp(10, 15, pins[0], pins[1], pins[2]));
                     }
-                    if(args.size() == 1)
+                    else if(args.size() == 1)
                     {
                         addComponent(new OpAmp(getArgumentValue(args[0]), 15, pins[0], pins[1], pins[2]));
                     }
-                    if(args.size() == 2)
+                    else if(args.size() == 2)
                     {
                         addComponent(new OpAmp(getArgumentValue(args[0]), getArgumentValue(args[1]), pins[0], pins[1], pins[2]));
                     }

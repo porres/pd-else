@@ -110,7 +110,7 @@ void* simulator_create(int argc, t_atom* argv, int blockSize, double sampleRate)
             auto [args, pins] = getPinsAndArguments(arguments, 2);
             netlistDescription.emplace_back(tVoltage, args, pins);
         }
-        else if(!arguments[0].compare("diode") && arguments.size() > 3) {
+        else if(!arguments[0].compare("diode") && arguments.size() > 2) {
             auto [args, pins] = getPinsAndArguments(arguments, 2);
             netlistDescription.emplace_back(tDiode, args, pins);
         }
@@ -118,7 +118,7 @@ void* simulator_create(int argc, t_atom* argv, int blockSize, double sampleRate)
             auto [args, pins] = getPinsAndArguments(arguments, 3);
             netlistDescription.emplace_back(tBJT, args, pins);
         }
-        else if(!arguments[0].compare("opamp") && arguments.size() > 4) {
+        else if(!arguments[0].compare("opamp") && arguments.size() > 3) {
             auto [args, pins] = getPinsAndArguments(arguments, 3);
             netlistDescription.emplace_back(tOpAmp, args, pins);
         }
@@ -134,7 +134,7 @@ void* simulator_create(int argc, t_atom* argv, int blockSize, double sampleRate)
             auto [args, pins] = getPinsAndArguments(arguments, 2);
             netlistDescription.emplace_back(tInductor, args, pins);
         }
-        else if(!arguments[0].compare("potmeter") && arguments.size() > 4) {
+        else if(!arguments[0].compare("potmeter") && arguments.size() > 5) {
             auto [args, pins] = getPinsAndArguments(arguments, 3);
             netlistDescription.emplace_back(tPotmeter, args, pins);
         }
