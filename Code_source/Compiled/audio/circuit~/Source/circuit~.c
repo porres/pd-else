@@ -4,7 +4,7 @@ static t_class *circuit_tilde_class;
 
 typedef struct _circuit_tilde {
     t_object x_obj;
-    void* x_netlist;
+    void* x_simulator;
     t_float f;
     
     t_outlet* x_out[8];
@@ -27,17 +27,17 @@ t_int *circuit_tilde_perform(t_int *w)
     
     for(int i = 0; i < n; i++)
     {
-        if(x->x_netlist && x->x_enabled)  {
+        if(x->x_simulator && x->x_enabled)  {
             for(int in = 0; in < x->x_numin; in++)
             {
-                netlist_set_input(x->x_netlist, in, ((t_sample *)w[in + 3])[i]);
+                simulator_set_input(x->x_simulator, in, ((t_sample *)w[in + 3])[i]);
             }
             
-            netlist_tick(x->x_netlist);
+            simulator_tick(x->x_simulator);
             
             for(int out = 0; out < x->x_numout; out++)
             {
-                ((t_sample *)w[x->x_numin + out + 3])[i] = netlist_get_output(x->x_netlist, out);
+                ((t_sample *)w[x->x_numin + out + 3])[i] = simulator_get_output(x->x_simulator, out);
             }
         }
         else {
@@ -76,15 +76,15 @@ void circuit_tilde_free(t_circuit_tilde *x)
         outlet_free(x->x_out[i]);
     }
     
-    netlist_free(x->x_netlist);
+    simulator_free(x->x_simulator);
 }
 
 void *circuit_tilde_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_circuit_tilde *x = (t_circuit_tilde *)pd_new(circuit_tilde_class);
-    x->x_netlist = netlist_create(argc, argv, sys_getsr());
-    x->x_numin = netlist_num_inlets(x->x_netlist);
-    x->x_numout = netlist_num_outlets(x->x_netlist);
+    x->x_simulator = simulator_create(argc, argv, sys_getsr());
+    x->x_numin = simulator_num_inlets(x->x_simulator);
+    x->x_numout = simulator_num_outlets(x->x_simulator);
     x->x_enabled = 1;
     
     for(int i = 1; i < x->x_numin; i++)
@@ -101,7 +101,7 @@ void *circuit_tilde_new(t_symbol *s, int argc, t_atom *argv)
 }
 
 void circuit_tilde_iter(t_circuit_tilde *x, t_float niter) {
-    netlist_set_iter(x->x_netlist, (int)niter);
+    simulator_set_iter(x->x_simulator, (int)niter);
 };
 
 void circuit_tilde_enable(t_circuit_tilde *x, t_float enable) {
@@ -109,12 +109,12 @@ void circuit_tilde_enable(t_circuit_tilde *x, t_float enable) {
 };
 
 void circuit_tilde_dcblock(t_circuit_tilde *x, t_float dcblock) {
-    netlist_set_dc_block(x->x_netlist, dcblock);
+    simulator_set_dc_block(x->x_simulator, dcblock);
 };
 
 
 void circuit_tilde_reset(t_circuit_tilde *x) {
-    x->x_netlist = netlist_reset(x->x_netlist, sys_getsr());
+    x->x_simulator = simulator_reset(x->x_simulator, sys_getsr());
 };
 
 void circuit_tilde_setup(void) {

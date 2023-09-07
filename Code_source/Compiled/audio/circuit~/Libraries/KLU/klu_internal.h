@@ -1,14 +1,20 @@
-/* ========================================================================== */
-/* === KLU/Include/klu_internal.h =========================================== */
-/* ========================================================================== */
+//------------------------------------------------------------------------------
+// KLU/Include/klu_internal.h: internal include file for KLU
+//------------------------------------------------------------------------------
+
+// KLU, Copyright (c) 2004-2022, University of Florida.  All Rights Reserved.
+// Authors: Timothy A. Davis and Ekanathan Palamadai.
+// SPDX-License-Identifier: LGPL-2.1+
+
+//------------------------------------------------------------------------------
 
 /* For internal use in KLU routines only, not for user programs */
 
 #ifndef _KLU_INTERNAL_H
 #define _KLU_INTERNAL_H
 
-#include "klu.h"
-#include "../BTF/btf.h"
+#include "klu.h" 
+#include "BTF/btf.h"
 #include "klu_version.h"
 
 /* ========================================================================== */
@@ -31,11 +37,7 @@
 
 /* ========================================================================== */
 
-#include <stdio.h>
 #include <assert.h>
-#include <limits.h>
-#include <stdlib.h>
-#include <math.h>
 
 #undef ASSERT
 #ifndef NDEBUG
@@ -106,7 +108,7 @@ size_t KLU_kernel   /* final size of LU on output */
     Int Stack [ ],  /* size n */
     Int Flag [ ],   /* size n */
     Int adj_pos [ ],    /* size n */
-
+    
     /* workspace for pruning only */
     Int Lpend [ ],      /* size n workspace */
 
@@ -217,20 +219,20 @@ void KLU_utsolve
     Entry X [ ]
 ) ;
 
-Int KLU_valid
+Int KLU_valid 
 (
-    Int n,
-    Int Ap [ ],
-    Int Ai [ ],
+    Int n, 
+    Int Ap [ ], 
+    Int Ai [ ], 
     Entry Ax [ ]
 ) ;
 
-Int KLU_valid_LU
+Int KLU_valid_LU 
 (
-    Int n,
-    Int flag_test_start_ptr,
+    Int n, 
+    Int flag_test_start_ptr, 
     Int Xip [ ],
-    Int Xlen [ ],
+    Int Xlen [ ],  
     Unit LU [ ]
 );
 

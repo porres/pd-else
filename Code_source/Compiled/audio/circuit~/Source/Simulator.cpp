@@ -14,35 +14,52 @@
 
 
 // Read pin index from string, error checked
-int getPinValue(std::string arg) {
-    int result = 0;
-    try {
-        result = std::stoi(arg);
-    } catch (...) {
-        pd_error(NULL, "Invalid pin index");
+std::pair<std::vector<std::string>, std::vector<int>> getPinsAndArguments(std::vector<std::string> args, int numPins) {
+    
+    std::vector<int> pins;
+    
+    for(int i = args.size() - numPins; i < args.size(); i++)
+    {
+        int pin = 0;
+        try {
+            pin = std::stoi(args[i]);
+        } catch (...) {
+            auto err_str = args[0] + ": invalid number of pins";
+            pd_error(NULL, err_str.c_str());
+        }
+        
+        pins.push_back(pin);
     }
     
-    return result;
+    args.erase(args.end() - numPins, args.end());
+    args.erase(args.begin());
+    
+    return {args, pins};
+}
+
+std::vector<std::string> getArguments(std::vector<std::string> args, int numPins) {
+    
+    
 }
 
 // Deallocate netlist
-void netlist_free(void* netlist)
+void simulator_free(void* netlist)
 {
     auto* net = static_cast<NetList*>(netlist);
     delete net;
 }
 
 // Create a new netlist with the same components as the old one, for a full state reset
-void* netlist_reset(void* netlist, double sampleRate)
+void* simulator_reset(void* netlist, double sampleRate)
 {
     auto* net = static_cast<NetList*>(netlist);
     
-    auto description = net->netlistDescription;
-    auto pins = net->pinAssignment;
+    auto lastNetlist = net->getLastNetlist();
+    auto nNets = net->getNumNets();
     
     delete net;
     
-    net = new NetList(description, pins);
+    net = new NetList(nNets, lastNetlist);
     
     net->buildSystem();
     
@@ -56,29 +73,27 @@ void* netlist_reset(void* netlist, double sampleRate)
 }
 
 // Construct a netlist from pure-data arguments
-void* netlist_create(int argc, t_atom* argv, double sampleRate)
+void* simulator_create(int argc, t_atom* argv, double sampleRate)
 {
     // Parse input text from pure-data arguments
-    std::ostringstream argStream;
+    std::stringstream netlistStream;
     for (int i = 0; i < argc; i++)
     {
         if (argv[i].a_type == A_SYMBOL)
-            argStream << argv[i].a_w.w_symbol->s_name;
+            netlistStream << argv[i].a_w.w_symbol->s_name;
         else if (argv[i].a_type == A_FLOAT)
-            argStream << argv[i].a_w.w_float;
+            netlistStream << argv[i].a_w.w_float;
         
-        argStream << ' ';
+        netlistStream << ' ';
     }
-    
-    std::stringstream netlistStream(argStream.str());
-    std::string obj;
     
     NetlistDescription netlistDescription;
     
     // first we split by ;
+    std::string obj;
     while(std::getline(netlistStream,obj,';'))
     {
-        std::vector<std::string> seglist;
+        std::vector<std::string> arguments;
         std::vector<std::string> optargs;
         std::string segment;
         std::stringstream inputcode(obj);
@@ -93,87 +108,90 @@ void* netlist_create(int argc, t_atom* argv, double sampleRate)
                 const auto strEnd = segment.find_last_not_of(" ");
                 const auto strRange = strEnd - strBegin + 1;
                 
-                seglist.push_back(segment.substr(strBegin, strRange));
+                arguments.push_back(segment.substr(strBegin, strRange));
             }
         }
-        if(!seglist.size()) continue;
+        if(!arguments.size()) continue;
         
-        // Skip over ground, it doesn't require implementation
-        if(!seglist[0].compare("ground"))
+        else if(!arguments[0].compare("resistor") && arguments.size() > 3) {
+            auto [args, pins] = getPinsAndArguments(arguments, 2);
+            netlistDescription.emplace_back(tResistor, args, pins);
+        }
+        else if(!arguments[0].compare("capacitor") && arguments.size() > 3) {
+            auto [args, pins] = getPinsAndArguments(arguments, 2);
+            netlistDescription.emplace_back(tCapacitor, args, pins);
+        }
+        else if(!arguments[0].compare("voltage")&& arguments.size() > 3) {
+            auto [args, pins] = getPinsAndArguments(arguments, 2);
+            netlistDescription.emplace_back(tVoltage, args, pins);
+        }
+        else if(!arguments[0].compare("diode") && arguments.size() > 3) {
+            auto [args, pins] = getPinsAndArguments(arguments, 2);
+            netlistDescription.emplace_back(tDiode, args, pins);
+        }
+        else if(!arguments[0].compare("bjt") && arguments.size() > 4) {
+            auto [args, pins] = getPinsAndArguments(arguments, 3);
+            netlistDescription.emplace_back(tBJT, args, pins);
+        }
+        else if(!arguments[0].compare("opamp") && arguments.size() > 4) {
+            auto [args, pins] = getPinsAndArguments(arguments, 3);
+            netlistDescription.emplace_back(tOpAmp, args, pins);
+        }
+        else if(!arguments[0].compare("transformer") && arguments.size() > 5) {
+            auto [args, pins] = getPinsAndArguments(arguments, 4);
+            netlistDescription.emplace_back(tTransformer, args, pins);
+        }
+        else if(!arguments[0].compare("gyrator") && arguments.size() > 5) {
+            auto [args, pins] = getPinsAndArguments(arguments, 4);
+            netlistDescription.emplace_back(tGyrator, args, pins);
+        }
+        else if(!arguments[0].compare("inductor") && arguments.size() > 3) {
+            auto [args, pins] = getPinsAndArguments(arguments, 2);
+            netlistDescription.emplace_back(tInductor, args, pins);
+        }
+        else if(!arguments[0].compare("potmeter") && arguments.size() > 4) {
+            auto [args, pins] = getPinsAndArguments(arguments, 3);
+            netlistDescription.emplace_back(tPotmeter, args, pins);
+        }
+        else if(!arguments[0].compare("probe") && arguments.size() > 2)
         {
-            continue;
-        }
-        else if(!seglist[0].compare("resistor") && seglist.size() > 3) {
-            netlistDescription.emplace_back("resistor", std::vector<std::string>{seglist[1]}, std::vector<int>{getPinValue(seglist[2]), getPinValue(seglist[3])});
-        }
-        else if(!seglist[0].compare("capacitor") && seglist.size() > 3) {
-            netlistDescription.emplace_back("capacitor", std::vector<std::string>{seglist[1]}, std::vector<int>{getPinValue(seglist[2]), getPinValue(seglist[3])});
-        }
-        else if(!seglist[0].compare("voltage")&& seglist.size() > 3) {
-            netlistDescription.emplace_back("voltage", std::vector<std::string>{seglist[1]}, std::vector<int>{getPinValue(seglist[2]), getPinValue(seglist[3])});
-        }
-        else if(!seglist[0].compare("input") && seglist.size() > 2) {
-            netlistDescription.emplace_back("input", std::vector<std::string>{}, std::vector<int>{getPinValue(seglist[1]), getPinValue(seglist[2])});
-        }
-        else if(!seglist[0].compare("diode") && seglist.size() > 2) {
-            netlistDescription.emplace_back("diode", std::vector<std::string>{}, std::vector<int>{getPinValue(seglist[1]), getPinValue(seglist[2])});
-        }
-        else if(!seglist[0].compare("bjt") && seglist.size() > 3) {
-            netlistDescription.emplace_back("bjt", std::vector<std::string>{seglist[1]}, std::vector<int>{getPinValue(seglist[2]), getPinValue(seglist[3]), getPinValue(seglist[4])});
-        }
-        else if(!seglist[0].compare("opamp") && seglist.size() > 3) {
-            if(seglist.size() == 4)
-            {
-                netlistDescription.emplace_back("opamp", std::vector<std::string>{"10", "15"}, std::vector<int>{getPinValue(seglist[1]), getPinValue(seglist[2]), getPinValue(seglist[3])});
-            }
-            if(seglist.size() == 5)
-            {
-                netlistDescription.emplace_back("opamp", std::vector<std::string>{seglist[1], "15"}, std::vector<int>{getPinValue(seglist[2]), getPinValue(seglist[3]), getPinValue(seglist[4])});
-            }
-            if(seglist.size() == 6)
-            {
-                netlistDescription.emplace_back("opamp", std::vector<std::string>{seglist[1], seglist[2]}, std::vector<int>{getPinValue(seglist[3]), getPinValue(seglist[4]), getPinValue(seglist[5])});
-            }
-        }
-        else if(!seglist[0].compare("transformer") && seglist.size() > 5) {
-            netlistDescription.emplace_back("transformer", std::vector<std::string>{seglist[1]}, std::vector<int>{getPinValue(seglist[2]), getPinValue(seglist[3]), getPinValue(seglist[4]), getPinValue(seglist[5])});
-        }
-        else if(!seglist[0].compare("gyrator") && seglist.size() > 5) {
-            netlistDescription.emplace_back("gyrator", std::vector<std::string>{seglist[1]}, std::vector<int>{getPinValue(seglist[2]), getPinValue(seglist[3]), getPinValue(seglist[4]), getPinValue(seglist[5])});
-        }
-        else if(!seglist[0].compare("inductor") && seglist.size() > 3) {
-            netlistDescription.emplace_back("inductor", std::vector<std::string>{seglist[1]}, std::vector<int>{getPinValue(seglist[2]), getPinValue(seglist[3])});
-        }
-        else if(!seglist[0].compare("potmeter") && seglist.size() > 5) {
-            netlistDescription.emplace_back("potmeter", std::vector<std::string>{seglist[1], seglist[2]}, std::vector<int>{getPinValue(seglist[3]), getPinValue(seglist[4]), getPinValue(seglist[5])});
-        }
-        else if(!seglist[0].compare("probe") && seglist.size() > 2)
-        {
-            netlistDescription.emplace_back("probe", std::vector<std::string>{}, std::vector<int>{getPinValue(seglist[1]), getPinValue(seglist[2])});
+            auto [args, pins] = getPinsAndArguments(arguments, 2);
+            netlistDescription.emplace_back(tProbe, args, pins);
         }
     }
     
     // A valid netlist contains no unused numbers
     // To make designing netlists easier, we do this programmatically so the user doesn't need to worry about it
-    std::vector<int> allPins = {0};
+    std::vector<int> usedPins = {0};
     for(const auto& [name, args, pins] : netlistDescription)
     {
         for(auto& pin : pins)
         {
-            allPins.push_back(pin);
+            usedPins.push_back(pin);
         }
     }
     
-    std::sort(allPins.begin(), allPins.end());
-    allPins.erase(std::unique(allPins.begin(), allPins.end()), allPins.end());
+    // Sort and remove duplicates
+    std::sort(usedPins.begin(), usedPins.end());
+    usedPins.erase(std::unique(usedPins.begin(), usedPins.end()), usedPins.end());
 
-    std::map<int, int> pinAssignment;
-    for(int i = 0; i < allPins.size(); i++)
+    for(auto& [name, args, pins] : netlistDescription)
     {
-        pinAssignment[allPins[i]] = i;
+        for(int i = 0; i < usedPins.size(); i++)
+        {
+            
+            for(auto& pin : pins)
+            {
+                if(pin == usedPins[i])
+                {
+                    // Replace each pin with the index of the equivalent pin to remove holes from the netlist
+                    pin = i;
+                }
+            }
+        }
     }
     
-    auto* net = new NetList(netlistDescription, pinAssignment);
+    auto* net = new NetList(usedPins.size(), netlistDescription);
     
     net->buildSystem();
     net->setStepScale(0);
@@ -185,43 +203,43 @@ void* netlist_create(int argc, t_atom* argv, double sampleRate)
     return net;
 }
 
-void netlist_set_input(void* netlist, int idx, double input)
+void simulator_set_input(void* netlist, int idx, double input)
 {
     auto* net = static_cast<NetList*>(netlist);
     net->setDynamicArgument(idx, input);
 }
 
-double netlist_get_output(void* netlist, int idx)
+double simulator_get_output(void* netlist, int idx)
 {
     auto* net = static_cast<NetList*>(netlist);
     return net->getMNA().output[idx];
 }
 
-void netlist_tick(void* netlist)
+void simulator_tick(void* netlist)
 {
     auto* net = static_cast<NetList*>(netlist);
     net->clearOutput();
     net->simulateTick();
 }
 
-int netlist_num_inlets(void* netlist)
+int simulator_num_inlets(void* netlist)
 {
     return static_cast<NetList*>(netlist)->getNumDynamicArguments();
 }
 
-int netlist_num_outlets(void* netlist)
+int simulator_num_outlets(void* netlist)
 {
     auto num_out = static_cast<NetList*>(netlist)->getMNA().output.size();
     return static_cast<int>(num_out);
 }
 
-void netlist_set_dc_block(void* netlist, int block)
+void simulator_set_dc_block(void* netlist, int block)
 {
     auto* net = static_cast<NetList*>(netlist);
     net->setBlockDC(block);
 }
 
-void netlist_set_iter(void* netlist, int iter)
+void simulator_set_iter(void* netlist, int iter)
 {
     auto* net = static_cast<NetList*>(netlist);
     net->setMaxIter(iter);

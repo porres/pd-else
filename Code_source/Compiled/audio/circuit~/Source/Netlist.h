@@ -2,70 +2,145 @@
 #include <KLU/klu.h>
 
 
-using NetlistDescription = std::vector<std::tuple<std::string, std::vector<std::string>, std::vector<int>>>;
+using NetlistDescription = std::vector<std::tuple<ComponentType, std::vector<std::string>, std::vector<int>>>;
 
 struct NetList
 {
     typedef std::vector<IComponent*> ComponentList;
     
-    NetList(NetlistDescription& description, std::map<int, int> pins) : nets(static_cast<int>(pins.size())), pinAssignment(pins), netlistDescription(description)
+    NetList(int nNets, NetlistDescription& netlist) : nets(nNets),  lastNetlist(netlist)
     {
         int numOut = 0;
-        for(auto& [name, args, pins] : netlistDescription)
+        for(auto& [type, args, pins] : netlist)
         {
-            if(name == "resistor")
+            switch(type)
             {
-                if (args[0].rfind("$s", 0) == 0) {
-                    addComponent(new VariableResistor(addDynamicArgument(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
+                case tResistor:
+                {
+                    if(args.size() == 1) {
+                        if (args[0].rfind("$s", 0) == 0) {
+                            addComponent(new VariableResistor(addDynamicArgument(args[0]), pins[0], pins[1]));
+                        }
+                        else {
+                            addComponent(new Resistor(getArgumentValue(args[0]), pins[0], pins[1]));
+                        }
+                    }
+                    else {
+                        pd_error(NULL, "resistor: invalid number of arguments");
+                    }
+                    break;
                 }
-                else {
-                    addComponent(new Resistor(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
+                case tCapacitor:
+                {
+                    if(args.size() == 1) {
+                        addComponent(new Capacitor(getArgumentValue(args[0]), pins[0], pins[1]));
+                    }
+                    else {
+                        pd_error(NULL, "capacitor: invalid number of arguments");
+                    }
+                    break;
                 }
-            }
-            else if(name == "capacitor")
-            {
-                addComponent(new Capacitor(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
-            }
-            else if(name == "voltage")
-            {
-                if (args[0].rfind("$s", 0) == 0) {
-                    addComponent(new VariableVoltage(addDynamicArgument(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
+                case tVoltage:
+                {
+                    if(args.size() == 1) {
+                        if (args[0].rfind("$s", 0) == 0) {
+                            addComponent(new VariableVoltage(addDynamicArgument(args[0]), pins[0], pins[1]));
+                        }
+                        else {
+                            addComponent(new Voltage(getArgumentValue(args[0]), pins[0], pins[1]));
+                        }
+                    }
+                    else {
+                        pd_error(NULL, "voltage: invalid number of arguments");
+                    }
+                    break;
                 }
-                else {
-                    addComponent(new Voltage(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
+                case tDiode:
+                {
+                    if(args.size() == 0) {
+                        addComponent(new Diode(pins[0], pins[1]));
+                    }
+                    else
+                    {
+                        pd_error(NULL, "diode: invalid number of arguments");
+                    }
+                    break;
                 }
-            }
-            else if(name == "diode")
-            {
-                addComponent(new Diode(pinAssignment[pins[0]], pinAssignment[pins[1]]));
-            }
-            else if(name == "bjt")
-            {
-                addComponent(new BJT(pinAssignment[pins[0]], pinAssignment[pins[1]], pinAssignment[pins[2]], getArgumentValue(args[0])));
-            }
-            else if(name == "transformer")
-            {
-                addComponent(new Transformer(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]], pinAssignment[pins[2]], pinAssignment[pins[3]]));
-            }
-            if(name == "gyrator")
-            {
-                addComponent(new Gyrator(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]], pinAssignment[pins[2]], pinAssignment[pins[3]]));
-            }
-            else if(name == "inductor")
-            {
-                addComponent(new Inductor(getArgumentValue(args[0]), pinAssignment[pins[0]], pinAssignment[pins[1]]));
-            }
-            else if(name == "opamp")
-            {
-                addComponent(new OpAmp(getArgumentValue(args[0]), getArgumentValue(args[1]), pinAssignment[pins[0]], pinAssignment[pins[1]], pinAssignment[pins[2]]));
-            }
-            else if(name == "potmeter")
-            {
-                addComponent(new Potentiometer(addDynamicArgument(args[0]), getArgumentValue(args[1]), pinAssignment[pins[0]], pinAssignment[pins[1]], pinAssignment[pins[2]]));
-            }
-            else if(name == "probe")
-            {
-                addComponent(new Probe(pinAssignment[pins[0]], pinAssignment[pins[1]], numOut++));
+                case tBJT:
+                {
+                    if(args.size() == 1) {
+                        addComponent(new BJT(pins[0], pins[1], pins[2], getArgumentValue(args[0])));
+                    }
+                    else {
+                        pd_error(NULL, "bjt: invalid number of arguments");
+                    }
+                    break;
+                }
+                case tTransformer:
+                {
+                    if(args.size() == 1) {
+                        addComponent(new Transformer(getArgumentValue(args[0]), pins[0], pins[1], pins[2], pins[3]));
+                    }
+                    else {
+                        pd_error(NULL, "transformer: invalid number of arguments");
+                    }
+                    break;
+                }
+                case tGyrator:
+                {
+                    if(args.size() == 1) {
+                        addComponent(new Gyrator(getArgumentValue(args[0]), pins[0], pins[1], pins[2], pins[3]));
+                    }
+                    else {
+                        pd_error(NULL, "gyrator: invalid number of arguments");
+                    }
+                    break;
+                }
+                case tInductor:
+                {
+                    if(args.size() == 1) {
+                        addComponent(new Inductor(getArgumentValue(args[0]), pins[0], pins[1]));
+                    }
+                    else {
+                        pd_error(NULL, "inductor: invalid number of arguments");
+                    }
+                    break;
+                }
+                case tOpAmp:
+                {
+                    if(args.size() == 0)
+                    {
+                        addComponent(new OpAmp(10, 15, pins[0], pins[1], pins[2]));
+                    }
+                    if(args.size() == 1)
+                    {
+                        addComponent(new OpAmp(getArgumentValue(args[0]), 15, pins[0], pins[1], pins[2]));
+                    }
+                    if(args.size() == 2)
+                    {
+                        addComponent(new OpAmp(getArgumentValue(args[0]), getArgumentValue(args[1]), pins[0], pins[1], pins[2]));
+                    }
+                    else {
+                        pd_error(NULL, "opamp: invalid number of arguments");
+                    }
+                    
+                    break;
+                }
+                case tPotmeter:
+                {
+                    if(args.size() == 2) {
+                        addComponent(new Potentiometer(addDynamicArgument(args[0]), getArgumentValue(args[1]), pins[0], pins[1], pins[2]));
+                    }
+                    else {
+                        pd_error(NULL, "potmeter: invalid number of arguments");
+                    }
+                    break;
+                }
+                case tProbe:
+                {
+                    addComponent(new Probe(pins[0], pins[1], numOut++));
+                    break;
+                }
             }
         }
     }
@@ -172,6 +247,16 @@ struct NetList
         maxiter = iter;
     }
     
+    int getNumNets()
+    {
+        return nets;
+    }
+    
+    NetlistDescription getLastNetlist()
+    {
+        return lastNetlist;
+    }
+    
 protected:
         
     int nets;
@@ -195,6 +280,9 @@ protected:
     std::vector<MNACell*> nzpointers;
     
     std::map<int, double> variableArgs;
+    
+    // Netlist state for resetting
+    NetlistDescription lastNetlist;
     
     void update()
     {
@@ -386,9 +474,4 @@ protected:
         
         return result;
     }
-    
-public:
-    // Netlist state for resetting
-    NetlistDescription netlistDescription;
-    std::map<int, int> pinAssignment;
 };
