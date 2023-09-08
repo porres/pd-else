@@ -32,7 +32,7 @@
 #X connect 10 0 5 0;
 #X restore 468 209 pd example;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -101,7 +101,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -166,7 +166,7 @@
 #X obj 34 162 bng 19 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000 #000000;
 #X obj 34 190 else/impseq~;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -235,7 +235,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -305,10 +305,10 @@
 #X text 141 313 ch <float>;
 #X text 216 312 - set number of output channels;
 #N canvas 494 115 663 333 multichannel 0;
-#X listbox 375 231 35 0 0 0 - - - 12;
-#X obj 375 197 else/s2f~;
+#X listbox 375 251 35 0 0 0 - - - 12;
+#X obj 375 217 else/s2f~;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -377,7 +377,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -417,8 +417,9 @@
 #X text 29 25 The -ch flag or message sets the number of output channels. This is only meaningful if you have a single channel input., f 43;
 #X obj 72 200 else/rand.f~ -ch 3 0 10;
 #X text 316 28 If you have a multichannel connection in the trigger inlet \, [rand.f~] generates a signal with the same number of channels and the 'ch' message or flag is meaningless., f 44;
-#X obj 375 123 else/imp.mc~ 0.25 0.5 1 2;
-#X obj 375 162 else/rand.f~ 0 10;
+#X obj 375 182 else/rand.f~ 0 10;
+#X obj 375 123 else/oscbank2~ -mc -freq 0.25 0.5 1 2;
+#X obj 375 152 else/op~ >;
 #X connect 1 0 0 0;
 #X connect 3 0 10 0;
 #X connect 4 0 3 0;
@@ -426,8 +427,9 @@
 #X connect 7 0 10 0;
 #X connect 8 0 7 0;
 #X connect 10 0 6 0;
-#X connect 12 0 13 0;
-#X connect 13 0 1 0;
+#X connect 12 0 1 0;
+#X connect 13 0 14 0;
+#X connect 14 0 12 0;
 #X restore 436 236 pd multichannel;
 #X text 177 328 bang;
 #X text 216 327 - control trigger;

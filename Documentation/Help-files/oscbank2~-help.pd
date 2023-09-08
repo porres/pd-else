@@ -55,12 +55,11 @@
 #X text 201 348 - sets ramp time for all oscillators;
 #X text 104 484 -rampall <float>: sets a ramp time for all oscillators (default all 10), f 71;
 #X text 61 86 [oscbank2~] is a bank made of [sine~] objects. You can set any number of oscillators and control their parameters. If you use flags \, the number of elements in the list (such as amplitude list) sets the number of oscillators in the bank \, and you must not use regular arguments in this case., f 72;
-#X obj 32 210 else/osc.mc~;
 #X obj 190 152 else/oscbank2~ -freq 360 440 590 720 -amp 0.9 0.5 0.5 0.6, f 36;
 #X text 136 363 mc float>;
 #X text 201 363 - non zero sets to multichannel output, f 44;
 #X text 105 499 -mc: sets to multichannel output, f 48;
-#N canvas 744 134 420 488 multichannel 0;
+#N canvas 744 134 395 445 multichannel 0;
 #X obj 100 267 else/out~;
 #X obj 100 226 else/xselect.mc~ 200 1;
 #X obj 136 151 hradio 16 1 0 4 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0;
@@ -71,8 +70,7 @@
 #X text 165 28 The "-mc" flag or message sets to multichannel output \, where each oscillator in the bank is in a different channel., f 30;
 #X obj 100 102 else/oscbank2~ -freq 360 440 590 720 -amp 0.9 0.5 0.5 0.6 -mc, f 37;
 #X text 95 361 Note that this object is quite similar to, f 25;
-#X obj 203 383 else/osc.mc~;
-#X text 131 425 The main difference is that [osc.mc~] takes signal inputs., f 31;
+#X obj 203 383 else/sine~;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;
 #X connect 3 0 4 0;
@@ -81,4 +79,5 @@
 #X connect 6 0 5 0;
 #X connect 8 0 1 0;
 #X restore 436 225 pd multichannel;
-#X connect 41 0 16 0;
+#X obj 32 210 else/sine~;
+#X connect 40 0 16 0;

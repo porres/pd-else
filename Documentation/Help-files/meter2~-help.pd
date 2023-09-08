@@ -288,10 +288,10 @@
 #X restore 314 142 pd;
 #X obj 138 277 else/out.mc~;
 #X text 77 21 The first inlet takes and outputs multichannel signals.;
-#X obj 138 70 else/osc.mc~ 200 300;
 #X obj 138 114 else/meter2~;
-#X connect 3 0 4 0;
-#X connect 4 0 1 0;
+#X obj 138 70 else/oscbank2~ -mc -freq 200 300;
+#X connect 3 0 1 0;
+#X connect 4 0 3 0;
 #X restore 433 252 pd multichannel;
 #X connect 22 0 21 0;
 #X connect 23 0 21 1;

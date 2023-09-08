@@ -86,7 +86,7 @@
 #X text 73 573 -mc: sets to multichannel output, f 48;
 #X text 166 423 mc float>;
 #X text 238 423 - non zero sets to multichannel output, f 44;
-#X obj 37 264 else/osc.mc~;
+#X obj 37 264 else/sine~;
 #X connect 31 0 47 0;
 #X connect 32 0 47 0;
 #X connect 47 0 30 0;

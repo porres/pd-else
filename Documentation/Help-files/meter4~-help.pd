@@ -147,7 +147,6 @@
 #X obj 263 135 else/white~ -clip;
 #N canvas 622 186 491 370 multichannel 0;
 #X obj 138 114 else/meter4~;
-#X obj 138 70 else/osc.mc~ 200 300 400 500;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
@@ -251,8 +250,9 @@
 #X restore 314 142 pd;
 #X obj 138 277 else/out.mc~;
 #X text 77 21 The first inlet takes and outputs multichannel signals.;
-#X connect 0 0 3 0;
-#X connect 1 0 0 0;
+#X obj 138 70 else/oscbank2~ -mc -freq 200 300 400 500;
+#X connect 0 0 2 0;
+#X connect 4 0 0 0;
 #X restore 427 301 pd multichannel;
 #X obj 90 397 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1-3 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 153 397 signal;

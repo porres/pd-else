@@ -156,10 +156,10 @@
 #N canvas 622 186 491 370 multichannel 0;
 #X obj 120 274 else/out.mc~;
 #X text 77 21 The first inlet takes and outputs multichannel signals.;
-#X obj 120 67 else/osc.mc~ 200 300 400 500 600 700 800 900;
 #X obj 120 107 else/meter8~;
-#X connect 2 0 3 0;
-#X connect 3 0 0 0;
+#X obj 120 67 else/oscbank2~ -mc -freq 200 300 400 500 600 700 800 900;
+#X connect 2 0 0 0;
+#X connect 3 0 2 0;
 #X restore 436 322 pd multichannel;
 #X connect 13 0 14 0;
 #X connect 13 0 14 1;
