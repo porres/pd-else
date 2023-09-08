@@ -33,12 +33,12 @@
 #X text 166 407 1) float;
 #X obj 192 209 else/rotate.mc~;
 #X obj 192 240 else/out.mc~;
-#X obj 192 150 else/osc.mc~ 444 666;
 #X text 20 207 see also:;
 #X obj 23 228 else/rotate~;
 #X obj 23 258 else/spread.mc~;
 #X text 260 372 - multichannel output;
+#X obj 192 150 else/oscbank2~ -mc -freq 444 666;
 #X connect 7 0 21 0;
 #X connect 21 0 28 1;
 #X connect 28 0 29 0;
-#X connect 30 0 28 0;
+#X connect 34 0 28 0;
