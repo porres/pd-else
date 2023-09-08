@@ -16,14 +16,17 @@ struct NetList {
     NetList(NetlistDescription& netlist, int nNets, int numSamples, double sampleRate)
         : lastNetlist(netlist)
         , nets(nNets)
+        , lastNumNets(nNets)
         , blockSize(numSamples)
     {
+        auto isDynamicArgument = [](std::string arg){ return arg.rfind("$s", 0) == 0 || arg.rfind("$f", 0) == 0; };
+        
         int numOut = 0;
-        for (auto& [type, args, pins] : netlist) {
+        for (const auto& [type, args, pins] : netlist) {
             switch (type) {
             case tResistor: {
                 if (args.size() == 1) {
-                    if (args[0].rfind("$s", 0) == 0) {
+                    if (isDynamicArgument(args[0])) {
                         addComponent(new VariableResistor(addDynamicArgument(args[0]), pins[0], pins[1]));
                     } else {
                         addComponent(new Resistor(getArgumentValue(args[0]), pins[0], pins[1]));
@@ -43,7 +46,7 @@ struct NetList {
             }
             case tVoltage: {
                 if (args.size() == 1) {
-                    if (args[0].rfind("$s", 0) == 0) {
+                    if (isDynamicArgument(args[0])) {
                         addComponent(new VariableVoltage(addDynamicArgument(args[0]), pins[0], pins[1]));
                     } else {
                         addComponent(new Voltage(getArgumentValue(args[0]), pins[0], pins[1]));
@@ -116,7 +119,7 @@ struct NetList {
             }
             case tCurrent: {
                 if (args.size() == 1) {
-                    if (args[0].rfind("$s", 0) == 0) {
+                    if (isDynamicArgument(args[0])) {
                         addComponent(new VariableCurrent(addDynamicArgument(args[0]), pins[0], pins[1]));
                     } else {
                         addComponent(new Current(getArgumentValue(args[0]), pins[0], pins[1]));
@@ -127,6 +130,10 @@ struct NetList {
             }
             case tProbe: {
                 addComponent(new Probe(pins[0], pins[1], numOut++));
+                break;
+            }
+            case tIter: {
+                maxiter = getArgumentValue(args[0]);
                 break;
             }
             }
@@ -244,9 +251,9 @@ struct NetList {
         maxiter = iter;
     }
 
-    int getNumNets() const
+    int getLastNumNets() const
     {
-        return nets;
+        return lastNumNets;
     }
 
     NetlistDescription getLastNetlist() const
@@ -277,8 +284,9 @@ protected:
     std::vector<MNACell*> nzpointers;
 
     // Netlist state for resetting
-    NetlistDescription lastNetlist;
-
+    const NetlistDescription lastNetlist;
+    const int lastNumNets;
+    
     void update()
     {
         for (int i = 0; i < components.size(); ++i) {

@@ -24,7 +24,8 @@ enum ComponentType {
     tOpAmp,
     tPotmeter,
     tCurrent,
-    tProbe
+    tProbe,
+    tIter // Special identifier to set number of iterations
 };
 
 extern "C" {
