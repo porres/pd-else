@@ -19,12 +19,14 @@ struct NetList {
         , lastNumNets(nNets)
         , blockSize(numSamples)
     {
+        auto isDynamicArgument = [](std::string arg){ return arg.rfind("$s", 0) == 0 || arg.rfind("$f", 0) == 0; };
+        
         int numOut = 0;
         for (const auto& [type, args, pins] : netlist) {
             switch (type) {
             case tResistor: {
                 if (args.size() == 1) {
-                    if (args[0].rfind("$s", 0) == 0) {
+                    if (isDynamicArgument(args[0])) {
                         addComponent(new VariableResistor(addDynamicArgument(args[0]), pins[0], pins[1]));
                     } else {
                         addComponent(new Resistor(getArgumentValue(args[0]), pins[0], pins[1]));
@@ -44,7 +46,7 @@ struct NetList {
             }
             case tVoltage: {
                 if (args.size() == 1) {
-                    if (args[0].rfind("$s", 0) == 0) {
+                    if (isDynamicArgument(args[0])) {
                         addComponent(new VariableVoltage(addDynamicArgument(args[0]), pins[0], pins[1]));
                     } else {
                         addComponent(new Voltage(getArgumentValue(args[0]), pins[0], pins[1]));
@@ -117,7 +119,7 @@ struct NetList {
             }
             case tCurrent: {
                 if (args.size() == 1) {
-                    if (args[0].rfind("$s", 0) == 0) {
+                    if (isDynamicArgument(args[0])) {
                         addComponent(new VariableCurrent(addDynamicArgument(args[0]), pins[0], pins[1]));
                     } else {
                         addComponent(new Current(getArgumentValue(args[0]), pins[0], pins[1]));
@@ -128,6 +130,10 @@ struct NetList {
             }
             case tProbe: {
                 addComponent(new Probe(pins[0], pins[1], numOut++));
+                break;
+            }
+            case tIter: {
+                maxiter = getArgumentValue(args[0]);
                 break;
             }
             }

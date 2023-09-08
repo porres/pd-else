@@ -136,8 +136,13 @@ void* simulator_create(int argc, t_atom* argv, int blockSize, double sampleRate)
         } else if (!arguments[0].compare("probe") && arguments.size() > 2) {
             auto [args, pins] = getPinsAndArguments(arguments, 2);
             netlistDescription.emplace_back(tProbe, args, pins);
-        } else {
-            auto errorMessage = "circuit~: netlist format error, unknown identifier \"" + arguments[0] + "\"";
+        }
+        else if (!arguments[0].compare("iter") && arguments.size() > 1) {
+            auto [args, pins] = getPinsAndArguments(arguments, 2);
+            netlistDescription.emplace_back(tIter, args, pins);
+        }
+        else {
+            auto errorMessage = "circuit~: netlist format error, unknown combination of identifier \"" + arguments[0] + "\" and " + std::to_string(arguments.size()-1) + " arguments";
             pd_error(NULL, errorMessage.c_str());
         }
     }

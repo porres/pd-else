@@ -1,4 +1,4 @@
-#N canvas 0 163 1680 473 12;
+#N canvas 0 163 1680 417 12;
 #X obj 2 -24 cnv 15 301 42 empty empty circuit~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -301,7 +301,6 @@
 #X text 232 476 - output signal from probe object;
 #X obj 503 109 else/bl.saw~ 200;
 #X obj 643 62 hsl 162 19 0 127 0 0 empty empty empty -2 -10 0 12 #fcfcfc #000000 #000000 0 1;
-#X obj 503 134 circuit~ \; probe 1 0 \; voltage $s1 2 0 \; opamp 3 4 1 \; resistor 2300 4 1 \; resistor 1000 4 0 \; capacitor 1e-06 5 1 \; capacitor 1e-06 3 0 \; resistor $s2 2 5 \; resistor $s2 5 3 \;;
 #X obj 640 109 else/f2s~;
 #X obj 503 308 else/out~;
 #N canvas 179 87 1501 471 circuit 0;
@@ -344,11 +343,12 @@
 #X text 192 399 bang;
 #X text 232 398 - reset and start simulation, f 61;
 #X text 36 223 Do note that this simulation is not 100% accurate for every single circuit out there. There is a chance that some circuits just won't work. Also \, experimenting with the circuit could lead to loud pops \, so be careful!;
-#X connect 27 0 29 0;
-#X connect 28 0 33 0;
-#X connect 29 0 31 0;
-#X connect 29 0 31 1;
-#X connect 30 0 29 1;
-#X connect 33 0 30 0;
-#X connect 38 0 29 0;
-#X connect 39 0 38 0;
+#X obj 503 134 circuit~ \; probe 1 0 \; voltage $s1 2 0 \; opamp 3 4 1 \; resistor 2300 4 1 \; resistor 1000 4 0 \; capacitor 1e-06 5 1 \; capacitor 1e-06 3 0 \; resistor $f2 2 5 \; resistor $s2 5 3 \;;
+#X connect 27 0 42 0;
+#X connect 28 0 32 0;
+#X connect 29 0 42 1;
+#X connect 32 0 29 0;
+#X connect 37 0 42 0;
+#X connect 38 0 37 0;
+#X connect 42 0 30 0;
+#X connect 42 0 30 1;
