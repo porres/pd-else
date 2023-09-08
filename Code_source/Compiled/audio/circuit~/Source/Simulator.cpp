@@ -55,7 +55,7 @@ void* simulator_reset(void* netlist, int blockSize, double sampleRate)
     auto* net = static_cast<NetList*>(netlist);
 
     auto lastNetlist = net->getLastNetlist();
-    auto nNets = net->getNumNets();
+    auto nNets = net->getLastNumNets();
 
     delete net;
 

@@ -16,10 +16,11 @@ struct NetList {
     NetList(NetlistDescription& netlist, int nNets, int numSamples, double sampleRate)
         : lastNetlist(netlist)
         , nets(nNets)
+        , lastNumNets(nNets)
         , blockSize(numSamples)
     {
         int numOut = 0;
-        for (auto& [type, args, pins] : netlist) {
+        for (const auto& [type, args, pins] : netlist) {
             switch (type) {
             case tResistor: {
                 if (args.size() == 1) {
@@ -244,9 +245,9 @@ struct NetList {
         maxiter = iter;
     }
 
-    int getNumNets() const
+    int getLastNumNets() const
     {
-        return nets;
+        return lastNumNets;
     }
 
     NetlistDescription getLastNetlist() const
@@ -277,8 +278,9 @@ protected:
     std::vector<MNACell*> nzpointers;
 
     // Netlist state for resetting
-    NetlistDescription lastNetlist;
-
+    const NetlistDescription lastNetlist;
+    const int lastNumNets;
+    
     void update()
     {
         for (int i = 0; i < components.size(); ++i) {

@@ -120,11 +120,15 @@ void circuit_tilde_dcblock(t_circuit_tilde *x, t_float dcblock) {
 
 void circuit_tilde_reset(t_circuit_tilde *x) {
     x->x_simulator = simulator_reset(x->x_simulator, sys_getblksize(), sys_getsr());
+    x->x_numin = simulator_num_inlets(x->x_simulator);
+    x->x_numout = simulator_num_outlets(x->x_simulator);
 };
 
 void circuit_tilde_bang(t_circuit_tilde *x)
 {
     x->x_simulator = simulator_reset(x->x_simulator, sys_getblksize(), sys_getsr());
+    x->x_numin = simulator_num_inlets(x->x_simulator);
+    x->x_numout = simulator_num_outlets(x->x_simulator);
     x->x_enabled = 1;
 }
 
