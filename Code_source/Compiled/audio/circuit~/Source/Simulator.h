@@ -25,6 +25,7 @@ enum ComponentType {
     tPotmeter,
     tCurrent,
     tProbe,
+    tTriode,
     tIter // Special identifier to set number of iterations
 };
 

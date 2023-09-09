@@ -96,6 +96,14 @@ struct NetList {
                 }
                 break;
             }
+            case tTriode: {
+                if (args.size() == 0) {
+                    addComponent(new Triode(pins[0], pins[1], pins[2]));
+                } else {
+                    pd_error(NULL, "circuit~: wrong number of arguments for inductor");
+                }
+                break;
+            }
             case tOpAmp: {
                 if (args.size() == 0) {
                     addComponent(new OpAmp(10, 15, pins[0], pins[1], pins[2]));
