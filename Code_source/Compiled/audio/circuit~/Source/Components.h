@@ -545,7 +545,7 @@ struct BJT : Component<3, 4> {
 
     bool newton(MNASystem& m) final
     {
-        return pnC.newtonJunctionPN(m.b[nets[3]].lu) && pnE.newtonJunctionPN(m.b[nets[4]].lu);
+        return pnC.newtonJunctionPN(m.b[nets[3]].lu) & pnE.newtonJunctionPN(m.b[nets[4]].lu);
     }
 
     void stamp(MNASystem& m) final
