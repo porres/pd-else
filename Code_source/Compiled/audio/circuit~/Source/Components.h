@@ -186,10 +186,6 @@ struct Capacitor : Component<2, 1> {
 
         // solve legit voltage from the pins
         voltage = m.b[nets[0]].lu - m.b[nets[1]].lu;
-
-        // then we can store this for display here
-        // since this value won't be used at this point
-        m.b[nets[2]].lu = c * voltage;
     }
 
     void scaleTime(double told_per_new) final
@@ -797,5 +793,179 @@ struct VariableCurrent final : Component<2> {
     void update(MNASystem& m) final
     {
         a_negative = -a;
+    }
+};
+
+struct Triode : public Component<3, 3>
+{
+    double mu = 100.0f;
+    double ex = 1.4;
+    double kg1 = 1060.0;
+    double kp = 600.0;
+    double kvb = 300;
+    double rgk = 1e6;
+    double vg = 0.33;
+    
+    double cgp = 2.4e-12; // grid to plate capacitor
+    double cgk = 2.3e-12; // grid to cathode capacitor
+    double cpk = 0.9e-12; // plate to cathode capacitor
+    
+    double vgp, vgk, vpk;
+    double vcgp, vcgk, vcpk;
+    double ip, ig, ipg;
+    double ids, gm, Gds, e1;
+    
+    double v0, v1, v2;
+    double lastv0 = 0;
+    double lastv1 = 0;
+    double lastv2 = 0;
+    
+    std::vector<double> ieq = std::vector<double>(3, 0);
+    std::vector<std::vector<double>> geq = std::vector<std::vector<double>>(3, std::vector<double>(3, 0));
+
+    Triode(int plate, int grid, int cathode)
+    {
+        pinLoc[0] = plate;
+        pinLoc[1] = grid;
+        pinLoc[2] = cathode;
+    }
+    
+    void stamp(MNASystem & m)
+    {
+        double g = 2 * cgp;
+        m.stampTimed(+1, nets[1], nets[3]); // Naar A->B system
+        m.stampTimed(-1, nets[0], nets[3]);
+        
+        m.stampTimed(-g, nets[1], nets[1]);
+        m.stampTimed(+g, nets[1], nets[0]);
+        m.stampTimed(+g, nets[0], nets[1]);
+        m.stampTimed(-g, nets[0], nets[0]);
+        m.stampStatic(+2 * g, nets[3], nets[1]);
+        m.stampStatic(-2 * g, nets[3], nets[0]);
+        m.stampStatic(-1, nets[3], nets[3]); // Naar A->D system
+        // see the comment about v:C[%d] below
+        m.b[nets[3]].gdyn.push_back(&vcgp);
+        
+        g = 2 * cgk;
+        m.stampTimed(+1, nets[1], nets[4]);
+        m.stampTimed(-1, nets[2], nets[4]);
+        // Weerstand parallel aan spanningsbron
+        m.stampTimed(-g, nets[1], nets[1]);
+        m.stampTimed(+g, nets[1], nets[2]);
+        m.stampTimed(+g, nets[2], nets[1]);
+        m.stampTimed(-g, nets[2], nets[2]);
+        m.stampStatic(+2 * g, nets[4], nets[1]);
+        m.stampStatic(-2 * g, nets[4], nets[2]);
+        m.stampStatic(-1, nets[4], nets[4]);
+        // see the comment about v:C[%d] below
+        m.b[nets[4]].gdyn.push_back(&vcgk);
+        
+        g = 2 * cpk;
+        m.stampTimed(+1, nets[0], nets[5]);
+        m.stampTimed(-1, nets[2], nets[5]);
+        
+        m.stampTimed(-g, nets[0], nets[0]);
+        m.stampTimed(+g, nets[0], nets[2]);
+        m.stampTimed(+g, nets[2], nets[0]);
+        m.stampTimed(-g, nets[2], nets[2]);
+        m.stampStatic(+2 * g, nets[5], nets[0]);
+        m.stampStatic(-2 * g, nets[5], nets[2]);
+        m.stampStatic(-1, nets[5], nets[5]);
+        // see the comment about v:C[%d] below
+        m.b[nets[5]].gdyn.push_back(&vcpk);
+        
+        m.A[nets[0]][nets[0]].gdyn.push_back(&geq[0][0]);
+        m.A[nets[0]][nets[1]].gdyn.push_back(&geq[0][1]);
+        m.A[nets[0]][nets[2]].gdyn.push_back(&geq[0][2]);
+        
+        m.A[nets[1]][nets[1]].gdyn.push_back(&geq[1][1]);
+        m.A[nets[1]][nets[2]].gdyn.push_back(&geq[1][2]);
+        
+        m.A[nets[2]][nets[0]].gdyn.push_back(&geq[2][0]);
+        m.A[nets[2]][nets[1]].gdyn.push_back(&geq[2][1]);
+        m.A[nets[2]][nets[2]].gdyn.push_back(&geq[2][2]);
+
+        m.b[nets[0]].gdyn.push_back(&ieq[0]);
+        m.b[nets[1]].gdyn.push_back(&ieq[1]);
+        m.b[nets[2]].gdyn.push_back(&ieq[2]);
+    }
+    
+    void update(MNASystem & m)
+    {
+        vcgp = m.b[nets[3]].lu;
+        vcgk = m.b[nets[4]].lu;
+        vcpk = m.b[nets[5]].lu;
+        
+        // Update capacitors
+        vgk = m.b[nets[1]].lu - m.b[nets[2]].lu;
+        vpk = m.b[nets[0]].lu - m.b[nets[2]].lu;
+        vgp = m.b[nets[1]].lu - m.b[nets[0]].lu;
+    }
+    
+    void calcKoren(MNASystem & m)
+    {
+        e1 = (vpk /kp) * std::log(1 + std::exp(kp * (1.0 / mu + vgk /sqrt(kvb + pow(vpk, 2)))));
+        
+        ids = (std::pow(e1, ex)/kg1) * (1 + (e1 >= 0) - (e1 < 0));
+        Gds = ex * sqrt(e1) / kg1;
+        gm = Gds / mu;
+        
+        if(ids == 0 || !std::isfinite(ids)) {
+            Gds = 1e-8;
+            gm = Gds / mu;
+            ids = vpk * Gds;
+        }
+        
+        
+        double rs = -ids + Gds * vpk + gm * vgk;
+        double gcr = vgk > vg ? rgk : 0;
+        
+        geq[0][0] = Gds;
+        geq[0][1] = gm;
+        geq[0][2] = -Gds - gm;
+        
+        geq[1][1] = gcr;
+        geq[1][2] = -gcr;
+        
+        geq[2][0] = -Gds;
+        geq[2][1] = -gm - gcr;
+        geq[2][2] = Gds + gm + gcr;
+        
+        
+        ieq[0] = rs;
+        ieq[1] = 0;
+        ieq[2] = -rs;
+        
+        // To compare with on next iteration
+        lastv0 = m.b[nets[0]].lu;
+        lastv1 = m.b[nets[1]].lu;
+        lastv2 = m.b[nets[2]].lu;
+    }
+    
+    void scaleTime(double told_per_new, double tStepSize)
+    {
+        double qcgp = 2 * cgp * vgp;
+        vcgp = qcgp + (vcgp - qcgp) * told_per_new;
+        
+        double qcgk = 2 * cgk * vgk;
+        vcgk = qcgk + (vcgk - qcgk) * told_per_new;
+        
+        double qcpk = 2 * cpk * vpk;
+        vcpk = qcgk + (vcpk - qcpk) * told_per_new;
+    }
+    
+    bool newton(MNASystem & m)
+    {
+        double v0 = m.b[nets[0]].lu;
+        double v1 = m.b[nets[1]].lu;
+        double v2 = m.b[nets[2]].lu;
+        
+        if(abs(lastv0 - v0) <= vTolerance && abs(lastv1 - v1) <= vTolerance && abs(lastv2 - v2) <= vTolerance)
+            return true;
+        
+        calcKoren(m);
+        
+        return false;
+        
     }
 };
