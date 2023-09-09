@@ -137,8 +137,8 @@ void* simulator_create(int argc, t_atom* argv, int blockSize, double sampleRate)
             auto [args, pins] = getPinsAndArguments(arguments, 2);
             netlistDescription.emplace_back(tProbe, args, pins);
         }
-        else if (!arguments[0].compare("iter") && arguments.size() > 1) {
-            auto [args, pins] = getPinsAndArguments(arguments, 2);
+        else if (!arguments[0].compare("-iter") && arguments.size() > 1) {
+            auto [args, pins] = getPinsAndArguments(arguments, 0);
             netlistDescription.emplace_back(tIter, args, pins);
         }
         else {
