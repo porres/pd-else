@@ -1,4 +1,4 @@
-#N canvas 317 40 557 703 10;
+#N canvas 317 40 562 706 10;
 #X obj 2 3 cnv 15 301 42 empty empty circuit~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -307,13 +307,12 @@
 #X obj 331 269 else/numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
 #X obj 310 237 else/f2s~ 10 100;
 #X text 368 192 resistance;
-#X text 226 515 - set transistors/diodes quality (default 20);
 #X obj 105 541 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 172 537 signal;
 #X text 225 538 - input signal \, accessed with '$sn';
 #X text 226 574 - output signal from a corresponding probe;
 #X text 44 85 [circuit~] simulates analog circuitry from a text description of the circuit. Voltage \, current \, resistance and potmeter can be modulated by an input signal by passing '$sn' as the first (where 'n' is the inlet number indexed from 1). To create an audio input \, use a voltage source with a modulatable parameter. An audio outlet will be created for every probe component. The object can be quite CPU intensive!, f 78;
-#N canvas 167 108 1147 518 syntax-details 1;
+#N canvas 167 108 1147 462 syntax-details 1;
 #X text 484 250 Voltage source for batteries or audio input. volt may be variable like $s0/$s1/etc, f 85;
 #X text 484 274 Resistor \, ohm may be variable like $s0/$s1/etc;
 #X text 484 346 Capacitor;
@@ -354,6 +353,7 @@
 #X obj 7 605 cnv 3 550 3 empty \$0-pddp.cnv.flag flags 8 12 0 13 #dcdcdc #000000 0;
 #X text 133 612 -iter;
 #X text 184 612 - set transistors/diodes quality (default 20), f 59;
+#X text 226 515 - set transistors/diodes/triodes quality (default 20);
 #X connect 28 0 32 0;
 #X connect 29 0 28 0;
 #X connect 30 0 32 0;
