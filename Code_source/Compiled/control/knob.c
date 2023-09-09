@@ -759,26 +759,38 @@ static void knob_receive(t_knob *x, t_symbol *s){
 }
 
 static void knob_range(t_knob *x, t_floatarg f1, t_floatarg f2){
-    if(f1 > f2){
-        x->x_max = (double)f1;
-        x->x_min = (double)f2;
+    x->x_min = (double)f1;
+    x->x_max = (double)f2;
+    if(x->x_min < x->x_max){
+        if(x->x_fval < x->x_min)
+            x->x_fval = x->x_min;
+        if(x->x_fval > x->x_max)
+            x->x_fval = x->x_max;
+        if(x->x_load < x->x_min)
+            x->x_load = x->x_min;
+        if(x->x_load > x->x_max)
+            x->x_load = x->x_max;
+        if(x->x_start < x->x_min)
+            x->x_start = x->x_min;
+        if(x->x_start > x->x_max)
+            x->x_start = x->x_max;
     }
-    else{
-        x->x_min = (double)f1;
-        x->x_max = (double)f2;
+    else if(x->x_min > x->x_max){
+        if(x->x_fval > x->x_min)
+            x->x_fval = x->x_min;
+        if(x->x_fval < x->x_max)
+            x->x_fval = x->x_max;
+        if(x->x_load > x->x_min)
+            x->x_load = x->x_min;
+        if(x->x_load < x->x_max)
+            x->x_load = x->x_max;
+        if(x->x_start > x->x_min)
+            x->x_start = x->x_min;
+        if(x->x_start < x->x_max)
+            x->x_start = x->x_max;
     }
-    if(x->x_fval < x->x_min)
-        x->x_fval = x->x_min;
-    if(x->x_fval > x->x_max)
-        x->x_fval = x->x_max;
-    if(x->x_load < x->x_min)
-        x->x_load = x->x_min;
-    if(x->x_load > x->x_max)
-        x->x_load = x->x_max;
-    if(x->x_start < x->x_min)
-        x->x_start = x->x_min;
-    if(x->x_start > x->x_max)
-        x->x_start = x->x_max;
+    else if(x->x_min == x->x_max)
+        x->x_fval = x->x_load = x->x_start = x->x_min;
     x->x_pos = knob_getpos(x, x->x_fval);
     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
         knob_update(x, glist_getcanvas(x->x_glist));
