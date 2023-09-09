@@ -8,6 +8,7 @@ set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Include pd.cmake (1):  
 include(${CMAKE_CURRENT_SOURCE_DIR}/Libraries/pd.build/pd.cmake)
