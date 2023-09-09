@@ -166,6 +166,12 @@ struct NetList {
         // get DC solution
         simulateTick();
         setTimeStep(1.0 / sampleRate);
+        
+        // This helps against clicks
+        for(int i = 0; i < 10; i++)
+        {
+            simulateTick();
+        }
     }
 
     ~NetList()

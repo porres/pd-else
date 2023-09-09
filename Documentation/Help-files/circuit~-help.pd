@@ -1,4 +1,4 @@
-#N canvas 317 40 559 674 10;
+#N canvas 317 40 557 703 10;
 #X obj 2 3 cnv 15 301 42 empty empty circuit~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -28,7 +28,7 @@
 #X text 173 575 signal;
 #X text 186 458 bang;
 #X text 226 457 - reset and start simulation, f 45;
-#N canvas 417 165 524 210 examples 0;
+#N canvas 417 165 520 210 examples 0;
 #N canvas 121 67 997 746 Boss 0;
 #X obj 285 685 else/out~;
 #X obj 376 103 hsl 162 19 0 127 0 0 empty empty empty -2 -10 0 12 #fcfcfc #000000 #000000 0 1;
@@ -266,7 +266,7 @@
 #X connect 8 0 7 0;
 #X connect 9 0 3 0;
 #X restore 46 49 pd Moog filter;
-#N canvas 150 137 893 555 Tube 0;
+#N canvas 150 137 893 499 Tube 0;
 #X text 472 52 Input gain;
 #X text 86 65 <- start simulation;
 #X msg 57 91 enable \$1;
@@ -281,19 +281,19 @@
 #X text 288 405 <- Convert from high-voltage output;
 #X obj 219 443 else/out~;
 #X obj 286 14 else/initmess 80;
-#X obj 217 197 else/circuit~ -iter 1 \; voltage $s1 1 0 \; capacitor 47n 2 1 \; resistor 1000k 2 0 \; resistor 70k 3 2 \; capacitor 2.5p 6 3 \; resistor 100k 5 6 \; resistor 1.5k 4 0 \; capacitor 25u 0 4 \; capacitor 100n 7 6 \; probe 7 0 \; resistor 100k 7 0 \; voltage 325 5 0 \; triode 6 3 4 \;;
 #X obj 288 74 else/rescale 1 5;
-#X connect 2 0 14 0;
+#X obj 217 197 else/circuit~ -iter 5 \; voltage $s1 1 0 \; capacitor 47n 2 1 \; resistor 1000k 2 0 \; resistor 70k 3 2 \; capacitor 2.5p 6 3 \; resistor 100k 5 6 \; resistor 1.5k 4 0 \; capacitor 25u 0 4 \; capacitor 100n 7 6 \; probe 7 0 \; resistor 100k 7 0 \; voltage 325 5 0 \; triode 6 3 4 \;;
+#X connect 2 0 15 0;
 #X connect 3 0 2 0;
 #X connect 4 0 3 0;
 #X connect 5 0 12 0;
 #X connect 6 0 9 0;
 #X connect 7 0 9 1;
-#X connect 8 0 15 0;
-#X connect 9 0 14 0;
+#X connect 8 0 14 0;
+#X connect 9 0 15 0;
 #X connect 13 0 8 0;
-#X connect 14 0 5 0;
-#X connect 15 0 7 0;
+#X connect 14 0 7 0;
+#X connect 15 0 5 0;
 #X restore 264 49 pd Tube Amplifier;
 #X restore 461 366 pd examples;
 #X obj 181 366 else/out~;
@@ -313,7 +313,7 @@
 #X text 225 538 - input signal \, accessed with '$sn';
 #X text 226 574 - output signal from a corresponding probe;
 #X text 44 85 [circuit~] simulates analog circuitry from a text description of the circuit. Voltage \, current \, resistance and potmeter can be modulated by an input signal by passing '$sn' as the first (where 'n' is the inlet number indexed from 1). To create an audio input \, use a voltage source with a modulatable parameter. An audio outlet will be created for every probe component. The object can be quite CPU intensive!, f 78;
-#N canvas 167 108 1147 574 syntax-details 1;
+#N canvas 167 108 1147 518 syntax-details 1;
 #X text 484 250 Voltage source for batteries or audio input. volt may be variable like $s0/$s1/etc, f 85;
 #X text 484 274 Resistor \, ohm may be variable like $s0/$s1/etc;
 #X text 484 346 Capacitor;
