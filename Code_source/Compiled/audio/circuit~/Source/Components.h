@@ -798,7 +798,7 @@ struct VariableCurrent final : Component<2> {
 
 struct Triode : public Component<3, 3>
 {
-    double mu = 100.0f;
+    double mu = 85.0;
     double ex = 1.4;
     double kg1 = 1060.0;
     double kp = 600.0;
@@ -810,11 +810,13 @@ struct Triode : public Component<3, 3>
     double cgk = 2.3e-12; // grid to cathode capacitor
     double cpk = 0.9e-12; // plate to cathode capacitor
     
-    double vgp, vgk, vpk;
-    double vcgp, vcgk, vcpk;
+    double vgp = 0.0, vgk = 0.0, vpk = 0.0;
+    double vcgp = 0.0f, vcgk = 0.0, vcpk = 0.0;
     double ip, ig, ipg;
     double ids, gm, Gds, e1;
     
+    double tolerance = 0.00005;
+
     double v0, v1, v2;
     double lastv0 = 0;
     double lastv1 = 0;
@@ -833,7 +835,7 @@ struct Triode : public Component<3, 3>
     void stamp(MNASystem & m)
     {
         double g = 2 * cgp;
-        m.stampTimed(+1, nets[1], nets[3]); // Naar A->B system
+        m.stampTimed(+1, nets[1], nets[3]);
         m.stampTimed(-1, nets[0], nets[3]);
         
         m.stampTimed(-g, nets[1], nets[1]);
@@ -842,14 +844,14 @@ struct Triode : public Component<3, 3>
         m.stampTimed(-g, nets[0], nets[0]);
         m.stampStatic(+2 * g, nets[3], nets[1]);
         m.stampStatic(-2 * g, nets[3], nets[0]);
-        m.stampStatic(-1, nets[3], nets[3]); // Naar A->D system
-        // see the comment about v:C[%d] below
+        m.stampStatic(-1, nets[3], nets[3]);
+
         m.b[nets[3]].gdyn.push_back(&vcgp);
         
         g = 2 * cgk;
         m.stampTimed(+1, nets[1], nets[4]);
         m.stampTimed(-1, nets[2], nets[4]);
-        // Weerstand parallel aan spanningsbron
+
         m.stampTimed(-g, nets[1], nets[1]);
         m.stampTimed(+g, nets[1], nets[2]);
         m.stampTimed(+g, nets[2], nets[1]);
@@ -857,7 +859,7 @@ struct Triode : public Component<3, 3>
         m.stampStatic(+2 * g, nets[4], nets[1]);
         m.stampStatic(-2 * g, nets[4], nets[2]);
         m.stampStatic(-1, nets[4], nets[4]);
-        // see the comment about v:C[%d] below
+
         m.b[nets[4]].gdyn.push_back(&vcgk);
         
         g = 2 * cpk;
@@ -871,7 +873,7 @@ struct Triode : public Component<3, 3>
         m.stampStatic(+2 * g, nets[5], nets[0]);
         m.stampStatic(-2 * g, nets[5], nets[2]);
         m.stampStatic(-1, nets[5], nets[5]);
-        // see the comment about v:C[%d] below
+
         m.b[nets[5]].gdyn.push_back(&vcpk);
         
         m.A[nets[0]][nets[0]].gdyn.push_back(&geq[0][0]);
@@ -896,7 +898,6 @@ struct Triode : public Component<3, 3>
         vcgk = m.b[nets[4]].lu;
         vcpk = m.b[nets[5]].lu;
         
-        // Update capacitors
         vgk = m.b[nets[1]].lu - m.b[nets[2]].lu;
         vpk = m.b[nets[0]].lu - m.b[nets[2]].lu;
         vgp = m.b[nets[1]].lu - m.b[nets[0]].lu;
@@ -904,6 +905,11 @@ struct Triode : public Component<3, 3>
     
     void calcKoren(MNASystem & m)
     {
+        // recalculate for iteration, but don't store on the class variables, that would mess up the capacitors
+        double vgk = m.b[nets[1]].lu - m.b[nets[2]].lu;
+        double vpk = m.b[nets[0]].lu - m.b[nets[2]].lu;
+        double vgp = m.b[nets[1]].lu - m.b[nets[0]].lu;
+        
         e1 = (vpk /kp) * std::log(1 + std::exp(kp * (1.0 / mu + vgk /sqrt(kvb + pow(vpk, 2)))));
         
         ids = (std::pow(e1, ex)/kg1) * (1 + (e1 >= 0) - (e1 < 0));
@@ -960,7 +966,12 @@ struct Triode : public Component<3, 3>
         double v1 = m.b[nets[1]].lu;
         double v2 = m.b[nets[2]].lu;
         
-        if(abs(lastv0 - v0) <= vTolerance && abs(lastv1 - v1) <= vTolerance && abs(lastv2 - v2) <= vTolerance)
+        if(v1 > lastv1 + 0.5) v1 = lastv1 + 0.5;
+        if(v1 < lastv1 - 0.5) v1 = lastv1 - 0.5;
+        if(v2 > lastv2 + 0.5) v2 = lastv2 + 0.5;
+        if(v2 < lastv2 - 0.5) v2 = lastv2 - 0.5;
+        
+        if(abs(lastv0 - v0) <= tolerance && abs(lastv1 - v1) <= tolerance && abs(lastv2 - v2) <= tolerance)
             return true;
         
         calcKoren(m);
