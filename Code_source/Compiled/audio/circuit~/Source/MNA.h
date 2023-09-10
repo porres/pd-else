@@ -29,6 +29,7 @@ struct MNACell {
     double g;      // simple values (eg. resistor conductance)
     double gtimed; // time-scaled values (eg. capacitor conductance)
     bool nonzero = false;
+    
     // pointers to dynamic variables, added in once per solve
     std::vector<double*> gdyn;
 

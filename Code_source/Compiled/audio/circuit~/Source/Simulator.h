@@ -18,6 +18,8 @@ enum ComponentType {
     tVoltage,
     tDiode,
     tBJT,
+    tMOSFET,
+    tJFET,
     tTransformer,
     tGyrator,
     tInductor,
