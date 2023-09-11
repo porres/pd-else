@@ -13,6 +13,7 @@
 #include <sstream>
 #include <map>
 #include <algorithm>
+#include <memory>
 
 #include "Simulator.h"
 #include "MNA.h"
