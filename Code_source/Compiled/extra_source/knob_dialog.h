@@ -277,11 +277,11 @@ sys_gui("\n"
 // Range minimum entry
 "    frame $mytoplevel.rng.range \n"
 "    frame $mytoplevel.rng.range.min\n"
-"    label $mytoplevel.rng.range.min.lab -text \"Min:\"\n"
+"    label $mytoplevel.rng.range.min.lab -text \"Lower:\"\n"
 "    entry $mytoplevel.rng.range.min.ent -textvariable ::dialog_knob::var_range_min($vid) -width 7\n"
 "    label $mytoplevel.rng.range.dummy1 -text \"\" -width 1\n"
 // Range maximum entry
-"    label $mytoplevel.rng.range.max_lab -text \"Max:\"\n"
+"    label $mytoplevel.rng.range.max_lab -text \"Upper:\"\n"
 "    entry $mytoplevel.rng.range.max_ent -textvariable ::dialog_knob::var_range_max($vid) -width 7\n"
 "    $mytoplevel.rng config -borderwidth 1 -pady 4 -text \"Range:\"\n"
 "    pack $mytoplevel.rng.range.min\n"
