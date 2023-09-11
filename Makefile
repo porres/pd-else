@@ -423,6 +423,9 @@ sfz-clean:
 circuit:
 	cd Code_source/Compiled/audio/circuit~ && ./build.sh
 
+circuit-clean:
+	rm -rf Code_source/Compiled/audio/circuit~/build
+
 install: installplus
 
 installplus:

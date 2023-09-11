@@ -19,10 +19,10 @@ struct NetList {
         , lastNumNets(nNets)
         , blockSize(numSamples)
     {
-        auto isDynamicArgument = [](std::string arg){ return arg.rfind("$s", 0) == 0 || arg.rfind("$f", 0) == 0; };
-        
+        auto isDynamicArgument = [](std::string arg) { return arg.rfind("$s", 0) == 0 || arg.rfind("$f", 0) == 0; };
+
         int numOut = 0;
-        for (const auto& [type, args, pins, model] : netlist) {
+        for (auto const& [type, args, pins, model] : netlist) {
             switch (type) {
             case tResistor: {
                 if (args.size() == 1) {
@@ -182,19 +182,19 @@ struct NetList {
         // get DC solution
         simulateTick();
         setTimeStep(1.0 / sampleRate);
-        
+
         // This helps against clicks
-        for(int i = 0; i < 10; i++)
-        {
+        for (int i = 0; i < 10; i++) {
             simulateTick();
         }
     }
 
     ~NetList()
     {
-        if(Symbolic) klu_free_symbolic(&Symbolic, &Common);
-        if(Numeric) klu_free_numeric(&Numeric, &Common);
-
+        if (Symbolic)
+            klu_free_symbolic(&Symbolic, &Common);
+        if (Numeric)
+            klu_free_numeric(&Numeric, &Common);
     }
 
     void addComponent(IComponent* c)
@@ -230,7 +230,7 @@ struct NetList {
     void simulateTick()
     {
         // Clear last output
-        std::fill(system.output.begin(), system.output.end(), 0.0f);
+        std::fill(system.output.begin(), system.output.end(), 0.0);
 
         solve();
         update();
@@ -263,12 +263,11 @@ struct NetList {
             idx = std::stoi(arg.substr(2)) - 1;
             if (idx < 0)
                 throw std::range_error("index out of range");
-            system.input[idx] = 0.0f;
+            system.input[idx] = 0.0;
             return system.input[idx];
         } catch (...) {
-            auto errorMessage = "circuit~: malformed dynamic argument: \"" + arg + "\"";
-            pd_error(NULL, errorMessage.c_str());
-            system.input[0] = 0.0f;
+            pd_error(NULL, "circuit~: malformed dynamic argument: \"%s\"", arg.c_str());
+            system.input[0] = 0.0;
             return system.input[0];
         }
     }
@@ -276,7 +275,7 @@ struct NetList {
     int getMaxDynamicArgument() const
     {
         int max = 0;
-        for (const auto& [idx, value] : system.input) {
+        for (auto const& [idx, value] : system.input) {
             max = std::max(idx + 1, max);
         }
 
@@ -322,8 +321,8 @@ protected:
 
     // Netlist state for resetting
     const NetlistDescription lastNetlist;
-    const int lastNumNets;
-    
+    int const lastNumNets;
+
     void update()
     {
         for (int i = 0; i < components.size(); ++i) {
@@ -359,9 +358,9 @@ protected:
         Common.scale = nochecking ? -1 : 2;
 
         // Symbolic analysis
-        Symbolic = klu_analyze((int)nets - 1, &AI[0], &AJ[0], &Common);
+        Symbolic = klu_analyze((int)nets - 1, AI.data(), AJ.data(), &Common);
         // Full numeric factorization: Only needed once!
-        Numeric = klu_factor(&AI[0], &AJ[0], getAValues(), Symbolic, &Common);
+        Numeric = klu_factor(AI.data(), AJ.data(), getAValues(), Symbolic, &Common);
     }
 
     void refactorKLU()
@@ -370,10 +369,10 @@ protected:
         klu_free_numeric(&Numeric, &Common);
 
         // Symbolic analysis
-        Symbolic = klu_analyze(nets - 1, &AI[0], &AJ[0], &Common);
+        Symbolic = klu_analyze(nets - 1, AI.data(), AJ.data(), &Common);
 
         // Full numeric factorization: Only needed once!
-        Numeric = klu_factor(&AI[0], &AJ[0], getAValues(), Symbolic, &Common);
+        Numeric = klu_factor(AI.data(), AJ.data(), getAValues(), Symbolic, &Common);
     }
 
     void solve()
@@ -393,7 +392,7 @@ protected:
     void solveKLU()
     {
         // Update our factorization or refactor if the last factorization failed
-        klu_refactor(&AI[0], &AJ[0], getAValues(), Symbolic, Numeric, &Common);
+        klu_refactor(AI.data(), AJ.data(), getAValues(), Symbolic, Numeric, &Common);
 
         // Solve the system!
         klu_solve(Symbolic, Numeric, nets - 1, 1, getBValues(), &Common);
@@ -458,7 +457,7 @@ protected:
             AVal[i] = (*nzpointers[i]).lu;
         }
 
-        return &AVal[0];
+        return AVal.data();
     }
 
     // List of all values in the B matrix
@@ -468,12 +467,12 @@ protected:
             b[i - 1] = system.b[i].lu;
         }
 
-        return &b[0];
+        return b.data();
     }
 
     double getArgumentValue(std::string arg) const
     {
-        double result = 0.0f;
+        double result = 0.0;
 
         auto replaceString = [](std::string subject, std::string const& search,
                                  std::string const& replace) {
@@ -496,8 +495,7 @@ protected:
         try {
             result = std::stod(arg);
         } catch (...) {
-            auto errorMessage = "circuit~: invalid circuit description argument \"" + arg + "\"";
-            pd_error(NULL, errorMessage.c_str());
+            pd_error(NULL, "circuit~: invalid circuit description argument \%s\"", arg.c_str());
         }
 
         return result;

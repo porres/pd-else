@@ -7,7 +7,6 @@
 
 #pragma once
 
-
 namespace {
 // gMin for diodes etc..
 constexpr double gMin = 1e-12;
@@ -43,7 +42,6 @@ struct IComponent {
 
     // time-step change, for caps to fix their state-variables
     virtual void scaleTime(double told_per_new) { }
-
 };
 
 template<int nPins = 0, int nInternalNets = 0>
@@ -66,7 +64,7 @@ struct Component : IComponent {
 };
 
 struct Resistor : Component<2> {
-    double r;
+    const double r;
 
     Resistor(double r, int l0, int l1)
         : r(r)
@@ -115,7 +113,7 @@ struct VariableResistor : Component<2> {
 };
 
 struct Capacitor : Component<2, 1> {
-    double c;
+    const double c;
     double stateVar;
     double voltage;
 
@@ -198,7 +196,7 @@ struct Capacitor : Component<2, 1> {
 };
 
 struct Inductor : Component<2, 1> {
-    double l;
+    const double l;
     double g;
     double stateVar;
     double voltage;
@@ -246,7 +244,7 @@ struct Inductor : Component<2, 1> {
 };
 
 struct Voltage : Component<2, 1> {
-    double v;
+    const double v;
 
     Voltage(double v, int l0, int l1)
         : v(v)
@@ -270,7 +268,7 @@ struct Voltage : Component<2, 1> {
 // probe a differential voltage
 // also forces this voltage to actually get solved :)
 struct Probe : Component<2, 1> {
-    
+
     class {
     public:
         void setInitialState(double state)
@@ -294,7 +292,7 @@ struct Probe : Component<2, 1> {
     } dc_blocker;
 
     bool initialised = false;
-    int outChannel;
+    const int outChannel;
 
     Probe(int l0, int l1, int outChannel)
         : outChannel(outChannel)
@@ -408,36 +406,34 @@ struct Diode : Component<2, 2> {
     JunctionPN pn;
 
     // should make these parameters
-    double rs;
+    const double rs;
 
     // l0 -->|-- l1 -- parameters default to approx 1N4148
-    Diode(int l0, int l1, std::string model)
+    Diode(int l0, int l1, std::string model) : rs(10.0)
     {
         pinLoc[0] = l0;
         pinLoc[1] = l1;
-        
-        rs = 10.0;
+
         double is = 35e-12;
         double n = 1.0;
 
-        pn.initJunctionPN(is, n);
-        
-        if(Models::Diodes.count(model))
-        {
-            const auto& modelDescription = Models::Diodes.at(model);
+        if (Models::Diodes.count(model)) {
+            auto const& modelDescription = Models::Diodes.at(model);
 
-            if(modelDescription.count("IS")) is = modelDescription.at("IS");
-            if(modelDescription.count("n")) n = modelDescription.at("n");
-        }
-        else if(!model.empty())
-        {
+            if (modelDescription.count("IS"))
+                is = modelDescription.at("IS");
+            if (modelDescription.count("n"))
+                n = modelDescription.at("n");
+        } else if (!model.empty()) {
             pd_error(NULL, "circuit~: unknown diode model");
         }
+
+        pn.initJunctionPN(is, n);
 
         // initial condition v = 0
         pn.linearizeJunctionPN(0);
     }
-    
+
     // l0 -->|-- l1 -- parameters default to approx 1N4148
     Diode(int l0, int l1, double rs = 10., double is = 35e-12, double n = 1.24)
         : rs(rs)
@@ -516,7 +512,7 @@ struct BJT : Component<3, 4> {
     // forward and reverse alpha
     double af, ar, rsbc, rsbe;
 
-    bool pnp;
+    const bool pnp;
 
     BJT(int b, int c, int e, std::string model, bool pnp)
         : pnp(pnp)
@@ -532,27 +528,25 @@ struct BJT : Component<3, 4> {
         // forward and reverse beta
         double bf = 220;
         double br = 20;
-        
+
         double is = 6.734e-15;
         double n = 1.24;
-        
-        if(Models::BJTs.count(model))
-        {
-            const auto& modelDescription = Models::BJTs.at(model);
 
-            if(modelDescription.count("IS")) is = modelDescription.at("IS");
-            if(modelDescription.count("BF")) bf = modelDescription.at("BF");
-            if(modelDescription.count("BR")) br = modelDescription.at("BR");
-            if(modelDescription.count("PNP"))
-            {
-                if(modelDescription.at("PNP") != pnp)
-                {
+        if (Models::BJTs.count(model)) {
+            auto const& modelDescription = Models::BJTs.at(model);
+
+            if (modelDescription.count("IS"))
+                is = modelDescription.at("IS");
+            if (modelDescription.count("BF"))
+                bf = modelDescription.at("BF");
+            if (modelDescription.count("BR"))
+                br = modelDescription.at("BR");
+            if (modelDescription.count("PNP")) {
+                if (modelDescription.at("PNP") != pnp) {
                     pd_error(NULL, "circuit~: BJT model does not match with set PNP value. Proceeding with custom PNP value");
                 }
             }
-        }
-        else if(!model.empty())
-        {
+        } else if (!model.empty()) {
             pd_error(NULL, "circuit~: unknown bjt model");
         }
 
@@ -664,47 +658,51 @@ struct BJT : Component<3, 4> {
     }
 };
 
+// Define a Transformer component
 struct Transformer final : Component<4, 2> {
-    double b;
 
-    Transformer(double scale, int a, int b, int c, int d)
-        : b(scale)
+    const double turnsRatio;
+
+    Transformer(double scale, int primary1, int primary2, int secondary1, int secondary2)
+        : turnsRatio(scale)
     {
-        pinLoc[0] = a;
-        pinLoc[1] = b;
-        pinLoc[2] = c;
-        pinLoc[3] = d;
+        // Assign pin locations with more descriptive names
+        pinLoc[0] = primary1;
+        pinLoc[1] = primary2;
+        pinLoc[2] = secondary1;
+        pinLoc[3] = secondary2;
     }
 
+    // Function to stamp the Transformer component into the MNA (Modified Nodal Analysis) system
     void stamp(MNASystem& m) final
     {
-        m.stampStatic(1, nets[5], nets[3]);
+        // Stamping equations representing the transformer in the MNA system
+        // These equations model the electrical behavior of the transformer
+        m.stampStatic(1, nets[5], nets[0]);
         m.stampStatic(-1, nets[5], nets[4]);
         m.stampStatic(1, nets[4], nets[4]);
-        m.stampStatic(1, nets[0], nets[4]);
-        m.stampStatic(-1, nets[1], nets[4]);
-        m.stampStatic(1, nets[2], nets[5]);
-        m.stampStatic(-1, nets[3], nets[5]);
-        m.stampStatic(-b, nets[5], nets[0]);
-        m.stampStatic(b, nets[5], nets[1]);
-        m.stampStatic(-b, nets[4], nets[5]);
+        m.stampStatic(1, nets[3], nets[4]);
+        m.stampStatic(-1, nets[2], nets[4]);
+        m.stampStatic(1, nets[1], nets[5]);
+        m.stampStatic(-1, nets[0], nets[5]);
+        m.stampStatic(-turnsRatio, nets[5], nets[3]);
+        m.stampStatic(turnsRatio, nets[5], nets[2]);
+        m.stampStatic(-turnsRatio, nets[4], nets[5]);
     }
 };
 
 struct OpAmp final : Component<3, 1> {
 
-    double amp;
-    double g, gv, ngv;
-    double Uout, Uin;
-    double v, vmax;
+    const double g, vmax;
+    double v, gv, ngv, Uout, Uin;
 
-    OpAmp(double G, double UMax, int a, int b, int c)
+    OpAmp(double G, double UMax, int invertingInput, int nonInvertingInput, int output)
         : g(G)
         , vmax(UMax)
     {
-        pinLoc[0] = a;
-        pinLoc[1] = b;
-        pinLoc[2] = c;
+        pinLoc[0] = invertingInput;
+        pinLoc[1] = nonInvertingInput;
+        pinLoc[2] = output;
     }
 
     void stamp(MNASystem& m) final
@@ -719,16 +717,23 @@ struct OpAmp final : Component<3, 1> {
 
     void update(MNASystem& m) final
     {
+        // Calculate the voltage difference between non-inverting and inverting inputs
         Uin = m.b[nets[0]].lu - m.b[nets[1]].lu;
+
+        // Calculate the dynamic conductance gv and its negative ngv
         gv = g / (1 + pow(M_PI_2 / vmax * g * Uin, 2)) + 1e-12;
         ngv = -gv;
+
+        // Calculate the OpAmp's output voltage
         Uout = vmax * (M_2_PI)*atan(Uin * g * M_PI_2 / vmax);
+
+        // Calculate the voltage v at the output node
         v = Uin * gv - Uout;
     }
 };
 
 struct Potentiometer final : Component<3, 0> {
-    double r;
+    const double r;
     double g;
     double ig;
     double input;
@@ -747,10 +752,13 @@ struct Potentiometer final : Component<3, 0> {
 
     void stamp(MNASystem& m) final
     {
+        // Calculate conductance
         g = r * 0.5;
         ig = r * 0.5;
         ng = -g;
         ing = -ig;
+
+        // Stamp it dynamically so it can be adjusted when the pot is moved
         m.A[nets[0]][nets[0]].gdyn.push_back(&g);
         m.A[nets[0]][nets[1]].gdyn.push_back(&ng);
         m.A[nets[1]][nets[0]].gdyn.push_back(&ng);
@@ -763,7 +771,9 @@ struct Potentiometer final : Component<3, 0> {
 
     void update(MNASystem& m) final
     {
-        auto input = std::clamp(pos, 1e-6, 1.0 - 1e-6); // take out the extremes and prevent 0 divides
+        const double input = std::clamp(pos, 1e-4, 1.0 - 1e-4); // take out the extremes and prevent 0 divides
+
+        // Update conductance variables
         g = 1. / (r * input);
         ig = 1. / (r - (r * input));
         ng = -g;
@@ -772,7 +782,7 @@ struct Potentiometer final : Component<3, 0> {
 };
 
 struct Gyrator final : Component<4> {
-    double r;
+    const double r;
 
     Gyrator(double r, int pin1, int pin2, int pin3, int pin4)
         : r(r)
@@ -785,22 +795,23 @@ struct Gyrator final : Component<4> {
 
     void stamp(MNASystem& m) final
     {
+        // see https://github.com/Qucs/qucsator/blob/d48b91e28f7c7b7718dabbdfd6cc9dfa0616d841/src/components/gyrator.cpp
         m.stampStatic(1. / r, nets[0], nets[1]);
-        m.stampStatic(1. / r, nets[0], nets[2]);
+        m.stampStatic(-1. / r, nets[0], nets[2]);
 
-        m.stampStatic(-1. / r, nets[1], nets[0]);
         m.stampStatic(1. / r, nets[1], nets[3]);
+        m.stampStatic(-1. / r, nets[1], nets[0]);
 
         m.stampStatic(1. / r, nets[2], nets[0]);
         m.stampStatic(-1. / r, nets[2], nets[3]);
 
-        m.stampStatic(-1. / r, nets[3], nets[1]);
         m.stampStatic(1. / r, nets[3], nets[2]);
+        m.stampStatic(-1. / r, nets[3], nets[1]);
     }
 };
 
 struct Current final : Component<2> {
-    double a;
+    const double a;
     Current(double ampere, int pin1, int pin2)
         : a(ampere)
     {
@@ -810,6 +821,7 @@ struct Current final : Component<2> {
 
     void stamp(MNASystem& m) final
     {
+        // Write current to RHS
         m.b[nets[0]].g = -a;
         m.b[nets[1]].g = a;
     }
@@ -838,32 +850,34 @@ struct VariableCurrent final : Component<2> {
     }
 };
 
-struct Triode : public Component<3, 3>
-{
-    double mu = 85.0;
-    double ex = 1.4;
-    double kg1 = 1060.0;
-    double kp = 600.0;
-    double kvb = 300;
-    double rgk = 1e6;
-    double vg = 0.33;
-    
-    double cgp = 2.4e-12; // grid to plate capacitor
-    double cgk = 2.3e-12; // grid to cathode capacitor
-    double cpk = 0.9e-12; // plate to cathode capacitor
-    
+struct Triode : public Component<3, 3> {
+    // Triode model parameters
+    double mu = 85.0;    // Amplification factor (μ)
+    double ex = 1.4;     // Exponential factor for Koren's equation
+    double kg1 = 1060.0; // kg1 coefficient for Koren's equation
+    double kp = 600.0;   // kp coefficient for Koren's equation
+    double kvb = 300;    // kvb coefficient for Koren's equation
+    double rgk = 1e6;    // Grid resistor (Rgk)
+    double vg = 0.33;    // Grid voltage offset
+
+    // Capacitance values
+    const double cgp = 2.4e-12; // Grid to plate capacitor (Cgp)
+    const double cgk = 2.3e-12; // Grid to cathode capacitor (Cgk)
+    const double cpk = 0.9e-12; // Plate to cathode capacitor (Cpk)
+
+    // Voltages and currents
     double vgp = 0.0, vgk = 0.0, vpk = 0.0;
     double vcgp = 0.0f, vcgk = 0.0, vcpk = 0.0;
     double ip, ig, ipg;
     double ids, gm, gds, e1;
     
-    double tolerance = 0.00005;
-
+    // Variables to store voltages from the previous iteration
     double v0, v1, v2;
     double lastv0 = 0;
     double lastv1 = 0;
     double lastv2 = 0;
-    
+
+    // Dynamic matrices for nodal analysis
     std::vector<double> ieq = std::vector<double>(3, 0);
     std::vector<std::vector<double>> geq = std::vector<std::vector<double>>(3, std::vector<double>(3, 0));
 
@@ -872,31 +886,35 @@ struct Triode : public Component<3, 3>
         pinLoc[0] = plate;
         pinLoc[1] = grid;
         pinLoc[2] = cathode;
-        
-        if(Models::Triodes.count(model))
-        {
-            const auto& modelDescription = Models::Triodes.at(model);
-            
-            if(modelDescription.count("Ex")) ex = modelDescription.at("Ex");
-            if(modelDescription.count("Mu")) mu = modelDescription.at("Mu");
-            if(modelDescription.count("Kg")) kg1 = modelDescription.at("Kg");
-            if(modelDescription.count("Kp")) kp = modelDescription.at("Kp");
-            if(modelDescription.count("Kvb")) kvb = modelDescription.at("Kvb");
-            if(modelDescription.count("Rgk")) rgk = modelDescription.at("Rgk");
-            if(modelDescription.count("Vg")) vg = modelDescription.at("Vg");
-        }
-        else if(!model.empty())
-        {
+
+        if (Models::Triodes.count(model)) {
+            auto const& modelDescription = Models::Triodes.at(model);
+
+            if (modelDescription.count("Ex"))
+                ex = modelDescription.at("Ex");
+            if (modelDescription.count("Mu"))
+                mu = modelDescription.at("Mu");
+            if (modelDescription.count("Kg"))
+                kg1 = modelDescription.at("Kg");
+            if (modelDescription.count("Kp"))
+                kp = modelDescription.at("Kp");
+            if (modelDescription.count("Kvb"))
+                kvb = modelDescription.at("Kvb");
+            if (modelDescription.count("Rgk"))
+                rgk = modelDescription.at("Rgk");
+            if (modelDescription.count("Vg"))
+                vg = modelDescription.at("Vg");
+        } else if (!model.empty()) {
             pd_error(NULL, "circuit~: unknown triode model");
         }
     }
-    
-    void stamp(MNASystem & m)
+
+    void stamp(MNASystem& m)
     {
         double g = 2 * cgp;
         m.stampTimed(+1, nets[1], nets[3]);
         m.stampTimed(-1, nets[0], nets[3]);
-        
+
         m.stampTimed(-g, nets[1], nets[1]);
         m.stampTimed(+g, nets[1], nets[0]);
         m.stampTimed(+g, nets[0], nets[1]);
@@ -906,7 +924,7 @@ struct Triode : public Component<3, 3>
         m.stampStatic(-1, nets[3], nets[3]);
 
         m.b[nets[3]].gdyn.push_back(&vcgp);
-        
+
         g = 2 * cgk;
         m.stampTimed(+1, nets[1], nets[4]);
         m.stampTimed(-1, nets[2], nets[4]);
@@ -920,11 +938,11 @@ struct Triode : public Component<3, 3>
         m.stampStatic(-1, nets[4], nets[4]);
 
         m.b[nets[4]].gdyn.push_back(&vcgk);
-        
+
         g = 2 * cpk;
         m.stampTimed(+1, nets[0], nets[5]);
         m.stampTimed(-1, nets[2], nets[5]);
-        
+
         m.stampTimed(-g, nets[0], nets[0]);
         m.stampTimed(+g, nets[0], nets[2]);
         m.stampTimed(+g, nets[2], nets[0]);
@@ -934,14 +952,14 @@ struct Triode : public Component<3, 3>
         m.stampStatic(-1, nets[5], nets[5]);
 
         m.b[nets[5]].gdyn.push_back(&vcpk);
-        
+
         m.A[nets[0]][nets[0]].gdyn.push_back(&geq[0][0]);
         m.A[nets[0]][nets[1]].gdyn.push_back(&geq[0][1]);
         m.A[nets[0]][nets[2]].gdyn.push_back(&geq[0][2]);
-        
+
         m.A[nets[1]][nets[1]].gdyn.push_back(&geq[1][1]);
         m.A[nets[1]][nets[2]].gdyn.push_back(&geq[1][2]);
-        
+
         m.A[nets[2]][nets[0]].gdyn.push_back(&geq[2][0]);
         m.A[nets[2]][nets[1]].gdyn.push_back(&geq[2][1]);
         m.A[nets[2]][nets[2]].gdyn.push_back(&geq[2][2]);
@@ -950,164 +968,175 @@ struct Triode : public Component<3, 3>
         m.b[nets[1]].gdyn.push_back(&ieq[1]);
         m.b[nets[2]].gdyn.push_back(&ieq[2]);
     }
-    
-    void update(MNASystem & m)
+
+    void update(MNASystem& m)
     {
+        // Update internal voltage variables based on node voltages
         vcgp = m.b[nets[3]].lu;
         vcgk = m.b[nets[4]].lu;
         vcpk = m.b[nets[5]].lu;
-        
+
         vgk = m.b[nets[1]].lu - m.b[nets[2]].lu;
         vpk = m.b[nets[0]].lu - m.b[nets[2]].lu;
         vgp = m.b[nets[1]].lu - m.b[nets[0]].lu;
     }
-    
-    void calcKoren(MNASystem & m)
+
+    void calcKoren(MNASystem& m)
     {
-        // recalculate for iteration, but don't store on the class variables, that would mess up the capacitors
-        double vgk = m.b[nets[1]].lu - m.b[nets[2]].lu;
-        double vpk = m.b[nets[0]].lu - m.b[nets[2]].lu;
-        double vgp = m.b[nets[1]].lu - m.b[nets[0]].lu;
-        
-        e1 = (vpk /kp) * std::log(1 + std::exp(kp * (1.0 / mu + vgk /sqrt(kvb + pow(vpk, 2)))));
-        
-        ids = (std::pow(e1, ex)/kg1) * (1 + (e1 >= 0) - (e1 < 0));
+        // Calculate intermediate voltage differences
+        const double cvgk = m.b[nets[1]].lu - m.b[nets[2]].lu;
+        const double cvpk = m.b[nets[0]].lu - m.b[nets[2]].lu;
+
+        // Calculate e1 using Koren's model
+        e1 = (cvpk / kp) * std::log(1 + std::exp(kp * (1.0 / mu + cvgk / sqrt(kvb + pow(cvpk, 2)))));
+
+        // Calculate ids, gds, and gm based on e1
+        ids = (std::pow(e1, ex) / kg1) * (1 + (e1 >= 0) - (e1 < 0));
         gds = ex * sqrt(e1) / kg1;
         gm = gds / mu;
-        
-        if(ids == 0 || !std::isfinite(ids)) {
+
+        // Check if ids is zero or not finite
+        if (ids == 0 || !std::isfinite(ids)) {
             gds = 1e-8;
             gm = gds / mu;
-            ids = vpk * gds;
+            ids = cvpk * gds;
         }
-        
-        
-        double rs = -ids + gds * vpk + gm * vgk;
-        double gcr = vgk > vg ? rgk : 0;
-        
+
+        // Calculate rs and gcr
+        const double rs = -ids + gds * cvpk + gm * cvgk;
+        const double gcr = cvgk > vg ? rgk : 0;
+
+        // Populate the geq and ieq matrices
         geq[0][0] = gds;
         geq[0][1] = gm;
         geq[0][2] = -gds - gm;
-        
+
         geq[1][1] = gcr;
         geq[1][2] = -gcr;
-        
+
         geq[2][0] = -gds;
         geq[2][1] = -gm - gcr;
         geq[2][2] = gds + gm + gcr;
-        
-        
+
         ieq[0] = rs;
         ieq[1] = 0;
         ieq[2] = -rs;
-        
-        // To compare with on next iteration
+
+        // Store current voltages for comparison in the next iteration
         lastv0 = m.b[nets[0]].lu;
         lastv1 = m.b[nets[1]].lu;
         lastv2 = m.b[nets[2]].lu;
     }
-    
+
     void scaleTime(double told_per_new, double tStepSize)
     {
-        double qcgp = 2 * cgp * vgp;
+        const double qcgp = 2 * cgp * vgp;
         vcgp = qcgp + (vcgp - qcgp) * told_per_new;
-        
-        double qcgk = 2 * cgk * vgk;
+
+        const double qcgk = 2 * cgk * vgk;
         vcgk = qcgk + (vcgk - qcgk) * told_per_new;
-        
-        double qcpk = 2 * cpk * vpk;
+
+        const double qcpk = 2 * cpk * vpk;
         vcpk = qcgk + (vcpk - qcpk) * told_per_new;
     }
-    
-    bool newton(MNASystem & m)
+
+    bool newton(MNASystem& m)
     {
+        // Apply the Newton-Raphson method for convergence
         double v0 = m.b[nets[0]].lu;
         double v1 = m.b[nets[1]].lu;
         double v2 = m.b[nets[2]].lu;
-        
-        if(v1 > lastv1 + 0.5) v1 = lastv1 + 0.5;
-        if(v1 < lastv1 - 0.5) v1 = lastv1 - 0.5;
-        if(v2 > lastv2 + 0.5) v2 = lastv2 + 0.5;
-        if(v2 < lastv2 - 0.5) v2 = lastv2 - 0.5;
-        
-        if(abs(lastv0 - v0) <= tolerance && abs(lastv1 - v1) <= tolerance && abs(lastv2 - v2) <= tolerance)
+
+        // Limit voltage changes to 0.5V
+        if (v1 > lastv1 + 0.5)
+            v1 = lastv1 + 0.5;
+        if (v1 < lastv1 - 0.5)
+            v1 = lastv1 - 0.5;
+        if (v2 > lastv2 + 0.5)
+            v2 = lastv2 + 0.5;
+        if (v2 < lastv2 - 0.5)
+            v2 = lastv2 - 0.5;
+
+        // Check for convergence based on voltage changes
+        if (abs(lastv0 - v0) <= vTolerance && abs(lastv1 - v1) <= vTolerance && abs(lastv2 - v2) <= vTolerance)
             return true;
-        
+
+        // Calculate triode parameters using Koren's model
         calcKoren(m);
-        
+
         return false;
-        
     }
 };
 
-struct MOSFET : public Component<3>
-{
-    double pnp;
-        
-    double vt = 1.5;
-    double kp = 0.02;
-    
-    bool finished = false;
-    double lastv0, lastv1, lastv2;
-    double ids;
-    
-    double geq[3][3] = {{0}};
-    double ieq[3] = {0};
+struct MOSFET : public Component<3> {
+    const double pnp; // Positive or negative MOSFET indicator (-1 or 1)
 
-    MOSFET(bool isPNP, int gate, int source, int drain, std::string model) : pnp(isPNP ? -1.0 : 1.0)
+    double vt = 1.5;     // Threshold voltage
+    double beta = 0.02;  // Beta parameter (transconductance)
+    double lambda = 0.0; // Lambda parameter (channel-length modulation)
+
+    double lastv0, lastv1, lastv2; // Last voltage values for convergence check
+    double ids;                    // Drain current (output current)
+
+    double geq[3][3] = { { 0 } }; // Matrix to store conductance values
+    double ieq[3] = { 0 };        // Vector to store current values
+
+    // Simple MOSFET implementation, inspired by circuitjs
+    MOSFET(bool isPNP, int gate, int source, int drain, std::string model)
+        : pnp(isPNP ? -1.0 : 1.0)
     {
         pinLoc[0] = gate;
         pinLoc[1] = source;
         pinLoc[2] = drain;
-        
-        if(Models::MOSFETs.count(model))
-        {
-            const auto& modelDescription = Models::MOSFETs.at(model);
 
-            if(modelDescription.count("Kp")) kp = modelDescription.at("Kp");
-            if(modelDescription.count("Vt0")) vt = modelDescription.at("Vt0");
-            
-            if(modelDescription.count("PNP"))
-            {
-                if(modelDescription.at("PNP") != isPNP)
-                {
+        if (Models::MOSFETs.count(model)) {
+            auto const& modelDescription = Models::MOSFETs.at(model);
+
+            if (modelDescription.count("Kp"))
+                beta = modelDescription.at("Kp"); // I'm not sure this is correct
+            if (modelDescription.count("Vt0"))
+                vt = modelDescription.at("Vt0");
+            if (modelDescription.count("Lambda"))
+                vt = modelDescription.at("Lambda");
+
+            if (modelDescription.count("PNP")) {
+                if (modelDescription.at("PNP") != isPNP) {
                     pd_error(NULL, "circuit~: mosfet model does not match with set PNP value. Proceeding with custom PNP value");
                 }
             }
-        }
-        else if(!model.empty())
-        {
+        } else if (!model.empty()) {
             pd_error(NULL, "circuit~: unknown mosfet model");
         }
     }
-    
+
     void stamp(MNASystem& m) override
     {
         m.A[nets[2]][nets[2]].gdyn.push_back(&geq[2][2]);
         m.A[nets[2]][nets[1]].gdyn.push_back(&geq[2][1]);
         m.A[nets[2]][nets[0]].gdyn.push_back(&geq[2][0]);
-        
+
         m.A[nets[1]][nets[2]].gdyn.push_back(&geq[1][2]);
         m.A[nets[1]][nets[1]].gdyn.push_back(&geq[1][1]);
         m.A[nets[1]][nets[0]].gdyn.push_back(&geq[1][0]);
-        
+
         m.b[nets[2]].gdyn.push_back(&ieq[2]);
         m.b[nets[1]].gdyn.push_back(&ieq[1]);
     }
-    
-    bool converged(double last, double now) {
+
+    bool converged(double last, double now)
+    {
         double diff = std::abs(last - now);
-    
-        // high kp MOSFETs are more sensitive to small differences, so we are more strict about convergence testing
-        diff = kp > 1 ? diff * 100 : diff;
+
+        // high beta MOSFETs are more sensitive to small differences, so we are more strict about convergence testing
+        diff = beta > 1 ? diff * 100 : diff;
         return diff < vTolerance;
     }
-    
+
     bool newton(MNASystem& m) override
     {
         bool allConverged = false;
         double vs[3];
-        
+
         // limit voltage changes to .5V
         vs[0] = m.b[nets[0]].lu;
         vs[1] = m.b[nets[1]].lu;
@@ -1121,23 +1150,23 @@ struct MOSFET : public Component<3>
             vs[2] = lastv2 + .5;
         if (vs[2] < lastv2 - .5)
             vs[2] = lastv2 - .5;
-        
+
         int gate = 0;
         int source = 1;
         int drain = 2;
-        
+
         // if source voltage > drain (for NPN), swap source and drain
         // (opposite for PNP)
         if (pnp * vs[1] > pnp * vs[2]) {
             source = 2;
             drain = 1;
         }
-        
+
         double vgs = vs[gate] - vs[source];
         double vds = vs[drain] - vs[source];
         if (converged(lastv1, vs[1]) && converged(lastv2, vs[2]) && converged(lastv0, vs[0]))
             allConverged = true;
-        
+
         lastv0 = vs[0];
         lastv1 = vs[1];
         lastv2 = vs[2];
@@ -1145,104 +1174,104 @@ struct MOSFET : public Component<3>
         double realvds = vds;
         vgs *= pnp;
         vds *= pnp;
+        const double b = beta * (1 + lambda * vds);
         ids = 0;
         double gm = 0;
         double gds = 0;
-        
+
         if (vgs < vt) {
             // should be all zero, but that causes a singular matrix,
             // so instead we treat it as a large resistor
             gds = 1e-8;
             ids = vds * gds;
-        }else if (vds < vgs-vt) {
+        } else if (vds < vgs - vt) {
             // linear
-            ids = kp * ((vgs - vt) * vds - vds * vds * 0.5);
-            gm  = kp * vds;
-            gds = kp * (vgs - vds - vt);
+            ids = b * ((vgs - vt) * vds - vds * vds * 0.5);
+            gm = b * vds;
+            gds = b * (vgs - vds - vt);
         } else {
             // saturation; gds = 0
-            gm  = kp * (vgs - vt);
+            gm = b * (vgs - vt);
             // use very small gds to avoid nonconvergence
             gds = 1e-8;
-            ids = 0.5 * kp * (vgs - vt) * (vgs - vt) + (vds - (vgs - vt)) * gds;
+            ids = 0.5 * b * (vgs - vt) * (vgs - vt) + (vds - (vgs - vt)) * gds;
         }
 
-        double rs = (-pnp) * ids + gds * realvds + gm * realvgs;
-        
+        const double rs = (-pnp) * ids + gds * realvds + gm * realvgs;
+
         // flip ids if we swapped source and drain above
-        if ((source == 2 && pnp == 1) ||
-            (source == 1 && pnp == -1))
+        if ((source == 2 && pnp == 1) || (source == 1 && pnp == -1))
             ids = -ids;
-        
+
         geq[drain][drain] = gds;
         geq[drain][source] = -gds - gm;
         geq[drain][gate] = gm;
-        
+
         geq[source][drain] = -gds;
         geq[source][source] = gds + gm;
         geq[source][gate] = -gm;
-        
+
         ieq[drain] = rs;
         ieq[source] = -rs;
-        
+
         return allConverged;
     }
 };
 
-struct JFET : public MOSFET
-{
+struct JFET : public MOSFET {
     std::unique_ptr<Diode> diode;
-    
-    JFET(bool isPNP, int gate, int source, int drain, std::string model) : MOSFET(isPNP, gate, source, drain, "")
+
+    // For a JFET, we just simulate a MOSFET with different params and an extra diode
+    // This is a large simplification so that it can easily run in realtime, but might not be as accurate
+    JFET(bool isPNP, int gate, int source, int drain, std::string model)
+        : MOSFET(isPNP, gate, source, drain, "")
     {
         // Like a 2N5458 JFET
         vt = -4.5;
-        kp = 0.00125;
+        beta = 0.00125;
         double is = 1.0;
-        
-        if(Models::JFETs.count(model))
-        {
-            const auto& modelDescription = Models::JFETs.at(model);
 
-            if(modelDescription.count("IS")) is = modelDescription.at("IS");
-            if(modelDescription.count("Kp")) kp = modelDescription.at("Kp");
-            if(modelDescription.count("Vt0")) vt = modelDescription.at("Vt0");
-            
-            if(modelDescription.count("PNP"))
-            {
-                if(modelDescription.at("PNP") != isPNP)
-                {
+        if (Models::JFETs.count(model)) {
+            auto const& modelDescription = Models::JFETs.at(model);
+
+            if (modelDescription.count("IS"))
+                is = modelDescription.at("IS");
+            if (modelDescription.count("Kp"))
+                beta = modelDescription.at("Kp");
+            if (modelDescription.count("Lambda"))
+                lambda = modelDescription.at("Lambda");
+            if (modelDescription.count("Vt0"))
+                vt = modelDescription.at("Vt0");
+
+            if (modelDescription.count("PNP")) {
+                if (modelDescription.at("PNP") != isPNP) {
                     pd_error(NULL, "circuit~: jfet model does not match with set PNP value. Proceeding with custom PNP value");
                 }
             }
-        }
-        else if(!model.empty())
-        {
+        } else if (!model.empty()) {
             pd_error(NULL, "circuit~: unknown jfet model");
         }
-        
+
         diode = std::make_unique<Diode>(isPNP ? source : gate, isPNP ? gate : source, 10, is, 1.0);
     }
-    
-    
+
     void stamp(MNASystem& m) override
     {
         MOSFET::stamp(m);
         diode->stamp(m);
     }
-    
+
     void setupNets(int& netSize) override
     {
         diode->setupNets(netSize);
-        
+
         for (int i = 0; i < 3; ++i) {
             nets[i] = pinLoc[i];
         }
     }
-    
+
     bool newton(MNASystem& m) override
     {
         return diode->newton(m) & MOSFET::newton(m);
     }
-    
 };

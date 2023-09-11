@@ -770,7 +770,7 @@ static void knob_range(t_knob *x, t_floatarg f1, t_floatarg f2){
     x->x_fval = knob_clipfloat(x, x->x_fval);
     x->x_load = knob_clipfloat(x, x->x_load);
     x->x_start = knob_clipfloat(x, x->x_start);
-    else if(x->x_lower == x->x_upper)
+    if(x->x_lower == x->x_upper)
         x->x_fval = x->x_load = x->x_start = x->x_lower;
     x->x_pos = knob_getpos(x, x->x_fval);
     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
