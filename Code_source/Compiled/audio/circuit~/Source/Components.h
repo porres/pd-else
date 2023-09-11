@@ -64,7 +64,7 @@ struct Component : IComponent {
 };
 
 struct Resistor : Component<2> {
-    double r;
+    const double r;
 
     Resistor(double r, int l0, int l1)
         : r(r)
@@ -113,7 +113,7 @@ struct VariableResistor : Component<2> {
 };
 
 struct Capacitor : Component<2, 1> {
-    double c;
+    const double c;
     double stateVar;
     double voltage;
 
@@ -196,7 +196,7 @@ struct Capacitor : Component<2, 1> {
 };
 
 struct Inductor : Component<2, 1> {
-    double l;
+    const double l;
     double g;
     double stateVar;
     double voltage;
@@ -244,7 +244,7 @@ struct Inductor : Component<2, 1> {
 };
 
 struct Voltage : Component<2, 1> {
-    double v;
+    const double v;
 
     Voltage(double v, int l0, int l1)
         : v(v)
@@ -292,7 +292,7 @@ struct Probe : Component<2, 1> {
     } dc_blocker;
 
     bool initialised = false;
-    int outChannel;
+    const int outChannel;
 
     Probe(int l0, int l1, int outChannel)
         : outChannel(outChannel)
@@ -406,15 +406,14 @@ struct Diode : Component<2, 2> {
     JunctionPN pn;
 
     // should make these parameters
-    double rs;
+    const double rs;
 
     // l0 -->|-- l1 -- parameters default to approx 1N4148
-    Diode(int l0, int l1, std::string model)
+    Diode(int l0, int l1, std::string model) : rs(10.0)
     {
         pinLoc[0] = l0;
         pinLoc[1] = l1;
 
-        rs = 10.0;
         double is = 35e-12;
         double n = 1.0;
 
@@ -513,7 +512,7 @@ struct BJT : Component<3, 4> {
     // forward and reverse alpha
     double af, ar, rsbc, rsbe;
 
-    bool pnp;
+    const bool pnp;
 
     BJT(int b, int c, int e, std::string model, bool pnp)
         : pnp(pnp)
@@ -662,7 +661,7 @@ struct BJT : Component<3, 4> {
 // Define a Transformer component
 struct Transformer final : Component<4, 2> {
 
-    double turnsRatio;
+    const double turnsRatio;
 
     Transformer(double scale, int primary1, int primary2, int secondary1, int secondary2)
         : turnsRatio(scale)
@@ -694,9 +693,8 @@ struct Transformer final : Component<4, 2> {
 
 struct OpAmp final : Component<3, 1> {
 
-    double g, gv, ngv;
-    double Uout, Uin;
-    double v, vmax;
+    const double g, vmax;
+    double v, gv, ngv, Uout, Uin;
 
     OpAmp(double G, double UMax, int invertingInput, int nonInvertingInput, int output)
         : g(G)
@@ -735,7 +733,7 @@ struct OpAmp final : Component<3, 1> {
 };
 
 struct Potentiometer final : Component<3, 0> {
-    double r;
+    const double r;
     double g;
     double ig;
     double input;
@@ -773,7 +771,7 @@ struct Potentiometer final : Component<3, 0> {
 
     void update(MNASystem& m) final
     {
-        auto input = std::clamp(pos, 1e-6, 1.0 - 1e-6); // take out the extremes and prevent 0 divides
+        const double input = std::clamp(pos, 1e-6, 1.0 - 1e-6); // take out the extremes and prevent 0 divides
 
         // Update conductance variables
         g = 1. / (r * input);
@@ -784,7 +782,7 @@ struct Potentiometer final : Component<3, 0> {
 };
 
 struct Gyrator final : Component<4> {
-    double r;
+    const double r;
 
     Gyrator(double r, int pin1, int pin2, int pin3, int pin4)
         : r(r)
@@ -813,7 +811,7 @@ struct Gyrator final : Component<4> {
 };
 
 struct Current final : Component<2> {
-    double a;
+    const double a;
     Current(double ampere, int pin1, int pin2)
         : a(ampere)
     {
@@ -863,9 +861,9 @@ struct Triode : public Component<3, 3> {
     double vg = 0.33;    // Grid voltage offset
 
     // Capacitance values
-    double cgp = 2.4e-12; // Grid to plate capacitor (Cgp)
-    double cgk = 2.3e-12; // Grid to cathode capacitor (Cgk)
-    double cpk = 0.9e-12; // Plate to cathode capacitor (Cpk)
+    const double cgp = 2.4e-12; // Grid to plate capacitor (Cgp)
+    const double cgk = 2.3e-12; // Grid to cathode capacitor (Cgk)
+    const double cpk = 0.9e-12; // Plate to cathode capacitor (Cpk)
 
     // Voltages and currents
     double vgp = 0.0, vgk = 0.0, vpk = 0.0;
@@ -988,8 +986,8 @@ struct Triode : public Component<3, 3> {
     void calcKoren(MNASystem& m)
     {
         // Calculate intermediate voltage differences
-        double cvgk = m.b[nets[1]].lu - m.b[nets[2]].lu;
-        double cvpk = m.b[nets[0]].lu - m.b[nets[2]].lu;
+        const double cvgk = m.b[nets[1]].lu - m.b[nets[2]].lu;
+        const double cvpk = m.b[nets[0]].lu - m.b[nets[2]].lu;
 
         // Calculate e1 using Koren's model
         e1 = (cvpk / kp) * std::log(1 + std::exp(kp * (1.0 / mu + cvgk / sqrt(kvb + pow(cvpk, 2)))));
@@ -1007,8 +1005,8 @@ struct Triode : public Component<3, 3> {
         }
 
         // Calculate rs and gcr
-        double rs = -ids + gds * cvpk + gm * cvgk;
-        double gcr = cvgk > vg ? rgk : 0;
+        const double rs = -ids + gds * cvpk + gm * cvgk;
+        const double gcr = cvgk > vg ? rgk : 0;
 
         // Populate the geq and ieq matrices
         geq[0][0] = gds;
@@ -1034,13 +1032,13 @@ struct Triode : public Component<3, 3> {
 
     void scaleTime(double told_per_new, double tStepSize)
     {
-        double qcgp = 2 * cgp * vgp;
+        const double qcgp = 2 * cgp * vgp;
         vcgp = qcgp + (vcgp - qcgp) * told_per_new;
 
-        double qcgk = 2 * cgk * vgk;
+        const double qcgk = 2 * cgk * vgk;
         vcgk = qcgk + (vcgk - qcgk) * told_per_new;
 
-        double qcpk = 2 * cpk * vpk;
+        const double qcpk = 2 * cpk * vpk;
         vcpk = qcgk + (vcpk - qcpk) * told_per_new;
     }
 
@@ -1073,7 +1071,7 @@ struct Triode : public Component<3, 3> {
 };
 
 struct MOSFET : public Component<3> {
-    double pnp; // Positive or negative MOSFET indicator (-1 or 1)
+    const double pnp; // Positive or negative MOSFET indicator (-1 or 1)
 
     double vt = 1.5;     // Threshold voltage
     double beta = 0.02;  // Beta parameter (transconductance)
@@ -1178,7 +1176,7 @@ struct MOSFET : public Component<3> {
         double realvds = vds;
         vgs *= pnp;
         vds *= pnp;
-        double b = beta * (1 + lambda * vds);
+        const double b = beta * (1 + lambda * vds);
         ids = 0;
         double gm = 0;
         double gds = 0;
@@ -1201,7 +1199,7 @@ struct MOSFET : public Component<3> {
             ids = 0.5 * b * (vgs - vt) * (vgs - vt) + (vds - (vgs - vt)) * gds;
         }
 
-        double rs = (-pnp) * ids + gds * realvds + gm * realvgs;
+        const double rs = (-pnp) * ids + gds * realvds + gm * realvgs;
 
         // flip ids if we swapped source and drain above
         if ((source == 2 && pnp == 1) || (source == 1 && pnp == -1))
