@@ -116,7 +116,7 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 506 74 pd;
-#X obj 176 140 noise~;
+#X obj 200 135 noise~;
 #X obj 176 165 else/meter8~;
 #X text 59 218 [else/meter8~] ==>;
 #X text 73 87 [meter4~] is a convenient qudraphonic VU-meter abstraction based on [else/vu~] and vanilla's [vu] GUI - see also: [meter~] \, [meter2~] and [meter4~].;
@@ -129,7 +129,6 @@
 #X text 361 52 else/meter4~;
 #X obj 354 80 else/meter4~;
 #X restore 459 347 pd see also;
-#X obj 273 140 else/white~ -clip;
 #X obj 2 590 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0 14 #dcdcdc #404040 0;
 #X obj 2 388 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 2 449 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0 13 #dcdcdc #000000 0;
@@ -154,15 +153,18 @@
 #X text 135 466 signal(s);
 #X text 203 466 - incoming signal or mutichannel signal passed through;
 #N canvas 622 186 491 370 multichannel 0;
-#X obj 120 274 else/out.mc~;
+#X obj 77 264 else/out.mc~;
 #X text 77 21 The first inlet takes and outputs multichannel signals.;
-#X obj 120 107 else/meter8~;
-#X obj 120 67 else/oscbank2~ -mc -freq 200 300 400 500 600 700 800 900;
+#X obj 77 97 else/meter8~;
+#X obj 77 57 else/oscbank2~ -mc -freq 200 300 400 500 600 700 800 900;
 #X connect 2 0 0 0;
 #X connect 3 0 2 0;
 #X restore 436 322 pd multichannel;
+#X obj 298 135 else/imp~ 1;
 #X connect 13 0 14 0;
 #X connect 13 0 14 1;
+#X connect 13 0 14 2;
+#X connect 13 0 14 3;
 #X connect 14 0 17 0;
 #X connect 14 1 17 1;
 #X connect 14 2 17 2;
@@ -171,5 +173,7 @@
 #X connect 14 5 17 5;
 #X connect 14 6 17 6;
 #X connect 14 7 17 7;
-#X connect 19 0 14 4;
-#X connect 19 0 14 5;
+#X connect 43 0 14 4;
+#X connect 43 0 14 5;
+#X connect 43 0 14 6;
+#X connect 43 0 14 7;

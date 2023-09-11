@@ -144,7 +144,6 @@
 #X text 78 52 else/meter~;
 #X restore 451 327 pd see also;
 #X obj 189 305 else/out4~;
-#X obj 263 135 else/white~ -clip;
 #N canvas 622 186 491 370 multichannel 0;
 #X obj 138 114 else/meter4~;
 #N canvas 207 34 366 264 (subpatch) 0;
@@ -262,11 +261,12 @@
 #X obj 90 442 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 135 442 signal(s);
 #X text 203 442 - incoming signal or mutichannel signal passed through;
+#X obj 263 135 else/imp~ 1;
 #X connect 0 0 33 0;
 #X connect 0 1 33 1;
 #X connect 0 2 33 2;
 #X connect 0 3 33 3;
 #X connect 29 0 0 0;
 #X connect 29 0 0 1;
-#X connect 34 0 0 2;
-#X connect 34 0 0 3;
+#X connect 43 0 0 2;
+#X connect 43 0 0 3;
