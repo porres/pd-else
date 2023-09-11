@@ -679,16 +679,16 @@ struct Transformer final : Component<4, 2> {
     {
         // Stamping equations representing the transformer in the MNA system
         // These equations model the electrical behavior of the transformer
-        m.stampStatic(1, nets[5], nets[3]);           // V_secondary2 - V_primary2
-        m.stampStatic(-1, nets[5], nets[4]);          // V_secondary2 - V_secondary1
-        m.stampStatic(1, nets[4], nets[4]);           // V_secondary1 - V_secondary1
-        m.stampStatic(1, nets[0], nets[4]);           // V_primary1 - V_secondary1
-        m.stampStatic(-1, nets[1], nets[4]);          // V_primary2 - V_secondary1
-        m.stampStatic(1, nets[2], nets[5]);           // V_primary1 - V_secondary2
-        m.stampStatic(-1, nets[3], nets[5]);          // V_primary2 - V_secondary2
-        m.stampStatic(-turnsRatio, nets[5], nets[0]); // V_secondary2 - V_primary1
-        m.stampStatic(turnsRatio, nets[5], nets[1]);  // V_secondary2 - V_primary2
-        m.stampStatic(-turnsRatio, nets[4], nets[5]); // V_secondary1 - V_secondary2
+        m.stampStatic(1, nets[5], nets[0]);
+        m.stampStatic(-1, nets[5], nets[4]);
+        m.stampStatic(1, nets[4], nets[4]);
+        m.stampStatic(1, nets[3], nets[4]);
+        m.stampStatic(-1, nets[2], nets[4]);
+        m.stampStatic(1, nets[1], nets[5]);
+        m.stampStatic(-1, nets[0], nets[5]);
+        m.stampStatic(-turnsRatio, nets[5], nets[3]);
+        m.stampStatic(turnsRatio, nets[5], nets[2]);
+        m.stampStatic(-turnsRatio, nets[4], nets[5]);
     }
 };
 
@@ -797,17 +797,18 @@ struct Gyrator final : Component<4> {
 
     void stamp(MNASystem& m) final
     {
+        // see https://github.com/Qucs/qucsator/blob/d48b91e28f7c7b7718dabbdfd6cc9dfa0616d841/src/components/gyrator.cpp
         m.stampStatic(1. / r, nets[0], nets[1]);
-        m.stampStatic(1. / r, nets[0], nets[2]);
+        m.stampStatic(-1. / r, nets[0], nets[2]);
 
-        m.stampStatic(-1. / r, nets[1], nets[0]);
         m.stampStatic(1. / r, nets[1], nets[3]);
+        m.stampStatic(-1. / r, nets[1], nets[0]);
 
         m.stampStatic(1. / r, nets[2], nets[0]);
         m.stampStatic(-1. / r, nets[2], nets[3]);
 
-        m.stampStatic(-1. / r, nets[3], nets[1]);
         m.stampStatic(1. / r, nets[3], nets[2]);
+        m.stampStatic(-1. / r, nets[3], nets[1]);
     }
 };
 
