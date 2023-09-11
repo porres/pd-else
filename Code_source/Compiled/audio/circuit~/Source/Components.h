@@ -313,7 +313,8 @@ struct Probe : Component<2, 1> {
 
     void update(MNASystem& m) final
     {
-        if (!initialised) {
+        // As soon as a voltage gets written, treat that as the DC offset point
+        if (!initialised && m.b[nets[2]].lu != 0.0) {
             dc_blocker.setInitialState(m.b[nets[2]].lu);
             initialised = true;
         }

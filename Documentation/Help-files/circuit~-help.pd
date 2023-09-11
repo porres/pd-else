@@ -1,4 +1,4 @@
-#N canvas 358 30 562 668 10;
+#N canvas 358 30 564 671 10;
 #X obj 2 3 cnv 15 301 42 empty empty circuit~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -28,7 +28,7 @@
 #X text 173 555 signal;
 #X text 186 438 bang;
 #X text 226 437 - reset and start simulation, f 45;
-#N canvas 584 236 549 231 examples 0;
+#N canvas 584 236 556 265 examples 0;
 #N canvas 449 25 565 710 Boss 0;
 #X obj 161 609 else/out~;
 #X msg 50 182 enable \$1;
@@ -68,7 +68,7 @@
 #X connect 19 0 16 1;
 #X connect 21 0 16 0;
 #X restore 254 110 pd Boss SD-1;
-#N canvas 322 74 495 536 Fuzzface 0;
+#N canvas 322 74 495 508 Fuzzface 0;
 #X obj 92 121 osc~ 200;
 #X text 109 59 <- start simulation;
 #X msg 81 88 enable \$1;
@@ -203,7 +203,7 @@
 #X connect 5 0 0 0;
 #X connect 7 0 5 0;
 #X restore 46 79 pd Transistor Distortion;
-#N canvas 153 25 504 697 Ibanez 0;
+#N canvas 153 25 504 669 Ibanez 0;
 #X obj 141 591 else/out~;
 #X text 205 156 DRIVE;
 #X text 274 156 TONE;
