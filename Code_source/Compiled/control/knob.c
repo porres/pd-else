@@ -50,8 +50,8 @@ typedef struct _knob{
     int             x_offset;
     int             x_ticks;
     int             x_outline;
-    double          x_min;
-    double          x_max;
+    double          x_lower;
+    double          x_upper;
     int             x_clicked;
     int             x_sel;
     int             x_shift;
@@ -98,12 +98,12 @@ static t_float knob_getfval(t_knob *x){
         pos = rint(pos * ticks) / ticks;
     }
     if(x->x_log == 1){ // log
-        if((x->x_min <= 0 && x->x_max >= 0) || (x->x_min >= 0 && x->x_max <= 0)){
+        if((x->x_lower <= 0 && x->x_upper >= 0) || (x->x_lower >= 0 && x->x_upper <= 0)){
             pd_error(x, "[knob]: range can't contain '0' in log mode");
-            fval = x->x_min;
+            fval = x->x_lower;
         }
         else
-            fval = exp(pos * log(x->x_max / x->x_min)) * x->x_min;
+            fval = exp(pos * log(x->x_upper / x->x_lower)) * x->x_lower;
     }
     else{
         if(x->x_exp != 0){
@@ -112,7 +112,7 @@ static t_float knob_getfval(t_knob *x){
             else
                 pos = 1 - pow(1 - pos, -x->x_exp);
         }
-        fval = pos * (x->x_max - x->x_min) + x->x_min;
+        fval = pos * (x->x_upper - x->x_lower) + x->x_lower;
     }
     if((fval < 1.0e-10) && (fval > -1.0e-10))
         fval = 0.0;
@@ -123,15 +123,15 @@ static t_float knob_getfval(t_knob *x){
 static t_float knob_getpos(t_knob *x, t_floatarg fval){
     double pos;
     if(x->x_log == 1){ // log
-        if((x->x_min <= 0 && x->x_max >= 0) || (x->x_min >= 0 && x->x_max <= 0)){
+        if((x->x_lower <= 0 && x->x_upper >= 0) || (x->x_lower >= 0 && x->x_upper <= 0)){
             pd_error(x, "[knob]: range cannot contain '0' in log mode");
             pos = 0;
         }
         else
-            pos = (double)log(fval/x->x_min) / (double)log(x->x_max/x->x_min);
+            pos = (double)log(fval/x->x_lower) / (double)log(x->x_upper/x->x_lower);
     }
     else{
-        pos = (double)(fval - x->x_min) / (double)(x->x_max - x->x_min);
+        pos = (double)(fval - x->x_lower) / (double)(x->x_upper - x->x_lower);
         if(x->x_exp != 0){
             if(x->x_exp > 0)
                 pos = pow(pos, 1.0/x->x_exp);
@@ -142,11 +142,20 @@ static t_float knob_getpos(t_knob *x, t_floatarg fval){
     if(x->x_discrete){
         t_float ticks = (float)(x->x_ticks) -1;
         if(ticks <= 0)
-            pos = (x->x_load - x->x_min) / (x->x_max - x->x_min); // ?????
+            pos = (x->x_load - x->x_lower) / (x->x_upper - x->x_lower); // ?????
         else
             pos = rint(pos * ticks) / ticks;
     }
     return(pos);
+}
+
+// get clipped float value
+static t_float knob_clipfloat(t_knob *x, t_floatarg f){
+    if(x->x_upper < x->x_lower)
+        f = f < x->x_upper ? x->x_upper : f > x->x_lower ? x->x_lower : f;
+    else
+        f = f > x->x_upper ? x->x_upper : f < x->x_lower ? x->x_lower : f;
+    return(f);
 }
 
 // ---------------------- Configure / Update GUI ----------------------
@@ -292,8 +301,6 @@ static void knob_draw_ticks(t_knob *x, t_glist *glist){
     int x0 = text_xpix(&x->x_obj, x->x_glist), y0 = text_ypix(&x->x_obj, x->x_glist);
     int xc = x0 + r, yc = y0 + r; // center coords
     int start = x->x_start_angle - 90.0;
-//    int odd  = x->x_ticks % 2;
-//    int mid  = x->x_ticks / 2 + 1;
     if(x->x_ticks == 1){
         int width = (x->x_size / 40);
         if(width < 1)
@@ -513,8 +520,8 @@ static void knob_save(t_gobj *z, t_binbuf *b){
     knob_get_rcv(x);
     binbuf_addv(b, "iffffsssssiiiiiiiif", // 19 args
         x->x_size, // 01: i SIZE
-        (float)x->x_min, // 02: f min
-        (float)x->x_max, // 03: f max
+        (float)x->x_lower, // 02: f lower
+        (float)x->x_upper, // 03: f upper
         x->x_log ? 1 : x->x_exp, // 04: f exp
         x->x_load, // 05: f load
         x->x_snd_raw, // 06: s snd
@@ -538,7 +545,7 @@ static void knob_save(t_gobj *z, t_binbuf *b){
 
 static void knob_set(t_knob *x, t_floatarg f){
     double old = x->x_pos;
-    x->x_fval = f > x->x_max ? x->x_max : f < x->x_min ? x->x_min : f;
+    x->x_fval = knob_clipfloat(x, f);
     x->x_pos = knob_getpos(x, x->x_fval);
     x->x_fval = knob_getfval(x);
     if(x->x_pos != old){
@@ -564,7 +571,7 @@ static void knob_load(t_knob *x, t_symbol *s, int ac, t_atom *av){
         x->x_load = x->x_fval;
     else if(ac == 1 && av->a_type == A_FLOAT){
         float f = atom_getfloat(av);
-        x->x_load = f < x->x_min ? x->x_min : f > x->x_max ? x->x_max : f;
+        x->x_load = knob_clipfloat(x, f);
         x->x_pos = knob_getpos(x, x->x_fval = x->x_load);
     }
     else
@@ -582,8 +589,7 @@ static void knob_start(t_knob *x, t_symbol *s, int ac, t_atom *av){
         x->x_start = x->x_fval;
     else if(ac == 1 && av->a_type == A_FLOAT){
         float f = atom_getfloat(av);
-        x->x_start = f < x->x_min ? x->x_min : f > x->x_max ? x->x_max : f;
-//        x->x_pos = knob_getpos(x, x->x_fval = x->x_load);
+        x->x_start = knob_clipfloat(x, f);
     }
     else
         return;
@@ -759,38 +765,13 @@ static void knob_receive(t_knob *x, t_symbol *s){
 }
 
 static void knob_range(t_knob *x, t_floatarg f1, t_floatarg f2){
-    x->x_min = (double)f1;
-    x->x_max = (double)f2;
-    if(x->x_min < x->x_max){
-        if(x->x_fval < x->x_min)
-            x->x_fval = x->x_min;
-        if(x->x_fval > x->x_max)
-            x->x_fval = x->x_max;
-        if(x->x_load < x->x_min)
-            x->x_load = x->x_min;
-        if(x->x_load > x->x_max)
-            x->x_load = x->x_max;
-        if(x->x_start < x->x_min)
-            x->x_start = x->x_min;
-        if(x->x_start > x->x_max)
-            x->x_start = x->x_max;
-    }
-    else if(x->x_min > x->x_max){
-        if(x->x_fval > x->x_min)
-            x->x_fval = x->x_min;
-        if(x->x_fval < x->x_max)
-            x->x_fval = x->x_max;
-        if(x->x_load > x->x_min)
-            x->x_load = x->x_min;
-        if(x->x_load < x->x_max)
-            x->x_load = x->x_max;
-        if(x->x_start > x->x_min)
-            x->x_start = x->x_min;
-        if(x->x_start < x->x_max)
-            x->x_start = x->x_max;
-    }
-    else if(x->x_min == x->x_max)
-        x->x_fval = x->x_load = x->x_start = x->x_min;
+    x->x_lower = (double)f1;
+    x->x_upper = (double)f2;
+    x->x_fval = knob_clipfloat(x, x->x_fval);
+    x->x_load = knob_clipfloat(x, x->x_load);
+    x->x_start = knob_clipfloat(x, x->x_start);
+    else if(x->x_lower == x->x_upper)
+        x->x_fval = x->x_load = x->x_start = x->x_lower;
     x->x_pos = knob_getpos(x, x->x_fval);
     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
         knob_update(x, glist_getcanvas(x->x_glist));
@@ -850,8 +831,8 @@ static void knob_properties(t_gobj *z, t_glist *owner){
     char buffer[512];
     sprintf(buffer, "knob_dialog %%s %g %g %g %g %d {%s} {%s} %d %g %d {%s} {%s} {%s} %d %d %d %d %d %d %g\n",
         (float)(x->x_size / x->x_zoom),
-        x->x_min,
-        x->x_max,
+        x->x_lower,
+        x->x_upper,
         x->x_load,
         x->x_circular,
         x->x_snd_raw->s_name,
@@ -877,8 +858,8 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_atom undo[20];
     SETFLOAT(undo+0, x->x_size);
-    SETFLOAT(undo+1, x->x_min);
-    SETFLOAT(undo+2, x->x_max);
+    SETFLOAT(undo+1, x->x_lower);
+    SETFLOAT(undo+2, x->x_upper);
     SETFLOAT(undo+3, x->x_load);
     SETSYMBOL(undo+4, x->x_snd);
     SETSYMBOL(undo+5, x->x_rcv);
