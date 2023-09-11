@@ -1,4 +1,4 @@
-#N canvas 481 23 560 674 10;
+#N canvas 481 25 560 646 10;
 #X obj 2 3 cnv 15 301 42 empty empty circuit~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -424,14 +424,13 @@
 #X obj 7 574 cnv 3 550 3 empty \$0-pddp.cnv.flag flags 8 12 0 13 #dcdcdc #000000 0;
 #X text 133 581 -iter;
 #X text 184 581 - set transistors/diodes quality (default 20), f 59;
-#N canvas 167 23 1048 612 basic-syntax 0;
+#N canvas 167 25 1048 584 basic-syntax 1;
 #X text 484 250 Voltage source for batteries or audio input. volt may be variable like $s0/$s1/etc, f 85;
 #X text 484 274 Resistor \, ohm may be variable like $s0/$s1/etc;
 #X text 484 346 Capacitor;
 #X text 484 371 Inductor;
 #X text 484 395 Diode;
 #X text 484 419 Bipolar Junction Transistor;
-#X text 484 443 Transformer;
 #X text 484 467 Opamp;
 #X text 484 298 Potentiometer \, position may be variable like $s0/$s1;
 #X text 484 226 Voltage probe \, use for audio output. This will also lead to the creation of an outlet, f 85;
@@ -459,6 +458,8 @@
 #X text 481 558 Metal Oxide Semiconductor Field Effect Transistor;
 #X text 64 558 mosfet (1=pnp \, 0=npn) [[gate] [source] [drain] ------------------->, f 67;
 #X text 237 44 Circuits need to be described as following \; You need to assign each component pin a number \, based on the wire that is connected to it. Every set of wires that are directly connected to each other \, share the same number. They are one network with no resistance between it at all. So if 2 wires touch at the same pin of a component \, those wires share the same number. By filling in all the components in your circuit \, and assigning the pin numbers like that \, you should be able to create a working circuit., f 99;
+#X text 484 442 Transformer;
+#X text 62 443 transformer (ratio) [primary+] [primary-] [secondary+] [secondary]->, f 68;
 #X restore 441 321 pd basic-syntax;
 #N canvas 403 23 532 367 models 0;
 #X text 83 33 Models:;
