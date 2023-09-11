@@ -392,7 +392,7 @@ protected:
     void solveKLU()
     {
         // Update our factorization or refactor if the last factorization failed
-        klu_refactor(&AI[0], &AJ[0], getAValues(), Symbolic, Numeric, &Common);
+        klu_refactor(AI.data(), AJ.data(), getAValues(), Symbolic, Numeric, &Common);
 
         // Solve the system!
         klu_solve(Symbolic, Numeric, nets - 1, 1, getBValues(), &Common);
