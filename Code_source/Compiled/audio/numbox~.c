@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../extra_source/compat.h"
+//#include "../extra_source/compat.h"
 
 #define MINDIGITS      1
 #define MAX_NUMBOX_LEN 32
@@ -28,8 +28,8 @@ typedef struct _numbox{
     t_float   x_in_val;
     t_float   x_out_val;
     t_float   x_set_val;
-    t_float   x_max;
-    t_float   x_min;
+    t_float   x_lower;
+    t_float   x_upper;
     t_float   x_sr_khz;
     t_float   x_inc;
     t_float   x_ramp_step;
@@ -106,8 +106,12 @@ static void numbox_width_calc(t_numbox *x){
 }
 
 static float numbox_clip(t_numbox *x, t_floatarg val){
-    if(x->x_min != 0 || x->x_max != 0)
-        return(val < x->x_min ? x->x_min : val > x->x_max ? x->x_max : val);
+    if(x->x_lower != 0 || x->x_upper != 0){
+        if(x->x_lower < x->x_upper)
+            return(val < x->x_lower ? x->x_lower : val > x->x_upper ? x->x_upper : val);
+        else
+            return(val > x->x_lower ? x->x_lower : val < x->x_upper ? x->x_upper : val);
+    }
     return(val);
 }
 
@@ -151,8 +155,8 @@ static void numbox_ramp(t_numbox *x, t_floatarg f){
 
 static void numbox_float(t_numbox *x, t_floatarg f){ // set float value and update GUI
     t_float ftocompare = f;
-    if(x->x_min != 0 && x->x_max != 0) // clip
-       ftocompare = f < x->x_min ? x->x_min : f > x->x_max ? x->x_max : f;
+    if(x->x_lower != 0 && x->x_upper != 0) // clip
+       ftocompare = f < x->x_lower ? x->x_lower : f > x->x_upper ? x->x_upper : f;
     if(memcmp(&ftocompare, &x->x_out_val, sizeof(ftocompare))){ // bitwise comparison
         x->x_out_val = ftocompare;
         if(x->x_outmode){
@@ -207,18 +211,10 @@ static void numbox_fg(t_numbox *x, t_symbol *s, int ac, t_atom *av){
         x->x_fg = fg;
         sys_vgui(".x%lx.c itemconfigure %lxNUM -fill %s\n", glist_getcanvas(x->x_glist), x, x->x_fg->s_name);
     }
-//    else if(ac == 3 && av->a_type == A_SYMBOL)
 }
 
 static void numbox_range(t_numbox *x, t_floatarg f1, t_floatarg f2){
-    if(x->x_min == f1 && x->x_max == f2)
-        return;
-    float temp = f1;
-    if(f2 < f1){
-        f1 = f2;
-        f2 = temp;
-    }
-    x->x_min = f1, x->x_max = f2;
+    x->x_lower = f1, x->x_upper = f2;
 }
 
 // ------------------------ widgetbehaviour-----------------------------
@@ -337,8 +333,8 @@ static void numbox_properties(t_gobj *z, t_glist *owner){ // called in right cli
     t_numbox *x = (t_numbox *)z;
     char buf[800];
     sprintf(buf, "::dialog_numbox::pdtk_numbox_dialog %%s -------dimensions(digits)(pix):------- \
-        %d %d %d %d %d %d %f %s %s %.4f %.4f\n", x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE,
-        x->x_ramp_ms, x->x_rate, x->x_set_val, x->x_bg->s_name, x->x_fg->s_name, x->x_min, x->x_max);
+        %d %d %d %d %d %d %f %s %s %g %g\n", x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE,
+        x->x_ramp_ms, x->x_rate, x->x_set_val, x->x_bg->s_name, x->x_fg->s_name, x->x_lower, x->x_upper);
     gfxstub_new(&x->x_obj.ob_pd, x, buf); // no idea what this does...
 }
 
@@ -361,8 +357,8 @@ static void numbox_dialog(t_numbox *x, t_symbol *s, int ac, t_atom *av){
     SETFLOAT(undo+4, x->x_set_val);
     SETSYMBOL(undo+5, x->x_bg);
     SETSYMBOL(undo+6, x->x_fg);
-    SETFLOAT(undo+7, x->x_min);
-    SETFLOAT(undo+8, x->x_max);
+    SETFLOAT(undo+7, x->x_lower);
+    SETFLOAT(undo+8, x->x_upper);
     pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 9, undo, ac, av);
     numbox_ramp(x, ramp_ms);
     numbox_rate(x, rate);
@@ -384,7 +380,7 @@ static void numbox_save(t_gobj *z, t_binbuf *b){
     t_numbox *x = (t_numbox *)z;
     binbuf_addv(b, "ssiisiiissifff", gensym("#X"), gensym("obj"), (int)x->x_obj.te_xpix,
         (int)x->x_obj.te_ypix, atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)), x->x_numwidth,
-        x->x_fontsize, x->x_rate, x->x_bg, x->x_fg, x->x_ramp_ms, x->x_min, x->x_max, x->x_set_val);
+        x->x_fontsize, x->x_rate, x->x_bg, x->x_fg, x->x_ramp_ms, x->x_lower, x->x_upper, x->x_set_val);
     binbuf_addv(b, ";");
 }
 

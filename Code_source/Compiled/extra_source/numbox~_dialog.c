@@ -244,10 +244,10 @@ sys_gui("\n" // Tcl/Tk properties code based on IEMGUI's
             "    labelframe $mytoplevel.rng\n"
             "    pack $mytoplevel.rng -side top -fill x\n"
             "    frame $mytoplevel.rng.min\n"
-            "    label $mytoplevel.rng.min.lab -text \"Minimum\"\n"
+            "    label $mytoplevel.rng.min.lab -text \"Lower\"\n"
             "    entry $mytoplevel.rng.min.ent -textvariable $var_numbox_min_rng -width 7\n"
             "    label $mytoplevel.rng.dummy1 -text \"\" -width 1\n"
-            "    label $mytoplevel.rng.max_lab -text \"Maximum\"\n"
+            "    label $mytoplevel.rng.max_lab -text \"Upper\"\n"
             "    entry $mytoplevel.rng.max_ent -textvariable $var_numbox_max_rng -width 7\n"
             "    $mytoplevel.rng config -borderwidth 1 -pady 4 -text \"Output Range\"\n"
      
