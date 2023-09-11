@@ -762,7 +762,7 @@ struct Potentiometer final : Component<3, 0> {
 
     void update(MNASystem& m) final
     {
-        auto input = std::max(std::min(pos, 0.95), 0.05); // take out the extremes and prevent 0 divides
+        auto input = std::clamp(pos, 1e-6, 1.0 - 1e-6); // take out the extremes and prevent 0 divides
         g = 1. / (r * input);
         ig = 1. / (r - (r * input));
         ng = -g;
