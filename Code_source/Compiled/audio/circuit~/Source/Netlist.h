@@ -19,10 +19,10 @@ struct NetList {
         , lastNumNets(nNets)
         , blockSize(numSamples)
     {
-        auto isDynamicArgument = [](std::string arg){ return arg.rfind("$s", 0) == 0 || arg.rfind("$f", 0) == 0; };
-        
+        auto isDynamicArgument = [](std::string arg) { return arg.rfind("$s", 0) == 0 || arg.rfind("$f", 0) == 0; };
+
         int numOut = 0;
-        for (const auto& [type, args, pins, model] : netlist) {
+        for (auto const& [type, args, pins, model] : netlist) {
             switch (type) {
             case tResistor: {
                 if (args.size() == 1) {
@@ -182,19 +182,19 @@ struct NetList {
         // get DC solution
         simulateTick();
         setTimeStep(1.0 / sampleRate);
-        
+
         // This helps against clicks
-        for(int i = 0; i < 10; i++)
-        {
+        for (int i = 0; i < 10; i++) {
             simulateTick();
         }
     }
 
     ~NetList()
     {
-        if(Symbolic) klu_free_symbolic(&Symbolic, &Common);
-        if(Numeric) klu_free_numeric(&Numeric, &Common);
-
+        if (Symbolic)
+            klu_free_symbolic(&Symbolic, &Common);
+        if (Numeric)
+            klu_free_numeric(&Numeric, &Common);
     }
 
     void addComponent(IComponent* c)
@@ -276,7 +276,7 @@ struct NetList {
     int getMaxDynamicArgument() const
     {
         int max = 0;
-        for (const auto& [idx, value] : system.input) {
+        for (auto const& [idx, value] : system.input) {
             max = std::max(idx + 1, max);
         }
 
@@ -322,8 +322,8 @@ protected:
 
     // Netlist state for resetting
     const NetlistDescription lastNetlist;
-    const int lastNumNets;
-    
+    int const lastNumNets;
+
     void update()
     {
         for (int i = 0; i < components.size(); ++i) {

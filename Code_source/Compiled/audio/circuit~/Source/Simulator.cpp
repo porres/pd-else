@@ -99,14 +99,13 @@ void* simulator_create(int argc, t_atom* argv, int blockSize, double sampleRate)
                 arguments.push_back(segment.substr(strBegin, strRange));
             }
         }
-        if (!arguments.size()) continue;
-        
+        if (!arguments.size())
+            continue;
+
         // See if there is a model flag set
         std::string model = "";
-        for(int i = 0; i < arguments.size() - 1; i++)
-        {
-            if(!arguments[i].compare("-model"))
-            {
+        for (int i = 0; i < arguments.size() - 1; i++) {
+            if (!arguments[i].compare("-model")) {
                 model = arguments[i + 1];
                 arguments.erase(arguments.begin() + i, arguments.begin() + i + 2);
             }
@@ -157,13 +156,11 @@ void* simulator_create(int argc, t_atom* argv, int blockSize, double sampleRate)
         } else if (!arguments[0].compare("triode") && arguments.size() > 3) {
             auto [args, pins] = getPinsAndArguments(arguments, 3);
             netlistDescription.emplace_back(tTriode, args, pins, model);
-        }
-        else if (!arguments[0].compare("-iter") && arguments.size() > 1) {
+        } else if (!arguments[0].compare("-iter") && arguments.size() > 1) {
             auto [args, pins] = getPinsAndArguments(arguments, 0);
             netlistDescription.emplace_back(tIter, args, pins, "");
-        }
-        else {
-            auto errorMessage = "circuit~: netlist format error, unknown combination of identifier \"" + arguments[0] + "\" and " + std::to_string(arguments.size()-1) + " arguments";
+        } else {
+            auto errorMessage = "circuit~: netlist format error, unknown combination of identifier \"" + arguments[0] + "\" and " + std::to_string(arguments.size() - 1) + " arguments";
             pd_error(NULL, errorMessage.c_str());
         }
     }
