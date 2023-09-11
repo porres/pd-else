@@ -1045,7 +1045,7 @@ struct MOSFET : public Component<3>
     double pnp;
         
     double vt = 1.5;
-    double beta= 0.02;
+    double kp = 0.02;
     
     bool finished = false;
     double lastv0, lastv1, lastv2;
@@ -1054,11 +1054,31 @@ struct MOSFET : public Component<3>
     double geq[3][3] = {{0}};
     double ieq[3] = {0};
 
-    MOSFET(bool isPNP, int gate, int source, int drain) : pnp(isPNP ? -1.0 : 1.0)
+    MOSFET(bool isPNP, int gate, int source, int drain, std::string model) : pnp(isPNP ? -1.0 : 1.0)
     {
         pinLoc[0] = gate;
         pinLoc[1] = source;
         pinLoc[2] = drain;
+        
+        if(Models::MOSFETs.count(model))
+        {
+            const auto& modelDescription = Models::MOSFETs.at(model);
+
+            if(modelDescription.count("Kp")) kp = modelDescription.at("Kp");
+            if(modelDescription.count("Vt0")) vt = modelDescription.at("Vt0");
+            
+            if(modelDescription.count("PNP"))
+            {
+                if(modelDescription.at("PNP") != isPNP)
+                {
+                    pd_error(NULL, "circuit~: mosfet model does not match with set PNP value. Proceeding with custom PNP value");
+                }
+            }
+        }
+        else if(!model.empty())
+        {
+            pd_error(NULL, "circuit~: unknown mosfet model");
+        }
     }
     
     void stamp(MNASystem& m) override
@@ -1078,8 +1098,8 @@ struct MOSFET : public Component<3>
     bool converged(double last, double now) {
         double diff = std::abs(last - now);
     
-        // high beta MOSFETs are more sensitive to small differences, so we are more strict about convergence testing
-        diff = beta > 1 ? diff * 100 : diff;
+        // high kp MOSFETs are more sensitive to small differences, so we are more strict about convergence testing
+        diff = kp > 1 ? diff * 100 : diff;
         return diff < vTolerance;
     }
     
@@ -1136,15 +1156,15 @@ struct MOSFET : public Component<3>
             ids = vds * gds;
         }else if (vds < vgs-vt) {
             // linear
-            ids = beta * ((vgs - vt) * vds - vds * vds * 0.5);
-            gm  = beta * vds;
-            gds = beta * (vgs - vds - vt);
+            ids = kp * ((vgs - vt) * vds - vds * vds * 0.5);
+            gm  = kp * vds;
+            gds = kp * (vgs - vds - vt);
         } else {
             // saturation; gds = 0
-            gm  = beta * (vgs - vt);
+            gm  = kp * (vgs - vt);
             // use very small gds to avoid nonconvergence
             gds = 1e-8;
-            ids = 0.5 * beta * (vgs - vt) * (vgs - vt) + (vds - (vgs - vt)) * gds;
+            ids = 0.5 * kp * (vgs - vt) * (vgs - vt) + (vds - (vgs - vt)) * gds;
         }
 
         double rs = (-pnp) * ids + gds * realvds + gm * realvgs;
@@ -1172,27 +1192,27 @@ struct MOSFET : public Component<3>
 struct JFET : public MOSFET
 {
     std::unique_ptr<Diode> diode;
-    double is = 1.0; // TODO: set on diode
     
-    JFET(bool isPNP, int gate, int source, int drain, std::string model) : MOSFET(isPNP, gate, source, drain)
+    JFET(bool isPNP, int gate, int source, int drain, std::string model) : MOSFET(isPNP, gate, source, drain, "")
     {
         // Like a 2N5458 JFET
         vt = -4.5;
-        beta = 0.00125;
+        kp = 0.00125;
+        double is = 1.0;
         
         if(Models::JFETs.count(model))
         {
             const auto& modelDescription = Models::JFETs.at(model);
 
             if(modelDescription.count("IS")) is = modelDescription.at("IS");
-            if(modelDescription.count("Beta")) beta = modelDescription.at("Beta");
+            if(modelDescription.count("Kp")) kp = modelDescription.at("Kp");
             if(modelDescription.count("Vt0")) vt = modelDescription.at("Vt0");
             
             if(modelDescription.count("PNP"))
             {
                 if(modelDescription.at("PNP") != isPNP)
                 {
-                    pd_error(NULL, "circuit~: JFET model does not match with set PNP value. Proceeding with custom PNP value");
+                    pd_error(NULL, "circuit~: jfet model does not match with set PNP value. Proceeding with custom PNP value");
                 }
             }
         }

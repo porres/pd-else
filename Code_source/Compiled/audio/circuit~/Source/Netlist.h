@@ -74,7 +74,7 @@ struct NetList {
             }
             case tMOSFET: {
                 if (args.size() == 1) {
-                    addComponent(new MOSFET(getArgumentValue(args[0]), pins[0], pins[1], pins[2]));
+                    addComponent(new MOSFET(getArgumentValue(args[0]), pins[0], pins[1], pins[2], model));
                 } else {
                     pd_error(NULL, "circuit~: wrong number of arguments for mosfet");
                 }

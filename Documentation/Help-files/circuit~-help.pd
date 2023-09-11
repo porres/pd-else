@@ -1,4 +1,4 @@
-#N canvas 358 30 564 671 10;
+#N canvas 358 30 562 671 10;
 #X obj 2 3 cnv 15 301 42 empty empty circuit~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -410,7 +410,7 @@
 #X text 226 518 - input signal \, accessed with '$sn', f 45;
 #X text 226 554 - output signal from a corresponding probe;
 #X text 44 85 [circuit~] simulates analog circuitry from a text description of the circuit. Voltage \, current \, resistance and potmeter can be modulated by an input signal by passing '$sn' as the first (where 'n' is the inlet number indexed from 1). To create an audio input \, use a voltage source with a modulatable parameter. An audio outlet will be created for every probe component. The object can be quite CPU intensive!, f 78;
-#N canvas 167 108 1049 809 syntax-details 0;
+#N canvas 167 108 1049 753 syntax-details 0;
 #X text 484 250 Voltage source for batteries or audio input. volt may be variable like $s0/$s1/etc, f 85;
 #X text 484 274 Resistor \, ohm may be variable like $s0/$s1/etc;
 #X text 484 346 Capacitor;
@@ -443,11 +443,11 @@
 #X text 67 250 voltage (volt) [+] [-] ------------------------------------------->, f 67;
 #X text 67 274 resistor (ohm) [pin1] [pin2] ------------------------------------->, f 67;
 #X text 65 600 Models:;
-#X text 73 757 bjt:;
+#X text 73 780 bjt:;
 #X text 57 708 triode:;
 #X text 62 681 diode:;
 #X text 68 733 jfet:;
-#X text 117 753 2N2222 \, 2N2222A \, 2N3904 \, 2N5088 \, 2N5089 \, 2N5210 \, 2N4401 \, MPSA13 \, MPSA18 \, 2SC1815 \, 2SC2240 \, BC107 \, BC107A \, BC107B \, BC108A \, BC108B \, BC108C \, BC109B \, BC109C \, BC549B \, BC549C \, AC127 \, AC128 \, 2N2907 \, 2N3906 \, 2N4125 \, 2N5087 \, 2SA1015 \, MPSA43 \, MPSA56 \, MPSA92 \, MPS8599 \, BC239A \, BC239B \, BC239C, f 110;
+#X text 117 776 2N2222 \, 2N2222A \, 2N3904 \, 2N5088 \, 2N5089 \, 2N5210 \, 2N4401 \, MPSA13 \, MPSA18 \, 2SC1815 \, 2SC2240 \, BC107 \, BC107A \, BC107B \, BC108A \, BC108B \, BC108C \, BC109B \, BC109C \, BC549B \, BC549C \, AC127 \, AC128 \, 2N2907 \, 2N3906 \, 2N4125 \, 2N5087 \, 2SA1015 \, MPSA43 \, MPSA56 \, MPSA92 \, MPS8599 \, BC239A \, BC239B \, BC239C, f 110;
 #X text 118 731 2N5952 \, 2N5457 \, 2N5458 \, 2N4392 \, J112 \, J174, f 110;
 #X text 118 680 Si \, Ge \, Zener \, Red \, Green \, Blue \, 1N4001 \, 1N914 \, 1N4148 \, MA150 \, 1N4448 \, 1N4739A \, 1N4742A \, 1N916 \, 1N4733 \, 1N34A, f 110;
 #X text 118 708 12AT7 \, 12AU7 \, 12AX7 \, 12AY7 \, 12AZ7 \, 6SL7GT \, 6L6GC-JJ \, 6V6GTA \, EL34-JJ \, EL84-JJ \, 6550 \, KT88-JJ, f 110;
@@ -456,6 +456,8 @@
 #X text 482 538 Junction Field Effect Transistor;
 #X text 481 558 Metal Oxide Semiconductor Field Effect Transistor;
 #X text 64 558 mosfet (1=pnp \, 0=npn) [[gate] [source] [drain] ------------------->, f 67;
+#X text 118 757 IRF510 \, IRF540 \, IRL540 \, IRL3705 \, BUZ901;
+#X text 57 757 mosfet:;
 #X restore 429 343 pd syntax-details;
 #X obj 3 645 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0 14 #dcdcdc #404040 0;
 #X obj 6 616 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12 0 13 #dcdcdc #000000 0;
