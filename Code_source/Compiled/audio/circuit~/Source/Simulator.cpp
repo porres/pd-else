@@ -5,14 +5,13 @@
  // Made by Timothy Schoen
  */
 
-#include <vector>
-#include <string>
-#include <cstdio>
 #include <cmath>
 
-#include <iostream>
+#include <vector>
+#include <string>
 #include <sstream>
 #include <map>
+#include <algorithm>
 
 #include "Simulator.h"
 #include "MNA.h"
