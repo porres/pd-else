@@ -16,6 +16,7 @@
 
 #include "Simulator.h"
 #include "MNA.h"
+#include "Models.h"
 #include "Components.h"
 #include "Netlist.h"
 
@@ -99,50 +100,67 @@ void* simulator_create(int argc, t_atom* argv, int blockSize, double sampleRate)
             }
         }
         if (!arguments.size()) continue;
+        
+        // See if there is a model flag set
+        std::string model = "";
+        for(int i = 0; i < arguments.size() - 1; i++)
+        {
+            if(!arguments[i].compare("-model"))
+            {
+                model = arguments[i + 1];
+                arguments.erase(arguments.begin() + i, arguments.begin() + i + 2);
+            }
+        }
 
         if (!arguments[0].compare("resistor") && arguments.size() > 3) {
             auto [args, pins] = getPinsAndArguments(arguments, 2);
-            netlistDescription.emplace_back(tResistor, args, pins);
+            netlistDescription.emplace_back(tResistor, args, pins, "");
         } else if (!arguments[0].compare("capacitor") && arguments.size() > 3) {
             auto [args, pins] = getPinsAndArguments(arguments, 2);
-            netlistDescription.emplace_back(tCapacitor, args, pins);
+            netlistDescription.emplace_back(tCapacitor, args, pins, "");
         } else if (!arguments[0].compare("voltage") && arguments.size() > 3) {
             auto [args, pins] = getPinsAndArguments(arguments, 2);
-            netlistDescription.emplace_back(tVoltage, args, pins);
+            netlistDescription.emplace_back(tVoltage, args, pins, "");
         } else if (!arguments[0].compare("diode") && arguments.size() > 2) {
             auto [args, pins] = getPinsAndArguments(arguments, 2);
-            netlistDescription.emplace_back(tDiode, args, pins);
+            netlistDescription.emplace_back(tDiode, args, pins, model);
         } else if (!arguments[0].compare("bjt") && arguments.size() > 4) {
             auto [args, pins] = getPinsAndArguments(arguments, 3);
-            netlistDescription.emplace_back(tBJT, args, pins);
+            netlistDescription.emplace_back(tBJT, args, pins, model);
+        } else if (!arguments[0].compare("mosfet") && arguments.size() > 4) {
+            auto [args, pins] = getPinsAndArguments(arguments, 3);
+            netlistDescription.emplace_back(tMOSFET, args, pins, model);
+        } else if (!arguments[0].compare("jfet") && arguments.size() > 4) {
+            auto [args, pins] = getPinsAndArguments(arguments, 3);
+            netlistDescription.emplace_back(tJFET, args, pins, model);
         } else if (!arguments[0].compare("opamp") && arguments.size() > 3) {
             auto [args, pins] = getPinsAndArguments(arguments, 3);
-            netlistDescription.emplace_back(tOpAmp, args, pins);
+            netlistDescription.emplace_back(tOpAmp, args, pins, "");
         } else if (!arguments[0].compare("transformer") && arguments.size() > 5) {
             auto [args, pins] = getPinsAndArguments(arguments, 4);
-            netlistDescription.emplace_back(tTransformer, args, pins);
+            netlistDescription.emplace_back(tTransformer, args, pins, "");
         } else if (!arguments[0].compare("gyrator") && arguments.size() > 5) {
             auto [args, pins] = getPinsAndArguments(arguments, 4);
-            netlistDescription.emplace_back(tGyrator, args, pins);
+            netlistDescription.emplace_back(tGyrator, args, pins, "");
         } else if (!arguments[0].compare("inductor") && arguments.size() > 3) {
             auto [args, pins] = getPinsAndArguments(arguments, 2);
-            netlistDescription.emplace_back(tInductor, args, pins);
+            netlistDescription.emplace_back(tInductor, args, pins, "");
         } else if (!arguments[0].compare("potmeter") && arguments.size() > 5) {
             auto [args, pins] = getPinsAndArguments(arguments, 3);
-            netlistDescription.emplace_back(tPotmeter, args, pins);
+            netlistDescription.emplace_back(tPotmeter, args, pins, "");
         } else if (!arguments[0].compare("current") && arguments.size() > 3) {
             auto [args, pins] = getPinsAndArguments(arguments, 2);
-            netlistDescription.emplace_back(tCurrent, args, pins);
+            netlistDescription.emplace_back(tCurrent, args, pins, "");
         } else if (!arguments[0].compare("probe") && arguments.size() > 2) {
             auto [args, pins] = getPinsAndArguments(arguments, 2);
-            netlistDescription.emplace_back(tProbe, args, pins);
+            netlistDescription.emplace_back(tProbe, args, pins, "");
         } else if (!arguments[0].compare("triode") && arguments.size() > 3) {
             auto [args, pins] = getPinsAndArguments(arguments, 3);
-            netlistDescription.emplace_back(tTriode, args, pins);
+            netlistDescription.emplace_back(tTriode, args, pins, model);
         }
         else if (!arguments[0].compare("-iter") && arguments.size() > 1) {
             auto [args, pins] = getPinsAndArguments(arguments, 0);
-            netlistDescription.emplace_back(tIter, args, pins);
+            netlistDescription.emplace_back(tIter, args, pins, "");
         }
         else {
             auto errorMessage = "circuit~: netlist format error, unknown combination of identifier \"" + arguments[0] + "\" and " + std::to_string(arguments.size()-1) + " arguments";
@@ -153,7 +171,7 @@ void* simulator_create(int argc, t_atom* argv, int blockSize, double sampleRate)
     // A valid netlist contains no unused numbers
     // To make designing netlists easier, we do this programmatically so the user doesn't need to worry about it
     std::vector<int> usedPins = { 0 };
-    for (auto const& [name, args, pins] : netlistDescription) {
+    for (auto const& [name, args, pins, model] : netlistDescription) {
         for (auto& pin : pins) {
             usedPins.push_back(pin);
         }
@@ -163,7 +181,7 @@ void* simulator_create(int argc, t_atom* argv, int blockSize, double sampleRate)
     std::sort(usedPins.begin(), usedPins.end());
     usedPins.erase(std::unique(usedPins.begin(), usedPins.end()), usedPins.end());
 
-    for (auto& [name, args, pins] : netlistDescription) {
+    for (auto& [name, args, pins, model] : netlistDescription) {
         for (int i = 0; i < usedPins.size(); i++) {
 
             for (auto& pin : pins) {

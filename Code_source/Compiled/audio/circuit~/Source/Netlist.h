@@ -8,7 +8,7 @@
 #pragma once
 #include <KLU/klu.h>
 
-using NetlistDescription = std::vector<std::tuple<ComponentType, std::vector<std::string>, std::vector<int>>>;
+using NetlistDescription = std::vector<std::tuple<ComponentType, std::vector<std::string>, std::vector<int>, std::string>>;
 
 struct NetList {
     typedef std::vector<std::unique_ptr<IComponent>> ComponentList;
@@ -22,7 +22,7 @@ struct NetList {
         auto isDynamicArgument = [](std::string arg){ return arg.rfind("$s", 0) == 0 || arg.rfind("$f", 0) == 0; };
         
         int numOut = 0;
-        for (const auto& [type, args, pins] : netlist) {
+        for (const auto& [type, args, pins, model] : netlist) {
             switch (type) {
             case tResistor: {
                 if (args.size() == 1) {
@@ -58,7 +58,7 @@ struct NetList {
             }
             case tDiode: {
                 if (args.size() == 0) {
-                    addComponent(new Diode(pins[0], pins[1]));
+                    addComponent(new Diode(pins[0], pins[1], model));
                 } else {
                     pd_error(NULL, "circuit~: wrong number of arguments for diode");
                 }
@@ -66,9 +66,25 @@ struct NetList {
             }
             case tBJT: {
                 if (args.size() == 1) {
-                    addComponent(new BJT(pins[0], pins[1], pins[2], getArgumentValue(args[0])));
+                    addComponent(new BJT(pins[0], pins[1], pins[2], model, getArgumentValue(args[0])));
                 } else {
                     pd_error(NULL, "circuit~: wrong number of arguments for bjt");
+                }
+                break;
+            }
+            case tMOSFET: {
+                if (args.size() == 1) {
+                    addComponent(new MOSFET(getArgumentValue(args[0]), pins[0], pins[1], pins[2], model));
+                } else {
+                    pd_error(NULL, "circuit~: wrong number of arguments for mosfet");
+                }
+                break;
+            }
+            case tJFET: {
+                if (args.size() == 1) {
+                    addComponent(new JFET(getArgumentValue(args[0]), pins[0], pins[1], pins[2], model));
+                } else {
+                    pd_error(NULL, "circuit~: wrong number of arguments for jfet");
                 }
                 break;
             }
@@ -98,9 +114,9 @@ struct NetList {
             }
             case tTriode: {
                 if (args.size() == 0) {
-                    addComponent(new Triode(pins[0], pins[1], pins[2]));
+                    addComponent(new Triode(pins[0], pins[1], pins[2], model));
                 } else {
-                    pd_error(NULL, "circuit~: wrong number of arguments for inductor");
+                    pd_error(NULL, "circuit~: wrong number of arguments for triode");
                 }
                 break;
             }
@@ -183,7 +199,7 @@ struct NetList {
 
     void addComponent(IComponent* c)
     {
-        c->setupNets(nets, c->getPinLocs());
+        c->setupNets(nets);
         components.push_back(std::unique_ptr<IComponent>(c));
     }
 
