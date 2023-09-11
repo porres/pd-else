@@ -12,7 +12,7 @@ static t_class *circuit_tilde_class;
 typedef struct _circuit_tilde {
     t_object x_obj;
     void* x_simulator;
-    t_float f;
+    t_float x_f;
     
     t_outlet* x_out[8];
     t_inlet* x_in[8];
@@ -22,7 +22,8 @@ typedef struct _circuit_tilde {
     int x_enabled;
     int x_sr;
     
-    t_int **w;
+    t_int ** x_w;
+    int x_w_size;
     
 } t_circuit_tilde;
 
@@ -62,13 +63,14 @@ t_int *circuit_tilde_perform(t_int *w)
 void circuit_tilde_dsp(t_circuit_tilde *x, t_signal **sp)
 {
     int sum = x->x_numin + x->x_numout;
-    x->w = getbytes(sizeof(t_int *) * (sum + 2));
-    t_int **w = x->w;
-    w[0] = (t_int*)(x);
-    w[1] = (t_int*)(sp[0]->s_n);
+    x->x_w = resizebytes(x->x_w, x->x_w_size, sizeof(t_int *) * (sum + 2));
+    
+    x->x_w_size = sizeof(t_int *) * (sum + 2);
+    x->x_w[0] = (t_int*)(x);
+    x->x_w[1] = (t_int*)(sp[0]->s_n);
     for (int i = 0; i < sum; i++)
-        w[i + 2] = (t_int*)(sp[i]->s_vec);
-    dsp_addv(circuit_tilde_perform, sum + 2, (t_int*)(w));
+        x->x_w[i + 2] = (t_int*)(sp[i]->s_vec);
+    dsp_addv(circuit_tilde_perform, sum + 2, (t_int*)(x->x_w));
 }
 
 void circuit_tilde_free(t_circuit_tilde *x)
@@ -83,6 +85,7 @@ void circuit_tilde_free(t_circuit_tilde *x)
     }
     
     simulator_free(x->x_simulator);
+    freebytes(x->x_w, x->x_w_size);
 }
 
 void *circuit_tilde_new(t_symbol *s, int argc, t_atom *argv)
@@ -92,6 +95,8 @@ void *circuit_tilde_new(t_symbol *s, int argc, t_atom *argv)
     x->x_numin = simulator_num_inlets(x->x_simulator);
     x->x_numout = simulator_num_outlets(x->x_simulator);
     x->x_enabled = 1;
+    x->x_w_size = 0;
+    x->x_w = NULL;
     
     for(int i = 1; i < x->x_numin; i++)
     {
@@ -158,5 +163,5 @@ void circuit_tilde_setup(void) {
     class_addmethod(circuit_tilde_class,
                     (t_method)circuit_tilde_reset, gensym("reset"), 0);
     
-    CLASS_MAINSIGNALIN(circuit_tilde_class, t_circuit_tilde, f);
+    CLASS_MAINSIGNALIN(circuit_tilde_class, t_circuit_tilde, x_f);
 }

@@ -428,6 +428,10 @@ struct Diode : Component<2, 2> {
             if(modelDescription.count("IS")) is = modelDescription.at("IS");
             if(modelDescription.count("n")) n = modelDescription.at("n");
         }
+        else if(!model.empty())
+        {
+            pd_error(NULL, "circuit~: unknown diode model");
+        }
 
         // initial condition v = 0
         pn.linearizeJunctionPN(0);
@@ -545,6 +549,10 @@ struct BJT : Component<3, 4> {
                     pd_error(NULL, "circuit~: BJT model does not match with set PNP value. Proceeding with custom PNP value");
                 }
             }
+        }
+        else if(!model.empty())
+        {
+            pd_error(NULL, "circuit~: unknown bjt model");
         }
 
         // forward and reverse alpha
@@ -876,6 +884,10 @@ struct Triode : public Component<3, 3>
             if(modelDescription.count("Rgk")) rgk = modelDescription.at("Rgk");
             if(modelDescription.count("Vg")) vg = modelDescription.at("Vg");
         }
+        else if(!model.empty())
+        {
+            pd_error(NULL, "circuit~: unknown triode model");
+        }
     }
     
     void stamp(MNASystem & m)
@@ -1182,6 +1194,10 @@ struct JFET : public MOSFET
                     pd_error(NULL, "circuit~: JFET model does not match with set PNP value. Proceeding with custom PNP value");
                 }
             }
+        }
+        else if(!model.empty())
+        {
+            pd_error(NULL, "circuit~: unknown jfet model");
         }
         
         diode = std::make_unique<Diode>(isPNP ? source : gate, isPNP ? gate : source, 10, is, 1.0);
