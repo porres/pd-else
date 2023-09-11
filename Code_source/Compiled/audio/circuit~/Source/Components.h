@@ -771,7 +771,7 @@ struct Potentiometer final : Component<3, 0> {
 
     void update(MNASystem& m) final
     {
-        const double input = std::clamp(pos, 1e-6, 1.0 - 1e-6); // take out the extremes and prevent 0 divides
+        const double input = std::clamp(pos, 1e-4, 1.0 - 1e-4); // take out the extremes and prevent 0 divides
 
         // Update conductance variables
         g = 1. / (r * input);
@@ -870,9 +870,7 @@ struct Triode : public Component<3, 3> {
     double vcgp = 0.0f, vcgk = 0.0, vcpk = 0.0;
     double ip, ig, ipg;
     double ids, gm, gds, e1;
-
-    double tolerance = 0.00005; // Tolerance for convergence
-
+    
     // Variables to store voltages from the previous iteration
     double v0, v1, v2;
     double lastv0 = 0;
@@ -1060,7 +1058,7 @@ struct Triode : public Component<3, 3> {
             v2 = lastv2 - 0.5;
 
         // Check for convergence based on voltage changes
-        if (abs(lastv0 - v0) <= tolerance && abs(lastv1 - v1) <= tolerance && abs(lastv2 - v2) <= tolerance)
+        if (abs(lastv0 - v0) <= vTolerance && abs(lastv1 - v1) <= vTolerance && abs(lastv2 - v2) <= vTolerance)
             return true;
 
         // Calculate triode parameters using Koren's model
