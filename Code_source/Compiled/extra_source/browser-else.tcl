@@ -59,7 +59,9 @@ proc category_else_menu::load_menutree {} {
             {logic
                 {loop}}
             {audio\ multichannel\ tools
-                {voices~ nchs~ sigs~ repeat~ select~ pick~ get~ sum~ merge~ unmerge~ slice~}}
+                {voices~ nchs~ sigs~ repeat~ select~ pick~ get~ sum~ merge~ unmerge~ slice~}}       
+            {analog\ circuitry\ emulation
+                {circuit~}}
             {fx\ assorted
                 {downsample~ conv~ chorus~ shaper~ crusher~ drive~ power~ flanger~ freq.shift~ pitch.shift~ stretch.shift~ stretch.shift~ ping.pong~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~ phaser~}}
             {fx\ delay

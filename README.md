@@ -115,7 +115,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 --------------------------------------------------------------------------
 
-## Current Object list (510 objects):
+## Current Object list (511 objects):
 
 #assorted
     else
@@ -151,6 +151,8 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     loop
 #audio multichannel tools
     voices~ nchs~ sigs~ repeat~ select~ pick~ get~ sum~ merge~ unmerge~ slice~
+#analog circtuitry emulation
+    circuit~
 #fx: assorted
     downsample~ conv~ chorus~ shaper~ crusher~ drive~ power~ flanger~ freq.shift~ pitch.shift~ stretch.shift~ stretch.shift~ ping.pong~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~ phaser~
 #fx: delay
