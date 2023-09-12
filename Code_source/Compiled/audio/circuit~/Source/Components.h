@@ -732,22 +732,21 @@ struct OpAmp final : Component<3, 1> {
     }
 };
 
-struct Potentiometer final : Component<3, 0> {
+struct Potentiometer final : Component<3> {
     const double r;
     double g;
     double ig;
-    double input;
     double& pos;
     double ng;
     double ing;
 
-    Potentiometer(double& position, double resistance, int vIn, int vOut, int vInvOut)
+    Potentiometer(double& position, double resistance, int vIn, int vWiper, int vOut)
         : pos(position)
         , r(resistance)
     {
-        pinLoc[0] = vIn;
-        pinLoc[1] = vOut;
-        pinLoc[2] = vInvOut;
+        pinLoc[0] = vWiper;
+        pinLoc[1] = vIn;
+        pinLoc[2] = vOut;
     }
 
     void stamp(MNASystem& m) final
@@ -771,13 +770,46 @@ struct Potentiometer final : Component<3, 0> {
 
     void update(MNASystem& m) final
     {
-        const double input = std::clamp(pos, 1e-4, 1.0 - 1e-4); // take out the extremes and prevent 0 divides
+        const double input = std::clamp(pos, 1e-3, 1.0 - 1e-3); // take out the extremes and prevent 0 divides
 
         // Update conductance variables
         g = 1. / (r * input);
         ig = 1. / (r - (r * input));
         ng = -g;
         ing = -ig;
+    }
+};
+
+struct StaticPotentiometer final : Component<3> {
+    const double r;
+    double pos;
+
+    StaticPotentiometer(double position, double resistance, int vIn, int vWiper, int vOut)
+        : pos(position)
+        , r(resistance)
+    {
+        pinLoc[0] = vWiper;
+        pinLoc[1] = vIn;
+        pinLoc[2] = vOut;
+    }
+
+    void stamp(MNASystem& m) final
+    {
+        double g = 1.0 / r;
+        double invG = 1.0 / (r - (r * pos));
+        
+        g = std::clamp(g, 1e-4, 1.0 - 1e-4);
+        invG = std::clamp(invG, 1e-4, 1.0 - 1e-4);
+        
+        m.stampStatic(g, nets[0], nets[0]);
+        m.stampStatic(-g, nets[0], nets[1]);
+        m.stampStatic(-g, nets[1], nets[0]);
+        m.stampStatic(g, nets[1], nets[1]);
+        
+        m.stampStatic(invG, nets[0], nets[0]);
+        m.stampStatic(-invG, nets[0], nets[2]);
+        m.stampStatic(-invG, nets[2], nets[0]);
+        m.stampStatic(invG, nets[2], nets[2]);
     }
 };
 
@@ -1229,7 +1261,7 @@ struct JFET : public MOSFET {
         // Like a 2N5458 JFET
         vt = -4.5;
         beta = 0.00125;
-        double is = 1.0;
+        double is = 35e-12;
 
         if (Models::JFETs.count(model)) {
             auto const& modelDescription = Models::JFETs.at(model);
