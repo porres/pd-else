@@ -696,7 +696,7 @@ struct OpAmp final : Component<3, 1> {
     const double g, vmax;
     double v, gv, ngv, Uout, Uin;
 
-    OpAmp(double G, double UMax, int invertingInput, int nonInvertingInput, int output)
+    OpAmp(double G, double UMax, int nonInvertingInput, int invertingInput, int output)
         : g(G)
         , vmax(UMax)
     {

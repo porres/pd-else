@@ -52,7 +52,7 @@
 #X obj 161 36 else/play.file~ else/guitar.wav 1 1, f 15;
 #X obj 161 123 *~ 0.5;
 #X obj 163 601 *~ 2;
-#X obj 161 273 else/circuit~ -iter 5 \; voltage $s1 15 0 \; capacitor 18n 11 15 \; resistor 100k 11 1 \; capacitor 47p 2 3 \; capacitor 47n 12 0 \; resistor 4.7k 2 12 \; resistor 33k 10 2 \; resistor $s2 10 3 \; opamp 4 13 6 \; resistor 10k 4 3 \; capacitor 18n 4 0 \; potmeter $s3 22k 13 4 14 \; capacitor 27n 5 14 \; resistor 470 0 5 \; resistor 10k 13 6 \; capacitor 1u 9 6 \; potmeter $s4 20k 0 8 16 \; resistor 10k 7 4 \; voltage 9 7 0 \; probe 8 0 \; voltage 9 1 0 \; resistor 4.7k 9 16 \; capacitor 10n 6 13 \; opamp 11 2 3 \; diode 2 3 \; diode 17 2 \; diode 3 17 \;;
+#X obj 161 273 else/circuit~ -iter 5 \; voltage $s1 15 0 \; capacitor 18n 11 15 \; resistor 100k 11 1 \; capacitor 47p 2 3 \; capacitor 47n 12 0 \; resistor 4.7k 2 12 \; resistor 33k 10 2 \; resistor $s2 10 3 \; opamp 13 4 6 \; resistor 10k 4 3 \; capacitor 18n 4 0 \; potmeter $s3 22k 13 4 14 \; capacitor 27n 5 14 \; resistor 470 0 5 \; resistor 10k 13 6 \; capacitor 1u 9 6 \; potmeter $s4 20k 0 8 16 \; resistor 10k 7 4 \; voltage 9 7 0 \; probe 8 0 \; voltage 9 1 0 \; resistor 4.7k 9 16 \; capacitor 10n 6 13 \; opamp 2 11 3 \; diode 2 3 \; diode 17 2 \; diode 3 17 \;;
 #X connect 1 0 23 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 0;
@@ -97,7 +97,7 @@
 #X msg 89 146 enable \$1;
 #X obj 89 116 tgl 21 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X obj 260 143 else/impseq~;
-#X obj 89 226 else/circuit~ \; resistor $s2 2 1 \; capacitor 100n 1 2 \; resistor 1.49k 3 2 \; capacitor 100n 3 4 \; resistor 22k 4 5 \; resistor 5 5 8 \; resistor 10.5k 8 0 \; voltage $s1 1 0 \; probe 4 0 \; opamp 100 5 2 5 4 \;;
+#X obj 89 226 else/circuit~ \; resistor $s2 2 1 \; capacitor 100n 1 2 \; resistor 1.49k 3 2 \; capacitor 100n 3 4 \; resistor 22k 4 5 \; resistor 5 5 8 \; resistor 10.5k 8 0 \; voltage $s1 1 0 \; probe 4 0 \; opamp 100 5 5 2 4 \;;
 #X obj 89 88 else/initmess 0;
 #X obj 262 242 else/f2s~ 10 4000;
 #X text 231 308 <- Wien Bridge oscillator circuit;
@@ -138,7 +138,7 @@
 #X obj 304 221 else/f2s~ 10 0.5, f 9;
 #X obj 230 221 else/f2s~ 20 500000, f 9;
 #X obj 157 37 else/play.file~ else/guitar.wav 1 1, f 15;
-#X obj 157 265 else/circuit~ \; voltage $s1 1 0 \; capacitor 1n 1 0 \; resistor 10k 2 1 \; resistor 1000k 4 3 \; capacitor 10n 3 2 \; resistor 1000k 5 7 \; resistor 4.7k 8 6 \; resistor $s2 5 6 \; capacitor 47n 8 0 \; capacitor 1u 9 7 \; resistor 10k 10 9 \; capacitor 1n 0 10 \; potmeter $s3 10k 0 11 10 \; probe 11 0 \; voltage 9 4 0 \; opamp 3 5 7 \; diode 0 10 \; diode 10 0 \;;
+#X obj 157 265 else/circuit~ \; voltage $s1 1 0 \; capacitor 1n 1 0 \; resistor 10k 2 1 \; resistor 1000k 4 3 \; capacitor 10n 3 2 \; resistor 1000k 5 7 \; resistor 4.7k 8 6 \; resistor $s2 5 6 \; capacitor 47n 8 0 \; capacitor 1u 9 7 \; resistor 10k 10 9 \; capacitor 1n 0 10 \; potmeter $s3 10k 0 11 10 \; probe 11 0 \; voltage 9 4 0 \; opamp 5 3 7 \; diode 0 10 \; diode 10 0 \;;
 #X connect 1 0 18 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 0;
@@ -237,7 +237,7 @@
 #X text 356 441 TS-9 circuit, f 13;
 #X obj 141 51 else/play.file~ else/guitar.wav 1 1, f 15;
 #X obj 142 136 *~ 0.1;
-#X obj 141 293 else/circuit~ \; voltage $s1 1 0 \; capacitor 1u 3 1 \; resistor 10k 3 2 \; capacitor 51p 4 5 \; capacitor 47n 13 0 \; resistor 4.7k 4 13 \; resistor 51k 12 4 \; resistor $s2 12 5 \; opamp 20000 9 6 14 8 \; resistor 1k 6 5 \; capacitor 220n 6 0 \; potmeter $s3 1k 15 14 6 \; capacitor 220n 7 15 \; resistor 220 0 7 \; resistor 10k 14 8 \; capacitor 1u 11 8 \; potmeter $s4 800 0 10 11 \; resistor 10k 9 6 \; voltage 4.5 9 0 \; probe 10 0 \; voltage 4.5 2 0 \; opamp 20000 9 3 4 5 \; diode 5 4 \; diode 4 5 \;, f 29;
+#X obj 141 293 else/circuit~ \; voltage $s1 1 0 \; capacitor 1u 3 1 \; resistor 10k 3 2 \; capacitor 51p 4 5 \; capacitor 47n 13 0 \; resistor 4.7k 4 13 \; resistor 51k 12 4 \; resistor $s2 12 5 \; opamp 20000 9 14 6 8 \; resistor 1k 6 5 \; capacitor 220n 6 0 \; potmeter $s3 1k 15 14 6 \; capacitor 220n 7 15 \; resistor 220 0 7 \; resistor 10k 14 8 \; capacitor 1u 11 8 \; potmeter $s4 800 0 10 11 \; resistor 10k 9 6 \; voltage 4.5 9 0 \; probe 10 0 \; voltage 4.5 2 0 \; opamp 20000 9 4 3 5 \; diode 5 4 \; diode 4 5 \;, f 29;
 #X connect 3 0 23 0;
 #X connect 4 0 3 0;
 #X connect 5 0 4 0;
@@ -261,7 +261,7 @@
 #X text 296 247 <- Moog filter circuit;
 #X msg 161 138 enable \$1;
 #X obj 161 104 tgl 19 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
-#X obj 161 180 else/circuit~ \; probe 1 0 \; voltage $s1 2 0 \; opamp 3 4 1 \; resistor 2300 4 1 \; resistor 1000 4 0 \; capacitor 1e-06 5 1 \; capacitor 1e-06 3 0 \; resistor $f2 2 5 \; resistor $s2 5 3 \;;
+#X obj 161 180 else/circuit~ \; probe 1 0 \; voltage $s1 2 0 \; opamp 4 3 1 \; resistor 2300 4 1 \; resistor 1000 4 0 \; capacitor 1e-06 5 1 \; capacitor 1e-06 3 0 \; resistor $f2 2 5 \; resistor $s2 5 3 \;;
 #X obj 278 87 else/knob 50 2 1000 -2 1000 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 1000;
 #X obj 278 149 else/f2s~ 10 1000;
 #X obj 161 74 else/initmess 0;
@@ -316,7 +316,7 @@
 #X msg 33 98 enable \$1;
 #X obj 33 71 tgl 19 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X obj 33 43 else/initmess 0;
-#X obj 205 170 else/circuit~ -iter 10 \; voltage $s1 14 0 \; capacitor 47u 3 2 \; resistor 1k 4 3 \; capacitor 100p 2 1 \; capacitor 4.7u 6 0 \; capacitor 2.2u 5 0 \; resistor 560 1 6 \; resistor 47 1 5 \; resistor 1.5k 7 8 \; capacitor 3.3n 8 0 \; diode 0 4 \; diode 4 0 \; capacitor 22n 9 8 \; resistor 1000k 9 0 \; opamp 12 9 11 1 2 \; resistor 1000k 14 0 \; capacitor 22n 12 14 \; resistor 1000k 12 13 \; resistor 1k 11 12 \; capacitor 1n 11 0 \; voltage 4.5 13 0 \; resistor 10k 15 0 \; voltage 9 16 0 \; jfet 0 9 15 16 -model 2N5458 \; capacitor 1u 17 15 \; probe 18 0 \; resistor $s3 2 1 \; resistor $s4 7 4 \; potmeter $s2 100k 0 17 18 \;, f 65;
+#X obj 205 170 else/circuit~ -iter 10 \; voltage $s1 14 0 \; capacitor 47u 3 2 \; resistor 1k 4 3 \; capacitor 100p 2 1 \; capacitor 4.7u 6 0 \; capacitor 2.2u 5 0 \; resistor 560 1 6 \; resistor 47 1 5 \; resistor 1.5k 7 8 \; capacitor 3.3n 8 0 \; diode 0 4 \; diode 4 0 \; capacitor 22n 9 8 \; resistor 1000k 9 0 \; opamp 12 9 1 11 2 \; resistor 1000k 14 0 \; capacitor 22n 12 14 \; resistor 1000k 12 13 \; resistor 1k 11 12 \; capacitor 1n 11 0 \; voltage 4.5 13 0 \; resistor 10k 15 0 \; voltage 9 16 0 \; jfet 0 9 15 16 -model 2N5458 \; capacitor 1u 17 15 \; probe 18 0 \; resistor $s3 2 1 \; resistor $s4 7 4 \; potmeter $s2 100k 0 17 18 \;, f 65;
 #X obj 453 51 else/knob 50 0 1 0 0.5 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0;
 #X obj 521 51 else/knob 50 10 10000 0 5000 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 10;
 #X obj 592 51 else/knob 50 10 20000 0 5000 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 10;
@@ -456,7 +456,7 @@
 #X text 65 538 jfet (1=pnp \, 0=npn) [gate] [source] [drain] ---------------------->, f 67;
 #X text 482 538 Junction Field Effect Transistor;
 #X text 481 558 Metal Oxide Semiconductor Field Effect Transistor;
-#X text 64 558 mosfet (1=pnp \, 0=npn) [[gate] [source] [drain] ------------------->, f 67;
+#X text 64 558 mosfet (1=pnp \, 0=npn) [gate] [source] [drain] ------------------->, f 67;
 #X text 237 44 Circuits need to be described as following \; You need to assign each component pin a number \, based on the wire that is connected to it. Every set of wires that are directly connected to each other \, share the same number. They are one network with no resistance between it at all. So if 2 wires touch at the same pin of a component \, those wires share the same number. By filling in all the components in your circuit \, and assigning the pin numbers like that \, you should be able to create a working circuit., f 99;
 #X text 484 442 Transformer;
 #X text 62 443 transformer (ratio) [primary+] [primary-] [secondary+] [secondary]->, f 68;
