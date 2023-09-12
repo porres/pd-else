@@ -27,6 +27,7 @@ typedef struct sigrms{
 t_class *rms_tilde_class;
 
 static float pow2db(t_float f){
+    if(f <= 0)
         return(-999);
     else if(f == 1)
         return(0);
