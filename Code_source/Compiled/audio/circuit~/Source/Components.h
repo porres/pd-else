@@ -1261,7 +1261,7 @@ struct JFET : public MOSFET {
         // Like a 2N5458 JFET
         vt = -4.5;
         beta = 0.00125;
-        double is = 1.0;
+        double is = 35e-12;
 
         if (Models::JFETs.count(model)) {
             auto const& modelDescription = Models::JFETs.at(model);
