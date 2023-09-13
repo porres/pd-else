@@ -135,7 +135,11 @@ struct NetList {
             }
             case tPotmeter: {
                 if (args.size() == 2) {
-                    addComponent(new Potentiometer(addDynamicArgument(args[0]), getArgumentValue(args[1]), pins[0], pins[1], pins[2]));
+                    if (isDynamicArgument(args[0])) {
+                        addComponent(new Potentiometer(addDynamicArgument(args[0]), getArgumentValue(args[1]), pins[0], pins[1], pins[2]));
+                    } else {
+                        addComponent(new StaticPotentiometer(getArgumentValue(args[0]), getArgumentValue(args[1]), pins[0], pins[1], pins[2]));
+                    }
                 } else {
                     pd_error(NULL, "circuit~: wrong number of arguments for potmeter");
                 }
