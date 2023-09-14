@@ -12,6 +12,8 @@
 #include <string>
 #include <sstream>
 #include <map>
+#include <array>
+#include <cassert>
 #include <algorithm>
 #include <memory>
 

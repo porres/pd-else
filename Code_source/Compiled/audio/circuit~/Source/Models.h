@@ -601,6 +601,8 @@ public:
             return OpAmps;
         }
         
+        assert(false);
+        
         return {};
     }
 };
