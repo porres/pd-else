@@ -231,7 +231,7 @@ static void sfz_note(t_sfz* x, t_symbol *s, int ac, t_atom* av){
             return;
         int vel = av[1].a_w.w_float;
         if(vel > 0)
-            sfizz_send_note_on(x->x_synth, 0, key - x->x_base, vel);
+            sfizz_send_hd_note_on(x->x_synth, 0, key - x->x_base, vel/127.);
         else
             sfizz_send_note_off(x->x_synth, 0, key - x->x_base, 0);
     }
@@ -241,7 +241,7 @@ static void sfz_ctl(t_sfz* x, t_float f1, t_float f2){
     int cc = (int)f2;
     if(cc < 0 || cc >= MIDI_CC_COUNT)
         return;
-    sfizz_send_cc(x->x_synth, 0, cc, (int)f1);
+    sfizz_send_hdcc(x->x_synth, 0, cc, f1/127.);
 }
 
 static void sfz_pgm(t_sfz* x, t_float f1){
