@@ -498,6 +498,81 @@ class Models {
         } }
     };
     
+    static inline const ModelList OpAmps =  {
+        {"LM308", {
+            {"Rin", 40e6},
+            {"Rout", 50},
+            {"Aol", 300e3},
+            {"Gbp", 1e6},
+        }},
+        {"3404A", {
+            {"Rin", 1e12},
+            {"Rout", 50},
+            {"Aol", 100e3},
+            {"Gbp", 1.2e6},
+        }},
+        {"4558", {
+            {"Rin", 5e6},
+            {"Rout", 100},
+            {"Aol", 300e3},
+            {"Gbp", 3e6},
+        }},
+        {"UA741", {
+            {"Rin", 2e6},
+            {"Rout", 75},
+            {"Aol", 200e3},
+            {"Gbp", 1e6},
+        }},
+        {"OP27", {
+            {"Rin", 4e6},
+            {"Rout", 70},
+            {"Aol", 1.78e6},
+            {"Gbp", 8e6},
+        }},
+        {"OP42", {
+            {"Rin", 1e12},
+            {"Rout", 50},
+            {"Aol", 1e6},
+            {"Gbp", 10e6},
+        }},
+        {"OP134", {
+            {"Rin", 10e12},
+            {"Rout", 10},
+            {"Aol", 1e6},
+            {"Gbp", 8e6},
+        }},
+        {"AD746", {
+            {"Rin", 200e9},
+            {"Rout", 10},
+            {"Aol", 282e3},
+            {"Gbp", 13e6},
+        }},
+        {"AD826", {
+            {"Rin", 300e3},
+            {"Rout", 8},
+            {"Aol", 5.6e3},
+            {"Gbp", 35e6},
+        }},
+        {"TL06x", {
+            {"Rin", 1e12},
+            {"Rout", 50},
+            {"Aol", 315e3},
+            {"Gbp", 1e6},
+        }},
+        {"TL07x", {
+            {"Rin", 1e12},
+            {"Rout", 50},
+            {"Aol", 200e3},
+            {"Gbp", 5.25e6},
+        }},
+        {"TL08x", {
+            {"Rin", 1e12},
+            {"Rout", 50},
+            {"Aol", 100e3},
+            {"Gbp", 3e6},
+        }}
+    };
+    
 public:
     static const ModelList& getModelsForComponent(const std::string& componentName)
     {
@@ -520,6 +595,10 @@ public:
         if(componentName == "bjt")
         {
             return BJTs;
+        }
+        if(componentName == "opamp")
+        {
+            return OpAmps;
         }
         
         return {};

@@ -51,6 +51,7 @@ struct NetList {
         }
         
         output.resize(numOut, 0.0);
+        
         numOut = 0;
         
         for (auto const& [type, args, pins, model] : netlist) {
@@ -164,6 +165,15 @@ struct NetList {
 
                 break;
             }
+            case tOpAmp2: {
+                if (args.size() == 0) {
+                    addComponent(new OpAmp2(pins[0], pins[1], pins[2], pins[3], pins[4], getModel("opamp", model)));
+                } else {
+                    pd_error(nullptr, "circuit~: wrong number of arguments for opamp2");
+                }
+
+                break;
+            }
             case tPotmeter: {
                 if (args.size() == 2) {
                     if (isDynamicArgument(args[0])) {
@@ -207,19 +217,23 @@ struct NetList {
 
         initialiseMatrix(AMatrix, xVector);
         
+        // Refactor KLU for DC solution
+        refactorKLU();
+        
         // get DC solution
         simulateTick();
 
         // Set time step size
         // Since we only ever change from stepsize 0 to a real samplerate, we shouldn't have to apply any time scaling for capacitors etc.
         for (int nz = 0; nz < timedA.size(); nz++) {
-            staticA[nz] += (timedA[nz] * sampleRate);
+            staticA[nz] += timedA[nz] * sampleRate;
         }
         
         for (auto& c : components) {
             c->initTransientAnalysis(1.0 / sampleRate);
         }
-
+        
+        // Refactor KLU again for transient analysis
         refactorKLU();
     }
 
@@ -264,34 +278,16 @@ struct NetList {
     void setBlockDC(bool blockDC)
     {
         blockDC = blockDC;
+        
+        // Enable dcblock on all probe components
         for (auto& c : components) {
             c->setDCBlock(blockDC);
         }
     }
 
-    double& addDynamicArgument(const std::string& arg)
-    {
-        try {
-            int idx = std::stoi(arg.substr(2)) - 1;
-            if (idx < 0)
-                throw std::range_error("index out of range");
-            input[idx] = 0.0;
-            return input[idx];
-        } catch (...) {
-            pd_error(nullptr, "circuit~: malformed dynamic argument: \"%s\"", arg.c_str());
-            input[0] = 0.0;
-            return input[0];
-        }
-    }
-
     int getMaxDynamicArgument() const
     {
-        int max = 0;
-        for (auto const& [idx, value] : input) {
-            max = std::max(idx + 1, max);
-        }
-
-        return max;
+        return maximumInputIndex;
     }
 
     void setMaxIter(int iter)
@@ -315,52 +311,63 @@ struct NetList {
     }
 
 private:
-    int nets;
-    ComponentList components;
 
-    // parameters
-    int maxiter = 15;
-
-    klu_symbolic* symbolic = nullptr;
-    klu_numeric* numeric = nullptr;
-    klu_common common;
-    
-    std::vector<double> output; // Probe object writes its output here
-    std::map<int, double> input; // Dynamic input argument values are stored here
-
-    std::vector<double> b;
-    std::vector<double> A;
-    std::vector<int> AI;
-    std::vector<int> AJ;
-    
-    std::vector<double> staticA;
-    std::vector<std::vector<double*>> dynamicA;
-    std::vector<double> timedA;
-    
-    std::vector<double> staticB;
-    std::vector<std::vector<double*>> dynamicB;
-    
-    // Netlist state for resetting
-    const NetlistDescription lastNetlist;
-    int const lastNumNets;
-
-    void update()
+    // Creates a sparse representation of the matrix, this is what KLU takes as input. We also swap rows with columns here.
+    void initialiseMatrix(MNAMatrix AMatrix, MNAVector xVector)
     {
-        for (const auto& c : components) {
-            c->update(b);
+        b.clear();
+        AI.clear();
+        AJ.clear();
+        A.clear();
+        int nonzero = 0;
+        
+        // count nonzero matrix values
+        for (int i = 1; i < nets; i++) {
+            for (int j = 1; j < nets; j++) {
+                if (AMatrix[j][i].nonzero())
+                    nonzero++;
+            }
+        }
+        
+        // Allocate memory for CSR format
+        b.resize(nets, 0.0);
+        AI.resize(nets);
+        AJ.resize(nonzero);
+        A.resize(nonzero);
+
+        // Copy g, gtimed and dyn to a more compact format that allows us to copy the static values over all at once
+        staticA.resize(nonzero);
+        timedA.resize(nonzero);
+        dynamicA.resize(nonzero);
+        
+        // Do the same for the B vector
+        staticB.resize(nets - 1);
+        dynamicB.resize(nets - 1);
+        
+        // Reset nonzeros
+        nonzero = 0;
+        AI[0] = 0;
+        
+        // Create the CSR format that KLU requires
+        for (int i = 1; i < nets; i++) {
+            staticB[i - 1] = xVector[i].g;
+            dynamicB[i - 1].insert(dynamicB[i - 1].end(), xVector[i].gdyn.begin(), xVector[i].gdyn.end());
+            
+            for (int j = 1; j < nets; j++) {
+                if (AMatrix[j][i].nonzero()) {
+                    AJ[nonzero] = static_cast<int>(j - 1);
+                    staticA[nonzero] = AMatrix[j][i].g;
+                    timedA[nonzero] = AMatrix[j][i].gtimed;
+                    dynamicA[nonzero].insert(dynamicA[nonzero].end(), AMatrix[j][i].gdyn.begin(), AMatrix[j][i].gdyn.end());
+                    nonzero++;
+                }
+            }
+            
+            AI[i] = nonzero;
         }
     }
-
-    // return true if we're done
-    bool newton()
-    {
-        bool done = true;
-        for (const auto& c : components) {
-            done &= c->newton(b);
-        }
-        return done;
-    }
-
+    
+    // Updates the A matrix and B vector pre-solve
     void updatePre()
     {
         // Copy static and dynamic values for B vector
@@ -379,12 +386,39 @@ private:
             }
         }
     }
+    
+    // Called for every timestep
+    void update()
+    {
+        for (const auto& c : components) {
+            c->update(b);
+        }
+    }
 
+    // Called for every Newton-Raphson iteration return true if we're done
+    bool newton()
+    {
+        bool done = true;
+        for (const auto& c : components) {
+            done &= c->newton(b);
+        }
+        return done;
+    }
 
     void refactorKLU()
     {
-        klu_free_symbolic(&symbolic, &common);
-        klu_free_numeric(&numeric, &common);
+        if(symbolic || numeric)
+        {
+            klu_free_symbolic(&symbolic, &common);
+            klu_free_numeric(&numeric, &common);
+        }
+        else {
+            // Initialise KLU
+            const bool nochecking = true;
+            klu_defaults(&common);
+            common.tol = 1e-7;
+            common.scale = nochecking ? -1 : 2;
+        }
 
         // symbolic analysis
         symbolic = klu_analyze(nets - 1, AI.data(), AJ.data(), &common);
@@ -410,73 +444,42 @@ private:
                 break;
         }
     }
-
-    // Creates a sparse representation of the matrix, this is what KLU takes as input. We also swap rows with columns here.
-    void initialiseMatrix(MNAMatrix AMatrix, MNAVector xVector)
+    
+    // Pass in a value like $s1, $f1, $s2, and it returns the double reference that belongs to this argument
+    double& addDynamicArgument(const std::string& arg)
     {
-        b.clear();
-        AI.clear();
-        AJ.clear();
-        A.clear();
-        int nonzero = 0;
-        
-        for (size_t i = 1; i < nets; i++) {
-            for (int j = 1; j < nets; j++) {
-                if (AMatrix[j][i].nonzero())
-                    nonzero++;
-            }
-        }
-        
-        // Allocate memory for CSR format
-        b.resize(nets, 0.0);
-        AI.resize(nets);
-        AJ.resize(nonzero);
-        A.resize(nonzero);
-
-        
-        staticB.resize(nets - 1);
-        dynamicB.resize(nets - 1);
-        
-        staticA.resize(nonzero);
-        timedA.resize(nonzero);
-        dynamicA.resize(nonzero);
-        
-        // Reset nonzeros
-        nonzero = 0;
-        AI[0] = 0;
-        
-        // Create our CSR format
-        for (size_t i = 1; i < nets; i++) {
-            staticB[i - 1] = xVector[i].g;
-            dynamicB[i - 1].insert(dynamicB[i - 1].end(), xVector[i].gdyn.begin(), xVector[i].gdyn.end());
-            
-            for (size_t j = 1; j < nets; j++) {
-                if (AMatrix[j][i].nonzero()) {
-                    AJ[nonzero] = static_cast<int>(j - 1);
-                    staticA[nonzero] = AMatrix[j][i].g;
-                    timedA[nonzero] =  AMatrix[j][i].gtimed;
-                    dynamicA[nonzero].insert(dynamicA[nonzero].end(), AMatrix[j][i].gdyn.begin(), AMatrix[j][i].gdyn.end());
-                    nonzero++;
-                }
+        try {
+            int idx = std::stoi(arg.substr(2)) - 1;
+            if (idx < 0) {
+                throw std::runtime_error("argument index needs to be larger than 0");
             }
             
-            AI[i] = nonzero;
+            if(idx >= 31)
+            {
+                throw std::runtime_error("too many dynamic arguments, only 32 are supported");
+            }
+            
+            maximumInputIndex = std::max(idx + 1, maximumInputIndex);
+            input[idx] = 0.0;
+            return input[idx];
+        } catch (std::runtime_error& e) {
+            pd_error(nullptr, "circuit~: %s", e.what());
+            input[0] = 0.0;
+            return input[0];
         }
-        
-        const double solvertol = 1e-7;
-        const bool nochecking = true;
-        
-        // Initialise KLU
-        klu_defaults(&common);
-        common.tol = solvertol;
-        common.scale = nochecking ? -1 : 2;
-
-        // symbolic analysis
-        symbolic = klu_analyze((int)nets - 1, AI.data(), AJ.data(), &common);
-        // Full numeric factorization: Only needed once!
-        numeric = klu_factor(AI.data(), AJ.data(), A.data(), symbolic, &common);
+        catch (const std::invalid_argument & e) {
+            pd_error(nullptr, "circuit~: malformed dynamic argument: \"%s\"", arg.c_str());
+            input[0] = 0.0;
+            return input[0];
+        }
+        catch (const std::out_of_range & e) {
+            pd_error(nullptr, "circuit~: malformed dynamic argument: \"%s\"", arg.c_str());
+            input[0] = 0.0;
+            return input[0];
+        }
     }
 
+    // Read a simple int or double argument value
     static double getArgumentValue(std::string arg)
     {
         double result = 0.0;
@@ -498,7 +501,8 @@ private:
         arg = replaceString(arg, "u", "e-6");
         arg = replaceString(arg, "m", "e-3");
         arg = replaceString(arg, "k", "e3");
-
+        arg = replaceString(arg, "M", "e6");
+        
         try {
             result = std::stod(arg);
         } catch (...) {
@@ -507,4 +511,35 @@ private:
 
         return result;
     }
+    
+    int nets;
+    ComponentList components;
+
+    // parameters
+    int maxiter = 15;
+
+    klu_symbolic* symbolic = nullptr;
+    klu_numeric* numeric = nullptr;
+    klu_common common;
+    
+    std::vector<int> AI;
+    std::vector<int> AJ;
+    
+    std::vector<double> b;
+    std::vector<double> A;
+        
+    std::vector<double> staticB;
+    std::vector<std::vector<double*>> dynamicB;
+    
+    std::vector<double> staticA;
+    std::vector<std::vector<double*>> dynamicA;
+    std::vector<double> timedA;
+    
+    std::vector<double> output; // Probe object writes its output here
+    std::array<double, 32> input; // Dynamic input argument values are stored here
+    int maximumInputIndex = 1;
+        
+    // Netlist state that we can reset to
+    const NetlistDescription lastNetlist;
+    int const lastNumNets;
 };

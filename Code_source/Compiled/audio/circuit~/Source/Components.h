@@ -219,12 +219,11 @@ struct Inductor : Component<2, 1> {
 
     void stamp(MNAMatrix& A, MNAVector& x) final
     {
-        stampStatic(A, +1, nets[0], nets[2]); // Naar A->B system
+        stampStatic(A, +1, nets[0], nets[2]);
         stampStatic(A, -1, nets[1], nets[2]);
-        stampStatic(A, -1, nets[2], nets[0]); // Naar A->C system
+        stampStatic(A, -1, nets[2], nets[0]);
         stampStatic(A, +1, nets[2], nets[1]);
 
-        // m.stampInvTimed(1. / (l * 2.), nets[2], nets[2]);
         A[nets[2]][nets[2]].gdyn.push_back(&g);
         x[nets[2]].gdyn.push_back(&stateVar);
     }
@@ -234,11 +233,8 @@ struct Inductor : Component<2, 1> {
         // solve legit voltage from the pins
         voltage = (b[nets[0]] - b[nets[1]]);
 
-        // we shouldn't need to do this??
-        if (tStep != 0)
-            g = 1. / ((2. * l) / (1. / tStep));
-        else
-            g = 0;
+        double tStepSize = tStep != 0 ? tStep : 1.0;
+        g = 1. / ((2. * l) / (1. / tStepSize));
         
         stateVar = voltage + g * b[nets[2]];
     }
@@ -246,6 +242,7 @@ struct Inductor : Component<2, 1> {
     void initTransientAnalysis(double tStepSize)
     {
         tStep = tStepSize;
+        stateVar = voltage / l;
     }
 };
 
@@ -277,14 +274,21 @@ struct Probe : Component<2, 1> {
 
     class {
     public:
-        void setInitialState(double state)
-        {
-            prevInSample = state;
-        }
-
         // Process a new input sample and return the filtered sample
         double filter(double inputSample)
         {
+            // Latch on to the first non-zero value as the centre point
+            // Ideally we could do this in initTransientAnalysis, but this is much more reliable against clicks
+            if(!initialised && inputSample != 0.0) {
+                initialised = true;
+                prevInSample = inputSample;
+                return inputSample;
+            }
+            else if(!initialised)
+            {
+                return inputSample;
+            }
+            
             double outputSample = inputSample - prevInSample + alpha * prevOutSample;
             prevInSample = inputSample;
             prevOutSample = outputSample;
@@ -295,9 +299,9 @@ struct Probe : Component<2, 1> {
         double alpha = 0.9997;      // Alpha coefficient for the filter
         double prevInSample = 0.0;  // Previous sample (state)
         double prevOutSample = 0.0; // Previous sample (state)
+        bool initialised = false;
     } dc_blocker;
 
-    bool initialised = false;
     double& output;
     bool blockDC = true;
 
@@ -323,12 +327,6 @@ struct Probe : Component<2, 1> {
 
     void update(MNAResultVector& b) final
     {
-        // As soon as a voltage gets written, treat that as the DC offset point
-        if (!initialised && b[nets[2]] != 0.0) {
-            dc_blocker.setInitialState(b[nets[2]]);
-            initialised = true;
-        }
-
         if (blockDC) {
             output += dc_blocker.filter(b[nets[2]]);
         } else {
@@ -732,6 +730,144 @@ struct OpAmp final : Component<3, 1> {
     }
 };
 
+struct OpAmp2 : Component<5, 6>
+{
+    // diode clamps
+    JunctionPN  pnPP, pnNN;
+    
+    double g, ro, ri;
+    
+    // pins: in+, in-, out, supply+, supply-
+    OpAmp2(int vInP, int vInN, int vOut, int vPP, int vNN, Model model)
+    {
+        pinLoc[0] = vOut;
+        pinLoc[1] = vInP;
+        pinLoc[2] = vInN;
+        pinLoc[3] = vPP;
+        pinLoc[4] = vNN;
+        
+        // the DC voltage gain
+        g = 10e3;
+        ri = 1.0 / 50e6;
+        ro = 10;
+        
+        if (model.count("Rin"))
+            ri = 1.0 / model.at("Rin");
+        if (model.count("Rout"))
+            ro = model.at("Rout");
+        if (model.count("Aol"))
+            g = model.at("Aol");
+       // if (model.count("Gbp"))
+       //     kp = model.at("Gbp");
+
+        // any sort of reasonable diode will do
+        double is = 8e-16;
+        double n = 1.0;
+        pnPP.initJunctionPN(is, n);
+        pnNN.initJunctionPN(is, n);
+        
+        pnPP.linearizeJunctionPN(0);
+        pnNN.linearizeJunctionPN(0);
+    }
+    
+    bool newton(MNAResultVector& b)
+    {
+        return pnPP.newtonJunctionPN(b[nets[5]])
+        & pnNN.newtonJunctionPN(b[nets[6]]);
+    }
+    
+    void stamp(MNAMatrix& A, MNAVector& x)
+    {
+        // What we want here is a high-gain VCVS where
+        // we then bypass to rails if we get too close.
+        //
+        // Here it's important not to have series resistance
+        // for thee diodes, otherwise we can still exceed rails.
+        //
+        // NOTE: the following ignores supply currents
+        //
+        //      0   1   2   3  4   5   6   7   8    9
+        //    vout in+ in- V+ V- vd+ vd- id+ id- iout
+        // 0 |  .   .   .   .  .   .   .  +1  -1   +1 | vout
+        // 1 |  .   .   .   .  .   .   .   .   .    . | in+
+        // 2 |  .   .   .   .  .   .   .   .   .    . | in-
+        // 3 |  .   .   .   .  .   .   .   .   .    . | v+
+        // 4 |  .   .   .   .  .   .   .   .   .    . | v-
+        // 5 |  .   .   .   .  . gpp   .  -1   .    . | vd+  = i0pp
+        // 6 |  .   .   .   .  .   . gnn   .  -1    . | vd-  = i0nn
+        // 7 | -1   .   .  +1  .  +1   .  ~0   .    . | id+  = +1.5
+        // 8 | +1   .   .   . -1   .  +1   .  ~0    . | id-  = +1.5
+        // 9 | -1  +g  -g   .  .   .   .   .   .   ro | iout
+        //
+        // We then add one useless extra row just to add
+        // the currents together, so one can plot the real
+        // current that actually get pushed into vOut
+        
+        // output currents
+        stampStatic(A, +1, nets[0], nets[7]);
+        stampStatic(A, -1, nets[0], nets[8]);
+        stampStatic(A, +1, nets[0], nets[9]);
+        
+        // output feedback
+        stampStatic(A, -1, nets[7], nets[0]);
+        stampStatic(A, +1, nets[8], nets[0]);
+        stampStatic(A, -1, nets[9], nets[0]);
+        
+        // voltage input
+        stampStatic(A, +g, nets[9], nets[1]);
+        stampStatic(A, -g, nets[9], nets[2]);
+        
+        // supply voltages
+        stampStatic(A, +1, nets[7], nets[3]);
+        stampStatic(A, -1, nets[8], nets[4]);
+        
+        // voltage drops from the supply, should be slightly
+        // more than the drop voltage drop across the diodes
+        x[nets[7]].g += 1.5;
+        x[nets[8]].g += 1.5;
+        
+        // diode voltages to currents
+        stampStatic(A, +1, nets[7], nets[5]);
+        stampStatic(A, -1, nets[5], nets[7]);
+        
+        stampStatic(A, +1, nets[8], nets[6]);
+        stampStatic(A, -1, nets[6], nets[8]);
+        
+        // the series resistance for the diode clamps
+        // needs to be small to handle the high gain,
+        // but still use something just slightly non-zero
+        double rs = gMin;
+        
+        // series resistances for diodes
+        // allow "gmin" just for pivoting?
+        stampStatic(A, rs, nets[7], nets[7]);
+        stampStatic(A, rs, nets[8], nets[8]);
+        
+        // series output resistance
+        stampStatic(A, ro, nets[9], nets[9]);
+
+        stampStatic(A, +ri, nets[1], nets[1]);
+        stampStatic(A, -ri, nets[1], nets[2]);
+        stampStatic(A, -ri, nets[2], nets[1]);
+        stampStatic(A, +ri, nets[2], nets[2]);
+        
+        // junctions
+        A[nets[5]][nets[5]].gdyn.push_back(&pnPP.geq);
+        A[nets[6]][nets[6]].gdyn.push_back(&pnNN.geq);
+        
+        x[nets[5]].gdyn.push_back(&pnPP.ieq);
+        x[nets[6]].gdyn.push_back(&pnNN.ieq);
+        
+        
+        // this is useless as far as simulation goes
+        // it's just for getting a nice current value
+        stampStatic(A, +1, nets[10], nets[7]);
+        stampStatic(A, -1, nets[10], nets[8]);
+        stampStatic(A, +1, nets[10], nets[9]);
+        stampStatic(A, +1, nets[10], nets[10]);
+    }
+};
+
 struct Potentiometer final : Component<3> {
     const double r;
     double g;
@@ -854,8 +990,8 @@ struct Current final : Component<2> {
     void stamp(MNAMatrix& A, MNAVector& x) final
     {
         // Write current to RHS
-        x[nets[0]].g = -a;
-        x[nets[1]].g = a;
+        x[nets[0]].g -= a;
+        x[nets[1]].g += a;
     }
 };
 

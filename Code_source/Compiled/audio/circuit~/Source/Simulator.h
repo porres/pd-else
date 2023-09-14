@@ -46,6 +46,7 @@ enum ComponentType {
     tGyrator,
     tInductor,
     tOpAmp,
+    tOpAmp2,
     tPotmeter,
     tCurrent,
     tProbe,

@@ -134,6 +134,9 @@ void* simulator_create(int argc, t_atom* argv, double sampleRate)
         } else if (arguments[0] =="opamp" && arguments.size() > 3) {
             auto [args, pins] = getPinsAndArguments(arguments, 3);
             netlistDescription.emplace_back(tOpAmp, args, pins, "");
+        }else if (arguments[0] =="opamp2" && arguments.size() > 5) {
+            auto [args, pins] = getPinsAndArguments(arguments, 5);
+            netlistDescription.emplace_back(tOpAmp2, args, pins, model);
         } else if (arguments[0] =="transformer" && arguments.size() > 5) {
             auto [args, pins] = getPinsAndArguments(arguments, 4);
             netlistDescription.emplace_back(tTransformer, args, pins, "");
