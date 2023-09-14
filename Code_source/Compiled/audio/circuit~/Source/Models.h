@@ -7,10 +7,11 @@
 
 #pragma once
 
-struct Models {
-    using Model = std::map<std::string, std::map<std::string, double>>;
+using Model = std::map<std::string, double>;
+using ModelList = std::map<std::string, std::map<std::string, double>>;
+class Models {
     
-    static inline const Model Triodes = {
+    static inline const ModelList Triodes = {
         { "12AT7", {
             { "Ex", 1.234 },
             { "Mu", 67.49 },
@@ -130,7 +131,7 @@ struct Models {
         } }
     };
     
-    static inline const Model BJTs = {
+    static inline const ModelList BJTs = {
         { "2N2222", {
             { "IS", 1e-14 },
             { "BF", 200 },
@@ -343,7 +344,7 @@ struct Models {
         } }
     };
     
-    static inline const Model JFETs = {
+    static inline const ModelList JFETs = {
         { "2N5952", {
             { "IS", 1e-14 },
             { "Beta", 1.3143e-3 },
@@ -388,7 +389,7 @@ struct Models {
         } }
     };
     
-    static inline const Model MOSFETs = {
+    static inline const ModelList MOSFETs = {
         { "IRF510", {
             { "Vt0", 3.82703 },
             { "Kp", 2.48457 },
@@ -421,7 +422,7 @@ struct Models {
         } },
     };
     
-    static inline const Model Diodes = {
+    static inline const ModelList Diodes = {
         { "Si", {
             { "Type", 0 }, { "IS", 1e-12 },
             //{"Description",  "Generic Silicon diode"},
@@ -496,4 +497,31 @@ struct Models {
             { "n", 1.3 },
         } }
     };
+    
+public:
+    static const ModelList& getModelsForComponent(const std::string& componentName)
+    {
+        if(componentName == "triode")
+        {
+            return Triodes;
+        }
+        if(componentName == "diode")
+        {
+            return Diodes;
+        }
+        if(componentName == "jfet")
+        {
+            return JFETs;
+        }
+        if(componentName == "mosfet")
+        {
+            return MOSFETs;
+        }
+        if(componentName == "bjt")
+        {
+            return BJTs;
+        }
+        
+        return {};
+    }
 };
