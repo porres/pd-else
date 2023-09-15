@@ -25,7 +25,7 @@ struct NetList {
         , lastNumNets(nNets)
     {
         auto isDynamicArgument = [](const std::string& arg) { return arg.rfind("$s", 0) == 0 || arg.rfind("$f", 0) == 0; };
-        auto getModel = [](const std::string& componentName, std::string modelName) -> Model {
+        auto getModel = [](const std::string& componentName, const std::string& modelName) -> Model {
             
             auto& models = Models::getModelsForComponent(componentName);
             
@@ -50,161 +50,164 @@ struct NetList {
             }
         }
         
+        if(numOut > 8)
+        {
+            pd_error(nullptr, "circuit~: too many probes, only 8 are allowed. Later probes will be ignored");
+        }
+        
         output.resize(numOut, 0.0);
         
         numOut = 0;
         
         for (auto const& [type, args, pins, model] : netlist) {
             switch (type) {
-            case tResistor: {
-                if (args.size() == 1) {
-                    if (isDynamicArgument(args[0])) {
-                        addComponent(new VariableResistor(addDynamicArgument(args[0]), pins[0], pins[1]));
+                case tResistor: {
+                    if (args.size() == 1) {
+                        if (isDynamicArgument(args[0])) {
+                            addComponent(new VariableResistor(addDynamicArgument(args[0]), pins[0], pins[1]));
+                        } else {
+                            addComponent(new Resistor(getArgumentValue(args[0]), pins[0], pins[1]));
+                        }
                     } else {
-                        addComponent(new Resistor(getArgumentValue(args[0]), pins[0], pins[1]));
+                        pd_error(nullptr, "circuit~: wrong number of arguments for resistor");
                     }
-                } else {
-                    pd_error(nullptr, "circuit~: wrong number of arguments for resistor");
+                    break;
                 }
-                break;
-            }
-            case tCapacitor: {
-                if (args.size() == 1) {
-                    addComponent(new Capacitor(getArgumentValue(args[0]), pins[0], pins[1]));
-                } else {
-                    pd_error(nullptr, "circuit~: wrong number of arguments for capacitor");
-                }
-                break;
-            }
-            case tVoltage: {
-                if (args.size() == 1) {
-                    if (isDynamicArgument(args[0])) {
-                        addComponent(new VariableVoltage(addDynamicArgument(args[0]), pins[0], pins[1]));
+                case tCapacitor: {
+                    if (args.size() == 1) {
+                        addComponent(new Capacitor(getArgumentValue(args[0]), pins[0], pins[1]));
                     } else {
-                        addComponent(new Voltage(getArgumentValue(args[0]), pins[0], pins[1]));
+                        pd_error(nullptr, "circuit~: wrong number of arguments for capacitor");
                     }
-                } else {
-                    pd_error(nullptr, "circuit~: wrong number of arguments for voltage");
+                    break;
                 }
-                break;
-            }
-            case tDiode: {
-                if (args.size() == 0) {
-                    addComponent(new Diode(pins[0], pins[1], getModel("diode", model)));
-                } else {
-                    pd_error(nullptr, "circuit~: wrong number of arguments for diode");
-                }
-                break;
-            }
-            case tBJT: {
-                if (args.size() == 1) {
-                    addComponent(new BJT(pins[0], pins[1], pins[2], getModel("bjt", model), getArgumentValue(args[0])));
-                } else {
-                    pd_error(nullptr, "circuit~: wrong number of arguments for bjt");
-                }
-                break;
-            }
-            case tMOSFET: {
-                if (args.size() == 1) {
-                    addComponent(new MOSFET(getArgumentValue(args[0]), pins[0], pins[1], pins[2], getModel("mosfet", model)));
-                } else {
-                    pd_error(nullptr, "circuit~: wrong number of arguments for mosfet");
-                }
-                break;
-            }
-            case tJFET: {
-                if (args.size() == 1) {
-                    addComponent(new JFET(getArgumentValue(args[0]), pins[0], pins[1], pins[2], getModel("jfet", model)));
-                } else {
-                    pd_error(nullptr, "circuit~: wrong number of arguments for jfet");
-                }
-                break;
-            }
-            case tTransformer: {
-                if (args.size() == 1) {
-                    addComponent(new Transformer(getArgumentValue(args[0]), pins[0], pins[1], pins[2], pins[3]));
-                } else {
-                    pd_error(nullptr, "circuit~: wrong number of arguments for transformer");
-                }
-                break;
-            }
-            case tGyrator: {
-                if (args.size() == 1) {
-                    addComponent(new Gyrator(getArgumentValue(args[0]), pins[0], pins[1], pins[2], pins[3]));
-                } else {
-                    pd_error(nullptr, "circuit~: wrong number of arguments for gyrator");
-                }
-                break;
-            }
-            case tInductor: {
-                if (args.size() == 1) {
-                    addComponent(new Inductor(getArgumentValue(args[0]), pins[0], pins[1]));
-                } else {
-                    pd_error(nullptr, "circuit~: wrong number of arguments for inductor");
-                }
-                break;
-            }
-            case tTriode: {
-                if (args.size() == 0) {
-                    addComponent(new Triode(pins[0], pins[1], pins[2], getModel("triode", model)));
-                } else {
-                    pd_error(nullptr, "circuit~: wrong number of arguments for triode");
-                }
-                break;
-            }
-            case tOpAmp: {
-                if (args.size() == 0) {
-                    addComponent(new OpAmp(10, 15, pins[0], pins[1], pins[2]));
-                } else if (args.size() == 1) {
-                    addComponent(new OpAmp(getArgumentValue(args[0]), 15, pins[0], pins[1], pins[2]));
-                } else if (args.size() == 2) {
-                    addComponent(new OpAmp(getArgumentValue(args[0]), getArgumentValue(args[1]), pins[0], pins[1], pins[2]));
-                } else {
-                    pd_error(nullptr, "circuit~: wrong number of arguments for opamp");
-                }
-
-                break;
-            }
-            case tOpAmp2: {
-                if (args.size() == 0) {
-                    addComponent(new OpAmp2(pins[0], pins[1], pins[2], pins[3], pins[4], getModel("opamp", model)));
-                } else {
-                    pd_error(nullptr, "circuit~: wrong number of arguments for opamp2");
-                }
-
-                break;
-            }
-            case tPotmeter: {
-                if (args.size() == 2) {
-                    if (isDynamicArgument(args[0])) {
-                        addComponent(new Potentiometer(addDynamicArgument(args[0]), getArgumentValue(args[1]), pins[0], pins[1], pins[2]));
+                case tVoltage: {
+                    if (args.size() == 1) {
+                        if (isDynamicArgument(args[0])) {
+                            addComponent(new VariableVoltage(addDynamicArgument(args[0]), pins[0], pins[1]));
+                        } else {
+                            addComponent(new Voltage(getArgumentValue(args[0]), pins[0], pins[1]));
+                        }
                     } else {
-                        addComponent(new StaticPotentiometer(getArgumentValue(args[0]), getArgumentValue(args[1]), pins[0], pins[1], pins[2]));
+                        pd_error(nullptr, "circuit~: wrong number of arguments for voltage");
                     }
-                } else {
-                    pd_error(nullptr, "circuit~: wrong number of arguments for potmeter");
+                    break;
                 }
-                break;
-            }
-            case tCurrent: {
-                if (args.size() == 1) {
-                    if (isDynamicArgument(args[0])) {
-                        addComponent(new VariableCurrent(addDynamicArgument(args[0]), pins[0], pins[1]));
+                case tDiode: {
+                    if (args.size() == 0) {
+                        addComponent(new Diode(pins[0], pins[1], getModel("diode", model)));
                     } else {
-                        addComponent(new Current(getArgumentValue(args[0]), pins[0], pins[1]));
+                        pd_error(nullptr, "circuit~: wrong number of arguments for diode");
                     }
-                } else {
-                    pd_error(nullptr, "circuit~: wrong number of arguments for current");
+                    break;
                 }
-            }
-            case tProbe: {
-                addComponent(new Probe(pins[0], pins[1], output[numOut]));
-                break;
-            }
-            case tIter: {
-                maxiter = getArgumentValue(args[0]);
-                break;
-            }
+                case tBJT: {
+                    if (args.size() == 1) {
+                        addComponent(new BJT(pins[0], pins[1], pins[2], getModel("bjt", model), getArgumentValue(args[0])));
+                    } else {
+                        pd_error(nullptr, "circuit~: wrong number of arguments for bjt");
+                    }
+                    break;
+                }
+                case tMOSFET: {
+                    if (args.size() == 1) {
+                        addComponent(new MOSFET(getArgumentValue(args[0]), pins[0], pins[1], pins[2], getModel("mosfet", model)));
+                    } else {
+                        pd_error(nullptr, "circuit~: wrong number of arguments for mosfet");
+                    }
+                    break;
+                }
+                case tJFET: {
+                    if (args.size() == 1) {
+                        addComponent(new JFET(getArgumentValue(args[0]), pins[0], pins[1], pins[2], getModel("jfet", model)));
+                    } else {
+                        pd_error(nullptr, "circuit~: wrong number of arguments for jfet");
+                    }
+                    break;
+                }
+                case tTransformer: {
+                    if (args.size() == 1) {
+                        addComponent(new Transformer(getArgumentValue(args[0]), pins[0], pins[1], pins[2], pins[3]));
+                    } else {
+                        pd_error(nullptr, "circuit~: wrong number of arguments for transformer");
+                    }
+                    break;
+                }
+                case tGyrator: {
+                    if (args.size() == 1) {
+                        addComponent(new Gyrator(getArgumentValue(args[0]), pins[0], pins[1], pins[2], pins[3]));
+                    } else {
+                        pd_error(nullptr, "circuit~: wrong number of arguments for gyrator");
+                    }
+                    break;
+                }
+                case tInductor: {
+                    if (args.size() == 1) {
+                        addComponent(new Inductor(getArgumentValue(args[0]), pins[0], pins[1]));
+                    } else {
+                        pd_error(nullptr, "circuit~: wrong number of arguments for inductor");
+                    }
+                    break;
+                }
+                case tTriode: {
+                    if (args.size() == 0) {
+                        addComponent(new Triode(pins[0], pins[1], pins[2], getModel("triode", model)));
+                    } else {
+                        pd_error(nullptr, "circuit~: wrong number of arguments for triode");
+                    }
+                    break;
+                }
+                case tOpAmp: {
+                    if (args.size() == 0) {
+                        addComponent(new OpAmp(10, 15, pins[0], pins[1], pins[2]));
+                    } else if (args.size() == 1) {
+                        addComponent(new OpAmp(getArgumentValue(args[0]), 15, pins[0], pins[1], pins[2]));
+                    } else if (args.size() == 2) {
+                        addComponent(new OpAmp(getArgumentValue(args[0]), getArgumentValue(args[1]), pins[0], pins[1], pins[2]));
+                    } else {
+                        pd_error(nullptr, "circuit~: wrong number of arguments for opamp");
+                    }
+                    
+                    break;
+                }
+                case tOpAmp2: {
+                    if (args.size() == 0) {
+                        addComponent(new OpAmp2(pins[0], pins[1], pins[2], pins[3], pins[4], getModel("opamp", model)));
+                    } else {
+                        pd_error(nullptr, "circuit~: wrong number of arguments for opamp2");
+                    }
+                    
+                    break;
+                }
+                case tPotmeter: {
+                    if (args.size() == 2) {
+                        if (isDynamicArgument(args[0])) {
+                            addComponent(new Potentiometer(addDynamicArgument(args[0]), getArgumentValue(args[1]), pins[0], pins[1], pins[2]));
+                        } else {
+                            addComponent(new StaticPotentiometer(getArgumentValue(args[0]), getArgumentValue(args[1]), pins[0], pins[1], pins[2]));
+                        }
+                    } else {
+                        pd_error(nullptr, "circuit~: wrong number of arguments for potmeter");
+                    }
+                    break;
+                }
+                case tCurrent: {
+                    if (args.size() == 1) {
+                        if (isDynamicArgument(args[0])) {
+                            addComponent(new VariableCurrent(addDynamicArgument(args[0]), pins[0], pins[1]));
+                        } else {
+                            addComponent(new Current(getArgumentValue(args[0]), pins[0], pins[1]));
+                        }
+                    } else {
+                        pd_error(nullptr, "circuit~: wrong number of arguments for current");
+                    }
+                }
+                case tProbe: {
+                    if(numOut < 8) {
+                        addComponent(new Probe(pins[0], pins[1], output[numOut]));
+                    }
+                    break;
+                }
             }
         }
                 
@@ -224,7 +227,7 @@ struct NetList {
         simulateTick();
 
         // Set time step size
-        // Since we only ever change from stepsize 0 to a real samplerate, we shouldn't have to apply any time scaling for capacitors etc.
+        // Since we only ever change from step size 0 to a real samplerate, we shouldn't have to apply any time scaling for capacitors etc.
         for (int nz = 0; nz < timedA.size(); nz++) {
             staticA[nz] += timedA[nz] * sampleRate;
         }
@@ -292,12 +295,12 @@ struct NetList {
 
     void setMaxIter(int iter)
     {
-        maxiter = iter;
+        maxIter = iter;
     }
 
-    int getMaxIter()
+    int getMaxIter() const
     {
-        return maxiter;
+        return maxIter;
     }
     
     int getLastNumNets() const
@@ -335,7 +338,7 @@ private:
         AJ.resize(nonzero);
         A.resize(nonzero);
 
-        // Copy g, gtimed and dyn to a more compact format that allows us to copy the static values over all at once
+        // Copy g, gTimed and dyn to a more compact format that allows us to copy the static values over all at once
         staticA.resize(nonzero);
         timedA.resize(nonzero);
         dynamicA.resize(nonzero);
@@ -387,7 +390,7 @@ private:
         }
     }
     
-    // Called for every timestep
+    // Called for every time step
     void update()
     {
         for (const auto& c : components) {
@@ -395,7 +398,7 @@ private:
         }
     }
 
-    // Called for every Newton-Raphson iteration return true if we're done
+    // Called for every Newton-Raphson iteration, returns true if we're done
     bool newton()
     {
         bool done = true;
@@ -414,10 +417,9 @@ private:
         }
         else {
             // Initialise KLU
-            const bool nochecking = true;
+            const bool noChecking = true;
             klu_defaults(&common);
-            common.tol = 1e-7;
-            common.scale = nochecking ? -1 : 2;
+            common.scale = noChecking ? -1 : 2;
         }
 
         // symbolic analysis
@@ -429,8 +431,8 @@ private:
 
     void solve()
     {
-        // Iterate junctions
-        for (int iter = 0; iter < std::max(maxiter, 1); iter++) {
+        for (int iter = 0; iter < std::max(maxIter, 1); iter++) {
+            
             // restore matrix state and add dynamic values
             updatePre();
 
@@ -440,6 +442,7 @@ private:
             // Solve the system!
             klu_solve(symbolic, numeric, nets - 1, 1, b.data() + 1, &common);
 
+            // Check if all NR iterated objects have converged
             if (newton())
                 break;
         }
@@ -451,12 +454,12 @@ private:
         try {
             int idx = std::stoi(arg.substr(2)) - 1;
             if (idx < 0) {
-                throw std::runtime_error("argument index needs to be larger than 0");
+                throw std::runtime_error("dynamic argument index needs to be larger than 0");
             }
             
-            if(idx >= 31)
+            if(idx >= 8)
             {
-                throw std::runtime_error("too many dynamic arguments, only 32 are supported");
+                throw std::runtime_error("too many dynamic arguments, only 8 are supported");
             }
             
             maximumInputIndex = std::max(idx + 1, maximumInputIndex);
@@ -516,7 +519,7 @@ private:
     ComponentList components;
 
     // parameters
-    int maxiter = 15;
+    int maxIter = 8;
 
     klu_symbolic* symbolic = nullptr;
     klu_numeric* numeric = nullptr;
@@ -536,7 +539,7 @@ private:
     std::vector<double> timedA;
     
     std::vector<double> output; // Probe object writes its output here
-    std::array<double, 32> input; // Dynamic input argument values are stored here
+    std::array<double, 8> input; // Dynamic input argument values are stored here
     int maximumInputIndex = 1;
         
     // Netlist state that we can reset to

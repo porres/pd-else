@@ -160,9 +160,8 @@ void* simulator_create(int argc, t_atom* argv, double sampleRate)
         } else if (arguments[0] =="triode" && arguments.size() > 3) {
             auto [args, pins] = getPinsAndArguments(arguments, 3);
             netlistDescription.emplace_back(tTriode, args, pins, model);
-        } else if (arguments[0] =="-iter" && arguments.size() > 1) {
-            auto [args, pins] = getPinsAndArguments(arguments, 0);
-            netlistDescription.emplace_back(tIter, args, pins, "");
+        } else if (arguments[0] =="-iter" || arguments[0] =="-oversample" || arguments[0] =="-dcblock") {
+                continue;
         } else {
             pd_error(nullptr, "circuit~: unknown combination of identifier \"%s\" and %lu arguments", arguments[0].c_str(), arguments.size() - 1);
         }
@@ -235,10 +234,3 @@ void simulator_set_num_iter(void* netlist, int iter)
     auto* net = static_cast<NetList*>(netlist);
     net->setMaxIter(iter);
 }
-
-int simulator_get_num_iter(void* netlist)
-{
-    auto* net = static_cast<NetList*>(netlist);
-    return net->getMaxIter();
-}
-

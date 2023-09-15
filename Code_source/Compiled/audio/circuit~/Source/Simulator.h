@@ -68,10 +68,9 @@ int simulator_num_inlets(void* net);
 int simulator_num_outlets(void* netlist);
 
 void* simulator_reset(void* netlist, double sampleRate);
-void simulator_set_dc_block(void* netlist, int block);
 
+void simulator_set_dc_block(void* netlist, int block);
 void simulator_set_num_iter(void* netlist, int iter);
-int simulator_get_num_iter(void* netlist);
 
 #ifdef __cplusplus
 }

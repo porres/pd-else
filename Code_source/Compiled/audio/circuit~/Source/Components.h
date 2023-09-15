@@ -98,7 +98,7 @@ struct Resistor : Component<2> {
 
 struct VariableResistor : Component<2> {
     double& r;
-    double g, g_negative;
+    double gPos, gNeg;
 
     VariableResistor(double& r, int l0, int l1)
         : r(r)
@@ -109,25 +109,25 @@ struct VariableResistor : Component<2> {
 
     void stamp(MNAMatrix& A, MNAVector& x) final
     {
-        g = 1. / std::max(r, 1.0);
-        g_negative = -g;
+        gPos = 1. / std::max(r, 1.0);
+        gNeg = -gPos;
 
-        A[nets[0]][nets[0]].gdyn.push_back(&g);
-        A[nets[0]][nets[1]].gdyn.push_back(&g_negative);
-        A[nets[1]][nets[0]].gdyn.push_back(&g_negative);
-        A[nets[1]][nets[1]].gdyn.push_back(&g);
+        A[nets[0]][nets[0]].gdyn.push_back(&gPos);
+        A[nets[0]][nets[1]].gdyn.push_back(&gNeg);
+        A[nets[1]][nets[0]].gdyn.push_back(&gNeg);
+        A[nets[1]][nets[1]].gdyn.push_back(&gPos);
     }
 
     void update(MNAResultVector& b) final
     {
-        g = 1. / std::max(r, 1.0);
-        g_negative = -g;
+        gPos = 1. / std::max(r, 1.0);
+        gNeg = -gPos;
     }
 };
 
 struct Capacitor : Component<2, 1> {
     const double c;
-    double stateVar;
+    double state;
     double voltage;
 
     Capacitor(double c, int l0, int l1)
@@ -136,7 +136,7 @@ struct Capacitor : Component<2, 1> {
         pinLoc[0] = l0;
         pinLoc[1] = l1;
 
-        stateVar = 0;
+        state = 0;
         voltage = 0;
     }
 
@@ -183,12 +183,12 @@ struct Capacitor : Component<2, 1> {
         stampStatic(A, -1.0, nets[2], nets[2]);
 
         // see the comment about v:C[%d] below
-        x[nets[2]].gdyn.push_back(&stateVar);
+        x[nets[2]].gdyn.push_back(&state);
     }
 
     void update(MNAResultVector& b) final
     {
-        stateVar = b[nets[2]];
+        state = b[nets[2]];
 
         // solve legit voltage from the pins
         voltage = b[nets[0]] - b[nets[1]];
@@ -196,14 +196,14 @@ struct Capacitor : Component<2, 1> {
 
     void initTransientAnalysis(double timeStep) final
     {
-        stateVar = 2.0 * c * voltage;
+        state = 2.0 * c * voltage;
     }
 };
 
 struct Inductor : Component<2, 1> {
     const double l;
     double g;
-    double stateVar;
+    double state;
     double voltage;
     double tStep = 0.0;
 
@@ -213,7 +213,7 @@ struct Inductor : Component<2, 1> {
         pinLoc[0] = l0;
         pinLoc[1] = l1;
 
-        stateVar = 0;
+        state = 0;
         voltage = 0;
     }
 
@@ -225,7 +225,7 @@ struct Inductor : Component<2, 1> {
         stampStatic(A, +1, nets[2], nets[1]);
 
         A[nets[2]][nets[2]].gdyn.push_back(&g);
-        x[nets[2]].gdyn.push_back(&stateVar);
+        x[nets[2]].gdyn.push_back(&state);
     }
 
     void update(MNAResultVector& b) final
@@ -236,13 +236,13 @@ struct Inductor : Component<2, 1> {
         double tStepSize = tStep != 0 ? tStep : 1.0;
         g = 1. / ((2. * l) / (1. / tStepSize));
         
-        stateVar = voltage + g * b[nets[2]];
+        state = voltage + g * b[nets[2]];
     }
     
-    void initTransientAnalysis(double tStepSize)
+    void initTransientAnalysis(double tStepSize) final
     {
         tStep = tStepSize;
-        stateVar = voltage / l;
+        state = voltage / l;
     }
 };
 
@@ -320,7 +320,7 @@ struct Probe : Component<2, 1> {
         stampStatic(A, -1, nets[2], nets[2]);
     }
     
-    void setBlockDC(bool shouldBlockDC)
+    void setDCBlock(bool shouldBlockDC) final
     {
         blockDC = shouldBlockDC;
     }
@@ -449,7 +449,7 @@ struct Diode : Component<2, 2> {
         pn.linearizeJunctionPN(0);
     }
 
-    bool newton(MNAResultVector& b)
+    bool newton(MNAResultVector& b) final
     {
         return pn.newtonJunctionPN(b[nets[2]]);
     }
@@ -573,7 +573,7 @@ struct BJT : Component<3, 4> {
         pnC.linearizeJunctionPN(0);
     }
 
-    bool newton(MNAResultVector& b)
+    bool newton(MNAResultVector& b) final
     {
         return pnC.newtonJunctionPN(b[nets[3]]) & pnE.newtonJunctionPN(b[nets[4]]);
     }
@@ -664,24 +664,20 @@ struct Transformer final : Component<4, 2> {
     Transformer(double scale, int primary1, int primary2, int secondary1, int secondary2)
         : turnsRatio(scale)
     {
-        // Assign pin locations with more descriptive names
         pinLoc[0] = primary1;
         pinLoc[1] = primary2;
         pinLoc[2] = secondary1;
         pinLoc[3] = secondary2;
     }
 
-    // Function to stamp the Transformer component into the MNA (Modified Nodal Analysis) system
     void stamp(MNAMatrix& A, MNAVector& x) final
     {
-        // Stamping equations representing the transformer in the MNA system
-        // These equations model the electrical behavior of the transformer
-        stampStatic(A, 1, nets[5], nets[0]);
+        stampStatic(A, +1, nets[5], nets[0]);
         stampStatic(A, -1, nets[5], nets[4]);
-        stampStatic(A, 1, nets[4], nets[4]);
-        stampStatic(A, 1, nets[3], nets[4]);
+        stampStatic(A, +1, nets[4], nets[4]);
+        stampStatic(A, +1, nets[3], nets[4]);
         stampStatic(A, -1, nets[2], nets[4]);
-        stampStatic(A, 1, nets[1], nets[5]);
+        stampStatic(A, +1, nets[1], nets[5]);
         stampStatic(A, -1, nets[0], nets[5]);
         stampStatic(A, -turnsRatio, nets[5], nets[3]);
         stampStatic(A, turnsRatio, nets[5], nets[2]);
@@ -691,12 +687,12 @@ struct Transformer final : Component<4, 2> {
 
 struct OpAmp final : Component<3, 1> {
 
-    const double g, vmax;
-    double v, gv, ngv, Uout, Uin;
+    const double gain, vMax;
+    double v, gvPos, gvNeg, vOut, vIn;
 
     OpAmp(double G, double UMax, int invertingInput, int nonInvertingInput, int output)
-        : g(G)
-        , vmax(UMax)
+        : gain(G)
+        , vMax(UMax)
     {
         pinLoc[0] = invertingInput;
         pinLoc[1] = nonInvertingInput;
@@ -707,26 +703,26 @@ struct OpAmp final : Component<3, 1> {
     {
         // http://qucs.sourceforge.net/tech/node67.html explains all this
         stampStatic(A, -1, nets[3], nets[2]);
-        stampStatic(A, 1, nets[2], nets[3]);
-        A[nets[3]][nets[0]].gdyn.push_back(&gv);
-        A[nets[3]][nets[1]].gdyn.push_back(&ngv);
+        stampStatic(A, +1, nets[2], nets[3]);
+        A[nets[3]][nets[0]].gdyn.push_back(&gvPos);
+        A[nets[3]][nets[1]].gdyn.push_back(&gvNeg);
         x[nets[3]].gdyn.push_back(&v);
     }
 
     void update(MNAResultVector& b) final
     {
         // Calculate the voltage difference between non-inverting and inverting inputs
-        Uin = b[nets[0]] - b[nets[1]];
+        vIn = b[nets[0]] - b[nets[1]];
 
         // Calculate the dynamic conductance gv and its negative ngv
-        gv = g / (1 + pow(M_PI_2 / vmax * g * Uin, 2)) + 1e-12;
-        ngv = -gv;
+        gvPos = gain / (1 + pow(M_PI_2 / vMax * gain * vIn, 2)) + 1e-12;
+        gvNeg = -gvPos;
 
         // Calculate the OpAmp's output voltage
-        Uout = vmax * (M_2_PI)*atan(Uin * g * M_PI_2 / vmax);
+        vOut = vMax * (M_2_PI)*atan(vIn * gain * M_PI_2 / vMax);
 
         // Calculate the voltage v at the output node
-        v = Uin * gv - Uout;
+        v = vIn * gvPos - vOut;
     }
 };
 
@@ -735,9 +731,8 @@ struct OpAmp2 : Component<5, 6>
     // diode clamps
     JunctionPN  pnPP, pnNN;
     
-    double g, ro, ri;
+    double gain, ro, ri;
     
-    // pins: in+, in-, out, supply+, supply-
     OpAmp2(int vInP, int vInN, int vOut, int vPP, int vNN, Model model)
     {
         pinLoc[0] = vOut;
@@ -747,7 +742,7 @@ struct OpAmp2 : Component<5, 6>
         pinLoc[4] = vNN;
         
         // the DC voltage gain
-        g = 10e3;
+        gain = 10e3;
         ri = 1.0 / 50e6;
         ro = 10;
         
@@ -756,11 +751,10 @@ struct OpAmp2 : Component<5, 6>
         if (model.count("Rout"))
             ro = model.at("Rout");
         if (model.count("Aol"))
-            g = model.at("Aol");
+            gain = model.at("Aol");
        // if (model.count("Gbp"))
        //     kp = model.at("Gbp");
 
-        // any sort of reasonable diode will do
         double is = 8e-16;
         double n = 1.0;
         pnPP.initJunctionPN(is, n);
@@ -770,19 +764,19 @@ struct OpAmp2 : Component<5, 6>
         pnNN.linearizeJunctionPN(0);
     }
     
-    bool newton(MNAResultVector& b)
+    bool newton(MNAResultVector& b) final
     {
         return pnPP.newtonJunctionPN(b[nets[5]])
         & pnNN.newtonJunctionPN(b[nets[6]]);
     }
     
-    void stamp(MNAMatrix& A, MNAVector& x)
+    void stamp(MNAMatrix& A, MNAVector& x) final
     {
         // What we want here is a high-gain VCVS where
         // we then bypass to rails if we get too close.
         //
         // Here it's important not to have series resistance
-        // for thee diodes, otherwise we can still exceed rails.
+        // for three diodes, otherwise we can still exceed rails.
         //
         // NOTE: the following ignores supply currents
         //
@@ -814,8 +808,8 @@ struct OpAmp2 : Component<5, 6>
         stampStatic(A, -1, nets[9], nets[0]);
         
         // voltage input
-        stampStatic(A, +g, nets[9], nets[1]);
-        stampStatic(A, -g, nets[9], nets[2]);
+        stampStatic(A, +gain, nets[9], nets[1]);
+        stampStatic(A, -gain, nets[9], nets[2]);
         
         // supply voltages
         stampStatic(A, +1, nets[7], nets[3]);
@@ -868,12 +862,42 @@ struct OpAmp2 : Component<5, 6>
     }
 };
 
+/*
+struct SPSTSwitch final : Component<2> {
+  
+    double& state;
+    double gPos, gNeg;
+    
+    SPSTSwitch(double& state, int vIn, int vOut) : state(state)
+    {
+        pinLoc[0] = vIn;
+        pinLoc[1] = vOut;
+    }
+    
+    void stamp(MNAMatrix& A, MNAVector& x) final
+    {
+        gPos = state ? 1.0 : gMin;
+        gNeg = -gPos;
+
+        A[nets[0]][nets[0]].gdyn.push_back(&gPos);
+        A[nets[0]][nets[1]].gdyn.push_back(&gNeg);
+        A[nets[1]][nets[0]].gdyn.push_back(&gNeg);
+        A[nets[1]][nets[1]].gdyn.push_back(&gPos);
+    }
+
+    void update(MNAResultVector& b) final
+    {
+        gPos = state ? 1.0 : gMin;
+        gNeg = -gPos;
+    }
+}; */
+
 struct Potentiometer final : Component<3> {
     const double r;
-    double g;
-    double ig;
+    double gPosInv;
     double& pos;
-    double ng;
+    double gPos;
+    double gNegInv;
     double ing;
 
     Potentiometer(double& position, double resistance, int vIn, int vWiper, int vOut)
@@ -888,20 +912,20 @@ struct Potentiometer final : Component<3> {
     void stamp(MNAMatrix& A, MNAVector& x) final
     {
         // Calculate conductance
-        g = r * 0.5;
-        ig = r * 0.5;
-        ng = -g;
-        ing = -ig;
+        gPos = r * 0.5;
+        gPosInv = r * 0.5;
+        gNegInv = -gPos;
+        ing = -gPosInv;
 
         // Stamp it dynamically, so it can be adjusted when the pot is moved
-        A[nets[0]][nets[0]].gdyn.push_back(&g);
-        A[nets[0]][nets[1]].gdyn.push_back(&ng);
-        A[nets[1]][nets[0]].gdyn.push_back(&ng);
-        A[nets[1]][nets[1]].gdyn.push_back(&g);
-        A[nets[0]][nets[0]].gdyn.push_back(&ig);
+        A[nets[0]][nets[0]].gdyn.push_back(&gPos);
+        A[nets[0]][nets[1]].gdyn.push_back(&gNegInv);
+        A[nets[1]][nets[0]].gdyn.push_back(&gNegInv);
+        A[nets[1]][nets[1]].gdyn.push_back(&gPos);
+        A[nets[0]][nets[0]].gdyn.push_back(&gPosInv);
         A[nets[0]][nets[2]].gdyn.push_back(&ing);
         A[nets[2]][nets[0]].gdyn.push_back(&ing);
-        A[nets[2]][nets[2]].gdyn.push_back(&ig);
+        A[nets[2]][nets[2]].gdyn.push_back(&gPosInv);
     }
 
     void update(MNAResultVector& b) final
@@ -909,10 +933,10 @@ struct Potentiometer final : Component<3> {
         const double input = std::clamp(pos, 1e-3, 1.0 - 1e-3); // take out the extremes and prevent 0 divides
 
         // Update conductance variables
-        g = 1. / (r * input);
-        ig = 1. / (r - (r * input));
-        ng = -g;
-        ing = -ig;
+        gPos = 1.0 / (r * input);
+        gPosInv = 1.0 / (r - (r * input));
+        gNegInv = -gPos;
+        ing = -gPosInv;
     }
 };
 
@@ -937,15 +961,15 @@ struct StaticPotentiometer final : Component<3> {
         g = std::clamp(g, 1e-4, 1.0 - 1e-4);
         invG = std::clamp(invG, 1e-4, 1.0 - 1e-4);
         
-        stampStatic(A, g, nets[0], nets[0]);
+        stampStatic(A, +g, nets[0], nets[0]);
         stampStatic(A, -g, nets[0], nets[1]);
         stampStatic(A, -g, nets[1], nets[0]);
-        stampStatic(A, g, nets[1], nets[1]);
+        stampStatic(A, +g, nets[1], nets[1]);
         
-        stampStatic(A, invG, nets[0], nets[0]);
+        stampStatic(A, +invG, nets[0], nets[0]);
         stampStatic(A, -invG, nets[0], nets[2]);
         stampStatic(A, -invG, nets[2], nets[0]);
-        stampStatic(A, invG, nets[2], nets[2]);
+        stampStatic(A, +invG, nets[2], nets[2]);
     }
 };
 
@@ -964,17 +988,19 @@ struct Gyrator final : Component<4> {
     void stamp(MNAMatrix& A, MNAVector& x) final
     {
         // see https://github.com/Qucs/qucsator/blob/d48b91e28f7c7b7718dabbdfd6cc9dfa0616d841/src/components/gyrator.cpp
-        stampStatic(A, 1. / r, nets[0], nets[1]);
-        stampStatic(A, -1. / r, nets[0], nets[2]);
+        
+        double g = 1.0 / r;
+        stampStatic(A, g, nets[0], nets[1]);
+        stampStatic(A, -g, nets[0], nets[2]);
 
-        stampStatic(A, 1. / r, nets[1], nets[3]);
-        stampStatic(A, -1. / r, nets[1], nets[0]);
+        stampStatic(A, g, nets[1], nets[3]);
+        stampStatic(A, -g, nets[1], nets[0]);
 
-        stampStatic(A, 1. / r, nets[2], nets[0]);
-        stampStatic(A, -1. / r, nets[2], nets[3]);
+        stampStatic(A, g, nets[2], nets[0]);
+        stampStatic(A, -g, nets[2], nets[3]);
 
-        stampStatic(A, 1. / r, nets[3], nets[2]);
-        stampStatic(A, -1. / r, nets[3], nets[1]);
+        stampStatic(A, g, nets[3], nets[2]);
+        stampStatic(A, -g, nets[3], nets[1]);
     }
 };
 
@@ -996,11 +1022,11 @@ struct Current final : Component<2> {
 };
 
 struct VariableCurrent final : Component<2> {
-    double& a;
-    double a_negative;
+    double& aPos;
+    double aNeg;
 
     VariableCurrent(double& ampere, int pin1, int pin2)
-        : a(ampere)
+        : aPos(ampere)
     {
         pinLoc[0] = pin1;
         pinLoc[1] = pin2;
@@ -1008,13 +1034,13 @@ struct VariableCurrent final : Component<2> {
 
     void stamp(MNAMatrix& A, MNAVector& x) final
     {
-        x[nets[0]].gdyn.push_back(&a_negative);
-        x[nets[1]].gdyn.push_back(&a);
+        x[nets[0]].gdyn.push_back(&aNeg);
+        x[nets[1]].gdyn.push_back(&aPos);
     }
 
     void update(MNAResultVector& b) final
     {
-        a_negative = -a;
+        aNeg = -aPos;
     }
 };
 
@@ -1039,10 +1065,8 @@ struct Triode : public Component<3, 3> {
     double ip, ids, gm, gds, e1;
     
     // Variables to store voltages from the previous iteration
-    double lastv0 = 0;
-    double lastv1 = 0;
-    double lastv2 = 0;
-
+    double lastV[3] = {0};
+    
     // Dynamic matrices for nodal analysis
     std::vector<double> ieq = std::vector<double>(3, 0);
     std::vector<std::vector<double>> geq = std::vector<std::vector<double>>(3, std::vector<double>(3, 0));
@@ -1183,9 +1207,9 @@ struct Triode : public Component<3, 3> {
         ieq[2] = -rs;
 
         // Store current voltages for comparison in the next iteration
-        lastv0 = b[nets[0]];
-        lastv1 = b[nets[1]];
-        lastv2 = b[nets[2]];
+        lastV[0] = b[nets[0]];
+        lastV[1] = b[nets[1]];
+        lastV[2] = b[nets[2]];
     }
 
     void initTransientAnalysis(double told_per_new) final
@@ -1195,25 +1219,23 @@ struct Triode : public Component<3, 3> {
         vcpk = 2.0 * cpk * vpk;
     }
 
-    bool newton(MNAResultVector& b)
+    bool newton(MNAResultVector& b) final
     {
         // Apply the Newton-Raphson method for convergence
-        double newv0 = b[nets[0]];
-        double newv1 = b[nets[1]];
-        double newv2 = b[nets[2]];
-
+        double newV[3] = {b[nets[0]], b[nets[1]], b[nets[2]]};
+        
         // Limit voltage changes to 0.5V
-        if (newv1 > lastv1 + 0.5)
-            newv1 = lastv1 + 0.5;
-        if (newv1 < lastv1 - 0.5)
-            newv1 = lastv1 - 0.5;
-        if (newv2 > lastv2 + 0.5)
-            newv2 = lastv2 + 0.5;
-        if (newv2 < lastv2 - 0.5)
-            newv2 = lastv2 - 0.5;
+        if (newV[1] > lastV[1] + 0.5)
+            newV[1] = lastV[1] + 0.5;
+        if (newV[1] < lastV[1] - 0.5)
+            newV[1] = lastV[1] - 0.5;
+        if (newV[2] > lastV[2] + 0.5)
+            newV[2] = lastV[2] + 0.5;
+        if (newV[2] < lastV[2] - 0.5)
+            newV[2] = lastV[2] - 0.5;
 
         // Check for convergence based on voltage changes
-        if (abs(lastv0 - newv0) <= vTolerance && abs(lastv1 - newv1) <= vTolerance && abs(lastv2 - newv2) <= vTolerance)
+        if (abs(lastV[0] - newV[0]) <= vTolerance && abs(lastV[1] - newV[1]) <= vTolerance && abs(lastV[2] - newV[2]) <= vTolerance)
             return true;
 
         // Calculate triode parameters using Koren's model
@@ -1230,7 +1252,7 @@ struct MOSFET : public Component<3> {
     double beta = 0.02;  // Beta parameter (transconductance)
     double lambda = 0.0; // Lambda parameter (channel-length modulation)
 
-    double lastv0 = 0.0, lastv1 = 0.0, lastv2 = 0.0; // Last voltage values for convergence check
+    double lastV[3] = {0}; // Last voltage values for convergence check
     double ids;                    // Drain current (output current)
 
     double geq[3][3] = { { 0.0 } }; // Matrix to store conductance values
@@ -1281,14 +1303,14 @@ struct MOSFET : public Component<3> {
         bool allConverged = false;
         double vs[3] = { b[nets[0]], b[nets[1]], b[nets[2]] }; // copy since we don't want to change the actual values
 
-        if (vs[1] > lastv1 + 0.5)
-            vs[1] = lastv1 + 0.5;
-        if (vs[1] < lastv1 - 0.5)
-            vs[1] = lastv1 - 0.5;
-        if (vs[2] > lastv2 + 0.5)
-            vs[2] = lastv2 + 0.5;
-        if (vs[2] < lastv2 - 0.5)
-            vs[2] = lastv2 - 0.5;
+        if (vs[1] > lastV[1] + 0.5)
+            vs[1] = lastV[1] + 0.5;
+        if (vs[1] < lastV[1] - 0.5)
+            vs[1] = lastV[1] - 0.5;
+        if (vs[2] > lastV[2] + 0.5)
+            vs[2] = lastV[2] + 0.5;
+        if (vs[2] < lastV[2] - 0.5)
+            vs[2] = lastV[2] - 0.5;
 
         int gate = 0;
         int source = 1;
@@ -1303,14 +1325,15 @@ struct MOSFET : public Component<3> {
 
         double vgs = vs[gate] - vs[source];
         double vds = vs[drain] - vs[source];
-        if (converged(lastv1, vs[1]) && converged(lastv2, vs[2]) && converged(lastv0, vs[0]))
+        if (converged(lastV[0], vs[0]) && converged(lastV[1], vs[1]) && converged(lastV[2], vs[2]))
             allConverged = true;
 
-        lastv0 = vs[0];
-        lastv1 = vs[1];
-        lastv2 = vs[2];
-        double realvgs = vgs;
-        double realvds = vds;
+        lastV[0] = vs[0];
+        lastV[1] = vs[1];
+        lastV[2] = vs[2];
+        
+        double realVgs = vgs;
+        double realVds = vds;
         vgs *= pnp;
         vds *= pnp;
         const double be = beta * (1.0 + lambda * vds);
@@ -1331,12 +1354,12 @@ struct MOSFET : public Component<3> {
         } else {
             // saturation; gds = 0
             gm = be * (vgs - vt);
-            // use very small gds to avoid nonconvergence
+            // use very small gds to avoid non-convergence
             gds = 1e-8;
             ids = 0.5 * be * (vgs - vt) * (vgs - vt) + (vds - (vgs - vt)) * gds;
         }
 
-        const double rs = (-pnp) * ids + gds * realvds + gm * realvgs;
+        const double rs = (-pnp) * ids + gds * realVds + gm * realVgs;
 
         // flip ids if we swapped source and drain above
         if ((source == 2 && pnp == 1) || (source == 1 && pnp == -1))
@@ -1388,13 +1411,13 @@ struct JFET : public MOSFET {
         diode = std::make_unique<Diode>(isPNP ? source : gate, isPNP ? gate : source, 10, is, 1.0);
     }
 
-    void stamp(MNAMatrix& A, MNAVector& x) override
+    void stamp(MNAMatrix& A, MNAVector& x) final
     {
         MOSFET::stamp(A, x);
         diode->stamp(A, x);
     }
 
-    void setupNets(int& netSize) override
+    void setupNets(int& netSize) final
     {
         diode->setupNets(netSize);
 
@@ -1403,7 +1426,7 @@ struct JFET : public MOSFET {
         }
     }
 
-    bool newton(MNAResultVector& b) override
+    bool newton(MNAResultVector& b) final
     {
         return diode->newton(b) & MOSFET::newton(b);
     }
