@@ -10,10 +10,11 @@
 
 #define buffer_MAXCHANS 64 //max number of channels
 
+#define _USE_MATH_DEFINES
 #include <math.h>
 
-#define TWO_PI (3.14159265358979323846 * 2)
-#define HALF_PI (3.14159265358979323846 * 0.5)
+#define TWO_PI (M_PI * 2)
+#define HALF_PI (M_PI * 0.5)
 
 #define ONE_SIXTH 0.16666666666666666666667f
 

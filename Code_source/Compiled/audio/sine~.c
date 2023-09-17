@@ -1,7 +1,5 @@
-// Porres 2017
+// Porres 2017-2023
 
-#define _USE_MATH_DEFINES
-#include <math.h>
 #include "m_pd.h"
 #include "magic.h"
 #include "buffer.h"
@@ -65,7 +63,6 @@ static t_int *sine_perform(t_int *w){
                 phase[j] += 1.; // wrap deviated phase
             if(phase[j] >= 1)
                 phase[j] -= 1.; // wrap deviated phase
-//            out[j*n + i] = sin(phase[j] * TWOPI);
             out[j*n + i] = read_sintab(x->x_sintable, phase[j]);
             phase[j] += phase_step; // next phase
             last_phase_offset[j] = phase_offset; // last phase offset
@@ -116,7 +113,6 @@ static t_int *sine_perform_sig(t_int *w){
                     phase[j] -= 1.; // wrap deviated phase
             }
             *out++ = read_sintab(x->x_sintable, phase[j]);
-//            *out++ = sin(phase[j] * TWOPI);
             phase[j] += phase_step; // next phase
             last_phase_offset[j] = phase_offset; // last phase offset
         }
@@ -218,4 +214,3 @@ void sine_tilde_setup(void){
     class_addmethod(sine_class, (t_method)sine_midi, gensym("midi"), A_DEFFLOAT, 0);
     class_addmethod(sine_class, (t_method)sine_dsp, gensym("dsp"), A_CANT, 0);
 }
-
