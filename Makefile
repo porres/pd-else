@@ -267,7 +267,6 @@ zerocross~.class.sources := Code_source/Compiled/audio/zerocross~.c
 
 
 magic := Code_source/shared/magic.c
-    sine~.class.sources := Code_source/Compiled/audio/sine~.c $(magic)
     cosine~.class.sources := Code_source/Compiled/audio/cosine~.c $(magic)
     fbsine~.class.sources := Code_source/Compiled/audio/fbsine~.c $(magic)
     gaussian~.class.sources := Code_source/Compiled/audio/gaussian~.c $(magic)
@@ -300,6 +299,7 @@ buf := Code_source/shared/buffer.c
 bufmagic := \
 Code_source/shared/magic.c \
 Code_source/shared/buffer.c
+    sine~.class.sources := Code_source/Compiled/audio/sine~.c $(bufmagic)
     wavetable~.class.sources = Code_source/Compiled/audio/wavetable~.c $(bufmagic)
     wt~.class.sources = Code_source/Compiled/extra_source/Aliases/wt~.c $(bufmagic)
     tabplayer~.class.sources = Code_source/Compiled/audio/tabplayer~.c $(bufmagic)

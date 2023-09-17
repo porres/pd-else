@@ -70,6 +70,13 @@ double bias, double tension){
     return(p0*b + p1*m0 + p2*m1 + p3*c);
 }
 
+double read_sintab(double *tab, double phase){
+    double tabphase = phase * ELSE_SIN_TABSIZE;
+    int i = (int)tabphase;
+    double frac = tabphase - i, p1 = tab[i], p2 = tab[i+1];
+    return(interp_lin(frac, p1, p2));
+}
+
 // on failure *bufsize is not modified
 t_word *buffer_get(t_buffer *c, t_symbol * name, int *bufsize, int indsp, int complain){
 //in dsp = used in dsp,
@@ -91,7 +98,7 @@ t_word *buffer_get(t_buffer *c, t_symbol * name, int *bufsize, int indsp, int co
         else if(complain)
             pd_error(c->c_owner, "no such array '%s'", name->s_name);
     }
-    return (0);
+    return(0);
 }
 
 //making peek~ work with channel number choosing, assuming 1-indexed

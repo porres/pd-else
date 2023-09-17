@@ -4,9 +4,7 @@
 #include <math.h>
 #include "m_pd.h"
 #include "magic.h"
-
-#define ELSE_SIN_TABSIZE 16384
-#define TWOPI 2.0 * M_PI
+#include "buffer.h"
 
 typedef struct _sine{
     t_object    x_obj;
@@ -29,31 +27,6 @@ typedef struct _sine{
 }t_sine;
 
 static t_class *sine_class;
-
-static double *else_makesintab(void){
-    static double *sintable; // stays allocated as long as Pd is running
-    if(sintable)
-        return(sintable);
-    sintable = getbytes((ELSE_SIN_TABSIZE + 1) * sizeof(*sintable));
-    double *tp = sintable;
-    double inc = TWOPI / ELSE_SIN_TABSIZE, phase = 0;
-    for(int i = ELSE_SIN_TABSIZE/4 - 1; i >= 0; i--, phase += inc)
-        *tp++ = sin(phase); // populate 1st quarter
-    *tp++ = 1;
-    for(int i = ELSE_SIN_TABSIZE/4 - 1; i >= 0; i--)
-        *tp++ = sintable[i]; // mirror inverted
-    for(int i = ELSE_SIN_TABSIZE/2 - 1; i >= 0; i--)
-        *tp++ = -sintable[i]; // mirror back
-    return(sintable);
-}
-
-static double read_sintab(t_sine *x, double phase){
-    double tabphase = phase * ELSE_SIN_TABSIZE;
-    int index = (int)tabphase;
-    double frac = tabphase - index;
-    double p1 = x->x_sintable[index], p2 = x->x_sintable[index+1];
-    return(p1 + frac * (p2 - p1)); // linear interpolation
-}
 
 static t_int *sine_perform(t_int *w){
     t_sine *x = (t_sine *)(w[1]);
@@ -93,7 +66,7 @@ static t_int *sine_perform(t_int *w){
             if(phase[j] >= 1)
                 phase[j] -= 1.; // wrap deviated phase
 //            out[j*n + i] = sin(phase[j] * TWOPI);
-            out[j*n + i] = read_sintab(x, phase[j]);
+            out[j*n + i] = read_sintab(x->x_sintable, phase[j]);
             phase[j] += phase_step; // next phase
             last_phase_offset[j] = phase_offset; // last phase offset
         }
@@ -142,8 +115,7 @@ static t_int *sine_perform_sig(t_int *w){
                 if(phase[j] >= 1)
                     phase[j] -= 1.; // wrap deviated phase
             }
-            
-            *out++ = read_sintab(x, phase[j]);
+            *out++ = read_sintab(x->x_sintable, phase[j]);
 //            *out++ = sin(phase[j] * TWOPI);
             phase[j] += phase_step; // next phase
             last_phase_offset[j] = phase_offset; // last phase offset

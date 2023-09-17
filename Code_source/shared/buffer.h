@@ -17,6 +17,8 @@
 
 #define ONE_SIXTH 0.16666666666666666666667f
 
+#define ELSE_SIN_TABSIZE 16384
+
 typedef struct _buffer{
     void       *c_owner;     // owner of buffer, note i don't know if this actually works
     int         c_npts;      // used also as a validation flag, number of samples in an array */
@@ -39,6 +41,25 @@ double interp_cubic(double frac, double a, double b, double c, double d);
 double interp_spline(double frac, double a, double b, double c, double d);
 double interp_hermite(double frac, double a, double b, double c, double d,
     double bias, double tension);
+
+static double *else_makesintab(void){
+    static double *sintable; // stays allocated as long as Pd is running
+    if(sintable)
+        return(sintable);
+    sintable = getbytes((ELSE_SIN_TABSIZE + 1) * sizeof(*sintable));
+    double *tp = sintable;
+    double inc = TWO_PI / ELSE_SIN_TABSIZE, phase = 0;
+    for(int i = ELSE_SIN_TABSIZE/4 - 1; i >= 0; i--, phase += inc)
+        *tp++ = sin(phase); // populate 1st quarter
+    *tp++ = 1;
+    for(int i = ELSE_SIN_TABSIZE/4 - 1; i >= 0; i--)
+        *tp++ = sintable[i]; // mirror inverted
+    for(int i = ELSE_SIN_TABSIZE/2 - 1; i >= 0; i--)
+        *tp++ = -sintable[i]; // mirror back
+    return(sintable);
+}
+
+double read_sintab(double *tab, double phase);
 
 void buffer_bug(char *fmt, ...);
 void buffer_clear(t_buffer *c);
