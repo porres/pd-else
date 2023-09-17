@@ -70,6 +70,27 @@ double bias, double tension){
     return(p0*b + p1*m0 + p2*m1 + p3*c);
 }
 
+static double *else_makesintab(void){
+    static double *sintable; // stays allocated as long as Pd is running
+    if(sintable)
+        return(sintable);
+    sintable = getbytes((ELSE_SIN_TABSIZE + 1) * sizeof(*sintable));
+    double *tp = sintable;
+    double inc = TWO_PI / ELSE_SIN_TABSIZE, phase = 0;
+    for(int i = ELSE_SIN_TABSIZE/4 - 1; i >= 0; i--, phase += inc)
+        *tp++ = sin(phase); // populate 1st quarter
+    *tp++ = 1;
+    for(int i = ELSE_SIN_TABSIZE/4 - 1; i >= 0; i--)
+        *tp++ = sintable[i]; // mirror inverted
+    for(int i = ELSE_SIN_TABSIZE/2 - 1; i >= 0; i--)
+        *tp++ = -sintable[i]; // mirror back
+    return(sintable);
+}
+
+double *get_sine_table(void){
+    return(else_makesintab());
+}
+
 double read_sintab(double *tab, double phase){
     double tabphase = phase * ELSE_SIN_TABSIZE;
     int i = (int)tabphase;

@@ -42,22 +42,7 @@ double interp_spline(double frac, double a, double b, double c, double d);
 double interp_hermite(double frac, double a, double b, double c, double d,
     double bias, double tension);
 
-static double *else_makesintab(void){
-    static double *sintable; // stays allocated as long as Pd is running
-    if(sintable)
-        return(sintable);
-    sintable = getbytes((ELSE_SIN_TABSIZE + 1) * sizeof(*sintable));
-    double *tp = sintable;
-    double inc = TWO_PI / ELSE_SIN_TABSIZE, phase = 0;
-    for(int i = ELSE_SIN_TABSIZE/4 - 1; i >= 0; i--, phase += inc)
-        *tp++ = sin(phase); // populate 1st quarter
-    *tp++ = 1;
-    for(int i = ELSE_SIN_TABSIZE/4 - 1; i >= 0; i--)
-        *tp++ = sintable[i]; // mirror inverted
-    for(int i = ELSE_SIN_TABSIZE/2 - 1; i >= 0; i--)
-        *tp++ = -sintable[i]; // mirror back
-    return(sintable);
-}
+double *get_sine_table(void);
 
 double read_sintab(double *tab, double phase);
 

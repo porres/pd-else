@@ -197,7 +197,7 @@ static void *sine_new(t_symbol *s, int ac, t_atom *av){
         x->x_phase[0] = 1.;
     else
         x->x_phase[0] = init_phase;
-    x->x_sintable = else_makesintab();
+    x->x_sintable = get_sine_table();
     x->x_freq = init_freq;
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_sync, 0);
