@@ -36,7 +36,7 @@ static double *else_makesintab(void){
         return(sintable);
     sintable = getbytes((ELSE_SIN_TABSIZE + 1) * sizeof(*sintable));
     double *tp = sintable;
-    double inc = (2.0 * M_PI) / ELSE_SIN_TABSIZE, phase = 0;
+    double inc = TWOPI / ELSE_SIN_TABSIZE, phase = 0;
     for(int i = ELSE_SIN_TABSIZE/4 - 1; i >= 0; i--, phase += inc)
         *tp++ = sin(phase); // populate 1st quarter
     *tp++ = 1;
@@ -92,7 +92,8 @@ static t_int *sine_perform(t_int *w){
                 phase[j] += 1.; // wrap deviated phase
             if(phase[j] >= 1)
                 phase[j] -= 1.; // wrap deviated phase
-            out[j*n + i] = sin(phase[j] * TWOPI);
+//            out[j*n + i] = sin(phase[j] * TWOPI);
+            out[j*n + i] = read_sintab(x, phase[j]);
             phase[j] += phase_step; // next phase
             last_phase_offset[j] = phase_offset; // last phase offset
         }
