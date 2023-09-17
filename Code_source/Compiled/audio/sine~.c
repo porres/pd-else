@@ -1,12 +1,12 @@
 // Porres 2017
 
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include "m_pd.h"
-#include "math.h"
 #include "magic.h"
 
-#define TWOPI (3.14159265358979323846 * 2)
-
-static t_class *sine_class;
+#define ELSE_SIN_TABSIZE 16384
+#define TWOPI 2.0 * M_PI
 
 typedef struct _sine{
     t_object    x_obj;
@@ -20,12 +20,40 @@ typedef struct _sine{
     t_inlet    *x_inlet_sync;
     t_outlet   *x_outlet;
     t_float     x_sr;
+    double     *x_sintable;
 // MAGIC:
     t_glist    *x_glist; // object list
     t_float    *x_signalscalar; // right inlet's float field
     int         x_hasfeeders; // right inlet connection flag
     t_float     x_phase_sync_float; // float from magic
 }t_sine;
+
+static t_class *sine_class;
+
+static double *else_makesintab(void){
+    static double *sintable; // stays allocated as long as Pd is running
+    if(sintable)
+        return(sintable);
+    sintable = getbytes((ELSE_SIN_TABSIZE + 1) * sizeof(*sintable));
+    double *tp = sintable;
+    double inc = (2.0 * M_PI) / ELSE_SIN_TABSIZE, phase = 0;
+    for(int i = ELSE_SIN_TABSIZE/4 - 1; i >= 0; i--, phase += inc)
+        *tp++ = sin(phase); // populate 1st quarter
+    *tp++ = 1;
+    for(int i = ELSE_SIN_TABSIZE/4 - 1; i >= 0; i--)
+        *tp++ = sintable[i]; // mirror inverted
+    for(int i = ELSE_SIN_TABSIZE/2 - 1; i >= 0; i--)
+        *tp++ = -sintable[i]; // mirror back
+    return(sintable);
+}
+
+static double read_sintab(t_sine *x, double phase){
+    double tabphase = phase * ELSE_SIN_TABSIZE;
+    int index = (int)tabphase;
+    double frac = tabphase - index;
+    double p1 = x->x_sintable[index], p2 = x->x_sintable[index+1];
+    return(p1 + frac * (p2 - p1)); // linear interpolation
+}
 
 static t_int *sine_perform(t_int *w){
     t_sine *x = (t_sine *)(w[1]);
@@ -113,7 +141,9 @@ static t_int *sine_perform_sig(t_int *w){
                 if(phase[j] >= 1)
                     phase[j] -= 1.; // wrap deviated phase
             }
-            *out++ = sin(phase[j] * TWOPI);
+            
+            *out++ = read_sintab(x, phase[j]);
+//            *out++ = sin(phase[j] * TWOPI);
             phase[j] += phase_step; // next phase
             last_phase_offset[j] = phase_offset; // last phase offset
         }
@@ -194,6 +224,7 @@ static void *sine_new(t_symbol *s, int ac, t_atom *av){
         x->x_phase[0] = 1.;
     else
         x->x_phase[0] = init_phase;
+    x->x_sintable = else_makesintab();
     x->x_freq = init_freq;
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_sync, 0);
@@ -214,3 +245,4 @@ void sine_tilde_setup(void){
     class_addmethod(sine_class, (t_method)sine_midi, gensym("midi"), A_DEFFLOAT, 0);
     class_addmethod(sine_class, (t_method)sine_dsp, gensym("dsp"), A_CANT, 0);
 }
+
