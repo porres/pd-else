@@ -70,10 +70,11 @@ double bias, double tension){
     return(p0*b + p1*m0 + p2*m1 + p3*c);
 }
 
-static double *else_makesintab(void){
-    static double *sintable; // stays allocated as long as Pd is running
+static double *sintable; // stays allocated as long as Pd is running
+
+void init_sine_table(void){
     if(sintable)
-        return(sintable);
+        return;
     sintable = getbytes((ELSE_SIN_TABSIZE + 1) * sizeof(*sintable));
     double *tp = sintable;
     double inc = TWO_PI / ELSE_SIN_TABSIZE, phase = 0;
@@ -84,17 +85,12 @@ static double *else_makesintab(void){
         *tp++ = sintable[i]; // mirror inverted
     for(int i = ELSE_SIN_TABSIZE/2 - 1; i >= 0; i--)
         *tp++ = -sintable[i]; // mirror back
-    return(sintable);
 }
 
-double *get_sine_table(void){
-    return(else_makesintab());
-}
-
-double read_sintab(double *tab, double phase){
+double read_sintab(double phase){
     double tabphase = phase * ELSE_SIN_TABSIZE;
     int i = (int)tabphase;
-    double frac = tabphase - i, p1 = tab[i], p2 = tab[i+1];
+    double frac = tabphase - i, p1 = sintable[i], p2 = sintable[i+1];
     return(interp_lin(frac, p1, p2));
 }
 

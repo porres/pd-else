@@ -43,9 +43,9 @@ double interp_spline(double frac, double a, double b, double c, double d);
 double interp_hermite(double frac, double a, double b, double c, double d,
     double bias, double tension);
 
-double *get_sine_table(void);
+double read_sintab(double phase);
 
-double read_sintab(double *tab, double phase);
+void init_sine_table(void);
 
 void buffer_bug(char *fmt, ...);
 void buffer_clear(t_buffer *c);
