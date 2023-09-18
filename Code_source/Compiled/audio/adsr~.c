@@ -36,8 +36,8 @@ static void adsr_lin(t_adsr *x, t_floatarg f){
 
 static void adsr_bang(t_adsr *x){
     x->x_f_gate = x->x_last_gate;
-    if(!x->x_status) // trigger it on
-        outlet_float(x->x_out2, x->x_status[0] = 1); // ?????????
+    if(!x->x_status[0]) // trigger it on
+        outlet_float(x->x_out2, x->x_status[0] = 1);
     else
         x->x_retrigger = 1;
 }
@@ -46,8 +46,8 @@ static void adsr_gate(t_adsr *x, t_floatarg f){
     x->x_f_gate = f;
     if(x->x_f_gate != 0){
         x->x_last_gate = x->x_f_gate;
-        if(!x->x_status) // trigger it on
-            outlet_float(x->x_out2, x->x_status[0] = 1); // ?????????
+        if(!x->x_status[0]) // trigger it on
+            outlet_float(x->x_out2, x->x_status[0] = 1);
         else
             x->x_retrigger = 1;
     }
@@ -57,8 +57,8 @@ static void adsr_float(t_adsr *x, t_floatarg f){
     x->x_f_gate = f / 127;
     if(x->x_f_gate != 0){
         x->x_last_gate = x->x_f_gate;
-        if(!x->x_status) // trigger it on
-            outlet_float(x->x_out2, x->x_status[0] = 1); // ?????????
+        if(!x->x_status[0]) // trigger it on
+            outlet_float(x->x_out2, x->x_status[0] = 1);
         else
             x->x_retrigger = 1;
     }
@@ -124,6 +124,11 @@ static t_int *adsr_perform(t_int *w){
                     incr[j] =  -(last[j] * coef_r);
                     nleft[j] = n_release;
                 }
+            }
+            else if(gate_status[j] && input_gate != target[j]){ // sig changed, retrigger
+                target[j] = input_gate;
+                incr[j] = (target[j] - last[j]) * coef_a;
+                nleft[j] = n_attack + n_decay;
             }
 // "attack + decay + sustain" phase
             if(gate_status[j]){
