@@ -280,8 +280,8 @@ magic := Code_source/shared/magic.c
     pimp~.class.sources := Code_source/Compiled/audio/pimp~.c $(magic)
     numbox~.class.sources := Code_source/Compiled/audio/numbox~.c $(magic)
 
-buf := Code_source/shared/buffer.c $(buf)
-    sin~.class.sources := Code_source/Compiled/audio/sin~.c
+buf := Code_source/shared/buffer.c
+    sin~.class.sources := Code_source/Compiled/audio/sin~.c $(buf)
     shaper~.class.sources = Code_source/Compiled/audio/shaper~.c $(buf)
     tabreader.class.sources = Code_source/Compiled/control/tabreader.c $(buf)
     tabreader~.class.sources = Code_source/Compiled/audio/tabreader~.c $(buf)
