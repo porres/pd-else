@@ -150,6 +150,7 @@ ceil~.class.sources := Code_source/Compiled/audio/ceil~.c
 cents2ratio~.class.sources := Code_source/Compiled/audio/cents2ratio~.c
 changed~.class.sources := Code_source/Compiled/audio/changed~.c
 changed2~.class.sources := Code_source/Compiled/audio/changed2~.c
+conv~.class.sources := Code_source/Compiled/audio/conv~.c
 cmul~.class.sources := Code_source/Compiled/audio/cmul~.c
 crackle~.class.sources := Code_source/Compiled/audio/crackle~.c
 crossover~.class.sources := Code_source/Compiled/audio/crossover~.c
