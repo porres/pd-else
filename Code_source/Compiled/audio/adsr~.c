@@ -125,11 +125,11 @@ static t_int *adsr_perform(t_int *w){
                     nleft[j] = n_release;
                 }
             }
-            else if(gate_status[j] && input_gate != target[j]){ // sig changed, retrigger
+/*            else if(gate_status[j] && input_gate != target[j]){ // sig changed, retrigger
                 target[j] = input_gate;
                 incr[j] = (target[j] - last[j]) * coef_a;
                 nleft[j] = n_attack + n_decay;
-            }
+            }*/
 // "attack + decay + sustain" phase
             if(gate_status[j]){
                 if(nleft[j] > 0){ // "attack + decay" not over
@@ -182,7 +182,7 @@ static void adsr_dsp(t_adsr *x, t_signal **sp){
     x->x_sr_khz = sp[0]->s_sr * 0.001;
     x->x_n = sp[0]->s_n;
     int chs = sp[0]->s_nchans;
-    signal_setmultiout(&sp[5], x->x_nchans);
+    signal_setmultiout(&sp[5], chs);
     if(x->x_nchans != chs){
         x->x_incr = (double *)resizebytes(x->x_incr,
             x->x_nchans * sizeof(double), chs * sizeof(double));
