@@ -296,8 +296,8 @@ buf := Code_source/shared/buffer.c $(buf)
 bufmagic := \
 Code_source/shared/magic.c \
 Code_source/shared/buffer.c
-    cosine~.class.sources := Code_source/Compiled/audio/cosine~.c $(magic)
-    fbsine~.class.sources := Code_source/Compiled/audio/fbsine~.c $(magic)
+    cosine~.class.sources := Code_source/Compiled/audio/cosine~.c $(bufmagic)
+    fbsine~.class.sources := Code_source/Compiled/audio/fbsine~.c $(bufmagic)
     sine~.class.sources := Code_source/Compiled/audio/sine~.c $(bufmagic)
     wavetable~.class.sources = Code_source/Compiled/audio/wavetable~.c $(bufmagic)
     wt~.class.sources = Code_source/Compiled/extra_source/Aliases/wt~.c $(bufmagic)
