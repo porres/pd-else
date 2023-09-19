@@ -219,15 +219,15 @@ void *circuit_tilde_new(t_symbol *s, int argc, t_atom *argv)
     {
         if(argv[i].a_type == A_SYMBOL && argv[i].a_w.w_symbol == gensym("-iter") && argv[i + 1].a_type == A_FLOAT)
         {
-            x->x_numiter = argv[i + 1].a_w.w_float;
+            numiter = argv[i + 1].a_w.w_float;
         }
         else if(argv[i].a_type == A_SYMBOL && argv[i].a_w.w_symbol == gensym("-oversample") && argv[i + 1].a_type == A_FLOAT)
         {
-            x->x_oversample_factor = argv[i + 1].a_w.w_float;
+            oversample_factor = argv[i + 1].a_w.w_float;
         }
         else if(argv[i].a_type == A_SYMBOL && argv[i].a_w.w_symbol == gensym("-dcblock") && argv[i + 1].a_type == A_FLOAT)
         {
-            x->x_dcblock = argv[i + 1].a_w.w_float;
+            dcblock = argv[i + 1].a_w.w_float;
         }
     }
     
