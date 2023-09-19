@@ -283,6 +283,7 @@ magic := Code_source/shared/magic.c
 
 buf := Code_source/shared/buffer.c
     sin~.class.sources := Code_source/Compiled/audio/sin~.c $(buf)
+    op2~.class.sources := Code_source/Compiled/audio/op2~.c $(buf)
     shaper~.class.sources = Code_source/Compiled/audio/shaper~.c $(buf)
     tabreader.class.sources = Code_source/Compiled/control/tabreader.c $(buf)
     tabreader~.class.sources = Code_source/Compiled/audio/tabreader~.c $(buf)
