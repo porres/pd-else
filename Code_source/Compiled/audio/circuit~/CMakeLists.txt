@@ -31,9 +31,13 @@ add_pd_external(pd-circuit circuit~ ${CMAKE_CURRENT_SOURCE_DIR}/Source/circuit~.
 file(GLOB KLU_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Libraries/KLU/*.c" "${CMAKE_CURRENT_SOURCE_DIR}/Libraries/COLAMD/*.c" "${CMAKE_CURRENT_SOURCE_DIR}/Libraries/AMD/*.c" "${CMAKE_CURRENT_SOURCE_DIR}/Libraries/BTF/*.c" "${CMAKE_CURRENT_SOURCE_DIR}/Libraries/SuiteSparse_config/*.c")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/Libraries/")
 
+file(GLOB SAMPLERATE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Libraries/libsamplerate/*.c")
+add_library(samplerate STATIC ${SAMPLERATE_SOURCES})
+
+
 add_library(klu STATIC ${KLU_SOURCES})
 
-add_library(circuit-simulator STATIC ${CMAKE_CURRENT_SOURCE_DIR}/Source/Simulator.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/Simulator.h ${CMAKE_CURRENT_SOURCE_DIR}/Source/Netlist.h ${CMAKE_CURRENT_SOURCE_DIR}/Source/MNA.h ${CMAKE_CURRENT_SOURCE_DIR}/Source/Components.h)
+add_library(circuit-simulator STATIC ${CMAKE_CURRENT_SOURCE_DIR}/Source/Simulator.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Source/Simulator.h ${CMAKE_CURRENT_SOURCE_DIR}/Source/Netlist.h ${CMAKE_CURRENT_SOURCE_DIR}/Source/Components.h)
 target_include_directories(circuit-simulator PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Libraries)
-target_link_libraries(pd-circuit circuit-simulator klu)
+target_link_libraries(pd-circuit samplerate klu circuit-simulator)
 
