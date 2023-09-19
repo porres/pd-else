@@ -71,7 +71,8 @@ static t_int *adsr_perform(t_int *w){
     t_float *in3 = (t_float *)(w[4]);
     t_float *in4 = (t_float *)(w[5]);
     t_float *in5 = (t_float *)(w[6]);
-    t_float *out = (t_float *)(w[7]);
+    t_float *in6 = (t_float *)(w[7]);
+    t_float *out = (t_float *)(w[8]);
     int n = x->x_n, chs = x->x_nchans;
     t_float *last = x->x_last;
     t_float *target = x->x_target;
@@ -86,6 +87,7 @@ static t_int *adsr_perform(t_int *w){
             t_float decay = in3[i];
             t_float sustain_point = in4[i];
             t_float release = in5[i];
+            t_float retrig = in6[i];
 // get & clip 'n'; set a/d/r coefs
             t_float n_attack = roundf(attack * x->x_sr_khz);
             if(n_attack < 1)
@@ -125,11 +127,11 @@ static t_int *adsr_perform(t_int *w){
                     nleft[j] = n_release;
                 }
             }
-/*            else if(gate_status[j] && input_gate != target[j]){ // sig changed, retrigger
-                target[j] = input_gate;
+            else if(gate_status[j] && retrig != 0){ // sig changed, retrigger
+//                target[j] = input_gate;
                 incr[j] = (target[j] - last[j]) * coef_a;
                 nleft[j] = n_attack + n_decay;
-            }*/
+            }
 // "attack + decay + sustain" phase
             if(gate_status[j]){
                 if(nleft[j] > 0){ // "attack + decay" not over
@@ -175,14 +177,14 @@ static t_int *adsr_perform(t_int *w){
     x->x_nleft = nleft;
     x->x_gate_status = gate_status;
     x->x_status = status;
-    return(w+8);
+    return(w+9);
 }
 
 static void adsr_dsp(t_adsr *x, t_signal **sp){
     x->x_sr_khz = sp[0]->s_sr * 0.001;
     x->x_n = sp[0]->s_n;
     int chs = sp[0]->s_nchans;
-    signal_setmultiout(&sp[5], chs);
+    signal_setmultiout(&sp[6], chs);
     if(x->x_nchans != chs){
         x->x_incr = (double *)resizebytes(x->x_incr,
             x->x_nchans * sizeof(double), chs * sizeof(double));
@@ -203,8 +205,8 @@ static void adsr_dsp(t_adsr *x, t_signal **sp){
         pd_error(x, "[adsr~]: secondary inputs must be single channels only");
         return;
     }
-    dsp_add(adsr_perform, 7, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec,
-        sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec);
+    dsp_add(adsr_perform, 8, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec,
+        sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec);
 }
 
 static void *adsr_free(t_adsr *x){
@@ -279,6 +281,7 @@ static void *adsr_new(t_symbol *sym, int ac, t_atom *av){
         pd_float((t_pd *)x->x_inlet_sustain, s);
     x->x_inlet_release = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_release, r);
+    inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     outlet_new((t_object *)x, &s_signal);
     x->x_out2 = outlet_new((t_object *)x, &s_float);
     return(x);
