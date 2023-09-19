@@ -47,11 +47,17 @@ enum ComponentType {
     tInductor,
     tOpAmp,
     tOpAmp2,
+    tSPST,
+    tSPDT,
     tPotmeter,
     tCurrent,
     tProbe,
     tTriode,
-    tIter // Special identifier to set number of iterations
+    /* Still experimental...
+    tTappedTransformer,
+    tPentode,
+    tBuffer,
+    tDelayBuffer */
 };
 
 extern "C" {

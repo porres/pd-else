@@ -121,6 +121,10 @@ void* simulator_create(int argc, t_atom* argv, double sampleRate)
         } else if (arguments[0] =="voltage" && arguments.size() > 3) {
             auto [args, pins] = getPinsAndArguments(arguments, 2);
             netlistDescription.emplace_back(tVoltage, args, pins, "");
+        } else if (arguments[0] =="rail" && arguments.size() > 2) {
+            auto [args, pins] = getPinsAndArguments(arguments, 1);
+            pins.push_back(0);
+            netlistDescription.emplace_back(tVoltage, args, pins, "");
         } else if (arguments[0] =="diode" && arguments.size() > 2) {
             auto [args, pins] = getPinsAndArguments(arguments, 2);
             netlistDescription.emplace_back(tDiode, args, pins, model);
@@ -148,6 +152,12 @@ void* simulator_create(int argc, t_atom* argv, double sampleRate)
         } else if (arguments[0] =="inductor" && arguments.size() > 3) {
             auto [args, pins] = getPinsAndArguments(arguments, 2);
             netlistDescription.emplace_back(tInductor, args, pins, "");
+        } else if (arguments[0] =="spst" && arguments.size() > 3) {
+            auto [args, pins] = getPinsAndArguments(arguments, 2);
+            netlistDescription.emplace_back(tSPST, args, pins, "");
+        } else if (arguments[0] =="spdt" && arguments.size() > 4) {
+            auto [args, pins] = getPinsAndArguments(arguments, 3);
+            netlistDescription.emplace_back(tSPDT, args, pins, "");
         } else if (arguments[0] =="potmeter" && arguments.size() > 5) {
             auto [args, pins] = getPinsAndArguments(arguments, 3);
             netlistDescription.emplace_back(tPotmeter, args, pins, "");
@@ -160,7 +170,25 @@ void* simulator_create(int argc, t_atom* argv, double sampleRate)
         } else if (arguments[0] =="triode" && arguments.size() > 3) {
             auto [args, pins] = getPinsAndArguments(arguments, 3);
             netlistDescription.emplace_back(tTriode, args, pins, model);
-        } else if (arguments[0] =="-iter" || arguments[0] =="-oversample" || arguments[0] =="-dcblock") {
+        }        
+        /*
+        else if (arguments[0] =="taptransformer" && arguments.size() > 6) {
+            auto [args, pins] = getPinsAndArguments(arguments, 5);
+            netlistDescription.emplace_back(tTransformer, args, pins, "");
+        }
+        else if (arguments[0] =="buffer" && arguments.size() > 2) {
+            auto [args, pins] = getPinsAndArguments(arguments, 2);
+            netlistDescription.emplace_back(tBuffer, args, pins, "");
+        } else if (arguments[0] =="delaybuffer" && arguments.size() > 2) {
+            auto [args, pins] = getPinsAndArguments(arguments, 2);
+            netlistDescription.emplace_back(tDelayBuffer, args, pins, "");
+        }
+        else if (arguments[0] =="pentode" && arguments.size() > 4) {
+            auto [args, pins] = getPinsAndArguments(arguments, 4);
+            netlistDescription.emplace_back(tPentode, args, pins, model);
+        } */
+        
+        else if (arguments[0] =="-iter" || arguments[0] =="-oversample" || arguments[0] =="-dcblock") {
                 continue;
         } else {
             pd_error(nullptr, "circuit~: unknown combination of identifier \"%s\" and %lu arguments", arguments[0].c_str(), arguments.size() - 1);

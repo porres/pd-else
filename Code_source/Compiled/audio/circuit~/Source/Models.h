@@ -320,25 +320,25 @@ class Models {
         } },
         { "MPS8599", {
             { "IS", 120.32e-15 },
-            { "Kp", 188.84 },
+            { "BF", 188.84 },
             { "BR", 24.295 },
             { "PNP", 1 },
         } },
         { "BC239A", {
             { "IS", 10e-15 },
-            { "Kp", 170 },
+            { "BF", 170 },
             { "BR", 1 },
             { "PNP", 0 },
         } },
         { "BC239B", {
             { "IS", 10e-15 },
-            { "Kp", 320 },
+            { "BF", 320 },
             { "BR", 1 },
             { "PNP", 0 },
         } },
         { "BC239C", {
             { "IS", 10e-15 },
-            { "Kp", 590 },
+            { "BF", 590 },
             { "BR", 1 },
             { "PNP", 0 },
         } }
@@ -600,9 +600,13 @@ public:
         {
             return OpAmps;
         }
+        /*
+        if(componentName == "pentode")
+        {
+            return Pentodes;
+        } */
         
         assert(false);
-        
         return {};
     }
 };

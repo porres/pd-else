@@ -41,7 +41,6 @@ struct NetList {
             return {};
         };
 
-        
         int numOut = 0;
         for (auto const& [type, args, pins, model] : netlist) {
             if(type == tProbe)
@@ -201,6 +200,67 @@ struct NetList {
                     } else {
                         pd_error(nullptr, "circuit~: wrong number of arguments for current");
                     }
+                    break;
+                }
+                /* Experimental components
+                case tBuffer: {
+                    if (args.size() == 0) {
+                        addComponent(new VoltageFollower(pins[0], pins[1]));
+                    } else {
+                        pd_error(nullptr, "circuit~: wrong number of arguments for buffer");
+                    }
+                    break;
+                }
+                case tDelayBuffer: {
+                    if (args.size() == 1) {
+                        addComponent(new DelayBuffer(pins[0], pins[1]));
+                    } else {
+                        pd_error(nullptr, "circuit~: wrong number of arguments for delaybuffer");
+                    }
+                    break;
+                }
+                 case tTappedTransformer: {
+                     if (args.size() == 1) {
+                         addComponent(new TappedTransformer(getArgumentValue(args[0]), pins[0], pins[1], pins[2], pins[3],  pins[4]));
+                     } else {
+                         pd_error(nullptr, "circuit~: wrong number of arguments for taptransformer");
+                     }
+                     break;
+                 }
+                 case tPentode: {
+                     if (args.size() == 0) {
+                         addComponent(new Pentode(pins[0], pins[1], pins[2], pins[3], getModel("pentode", model)));
+                     } else {
+                         pd_error(nullptr, "circuit~: wrong number of arguments for triode");
+                     }
+                     break;
+                 }
+                 
+                 */
+                case tSPST: {
+                    if (args.size() == 1) {
+                        if (isDynamicArgument(args[0])) {
+                            addComponent(new Switch<1>(&addDynamicArgument(args[0]), pins));
+                        } else {
+                            addComponent(new Switch<1>(getArgumentValue(args[0]), pins));
+                        }
+                    } else {
+                        pd_error(nullptr, "circuit~: wrong number of arguments for spst");
+                    }
+                    break;
+                }
+
+                case tSPDT: {
+                    if (args.size() == 1) {
+                        if (isDynamicArgument(args[0])) {
+                            addComponent(new Switch<2>(&addDynamicArgument(args[0]), pins));
+                        } else {
+                            addComponent(new Switch<2>(getArgumentValue(args[0]), pins));
+                        }
+                    } else {
+                        pd_error(nullptr, "circuit~: wrong number of arguments for spdt");
+                    }
+                    break;
                 }
                 case tProbe: {
                     if(numOut < 8) {
@@ -238,6 +298,12 @@ struct NetList {
         
         // Refactor KLU again for transient analysis
         refactorKLU();
+        
+        // this isn't pretty, but it helps against clicks
+        for(int i = 0; i < 5; i++)
+        {
+            simulateTick();
+        }
     }
 
     ~NetList()

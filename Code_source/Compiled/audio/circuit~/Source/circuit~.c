@@ -41,7 +41,6 @@ void circuit_tilde_enable(t_circuit_tilde *x, t_float enable) {
     x->x_enabled = enable;
 }
 
-
 void circuit_tilde_iter(t_circuit_tilde *x, t_float niter) {
     simulator_set_num_iter(x->x_simulator, (int)niter);
     x->x_numiter = niter;
