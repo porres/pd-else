@@ -18,7 +18,7 @@ constexpr double vThermal = 0.026;
 
 static bool checkConvergence(double v, double dv)
 {
-    return ((vTolerance * std::abs(v)) + (1e-6 * std::abs(v)));
+    return std::abs(dv) < vTolerance;
 }
 }
 
@@ -369,7 +369,7 @@ struct VariableVoltage : Component<2, 1> {
 //
 struct JunctionPN {
     // variables
-    double geq, ieq, veq;
+    double geq = 0.0, ieq = 0.0, veq = 0.0;
 
     // parameters
     double is, nvt, rnvt, vcrit;
@@ -727,7 +727,7 @@ struct TappedTransformer final : Component<5, 2> {
 struct OpAmp final : Component<3, 1> {
 
     const double gain, vMax;
-    double v, gvPos, gvNeg, vOut, vIn;
+    double v = 0.0, gvPos = gMin, gvNeg = gMin;
 
     OpAmp(double G, double UMax, int invertingInput, int nonInvertingInput, int output)
         : gain(G)
@@ -751,14 +751,14 @@ struct OpAmp final : Component<3, 1> {
     void update(MNAResultVector& x) final
     {
         // Calculate the voltage difference between non-inverting and inverting inputs
-        vIn = x[nets[0]] - x[nets[1]];
+        double vIn = x[nets[0]] - x[nets[1]];
 
         // Calculate the dynamic conductance gv and its negative ngv
         gvPos = gain / (1 + std::pow(M_PI_2 / vMax * gain * vIn, 2)) + 1e-12;
         gvNeg = -gvPos;
 
         // Calculate the OpAmp's output voltage
-        vOut = vMax * (M_2_PI)* std::atan(vIn * gain * M_PI_2 / vMax);
+        double vOut = vMax * (M_2_PI)* std::atan(vIn * gain * M_PI_2 / vMax);
 
         // Calculate the voltage v at the output node
         v = vIn * gvPos - vOut;
