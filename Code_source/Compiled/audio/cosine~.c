@@ -4,7 +4,7 @@
 #include "magic.h"
 #include "buffer.h"
 
-typedef struct _coseine{
+typedef struct _cosine{
     t_object    x_obj;
     double     *x_phase;
     int         x_nchans;
@@ -20,11 +20,11 @@ typedef struct _coseine{
     t_float    *x_signalscalar; // right inlet's float field
     int         x_hasfeeders; // right inlet connection flag
     t_float     x_phase_sync_float; // float from magic
-}t_coseine;
+}t_cosine;
 
-static t_class *coseine_class;
+static t_class *cosine_class;
 
-double coseine_wrap_phase(double phase){
+double cosine_wrap_phase(double phase){
     while(phase >= 1)
         phase -= 1.;
     while(phase < 0)
@@ -32,8 +32,8 @@ double coseine_wrap_phase(double phase){
     return(phase);
 }
 
-static t_int *coseine_perform(t_int *w){
-    t_coseine *x = (t_coseine *)(w[1]);
+static t_int *cosine_perform(t_int *w){
+    t_cosine *x = (t_cosine *)(w[1]);
     int n = (int)(w[2]);
     int ch3 = (int)(w[3]);
     t_float *in1 = (t_float *)(w[4]);
@@ -58,16 +58,16 @@ static t_int *coseine_perform(t_int *w){
                 hz = hz <= 0 ? 0 : pow(2, (hz - 69)/12) * 440;
             double phase_step = hz * x->x_sr_rec; // phase_step
             double phase_offset = ch3 == 1 ? in3[i] : in3[j*n + i];
-            out[j*n + i] = read_sintab(coseine_wrap_phase(phase[j] + .25 + phase_offset));
-            phase[j] = coseine_wrap_phase(phase[j] + phase_step);
+            out[j*n + i] = read_sintab(cosine_wrap_phase(phase[j] + .25 + phase_offset));
+            phase[j] = cosine_wrap_phase(phase[j] + phase_step);
         }
     }
     x->x_phase = phase;
     return(w+7);
 }
 
-static t_int *coseine_perform_sig(t_int *w){
-    t_coseine *x = (t_coseine *)(w[1]);
+static t_int *cosine_perform_sig(t_int *w){
+    t_cosine *x = (t_cosine *)(w[1]);
     int n = (int)(w[2]);
     int ch2 = (int)(w[3]);
     int ch3 = (int)(w[4]);
@@ -93,16 +93,16 @@ static t_int *coseine_perform_sig(t_int *w){
                     phase[j] = trig;
             }
             else
-                phase[j] = coseine_wrap_phase(phase[j] + .25 + phase_offset);
+                phase[j] = cosine_wrap_phase(phase[j] + .25 + phase_offset);
             out[j*n + i] = read_sintab(phase[j]);
-            phase[j] = coseine_wrap_phase(phase[j] + phase_step);
+            phase[j] = cosine_wrap_phase(phase[j] + phase_step);
         }
     }
     x->x_phase = phase;
     return(w+9);
 }
 
-static void coseine_dsp(t_coseine *x, t_signal **sp){
+static void cosine_dsp(t_cosine *x, t_signal **sp){
     x->x_sr_rec = 1.0 / (double)sp[0]->s_sr;
     int chs = sp[0]->s_nchans, ch2 = sp[1]->s_nchans, ch3 = sp[2]->s_nchans, n = sp[0]->s_n;
     signal_setmultiout(&sp[3], chs);
@@ -113,27 +113,27 @@ static void coseine_dsp(t_coseine *x, t_signal **sp){
     }
     if((ch2 > 1 && ch2 != x->x_nchans) || (ch3 > 1 && ch3 != x->x_nchans)){
         dsp_add_zero(sp[3]->s_vec, chs*n);
-        pd_error(x, "[coseine~]: channel sizes mismatch");
+        pd_error(x, "[cosine~]: channel sizes mismatch");
         return;
     }
     x->x_hasfeeders = else_magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal); // magic feeder flag
     if(x->x_hasfeeders){
-        dsp_add(coseine_perform_sig, 8, x, n, ch2, ch3,
+        dsp_add(cosine_perform_sig, 8, x, n, ch2, ch3,
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
     }
     else
-        dsp_add(coseine_perform, 6, x, n, ch3, sp[0]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+        dsp_add(cosine_perform, 6, x, n, ch3, sp[0]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
-static void coseine_midi(t_coseine *x, t_floatarg f){
+static void cosine_midi(t_cosine *x, t_floatarg f){
     x->midi = (int)(f != 0);
 }
 
-static void coseine_soft(t_coseine *x, t_floatarg f){
+static void cosine_soft(t_cosine *x, t_floatarg f){
     x->soft = (int)(f != 0);
 }
 
-static void *coseine_free(t_coseine *x){
+static void *cosine_free(t_cosine *x){
     inlet_free(x->x_inlet_sync);
     inlet_free(x->x_inlet_phase);
     outlet_free(x->x_outlet);
@@ -141,9 +141,9 @@ static void *coseine_free(t_coseine *x){
     return(void *)x;
 }
 
-static void *coseine_new(t_symbol *s, int ac, t_atom *av){
+static void *cosine_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    t_coseine *x = (t_coseine *)pd_new(coseine_class);
+    t_cosine *x = (t_cosine *)pd_new(cosine_class);
     t_float f1 = 0, f2 = 0;
     x->midi = x->soft = 0;
     x->x_phase = (double *)getbytes(sizeof(*x->x_phase));
@@ -182,11 +182,11 @@ static void *coseine_new(t_symbol *s, int ac, t_atom *av){
     return(x);
 }
 
-void coseine_tilde_setup(void){
-    coseine_class = class_new(gensym("coseine~"), (t_newmethod)coseine_new, (t_method)coseine_free,
-        sizeof(t_coseine), CLASS_MULTICHANNEL, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(coseine_class, t_coseine, x_freq);
-    class_addmethod(coseine_class, (t_method)coseine_soft, gensym("soft"), A_DEFFLOAT, 0);
-    class_addmethod(coseine_class, (t_method)coseine_midi, gensym("midi"), A_DEFFLOAT, 0);
-    class_addmethod(coseine_class, (t_method)coseine_dsp, gensym("dsp"), A_CANT, 0);
+void cosine_tilde_setup(void){
+    cosine_class = class_new(gensym("cosine~"), (t_newmethod)cosine_new, (t_method)cosine_free,
+        sizeof(t_cosine), CLASS_MULTICHANNEL, A_GIMME, 0);
+    CLASS_MAINSIGNALIN(cosine_class, t_cosine, x_freq);
+    class_addmethod(cosine_class, (t_method)cosine_soft, gensym("soft"), A_DEFFLOAT, 0);
+    class_addmethod(cosine_class, (t_method)cosine_midi, gensym("midi"), A_DEFFLOAT, 0);
+    class_addmethod(cosine_class, (t_method)cosine_dsp, gensym("dsp"), A_CANT, 0);
 }
