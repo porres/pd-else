@@ -163,6 +163,7 @@ detect~.class.sources := Code_source/Compiled/audio/detect~.c
 envgen~.class.sources := Code_source/Compiled/audio/envgen~.c
 eq~.class.sources := Code_source/Compiled/audio/eq~.c
 fader~.class.sources := Code_source/Compiled/audio/fader~.c
+fbsine2~.class.sources := Code_source/Compiled/audio/fbsine2~.c
 fdn.rev~.class.sources := Code_source/Compiled/audio/fdn.rev~.c
 floor~.class.sources := Code_source/Compiled/audio/floor~.c
 fold~.class.sources := Code_source/Compiled/audio/fold~.c
@@ -264,8 +265,6 @@ wrap2~.class.sources := Code_source/Compiled/audio/wrap2~.c
 zerocross~.class.sources := Code_source/Compiled/audio/zerocross~.c
 
 magic := Code_source/shared/magic.c
-    cosine~.class.sources := Code_source/Compiled/audio/cosine~.c $(magic)
-    fbsine~.class.sources := Code_source/Compiled/audio/fbsine~.c $(magic)
     gaussian~.class.sources := Code_source/Compiled/audio/gaussian~.c $(magic)
     imp~.class.sources := Code_source/Compiled/extra_source/Aliases/imp~.c $(magic)
     impulse~.class.sources := Code_source/Compiled/audio/impulse~.c $(magic)
@@ -297,7 +296,8 @@ buf := Code_source/shared/buffer.c $(buf)
 bufmagic := \
 Code_source/shared/magic.c \
 Code_source/shared/buffer.c
-    fbsine2~.class.sources := Code_source/Compiled/audio/fbsine2~.c $(bufmagic)
+    cosine~.class.sources := Code_source/Compiled/audio/cosine~.c $(magic)
+    fbsine~.class.sources := Code_source/Compiled/audio/fbsine~.c $(magic)
     sine~.class.sources := Code_source/Compiled/audio/sine~.c $(bufmagic)
     wavetable~.class.sources = Code_source/Compiled/audio/wavetable~.c $(bufmagic)
     wt~.class.sources = Code_source/Compiled/extra_source/Aliases/wt~.c $(bufmagic)
