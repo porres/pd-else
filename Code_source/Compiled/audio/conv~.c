@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include "kiss_fft.h"
 #include <math.h>
 #define MINWIN 64
-#define DEFAULTWIN 2048
+#define DEFAULTWIN 256
 //#define NUMBARKBOUNDS 25
 
 //t_float barkBounds[] = {0, 100, 200, 300, 400, 510, 630, 770, 920, 1080, 1270, 1480, 1720, 2000, 2320, 2700, 3150, 3700, 4400, 5300, 6400, 7700, 9500, 12000, 15500};
@@ -20,7 +20,6 @@ static t_class *conv_tilde_class;
 
 typedef struct _conv_tilde{
     t_object x_obj;
-    t_symbol *x_obj_symbol;
     t_symbol *x_array_name;
     t_word *x_vec;
     t_clock *x_clock;
@@ -53,26 +52,20 @@ typedef struct _conv_tilde{
 static t_int *conv_tilde_perform(t_int *w){
     int i, p, n, window, window_double, num_parts;
     t_float amp_scalar;
-
     t_conv_tilde *x = (t_conv_tilde *)(w[1]);
-
     t_sample *in = (t_float *)(w[2]);
     t_sample *out = (t_float *)(w[3]);
-
     n = w[4];
     window = x->x_window;
     window_double = x->x_window_double;
     num_parts = x->x_num_parts;
     amp_scalar = x->x_amp_scalar;
-
-    if(n!=64 || num_parts<1)
-    {
+    if(n != 64 || num_parts < 1){
         for(i=0; i<n; i++)
             out[i] = 0.0;
 
         return (w+5);
     };
-
     // buffer most recent block
     for(i=0; i<n; i++)
         x->x_signal_buf[(x->x_dsp_tick*n)+i] = in[i];
@@ -151,13 +144,13 @@ static void conv_tilde_dsp(t_conv_tilde *x, t_signal **sp){
     dsp_add(conv_tilde_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
     // TODO: could allow for re-blocking and re-calc x_buffer_limit based on new x_n
     if(sp[0]->s_n != x->x_n)
-        pd_error(x, "%s: block size must be 64. DSP suspended.", x->x_obj_symbol->s_name);
+        pd_error(x, "[conv~]: block size must be 64. DSP suspended.");
     if(sp[0]->s_sr != x->x_sr){
         x->x_sr = sp[0]->s_sr;
-        post("%s: sample rate updated to %0.0f", x->x_obj_symbol->s_name, x->x_sr);
+        post("[conv~]: sample rate updated to %0.0f", x->x_sr);
     };
     if(x->x_num_parts < 1)
-        pd_error(x, "%s: impulse response analysis not performed yet. output will be zero.", x->x_obj_symbol->s_name);
+        pd_error(x, "[conv~]: impulse response analysis not performed yet. output will be zero.");
 };
 
 /*static void conv_tilde_eq(t_conv_tilde *x, t_symbol *s, int argc, t_atom *argv){
@@ -252,7 +245,7 @@ static void conv_tilde_dsp(t_conv_tilde *x, t_signal **sp){
     post("%s: EQ scalars applied to IR array %s", x->x_obj_symbol->s_name, x->x_array_name->s_name);
 
     // re-run analysis
-    conv_tilde_analyze(x, x->x_array_name);
+    conv_tilde_set(x, x->x_array_name);
     }
 }
 
@@ -281,7 +274,7 @@ static void conv_tilde_dsp(t_conv_tilde *x, t_signal **sp){
  }
  */
 
-static void conv_tilde_analyze(t_conv_tilde *x, t_symbol *arrayName){
+static void conv_tilde_set(t_conv_tilde *x, t_symbol *arrayName){
     t_garray *array_ptr;
     int i, j, old_non_overlapped_size, new_non_overlapped_size;
     t_float *fft_in;
@@ -299,7 +292,7 @@ static void conv_tilde_analyze(t_conv_tilde *x, t_symbol *arrayName){
         old_array_size = x->x_array_size;
         if(!(array_ptr = (t_garray *)pd_findbyclass(arrayName, garray_class))){
             if(*arrayName->s_name){
-                pd_error(x, "%s: no array named %s", x->x_obj_symbol->s_name, arrayName->s_name);
+                pd_error(x, "[conv~]: no array named %s", arrayName->s_name);
                 // resize x_ir_signal_eq back to 0
                 x->x_ir_signal_eq = (t_sample *)t_resizebytes(
                     x->x_ir_signal_eq,
@@ -312,7 +305,7 @@ static void conv_tilde_analyze(t_conv_tilde *x, t_symbol *arrayName){
             }
         }
         else if(!garray_getfloatwords(array_ptr, &x->x_array_size, &x->x_vec)){
-            pd_error(x, "%s: bad template for %s", x->x_obj_symbol->s_name, arrayName->s_name);
+            pd_error(x, "[conv~]: bad template for %s", arrayName->s_name);
             // resize x_ir_signal_eq back to 0
             x->x_ir_signal_eq = (t_sample *)t_resizebytes(
                 x->x_ir_signal_eq,
@@ -344,7 +337,7 @@ static void conv_tilde_analyze(t_conv_tilde *x, t_symbol *arrayName){
         this_array_ptr = (t_garray *)pd_findbyclass(arrayName, garray_class);
         garray_getfloatwords(this_array_ptr, &this_array_size, &this_vec);
         if(this_array_size != x->x_array_size){
-            pd_error(x, "%s: size of array %s has changed since previous analysis...aborting. Reload %s with previous IR contents or analyze another array.", x->x_obj_symbol->s_name, arrayName->s_name, arrayName->s_name);
+            pd_error(x, "[conv~]: size of array %s has changed since previous analysis...aborting. Reload %s with previous IR contents or analyze another array.", arrayName->s_name, arrayName->s_name);
             return;
         }
     }
@@ -361,7 +354,7 @@ static void conv_tilde_analyze(t_conv_tilde *x, t_symbol *arrayName){
         new_non_overlapped_size*sizeof(t_sample)
     );
     // clear time-domain buffer
-    for(i=0; i<new_non_overlapped_size; i++)
+    for(i = 0; i < new_non_overlapped_size; i++)
         x->x_non_overlapped_output[i] = 0.0;
     // free x_ir_freq_dom_data/x_live_freq_dom_data and re-alloc to new size based on x_num_parts
     free(x->x_ir_freq_dom_data);
@@ -411,7 +404,7 @@ static void conv_tilde_analyze(t_conv_tilde *x, t_symbol *arrayName){
     //post("%s: analysis of IR array %s complete. Array size: %i. Partitions: %i.", x->x_obj_symbol->s_name, x->x_array_name->s_name, x->x_array_size, x->x_num_parts);
 }
 
-static void conv_tilde_window(t_conv_tilde *x, t_float w){
+static void conv_tilde_size(t_conv_tilde *x, t_float w){
     int i, i_win, is64, old_window, old_window_double;
     i_win = w;
     is64 = (i_win%64)==0;
@@ -422,12 +415,12 @@ static void conv_tilde_window(t_conv_tilde *x, t_float w){
             x->x_window = i_win;
         else{
             x->x_window = MINWIN;
-            pd_error(x, "%s: requested window size too small. minimum value of %i used instead", x->x_obj_symbol->s_name, x->x_window);
+            pd_error(x, "[conv~]: requested window size too small. minimum value of %i used instead", x->x_window);
         }
     }
     else{
         x->x_window = DEFAULTWIN;
-        pd_error(x, "%s: window not a multiple of 64. default value of %i used instead", x->x_obj_symbol->s_name, x->x_window);
+        pd_error(x, "[conv~]: window not a multiple of 64. default value of %i used instead", x->x_window);
     }
     // resize time-domain buffer to zero bytes
     x->x_non_overlapped_output =
@@ -463,28 +456,28 @@ static void conv_tilde_window(t_conv_tilde *x, t_float w){
          x->x_signal_buf_padded[i] = 0.0;
          x->x_inv_out_fft_out[i] = 0.0;
     }
-    post("%s: partition size: %i", x->x_obj_symbol->s_name, x->x_window);
+//    post("[conv~]: partition size: %i", x->x_window);
     // set num_parts back to zero so that the IR analysis routine is initialized as if it's the first call
     x->x_num_parts = 0;
     // reset DSP ticks since we're clearing a new buffer and starting to fill it with signal
     x->x_dsp_tick = 0;
     // re-run IR analysis routine, but only IF x->arrayName exists
     if(x->x_array_name != gensym("NOARRAYSPECIFIED"))
-        conv_tilde_analyze(x, x->x_array_name);
+        conv_tilde_set(x, x->x_array_name);
 }
 
 static void conv_tilde_print(t_conv_tilde *x){
-    post("%s: IR array: %s", x->x_obj_symbol->s_name, x->x_array_name->s_name);
-    post("%s: array length: %i", x->x_obj_symbol->s_name, x->x_array_size);
-    post("%s: partition size: %i", x->x_obj_symbol->s_name, x->x_window);
-    post("%s: number of partitions: %i", x->x_obj_symbol->s_name, x->x_num_parts);
+    post("[conv~]: IR array: %s", x->x_array_name->s_name);
+    post("[conv~]: array length: %i", x->x_array_size);
+    post("[conv~]: number of partitions: %i", x->x_num_parts);
+    post("[conv~]: partition size: %i", x->x_window);
 }
 
 static void conv_tilde_initClock(t_conv_tilde *x){
     x->x_startup_flag = 1;
     // try analyzing at creation if there was a table specified
     if(x->x_array_name != gensym("NOARRAYSPECIFIED"))
-        conv_tilde_analyze(x, x->x_array_name);
+        conv_tilde_set(x, x->x_array_name);
 }
 
 static void conv_tilde_free(t_conv_tilde *x){
@@ -507,13 +500,12 @@ static void conv_tilde_free(t_conv_tilde *x){
     clock_free(x->x_clock);
 };
 
-
 static void *conv_tilde_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     t_conv_tilde *x = (t_conv_tilde *)pd_new(conv_tilde_class);
     int i, is64, window;
     outlet_new(&x->x_obj, &s_signal);
     // store the pointer to the symbol containing the object name. Can access it for error and post functions via s->s_name
-    x->x_obj_symbol = s;
     switch(argc){
         case 0:
             window = DEFAULTWIN;
@@ -528,7 +520,7 @@ static void *conv_tilde_new(t_symbol *s, int argc, t_atom *argv){
             x->x_array_name = atom_getsymbol(argv+1);
             break;
         default:
-            pd_error(x, "%s: the only creation argument should be the window/partition size in samples", x->x_obj_symbol->s_name);
+            pd_error(x, "[conv~]: the only creation argument should be the window/partition size in samples");
             window = DEFAULTWIN;
             x->x_array_name = gensym("NOARRAYSPECIFIED");
             break;
@@ -539,12 +531,12 @@ static void *conv_tilde_new(t_symbol *s, int argc, t_atom *argv){
             x->x_window = window;
         else{
             x->x_window = MINWIN;
-            pd_error(x, "%s: requested window size too small. minimum value of %i used instead", x->x_obj_symbol->s_name, x->x_window);
+            pd_error(x, "[conv~]: requested window size too small. minimum value of %i used instead", x->x_window);
         }
     }
     else{
         x->x_window = DEFAULTWIN;
-        pd_error("%s: window not a multiple of 64. default value of %i used instead", x->x_obj_symbol->s_name, x->x_window);
+        pd_error(x, "[conv~]: window not a multiple of 64. default value of %i used instead", x->x_window);
     }
     x->x_clock = clock_new(x, (t_method)conv_tilde_initClock);
     x->x_array_size = 0;
@@ -558,28 +550,20 @@ static void *conv_tilde_new(t_symbol *s, int argc, t_atom *argv){
     x->x_buffer_limit = x->x_window/x->x_n;
 
     // these will be resized when analysis occurs
-
     x->x_non_overlapped_output = (t_sample *)getbytes(0);
     // this can probably just be x_window_double * 2!!
-
     x->x_ir_signal_eq = (t_sample *)getbytes(0);
     x->x_ir_freq_dom_data = (kiss_fft_cpx*)getbytes((x->x_window+1) * sizeof(kiss_fft_cpx));
     x->x_live_freq_dom_data = (kiss_fft_cpx*)getbytes((x->x_window+1) * sizeof(kiss_fft_cpx));
-
     x->x_signal_buf = (t_sample *)getbytes(x->x_window*sizeof(t_sample));
     x->x_signal_buf_padded = (t_sample *)getbytes(x->x_window_double*sizeof(t_sample));
     x->x_inv_out_fft_out = (t_sample *)getbytes(x->x_window_double*sizeof(t_sample));
     x->x_final_output = (t_sample *)getbytes(x->x_window*sizeof(t_sample));
-
     // set up the FFTW output buffer for signalBufPadded
     x->x_sig_buf_pad_fft_out = (kiss_fft_cpx*)getbytes((x->x_window+1) * sizeof(kiss_fft_cpx));
-
     x->x_sig_buf_pad_fft_plan = kiss_fftr_alloc(x->x_window_double, 0, NULL, NULL);
-
     x->x_inv_out_fft_in = (kiss_fft_cpx*)getbytes((x->x_window+1) * sizeof(kiss_fft_cpx));
-
     x->x_inv_out_fft_plan = kiss_fftr_alloc(x->x_window_double, 1, NULL, NULL);
-
     // init signal buffers
     for(i = 0; i < x->x_window; i++){
          x->x_signal_buf[i] = 0.0;
@@ -598,8 +582,8 @@ void conv_tilde_setup(void){
         (t_method)conv_tilde_free, sizeof(t_conv_tilde), CLASS_DEFAULT, A_GIMME, 0);
   CLASS_MAINSIGNALIN(conv_tilde_class, t_conv_tilde, x_f);
   class_addmethod(conv_tilde_class, (t_method)conv_tilde_dsp, gensym("dsp"), 0);
-  class_addmethod(conv_tilde_class, (t_method)conv_tilde_window, gensym("size"), A_DEFFLOAT, 0);
-  class_addmethod(conv_tilde_class, (t_method)conv_tilde_analyze, gensym("set"), A_SYMBOL, 0);
+  class_addmethod(conv_tilde_class, (t_method)conv_tilde_size, gensym("size"), A_DEFFLOAT, 0);
+  class_addmethod(conv_tilde_class, (t_method)conv_tilde_set, gensym("set"), A_SYMBOL, 0);
   class_addmethod(conv_tilde_class, (t_method)conv_tilde_print, gensym("print"), 0);
   //  class_addmethod(conv_tilde_class, (t_method)conv_tilde_clear, gensym("clear"), 0);
 //  class_addmethod(conv_tilde_class, (t_method)conv_tilde_eq, gensym("eq"), A_GIMME, 0);

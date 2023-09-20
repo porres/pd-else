@@ -1,4 +1,4 @@
-#N canvas 783 84 575 754 10;
+#N canvas 461 46 575 723 10;
 #X obj 2 3 cnv 15 301 42 empty empty circuit~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -76,8 +76,8 @@
 #X connect 13 0 10 0;
 #X connect 16 0 1 0;
 #X restore 46 172 pd Wien Bridge Oscillator;
-#N canvas 24 295 571 593 MXR 0;
-#X obj 154 508 else/out~;
+#N canvas 180 117 571 593 MXR 0;
+#X obj 157 508 else/out~;
 #X msg 42 186 enable \$1;
 #X obj 43 155 tgl 21 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X obj 43 128 else/initmess 0;
@@ -264,7 +264,7 @@
 #X connect 13 0 10 1;
 #X connect 15 0 10 0;
 #X restore 254 49 pd Tube Amplifier;
-#N canvas 579 221 707 624 Pro 0;
+#N canvas 579 122 707 624 Pro 0;
 #X obj 201 529 else/out~;
 #X text 459 33 VOLUME;
 #X text 533 33 GAIN;
@@ -305,8 +305,8 @@
 #X connect 20 0 0 1;
 #X connect 21 0 20 0;
 #X restore 45 203 pd Pro Co Rat;
-#N canvas 132 44 1007 862 Orange 0;
-#X obj 206 751 else/out~;
+#N canvas 132 23 1007 723 Orange 0;
+#X obj 216 751 else/out~;
 #X msg 101 115 enable \$1;
 #X obj 100 86 tgl 19 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X obj 100 60 else/initmess 0;
@@ -364,16 +364,16 @@
 #X connect 32 0 33 0;
 #X connect 33 0 31 0;
 #X restore 254 203 pd Orange Rockerverb;
-#N canvas 586 28 832 882 MXR 0;
+#N canvas 534 23 832 723 MXR 0;
 #X text 426 217 <- We just modulate the JFETs with an LFO input voltage;
 #X text 443 240 You could also build the analog LFO \, but this should give basically the same result;
-#X obj 124 809 else/out~;
+#X obj 121 809 else/out~;
 #X obj 515 79 else/knob 50 3.5 4 0 3.8 empty empty #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 3.5;
 #X text 521 49 DEPTH;
 #X obj 441 82 else/knob 50 0.2 12 0 1 empty empty #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 3;
 #X text 453 49 RATE;
-#X obj 283 194 osc~;
-#X obj 283 218 else/rescale~ 3.5 4;
+#X obj 333 194 osc~;
+#X obj 333 218 else/rescale~ 3.5 4;
 #X text 86 72 <- start simulation;
 #X msg 58 101 enable \$1;
 #X obj 58 71 tgl 21 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
@@ -403,7 +403,6 @@
 #X connect 20 0 8 2;
 #X connect 21 0 7 0;
 #X connect 22 0 2 0;
-#X connect 22 0 2 1;
 #X restore 254 110 pd MXR Phase 90;
 #X restore 465 367 pd examples;
 #X obj 181 340 else/out~;
