@@ -15,11 +15,6 @@ constexpr double vTolerance = 1e-4;
 
 // thermal voltage for diodes/transistors
 constexpr double vThermal = 0.026;
-
-static bool checkConvergence(double v, double dv)
-{
-    return std::abs(dv) < vTolerance;
-}
 }
 
 struct IComponent {
@@ -403,7 +398,7 @@ struct JunctionPN {
     {
         double dv = v - veq;
         
-        if (checkConvergence(v, dv))
+        if (std::abs(dv) < vTolerance)
             return true;
 
         // check critical voltage and adjust voltage if over
@@ -661,8 +656,6 @@ struct BJT : Component<3, 4> {
     }
 };
 
-
-
 struct Transformer final : Component<4, 2> {
 
     const double turnsRatio;
@@ -706,16 +699,16 @@ struct TappedTransformer final : Component<5, 2> {
 
     void stamp(MNAMatrix& A, MNAVector& b) final
     {
-        stampStatic(A, +1, nets[5], nets[0]);
-        stampStatic(A, -1, nets[5], nets[4]);
-        stampStatic(A, +1, nets[4], nets[4]);
-        stampStatic(A, +1, nets[3], nets[4]);
-        stampStatic(A, -1, nets[2], nets[4]);
-        stampStatic(A, +1, nets[1], nets[5]);
-        stampStatic(A, -1, nets[0], nets[5]);
-        stampStatic(A, -turnsRatio, nets[5], nets[3]);
-        stampStatic(A, turnsRatio, nets[5], nets[2]);
-        stampStatic(A, -turnsRatio, nets[4], nets[5]);
+        stampStatic(A, +1, nets[6], nets[0]);
+        stampStatic(A, -1, nets[6], nets[5]);
+        stampStatic(A, +1, nets[5], nets[5]);
+        stampStatic(A, +1, nets[3], nets[5]);
+        stampStatic(A, -1, nets[2], nets[5]);
+        stampStatic(A, +1, nets[1], nets[6]);
+        stampStatic(A, -1, nets[0], nets[6]);
+        stampStatic(A, -turnsRatio, nets[6], nets[3]);
+        stampStatic(A, turnsRatio, nets[6], nets[2]);
+        stampStatic(A, -turnsRatio, nets[5], nets[6]);
         
         // Stamp the center tap connection
         stampStatic(A, -1, nets[4], nets[4]);
@@ -1263,17 +1256,11 @@ struct Triode : public Component<3, 3> {
         // Calculate e1 using Koren's model
         e1 = (cvpk / kp) * std::log(1.0 + std::exp(kp * (1.0 / mu + cvgk / std::sqrt(kvb + std::pow(cvpk, 2)))));
 
+        gds = e1 > 0 ? ex * std::sqrt(e1) / kg1 : 1e-8;
         // Calculate ids, gds, and gm based on e1
-        ids = (std::pow(e1, ex) / kg1) * (1.0 + (e1 >= 0) - (e1 < 0.0));
-        gds = ex * std::sqrt(e1) / kg1;
-        gm = gds / mu;
+        ids = e1 > 0 ? (std::pow(e1, ex) / kg1) * (1.0 + (e1 >= 0) - (e1 < 0.0)) : cvpk * gds;
 
-        // Check if ids is zero or not finite
-        if (ids == 0.0 || !std::isfinite(ids)) {
-            gds = 1e-8;
-            gm = gds / mu;
-            ids = cvpk * gds;
-        }
+        gm = gds / mu;
 
         // Calculate rs and gcr
         const double rs = -ids + gds * cvpk + gm * cvgk;
@@ -1307,6 +1294,12 @@ struct Triode : public Component<3, 3> {
         vcgk = 2.0 * cgk * vgk;
         vcpk = 2.0 * cpk * vpk;
     }
+    
+    bool checkConvergence(double v, double dv)
+    {
+        dv /= v > 0 ? v : 1;
+        return std::abs(dv) < vTolerance;
+    }
 
     bool newton(MNAResultVector& x) final
     {
@@ -1324,13 +1317,12 @@ struct Triode : public Component<3, 3> {
             newV[2] = lastV[2] - 0.5;
         
         // Check for convergence based on voltage changes
-        if (checkConvergence(newV[0], lastV[0] - newV[0]) && checkConvergence(newV[1], lastV[1] - newV[1]) && checkConvergence(newV[2], lastV[2] - newV[2]))
-            return true;
+        bool done = checkConvergence(newV[0], lastV[0] - newV[0]) && checkConvergence(newV[1], lastV[1] - newV[1]) && checkConvergence(newV[2], lastV[2] - newV[2]);
 
         // Calculate triode parameters using Koren's model
         calcKoren(x);
 
-        return false;
+        return done;
     }
 };
  
@@ -1384,7 +1376,7 @@ struct MOSFET : public Component<3> {
 
         // high beta MOSFETs are more sensitive to small differences, so we are stricter about convergence testing
         dv = beta > 1 ? dv * 100 : dv;
-        return checkConvergence(now, dv);
+        return std::abs(dv) < vTolerance;
     }
 
     bool newton(MNAResultVector& x) override
@@ -1580,7 +1572,7 @@ struct DelayBuffer : public Component<2, 1> {
         vOut = x[nets[0]];
     }
 };
-
+*/
 // Experimental pentode implementation
 struct Pentode : public Component<4, 3> {
             
@@ -1616,21 +1608,19 @@ struct Pentode : public Component<4, 3> {
         pinLoc[1] = grid;
         pinLoc[2] = cathode;
         pinLoc[3] = screen;
-
+        
         if (model.count("Ex"))
             ex = model.at("Ex");
         if (model.count("Mu"))
             mu = model.at("Mu");
-        if (model.count("Kg"))
-            kg1 = model.at("Kg");
+        if (model.count("Kg1"))
+            kg1 = model.at("Kg1");
+        if (model.count("Kg2"))
+            kg1 = model.at("Kg2");
         if (model.count("Kp"))
             kp = model.at("Kp");
         if (model.count("Kvb"))
             kvb = model.at("Kvb");
-        if (model.count("Rgk"))
-            rgk = model.at("Rgk");
-        if (model.count("Vg"))
-            vg = model.at("Vg");
     }
 
     void stamp(MNAMatrix& A, MNAVector& x) final
@@ -1719,30 +1709,25 @@ struct Pentode : public Component<4, 3> {
         const double cvpk = b[nets[0]] - b[nets[2]];
         const double cvg2k = b[nets[3]] - b[nets[2]];
                 
-        e1 = (cvg2k / kp) * std::log(1.0 + std::exp(kp * (1.0 / mu + cvgk / std::sqrt(kvb + std::pow(cvg2k, 2)))));
-    
-        // Calculate ids, gds, and gm based on e1
-        ids = e1 > 0.0 ? (std::pow(e1, ex) / kg1) * atan(vpk / kvb) : 0.0;
-        gds = ex * std::sqrt(e1) / kg1;
+        auto ln1exp = [](double x) {
+            return (x > 50.0) ? x : std::log(1.0 + std::exp(x));
+        };
         
-        //gds =
+        e1 = (cvg2k / kp) * ln1exp(kp * (1.0 / mu + cvgk / std::sqrt(kvb + std::pow(cvg2k, 2))));
+ 
+        gds = e1 > 0.0 ? ex * std::sqrt(e1) / kg1 : 1e-8;
+        // Calculate ids, gds, and gm based on e1
+        ids = e1 > 0.0 ? (std::pow(e1, ex) / kg1) * atan(cvpk / kvb) : cvpk * gds;
         
         gm = gds / mu;
         
         double vgg2 = cvgk + (cvg2k / mu);
-        double gg2 =  vgg2 > 0.0 ? pow(vgg2, 1.5) / kg2 : 0.0;
-        
-        // Check if ids is zero or not finite
-        if (ids == 0.0 || !std::isfinite(ids)) {
-            gds = 1e-8;
-            gm = gds / mu;
-            gg2 = cvg2k * gds;
-            ids = cvpk * gds;
-        }
+        double id2 = vgg2 > 0.0 ? pow(vgg2, 1.5) / kg2 : 1e-8;
+        double gg2 =  e1 > 0.0 ? ex * std::sqrt(e1) / kg2 : 1e-8;
 
         // Calculate rs and gcr
         const double rs = -ids + gds * cvpk + gm * cvgk;
-        const double rs2 = gg2 * cvg2k;
+        const double rs2 = -id2 + (gg2 * cvg2k);
         const double gcr = cvgk > vg ? rgk : gMin;
 
         // Populate the geq and ieq matrices
@@ -1780,20 +1765,25 @@ struct Pentode : public Component<4, 3> {
         vcgk = 2.0 * cgk * vgk;
         vcpk = 2.0 * cpk * vpk;
     }
-
+    
+    bool checkConvergence(double v, double dv)
+    {
+        dv /= v > 0 ? v : 1;
+        return std::abs(dv) < vTolerance;
+    }
+    
     bool newton(MNAResultVector& b) final
     {
         // Apply the Newton-Raphson method for convergence
         double newV[4] = {b[nets[0]], b[nets[1]], b[nets[2]], b[nets[3]]};
     
+        
         // Check for convergence based on voltage changes
-        if (checkConvergence(newV[0], lastV[0] - newV[0]) && checkConvergence(newV[1], lastV[1] - newV[1]) && checkConvergence(newV[2], lastV[2] - newV[2]) && checkConvergence(newV[3], lastV[3] - newV[3]))
-            return true;
-
+        bool done = checkConvergence(newV[0], lastV[0] - newV[0]) && checkConvergence(newV[1], lastV[1] - newV[1]) && checkConvergence(newV[2], lastV[2] - newV[2]) && checkConvergence(newV[3], lastV[3] - newV[3]);
+        
         // Calculate triode parameters using Koren's model
         calcKoren(b);
         
-        return false;
+        return done;
     }
 };
-*/

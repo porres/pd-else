@@ -226,7 +226,7 @@ struct NetList {
                          pd_error(nullptr, "circuit~: wrong number of arguments for taptransformer");
                      }
                      break;
-                 }
+                 }*/
                  case tPentode: {
                      if (args.size() == 0) {
                          addComponent(new Pentode(pins[0], pins[1], pins[2], pins[3], getModel("pentode", model)));
@@ -236,7 +236,7 @@ struct NetList {
                      break;
                  }
                  
-                 */
+                 
                 case tSPST: {
                     if (args.size() == 1) {
                         if (isDynamicArgument(args[0])) {
@@ -402,7 +402,7 @@ private:
         b.resize(nets, 0.0);
         AI.resize(nets);
         AJ.resize(nonzero);
-        A.resize(nonzero);
+        A.resize(nonzero, 0.0);
 
         // Copy g, gTimed and dyn to a more compact format that allows us to copy the static values over all at once
         staticA.resize(nonzero);

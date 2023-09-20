@@ -131,6 +131,63 @@ class Models {
         } }
     };
     
+    static inline const ModelList Pentodes = {
+        {"6L6GC-JJ", {
+                    {"Mu", 13.94},
+                    {"Ex", 1.063},
+                    {"Kg1", 320.2},
+                    {"Kg2", 4500},
+                    {"Kp", 33.2},
+                    {"Kvb", 29.6},
+                    {"Rgi", 1000}
+                }},
+                {"6V6GTA", {
+                    {"Mu", 10.7},
+                    {"Ex", 1.31},
+                    {"Kg1", 1672.0},
+                    {"Kg2", 4500},
+                    {"Kp", 41.16},
+                    {"Kvb", 12.7},
+                    {"Rgi", 2000}
+                }},
+                {"EL34-JJ", {
+                    {"Mu", 11.55},
+                    {"Ex", 1.35},
+                    {"Kg1", 650.2},
+                    {"Kg2", 6000},
+                    {"Kp", 51.85},
+                    {"Kvb", 25.4},
+                    {"Rgi", 1000}
+                }},
+                {"EL84-JJ", {
+                    {"Mu", 19.56},
+                    {"Ex", 1.35},
+                    {"Kg1", 593.0},
+                    {"Kg2", 4500},
+                    {"Kp", 131.34},
+                    {"Kvb", 17.5},
+                    {"Rgi", 1000}
+                }},
+                {"6550", {
+                    {"Mu", 7.9},
+                    {"Ex", 1.35},
+                    {"Kg1", 890},
+                    {"Kg2", 4200},
+                    {"Kp", 60},
+                    {"Kvb", 24},
+                    {"Rgi", 1000}
+                }},
+                {"KT88-JJ", {
+                    {"Mu", 12.43},
+                    {"Ex", 1.218},
+                    {"Kg1", 315.7},
+                    {"Kg2", 4500},
+                    {"Kp", 26.72},
+                    {"Kvb", 36.1},
+                    {"Rgi", 1000}
+                }}
+    }
+    
     static inline const ModelList BJTs = {
         { "2N2222", {
             { "IS", 1e-14 },
@@ -580,6 +637,10 @@ public:
         {
             return Triodes;
         }
+        if(componentName == "pentode")
+        {
+            return Pentodes;
+        }
         if(componentName == "diode")
         {
             return Diodes;
@@ -600,11 +661,7 @@ public:
         {
             return OpAmps;
         }
-        /*
-        if(componentName == "pentode")
-        {
-            return Pentodes;
-        } */
+
         
         assert(false);
         return {};

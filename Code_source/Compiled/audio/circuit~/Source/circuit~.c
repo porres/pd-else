@@ -231,7 +231,7 @@ void *circuit_tilde_new(t_symbol *s, int argc, t_atom *argv)
         }
     }
     
-    x->x_simulator = simulator_create(argc, argv, sys_getsr() * x->x_oversample_factor);
+    x->x_simulator = simulator_create(argc, argv, sys_getsr() * oversample_factor);
     x->x_numin = simulator_num_inlets(x->x_simulator);
     x->x_numout = simulator_num_outlets(x->x_simulator);
     x->x_enabled = 1;
