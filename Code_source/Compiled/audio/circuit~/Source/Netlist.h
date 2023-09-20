@@ -603,7 +603,7 @@ private:
     std::vector<double> staticA;
     std::vector<std::vector<double*>> dynamicA;
     std::vector<double> timedA;
-    
+
     std::vector<double> output; // Probe object writes its output here
     std::array<double, 8> input; // Dynamic input argument values are stored here
     int maximumInputIndex = 1;
