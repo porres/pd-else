@@ -1,76 +1,75 @@
-#N canvas 428 43 569 449 10;
-#X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
-#X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 24 42 cnv 4 4 4 empty empty Partitioned 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 110 42 cnv 4 4 4 empty empty convolution 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 516 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 465 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 503 28 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
+#N canvas 365 52 569 465 10;
+#X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
+#X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 24 42 cnv 4 4 4 empty empty Partitioned 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 110 42 cnv 4 4 4 empty empty convolution 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 516 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 465 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 503 28 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 306 5 graph;
-#X obj 4 5 cnv 15 301 42 empty empty conv~ 20 20 2 37 #e0e0e0 #000000
-0;
+#X obj 4 5 cnv 15 301 42 empty empty conv~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 5 graph;
-#X obj 8 418 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X obj 8 267 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 8 333 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 8 371 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 142 344 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 141 275 cnv 17 3 50 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 169 200 else/out~;
-#X text 117 396 2) symbol;
-#X text 123 379 1) float;
-#X text 181 380 -;
-#X text 214 275 signal - input signal, f 28;
-#X text 214 345 signal - output signal;
-#X obj 169 137 else/play.file~ 1 vacuous.wav 1 -loop;
-#X obj 169 169 else/conv~ 1024 IR.wav;
-#X text 76 90 [conv~] is an abstraction that performs partitioned convolution.
-It takes a partition size and Impulse Response sound file., f 65;
-#X text 178 291 size <float> - sets partition size;
-#X text 172 308 load <symbol> - loads IR sound file;
-#X text 183 396 - file name to open as impulse response (default none)
-;
-#X text 194 379 optional: partition size (default 1024 \, minimum 64)
-, f 53;
-#N canvas 702 243 459 313 cpu-heavy 0;
-#X obj 201 177 else/out~;
-#X obj 97 148 switch~;
-#X obj 97 122 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
-#X floatatom 98 207 5 0 0 0 - - - 0;
-#X obj 98 179 else/meter;
-#X obj 201 146 else/conv~ 2048 church.wav;
-#X obj 201 114 else/impseq~;
-#X obj 201 89 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
-#000000;
-#X text 45 32 This object can be heavy on your CPU. This example loads
-a bigger IR file so it's heavier on your machine. Test it.;
-#X connect 2 0 1 0;
-#X connect 4 0 3 0;
-#X connect 5 0 0 0;
-#X connect 6 0 5 0;
-#X connect 7 0 6 0;
-#X restore 449 234 pd cpu-heavy;
-#X connect 24 0 25 0;
-#X connect 25 0 18 0;
+#X obj 8 438 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 8 287 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 8 353 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 8 391 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 142 364 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 141 295 cnv 17 3 50 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 169 220 else/out~;
+#X text 117 416 2) symbol;
+#X text 123 399 1) float;
+#X text 181 400 -;
+#X text 214 295 signal - input signal, f 30;
+#X text 214 365 signal - output signal;
+#X text 178 311 size <float> - sets partition size, f 36;
+#X text 194 399 optional: partition size (default 1024 \, minimum 64), f 53;
+#X text 76 90 [conv~] is an abstraction that performs partitioned convolution. It takes a partition size and Impulse Response table., f 65;
+#X obj 169 133 else/play.file~ vacuous.wav 1 1;
+#X msg 189 163 print;
+#X text 231 157 post settings on terminal window, f 16;
+#X text 172 328 load <symbol> - loads IR sound table, f 37;
+#X text 183 416 - impulse response table name (default none);
+#N canvas 648 73 353 570 example 0;
+#N canvas 144 216 913 453 partitioned-convolution-explained 0;
+#X text 38 177 This is the standard frequency domain method \, which is much faster than performing convolution in the time domain. In either case \, the result is that a scaled and time shifted copy of one file takes the place of every single sample in the other. So \, if you have an impulse response (IR) of a room - that is \, a burst of noise followed by the natural echos the room produces - you can graft that pattern of echos onto every single sample in your input file.;
+#X text 38 297 With real-time input \, the situation becomes more complicated. We can have an IR prepared in advance \, but the other sound source only shows up bit by bit. Typically \, it will arrive in chunks of 64 \, 128 \, 256 \, or some other number of samples. Partitioned convolution solves this problem by breaking up the IR into some number of partitions that is each M samples long. M should be the same size as the chunks of input that arrive in real time. Then \, each of the partitions is Fourier transformed and stored as frequency domain data.;
+#X text 488 247 The last point to make is that the size of the Fourier transform must be M*2. That is \, when we get the latest M samples \, we pad it out with zeros to M*2 samples \, then transform it. All of the IR partitions are padded to this same size. When any one chunk is inverse Fourier transformed \, its main content will be over the first M samples \, trailed by low amplitude samples or zeros. A process of overlapping and adding is then performed so that the first M samples of the most recently processed M*2 samples is mixed down with the last M samples of the previous chunk of processed M*2 samples.;
+#X text 488 27 When each new input chunk arrives (the M most recent samples) \, it is Fourier transformed into complex frequency domain data. The new chunk of frequency domain data is multiplied against each of the pre-prepared IR partitions that are also in the frequency domain. We can immediately do an inverse Fourier transform on the most recently available chunk to hear that portion of the processed input in the time domain \, but the other chunks will wait in a buffer to be output in the future. The crucial point to understand is that as new input chunks come in and are transformed and multiplied in the frequency domain \, we sum that new data with whatever other frequency domain data was waiting in that part of the buffer. Thus \, we save numerous FFT calls by summing in the frequency domain.;
+#X text 38 27 With two pre-recorded sound files \, convolution is pretty simple. We determine which file is longer \, find the next highest power of 2 (we'll call it N) \, and then pad each of the files with addiontal zeros up to N. Next \, we do a forward Fourier transform on each of them \, and multiply the transformed data sets point by point. Because the data contain complex values \, we must do a complex multiply vis FOIL. After multiplication \, all that is left to do is an inverse Fourier transform on the frequency domain product. Depending on the specific FFT algorithm being used \, you may also have to scale the amplitude by the reciprocal of N.;
+#X restore 61 513 pd partitioned-convolution-explained;
+#X obj 36 293 else/meter;
+#X floatatom 36 317 5 0 0 0 - - - 16;
+#X obj 126 320 else/out~;
+#X obj 55 105 else/play.file~ bubul.wav 1 1;
+#X obj 114 129 loadbang;
+#X obj 82 427 else/sample~ IR IR.wav;
+#X obj 82 464 else/sample~ church church.wav;
+#X msg 114 156 set IR;
+#X msg 126 179 set church;
+#X msg 151 211 size 256;
+#X text 88 398 Loading IR tables:;
+#X text 22 30 Change partition size (and latency) in samples. It must be a power of 2! Small partition sizes have less latency and are more expensive. Change it and check balow, f 40;
+#X text 177 157 set IR tables;
+#X obj 126 289 ./conv~ 512 0-church;
+#X msg 189 256 size 64;
+#X msg 169 233 size 512;
+#X connect 1 0 2 0;
+#X connect 4 0 14 0;
+#X connect 5 0 8 0;
+#X connect 8 0 14 0;
+#X connect 9 0 14 0;
+#X connect 10 0 14 0;
+#X connect 14 0 3 0;
+#X connect 15 0 14 0;
+#X connect 16 0 14 0;
+#X restore 456 244 pd example;
+#X obj 169 189 ./conv~ 64 IR;
+#X connect 27 0 33 0;
+#X connect 28 0 33 0;
+#X connect 33 0 18 0;
