@@ -20,7 +20,6 @@ typedef struct _op2{
     t_float     x_1to2;
     t_float     x_2to1;
     t_float     x_2to2;
-    
     t_float     x_fvol1;
     t_float     x_vol1;
     t_float     x_fvol2;
@@ -29,7 +28,6 @@ typedef struct _op2{
     t_float     x_pan1;
     t_float     x_fpan2;
     t_float     x_pan2;
-    
     t_inlet    *x_inl1;
     t_inlet    *x_inl2;
     int         x_ch2;
@@ -37,8 +35,7 @@ typedef struct _op2{
     int         x_n;
     int         x_nchans;
     double      x_sr_rec;
-    
-    float x_ramp;
+    float       x_ramp;
 }t_op2;
 
 static t_class *op2_class;
@@ -53,6 +50,15 @@ static void op2_vol2(t_op2 *x, t_floatarg f){
     x->x_vol2 = f;
 }
 
+static void *op2_vol(t_op2 *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(ac == 2){
+        op2_vol1(x, atom_getfloat(av));
+        av++;
+        op2_vol2(x, atom_getfloat(av));
+    }
+}
+
 static void op2_pan1(t_op2 *x, t_floatarg f){
     f = f < -1 ? -1 : f > 1 ? 1 : f;
     x->x_pan1 = (f * 0.5 + 0.5) * .25;
@@ -63,6 +69,15 @@ static void op2_pan2(t_op2 *x, t_floatarg f){
     x->x_pan2 = (f * 0.5 + 0.5) * .25;
 }
 
+static void *op2_pan(t_op2 *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(ac == 2){
+        op2_pan1(x, atom_getfloat(av));
+        av++;
+        op2_pan2(x, atom_getfloat(av));
+    }
+}
+
 static void op2_detune1(t_op2 *x, t_floatarg f){
     x->x_detune1 = f;
 }
@@ -71,12 +86,30 @@ static void op2_detune2(t_op2 *x, t_floatarg f){
     x->x_detune2 = f;
 }
 
+static void *op2_detune(t_op2 *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(ac == 2){
+        op2_detune1(x, atom_getfloat(av));
+        av++;
+        op2_detune2(x, atom_getfloat(av));
+    }
+}
+
 static void op2_ratio1(t_op2 *x, t_floatarg f){
     x->x_ratio1 = f;
 }
 
 static void op2_ratio2(t_op2 *x, t_floatarg f){
     x->x_ratio2 = f;
+}
+
+static void *op2_ratio(t_op2 *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(ac == 2){
+        op2_ratio1(x, atom_getfloat(av));
+        av++;
+        op2_ratio2(x, atom_getfloat(av));
+    }
 }
 
 static void op2_1to1(t_op2 *x, t_floatarg f){
@@ -95,6 +128,19 @@ static void op2_2to2(t_op2 *x, t_floatarg f){
     x->x_2to2 = f;
 }
 
+static void *op2_idx(t_op2 *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(ac == 4){
+        x->x_1to1 = atom_getfloat(av);
+        av++;
+        x->x_2to1 = atom_getfloat(av);
+        av++;
+        x->x_1to2 = atom_getfloat(av);
+        av++;
+        x->x_2to2 = atom_getfloat(av);
+    }
+}
+
 double op2_wrap_phase(double phase){
     while(phase >= 1)
         phase -= 1.;
@@ -110,8 +156,7 @@ static t_int *op2_perform(t_int *w){
     t_float *l2 = (t_float *)(w[4]);
     t_float *out1 = (t_float *)(w[5]);
     t_float *out2 = (t_float *)(w[6]);
-    int n = x->x_n;
-    int ch2 = x->x_ch2, ch3 = x->x_ch3;
+    int n = x->x_n, ch2 = x->x_ch2, ch3 = x->x_ch3;
     float *y1n1 = x->x_y1n1;
     float *y1n2 = x->x_y1n2;
     float *y2n1 = x->x_y2n1;
@@ -120,12 +165,10 @@ static t_int *op2_perform(t_int *w){
     double *ph2 = x->x_phase_2;
     double pan1 = x->x_fpan1, pan2 = x->x_fpan2;
     double vol1 = x->x_fvol1, vol2 = x->x_fvol2;
-    
     float p1Inc = (x->x_pan1 - pan1) * x->x_ramp;
     float p2Inc = (x->x_pan2 - pan2) * x->x_ramp;
     float v1Inc = (x->x_vol1 - vol1) * x->x_ramp;
     float v2Inc = (x->x_vol2 - vol2) * x->x_ramp;
-    
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0; i < n; i++){
             double hz = freq[j*n + i];
@@ -318,16 +361,21 @@ void op2_tilde_setup(void){
     op2_class = class_new(gensym("op2~"), (t_newmethod)op2_new, (t_method)op2_free, sizeof(t_op2), CLASS_MULTICHANNEL, A_GIMME, 0);
     CLASS_MAINSIGNALIN(op2_class, t_op2, x_freq);
     class_addmethod(op2_class, (t_method)op2_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(op2_class, (t_method)op2_idx, gensym("idx"), A_GIMME, 0);
     class_addmethod(op2_class, (t_method)op2_1to1, gensym("1to1"), A_FLOAT, 0);
     class_addmethod(op2_class, (t_method)op2_1to2, gensym("1to2"), A_FLOAT, 0);
     class_addmethod(op2_class, (t_method)op2_2to1, gensym("2to1"), A_FLOAT, 0);
     class_addmethod(op2_class, (t_method)op2_2to2, gensym("2to2"), A_FLOAT, 0);
+    class_addmethod(op2_class, (t_method)op2_ratio, gensym("ratio"), A_GIMME, 0);
     class_addmethod(op2_class, (t_method)op2_ratio1, gensym("ratio1"), A_FLOAT, 0);
     class_addmethod(op2_class, (t_method)op2_ratio2, gensym("ratio2"), A_FLOAT, 0);
+    class_addmethod(op2_class, (t_method)op2_detune, gensym("detune"), A_GIMME, 0);
     class_addmethod(op2_class, (t_method)op2_detune1, gensym("detune1"), A_FLOAT, 0);
     class_addmethod(op2_class, (t_method)op2_detune2, gensym("detune2"), A_FLOAT, 0);
+    class_addmethod(op2_class, (t_method)op2_vol, gensym("vol"), A_GIMME, 0);
     class_addmethod(op2_class, (t_method)op2_vol1, gensym("vol1"), A_FLOAT, 0);
     class_addmethod(op2_class, (t_method)op2_vol2, gensym("vol2"), A_FLOAT, 0);
+    class_addmethod(op2_class, (t_method)op2_pan, gensym("pan"), A_GIMME, 0);
     class_addmethod(op2_class, (t_method)op2_pan1, gensym("pan1"), A_FLOAT, 0);
     class_addmethod(op2_class, (t_method)op2_pan2, gensym("pan2"), A_FLOAT, 0);
 }
