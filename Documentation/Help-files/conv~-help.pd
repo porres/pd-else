@@ -27,12 +27,11 @@
 #X text 181 386 -;
 #X text 214 270 signal - input signal, f 39;
 #X text 214 351 signal - output signal;
-#X text 76 90 [conv~] is an abstraction that performs partitioned convolution. It takes a partition size and Impulse Response table., f 65;
 #X obj 211 133 else/play.file~ vacuous.wav 1 1;
 #X text 183 402 - impulse response table name (default none);
 #N canvas 388 176 680 451 example 0;
 #X obj 41 296 else/meter;
-#X floatatom 41 320 5 0 0 0 - - - 16;
+#X floatatom 41 320 4 0 0 0 - - - 16;
 #X obj 149 343 else/out~;
 #X obj 78 88 else/play.file~ bubul.wav 1 1;
 #X obj 391 66 else/sample~ IR IR.wav;
@@ -55,7 +54,8 @@
 #X obj 393 181 bng 25 250 50 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000;
 #X msg 161 180 size 1024;
 #X text 402 146 Play IR samples:;
-#X obj 149 312 else/conv~ 512 IR;
+#X obj 149 312 else/conv~;
+#X text 392 360 If no arguments are given \, the input sound is bypassed without latency., f 36;
 #X connect 0 0 1 0;
 #X connect 3 0 24 0;
 #X connect 5 0 24 0;
@@ -76,5 +76,6 @@
 #X text 178 286 size <float> - sets partition size in samples;
 #X text 194 385 optional: partition size (default 256 \, minimum 64), f 53;
 #X obj 211 165 else/conv~ 512 IR;
-#X connect 25 0 32 0;
-#X connect 32 0 18 0;
+#X text 76 90 [conv~] performs partitioned convolution. It takes a partition size and Impulse Response table as arguments., f 65;
+#X connect 24 0 31 0;
+#X connect 31 0 18 0;

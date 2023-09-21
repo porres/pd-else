@@ -3,6 +3,7 @@
 #include "m_pd.h"
 #include "kiss_fft.h"
 #include <math.h>
+
 #define MINSIZE 64
 #define DEFSIZE 256
 
@@ -11,11 +12,10 @@ typedef struct _conv{
     t_symbol       *x_array_name;
     t_word         *x_vec;
     t_clock        *x_clock;
-    t_sample       *x_ir_signal_eq;
+    t_sample       *x_ir_signal;
     int             x_startup_flag;
     int             x_array_size;
     int             x_num_parts;
-    t_float         x_sr;
     t_float         x_n;
     int             x_dsp_tick;
     int             x_buffer_limit;
@@ -42,109 +42,98 @@ static t_int *conv_perform(t_int *w){
     t_conv *x = (t_conv *)(w[1]);
     t_sample *in = (t_float *)(w[2]);
     t_sample *out = (t_float *)(w[3]);
-    int n = w[4];
-    int window = x->x_window;
-    int window_double = x->x_window_double;
-    int num_parts = x->x_num_parts;
-    t_float amp_scalar = x->x_amp_scalar;
-    if(n != 64 || num_parts < 1){
+    int window = x->x_window, window_double = x->x_window_double;
+    int num_parts = x->x_num_parts, n = x->x_n;
+    if(x->x_num_parts < 1){
         for(i = 0; i < n; i++)
-            out[i] = 0.0;
-        return(w+5);
-    };
+            out[i] = in[i];
+        return(w+4);
+    }
+    t_float amp_scalar = x->x_amp_scalar;
     // buffer most recent block
     for(i = 0; i < n; i++)
         x->x_signal_buf[(x->x_dsp_tick*n)+i] = in[i];
     if(++x->x_dsp_tick >= x->x_buffer_limit){
         x->x_dsp_tick = 0;
-        // don't do anything if the IR hasn't been analyzed yet
-        if(x->x_num_parts > 0){
-        // copy the signal buffer into the transform IN buffer
-            for(i = 0; i < window; i++)
-                x->x_signal_buf_padded[i] = x->x_signal_buf[i];
-        // pad the rest out with zeros
-            for(; i<window_double; i++)
-                x->x_signal_buf_padded[i] = 0.0;
-        // take FT of the most recent input, padded to double window size
-            kiss_fftr(x->x_sig_buf_pad_fft_plan, x->x_signal_buf_padded, x->x_sig_buf_pad_fft_out);
-         // multiply against partitioned IR spectra. these need to be complex multiplies
-         // also, sum into appropriate part of the nonoverlapped buffer
-            for(p = 0; p < num_parts; p++){
-                int startIdx;
-                startIdx = p*(window+1);
-                for(i = 0; i < (window+1); i++){
-                    t_float realLive = x->x_sig_buf_pad_fft_out[i].r;
-                    t_float imagLive = x->x_sig_buf_pad_fft_out[i].i;
-                    t_float realIR = x->x_ir_freq_dom_data[startIdx+i].r;
-                    t_float imagIR = x->x_ir_freq_dom_data[startIdx+i].i;
-                    // MINUS the imag part because i^2 = -1
-                    t_float real = (realLive * realIR) - (imagLive * imagIR);
-                    t_float imag = (imagLive * realIR) + (realLive * imagIR);
-                    // sum into the live freq domain data buffer
-                    x->x_live_freq_dom_data[startIdx+i].r += real;
-                    x->x_live_freq_dom_data[startIdx+i].i += imag;
-                }
-            }
-        // copy the freq dom data from head of the complex summing buffer into the inverse FFT input buffer
+        for(i = 0; i < window; i++)  // copy signal buffer into the transform buffer
+            x->x_signal_buf_padded[i] = x->x_signal_buf[i];
+        for(; i < window_double; i++) // pad the rest out with zeros
+            x->x_signal_buf_padded[i] = 0.0;
+        // FT of most recent input, padded to double window size
+        kiss_fftr(x->x_sig_buf_pad_fft_plan, x->x_signal_buf_padded, x->x_sig_buf_pad_fft_out);
+        // multiply with partitioned IR spectra and sum into appropriate part of the nonoverlapped buffer
+        for(p = 0; p < num_parts; p++){
+            int startIdx = p*(window+1);
             for(i = 0; i < (window+1); i++){
-                x->x_inv_out_fft_in[i].r = x->x_live_freq_dom_data[i].r;
-                x->x_inv_out_fft_in[i].i = x->x_live_freq_dom_data[i].i;
+                t_float realLive = x->x_sig_buf_pad_fft_out[i].r;
+                t_float imagLive = x->x_sig_buf_pad_fft_out[i].i;
+                t_float realIR = x->x_ir_freq_dom_data[startIdx+i].r;
+                t_float imagIR = x->x_ir_freq_dom_data[startIdx+i].i;
+                // MINUS the imag part because i^2 = -1
+                t_float real = (realLive * realIR) - (imagLive * imagIR);
+                t_float imag = (imagLive * realIR) + (realLive * imagIR);
+                // sum into the live freq domain data buffer
+                x->x_live_freq_dom_data[startIdx+i].r += real;
+                x->x_live_freq_dom_data[startIdx+i].i += imag;
             }
-            // perform ifft
-            kiss_fftri(x->x_inv_out_fft_plan, x->x_inv_out_fft_in, x->x_inv_out_fft_out);
-        // copy the latest IFFT time-domain result into the SECOND block of x_non_overlapped_output. The first block contains time-domain results from last time, which we will overlap-add with
-            for(i = 0; i < window_double; i++)
-                x->x_non_overlapped_output[window_double+i] = x->x_inv_out_fft_out[i];
-        // write time domain output to x->x_final_output and reduce gain
-            for(i = 0; i < window; i++){
-                x->x_final_output[i] = x->x_non_overlapped_output[window+i] +  x->x_non_overlapped_output[window_double+i];
-                x->x_final_output[i] *= amp_scalar;
-            }
-        // push the live freq domain data buffer contents backwards
-            for(i = 0; i < ((num_parts*(window+1))-(window+1)); i++){
-                x->x_live_freq_dom_data[i].r = x->x_live_freq_dom_data[(window+1)+i].r;
-                x->x_live_freq_dom_data[i].i = x->x_live_freq_dom_data[(window+1)+i].i;
-            }
-        // init the newly available chunk at the end
-            for(; i < (num_parts*(window+1)); i++){
-                x->x_live_freq_dom_data[i].r = 0.0;
-                x->x_live_freq_dom_data[i].i = 0.0;
-            }
-        // push remaining output buffer contents backwards
-            for(i = 0; i < window_double; i++)
-                x->x_non_overlapped_output[i] = x->x_non_overlapped_output[window_double+i];
-        // init the newly available chunk at the end
-            for(; i < (2*window_double); i++)
-                x->x_non_overlapped_output[i] = 0.0;
         }
+        // copy FT data from head of the complex summing buffer into the inverse FT buffer
+        for(i = 0; i < (window+1); i++){
+            x->x_inv_out_fft_in[i].r = x->x_live_freq_dom_data[i].r;
+            x->x_inv_out_fft_in[i].i = x->x_live_freq_dom_data[i].i;
+        }
+        // perform ifft
+        kiss_fftri(x->x_inv_out_fft_plan, x->x_inv_out_fft_in, x->x_inv_out_fft_out);
+        // copy the latest IFFT time-domain result into the SECOND block of x_non_overlapped_output. The first block contains time-domain results from last time, which we will overlap-add with
+        for(i = 0; i < window_double; i++)
+            x->x_non_overlapped_output[window_double+i] = x->x_inv_out_fft_out[i];
+        // write time domain output to x->x_final_output and reduce gain
+        for(i = 0; i < window; i++){
+            x->x_final_output[i] = x->x_non_overlapped_output[window+i] +  x->x_non_overlapped_output[window_double+i];
+            x->x_final_output[i] *= amp_scalar;
+        }
+        // push the live freq domain data buffer contents backwards
+        for(i = 0; i < ((num_parts*(window+1))-(window+1)); i++){
+            x->x_live_freq_dom_data[i].r = x->x_live_freq_dom_data[(window+1)+i].r;
+            x->x_live_freq_dom_data[i].i = x->x_live_freq_dom_data[(window+1)+i].i;
+        }
+        // init the newly available chunk at the end
+        for(; i < (num_parts*(window+1)); i++){
+            x->x_live_freq_dom_data[i].r = 0.0;
+            x->x_live_freq_dom_data[i].i = 0.0;
+        }
+        // push remaining output buffer contents backwards
+        for(i = 0; i < window_double; i++)
+            x->x_non_overlapped_output[i] = x->x_non_overlapped_output[window_double+i];
+        // init the newly available chunk at the end
+        for(; i < (2*window_double); i++)
+            x->x_non_overlapped_output[i] = 0.0;
     };
     for(i = 0; i < n; i++) // output
         out[i] = x->x_final_output[(x->x_dsp_tick*n)+i];
-    return(w+5);
+    return(w+4);
 }
 
 static void conv_dsp(t_conv *x, t_signal **sp){
-    dsp_add(conv_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
-    if(sp[0]->s_n != x->x_n)
-        pd_error(x, "[conv~]: block size must be 64. DSP suspended.");
-    if(sp[0]->s_sr != x->x_sr)
-        x->x_sr = sp[0]->s_sr;
-    if(x->x_num_parts < 1)
-        pd_error(x, "[conv~]: impulse response analysis not performed yet. output will be zero.");
+    if(sp[0]->s_n != x->x_n){
+        pd_error(x, "[conv~]: block size must be 64");
+        dsp_add_zero(sp[1]->s_vec, x->x_n);
+    }
+    else
+        dsp_add(conv_perform, 3, x, sp[0]->s_vec, sp[1]->s_vec);
 };
 
 static void conv_set(t_conv *x, t_symbol *arrayName){
     t_garray *array_ptr;
-    int i, j, old_non_overlapped_size, new_non_overlapped_size;
     t_float *fft_in;
+    int i, j, old_non_overlapped_size, new_non_overlapped_size;
     kiss_fft_cpx *fft_out;
     kiss_fftr_cfg fft_cfg;
     if(x->x_num_parts > 0)
         old_non_overlapped_size = 2*x->x_window_double;
     else
         old_non_overlapped_size = 0;
-    // if this call to _analyze() is issued from _eq(), the incoming arrayName will match x->x_array_name.
-    // if incoming arrayName doesn't match x->x_array_name, load arrayName and dump its samples into x_ir_signal_eq
+    // if incoming arrayName doesn't match x->x_array_name, load arrayName and dump its samples into x_ir_signal
     if(arrayName->s_name != x->x_array_name->s_name || x->x_startup_flag){
         int old_array_size;
         x->x_startup_flag = 0;
@@ -152,12 +141,8 @@ static void conv_set(t_conv *x, t_symbol *arrayName){
         if(!(array_ptr = (t_garray *)pd_findbyclass(arrayName, garray_class))){
             if(*arrayName->s_name){
                 pd_error(x, "[conv~]: no array named %s", arrayName->s_name);
-                // resize x_ir_signal_eq back to 0
-                x->x_ir_signal_eq = (t_sample *)t_resizebytes(
-                    x->x_ir_signal_eq,
-                    old_array_size*sizeof(t_sample),
-                    0
-                );
+                // resize x_ir_signal back to 0
+                x->x_ir_signal = (t_sample *)t_resizebytes( x->x_ir_signal, old_array_size*sizeof(t_sample), 0);
                 x->x_array_size = 0;
                 x->x_vec = 0;
                 return;
@@ -165,20 +150,19 @@ static void conv_set(t_conv *x, t_symbol *arrayName){
         }
         else if(!garray_getfloatwords(array_ptr, &x->x_array_size, &x->x_vec)){
             pd_error(x, "[conv~]: bad template for %s", arrayName->s_name);
-            // resize x_ir_signal_eq back to 0
-            x->x_ir_signal_eq = (t_sample *)t_resizebytes(x->x_ir_signal_eq, old_array_size*sizeof(t_sample), 0);
+            // resize x_ir_signal back to 0
+            x->x_ir_signal = (t_sample *)t_resizebytes(x->x_ir_signal, old_array_size*sizeof(t_sample), 0);
             x->x_array_size = 0;
             x->x_vec = 0;
             return;
         }
         else
             x->x_array_name = arrayName;
-        // resize x_ir_signal_eq
-        x->x_ir_signal_eq = (t_sample *)t_resizebytes(x->x_ir_signal_eq, old_array_size*sizeof(t_sample), x->x_array_size*sizeof(t_sample)
-        );
-        // since this is first analysis of arrayName, load it into x_ir_signal_eq
+        // resize x_ir_signal
+        x->x_ir_signal = (t_sample *)t_resizebytes(x->x_ir_signal, old_array_size*sizeof(t_sample), x->x_array_size*sizeof(t_sample));
+        // since this is first analysis of arrayName, load it into x_ir_signal
         for(i = 0; i < x->x_array_size; i++)
-            x->x_ir_signal_eq[i] = x->x_vec[i].w_float;
+            x->x_ir_signal[i] = x->x_vec[i].w_float;
     }
     else{
         t_garray *this_array_ptr;
@@ -234,17 +218,17 @@ static void conv_set(t_conv *x, t_symbol *arrayName){
         int start_spec, start_vec;
         start_spec = i*(x->x_window+1);
         start_vec = i*x->x_window;
-        // we are analyzing partitions of x_ir_signal_eq, in case there has been any EQ
-        for(j = 0; j < x->x_window && (start_vec+j)<x->x_array_size; j++)
-            fft_in[j] = x->x_ir_signal_eq[start_vec+j];
+        // we are analyzing partitions of x_ir_signal, in case there has been any EQ
+        for(j = 0; j < x->x_window && (start_vec+j) < x->x_array_size; j++)
+            fft_in[j] = x->x_ir_signal[start_vec+j];
         // zero pad
-        for(; j<x->x_window_double; j++)
+        for(; j < x->x_window_double; j++)
             fft_in[j] = 0.0;
         // perform FFT
         kiss_fftr(fft_cfg, fft_in, fft_out);
         // copy freq domain data from fft output buffer into
         // larger IR freq domain data buffer
-        for(j = 0; j<x->x_window+1; j++){
+        for(j = 0; j < x->x_window+1; j++){
             x->x_ir_freq_dom_data[start_spec+j].r = fft_out[j].r;
             x->x_ir_freq_dom_data[start_spec+j].i = fft_out[j].i;
         }
@@ -252,27 +236,14 @@ static void conv_set(t_conv *x, t_symbol *arrayName){
     freebytes(fft_in, (x->x_window_double)*sizeof(t_float));
     freebytes(fft_out, (x->x_window+1)*sizeof(kiss_fft_cpx));
     kiss_fft_free(fft_cfg);
-    // TS: I'm not sure we want to print this message every time, seems excessive
-    //post("%s: analysis of IR array %s complete. Array size: %i. Partitions: %i.", x->x_obj_symbol->s_name, x->x_array_name->s_name, x->x_array_size, x->x_num_parts);
 }
 
 static void conv_size(t_conv *x, t_float w){
-    int i;
-    int i_win = w;
-    int is64 = (i_win % 64) == 0;
-    int old_window = x->x_window;
-    int old_window_double = x->x_window_double;
-    if(is64){
-        if(i_win >= MINSIZE)
-            x->x_window = i_win;
-        else{
-            x->x_window = MINSIZE;
-            pd_error(x, "[conv~]: requested window size too small. minimum value of %i used instead", x->x_window);
-        }
-    }
-    else{
+    int i, old_window = x->x_window, old_window_double = x->x_window_double;
+    x->x_window = w < MINSIZE ? MINSIZE : (int)w;
+    if((x->x_window % 64) != 0){ // window size is not a multiple of 64
         x->x_window = DEFSIZE;
-        pd_error(x, "[conv~]: window not a multiple of 64. default value of %i used instead", x->x_window);
+        pd_error(x, "[conv~]: window not a multiple of 64, using default (%i) instead", x->x_window);
     }
     // resize time-domain buffer to zero bytes
     x->x_non_overlapped_output = (t_sample *)t_resizebytes(x->x_non_overlapped_output, (2*x->x_window_double)*sizeof(t_sample), 0);
@@ -307,7 +278,6 @@ static void conv_size(t_conv *x, t_float w){
          x->x_signal_buf_padded[i] = 0.0;
          x->x_inv_out_fft_out[i] = 0.0;
     }
-//    post("[conv~]: partition size: %i", x->x_window);
     // set num_parts back to zero so that the IR analysis routine is initialized as if it's the first call
     x->x_num_parts = 0;
     // reset DSP ticks since we're clearing a new buffer and starting to fill it with signal
@@ -318,9 +288,13 @@ static void conv_size(t_conv *x, t_float w){
 }
 
 static void conv_print(t_conv *x){
-    post("[conv~]: IR array: %s", x->x_array_name->s_name);
-    post("[conv~]: array length: %i", x->x_array_size);
-    post("[conv~]: number of partitions: %i", x->x_num_parts);
+    if(x->x_array_name == gensym("NOARRAYSPECIFIED"))
+        post("[conv~]: no IR array set");
+    else{
+        post("[conv~]: IR array: %s", x->x_array_name->s_name);
+        post("[conv~]: array length: %i", x->x_array_size);
+        post("[conv~]: number of partitions: %i", x->x_num_parts);
+    }
     post("[conv~]: partition size: %i", x->x_window);
 }
 
@@ -332,7 +306,7 @@ static void conv_initClock(t_conv *x){
 }
 
 static void conv_free(t_conv *x){
-    t_freebytes(x->x_ir_signal_eq, x->x_array_size*sizeof(t_sample));
+    t_freebytes(x->x_ir_signal, x->x_array_size*sizeof(t_sample));
     t_freebytes(x->x_signal_buf, x->x_window*sizeof(t_sample));
     t_freebytes(x->x_signal_buf_padded, x->x_window_double*sizeof(t_sample));
     t_freebytes(x->x_inv_out_fft_out, x->x_window_double*sizeof(t_sample));
@@ -344,7 +318,7 @@ static void conv_free(t_conv *x){
     free(x->x_inv_out_fft_in);
     kiss_fftr_free(x->x_sig_buf_pad_fft_plan);
     kiss_fftr_free(x->x_inv_out_fft_plan);
-    if(x->x_num_parts>0)
+    if(x->x_num_parts > 0)
         t_freebytes(x->x_non_overlapped_output, 2*x->x_window_double*sizeof(t_sample));
     else
         t_freebytes(x->x_non_overlapped_output, 0);
@@ -378,7 +352,6 @@ static void *conv_new(t_symbol *s, int ac, t_atom *av){
     x->x_clock = clock_new(x, (t_method)conv_initClock);
     x->x_array_size = 0;
     x->x_num_parts = 0;
-    x->x_sr = 44100;
     x->x_n = 64;
     x->x_dsp_tick = 0;
     x->x_window_double = x->x_window*2;
@@ -387,7 +360,7 @@ static void *conv_new(t_symbol *s, int ac, t_atom *av){
     // these will be resized when analysis occurs
     x->x_non_overlapped_output = (t_sample *)getbytes(0);
     // this can probably just be x_window_double * 2!!
-    x->x_ir_signal_eq = (t_sample *)getbytes(0);
+    x->x_ir_signal = (t_sample *)getbytes(0);
     x->x_ir_freq_dom_data = (kiss_fft_cpx*)getbytes((x->x_window+1) * sizeof(kiss_fft_cpx));
     x->x_live_freq_dom_data = (kiss_fft_cpx*)getbytes((x->x_window+1) * sizeof(kiss_fft_cpx));
     x->x_signal_buf = (t_sample *)getbytes(x->x_window*sizeof(t_sample));
