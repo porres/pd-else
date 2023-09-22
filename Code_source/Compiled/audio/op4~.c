@@ -62,12 +62,12 @@ typedef struct _op4{
     t_inlet    *x_inl2;
     t_inlet    *x_inl3;
     t_inlet    *x_inl4;
+    int         x_nchans;
+    int         x_n;
     int         x_ch2;
     int         x_ch3;
     int         x_ch4;
     int         x_ch5;
-    int         x_n;
-    int         x_nchans;
     double      x_sr_rec;
     float       x_ramp;
 }t_op4;
@@ -453,7 +453,8 @@ static void op4_dsp(t_op4 *x, t_signal **sp){
     x->x_ramp = 100.f*x->x_sr_rec;
     int chs = sp[0]->s_nchans, ch2 = sp[1]->s_nchans, ch3 = sp[2]->s_nchans;
     int ch4 = sp[3]->s_nchans, ch5 = sp[4]->s_nchans;
-    if((ch2 > 1 && ch2 != chs) || (ch3 > 1 && ch3 != chs)){
+    if((ch2 > 1 && ch2 != chs) || (ch3 > 1 && ch3 != chs)
+    || (ch4 > 1 && ch4 != chs) || (ch5 > 1 && ch5 != chs)){
         dsp_add_zero(sp[5]->s_vec, chs*x->x_n);
         dsp_add_zero(sp[6]->s_vec, chs*x->x_n);
         pd_error(x, "[op4~]: channel sizes mismatch");
