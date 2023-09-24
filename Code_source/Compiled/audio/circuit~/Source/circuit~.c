@@ -32,6 +32,8 @@ typedef struct _circuit_tilde {
     int x_numiter;
     int x_dcblock;
     
+    int x_last_sr;
+    
     t_int ** x_w;
     int x_w_size;
     
@@ -54,7 +56,7 @@ void circuit_tilde_dcblock(t_circuit_tilde *x, t_float dcblock) {
 
 void circuit_tilde_reset(t_circuit_tilde *x) {
     x->x_simulator = simulator_reset(x->x_simulator, sys_getsr() * x->x_oversample_factor);
-    
+    x->x_last_sr = sys_getsr() * x->x_oversample_factor;
     circuit_tilde_dcblock(x, x->x_dcblock);
     circuit_tilde_iter(x, x->x_numiter);
 }
@@ -181,8 +183,10 @@ void circuit_tilde_dsp(t_circuit_tilde *x, t_signal **sp)
     int sum = x->x_numin + x->x_numout;
     x->x_w = resizebytes(x->x_w, x->x_w_size, sizeof(t_int *) * (sum + 2));
 
-    // Reset simulator because samplerate may have changed
-    circuit_tilde_reset(x);
+    // Reset simulator if samplerate has changed
+    if(x->x_last_sr != sys_getsr() * x->x_oversample_factor) {
+        circuit_tilde_reset(x);
+    }
 
     x->x_w_size = sizeof(t_int *) * (sum + 2);
     x->x_w[0] = (t_int*)(x);
@@ -231,9 +235,10 @@ void *circuit_tilde_new(t_symbol *s, int argc, t_atom *argv)
         }
     }
     
-    x->x_simulator = simulator_create(argc, argv, sys_getsr() * x->x_oversample_factor);
+    x->x_simulator = simulator_create(argc, argv, sys_getsr() * oversample_factor);
     x->x_numin = simulator_num_inlets(x->x_simulator);
     x->x_numout = simulator_num_outlets(x->x_simulator);
+    x->x_last_sr = sys_getsr() * oversample_factor;
     x->x_enabled = 1;
     x->x_w_size = 0;
     x->x_w = NULL;

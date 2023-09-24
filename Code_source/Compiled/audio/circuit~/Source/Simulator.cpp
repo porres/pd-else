@@ -171,22 +171,22 @@ void* simulator_create(int argc, t_atom* argv, double sampleRate)
             auto [args, pins] = getPinsAndArguments(arguments, 3);
             netlistDescription.emplace_back(tTriode, args, pins, model);
         }        
-        /*
+
         else if (arguments[0] =="taptransformer" && arguments.size() > 6) {
             auto [args, pins] = getPinsAndArguments(arguments, 5);
             netlistDescription.emplace_back(tTransformer, args, pins, "");
-        }
+        }        /*
         else if (arguments[0] =="buffer" && arguments.size() > 2) {
             auto [args, pins] = getPinsAndArguments(arguments, 2);
             netlistDescription.emplace_back(tBuffer, args, pins, "");
         } else if (arguments[0] =="delaybuffer" && arguments.size() > 2) {
             auto [args, pins] = getPinsAndArguments(arguments, 2);
             netlistDescription.emplace_back(tDelayBuffer, args, pins, "");
-        }
+        } */
         else if (arguments[0] =="pentode" && arguments.size() > 4) {
             auto [args, pins] = getPinsAndArguments(arguments, 4);
             netlistDescription.emplace_back(tPentode, args, pins, model);
-        } */
+        }
         
         else if (arguments[0] =="-iter" || arguments[0] =="-oversample" || arguments[0] =="-dcblock") {
                 continue;

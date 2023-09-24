@@ -53,9 +53,9 @@ enum ComponentType {
     tCurrent,
     tProbe,
     tTriode,
-    /* Still experimental...
+    tPentode,/*
     tTappedTransformer,
-    tPentode,
+     Still experimental...
     tBuffer,
     tDelayBuffer */
 };
