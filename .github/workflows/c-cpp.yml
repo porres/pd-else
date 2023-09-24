@@ -30,7 +30,9 @@ jobs:
         mv pure-data-* pure-data
 
     - name: Install FluidSynth deps
-      run: sudo apt install cmake libglib2.0-dev libpcre++-dev libsndfile1-dev patchelf -y
+      run: |
+        sudo apt update
+        sudo apt install cmake libglib2.0-dev libpcre++-dev libsndfile1-dev patchelf -y
 
     - name: build FluidSynth
       run: | 

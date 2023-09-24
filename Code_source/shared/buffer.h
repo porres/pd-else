@@ -10,12 +10,15 @@
 
 #define buffer_MAXCHANS 64 //max number of channels
 
+#define _USE_MATH_DEFINES
 #include <math.h>
 
-#define TWO_PI (3.14159265358979323846 * 2)
-#define HALF_PI (3.14159265358979323846 * 0.5)
+#define TWO_PI (M_PI * 2)
+#define HALF_PI (M_PI * 0.5)
 
 #define ONE_SIXTH 0.16666666666666666666667f
+
+#define ELSE_SIN_TABSIZE 16384
 
 typedef struct _buffer{
     void       *c_owner;     // owner of buffer, note i don't know if this actually works
@@ -39,6 +42,10 @@ double interp_cubic(double frac, double a, double b, double c, double d);
 double interp_spline(double frac, double a, double b, double c, double d);
 double interp_hermite(double frac, double a, double b, double c, double d,
     double bias, double tension);
+
+double read_sintab(double phase);
+
+void init_sine_table(void);
 
 void buffer_bug(char *fmt, ...);
 void buffer_clear(t_buffer *c);
