@@ -67,7 +67,7 @@ static void sfz_do_open(t_sfz *x, t_symbol *name){
     sys_close(fd);
     if(x->x_filename && strlen(x->x_filename))
         free(x->x_filename);
-    x->x_filename = (char*)malloc(strlen(filename));
+    x->x_filename = (char*)malloc(strlen(filename) + 1);
     strcpy(x->x_filename, filename);
     if(x->x_bufsize){
         free(x->x_buf);
@@ -154,7 +154,7 @@ static void sfz_set(t_sfz *x, t_symbol *s, int ac, t_atom* av){
 
 static void sfz_path(t_sfz *x, t_symbol *path){
     if(path->s_name[0] == '\0'){
-        char* patchPath = (char*)malloc(strlen(x->x_patch_path));
+        char* patchPath = (char*)malloc(strlen(x->x_patch_path)+1);
         strcpy(patchPath, x->x_patch_path);
         if(x->x_custom_path && strlen(x->x_custom_path))
             free(x->x_custom_path);
