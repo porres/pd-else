@@ -653,9 +653,6 @@ struct BJT : Component<3, 4> {
 
         A[nets[4]][nets[4]].gdyn.push_back(&pnE.geq);
         b[nets[4]].gdyn.push_back(&pnE.ieq);
-        
-        b[nets[3]].iter = true;
-        b[nets[4]].iter = true;
     }
 };
 
