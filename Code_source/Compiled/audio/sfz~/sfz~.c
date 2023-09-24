@@ -13,7 +13,11 @@ __attribute__((visibility("default")))
 #include "../../../shared/elsefile.h"
 #include <sfizz.h>
 #include <sfizz/import/sfizz_import.h>
+
+#ifndef _MSC_VER
 #include <unistd.h>
+#endif
+
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -33,9 +37,9 @@ typedef struct _sfz{
     char           *x_buf;               // sfz file as a string
     int             x_bufsize;
     char           *x_custom_path;       // custom path for sfz_set
-    char           *x_patch_path;        // patch path 
-    char           *x_filename_buf;
-    int             x_filename_bufsize;
+    char           *x_patch_path;        // patch path
+    char           *x_filename;
+    
     t_elsefile     *x_elsefilehandle;
 }t_sfz;
 
@@ -61,10 +65,14 @@ static void sfz_do_open(t_sfz *x, t_symbol *name){
         }
     }
     sys_close(fd);
-    x->x_filename_bufsize = strlen(filename);
-    x->x_filename_buf = (char *)filename;
-    x->x_bufsize = 0;
-    free(x->x_buf);
+    if(x->x_filename && strlen(x->x_filename))
+        free(x->x_filename);
+    x->x_filename = (char*)malloc(strlen(filename));
+    strcpy(x->x_filename, filename);
+    if(x->x_bufsize){
+        free(x->x_buf);
+        x->x_bufsize = 0;
+    }
     chdir(realdir);
     sfizz_load_or_import_file(x->x_synth, realname, NULL);
 }
@@ -124,6 +132,8 @@ static void sfz_open(t_sfz *x, t_symbol *s){
 
 static void sfz_set(t_sfz *x, t_symbol *s, int ac, t_atom* av){
     (void)s;
+    if(x->x_bufsize)
+        freebytes(x->x_buf, x->x_bufsize);
     binbuf_clear(x->x_binbuf);
     binbuf_restore(x->x_binbuf, ac, av);
     binbuf_gettext(x->x_binbuf, &x->x_buf, &x->x_bufsize);
@@ -135,15 +145,20 @@ static void sfz_set(t_sfz *x, t_symbol *s, int ac, t_atom* av){
     }
     strncpy(new_buf, x->x_buf, x->x_bufsize);
     new_buf[x->x_bufsize] = '\0';
-    free(x->x_buf);
+    freebytes(x->x_buf, x->x_bufsize);
     x->x_buf = new_buf;
+    x->x_bufsize = strlen(x->x_buf);
     if(!sfizz_load_string(x->x_synth, x->x_custom_path, x->x_buf))
         post("[sfz~] could not set SFZ string");
 }
 
 static void sfz_path(t_sfz *x, t_symbol *path){
-    if(strlen(path->s_name) == 0){
-        x->x_custom_path = x->x_patch_path;
+    if(path->s_name[0] == '\0'){
+        char* patchPath = (char*)malloc(strlen(x->x_patch_path));
+        strcpy(patchPath, x->x_patch_path);
+        if(x->x_custom_path && strlen(x->x_custom_path))
+            free(x->x_custom_path);
+        x->x_custom_path = patchPath;
         return;
     }
     char *custom_path_buf;
@@ -156,6 +171,8 @@ static void sfz_path(t_sfz *x, t_symbol *path){
         custom_path_buf = (char*)malloc(strlen(path->s_name) + 1);
         strcpy(custom_path_buf, path->s_name);
     }
+    if(x->x_custom_path && strlen(x->x_custom_path))
+        free(x->x_custom_path);
     x->x_custom_path = custom_path_buf;
 }
 
@@ -214,7 +231,7 @@ static void sfz_note(t_sfz* x, t_symbol *s, int ac, t_atom* av){
             return;
         int vel = av[1].a_w.w_float;
         if(vel > 0)
-            sfizz_send_note_on(x->x_synth, 0, key - x->x_base, vel);
+            sfizz_send_hd_note_on(x->x_synth, 0, key - x->x_base, vel/127.);
         else
             sfizz_send_note_off(x->x_synth, 0, key - x->x_base, 0);
     }
@@ -224,7 +241,7 @@ static void sfz_ctl(t_sfz* x, t_float f1, t_float f2){
     int cc = (int)f2;
     if(cc < 0 || cc >= MIDI_CC_COUNT)
         return;
-    sfizz_send_cc(x->x_synth, 0, cc, (int)f1);
+    sfizz_send_hdcc(x->x_synth, 0, cc, f1/127.);
 }
 
 static void sfz_pgm(t_sfz* x, t_float f1){
@@ -265,16 +282,16 @@ static void sfz_flush(t_sfz* x){
 }
 
 static void sfz_info(t_sfz *x){
-    post("[sfz~] info -------------------------", SFIZZ_VERSION);
+    post("[sfz~] info -------------------------");
     post("Using SFIZZ version '%s'", SFIZZ_VERSION);
     if(x->x_bufsize)
         post("SFZ string loaded");
-    else if(x->x_filename_bufsize)
-        post("[sfz~] SFZ file loaded (%s)", x->x_filename_buf);
+    else if(x->x_filename && strlen(x->x_filename))
+        post("SFZ file loaded (%s)", x->x_filename);
     else
-        post("[sfz~] no SFZ string or file loaded");
+        post("no SFZ string or file loaded");
     post("custom path loaded = %s", x->x_custom_path);
-    post("-------------------------------------", SFIZZ_VERSION);
+    post("-------------------------------------");
 }
 
 static t_int* sfz_perform(t_int* w){
@@ -292,16 +309,17 @@ static void sfz_dsp(t_sfz* x, t_signal** sp){
 }
 
 static void sfz_free(t_sfz* x){
-    free(x->x_custom_path);
     if(x->x_synth)
         sfizz_free(x->x_synth);
     if(x->x_elsefilehandle)
         elsefile_free(x->x_elsefilehandle);
     binbuf_free(x->x_binbuf);
+    if(x->x_custom_path && strlen(x->x_custom_path))
+        free(x->x_custom_path);
+    if(x->x_filename)
+        free(x->x_filename);
     if(x->x_bufsize)
         freebytes(x->x_buf, x->x_bufsize);
-    if(x->x_filename_bufsize)
-        freebytes(x->x_filename_buf, x->x_filename_bufsize);
 }
 
 static void* sfz_new(t_symbol *s, int ac, t_atom *av){
@@ -316,7 +334,9 @@ static void* sfz_new(t_symbol *s, int ac, t_atom *av){
     x->x_patch_path = (char*)malloc(strlen(canvas_dir) + 2);
     strcpy(x->x_patch_path, canvas_dir);
     strcat(x->x_patch_path, "/");
-    x->x_custom_path = x->x_patch_path;
+    
+    x->x_custom_path = (char*)malloc(strlen(x->x_patch_path));
+    strcpy(x->x_custom_path, x->x_patch_path);
     
     x->x_synth = sfizz_create_synth();
     sfizz_set_sample_rate(x->x_synth , sys_getsr());
@@ -324,7 +344,7 @@ static void* sfz_new(t_symbol *s, int ac, t_atom *av){
     x->x_a4 = 440;
     x->x_base = 0;
     x->x_ratio = x->x_bratio = 1.;
-    x->x_filename_bufsize = 0;
+    x->x_filename = NULL;
     if(ac == 1 && av[0].a_type == A_SYMBOL)
         sfz_open(x, av[0].a_w.w_symbol);
     outlet_new(&x->x_obj, &s_signal);

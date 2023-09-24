@@ -70,6 +70,30 @@ double bias, double tension){
     return(p0*b + p1*m0 + p2*m1 + p3*c);
 }
 
+static double *sintable; // stays allocated as long as Pd is running
+
+void init_sine_table(void){
+    if(sintable)
+        return;
+    sintable = getbytes((ELSE_SIN_TABSIZE + 1) * sizeof(*sintable));
+    double *tp = sintable;
+    double inc = TWO_PI / ELSE_SIN_TABSIZE, phase = 0;
+    for(int i = ELSE_SIN_TABSIZE/4 - 1; i >= 0; i--, phase += inc)
+        *tp++ = sin(phase); // populate 1st quarter
+    *tp++ = 1;
+    for(int i = ELSE_SIN_TABSIZE/4 - 1; i >= 0; i--)
+        *tp++ = sintable[i]; // mirror inverted
+    for(int i = ELSE_SIN_TABSIZE/2 - 1; i >= 0; i--)
+        *tp++ = -sintable[i]; // mirror back
+}
+
+double read_sintab(double phase){
+    double tabphase = phase * ELSE_SIN_TABSIZE;
+    int i = (int)tabphase;
+    double frac = tabphase - i, p1 = sintable[i], p2 = sintable[i+1];
+    return(interp_lin(frac, p1, p2));
+}
+
 // on failure *bufsize is not modified
 t_word *buffer_get(t_buffer *c, t_symbol * name, int *bufsize, int indsp, int complain){
 //in dsp = used in dsp,
@@ -91,7 +115,7 @@ t_word *buffer_get(t_buffer *c, t_symbol * name, int *bufsize, int indsp, int co
         else if(complain)
             pd_error(c->c_owner, "no such array '%s'", name->s_name);
     }
-    return (0);
+    return(0);
 }
 
 //making peek~ work with channel number choosing, assuming 1-indexed

@@ -1,17 +1,12 @@
-// Porres 2017
+// Porres 2017-2023
 
 #include "m_pd.h"
-#include "math.h"
 #include "magic.h"
-
-#define TWOPI (3.14159265358979323846 * 2)
-
-static t_class *sine_class;
+#include "buffer.h"
 
 typedef struct _sine{
     t_object    x_obj;
     double     *x_phase;
-    double     *x_last_phase_offset;
     int         x_nchans;
     t_int       midi;
     t_int       soft;
@@ -19,13 +14,23 @@ typedef struct _sine{
     t_inlet    *x_inlet_phase;
     t_inlet    *x_inlet_sync;
     t_outlet   *x_outlet;
-    t_float     x_sr;
+    double      x_sr_rec;
 // MAGIC:
     t_glist    *x_glist; // object list
     t_float    *x_signalscalar; // right inlet's float field
     int         x_hasfeeders; // right inlet connection flag
     t_float     x_phase_sync_float; // float from magic
 }t_sine;
+
+static t_class *sine_class;
+
+double sine_wrap_phase(double phase){
+    while(phase >= 1)
+        phase -= 1.;
+    while(phase < 0)
+        phase += 1.;
+    return(phase);
+}
 
 static t_int *sine_perform(t_int *w){
     t_sine *x = (t_sine *)(w[1]);
@@ -46,31 +51,18 @@ static t_int *sine_perform(t_int *w){
     }
 // Magic End
     double *phase = x->x_phase;
-    double *last_phase_offset = x->x_last_phase_offset;
-    double sr = x->x_sr;
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0; i < n; i++){
-            t_float hz = in1[j*n + i];
+            double hz = in1[j*n + i];
             if(x->midi)
                 hz = hz <= 0 ? 0 : pow(2, (hz - 69)/12) * 440;
+            double phase_step = hz * x->x_sr_rec; // phase_step
             double phase_offset = ch3 == 1 ? in3[i] : in3[j*n + i];
-            double phase_step = hz / sr; // phase_step
-            phase_step = phase_step > 0.5 ? 0.5 : phase_step < -0.5 ? -0.5 : phase_step; // clipped to nyq
-            double phase_dev = phase_offset - last_phase_offset[j];
-            if(phase_dev >= 1 || phase_dev <= -1)
-                phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
-            phase[j] += phase_dev;
-            if(phase[j] <= 0)
-                phase[j] += 1.; // wrap deviated phase
-            if(phase[j] >= 1)
-                phase[j] -= 1.; // wrap deviated phase
-            out[j*n + i] = sin(phase[j] * TWOPI);
-            phase[j] += phase_step; // next phase
-            last_phase_offset[j] = phase_offset; // last phase offset
+            out[j*n + i] = read_sintab(sine_wrap_phase(phase[j] + phase_offset));
+            phase[j] = sine_wrap_phase(phase[j] + phase_step);
         }
     }
     x->x_phase = phase;
-    x->x_last_phase_offset = last_phase_offset;
     return(w+7);
 }
 
@@ -84,20 +76,14 @@ static t_int *sine_perform_sig(t_int *w){
     t_float *in3 = (t_float *)(w[7]);
     t_float *out = (t_float *)(w[8]);
     double *phase = x->x_phase;
-    double *last_phase_offset = x->x_last_phase_offset;
-    double sr = x->x_sr;
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0; i < n; i++){
             double hz = in1[j*n + i];
             if(x->midi)
                 hz = hz <= 0 ? 0 : pow(2, (hz - 69)/12) * 440;
+            double phase_step = hz * x->x_sr_rec; // phase_step
             t_float trig = ch2 == 1 ? in2[i] : in2[j*n + i];
             double phase_offset = ch3 == 1 ? in3[i] : in3[j*n + i];
-            double phase_step = hz / sr; // phase_step
-            phase_step = phase_step > 0.5 ? 0.5 : phase_step < -0.5 ? -0.5 : phase_step; // clipped to nyq
-            double phase_dev = phase_offset - last_phase_offset[j];
-            if(phase_dev >= 1 || phase_dev <= -1)
-                phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
             if(x->soft)
                 phase_step *= (x->soft);
             if(trig > 0 && trig <= 1){
@@ -106,30 +92,21 @@ static t_int *sine_perform_sig(t_int *w){
                 else
                     phase[j] = trig;
             }
-            else{
-                phase[j] += phase_dev;
-                if(phase[j] <= 0)
-                    phase[j] += 1.; // wrap deviated phase
-                if(phase[j] >= 1)
-                    phase[j] -= 1.; // wrap deviated phase
-            }
-            *out++ = sin(phase[j] * TWOPI);
-            phase[j] += phase_step; // next phase
-            last_phase_offset[j] = phase_offset; // last phase offset
+            else
+                phase[j] = sine_wrap_phase(phase[j] + phase_offset);
+            out[j*n + i] = read_sintab(phase[j]);
+            phase[j] = sine_wrap_phase(phase[j] + phase_step);
         }
     }
     x->x_phase = phase;
-    x->x_last_phase_offset = last_phase_offset;
     return(w+9);
 }
 
 static void sine_dsp(t_sine *x, t_signal **sp){
-    x->x_sr = sp[0]->s_sr;
+    x->x_sr_rec = 1.0 / (double)sp[0]->s_sr;
     int chs = sp[0]->s_nchans, ch2 = sp[1]->s_nchans, ch3 = sp[2]->s_nchans, n = sp[0]->s_n;
     signal_setmultiout(&sp[3], chs);
     if(x->x_nchans != chs){
-        x->x_last_phase_offset = (double *)resizebytes(x->x_last_phase_offset,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
         x->x_phase = (double *)resizebytes(x->x_phase,
             x->x_nchans * sizeof(double), chs * sizeof(double));
         x->x_nchans = chs;
@@ -160,7 +137,6 @@ static void *sine_free(t_sine *x){
     inlet_free(x->x_inlet_sync);
     inlet_free(x->x_inlet_phase);
     outlet_free(x->x_outlet);
-    freebytes(x->x_last_phase_offset, x->x_nchans * sizeof(*x->x_last_phase_offset));
     freebytes(x->x_phase, x->x_nchans * sizeof(*x->x_phase));
     return(void *)x;
 }
@@ -170,7 +146,6 @@ static void *sine_new(t_symbol *s, int ac, t_atom *av){
     t_sine *x = (t_sine *)pd_new(sine_class);
     t_float f1 = 0, f2 = 0;
     x->midi = x->soft = 0;
-    x->x_last_phase_offset = (double *)getbytes(sizeof(*x->x_last_phase_offset));
     x->x_phase = (double *)getbytes(sizeof(*x->x_phase));
     while(ac && av->a_type == A_SYMBOL){
         if(atom_getsymbol(av) == gensym("-midi"))
@@ -194,6 +169,7 @@ static void *sine_new(t_symbol *s, int ac, t_atom *av){
         x->x_phase[0] = 1.;
     else
         x->x_phase[0] = init_phase;
+    init_sine_table();
     x->x_freq = init_freq;
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_sync, 0);

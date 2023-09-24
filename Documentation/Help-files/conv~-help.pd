@@ -1,76 +1,81 @@
-#N canvas 428 43 569 449 10;
-#X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
-#X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 24 42 cnv 4 4 4 empty empty Partitioned 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 110 42 cnv 4 4 4 empty empty convolution 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 516 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 465 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 503 28 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
+#N canvas 365 52 569 450 10;
+#X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
+#X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 24 42 cnv 4 4 4 empty empty Partitioned 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 110 42 cnv 4 4 4 empty empty convolution 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 516 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 465 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 503 28 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 306 5 graph;
-#X obj 4 5 cnv 15 301 42 empty empty conv~ 20 20 2 37 #e0e0e0 #000000
-0;
+#X obj 4 5 cnv 15 301 42 empty empty conv~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 5 graph;
-#X obj 8 418 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X obj 8 267 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 8 333 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 8 371 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 142 344 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 141 275 cnv 17 3 50 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 169 200 else/out~;
-#X text 117 396 2) symbol;
-#X text 123 379 1) float;
-#X text 181 380 -;
-#X text 214 275 signal - input signal, f 28;
-#X text 214 345 signal - output signal;
-#X obj 169 137 else/play.file~ 1 vacuous.wav 1 -loop;
-#X obj 169 169 else/conv~ 1024 IR.wav;
-#X text 76 90 [conv~] is an abstraction that performs partitioned convolution.
-It takes a partition size and Impulse Response sound file., f 65;
-#X text 178 291 size <float> - sets partition size;
-#X text 172 308 load <symbol> - loads IR sound file;
-#X text 183 396 - file name to open as impulse response (default none)
-;
-#X text 194 379 optional: partition size (default 1024 \, minimum 64)
-, f 53;
-#N canvas 702 243 459 313 cpu-heavy 0;
-#X obj 201 177 else/out~;
-#X obj 97 148 switch~;
-#X obj 97 122 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
-#X floatatom 98 207 5 0 0 0 - - - 0;
-#X obj 98 179 else/meter;
-#X obj 201 146 else/conv~ 2048 church.wav;
-#X obj 201 114 else/impseq~;
-#X obj 201 89 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
-#000000;
-#X text 45 32 This object can be heavy on your CPU. This example loads
-a bigger IR file so it's heavier on your machine. Test it.;
-#X connect 2 0 1 0;
-#X connect 4 0 3 0;
-#X connect 5 0 0 0;
-#X connect 6 0 5 0;
-#X connect 7 0 6 0;
-#X restore 449 234 pd cpu-heavy;
-#X connect 24 0 25 0;
-#X connect 25 0 18 0;
+#X obj 8 424 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 8 262 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 8 339 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 8 377 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 142 350 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 141 271 cnv 17 3 61 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 211 196 else/out~;
+#X text 117 402 2) symbol;
+#X text 123 385 1) float;
+#X text 181 386 -;
+#X text 214 270 signal - input signal, f 39;
+#X text 214 351 signal - output signal;
+#X obj 211 133 else/play.file~ vacuous.wav 1 1;
+#X text 183 402 - impulse response table name (default none);
+#N canvas 388 176 680 451 example 0;
+#X obj 41 296 else/meter;
+#X floatatom 41 320 4 0 0 0 - - - 16;
+#X obj 149 343 else/out~;
+#X obj 78 88 else/play.file~ bubul.wav 1 1;
+#X obj 391 66 else/sample~ IR IR.wav;
+#X msg 191 243 set IR;
+#X msg 135 136 size 256;
+#X text 397 37 Loading IR tables:;
+#X text 22 18 Change partition size (and latency) in samples. It must be a power of 2! Small partition sizes have less latency and are more expensive. Change it and check balow, f 48;
+#X text 181 204 set IR tables;
+#X msg 123 115 size 64;
+#X msg 149 157 size 512;
+#X obj 392 89 else/sample~ church church.wav;
+#X msg 178 221 set church;
+#X msg 200 275 print;
+#X text 243 268 post info on terminal window, f 16;
+#X obj 393 217 else/tabplayer~ IR;
+#X obj 393 260 else/out~;
+#X obj 524 181 bng 25 250 50 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000;
+#X obj 524 259 else/out~;
+#X obj 524 216 else/tabplayer~ church;
+#X obj 393 181 bng 25 250 50 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000;
+#X msg 161 180 size 1024;
+#X text 402 146 Play IR samples:;
+#X obj 149 312 else/conv~;
+#X text 392 360 If no arguments are given \, the input sound is bypassed without latency., f 36;
+#X connect 0 0 1 0;
+#X connect 3 0 24 0;
+#X connect 5 0 24 0;
+#X connect 6 0 24 0;
+#X connect 10 0 24 0;
+#X connect 11 0 24 0;
+#X connect 13 0 24 0;
+#X connect 14 0 24 0;
+#X connect 16 0 17 0;
+#X connect 18 0 20 0;
+#X connect 20 0 19 0;
+#X connect 21 0 16 0;
+#X connect 22 0 24 0;
+#X connect 24 0 2 0;
+#X restore 463 224 pd example;
+#X text 220 318 print - post info on terminal, f 38;
+#X text 178 302 set <symbol> - set IR table, f 45;
+#X text 178 286 size <float> - sets partition size in samples;
+#X text 194 385 optional: partition size (default 256 \, minimum 64), f 53;
+#X obj 211 165 else/conv~ 512 IR;
+#X text 76 90 [conv~] performs partitioned convolution. It takes a partition size and Impulse Response table as arguments., f 65;
+#X connect 24 0 31 0;
+#X connect 31 0 18 0;

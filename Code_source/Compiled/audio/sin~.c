@@ -1,12 +1,10 @@
 // porres
 
-#include <math.h>
 #include "m_pd.h"
-
-#define TWO_PI (3.14159265358979323846 * 2)
+#include "buffer.h"
 
 typedef struct _sin{
-    t_object    x_obj;
+    t_object  x_obj;
 }t_sin;
 
 static t_class *sin_class;
@@ -16,12 +14,12 @@ static t_int *sin_perform(t_int *w){
     t_float *in = (t_float *)(w[2]);
     t_float *out = (t_float *)(w[3]);
     while(n--){
-        double f = *in++;
-        if(f >= 1 || f <= -1) f = fmod(f, 1);
-        if(f == 0.5)
-            *out++ = 0;
-        else
-            *out++ = sin(f * TWO_PI);
+        double phase = *in++;
+        while(phase >= 1)
+            phase -= 1.;
+        while(phase < 0)
+            phase += 1.;
+        *out++ = read_sintab(phase);
     }
     return(w+4);
 }
@@ -35,6 +33,7 @@ static void sin_dsp(t_sin *x, t_signal **sp){
 
 void *sin_new(void){
     t_sin *x = (t_sin *)pd_new(sin_class);
+    init_sine_table();
     outlet_new(&x->x_obj, &s_signal);
     return(x);
 }

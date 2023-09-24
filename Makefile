@@ -150,6 +150,7 @@ ceil~.class.sources := Code_source/Compiled/audio/ceil~.c
 cents2ratio~.class.sources := Code_source/Compiled/audio/cents2ratio~.c
 changed~.class.sources := Code_source/Compiled/audio/changed~.c
 changed2~.class.sources := Code_source/Compiled/audio/changed2~.c
+conv~.class.sources := Code_source/Compiled/audio/conv~.c
 cmul~.class.sources := Code_source/Compiled/audio/cmul~.c
 crackle~.class.sources := Code_source/Compiled/audio/crackle~.c
 crossover~.class.sources := Code_source/Compiled/audio/crossover~.c
@@ -228,7 +229,6 @@ schmitt~.class.sources := Code_source/Compiled/audio/schmitt~.c
 slice~.class.sources := Code_source/Compiled/audio/slice~.c
 lag~.class.sources := Code_source/Compiled/audio/lag~.c
 lag2~.class.sources := Code_source/Compiled/audio/lag2~.c
-sin~.class.sources := Code_source/Compiled/audio/sin~.c
 sig2float~.class.sources := Code_source/Compiled/audio/sig2float~.c
 slew~.class.sources := Code_source/Compiled/audio/slew~.c
 slew2~.class.sources := Code_source/Compiled/audio/slew2~.c
@@ -265,11 +265,7 @@ wrap2.class.sources := Code_source/Compiled/control/wrap2.c
 wrap2~.class.sources := Code_source/Compiled/audio/wrap2~.c
 zerocross~.class.sources := Code_source/Compiled/audio/zerocross~.c
 
-
 magic := Code_source/shared/magic.c
-    sine~.class.sources := Code_source/Compiled/audio/sine~.c $(magic)
-    cosine~.class.sources := Code_source/Compiled/audio/cosine~.c $(magic)
-    fbsine~.class.sources := Code_source/Compiled/audio/fbsine~.c $(magic)
     gaussian~.class.sources := Code_source/Compiled/audio/gaussian~.c $(magic)
     imp~.class.sources := Code_source/Compiled/extra_source/Aliases/imp~.c $(magic)
     impulse~.class.sources := Code_source/Compiled/audio/impulse~.c $(magic)
@@ -286,6 +282,10 @@ magic := Code_source/shared/magic.c
     numbox~.class.sources := Code_source/Compiled/audio/numbox~.c $(magic)
 
 buf := Code_source/shared/buffer.c
+    sin~.class.sources := Code_source/Compiled/audio/sin~.c $(buf)
+    op2~.class.sources := Code_source/Compiled/audio/op2~.c $(buf)
+    op4~.class.sources := Code_source/Compiled/audio/op4~.c $(buf)
+    op6~.class.sources := Code_source/Compiled/audio/op6~.c $(buf)
     shaper~.class.sources = Code_source/Compiled/audio/shaper~.c $(buf)
     tabreader.class.sources = Code_source/Compiled/control/tabreader.c $(buf)
     tabreader~.class.sources = Code_source/Compiled/audio/tabreader~.c $(buf)
@@ -300,6 +300,9 @@ buf := Code_source/shared/buffer.c
 bufmagic := \
 Code_source/shared/magic.c \
 Code_source/shared/buffer.c
+    cosine~.class.sources := Code_source/Compiled/audio/cosine~.c $(bufmagic)
+    fbsine~.class.sources := Code_source/Compiled/audio/fbsine~.c $(bufmagic)
+    sine~.class.sources := Code_source/Compiled/audio/sine~.c $(bufmagic)
     wavetable~.class.sources = Code_source/Compiled/audio/wavetable~.c $(bufmagic)
     wt~.class.sources = Code_source/Compiled/extra_source/Aliases/wt~.c $(bufmagic)
     tabplayer~.class.sources = Code_source/Compiled/audio/tabplayer~.c $(bufmagic)
