@@ -39,12 +39,12 @@
 #X text 155 351 toggle <float>;
 #X text 245 351 - non zero sets to toggle mode, f 42;
 #N canvas 674 194 360 265 toggle 0;
-#X obj 246 197 else/display;
+#X obj 210 194 else/display;
 #X obj 123 197 else/display;
 #X text 44 32 In toggle mode you have "1" for when the learned key is pressed and 0 when it is released., f 40;
-#X msg 153 112 toggle \$1;
-#X obj 153 89 tgl 16 0 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0 1;
-#X obj 123 162 else/key.learn a;
+#X msg 123 124 toggle \$1;
+#X obj 123 101 tgl 16 0 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0 1;
+#X obj 123 162 else/keypress a;
 #X connect 3 0 5 0;
 #X connect 4 0 3 0;
 #X connect 5 0 1 0;
@@ -62,7 +62,7 @@
 #X msg 116 210 set;
 #X text 80 209 none;
 #X text 52 81 [keypress] uses key presses of a single key to send a bang or a toggle. You can set the key symbol as an argument or ask the object to "learn" a pressed key (useful for kys like "shift" and stuff) \, which is then saved as an argument in the owning patch. Note that autorepeated keys are filtered! Key presses in edit mode are also filtered!, f 73;
-#X obj 187 262 else/keypress;
+#X obj 187 262 else/keypress Alt_L;
 #X connect 18 0 48 0;
 #X connect 36 0 48 0;
 #X connect 37 0 48 0;
