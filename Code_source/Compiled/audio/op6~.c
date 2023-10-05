@@ -111,7 +111,7 @@ typedef struct _op6{
     int         x_ch6;
     int         x_ch7;
     double      x_sr_rec;
-    float       x_ramp;
+    double      x_ramp;
 }t_op6;
 
 static t_class *op6_class;
@@ -559,18 +559,18 @@ static t_int *op6_perform(t_int *w){
     double vol1 = x->x_fvol1, vol2 = x->x_fvol2;
     double vol3 = x->x_fvol3, vol4 = x->x_fvol4;
     double vol5 = x->x_fvol5, vol6 = x->x_fvol6;
-    float p1Inc = (x->x_pan1 - pan1) * x->x_ramp;
-    float p2Inc = (x->x_pan2 - pan2) * x->x_ramp;
-    float p3Inc = (x->x_pan3 - pan3) * x->x_ramp;
-    float p4Inc = (x->x_pan4 - pan4) * x->x_ramp;
-    float p5Inc = (x->x_pan5 - pan5) * x->x_ramp;
-    float p6Inc = (x->x_pan6 - pan6) * x->x_ramp;
-    float v1Inc = (x->x_vol1 - vol1) * x->x_ramp;
-    float v2Inc = (x->x_vol2 - vol2) * x->x_ramp;
-    float v3Inc = (x->x_vol3 - vol3) * x->x_ramp;
-    float v4Inc = (x->x_vol4 - vol4) * x->x_ramp;
-    float v5Inc = (x->x_vol5 - vol5) * x->x_ramp;
-    float v6Inc = (x->x_vol6 - vol6) * x->x_ramp;
+    double p1Inc = (x->x_pan1 - pan1) * x->x_ramp;
+    double p2Inc = (x->x_pan2 - pan2) * x->x_ramp;
+    double p3Inc = (x->x_pan3 - pan3) * x->x_ramp;
+    double p4Inc = (x->x_pan4 - pan4) * x->x_ramp;
+    double p5Inc = (x->x_pan5 - pan5) * x->x_ramp;
+    double p6Inc = (x->x_pan6 - pan6) * x->x_ramp;
+    double v1Inc = (x->x_vol1 - vol1) * x->x_ramp;
+    double v2Inc = (x->x_vol2 - vol2) * x->x_ramp;
+    double v3Inc = (x->x_vol3 - vol3) * x->x_ramp;
+    double v4Inc = (x->x_vol4 - vol4) * x->x_ramp;
+    double v5Inc = (x->x_vol5 - vol5) * x->x_ramp;
+    double v6Inc = (x->x_vol6 - vol6) * x->x_ramp;
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0; i < n; i++){
             double hz = freq[j*n + i];
@@ -614,7 +614,7 @@ static t_int *op6_perform(t_int *w){
             mod5 += (op2 * x->x_2to5);
             mod5 += (op3 * x->x_3to5);
             mod5 += (op4 * x->x_4to5);
-            float op5 = read_sintab(op6_wrap_phase(ph4[j] + mod5));
+            float op5 = read_sintab(op6_wrap_phase(ph5[j] + mod5));
             bus1 += (op5 * x->x_5to1);
             bus2 += (op5 * x->x_5to2);
             bus3 += (op5 * x->x_5to3);
@@ -627,7 +627,7 @@ static t_int *op6_perform(t_int *w){
             mod6 += (op3 * x->x_3to6);
             mod6 += (op4 * x->x_4to6);
             mod6 += (op5 * x->x_5to6);
-            float op6 = read_sintab(op6_wrap_phase(ph4[j] + mod6));
+            float op6 = read_sintab(op6_wrap_phase(ph6[j] + mod6));
             bus1 += (op6 * x->x_6to1);
             bus2 += (op6 * x->x_6to2);
             bus3 += (op6 * x->x_6to3);
@@ -845,7 +845,7 @@ static void *op6_new(t_symbol *s, int ac, t_atom *av){
     x->x_y6n1 = (float *)getbytes(sizeof(*x->x_y6n1));
     x->x_y6n2 = (float *)getbytes(sizeof(*x->x_y6n2));
     init_sine_table();
-    x->x_ratio1 = x->x_ratio2 = x->x_ratio3 = x->x_ratio4 = x->x_ratio6 = x->x_ratio6 = 1;
+    x->x_ratio1 = x->x_ratio2 = x->x_ratio3 = x->x_ratio4 = x->x_ratio5 = x->x_ratio6 = 1;
     x->x_vol1 = x->x_fvol1 = x->x_fvol2 = x->x_vol2 = 1;
     x->x_vol3 = x->x_fvol3 = x->x_fvol4 = x->x_vol4 = 1;
     x->x_vol5 = x->x_fvol5 = x->x_fvol6 = x->x_vol6 = 1;
