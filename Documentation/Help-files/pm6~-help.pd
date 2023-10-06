@@ -1,4 +1,4 @@
-#N canvas 457 23 560 711 10;
+#N canvas 354 23 560 711 10;
 #X obj 4 232 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 525 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 574 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
@@ -626,9 +626,14 @@
 #X text 239 505 - master level for operator 6;
 #X text 61 85 [op6~] is a 6 operators FM (actually phase modulation) synthesizer. Each oscillator can modulate itself and each other., f 69;
 #X obj 215 148 else/pm6~ 440;
-#N canvas 619 256 502 247 multichannel 0;
-#X text 37 36 Here's an example with GUI controls for you to have fun. You can set ratio \, detune \, level and pan for each operator. The modulation matrix sets the modulation index value for all possibilities. The gray diagonal row represents all 6 operators and the modulation index on how each modulator modulates itself. The bottom left half portion represents feed forward modulation \, from operaor 1 to operator 6 \, while the other right top half sets feedback modulation from operator 6 to operator 1!, f 66;
-#X restore 451 202 pd multichannel;
+#N canvas 628 213 479 379 multichannel 0;
+#X obj 191 155 sigs~ 333 444;
+#X obj 191 264 else/out.mc~;
+#X text 39 21 The object has multichannel support. If the left input has more than one channel \, it outputs the same number of channels in both outlets. If the secondary inlets have a signal with a single channel for the operator's master level \, the single value is applied to all channels. If a secondary inlet is also a multichhanel signal \, then each channel gets its master level value. Note \, however \, that the number of multichannels in secondary inlets need to match the same number of channels from the left input., f 70;
+#X obj 191 213 else/pm6~, f 11;
+#X connect 0 0 3 0;
+#X connect 3 0 1 0;
+#X restore 451 203 pd multichannel;
 #X connect 52 0 78 0;
 #X connect 78 0 17 0;
 #X connect 78 1 17 1;

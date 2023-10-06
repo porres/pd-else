@@ -205,7 +205,6 @@ power~.class.sources := Code_source/Compiled/audio/power~.c
 pan2~.class.sources := Code_source/Compiled/audio/pan2~.c
 pan4~.class.sources := Code_source/Compiled/audio/pan4~.c
 peak~.class.sources := Code_source/Compiled/audio/peak~.c
-pmosc~.class.sources := Code_source/Compiled/audio/pmosc~.c
 phaseseq~.class.sources := Code_source/Compiled/audio/phaseseq~.c
 pulsecount~.class.sources := Code_source/Compiled/audio/pulsecount~.c
 pick~.class.sources := Code_source/Compiled/audio/pick~.c
@@ -283,6 +282,7 @@ magic := Code_source/shared/magic.c
 
 buf := Code_source/shared/buffer.c
     sin~.class.sources := Code_source/Compiled/audio/sin~.c $(buf)
+    pm~.class.sources := Code_source/Compiled/audio/pm~.c $(buf)
     pm2~.class.sources := Code_source/Compiled/audio/pm2~.c $(buf)
     pm4~.class.sources := Code_source/Compiled/audio/pm4~.c $(buf)
     pm6~.class.sources := Code_source/Compiled/audio/pm6~.c $(buf)

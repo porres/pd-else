@@ -186,10 +186,10 @@ static t_int *pm2_perform(t_int *w){
             bus1 += (op2 * x->x_2to1);
             float bus2 = (op2 * x->x_2to2);
             
-            double inc1 = (hz + x->x_detune1) * x->x_sr_rec;
-            double inc2 = (hz + x->x_detune2) * x->x_sr_rec;
-            ph1[j] = pm2_wrap_phase(ph1[j] + inc1 * x->x_ratio1); // phase inc
-            ph2[j] = pm2_wrap_phase(ph2[j] + inc2 * x->x_ratio2); // phase inc
+            double inc1 = (hz + x->x_detune1) * x->x_ratio1 * x->x_sr_rec;
+            double inc2 = (hz + x->x_detune2) * x->x_ratio2 * x->x_sr_rec;
+            ph1[j] = pm2_wrap_phase(ph1[j] + inc1); // phase inc
+            ph2[j] = pm2_wrap_phase(ph2[j] + inc2); // phase inc
             
             float g1 = op1 * vol1 * level1;
             float g2 = op2 * vol2 * level2;
@@ -232,15 +232,17 @@ static void pm2_dsp(t_pm2 *x, t_signal **sp){
     x->x_ramp = 100.f*x->x_sr_rec;
     int chs = sp[0]->s_nchans, ch2 = sp[1]->s_nchans, ch3 = sp[2]->s_nchans;
     if((ch2 > 1 && ch2 != chs) || (ch3 > 1 && ch3 != chs)){
-        dsp_add_zero(sp[3]->s_vec, chs*x->x_n);
-        dsp_add_zero(sp[4]->s_vec, chs*x->x_n);
+        signal_setmultiout(&sp[3], 1);
+        signal_setmultiout(&sp[4], 1);
+        dsp_add_zero(sp[3]->s_vec, x->x_n);
+        dsp_add_zero(sp[4]->s_vec, x->x_n);
         pd_error(x, "[pm2~]: channel sizes mismatch");
         return;
     }
-    x->x_ch2 = ch2;
-    x->x_ch3 = ch3;
     signal_setmultiout(&sp[3], chs);
     signal_setmultiout(&sp[4], chs);
+    x->x_ch2 = ch2;
+    x->x_ch3 = ch3;
     if(x->x_nchans != chs){
         x->x_phase_1 = (double *)resizebytes(x->x_phase_1,
             x->x_nchans * sizeof(double), chs * sizeof(double));

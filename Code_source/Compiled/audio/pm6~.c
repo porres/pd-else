@@ -533,7 +533,8 @@ static t_int *pm6_perform(t_int *w){
     t_float *l6 = (t_float *)(w[8]);
     t_float *out1 = (t_float *)(w[9]);
     t_float *out2 = (t_float *)(w[10]);
-    int n = x->x_n, ch2 = x->x_ch2, ch3 = x->x_ch3, ch4 = x->x_ch4;
+    int n = x->x_n;
+    int ch2 = x->x_ch2, ch3 = x->x_ch3, ch4 = x->x_ch4;
     int ch5 = x->x_ch5, ch6 = x->x_ch6, ch7 = x->x_ch7;
     float *y1n1 = x->x_y1n1;
     float *y1n2 = x->x_y1n2;
@@ -635,18 +636,18 @@ static t_int *pm6_perform(t_int *w){
             bus5 += (op6 * x->x_6to5);
             float bus6 = (op6 * x->x_6to6);
             
-            double inc1 = (hz + x->x_detune1) * x->x_sr_rec;
-            double inc2 = (hz + x->x_detune2) * x->x_sr_rec;
-            double inc3 = (hz + x->x_detune3) * x->x_sr_rec;
-            double inc4 = (hz + x->x_detune4) * x->x_sr_rec;
-            double inc5 = (hz + x->x_detune5) * x->x_sr_rec;
-            double inc6 = (hz + x->x_detune6) * x->x_sr_rec;
-            ph1[j] = pm6_wrap_phase(ph1[j] + inc1 * x->x_ratio1); // phase inc
-            ph2[j] = pm6_wrap_phase(ph2[j] + inc2 * x->x_ratio2); // phase inc
-            ph3[j] = pm6_wrap_phase(ph3[j] + inc3 * x->x_ratio3); // phase inc
-            ph4[j] = pm6_wrap_phase(ph4[j] + inc4 * x->x_ratio4); // phase inc
-            ph5[j] = pm6_wrap_phase(ph5[j] + inc5 * x->x_ratio5); // phase inc
-            ph6[j] = pm6_wrap_phase(ph6[j] + inc6 * x->x_ratio6); // phase inc
+            double inc1 = (hz + x->x_detune1) * x->x_ratio1 * x->x_sr_rec;
+            double inc2 = (hz + x->x_detune2) * x->x_ratio2 * x->x_sr_rec;
+            double inc3 = (hz + x->x_detune3) * x->x_ratio3 * x->x_sr_rec;
+            double inc4 = (hz + x->x_detune4) * x->x_ratio4 * x->x_sr_rec;
+            double inc5 = (hz + x->x_detune5) * x->x_ratio5 * x->x_sr_rec;
+            double inc6 = (hz + x->x_detune6) * x->x_ratio6 * x->x_sr_rec;
+            ph1[j] = pm6_wrap_phase(ph1[j] + inc1); // phase inc
+            ph2[j] = pm6_wrap_phase(ph2[j] + inc2); // phase inc
+            ph3[j] = pm6_wrap_phase(ph3[j] + inc3); // phase inc
+            ph4[j] = pm6_wrap_phase(ph4[j] + inc4); // phase inc
+            ph5[j] = pm6_wrap_phase(ph5[j] + inc5); // phase inc
+            ph6[j] = pm6_wrap_phase(ph6[j] + inc6); // phase inc
             
             float g1 = op1 * vol1 * level1;
             float g2 = op2 * vol2 * level2;
@@ -740,18 +741,17 @@ static void pm6_dsp(t_pm6 *x, t_signal **sp){
     if((ch2 > 1 && ch2 != chs) || (ch3 > 1 && ch3 != chs)
     || (ch4 > 1 && ch4 != chs) || (ch5 > 1 && ch5 != chs)
     || (ch6 > 1 && ch6 != chs) || (ch7 > 1 && ch7 != chs)){
-        dsp_add_zero(sp[7]->s_vec, chs*x->x_n);
-        dsp_add_zero(sp[8]->s_vec, chs*x->x_n);
+        signal_setmultiout(&sp[7], 1);
+        signal_setmultiout(&sp[8], 1);
+        dsp_add_zero(sp[7]->s_vec, x->x_n);
+        dsp_add_zero(sp[8]->s_vec, x->x_n);
         pd_error(x, "[pm6~]: channel sizes mismatch");
         return;
     }
-    x->x_ch2 = ch2;
-    x->x_ch3 = ch3;
-    x->x_ch4 = ch4;
-    x->x_ch5 = ch5;
-    x->x_ch6 = ch6;
     signal_setmultiout(&sp[7], chs);
     signal_setmultiout(&sp[8], chs);
+    x->x_ch2 = ch2, x->x_ch3 = ch3, x->x_ch4 = ch4;
+    x->x_ch5 = ch5, x->x_ch6 = ch6, x->x_ch7 = ch7;
     if(x->x_nchans != chs){
         x->x_phase_1 = (double *)resizebytes(x->x_phase_1,
             x->x_nchans * sizeof(double), chs * sizeof(double));
@@ -791,7 +791,8 @@ static void pm6_dsp(t_pm6 *x, t_signal **sp){
             x->x_nchans * sizeof(float), chs * sizeof(float));
         x->x_nchans = chs;
     }
-    dsp_add(pm6_perform, 10, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec);
+    dsp_add(pm6_perform, 10, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec,
+        sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec);
 }
 
 static void *pm6_free(t_pm6 *x){

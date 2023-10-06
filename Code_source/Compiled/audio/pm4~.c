@@ -378,14 +378,14 @@ static t_int *pm4_perform(t_int *w){
             bus3 += (op4 * x->x_4to3);
             float bus4 = (op4 * x->x_4to4);
             
-            double inc1 = (hz + x->x_detune1) * x->x_sr_rec;
-            double inc2 = (hz + x->x_detune2) * x->x_sr_rec;
-            double inc3 = (hz + x->x_detune3) * x->x_sr_rec;
-            double inc4 = (hz + x->x_detune4) * x->x_sr_rec;
-            ph1[j] = pm4_wrap_phase(ph1[j] + inc1 * x->x_ratio1); // phase inc
-            ph2[j] = pm4_wrap_phase(ph2[j] + inc2 * x->x_ratio2); // phase inc
-            ph3[j] = pm4_wrap_phase(ph3[j] + inc3 * x->x_ratio3); // phase inc
-            ph4[j] = pm4_wrap_phase(ph4[j] + inc4 * x->x_ratio4); // phase inc
+            double inc1 = (hz + x->x_detune1) * x->x_ratio1 * x->x_sr_rec;
+            double inc2 = (hz + x->x_detune2) * x->x_ratio2 * x->x_sr_rec;
+            double inc3 = (hz + x->x_detune3) * x->x_ratio3 * x->x_sr_rec;
+            double inc4 = (hz + x->x_detune4) * x->x_ratio4 * x->x_sr_rec;
+            ph1[j] = pm4_wrap_phase(ph1[j] + inc1); // phase inc
+            ph2[j] = pm4_wrap_phase(ph2[j] + inc2); // phase inc
+            ph3[j] = pm4_wrap_phase(ph3[j] + inc3); // phase inc
+            ph4[j] = pm4_wrap_phase(ph4[j] + inc4); // phase inc
             
             float g1 = op1 * vol1 * level1;
             float g2 = op2 * vol2 * level2;
@@ -454,17 +454,19 @@ static void pm4_dsp(t_pm4 *x, t_signal **sp){
     int ch4 = sp[3]->s_nchans, ch5 = sp[4]->s_nchans;
     if((ch2 > 1 && ch2 != chs) || (ch3 > 1 && ch3 != chs)
     || (ch4 > 1 && ch4 != chs) || (ch5 > 1 && ch5 != chs)){
-        dsp_add_zero(sp[5]->s_vec, chs*x->x_n);
-        dsp_add_zero(sp[6]->s_vec, chs*x->x_n);
+        signal_setmultiout(&sp[5], 1);
+        signal_setmultiout(&sp[6], 1);
+        dsp_add_zero(sp[5]->s_vec, x->x_n);
+        dsp_add_zero(sp[6]->s_vec, x->x_n);
         pd_error(x, "[pm4~]: channel sizes mismatch");
         return;
     }
+    signal_setmultiout(&sp[5], chs);
+    signal_setmultiout(&sp[6], chs);
     x->x_ch2 = ch2;
     x->x_ch3 = ch3;
     x->x_ch4 = ch4;
     x->x_ch5 = ch5;
-    signal_setmultiout(&sp[5], chs);
-    signal_setmultiout(&sp[6], chs);
     if(x->x_nchans != chs){
         x->x_phase_1 = (double *)resizebytes(x->x_phase_1,
             x->x_nchans * sizeof(double), chs * sizeof(double));
