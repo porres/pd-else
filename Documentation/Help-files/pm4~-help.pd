@@ -431,12 +431,12 @@
 #X obj 215 148 else/pm4~ 440;
 #X text 61 85 [op4~] is a 4 operators FM (actually phase modulation) synthesizer. Each oscillator can modulate itself and each other., f 69;
 #N canvas 628 213 479 379 multichannel 0;
-#X obj 191 155 sigs~ 333 444;
 #X obj 191 264 else/out.mc~;
 #X text 39 21 The object has multichannel support. If the left input has more than one channel \, it outputs the same number of channels in both outlets. If the secondary inlets have a signal with a single channel for the operator's master level \, the single value is applied to all channels. If a secondary inlet is also a multichhanel signal \, then each channel gets its master level value. Note \, however \, that the number of multichannels in secondary inlets need to match the same number of channels from the left input., f 70;
 #X obj 191 213 else/pm4~;
-#X connect 0 0 3 0;
-#X connect 3 0 1 0;
+#X obj 191 155 else/sigs~ 333 444;
+#X connect 2 0 0 0;
+#X connect 3 0 2 0;
 #X restore 451 202 pd multichannel;
 #X connect 52 0 71 0;
 #X connect 71 0 17 0;

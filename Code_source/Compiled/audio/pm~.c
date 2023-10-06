@@ -8,6 +8,7 @@ typedef struct _pm{
     double     *x_phase1;
     double     *x_phase2;
     int         x_nchans;
+    int         x_ratio;
     t_float     x_freq;
     t_inlet    *x_inlet_mod;
     t_inlet    *x_inlet_idx;
@@ -44,6 +45,8 @@ static t_int *pm_perform(t_int *w){
         for(int i = 0; i < n; i++){
             double carrier = in1[j*n + i];
             double mod = ch2 == 1 ? in2[i] : in2[j*n + i];
+            if(x->x_ratio)
+                mod *= carrier;
             double index = ch3 == 1 ? in3[i] : in3[j*n + i];
             double phase_offset = ch4 == 1 ? in4[i] : in4[j*n + i];
             
@@ -57,6 +60,10 @@ static t_int *pm_perform(t_int *w){
     x->x_phase1 = phase1;
     x->x_phase2 = phase2;
     return(w+7);
+}
+
+static void pm_ratio(t_pm *x, t_floatarg f){
+    x->x_ratio = f != 0;
 }
 
 static void pm_dsp(t_pm *x, t_signal **sp){
@@ -98,8 +105,14 @@ static void *pm_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_pm *x = (t_pm *)pd_new(pm_class);
     t_float f1 = 0, f2 = 0, f3 = 0, f4 = 0;
+    x->x_ratio = 0;
     x->x_phase1 = (double *)getbytes(sizeof(*x->x_phase1));
     x->x_phase2 = (double *)getbytes(sizeof(*x->x_phase2));
+    if(ac && av->a_type == A_SYMBOL){
+        if(atom_getsymbol(av) == gensym("-ratio"))
+            x->x_ratio = 1;
+        ac--, av++;
+    }
     if(ac && av->a_type == A_FLOAT){
         f1 = av->a_w.w_float;
         ac--, av++;
@@ -142,4 +155,5 @@ void pm_tilde_setup(void){
         sizeof(t_pm), CLASS_MULTICHANNEL, A_GIMME, 0);
     CLASS_MAINSIGNALIN(pm_class, t_pm, x_freq);
     class_addmethod(pm_class, (t_method)pm_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(pm_class, (t_method)pm_ratio, gensym("ratio"), A_FLOAT, 0);
 }
