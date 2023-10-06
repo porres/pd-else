@@ -283,9 +283,9 @@ magic := Code_source/shared/magic.c
 
 buf := Code_source/shared/buffer.c
     sin~.class.sources := Code_source/Compiled/audio/sin~.c $(buf)
-    op2~.class.sources := Code_source/Compiled/audio/op2~.c $(buf)
-    op4~.class.sources := Code_source/Compiled/audio/op4~.c $(buf)
-    op6~.class.sources := Code_source/Compiled/audio/op6~.c $(buf)
+    pm2~.class.sources := Code_source/Compiled/audio/pm2~.c $(buf)
+    pm4~.class.sources := Code_source/Compiled/audio/pm4~.c $(buf)
+    pm6~.class.sources := Code_source/Compiled/audio/pm6~.c $(buf)
     shaper~.class.sources = Code_source/Compiled/audio/shaper~.c $(buf)
     tabreader.class.sources = Code_source/Compiled/control/tabreader.c $(buf)
     tabreader~.class.sources = Code_source/Compiled/audio/tabreader~.c $(buf)

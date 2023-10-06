@@ -3,7 +3,7 @@
 #include "m_pd.h"
 #include "buffer.h"
 
-typedef struct _op4{
+typedef struct _pm4{
     t_object    x_obj;
     float      *x_y1n1;
     float      *x_y1n2;
@@ -69,200 +69,200 @@ typedef struct _op4{
     int         x_ch4;
     int         x_ch5;
     double      x_sr_rec;
-    float       x_ramp;
-}t_op4;
+    double      x_ramp;
+}t_pm4;
 
-static t_class *op4_class;
+static t_class *pm4_class;
 
-static void op4_vol1(t_op4 *x, t_floatarg f){
+static void pm4_vol1(t_pm4 *x, t_floatarg f){
     f = f < 0 ? 0 : f > 1 ? 1 : f;
     x->x_vol1 = f;
 }
 
-static void op4_vol2(t_op4 *x, t_floatarg f){
+static void pm4_vol2(t_pm4 *x, t_floatarg f){
     f = f < 0 ? 0 : f > 1 ? 1 : f;
     x->x_vol2 = f;
 }
 
-static void op4_vol3(t_op4 *x, t_floatarg f){
+static void pm4_vol3(t_pm4 *x, t_floatarg f){
     f = f < 0 ? 0 : f > 1 ? 1 : f;
     x->x_vol3 = f;
 }
 
-static void op4_vol4(t_op4 *x, t_floatarg f){
+static void pm4_vol4(t_pm4 *x, t_floatarg f){
     f = f < 0 ? 0 : f > 1 ? 1 : f;
     x->x_vol4 = f;
 }
 
-static void op4_vol(t_op4 *x, t_symbol *s, int ac, t_atom *av){
+static void pm4_vol(t_pm4 *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 4){
-        op4_vol1(x, atom_getfloat(av));
+        pm4_vol1(x, atom_getfloat(av));
         av++;
-        op4_vol2(x, atom_getfloat(av));
+        pm4_vol2(x, atom_getfloat(av));
         av++;
-        op4_vol3(x, atom_getfloat(av));
+        pm4_vol3(x, atom_getfloat(av));
         av++;
-        op4_vol4(x, atom_getfloat(av));
+        pm4_vol4(x, atom_getfloat(av));
     }
 }
 
-static void op4_pan1(t_op4 *x, t_floatarg f){
+static void pm4_pan1(t_pm4 *x, t_floatarg f){
     f = f < -1 ? -1 : f > 1 ? 1 : f;
     x->x_pan1 = (f * 0.5 + 0.5) * .25;
 }
 
-static void op4_pan2(t_op4 *x, t_floatarg f){
+static void pm4_pan2(t_pm4 *x, t_floatarg f){
     f = f < -1 ? -1 : f > 1 ? 1 : f;
     x->x_pan2 = (f * 0.5 + 0.5) * .25;
 }
 
-static void op4_pan3(t_op4 *x, t_floatarg f){
+static void pm4_pan3(t_pm4 *x, t_floatarg f){
     f = f < -1 ? -1 : f > 1 ? 1 : f;
     x->x_pan3 = (f * 0.5 + 0.5) * .25;
 }
 
-static void op4_pan4(t_op4 *x, t_floatarg f){
+static void pm4_pan4(t_pm4 *x, t_floatarg f){
     f = f < -1 ? -1 : f > 1 ? 1 : f;
     x->x_pan4 = (f * 0.5 + 0.5) * .25;
 }
 
-static void op4_pan(t_op4 *x, t_symbol *s, int ac, t_atom *av){
+static void pm4_pan(t_pm4 *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 4){
-        op4_pan1(x, atom_getfloat(av));
+        pm4_pan1(x, atom_getfloat(av));
         av++;
-        op4_pan2(x, atom_getfloat(av));
+        pm4_pan2(x, atom_getfloat(av));
         av++;
-        op4_pan3(x, atom_getfloat(av));
+        pm4_pan3(x, atom_getfloat(av));
         av++;
-        op4_pan4(x, atom_getfloat(av));
+        pm4_pan4(x, atom_getfloat(av));
     }
 }
 
-static void op4_detune1(t_op4 *x, t_floatarg f){
+static void pm4_detune1(t_pm4 *x, t_floatarg f){
     x->x_detune1 = f;
 }
 
-static void op4_detune2(t_op4 *x, t_floatarg f){
+static void pm4_detune2(t_pm4 *x, t_floatarg f){
     x->x_detune2 = f;
 }
 
-static void op4_detune3(t_op4 *x, t_floatarg f){
+static void pm4_detune3(t_pm4 *x, t_floatarg f){
     x->x_detune3 = f;
 }
 
-static void op4_detune4(t_op4 *x, t_floatarg f){
+static void pm4_detune4(t_pm4 *x, t_floatarg f){
     x->x_detune4 = f;
 }
 
-static void op4_detune(t_op4 *x, t_symbol *s, int ac, t_atom *av){
+static void pm4_detune(t_pm4 *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 4){
-        op4_detune1(x, atom_getfloat(av));
+        pm4_detune1(x, atom_getfloat(av));
         av++;
-        op4_detune2(x, atom_getfloat(av));
+        pm4_detune2(x, atom_getfloat(av));
         av++;
-        op4_detune3(x, atom_getfloat(av));
+        pm4_detune3(x, atom_getfloat(av));
         av++;
-        op4_detune4(x, atom_getfloat(av));
+        pm4_detune4(x, atom_getfloat(av));
     }
 }
 
-static void op4_ratio1(t_op4 *x, t_floatarg f){
+static void pm4_ratio1(t_pm4 *x, t_floatarg f){
     x->x_ratio1 = f;
 }
 
-static void op4_ratio2(t_op4 *x, t_floatarg f){
+static void pm4_ratio2(t_pm4 *x, t_floatarg f){
     x->x_ratio2 = f;
 }
 
-static void op4_ratio3(t_op4 *x, t_floatarg f){
+static void pm4_ratio3(t_pm4 *x, t_floatarg f){
     x->x_ratio3 = f;
 }
 
-static void op4_ratio4(t_op4 *x, t_floatarg f){
+static void pm4_ratio4(t_pm4 *x, t_floatarg f){
     x->x_ratio4 = f;
 }
 
-static void op4_ratio(t_op4 *x, t_symbol *s, int ac, t_atom *av){
+static void pm4_ratio(t_pm4 *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 4){
-        op4_ratio1(x, atom_getfloat(av));
+        pm4_ratio1(x, atom_getfloat(av));
         av++;
-        op4_ratio2(x, atom_getfloat(av));
+        pm4_ratio2(x, atom_getfloat(av));
         av++;
-        op4_ratio3(x, atom_getfloat(av));
+        pm4_ratio3(x, atom_getfloat(av));
         av++;
-        op4_ratio4(x, atom_getfloat(av));
+        pm4_ratio4(x, atom_getfloat(av));
     }
 }
 
-static void op4_1to1(t_op4 *x, t_floatarg f){
+static void pm4_1to1(t_pm4 *x, t_floatarg f){
     x->x_1to1 = f;
 }
 
-static void op4_1to2(t_op4 *x, t_floatarg f){
+static void pm4_1to2(t_pm4 *x, t_floatarg f){
     x->x_1to2 = f;
 }
 
-static void op4_1to3(t_op4 *x, t_floatarg f){
+static void pm4_1to3(t_pm4 *x, t_floatarg f){
     x->x_1to3 = f;
 }
 
-static void op4_1to4(t_op4 *x, t_floatarg f){
+static void pm4_1to4(t_pm4 *x, t_floatarg f){
     x->x_1to4 = f;
 }
 
-static void op4_2to1(t_op4 *x, t_floatarg f){
+static void pm4_2to1(t_pm4 *x, t_floatarg f){
     x->x_2to1 = f;
 }
 
-static void op4_2to2(t_op4 *x, t_floatarg f){
+static void pm4_2to2(t_pm4 *x, t_floatarg f){
     x->x_2to2 = f;
 }
 
-static void op4_2to3(t_op4 *x, t_floatarg f){
+static void pm4_2to3(t_pm4 *x, t_floatarg f){
     x->x_2to3 = f;
 }
 
-static void op4_2to4(t_op4 *x, t_floatarg f){
+static void pm4_2to4(t_pm4 *x, t_floatarg f){
     x->x_2to4 = f;
 }
 
-static void op4_3to1(t_op4 *x, t_floatarg f){
+static void pm4_3to1(t_pm4 *x, t_floatarg f){
     x->x_3to1 = f;
 }
 
-static void op4_3to2(t_op4 *x, t_floatarg f){
+static void pm4_3to2(t_pm4 *x, t_floatarg f){
     x->x_3to2 = f;
 }
 
-static void op4_3to3(t_op4 *x, t_floatarg f){
+static void pm4_3to3(t_pm4 *x, t_floatarg f){
     x->x_3to3 = f;
 }
 
-static void op4_3to4(t_op4 *x, t_floatarg f){
+static void pm4_3to4(t_pm4 *x, t_floatarg f){
     x->x_3to4 = f;
 }
 
-static void op4_4to1(t_op4 *x, t_floatarg f){
+static void pm4_4to1(t_pm4 *x, t_floatarg f){
     x->x_4to1 = f;
 }
 
-static void op4_4to2(t_op4 *x, t_floatarg f){
+static void pm4_4to2(t_pm4 *x, t_floatarg f){
     x->x_4to2 = f;
 }
 
-static void op4_4to3(t_op4 *x, t_floatarg f){
+static void pm4_4to3(t_pm4 *x, t_floatarg f){
     x->x_4to3 = f;
 }
 
-static void op4_4to4(t_op4 *x, t_floatarg f){
+static void pm4_4to4(t_pm4 *x, t_floatarg f){
     x->x_4to4 = f;
 }
 
-static void op4_idx(t_op4 *x, t_symbol *s, int ac, t_atom *av){
+static void pm4_idx(t_pm4 *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 16){
         x->x_1to1 = atom_getfloat(av);
@@ -300,7 +300,7 @@ static void op4_idx(t_op4 *x, t_symbol *s, int ac, t_atom *av){
     }
 }
 
-double op4_wrap_phase(double phase){
+double pm4_wrap_phase(double phase){
     while(phase >= 1)
         phase -= 1.;
     while(phase < 0)
@@ -308,8 +308,8 @@ double op4_wrap_phase(double phase){
     return(phase);
 }
 
-static t_int *op4_perform(t_int *w){
-    t_op4 *x = (t_op4 *)(w[1]);
+static t_int *pm4_perform(t_int *w){
+    t_pm4 *x = (t_pm4 *)(w[1]);
     t_float *freq = (t_float *)(w[2]);
     t_float *l1 = (t_float *)(w[3]);
     t_float *l2 = (t_float *)(w[4]);
@@ -317,8 +317,7 @@ static t_int *op4_perform(t_int *w){
     t_float *l4 = (t_float *)(w[6]);
     t_float *out1 = (t_float *)(w[7]);
     t_float *out2 = (t_float *)(w[8]);
-    int n = x->x_n, ch2 = x->x_ch2, ch3 = x->x_ch3;
-    int ch4 = x->x_ch4, ch5 = x->x_ch5;
+    int n = x->x_n, ch2 = x->x_ch2, ch3 = x->x_ch3, ch4 = x->x_ch4, ch5 = x->x_ch5;
     float *y1n1 = x->x_y1n1;
     float *y1n2 = x->x_y1n2;
     float *y2n1 = x->x_y2n1;
@@ -335,14 +334,14 @@ static t_int *op4_perform(t_int *w){
     double pan3 = x->x_fpan3, pan4 = x->x_fpan4;
     double vol1 = x->x_fvol1, vol2 = x->x_fvol2;
     double vol3 = x->x_fvol3, vol4 = x->x_fvol4;
-    float p1Inc = (x->x_pan1 - pan1) * x->x_ramp;
-    float p2Inc = (x->x_pan2 - pan2) * x->x_ramp;
-    float p3Inc = (x->x_pan3 - pan3) * x->x_ramp;
-    float p4Inc = (x->x_pan4 - pan4) * x->x_ramp;
-    float v1Inc = (x->x_vol1 - vol1) * x->x_ramp;
-    float v2Inc = (x->x_vol2 - vol2) * x->x_ramp;
-    float v3Inc = (x->x_vol3 - vol3) * x->x_ramp;
-    float v4Inc = (x->x_vol4 - vol4) * x->x_ramp;
+    double p1Inc = (x->x_pan1 - pan1) * x->x_ramp;
+    double p2Inc = (x->x_pan2 - pan2) * x->x_ramp;
+    double p3Inc = (x->x_pan3 - pan3) * x->x_ramp;
+    double p4Inc = (x->x_pan4 - pan4) * x->x_ramp;
+    double v1Inc = (x->x_vol1 - vol1) * x->x_ramp;
+    double v2Inc = (x->x_vol2 - vol2) * x->x_ramp;
+    double v3Inc = (x->x_vol3 - vol3) * x->x_ramp;
+    double v4Inc = (x->x_vol4 - vol4) * x->x_ramp;
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0; i < n; i++){
             double hz = freq[j*n + i];
@@ -352,19 +351,19 @@ static t_int *op4_perform(t_int *w){
             float level4 = ch5 == 1 ? l4[i] : l4[j*n + i];
             
             float mod1 = ((y1n1[j] + y1n2[j]) * 0.5); // fb bus1
-            float op1 = read_sintab(op4_wrap_phase(ph1[j] + mod1));
+            float op1 = read_sintab(pm4_wrap_phase(ph1[j] + mod1));
             float bus1 = op1 * x->x_1to1;
             
             float mod2 = ((y2n1[j] + y2n2[j]) * 0.5); // fb bus2
             mod2 += (op1 * x->x_1to2); // ff
-            float op2 = read_sintab(op4_wrap_phase(ph2[j] + mod2));
+            float op2 = read_sintab(pm4_wrap_phase(ph2[j] + mod2));
             bus1 += (op2 * x->x_2to1);
             float bus2 = (op2 * x->x_2to2);
             
             float mod3 = ((y3n1[j] + y3n2[j]) * 0.5); // fb bus3
             mod3 += (op1 * x->x_1to3);
             mod3 += (op2 * x->x_2to3);
-            float op3 = read_sintab(op4_wrap_phase(ph3[j] + mod3));;
+            float op3 = read_sintab(pm4_wrap_phase(ph3[j] + mod3));;
             bus1 += (op3 * x->x_3to1);
             bus2 += (op3 * x->x_3to2);
             float bus3 = op3 * x->x_3to3;
@@ -373,7 +372,7 @@ static t_int *op4_perform(t_int *w){
             mod4 += (op1 * x->x_1to4);
             mod4 += (op2 * x->x_2to4);
             mod4 += (op3 * x->x_3to4);
-            float op4 = read_sintab(op4_wrap_phase(ph4[j] + mod4));
+            float op4 = read_sintab(pm4_wrap_phase(ph4[j] + mod4));
             bus1 += (op4 * x->x_4to1);
             bus2 += (op4 * x->x_4to2);
             bus3 += (op4 * x->x_4to3);
@@ -383,10 +382,10 @@ static t_int *op4_perform(t_int *w){
             double inc2 = (hz + x->x_detune2) * x->x_sr_rec;
             double inc3 = (hz + x->x_detune3) * x->x_sr_rec;
             double inc4 = (hz + x->x_detune4) * x->x_sr_rec;
-            ph1[j] = op4_wrap_phase(ph1[j] + inc1 * x->x_ratio1); // phase inc
-            ph2[j] = op4_wrap_phase(ph2[j] + inc2 * x->x_ratio2); // phase inc
-            ph3[j] = op4_wrap_phase(ph3[j] + inc3 * x->x_ratio3); // phase inc
-            ph4[j] = op4_wrap_phase(ph4[j] + inc4 * x->x_ratio4); // phase inc
+            ph1[j] = pm4_wrap_phase(ph1[j] + inc1 * x->x_ratio1); // phase inc
+            ph2[j] = pm4_wrap_phase(ph2[j] + inc2 * x->x_ratio2); // phase inc
+            ph3[j] = pm4_wrap_phase(ph3[j] + inc3 * x->x_ratio3); // phase inc
+            ph4[j] = pm4_wrap_phase(ph4[j] + inc4 * x->x_ratio4); // phase inc
             
             float g1 = op1 * vol1 * level1;
             float g2 = op2 * vol2 * level2;
@@ -447,7 +446,7 @@ static t_int *op4_perform(t_int *w){
     return(w+9);
 }
 
-static void op4_dsp(t_op4 *x, t_signal **sp){
+static void pm4_dsp(t_pm4 *x, t_signal **sp){
     x->x_sr_rec = 1.0 / (double)sp[0]->s_sr;
     x->x_n = sp[0]->s_n;
     x->x_ramp = 100.f*x->x_sr_rec;
@@ -457,7 +456,7 @@ static void op4_dsp(t_op4 *x, t_signal **sp){
     || (ch4 > 1 && ch4 != chs) || (ch5 > 1 && ch5 != chs)){
         dsp_add_zero(sp[5]->s_vec, chs*x->x_n);
         dsp_add_zero(sp[6]->s_vec, chs*x->x_n);
-        pd_error(x, "[op4~]: channel sizes mismatch");
+        pd_error(x, "[pm4~]: channel sizes mismatch");
         return;
     }
     x->x_ch2 = ch2;
@@ -493,11 +492,10 @@ static void op4_dsp(t_op4 *x, t_signal **sp){
             x->x_nchans * sizeof(float), chs * sizeof(float));
         x->x_nchans = chs;
     }
-    dsp_add(op4_perform, 8, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec,
-        sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec);
+    dsp_add(pm4_perform, 8, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec);
 }
 
-static void *op4_free(t_op4 *x){
+static void *pm4_free(t_pm4 *x){
     inlet_free(x->x_inl1);
     inlet_free(x->x_inl2);
     inlet_free(x->x_inl3);
@@ -517,9 +515,9 @@ static void *op4_free(t_op4 *x){
     return(void *)x;
 }
 
-static void *op4_new(t_symbol *s, int ac, t_atom *av){
+static void *pm4_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    t_op4 *x = (t_op4 *)pd_new(op4_class);
+    t_pm4 *x = (t_pm4 *)pd_new(pm4_class);
     x->x_phase_1 = (double *)getbytes(sizeof(*x->x_phase_1));
     x->x_phase_2 = (double *)getbytes(sizeof(*x->x_phase_2));
     x->x_phase_3 = (double *)getbytes(sizeof(*x->x_phase_3));
@@ -607,26 +605,26 @@ static void *op4_new(t_symbol *s, int ac, t_atom *av){
                 if(ac < 5)
                     goto errstate;
                 ac--, av++;
-                op4_vol1(x, atom_getfloat(av));
+                pm4_vol1(x, atom_getfloat(av));
                 ac--, av++;
-                op4_vol2(x, atom_getfloat(av));
+                pm4_vol2(x, atom_getfloat(av));
                 ac--, av++;
-                op4_vol3(x, atom_getfloat(av));
+                pm4_vol3(x, atom_getfloat(av));
                 ac--, av++;
-                op4_vol4(x, atom_getfloat(av));
+                pm4_vol4(x, atom_getfloat(av));
                 ac--, av++;
             }
             else if(atom_getsymbol(av) == gensym("-pan")){
                 if(ac < 5)
                     goto errstate;
                 ac--, av++;
-                op4_pan1(x, atom_getfloat(av));
+                pm4_pan1(x, atom_getfloat(av));
                 ac--, av++;
-                op4_pan2(x, atom_getfloat(av));
+                pm4_pan2(x, atom_getfloat(av));
                 ac--, av++;
-                op4_pan3(x, atom_getfloat(av));
+                pm4_pan3(x, atom_getfloat(av));
                 ac--, av++;
-                op4_pan4(x, atom_getfloat(av));
+                pm4_pan4(x, atom_getfloat(av));
                 ac--, av++;
             }
             else
@@ -651,49 +649,49 @@ static void *op4_new(t_symbol *s, int ac, t_atom *av){
     outlet_new(&x->x_obj, &s_signal);
     return(x);
 errstate:
-    pd_error(x, "[op4~]: improper args");
+    pd_error(x, "[pm4~]: improper args");
     return(NULL);
 }
 
-void op4_tilde_setup(void){
-    op4_class = class_new(gensym("op4~"), (t_newmethod)op4_new, (t_method)op4_free, sizeof(t_op4), CLASS_MULTICHANNEL, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(op4_class, t_op4, x_freq);
-    class_addmethod(op4_class, (t_method)op4_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(op4_class, (t_method)op4_idx, gensym("idx"), A_GIMME, 0);
-    class_addmethod(op4_class, (t_method)op4_1to1, gensym("1to1"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_1to2, gensym("1to2"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_1to3, gensym("1to3"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_1to4, gensym("1to4"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_2to1, gensym("2to1"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_2to2, gensym("2to2"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_2to3, gensym("2to3"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_2to4, gensym("2to4"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_3to1, gensym("3to1"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_3to2, gensym("3to2"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_3to3, gensym("3to3"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_3to4, gensym("3to4"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_4to1, gensym("4to1"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_4to2, gensym("4to2"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_4to3, gensym("4to3"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_4to4, gensym("4to4"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_ratio, gensym("ratio"), A_GIMME, 0);
-    class_addmethod(op4_class, (t_method)op4_ratio1, gensym("ratio1"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_ratio2, gensym("ratio2"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_ratio3, gensym("ratio3"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_ratio4, gensym("ratio4"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_detune, gensym("detune"), A_GIMME, 0);
-    class_addmethod(op4_class, (t_method)op4_detune1, gensym("detune1"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_detune2, gensym("detune2"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_detune3, gensym("detune3"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_detune4, gensym("detune4"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_vol, gensym("vol"), A_GIMME, 0);
-    class_addmethod(op4_class, (t_method)op4_vol1, gensym("vol1"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_vol2, gensym("vol2"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_vol3, gensym("vol3"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_vol4, gensym("vol4"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_pan, gensym("pan"), A_GIMME, 0);
-    class_addmethod(op4_class, (t_method)op4_pan1, gensym("pan1"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_pan2, gensym("pan2"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_pan3, gensym("pan3"), A_FLOAT, 0);
-    class_addmethod(op4_class, (t_method)op4_pan4, gensym("pan4"), A_FLOAT, 0);
+void pm4_tilde_setup(void){
+    pm4_class = class_new(gensym("pm4~"), (t_newmethod)pm4_new, (t_method)pm4_free, sizeof(t_pm4), CLASS_MULTICHANNEL, A_GIMME, 0);
+    CLASS_MAINSIGNALIN(pm4_class, t_pm4, x_freq);
+    class_addmethod(pm4_class, (t_method)pm4_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_idx, gensym("idx"), A_GIMME, 0);
+    class_addmethod(pm4_class, (t_method)pm4_1to1, gensym("1to1"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_1to2, gensym("1to2"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_1to3, gensym("1to3"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_1to4, gensym("1to4"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_2to1, gensym("2to1"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_2to2, gensym("2to2"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_2to3, gensym("2to3"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_2to4, gensym("2to4"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_3to1, gensym("3to1"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_3to2, gensym("3to2"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_3to3, gensym("3to3"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_3to4, gensym("3to4"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_4to1, gensym("4to1"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_4to2, gensym("4to2"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_4to3, gensym("4to3"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_4to4, gensym("4to4"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_ratio, gensym("ratio"), A_GIMME, 0);
+    class_addmethod(pm4_class, (t_method)pm4_ratio1, gensym("ratio1"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_ratio2, gensym("ratio2"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_ratio3, gensym("ratio3"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_ratio4, gensym("ratio4"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_detune, gensym("detune"), A_GIMME, 0);
+    class_addmethod(pm4_class, (t_method)pm4_detune1, gensym("detune1"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_detune2, gensym("detune2"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_detune3, gensym("detune3"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_detune4, gensym("detune4"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_vol, gensym("vol"), A_GIMME, 0);
+    class_addmethod(pm4_class, (t_method)pm4_vol1, gensym("vol1"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_vol2, gensym("vol2"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_vol3, gensym("vol3"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_vol4, gensym("vol4"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_pan, gensym("pan"), A_GIMME, 0);
+    class_addmethod(pm4_class, (t_method)pm4_pan1, gensym("pan1"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_pan2, gensym("pan2"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_pan3, gensym("pan3"), A_FLOAT, 0);
+    class_addmethod(pm4_class, (t_method)pm4_pan4, gensym("pan4"), A_FLOAT, 0);
 }
