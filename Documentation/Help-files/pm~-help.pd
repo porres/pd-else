@@ -202,6 +202,11 @@
 #X text 200 466 -ratio: sets to ratio mode;
 #X text 193 521 - modulation frequency in hertz or ratio (default 0);
 #X text 43 90 [pm~] is a very basic and simple phase modulation unit \, which consists of a pair of sinusoidal oscillators \, where one modulates the phase input of another., f 65;
+#X text 27 189 see also;
+#X obj 27 208 else/fm~;
+#X obj 27 229 else/pm2~;
+#X obj 27 250 else/fbsine~;
+#X obj 27 271 else/xmod~;
 #X connect 39 0 47 0;
 #X connect 40 0 47 1;
 #X connect 41 0 43 0;

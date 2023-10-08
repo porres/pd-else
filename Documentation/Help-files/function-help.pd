@@ -232,7 +232,7 @@
 #X obj 79 201 savestate;
 #X obj 79 233 else/presets;
 #A saved -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;;
-#X text 35 26 With the 'savestate' message or '-savestate' flag \, the GUI operates in 'save state mode' \, where it saves the state from the last time the patch was saved. Note that this is only useful for patches and not abstractions. For abstractions oyou should use [savestate] instead \, and also have a look at [presets]. Unlike iemguis \, the value is not output when loading the patch \, use [loadbang] for that.;
+#X text 35 26 With the 'savestate' message or '-savestate' flag \, the GUI operates in 'save state mode' \, where it saves the state from the last time the patch was saved. Note that this is only useful for patches and not abstractions. For abstractions you should use [savestate] instead \, and also have a look at [presets]. Unlike iemguis \, the value is not output when loading the patch \, use [loadbang] for that.;
 #X connect 0 0 1 0;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;

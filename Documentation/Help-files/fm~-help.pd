@@ -187,6 +187,8 @@
 #X obj 122 312 cnv 17 3 29 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 43 90 [fm~] is a very basic and simple frequency modulation unit \, which consists of a pair of sinusoidal oscillators \, where one modulates the frequency input of another., f 61;
 #X text 261 403 frequency modulation output;
+#X text 38 239 see also:;
+#X obj 40 259 else/pm~;
 #X connect 32 0 47 0;
 #X connect 33 0 47 1;
 #X connect 34 0 36 0;

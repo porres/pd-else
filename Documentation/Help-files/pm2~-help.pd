@@ -278,7 +278,6 @@
 #X text 127 514 -vol <list>: set volumes (default all = 1), f 54;
 #X text 239 404 - master level for operator 1;
 #X text 239 424 - master level for operator 2;
-#X text 88 122 set mod index -----> (from op1 to op2), f 20;
 #X text 61 85 [op2~] is a 2 operators FM (actually phase modulation) synthesizer. Each oscillator can modulate itself and each other., f 69;
 #X obj 215 148 else/pm2~ 440;
 #N canvas 628 213 479 379 multichannel 0;
@@ -289,6 +288,12 @@
 #X connect 2 0 0 0;
 #X connect 3 0 2 0;
 #X restore 451 202 pd multichannel;
-#X connect 52 0 66 0;
-#X connect 66 0 17 0;
-#X connect 66 1 17 1;
+#X text 127 122 set index ---> (from op1 to op2), f 14;
+#X obj 17 185 else/pm~;
+#X obj 77 185 else/xmod~;
+#X obj 11 206 else/pm4~;
+#X obj 77 206 else/pm6~, f 11;
+#X text 19 161 see also:;
+#X connect 52 0 65 0;
+#X connect 65 0 17 0;
+#X connect 65 1 17 1;

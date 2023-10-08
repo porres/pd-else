@@ -66,8 +66,8 @@
 #X text 43 258 alt + click to restore start state, f 13;
 #X msg 150 180 start;
 #X text 19 6 By default \, the angular range is 320 degrees. The object also draws an 'arc' by default \, with its own background color \, which is useful to dislay the initial and final position. You can change this with the 'arc' or 'angle' messages \, proerties or flags. A full 360 degree is possible and the arc is then useful to differentiate from the fully turned down (background color) to the turned up [knob] (foreground color). The default range is from 0 to 127 \, but you can change that in the same way. A float sets and outputs values \, which get clipped to the [knob]'s range. A 'set' message only sets the value (no output)., f 65;
-#X text 19 345 The 'load' message sets the initial value for when the object is loaded (0 by default). This value is not output when loading the patch \, so you need [loadbang] if you want that. If you only send it 'load' \, then [knob] saves the current state by capturing the current value as the initialization value. This 'start' value is where the arc starts \, just 'start' also sets current value. Double clicking on the object restores to the 'start' value., f 65;
 #X msg 143 161 start 90;
+#X text 19 345 The 'load' message sets the initial value for when the object is loaded (0 by default). This value is not output when loading the patch \, so you need [loadbang] if you want that. If you only send it 'load' \, then [knob] saves the current state by capturing the current value as the initialization value. The 'start' value is where the arc starts \, just 'start' also sets current value. alt+clicking on the object restores to the 'start' value., f 65;
 #X connect 1 0 21 0;
 #X connect 2 0 21 0;
 #X connect 3 0 21 0;
@@ -98,7 +98,7 @@
 #X connect 36 0 22 0;
 #X connect 37 0 22 0;
 #X connect 39 0 21 0;
-#X connect 42 0 21 0;
+#X connect 41 0 21 0;
 #X restore 495 106 pd basic;
 #N canvas 422 73 772 634 +parameters 0;
 #X obj 327 123 else/knob 90 0 1 4 0 empty empty #9a9f9c #feffc6 #402420 0 0 2 0 0 320 0 0 0;
@@ -200,7 +200,7 @@
 #X text 202 464 - sets number of ticks (default: 0), f 54;
 #X text 202 478 - non zero sets to discrete mode (default: 0), f 54;
 #X text 202 377 - non zero sets to circular dragging mode (default: 0);
-#X obj 227 66 else/knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 1 0;
+#X obj 227 66 else/knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0;
 #X text 107 351 fgcolor <list>;
 #X text 202 325 -;
 #X text 101 325 arccolor <list>;

@@ -438,6 +438,9 @@
 #X connect 2 0 0 0;
 #X connect 3 0 2 0;
 #X restore 451 202 pd multichannel;
+#X obj 27 187 else/pm~;
+#X text 20 163 see also:;
+#X obj 21 208 else/pm6~, f 10;
 #X connect 52 0 71 0;
 #X connect 71 0 17 0;
 #X connect 71 1 17 1;
