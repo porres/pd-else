@@ -13,8 +13,8 @@ typedef struct varcommon{
 typedef struct _var{
     t_object    x_obj;
     t_int       x_n;    // number of given vars as arguments
-    t_symbol  **x_sym;
-    float      *x_fval; // var value
+    t_symbol  **x_sym;  // variable name
+    t_float   **x_fval; // var value
 }t_var;
 
 static void varcommon_float(t_varcommon *x, t_float f){
@@ -24,7 +24,7 @@ static void varcommon_float(t_varcommon *x, t_float f){
 static void var_bang(t_var *x){
     t_atom at[x->x_n];
     for(int i = 0; i < x->x_n; i++)
-        SETFLOAT(at+i, x->x_fval[i]);
+        SETFLOAT(at+i, *x->x_fval[i]);
     outlet_list(x->x_obj.ob_outlet, &s_list, x->x_n, at);
 }
 
@@ -33,7 +33,7 @@ static void var_list(t_var *x, t_symbol *s, int ac, t_atom *av){
     if(!ac)
         var_bang(x);
     else for(int i = 0; i < (ac > x->x_n ? x->x_n : ac); i++)
-        x->x_fval[i] = atom_getfloat(av+i);
+        *x->x_fval[i] = atom_getfloat(av+i);
 }
 
 static void var_free(t_var *x){
