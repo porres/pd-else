@@ -120,6 +120,7 @@ ptouch.in.class.sources := Code_source/Compiled/control/ptouch.in.c
 ptouch.out.class.sources := Code_source/Compiled/control/ptouch.out.c
 trunc.class.sources := Code_source/Compiled/control/trunc.c
 unmerge.class.sources := Code_source/Compiled/control/unmerge.c
+var.class.sources := Code_source/Compiled/control/var.c
 
 # signal:
 above~.class.sources := Code_source/Compiled/audio/above~.c

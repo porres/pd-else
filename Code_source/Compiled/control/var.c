@@ -1,4 +1,4 @@
-// porres
+// porres 2023
 
 #include "m_pd.h"
 
@@ -61,11 +61,8 @@ static void var_list(t_var *x, t_symbol *s, int ac, t_atom *av){
         var_bang(x);
     else{
         int n = ac > x->x_n_vars ? x->x_n_vars : ac;
-        for(int i = 0; i < n; i++){
-            t_float f = *x->x_floatstar[i] = atom_getfloat(av+i);
-            if((x->x_sym[i])->s_thing)
-                pd_float((x->x_sym[i])->s_thing, f);
-        }
+        for(int i = 0; i < n; i++)
+            *x->x_floatstar[i] = atom_getfloat(av+i);
     }
 }
 
