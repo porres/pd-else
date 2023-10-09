@@ -45,15 +45,6 @@ void var_release(t_symbol *s){
         post("var_release");
 }
 
-// set float value of a "var" object, return 0 on success, 1 otherwise
-int var_setfloat(t_symbol *s, t_float f){
-    t_vcommon *c = (t_vcommon *)pd_findbyclass(s, vcommon_class);
-    if(!c)
-        return(1);
-    c->c_f = f;
-    return(0);
-}
-
 static void vcommon_float(t_vcommon *x, t_float f){
     x->c_f = f;
 }
