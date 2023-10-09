@@ -5,8 +5,8 @@
 static t_class *var_class, *vcommon_class;
 
 typedef struct vcommon{
-    t_pd c_pd;
-    int c_refcount;
+    t_pd    c_pd;
+    int     c_refcount;
     t_float c_f;
 }t_vcommon;
 
@@ -45,18 +45,7 @@ void var_release(t_symbol *s){
         post("var_release");
 }
 
-// var_getfloat -- obtain the float var of a "var" object
-// return 0 on success, 1 otherwise
-int var_getfloat(t_symbol *s, t_float *f){
-    t_vcommon *c = (t_vcommon *)pd_findbyclass(s, vcommon_class);
-    if(!c)
-        return(1);
-    *f = c->c_f;
-    return(0);
-}
-
-// var_setfloat -- set the float var of a "var" object
-// return 0 on success, 1 otherwise
+// set float value of a "var" object, return 0 on success, 1 otherwise
 int var_setfloat(t_symbol *s, t_float f){
     t_vcommon *c = (t_vcommon *)pd_findbyclass(s, vcommon_class);
     if(!c)
@@ -77,8 +66,6 @@ static void var_bang(t_var *x){
     outlet_list(x->x_obj.ob_outlet, &s_list, n, at);
 }
 
-
-
 static void var_list(t_var *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(!ac)
@@ -94,13 +81,6 @@ static void var_list(t_var *x, t_symbol *s, int ac, t_atom *av){
     }
 }
 
-// set method
-/*static void var_symbol2(t_var *x, t_symbol *s){
-    var_release(x->x_sym);
-    x->x_sym = s;
-    x->x_floatstar = var_get(s);
-}*/
-
 static void var_free(t_var *x){
     for(int i = 0; i < x->x_n_vars; i++)
         var_release(x->x_sym[i]);
@@ -113,8 +93,6 @@ static void *var_new(t_symbol *s, int ac, t_atom *av){
 //    post("x->x_n_vars = %d", x->x_n_vars);
     x->x_sym = getbytes(sizeof(t_symbol) * x->x_n_vars);
     x->x_floatstar = getbytes(sizeof(float) * x->x_n_vars);
-/*    if(!*s->s_name)
-        inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("symbol"), gensym("symbol2"));*/
     if(ac){
         for(int i = 0; i < x->x_n_vars; i++){
             x->x_sym[i] = atom_getsymbol(av+i);
@@ -129,7 +107,6 @@ void var_setup(void){
     var_class = class_new(gensym("var"), (t_newmethod)var_new,
         (t_method)var_free, sizeof(t_var), 0, A_GIMME, 0);
     class_addlist(var_class, var_list);
-//    class_addmethod(var_class, (t_method)var_symbol2, gensym("symbol2"), A_DEFSYM, 0);
     vcommon_class = class_new(gensym("var"), 0, 0, sizeof(t_vcommon), CLASS_PD, 0);
     class_addfloat(vcommon_class, vcommon_float);
 }
