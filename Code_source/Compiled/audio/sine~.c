@@ -8,8 +8,9 @@ typedef struct _sine{
     t_object    x_obj;
     double     *x_phase;
     int         x_nchans;
-    t_int       midi;
-    t_int       soft;
+    t_int       x_midi;
+    t_int       x_soft;
+    t_int      *x_dir;
     t_float     x_freq;
     t_inlet    *x_inlet_phase;
     t_inlet    *x_inlet_sync;
@@ -54,7 +55,7 @@ static t_int *sine_perform(t_int *w){
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0; i < n; i++){
             double hz = in1[j*n + i];
-            if(x->midi)
+            if(x->x_midi)
                 hz = hz <= 0 ? 0 : pow(2, (hz - 69)/12) * 440;
             double phase_step = hz * x->x_sr_rec; // phase_step
             double phase_offset = ch3 == 1 ? in3[i] : in3[j*n + i];
@@ -76,19 +77,23 @@ static t_int *sine_perform_sig(t_int *w){
     t_float *in3 = (t_float *)(w[7]);
     t_float *out = (t_float *)(w[8]);
     double *phase = x->x_phase;
+    t_int *dir = x->x_dir;
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0; i < n; i++){
             double hz = in1[j*n + i];
-            if(x->midi)
+            if(x->x_midi)
                 hz = hz <= 0 ? 0 : pow(2, (hz - 69)/12) * 440;
             double phase_step = hz * x->x_sr_rec; // phase_step
             t_float trig = ch2 == 1 ? in2[i] : in2[j*n + i];
             double phase_offset = ch3 == 1 ? in3[i] : in3[j*n + i];
-            if(x->soft)
-                phase_step *= (x->soft);
+            if(x->x_soft){
+                if(dir[j] == 0)
+                    dir[j] = 1;
+                phase_step *= (dir[j]);
+            }
             if(trig > 0 && trig <= 1){
-                if(x->soft)
-                    x->soft = x->soft == 1 ? -1 : 1;
+                if(x->x_soft)
+                    dir[j] = dir[j] == 1 ? -1 : 1;
                 else
                     phase[j] = trig;
             }
@@ -99,6 +104,7 @@ static t_int *sine_perform_sig(t_int *w){
         }
     }
     x->x_phase = phase;
+    x->x_dir = dir;
     return(w+9);
 }
 
@@ -108,6 +114,8 @@ static void sine_dsp(t_sine *x, t_signal **sp){
     signal_setmultiout(&sp[3], chs);
     if(x->x_nchans != chs){
         x->x_phase = (double *)resizebytes(x->x_phase,
+            x->x_nchans * sizeof(double), chs * sizeof(double));
+        x->x_dir = (t_int *)resizebytes(x->x_dir,
             x->x_nchans * sizeof(double), chs * sizeof(double));
         x->x_nchans = chs;
     }
@@ -126,11 +134,11 @@ static void sine_dsp(t_sine *x, t_signal **sp){
 }
 
 static void sine_midi(t_sine *x, t_floatarg f){
-    x->midi = (int)(f != 0);
+    x->x_midi = (int)(f != 0);
 }
 
 static void sine_soft(t_sine *x, t_floatarg f){
-    x->soft = (int)(f != 0);
+    x->x_soft = (int)(f != 0);
 }
 
 static void *sine_free(t_sine *x){
@@ -138,6 +146,7 @@ static void *sine_free(t_sine *x){
     inlet_free(x->x_inlet_phase);
     outlet_free(x->x_outlet);
     freebytes(x->x_phase, x->x_nchans * sizeof(*x->x_phase));
+    freebytes(x->x_dir, x->x_nchans * sizeof(*x->x_dir));
     return(void *)x;
 }
 
@@ -145,13 +154,14 @@ static void *sine_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_sine *x = (t_sine *)pd_new(sine_class);
     t_float f1 = 0, f2 = 0;
-    x->midi = x->soft = 0;
+    x->x_midi = x->x_soft = 0;
     x->x_phase = (double *)getbytes(sizeof(*x->x_phase));
+    x->x_dir = (t_int *)getbytes(sizeof(*x->x_dir));
     while(ac && av->a_type == A_SYMBOL){
         if(atom_getsymbol(av) == gensym("-midi"))
-            x->midi = 1;
+            x->x_midi = 1;
         else if(atom_getsymbol(av) == gensym("-soft"))
-            x->soft = 1;
+            x->x_soft = 1;
         ac--, av++;
     }
     if(ac && av->a_type == A_FLOAT){
