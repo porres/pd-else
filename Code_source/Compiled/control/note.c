@@ -7,8 +7,7 @@
 #include "g_canvas.h"
 #include "s_elseutf8.h"
 
-#include "../extra_source/compat.h"
-
+// #include "../extra_source/compat.h"
 
 #define NOTE_MINSIZE       8
 #define NOTE_HANDLE_WIDTH  8
@@ -811,7 +810,8 @@ static void note_receive(t_note *x, t_symbol *s){
 
 static void note_set(t_note *x, t_symbol *s, int ac, t_atom * av){
     s = NULL;
-//    post("set");
+    if(!x->x_init) // hack???
+        note_initialize(x);
     binbuf_clear(x->x_binbuf);
     binbuf_restore(x->x_binbuf, ac, av);
     binbuf_gettext(x->x_binbuf, &x->x_buf, &x->x_bufsize);
@@ -825,7 +825,7 @@ static void note_append(t_note *x, t_symbol *s, int ac, t_atom * av){
         note_initialize(x);
     if(ac){
         int n = binbuf_getnatom(x->x_binbuf); // number of arguments
-        t_atom* at = (t_atom *)getbytes((n+ac)*sizeof(t_atom));
+        t_atom *at = (t_atom *)getbytes((n+ac)*sizeof(t_atom));
         char buf[128];
         int i = 0;
         for(i = 0;  i < n; i++){
@@ -1795,5 +1795,4 @@ void note_setup(void){
      "    }\n"
      "    set_col_example $id\n"
      "}\n");
-
 }

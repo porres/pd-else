@@ -45,7 +45,15 @@ typedef struct _pluck{
     double          x_b1;
 }t_pluck;
 
+static void pluck_clear(t_pluck *x){
+    for(unsigned int i = 0; i < x->x_sz; i++)
+        x->x_ybuf[i] = 0.;
+    x->x_wh = 0;
+    x->x_xnm1 = x->x_ynm1 = 0.;
+}
+
 static void pluck_bang(t_pluck *x){
+//    pluck_clear(x);
     x->x_control_trig = 1;
 }
 
@@ -61,13 +69,6 @@ static void pluck_gate(t_pluck *x, t_floatarg f){
         x->x_float_trig = f;
         pluck_bang(x);
     }
-}
-
-static void pluck_clear(t_pluck *x){
-    for(unsigned int i = 0; i < x->x_sz; i++)
-        x->x_ybuf[i] = 0.;
-    x->x_wh = 0;
-    x->x_xnm1 = x->x_ynm1 = 0.;
 }
 
 static void pluck_sz(t_pluck *x){
