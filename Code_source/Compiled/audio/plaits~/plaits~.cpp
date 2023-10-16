@@ -241,13 +241,15 @@ t_int *plts_perform(t_int *w){
     x->modulations.frequency_patched = x->frequency_active;
     x->modulations.timbre_patched = x->timbre_active;
     x->modulations.morph_patched = x->morph_active;
-    x->modulations.level_patched = x->level_active;
+    x->modulations.level_patched = x->level_active && x->level_auto;
     for(int j = 0; j < x->block_count; j++){ // Render frames
         float pitch = plts_get_pitch(x, pitch_inlet[x->block_size * j]); // get pitch
         pitch += x->pitch_correction;
         x->patch.note = 60.f + pitch * 12.f;
         x->modulations.level = level[x->block_size * j];
-        if(!(x->tr_conntected && x->tr_auto)){ // no signal connected
+        if(x->tr_conntected && (x->tr_auto || x->trigger_mode)){ // signal connected
+            x->modulations.trigger = (trig[x->block_size * j] != 0);
+        else if(x->trigger_mode && !x->tr_conntected){ // no signal connected
             if(x->trigger){ // Message trigger (bang)
                 x->modulations.trigger = 1.0f;
                 x->trigger = false;
@@ -255,8 +257,6 @@ t_int *plts_perform(t_int *w){
             else
                 x->modulations.trigger = 0.0f;
         }
-        else
-            x->modulations.trigger = (trig[x->block_size * j] != 0);
         plaits::Voice::Frame output[x->block_size];
         x->voice.Render(x->patch, x->modulations, output, x->block_size);
         for(int i = 0; i < x->block_size; i++){
