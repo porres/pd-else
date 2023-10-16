@@ -110,7 +110,7 @@ void plts_print(t_plts *x){
     post("- harmonics: %f", x->harmonics);
     post("- timbre: %f", x->timbre);
     post("- morph: %f", x->morph);
-    post("- trigger: %d", (x->trigger_mode || (x->tr_conntected && x->tr_auto));
+    post("- trigger: %d", (x->trigger_mode || (x->tr_conntected && x->tr_auto)));
     post("- cutoff: %f", x->lpg_cutoff);
     post("- decay: %f", x->decay);
 }
