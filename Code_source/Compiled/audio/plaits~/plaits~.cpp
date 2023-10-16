@@ -247,7 +247,7 @@ t_int *plts_perform(t_int *w){
         pitch += x->pitch_correction;
         x->patch.note = 60.f + pitch * 12.f;
         x->modulations.level = level[x->block_size * j];
-        if(x->tr_conntected && (x->tr_auto || x->trigger_mode)){ // signal connected
+        if(x->tr_conntected && (x->tr_auto || x->trigger_mode)) // signal connected
             x->modulations.trigger = (trig[x->block_size * j] != 0);
         else if(x->trigger_mode && !x->tr_conntected){ // no signal connected
             if(x->trigger){ // Message trigger (bang)
