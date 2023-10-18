@@ -24,7 +24,6 @@ typedef struct _plts{
     t_float lpg_cutoff;
     t_int pitch_mode;
     t_float decay;
-    bool trigger;
     t_float mod_timbre;
     t_float mod_fm;
     t_float mod_morph;
@@ -63,7 +62,6 @@ extern "C"  { // Pure data methods, needed because we are using C++
     void plts_morph(t_plts *x, t_floatarg f);
     void plts_lpg_cutoff(t_plts *x, t_floatarg f);
     void plts_decay(t_plts *x, t_floatarg f);
-    void plts_bang(t_plts *x);
     void plts_midi(t_plts *x);
     void plts_hz(t_plts *x);
     void plts_cv(t_plts *x);
@@ -106,7 +104,7 @@ void plts_print(t_plts *x){
     post("- harmonics: %f", x->harmonics);
     post("- timbre: %f", x->timbre);
     post("- morph: %f", x->morph);
-    post("- trigger: %d", x->trigger_mode);
+    post("- trigger mode: %d", x->trigger_mode);
     post("- cutoff: %f", x->lpg_cutoff);
     post("- decay: %f", x->decay);
 }
@@ -122,7 +120,7 @@ void plts_dump(t_plts *x){
     SETFLOAT(at, x->morph);
     outlet_anything(x->x_info_out, gensym("morph"), 1, at);
     SETFLOAT(at, x->trigger_mode);
-    outlet_anything(x->x_info_out, gensym("trigger"), 1, at);
+    outlet_anything(x->x_info_out, gensym("trigger mode"), 1, at);
     SETFLOAT(at, x->lpg_cutoff);
     outlet_anything(x->x_info_out, gensym("cutoff"), 1, at);
     SETFLOAT(at, x->decay);
@@ -146,10 +144,6 @@ void plts_timbre(t_plts *x, t_floatarg f){
 
 void plts_morph(t_plts *x, t_floatarg f){
     x->morph = f < 0 ? 0 : f > 1 ? 1 : f;
-}
-
-void plts_bang(t_plts *x){
-    x->trigger = 1;
 }
 
 void plts_lpg_cutoff(t_plts *x, t_floatarg f){
@@ -235,15 +229,8 @@ t_int *plts_perform(t_int *w){
         pitch += x->pitch_correction;
         x->patch.note = 60.f + pitch * 12.f;
         x->modulations.level = level[x->block_size * j];
-        if(x->trigger_mode){ // trigger mode
-            float audiotrigger = (trig[x->block_size * j] != 0);
-            float controltrigger = 0;
-            if(x->trigger){
-                controltrigger = 1;
-                x->trigger = false;
-            }
-            x->modulations.trigger = audiotrigger ? audiotrigger : controltrigger;
-        }
+        if(x->trigger_mode) // trigger mode
+            x->modulations.trigger = (trig[x->block_size * j] != 0);
         plaits::Voice::Frame output[x->block_size];
         x->voice.Render(x->patch, x->modulations, output, x->block_size);
         for(int i = 0; i < x->block_size; i++){
@@ -300,7 +287,6 @@ void *plts_new(t_symbol *s, int ac, t_atom *av){
     x->lpg_cutoff = 0.5f;
     x->pitch_mode = 0;
     x->decay = 0.5f;
-    x->trigger = false;
     x->mod_timbre = 0;
     x->mod_fm = 0;
     x->mod_morph = 0;
@@ -376,7 +362,6 @@ void plaits_tilde_setup(void){
         (t_method)plts_free, sizeof(t_plts), 0, A_GIMME, 0);
     class_addmethod(plts_class, (t_method)plts_dsp, gensym("dsp"), A_NULL);
     CLASS_MAINSIGNALIN(plts_class, t_plts, pitch_in);
-    class_addbang(plts_class, plts_bang);
     class_addmethod(plts_class, (t_method)plts_model, gensym("model"), A_DEFFLOAT, A_NULL);
     class_addmethod(plts_class, (t_method)plts_harmonics, gensym("harmonics"), A_DEFFLOAT, A_NULL);
     class_addmethod(plts_class, (t_method)plts_timbre, gensym("timbre"), A_DEFFLOAT, A_NULL);
