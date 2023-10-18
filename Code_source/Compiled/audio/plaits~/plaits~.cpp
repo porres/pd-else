@@ -1,4 +1,4 @@
-// plaits ported to Pd, by Porres and tomara 2023
+// plaits ported to Pd, by Porres 2023
 // MIT Liscense
 
 #include <stdint.h>
