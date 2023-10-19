@@ -15,11 +15,13 @@ static t_class *pluck_class;
 typedef struct _pluck{
     t_object        x_obj;
     t_random_state  x_rstate;
-    t_inlet        *x_freq_inlet;
+    t_inlet        *x_trig_let;
     t_inlet        *x_decay_inlet;
     t_inlet        *x_cutoff_inlet;
     float           x_sr;
+    t_int           x_midi;
     float           x_freq;
+    float           x_hz;
     float           x_float_trig;
     int             x_control_trig;
     int             x_noise_input;
@@ -45,6 +47,39 @@ typedef struct _pluck{
     double          x_b1;
 }t_pluck;
 
+
+
+static void update_coeffs(t_pluck *x, double f){
+    x->x_f = f;
+    double omega = f * TWO_PI/x->x_sr;
+    if(omega < 0)
+        omega = 0;
+    if(omega > 2){
+        x->x_a0 = 1;
+        x->x_a1 = x->x_b1 = 0;
+    }
+    else{
+        x->x_a0 = x->x_a1 = omega * 0.5;
+        x->x_b1 = 1 - omega;
+    }
+}
+
+static void update_fb(t_pluck *x, double fb, double delms){
+    x->x_ain = (float)fb;
+    x->x_fb = fb == 0 ? 0 : copysign(exp(log(0.001) * delms/fabs(fb)), fb);
+}
+
+static void update_time(t_pluck *x, float hz){
+    if(x->x_midi)
+        hz = pow(2, (hz - 69)/12) * 440;
+    if(hz < 1)
+        hz = 1;
+    double period = 1./(double)hz;
+    x->x_delms = period * 1000;
+    x->x_samps = (int)roundf(period * x->x_sr);
+}
+
+
 static void pluck_clear(t_pluck *x){
     for(unsigned int i = 0; i < x->x_sz; i++)
         x->x_ybuf[i] = 0.;
@@ -52,22 +87,40 @@ static void pluck_clear(t_pluck *x){
     x->x_xnm1 = x->x_ynm1 = 0.;
 }
 
-static void pluck_bang(t_pluck *x){
+static void pluck_midi(t_pluck *x, t_floatarg f){
+    x->x_midi = (int)(f != 0);
+}
+
+/*static void pluck_bang(t_pluck *x){
 //    pluck_clear(x);
     x->x_control_trig = 1;
 }
-
-static void pluck_float(t_pluck *x, t_float f){
-    if(f != 0){
-        x->x_float_trig = f/127;
-        pluck_bang(x);
-    }
-}
-
 static void pluck_gate(t_pluck *x, t_floatarg f){
     if(f != 0){
         x->x_float_trig = f;
         pluck_bang(x);
+    }
+}*/
+
+/*static void pluck_float(t_pluck *x, t_float f){
+    x->x_freq = f;
+}*/
+
+static void pluck_list(t_pluck *x, t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
+    if(argc == 0)
+        return;
+    if(argc == 1){
+        obj_list(&x->x_obj, 0, argc, argv);
+        return;
+    }
+    if(atom_getfloat(argv+1) == 0)
+        return;
+    if(argc >= 2){
+        obj_list(&x->x_obj, 0, argc, argv);
+        argc--, argv++;
+        x->x_float_trig = atom_getfloat(argv)/ 127.f;
+        x->x_control_trig = 1;
     }
 }
 
@@ -127,40 +180,13 @@ static double pluck_read_delay(t_pluck *x, double arr[], int in_samps){
     return(pluck_getlin(arr, x->x_sz, rh)); // read from buffer
 }
 
-static void update_coeffs(t_pluck *x, double f){
-    x->x_f = f;
-    double omega = f * TWO_PI/x->x_sr;
-    if(omega < 0)
-        omega = 0;
-    if(omega > 2){
-        x->x_a0 = 1;
-        x->x_a1 = x->x_b1 = 0;
-    }
-    else{
-        x->x_a0 = x->x_a1 = omega * 0.5;
-        x->x_b1 = 1 - omega;
-    }
-}
-
-static void update_fb(t_pluck *x, double fb, double delms){
-    x->x_ain = (float)fb;
-    x->x_fb = fb == 0 ? 0 : copysign(exp(log(0.001) * delms/fabs(fb)), fb);
-}
-
-static void update_time(t_pluck *x, float hz){
-    x->x_freq = hz;
-    double period = 1./(double)hz;
-    x->x_delms = period * 1000;
-    x->x_samps = (int)roundf(period * x->x_sr);
-}
-
 ////////////////////////////////////////////////////////////////////////////////////
 
 static t_int *pluck_perform_noise_input(t_int *w){
     t_pluck *x = (t_pluck *)(w[1]);
     int n = (int)(w[2]);
-    t_float *t_in = (t_float *)(w[3]);
-    t_float *hz_in = (t_float *)(w[4]);
+    t_float *hz_in = (t_float *)(w[3]);
+    t_float *t_in = (t_float *)(w[4]);
     t_float *ain = (t_float *)(w[5]);
     t_float *cut_in = (t_float *)(w[6]);
     t_float *noise_in = (t_float *)(w[7]);
@@ -181,8 +207,8 @@ static t_int *pluck_perform_noise_input(t_int *w){
             xnm1 = ynm1 = 0;
         }
         else{
-            if(hz != x->x_freq){
-                update_time(x, hz);
+            if(hz != x->x_hz){
+                update_time(x, x->x_hz = hz);
                 goto update_fb;
             }
             if(x->x_ain != a_in){
@@ -237,8 +263,8 @@ static t_int *pluck_perform(t_int *w){
     t_pluck *x = (t_pluck *)(w[1]);
     int n = (int)(w[2]);
     t_random_state *rstate = (t_random_state *)(w[3]);
-    t_float *t_in = (t_float *)(w[4]);
-    t_float *hz_in = (t_float *)(w[5]);
+    t_float *hz_in = (t_float *)(w[4]);
+    t_float *t_in = (t_float *)(w[5]);
     t_float *ain = (t_float *)(w[6]);
     t_float *cut_in = (t_float *)(w[7]);
     t_float *out = (t_float *)(w[8]);
@@ -260,8 +286,8 @@ static t_int *pluck_perform(t_int *w){
             xnm1 = ynm1 = 0;
         }
         else{
-            if(hz != x->x_freq){
-                update_time(x, hz);
+            if(hz != x->x_hz){
+                update_time(x, x->x_hz = hz);
                 goto update_fb;
             }
             if(x->x_ain != a_in){
@@ -334,6 +360,7 @@ static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
     float freq = 0;
     float decay = 0;
     float cut_freq = DEF_RADIANS * x->x_sr;
+    x->x_midi = 0;
     x->x_float_trig = 1;
     x->x_control_trig = 0;
     x->x_noise_input = 0;
@@ -363,6 +390,10 @@ static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
                 x->x_noise_input = 1;
                 argc--, argv++;
             }
+            else if(curarg == gensym("-midi")){
+                x->x_midi = 1;
+                argc--, argv++;
+            }
             else
                 goto errstate;
         }
@@ -376,26 +407,33 @@ static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
 // clear out stack buf, set pointer to stack
     x->x_ybuf = x->x_fbstack;
     pluck_clear(x);
-    x->x_freq = (double)freq;
+    x->x_hz = x->x_freq = (double)freq;
     x->x_ain = decay;
     x->x_f = (double)cut_freq;
     x->x_maxdel = 1000;
 // ship off to the helper method to deal with allocation if necessary
     pluck_sz(x);
     
-    if(x->x_freq > 1){
-        update_time(x, x->x_freq);
+    if(x->x_hz > 1){
+        update_time(x, x->x_hz);
         update_fb(x, x->x_ain, x->x_delms);
     }
     if(x->x_f >= 0)
         update_coeffs(x, x->x_f);
+    
 // inlets / outlet
-    x->x_freq_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_freq_inlet, freq);
-    x->x_decay_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal); // decay time
+    x->x_trig_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+    x->x_decay_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_decay_inlet, decay);
     x->x_cutoff_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_cutoff_inlet, cut_freq);
+    
+/*    x->x_freq_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+//        pd_float((t_pd *)x->x_freq_inlet, freq);
+    x->x_decay_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal); // decay time
+        pd_float((t_pd *)x->x_decay_inlet, decay);
+    x->x_cutoff_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_cutoff_inlet, cut_freq);*/
     if(x->x_noise_input)
         inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     outlet_new((t_object *)x, &s_signal);
@@ -408,7 +446,7 @@ errstate:
 static void * pluck_free(t_pluck *x){
     if(x->x_alloc)
         free(x->x_ybuf);
-    inlet_free(x->x_freq_inlet);
+    inlet_free(x->x_trig_let);
     inlet_free(x->x_decay_inlet);
     inlet_free(x->x_cutoff_inlet);
     return(void *)x;
@@ -417,10 +455,13 @@ static void * pluck_free(t_pluck *x){
 void pluck_tilde_setup(void){
     pluck_class = class_new(gensym("pluck~"), (t_newmethod)pluck_new,
         (t_method)pluck_free, sizeof(t_pluck), 0, A_GIMME, 0);
-    class_addmethod(pluck_class, nullfn, gensym("signal"), 0);
-    class_addfloat(pluck_class, pluck_float);
-    class_addbang(pluck_class, pluck_bang);
+//    class_addmethod(pluck_class, nullfn, gensym("signal"), 0);
+    CLASS_MAINSIGNALIN(pluck_class, t_pluck, x_freq);
+//    class_addfloat(pluck_class, pluck_float);
+//    class_addbang(pluck_class, pluck_bang);
+// class_addmethod(pluck_class, (t_method)pluck_gate, gensym("gate"), A_DEFFLOAT, 0);
+    class_addlist(pluck_class, pluck_list);
     class_addmethod(pluck_class, (t_method)pluck_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(pluck_class, (t_method)pluck_gate, gensym("gate"), A_DEFFLOAT, 0);
     class_addmethod(pluck_class, (t_method)pluck_clear, gensym("clear"), 0);
+    class_addmethod(pluck_class, (t_method)pluck_midi, gensym("midi"), A_DEFFLOAT, 0);
 }
