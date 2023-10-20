@@ -91,27 +91,12 @@ static void pluck_midi(t_pluck *x, t_floatarg f){
     x->x_midi = (int)(f != 0);
 }
 
-/*static void pluck_bang(t_pluck *x){
-//    pluck_clear(x);
-    x->x_control_trig = 1;
-}
-static void pluck_gate(t_pluck *x, t_floatarg f){
-    if(f != 0){
-        x->x_float_trig = f;
-        pluck_bang(x);
-    }
-}*/
-
-/*static void pluck_float(t_pluck *x, t_float f){
-    x->x_freq = f;
-}*/
-
 static void pluck_list(t_pluck *x, t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     if(argc == 0)
         return;
     if(argc == 1){
-        obj_list(&x->x_obj, NULL, argc, argv);
+        obj_list(&x->x_obj, NULL, 1, argv);
         return;
     }
     if(atom_getfloat(argv+1) == 0)
@@ -427,13 +412,6 @@ static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
         pd_float((t_pd *)x->x_decay_inlet, decay);
     x->x_cutoff_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_cutoff_inlet, cut_freq);
-    
-/*    x->x_freq_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-//        pd_float((t_pd *)x->x_freq_inlet, freq);
-    x->x_decay_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal); // decay time
-        pd_float((t_pd *)x->x_decay_inlet, decay);
-    x->x_cutoff_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_cutoff_inlet, cut_freq);*/
     if(x->x_noise_input)
         inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     outlet_new((t_object *)x, &s_signal);
@@ -455,13 +433,9 @@ static void * pluck_free(t_pluck *x){
 void pluck_tilde_setup(void){
     pluck_class = class_new(gensym("pluck~"), (t_newmethod)pluck_new,
         (t_method)pluck_free, sizeof(t_pluck), 0, A_GIMME, 0);
-//    class_addmethod(pluck_class, nullfn, gensym("signal"), 0);
-    CLASS_MAINSIGNALIN(pluck_class, t_pluck, x_freq);
-//    class_addfloat(pluck_class, pluck_float);
-//    class_addbang(pluck_class, pluck_bang);
-// class_addmethod(pluck_class, (t_method)pluck_gate, gensym("gate"), A_DEFFLOAT, 0);
-    class_addlist(pluck_class, pluck_list);
     class_addmethod(pluck_class, (t_method)pluck_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(pluck_class, (t_method)pluck_clear, gensym("clear"), 0);
+    CLASS_MAINSIGNALIN(pluck_class, t_pluck, x_freq);
+    class_addlist(pluck_class, pluck_list);
     class_addmethod(pluck_class, (t_method)pluck_midi, gensym("midi"), A_DEFFLOAT, 0);
+    class_addmethod(pluck_class, (t_method)pluck_clear, gensym("clear"), 0);
 }
