@@ -83,11 +83,11 @@ static t_int *adsr_perform(t_int *w){
     for(int j = 0; j < chs; j++){
         for(int i = 0; i < n; i++){
             t_float input_gate = in1[j*n + i];
-            t_float attack = in2[i];
-            t_float decay = in3[i];
-            t_float sustain_point = in4[i];
-            t_float release = in5[i];
-            t_float retrig = in6[i];
+            t_float retrig = in2[i];
+            t_float attack = in3[i];
+            t_float decay = in4[i];
+            t_float sustain_point = in5[i];
+            t_float release = in6[i];
 // get & clip 'n'; set a/d/r coefs
             t_float n_attack = roundf(attack * x->x_sr_khz);
             if(n_attack < 1)
@@ -273,6 +273,7 @@ static void *adsr_new(t_symbol *sym, int ac, t_atom *av){
         else
             goto errstate;
     }
+    inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     x->x_inlet_attack = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_attack, a);
     x->x_inlet_decay = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
@@ -281,7 +282,6 @@ static void *adsr_new(t_symbol *sym, int ac, t_atom *av){
         pd_float((t_pd *)x->x_inlet_sustain, s);
     x->x_inlet_release = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_release, r);
-    inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     outlet_new((t_object *)x, &s_signal);
     x->x_out2 = outlet_new((t_object *)x, &s_float);
     return(x);
