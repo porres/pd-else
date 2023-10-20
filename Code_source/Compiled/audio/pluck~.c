@@ -111,13 +111,13 @@ static void pluck_list(t_pluck *x, t_symbol *s, int argc, t_atom *argv){
     if(argc == 0)
         return;
     if(argc == 1){
-        obj_list(&x->x_obj, 0, argc, argv);
+        obj_list(&x->x_obj, NULL, argc, argv);
         return;
     }
     if(atom_getfloat(argv+1) == 0)
         return;
     if(argc >= 2){
-        obj_list(&x->x_obj, 0, argc, argv);
+        obj_list(&x->x_obj, 0, 1, argv);
         argc--, argv++;
         x->x_float_trig = atom_getfloat(argv)/ 127.f;
         x->x_control_trig = 1;

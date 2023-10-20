@@ -127,6 +127,24 @@ void plts_dump(t_plts *x){
     outlet_anything(x->x_info_out, gensym("decay"), 1, at);
 }
 
+static void plts_list(t_plts *x, t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
+    if(argc == 0)
+        return;
+    if(argc <= 2){
+        obj_list(&x->x_obj, NULL, argc, argv);
+        return;
+    }
+/*    if(atom_getfloat(argv+1) == 0)
+        return;
+    if(argc == 2){
+        obj_list(&x->x_obj, NULL, argc, argv);
+        argc--, argv++;
+        x->x_float_trig = atom_getfloat(argv)/ 127.f;
+        x->x_control_trig = 1;
+    }*/
+}
+
 void plts_model(t_plts *x, t_floatarg f){
     x->model = f < 0 ? 0 : f > 23 ? 23 : (int)f;
     t_atom at[1];
@@ -362,6 +380,7 @@ void plaits_tilde_setup(void){
         (t_method)plts_free, sizeof(t_plts), 0, A_GIMME, 0);
     class_addmethod(plts_class, (t_method)plts_dsp, gensym("dsp"), A_NULL);
     CLASS_MAINSIGNALIN(plts_class, t_plts, pitch_in);
+    class_addlist(plts_class, plts_list);
     class_addmethod(plts_class, (t_method)plts_model, gensym("model"), A_DEFFLOAT, A_NULL);
     class_addmethod(plts_class, (t_method)plts_harmonics, gensym("harmonics"), A_DEFFLOAT, A_NULL);
     class_addmethod(plts_class, (t_method)plts_timbre, gensym("timbre"), A_DEFFLOAT, A_NULL);
