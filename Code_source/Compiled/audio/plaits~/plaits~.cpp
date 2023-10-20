@@ -31,8 +31,7 @@ typedef struct _plts{
     bool timbre_active;
     bool morph_active;
     bool trigger_mode;
-    bool tr_conntected;
-    bool level_active;
+    bool vca;
     t_int block_size;
     t_int block_count;
     t_int last_n;
@@ -69,6 +68,8 @@ extern "C"  { // Pure data methods, needed because we are using C++
     void plts_dump(t_plts *x);
     void plts_print(t_plts *x);
     void plts_trigger_mode(t_plts *x, t_floatarg f);
+    void plts_vca(t_plts *x, t_floatarg f);
+    void plts_list(t_symbol *s, int ac, t_atom *av);
 }
 
 static const char* modelLabels[24] = {
@@ -107,6 +108,7 @@ void plts_print(t_plts *x){
     post("- trigger mode: %d", x->trigger_mode);
     post("- cutoff: %f", x->lpg_cutoff);
     post("- decay: %f", x->decay);
+    post("- vca: %d", x->vca);
 }
 
 void plts_dump(t_plts *x){
@@ -121,10 +123,12 @@ void plts_dump(t_plts *x){
     outlet_anything(x->x_info_out, gensym("morph"), 1, at);
     SETFLOAT(at, x->trigger_mode);
     outlet_anything(x->x_info_out, gensym("trigger mode"), 1, at);
-    SETFLOAT(at, x->lpg_cutoff);
+    SETFLOAT(at, x->vca);
     outlet_anything(x->x_info_out, gensym("cutoff"), 1, at);
     SETFLOAT(at, x->decay);
     outlet_anything(x->x_info_out, gensym("decay"), 1, at);
+    outlet_anything(x->x_info_out, gensym("vca"), 1, at);
+    SETFLOAT(at, x->lpg_cutoff);
 }
 
 static void plts_list(t_plts *x, t_symbol *s, int argc, t_atom *argv){
@@ -188,6 +192,10 @@ void plts_trigger_mode(t_plts *x, t_floatarg f){
     x->trigger_mode = (int)(f != 0);
 }
 
+void plts_vca(t_plts *x, t_floatarg f){
+    x->vca = (int)(f != 0);
+}
+
 static float plts_get_pitch(t_plts *x, t_floatarg f){
     if(x->pitch_mode == 0){
         f = log2f((f < 0 ? f * -1 : f)/440) + 0.75;
@@ -241,7 +249,7 @@ t_int *plts_perform(t_int *w){
     x->modulations.frequency_patched = x->frequency_active;
     x->modulations.timbre_patched = x->timbre_active;
     x->modulations.morph_patched = x->morph_active;
-    x->modulations.level_patched = x->level_active;
+    x->modulations.level_patched = x->vca;
     for(int j = 0; j < x->block_count; j++){ // Render frames
         float pitch = plts_get_pitch(x, pitch_inlet[x->block_size * j]); // get pitch
         pitch += x->pitch_correction;
@@ -271,8 +279,6 @@ int connected_inlet(t_object *x, t_glist *glist, int inno, t_symbol *outsym){
 
 void plts_dsp(t_plts *x, t_signal **sp){
     x->pitch_correction = log2f(48000.f / sys_getsr());
-    x->tr_conntected = connected_inlet((t_object *)x, x->x_glist, 1, &s_signal);
-    x->level_active = connected_inlet((t_object *)x, x->x_glist, 2, &s_signal);
     dsp_add(plts_perform, 7, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec,
         sp[3]->s_vec, sp[4]->s_vec, sp[0]->s_n);
 }
@@ -312,8 +318,7 @@ void *plts_new(t_symbol *s, int ac, t_atom *av){
     x->timbre_active = false;
     x->morph_active = false;
     x->trigger_mode = false;
-    x->tr_conntected = false;
-    x->level_active = false;
+    x->vca = false;
     x->last_engine = 0;
     x->last_engine_perform = 0;
     while(ac){
@@ -386,6 +391,7 @@ void plaits_tilde_setup(void){
     class_addmethod(plts_class, (t_method)plts_timbre, gensym("timbre"), A_DEFFLOAT, A_NULL);
     class_addmethod(plts_class, (t_method)plts_morph, gensym("morph"), A_DEFFLOAT, A_NULL);
     class_addmethod(plts_class, (t_method)plts_trigger_mode, gensym("trigger"), A_DEFFLOAT, A_NULL);
+    class_addmethod(plts_class, (t_method)plts_vca, gensym("vca"), A_DEFFLOAT, A_NULL);
     class_addmethod(plts_class, (t_method)plts_lpg_cutoff, gensym("cutoff"), A_DEFFLOAT, A_NULL);
     class_addmethod(plts_class, (t_method)plts_decay, gensym("decay"), A_DEFFLOAT, A_NULL);
     class_addmethod(plts_class, (t_method)plts_cv, gensym("cv"), A_NULL);
