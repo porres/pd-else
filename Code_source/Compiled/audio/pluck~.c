@@ -70,10 +70,6 @@ static void update_fb(t_pluck *x, double fb, double delms){
 }
 
 static void update_time(t_pluck *x, float hz){
-    if(x->x_midi)
-        hz = pow(2, (hz - 69)/12) * 440;
-    if(hz < 1)
-        hz = 1;
     double period = 1./(double)hz;
     x->x_delms = period * 1000;
     x->x_samps = (int)roundf(period * x->x_sr);
@@ -192,6 +188,8 @@ static t_int *pluck_perform_noise_input(t_int *w){
             xnm1 = ynm1 = 0;
         }
         else{
+            if(x->x_midi)
+                hz = pow(2, (hz - 69)/12) * 440;
             if(hz != x->x_hz){
                 update_time(x, x->x_hz = hz);
                 goto update_fb;
@@ -271,6 +269,8 @@ static t_int *pluck_perform(t_int *w){
             xnm1 = ynm1 = 0;
         }
         else{
+            if(x->x_midi)
+                hz = pow(2, (hz - 69)/12) * 440;
             if(hz != x->x_hz){
                 update_time(x, x->x_hz = hz);
                 goto update_fb;
@@ -393,13 +393,17 @@ static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
     x->x_ybuf = x->x_fbstack;
     pluck_clear(x);
     x->x_hz = x->x_freq = (double)freq;
+
+    if(x->x_midi)
+        x->x_hz  = pow(2, (x->x_hz  - 69)/12) * 440;
+
     x->x_ain = decay;
     x->x_f = (double)cut_freq;
     x->x_maxdel = 1000;
 // ship off to the helper method to deal with allocation if necessary
     pluck_sz(x);
     
-    if(x->x_hz > 1){
+    if(x->x_hz >= 1){
         update_time(x, x->x_hz);
         update_fb(x, x->x_ain, x->x_delms);
     }
