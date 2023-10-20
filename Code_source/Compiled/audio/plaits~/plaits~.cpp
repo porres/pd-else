@@ -69,7 +69,7 @@ extern "C"  { // Pure data methods, needed because we are using C++
     void plts_print(t_plts *x);
     void plts_trigger_mode(t_plts *x, t_floatarg f);
     void plts_vca(t_plts *x, t_floatarg f);
-    void plts_list(t_symbol *s, int ac, t_atom *av);
+    void plts_list(t_plts *x, t_symbol *s, int ac, t_atom *av);
 }
 
 static const char* modelLabels[24] = {
@@ -131,7 +131,7 @@ void plts_dump(t_plts *x){
     SETFLOAT(at, x->lpg_cutoff);
 }
 
-static void plts_list(t_plts *x, t_symbol *s, int argc, t_atom *argv){
+void plts_list(t_plts *x, t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     if(argc == 0)
         return;
@@ -340,6 +340,8 @@ void *plts_new(t_symbol *s, int ac, t_atom *av){
             }
             else if(sym == gensym("-trigger"))
                 x->trigger_mode = 1;
+            else if(sym == gensym("-vca"))
+                x->vca = 1;
             else
                 goto errstate;
         }
