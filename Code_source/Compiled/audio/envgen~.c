@@ -347,17 +347,25 @@ static void envgen_suspoint(t_envgen *x, t_floatarg f){
 static t_int *envgen_perform(t_int *w){
     t_envgen *x = (t_envgen *)(w[1]);
     int n = (int)(w[2]);
-    t_float *in = (t_float *)(w[3]);
-    t_float *out = (t_float *)(w[4]);
+    t_float *in1 = (t_float *)(w[3]);
+    t_float *in2 = (t_float *)(w[4]);
+    t_float *out = (t_float *)(w[5]);
     float lastin = x->x_lastin;
     while(n--){
-        t_float f = *in++;
+        t_float f = *in1++;
+        t_float retrig = *in2++;
         if(f != 0 && lastin == 0){ // set attack ramp
             x->x_gain = f;
             envgen_attack(x, x->x_ac, x->x_av);
         }
         else if(x->x_release && f == 0 && lastin != 0) // set release ramp
             envgen_release(x, x->x_ac_rel, x->x_av_rel);
+        if(f != 0 && lastin != 0){ // gate on
+            if(retrig != 0){ // retrigger
+                x->x_gain = retrig;
+                envgen_attack(x, x->x_ac, x->x_av);
+            }
+        }
         if(PD_BIGORSMALL(x->x_value)) // ??????????????
             x->x_value = 0;
         *out++ = x->x_value = x->x_last_target + x->x_inc;
@@ -378,11 +386,11 @@ static t_int *envgen_perform(t_int *w){
         lastin = f;
     }
     x->x_lastin = lastin;
-    return(w+5);
+    return(w+6);
 }
 
 static void envgen_dsp(t_envgen *x, t_signal **sp){
-    dsp_add(envgen_perform, 4, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
+    dsp_add(envgen_perform, 5, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
 }
 
 static void envgen_free(t_envgen *x){
@@ -509,6 +517,7 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
         }
     }
     x->x_last_target = x->x_value;
+    inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     envgen_proxy_init(&x->x_proxy, x);
     inlet_new(&x->x_obj, &x->x_proxy.p_pd, 0, 0);
     outlet_new((t_object *)x, &s_signal);
