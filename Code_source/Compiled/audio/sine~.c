@@ -58,6 +58,10 @@ static t_int *sine_perform(t_int *w){
             if(x->x_midi)
                 hz = hz <= 0 ? 0 : pow(2, (hz - 69)/12) * 440;
             double phase_step = hz * x->x_sr_rec; // phase_step
+            if(phase_step > 0.5)
+                phase_step = 0.5;
+            if(phase_step < -0.5)
+                phase_step = -0.5;
             double phase_offset = ch3 == 1 ? in3[i] : in3[j*n + i];
             out[j*n + i] = read_sintab(sine_wrap_phase(phase[j] + phase_offset));
             phase[j] = sine_wrap_phase(phase[j] + phase_step);
@@ -84,6 +88,10 @@ static t_int *sine_perform_sig(t_int *w){
             if(x->x_midi)
                 hz = hz <= 0 ? 0 : pow(2, (hz - 69)/12) * 440;
             double phase_step = hz * x->x_sr_rec; // phase_step
+            if(phase_step > 0.5)
+                phase_step = 0.5;
+            if(phase_step < -0.5)
+                phase_step = -0.5;
             t_float trig = ch2 == 1 ? in2[i] : in2[j*n + i];
             double phase_offset = ch3 == 1 ? in3[i] : in3[j*n + i];
             if(x->x_soft){
