@@ -118,7 +118,7 @@ static void *mrms_new(t_symbol *s, int argc, t_atom * argv){
     x->x_size = MRMS_DEF_BUFSIZE;
     float n_arg = 1;
     x->x_alloc = 0;
-    x->x_db = 0;
+    x->x_db = 1;
 /////////////////////////////////////////////////////////////////////////////////
     int argn = 0;
     while(argc > 0){
@@ -133,8 +133,8 @@ static void *mrms_new(t_symbol *s, int argc, t_atom * argv){
                 else
                     goto errstate;
             }
-            else if(cursym == gensym("-db") && !argn){
-                x->x_db = 1;
+            else if(cursym == gensym("-lin") && !argn){
+                x->x_db = 0;
                 argc--, argv++;
             }
             else

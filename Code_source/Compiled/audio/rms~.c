@@ -1,5 +1,5 @@
-/* ---------------- rms~ - rmselope follower. ----------------- */
-/* based on msp's env~-object: outputs both linear and dBFS rms */
+/* ---------------- rms~ - envelope follower. ----------------- */
+/* based on msp's [env~] object: outputs both linear and dBFS rms */
 
 #include "m_pd.h"
 #include "math.h"
@@ -12,13 +12,13 @@ typedef struct sigrms{
     t_object x_obj;                 /* header */
     void *x_outlet;                 /* a "float" outlet */
     void *x_clock;                  /* a "clock" object */
-    t_sample *x_buf;                   /* a Hanning window */
+    t_sample *x_buf;                /* a Hanning window */
     int x_phase;                    /* number of points since last output */
     int x_period;                   /* requested period of output */
     int x_realperiod;               /* period rounded up to vecsize multiple */
     int x_npoints;                  /* analysis window size in samples */
-    t_float x_result;                 /* result to output */
-    t_sample x_sumbuf[MAXOVERLAP];     /* summing buffer */
+    t_float x_result;               /* result to output */
+    t_sample x_sumbuf[MAXOVERLAP];  /* summing buffer */
     int x_allocforvs;               /* extra buffer for DSP vector size */
     int x_block; // block size
     int x_db;
