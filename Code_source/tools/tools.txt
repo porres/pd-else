@@ -26,7 +26,7 @@ make install objectsdir=../ arch= x86_64 extension=d_amd64
 
 --------------------------------------------------------------------------------------
 
-./deken upload -v 1.0-0_rc8-with_live_electronics_tutorial else --no-source-error
+./deken upload -v 1.0-0_rc10-with_live_electronics_tutorial else --no-source-error
 
 --------------------------------------------------------------------------------------
 
@@ -41,6 +41,10 @@ For git reset --hard HEAD~1
 codespell
 
 LC_ALL=C find . -type f -name '*.pd' -exec sed -i '' s/else\\///g {} +
+
+find . -name "*.txt" -print | xargs sed -i 's/this/that/g'
+
+find . -name "*. pd" -print | xargs sed -i 's/this/that/g'
 
 --------------------------------------------------------------------------------------
 
