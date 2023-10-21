@@ -73,6 +73,11 @@ static t_int *adsr_perform(t_int *w){
     t_float *in5 = (t_float *)(w[6]);
     t_float *in6 = (t_float *)(w[7]);
     t_float *out = (t_float *)(w[8]);
+    int ch2 = (int)(w[9]);
+    int ch3 = (int)(w[10]);
+    int ch4 = (int)(w[11]);
+    int ch5 = (int)(w[12]);
+    int ch6 = (int)(w[13]);
     int n = x->x_n, chs = x->x_nchans;
     t_float *last = x->x_last;
     t_float *target = x->x_target;
@@ -83,11 +88,16 @@ static t_int *adsr_perform(t_int *w){
     for(int j = 0; j < chs; j++){
         for(int i = 0; i < n; i++){
             t_float input_gate = in1[j*n + i];
-            t_float retrig = in2[i];
+/*            t_float retrig = in2[j*n + i];
             t_float attack = in3[i];
             t_float decay = in4[i];
             t_float sustain_point = in5[i];
-            t_float release = in6[i];
+            t_float release = in6[i];*/
+            t_float retrig = ch2 == 1 ? in2[i] : in2[j*n + i];
+            t_float attack = ch3 == 1 ? in3[i] : in3[j*n + i];
+            t_float decay = ch4 == 1 ? in4[i] : in4[j*n + i];
+            t_float sustain_point = ch5 == 1 ? in5[i] : in5[j*n + i];
+            t_float release = ch6 == 1 ? in6[i] : in6[j*n + i];
 // get & clip 'n'; set a/d/r coefs
             t_float n_attack = roundf(attack * x->x_sr_khz);
             if(n_attack < 1)
@@ -177,7 +187,7 @@ static t_int *adsr_perform(t_int *w){
     x->x_nleft = nleft;
     x->x_gate_status = gate_status;
     x->x_status = status;
-    return(w+9);
+    return(w+14);
 }
 
 static void adsr_dsp(t_adsr *x, t_signal **sp){
@@ -200,13 +210,16 @@ static void adsr_dsp(t_adsr *x, t_signal **sp){
             x->x_nchans * sizeof(t_float), chs * sizeof(t_float));
         x->x_nchans = chs;
     }
-    if(sp[1]->s_nchans > 1 || sp[2]->s_nchans > 1 || sp[3]->s_nchans > 1 || sp[4]->s_nchans > 1){
-        dsp_add_zero(sp[5]->s_vec, chs*x->x_n);
-        pd_error(x, "[adsr~]: secondary inputs must be single channels only");
+    int ch2 = sp[1]->s_nchans, ch3 = sp[2]->s_nchans, ch4 = sp[3]->s_nchans;
+    int ch5 = sp[4]->s_nchans, ch6 = sp[5]->s_nchans;
+    if((ch2 > 1 && ch2 != chs) || (ch3 > 1 && ch3 != chs) || (ch4 > 1 && ch4 != chs)
+    || (ch5 > 1 && ch5 != chs) || (ch6 > 1 && ch6 != chs)){
+        dsp_add_zero(sp[6]->s_vec, chs*x->x_n);
+        pd_error(x, "[adsr~]: channel sizes mismatch");
         return;
     }
-    dsp_add(adsr_perform, 8, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec,
-        sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec);
+    dsp_add(adsr_perform, 13, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec,
+        sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, ch2, ch3, ch4, ch5, ch6);
 }
 
 static void *adsr_free(t_adsr *x){
