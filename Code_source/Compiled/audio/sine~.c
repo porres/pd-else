@@ -37,7 +37,6 @@ static void sine_list(t_sine *x, t_symbol *s, int ac, t_atom * av){
         x->x_list_size = ac;
         canvas_update_dsp();
     }
-//    x->x_freq_list = (float*)malloc(MAXLEN * sizeof(float));
     for(int i = 0; i < ac; i++)
         x->x_freq_list[i] = atom_getfloat(av+i);
 }
@@ -189,13 +188,12 @@ static void *sine_free(t_sine *x){
 static void *sine_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_sine *x = (t_sine *)pd_new(sine_class);
-    t_float init_phase = 0;
     x->x_midi = x->x_soft = 0;
     x->x_freq_list = (float*)malloc(MAXLEN * sizeof(float));
-    x->x_list_size = 1;
-    x->x_freq_list[0] = 0;
     x->x_phase = (double *)getbytes(sizeof(*x->x_phase));
     x->x_dir = (t_int *)getbytes(sizeof(*x->x_dir));
+    x->x_list_size = 1;
+    x->x_freq_list[0] = x->x_phase[0] = 0;
     while(ac && av->a_type == A_SYMBOL){
         if(atom_getsymbol(av) == gensym("-midi")){
             x->x_midi = 1;
@@ -223,20 +221,15 @@ static void *sine_new(t_symbol *s, int ac, t_atom *av){
         x->x_freq_list[0] = av->a_w.w_float;
         ac--, av++;
         if(ac && av->a_type == A_FLOAT){
-            init_phase = av->a_w.w_float;
+            x->x_phase[0] = av->a_w.w_float;
             ac--, av++;
         }
     }
     init_sine_table();
-    init_phase = init_phase  < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
-    if(init_phase == 0 && x->x_freq_list[0] > 0)
-        x->x_phase[0] = 1.;
-    else
-        x->x_phase[0] = init_phase;
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_sync, 0);
     x->x_inlet_phase = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_inlet_phase, init_phase);
+        pd_float((t_pd *)x->x_inlet_phase, x->x_phase[0]);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
 // Magic
     x->x_glist = canvas_getcurrent();
