@@ -1,4 +1,4 @@
-#N canvas 501 25 560 704 10;
+#N canvas 409 25 560 704 10;
 #X obj 236 145 else/out~;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -2046,8 +2046,8 @@
 #X text 34 294 In other modes where trigger and level work together \, the LPG is actually disabled (and hence so are the decay and cutoff settings). These modes are: 11 (inharmonic string modeling) \, 12 (modal resonator) \, the percussive modes 13 (bass drum) \, 14 (snare drum) and 15 (hi hat) \, as well the 6 op FM modes (18 \, 19 and 20). See details below., f 49;
 #X text 34 442 In FM modes 18 to 20 you have attack and release envelopes that are controlled by trigger input with a gate on and off \, this means that in this case the trigger input can hold a sustained sound when the gate is on. The level input controls loudness or timbre depending on how each preset is programmed. Without the level input enabled it's like this parameter is set to '0.5'., f 49;
 #X text 34 190 In mode 7 (vowel and speech synthesis) \, only the level input controls the LPG. The trigger triggers the utterance of a word and supersedes the level input., f 49;
-#X text 34 240 In mode 23 (Chiptune) \, only the level input controls the LPG. In trigger mode you have a continuous tone and an arppegio note variation at each trigger., f 49;
 #X text 34 390 In modes 11 to 15 \, the level signal works as an envelope. If the trigger mode is enabled \, the level input works as an accent while the trigger triggers a percussive decay envelope., f 49;
+#X text 34 240 In mode 23 (Chiptune) \, only the level input controls the LPG. In trigger mode you have a continuous tone and an arppegio note variation at each trigger snd it supersedes the level input., f 49;
 #X connect 1 0 0 0;
 #X connect 2 0 4 0;
 #X connect 3 0 0 0;
