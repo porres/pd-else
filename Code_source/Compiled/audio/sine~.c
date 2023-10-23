@@ -4,6 +4,10 @@
 #include "magic.h"
 #include "buffer.h"
 
+#include <stdlib.h>
+
+#define MAXLEN 1024
+
 typedef struct _sine{
     t_object    x_obj;
     double     *x_phase;
@@ -11,7 +15,8 @@ typedef struct _sine{
     t_int       x_midi;
     t_int       x_soft;
     t_int      *x_dir;
-    t_float     x_freq;
+    float      *x_freq_list;
+    t_int       x_list_size;
     t_inlet    *x_inlet_phase;
     t_inlet    *x_inlet_sync;
     t_outlet   *x_outlet;
@@ -19,11 +24,23 @@ typedef struct _sine{
 // MAGIC:
     t_glist    *x_glist; // object list
     t_float    *x_signalscalar; // right inlet's float field
-    int         x_hasfeeders; // right inlet connection flag
     t_float     x_phase_sync_float; // float from magic
 }t_sine;
 
 static t_class *sine_class;
+
+static void sine_list(t_sine *x, t_symbol *s, int ac, t_atom * av){
+    s = NULL;
+    if(ac == 0)
+        return;
+    if(x->x_list_size != ac){
+        x->x_list_size = ac;
+        canvas_update_dsp();
+    }
+//    x->x_freq_list = (float*)malloc(MAXLEN * sizeof(float));
+    for(int i = 0; i < ac; i++)
+        x->x_freq_list[i] = atom_getfloat(av+i);
+}
 
 double sine_wrap_phase(double phase){
     while(phase >= 1)
@@ -36,10 +53,11 @@ double sine_wrap_phase(double phase){
 static t_int *sine_perform(t_int *w){
     t_sine *x = (t_sine *)(w[1]);
     int n = (int)(w[2]);
-    int ch3 = (int)(w[3]);
-    t_float *in1 = (t_float *)(w[4]);
-    t_float *in3 = (t_float *)(w[5]);
-    t_float *out = (t_float *)(w[6]);
+    int sig = (int)(w[3]);
+    int ch3 = (int)(w[4]);
+    t_float *in1 = (t_float *)(w[5]);
+    t_float *in3 = (t_float *)(w[6]);
+    t_float *out = (t_float *)(w[7]);
 // Magic Start
     t_float *scalar = x->x_signalscalar;
     if(!else_magic_isnan(*x->x_signalscalar)){
@@ -54,7 +72,11 @@ static t_int *sine_perform(t_int *w){
     double *phase = x->x_phase;
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0; i < n; i++){
-            double hz = in1[j*n + i];
+            double hz;
+            if(sig)
+                hz = in1[j*n + i];
+            else
+                hz = x->x_freq_list[j];
             if(x->x_midi)
                 hz = hz <= 0 ? 0 : pow(2, (hz - 69)/12) * 440;
             double phase_step = hz * x->x_sr_rec; // phase_step
@@ -68,23 +90,28 @@ static t_int *sine_perform(t_int *w){
         }
     }
     x->x_phase = phase;
-    return(w+7);
+    return(w+8);
 }
 
 static t_int *sine_perform_sig(t_int *w){
     t_sine *x = (t_sine *)(w[1]);
     int n = (int)(w[2]);
-    int ch2 = (int)(w[3]);
-    int ch3 = (int)(w[4]);
-    t_float *in1 = (t_float *)(w[5]);
-    t_float *in2 = (t_float *)(w[6]);
-    t_float *in3 = (t_float *)(w[7]);
-    t_float *out = (t_float *)(w[8]);
+    int sig = (int)(w[3]);
+    int ch2 = (int)(w[4]);
+    int ch3 = (int)(w[5]);
+    t_float *in1 = (t_float *)(w[6]);
+    t_float *in2 = (t_float *)(w[7]);
+    t_float *in3 = (t_float *)(w[8]);
+    t_float *out = (t_float *)(w[9]);
     double *phase = x->x_phase;
     t_int *dir = x->x_dir;
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0; i < n; i++){
-            double hz = in1[j*n + i];
+            double hz;
+            if(sig)
+                hz = in1[j*n + i];
+            else
+                hz = x->x_freq_list[j];
             if(x->x_midi)
                 hz = hz <= 0 ? 0 : pow(2, (hz - 69)/12) * 440;
             double phase_step = hz * x->x_sr_rec; // phase_step
@@ -113,12 +140,15 @@ static t_int *sine_perform_sig(t_int *w){
     }
     x->x_phase = phase;
     x->x_dir = dir;
-    return(w+9);
+    return(w+10);
 }
 
 static void sine_dsp(t_sine *x, t_signal **sp){
     x->x_sr_rec = 1.0 / (double)sp[0]->s_sr;
     int chs = sp[0]->s_nchans, ch2 = sp[1]->s_nchans, ch3 = sp[2]->s_nchans, n = sp[0]->s_n;
+    int sig1 = else_magic_inlet_connection((t_object *)x, x->x_glist, 0, &s_signal);
+    if(!sig1)
+        chs = x->x_list_size;
     signal_setmultiout(&sp[3], chs);
     if(x->x_nchans != chs){
         x->x_phase = (double *)resizebytes(x->x_phase,
@@ -132,13 +162,11 @@ static void sine_dsp(t_sine *x, t_signal **sp){
         pd_error(x, "[sine~]: channel sizes mismatch");
         return;
     }
-    x->x_hasfeeders = else_magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal); // magic feeder flag
-    if(x->x_hasfeeders){
-        dsp_add(sine_perform_sig, 8, x, n, ch2, ch3,
+    if(else_magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal))
+        dsp_add(sine_perform_sig, 9, x, n, sig1, ch2, ch3,
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
-    }
     else
-        dsp_add(sine_perform, 6, x, n, ch3, sp[0]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+        dsp_add(sine_perform, 7, x, n, sig1, ch3, sp[0]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
 static void sine_midi(t_sine *x, t_floatarg f){
@@ -161,34 +189,50 @@ static void *sine_free(t_sine *x){
 static void *sine_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_sine *x = (t_sine *)pd_new(sine_class);
-    t_float f1 = 0, f2 = 0;
+    t_float init_phase = 0;
     x->x_midi = x->x_soft = 0;
+    x->x_freq_list = (float*)malloc(MAXLEN * sizeof(float));
+    x->x_list_size = 1;
+    x->x_freq_list[0] = 0;
     x->x_phase = (double *)getbytes(sizeof(*x->x_phase));
     x->x_dir = (t_int *)getbytes(sizeof(*x->x_dir));
     while(ac && av->a_type == A_SYMBOL){
-        if(atom_getsymbol(av) == gensym("-midi"))
+        if(atom_getsymbol(av) == gensym("-midi")){
             x->x_midi = 1;
-        else if(atom_getsymbol(av) == gensym("-soft"))
+            ac--, av++;
+        }
+        else if(atom_getsymbol(av) == gensym("-soft")){
             x->x_soft = 1;
-        ac--, av++;
+            ac--, av++;
+        }
+        else if(atom_getsymbol(av) == gensym("-f")){
+            ac--, av++;
+            if(!ac || av->a_type != A_FLOAT)
+                goto errstate;
+            int n = 0;
+            while(ac && av->a_type == A_FLOAT){
+                x->x_freq_list[n] = atom_getfloat(av);
+                ac--, av++, n++;
+            }
+            x->x_list_size = n;
+        }
+        else
+            goto errstate;
     }
     if(ac && av->a_type == A_FLOAT){
-        f1 = av->a_w.w_float;
+        x->x_freq_list[0] = av->a_w.w_float;
         ac--, av++;
         if(ac && av->a_type == A_FLOAT){
-            f2 = av->a_w.w_float;
+            init_phase = av->a_w.w_float;
             ac--, av++;
         }
     }
-    t_float init_freq = f1;
-    t_float init_phase = f2;
+    init_sine_table();
     init_phase = init_phase  < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
-    if(init_phase == 0 && init_freq > 0)
+    if(init_phase == 0 && x->x_freq_list[0] > 0)
         x->x_phase[0] = 1.;
     else
         x->x_phase[0] = init_phase;
-    init_sine_table();
-    x->x_freq = init_freq;
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_sync, 0);
     x->x_inlet_phase = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
@@ -198,12 +242,16 @@ static void *sine_new(t_symbol *s, int ac, t_atom *av){
     x->x_glist = canvas_getcurrent();
     x->x_signalscalar = obj_findsignalscalar((t_object *)x, 1);
     return(x);
+errstate:
+    post("[sine~]: improper args");
+    return(NULL);
 }
 
 void sine_tilde_setup(void){
     sine_class = class_new(gensym("sine~"), (t_newmethod)sine_new, (t_method)sine_free,
         sizeof(t_sine), CLASS_MULTICHANNEL, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(sine_class, t_sine, x_freq);
+    class_addmethod(sine_class, nullfn, gensym("signal"), 0);
+    class_addlist(sine_class, sine_list);
     class_addmethod(sine_class, (t_method)sine_soft, gensym("soft"), A_DEFFLOAT, 0);
     class_addmethod(sine_class, (t_method)sine_midi, gensym("midi"), A_DEFFLOAT, 0);
     class_addmethod(sine_class, (t_method)sine_dsp, gensym("dsp"), A_CANT, 0);
