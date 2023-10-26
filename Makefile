@@ -80,6 +80,7 @@ message.class.sources := Code_source/Compiled/control/message.c
 messbox.class.sources := Code_source/Compiled/control/messbox.c
 metronome.class.sources := Code_source/Compiled/control/metronome.c
 mouse.class.sources := Code_source/Compiled/control/mouse.c
+mpe.in.class.sources := Code_source/Compiled/control/mpe.in.c
 noteinfo.class.sources := Code_source/Compiled/control/noteinfo.c
 note.in.class.sources := Code_source/Compiled/control/note.in.c
 note.out.class.sources := Code_source/Compiled/control/note.out.c
