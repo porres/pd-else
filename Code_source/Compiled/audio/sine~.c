@@ -80,17 +80,13 @@ static t_int *sine_perform(t_int *w){
             double hz = x->x_sig1 ? in1[j*n + i] : x->x_freq_list[j];
             if(x->x_midi)
                 hz = hz <= 0 ? 0 : pow(2, (hz - 69)/12) * 440;
-            double phase_step = hz * x->x_sr_rec; // phase_step
-            if(phase_step > 0.5)
-                phase_step = 0.5;
-            if(phase_step < -0.5)
-                phase_step = -0.5;
-            double phase_offset = x->x_ch3 == 1 ? in3[i] : in3[j*n + i];
+            double step = hz * x->x_sr_rec; // phase step
+            step = step > 0.5 ? 0.5 : step < -0.5 ? -0.5 : step;
             if(x->x_sig2){
                 if(x->x_soft){
                     if(dir[j] == 0)
                         dir[j] = 1;
-                    phase_step *= (dir[j]);
+                    step *= (dir[j]);
                 }
                 t_float trig = x->x_ch2 == 1 ? in2[i] : in2[j*n + i];
                 if(trig > 0 && trig <= 1){
@@ -99,17 +95,10 @@ static t_int *sine_perform(t_int *w){
                     else
                         phase[j] = trig;
                 }
-//                else
-//                    phase[j] = sine_wrap_phase(phase[j] + phase_offset);
             }
-/*            else
-                phase[j] = sine_wrap_phase(phase[j] + phase_offset);
-            out[j*n + i] = read_sintab(phase[j]);
-            phase[j] = sine_wrap_phase(phase[j] + phase_step);*/
-            
+            double phase_offset = x->x_ch3 == 1 ? in3[i] : in3[j*n + i];
             out[j*n + i] = read_sintab(sine_wrap_phase(phase[j] + phase_offset));
-            phase[j] = sine_wrap_phase(phase[j] + phase_step);
-            
+            phase[j] = sine_wrap_phase(phase[j] + step);
         }
     }
     x->x_phase = phase;
@@ -152,10 +141,9 @@ static void *sine_free(t_sine *x){
     inlet_free(x->x_inlet_sync);
     inlet_free(x->x_inlet_phase);
     outlet_free(x->x_outlet);
-    free(x->x_freq_list);
-    freebytes(x->x_phase, x->x_nchans * sizeof(*x->x_phase));
     freebytes(x->x_phase, x->x_nchans * sizeof(*x->x_phase));
     freebytes(x->x_dir, x->x_nchans * sizeof(*x->x_dir));
+    free(x->x_freq_list);
     return(void *)x;
 }
 
@@ -163,11 +151,11 @@ static void *sine_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_sine *x = (t_sine *)pd_new(sine_class);
     x->x_midi = x->x_soft = 0;
-    x->x_freq_list = (float*)malloc(MAXLEN * sizeof(float));
-    x->x_phase = (double *)getbytes(sizeof(*x->x_phase));
     x->x_dir = (t_int *)getbytes(sizeof(*x->x_dir));
-    x->x_list_size = 1;
+    x->x_phase = (double *)getbytes(sizeof(*x->x_phase));
+    x->x_freq_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_freq_list[0] = x->x_phase[0] = 0;
+    x->x_list_size = 1;
     while(ac && av->a_type == A_SYMBOL){
         if(atom_getsymbol(av) == gensym("-midi")){
             x->x_midi = 1;
@@ -218,8 +206,8 @@ void sine_tilde_setup(void){
     sine_class = class_new(gensym("sine~"), (t_newmethod)sine_new, (t_method)sine_free,
         sizeof(t_sine), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(sine_class, nullfn, gensym("signal"), 0);
-    class_addmethod(sine_class, (t_method)sine_dsp, gensym("dsp"), A_CANT, 0);
     class_addlist(sine_class, sine_list);
     class_addmethod(sine_class, (t_method)sine_soft, gensym("soft"), A_DEFFLOAT, 0);
     class_addmethod(sine_class, (t_method)sine_midi, gensym("midi"), A_DEFFLOAT, 0);
+    class_addmethod(sine_class, (t_method)sine_dsp, gensym("dsp"), A_CANT, 0);
 }
