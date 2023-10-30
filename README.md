@@ -169,7 +169,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     sfont~ sfz~ plaits~ synth~
 #synthesis: granular
     grain.synth~
-#synthesis: physical modelling
+#synthesis: physical modeling
     pluck~
 #synthesis: oscillators
     cosine~ impulse~ imp.mc~ impulse2~ parabolic~ pulse~ saw~ saw2~ oscbank~ oscbank2~ osc.mc~ oscnoise~ sine~ square~ tri~ gaussian~ vsaw~ pmosc~ wavetable~ blip~ bl.osc~ bl.imp~ bl.imp2~ bl.saw~ bl.saw2~ bl.square~ bl.tri~ bl.vsaw~ bl.wavetable~
