@@ -49,12 +49,8 @@ static void mrms_size(t_mrms *x, t_float f){ // deals with allocation issues if 
     mrms_clear(x);
 }
 
-static void mrms_db(t_mrms *x){
-    x->x_db = 1;
-}
-
-static void mrms_linear(t_mrms *x){
-    x->x_db = 0;
+static void mrms_linear(t_mrms *x, t_floatarg f){
+    x->x_db = f == 0;
 }
 
 static t_int *mrms_perform(t_int *w){
@@ -168,6 +164,5 @@ void setup_mov0x2erms_tilde(void){
     class_addmethod(mrms_class, nullfn, gensym("signal"), 0);
     class_addmethod(mrms_class, (t_method)mrms_clear, gensym("clear"), 0);
     class_addmethod(mrms_class, (t_method)mrms_size, gensym("size"), A_DEFFLOAT, 0);
-    class_addmethod(mrms_class, (t_method)mrms_db, gensym("db"), 0);
-    class_addmethod(mrms_class, (t_method)mrms_linear, gensym("linear"), 0);
+    class_addmethod(mrms_class, (t_method)mrms_linear, gensym("lin"), A_DEFFLOAT, 0);
 }
