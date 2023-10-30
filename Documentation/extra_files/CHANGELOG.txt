@@ -5,6 +5,67 @@
 ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 
 ----------------------------------------------------------------------------
+    **************************** CHANGELOG ****************************
+----------------------------------------------------------------------------
+
+
+
+----------------------------------------------------------------------------
+1.0-0 Release Candidate 10:
+----------------------------------------------------------------------------
+
+--------------------------------------
+CHANGELOG:
+--------------------------------------
+
+**LIBRARY:**
+
+Breaking changes:
+- [pmosc~] renamed to [pm~], mod freq is now 'ratio' of carrier
+- [rms~], [mov.rms~] and [peak~], new 'lin' method instead of old ones, -lin flag instead of -db and now default is 'db'
+- [fbsine~] default now is filter on
+- [conv~] is now a compiled object that behaves differently (taking arrays instead of IR audio files)
+- [plaits~]: changed behaviour of trigger mode, now it needs to be active to get audio trigger impulses, there's not a bang input anymore. Also, now you need to use a new 'vca' method or flag to activate the rightmost input.
+- [pluck~] first 2 inlets inlets swapped back again (yikes), bang trigger and 'gate' message removed, I hope I finally get this right, no other object wen theough so many braeaking changes. 
+- [adsr~] and [envgen~]: added a new second inlet to retrigger the envelope with impulses. 
+- deleted [osc.mc~], [imp.mc~], [stepnoise.mc~] and [rampnoise.mc~]. 
+- [note.in]/[note.out] big redesign, changed behaviour of '-rel' flag and added '-both' flag
+
+Enhancements/fixes/other changes:
+- fixed some errors in the object browser plugin
+- [adsr~] fixed 'lin' message 
+- [maxpeak~] added 'lin' method 
+- [loadbanger] added '-fin' flag 
+- [knob] and [numbox~] allow min value greater than max, renamed min/max to lower/upper
+- Improved peak metering for [meter~], meter2~], [meter4~] and [meter8~]
+- Added MC support to [sine~], [impulse~], [cosine~], [fbsine~], [pm~] and [adsr~].
+- Added internal wavetable lookup instead of trig functions for [sine~], [cosine~], [fbsine~], [pm~], [sin~] and more stuff (improves efficiency and accuracy).
+- [mono] fixed flush and clear messages.
+- [pm~] added a ratio flag.
+- [conv~] is now a compiled object, which is way more efficient, and the old version wasn't working at all for ages anyway.
+- [gain~], [gain2~] added MIDI 'learn' and 'forget' features.
+- [out~] can now take mc input but sums it up.
+- [keypress] fixed toggle flag and a bug where it'd zero the output if another key was pressed.
+- [keymap] fixed initialization, added toggle mode to deal with hardware restrictions for polyphony.
+- [note] fixed 'set' message at loadbang.
+- [midi.in] and midi.out] added noteoff support 
+- [pluck~] added new list mode to connect directly to a note on message and support for midi pitch input
+- [plaits~]: added new list mode to connect directly to a note on/off messages
+- [impulse~]: added 'midi' support and soft sync.
+- 11 new objects: [list.inc], [list.seq], [dispatch], [var], [nop~], [send2~], [fm~], [pm2~], [pm4~], [pm6~] and [circuit~].
+
+Objects count: total of 517 (276 signal objects and 241 control objects)! 
+
+- 299 coded objects (192 signal objects / 107 control objects)
+- 218 abstractions (84 signal objects / 134 control objects)
+
+--------------------------------------
+
+**TUTORIAL:**
+- New examples and revisions to add the new objects and breaking changes in ELSE. 
+- Total number of examples is now 508!
+
+--------------------------------------
 
 
 ----------------------------------------------------------------------------

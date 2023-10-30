@@ -6,7 +6,7 @@
 
 ### Version: 1.0-0 RC-10 (release candidate #10) With Live Electronics Tutorial. 
 
-### Unreleased
+### Released november 7th 2023
 
 
 Copyright © 2017-2023 Alexandre Torres Porres and others 
@@ -29,7 +29,7 @@ For copies of the licenses and the terms, please check the 'license' subfolder.
 
 ###   About ELSE
 
-This version of ELSE needs **Pd 0.54-0** or above.
+This version of ELSE needs **Pd 0.54-1** or above.
 
 ELSE is a big library of externals that extends the performance Pure Data (Pd) - Miller S. Puckette's realtime computer music environment (download Pd from: http://msp.ucsd.edu/software.html).
 
