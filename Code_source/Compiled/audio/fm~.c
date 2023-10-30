@@ -8,9 +8,8 @@ typedef struct _fm{
     double     *x_phase1;
     double     *x_phase2;
     int         x_nchans;
-    int         x_ratio;
     t_float     x_freq;
-    t_inlet    *x_inlet_mod;
+    t_inlet    *x_inlet_ratio;
     t_inlet    *x_inlet_idx;
     t_inlet    *x_inlet_phase;
     t_outlet   *x_outlet;
@@ -43,9 +42,9 @@ static t_int *fm_perform(t_int *w){
         for(int i = 0; i < n; i++){
             double carrier = in1[j*n + i];
             double mod = ch2 == 1 ? in2[i] : in2[j*n + i];
-            if(x->x_ratio)
-                mod *= carrier;
+            mod *= carrier;
             double index = ch3 == 1 ? in3[i] : in3[j*n + i];
+            index *= mod;
             
             double modulator = read_sintab(fm_wrap_phase(phase2[j])) * index;
             out[j*n + i] = read_sintab(fm_wrap_phase(phase1[j]));
@@ -57,10 +56,6 @@ static t_int *fm_perform(t_int *w){
     x->x_phase1 = phase1;
     x->x_phase2 = phase2;
     return(w+6);
-}
-
-static void fm_ratio(t_fm *x, t_floatarg f){
-    x->x_ratio = f != 0;
 }
 
 static void fm_dsp(t_fm *x, t_signal **sp){
@@ -87,7 +82,7 @@ static void fm_dsp(t_fm *x, t_signal **sp){
 }
 
 static void *fm_free(t_fm *x){
-    inlet_free(x->x_inlet_mod);
+    inlet_free(x->x_inlet_ratio);
     inlet_free(x->x_inlet_idx);
     outlet_free(x->x_outlet);
     freebytes(x->x_phase1, x->x_nchans * sizeof(*x->x_phase1));
@@ -98,15 +93,9 @@ static void *fm_free(t_fm *x){
 static void *fm_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_fm *x = (t_fm *)pd_new(fm_class);
-    t_float f1 = 0, f2 = 0, f3 = 0;
-    x->x_ratio = 0;
+    t_float f1 = 0, f2 = 1, f3 = 0;
     x->x_phase1 = (double *)getbytes(sizeof(*x->x_phase1));
     x->x_phase2 = (double *)getbytes(sizeof(*x->x_phase2));
-    if(ac && av->a_type == A_SYMBOL){
-        if(atom_getsymbol(av) == gensym("-ratio"))
-            x->x_ratio = 1;
-        ac--, av++;
-    }
     if(ac && av->a_type == A_FLOAT){
         f1 = av->a_w.w_float;
         ac--, av++;
@@ -120,12 +109,12 @@ static void *fm_new(t_symbol *s, int ac, t_atom *av){
         }
     }
     t_float init_freq = f1;
-    t_float init_mod = f2;
+    t_float init_ratio = f2;
     t_float init_idx = f3;
     init_sine_table();
     x->x_freq = init_freq;
-    x->x_inlet_mod = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_inlet_mod, init_mod);
+    x->x_inlet_ratio = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_inlet_ratio, init_ratio);
     x->x_inlet_idx = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_idx, init_idx);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
@@ -137,5 +126,4 @@ void fm_tilde_setup(void){
         sizeof(t_fm), CLASS_MULTICHANNEL, A_GIMME, 0);
     CLASS_MAINSIGNALIN(fm_class, t_fm, x_freq);
     class_addmethod(fm_class, (t_method)fm_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(fm_class, (t_method)fm_ratio, gensym("ratio"), A_FLOAT, 0);
 }
