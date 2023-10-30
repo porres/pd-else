@@ -1,4 +1,5 @@
-#N canvas 412 35 232 151 12;
+#N canvas 412 35 347 185 12;
 #X obj 74 54 inlet~;
 #X obj 74 85 outlet~;
+#X text 155 71 part of else;
 #X connect 0 0 1 0;
