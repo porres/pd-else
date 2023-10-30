@@ -1,11 +1,10 @@
-// porres 2018
+// porres 2018-2023
 
 #include "m_pd.h"
 
 typedef struct _noteout{
-    t_object  x_ob;
+    t_object  x_obj;
     t_float   x_channel;
-    t_float   x_flag;
     t_float   x_velocity;
     t_int     x_pitch;
     t_int     x_rel;
@@ -27,7 +26,7 @@ static void noteout_float(t_noteout *x, t_float f){
         if(velocity > 127)
             velocity = 127;
         if(x->x_rel){
-            int status = ((int)x->x_flag ? 0x90 : 0x80);
+            int status = 0x80;
             outlet_float(((t_object *)x)->ob_outlet, status + ((channel-1)));
             outlet_float(((t_object *)x)->ob_outlet, pitch);
             outlet_float(((t_object *)x)->ob_outlet, velocity);
@@ -43,7 +42,7 @@ static void noteout_float(t_noteout *x, t_float f){
 
 static void *noteout_new(t_symbol *s, t_int ac, t_atom *av){
     t_noteout *x = (t_noteout *)pd_new(noteout_class);
-    t_symbol *curarg = s; // get rid of warning
+    s = NULL; // get rid of warning
     float channel = 1;
     int argn = 0;
     if(ac){
@@ -54,7 +53,7 @@ static void *noteout_new(t_symbol *s, t_int ac, t_atom *av){
                 ac--, av++;
             }
             else if(av->a_type == A_SYMBOL && !argn){
-                curarg = atom_getsymbolarg(0, ac, av);
+                t_symbol *curarg = atom_getsymbolarg(0, ac, av);
                 if(curarg == gensym("-rel")){
                     x->x_rel = 1;
                     ac--, av++;
@@ -66,13 +65,10 @@ static void *noteout_new(t_symbol *s, t_int ac, t_atom *av){
                 goto errstate;
         }
     }
-    if(x->x_rel)
-        floatinlet_new((t_object *)x, &x->x_flag);
     floatinlet_new((t_object *)x, &x->x_velocity);
     floatinlet_new((t_object *)x, &x->x_channel);
     outlet_new((t_object *)x, &s_float);
     x->x_channel = (channel > 0 ? channel : 1);
-    x->x_flag = 0;
     x->x_velocity = 0;
     x->x_pitch = -1;
     return(x);
