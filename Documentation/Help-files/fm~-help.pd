@@ -20,7 +20,7 @@
 #X text 200 423 signal -;
 #X text 154 458 1) float;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -89,7 +89,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -120,7 +120,7 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X obj 184 270 else/out~;
+#X obj 181 270 else/out~;
 #X text 154 477 2) float;
 #X obj 25 40 cnv 4 4 4 empty empty Frequency\ modulation\ unit 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 122 365 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
@@ -137,7 +137,7 @@
 #X obj 166 205 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 230 206 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 295 187 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
-#X obj 298 165 hsl 128 15 0 1000 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 298 165 hsl 128 15 0 10 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 295 205 else/float2sig~ 10;
 #X text 166 185 carrier;
 #X text 352 187 index;
@@ -147,7 +147,7 @@
 #X text 39 21 The object has multichannel support. If the left input has more than one channel \, it outputs the same number of channels in both outlets. If the secondary inlets have a signal with a single channel \, the single value is applied to all channels. If a secondary inlet is also a multichhanel signal \, then each channel gets its own value. Note \, however \, that the number of multichannels in secondary inlets need to match the same number of channels from the left input., f 70;
 #X obj 191 233 else/fm~;
 #X obj 213 180 else/sigs~ 0.75 1.501;
-#X obj 236 207 else/sigs~ 10 20;
+#X obj 236 207 else/sigs~ 5 12;
 #X connect 1 0 3 0;
 #X connect 3 0 0 0;
 #X connect 4 0 3 1;
@@ -158,13 +158,13 @@
 #X text 38 269 see also:;
 #X obj 40 289 else/pm~;
 #X text 237 185 ratio;
-#X obj 184 237 else/fm~ 220 2, f 16;
 #X text 261 369 modulation frequency as ratio of carrier;
 #X text 213 477 - ratio (default 1);
 #X text 46 87 [fm~] is a simple frequency modulation unit consisting of a pair of sinusoidal oscillators \, where one modulates the frequency input of another. The modulation frequency is set as a ratio of the carrier and the modulation index is multiplied by this resulting frequency. The object has support for multichannels., f 66;
-#X connect 31 0 44 0;
-#X connect 32 0 44 1;
+#X obj 181 237 else/fm~ 220 2.01;
+#X connect 31 0 47 0;
+#X connect 32 0 47 1;
 #X connect 33 0 35 0;
 #X connect 34 0 33 0;
-#X connect 35 0 44 2;
-#X connect 44 0 19 0;
+#X connect 35 0 47 2;
+#X connect 47 0 19 0;
