@@ -63,7 +63,7 @@ static void fm_dsp(t_fm *x, t_signal **sp){
     int chs = sp[0]->s_nchans;
     int ch2 = sp[1]->s_nchans, ch3 = sp[2]->s_nchans;
     x->x_n = sp[0]->s_n;
-    signal_setmultiout(&sp[4], chs);
+    signal_setmultiout(&sp[3], chs);
     if(x->x_nchans != chs){
         x->x_phase1 = (double *)resizebytes(x->x_phase1,
             x->x_nchans * sizeof(double), chs * sizeof(double));
@@ -72,7 +72,7 @@ static void fm_dsp(t_fm *x, t_signal **sp){
         x->x_nchans = chs;
     }
     if((ch2 > 1 && ch2 != x->x_nchans) || (ch3 > 1 && ch3 != x->x_nchans)){
-        dsp_add_zero(sp[4]->s_vec, chs*x->x_n);
+        dsp_add_zero(sp[3]->s_vec, chs*x->x_n);
         pd_error(x, "[fm~]: channel sizes mismatch");
         return;
     }
