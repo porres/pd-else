@@ -135,18 +135,17 @@ void plts_list(t_plts *x, t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     if(argc == 0)
         return;
-    if(argc <= 2){
+    if(argc != 2){
         obj_list(&x->x_obj, NULL, argc, argv);
+    }
+    else{
+        t_atom at[3];
+        SETFLOAT(at, atom_getfloat(argv));
+        SETFLOAT(at+1, atom_getfloat(argv+1));
+        SETFLOAT(at+2, atom_getfloat(argv+1));
+        obj_list(&x->x_obj, NULL, 3, at);
         return;
     }
-/*    if(atom_getfloat(argv+1) == 0)
-        return;
-    if(argc == 2){
-        obj_list(&x->x_obj, NULL, argc, argv);
-        argc--, argv++;
-        x->x_float_trig = atom_getfloat(argv)/ 127.f;
-        x->x_control_trig = 1;
-    }*/
 }
 
 void plts_model(t_plts *x, t_floatarg f){
