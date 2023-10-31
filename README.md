@@ -6,7 +6,7 @@
 
 ### Version: 1.0-0 RC-10 (release candidate #10) With Live Electronics Tutorial. 
 
-### Released november 7th 2023
+### Released November 7th 2023
 
 
 Copyright © 2017-2023 Alexandre Torres Porres and others 
@@ -20,7 +20,7 @@ For instance:
 - [sfz~] and band limited oscillators like [bl.saw~] are licensed under the BSD 2-Clause library
 - [plaits~], [osc.format], [osc.parse] and [osc.route] are licensed under the MIT library
 
-ELSE comes with a Live Electronics tutorial as part of its documentation written by Alexandre Torres Porres, this work is licensed under a Creative Common (CC} License. 
+ELSE comes with a Live Electronics tutorial as part of its documentation written by Alexandre Torres Porres, this work is licensed under a Creative Commons (CC} License. 
 
 For copies of the licenses and the terms, please check the 'license' subfolder.
 
