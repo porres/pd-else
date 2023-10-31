@@ -6,8 +6,10 @@ typedef struct _noteout{
     t_object  x_obj;
     t_float   x_channel;
     t_float   x_velocity;
+    t_float   x_relvel;
     t_int     x_pitch;
     t_int     x_rel;
+    t_int     x_both;
 }t_noteout;
 
 static t_class *noteout_class;
@@ -21,18 +23,36 @@ static void noteout_float(t_noteout *x, t_float f){
         if(channel > 16)
             channel = 16;
         int velocity = (int)x->x_velocity;
+        int release = (int)x->x_relvel;
         if(velocity < 0)
             velocity = 0;
         if(velocity > 127)
             velocity = 127;
+        int status;
         if(x->x_rel){
-            int status = 0x80;
+            status = 0x80;
             outlet_float(((t_object *)x)->ob_outlet, status + ((channel-1)));
             outlet_float(((t_object *)x)->ob_outlet, pitch);
             outlet_float(((t_object *)x)->ob_outlet, velocity);
         }
+        else if(x->x_both){
+            int vel;
+            if(velocity >= 0 && release == 0){
+                vel = velocity;
+                status = 0x90;
+            }
+            else if(velocity == 0 && release > 0){
+                vel = release;
+                status = 0x80;
+            }
+            else
+                return;
+            outlet_float(((t_object *)x)->ob_outlet, status + ((channel-1)));
+            outlet_float(((t_object *)x)->ob_outlet, pitch);
+            outlet_float(((t_object *)x)->ob_outlet, vel);
+        }
         else{
-            int status = 0x90;
+            status = 0x90;
             outlet_float(((t_object *)x)->ob_outlet, status + ((channel-1)));
             outlet_float(((t_object *)x)->ob_outlet, pitch);
             outlet_float(((t_object *)x)->ob_outlet, velocity);
@@ -58,6 +78,10 @@ static void *noteout_new(t_symbol *s, t_int ac, t_atom *av){
                     x->x_rel = 1;
                     ac--, av++;
                 }
+                else if(curarg == gensym("-both")){
+                    x->x_both = 1;
+                    ac--, av++;
+                }
                 else
                     goto errstate;
             }
@@ -66,10 +90,13 @@ static void *noteout_new(t_symbol *s, t_int ac, t_atom *av){
         }
     }
     floatinlet_new((t_object *)x, &x->x_velocity);
+    if(x->x_both)
+        floatinlet_new((t_object *)x, &x->x_relvel);
     floatinlet_new((t_object *)x, &x->x_channel);
     outlet_new((t_object *)x, &s_float);
     x->x_channel = (channel > 0 ? channel : 1);
     x->x_velocity = 0;
+    x->x_relvel = 0;
     x->x_pitch = -1;
     return(x);
     errstate:
