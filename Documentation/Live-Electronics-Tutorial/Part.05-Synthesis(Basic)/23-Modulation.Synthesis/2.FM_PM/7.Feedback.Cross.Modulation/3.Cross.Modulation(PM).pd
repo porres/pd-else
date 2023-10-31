@@ -48,8 +48,8 @@
 #X obj 327 37 declare -path else;
 #X obj 97 425 out~;
 #X obj 269 424 out~;
-#X text 74 88 This is basically the same as the last example \, but we get the output of both oscillators instead. Now we can't use [pmosc~] to implement this \, we need two [sine~] objects and get the audio signal from both., f 58;
-#X text 74 166 This implies we have a "stereo" output. Open the subpacth below to check out how to implement this. Also check the [xmod~] object from ELSE \, which does cross modulation for phase and frequency modulation.;
+#X text 74 88 This is basically the same as the last example \, but we get the output of both oscillators instead. Now we can't use [pm~] to implement this \, we need two [sine~] objects and get the audio signal from both.;
+#X text 74 166 This implies we have a "stereo" output. Open the subpacth below to check out how to implement this. Also check the [xmod~] object from ELSE \, which does cross modulation for phase and frequency modulation with independent frequency and index input.;
 #X connect 0 0 14 0;
 #X connect 0 1 14 1;
 #X connect 1 0 2 0;

@@ -1,4 +1,4 @@
-#N canvas 593 23 594 674 12;
+#N canvas 412 23 594 674 12;
 #X declare -path else;
 #X obj 148 150 hsl 128 15 1 1000 1 0 empty index1 empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 145 177 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;

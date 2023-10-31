@@ -1,7 +1,7 @@
 #N canvas 509 38 501 597 12;
 #X declare -path else;
 #X obj 152 191 tgl 19 0 empty loop empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
-#N canvas 408 260 354 342 voice1 1;
+#N canvas 408 260 354 342 voice1 0;
 #X obj 152 228 *~;
 #X obj 47 117 mtof;
 #X floatatom 47 147 5 0 0 0 - - - 0;
@@ -28,7 +28,7 @@
 #X connect 11 0 0 1;
 #X restore 139 324 pd voice1;
 #X obj 152 257 note.in;
-#N canvas 720 267 336 318 voice2 1;
+#N canvas 720 267 336 318 voice2 0;
 #X obj 152 228 *~;
 #X obj 47 117 mtof;
 #X floatatom 47 147 5 0 0 0 - - - 0;

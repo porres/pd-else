@@ -1,4 +1,4 @@
-#N canvas 369 57 864 554 12;
+#N canvas 297 29 864 678 12;
 #X declare -path else;
 #X obj 683 15 declare -path else;
 #X obj 303 140 setdsp~;
@@ -29,10 +29,8 @@
 #X text 252 235 <-- [numbox~] *;
 #X obj 488 292 sigs~;
 #X text 560 290 generate multichannel signal from list;
-#X obj 496 143 osc.mc~ 440 880;
-#X obj 496 173 out.mc~;
+#X obj 476 173 out.mc~;
 #X text 42 458 The [adc~] and [dac~] objects have support as described before. Next \, we have the [out.mc~] abstraction that is also based on [dac~] and takes a multichannel inputs and distributes the channels., f 48;
-#X text 459 57 The [osc.mc~] object is a bank of oscillators that generates a multichannel signal output and is the same as above., f 50;
 #X obj 488 390 unmerge~;
 #X obj 488 415 slice~;
 #X text 560 389 unmerge signals into channel groups;
@@ -40,6 +38,11 @@
 #X obj 488 464 repeat~;
 #X text 560 463 repeat a signal;
 #X text 465 239 Many objects in ELSE support multichannals. Here is some of them that are multi channel tools:, f 54;
+#X text 459 57 The [sine~] object is an oscillators that can also generate a multichannel signal output and is the same to the right., f 50;
+#X obj 218 592 out~;
+#X text 382 569 note \, however \, thar a multichannel signal input into [out~] gets summed up automatically. This is because this abstraction has a [sum~] object internally \, which sums all multichannel signals into a single channel., f 57;
+#X obj 218 562 sine~ -mc 440 880;
+#X obj 476 143 sine~ -mc 440 880;
 #X connect 2 0 10 0;
 #X connect 3 0 10 1;
 #X connect 6 0 12 0;
@@ -48,4 +51,5 @@
 #X connect 11 0 5 0;
 #X connect 11 1 4 0;
 #X connect 12 0 13 0;
-#X connect 29 0 30 0;
+#X connect 41 0 39 0;
+#X connect 42 0 29 0;

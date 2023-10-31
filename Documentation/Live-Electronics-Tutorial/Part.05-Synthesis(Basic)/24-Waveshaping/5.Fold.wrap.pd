@@ -21,12 +21,12 @@
 #X obj 93 432 out~;
 #X obj 627 456 out~;
 #X text 472 49 On the other hand \, [wrap2~] from ELSE performs a "wrapping" function for a specific range (-1 and 1) by default. You can change the range in both [fold~] and [wrap2~] \, of course \, check their help files., f 59;
-#X obj 428 447 osc.mc~ 220 440;
 #X obj 428 484 fold~ -0.5 0.5;
 #X obj 311 484 wrap2~ -0.5 0.5;
 #X obj 311 521 out.mc~;
 #X obj 428 521 out.mc~;
 #X text 101 518 [fold~] and [wrap2~] are capable of dealing with multichannels., f 25;
+#X obj 428 447 sine~ -mc 220 440;
 #X connect 0 0 4 0;
 #X connect 1 0 5 0;
 #X connect 2 0 3 0;
@@ -43,7 +43,7 @@
 #X connect 13 0 12 0;
 #X connect 14 0 1 1;
 #X connect 15 0 8 1;
-#X connect 21 0 22 0;
-#X connect 21 0 23 0;
-#X connect 22 0 25 0;
-#X connect 23 0 24 0;
+#X connect 21 0 24 0;
+#X connect 22 0 23 0;
+#X connect 26 0 21 0;
+#X connect 26 0 22 0;

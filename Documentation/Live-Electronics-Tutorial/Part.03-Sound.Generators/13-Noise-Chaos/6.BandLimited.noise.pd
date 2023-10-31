@@ -1,4 +1,4 @@
-#N canvas 246 23 1033 633 12;
+#N canvas 158 43 1033 633 12;
 #X declare -path else;
 #X obj 141 389 nbx 7 14 -1e+37 1e+37 0 0 empty hz empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 67 498 out~;
@@ -22,19 +22,12 @@
 #X text 579 190 hz;
 #X obj 600 231 lfnoise~ 300;
 #X text 563 57 You can try other noise sources instead of [white~] \, like [pink~] \, [brown~] and [gray~]. If you want white noise \, you can use the specialized [lfnoise~] object instead \, which is similar to [white~] going through [downsample~] \, but it also has a second inlet to reset the phase with impulses., f 61;
-#X obj 866 251 stepnoise~ 200;
-#X obj 866 359 rampnoise~ 200;
-#X obj 866 289 out~;
-#X obj 866 398 out~;
-#X text 765 148 ELSE also has [stepnoise~] and [rampnoise~] which are white noise being downsample without ("step") and with ("ramp") interpolation., f 32;
+#X obj 857 478 stepnoise~ 200;
+#X obj 864 347 rampnoise~ 200;
+#X obj 857 516 out~;
+#X obj 864 386 out~;
+#X text 601 509 ELSE also has [stepnoise~] and [rampnoise~] which are white noise being downsample without ("step") and with ("ramp") interpolation., f 32;
 #X text 367 425 [spectograph~];
-#X obj 771 560 out.mc~;
-#X obj 771 525 stepnoise.mc~;
-#X obj 771 491 sigs~ 400 800;
-#X obj 894 560 out.mc~;
-#X obj 894 491 sigs~ 400 800;
-#X obj 894 525 rampnoise.mc~;
-#X text 539 518 ELSE also has step and ramp noise bank generators with multichannel output. Check their help files., f 27;
 #X connect 0 0 12 1;
 #X connect 2 0 0 0;
 #X connect 3 0 12 0;
@@ -51,7 +44,3 @@
 #X connect 20 0 17 0;
 #X connect 22 0 24 0;
 #X connect 23 0 25 0;
-#X connect 29 0 28 0;
-#X connect 30 0 29 0;
-#X connect 32 0 33 0;
-#X connect 33 0 31 0;

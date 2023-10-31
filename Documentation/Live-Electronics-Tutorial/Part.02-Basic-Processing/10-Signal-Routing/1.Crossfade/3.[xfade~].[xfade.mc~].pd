@@ -30,9 +30,9 @@
 #X obj 90 477 out.mc~;
 #X obj 215 435 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 212 461 f2s~ 10;
-#X obj 90 359 osc.mc~ 220 440;
-#X obj 127 395 osc.mc~ 330 660;
-#X text 332 474 Check also [xfade.mc~ for multichannel inputs., f 26;
+#X text 332 474 Check also [xfade.mc~] for multichannel inputs., f 26;
+#X obj 90 359 sine~ -mc 220 440;
+#X obj 127 395 sine~ -mc 330 660;
 #X connect 0 0 20 0;
 #X connect 1 0 0 0;
 #X connect 2 0 13 0;
@@ -50,5 +50,5 @@
 #X connect 26 0 27 0;
 #X connect 28 0 29 0;
 #X connect 29 0 26 2;
-#X connect 30 0 26 0;
-#X connect 31 0 26 1;
+#X connect 31 0 26 0;
+#X connect 32 0 26 1;
