@@ -68,7 +68,7 @@ ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check t
 Go to the pd-else folder and use "objectsdir" to set an *absolute* path for your build, something like:
 
 <pre>make install objectsdir=~/else-build</pre>
-Then move it from there to your preferred install folder for Pd and add it to the path.
+Than move it from there to your preferred install folder for Pd and add it to the path.
 
 Cross compiling is also possible with something like this
 
