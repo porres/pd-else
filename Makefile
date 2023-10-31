@@ -266,6 +266,9 @@ wrap2.class.sources := Code_source/Compiled/control/wrap2.c
 wrap2~.class.sources := Code_source/Compiled/audio/wrap2~.c
 zerocross~.class.sources := Code_source/Compiled/audio/zerocross~.c
 
+aubio := $(wildcard Code_source/shared/aubio/src/*/*.c) $(wildcard Code_source/shared/aubio/src/*.c)
+    beat~.class.sources := Code_source/Compiled/audio/beat~.c $(aubio)
+
 magic := Code_source/shared/magic.c
     gaussian~.class.sources := Code_source/Compiled/audio/gaussian~.c $(magic)
     imp~.class.sources := Code_source/Compiled/extra_source/Aliases/imp~.c $(magic)
