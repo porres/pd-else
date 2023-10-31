@@ -165,7 +165,7 @@ static void *sine_new(t_symbol *s, int ac, t_atom *av){
             x->x_soft = 1;
             ac--, av++;
         }
-        else if(atom_getsymbol(av) == gensym("-f")){
+        else if(atom_getsymbol(av) == gensym("-mc")){
             ac--, av++;
             if(!ac || av->a_type != A_FLOAT)
                 goto errstate;
