@@ -80,7 +80,7 @@
 #X obj 47 196 else/bl.tri~;
 #X obj 47 134 else/initmess 200;
 #X obj 225 126 else/function 200 100 empty empty 0 1 220 220 220 50 50 50 0 0 0 0 0 50 1 50 0.6 300 0.6 200 0;
-#X text 66 30 Here's an example on how to use [function] with [envgen~]. Since [function] is always outputting a list \, you can use the second inlet. Check the help file of [envgen~] for more details on how it works., f 64;
+#X text 66 30 Here's an example on how to use [function] with [envgen~]. Since [function] is always outputting a list \, you can use the third inlet. Check the help file of [envgen~] for more details on how it works., f 64;
 #X connect 0 0 2 0;
 #X connect 2 0 3 1;
 #X connect 3 0 4 0;
@@ -88,7 +88,7 @@
 #X connect 7 0 10 0;
 #X connect 8 0 3 0;
 #X connect 9 0 6 0;
-#X connect 10 0 2 1;
+#X connect 10 0 2 2;
 #X restore 480 169 pd envgen~;
 #X text 179 567 (none);
 #X text 225 514 - nonzero sets to init mode, f 45;
@@ -169,7 +169,7 @@
 #X restore 480 209 pd float/i;
 #X text 161 317 i <float>;
 #X text 225 318 - indexes of table (function value is output);
-#N canvas 920 126 573 449 send 0;
+#N canvas 793 126 573 449 send 0;
 #X obj 345 269 else/display;
 #X obj 99 196 else/function 200 100 \$0-function-out \$0-function-in 0 1 220 220 220 50 50 50 1 0 0 0 0.53 400 1 255 0 345 0.58;
 #X obj 343 169 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
