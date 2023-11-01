@@ -114,7 +114,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 --------------------------------------------------------------------------
 
-## Current Object list (511 objects):
+## Current Object list (518 objects):
 
 #assorted
     else
@@ -137,7 +137,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 #file management
     dir
 #midi
-    midi midi.learn midi.in midi.out sysrt.in sysrt.out ctl.in ctl.out touch.in touch.out ptouch.in ptouch.out  pgm.in pgm.out nemd.in bend.out note.in note.out midi.clock noteinfo panic mono voices suspedal
+    midi midi.learn midi.in midi.out sysrt.in sysrt.out ctl.in ctl.out touch.in touch.out ptouch.in ptouch.out  pgm.in pgm.out nemd.in bend.out note.in note.out midi.clock noteinfo panic mono mono~ voices voices~ suspedal
 #osc
     osc.route osc.format osc.parse osc.send osc.receive
 #math functions
@@ -149,7 +149,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 #logic
     loop
 #audio multichannel tools
-    voices~ nchs~ sigs~ repeat~ select~ pick~ get~ sum~ merge~ unmerge~ slice~
+    nchs~ sigs~ repeat~ select~ pick~ get~ sum~ merge~ unmerge~ slice~
 #analog circuitry emulation
     circuit~
 #fx: assorted
