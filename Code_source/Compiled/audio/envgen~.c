@@ -362,7 +362,7 @@ static t_int *envgen_perform(t_int *w){
             envgen_release(x, x->x_ac_rel, x->x_av_rel);
         if(f != 0 && lastin != 0){ // gate on
             if(retrig != 0){ // retrigger
-                x->x_gain = retrig;
+                x->x_gain = f;
                 envgen_attack(x, x->x_ac, x->x_av);
             }
         }

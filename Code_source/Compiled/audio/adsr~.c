@@ -88,11 +88,6 @@ static t_int *adsr_perform(t_int *w){
     for(int j = 0; j < chs; j++){
         for(int i = 0; i < n; i++){
             t_float input_gate = in1[j*n + i];
-/*            t_float retrig = in2[j*n + i];
-            t_float attack = in3[i];
-            t_float decay = in4[i];
-            t_float sustain_point = in5[i];
-            t_float release = in6[i];*/
             t_float retrig = ch2 == 1 ? in2[i] : in2[j*n + i];
             t_float attack = ch3 == 1 ? in3[i] : in3[j*n + i];
             t_float decay = ch4 == 1 ? in4[i] : in4[j*n + i];
@@ -138,7 +133,7 @@ static t_int *adsr_perform(t_int *w){
                 }
             }
             else if(gate_status[j] && retrig != 0){ // sig changed, retrigger
-//                target[j] = input_gate;
+                target[j] = input_gate;
                 incr[j] = (target[j] - last[j]) * coef_a;
                 nleft[j] = n_attack + n_decay;
             }
