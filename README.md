@@ -58,9 +58,9 @@ It might still be important to stress this library runs in Pd Vanilla and is not
 
 #### Building ELSE for Pd Vanilla:
 
-ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example (assuming the unpacked Pd package is in ~/pd-0.54-0; for Windows/MinGW add `pdbinpath=~/pd-0.54-0/bin/`):
+ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example (assuming the unpacked Pd package is in ~/pd-0.54-1; for Windows/MinGW add `pdbinpath=~/pd-0.54-1/bin/`):
 
-<pre>make pdincludepath=~/pd-0.54-0/src/</pre>
+<pre>make pdincludepath=~/pd-0.54-1/src/</pre>
 
 ##### Installing with pdlibbuilder
 
@@ -79,7 +79,7 @@ For technical reasons these objects reside in their own subdirectories of the EL
 
 To install them with the rest of ELSE you can build from the toplevel source directory using the special 'sfont', 'sfz' and 'plaits' targets, such as:
 
-<pre>make sfz plaits pdincludepath=~/pd-0.54-0/src/</pre>
+<pre>make sfz plaits pdincludepath=~/pd-0.54-1/src/</pre>
 <pre>make sfz-install plaits-install objectsdir=~/else-build</pre>
 
 For sfont you should do the same but you also must run a script in the sfont subfolder to copy the needed dependencies, check its readme for more details.
