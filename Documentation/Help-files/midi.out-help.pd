@@ -59,8 +59,8 @@
 #X msg 207 159 60 127 3;
 #X obj 207 226 print raw;
 #X text 268 153 Note message (note \, velocity \, channel), f 20;
-#X text 56 89 [midi.in] sends MIDI data from "cooked" data \, instead of "raw" data like [midiout]. It takes data type symbol \, values and channel (but a note output is received as a simple numeric list). It outputs raw MIDI data but it also sends out to the connected MIDI device., f 72;
 #X text 38 185 see also;
 #X obj 37 210 else/midi.in;
+#X text 56 89 [midi.out] sends MIDI data from "cooked" data \, instead of "raw" data like [midiout]. It takes data type symbol \, values and channel (but a note output is received as a simple numeric list). It outputs raw MIDI data but it also sends out to the connected MIDI device., f 72;
 #X connect 23 0 25 0;
 #X connect 24 0 23 0;
