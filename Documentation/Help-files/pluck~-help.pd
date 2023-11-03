@@ -161,8 +161,7 @@
 #X obj 59 113 tgl 21 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X text 52 364 By default \, the frequency input is in Hertz \, but you can set it to MIDI pitch with the 'midi' message or 'midi' flag., f 44;
 #X obj 300 280 else/note.in;
-#X obj 300 255 midiin;
-#X text 334 16 You can use lists for a MIDI/control input. It takes note on messages to trigger it (note offs are just ignored) with pitch and velocity (values from 0 to 127 is normalized to 0 to 1 range (float values and values outside this range is possible). You can get note on list messages with objects like [keyboard] \, [makenote2] and [else/note.in], f 52;
+#X text 334 16 You can use lists for a MIDI/control input. It takes note on messages to trigger it (note offs are just ignored) with pitch and velocity (values from 0 to 127 is normalized to 0 to 1 range (float values and values outside this range is possible). You can get note on list messages with objects like [keyboard] \, [makenote2] and [note.in], f 52;
 #X connect 1 0 2 0;
 #X connect 1 0 3 1;
 #X connect 2 0 5 0;
@@ -179,7 +178,6 @@
 #X connect 16 0 3 0;
 #X connect 17 0 16 0;
 #X connect 19 0 13 0;
-#X connect 20 0 19 0;
 #X restore 342 288 pd trigger and MIDI;
 #X connect 14 0 35 2;
 #X connect 19 0 35 3;

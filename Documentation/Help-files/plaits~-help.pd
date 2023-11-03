@@ -2035,7 +2035,6 @@
 #X obj 394 446 out~;
 #X obj 394 415 else/plaits~ -midi -trigger;
 #X obj 394 279 else/note.in;
-#X obj 394 256 midiin;
 #X obj 618 253 outlet~;
 #X obj 618 141 else/pulse~ 0.5 0.9;
 #X msg 377 133 level \$1;
@@ -2058,12 +2057,11 @@
 #X connect 12 0 14 0;
 #X connect 14 0 13 0;
 #X connect 15 0 12 0;
-#X connect 16 0 15 0;
-#X connect 18 0 11 0;
-#X connect 18 0 9 0;
-#X connect 18 0 17 0;
-#X connect 19 0 0 0;
-#X connect 20 0 19 0;
+#X connect 17 0 11 0;
+#X connect 17 0 9 0;
+#X connect 17 0 16 0;
+#X connect 18 0 0 0;
+#X connect 19 0 18 0;
 #X restore 186 363 pd LPG \; trigger \; level;
 #X text 245 365 <-- open for LPG (LowPass Gate) settings and trigger and level input details., f 77;
 #X text 413 444 The 3rd row of he last 8 modes are better described here:, f 51;
