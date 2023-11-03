@@ -4,11 +4,12 @@
 #include <string.h>
 
 typedef struct _ctlin{
-    t_object       x_ob;
+    t_object       x_obj;
     t_int          x_omni;
     t_float        x_ch;
     t_float        x_ch_in;
     t_float        x_ctl_in;
+    t_int          x_ext;
     unsigned char  x_n;
     unsigned char  x_ready;
     unsigned char  x_control;
@@ -72,6 +73,22 @@ static void ctlin_float(t_ctlin *x, t_float f){
     }
 }
 
+static void ctlin_list(t_ctlin *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(!ac)
+        return;
+    if(!x->x_ext)
+        ctlin_float(x, atom_getfloat(av));
+}
+
+static void ctlin_ext(t_ctlin *x, t_floatarg f){
+    x->x_ext = f != 0;
+}
+
+static void ctlin_free(t_ctlin *x){
+    pd_unbind(&x->x_obj.ob_pd, gensym("#midiin"));
+}
+
 static void *ctlin_new(t_symbol *s, t_int ac, t_atom *av){
     t_ctlin *x = (t_ctlin *)pd_new(ctlin_class);
     t_symbol *curarg = NULL;
@@ -79,12 +96,18 @@ static void *ctlin_new(t_symbol *s, t_int ac, t_atom *av){
     x->x_control = x->x_ready = x->x_n = 0;
     t_float channel = 0, ctl = -1;
     if(ac){
-        if(ac == 1)
-            channel = (t_int)atom_getfloatarg(0, ac, av);
-        else{
-            ctl = (t_int)atom_getfloatarg(0, ac, av);
+        if(atom_getsymbolarg(0, ac, av) == gensym("-ext")){
+            x->x_ext = 1;
             ac--, av++;
-            channel = (t_int)atom_getfloatarg(0, ac, av);
+        }
+        if(ac){
+            if(ac == 1)
+                channel = (t_int)atom_getfloatarg(0, ac, av);
+            else{
+                ctl = (t_int)atom_getfloatarg(0, ac, av);
+                ac--, av++;
+                channel = (t_int)atom_getfloatarg(0, ac, av);
+            }
         }
     }
     if(channel < 0)
@@ -101,11 +124,14 @@ static void *ctlin_new(t_symbol *s, t_int ac, t_atom *av){
     outlet_new((t_object *)x, &s_float);
     x->x_n_out = outlet_new((t_object *)x, &s_float);
     x->x_chanout = outlet_new((t_object *)x, &s_float);
+    pd_bind(&x->x_obj.ob_pd, gensym("#midiin"));
     return(x);
 }
 
 void setup_ctl0x2ein(void){
     ctlin_class = class_new(gensym("ctl.in"), (t_newmethod)ctlin_new,
-        0, sizeof(t_ctlin), 0, A_GIMME, 0);
+        (t_method)ctlin_free, sizeof(t_ctlin), 0, A_GIMME, 0);
     class_addfloat(ctlin_class, ctlin_float);
+    class_addlist(ctlin_class, ctlin_list);
+    class_addmethod(ctlin_class, (t_method)ctlin_ext, gensym("ext"), A_DEFFLOAT, 0);
 }

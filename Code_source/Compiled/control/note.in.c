@@ -3,10 +3,11 @@
 #include "m_pd.h"
 
 typedef struct _notein{
-    t_object       x_ob;
+    t_object       x_obj;
     t_int          x_omni;
     t_int          x_both;
     t_int          x_rel;
+    t_int          x_ext;
     t_float        x_ch;
     t_float        x_ch_in;
     unsigned char  x_ready;
@@ -41,7 +42,7 @@ static void notein_float(t_notein *x, t_float f){
             unsigned char status = bval & 0xF0;
             if(status == 0xF0 && bval < 0xF8)
                 x->x_status = x->x_ready = 0; // clear
-            else if((x->x_rel && status == 0x80) || status == 0x90){
+            else if(status == 0x80 || status == 0x90){
                 unsigned char channel = bval & 0x0F;
                 if(x->x_omni)
                     x->x_channel = channel;
@@ -86,12 +87,20 @@ static void notein_float(t_notein *x, t_float f){
                     outlet_list(((t_object *)x)->ob_outlet, &s_list, 2, at);
                 }
             }
-            else if (on){ // Note On
+            else if(on){ // Note On
                 if(x->x_omni)
                     outlet_float(x->x_chanout, x->x_channel + 1);
                 t_atom at[2];
                 SETFLOAT(at, x->x_pitch);
                 SETFLOAT(at+1, bval);
+                outlet_list(((t_object *)x)->ob_outlet, &s_list, 2, at);
+            }
+            else{ // Note Off
+                if(x->x_omni)
+                    outlet_float(x->x_chanout, x->x_channel + 1);
+                t_atom at[2];
+                SETFLOAT(at, x->x_pitch);
+                SETFLOAT(at+1, 0);
                 outlet_list(((t_object *)x)->ob_outlet, &s_list, 2, at);
             }
             x->x_ready = 0;
@@ -103,6 +112,22 @@ static void notein_float(t_notein *x, t_float f){
     }
     else
         x->x_status = x->x_ready = 0; // clear
+}
+
+static void notein_list(t_notein *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(!ac)
+        return;
+    if(!x->x_ext)
+        notein_float(x, atom_getfloat(av));
+}
+
+static void notein_ext(t_notein *x, t_floatarg f){
+    x->x_ext = f != 0;
+}
+
+static void notein_free(t_notein *x){
+    pd_unbind(&x->x_obj.ob_pd, gensym("#midiin"));
 }
 
 static void *notein_new(t_symbol *s, t_int ac, t_atom *av){
@@ -128,6 +153,10 @@ static void *notein_new(t_symbol *s, t_int ac, t_atom *av){
                     x->x_rel = 1;
                     ac--, av++;
                 }
+                else if(atom_getsymbolarg(0, ac, av) == gensym("-ext") && !argn){
+                    x->x_ext = 1;
+                    ac--, av++;
+                }
                 else
                     goto errstate;
             }
@@ -143,6 +172,7 @@ static void *notein_new(t_symbol *s, t_int ac, t_atom *av){
     if(x->x_rel && !x->x_both)
         x->x_offout = outlet_new((t_object *)x, &s_float);
     x->x_chanout = outlet_new((t_object *)x, &s_float);
+    pd_bind(&x->x_obj.ob_pd, gensym("#midiin"));
     return(x);
 errstate:
     pd_error(x, "[note.in]: improper args");
@@ -151,6 +181,8 @@ errstate:
 
 void setup_note0x2ein(void){
     notein_class = class_new(gensym("note.in"), (t_newmethod)notein_new,
-        0, sizeof(t_notein), 0, A_GIMME, 0);
+        (t_method)notein_free, sizeof(t_notein), 0, A_GIMME, 0);
     class_addfloat(notein_class, notein_float);
+    class_addlist(notein_class, notein_list);
+    class_addmethod(notein_class, (t_method)notein_ext, gensym("ext"), A_DEFFLOAT, 0);
 }

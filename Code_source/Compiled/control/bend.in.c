@@ -3,11 +3,12 @@
 #include "m_pd.h"
 
 typedef struct _bendin{
-    t_object       x_ob;
+    t_object       x_obj;
     t_int          x_omni;
     t_int          x_raw;
     t_float        x_ch;
     t_float        x_ch_in;
+    t_int          x_ext;
     unsigned char  x_ready;
     unsigned char  x_status;
     unsigned char  x_channel;
@@ -69,6 +70,22 @@ static void bendin_float(t_bendin *x, t_float f){
         x->x_status = x->x_ready = 0; // clear
 }
 
+static void bendin_list(t_bendin *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(!ac)
+        return;
+    if(!x->x_ext)
+        bendin_float(x, atom_getfloat(av));
+}
+
+static void bendin_ext(t_bendin *x, t_floatarg f){
+    x->x_ext = f != 0;
+}
+
+static void bendin_free(t_bendin *x){
+    pd_unbind(&x->x_obj.ob_pd, gensym("#midiin"));
+}
+
 static void *bendin_new(t_symbol *s, t_int ac, t_atom *av){
     t_bendin *x = (t_bendin *)pd_new(bendin_class);
     t_symbol *curarg = s; // get rid of warning
@@ -88,6 +105,10 @@ static void *bendin_new(t_symbol *s, t_int ac, t_atom *av){
                     x->x_raw = 1;
                     ac--, av++;
                 }
+                else if(curarg == gensym("-ext")){
+                    x->x_ext = 1;
+                    ac--, av++;
+                }
                 else
                     goto errstate;
             }
@@ -101,6 +122,7 @@ static void *bendin_new(t_symbol *s, t_int ac, t_atom *av){
     floatinlet_new((t_object *)x, &x->x_ch_in);
     outlet_new((t_object *)x, &s_float);
     x->x_chanout = outlet_new((t_object *)x, &s_float);
+    pd_bind(&x->x_obj.ob_pd, gensym("#midiin"));
     return(x);
     errstate:
         pd_error(x, "[bend.in]: improper args");
@@ -109,6 +131,8 @@ static void *bendin_new(t_symbol *s, t_int ac, t_atom *av){
 
 void setup_bend0x2ein(void){
     bendin_class = class_new(gensym("bend.in"), (t_newmethod)bendin_new,
-        0, sizeof(t_bendin), 0, A_GIMME, 0);
+        (t_method)bendin_free, sizeof(t_bendin), 0, A_GIMME, 0);
     class_addfloat(bendin_class, bendin_float);
+    class_addlist(bendin_class, bendin_list);
+    class_addmethod(bendin_class, (t_method)bendin_ext, gensym("ext"), A_DEFFLOAT, 0);
 }

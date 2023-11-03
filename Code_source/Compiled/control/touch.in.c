@@ -1,13 +1,13 @@
 // porres 2018
 
 #include "m_pd.h"
-//#include <string.h>
 
 typedef struct _touchin{
-    t_object       x_ob;
+    t_object       x_obj;
     t_int          x_omni;
     t_float        x_ch;
     t_float        x_ch_in;
+    t_int          x_ext;
     unsigned char  x_pressure;
     unsigned char  x_ready;
     unsigned char  x_atouch;
@@ -46,21 +46,48 @@ static void touchin_float(t_touchin *x, t_float f){
     }
 }
 
-static void *touchin_new(t_symbol *s, t_floatarg f){
+static void touchin_list(t_touchin *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(!ac)
+        return;
+    if(!x->x_ext)
+        touchin_float(x, atom_getfloat(av));
+}
+
+static void touchin_ext(t_touchin *x, t_floatarg f){
+    x->x_ext = f != 0;
+}
+
+static void touchin_free(t_touchin *x){
+    pd_unbind(&x->x_obj.ob_pd, gensym("#midiin"));
+}
+
+static void *touchin_new(t_symbol *s, t_int ac, t_atom *av){
     s = NULL;
     t_touchin *x = (t_touchin *)pd_new(touchin_class);
     x->x_atouch =  x->x_ready = x->x_pressure = 0;
-    int ch = f < 0 ? 0 : f > 16 ? 16 : (int)f;
+    int ch = 0;
+    if(ac){
+        if(atom_getsymbolarg(0, ac, av) == gensym("-ext")){
+            x->x_ext = 1;
+            ac--, av++;
+        }
+        ch = (t_int)atom_getintarg(0, ac, av);
+    }
+    ch = ch < 0 ? 0 : ch > 16 ? 16 : ch;
     x->x_omni = (ch == 0);
     x->x_ch = x->x_ch_in = ch;
     floatinlet_new((t_object *)x, &x->x_ch_in);
     outlet_new((t_object *)x, &s_float);
     x->x_chanout = outlet_new((t_object *)x, &s_float);
+    pd_bind(&x->x_obj.ob_pd, gensym("#midiin"));
     return(x);
 }
 
 void setup_touch0x2ein(void){
     touchin_class = class_new(gensym("touch.in"), (t_newmethod)touchin_new,
-        0, sizeof(t_touchin), 0, A_DEFFLOAT, 0);
+        (t_method)touchin_free, sizeof(t_touchin), 0, A_GIMME, 0);
     class_addfloat(touchin_class, touchin_float);
+    class_addlist(touchin_class, touchin_list);
+    class_addmethod(touchin_class, (t_method)touchin_ext, gensym("ext"), A_DEFFLOAT, 0);
 }

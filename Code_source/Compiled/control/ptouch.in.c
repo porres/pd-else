@@ -3,10 +3,11 @@
 #include "m_pd.h"
 
 typedef struct _ptouchin{
-    t_object       x_ob;
+    t_object       x_obj;
     t_int          x_omni;
     t_float        x_ch;
     t_float        x_ch_in;
+    t_int          x_ext;
     unsigned char  x_key;
     unsigned char  x_ready;
     unsigned char  x_ptouch;
@@ -65,21 +66,48 @@ static void ptouchin_float(t_ptouchin *x, t_float f){
     }
 }
 
-static void *ptouchin_new(t_symbol *s, t_floatarg f){
+static void ptouchin_list(t_ptouchin *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(!ac)
+        return;
+    if(!x->x_ext)
+        ptouchin_float(x, atom_getfloat(av));
+}
+
+static void ptouchin_ext(t_ptouchin *x, t_floatarg f){
+    x->x_ext = f != 0;
+}
+
+static void ptouchin_free(t_ptouchin *x){
+    pd_unbind(&x->x_obj.ob_pd, gensym("#midiin"));
+}
+
+static void *ptouchin_new(t_symbol *s, t_int ac, t_atom *av){
     s = NULL;
     t_ptouchin *x = (t_ptouchin *)pd_new(ptouchin_class);
     x->x_ptouch =  x->x_ready = x->x_key = 0;
-    int ch = f < 0 ? 0 : f > 16 ? 16 : (int)f;
+    int ch = 0;
+    if(ac){
+        if(atom_getsymbolarg(0, ac, av) == gensym("-ext")){
+            x->x_ext = 1;
+            ac--, av++;
+        }
+        ch = (t_int)atom_getintarg(0, ac, av);
+    }
+    ch = ch < 0 ? 0 : ch > 16 ? 16 : ch;
     x->x_omni = (ch == 0);
     x->x_ch = x->x_ch_in = ch;
     floatinlet_new((t_object *)x, &x->x_ch_in);
     outlet_new((t_object *)x, &s_float);
     x->x_chanout = outlet_new((t_object *)x, &s_float);
+    pd_bind(&x->x_obj.ob_pd, gensym("#midiin"));
     return(x);
 }
 
 void setup_ptouch0x2ein(void){
     ptouchin_class = class_new(gensym("ptouch.in"), (t_newmethod)ptouchin_new,
-        0, sizeof(t_ptouchin), 0, A_DEFFLOAT, 0);
+        (t_method)ptouchin_free, sizeof(t_ptouchin), 0, A_DEFFLOAT, 0);
     class_addfloat(ptouchin_class, ptouchin_float);
+    class_addlist(ptouchin_class, ptouchin_list);
+    class_addmethod(ptouchin_class, (t_method)ptouchin_ext, gensym("ext"), A_DEFFLOAT, 0);
 }
