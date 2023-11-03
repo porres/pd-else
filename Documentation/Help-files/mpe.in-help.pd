@@ -22,10 +22,9 @@
 #X obj 2 375 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
 #X text 155 257 float;
 #X text 199 258 - Raw MIDI data;
-#X obj 226 173 else/mpe.in;
+#X obj 242 173 else/mpe.in;
 #X text 163 315 list;
 #X text 36 171 This object is still experimental, f 19;
-#X text 61 87 [mpe.in] sends "cooked" MPE data from "raw" MIDI data. It outputs most common MIDI messages prepended with a voice number indexed from 0 (which depends on MIDI channel in this case)., f 73;
 #X text 152 354 -ext: only listen to external input source;
 #X text 119 277 ext <float>;
 #X text 199 277 - non zero sets to listen only to external input source;
@@ -68,9 +67,9 @@
 #X connect 9 5 15 0;
 #X connect 16 0 9 0;
 #X restore 457 187 pd details;
-#X msg 226 145 180 \, 74 \, 127;
-#X text 310 145 raw MIDI data;
-#X obj 226 205 else/display;
+#X msg 242 145 180 \, 74 \, 127;
+#X text 326 145 raw MIDI data;
+#X obj 242 205 else/display;
 #X text 199 315 - voice number \, data type and data;
 #N canvas 653 199 427 384 external 0;
 #X text 61 31 [mpe.in] automatically listens to whatever is connected as a MIDI device in Pd. So it's like it has a bult in [midiin] object feeding it. Hence \, if you have a MPE aware device connected to Pd \, you don't need to worry about anything and just get the data from it. This is considered to be an "internal" source., f 55;
@@ -85,5 +84,6 @@
 #X connect 5 0 3 0;
 #X connect 6 0 5 0;
 #X restore 457 207 pd external;
-#X connect 19 0 29 0;
-#X connect 27 0 19 0;
+#X text 61 87 [mpe.in] sends "cooked" MPE data from external "raw" MIDI data or an internally connected device. It outputs most common MIDI messages prepended with a voice number indexed from 0 (which depends on MIDI channel in this case)., f 69;
+#X connect 19 0 28 0;
+#X connect 26 0 19 0;
