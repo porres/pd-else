@@ -1,54 +1,33 @@
-#N canvas 401 23 561 437 10;
-#X obj 23 40 cnv 4 4 4 empty empty Midi 0 28 2 18 #e0e0e0 #000000 0
-;
-#X obj 65 40 cnv 4 4 4 empty empty program 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 3 3 cnv 15 301 42 empty empty pgm.in 20 20 2 37 #e0e0e0 #000000
-0;
+#N canvas 397 66 562 492 10;
+#X obj 23 40 cnv 4 4 4 empty empty Midi 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 65 40 cnv 4 4 4 empty empty program 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 3 3 cnv 15 301 42 empty empty pgm.in 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 2 257 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 2 314 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 2 377 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 154 268 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 2 410 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X text 209 386 -;
-#X text 151 386 1) float;
-#X text 193 270 float;
-#X text 238 270 - raw MIDI data stream;
-#X text 239 351 -;
-#X text 199 351 float;
-#X obj 131 40 cnv 4 4 4 empty empty input 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 154 324 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X text 238 324 -;
-#X text 198 324 float;
-#X obj 154 348 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#X obj 2 257 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 2 339 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 2 432 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 2 465 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X text 209 441 -;
+#X text 151 441 1) float;
+#X text 189 376 -;
+#X text 149 376 float;
+#X obj 131 40 cnv 4 4 4 empty empty input 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 114 349 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X text 188 349 -;
+#X text 148 349 float;
+#X obj 114 373 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #N canvas 792 220 453 261 channel 0;
 #X msg 230 141 1;
 #X msg 263 141 5;
@@ -56,12 +35,7 @@
 #X msg 212 115 0;
 #X text 240 115 <= omni;
 #X obj 149 141 midiin;
-#X text 19 15 An argument sets the channel number. If so \, only MIDI
-messages that correspond to that channel are sent. If no channel is
-given \, it loads "0" as the default and the object operates in omni
-mode \, where the objects outputs values from all channels and the
-channel number is output in the right outlet. You can also change the
-channel with the right inlet (0 sets to omni)., f 67;
+#X text 19 15 An argument sets the channel number. If so \, only MIDI messages that correspond to that channel are sent. If no channel is given \, it loads "0" as the default and the object operates in omni mode \, where the objects outputs values from all channels and the channel number is output in the right outlet. You can also change the channel with the right inlet (0 sets to omni)., f 67;
 #X obj 149 179 else/pgm.in;
 #X obj 212 203 else/display;
 #X obj 149 203 else/display;
@@ -71,13 +45,12 @@ channel with the right inlet (0 sets to omni)., f 67;
 #X connect 5 0 7 0;
 #X connect 7 0 9 0;
 #X connect 7 1 8 0;
-#X restore 473 222 pd channel;
-#X text 223 386 sets channel number (default 0 - OMNI);
-#X text 238 293 -;
-#X text 198 293 float;
-#X text 253 293 MIDI channel, f 31;
-#X obj 154 290 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
-;
+#X restore 473 199 pd channel;
+#X text 223 441 sets channel number (default 0 - OMNI);
+#X text 188 318 -;
+#X text 148 318 float;
+#X text 203 318 MIDI channel, f 31;
+#X obj 114 315 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 163 145 midiin;
 #X text 301 217 MIDI channel;
 #X obj 282 213 else/display;
@@ -87,15 +60,33 @@ channel with the right inlet (0 sets to omni)., f 67;
 #X text 169 220 Program;
 #X msg 247 162 199 \, 15;
 #X text 276 134 Program message (raw MIDI data);
-#X text 253 323 MIDI Program, f 31;
-#X text 254 351 MIDI channel;
+#X text 203 348 MIDI Program, f 31;
+#X text 204 376 MIDI channel;
 #X obj 31 214 else/pgm.out;
 #X obj 219 190 else/pgm.in;
-#X text 69 85 [pgm.in] extracts MIDI Program information from raw MIDI
-input (such as from [midiin]). Unlike vanilla's [pgmin] and [pgmout]
-\, the program change values are from 0 to 127!, f 68;
-#X connect 34 0 46 0;
-#X connect 39 0 46 0;
-#X connect 41 0 46 0;
-#X connect 46 0 37 0;
-#X connect 46 1 36 0;
+#X text 69 85 [pgm.in] extracts MIDI Program information from raw MIDI input (such as from [midiin]). Unlike vanilla's [pgmin] and [pgmout] \, the program change values are from 0 to 127!, f 68;
+#N canvas 653 199 427 384 external 0;
+#X obj 175 221 else/midi;
+#X obj 175 309 print;
+#X msg 111 240 ext \$1;
+#X obj 111 212 tgl 19 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
+#X text 37 42 The object automatically listens to whatever is connected as a MIDI device in Pd. So it's like it has a bult in [midiin] object feeding it. This is considered to be an "internal" source.;
+#X text 37 96 The left inlet provides and "external" source of raw MIDI data input. This is needed if you have \, for instance \, the [midi] object from ELSE reading a MIDI file or something. If \, by any chance \, you just want the object to receive from this external source and not listen to the internal connected device \, you can use the '-ext' flag or 'ext' message \, to force only the external input.;
+#X obj 175 277 else/pgm.in;
+#X connect 0 0 6 0;
+#X connect 2 0 6 0;
+#X connect 3 0 2 0;
+#X connect 6 0 1 0;
+#X restore 467 222 pd external;
+#X text 165 270 float;
+#X text 205 270 - raw MIDI data stream;
+#X obj 115 267 cnv 17 3 42 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X text 129 288 ext <float>;
+#X text 204 288 - non zero sets to listen only to external input source;
+#X obj 2 398 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
+#X text 121 410 -ext: - only listen to external input source, f 46;
+#X connect 31 0 43 0;
+#X connect 36 0 43 0;
+#X connect 38 0 43 0;
+#X connect 43 0 34 0;
+#X connect 43 1 33 0;

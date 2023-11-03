@@ -1,4 +1,4 @@
-#N canvas 473 28 562 575 10;
+#N canvas 394 76 562 575 10;
 #X obj 23 40 cnv 4 4 4 empty empty Midi 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 65 40 cnv 4 4 4 empty empty pitch 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 3 3 cnv 15 301 42 empty empty note.in 20 20 2 37 #e0e0e0 #000000 0;
@@ -127,17 +127,17 @@
 #X text 225 369 pitch and velocity (for NoteOn or both);
 #X text 226 392 pitch and note off velocity (for NoteOn or both);
 #N canvas 653 199 427 384 external 0;
-#X text 37 96 The inlet provides and "external" source of raw MIDI data input. This is needed if you have \, for instance \, the [midi] object from ELSE reading a MIDI file or something. If \, by any chance \, you just want the object to receive from this external source and not listen to the internal connected device \, you can use the '-ext' flag or 'ext' message \, to force only the external input., f 60;
 #X obj 175 221 else/midi;
 #X obj 175 309 print;
 #X msg 111 240 ext \$1;
 #X obj 111 212 tgl 19 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X text 37 42 The object automatically listens to whatever is connected as a MIDI device in Pd. So it's like it has a bult in [midiin] object feeding it. This is considered to be an "internal" source.;
 #X obj 175 277 else/note.in;
-#X connect 1 0 6 0;
-#X connect 3 0 6 0;
-#X connect 4 0 3 0;
-#X connect 6 0 2 0;
+#X text 37 96 The left inlet provides and "external" source of raw MIDI data input. This is needed if you have \, for instance \, the [midi] object from ELSE reading a MIDI file or something. If \, by any chance \, you just want the object to receive from this external source and not listen to the internal connected device \, you can use the '-ext' flag or 'ext' message \, to force only the external input.;
+#X connect 0 0 5 0;
+#X connect 2 0 5 0;
+#X connect 3 0 2 0;
+#X connect 5 0 1 0;
 #X restore 467 238 pd external;
 #X text 111 485 -ext: - only listen to external input source, f 72;
 #X obj 110 282 cnv 17 3 42 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
