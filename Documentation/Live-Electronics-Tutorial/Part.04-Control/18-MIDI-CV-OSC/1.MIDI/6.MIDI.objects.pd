@@ -1,4 +1,4 @@
-#N canvas 279 35 940 601 12;
+#N canvas 158 66 940 601 12;
 #X declare -path else;
 #X obj 115 221 pgmin;
 #X obj 109 197 bendin;
@@ -42,7 +42,6 @@
 #X obj 762 22 declare -path else;
 #X text 27 15 Pd has several nastive objects that deal with MIDI. We only used [notein] and MIDI note messages in this series \, but there are many other MIDI messages we could use to control a patch. Conversely \, we can create and maniplate MIDI data in a patch and send it out with MIDI out objects., f 57;
 #X text 27 105 Here are Pd native objects for MIDI \, separated into MIDI message types., f 57;
-#X text 482 61 The ELSE library also has MIDI objects \, but they receive and send raw MIDI data. This means they can be connected to [midiin] and [midiout] objects.;
 #X text 191 332 sysex messages;
 #X text 205 307 MIDI System & MIDI Real-time;
 #X text 265 148 Note (on/off);
@@ -62,3 +61,4 @@
 #X text 662 210 Note On and Note Off;
 #X obj 557 544 mpe.in;
 #X text 613 546 For MIDI Polyphonic Expression;
+#X text 482 61 The ELSE library also has MIDI objects \, which act the same but can also receive and send raw MIDI data. This means they can be connected to an object like [else/midi].;

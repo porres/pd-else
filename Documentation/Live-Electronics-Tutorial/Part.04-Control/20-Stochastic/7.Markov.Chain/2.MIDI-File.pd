@@ -139,7 +139,7 @@
 #X connect 60 0 4 0;
 #X connect 60 1 21 0;
 #X restore 581 595 pd [text];
-#X obj 65 294 stripnote;
+#X obj 65 288 stripnote;
 #X msg 65 153 open;
 #X msg 227 263 clear;
 #X obj 286 254 tgl 25 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
@@ -186,7 +186,6 @@
 #X connect 13 0 21 0;
 #X connect 18 0 21 0;
 #X connect 19 0 2 0;
-#X connect 19 1 2 1;
 #X connect 20 0 19 0;
 #X connect 20 1 8 0;
 #X connect 21 0 10 0;
