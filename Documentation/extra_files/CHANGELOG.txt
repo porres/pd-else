@@ -25,11 +25,12 @@ Breaking changes:
 - [rms~], [mov.rms~] and [peak~], new 'lin' method instead of old ones, -lin flag instead of -db and now default is 'db'
 - [fbsine~] default now is filter on
 - [conv~] is now a compiled object that behaves differently (taking arrays instead of IR audio files)
-- [plaits~]: changed behaviour of trigger mode, now it needs to be active to get audio trigger impulses, there's not a bang input anymore. Also, now you need to use a new 'vca' method or flag to activate the rightmost input.
+- [plaits~]: changed behaviour of trigger mode, now it needs to be active to get audio trigger impulses, there's not a bang input anymore. Also, now you need to use a new 'level' method or flag to activate the rightmost input.
 - [pluck~] first 2 inlets inlets swapped back again (yikes), bang trigger and 'gate' message removed, I hope I finally get this right, no other object wen theough so many braeaking changes. 
 - [adsr~] and [envgen~]: added a new second inlet to retrigger the envelope with impulses. 
 - deleted [osc.mc~], [imp.mc~], [stepnoise.mc~] and [rampnoise.mc~]. 
-- [note.in]/[note.out] big redesign, changed behaviour of '-rel' flag and added '-both' flag
+- [note.in]/[note.out] big redesign, changed behaviour of '-rel' flag and added '-both' flag, it now also listens to and send data connected MIDI devices.
+- [touch.in], [ptouch.in], [bend.in], [pgm.in], [touch.out], [ptouch.out], [bend.out], [pgm.out]  now also listens to and send data to connected MIDI devices.
 
 Enhancements/fixes/other changes:
 - fixed some errors in the object browser plugin
@@ -50,14 +51,15 @@ Enhancements/fixes/other changes:
 - [note] fixed 'set' message at loadbang.
 - [midi.in] and midi.out] added noteoff support 
 - [pluck~] added new list mode to connect directly to a note on message and support for midi pitch input
-- [plaits~]: added new list mode to connect directly to a note on/off messages
+- [plaits~]: added new list mode to connect directly to a note on/off messages, fixed some wrong information and improved the documentation considerably
 - [impulse~]: added 'midi' support and soft sync.
-- 11 new objects: [list.inc], [list.seq], [dispatch], [var], [nop~], [send2~], [fm~], [pm2~], [pm4~], [pm6~] and [circuit~].
+- [note.in]/[note.out], [touch.in], [ptouch.in], [bend.in], [pgm.in], [midi.in], added 'ext' message and flag to force only listening to external input. 
+- 12 new objects: [list.inc], [list.seq], [dispatch], [var], [mono~], [nop~], [send2~], [fm~], [pm2~], [pm4~], [pm6~] and [circuit~].
 
-Objects count: total of 517 (276 signal objects and 241 control objects)! 
+Objects count: total of 518 (277 signal objects and 241 control objects)! 
 
 - 299 coded objects (192 signal objects / 107 control objects)
-- 218 abstractions (84 signal objects / 134 control objects)
+- 219 abstractions (85 signal objects / 134 control objects)
 
 --------------------------------------
 
