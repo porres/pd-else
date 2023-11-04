@@ -1,6 +1,7 @@
 // porres 2018
 
 #include "m_pd.h"
+#include "s_stuff.h"
 
 typedef struct _bendout{
     t_object  x_ob;
@@ -9,6 +10,20 @@ typedef struct _bendout{
 }t_bendout;
 
 static t_class *bendout_class;
+
+void bendout_midiout(int value){
+#ifdef USEAPI_ALSA
+  if(sys_midiapi == API_ALSA)
+      sys_alsa_putmidibyte(0, value);
+  else
+#endif
+    sys_putmidibyte(0, value);
+}
+
+static void bendout_output(t_bendout *x, t_float f){
+    outlet_float(((t_object *)x)->ob_outlet, f);
+    bendout_midiout(f);
+}
 
 static void bendout_float(t_bendout *x, t_float f){
     t_int bend;
@@ -20,9 +35,9 @@ static void bendout_float(t_bendout *x, t_float f){
     else
         bend = (t_int)(f * 8191) + 8192;
     if(bend >= 0 && bend <= 16383){
-        outlet_float(((t_object *)x)->ob_outlet, 224 + ((channel-1) & 0x0F));
-        outlet_float(((t_object *)x)->ob_outlet, bend & 0x7F);
-        outlet_float(((t_object *)x)->ob_outlet, bend >> 7);
+        bendout_output(x, 224 + ((channel-1) & 0x0F));
+        bendout_output(x, bend & 0x7F);
+        bendout_output(x,  bend >> 7);
     }
 }
 

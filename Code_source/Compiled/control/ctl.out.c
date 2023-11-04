@@ -1,7 +1,7 @@
 // porres 2018
 
 #include "m_pd.h"
-#include <string.h>
+#include "s_stuff.h"
 
 typedef struct _ctlout{
     t_object  x_ob;
@@ -10,6 +10,20 @@ typedef struct _ctlout{
 }t_ctlout;
 
 static t_class *ctlout_class;
+
+void ctlout_midiout(int value){
+#ifdef USEAPI_ALSA
+  if(sys_midiapi == API_ALSA)
+      sys_alsa_putmidibyte(0, value);
+  else
+#endif
+    sys_putmidibyte(0, value);
+}
+
+static void ctlout_output(t_ctlout *x, t_float f){
+    outlet_float(((t_object *)x)->ob_outlet, f);
+    ctlout_midiout(f);
+}
 
 static void ctlout_float(t_ctlout *x, t_float f){
     if(f >= 0 && f <= 127){
@@ -22,10 +36,9 @@ static void ctlout_float(t_ctlout *x, t_float f){
             x->x_n = 0;
         if(x->x_n > 127)
             x->x_n = 127;
-//        post("floar input => channel = %d, x->x_n = %f", channel, x->x_n);
-        outlet_float(((t_object *)x)->ob_outlet, 176 + ((channel-1) & 0x0F));
-        outlet_float(((t_object *)x)->ob_outlet, (t_int)x->x_n);
-        outlet_float(((t_object *)x)->ob_outlet, (t_int)f);
+        ctlout_output(x, 176 + ((channel-1) & 0x0F));
+        ctlout_output(x,  (t_int)x->x_n);
+        ctlout_output(x, (t_int)f);
     }
 }
 
@@ -45,7 +58,6 @@ static void *ctlout_new(t_symbol *s, t_int ac, t_atom *av){
             x->x_channel = (t_int)atom_getfloatarg(0, ac, av);
         }
     }
-//    post("x->x_n = %f, x->x_channel = %d", x->x_n, x->x_channel);
     floatinlet_new((t_object *)x, &x->x_n);
     floatinlet_new((t_object *)x, &x->x_channel);
     outlet_new((t_object *)x, &s_float);

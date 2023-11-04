@@ -1,6 +1,7 @@
 // porres 2018-2023
 
 #include "m_pd.h"
+#include "s_stuff.h"
 
 typedef struct _noteout{
     t_object  x_obj;
@@ -13,6 +14,20 @@ typedef struct _noteout{
 }t_noteout;
 
 static t_class *noteout_class;
+
+void noteout_midiout(int value){
+#ifdef USEAPI_ALSA
+  if(sys_midiapi == API_ALSA)
+      sys_alsa_putmidibyte(0, value);
+  else
+#endif
+    sys_putmidibyte(0, value);
+}
+
+static void noteout_output(t_noteout *x, t_float f){
+    outlet_float(((t_object *)x)->ob_outlet, f);
+    noteout_midiout(f);
+}
 
 static void noteout_float(t_noteout *x, t_float f){
     int pitch = (int)f;
@@ -31,9 +46,9 @@ static void noteout_float(t_noteout *x, t_float f){
         int status;
         if(x->x_rel){
             status = 0x80;
-            outlet_float(((t_object *)x)->ob_outlet, status + ((channel-1)));
-            outlet_float(((t_object *)x)->ob_outlet, pitch);
-            outlet_float(((t_object *)x)->ob_outlet, velocity);
+            noteout_output(x, status + ((channel-1)));
+            noteout_output(x, pitch);
+            noteout_output(x, velocity);
         }
         else if(x->x_both){
             int vel;
@@ -47,15 +62,15 @@ static void noteout_float(t_noteout *x, t_float f){
             }
             else
                 return;
-            outlet_float(((t_object *)x)->ob_outlet, status + ((channel-1)));
-            outlet_float(((t_object *)x)->ob_outlet, pitch);
-            outlet_float(((t_object *)x)->ob_outlet, vel);
+            noteout_output(x, status + ((channel-1)));
+            noteout_output(x, pitch);
+            noteout_output(x, vel);
         }
         else{
             status = 0x90;
-            outlet_float(((t_object *)x)->ob_outlet, status + ((channel-1)));
-            outlet_float(((t_object *)x)->ob_outlet, pitch);
-            outlet_float(((t_object *)x)->ob_outlet, velocity);
+            noteout_output(x, status + ((channel-1)));
+            noteout_output(x, pitch);
+            noteout_output(x, velocity);
         }
     }
 }

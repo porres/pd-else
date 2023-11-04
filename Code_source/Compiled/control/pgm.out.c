@@ -1,7 +1,7 @@
 // porres 2018
 
 #include "m_pd.h"
-#include <string.h>
+#include "s_stuff.h"
 
 typedef struct _pgmout{
     t_object  x_ob;
@@ -11,13 +11,27 @@ typedef struct _pgmout{
 
 static t_class *pgmout_class;
 
+void pgmout_midiout(int value){
+#ifdef USEAPI_ALSA
+  if(sys_midiapi == API_ALSA)
+      sys_alsa_putmidibyte(0, value);
+  else
+#endif
+    sys_putmidibyte(0, value);
+}
+
+static void pgmout_output(t_pgmout *x, t_float f){
+    outlet_float(((t_object *)x)->ob_outlet, f);
+    pgmout_midiout(f);
+}
+
 static void pgmout_float(t_pgmout *x, t_float f){
     if(f >= 0 && f <= 127){
         t_int channel = (int)x->x_channel;
         if(channel <= 0)
             channel = 1;
-        outlet_float(((t_object *)x)->ob_outlet, 192 + ((channel-1) & 0x0F));
-        outlet_float(((t_object *)x)->ob_outlet, (t_int)f);
+        pgmout_output(x, 192 + ((channel-1) & 0x0F));
+        pgmout_output(x, (t_int)f);
     }
 }
 
@@ -47,6 +61,6 @@ static void *pgmout_new(t_symbol *s, t_int ac, t_atom *av){
 
 void setup_pgm0x2eout(void){
     pgmout_class = class_new(gensym("pgm.out"), (t_newmethod)pgmout_new,
-            0, sizeof(t_pgmout), 0, A_GIMME, 0);
+        0, sizeof(t_pgmout), 0, A_GIMME, 0);
     class_addfloat(pgmout_class, pgmout_float);
 }
