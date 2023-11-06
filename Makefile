@@ -430,10 +430,10 @@ sfz-clean:
 .PHONY: circuit
 
 circuit:
-	cd Code_source/Compiled/audio/circuit~ && ./build.sh
+	$(MAKE) -C Code_source/Compiled/audio/circuit~ install extension=$(extension) installpath="$(abspath $(PDLIBDIR))/else"
 
 circuit-clean:
-	rm -rf Code_source/Compiled/audio/circuit~/build
+	$(MAKE) -C Code_source/Compiled/audio/circuit~ clean
 
 install: installplus
 
