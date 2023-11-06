@@ -11,7 +11,7 @@ XINCLUDE = \
     -I./Source \
     ${empty}
 
-cflags = ${XINCLUDE} -I .
+cflags += -std=c++1z ${XINCLUDE} -I .
     
 circuit~.class.sources = \
     ./Libraries/AMD/amd_1.c \
