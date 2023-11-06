@@ -1,4 +1,4 @@
-#N canvas 306 62 914 548 12;
+#N canvas 306 62 932 713 12;
 #X declare -path else;
 #X obj 116 260 else;
 #X obj 93 27 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
@@ -35,3 +35,9 @@
 #X text 488 303 I post lots of Pd stuff in my instagram \, you can folow me if you like for some ELSE news and more stuff:, f 48;
 #X obj 550 403 else/openfile -h https://www.instagram.com/el.locus.solus/;
 #X text 490 382 sometimes it is named as:;
+#X text 278 644 Bug/Issue report:;
+#X text 279 611 ELSE's repository;
+#X obj 522 578 else/openfile -h All_objects.pd;
+#X obj 410 611 else/openfile -h http://www.github.com/porres/pd-else;
+#X obj 410 644 else/openfile -h https://github.com/porres/pd-issues;
+#X text 277 578 All objects in the ELSE library:;
