@@ -183,7 +183,7 @@ jobs:
        name: Build circuit~
        shell: msys2 {0}
        run: |
-         make PDDIR=./pd PDLIBDIR=./out extension=m_amd64 circuit
+         make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 circuit
          
      - if: runner.os == 'Windows'
        name: Create Library Folder
