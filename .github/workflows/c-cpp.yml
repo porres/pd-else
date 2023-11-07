@@ -76,6 +76,11 @@ jobs:
       run: |
         cd ./Code_source/Compiled/audio/plaits~
         make PDINCLUDEDIR=${{github.workspace}}/pure-data/src extension=l_amd64
+        
+    - name: Build circuit~
+      run: |
+        cd ./Code_source/Compiled/audio/circuit~
+        make PDINCLUDEDIR=${{github.workspace}}/pure-data/src extension=l_amd64
  
     - name: Build pd-else
       run: | 
@@ -90,6 +95,7 @@ jobs:
         cp -r ./Code_source/Abstractions/extra_abs/* ./else-Linux
         cp -r ./Documentation/Live-Electronics-Tutorial ./else-Linux
         cp -r ./Code_source/Compiled/audio/plaits~/*.l_amd64 ./else-Linux
+        cp -r ./Code_source/Compiled/audio/circuit~/*.l_amd64 ./else-Linux
         cp -r ./Code_source/Compiled/extra_source/*.tcl ./else-Linux
         cp -r ./Code_source/Compiled/audio/sfz~/sfizz/build/pd/sfizz/sfizz.pd_linux ./else-Linux
         mv ./else-Linux/sfizz.pd_linux ./else-Linux/sfz~.l_amd64
@@ -174,6 +180,12 @@ jobs:
          make PDDIR=./pd PDLIBDIR=./out extension=m_amd64 sfz-install
          
      - if: runner.os == 'Windows'
+       name: Build circuit~
+       shell: msys2 {0}
+       run: |
+         make PDDIR=./pd PDLIBDIR=./out extension=m_amd64 circuit
+         
+     - if: runner.os == 'Windows'
        name: Create Library Folder
        shell: msys2 {0}
        run: |
@@ -221,6 +233,11 @@ jobs:
         cd ./Code_source/Compiled/audio/plaits~
         make extension=d_amd64
 
+    - name: Build circuit~
+      run: |
+        cd ./Code_source/Compiled/audio/circuit~
+        make extension=d_amd64
+        
     - name: Build pd-else
       run: |
         make extension=d_amd64
@@ -230,6 +247,7 @@ jobs:
         mkdir else-MacOS
         cp *.d_amd64 ./else-MacOS
         cp ./Code_source/Compiled/audio/plaits~/*.d_amd64 ./else-MacOS
+        cp ./Code_source/Compiled/audio/circuit~/*.d_amd64 ./else-MacOS
         cp -r ./Code_source/Compiled/audio/sfz~/sfizz/build/pd/sfizz/*.pd_darwin ./else-MacOS
         mv ./else-MacOS/sfizz.pd_darwin ./else-MacOS/sfz~.d_amd64
         cp -r ./Code_source/Compiled/audio/sfont~/sfont-compiled/* ./else-MacOS
@@ -273,6 +291,10 @@ jobs:
         cd ./Code_source/Compiled/audio/plaits~
         make extension=d_arm64 
 
+    - name: Build circuit~
+      run: |
+        cd ./Code_source/Compiled/audio/circuit~
+        make extension=d_arm64
 
     - name: Build pd-else
       run: |
@@ -283,6 +305,7 @@ jobs:
         mkdir else-MacOS
         cp *.d_arm64 ./else-MacOS
         cp ./Code_source/Compiled/audio/plaits~/*.d_arm64 ./else-MacOS
+        cp ./Code_source/Compiled/audio/circuit~/*.d_arm64 ./else-MacOS
         cp -r ./Code_source/Compiled/audio/sfz~/sfizz/build/pd/sfizz/*.pd_darwin ./else-MacOS
         mv ./else-MacOS/sfizz.pd_darwin ./else-MacOS/sfz~.d_arm64
         cp -r ./Code_source/Compiled/audio/sfont~/sfont-compiled/* ./else-MacOS
