@@ -228,6 +228,8 @@
 #X restore 129 138 pd legato;
 #X obj 54 313 else/glide~;
 #X obj 189 320 else/changed~;
+#X floatatom 264 187 5 0 0 0 - - - 0;
+#X obj 222 287 else/impseq~;
 #X connect 0 0 16 0;
 #X connect 1 0 15 1;
 #X connect 5 0 19 0;
@@ -235,6 +237,7 @@
 #X connect 7 0 8 0;
 #X connect 10 0 11 0;
 #X connect 11 0 12 0;
+#X connect 11 0 22 0;
 #X connect 11 1 13 0;
 #X connect 12 0 19 1;
 #X connect 13 0 14 0;
@@ -244,5 +247,7 @@
 #X connect 16 0 15 0;
 #X connect 18 0 7 0;
 #X connect 18 1 10 0;
+#X connect 18 1 21 0;
 #X connect 19 0 6 0;
 #X connect 20 0 9 0;
+#X connect 22 0 20 0;
