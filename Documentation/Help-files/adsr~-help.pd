@@ -342,7 +342,7 @@
 #X obj 53 317 else/out.mc~;
 #X obj 208 101 else/randpulse2~ 1.5;
 #X text 26 29 If [adsr~] has a multichannel left input \, it outputs the same number of channels \, one for each gate signal. Secondary inlets must have the same number of channels if bigger than 1 \, in which case each channel gets its own parameter \, otherwise the single channel input is copied to all channels., f 68;
-#X obj 52 177 else/sine~ -f 440 550;
+#X obj 52 177 else/sine~ -mc 440 550;
 #X connect 0 0 5 0;
 #X connect 1 0 0 1;
 #X connect 1 0 2 0;
