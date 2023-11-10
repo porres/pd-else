@@ -62,7 +62,7 @@ static void touchin_free(t_touchin *x){
     pd_unbind(&x->x_obj.ob_pd, gensym("#midiin"));
 }
 
-static void *touchin_new(t_symbol *s, t_int ac, t_atom *av){
+static void *touchin_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_touchin *x = (t_touchin *)pd_new(touchin_class);
     x->x_atouch =  x->x_ready = x->x_pressure = 0;

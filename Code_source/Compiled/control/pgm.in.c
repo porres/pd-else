@@ -60,7 +60,7 @@ static void pgmin_free(t_pgmin *x){
     pd_unbind(&x->x_obj.ob_pd, gensym("#midiin"));
 }
 
-static void *pgmin_new(t_symbol *s, t_int ac, t_atom *av){
+static void *pgmin_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_pgmin *x = (t_pgmin *)pd_new(pgmin_class);
     x->x_pgm = 0;

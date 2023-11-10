@@ -82,7 +82,7 @@ static void ptouchin_free(t_ptouchin *x){
     pd_unbind(&x->x_obj.ob_pd, gensym("#midiin"));
 }
 
-static void *ptouchin_new(t_symbol *s, t_int ac, t_atom *av){
+static void *ptouchin_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_ptouchin *x = (t_ptouchin *)pd_new(ptouchin_class);
     x->x_ptouch =  x->x_ready = x->x_key = 0;

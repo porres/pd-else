@@ -42,7 +42,7 @@ static void ctlout_float(t_ctlout *x, t_float f){
     }
 }
 
-static void *ctlout_new(t_symbol *s, t_int ac, t_atom *av){
+static void *ctlout_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_ctlout *x = (t_ctlout *)pd_new(ctlout_class);
     x->x_channel = 1,

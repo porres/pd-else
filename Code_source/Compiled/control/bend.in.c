@@ -86,7 +86,7 @@ static void bendin_free(t_bendin *x){
     pd_unbind(&x->x_obj.ob_pd, gensym("#midiin"));
 }
 
-static void *bendin_new(t_symbol *s, t_int ac, t_atom *av){
+static void *bendin_new(t_symbol *s, int ac, t_atom *av){
     t_bendin *x = (t_bendin *)pd_new(bendin_class);
     t_symbol *curarg = s; // get rid of warning
     t_int channel = 0;

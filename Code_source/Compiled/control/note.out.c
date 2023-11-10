@@ -75,7 +75,7 @@ static void noteout_float(t_noteout *x, t_float f){
     }
 }
 
-static void *noteout_new(t_symbol *s, t_int ac, t_atom *av){
+static void *noteout_new(t_symbol *s, int ac, t_atom *av){
     t_noteout *x = (t_noteout *)pd_new(noteout_class);
     s = NULL; // get rid of warning
     float channel = 1;
