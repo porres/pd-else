@@ -130,7 +130,7 @@ static void notein_free(t_notein *x){
     pd_unbind(&x->x_obj.ob_pd, gensym("#midiin"));
 }
 
-static void *notein_new(t_symbol *s, t_int ac, t_atom *av){
+static void *notein_new(t_symbol *s, int ac, t_atom *av){
     t_notein *x = (t_notein *)pd_new(notein_class);
     t_symbol *curarg = NULL;
     curarg = s; // get rid of warning

@@ -38,7 +38,7 @@ static void ptouchout_float(t_ptouchout *x, t_float f){
     }
 }
 
-static void *ptouchout_new(t_symbol *s, t_int ac, t_atom *av){
+static void *ptouchout_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_ptouchout *x = (t_ptouchout *)pd_new(ptouchout_class);
     t_float channel = 1;

@@ -35,7 +35,7 @@ static void pgmout_float(t_pgmout *x, t_float f){
     }
 }
 
-static void *pgmout_new(t_symbol *s, t_int ac, t_atom *av){
+static void *pgmout_new(t_symbol *s, int ac, t_atom *av){
     t_pgmout *x = (t_pgmout *)pd_new(pgmout_class);
     t_symbol *curarg = NULL;
     curarg = s; // get rid of warning

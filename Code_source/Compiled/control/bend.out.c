@@ -41,7 +41,7 @@ static void bendout_float(t_bendout *x, t_float f){
     }
 }
 
-static void *bendout_new(t_symbol *s, t_int ac, t_atom *av){
+static void *bendout_new(t_symbol *s, int ac, t_atom *av){
     t_bendout *x = (t_bendout *)pd_new(bendout_class);
     t_symbol *curarg = s; // get rid of warning
     floatinlet_new((t_object *)x, &x->x_channel);
