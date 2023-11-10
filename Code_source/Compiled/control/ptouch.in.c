@@ -106,7 +106,7 @@ static void *ptouchin_new(t_symbol *s, int ac, t_atom *av){
 
 void setup_ptouch0x2ein(void){
     ptouchin_class = class_new(gensym("ptouch.in"), (t_newmethod)ptouchin_new,
-        (t_method)ptouchin_free, sizeof(t_ptouchin), 0, A_DEFFLOAT, 0);
+        (t_method)ptouchin_free, sizeof(t_ptouchin), 0, A_GIMME, 0);
     class_addfloat(ptouchin_class, ptouchin_float);
     class_addlist(ptouchin_class, ptouchin_list);
     class_addmethod(ptouchin_class, (t_method)ptouchin_ext, gensym("ext"), A_DEFFLOAT, 0);
