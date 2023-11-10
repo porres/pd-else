@@ -87,7 +87,7 @@ static void *pgmin_new(t_symbol *s, int ac, t_atom *av){
 
 void setup_pgm0x2ein(void){
     pgmin_class = class_new(gensym("pgm.in"), (t_newmethod)pgmin_new,
-        (t_method)pgmin_free, sizeof(t_pgmin), 0, A_DEFFLOAT, 0);
+        (t_method)pgmin_free, sizeof(t_pgmin), 0, A_GIMME, 0);
     class_addfloat(pgmin_class, pgmin_float);
     class_addlist(pgmin_class, pgmin_list);
     class_addmethod(pgmin_class, (t_method)pgmin_ext, gensym("ext"), A_DEFFLOAT, 0);
