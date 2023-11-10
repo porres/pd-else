@@ -194,8 +194,8 @@ static void *allpass_rev_new(t_symbol *s, int argc, t_atom *argv){
     x->x_xbuf = x->x_ffstack;
     allpass_rev_clear(x);
 /////////////////////////////////////////////////////////////////////////////////////
-    float init_maxdelay;
-    float init_coeff;
+    float init_maxdelay = 0.0f;
+    float init_coeff = 0.0f;
     int argnum = 0;
     while(argc > 0){
         if(argv -> a_type == A_FLOAT){ //if current argument is a float
