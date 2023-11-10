@@ -260,7 +260,7 @@ static void _bang_phasor(t_blimpctl *ctl, t_float freq){
 static t_int *blimp_perform_imp(t_int *w){
     t_blimp* x        = (t_blimp*)(w[1]);
     t_blimpctl *ctl   = (t_blimpctl *)(w[2]);
-    t_int n           = (t_int)(w[3]);
+    int n             = (int)(w[3]);
     t_float *freq     = (t_float *)(w[4]);
     t_float *out      = (t_float *)(w[5]);
     // set postfilter cutoff
