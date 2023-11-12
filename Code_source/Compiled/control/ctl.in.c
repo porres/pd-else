@@ -89,7 +89,7 @@ static void ctlin_free(t_ctlin *x){
     pd_unbind(&x->x_obj.ob_pd, gensym("#midiin"));
 }
 
-static void *ctlin_new(t_symbol *s, t_int ac, t_atom *av){
+static void *ctlin_new(t_symbol *s, int ac, t_atom *av){
     t_ctlin *x = (t_ctlin *)pd_new(ctlin_class);
     t_symbol *curarg = NULL;
     curarg = s; // get rid of warning
