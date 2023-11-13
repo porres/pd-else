@@ -332,7 +332,7 @@ static void _bang_phasor(t_bloscctl *ctl, t_float freq){
     t_float *freq2     = (t_float *)(w[4]);
     t_float *out      = (t_float *)(w[5]);
     t_bloscctl *ctl  = (t_bloscctl *)(w[1]);
-    t_int n           = (t_int)(w[2]);
+    int n             = (int)(w[2]);
     set_butter_hp(ctl->c_butter, 0.85 * (*freq / sys_getsr()));
     while(n--){
         t_float frequency = *freq++;
@@ -354,7 +354,7 @@ static void _bang_phasor(t_bloscctl *ctl, t_float freq){
 static t_int *blosc_perform_imp(t_int *w){
     t_blosc* x        = (t_blosc*)(w[1]);
     t_bloscctl *ctl   = (t_bloscctl *)(w[2]);
-    t_int n           = (t_int)(w[3]);
+    int n             = (int)(w[3]);
     t_float *freq     = (t_float *)(w[4]);
     t_float *out      = (t_float *)(w[5]);
     // set postfilter cutoff
