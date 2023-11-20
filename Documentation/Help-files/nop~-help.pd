@@ -22,7 +22,6 @@
 #X obj 139 244 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 181 244 signal;
 #X text 181 283 signal;
-#X text 61 86 [nop~] does no operation \, that is \, it does nothing. It's mostly useful for managing singal cords in your patch.;
 #X obj 217 167 else/nop~;
 #X obj 217 137 sig~ 3;
 #X obj 217 199 else/numbox~ 6 10 100 #C0C0C4 #440008 10 0 0 0;
@@ -30,5 +29,6 @@
 #X text 230 244 - signal input;
 #X text 230 283 - signal output;
 #X text 195 316 (none);
-#X connect 20 0 22 0;
-#X connect 21 0 20 0;
+#X text 61 86 [nop~] does no operation \, that is \, it does nothing. It's mostly useful for managing signal cords in your patch.;
+#X connect 19 0 21 0;
+#X connect 20 0 19 0;
