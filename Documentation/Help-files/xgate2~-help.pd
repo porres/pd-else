@@ -1,105 +1,40 @@
-#N canvas 503 23 561 542 10;
-#X obj 4 365 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 436 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 469 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 88 445 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 88 413 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X text 151 412 signal;
-#X text 151 445 signal;
-#X obj 2 3 cnv 15 301 42 empty empty xgate2~ 20 20 2 37 #e0e0e0 #000000
-0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#N canvas 506 26 561 589 10;
+#X obj 4 399 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 4 474 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 4 509 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 128 483 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 128 428 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X text 181 428 signal;
+#X text 181 483 signal;
+#X obj 2 3 cnv 15 301 42 empty empty xgate2~ 20 20 2 37 #e0e0e0 #000000 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 23 40 cnv 4 4 4 empty empty Route 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 151 40 cnv 4 4 4 empty empty with 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 23 40 cnv 4 4 4 empty empty Route 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 151 40 cnv 4 4 4 empty empty with 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 76 40 cnv 4 4 4 empty empty an 0 28 2 18 #e0e0e0 #000000 0;
-#X obj 195 40 cnv 4 4 4 empty empty crossfade 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 88 373 cnv 17 3 33 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 4 515 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X text 151 373 signal;
-#X text 109 391 index <float>;
-#X text 197 391 - <1> sets to indexed mode \, <0> to non-indexed (default)
-;
-#X text 110 491 2) float - <1> sets to indexed mode (default) <0> sets
-to non-indexed, f 69;
-#N canvas 876 133 462 559 modes 0;
-#X text 51 131 In non-indexed mode \, the selection input values are
-from 0 (first channel) to 1 (last channel).;
-#X text 243 286 set to non-indexed mode with the second argument,
-f 24;
-#X msg 64 226 index \$1;
-#X obj 64 203 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
-#000000 0 1;
-#X text 51 84 In the default mode of [xselect2~] (indexed) \, the integer
-part represents the channel (indexed from 0) and the fractional part
-the crossfading point.;
-#X obj 137 182 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
-#000000 #000000 0 1;
-#X floatatom 134 205 0 0 0 0 - - - 0;
-#X obj 134 230 else/float2sig~ 10;
-#X text 152 182 select channels;
-#X text 49 24 You can set the operation mode of [xgate2~] with the
-second argument \, 1 sets to indexed mode (default) and 0 sets to non-indexed
-mode. You can also use the index message to change between modes.;
-#X obj 134 288 else/xgate2~ 4 0;
-#X obj 227 257 osc~ 440;
-#X obj 131 326 else/meter4~;
-#X obj 126 484 else/out4~;
-#X connect 2 0 10 0;
-#X connect 3 0 2 0;
-#X connect 5 0 6 0;
-#X connect 6 0 7 0;
-#X connect 7 0 10 0;
-#X connect 10 0 12 0;
-#X connect 10 1 12 1;
-#X connect 10 2 12 2;
-#X connect 10 3 12 3;
-#X connect 11 0 10 1;
-#X connect 12 0 13 0;
-#X connect 12 1 13 1;
-#X connect 12 2 13 2;
-#X connect 12 3 13 3;
-#X restore 483 308 pd modes;
-#X obj 101 40 cnv 4 4 4 empty empty input 0 28 2 18 #e0e0e0 #000000
-0;
-#X text 110 475 1) float - number of output channels (default/min 2
-\, max 500), f 69;
-#X text 197 445 - routed outputs with crossfade;
-#X obj 190 125 hsl 128 15 0 3 0 0 empty empty empty -2 -8 0 10 #dcdcdc
-#000000 #000000 0 1;
-#X floatatom 187 145 0 0 0 0 - - - 0;
-#X obj 187 189 else/xgate2~ 4;
-#X text 61 86 [xgate2~] routes an input signal to 'n' specified outlets
-with equal power crossfade between two adjacent channels.;
-#X obj 268 158 noise~;
-#X text 190 125 select output channel;
+#X obj 195 40 cnv 4 4 4 empty empty crossfade 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 128 406 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 4 557 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X text 181 406 signal;
+#X obj 101 40 cnv 4 4 4 empty empty input 0 28 2 18 #e0e0e0 #000000 0;
+#X text 110 518 1) float - number of output channels (default/min 2 \, max 500), f 69;
+#X text 227 483 - routed outputs with crossfade;
+#X obj 237 152 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X floatatom 234 172 0 0 0 0 - - - 0;
+#X obj 194 216 else/xgate2~ 4;
+#X obj 168 176 noise~;
+#X text 300 193 select output channel;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
-#fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -168,8 +103,7 @@ with equal power crossfade between two adjacent channels.;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
-0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -181,8 +115,7 @@ with equal power crossfade between two adjacent channels.;
 #X obj 136 86 snapshot~;
 #X obj 91 52 del 5;
 #X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 74 126 switch~;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -201,38 +134,44 @@ with equal power crossfade between two adjacent channels.;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X text 197 412 - input channel to be routed;
-#X text 197 373 - channel selection;
-#X obj 187 167 sig~;
-#X obj 180 219 else/meter4~;
-#N canvas 960 163 307 506 example 0;
-#X obj 77 250 else/meter4~;
-#X obj 72 408 else/out4~;
-#X obj 166 182 noise~;
-#X obj 85 213 else/xgate2~ 4;
-#X obj 85 144 else/rand.i~ 0 3;
-#X text 58 33 An example on how to change the route output channel
-at signal rate., f 28;
-#X obj 85 112 else/tempo~ -on 60 100;
-#X obj 85 177 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X text 227 406 - channel selection;
+#X obj 187 244 else/meter4~;
+#N canvas 881 158 307 506 example 0;
+#X obj 84 235 else/meter4~;
+#X obj 79 393 else/out4~;
+#X obj 61 134 noise~;
+#X obj 92 198 else/xgate2~ 4;
+#X obj 132 115 else/rand.i~ 0 3;
+#X text 30 31 An example on how to change the route output channel at signal rate., f 37;
+#X obj 132 87 else/tempo~ -on 60 100;
+#X obj 132 142 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 132 168 /~ 4;
 #X connect 0 0 1 0;
 #X connect 0 1 1 1;
 #X connect 0 2 1 2;
 #X connect 0 3 1 3;
-#X connect 2 0 3 1;
+#X connect 2 0 3 0;
 #X connect 3 0 0 0;
 #X connect 3 1 0 1;
 #X connect 3 2 0 2;
 #X connect 3 3 0 3;
 #X connect 4 0 7 0;
 #X connect 6 0 4 0;
-#X connect 7 0 3 0;
-#X restore 471 330 pd example;
-#X connect 29 0 30 0;
-#X connect 30 0 38 0;
-#X connect 31 0 39 0;
-#X connect 31 1 39 1;
-#X connect 31 2 39 2;
-#X connect 31 3 39 3;
-#X connect 33 0 31 1;
-#X connect 38 0 31 0;
+#X connect 7 0 8 0;
+#X connect 8 0 3 1;
+#X restore 465 350 pd example;
+#X obj 234 194 else/f2s~;
+#X text 110 534 2) float - spread (default 1), f 69;
+#X text 227 428 - output position from 0-1;
+#X obj 128 450 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X text 181 450 signal;
+#X text 227 450 - spread paraeter;
+#X text 61 94 [xgate2~] routes an input signal to 'n' specified outlets with crossfading between adjacent channels according to a spread parameter. A spread value of 1 is like an equal power crossfade between 2 channels., f 63;
+#X connect 25 0 26 0;
+#X connect 26 0 34 0;
+#X connect 27 0 32 0;
+#X connect 27 1 32 1;
+#X connect 27 2 32 2;
+#X connect 27 3 32 3;
+#X connect 28 0 27 0;
+#X connect 34 0 27 1;
