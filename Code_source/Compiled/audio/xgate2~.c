@@ -9,6 +9,7 @@ typedef struct _xgate2{
     t_object    x_obj;
     t_float    *x_ch_select;    // channel selector signal
     t_float    *x_spread;       // spread signal
+    t_int       x_index;
     t_inlet    *x_inlet_spread;
     int         x_n_outlets;    // outlets excluding main signal
     t_float   **x_ovecs;        // copying from matrix
@@ -16,6 +17,10 @@ typedef struct _xgate2{
 }t_xgate2;
 
 static t_class *xgate2_class;
+
+static void xgate2_index(t_xgate2 *x, t_floatarg f){
+    x->x_index = f != 0;
+}
 
 static t_int *xgate2_perform(t_int *w){
     t_xgate2 *x = (t_xgate2 *)(w[1]);
@@ -34,7 +39,8 @@ static t_int *xgate2_perform(t_int *w){
             spread = 0.1;
         spread *= 2;
         float range = x->x_n_outlets / spread;
-        pos *= n_outlets;
+        if(!x->x_index)
+            pos *= n_outlets;
         if(pos < 0)
             pos = 0;
         else if(pos > n_outlets)
@@ -67,10 +73,21 @@ static void *xgate2_new(t_symbol *s, int ac, t_atom *av){
     t_float n_outlets = 2; //inlets not counting xgate2 input
     float spread = 1;
     if(ac){
-        n_outlets = atom_getfloat(av);
-        ac--, av++;
-        if(ac)
-            spread = atom_getfloat(av);
+        if(av->a_type == A_SYMBOL){
+            t_symbol *curarg = atom_getsymbol(av);
+            if(curarg == gensym("-index")){
+                x->x_index = 1;
+                ac--, av++;
+            }
+            else
+                goto errstate;
+        };
+        if(ac){
+            n_outlets = atom_getfloat(av);
+            ac--, av++;
+            if(ac)
+                spread = atom_getfloat(av);
+        }
     };
     if(n_outlets < 2)
         n_outlets = 2;
@@ -84,6 +101,9 @@ static void *xgate2_new(t_symbol *s, int ac, t_atom *av){
     for(int i = 0; i < n_outlets; i++)
         outlet_new((t_object *)x, &s_signal);
     return(x);
+    errstate:
+        pd_error(x, "[xgate2~]: improper args");
+        return(NULL);
 }
 
 void * xgate2_free(t_xgate2 *x){
@@ -97,4 +117,5 @@ void xgate2_tilde_setup(void){
         (t_method)xgate2_free, sizeof(t_xgate2), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(xgate2_class, nullfn, gensym("signal"), 0);
     class_addmethod(xgate2_class, (t_method)xgate2_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(xgate2_class, (t_method)xgate2_index, gensym("index"), A_FLOAT, 0);
 }
