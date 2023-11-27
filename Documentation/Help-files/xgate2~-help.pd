@@ -1,4 +1,4 @@
-#N canvas 612 23 564 640 10;
+#N canvas 310 28 564 640 10;
 #X obj 4 399 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 492 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 563 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -25,7 +25,6 @@
 #X obj 4 611 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
 #X text 164 406 signal;
 #X obj 97 40 cnv 4 4 4 empty empty input 0 28 2 18 #e0e0e0 #000000 0;
-#X text 115 572 1) float - number of output channels (default/min 2 \, max 500), f 69;
 #X text 207 501 - routed outputs with crossfade;
 #X obj 258 150 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X floatatom 255 170 8 0 0 0 - - - 0;
@@ -222,12 +221,13 @@
 #X text 32 283 see also:;
 #X obj 28 335 else/xgate~;
 #X obj 28 309 else/xgate2.mc~;
-#X obj 28 361 else/xselect~;
-#X connect 24 0 25 0;
-#X connect 25 0 32 0;
-#X connect 26 0 30 0;
-#X connect 26 1 30 1;
-#X connect 26 2 30 2;
-#X connect 26 3 30 3;
-#X connect 27 0 26 0;
-#X connect 32 0 26 1;
+#X text 115 572 1) float - number of output channels (default/min 2 \, max 512), f 69;
+#X obj 28 361 else/xselect2~;
+#X connect 23 0 24 0;
+#X connect 24 0 31 0;
+#X connect 25 0 29 0;
+#X connect 25 1 29 1;
+#X connect 25 2 29 2;
+#X connect 25 3 29 3;
+#X connect 26 0 25 0;
+#X connect 31 0 25 1;
