@@ -17,7 +17,6 @@
 #X obj 83 330 cnv 17 3 33 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 346 145 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X floatatom 343 167 11 0 0 0 - - - 0;
-#X text 191 330 - selected channel with crossfade;
 #X text 145 330 signal;
 #X text 361 145 select channels;
 #X text 103 348 index <float>;
@@ -95,7 +94,6 @@
 #X obj 4 458 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
 #X text 151 466 -index: sets to indexed mode, f 29;
 #X text 115 502 1) float - number of output channels (default/min 2 \, max 512), f 69;
-#X text 58 86 [xselect2~] selectsfrom 'n' inputs with crossfading between adjacent channels according to a spread parameter. By default we have a circular round by setting the output position from 0 to 1!, f 61;
 #N canvas 673 91 527 437 spread 0;
 #X text 53 39 The Sine/Cosine function is used for crossfading and the default spread value of 1 means the usual equal power crossfade between 2 adjacent channels \, where the mid point between the 2 channels means both have the same amplitude at square root of 0.5 (0.707107)., f 71;
 #X text 53 101 Spread values greater than 1 spreads the signal to more than 2 adjacent channels. A spread value of two will spread the input to the 2 adjacent channels (to the right and to the left) with an amplidute of the square root of 0.5! Values smaller than 1 narrows the crossfading point closer to the selected channel. A value of 0.5 provides no actual crossfading \, meaning that 2 adjacent channels get muted at the mid point. Values smaller than 0.5 are possible and it narrows down even more at the channel center., f 71;
@@ -124,10 +122,12 @@
 #X connect 14 0 11 2;
 #X connect 15 0 11 1;
 #X restore 474 258 pd spread;
+#X text 58 86 [xselect2~] selects from 'n' inputs with crossfading between adjacent channels according to a spread parameter. By default we have a circular round by setting the output position from 0 to 1!, f 61;
+#X text 191 330 - input channel to select from, f 56;
 #X connect 14 0 15 0;
-#X connect 15 0 38 0;
-#X connect 22 0 6 0;
-#X connect 35 0 22 0;
-#X connect 36 0 22 2;
-#X connect 37 0 22 1;
-#X connect 38 0 22 3;
+#X connect 15 0 37 0;
+#X connect 21 0 6 0;
+#X connect 34 0 21 0;
+#X connect 35 0 21 2;
+#X connect 36 0 21 1;
+#X connect 37 0 21 3;

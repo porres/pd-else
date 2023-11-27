@@ -263,6 +263,7 @@ xmod2~.class.sources := Code_source/Compiled/audio/xmod2~.c
 xselect~.class.sources := Code_source/Compiled/audio/xselect~.c
 xselect.mc~.class.sources := Code_source/Compiled/audio/xselect.mc~.c
 xselect2~.class.sources := Code_source/Compiled/audio/xselect2~.c
+xselect2.mc~.class.sources := Code_source/Compiled/audio/xselect2.mc~.c
 wrap2.class.sources := Code_source/Compiled/control/wrap2.c
 wrap2~.class.sources := Code_source/Compiled/audio/wrap2~.c
 zerocross~.class.sources := Code_source/Compiled/audio/zerocross~.c
