@@ -256,6 +256,7 @@ xfade~.class.sources := Code_source/Compiled/audio/xfade~.c
 xfade.mc~.class.sources := Code_source/Compiled/audio/xfade.mc~.c
 xgate~.class.sources := Code_source/Compiled/audio/xgate~.c
 xgate.mc~.class.sources := Code_source/Compiled/audio/xgate.mc~.c
+xgate2.mc~.class.sources := Code_source/Compiled/audio/xgate2.mc~.c
 xgate2~.class.sources := Code_source/Compiled/audio/xgate2~.c
 xmod~.class.sources := Code_source/Compiled/audio/xmod~.c
 xmod2~.class.sources := Code_source/Compiled/audio/xmod2~.c

@@ -18,7 +18,7 @@
 #X obj 101 40 cnv 4 4 4 empty empty input 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 207 147 noise~;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -87,7 +87,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -138,7 +138,7 @@
 #X text 204 495 - routed output;
 #X text 141 543 1) float - number of outlets/channels (default 1 \, max 500);
 #X obj 195 208 else/meter4~;
-#X text 79 260 [else/meter4~] =>;
+#X text 79 230 [else/meter4~] =>;
 #X obj 195 356 else/out4~;
 #X obj 324 218 print off-status;
 #X obj 97 514 cnv 17 3 17 empty empty n+1 5 9 0 16 #dcdcdc #9c9c9c 0;
@@ -219,8 +219,8 @@
 #X connect 19 2 15 0;
 #X restore 458 331 pd status \; switch;
 #X text 61 86 [xgate~] routes between multiple outputs with equal power crossfading. It has support for multichannel signals.;
-#X text 44 341 see also:;
-#X obj 40 367 else/xgate.mc~;
+#X text 44 299 see also:;
+#X obj 40 325 else/xgate.mc~;
 #X text 134 424 signal(s);
 #X text 134 495 signal(s);
 #N canvas 728 164 449 358 multichannel 0;
@@ -231,7 +231,7 @@
 #X obj 100 223 else/s2f~;
 #X listbox 100 249 27 0 0 0 - - - 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -300,7 +300,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -345,6 +345,8 @@
 #X connect 9 0 4 0;
 #X connect 9 1 7 0;
 #X restore 429 366 pd multichannel;
+#X obj 40 352 else/xgate2~;
+#X obj 39 378 else/xselect~;
 #X connect 13 0 15 0;
 #X connect 15 0 34 0;
 #X connect 15 1 34 1;
