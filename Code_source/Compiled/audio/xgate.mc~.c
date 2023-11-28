@@ -33,6 +33,11 @@ void xgatemc_float(t_xgatemc *x, t_floatarg f){
     }
 }
 
+void xgatemc_n(t_xgatemc *x, t_floatarg f){
+    x->x_ch_outs = f < 1 ? 1 : f > MAXOUTS ? MAXOUTS : (int)f;
+    canvas_update_dsp();
+}
+
 static void xgatemc_time(t_xgatemc *x, t_floatarg f){
     double last_fade_n = x->x_n_fade;
     x->x_n_fade = (x->x_sr_khz * (f < 0 ? 0 : f)) + 1;
@@ -108,4 +113,5 @@ void setup_xgate0x2emc_tilde(void) {
     class_addmethod(xgatemc_class, nullfn, gensym("signal"), 0);
     class_addmethod(xgatemc_class, (t_method)xgatemc_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(xgatemc_class, (t_method)xgatemc_time, gensym("time"), A_FLOAT, 0);
+    class_addmethod(xgatemc_class, (t_method)xgatemc_n, gensym("n"), A_FLOAT, 0);
 }
