@@ -34,6 +34,11 @@ static void xselectmc_time(t_xselectmc *x, t_floatarg f){
     x->x_fade = f;
 }
 
+static void xselectmc_n(t_xselectmc *x, t_floatarg f){
+    x->x_n = f < 1 ? 1 : (int)f;
+    canvas_update_dsp();
+}
+
 static t_int *xselectmc_perform(t_int *w){
     t_xselectmc *x = (t_xselectmc *)(w[1]);
     t_int nblock = (t_int)(w[2]);
@@ -108,4 +113,5 @@ void setup_xselect0x2emc_tilde(void){
     class_addmethod(xselectmc_class, nullfn, gensym("signal"), 0);
     class_addmethod(xselectmc_class, (t_method)xselectmc_dsp, gensym("dsp"), 0);
     class_addmethod(xselectmc_class, (t_method)xselectmc_time, gensym("time"), A_FLOAT, 0);
+    class_addmethod(xselectmc_class, (t_method)xselectmc_n, gensym("n"), A_FLOAT, 0);
 }
