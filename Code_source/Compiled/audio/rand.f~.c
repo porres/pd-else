@@ -50,7 +50,7 @@ static t_int *randf_perform(t_int *w){
                 out_low = out_high;
                 out_high = temp;
             }
-            int range = out_high - out_low; // Range
+            float range = out_high - out_low; // Range
             float trig = chs == 1 ? in1[i] : in1[j*n + i];
             if(range == 0)
                 x->x_randf[j] = out_low;
