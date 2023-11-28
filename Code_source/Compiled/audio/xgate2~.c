@@ -38,7 +38,7 @@ static t_int *xgate2_perform(t_int *w){
         if(spread < 0.1)
             spread = 0.1;
         spread *= 2;
-        float range = x->x_n_outlets / spread;
+        float range = n_outlets / spread;
         if(!x->x_index)
             pos *= n_outlets;
         if(pos < 0)
@@ -70,7 +70,7 @@ static void xgate2_dsp(t_xgate2 *x, t_signal **sp){
 static void *xgate2_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_xgate2 *x = (t_xgate2 *)pd_new(xgate2_class);
-    t_float n_outlets = 2; //inlets not counting xgate2 input
+    t_float n_outlets = 2;
     float spread = 1;
     if(ac){
         if(av->a_type == A_SYMBOL){
@@ -106,7 +106,7 @@ static void *xgate2_new(t_symbol *s, int ac, t_atom *av){
         return(NULL);
 }
 
-void * xgate2_free(t_xgate2 *x){
+void *xgate2_free(t_xgate2 *x){
     freebytes(x->x_ovecs, x->x_n_outlets * sizeof(*x->x_ovecs));
     inlet_free(x->x_inlet_spread);
     return(void *)x;
