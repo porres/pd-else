@@ -1,4 +1,4 @@
-#N canvas 492 23 562 702 10;
+#N canvas 437 23 562 702 10;
 #X obj 4 669 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
 #X obj 5 279 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 5 496 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
@@ -242,14 +242,14 @@
 #X restore 489 199 pd phase;
 #X obj 175 156 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 139 300 set <symbol> - sets an entire array to be used as a waveform, f 62;
-#X text 28 232 see also:;
-#X obj 30 250 else/bl.wavetable~;
+#X text 28 237 see also:;
+#X obj 30 255 else/bl.wavetable~;
 #X obj 309 216 else/out~;
 #X obj 309 154 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 175 182 else/wavetable~ \$0-table 110, f 15;
 #X text 389 161 (alias);
 #X obj 309 182 else/wt~ \$0-table 110;
-#X obj 51 178 else/sample~ \$0-table baglama.wav, f 12;
+#X obj 51 183 else/sample~ \$0-table baglama.wav, f 12;
 #X obj 5 527 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
 #N canvas 683 161 623 334 interpolation 0;
 #X obj 66 168 cnv 16 198 138 empty empty empty 20 12 0 10 #e0e0e0 #404040 0;
@@ -322,9 +322,11 @@
 #X text 103 594 -soft: sets to soft sync mode (default hard), f 64;
 #X text 103 533 -none/-lin/-cos/-lagrange: set interpolation mode (default spline), f 67;
 #X text 103 579 -midi: sets frequency input in MIDI pitch (default hertz), f 64;
-#X obj 104 147 else/openfile -h https://waveeditonline.com here;
+#X obj 109 139 else/openfile -h https://waveeditonline.com here;
 #X text 54 85 [wavetable~] is an interpolating wavetable oscillator like Pd Vanilla's [tabosc4~]. It accepts negative frequencies \, has inlets for phase sync and phase modulation and has more interpolation options., f 71;
-#X text 37 136 Get some tables -->, f 10;
+#X text 42 128 Get some tables -->, f 10;
+#X obj 61 157 else/openfile -h https://github.com/KristofferKarlAxelEkstrand/AKWF-FREE and/or here;
+#X text 35 157 -->;
 #X connect 35 0 41 0;
 #X connect 40 0 43 0;
 #X connect 41 0 7 0;
