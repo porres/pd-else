@@ -92,7 +92,7 @@ proc category_menu_vanilla::load_menutree {} {
             {general\ audio\ tools
                 {snake~\ in snake~\ out adc~ dac~ sig~ line~ vline~ threshold~ env~ snapshot~ vsnapsot~ bang~ samphold~ samplerate~ send~ receive~ throw~ catch~ readsf~ writesf~ print~}}
             {signal\ math
-                {fft~ ifft~ rfft~ irfft~ expr~ fexpr~ +~ -~ *~ /~ max~ min~ log~ pow~ abs~ sqrt~ rsqrt~ wrap~ exp~ clip~}}
+                {fft~ ifft~ rfft~ rifft~ expr~ fexpr~ +~ -~ *~ /~ max~ min~ log~ pow~ abs~ sqrt~ rsqrt~ wrap~ exp~ clip~}}
             {signal\ acoustic\ conversions
                 {mtof~ ftom~ rmstodb~ dbtorms~ powtodb~ dbtopow~}}
             {audio\ generators/tables
