@@ -63,7 +63,7 @@ proc category_else_menu::load_menutree {} {
             {analog\ circuitry\ emulation
                 {circuit~}}
             {fx\ assorted
-                {downsample~ conv~ chorus~ shaper~ crusher~ drive~ power~ flanger~ freq.shift~ pitch.shift~ stretch.shift~ ping.pong~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~ phaser~}}
+                {downsample~ conv~ chorus~ shaper~ crusher~ drive~ power~ flanger~ freq.shift~ pitch.shift~ ping.pong~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~ phaser~}}
             {fx\ delay
                 {del\ in~ del\ out~ fbdelay~ ffdelay~ revdelay~ filterdelay~}}
             {fx\ dynamics
@@ -73,11 +73,11 @@ proc category_else_menu::load_menutree {} {
             {fx\ filters
                 {allpass.2nd~ allpass.filt~ bitnormal~ comb.filt~ lop.bw~ hip.bw~ biquads~ bandpass~ bandstop~ crossover~ bpbank~ bicoeff2 brickwall~ eq~ highpass~ highshelf~ lop2~ lowpass~ lowshelf~ mov.avg~ resonbank~ resonbank2~ resonant~ resonant2~ svfilter~}}
             {sampling\ playing\ granulation
-                {player~ gran.player~ pvoc.player~ pvoc.live~ batch.rec~ bach.write~ rec.file~ play.file~ tabplayer~ tabwriter~ sample~}}
+                {player~ gran.player~ stretch.shift~ pvoc.player~ pvoc.live~ batch.rec~ bach.write~ rec.file~ play.file~ tabplayer~ tabwriter~ sample~}}
             {synthesis:\ synthesizers
                 {pm2~ pm4~ pm6~ sfont~ sfz~ plaits~ synth~}}
             {synthesis:\ granular
-                {grain.synth~}}
+                {grain.synth~ grain.live~ grain.sampler~}}
             {synthesis:\ physical\ modeling
                 {pluck~}}
             {synthesis:\ oscillators
