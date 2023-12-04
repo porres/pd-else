@@ -131,7 +131,7 @@
 #X text 205 362 list;
 #X obj 45 212 else/note2midi;
 #X obj 221 187 else/midi2note;
-#N canvas 516 157 668 470 quarter-tones 0;
+#N canvas 614 157 668 470 quarter-tones 0;
 #X obj 98 393 else/display;
 #X text 235 296 set arbitrary symbols;
 #X obj 179 297 loadbang;
@@ -143,7 +143,6 @@
 #X msg 136 296 flat;
 #X listbox 98 207 16 0 0 0 - - - 16;
 #X msg 59 174 55.5;
-#X obj 59 145 loadbang;
 #X text 159 95 The float input values are quantized to quarter tones \, so yeah \, there's support for quarter tones. The syntax is the same as found in [note2midi] where '+' is a quarter tone sharp and '-' is a quarter tone flat. The quarter tone character can be combined with regular sharps and flats., f 73;
 #X text 285 152 The 'chromatic' \, 'sharp' and 'flat' modes work the same way and you can set a list of arbitrary symbols with 24 elements to set quarter tones output., f 52;
 #X connect 2 0 5 0;
@@ -155,7 +154,6 @@
 #X connect 8 0 3 0;
 #X connect 9 0 3 0;
 #X connect 10 0 9 0;
-#X connect 11 0 10 0;
 #X restore 427 221 pd quarter-tones;
 #X msg 221 157 65.5;
 #X text 62 89 [midi2note] converts a MIDI pitch value to note names (such as Eb3). The names end with an octave number \, in a way that middle C (MIDI pitch = 60) represents C4 represents. Float inputs are rounded to quarter tones (yes \, there's support for quarter tones)., f 68;
