@@ -36,18 +36,6 @@ typedef struct _impulse{
 
 static t_class *impulse_class;
 
-static void impulse_list(t_impulse *x, t_symbol *s, int ac, t_atom * av){
-    s = NULL;
-    if(ac == 0)
-        return;
-    if(x->x_list_size != ac){
-        x->x_list_size = ac;
-        canvas_update_dsp();
-    }
-    for(int i = 0; i < ac; i++)
-        x->x_freq_list[i] = atom_getfloat(av+i);
-}
-
 double impulse_wrap_phase(double phase){
     while(phase >= 1)
         phase -= 1.;
@@ -170,6 +158,32 @@ static void impulse_soft(t_impulse *x, t_floatarg f){
     x->x_soft = (int)(f != 0);
 }
 
+static void impulse_list(t_impulse *x, t_symbol *s, int ac, t_atom * av){
+    s = NULL;
+    if(ac == 0)
+        return;
+    if(x->x_list_size != ac){
+        x->x_list_size = ac;
+        canvas_update_dsp();
+    }
+    for(int i = 0; i < ac; i++)
+        x->x_freq_list[i] = atom_getfloat(av+i);
+}
+
+static void impulse_set(t_impulse *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(ac != 2)
+        return;
+    int i = atom_getint(av);
+    float f = atom_getint(av+1);
+    if(i >= x->x_list_size)
+        i = x->x_list_size;
+    if(i <= 0)
+        i = 1;
+    i--;
+    x->x_freq_list[i] = f;
+}
+
 static void *impulse_free(t_impulse *x){
     inlet_free(x->x_inlet_sync);
     inlet_free(x->x_inlet_phase);
@@ -240,8 +254,9 @@ void impulse_tilde_setup(void){
     impulse_class = class_new(gensym("impulse~"), (t_newmethod)impulse_new, (t_method)impulse_free,
         sizeof(t_impulse), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(impulse_class, nullfn, gensym("signal"), 0);
+    class_addmethod(impulse_class, (t_method)impulse_dsp, gensym("dsp"), A_CANT, 0);
     class_addlist(impulse_class, impulse_list);
     class_addmethod(impulse_class, (t_method)impulse_soft, gensym("soft"), A_DEFFLOAT, 0);
     class_addmethod(impulse_class, (t_method)impulse_midi, gensym("midi"), A_DEFFLOAT, 0);
-    class_addmethod(impulse_class, (t_method)impulse_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(impulse_class, (t_method)impulse_set, gensym("set"), A_GIMME, 0);
 }

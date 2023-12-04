@@ -34,18 +34,6 @@ typedef struct _sine{
 
 static t_class *sine_class;
 
-static void sine_list(t_sine *x, t_symbol *s, int ac, t_atom * av){
-    s = NULL;
-    if(ac == 0)
-        return;
-    if(x->x_list_size != ac){
-        x->x_list_size = ac;
-        canvas_update_dsp();
-    }
-    for(int i = 0; i < ac; i++)
-        x->x_freq_list[i] = atom_getfloat(av+i);
-}
-
 double sine_wrap_phase(double phase){
     while(phase >= 1)
         phase -= 1.;
@@ -133,6 +121,32 @@ static void sine_midi(t_sine *x, t_floatarg f){
     x->x_midi = (int)(f != 0);
 }
 
+static void sine_set(t_sine *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(ac != 2)
+        return;
+    int i = atom_getint(av);
+    float f = atom_getint(av+1);
+    if(i >= x->x_list_size)
+        i = x->x_list_size;
+    if(i <= 0)
+        i = 1;
+    i--;
+    x->x_freq_list[i] = f;
+}
+
+static void sine_list(t_sine *x, t_symbol *s, int ac, t_atom * av){
+    s = NULL;
+    if(ac == 0)
+        return;
+    if(x->x_list_size != ac){
+        x->x_list_size = ac;
+        canvas_update_dsp();
+    }
+    for(int i = 0; i < ac; i++)
+        x->x_freq_list[i] = atom_getfloat(av+i);
+}
+
 static void sine_soft(t_sine *x, t_floatarg f){
     x->x_soft = (int)(f != 0);
 }
@@ -206,8 +220,9 @@ void sine_tilde_setup(void){
     sine_class = class_new(gensym("sine~"), (t_newmethod)sine_new, (t_method)sine_free,
         sizeof(t_sine), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(sine_class, nullfn, gensym("signal"), 0);
+    class_addmethod(sine_class, (t_method)sine_dsp, gensym("dsp"), A_CANT, 0);
     class_addlist(sine_class, sine_list);
     class_addmethod(sine_class, (t_method)sine_soft, gensym("soft"), A_DEFFLOAT, 0);
     class_addmethod(sine_class, (t_method)sine_midi, gensym("midi"), A_DEFFLOAT, 0);
-    class_addmethod(sine_class, (t_method)sine_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(sine_class, (t_method)sine_set, gensym("set"), A_GIMME, 0);
 }
