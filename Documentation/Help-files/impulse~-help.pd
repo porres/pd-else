@@ -150,7 +150,7 @@
 #X connect 2 0 5 0;
 #X connect 5 0 3 0;
 #X restore 498 143 pd midi;
-#N canvas 604 127 532 481 multichannel 0;
+#N canvas 604 127 540 447 multichannel 0;
 #X obj 50 253 else/sine~;
 #X obj 50 314 else/out.mc~;
 #X obj 220 367 else/out~;
@@ -164,7 +164,7 @@
 #X obj 220 326 else/impulse~ -mc 440 660;
 #X text 201 106 You can initialize the object with multichannel if you give it a list of frequencies with the -mc flag (you can't set phases though). A list input also works if no signal is connected to set it to multichannel with a list of frequency input., f 51;
 #X msg 262 282 set 1 555;
-#X text 334 269 the set message sets a single frequency in the list \, indexed by 1!, f 23;
+#X text 334 269 the set message sets a single frequency channel, f 24;
 #X connect 0 0 1 0;
 #X connect 3 0 10 0;
 #X connect 4 0 10 0;
@@ -187,7 +187,7 @@
 #X text 236 335 non zero sets to soft sync mode, f 50;
 #X text 134 290 list/signal(s) - frequency in hz or midi, f 67;
 #X text 110 320 set <float \, float> -;
-#X text 236 320 <index \, freq> set a single frequency \, indexed by 1;
+#X text 236 320 <channel \, freq> set a single frequency channel, f 50;
 #X connect 6 0 35 0;
 #X connect 35 0 7 0;
 #X connect 36 0 22 0;

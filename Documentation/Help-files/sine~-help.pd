@@ -44,7 +44,7 @@
 #X obj 267 217 else/sig2float~;
 #X text 221 132 <= reset =>;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -113,7 +113,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -248,7 +248,7 @@
 #X obj 236 337 else/sine~ -mc 440 660;
 #X text 195 109 You can initialize the object with multichannel if you give it a list of frequencies with the -mc flag (you can't set phases though). A list input also works if no signal is connected to set it to multichannel with a list of frequency input., f 49;
 #X msg 279 290 set 1 555;
-#X text 351 277 the set message sets a single frequency in the list \, indexed by 1!, f 23;
+#X text 349 283 the set message sets a single frequency channel, f 24;
 #X connect 0 0 1 0;
 #X connect 2 0 0 2;
 #X connect 3 0 2 0;
@@ -272,6 +272,6 @@
 #X text 134 270 list/signal(s) - frequency in hz or midi, f 67;
 #X text 103 425 -mc <list>: sets multichannel output wirh a list of frequencies, f 63;
 #X text 110 300 set <float \, float> -;
-#X text 236 300 <index \, freq> set a single frequency \, indexed by 1;
+#X text 236 300 <channel \, freq> set a single frequency channel, f 50;
 #X connect 20 0 28 0;
 #X connect 28 0 26 0;
