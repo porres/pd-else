@@ -32,7 +32,7 @@
 #X obj 151 39 cnv 4 4 4 empty empty pattern 0 28 2 18 #e0e0e0 #000000 0;
 #X text 231 324 - sets track \, slot and status (no output), f 42;
 #X text 231 366 - sets slot value and output tracks values;
-#N canvas 598 57 629 680 drum 0;
+#N canvas 598 57 629 680 drum 1;
 #X obj 355 564 else/pluck~ 50 2500 10000;
 #X obj 404 520 impseq~;
 #X obj 294 607 else/out~;
@@ -41,7 +41,7 @@
 #X obj 348 488 sel 1;
 #X msg 118 93 clear;
 #X obj 174 58 else/tempo 120;
-#X obj 185 353 drum.seq 3 8 20 1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 0 1 0 0 1 0 1 0 1 0 1 0 0 1 0 1 0 1 0;
+#X obj 185 353 drum.seq 3 8 20 1 0 0 0 0 0 0 0 0 0 0 0 1 0 1 0 1 1 0 1 0 1 0 1 0 1 0 1 0 1 1 0 0 1 1 0;
 #X obj 401 488 print drum.seq;
 #X msg 185 110 export;
 #X obj 295 526 else/play.file~ dholak.aif, f 15;
