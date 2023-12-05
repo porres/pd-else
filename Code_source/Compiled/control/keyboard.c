@@ -388,6 +388,35 @@ static void keyboard_set(t_keyboard *x, t_floatarg f1, t_floatarg f2){
     }
 }
 
+static void keyboard_plot(t_keyboard *x,  t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    t_canvas *cv =  glist_getcanvas(x->x_glist);
+    for(int note = 0; note < 128; note++){
+        if(x->x_tgl_notes[note] > 0){
+            x->x_tgl_notes[note] = 0;
+            int i = note - x->x_first_c;
+            if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+                short key = i % 12, c4 = (note == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
+                sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_OFF : c4 ? MIDDLE_C : WHITE_OFF);
+            }
+        }
+    }
+    for(int i = 0; i < ac; i++){
+        int note = atom_getint(av++);
+        int on = x->x_tgl_notes[note] = 1;
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+            if(note >= x->x_first_c && note < x->x_first_c + (x->x_octaves * 12)){
+                int j = note - x->x_first_c, key = i % 12;
+                if(key == 1 || key == 3 || key == 6 || key == 8 || key == 10) // black
+                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, j, on ? BLACK_ON : BLACK_OFF);
+                else // white
+                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, j, on ? WHITE_ON : note == 60 ? MIDDLE_C : WHITE_OFF);
+            }
+        }
+
+    }
+}
+
 static void keyboard_off(t_keyboard *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     while(ac > 0){
@@ -501,7 +530,7 @@ static void keyboard_receive(t_keyboard *x, t_symbol *s){
 static void keyboard_flush(t_keyboard* x){
     t_canvas *cv =  glist_getcanvas(x->x_glist);
     t_atom at[2];
-    for(int note = 0; note < 256; note++){
+    for(int note = 0; note < 128; note++){
         if(x->x_tgl_notes[note] > 0){
             int i = note - x->x_first_c;
             if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
@@ -854,6 +883,7 @@ void keyboard_setup(void){
     class_addmethod(keyboard_class, (t_method)keyboard_receive, gensym("receive"), A_DEFSYMBOL, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_on, gensym("on"), A_GIMME, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_set, gensym("set"), A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(keyboard_class, (t_method)keyboard_plot, gensym("plot"), A_GIMME, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_off, gensym("off"), A_GIMME, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_zoom, gensym("zoom"), A_CANT, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
