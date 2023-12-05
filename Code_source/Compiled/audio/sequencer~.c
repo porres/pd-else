@@ -37,12 +37,12 @@ static void sequencer_set(t_sequencer *x, t_symbol *s, int ac, t_atom * av){
     }
 }
 
-void sequencer_goto(t_sequencer *x, t_floatarg f){
+static void sequencer_goto(t_sequencer *x, t_floatarg f){
     int i = (int)f - 1;
     x->x_index = i < 0 ? 0 : i;
 }
 
-t_int *sequencer_perform(t_int *w){
+static t_int *sequencer_perform(t_int *w){
     t_sequencer *x = (t_sequencer *) (w[1]);
     float *inlet = (t_float *) (w[2]);
     float *out1 = (t_float *) (w[3]);
@@ -71,12 +71,17 @@ t_int *sequencer_perform(t_int *w){
     return(w+6);
 }
 
-void sequencer_dsp(t_sequencer *x, t_signal **sp){
+static void sequencer_dsp(t_sequencer *x, t_signal **sp){
     dsp_add(sequencer_perform, 5, x, sp[0]->s_vec,
             sp[1]->s_vec, sp[2]->s_vec, sp[0]->s_n);
 }
 
-void *sequencer_new(t_symbol *s, int ac, t_atom *av){
+static void *sequencer_free(t_sequencer *x){
+    freebytes(x->x_sequencer, sizeof(*x->x_sequencer));
+    return(void *)x;
+}
+
+static void *sequencer_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_sequencer *x = (t_sequencer *)pd_new(sequencer_class);
     if(!ac){
@@ -97,8 +102,8 @@ void *sequencer_new(t_symbol *s, int ac, t_atom *av){
 }
 
 void sequencer_tilde_setup(void){
-    sequencer_class = class_new(gensym("sequencer~"), (t_newmethod)sequencer_new, 0,
-        sizeof(t_sequencer), 0, A_GIMME, 0);
+    sequencer_class = class_new(gensym("sequencer~"), (t_newmethod)sequencer_new,
+        (t_method)sequencer_free, sizeof(t_sequencer), 0, A_GIMME, 0);
     class_addbang(sequencer_class, (t_method)sequencer_bang);
     class_addmethod(sequencer_class, nullfn, gensym("signal"), 0);
     class_addmethod(sequencer_class,(t_method)sequencer_dsp,gensym("dsp"), A_CANT, 0);
