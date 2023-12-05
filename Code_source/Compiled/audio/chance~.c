@@ -69,7 +69,7 @@ t_int *chance_perform(t_int *w){
     return(w+outlets+4);
 }
 
-void chance_dsp(t_chance *x, t_signal **sp){
+static void chance_dsp(t_chance *x, t_signal **sp){
     int n_sig = x->x_n_outlets + 3; // outs + 3 (ob / in / block size)
     t_int* sigvec = (t_int*)calloc(n_sig, sizeof(t_int));
 	sigvec[0] = (t_int)x; // object
@@ -80,14 +80,14 @@ void chance_dsp(t_chance *x, t_signal **sp){
     free(sigvec);
 }
 
-void chance_free(t_chance *x){
+static void chance_free(t_chance *x){
     free(x->x_probabilities);
     free(x->outs);
     free(x->ins[0]);
     free(x->ins);
 }
 
-void *chance_new(t_symbol *s, short ac, t_atom *av){
+static void *chance_new(t_symbol *s, short ac, t_atom *av){
     s = NULL;
     t_chance *x = (t_chance *)pd_new(chance_class);
     x->x_id = random_get_id();
