@@ -4,23 +4,16 @@
 #include <stdlib.h>
 
 typedef struct _match{
-	t_object x_obj;
-    t_float x_lastin;
-    t_int   x_n_outlets;
-    t_int   x_first;
-	t_float *matches; // numbers to match against
-    t_float **ins;
-    t_float **outs;
+	t_object    x_obj;
+    t_float     x_lastin;
+    t_int       x_n_outlets;
+    t_int       x_first;
+	t_float    *matches; // numbers to match against
+    t_float   **ins;
+    t_float   **outs;
 }t_match;
 
 static t_class *match_class;
-
-void *match_list(t_match *x, t_symbol *s, int argc, t_atom *argv){
-    s = NULL;
-    for(int i = 0; i < argc || i < x->x_n_outlets - 1; i++)
-        x->matches[i] = (double)atom_getfloatarg(i, argc, argv);
-    return(NULL);
-}
 
 t_int *match_perform(t_int *w){
     int i, j;
@@ -85,7 +78,14 @@ t_int *match_perform(t_int *w){
     return(w + outlets + 4);
 }
 
-void match_dsp(t_match *x, t_signal **sp){
+static void *match_list(t_match *x, t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
+    for(int i = 0; i < argc || i < x->x_n_outlets - 1; i++)
+        x->matches[i] = (double)atom_getfloatarg(i, argc, argv);
+    return(NULL);
+}
+
+static void match_dsp(t_match *x, t_signal **sp){
 	int i;
     int n_sig = x->x_n_outlets + 3; // outs + 3 (ob / in / block size)
     t_int* sigvec = (t_int*)calloc(n_sig, sizeof(t_int));
@@ -97,14 +97,14 @@ void match_dsp(t_match *x, t_signal **sp){
     free(sigvec);
 }
 
-void match_free(t_match *x){
+static void match_free(t_match *x){
     free(x->matches);
     free(x->outs);
     free(x->ins[0]);
     free(x->ins);
 }
 
-void *match_new(t_symbol *s, short argc, t_atom *argv){
+static void *match_new(t_symbol *s, short argc, t_atom *argv){
     t_match *x = (t_match *)pd_new(match_class);
     s = NULL;
     x->x_lastin = 0;
@@ -133,7 +133,7 @@ void *match_new(t_symbol *s, short argc, t_atom *argv){
 
 void match_tilde_setup(void){
     match_class = class_new(gensym("match~"), (t_newmethod)match_new,
-            (t_method)match_free, sizeof(t_match), 0, A_GIMME, 0);
+        (t_method)match_free, sizeof(t_match), 0, A_GIMME, 0);
     class_addmethod(match_class, nullfn, gensym("signal"), 0);
     class_addmethod(match_class, (t_method)match_dsp, gensym("dsp"), A_CANT, 0);
     class_addlist(match_class, (t_method)match_list);
