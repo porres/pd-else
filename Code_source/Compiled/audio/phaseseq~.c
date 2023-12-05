@@ -80,6 +80,7 @@ static void phaseseq_dsp(t_phaseseq *x, t_signal **sp){
 static void *phaseseq_free(t_phaseseq *x){
     outlet_free(x->x_out);
     outlet_free(x->x_out_i);
+    freebytes(x->x_seq, sizeof(*x->x_seq));
     return(void *)x;
 }
 
