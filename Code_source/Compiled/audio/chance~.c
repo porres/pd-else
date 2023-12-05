@@ -18,10 +18,6 @@ typedef struct _chance{
 
 static t_class *chance_class;
 
-static void chance_seed(t_chance *x, t_symbol *s, int ac, t_atom *av){
-    random_init(&x->x_rstate, get_seed(s, ac, av, x->x_id));
-}
-
 t_int *chance_perform(t_int *w){
     int i, j;
     t_chance *x = (t_chance *) w[1]; // first is object
@@ -69,6 +65,22 @@ t_int *chance_perform(t_int *w){
     return(w+outlets+4);
 }
 
+
+static void chance_list(t_chance *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(ac < 2 || x->x_n_outlets <= 2)
+        return;
+    if(ac > x->x_n_outlets)
+        ac = x->x_n_outlets;
+    x->x_range = 0;
+    for(int i = 0; i < ac; i++)
+        x->x_probabilities[i] = (x->x_range += atom_getfloat(av++));
+}
+
+static void chance_seed(t_chance *x, t_symbol *s, int ac, t_atom *av){
+    random_init(&x->x_rstate, get_seed(s, ac, av, x->x_id));
+}
+
 static void chance_dsp(t_chance *x, t_signal **sp){
     int n_sig = x->x_n_outlets + 3; // outs + 3 (ob / in / block size)
     t_int* sigvec = (t_int*)calloc(n_sig, sizeof(t_int));
@@ -108,6 +120,7 @@ static void *chance_new(t_symbol *s, short ac, t_atom *av){
         x->x_probabilities[0] = 50;
         x->x_probabilities[1] = 100;
         x->x_range = 100;
+        floatinlet_new(&x->x_obj, &x->x_probabilities[0]);
     }
     else if(ac == 1){
         x->x_n_outlets = 2;
@@ -117,6 +130,7 @@ static void *chance_new(t_symbol *s, short ac, t_atom *av){
         x->x_probabilities[0] = atom_getfloatarg(0, ac, av);
         x->x_probabilities[1] = 100;
         x->x_range = 100;
+        floatinlet_new(&x->x_obj, &x->x_probabilities[0]);
     }
     else{
         int i;
@@ -125,7 +139,7 @@ static void *chance_new(t_symbol *s, short ac, t_atom *av){
             outlet_new(&x->x_obj, gensym("signal"));
         x->x_probabilities = (float *) malloc((x->x_n_outlets) * sizeof(float));
         for(i = 0; i < ac; i++)
-            x->x_probabilities[i] = (x->x_range += atom_getfloatarg(i, ac, av));
+            x->x_probabilities[i] = (x->x_range += atom_getfloat(av++));
     }
     x->ins = (t_float **) malloc(1 * sizeof(t_float *));
     x->outs = (t_float **) malloc(x->x_n_outlets * sizeof(t_float *));
@@ -139,4 +153,5 @@ void chance_tilde_setup(void){
     class_addmethod(chance_class, nullfn, gensym("signal"), 0);
     class_addmethod(chance_class, (t_method)chance_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(chance_class, (t_method)chance_seed, gensym("seed"), A_GIMME, 0);
+    class_addlist(chance_class, chance_list);
 }
