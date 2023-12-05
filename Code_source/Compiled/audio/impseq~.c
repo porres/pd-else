@@ -80,6 +80,11 @@ t_int *impseq_perform(t_int *w){
     return(w+6);
 }
 
+static void *impseq_free(t_impseq *x){
+    freebytes(x->x_impseq, sizeof(*x->x_impseq));
+    return(void *)x;
+}
+
 void impseq_dsp(t_impseq *x, t_signal **sp){
     dsp_add(impseq_perform, 5, x, sp[0]->s_vec,
             sp[1]->s_vec, sp[2]->s_vec, sp[0]->s_n);
@@ -106,8 +111,8 @@ void *impseq_new(t_symbol *s, int ac, t_atom *av){
 }
 
 void impseq_tilde_setup(void){
-    impseq_class = class_new(gensym("impseq~"), (t_newmethod)impseq_new, 0,
-        sizeof(t_impseq), 0, A_GIMME, 0);
+    impseq_class = class_new(gensym("impseq~"), (t_newmethod)impseq_new,
+        (t_method)impseq_free, sizeof(t_impseq), 0, A_GIMME, 0);
     class_addmethod(impseq_class, nullfn, gensym("signal"), 0);
     class_addlist(impseq_class, (t_method)impseq_list);
     class_addmethod(impseq_class,(t_method)impseq_dsp,gensym("dsp"), A_CANT, 0);
