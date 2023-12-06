@@ -363,15 +363,6 @@ void keyboard_float(t_keyboard *x, t_floatarg f){
     }
 }
 
-static void keyboard_on(t_keyboard *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
-    while(ac > 0){
-        x->x_vel_in = 127;
-        keyboard_float(x, atom_getfloatarg(0, ac, av++));
-        ac--;
-    }
-}
-
 static void keyboard_set(t_keyboard *x, t_floatarg f1, t_floatarg f2){
     int note = (int)f1;
     x->x_vel_in = f2 < 0 ? 0 : f2 > 127 ? 127 : (int)f2;
@@ -388,7 +379,7 @@ static void keyboard_set(t_keyboard *x, t_floatarg f1, t_floatarg f2){
     }
 }
 
-static void keyboard_plot(t_keyboard *x,  t_symbol *s, int ac, t_atom *av){
+static void keyboard_show(t_keyboard *x,  t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_canvas *cv =  glist_getcanvas(x->x_glist);
     for(int note = 0; note < 128; note++){
@@ -417,13 +408,46 @@ static void keyboard_plot(t_keyboard *x,  t_symbol *s, int ac, t_atom *av){
     }
 }
 
+static void keyboard_flush(t_keyboard* x){
+    t_canvas *cv =  glist_getcanvas(x->x_glist);
+    t_atom at[2];
+    for(int note = 0; note < 128; note++){
+        if(x->x_tgl_notes[note] > 0){
+            int i = note - x->x_first_c;
+            if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+                short key = i % 12, c4 = (note == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
+                sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_OFF : c4 ? MIDDLE_C : WHITE_OFF);
+            }
+            SETFLOAT(at, note);
+            SETFLOAT(at+1, x->x_tgl_notes[note] = 0);
+            outlet_list(x->x_out, &s_list, 2, at);
+            if(x->x_send != &s_ && x->x_send->s_thing)
+                pd_list(x->x_send->s_thing, &s_list, 2, at);
+        }
+    }
+}
+
+static void keyboard_on(t_keyboard *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    while(ac > 0){
+        x->x_vel_in = 127;
+        keyboard_float(x, atom_getfloatarg(0, ac--, av++));
+    }
+}
+
 static void keyboard_off(t_keyboard *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     while(ac > 0){
         x->x_vel_in = 0;
-        keyboard_float(x, atom_getfloatarg(0, ac, av++));
-        ac--;
+        keyboard_float(x, atom_getfloatarg(0, ac--, av++));
     }
+}
+
+static void keyboard_play(t_keyboard *x, t_symbol *s, int ac, t_atom *av){
+    if(!ac)
+        return;
+    keyboard_flush(x);
+    keyboard_on(x, s, ac, av);
 }
 
 static void keyboard_height(t_keyboard *x, t_floatarg f){
@@ -523,25 +547,6 @@ static void keyboard_receive(t_keyboard *x, t_symbol *s){
                     sys_vgui(".x%lx.c delete %lx_in2\n", cv, x);
                 }
             }
-        }
-    }
-}
-
-static void keyboard_flush(t_keyboard* x){
-    t_canvas *cv =  glist_getcanvas(x->x_glist);
-    t_atom at[2];
-    for(int note = 0; note < 128; note++){
-        if(x->x_tgl_notes[note] > 0){
-            int i = note - x->x_first_c;
-            if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
-                short key = i % 12, c4 = (note == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
-                sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_OFF : c4 ? MIDDLE_C : WHITE_OFF);
-            }
-            SETFLOAT(at, note);
-            SETFLOAT(at+1, x->x_tgl_notes[note] = 0);
-            outlet_list(x->x_out, &s_list, 2, at);
-            if(x->x_send != &s_ && x->x_send->s_thing)
-                pd_list(x->x_send->s_thing, &s_list, 2, at);
         }
     }
 }
@@ -883,7 +888,8 @@ void keyboard_setup(void){
     class_addmethod(keyboard_class, (t_method)keyboard_receive, gensym("receive"), A_DEFSYMBOL, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_on, gensym("on"), A_GIMME, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_set, gensym("set"), A_DEFFLOAT, A_DEFFLOAT, 0);
-    class_addmethod(keyboard_class, (t_method)keyboard_plot, gensym("plot"), A_GIMME, 0);
+    class_addmethod(keyboard_class, (t_method)keyboard_show, gensym("show"), A_GIMME, 0);
+    class_addmethod(keyboard_class, (t_method)keyboard_play, gensym("play"), A_GIMME, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_off, gensym("off"), A_GIMME, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_zoom, gensym("zoom"), A_CANT, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
