@@ -155,7 +155,7 @@ static t_int *wavetable_perform(t_int *w){
                         offset = npts - size;
                     if(x->x_interp == 0){
                         int ndx = (int)(phase*(double)size);
-                        *out++ = (double)vector[ndx].w_float;
+                        *out++ = (double)vector[ndx+offset].w_float;
                     }
                     else if(x->x_interp >= 3){
                         INDEX_4PT()
