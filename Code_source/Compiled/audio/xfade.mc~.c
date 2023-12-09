@@ -12,6 +12,7 @@ typedef struct _xfademc{
     t_inlet    *x_inlet_mix;
     int         x_block;
     int         x_chs;
+    int         x_lin;
 }t_xfademc;
 
 static t_int *xfademc_perform(t_int *w){
@@ -29,9 +30,13 @@ static t_int *xfademc_perform(t_int *w){
             pos = -1;
         pos = (pos + 1) * 0.5; // xfade from 0 to 1
         for(int j = 0; j < chs; j++){
-            double amp1 = cos((double)pos * HALF_PI);
-            double amp2 = sin((double)pos * HALF_PI);
-            out[j*n + i] = (in1[j*n + i] * amp1) + (in2[j*n + i] * amp2);
+            if(x->x_lin)
+                out[j*n + i] = in1[j*n + i] * (1-pos) + in2[j*n + i] * pos;
+            else{
+                double amp1 = cos((double)pos * HALF_PI);
+                double amp2 = sin((double)pos * HALF_PI);
+                out[j*n + i] = (in1[j*n + i] * amp1) + (in2[j*n + i] * amp2);
+            }
         }
     }
     return(w+6);
@@ -49,13 +54,26 @@ static void xfademc_dsp(t_xfademc *x, t_signal **sp){
         dsp_add(xfademc_perform, 5, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
+static void xfademc_lin(t_xfademc *x, t_floatarg f){
+    x->x_lin = (int)(f != 0);
+}
+
 static void xfademc_free(t_xfademc *x){
      inlet_free(x->x_inlet_mix);
 }
 
-static void *xfademc_new(t_floatarg f){
+static void *xfademc_new(t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     t_xfademc *x = (t_xfademc *)pd_new(xfademc_class);
-    float init_mix = f < -1 ? -1 : f >= 1 ? 1 : f; // clipping mix input
+    t_float init_mix = 0;
+    x->x_lin = 0;
+    if(av->a_type == A_SYMBOL){
+        if(atom_getsymbol(av) == gensym("-lin"))
+            x->x_lin = 1;
+        ac--; av++;
+    }
+    if(ac && av->a_type == A_FLOAT)
+        init_mix = av->a_w.w_float;
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     x->x_inlet_mix = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_mix, init_mix);
@@ -65,7 +83,8 @@ static void *xfademc_new(t_floatarg f){
 
 void setup_xfade0x2emc_tilde(void){
     xfademc_class = class_new(gensym("xfade.mc~"), (t_newmethod)xfademc_new,
-        (t_method)xfademc_free, sizeof(t_xfademc), CLASS_MULTICHANNEL, A_DEFFLOAT, 0);
+        (t_method)xfademc_free, sizeof(t_xfademc), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(xfademc_class, nullfn, gensym("signal"), 0);
     class_addmethod(xfademc_class, (t_method)xfademc_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(xfademc_class, (t_method)xfademc_lin, gensym("lin"), A_FLOAT, 0);
 }

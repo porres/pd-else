@@ -12,6 +12,7 @@ typedef struct _xfade{
     int         n_in;
     int         channels;
     int         n_out;
+    int         x_lin;
     t_sample   *buffer;
     t_sample  **in;
     t_sample  **out;
@@ -35,8 +36,11 @@ static t_int *xfade_perform(t_int *w){
             x->buffer[i] = (t_sample) x->in[i][j];
         for(i = 0; i < x->channels; i++){
             out = (t_sample *)(x->out[i]);
-            out[j] = (x->buffer[i] * (mix_f == 1 ? 0 : cos(mix_f * HALF_PI)))
-                + (x->buffer[i+x->channels] * sin(mix_f * HALF_PI));
+            if(x->x_lin)
+                out[j] = x->buffer[i] * (1-mix_f) + x->buffer[i+x->channels] * mix_f;
+            else
+                out[j] = (x->buffer[i] * (mix_f == 1 ? 0 : cos(mix_f * HALF_PI)))
+                    + (x->buffer[i+x->channels] * sin(mix_f * HALF_PI));
         }
     }
     return(w+4);
@@ -53,6 +57,10 @@ static void xfade_dsp(t_xfade *x, t_signal **sp){
     dsp_add(xfade_perform, 3, x, sp[0]->s_n, sp[x->n_in]->s_vec);
 }
 
+static void xfade_lin(t_xfade *x, t_floatarg f){
+    x->x_lin = (int)(f != 0);
+}
+
 static void xfade_free(t_xfade *x){
      inlet_free(x->x_inlet_mix);
      freebytes(x->in, x->n_in * sizeof(t_sample *));
@@ -64,6 +72,11 @@ static void *xfade_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_xfade *x = (t_xfade *)pd_new(xfade_class);
     t_float f1 = 1, f2 = 0;
+    if(av->a_type == A_SYMBOL){
+        if(atom_getsymbol(av) == gensym("-lin"))
+            x->x_lin = 1;
+        ac--; av++;
+    }
     if(ac && av->a_type == A_FLOAT){
         f1 = av->a_w.w_float;
         ac--; av++;
@@ -102,4 +115,5 @@ void xfade_tilde_setup(void){
         (t_method)xfade_free, sizeof(t_xfade), 0, A_GIMME, 0);
     class_addmethod(xfade_class, nullfn, gensym("signal"), 0);
     class_addmethod(xfade_class, (t_method)xfade_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(xfade_class, (t_method)xfade_lin, gensym("lin"), A_FLOAT, 0);
 }
