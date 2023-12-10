@@ -92,9 +92,9 @@
 #X obj 88 384 trigger symbol symbol;
 #X obj 152 73 trigger symbol symbol;
 #X obj 416 272 list;
-#X obj 261 370 else/note2pitch;
+#X obj 261 370 else/note2midi;
 #X obj 483 368 else/sum;
-#X obj 390 166 else/note2pitch;
+#X obj 390 166 else/note2midi;
 #X connect 0 0 10 0;
 #X connect 1 0 32 0;
 #X connect 3 0 6 0;
@@ -221,7 +221,7 @@
 #X obj 286 158 t f;
 #X obj 286 192 s \$0-reset-count;
 #X obj 142 91 trigger symbol symbol;
-#X obj 142 160 else/note2pitch;
+#X obj 142 160 else/note2midi;
 #X connect 0 0 7 0;
 #X connect 2 0 8 0;
 #X connect 3 0 1 0;

@@ -1,7 +1,7 @@
-#N struct 1006-cell float x float y float cellsize float color;
-#N struct 1007-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
-#N struct 1026-point float x0 float y0 float size float fg float in float grid;
-#N struct 1079-slot float x float y float slotsize float color float width float bordercolor;
+#N struct 1004-cell float x float y float cellsize float color;
+#N struct 1005-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
+#N struct 1024-point float x0 float y0 float size float fg float in float grid;
+#N struct 1077-slot float x float y float slotsize float color float width float bordercolor;
 #N canvas 480 25 550 589 10;
 #N canvas 347 36 974 668 GUI 0;
 #X text 40 146 [biplot];
@@ -116,13 +116,13 @@
 #X obj 71 143 else/retrieve;
 #X obj 71 69 else/presets;
 #A saved -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;;
-#X obj 71 216 else/canvas.file;
 #X obj 71 317 else/canvas.name;
 #X obj 71 440 else/sender;
 #X obj 72 539 else/dispatch;
 #X obj 73 562 else/var;
 #X obj 74 589 else/nop~;
 #X obj 72 513 else/send2~;
+#X obj 71 216 else/findfile;
 #X restore 46 185 pd Patch/subpatch_management;
 #N canvas 493 47 306 699 MIDI 0;
 #X obj 72 125 else/sysrt.in;
