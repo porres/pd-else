@@ -134,7 +134,7 @@
 #X obj 288 194 openpanel;
 #X obj 288 258 file split;
 #X obj 288 289 else/slice -1;
-#X obj 376 353 else/canvas.file 1;
+#X obj 376 353 else/findfile 1;
 #X obj 288 225 trigger symbol symbol, f 42;
 #X obj 376 320 trigger symbol symbol;
 #X obj 481 428 symbol;

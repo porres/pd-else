@@ -408,7 +408,7 @@
 #X msg 55 432 click;
 #X obj 105 78 route show hide read write clear list export n, f 101;
 #N canvas 47 74 450 300 search 0;
-#X obj 105 112 else/canvas.file 1;
+#X obj 105 112 else/findfile 1;
 #X obj 142 185 print [presets];
 #X msg 142 155 \$1 file not found;
 #X obj 106 33 inlet;

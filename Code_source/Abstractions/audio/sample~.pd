@@ -542,7 +542,7 @@
 #X connect 6 1 5 0;
 #X restore 82 221 pd openpanel;
 #X obj 82 88 list;
-#X obj 201 211 else/canvas.file 1;
+#X obj 201 211 else/findfile 1;
 #X obj 82 118 route bang symbol;
 #X obj 223 271 print [sample~];
 #X msg 223 245 \$1 file not found;

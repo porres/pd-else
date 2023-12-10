@@ -424,7 +424,7 @@
 #X obj 98 61 else/args;
 #X obj 98 88 route symbol;
 #X obj 98 264 outlet;
-#X obj 98 160 else/canvas.file 1;
+#X obj 98 160 else/findfile 1;
 #X msg 221 192 \$1 file not found;
 #X obj 221 222 print [score2];
 #X msg 98 220 read \$1;

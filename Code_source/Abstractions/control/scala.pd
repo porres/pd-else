@@ -18,7 +18,7 @@
 #X obj 100 16 inlet;
 #X obj 259 690 outlet;
 #X obj 203 690 outlet;
-#X obj 100 204 else/canvas.file;
+#X obj 100 204 else/findfile;
 #X obj 150 587 else/insert file, f 11;
 #X obj 259 566 else/insert name, f 11;
 #X obj 244 124 else/click;

@@ -62,11 +62,11 @@
 #X obj 238 547 outlet;
 #X text 195 548 start;
 #X obj 84 136 else/click;
-#X obj 521 245 else/canvas.file 1;
+#X obj 521 245 else/findfile 1;
 #X obj 521 213 r \$0-file;
 #X obj 521 275 s \$0-found-file;
 #X obj 297 222 r \$0-found-file;
-#X obj 291 283 else/canvas.file 1;
+#X obj 291 283 else/findfile 1;
 #X msg 626 357 \$1 file not found;
 #X obj 626 382 print [pvoc.player~];
 #X connect 0 0 8 0;
@@ -426,7 +426,7 @@
 #X obj 102 362 route bang;
 #X obj 159 384 t a b;
 #X obj 72 148 t b a;
-#X obj 639 315 else/canvas.file 1;
+#X obj 639 315 else/findfile 1;
 #X msg 664 347 \$1 file not found;
 #X obj 664 372 print [pvoc.player~];
 #X connect 0 0 7 0;

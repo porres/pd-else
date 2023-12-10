@@ -20,7 +20,7 @@
 #X obj 98 61 else/args;
 #X obj 98 88 route symbol;
 #X obj 98 224 outlet;
-#X obj 98 123 else/canvas.file 1;
+#X obj 98 123 else/findfile 1;
 #X msg 221 155 \$1 file not found;
 #X obj 221 185 print [score];
 #X msg 98 172 read \$1;

@@ -19,7 +19,7 @@
 #X obj 216 54 inlet;
 #X obj 315 356 outlet;
 #X obj 348 54 inlet;
-#X obj 373 183 else/canvas.file 1;
+#X obj 373 183 else/findfile 1;
 #X obj 478 233 print [sample~];
 #X msg 478 207 \$1 file not found;
 #X obj 315 295 symbol;
@@ -99,7 +99,7 @@
 #X restore 77 169 pd route;
 #X obj 56 118 r \$0-reroute;
 #X obj 229 105 list;
-#X obj 313 387 else/canvas.file 1;
+#X obj 313 387 else/findfile 1;
 #X obj 418 444 print [sample~];
 #X msg 418 418 \$1 file not found;
 #X obj 313 436 s \$0-file-found;
