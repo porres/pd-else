@@ -15,10 +15,12 @@ static t_class* gendyn_class;
 typedef struct _gendyn{
     t_object       x_obj;          // the object
     t_random_state x_rstate;       // random generator state
+    int            x_changed;      // random id value
     int            x_id;           // random id value
     int            x_n;            // number of points in the period
     double         x_bw;           // bandwidth around center frequency
-    double         x_cf;           // center frequency
+    t_float        x_cf;           // center frequency
+    t_float        x_last_cf;      // center frequency
     int            x_cents;        // flag for bandwidth in cents
     int            x_ad;           // amplitude distribution number
     int            x_fd;           // frequency distribution number
@@ -114,14 +116,23 @@ static void gendyn_seed(t_gendyn *x, t_symbol *s, int ac, t_atom *av){
 
 static void gendyn_n(t_gendyn* x, t_floatarg f){ // number of points
     x->x_n = f < 1 ? 1 : f > MAX_N ? MAX_N : (int)f;
+    x->x_changed = 1;
 }
 
 static void gendyn_bw(t_gendyn* x, t_floatarg f){
     x->x_bw = f < 0 ? 0 : f;
+    x->x_changed = 1;
 }
 
 static void gendyn_cents(t_gendyn* x, t_floatarg f){
     x->x_cents = f != 0;
+    x->x_changed = 1;
+}
+
+static void gendyn_frange(t_gendyn* x, t_floatarg minf, t_floatarg maxf){
+    x->x_cents = 0;
+    x->x_bw = (maxf - minf) * 0.5;
+    x->x_cf = minf + x->x_bw;
 }
 
 static void gendyn_step_a(t_gendyn* x, t_floatarg f){ // maximum amplitude step in percentage
@@ -161,30 +172,13 @@ static t_int* gendyn_perform(t_int* w){
     double phase = x->x_phase;
     double amp = x->x_amp; // current index amplitude
     double freq = x->x_freq; // current index frequency
+    t_float last_cf = x->x_last_cf;
     double nextamp = x->x_nextamp;
     double phase_step = x->x_phase_step;
     double output;
     float minf, maxf;
     while(n--){
         float cf = *in++;
-//        post("cf = %f", cf);
-        if(x->x_cents){
-            float ratio = pow(2, (x->x_bw/1200));
-            minf = cf / ratio;
-            maxf = cf * ratio;
-        }
-        else{
-            minf = cf - x->x_bw;
-            maxf = cf + x->x_bw;
-        }
-        if(minf < 0.000001)
-            minf = 0.000001;
-        if(minf > 22050)
-            minf = 22050;
-        if(maxf < 0.000001)
-            maxf = 0.000001;
-        if(maxf > 22050)
-            maxf = 22050;
         if(phase >= 1){ // get new value
             phase -= 1;
             amp = x->x_amps[x->x_i], freq = x->x_freqs[x->x_i]; // get values
@@ -194,13 +188,35 @@ static t_int* gendyn_perform(t_int* w){
             x->x_freqs[x->x_i] = gendyn_fold(freq + r, 0.0, 1.0); // update freq
             x->x_i = (x->x_i + 1) % x->x_n; // next index
             nextamp = x->x_amps[x->x_i]; // next index's amp
+            x->x_changed = 1;
         }
-        // need to remap
-        float frange = maxf - minf;
-        phase_step = freq * frange + minf;
-        phase_step *= (x->x_n * x->x_i_sr);
-        if(phase_step > 1)
-            phase_step = 1;
+        if(cf != x->x_last_cf)
+            x->x_changed = 1;
+        if(x->x_changed){  // need to remap
+            if(x->x_cents){
+                float ratio = pow(2, (x->x_bw/1200));
+                minf = cf / ratio;
+                maxf = cf * ratio;
+            }
+            else{
+                minf = cf - x->x_bw;
+                maxf = cf + x->x_bw;
+            }
+            if(minf < 0.000001)
+                minf = 0.000001;
+            if(minf > 22050)
+                minf = 22050;
+            if(maxf < 0.000001)
+                maxf = 0.000001;
+            if(maxf > 22050)
+                maxf = 22050;
+            float frange = maxf - minf;
+            phase_step = freq * frange + minf;
+            phase_step *= (x->x_n * x->x_i_sr);
+            if(phase_step > 1)
+                phase_step = 1;
+            x->x_changed = 0;
+        }
         switch(x->x_interp){
             case 0: // no interpolation
                 output = amp;
@@ -214,12 +230,14 @@ static t_int* gendyn_perform(t_int* w){
         }
         phase += phase_step;
         *out++ = output;
+        last_cf = cf;
     }
     x->x_phase = phase;
     x->x_amp = amp;
     x->x_freq = freq;
     x->x_nextamp = nextamp;
     x->x_phase_step = phase_step;
+    x->x_last_cf = last_cf;
     return(w+5);
 }
 
@@ -331,9 +349,6 @@ static void* gendyn_new(t_symbol *s, int ac, t_atom *av){
     x->x_interp = interp;
     x->x_i_sr = 1 / sys_getsr();
     outlet_new(&x->x_obj, gensym("signal"));
-    post("cf = %f", x->x_cf);
-    post("cents = %d", x->x_cents);
-    post("bw = %f", x->x_bw);
     return(x);
 errstate:
     pd_error(x, "[gendyn~]: improper args");
@@ -347,7 +362,7 @@ void gendyn_tilde_setup(void){
     class_addmethod(gendyn_class, (t_method)gendyn_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(gendyn_class, (t_method)gendyn_bw, gensym("bw"), A_FLOAT, 0);
     class_addmethod(gendyn_class, (t_method)gendyn_cents, gensym("cents"), A_FLOAT, 0);
-//    class_addmethod(gendyn_class, (t_method)gendyn_frange, gensym("frange"), A_FLOAT, A_FLOAT, 0);
+    class_addmethod(gendyn_class, (t_method)gendyn_frange, gensym("frange"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(gendyn_class, (t_method)gendyn_step_a, gensym("amp_step"), A_FLOAT, 0);
     class_addmethod(gendyn_class, (t_method)gendyn_step_f, gensym("freq_step"), A_FLOAT, 0);
     class_addmethod(gendyn_class, (t_method)gendyn_dist, gensym("dist"),
