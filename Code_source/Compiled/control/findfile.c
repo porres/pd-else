@@ -42,7 +42,7 @@ static void *findfile_new(t_floatarg f){
     return(x);
 }
 
-void setup_findfile(void){
+void findfile_setup(void){
     findfile_class = class_new(gensym("findfile"), (t_newmethod)findfile_new,
         0, sizeof(t_findfile), 0, A_DEFFLOAT, 0);
     class_addsymbol(findfile_class, findfile_symbol);

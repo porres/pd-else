@@ -1,8 +1,8 @@
-#N struct 1004-cell float x float y float cellsize float color;
-#N struct 1005-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
-#N struct 1024-point float x0 float y0 float size float fg float in float grid;
-#N struct 1077-slot float x float y float slotsize float color float width float bordercolor;
-#N canvas 368 25 550 589 10;
+#N struct 1006-cell float x float y float cellsize float color;
+#N struct 1007-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
+#N struct 1026-point float x0 float y0 float size float fg float in float grid;
+#N struct 1079-slot float x float y float slotsize float color float width float bordercolor;
+#N canvas 480 25 550 589 10;
 #N canvas 347 36 974 668 GUI 0;
 #X text 40 146 [biplot];
 #X text 196 83 [pic] =>;
@@ -577,8 +577,6 @@
 #X obj 50 186 else/eqdiv;
 #X obj 50 294 else/frac2dec;
 #X obj 50 363 else/midi2freq;
-#X obj 50 386 else/note2pitch;
-#X obj 50 409 else/pitch2note;
 #X obj 50 44 else/scales;
 #X obj 50 250 else/cents2frac;
 #X obj 50 272 else/frac2cents;
@@ -586,9 +584,11 @@
 #X obj 50 227 else/cents2scale;
 #X obj 50 340 else/freq2midi;
 #X obj 50 318 else/dec2frac;
-#X obj 50 433 else/note2dur;
 #X obj 50 114 else/makenote2;
 #X obj 50 137 else/scala;
+#X obj 50 433 else/notedur;
+#X obj 50 409 else/midi2note;
+#X obj 50 386 else/note2midi;
 #X restore 367 152 pd Tuning/notes;
 #N canvas 445 74 302 469 List_management 0;
 #X obj 73 20 else/break;
