@@ -1,4 +1,4 @@
-// based on convolve~ by William Brent under the GNU General Public License
+// based on [convolve~] by William Brent under the GNU General Public License
 
 #include "m_pd.h"
 #include "kiss_fft.h"
@@ -331,12 +331,12 @@ static void *conv_new(t_symbol *s, int ac, t_atom *av){
     x->x_window = DEFSIZE;
     x->x_array_name = gensym("NOARRAYSPECIFIED");
     // store the pointer to the symbol containing the object name. Can access it for error and post functions via s->s_name
-    if(ac && av->a_type == A_FLOAT){
-        x->x_window = atom_getfloat(av);
-        ac--, av++;
-    }
     if(ac && av->a_type == A_SYMBOL){
         x->x_array_name = atom_getsymbol(av);
+        ac--, av++;
+    }
+    if(ac && av->a_type == A_FLOAT){
+        x->x_window = atom_getfloat(av);
         ac--, av++;
     }
     if((x->x_window % 64) == 0){ // window size is a multiple of 64
