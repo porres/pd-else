@@ -47,7 +47,7 @@ proc category_else_menu::load_menutree {} {
             {file\ management
                 {dir}}
             {midi
-                {midi midi.learn midi.in midi.out sysrt.in sysrt.out ctl.in ctl.out touch.in touch.out ptouch.in ptouch.out pgm.in pgm.out nemd.in bend.out note.in note.out midi.clock noteinfo sendmidi panic mono mono~ voices voices~ suspedal}}
+                {midi midi.learn midi.in midi.out sysrt.in sysrt.out ctl.in ctl.out touch.in touch.out ptouch.in ptouch.out pgm.in pgm.out bend.in bend.out note.in note.out midi.clock noteinfo sendmidi panic mono mono~ voices voices~ suspedal}}
             {osc
                 {osc.route osc.format osc.parse osc.send osc.receive}}
             {math\ functions
