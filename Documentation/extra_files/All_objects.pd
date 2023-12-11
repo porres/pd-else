@@ -586,9 +586,9 @@
 #X obj 50 318 else/dec2frac;
 #X obj 50 114 else/makenote2;
 #X obj 50 137 else/scala;
-#X obj 50 433 else/notedur;
 #X obj 50 409 else/midi2note;
 #X obj 50 386 else/note2midi;
+#X obj 50 433 else/notedur2ratio;
 #X restore 367 152 pd Tuning/notes;
 #N canvas 445 74 302 469 List_management 0;
 #X obj 73 20 else/break;
