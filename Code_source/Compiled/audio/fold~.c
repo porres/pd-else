@@ -70,7 +70,6 @@ static t_int *fold_perform(t_int *w){
 	return(w+6);
 }
 
-
 static void fold_dsp(t_fold *x, t_signal **sp){
     x->x_n = sp[0]->s_n;
     x->x_nchans = sp[0]->s_nchans;
