@@ -252,7 +252,7 @@ static void* gendyn_new(t_symbol *s, int ac, t_atom *av){
     int ad = 0, fd = 0;             // distribution number
     double ap = 0.5, fp = 0.5;      // distribution parameter
     float fstep = 25, astep = 25;   // steps in %
-    int interp = 1;                 // interpolation mode
+    x->x_interp = 1;                // interpolation mode
     x->x_cf = 440;
     x->x_bw = 1200;
     x->x_cents = 1;
@@ -260,7 +260,7 @@ static void* gendyn_new(t_symbol *s, int ac, t_atom *av){
     gendyn_seed(x, s, 0, NULL);
     while(ac > 0){
         if(av->a_type == A_SYMBOL){
-            s = atom_getsymbolarg(0, ac, av);
+            s = atom_getsymbol(av);
             if(s == gensym("-interp")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     gendyn_interp(x, atom_getfloatarg(1, ac, av));
@@ -346,7 +346,6 @@ static void* gendyn_new(t_symbol *s, int ac, t_atom *av){
     x->x_fd = fd;
     x->x_ap = ap;
     x->x_fp = fp;
-    x->x_interp = interp;
     x->x_i_sr = 1 / sys_getsr();
     outlet_new(&x->x_obj, gensym("signal"));
     return(x);
