@@ -1,44 +1,27 @@
-#N struct 1007-point float x0 float y0 float xs float ys float fg float
-in float gridx float gridy;
-#N struct 1020-point float x0 float y0 float xs float ys float fg float
-in float gridx float gridy;
-#N canvas 590 23 561 567 10;
-#X obj 3 332 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 3 402 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 3 495 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 122 410 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 123 339 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 3 538 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#N struct 1011-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
+#N struct 1024-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
+#N struct 1073-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
+#N canvas 497 23 563 609 10;
+#X obj 3 332 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 402 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 535 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 122 410 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 123 339 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 3 578 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 135 40 cnv 4 4 4 empty empty panning 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 21 40 cnv 4 4 4 empty empty Quadraphonic 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 135 40 cnv 4 4 4 empty empty panning 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 21 40 cnv 4 4 4 empty empty Quadraphonic 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
-#fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -107,8 +90,7 @@ in float gridx float gridy;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
-0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -120,8 +102,7 @@ in float gridx float gridy;
 #X obj 136 86 snapshot~;
 #X obj 91 52 del 5;
 #X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 74 126 switch~;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -142,48 +123,38 @@ in float gridx float gridy;
 #X restore 505 71 pd;
 #X text 189 410 signal;
 #X text 188 339 signal;
-#X obj 123 360 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
-;
+#X obj 123 360 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 152 361 float/signal;
-#X obj 3 4 cnv 15 301 42 empty empty pan4~ 20 20 2 37 #e0e0e0 #000000
-0;
+#X obj 3 4 cnv 15 301 42 empty empty pan4~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #X text 240 339 - signal input;
-#X obj 122 431 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
-;
+#X obj 122 431 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 189 431 signal;
-#X obj 123 381 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
-;
+#X obj 123 381 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 152 382 float/signal;
 #X text 240 361 - X pan value: from -1 (Left) to 1 (Right);
 #X text 240 382 - Y pan value: from -1 (Back) to 1 (Front);
-#X text 149 502 1) float - initial X pan value (default 0);
-#X obj 122 452 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
-;
+#X text 149 542 1) float - initial X pan value (default 0);
+#X obj 122 452 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 189 452 signal;
-#X obj 122 473 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
-;
+#X obj 122 473 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 189 473 signal;
 #X text 242 452 - Left-Back channel;
 #X text 242 473 - Right-Back channel;
-#X text 149 517 2) float - initial Y pan value (default 0);
+#X text 149 557 2) float - initial Y pan value (default 0);
 #X floatatom 250 207 5 0 0 0 - - - 0;
 #X floatatom 309 206 5 0 0 0 - - - 0;
 #X obj 192 254 env~;
 #X obj 231 254 env~;
 #X obj 270 254 env~;
 #X obj 309 254 env~;
-#X obj 309 279 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
+#X obj 309 279 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 192 154 noise~;
-#X obj 270 279 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
-#X obj 231 278 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
-#X obj 192 278 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
+#X obj 270 279 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 231 278 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 192 278 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 230 295 left;
 #X text 230 309 front;
 #X text 269 309 front;
@@ -192,8 +163,7 @@ in float gridx float gridy;
 #X text 309 295 right;
 #X text 191 309 back;
 #X text 310 309 back;
-#X text 73 88 [pan4~] is a 4-channel equal power (sin/cos) panner.
-;
+#X text 73 88 [pan4~] is a 4-channel equal power (sin/cos) panner.;
 #X text 235 205 X;
 #X text 295 205 Y;
 #X obj 192 227 else/pan4~, f 20;
@@ -219,8 +189,7 @@ in float gridx float gridy;
 #X text 179 82 2;
 #X text 317 80 3;
 #X text 316 208 4;
-#X obj 189 85 else/slider2d 127 127 -1 1 -1 1 0 210 210 210 0 0 0 1
-0 0 119 55 empty empty;
+#X obj 189 85 else/slider2d 127 127 -1 1 -1 1 0 210 210 210 0 0 0 1 0 0 119 55 empty empty;
 #X connect 0 0 11 0;
 #X connect 1 0 13 0;
 #X connect 2 0 5 0;
@@ -238,9 +207,41 @@ in float gridx float gridy;
 #X connect 12 1 1 0;
 #X connect 13 0 5 2;
 #X connect 18 0 12 0;
-#X restore 467 289 pd example;
-#X obj 250 115 else/slider2d 64 64 -1 1 -1 1 1 210 210 210 0 0 0 1
-0 0 64 0 empty empty;
+#X restore 467 269 pd example;
+#X obj 250 115 else/slider2d 64 64 -1 1 -1 1 1 210 210 210 0 0 0 1 0 0 64 0 empty empty;
+#N canvas 539 94 519 557 multichannel 0;
+#X obj 211 198 noise~;
+#X obj 211 381 else/out.mc~;
+#X obj 211 322 else/pan4~ -mc;
+#X obj 83 367 else/meter4~;
+#X floatatom 305 228 5 0 0 0 - - - 0;
+#X floatatom 361 227 5 0 0 0 - - - 0;
+#X text 290 226 X;
+#X text 347 226 Y;
+#X obj 305 30 else/initmess set 0 0;
+#X obj 305 252 else/f2s~ 10;
+#X obj 305 208 unpack;
+#X obj 361 272 else/f2s~ 10;
+#X text 294 179 1;
+#X text 295 55 2;
+#X text 433 53 3;
+#X text 432 181 4;
+#X obj 305 58 else/slider2d 127 127 -1 1 -1 1 0 210 210 210 0 0 0 1 0 0 -0.165354 -0.0708662 empty empty;
+#X text 94 70 The '-mc' flag sets to output a multichannel audio containing all channels., f 23;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 2 0 3 0;
+#X connect 4 0 9 0;
+#X connect 5 0 11 0;
+#X connect 8 0 16 0;
+#X connect 9 0 2 1;
+#X connect 10 0 4 0;
+#X connect 10 1 5 0;
+#X connect 11 0 2 2;
+#X connect 16 0 10 0;
+#X restore 437 295 pd multichannel;
+#X obj 3 500 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
+#X text 180 510 -mc: sets to multichannel output, f 33;
 #X connect 38 0 60 1;
 #X connect 39 0 60 2;
 #X connect 40 0 48 0;
