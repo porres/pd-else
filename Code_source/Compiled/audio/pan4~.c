@@ -68,15 +68,15 @@ static t_int *pan4_perform_mc(t_int *w){
         float back = in * (ypan == 1 ? 0 : cos(ypan * HALF_PI));
         float front = in * sin(ypan * HALF_PI);
         for(int j = 0; j < 4; j++){
-            float output;
+            float output = 0;
             if(j == 0)
                 output = back * (xpan == 1 ? 0 : cos(xpan * HALF_PI));  // Left Back
-            if(j == 1)
+            else if(j == 1)
                 output = front * (xpan == 1 ? 0 : cos(xpan * HALF_PI)); // Left Front
-            if(j == 2)
+            else if(j == 2)
                 output = front * sin(xpan * HALF_PI);                   // Right Front
             else
-                output = back * sin(xpan * HALF_PI);                    // Right Back
+                output = back * sin(xpan * HALF_PI);                    // Right Back8
             out[j*x->x_n + i] = output;
         }
     }
