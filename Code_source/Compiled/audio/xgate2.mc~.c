@@ -40,20 +40,15 @@ t_int *xgate2mc_perform(t_int *w){
         t_float spread = spreadin[i];
         if(spread < 0.1)
             spread = 0.1;
-        spread *= 2;
-        float range = outchs / spread;
         if(!x->x_index)
-            pos *= outchs;
-        if(pos < 0)
-            pos = 0;
-        else if(pos > outchs)
-            pos = outchs;
-        pos += (spread * 0.5);
+            pos *= (outchs - 1);
+        pos += spread;
+        spread *= 2;
         for(int j = 0; j < outchs; j++){
             float chanpos = (pos - j) / spread;
-            chanpos = chanpos - range * floor(chanpos/range);
-            float chanamp = chanpos >= 1 ? 0 : sin(chanpos*M_PI);
-            out[j*n + i] = in[i] * chanamp;
+            if(chanpos >= 1 || chanpos < 0)
+                chanpos = 0;
+            out[j*n + i] = in[i] * sin(chanpos*M_PI);
         }
 	}
     return(w+6);

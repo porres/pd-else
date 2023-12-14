@@ -37,20 +37,15 @@ static t_int *xgate2_perform(t_int *w){
         t_float spread = spreadin[i];
         if(spread < 0.1)
             spread = 0.1;
-        spread *= 2;
-        float range = n_outlets / spread;
         if(!x->x_index)
-            pos *= n_outlets;
-        if(pos < 0)
-            pos = 0;
-        else if(pos > n_outlets)
-            pos = n_outlets;
-        pos += (spread * 0.5);
+            pos *= (n_outlets - 1);
+        pos += spread;
+        spread *= 2;
         for(j = 0; j < n_outlets; j++){
             float chanpos = (pos - j) / spread;
-            chanpos = chanpos - range * floor(chanpos/range);
-            float chanamp = chanpos >= 1 ? 0 : sin(chanpos*M_PI);
-            ovecs[j][i] = input * chanamp;
+            if(chanpos >= 1 || chanpos < 0)
+                chanpos = 0;
+            ovecs[j][i] = input * sin(chanpos*M_PI);
         }
     };
     return(w+3);
