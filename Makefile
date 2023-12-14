@@ -204,6 +204,7 @@ nyquist~.class.sources := Code_source/Compiled/audio/nyquist~.c
 op~.class.sources := Code_source/Compiled/audio/op~.c
 pol2car~.class.sources := Code_source/Compiled/audio/pol2car~.c
 power~.class.sources := Code_source/Compiled/audio/power~.c
+pan~.class.sources := Code_source/Compiled/audio/pan~.c
 pan2~.class.sources := Code_source/Compiled/audio/pan2~.c
 pan4~.class.sources := Code_source/Compiled/audio/pan4~.c
 peak~.class.sources := Code_source/Compiled/audio/peak~.c

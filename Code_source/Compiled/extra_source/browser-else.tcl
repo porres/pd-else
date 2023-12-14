@@ -87,7 +87,7 @@ proc category_else_menu::load_menutree {} {
             {control:\ mouse\ keyboard
                 {mouse canvas.mouse keycode keymap keypress}}
             {control:\ fade\ pan\ routing
-                {fader~ autofade~ autofade2~ balance~ pan2~ pan4~ pan8~ spread~ spread.mc~ rotate~ rotate.mc~ xfade~ xfade.mc~ xgate~ xgate.mc~ xgate2~ xgate2.mc~ xselect~ xselect2~ xselect2.mc~ xselect.mc~ mtx~}}
+                {fader~ autofade~ autofade2~ balance~ pan~ pan2~ pan4~ pan8~ spread~ spread.mc~ rotate~ rotate.mc~ xfade~ xfade.mc~ xgate~ xgate.mc~ xgate2~ xgate2.mc~ xselect~ xselect2~ xselect2.mc~ xselect.mc~ mtx~}}
             {control:\ sequencers
                 {euclid score score2 pattern list.seq sequencer sequencer~ phaseseq~ impseq~ rec rec2}}
             {control:\ envelopes
