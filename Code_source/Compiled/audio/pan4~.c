@@ -1,9 +1,7 @@
 // Porres 2016
 
 #include "m_pd.h"
-#include <math.h>
-
-#define HALF_PI (3.14159265358979323846 * 0.5)
+#include "buffer.h"
 
 static t_class *pan4_class;
 
@@ -27,22 +25,22 @@ static t_int *pan4_perform(t_int *w){
     int n = x->x_n;
     while(n--){
         float in = *in1++;
-        float xpan = (*in2++ + 1) * 0.5;
-        float ypan = (*in3++ + 1) * 0.5;
+        float xpan = (*in2++ + 1) * 0.125;
+        float ypan = (*in3++ + 1) * 0.125;
         if(xpan < 0)
             xpan = 0;
-        if(xpan > 1)
-            xpan = 1;
+        if(xpan > 0.25)
+            xpan = 0.25;
         if(ypan < 0)
             ypan = 0;
-        if(ypan > 1)
-            ypan = 1;
-        float back = in * (ypan == 1 ? 0 : cos(ypan * HALF_PI));
-        float front = in * sin(ypan * HALF_PI);
-        *out1++ = back * (xpan == 1 ? 0 : cos(xpan * HALF_PI));  // Left Back
-        *out2++ = front * (xpan == 1 ? 0 : cos(xpan * HALF_PI)); // Left Front
-        *out3++ = front * sin(xpan * HALF_PI);                   // Right Front
-        *out4++ = back * sin(xpan * HALF_PI);                    // Right Back
+        if(ypan > 0.25)
+            ypan = 0.25;
+        float back = in * read_sintab(ypan + 0.25);
+        float front = in * read_sintab(ypan);
+        *out1++ = back * read_sintab(xpan + 0.25);  // Left Back
+        *out2++ = front * read_sintab(xpan + 0.25); // Left Front
+        *out3++ = front * read_sintab(xpan);        // Right Front
+        *out4++ = back * read_sintab(xpan);         // Right Back
     }
     return(w+9);
 }
@@ -55,28 +53,28 @@ static t_int *pan4_perform_mc(t_int *w){
     t_float *out = (t_float *)(w[5]);
     for(int i = 0; i < x->x_n; i++){
         float in = in1[i];
-        float xpan = (in2[i] + 1) * 0.5;
-        float ypan = (in3[i] + 1) * 0.5;
+        float xpan = (in2[i] + 1) * 0.125;
+        float ypan = (in3[i] + 1) * 0.125;
         if(xpan < 0)
             xpan = 0;
-        if(xpan > 1)
-            xpan = 1;
+        if(xpan > 0.25)
+            xpan = 0.25;
         if(ypan < 0)
             ypan = 0;
-        if(ypan > 1)
-            ypan = 1;
-        float back = in * (ypan == 1 ? 0 : cos(ypan * HALF_PI));
-        float front = in * sin(ypan * HALF_PI);
+        if(ypan > 0.25)
+            ypan = 0.25;
+        float back = in * read_sintab(ypan + 0.25);
+        float front = in * read_sintab(ypan);
         for(int j = 0; j < 4; j++){
             float output = 0;
             if(j == 0)
-                output = back * (xpan == 1 ? 0 : cos(xpan * HALF_PI));  // Left Back
+                output = back * read_sintab(xpan + 0.25);   // Left Back
             else if(j == 1)
-                output = front * (xpan == 1 ? 0 : cos(xpan * HALF_PI)); // Left Front
+                output = front * read_sintab(xpan + 0.25);  // Left Front
             else if(j == 2)
-                output = front * sin(xpan * HALF_PI);                   // Right Front
+                output = front * read_sintab(ypan);         // Right Front
             else
-                output = back * sin(xpan * HALF_PI);                    // Right Back8
+                output = back * read_sintab(ypan);          // Right Back8
             out[j*x->x_n + i] = output;
         }
     }
@@ -109,6 +107,7 @@ static void *pan4_free(t_pan4 *x){
 static void *pan4_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_pan4 *x = (t_pan4 *)pd_new(pan4_class);
+    init_sine_table();
     float f1 = 0, f2 = 0;
     x->x_mc = 0;
     while(ac && av->a_type == A_SYMBOL){

@@ -289,6 +289,8 @@ magic := Code_source/shared/magic.c
 
 buf := Code_source/shared/buffer.c
     pan~.class.sources := Code_source/Compiled/audio/pan~.c $(buf)
+    pan2~.class.sources := Code_source/Compiled/audio/pan2~.c $(buf)
+    pan4~.class.sources := Code_source/Compiled/audio/pan4~.c $(buf)
     sin~.class.sources := Code_source/Compiled/audio/sin~.c $(buf)
     fm~.class.sources := Code_source/Compiled/audio/fm~.c $(buf)
     pm~.class.sources := Code_source/Compiled/audio/pm~.c $(buf)

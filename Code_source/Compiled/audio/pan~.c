@@ -62,7 +62,7 @@ static void pan_offset(t_pan *x, t_floatarg f){
 
 void *pan_free(t_pan *x){
     freebytes(x->x_outs, x->x_n_outlets * sizeof(*x->x_outs));
-    freebytes(x->x_outs, 4 * sizeof(*x->x_ins));
+    freebytes(x->x_ins, 4 * sizeof(*x->x_ins));
     inlet_free(x->x_inlet_spread);
     inlet_free(x->x_inlet_gain);
     return(void *)x;
