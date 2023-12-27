@@ -1,7 +1,7 @@
 // porres 2023
 
 #include "m_pd.h"
-#include <math.h>
+#include "buffer.h"
 
 #define MAXOUTPUT 512
 
@@ -44,7 +44,7 @@ t_int *xselect2mc_perform(t_int *w){
         for(int j = 0; j < inchs; j++){
             float chanpos = (pos - j) / spread;
             chanpos = chanpos - range * floor(chanpos/range);
-            float chanamp = chanpos >= 1 ? 0 : sin(chanpos*M_PI);
+            float chanamp = chanpos >= 1 ? 0 : read_sintab(chanpos*0.5);
             out[i] += in[j*n + i] * chanamp;
         }
 	}
@@ -69,6 +69,7 @@ void xselect2mc_free(t_xselect2mc *x){
 void *xselect2mc_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_xselect2mc *x = (t_xselect2mc *)pd_new(xselect2mc_class);
+    init_sine_table();
     float spread = 1;
     if(ac){
         if(av->a_type == A_SYMBOL){

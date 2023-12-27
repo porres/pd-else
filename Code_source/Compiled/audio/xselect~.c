@@ -2,12 +2,11 @@
 
 #include "m_pd.h"
 #include <stdlib.h>
-#include <math.h>
+#include "buffer.h"
 
 static t_class *xselect_class;
 
 #define INPUTLIMIT 512
-#define HALF_PI (3.14159265358979323846 * 0.5)
 
 typedef struct _xselect{
     t_object    x_obj;
@@ -57,7 +56,7 @@ static t_int *xselect_perform(t_int *w){
                 }
             }
             x->x_fade[i] = x->x_counter[i] / x->x_fade_in_samps;
-            x->x_fade[i] = sin(x->x_fade[i] * HALF_PI); // equal power
+            x->x_fade[i] = read_sintab(x->x_fade[i] * 0.25); // equal power
             sum += *x->x_in[i]++ * x->x_fade[i];
         }
         *out++ = sum;
@@ -90,6 +89,7 @@ static void xselect_time(t_xselect *x, t_floatarg ms){
 static void *xselect_new(t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     t_xselect *x = (t_xselect *)pd_new(xselect_class);
+    init_sine_table();
     x->x_sr_khz = sys_getsr() * 0.001;
     t_float ch = 1, ms = 0, init_channel = 0;
     int i;

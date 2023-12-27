@@ -1,6 +1,6 @@
 
 #include "m_pd.h"
-#include <math.h>
+#include "buffer.h"
 
 #define MAXINTPUT 512
 
@@ -47,7 +47,7 @@ static t_int *xselect2_perform(t_int *w){
         for(int j = 0; j < n_inlets; j++){
             float chanpos = (pos - j) / spread;
             chanpos = chanpos - range * floor(chanpos/range);
-            float chanamp = chanpos >= 1 ? 0 : sin(chanpos*M_PI);
+            float chanamp = chanpos >= 1 ? 0 : read_sintab(chanpos*0.5);
             output += ivecs[j][i] * chanamp;
         }
         ovec[i] = output;
@@ -69,6 +69,7 @@ static void xselect2_dsp(t_xselect2 *x, t_signal **sp){
 static void *xselect2_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_xselect2 *x = (t_xselect2 *)pd_new(xselect2_class);
+    init_sine_table();
     t_float n_inlets = 2; // inlets not counting channel selection
     x->x_indexed = 0;
     float spread = 1;

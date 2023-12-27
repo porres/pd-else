@@ -1,12 +1,11 @@
 // porres
 
 #include "m_pd.h"
-#include <math.h>
+#include "buffer.h"
 
 static t_class *xselectmc_class;
 
 #define MAXIN 512
-#define HALF_PI (3.14159265358979323846 * 0.5)
 
 typedef struct _xselectmc{
     t_object  x_obj;
@@ -59,7 +58,7 @@ static t_int *xselectmc_perform(t_int *w){
                 if(x->x_count[j]){
                     float fadeval;
                     if(x->x_count[j] < fade)
-                        fadeval = sin(((float)x->x_count[j] / fade) * HALF_PI);
+                        fadeval = read_sintab(((float)x->x_count[j] / fade) * 0.25);
                     else
                         fadeval = 1;
                     sum += in[j*nblock + n*nblock + i] * fadeval;
@@ -79,6 +78,7 @@ static void xselectmc_dsp(t_xselectmc *x, t_signal **sp){
 
 static void *xselectmc_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
+    init_sine_table();
     t_xselectmc *x = (t_xselectmc *)pd_new(xselectmc_class);
     x->x_ch = x->x_last_ch = 0;
     x->x_sr_khz = sys_getsr() * 0.001;
