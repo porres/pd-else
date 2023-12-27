@@ -1,8 +1,6 @@
 
 #include <math.h>
-#include "m_pd.h"
-
-#define HALF_PI (3.14159265358979323846 * 0.5)
+#include "buffer.h"
 
 static t_class *xfade_class;
 
@@ -31,7 +29,7 @@ static t_int *xfade_perform(t_int *w){
             mix_f = 1;
         if(mix_f < -1)
             mix_f = -1;
-        mix_f = (mix_f + 1) * 0.5; // Mix from 0 to 1
+        mix_f = (mix_f + 1) * 0.125; // Mix from 0 to 1
         for(i = 0; i < x->n_in; i++)
             x->buffer[i] = (t_sample) x->in[i][j];
         for(i = 0; i < x->channels; i++){
@@ -39,8 +37,8 @@ static t_int *xfade_perform(t_int *w){
             if(x->x_lin)
                 out[j] = x->buffer[i] * (1-mix_f) + x->buffer[i+x->channels] * mix_f;
             else
-                out[j] = (x->buffer[i] * (mix_f == 1 ? 0 : cos(mix_f * HALF_PI)))
-                    + (x->buffer[i+x->channels] * sin(mix_f * HALF_PI));
+                out[j] = (x->buffer[i] * (mix_f == 1 ? 0 : read_sintab(mix_f+0.25)))
+                    + (x->buffer[i+x->channels] * read_sintab(mix_f));
         }
     }
     return(w+4);
@@ -71,6 +69,7 @@ static void xfade_free(t_xfade *x){
 static void *xfade_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_xfade *x = (t_xfade *)pd_new(xfade_class);
+    init_sine_table();
     t_float f1 = 1, f2 = 0;
     if(av->a_type == A_SYMBOL){
         if(atom_getsymbol(av) == gensym("-lin"))

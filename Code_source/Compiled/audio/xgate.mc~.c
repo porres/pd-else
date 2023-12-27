@@ -2,12 +2,11 @@
 
 #include "m_pd.h"
 #include <stdlib.h>
-#include <math.h>
+#include "buffer.h"
 
 static t_class *xgatemc_class;
 
 #define MAXOUTS 512
-#define HALF_PI (3.14159265358979323846 * 0.5)
 
 typedef struct _xgatemc{
     t_object    x_obj;
@@ -62,7 +61,7 @@ static t_int *xgatemc_perform(t_int *w){
                     x->x_count[j]++;
                 else if(!x->x_active_out[j] && x->x_count[j] > 0)
                     x->x_count[j]--;
-                float fade = sin((x->x_count[j] / x->x_n_fade) * HALF_PI);
+                float fade = read_sintab((x->x_count[j] / x->x_n_fade) * 0.25);
                 out[j*x->x_ch*n + ch*n + i] = in[ch*n + i] * fade;
             }
         }
@@ -88,6 +87,7 @@ void xgatemc_free(t_xgatemc *x){
 
 static void *xgatemc_new(t_floatarg f1, t_floatarg f2, t_floatarg f3){
     t_xgatemc *x = (t_xgatemc *)pd_new(xgatemc_class);
+    init_sine_table();
     for(int n = 0; n < MAXOUTS; n++){
         x->x_active_out[n] = 0;
         x->x_count[n] = 0;

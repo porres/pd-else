@@ -1,10 +1,8 @@
 #include "m_pd.h"
-#include <math.h>
+#include "buffer.h"
 #include <stdlib.h>
 
 static t_class *spread_class;
-
-#define HALF_PI (3.14159265358979323846 * 0.5)
 
 typedef struct _spread{
     t_object    x_obj;
@@ -87,9 +85,9 @@ void spread_free(t_spread *x){
 }
 
 void *spread_new(t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     t_spread *x = (t_spread *)pd_new(spread_class);
-    t_symbol *dummy = s;
-    dummy = NULL;
+    init_sine_table();
     int i;
     double fullFrac, thisFrac, panloc;
     long outIndex;
@@ -118,22 +116,21 @@ void *spread_new(t_symbol *s, int ac, t_atom *av){
     x->indexList = (long *) malloc(x->inChans * sizeof(long));
     x->advFrac = (double)(x->outChans - 1)/(double)(x->inChans - 1);
     x->outs = (t_float **)malloc(x->outChans * sizeof(t_float *)); // temporary holding for output vectors
-    
     for(i = 1; i < x->inChans - 1; i++){
         fullFrac = i * x->advFrac;
         outIndex = floor(fullFrac);
         thisFrac = fullFrac - outIndex;
-        panloc = thisFrac * HALF_PI;
+        panloc = thisFrac * 0.25;
         x->indexList[i] = outIndex;
-        x->pangains1[i] = cos(panloc);
-        x->pangains2[i] = sin(panloc);
+        x->pangains1[i] = read_sintab(panloc + 0.25);
+        x->pangains2[i] = read_sintab(panloc);
     }
     return(x);
 }
 
 void spread_tilde_setup(void){
     spread_class = class_new(gensym("spread~"), (t_newmethod)spread_new,
-            (t_method)spread_free, sizeof(t_spread), 0, A_GIMME, 0);
+        (t_method)spread_free, sizeof(t_spread), 0, A_GIMME, 0);
     class_addmethod(spread_class, nullfn, gensym("signal"), 0);
     class_addmethod(spread_class, (t_method)spread_dsp, gensym("dsp"),0);
 }

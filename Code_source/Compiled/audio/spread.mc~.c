@@ -1,12 +1,10 @@
 // porres 2023
 
 #include "m_pd.h"
-#include <math.h>
+#include "buffer.h"
 #include <stdlib.h>
 
 static t_class *spreadmc_class;
-
-#define HALF_PI (3.14159265358979323846 * 0.5)
 
 typedef struct _spreadmc{
     t_object    x_obj;
@@ -27,9 +25,9 @@ static void spreadmc_n(t_spreadmc *x, t_floatarg f){
         for(int i = 1; i < x->x_nchs - 1; i++){
             float frac = i * chratio;
             x->x_idx[i] = floor(frac);
-            double pos = (double)(frac - x->x_idx[i]) * HALF_PI;
-            x->x_amp1[i] = cos(pos);
-            x->x_amp2[i] = sin(pos);
+            double pos = (double)(frac - x->x_idx[i]) * 0.25;
+            x->x_amp1[i] = read_sintab(pos + 0.25);
+            x->x_amp2[i] = read_sintab(pos);
         }
         canvas_update_dsp();
     }
@@ -72,9 +70,9 @@ void spreadmc_dsp(t_spreadmc *x, t_signal **sp){
             for(int i = 1; i < chs - 1; i++){
                 float frac = i * chratio;
                 x->x_idx[i] = floor(frac);
-                double pos = (double)(frac - x->x_idx[i]) * HALF_PI;
-                x->x_amp1[i] = cos(pos);
-                x->x_amp2[i] = sin(pos);
+                double pos = (double)(frac - x->x_idx[i]) * 0.25;
+                x->x_amp1[i] = read_sintab(pos + 0.25);
+                x->x_amp2[i] = read_sintab(pos);
             }
         }
         x->x_input = (t_float *)resizebytes(x->x_input,
@@ -93,6 +91,7 @@ void spreadmc_free(t_spreadmc *x){
 
 void *spreadmc_new(t_floatarg f){
     t_spreadmc *x = (t_spreadmc *)pd_new(spreadmc_class);
+    init_sine_table();
     x->x_outchs = f < 2 ? 2 : f > 512 ? 512 : (int)f;
     x->x_nchs = 1;
     x->x_block = sys_getblksize();

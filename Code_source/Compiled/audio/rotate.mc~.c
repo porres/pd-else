@@ -1,26 +1,23 @@
-#include "m_pd.h"
-#include <math.h>
-#include <stdlib.h>
+// porres 2023
 
-#define HALF_PI (3.14159265358979323846 * 0.5)
+#include "m_pd.h"
+#include "buffer.h"
 
 static t_class *rotatemc_class;
 
 typedef struct _rotatemc{
     t_object    x_obj;
-    t_inlet    *x_inlet_pos;
     t_float    *x_input;
-    int         x_block;
-    int         x_chs;
+    t_inlet    *x_inlet_pos;
+    int         x_n, x_chs;
 }t_rotatemc;
 
 static t_int *rotatemc_perform(t_int *w){
     t_rotatemc *x = (t_rotatemc*)w[1];
-    int n = (int)(w[2]);
-    int chs = (int)(w[3]);
-    t_float *input = (t_float *)(w[4]);
-    t_float *position = (t_float *)(w[5]);
-    t_float *out = (t_float *)(w[6]);
+    t_float *input = (t_float *)(w[2]);
+    t_float *position = (t_float *)(w[3]);
+    t_float *out = (t_float *)(w[4]);
+    int chs = x->x_chs, n = x->x_n;
     t_float *in = x->x_input;
     for(int i = 0; i < n*chs; i++) // copy input
         in[i] = input[i];
@@ -33,35 +30,36 @@ static t_int *rotatemc_perform(t_int *w){
         while(idx < 0)
             idx += chs;
         int offset = (int)floor(idx) % chs;
-        double pos = (idx - offset) * HALF_PI;
-        double amp1 = cos(pos), amp2 = sin(pos);
+        double pos = (idx - offset) * 0.25;
+        double amp1 = read_sintab(pos + 0.25), amp2 = read_sintab(pos);
         for(int j = 0; j < chs; j++){
             int ch1 = ((j+offset) % chs) * n, ch2 = ((j+offset+1) % chs) * n;
             out[ch1+i] += (amp1 * in[j*n + i]);
             out[ch2+i] += (amp2 * in[j*n + i]);
         }
 	}
-    return(w+7);
+    return(w+5);
 }
 
 static void rotatemc_dsp(t_rotatemc *x, t_signal **sp){
     int n = sp[0]->s_n, chs = sp[0]->s_nchans;
     signal_setmultiout(&sp[2], chs);
-    if(x->x_block != n || x->x_chs != chs){
+    if(x->x_n != n || x->x_chs != chs){
         x->x_input = (t_float *)resizebytes(x->x_input,
-            x->x_block*x->x_chs * sizeof(t_float), n*chs * sizeof(t_float));
-        x->x_block = n, x->x_chs = chs;
+            x->x_n*x->x_chs * sizeof(t_float), n*chs * sizeof(t_float));
+        x->x_n = n, x->x_chs = chs;
     }
-    dsp_add(rotatemc_perform, 6, x, n, chs, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
+    dsp_add(rotatemc_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
 }
 
 void rotatemc_free(t_rotatemc *x){
-    freebytes(x->x_input, x->x_block*x->x_chs * sizeof(*x->x_input));
+    freebytes(x->x_input, x->x_n*x->x_chs * sizeof(*x->x_input));
 }
 
 static void *rotatemc_new(t_floatarg f){
     t_rotatemc *x = (t_rotatemc *)pd_new(rotatemc_class);
-    x->x_block = x->x_chs = 0;
+    init_sine_table();
+    x->x_n = x->x_chs = 0;
     x->x_input = (t_float *)getbytes(0);
     x->x_inlet_pos = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_pos, f);

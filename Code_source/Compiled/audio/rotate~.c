@@ -1,8 +1,6 @@
 #include "m_pd.h"
-#include <math.h>
+#include "buffer.h"
 #include <stdlib.h>
-
-#define HALF_PI (3.14159265358979323846 * 0.5)
 
 static t_class *rotate_class;
 
@@ -46,9 +44,9 @@ static t_int *rotate_perform(t_int *w){
         while(idx < 0)
             idx += x_ch;
         offset = (int)floor(idx) % x_ch;
-        pos = (idx - offset) * HALF_PI;
-        amp1 = cos(pos);
-        amp2 = sin(pos);
+        pos = (idx - offset) * 0.25;
+        amp1 = read_sintab(pos + 0.25);
+        amp2 = read_sintab(pos);
         for(ch = 0; ch < x_ch; ch++){
             x_outs[(ch+offset) % x_ch][j] += amp1 * inarr[ch];
             x_outs[(ch+offset+1) % x_ch][j] += amp2 * inarr[ch];
@@ -81,6 +79,7 @@ static void rotate_free(t_rotate *x){
 
 static void *rotate_new(t_floatarg f1, t_floatarg f2){
     t_rotate *x = (t_rotate *)pd_new(rotate_class);
+    init_sine_table();
     t_int ch = (t_int)f1;
     if(ch < 2)
         ch = 2;

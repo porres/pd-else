@@ -1,7 +1,7 @@
 // porres 2023
 
 #include "m_pd.h"
-#include <math.h>
+#include "buffer.h"
 
 #define MAXOUTPUT 512
 
@@ -48,7 +48,7 @@ t_int *xgate2mc_perform(t_int *w){
             float chanpos = (pos - j) / spread;
             if(chanpos >= 1 || chanpos < 0)
                 chanpos = 0;
-            out[j*n + i] = in[i] * sin(chanpos*M_PI);
+            out[j*n + i] = in[i] * read_sintab(chanpos*0.5);
         }
 	}
     return(w+6);
@@ -72,6 +72,7 @@ void xgate2mc_free(t_xgate2mc *x){
 void *xgate2mc_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_xgate2mc *x = (t_xgate2mc *)pd_new(xgate2mc_class);
+    init_sine_table();
     t_float outchs = 2;
     float spread = 1;
     if(ac){

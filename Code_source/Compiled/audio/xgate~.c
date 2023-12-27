@@ -2,12 +2,11 @@
 
 #include "m_pd.h"
 #include <stdlib.h>
-#include <math.h>
+#include "buffer.h"
 
 static t_class *xgate_class;
 
 #define MAXOUTS 512
-#define HALF_PI (3.14159265358979323846 * 0.5)
 
 typedef struct _xgate{
     t_object  x_obj;
@@ -61,7 +60,7 @@ static t_int *xgate_perform(t_int *w){
                     outlet_list(x->x_out_status, gensym("list"), 2, at);
                 }
             }
-            double amp = sin(x->x_count[n] / x->x_n_fade * HALF_PI);
+            double amp = read_sintab(x->x_count[n] / x->x_n_fade * 0.25);
             *x->x_outs[n]++ = input * amp;
         }
     }
@@ -86,6 +85,7 @@ static void xgate_dsp(t_xgate *x, t_signal **sp){
 
 static void *xgate_new(t_floatarg f1, t_floatarg f2, t_floatarg f3){
     t_xgate *x = (t_xgate *)pd_new(xgate_class);
+    init_sine_table();
     for(int n = 0; n < MAXOUTS; n++){
         x->x_active_out[n] = 0;
         x->x_count[n] = 0;

@@ -1,19 +1,20 @@
 // porres
 
 #include "m_pd.h"
-#include <math.h>
+#include "buffer.h"
 
 #define MAXOUTPUT 512
 
 typedef struct _xgate2{
     t_object    x_obj;
+    t_float    *x_in;
     t_float    *x_ch_select;    // channel selector signal
     t_float    *x_spread;       // spread signal
-    t_int       x_index;
+    t_float   **x_outs;
     t_inlet    *x_inlet_spread;
     int         x_n_outlets;    // outlets excluding main signal
-    t_float   **x_ovecs;        // copying from matrix
-    t_float    *x_ivec;         // single pointer since (an array rather than an array of arrays)
+    int         x_nchs;
+    int         x_index;
 }t_xgate2;
 
 static t_class *xgate2_class;
@@ -25,27 +26,22 @@ static void xgate2_index(t_xgate2 *x, t_floatarg f){
 static t_int *xgate2_perform(t_int *w){
     t_xgate2 *x = (t_xgate2 *)(w[1]);
     int nblock = (int)(w[2]);
-    t_float *ivec = x->x_ivec;
-    t_float *ch_select = x->x_ch_select;
-    t_float *spreadin = x->x_spread;
-    t_float **ovecs = x->x_ovecs;
-    int n_outlets = x->x_n_outlets;
     int i, j;
-    for(i = 0; i < nblock; i++){
-        t_float input = ivec[i];
-        t_float pos = ch_select[i];
-        t_float spread = spreadin[i];
+    for(i = 0; i < nblock * x->x_nchs; i++){
+        t_float input = x->x_in[i];
+        t_float pos = x->x_ch_select[i];
+        t_float spread = x->x_spread[i];
         if(spread < 0.1)
             spread = 0.1;
         if(!x->x_index)
-            pos *= (n_outlets - 1);
+            pos *= (x->x_n_outlets - 1);
         pos += spread;
         spread *= 2;
-        for(j = 0; j < n_outlets; j++){
+        for(j = 0; j < x->x_n_outlets; j++){
             float chanpos = (pos - j) / spread;
             if(chanpos >= 1 || chanpos < 0)
                 chanpos = 0;
-            ovecs[j][i] = input * sin(chanpos*M_PI);
+            x->x_outs[j][i] = input * read_sintab(chanpos*0.5);
         }
     };
     return(w+3);
@@ -53,18 +49,23 @@ static t_int *xgate2_perform(t_int *w){
 
 static void xgate2_dsp(t_xgate2 *x, t_signal **sp){
     int i, nblock = sp[0]->s_n;
+//    x->x_nchs = sp[0]->s_nchans;
+    x->x_nchs = 1;
     t_signal **sigp = sp;
-    x->x_ivec = (*sigp++)->s_vec; // the input inlet
-    x->x_ch_select = (*sigp++)->s_vec; // the idx inlet
-    x->x_spread = (*sigp++)->s_vec; // the spread inlet
-    for(i = 0; i < x->x_n_outlets; i++) // the n_outlets
-        *(x->x_ovecs+i) = (*sigp++)->s_vec;
+    x->x_in = (*sigp++)->s_vec;             // input
+    x->x_ch_select = (*sigp++)->s_vec;      // idx
+    x->x_spread = (*sigp++)->s_vec;         // spread
+    for(i = 0; i < x->x_n_outlets; i++){    // outlets
+//        signal_setmultiout(&sp[3+i], x->x_nchs);
+        *(x->x_outs+i) = (*sigp++)->s_vec;
+    }
     dsp_add(xgate2_perform, 2, x, nblock);
 }
 
 static void *xgate2_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_xgate2 *x = (t_xgate2 *)pd_new(xgate2_class);
+    init_sine_table();
     t_float n_outlets = 2;
     float spread = 1;
     if(ac){
@@ -89,7 +90,7 @@ static void *xgate2_new(t_symbol *s, int ac, t_atom *av){
     else if(n_outlets > (t_float)MAXOUTPUT)
         n_outlets = MAXOUTPUT;
     x->x_n_outlets = (int)n_outlets;
-    x->x_ovecs = getbytes(n_outlets * sizeof(*x->x_ovecs));
+    x->x_outs = getbytes(n_outlets * sizeof(*x->x_outs));
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     x->x_inlet_spread = inlet_new(&x->x_obj, &x->x_obj.ob_pd,  &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_spread, spread);
@@ -102,7 +103,7 @@ static void *xgate2_new(t_symbol *s, int ac, t_atom *av){
 }
 
 void *xgate2_free(t_xgate2 *x){
-    freebytes(x->x_ovecs, x->x_n_outlets * sizeof(*x->x_ovecs));
+    freebytes(x->x_outs, x->x_n_outlets * sizeof(*x->x_outs));
     inlet_free(x->x_inlet_spread);
     return(void *)x;
 }
@@ -110,6 +111,7 @@ void *xgate2_free(t_xgate2 *x){
 void xgate2_tilde_setup(void){
     xgate2_class = class_new(gensym("xgate2~"), (t_newmethod)xgate2_new,
         (t_method)xgate2_free, sizeof(t_xgate2), CLASS_DEFAULT, A_GIMME, 0);
+//        (t_method)xgate2_free, sizeof(t_xgate2), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(xgate2_class, nullfn, gensym("signal"), 0);
     class_addmethod(xgate2_class, (t_method)xgate2_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(xgate2_class, (t_method)xgate2_index, gensym("index"), A_FLOAT, 0);

@@ -1,9 +1,7 @@
 // porres 2023
 
-#include <math.h>
 #include "m_pd.h"
-
-#define HALF_PI (3.14159265358979323846 * 0.5)
+#include "buffer.h"
 
 static t_class *xfademc_class;
 
@@ -28,13 +26,13 @@ static t_int *xfademc_perform(t_int *w){
             pos = 1;
         if(pos < -1)
             pos = -1;
-        pos = (pos + 1) * 0.5; // xfade from 0 to 1
+        pos = (pos + 1) * 0.125; // xfade from 0 to 1
         for(int j = 0; j < chs; j++){
             if(x->x_lin)
                 out[j*n + i] = in1[j*n + i] * (1-pos) + in2[j*n + i] * pos;
             else{
-                double amp1 = cos((double)pos * HALF_PI);
-                double amp2 = sin((double)pos * HALF_PI);
+                double amp1 = (double)read_sintab(pos + 0.25);
+                double amp2 = (double)read_sintab(pos);
                 out[j*n + i] = (in1[j*n + i] * amp1) + (in2[j*n + i] * amp2);
             }
         }
@@ -65,6 +63,7 @@ static void xfademc_free(t_xfademc *x){
 static void *xfademc_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_xfademc *x = (t_xfademc *)pd_new(xfademc_class);
+    init_sine_table();
     t_float init_mix = 0;
     x->x_lin = 0;
     if(av->a_type == A_SYMBOL){
