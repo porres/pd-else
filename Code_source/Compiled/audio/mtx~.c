@@ -3,9 +3,8 @@
 #include "m_pd.h"
 
 #define MTX_MAX_INOUT   512
-#define MTX_DEFFADE     10.
-#define MTX_GAINEPSILON 1e-20f
-#define MTX_MINFADE     .001    // LATER rethink
+#define MTX_DEFFADE     10.0
+#define MTX_MINFADE     0.001    // LATER rethink!!!????!???!?!!!?
 
 typedef struct _mtx{
     t_object   x_obj;
@@ -15,6 +14,7 @@ typedef struct _mtx{
     int        x_maxblock;
     int        x_ncells;
     int       *x_cells;
+    int       *x_remains;
     t_float  **x_ins;
     t_float  **x_outs;
     t_float  **x_osums;
@@ -25,7 +25,6 @@ typedef struct _mtx{
     float     *x_fades;
     float     *x_incrs;
     float     *x_bigincrs;
-    int       *x_remains;
 }t_mtx;
 
 typedef void(*t_mtx_cellfn)(t_mtx *x, int indx, int ondx, int onoff, float gain);
@@ -49,56 +48,30 @@ static void mtx_retarget(t_mtx *x, int cellndx){ // LATER deal with changing nbl
 
 static void mtx_list(t_mtx *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    int inlet_idx, outlet_idx, cell_idx, onoff;
-    float gain, fade;
-    // init vals
-    inlet_idx = 0;
-    outlet_idx = 0;
-    cell_idx = 0;
-    onoff = 0;
-    gain = 0;
-    fade = 0;
-    if(ac < 3){ //ignore if less than 3 args
+    if(ac != 3){
         if(ac == 1)
             pd_error(x, "[mtx~]: no method for float");
+        else
+            pd_error(x, "[mtx~]: list size must be '3'");
         return;
     }
-    int argnum = 0;
-    while(ac > 0){ //argument parsing
-        t_float aval = 0; //if not float, set equal to 0, else get value
-        if(av -> a_type == A_FLOAT)
-            aval = atom_getfloatarg(0, ac, av);
-        switch(argnum){ // if more than 4 args, then just ignore;
-            case 0:
-                inlet_idx = (int)aval;
-                break;
-            case 1:
-                outlet_idx = (int)aval;
-                break;
-            case 2:
-                gain = aval != 0;
-                break;
-            default:
-                break;
-        };
-        argnum++;
-        ac--;
-        av++;
-    };
+    int inlet_idx = atom_getint(av++);
     if(inlet_idx < 0 || inlet_idx >= x->x_n_ins){  // bound check
-        pd_error(x, "mtx~: %d is not a valid inlet index!", inlet_idx);
+        pd_error(x, "[mtx~]: %d is not a valid inlet index!", inlet_idx);
         return;
     };
+    int outlet_idx = atom_getint(av++);
     if(outlet_idx < 0 || outlet_idx >= x->x_n_outs){
-        pd_error(x, "mtx~: %d is not a valid outlet index!", outlet_idx);
+        pd_error(x, "[mtx~]: %d is not a valid outlet index!", outlet_idx);
         return;
     };
-    cell_idx = inlet_idx * x->x_n_outs + outlet_idx;
-    //negative gain used in nonbinary mode, accepted as 1 in binary (legacy code)
-    onoff = (gain < -MTX_GAINEPSILON || gain > MTX_GAINEPSILON);
-    x->x_cells[cell_idx] = onoff;
-    if(x->x_gains){ //if in nonbinary mode
-        if(onoff)
+    float gain = atom_getfloat(av++);
+    int cell_idx = inlet_idx * x->x_n_outs + outlet_idx;
+    // negative gain used in nonbinary mode, accepted as 1 in binary (legacy code)
+    int on = gain != 0;
+    x->x_cells[cell_idx] = on;
+    if(x->x_gains){ // if in nonbinary mode
+        if(on)
             x->x_gains[cell_idx] = gain;
         mtx_retarget(x, cell_idx);
     };
