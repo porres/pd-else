@@ -12,7 +12,7 @@
 #X obj 355 205 osc~ 400;
 #X text 216 278 0;
 #X text 283 235 0;
-#X text 364 235 1;
+#X text 360 235 1;
 #X text 128 520 1) float;
 #X text 128 537 2) float;
 #X obj 92 468 cnv 1 3 17 empty empty 0=>n 5 9 0 16 #dcdcdc #9c9c9c 0;
