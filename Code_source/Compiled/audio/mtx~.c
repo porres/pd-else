@@ -3,40 +3,29 @@
 #include "m_pd.h"
 
 #define MTX_MAX_INOUT   512
-#define MTX_DEFFADE     10.0
-#define MTX_MINFADE     0.001    // LATER rethink!!!????!???!?!!!?
 
 typedef struct _mtx{
     t_object   x_obj;
-    int        x_n;
-    int        x_n_ins;
-    int        x_n_outs;
-    int        x_maxblock;
-    int        x_ncells;
-    float      x_fade;
-    int       *x_cells;
-    int       *x_remains;
-    t_float  **x_ins;
-    t_float  **x_outs;
-    t_float  **x_osums;
-    float      x_ksr;
-    float     *x_coefs;         // current coefs
-    float     *x_gains;         // target gains
-    float     *x_incrs;
-    float     *x_bigincrs;
+    int        x_n, x_maxblock;
+    int        x_n_ins, x_n_outs, x_n_cells;
+    float      x_ksr, x_ramp_ms;
+    int        x_ramp;                  // ramp size in samples
+    int       *x_nleft;                 // n samples left in ramp
+    t_float  **x_ins, **x_outs, **x_osums;
+    float     *x_gains, *x_coefs;       // target gains, current coefs
+    float     *x_incrs, *x_bigincrs;
 }t_mtx;
 
 static t_class *mtx_class;
 
 static void mtx_retarget(t_mtx *x, int i){ // LATER deal with changing nblock/ksr
-    float target = (x->x_cells[i] ? x->x_gains[i] : 0.);
-    if(x->x_fade < MTX_MINFADE){
-        x->x_coefs[i] = target;
-        x->x_remains[i] = 0;
+    x->x_nleft[i] = x->x_ramp;
+    if(x->x_nleft[i] == 0){
+        x->x_coefs[i] = x->x_gains[i];
+        x->x_incrs[i] = x->x_bigincrs[i] = 0;
     }
     else{
-        x->x_remains[i] = x->x_fade * x->x_ksr + 0.5;  // LATER rethink
-        x->x_incrs[i] = (target - x->x_coefs[i]) / (float)x->x_remains[i];
+        x->x_incrs[i] = (x->x_gains[i] - x->x_coefs[i]) / (float)x->x_nleft[i];
         x->x_bigincrs[i] = x->x_n * x->x_incrs[i];
     }
 }
@@ -62,88 +51,83 @@ static void mtx_list(t_mtx *x, t_symbol *s, int ac, t_atom *av){
     };
     float gain = atom_getfloat(av++);
     int cell_idx = inlet_idx * x->x_n_outs + outlet_idx;
-    int on = gain != 0;
-    x->x_cells[cell_idx] = on;
-    if(on)
-        x->x_gains[cell_idx] = gain;
+    x->x_gains[cell_idx] = gain;
     mtx_retarget(x, cell_idx);
 }
 
 static void mtx_clear(t_mtx *x){
-    for(int i = 0; i < x->x_ncells; i++){
-        x->x_cells[i] = 0;
+    for(int i = 0; i < x->x_n_cells; i++){
+        x->x_gains[i] = 0;
         mtx_retarget(x, i);
     }
 }
 
-static void mtx_fade(t_mtx *x, t_floatarg f){
-    x->x_fade = f < 0 ? 0 : f;
+static void mtx_ramp(t_mtx *x, t_floatarg f){
+    x->x_ramp_ms = f < 0 ? 0 : f;
+    x->x_ramp = (int)((x->x_ramp_ms * x->x_ksr) + 0.5);
+}
+
+static void mtx_print(t_mtx *x){
+    post("[mtx~]:");
+    float *gp = x->x_gains;
+    for(int indx = 0; indx < x->x_n_ins; indx++)
+        for(int ondx = 0; ondx < x->x_n_outs; ondx++, gp++)
+            post("%d %d %g", indx, ondx, *gp);
 }
 
 static t_int *mtx_perform(t_int *w){
     t_mtx *x = (t_mtx *)(w[1]);
-    int nblock = x->x_n;
-    t_float **ins = x->x_ins;
-    t_float **outs = x->x_outs;
-    t_float **osums = x->x_osums;
-    int *cellp = x->x_cells;
-    float *gainp = x->x_gains;
-    float *coefp = x->x_coefs;
-    float *incrp = x->x_incrs;
-    float *bigincrp = x->x_bigincrs;
-    int *nleftp = x->x_remains;
-    int indx;
-    for(indx = 0; indx < x->x_n_ins; indx++){
+    t_float **ins = x->x_ins, **outs = x->x_outs;
+    int *nleftp = x->x_nleft;
+    float *gainp = x->x_gains, *coefp = x->x_coefs;
+    float *incrp = x->x_incrs, *bigincrp = x->x_bigincrs;
+    for(int i = 0; i < x->x_n_ins; i++){
         t_float *input = *ins++;
-        t_float **ovecp = osums;
-        int ondx = x->x_n_outs;
-        while(ondx--){
+        t_float **ovecp = x->x_osums;
+        for(int j = 0; j < x->x_n_outs; j++){
             t_float *in = input;
             t_float *out = *ovecp;
-            float nleft = *nleftp;
-            int sndx = nblock;
-            if(nleft >= nblock){
+            int n = x->x_n, nleft = *nleftp;
+            if(nleft >= x->x_n){
                 float coef = *coefp;
                 float incr = *incrp;
-                if((*nleftp -= nblock) == 0)
-                    *coefp = (*cellp ? *gainp : 0.);
+                if((*nleftp -= x->x_n) == 0)
+                    *coefp = *gainp;
                 else
                     *coefp += *bigincrp;
-                while(sndx--)
+                while(n--)
                     *out++ += *in++ * coef, coef += incr;
             }
             else if(nleft > 0){
                 float coef = *coefp;
                 float incr = *incrp;
-                sndx -= nleft;
+                n -= nleft;
                 do{
                     *out++ += *in++ * coef, coef += incr;
                 }while(--nleft);
-                if(*cellp){
+                if(*gainp != 0){
                     coef = *coefp = *gainp;
-                    while(sndx--)
+                    while(n--)
                         *out++ += *in++ * coef;
                 }
                 else
                     *coefp = 0.;
                 *nleftp = 0;
             }
-            else if(*cellp){
+            else if(*gainp != 0){
                 float coef = *coefp;
-                while(sndx--)
+                while(n--)
                     *out++ += *in++ * coef;
             }
-            cellp++, ovecp++, gainp++, coefp++;
+            ovecp++, gainp++, coefp++;
             incrp++, bigincrp++, nleftp++;
         }
     }
-    osums = x->x_osums;
-    indx = x->x_n_outs;
-    while(indx--){
+    t_float **osums = x->x_osums;
+    for(int i = 0; i < x->x_n_outs; i++){
         t_float *in = *osums++;
         t_float *out = *outs++;
-        int sndx = nblock;
-        while(sndx--){
+        for(int n = 0; n < x->x_n; n++){
             *out++ = *in;
             *in++ = 0.;
         }
@@ -153,7 +137,7 @@ static t_int *mtx_perform(t_int *w){
 
 static void mtx_dsp(t_mtx *x, t_signal **sp){
     int i, nblock = sp[0]->s_n;
-    x->x_ksr = sp[0]->s_sr * .001;
+    float ksr = sp[0]->s_sr * .001;
     t_float **vecp = x->x_ins;
     t_signal **sigp = sp;
     for(i = 0; i < x->x_n_ins; i++)
@@ -171,16 +155,11 @@ static void mtx_dsp(t_mtx *x, t_signal **sp){
         };
         x->x_n = nblock;
     }
+    if(ksr != x->x_ksr){ // update
+        x->x_ksr = ksr;
+        mtx_ramp(x, x->x_ramp_ms);
+    }
     dsp_add(mtx_perform, 1, x);
-}
-
-static void mtx_print(t_mtx *x){
-    post("[mtx~]:");
-    int *cellp = x->x_cells;
-    float *gp = x->x_gains;
-    for(int indx = 0; indx < x->x_n_ins; indx++)
-        for(int ondx = 0; ondx < x->x_n_outs; ondx++, cellp++, gp++)
-            post("%d %d %g", indx, ondx, *cellp ? *gp : 0.);
 }
 
 static void *mtx_free(t_mtx *x){
@@ -189,20 +168,21 @@ static void *mtx_free(t_mtx *x){
     for(int i = 0; i < x->x_n_outs; i++)
         freebytes(x->x_osums[i], x->x_maxblock * sizeof(*x->x_osums[i]));
     freebytes(x->x_osums, x->x_n_outs * sizeof(*x->x_osums));
-    freebytes(x->x_cells, x->x_ncells * sizeof(*x->x_cells));
-    freebytes(x->x_gains, x->x_ncells * sizeof(*x->x_gains));
-    freebytes(x->x_coefs, x->x_ncells * sizeof(*x->x_coefs));
-    freebytes(x->x_incrs, x->x_ncells * sizeof(*x->x_incrs));
-    freebytes(x->x_bigincrs, x->x_ncells * sizeof(*x->x_bigincrs));
-    freebytes(x->x_remains, x->x_ncells * sizeof(*x->x_remains));
+    freebytes(x->x_gains, x->x_n_cells * sizeof(*x->x_gains));
+    freebytes(x->x_coefs, x->x_n_cells * sizeof(*x->x_coefs));
+    freebytes(x->x_incrs, x->x_n_cells * sizeof(*x->x_incrs));
+    freebytes(x->x_bigincrs, x->x_n_cells * sizeof(*x->x_bigincrs));
+    freebytes(x->x_nleft, x->x_n_cells * sizeof(*x->x_nleft));
     return(void *)x;
 }
 
 static void *mtx_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_mtx *x = (t_mtx *)pd_new(mtx_class);
-    t_float fadeval = MTX_DEFFADE;
+    t_float rampms = 10.;
     x->x_n_ins = x->x_n_outs = 1;
+    x->x_ksr = sys_getsr() * .001;
+    x->x_n = x->x_maxblock = sys_getblksize();
     int i;
     if(ac){
         int ins = atom_getint(av);
@@ -215,25 +195,22 @@ static void *mtx_new(t_symbol *s, int ac, t_atom *av){
         ac--, av++;
     }
     if(ac)
-        fadeval = atom_getfloat(av);
-    x->x_ksr = sys_getsr() * .001;
-    x->x_ncells = x->x_n_ins * x->x_n_outs;
+        rampms = atom_getfloat(av);
     x->x_ins = getbytes(x->x_n_ins * sizeof(*x->x_ins));
     x->x_outs = getbytes(x->x_n_outs * sizeof(*x->x_outs));
-    x->x_n = x->x_maxblock = sys_getblksize();
     x->x_osums = getbytes(x->x_n_outs * sizeof(*x->x_osums));
     for(i = 0; i < x->x_n_outs; i++)
         x->x_osums[i] = getbytes(x->x_maxblock * sizeof(*x->x_osums[i]));
-    x->x_cells = getbytes(x->x_ncells * sizeof(*x->x_cells));
-    x->x_gains = getbytes(x->x_ncells * sizeof(*x->x_gains));
-    x->x_coefs = getbytes(x->x_ncells * sizeof(*x->x_coefs));
-    x->x_incrs = getbytes(x->x_ncells * sizeof(*x->x_incrs));
-    x->x_bigincrs = getbytes(x->x_ncells * sizeof(*x->x_bigincrs));
-    x->x_remains = getbytes(x->x_ncells * sizeof(*x->x_remains));
-    for(i = 0; i < x->x_ncells; i++)
-        x->x_coefs[i] = x->x_gains[i] = x->x_remains[i] = 0.;
+    x->x_n_cells = x->x_n_ins * x->x_n_outs;
+    x->x_gains = getbytes(x->x_n_cells * sizeof(*x->x_gains));
+    x->x_coefs = getbytes(x->x_n_cells * sizeof(*x->x_coefs));
+    x->x_incrs = getbytes(x->x_n_cells * sizeof(*x->x_incrs));
+    x->x_bigincrs = getbytes(x->x_n_cells * sizeof(*x->x_bigincrs));
+    x->x_nleft = getbytes(x->x_n_cells * sizeof(*x->x_nleft));
+    for(i = 0; i < x->x_n_cells; i++)
+        x->x_coefs[i] = x->x_gains[i] = x->x_nleft[i] = 0.;
     mtx_clear(x);
-    mtx_fade(x, fadeval);
+    mtx_ramp(x, rampms);
     for(i = 1; i < x->x_n_ins; i++)
         inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     for(i = 0; i < x->x_n_outs; i++)
@@ -248,6 +225,6 @@ void mtx_tilde_setup(void){
     class_addmethod(mtx_class, (t_method)mtx_dsp, gensym("dsp"), A_CANT, 0);
     class_addlist(mtx_class, mtx_list);
     class_addmethod(mtx_class, (t_method)mtx_clear, gensym("clear"), 0);
-    class_addmethod(mtx_class, (t_method)mtx_fade, gensym("ramp"), A_FLOAT, 0);
+    class_addmethod(mtx_class, (t_method)mtx_ramp, gensym("ramp"), A_FLOAT, 0);
     class_addmethod(mtx_class, (t_method)mtx_print, gensym("print"), 0);
 }
