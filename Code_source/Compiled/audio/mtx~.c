@@ -2,16 +2,10 @@
 
 #include "m_pd.h"
 
-#define MTX_DEFGAIN     1.
+#define MTX_MAX_INOUT   512
 #define MTX_DEFFADE     10.
-
 #define MTX_GAINEPSILON 1e-20f
 #define MTX_MINFADE     .001    // LATER rethink
-
-#define MTX_MININLETS   1
-#define MTX_MAXINLETS   512
-#define MTX_MINOUTLETS  1
-#define MTX_MAXOUTLETS  512
 
 typedef struct _mtx{
     t_object   x_obj;
@@ -26,7 +20,6 @@ typedef struct _mtx{
     t_float  **x_osums;
     t_outlet  *x_dumpout;
     float      x_ksr;
-    float      x_defgain;       // gain given as argument
     float     *x_coefs;         // current coefs
     float     *x_gains;         // target gains
     float     *x_fades;
@@ -39,8 +32,7 @@ typedef void(*t_mtx_cellfn)(t_mtx *x, int indx, int ondx, int onoff, float gain)
 
 static t_class *mtx_class;
 
-// LATER deal with changing nblock/ksr
-static void mtx_retarget(t_mtx *x, int cellndx){
+static void mtx_retarget(t_mtx *x, int cellndx){ // LATER deal with changing nblock/ksr
     float target = (x->x_cells[cellndx] ? x->x_gains[cellndx] : 0.);
     if(x->x_fades[cellndx] < MTX_MINFADE){
         x->x_coefs[cellndx] = target;
@@ -76,7 +68,7 @@ static void mtx_list(t_mtx *x, t_symbol *s, int ac, t_atom *av){
         t_float aval = 0; //if not float, set equal to 0, else get value
         if(av -> a_type == A_FLOAT)
             aval = atom_getfloatarg(0, ac, av);
-        switch(argnum){ //if more than 4 args, then just ignore;
+        switch(argnum){ // if more than 4 args, then just ignore;
             case 0:
                 inlet_idx = (int)aval;
                 break;
@@ -93,8 +85,7 @@ static void mtx_list(t_mtx *x, t_symbol *s, int ac, t_atom *av){
         ac--;
         av++;
     };
-    // bound check
-    if(inlet_idx < 0 || inlet_idx >= x->x_n_ins){
+    if(inlet_idx < 0 || inlet_idx >= x->x_n_ins){  // bound check
         pd_error(x, "mtx~: %d is not a valid inlet index!", inlet_idx);
         return;
     };
@@ -251,16 +242,14 @@ static void mtx_report(t_mtx *x, float *gains, float defgain, t_mtx_cellfn cellf
         int indx, ondx;
         for(indx = 0; indx < x->x_n_ins; indx++)
             for(ondx = 0; ondx < x->x_n_outs; ondx++, cellp++, gp++)
-            /* CHECKED all cells are printed */
-            (*cellfn)(x, indx, ondx, *cellp, *gp);
+                (*cellfn)(x, indx, ondx, *cellp, *gp); // all cells are printed
     }
-    else{  /* CHECKED incompatible: gains confusingly printed in binary mode */
+    else{  // CHECKED incompatible: gains confusingly printed in binary mode
         int *cellp = x->x_cells;
         int indx, ondx;
         for(indx = 0; indx < x->x_n_ins; indx++)
             for(ondx = 0; ondx < x->x_n_outs; ondx++, cellp++)
-            /* CHECKED all cells are printed */
-            (*cellfn)(x, indx, ondx, *cellp, defgain);
+                (*cellfn)(x, indx, ondx, *cellp, defgain);
     }
 }
 
@@ -303,31 +292,30 @@ static void *mtx_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_mtx *x = (t_mtx *)pd_new(mtx_class);
     t_float fadeval = MTX_DEFFADE;
-    x->x_n_ins = (int)MTX_MININLETS;
-    x->x_n_outs = (int)MTX_MINOUTLETS;
-    x->x_defgain = MTX_DEFGAIN;
+    x->x_n_ins = x->x_n_outs = 1;
+    float defgain = 1.0;
     int i;
     int argnum = 0;
     while(ac > 0){
-        if(av -> a_type == A_FLOAT){
-            t_float aval = atom_getfloatarg(0, ac, av);
+        if(av->a_type == A_FLOAT){
+            t_float aval = atom_getfloat(av);
             switch(argnum){
                 case 0:
-                    if(aval < MTX_MININLETS)
-                        x->x_n_ins = (int)MTX_MININLETS;
-                    else if(aval > MTX_MAXINLETS){
-                        x->x_n_ins = (int)MTX_MAXINLETS;
-                        post("[mtx~]: resizing to %d signal inlets", (int)MTX_MAXINLETS);
+                    if(aval < 1)
+                        x->x_n_ins = 1;
+                    else if(aval > MTX_MAX_INOUT){
+                        x->x_n_ins = (int)MTX_MAX_INOUT;
+                        post("[mtx~]: resizing to %d signal inlets", (int)MTX_MAX_INOUT);
                     }
                     else
                         x->x_n_ins = (int)aval;
                     break;
                 case 1:
-                    if(aval < MTX_MINOUTLETS)
-                        x->x_n_outs = (int)MTX_MINOUTLETS;
-                    else if(aval > MTX_MAXOUTLETS){
-                        x->x_n_outs = (int)MTX_MAXOUTLETS;
-                        post("mtx~: resizing to %d signal outlets", (int)MTX_MAXOUTLETS);
+                    if(aval < 1)
+                        x->x_n_outs = 1;
+                    else if(aval > MTX_MAX_INOUT){
+                        x->x_n_outs = (int)MTX_MAX_INOUT;
+                        post("mtx~: resizing to %d signal outlets", (int)MTX_MAX_INOUT);
                     }
                     else
                         x->x_n_outs = (int)aval;
@@ -342,9 +330,6 @@ static void *mtx_new(t_symbol *s, int ac, t_atom *av){
             av++;
             argnum++;
         }
-        else if(av -> a_type == A_SYMBOL){
-                goto errstate;
-        }
         else
             goto errstate;
     };
@@ -357,27 +342,24 @@ static void *mtx_new(t_symbol *s, int ac, t_atom *av){
         x->x_osums[i] = getbytes(x->x_maxblock * sizeof(*x->x_osums[i]));
     x->x_cells = getbytes(x->x_ncells * sizeof(*x->x_cells));
     mtx_clear(x);
-        x->x_gains = getbytes(x->x_ncells * sizeof(*x->x_gains));
-        for(i = 0; i < x->x_ncells; i++)
-            x->x_gains[i] = x->x_defgain;
-        x->x_fades = getbytes(x->x_ncells * sizeof(*x->x_fades));
-        mtx_fade(x, fadeval);
-        x->x_coefs = getbytes(x->x_ncells * sizeof(*x->x_coefs));
-        for(i = 0; i < x->x_ncells; i++)
-            x->x_coefs[i] = 0.;
-        x->x_ksr = sys_getsr() * .001;
-        x->x_incrs = getbytes(x->x_ncells * sizeof(*x->x_incrs));
-        x->x_bigincrs = getbytes(x->x_ncells * sizeof(*x->x_bigincrs));
-        x->x_remains = getbytes(x->x_ncells * sizeof(*x->x_remains));
-        for(i = 0; i < x->x_ncells; i++){
-            x->x_remains[i] = 0;
-        };
-    for(i = 1; i < x->x_n_ins; i++){
+    x->x_gains = getbytes(x->x_ncells * sizeof(*x->x_gains));
+    for(i = 0; i < x->x_ncells; i++)
+        x->x_gains[i] = defgain;
+    x->x_fades = getbytes(x->x_ncells * sizeof(*x->x_fades));
+    mtx_fade(x, fadeval);
+    x->x_coefs = getbytes(x->x_ncells * sizeof(*x->x_coefs));
+    for(i = 0; i < x->x_ncells; i++)
+        x->x_coefs[i] = 0.;
+    x->x_ksr = sys_getsr() * .001;
+    x->x_incrs = getbytes(x->x_ncells * sizeof(*x->x_incrs));
+    x->x_bigincrs = getbytes(x->x_ncells * sizeof(*x->x_bigincrs));
+    x->x_remains = getbytes(x->x_ncells * sizeof(*x->x_remains));
+    for(i = 0; i < x->x_ncells; i++)
+        x->x_remains[i] = 0;
+    for(i = 1; i < x->x_n_ins; i++)
         inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
-    };
-    for(i = 0; i < x->x_n_outs; i++){
+    for(i = 0; i < x->x_n_outs; i++)
          outlet_new(&x->x_obj, gensym("signal"));
-    };
     x->x_dumpout = outlet_new((t_object *)x, &s_list);
     return(x);
     errstate:
@@ -392,7 +374,7 @@ void mtx_tilde_setup(void){
     class_addmethod(mtx_class, (t_method)mtx_dsp, gensym("dsp"), A_CANT, 0);
     class_addlist(mtx_class, mtx_list);
     class_addmethod(mtx_class, (t_method)mtx_clear, gensym("clear"), 0);
-    class_addmethod(mtx_class, (t_method)mtx_fade, gensym("fade"), A_FLOAT, 0);
+    class_addmethod(mtx_class, (t_method)mtx_fade, gensym("ramp"), A_FLOAT, 0);
     class_addmethod(mtx_class, (t_method)mtx_dump, gensym("dump"), 0);
     class_addmethod(mtx_class, (t_method)mtx_print, gensym("print"), 0);
 }
