@@ -73,7 +73,7 @@ static void mtxmc_clear(t_mtxmc *x){
 }*/
 
 static void mtxmc_outs(t_mtxmc *x, t_floatarg f){
-    int n_outs = f < 1 ? f > MTXMC_MAX_INOUT ? MTXMC_MAX_INOUT : (int)f;
+    int n_outs = f < 1 ? 1 : f > MTXMC_MAX_INOUT ? MTXMC_MAX_INOUT : (int)f;
     if(n_outs != x->x_n_outs){
         int n_cells = x->x_n_ins * n_outs;
         x->x_tgain = (t_float *)resizebytes(x->x_tgain,
