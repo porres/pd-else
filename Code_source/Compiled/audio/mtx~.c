@@ -2,31 +2,33 @@
 
 #include "m_pd.h"
 
-#define MTX_MAX_INOUT   512
+#define MTX_MAX_INOUT  4096
 
 typedef struct _mtx{
-    t_object   x_obj;
-    int        x_n, x_maxblock;
-    int        x_n_ins, x_n_outs, x_n_cells;
-    float      x_ksr, x_ramp_ms;
-    int        x_ramp;                  // ramp size in samples
-    int       *x_nleft;                 // n samples left in ramp
-    t_float  **x_ins, **x_outs, **x_osums;
-    float     *x_gains, *x_coefs;       // target gains, current coefs
-    float     *x_incrs, *x_bigincrs;
+    t_object  x_obj;
+    int       x_n, x_maxblock;
+    int       x_n_ins, x_n_outs, x_n_cells;
+    int       x_ramp;                               // ramp size in samples
+    float     x_ksr, x_ramp_ms;                     // sr in khz and ramp size in ms
+    int      *x_nleft;                              // n samples left in ramp
+    t_float **x_ins, **x_outs, **x_osums;
+    float    *x_gains, *x_coefs, *x_inc, *x_biginc; // target gains, current and incs
 }t_mtx;
 
 static t_class *mtx_class;
 
-static void mtx_retarget(t_mtx *x, int i){ // LATER deal with changing nblock/ksr
+static void mtx_set_gain(t_mtx *x, int i, float g){
+    if(x->x_gains[i] == g)
+        return;
+    x->x_gains[i] = g;
     x->x_nleft[i] = x->x_ramp;
     if(x->x_nleft[i] == 0){
         x->x_coefs[i] = x->x_gains[i];
-        x->x_incrs[i] = x->x_bigincrs[i] = 0;
+        x->x_inc[i] = x->x_biginc[i] = 0; // biginc????
     }
     else{
-        x->x_incrs[i] = (x->x_gains[i] - x->x_coefs[i]) / (float)x->x_nleft[i];
-        x->x_bigincrs[i] = x->x_n * x->x_incrs[i];
+        x->x_inc[i] = (x->x_gains[i] - x->x_coefs[i]) / (float)x->x_nleft[i];
+        x->x_biginc[i] = x->x_n * x->x_inc[i];
     }
 }
 
@@ -49,17 +51,13 @@ static void mtx_list(t_mtx *x, t_symbol *s, int ac, t_atom *av){
         pd_error(x, "[mtx~]: %d is not a valid outlet index!", outlet_idx);
         return;
     };
-    float gain = atom_getfloat(av++);
-    int cell_idx = inlet_idx * x->x_n_outs + outlet_idx;
-    x->x_gains[cell_idx] = gain;
-    mtx_retarget(x, cell_idx);
+    int i = inlet_idx * x->x_n_outs + outlet_idx;
+    mtx_set_gain(x, i, atom_getfloat(av++));
 }
 
 static void mtx_clear(t_mtx *x){
-    for(int i = 0; i < x->x_n_cells; i++){
-        x->x_gains[i] = 0;
-        mtx_retarget(x, i);
-    }
+    for(int i = 0; i < x->x_n_cells; i++)
+        mtx_set_gain(x, i, 0); // set gain to 0
 }
 
 static void mtx_ramp(t_mtx *x, t_floatarg f){
@@ -68,11 +66,10 @@ static void mtx_ramp(t_mtx *x, t_floatarg f){
 }
 
 static void mtx_print(t_mtx *x){
-    post("[mtx~]:");
-    float *gp = x->x_gains;
-    for(int indx = 0; indx < x->x_n_ins; indx++)
-        for(int ondx = 0; ondx < x->x_n_outs; ondx++, gp++)
-            post("%d %d %g", indx, ondx, *gp);
+    post("-- [mtx~] --:");
+    for(int i = 0; i < x->x_n_ins; i++)
+        for(int o = 0; o < x->x_n_outs; o++)
+            post("%d %d %g", i, o, x->x_gains[i*x->x_n_outs + o]);
 }
 
 static t_int *mtx_perform(t_int *w){
@@ -80,7 +77,7 @@ static t_int *mtx_perform(t_int *w){
     t_float **ins = x->x_ins, **outs = x->x_outs;
     int *nleftp = x->x_nleft;
     float *gainp = x->x_gains, *coefp = x->x_coefs;
-    float *incrp = x->x_incrs, *bigincrp = x->x_bigincrs;
+    float *incrp = x->x_inc, *bigincrp = x->x_biginc;
     for(int i = 0; i < x->x_n_ins; i++){
         t_float *input = *ins++;
         t_float **ovecp = x->x_osums;
@@ -170,8 +167,8 @@ static void *mtx_free(t_mtx *x){
     freebytes(x->x_osums, x->x_n_outs * sizeof(*x->x_osums));
     freebytes(x->x_gains, x->x_n_cells * sizeof(*x->x_gains));
     freebytes(x->x_coefs, x->x_n_cells * sizeof(*x->x_coefs));
-    freebytes(x->x_incrs, x->x_n_cells * sizeof(*x->x_incrs));
-    freebytes(x->x_bigincrs, x->x_n_cells * sizeof(*x->x_bigincrs));
+    freebytes(x->x_inc, x->x_n_cells * sizeof(*x->x_inc));
+    freebytes(x->x_biginc, x->x_n_cells * sizeof(*x->x_biginc));
     freebytes(x->x_nleft, x->x_n_cells * sizeof(*x->x_nleft));
     return(void *)x;
 }
@@ -204,8 +201,8 @@ static void *mtx_new(t_symbol *s, int ac, t_atom *av){
     x->x_n_cells = x->x_n_ins * x->x_n_outs;
     x->x_gains = getbytes(x->x_n_cells * sizeof(*x->x_gains));
     x->x_coefs = getbytes(x->x_n_cells * sizeof(*x->x_coefs));
-    x->x_incrs = getbytes(x->x_n_cells * sizeof(*x->x_incrs));
-    x->x_bigincrs = getbytes(x->x_n_cells * sizeof(*x->x_bigincrs));
+    x->x_inc = getbytes(x->x_n_cells * sizeof(*x->x_inc));
+    x->x_biginc = getbytes(x->x_n_cells * sizeof(*x->x_biginc));
     x->x_nleft = getbytes(x->x_n_cells * sizeof(*x->x_nleft));
     for(i = 0; i < x->x_n_cells; i++)
         x->x_coefs[i] = x->x_gains[i] = x->x_nleft[i] = 0.;

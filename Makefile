@@ -195,6 +195,7 @@ lowpass~.class.sources := Code_source/Compiled/audio/lowpass~.c
 lowshelf~.class.sources := Code_source/Compiled/audio/lowshelf~.c
 mov.rms~.class.sources := Code_source/Compiled/audio/mov.rms~.c
 mtx~.class.sources := Code_source/Compiled/audio/mtx~.c
+mtx.mc~.class.sources := Code_source/Compiled/audio/mtx.mc~.c
 match~.class.sources := Code_source/Compiled/audio/match~.c
 mov.avg~.class.sources := Code_source/Compiled/audio/mov.avg~.c
 median~.class.sources := Code_source/Compiled/audio/median~.c
