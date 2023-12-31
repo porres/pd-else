@@ -135,7 +135,6 @@ adsr~.class.sources := Code_source/Compiled/audio/adsr~.c
 asr~.class.sources := Code_source/Compiled/audio/asr~.c
 autofade~.class.sources := Code_source/Compiled/audio/autofade~.c
 autofade2~.class.sources := Code_source/Compiled/audio/autofade2~.c
-balance~.class.sources := Code_source/Compiled/audio/balance~.c
 bandpass~.class.sources := Code_source/Compiled/audio/bandpass~.c
 bandstop~.class.sources := Code_source/Compiled/audio/bandstop~.c
 bl.imp~.class.sources := Code_source/Compiled/audio/bl.imp~.c
@@ -273,6 +272,7 @@ magic := Code_source/shared/magic.c
     numbox~.class.sources := Code_source/Compiled/audio/numbox~.c $(magic)
 
 buf := Code_source/shared/buffer.c
+    balance~.class.sources := Code_source/Compiled/audio/balance~.c $(buf)
     pan~.class.sources := Code_source/Compiled/audio/pan~.c $(buf)
     pan2~.class.sources := Code_source/Compiled/audio/pan2~.c $(buf)
     pan4~.class.sources := Code_source/Compiled/audio/pan4~.c $(buf)
