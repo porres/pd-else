@@ -1,39 +1,24 @@
 #N canvas 453 23 560 494 10;
-#X obj 3 280 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 363 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 417 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
-0;
-#X obj 122 372 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 123 288 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 3 451 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
-0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
-0;
+#X obj 3 280 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 363 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 417 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 122 372 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 123 288 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 3 451 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
-0;
-#X obj 75 40 cnv 4 4 4 empty empty balancer 0 28 2 18 -233017 -1 0
-;
-#X obj 21 40 cnv 4 4 4 empty empty Stereo 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
-0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
-0;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 75 40 cnv 4 4 4 empty empty balancer 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 21 40 cnv 4 4 4 empty empty Stereo 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -102,8 +87,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
-0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -115,8 +99,7 @@
 #X obj 136 86 snapshot~;
 #X obj 91 52 del 5;
 #X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 74 126 switch~;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -137,31 +120,25 @@
 #X restore 505 71 pd;
 #X text 189 372 signal;
 #X text 188 288 signal;
-#X obj 123 310 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
+#X obj 123 310 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 152 335 float/signal;
-#X obj 309 129 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 306 150 0 0 0 0 - - -;
+#X obj 309 129 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X floatatom 306 150 0 0 0 0 - - - 0;
 #X obj 184 125 osc~ 440;
-#X obj 3 4 cnv 15 301 42 empty empty balance~ 20 20 2 37 -233017 -1
-0;
+#X obj 3 4 cnv 15 301 42 empty empty balance~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #X text 291 128 L;
 #X text 441 128 R;
 #X text 242 372 - left channel;
-#X obj 122 394 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
+#X obj 122 394 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 189 394 signal;
 #X text 242 394 - right channel;
 #X obj 184 178 else/balance~;
 #X obj 221 152 osc~ 880;
-#X text 75 91 [balance~] performs an equal power (sin/cos) stereo balancing.
-;
-#X obj 123 334 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
+#X text 75 91 [balance~] performs an equal power (sin/cos) stereo balancing.;
+#X obj 123 334 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 240 335 - balance value: from -1 (L) to 1 (R);
 #X text 240 288 - left signal input;
 #X text 188 308 signal;
@@ -169,6 +146,20 @@
 #X text 149 428 1) float - initial balance value (default 0);
 #X obj 306 171 else/float2sig~ 10;
 #X obj 181 211 else/out~;
+#N canvas 615 144 459 508 multichannel 0;
+#X obj 105 329 meter2~;
+#X obj 294 172 knob 50 -1 1 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0;
+#X obj 294 234 f2s~;
+#X obj 195 327 else/out.mc~;
+#X text 73 47 The '-mc' flag sets to output a multichannel audio containing both stereo signals.;
+#X obj 195 268 else/balance~ -mc;
+#X obj 195 114 else/sine~ -mc 333 555;
+#X connect 1 0 2 0;
+#X connect 2 0 5 1;
+#X connect 5 0 0 0;
+#X connect 5 0 3 0;
+#X connect 6 0 5 0;
+#X restore 440 237 pd multichannel;
 #X connect 21 0 22 0;
 #X connect 22 0 41 0;
 #X connect 23 0 32 0;
