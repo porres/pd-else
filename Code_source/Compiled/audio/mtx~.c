@@ -1,54 +1,48 @@
-// based on cyclone/matrix~
+// porres 2023, rewrote from scratcg and ditched old version based on cyclone's
 
 #include "m_pd.h"
 
-#define MTX_MAX_INOUT  4096
+#define mtx_MAX_INOUT  4096
 
 typedef struct _mtx{
     t_object  x_obj;
-    int       x_n, x_maxblock;
+    int       x_n;
     int       x_n_ins, x_n_outs, x_n_cells;
-    int       x_ramp;                               // ramp size in samples
-    float     x_ksr, x_ramp_ms;                     // sr in khz and ramp size in ms
-    int      *x_nleft;                              // n samples left in ramp
-    t_float **x_ins, **x_outs, **x_osums;
-    float    *x_gains, *x_coefs, *x_inc, *x_biginc; // target gains, current and incs
+    int       x_ramp;                           // ramp size in samples
+    int      *x_nleft;                          // n samples left in ramp for each cell
+    float     x_ksr, x_ramp_ms;                 // sr in khz and ramp size in ms
+    t_float **x_ins, **x_outs;                  // inputs and outputs
+    t_float  *x_inputs;                         // inputs copy
+    t_float  *x_tgain, *x_g, *x_inc;            // target gains, current gain and inc step
 }t_mtx;
 
 static t_class *mtx_class;
 
 static void mtx_set_gain(t_mtx *x, int i, float g){
-    if(x->x_gains[i] == g)
+    if(x->x_tgain[i] == g)
         return;
-    x->x_gains[i] = g;
+    x->x_tgain[i] = g;
     x->x_nleft[i] = x->x_ramp;
-    if(x->x_nleft[i] == 0){
-        x->x_coefs[i] = x->x_gains[i];
-        x->x_inc[i] = x->x_biginc[i] = 0; // biginc????
-    }
-    else{
-        x->x_inc[i] = (x->x_gains[i] - x->x_coefs[i]) / (float)x->x_nleft[i];
-        x->x_biginc[i] = x->x_n * x->x_inc[i];
-    }
+    x->x_inc[i] = (x->x_tgain[i] - x->x_g[i]) / (float)x->x_nleft[i];
 }
 
 static void mtx_list(t_mtx *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac != 3){
         if(ac == 1)
-            pd_error(x, "[mtx~]: no method for float");
+            pd_error(x, "[mtx.mc~]: no method for float");
         else
-            pd_error(x, "[mtx~]: list size must be '3'");
+            pd_error(x, "[mtx.mc~]: list size must be '3'");
         return;
     }
     int inlet_idx = atom_getint(av++);
     if(inlet_idx < 0 || inlet_idx >= x->x_n_ins){  // bound check
-        pd_error(x, "[mtx~]: %d is not a valid inlet index!", inlet_idx);
+        pd_error(x, "[mtx.mc~]: %d is not a valid inlet index!", inlet_idx);
         return;
     };
     int outlet_idx = atom_getint(av++);
     if(outlet_idx < 0 || outlet_idx >= x->x_n_outs){
-        pd_error(x, "[mtx~]: %d is not a valid outlet index!", outlet_idx);
+        pd_error(x, "[mtx.mc~]: %d is not a valid outlet index!", outlet_idx);
         return;
     };
     int i = inlet_idx * x->x_n_outs + outlet_idx;
@@ -66,110 +60,71 @@ static void mtx_ramp(t_mtx *x, t_floatarg f){
 }
 
 static void mtx_print(t_mtx *x){
-    post("-- [mtx~] --:");
+    post("-- [mtx.mc~] --:");
     for(int i = 0; i < x->x_n_ins; i++)
         for(int o = 0; o < x->x_n_outs; o++)
-            post("%d %d %g", i, o, x->x_gains[i*x->x_n_outs + o]);
+            post("%d %d %g", i, o, x->x_tgain[i*x->x_n_outs + o]);
 }
 
 static t_int *mtx_perform(t_int *w){
     t_mtx *x = (t_mtx *)(w[1]);
-    t_float **ins = x->x_ins, **outs = x->x_outs;
-    int *nleftp = x->x_nleft;
-    float *gainp = x->x_gains, *coefp = x->x_coefs;
-    float *incrp = x->x_inc, *bigincrp = x->x_biginc;
-    for(int i = 0; i < x->x_n_ins; i++){
-        t_float *input = *ins++;
-        t_float **ovecp = x->x_osums;
-        for(int j = 0; j < x->x_n_outs; j++){
-            t_float *in = input;
-            t_float *out = *ovecp;
-            int n = x->x_n, nleft = *nleftp;
-            if(nleft >= x->x_n){
-                float coef = *coefp;
-                float incr = *incrp;
-                if((*nleftp -= x->x_n) == 0)
-                    *coefp = *gainp;
-                else
-                    *coefp += *bigincrp;
-                while(n--)
-                    *out++ += *in++ * coef, coef += incr;
-            }
-            else if(nleft > 0){
-                float coef = *coefp;
-                float incr = *incrp;
-                n -= nleft;
-                do{
-                    *out++ += *in++ * coef, coef += incr;
-                }while(--nleft);
-                if(*gainp != 0){
-                    coef = *coefp = *gainp;
-                    while(n--)
-                        *out++ += *in++ * coef;
+    t_float *ins = x->x_inputs;
+    int i;
+    for(int j = 0; j < x->x_n_ins; j++){ // copy input
+        for(i = 0; i < x->x_n; i++)
+            ins[j*x->x_n+i] = x->x_ins[j][i];
+    }
+    for(int j = 0; j < x->x_n_outs; j++){ // zero outputs
+        for(i = 0; i < x->x_n; i++)
+            x->x_outs[j][i] = 0;
+    }
+    for(i = 0; i < x->x_n_ins; i++){
+        for(int o = 0; o < x->x_n_outs; o++){
+            int idx = i * x->x_n_outs + o; // cell index
+            for(int n = 0; n < x->x_n; n++){ // n sample in block
+                float gain;
+                if(x->x_nleft[idx] > 0){
+                    gain = x->x_g[idx];
+                    x->x_g[idx] += x->x_inc[idx];
+                    x->x_nleft[idx]--;
                 }
                 else
-                    *coefp = 0.;
-                *nleftp = 0;
+                    gain = x->x_g[idx] = x->x_tgain[idx];
+                x->x_outs[o][n] += ins[i*x->x_n + n] * gain;
             }
-            else if(*gainp != 0){
-                float coef = *coefp;
-                while(n--)
-                    *out++ += *in++ * coef;
-            }
-            ovecp++, gainp++, coefp++;
-            incrp++, bigincrp++, nleftp++;
-        }
-    }
-    t_float **osums = x->x_osums;
-    for(int i = 0; i < x->x_n_outs; i++){
-        t_float *in = *osums++;
-        t_float *out = *outs++;
-        for(int n = 0; n < x->x_n; n++){
-            *out++ = *in;
-            *in++ = 0.;
         }
     }
     return(w+2);
 }
 
 static void mtx_dsp(t_mtx *x, t_signal **sp){
-    int i, nblock = sp[0]->s_n;
-    float ksr = sp[0]->s_sr * .001;
-    t_float **vecp = x->x_ins;
     t_signal **sigp = sp;
-    for(i = 0; i < x->x_n_ins; i++)
-        *vecp++ = (*sigp++)->s_vec;
-    vecp = x->x_outs;
-    for(i = 0; i < x->x_n_outs; i++)
-        *vecp++ = (*sigp++)->s_vec;
-    if(nblock != x->x_n){
-        if(nblock > x->x_maxblock){
-            size_t oldsize = x->x_maxblock * sizeof(*x->x_osums[i]),
-            newsize = nblock * sizeof(*x->x_osums[i]);
-            for(i = 0; i < x->x_n_outs; i++)
-                x->x_osums[i] = resizebytes(x->x_osums[i], oldsize, newsize);
-            x->x_maxblock = nblock;
-        };
-        x->x_n = nblock;
-    }
+    int i, n = sp[0]->s_n;
+    for(i = 0; i < x->x_n_ins; i++)  // 'n' inlets
+        *(x->x_ins+i) = (*sigp++)->s_vec;
+    for(i = 0; i < x->x_n_outs; i++) // 'n' outlets
+        *(x->x_outs+i) = (*sigp++)->s_vec;
+    float ksr = sp[0]->s_sr * .001;
     if(ksr != x->x_ksr){ // update
         x->x_ksr = ksr;
         mtx_ramp(x, x->x_ramp_ms);
+    }
+    if(n != x->x_n){
+        x->x_inputs = (t_float *)resizebytes(x->x_inputs,
+            x->x_n*x->x_n_ins * sizeof(t_float), n*x->x_n_ins * sizeof(t_float));
+        x->x_n = n;
     }
     dsp_add(mtx_perform, 1, x);
 }
 
 static void *mtx_free(t_mtx *x){
+    freebytes(x->x_inputs, x->x_n*x->x_n_ins*sizeof(*x->x_inputs));
     freebytes(x->x_ins, x->x_n_ins * sizeof(*x->x_ins));
     freebytes(x->x_outs, x->x_n_outs * sizeof(*x->x_outs));
-    for(int i = 0; i < x->x_n_outs; i++)
-        freebytes(x->x_osums[i], x->x_maxblock * sizeof(*x->x_osums[i]));
-    freebytes(x->x_osums, x->x_n_outs * sizeof(*x->x_osums));
-    freebytes(x->x_gains, x->x_n_cells * sizeof(*x->x_gains));
-    freebytes(x->x_coefs, x->x_n_cells * sizeof(*x->x_coefs));
-    freebytes(x->x_inc, x->x_n_cells * sizeof(*x->x_inc));
-    freebytes(x->x_biginc, x->x_n_cells * sizeof(*x->x_biginc));
-    freebytes(x->x_nleft, x->x_n_cells * sizeof(*x->x_nleft));
+    freebytes(x->x_tgain, x->x_n_cells*sizeof(*x->x_tgain));
+    freebytes(x->x_g, x->x_n_cells*sizeof(*x->x_g));
+    freebytes(x->x_inc, x->x_n_cells*sizeof(*x->x_inc));
+    freebytes(x->x_nleft, x->x_n_cells*sizeof(*x->x_nleft));
     return(void *)x;
 }
 
@@ -179,45 +134,41 @@ static void *mtx_new(t_symbol *s, int ac, t_atom *av){
     t_float rampms = 10.;
     x->x_n_ins = x->x_n_outs = 1;
     x->x_ksr = sys_getsr() * .001;
-    x->x_n = x->x_maxblock = sys_getblksize();
+    x->x_n = sys_getblksize();
     int i;
     if(ac){
         int ins = atom_getint(av);
-        x->x_n_ins = ins < 1 ? 1 : ins > MTX_MAX_INOUT ? MTX_MAX_INOUT : ins;
+        x->x_n_ins = ins < 1 ? 1 : ins > mtx_MAX_INOUT ? mtx_MAX_INOUT : ins;
         ac--, av++;
     }
     if(ac){
         int outs = atom_getint(av);
-        x->x_n_outs = outs < 1 ? 1 : outs > MTX_MAX_INOUT ? MTX_MAX_INOUT : outs;
+        x->x_n_outs = outs < 1 ? 1 : outs > mtx_MAX_INOUT ? mtx_MAX_INOUT : outs;
         ac--, av++;
     }
     if(ac)
         rampms = atom_getfloat(av);
     x->x_ins = getbytes(x->x_n_ins * sizeof(*x->x_ins));
     x->x_outs = getbytes(x->x_n_outs * sizeof(*x->x_outs));
-    x->x_osums = getbytes(x->x_n_outs * sizeof(*x->x_osums));
-    for(i = 0; i < x->x_n_outs; i++)
-        x->x_osums[i] = getbytes(x->x_maxblock * sizeof(*x->x_osums[i]));
+    x->x_inputs = (t_float *)getbytes(x->x_n*x->x_n_ins*sizeof(*x->x_inputs));
     x->x_n_cells = x->x_n_ins * x->x_n_outs;
-    x->x_gains = getbytes(x->x_n_cells * sizeof(*x->x_gains));
-    x->x_coefs = getbytes(x->x_n_cells * sizeof(*x->x_coefs));
-    x->x_inc = getbytes(x->x_n_cells * sizeof(*x->x_inc));
-    x->x_biginc = getbytes(x->x_n_cells * sizeof(*x->x_biginc));
+    x->x_tgain = getbytes(x->x_n_cells * sizeof(*x->x_tgain));
+    x->x_g = getbytes(x->x_n_cells * sizeof(*x->x_g));
     x->x_nleft = getbytes(x->x_n_cells * sizeof(*x->x_nleft));
+    x->x_inc = getbytes(x->x_n_cells * sizeof(*x->x_inc));
     for(i = 0; i < x->x_n_cells; i++)
-        x->x_coefs[i] = x->x_gains[i] = x->x_nleft[i] = 0.;
-    mtx_clear(x);
+        x->x_tgain[i] = x->x_g[i] = x->x_nleft[i] = x->x_inc[i] = 0.;
     mtx_ramp(x, rampms);
     for(i = 1; i < x->x_n_ins; i++)
         inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     for(i = 0; i < x->x_n_outs; i++)
-         outlet_new(&x->x_obj, gensym("signal"));
+        outlet_new(&x->x_obj, gensym("signal"));
     return(x);
 }
 
 void mtx_tilde_setup(void){
     mtx_class = class_new(gensym("mtx~"), (t_newmethod)mtx_new,
-        (t_method)mtx_free, sizeof(t_mtx), 0, A_GIMME, 0);
+        (t_method)mtx_free, sizeof(t_mtx), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(mtx_class, nullfn, gensym("signal"), 0);
     class_addmethod(mtx_class, (t_method)mtx_dsp, gensym("dsp"), A_CANT, 0);
     class_addlist(mtx_class, mtx_list);
