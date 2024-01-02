@@ -6,40 +6,40 @@
 typedef struct _fader_tilde{
     t_object    x_obj;
     t_int       x_table;
-}t_fader_tilde;
+}t_fader;
 
-static t_class *fader_tilde_class;
+static t_class *fader_class;
 
-static void fader_quartic(t_fader_tilde *x){
+static void fader_quartic(t_fader *x){
     x->x_table = 0;
 }
 
-static void fader_lin(t_fader_tilde *x){
+static void fader_lin(t_fader *x){
     x->x_table = 1;
 }
 
-static void fader_linsin(t_fader_tilde *x){
+static void fader_linsin(t_fader *x){
     x->x_table = 2;
 }
 
-static void fader_sqrt(t_fader_tilde *x){
+static void fader_sqrt(t_fader *x){
     x->x_table = 3;
 }
 
-static void fader_sin(t_fader_tilde *x){
+static void fader_sin(t_fader *x){
     x->x_table = 4;
 }
 
-static void fader_hannsin(t_fader_tilde *x){
+static void fader_hannsin(t_fader *x){
     x->x_table = 5;
 }
 
-static void fader_hann(t_fader_tilde *x){
+static void fader_hann(t_fader *x){
     x->x_table = 6;
 }
 
 static t_int *fader_tilde_perform(t_int *w){
-    t_fader_tilde *x = (t_fader_tilde *)(w[1]);
+    t_fader *x = (t_fader *)(w[1]);
     int n = (int)(w[2]);
     t_float *in = (t_float *)(w[3]);
     t_float *out = (t_float *)(w[4]);
@@ -54,7 +54,7 @@ static t_int *fader_tilde_perform(t_int *w){
     return(w+5);
 }
 
-static void fader_tilde_dsp(t_fader_tilde *x, t_signal **sp){
+static void fader_tilde_dsp(t_fader *x, t_signal **sp){
     signal_setmultiout(&sp[1], sp[0]->s_nchans);
     dsp_add(fader_tilde_perform, 4, x,
         (t_int)(sp[0]->s_n * sp[0]->s_nchans),
@@ -62,7 +62,7 @@ static void fader_tilde_dsp(t_fader_tilde *x, t_signal **sp){
 }
 
 static void *fader_tilde_new(t_symbol *s){
-    t_fader_tilde *x = (t_fader_tilde *)pd_new(fader_tilde_class);
+    t_fader *x = (t_fader *)pd_new(fader_class);
     init_fade_tables();
     x->x_table = 0; // quartic
     if(s == gensym("quartic"))
@@ -84,15 +84,15 @@ static void *fader_tilde_new(t_symbol *s){
 }
 
 void fader_tilde_setup(void){
-  fader_tilde_class = class_new(gensym("fader~"), (t_newmethod)fader_tilde_new, 0,
-    sizeof(t_fader_tilde), CLASS_MULTICHANNEL, A_DEFSYM, 0);
-    class_addmethod(fader_tilde_class, nullfn, gensym("signal"), 0);
-    class_addmethod(fader_tilde_class, (t_method)fader_tilde_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(fader_tilde_class, (t_method)fader_quartic, gensym("quartic"), 0);
-    class_addmethod(fader_tilde_class, (t_method)fader_lin, gensym("lin"), 0);
-    class_addmethod(fader_tilde_class, (t_method)fader_sqrt, gensym("sqrt"), 0);
-    class_addmethod(fader_tilde_class, (t_method)fader_sin, gensym("sin"), 0);
-    class_addmethod(fader_tilde_class, (t_method)fader_hann, gensym("hann"), 0);
-    class_addmethod(fader_tilde_class, (t_method)fader_linsin, gensym("linsin"), 0);
-    class_addmethod(fader_tilde_class, (t_method)fader_hannsin, gensym("hannsin"), 0);
+  fader_class = class_new(gensym("fader~"), (t_newmethod)fader_tilde_new, 0,
+    sizeof(t_fader), CLASS_MULTICHANNEL, A_DEFSYM, 0);
+    class_addmethod(fader_class, nullfn, gensym("signal"), 0);
+    class_addmethod(fader_class, (t_method)fader_tilde_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(fader_class, (t_method)fader_quartic, gensym("quartic"), 0);
+    class_addmethod(fader_class, (t_method)fader_lin, gensym("lin"), 0);
+    class_addmethod(fader_class, (t_method)fader_sqrt, gensym("sqrt"), 0);
+    class_addmethod(fader_class, (t_method)fader_sin, gensym("sin"), 0);
+    class_addmethod(fader_class, (t_method)fader_hann, gensym("hann"), 0);
+    class_addmethod(fader_class, (t_method)fader_linsin, gensym("linsin"), 0);
+    class_addmethod(fader_class, (t_method)fader_hannsin, gensym("hannsin"), 0);
 }
