@@ -4,7 +4,8 @@
 #include <string.h>
 #include <stdarg.h>
 
-// interpolation
+////////////////////////////////   INTERPOLATION
+
 double interp_lin(double frac, double b, double c){
     return(b + frac * (c-b));
 }
@@ -70,7 +71,17 @@ double bias, double tension){
     return(p0*b + p1*m0 + p2*m1 + p3*c);
 }
 
-static double *sintable; // stays allocated as long as Pd is running
+////////////////////////////////   INIT TABLES!!!! They stays allocated as long as Pd is running
+
+static double *sintable;
+static int fadetables = 0;
+
+static double *tab_fade_sin;
+static double *tab_fade_hannsin;
+static double *tab_fade_hann;
+static double *tab_fade_linsin;
+static double *tab_fade_quartic;
+static double *tab_fade_sqrt;
 
 void init_sine_table(void){
     if(sintable)
@@ -85,6 +96,73 @@ void init_sine_table(void){
         *tp++ = sintable[i]; // mirror inverted
     for(int i = ELSE_SIN_TABSIZE/2 - 1; i >= 0; i--)
         *tp++ = -sintable[i]; // mirror back
+}
+
+void init_fade_tables(void){
+    if(fadetables)
+        return;
+    fadetables = 1;
+    int i;
+    double *tp;
+    double inc1, inc2, v, ph1, ph2;
+    
+    inc1 = 1.0 / ELSE_FADE_TABSIZE;
+    inc2 = HALF_PI * inc1;
+    
+    tab_fade_quartic = getbytes((ELSE_FADE_TABSIZE + 1) * sizeof(*tab_fade_quartic));
+    tp = tab_fade_quartic;
+    for(i = 0, ph1 = 0; i <= ELSE_FADE_TABSIZE; i++, ph1 += inc1)
+        *tp++ = pow(ph1, 4);
+
+    tab_fade_sqrt = getbytes((ELSE_FADE_TABSIZE + 1) * sizeof(*tab_fade_sqrt));
+    tp = tab_fade_sqrt;
+    for(i = 0, ph1 = 0; i <= ELSE_FADE_TABSIZE; i++, ph1 += inc1)
+        *tp++ = sqrt(ph1);
+    
+    tab_fade_sin = getbytes((ELSE_FADE_TABSIZE + 1) * sizeof(*tab_fade_sin));
+    tp = tab_fade_sin;
+    for(i = 0, ph1 = 0; i <= ELSE_FADE_TABSIZE; i++, ph1 += inc2)
+        *tp++ = sin(ph1);
+    
+    tab_fade_hann = getbytes((ELSE_FADE_TABSIZE + 1) * sizeof(*tab_fade_hann));
+    tp = tab_fade_hann;
+    for(i = 0, ph1 = 0; i <= ELSE_FADE_TABSIZE; i++, ph1 += inc2){
+        v = sin(ph1);
+        *tp++ = v*v;
+    }
+    
+    tab_fade_hannsin = getbytes((ELSE_FADE_TABSIZE + 1) * sizeof(*tab_fade_hannsin));
+    tp = tab_fade_hannsin;
+    for(i = 0, ph1 = 0; i <= ELSE_FADE_TABSIZE; i++, ph1 += inc2){
+        v = sin(ph1);
+        *tp++ = v*sqrt(v);
+    }
+    
+    tab_fade_linsin = getbytes((ELSE_FADE_TABSIZE + 1) * sizeof(*tab_fade_linsin));
+    tp = tab_fade_linsin;
+    for(i = 0, ph1 = 0, ph2 = 0; i <= ELSE_FADE_TABSIZE; i++, ph1 += inc1, ph2 += inc2)
+        *tp++ = sqrt(ph1 * sin(ph2));
+}
+
+double read_fadetab(double phase, int tab){
+    double tabphase = phase * ELSE_FADE_TABSIZE;
+    int i = (int)tabphase;
+    double frac = tabphase - i, p1 = 0, p2 = 0;
+    if(tab == 0)
+        p1 = tab_fade_quartic[i], p2 = tab_fade_quartic[i+1];
+    else if(tab == 1)
+        return(phase);
+    else if(tab == 2)
+        p1 = tab_fade_linsin[i], p2 = tab_fade_linsin[i+1];
+    else if(tab == 3)
+        p1 = tab_fade_sqrt[i], p2 = tab_fade_sqrt[i+1];
+    else if(tab == 4)
+        p1 = tab_fade_sin[i], p2 = tab_fade_sin[i+1];
+    else if(tab == 5)
+        p1 = tab_fade_hannsin[i], p2 = tab_fade_hannsin[i+1];
+    else if(tab == 6)
+        p1 = tab_fade_hann[i], p2 = tab_fade_hann[i+1];
+    return(interp_lin(frac, p1, p2));
 }
 
 double read_sintab(double phase){

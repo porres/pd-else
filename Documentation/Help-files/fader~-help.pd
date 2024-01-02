@@ -1,49 +1,30 @@
 #N canvas 537 32 566 430 10;
-#X obj 4 256 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 320 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 357 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 90 330 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 91 265 cnv 17 3 47 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 4 401 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X obj 192 139 hsl 180 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
-#000000 #000000 0 1;
-#X text 116 267 float/signal;
+#X obj 4 256 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 4 320 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 4 357 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 90 330 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 91 265 cnv 17 3 47 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 4 401 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 192 139 hsl 180 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X text 152 330 signal;
-#X obj 3 4 cnv 15 301 42 empty empty fader~ 20 20 2 37 #e0e0e0 #000000
-0;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#X obj 3 4 cnv 15 301 42 empty empty fader~ 20 20 2 37 #e0e0e0 #000000 0;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 4 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 4 pd;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 23 41 cnv 4 4 4 empty empty Fader 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 74 41 cnv 4 4 4 empty empty waveshaper 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 23 41 cnv 4 4 4 empty empty Fader 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 74 41 cnv 4 4 4 empty empty waveshaper 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
-#fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -112,8 +93,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
-0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -125,8 +105,7 @@
 #X obj 136 86 snapshot~;
 #X obj 91 52 del 5;
 #X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 74 126 switch~;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -151,15 +130,13 @@
 #X obj 189 195 else/fader~ sqrt;
 #N canvas 693 105 587 269 curves 0;
 #N canvas 135 30 735 535 constant-power(3db) 0;
-#X obj 30 287 cnv 15 348 198 empty empty empty 20 12 0 14 #dcdcdc #404040
-0;
+#X obj 30 287 cnv 15 348 198 empty empty empty 20 12 0 14 #dcdcdc #404040 0;
 #N canvas 0 22 452 302 (subpatch) 0;
 #X array \$0-sqrt_in 441 float 0;
 #X array \$0-sqrt_out 441 float 0;
 #X coords 0 1.01 441 0 350 200 1 0 0;
 #X restore 29 286 graph;
-#X obj 32 45 cnv 15 348 198 empty empty empty 20 12 0 14 #dcdcdc #404040
-0;
+#X obj 32 45 cnv 15 348 198 empty empty empty 20 12 0 14 #dcdcdc #404040 0;
 #N canvas 0 22 452 302 (subpatch) 0;
 #X array \$0-sin_in 441 float 0;
 #X array \$0-sin_out 441 float 0;
@@ -195,18 +172,13 @@
 #X connect 14 0 11 0;
 #X connect 15 0 9 0;
 #X restore 327 253 pd plot;
-#X text 431 108 There are two "constant power" curves \, which have
-a crossing point at -3dB., f 33;
-#X text 432 164 We have the "sin" (sine) function above and a "sqrt"
-(square root) function below., f 33;
-#X text 434 227 The "sin" function is 1/4 of the cycle of a sine function.
-, f 33;
-#X text 435 270 The "sqrt" function is the same as extracting the square
-root of the input., f 33;
+#X text 431 108 There are two "constant power" curves \, which have a crossing point at -3dB., f 33;
+#X text 432 164 We have the "sin" (sine) function above and a "sqrt" (square root) function below., f 33;
+#X text 434 227 The "sin" function is 1/4 of the cycle of a sine function., f 33;
+#X text 435 270 The "sqrt" function is the same as extracting the square root of the input., f 33;
 #X restore 172 152 pd constant-power(3db);
 #N canvas 240 70 761 552 compromise(4.5db) 0;
-#X obj 34 50 cnv 15 348 198 empty empty empty 20 12 0 14 #dcdcdc #404040
-0;
+#X obj 34 50 cnv 15 348 198 empty empty empty 20 12 0 14 #dcdcdc #404040 0;
 #N canvas 0 22 452 302 (subpatch) 0;
 #X array \$0-hannsin_in 441 float 0;
 #X array \$0-hannsin_out 441 float 0;
@@ -242,23 +214,17 @@ root of the input., f 33;
 #X connect 10 0 14 0;
 #X connect 11 0 15 0;
 #X restore 329 258 pd plot;
-#X obj 34 290 cnv 15 348 198 empty empty empty 20 12 0 14 #dcdcdc #404040
-0;
+#X obj 34 290 cnv 15 348 198 empty empty empty 20 12 0 14 #dcdcdc #404040 0;
 #N canvas 0 22 452 302 (subpatch) 0;
 #X array \$0-linsin_in 441 float 0;
 #X array \$0-linsin_out 441 float 0;
 #X coords 0 1.01 441 0 350 200 1 0 0;
 #X restore 33 289 graph;
-#X text 419 97 As a compromise between the functions that cross between
--3 and -6dB \, we have a crossing point at -4.5 dB., f 37;
-#X text 419 150 This can be achieved with a geometric mean between
-such functions. Here we have a mean between the "hann" and the "sin"
-function above \, and a mean between the "lin" and "sin" function below.
-, f 37;
+#X text 419 97 As a compromise between the functions that cross between -3 and -6dB \, we have a crossing point at -4.5 dB., f 37;
+#X text 419 150 This can be achieved with a geometric mean between such functions. Here we have a mean between the "hann" and the "sin" function above \, and a mean between the "lin" and "sin" function below., f 37;
 #X restore 172 201 pd compromise(4.5db);
 #N canvas 221 110 734 527 constant-voltage(6db) 0;
-#X obj 31 56 cnv 15 348 198 empty empty empty 20 12 0 14 #dcdcdc #404040
-0;
+#X obj 31 56 cnv 15 348 198 empty empty empty 20 12 0 14 #dcdcdc #404040 0;
 #N canvas 0 22 452 302 (subpatch) 0;
 #X array \$0-hann_in 441 float 0;
 #X array \$0-hann_out 441 float 0;
@@ -294,25 +260,19 @@ function above \, and a mean between the "lin" and "sin" function below.
 #X connect 12 0 14 0;
 #X connect 13 0 15 0;
 #X restore 327 262 pd plot;
-#X obj 32 289 cnv 15 348 198 empty empty empty 20 12 0 14 #dcdcdc #404040
-0;
+#X obj 32 289 cnv 15 348 198 empty empty empty 20 12 0 14 #dcdcdc #404040 0;
 #N canvas 0 22 452 302 (subpatch) 0;
 #X array \$0-lin_in 441 float 0;
 #X array \$0-lin_out 441 float 0;
 #X coords 0 1.01 441 0 350 200 1 0 0;
 #X restore 31 288 graph;
-#X text 430 125 There are two "constant voltage" curves \, which have
-a crossing point at -6dB., f 33;
-#X text 430 181 We have the "hann" function above and a linear transfer
-function below, f 33;
-#X text 431 246 The "hann" function is half the cycle of a "cosine"
-function., f 33;
-#X text 432 288 The "lin" function does nothing \, it is the same as
-the input., f 33;
+#X text 430 125 There are two "constant voltage" curves \, which have a crossing point at -6dB., f 33;
+#X text 430 181 We have the "hann" function above and a linear transfer function below, f 33;
+#X text 431 246 The "hann" function is half the cycle of a "cosine" function., f 33;
+#X text 432 288 The "lin" function does nothing \, it is the same as the input., f 33;
 #X restore 172 176 pd constant-voltage(6db);
 #N canvas 363 166 734 349 quartic 0;
-#X obj 45 72 cnv 15 348 198 empty empty empty 20 12 0 14 #dcdcdc #404040
-0;
+#X obj 45 72 cnv 15 348 198 empty empty empty 20 12 0 14 #dcdcdc #404040 0;
 #N canvas 0 22 452 302 (subpatch) 0;
 #X array \$0-quartic_in 441 float 0;
 #X array \$0-quartic_out 441 float 0;
@@ -334,14 +294,12 @@ the input., f 33;
 #X connect 5 0 7 0;
 #X connect 6 0 5 0;
 #X restore 44 277 pd plot;
-#X text 455 104 The default curve is "quartic" \, which is the same
-as raising the input to the power of 4, f 31;
+#X text 455 104 The default curve is "quartic" \, which is the same as raising the input to the power of 4, f 31;
 #X text 517 175 as in:;
 #X obj 572 176 pow~ 4;
 #X restore 172 128 pd quartic;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
-#fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -410,8 +368,7 @@ as raising the input to the power of 4, f 31;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
-0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -423,8 +380,7 @@ as raising the input to the power of 4, f 31;
 #X obj 136 86 snapshot~;
 #X obj 91 52 del 5;
 #X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 74 126 switch~;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -445,28 +401,21 @@ as raising the input to the power of 4, f 31;
 #X restore 363 49 pd;
 #X text 446 49 be sure audio is on, f 7;
 #X text 414 63 <===;
-#X text 68 53 Open the subpatch below for more details on the fading
-curves available, f 32;
-#X restore 474 195 pd curves;
-#X text 203 267 - input value (clipped from 0 to 1);
+#X text 68 53 Open the subpatch below for more details on the fading curves available, f 32;
+#X restore 478 171 pd curves;
 #X text 203 286 -;
 #X text 203 330 - waveshaped output;
 #X text 131 367 1) symbol -;
-#X text 78 90 [fader~] is a waveshaper. It takes input from 0 to 1
-and uses internal lookup tables for 7 different fading curves.;
-#X text 216 367 fade types <quartic \, sin \, sqrt \, hann \, lin \,
-hannsin \, linsin> (default: quartic), f 47;
-#X text 215 286 fade types <quartic \, sin \, sqrt \, hann \, lin \,
-hannsin \, linsin>, f 47;
+#X text 78 90 [fader~] is a waveshaper. It takes input from 0 to 1 and uses internal lookup tables for 7 different fading curves.;
+#X text 216 367 fade types <quartic \, sin \, sqrt \, hann \, lin \, hannsin \, linsin> (default: quartic), f 47;
+#X text 215 286 fade types <quartic \, sin \, sqrt \, hann \, lin \, hannsin \, linsin>, f 47;
 #N canvas 552 191 622 511 crossfading 0;
 #X obj 378 249 else/fader~;
 #X obj 122 278 else/fader~;
 #X obj 28 224 else/brown~;
 #X obj 107 317 *~;
-#X obj 250 110 hsl 180 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
-#000000 #000000 0 1;
-#X obj 247 134 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
+#X obj 250 110 hsl 180 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 247 134 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 247 157 else/float2sig~ 10;
 #X obj 363 341 *~;
 #X obj 297 291 osc~ 440;
@@ -487,8 +436,7 @@ hannsin \, linsin>, f 47;
 #X msg 164 177 lin;
 #X msg 167 198 hannsin;
 #X msg 170 218 linsin;
-#X text 249 26 Here's how you can combine different fade in and out
-curves with a crossfading slider., f 27;
+#X text 249 26 Here's how you can combine different fade in and out curves with a crossfading slider., f 27;
 #X connect 0 0 7 1;
 #X connect 1 0 3 1;
 #X connect 2 0 3 0;
@@ -515,9 +463,40 @@ curves with a crossfading slider., f 27;
 #X connect 23 0 1 0;
 #X connect 24 0 1 0;
 #X connect 25 0 1 0;
-#X restore 444 217 pd crossfading;
+#X restore 448 194 pd crossfading;
 #X obj 189 225 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
 #X obj 189 166 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
-#X connect 6 0 36 0;
-#X connect 25 0 35 0;
-#X connect 36 0 25 0;
+#N canvas 795 189 529 433 multichannel 0;
+#X listbox 46 88 17 0 0 0 - - - 0;
+#X obj 383 206 setdsp~ 0;
+#X text 289 81 Multichannel support example.;
+#X obj 185 320 else/s2f~;
+#X listbox 185 356 35 0 0 0 - - - 12;
+#X obj 185 272 else/fader~;
+#X obj 46 59 else/initmess 0.1 0.5 0.75 1;
+#X obj 46 114 else/f2s~;
+#X msg 199 111 sin;
+#X msg 213 132 sqrt;
+#X msg 185 90 quartic;
+#X msg 227 152 hann;
+#X msg 240 172 lin;
+#X msg 248 193 hannsin;
+#X msg 254 216 linsin;
+#X connect 0 0 7 0;
+#X connect 3 0 4 0;
+#X connect 5 0 3 0;
+#X connect 6 0 0 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 0;
+#X connect 9 0 5 0;
+#X connect 10 0 5 0;
+#X connect 11 0 5 0;
+#X connect 12 0 5 0;
+#X connect 13 0 5 0;
+#X connect 14 0 5 0;
+#X restore 442 217 pd multichannel;
+#X text 134 267 signal(s);
+#X text 203 267 - input value(s) (clipped from 0 to 1);
+#X connect 6 0 34 0;
+#X connect 24 0 33 0;
+#X connect 34 0 24 0;

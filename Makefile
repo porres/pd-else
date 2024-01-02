@@ -164,7 +164,6 @@ drive~.class.sources := Code_source/Compiled/audio/drive~.c
 detect~.class.sources := Code_source/Compiled/audio/detect~.c
 envgen~.class.sources := Code_source/Compiled/audio/envgen~.c
 eq~.class.sources := Code_source/Compiled/audio/eq~.c
-fader~.class.sources := Code_source/Compiled/audio/fader~.c
 fbsine2~.class.sources := Code_source/Compiled/audio/fbsine2~.c
 fdn.rev~.class.sources := Code_source/Compiled/audio/fdn.rev~.c
 floor~.class.sources := Code_source/Compiled/audio/floor~.c
@@ -272,6 +271,9 @@ magic := Code_source/shared/magic.c
     numbox~.class.sources := Code_source/Compiled/audio/numbox~.c $(magic)
 
 buf := Code_source/shared/buffer.c
+
+    fader~.class.sources := Code_source/Compiled/audio/fader~.c $(buf)
+
     balance~.class.sources := Code_source/Compiled/audio/balance~.c $(buf)
     pan~.class.sources := Code_source/Compiled/audio/pan~.c $(buf)
     pan2~.class.sources := Code_source/Compiled/audio/pan2~.c $(buf)

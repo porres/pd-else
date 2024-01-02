@@ -18,7 +18,8 @@
 
 #define ONE_SIXTH 0.16666666666666666666667f
 
-#define ELSE_SIN_TABSIZE 16384
+#define ELSE_SIN_TABSIZE  16384
+#define ELSE_FADE_TABSIZE 4096
 
 typedef struct _buffer{
     void       *c_owner;     // owner of buffer, note i don't know if this actually works
@@ -44,8 +45,10 @@ double interp_hermite(double frac, double a, double b, double c, double d,
     double bias, double tension);
 
 double read_sintab(double phase);
+double read_fadetab(double phase, int tab);
 
 void init_sine_table(void);
+void init_fade_tables(void);
 
 void buffer_bug(char *fmt, ...);
 void buffer_clear(t_buffer *c);
