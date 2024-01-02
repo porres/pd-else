@@ -133,7 +133,6 @@ comb.rev~.class.sources := Code_source/Compiled/audio/comb.rev~.c
 comb.filt~.class.sources := Code_source/Compiled/audio/comb.filt~.c
 adsr~.class.sources := Code_source/Compiled/audio/adsr~.c
 asr~.class.sources := Code_source/Compiled/audio/asr~.c
-autofade~.class.sources := Code_source/Compiled/audio/autofade~.c
 autofade2~.class.sources := Code_source/Compiled/audio/autofade2~.c
 bandpass~.class.sources := Code_source/Compiled/audio/bandpass~.c
 bandstop~.class.sources := Code_source/Compiled/audio/bandstop~.c
@@ -273,6 +272,7 @@ magic := Code_source/shared/magic.c
 buf := Code_source/shared/buffer.c
 
     fader~.class.sources := Code_source/Compiled/audio/fader~.c $(buf)
+    autofade~.class.sources := Code_source/Compiled/audio/autofade~.c $(buf)
 
     balance~.class.sources := Code_source/Compiled/audio/balance~.c $(buf)
     pan~.class.sources := Code_source/Compiled/audio/pan~.c $(buf)
