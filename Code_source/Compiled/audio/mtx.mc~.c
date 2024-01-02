@@ -113,7 +113,7 @@ static t_int *mtxmc_perform(t_int *w){
 
 static void mtxmc_dsp(t_mtxmc *x, t_signal **sp){
     int n_ins = sp[0]->s_nchans, n = sp[0]->s_n;
-    if(f > MTXMC_MAX_INOUT){
+    if(n_ins > MTXMC_MAX_INOUT){
         pd_error(x, "[mtx.mc~]: c'mon %d is enough channels, huh?", MTXMC_MAX_INOUT);
         return;
     }
