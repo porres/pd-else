@@ -1,4 +1,4 @@
-// porres 2024
+// porres 2023
 
 #include "m_pd.h"
 
@@ -52,25 +52,6 @@ static void mtxmc_clear(t_mtxmc *x){
     for(int i = 0; i < x->x_n_cells; i++)
         mtxmc_set_gain(x, i, 0); // set gain to 0
 }
-
-/*static void mtxmc_ins(t_mtxmc *x, t_floatarg f){
-    int n_ins = f < 1 ? 1 : (int)f;
-    if(n_ins != x->x_n_ins){
-        int n_cells = n_ins * x->x_n_outs;
-        x->x_input = (t_float *)resizebytes(x->x_input,
-            x->x_n*x->x_n_ins * sizeof(t_float),
-            x->x_n*n_ins * sizeof(t_float));
-        x->x_tgain = (t_float *)resizebytes(x->x_tgain,
-            x->x_n_cells*sizeof(t_float), n_cells * sizeof(t_float));
-        x->x_g = (t_float *)resizebytes(x->x_g,
-            x->x_n_cells*sizeof(t_float), n_cells * sizeof(t_float));
-        x->x_inc = (t_float *)resizebytes(x->x_inc,
-            x->x_n_cells*sizeof(t_float), n_cells * sizeof(t_float));
-        x->x_nleft = (int *)resizebytes(x->x_nleft,
-            x->x_n_cells*sizeof(t_float), n_cells * sizeof(int));
-        x->x_n_ins = n_ins, x->x_n_cells = n_cells;
-    }
-}*/
 
 static void mtxmc_outs(t_mtxmc *x, t_floatarg f){
     int n_outs = f < 1 ? 1 : f > MTXMC_MAX_INOUT ? MTXMC_MAX_INOUT : (int)f;
@@ -132,7 +113,7 @@ static t_int *mtxmc_perform(t_int *w){
 
 static void mtxmc_dsp(t_mtxmc *x, t_signal **sp){
     int n_ins = sp[0]->s_nchans, n = sp[0]->s_n;
-    if(n_ins > MTXMC_MAX_INOUT){
+    if(f > MTXMC_MAX_INOUT){
         pd_error(x, "[mtx.mc~]: c'mon %d is enough channels, huh?", MTXMC_MAX_INOUT);
         return;
     }
@@ -209,7 +190,6 @@ void setup_mtx0x2emc_tilde(void){
     class_addlist(mtxmc_class, mtxmc_list);
     class_addmethod(mtxmc_class, (t_method)mtxmc_clear, gensym("clear"), 0);
     class_addmethod(mtxmc_class, (t_method)mtxmc_ramp, gensym("ramp"), A_FLOAT, 0);
-//    class_addmethod(mtxmc_class, (t_method)mtxmc_ins, gensym("ins"), A_FLOAT, 0);
     class_addmethod(mtxmc_class, (t_method)mtxmc_outs, gensym("outs"), A_FLOAT, 0);
     class_addmethod(mtxmc_class, (t_method)mtxmc_print, gensym("print"), 0);
 }
