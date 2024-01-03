@@ -96,7 +96,7 @@
 #X obj 55 52 else/hann~;
 #X obj 55 78 else/bin.shift~;
 #X restore 255 152 pd FFT;
-#N canvas 711 145 412 491 Patch/subpatch_management 0;
+#N canvas 660 186 345 460 Patch/subpatch_management 0;
 #X obj 70 41 else/meter;
 #X obj 71 16 else/args;
 #X obj 71 93 else/blocksize~;
@@ -123,8 +123,10 @@
 #X obj 74 589 else/nop~;
 #X obj 72 513 else/send2~;
 #X obj 71 216 else/findfile;
+#X obj 74 615 else/abs.pd~;
+#X obj 74 640 else/sendmidi;
 #X restore 46 185 pd Patch/subpatch_management;
-#N canvas 655 96 309 572 MIDI 0;
+#N canvas 655 96 310 486 MIDI 0;
 #X obj 72 125 else/sysrt.in;
 #X obj 72 151 else/sysrt.out;
 #X obj 72 177 else/ctl.in;
@@ -152,7 +154,6 @@
 #X obj 73 309 else/ptouch.out;
 #X obj 72 598 else/mono~;
 #X obj 72 646 else/voices~;
-#X obj 71 700 else/sendmidi;
 #X restore 161 214 pd MIDI;
 #N canvas 591 107 264 441 Math_functions 0;
 #X obj 48 24 else/add;
