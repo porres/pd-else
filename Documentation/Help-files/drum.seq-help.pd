@@ -32,7 +32,7 @@
 #X obj 151 39 cnv 4 4 4 empty empty pattern 0 28 2 18 #e0e0e0 #000000 0;
 #X text 231 324 - sets track \, slot and status (no output), f 42;
 #X text 231 366 - sets slot value and output tracks values;
-#N canvas 598 57 629 680 drum 1;
+#N canvas 598 57 629 680 drum 0;
 #X obj 355 564 else/pluck~ 50 2500 10000;
 #X obj 404 520 impseq~;
 #X obj 294 607 else/out~;
