@@ -272,8 +272,9 @@ buf := Code_source/shared/buffer.c
 
     fader~.class.sources := Code_source/Compiled/audio/fader~.c $(buf)
     autofade~.class.sources := Code_source/Compiled/audio/autofade~.c $(buf)
-autofade2~.class.sources := Code_source/Compiled/audio/autofade2~.c $(buf)
-
+    autofade.mc~.class.sources := Code_source/Compiled/audio/autofade.mc~.c $(buf)
+    autofade2~.class.sources := Code_source/Compiled/audio/autofade2~.c $(buf)
+    autofade2.mc~.class.sources := Code_source/Compiled/audio/autofade2.mc~.c $(buf)
     balance~.class.sources := Code_source/Compiled/audio/balance~.c $(buf)
     pan~.class.sources := Code_source/Compiled/audio/pan~.c $(buf)
     pan2~.class.sources := Code_source/Compiled/audio/pan2~.c $(buf)
