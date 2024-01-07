@@ -193,7 +193,7 @@
 #X obj 572 176 pow~ 4;
 #X restore 290 141 pd quartic;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -262,7 +262,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -324,7 +324,6 @@
 #X text 234 462 (optional) fade types <quartic \, sin \, sqrt \, lin \, hann \, lin \, hannsin \, linsin> (default: quartic), f 47;
 #X text 222 462 -;
 #X text 150 463 1) symbol;
-#X text 222 490 - fade time in ms (default 0), f 49;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
 #X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
@@ -354,11 +353,12 @@
 #X obj 299 182 else/gray~;
 #X obj 379 191 sig~;
 #X text 221 395 - gate on/off;
-#X connect 14 0 35 0;
-#X connect 35 0 40 0;
-#X connect 40 0 42 0;
-#X connect 40 1 42 1;
-#X connect 48 0 51 0;
-#X connect 49 0 40 0;
-#X connect 50 0 40 1;
-#X connect 51 0 40 2;
+#X text 222 490 - fade time in ms (default 10), f 49;
+#X connect 14 0 34 0;
+#X connect 34 0 39 0;
+#X connect 39 0 41 0;
+#X connect 39 1 41 1;
+#X connect 47 0 50 0;
+#X connect 48 0 39 0;
+#X connect 49 0 39 1;
+#X connect 50 0 39 2;
