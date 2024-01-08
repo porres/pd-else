@@ -10,7 +10,7 @@ typedef struct _panmc{
     t_inlet    *x_inlet_spread;
     t_inlet    *x_inlet_gain;
     int         x_n;            // block size
-    int         x_n_outlets;    // outlets
+    int         x_nchs;         // outlets
     t_float     x_offset;
 }t_panmc;
 
@@ -35,10 +35,10 @@ static t_int *panmc_perform(t_int *w){
             pos -= 1;
         if(spread < 0.1)
             spread = 0.1;
-        pos = pos * x->x_n_outlets + spread;
+        pos = pos * x->x_nchs + spread;
         spread *= 2;
-        float range = x->x_n_outlets / spread;
-        for(int j = 0; j < x->x_n_outlets; j++){
+        float range = x->x_nchs / spread;
+        for(int j = 0; j < x->x_nchs; j++){
             float chanpos = (pos - j) / spread;
             chanpos = chanpos - range * floor(chanpos/range);
             float chanamp = chanpos >= 1 ? 0 : read_sintab(chanpos*0.5);
@@ -50,15 +50,20 @@ static t_int *panmc_perform(t_int *w){
 
 void panmc_dsp(t_panmc *x, t_signal **sp){
     x->x_n = sp[0]->s_n;
-    signal_setmultiout(&sp[4], x->x_n_outlets);
+    signal_setmultiout(&sp[4], x->x_nchs);
     if(sp[0]->s_nchans > 1 || sp[1]->s_nchans > 1
     || sp[2]->s_nchans > 1 || sp[2]->s_nchans > 1){
-        dsp_add_zero(sp[4]->s_vec, x->x_n_outlets*x->x_n);
+        dsp_add_zero(sp[4]->s_vec, x->x_nchs*x->x_n);
         pd_error(x, "[pan.mc~] input channels cannot be greater than 1");
         return;
     }
     dsp_add(panmc_perform, 6, x, sp[0]->s_vec, sp[1]->s_vec,
         sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
+}
+
+static void panmc_n(t_panmc *x, t_floatarg f){
+    x->x_nchs = (f < 2 ? 2 : f > MAXOUTPUT ? MAXOUTPUT : f);
+    canvas_update_dsp();
 }
 
 static void panmc_offset(t_panmc *x, t_floatarg f){
@@ -96,7 +101,7 @@ static void *panmc_new(t_symbol *s, int ac, t_atom *av){
         n_outlets = 2;
     else if(n_outlets > (t_float)MAXOUTPUT)
         n_outlets = MAXOUTPUT;
-    x->x_n_outlets = (int)n_outlets;
+    x->x_nchs = (int)n_outlets;
     x->x_inlet_gain = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_gain, gain);
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal); // azimuth
@@ -112,4 +117,5 @@ void setup_pan0x2emc_tilde(void){
     class_addmethod(panmc_class, nullfn, gensym("signal"), 0);
     class_addmethod(panmc_class, (t_method)panmc_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(panmc_class, (t_method)panmc_offset, gensym("offset"), A_FLOAT, 0);
+    class_addmethod(panmc_class, (t_method)panmc_n, gensym("n"), A_FLOAT, 0);
 }
