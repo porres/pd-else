@@ -12,7 +12,7 @@ typedef struct _autofademc{
     int       x_fade;                           // fade size in samples
     int       x_nleft;                          // n samples left
     float     x_ksr, x_fade_ms, x_inc;          // sr in khz, fade size in ms and inc step
-    t_float  *x_inputs;                         // inputs copy
+    t_float  *x_input;                         // inputs copy
     t_float  *x_gate;                           // gate
     t_int     x_gate_on;                        // gate status
     t_float   x_lastgate, x_lastfade, x_start, x_end, x_delta, x_phase;
@@ -59,7 +59,7 @@ static t_int *autofademc_perform(t_int *w){
     t_float *in = (t_float *)(w[2]);
     t_float *gate = (t_float *)(w[3]);
     t_float *out = (t_float *)(w[4]);
-    t_float *ins = x->x_inputs;
+    t_float *ins = x->x_input;
     int i;
     for(i = 0; i < x->x_n_chans*x->x_n; i++) // copy input
         ins[i] = in[i];
@@ -115,7 +115,7 @@ static void autofademc_dsp(t_autofademc *x, t_signal **sp){
         autofademc_fade(x, x->x_fade_ms);
     }
     if(n != x->x_n || ch1 != x->x_n_chans){
-        x->x_inputs = (t_float *)resizebytes(x->x_inputs,
+        x->x_input = (t_float *)resizebytes(x->x_input,
             x->x_n*x->x_n_chans * sizeof(t_float), n*ch1 * sizeof(t_float));
         x->x_n = n, x->x_n_chans = ch1;
     }
@@ -128,7 +128,7 @@ static void autofademc_dsp(t_autofademc *x, t_signal **sp){
 }
 
 static void *autofademc_free(t_autofademc *x){
-    freebytes(x->x_inputs, x->x_n*x->x_n_chans*sizeof(*x->x_inputs));
+    freebytes(x->x_input, x->x_n*x->x_n_chans*sizeof(*x->x_input));
     return(void *)x;
 }
 
@@ -163,7 +163,7 @@ static void *autofademc_new(t_symbol *s, int ac, t_atom *av){
         fadems = atom_getfloat(av);
         ac--, av++;
     }
-    x->x_inputs = (t_float *)getbytes(x->x_n*x->x_n_chans*sizeof(*x->x_inputs));
+    x->x_input = (t_float *)getbytes(x->x_n*x->x_n_chans*sizeof(*x->x_input));
     x->x_end = x->x_nleft = x->x_inc = x->x_lastgate = 0.;
     autofademc_fade(x, fadems);
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);

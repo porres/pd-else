@@ -11,8 +11,8 @@ typedef struct _xselect2{
     int 	    x_indexed; // inlets excluding main signal
     t_float    *x_spread; // spread signal
     t_inlet    *x_inlet_spread;
-    t_float   **x_ivecs; // copying from matrix
-    t_float    *x_ovec; // single pointer (an array rather than an array of arrays)
+    t_float   **x_ins;
+    t_float    *x_out;
 }t_xselect2;
 
 static t_class *xselect2_class;
@@ -24,10 +24,10 @@ static void xselect2_index(t_xselect2 *x, t_floatarg f){
 static t_int *xselect2_perform(t_int *w){
     t_xselect2 *x = (t_xselect2 *)(w[1]);
     int nblock = (int)(w[2]);
-    t_float **ivecs = x->x_ivecs;
+    t_float **ins = x->x_ins;
     t_float *channel = x->x_ch_select;
     t_float *spreadin = x->x_spread;
-    t_float *ovec = x->x_ovec;
+    t_float *out = x->x_out;
     int n_inlets = x->x_n_inlets;
     for(int i = 0; i < nblock; i++){
         t_float output = 0;
@@ -48,9 +48,9 @@ static t_int *xselect2_perform(t_int *w){
             float chanpos = (pos - j) / spread;
             chanpos = chanpos - range * floor(chanpos/range);
             float chanamp = chanpos >= 1 ? 0 : read_sintab(chanpos*0.5);
-            output += ivecs[j][i] * chanamp;
+            output += ins[j][i] * chanamp;
         }
-        ovec[i] = output;
+        out[i] = output;
     };
     return(w+3);
 }
@@ -59,10 +59,10 @@ static void xselect2_dsp(t_xselect2 *x, t_signal **sp){
     int i, nblock = sp[0]->s_n;
     t_signal **sigp = sp;
     for(i = 0; i < x->x_n_inlets; i++) // n_inlets
-        *(x->x_ivecs+i) = (*sigp++)->s_vec;
+        *(x->x_ins+i) = (*sigp++)->s_vec;
     x->x_ch_select = (*sigp++)->s_vec; // idx
     x->x_spread = (*sigp++)->s_vec; // the spread inlet
-    x->x_ovec = (*sigp++)->s_vec; // now for the outlet
+    x->x_out = (*sigp++)->s_vec; // now for the outlet
     dsp_add(xselect2_perform, 2, x, nblock);
 }
 
@@ -96,7 +96,7 @@ static void *xselect2_new(t_symbol *s, int ac, t_atom *av){
     else if(n_inlets > (t_float)MAXINTPUT)
         n_inlets = MAXINTPUT;
     x->x_n_inlets = (int)n_inlets;
-    x->x_ivecs = getbytes(n_inlets * sizeof(*x->x_ivecs));
+    x->x_ins = getbytes(n_inlets * sizeof(*x->x_ins));
     for(i = 0; i < n_inlets; i++)
         inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     x->x_inlet_spread = inlet_new(&x->x_obj, &x->x_obj.ob_pd,  &s_signal, &s_signal);
@@ -109,7 +109,7 @@ static void *xselect2_new(t_symbol *s, int ac, t_atom *av){
 }
 
 void * xselect2_free(t_xselect2 *x){
-    freebytes(x->x_ivecs, x->x_n_inlets * sizeof(*x->x_ivecs));
+    freebytes(x->x_ins, x->x_n_inlets * sizeof(*x->x_ins));
     inlet_free(x->x_inlet_spread);
     return(void *)x;
 }

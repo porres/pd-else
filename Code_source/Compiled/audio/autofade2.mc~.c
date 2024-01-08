@@ -12,7 +12,7 @@ typedef struct _autofade2mc{
     int       x_fadein, x_fadeout;              // fade size in samples
     int       x_nleft;                          // n samples left
     float     x_ksr, x_fadein_ms, x_fadeout_ms, x_inc;
-    t_float  *x_inputs;                         // inputs copy
+    t_float  *x_input;                         // inputs copy
     t_float  *x_gate;                           // gate
     t_int     x_gate_on;                        // gate status
     t_float   x_lastgate, x_lastfade, x_start, x_end, x_delta, x_phase;
@@ -64,7 +64,7 @@ static t_int *autofade2mc_perform(t_int *w){
     t_float *in = (t_float *)(w[2]);
     t_float *gate = (t_float *)(w[3]);
     t_float *out = (t_float *)(w[4]);
-    t_float *ins = x->x_inputs;
+    t_float *ins = x->x_input;
     int i;
     for(i = 0; i < x->x_n_chans*x->x_n; i++) // copy input
         ins[i] = in[i];
@@ -123,7 +123,7 @@ static void autofade2mc_dsp(t_autofade2mc *x, t_signal **sp){
         autofade2mc_fadeout(x, x->x_fadeout_ms);
     }
     if(n != x->x_n || ch1 != x->x_n_chans){
-        x->x_inputs = (t_float *)resizebytes(x->x_inputs,
+        x->x_input = (t_float *)resizebytes(x->x_input,
             x->x_n*x->x_n_chans * sizeof(t_float), n*ch1 * sizeof(t_float));
         x->x_n = n, x->x_n_chans = ch1;
     }
@@ -136,7 +136,7 @@ static void autofade2mc_dsp(t_autofade2mc *x, t_signal **sp){
 }
 
 static void *autofade2mc_free(t_autofade2mc *x){
-    freebytes(x->x_inputs, x->x_n*x->x_n_chans*sizeof(*x->x_inputs));
+    freebytes(x->x_input, x->x_n*x->x_n_chans*sizeof(*x->x_input));
     return(void *)x;
 }
 
@@ -175,7 +175,7 @@ static void *autofade2mc_new(t_symbol *s, int ac, t_atom *av){
         fademsout = atom_getfloat(av);
         ac--, av++;
     }
-    x->x_inputs = (t_float *)getbytes(x->x_n*x->x_n_chans*sizeof(*x->x_inputs));
+    x->x_input = (t_float *)getbytes(x->x_n*x->x_n_chans*sizeof(*x->x_input));
     x->x_end = x->x_nleft = x->x_inc = x->x_lastgate = 0.;
     autofade2mc_fadein(x, fademsin);
     autofade2mc_fadeout(x, fademsout);

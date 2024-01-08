@@ -13,7 +13,7 @@ typedef struct _xgate2{
     t_float   **x_outs;
     t_inlet    *x_inlet_spread;
     int         x_n_outlets;    // outlets excluding main signal
-    int         x_nchs;
+    int         x_n;
     int         x_index;
 }t_xgate2;
 
@@ -27,7 +27,7 @@ static t_int *xgate2_perform(t_int *w){
     t_xgate2 *x = (t_xgate2 *)(w[1]);
     int nblock = (int)(w[2]);
     int i, j;
-    for(i = 0; i < nblock * x->x_nchs; i++){
+    for(i = 0; i < x->x_n; i++){
         t_float input = x->x_in[i];
         t_float pos = x->x_ch_select[i];
         t_float spread = x->x_spread[i];
@@ -48,18 +48,14 @@ static t_int *xgate2_perform(t_int *w){
 }
 
 static void xgate2_dsp(t_xgate2 *x, t_signal **sp){
-    int i, nblock = sp[0]->s_n;
-//    x->x_nchs = sp[0]->s_nchans;
-    x->x_nchs = 1;
+    x->x_n = sp[0]->s_n;
     t_signal **sigp = sp;
     x->x_in = (*sigp++)->s_vec;             // input
     x->x_ch_select = (*sigp++)->s_vec;      // idx
     x->x_spread = (*sigp++)->s_vec;         // spread
-    for(i = 0; i < x->x_n_outlets; i++){    // outlets
-//        signal_setmultiout(&sp[3+i], x->x_nchs);
+    for(int i = 0; i < x->x_n_outlets; i++) // outlets
         *(x->x_outs+i) = (*sigp++)->s_vec;
-    }
-    dsp_add(xgate2_perform, 2, x, nblock);
+    dsp_add(xgate2_perform, 1, x);
 }
 
 static void *xgate2_new(t_symbol *s, int ac, t_atom *av){
@@ -111,7 +107,6 @@ void *xgate2_free(t_xgate2 *x){
 void xgate2_tilde_setup(void){
     xgate2_class = class_new(gensym("xgate2~"), (t_newmethod)xgate2_new,
         (t_method)xgate2_free, sizeof(t_xgate2), CLASS_DEFAULT, A_GIMME, 0);
-//        (t_method)xgate2_free, sizeof(t_xgate2), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(xgate2_class, nullfn, gensym("signal"), 0);
     class_addmethod(xgate2_class, (t_method)xgate2_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(xgate2_class, (t_method)xgate2_index, gensym("index"), A_FLOAT, 0);

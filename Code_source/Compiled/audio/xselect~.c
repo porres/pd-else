@@ -67,7 +67,6 @@ static t_int *xselect_perform(t_int *w){
 static void xselect_dsp(t_xselect *x, t_signal **sp) {
     x->x_sr_khz = sp[0]->s_sr * 0.001;
     int i, count = x->x_ninlets + 3;
-    
     t_int* sigvec = (t_int*)calloc(count, sizeof(t_int));
     sigvec[0] = (t_int)x; // 1st => object
     sigvec[1] = (t_int)sp[0]->s_n; // 2nd => block (n)

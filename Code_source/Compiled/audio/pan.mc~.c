@@ -5,26 +5,29 @@
 
 #define MAXOUTPUT 4096
 
-typedef struct _pan{
+typedef struct _panmc{
     t_object    x_obj;
-    t_float   **x_ins;          // inputs
-    t_float   **x_outs;         // outputs
     t_inlet    *x_inlet_spread;
     t_inlet    *x_inlet_gain;
     int         x_n;            // block size
     int         x_n_outlets;    // outlets
     t_float     x_offset;
-}t_pan;
+}t_panmc;
 
-static t_class *pan_class;
+static t_class *panmc_class;
 
-static t_int *pan_perform(t_int *w){
-    t_pan *x = (t_pan *)(w[1]);
+static t_int *panmc_perform(t_int *w){
+    t_panmc *x = (t_panmc *)(w[1]);
+    t_float *input = (t_float *)(w[2]);
+    t_float *gain = (t_float *)(w[3]);
+    t_float *azimuth = (t_float *)(w[4]);
+    t_float *spreadin = (t_float *)(w[5]);
+    t_float *out = (t_float *)(w[6]);
     for(int i = 0; i < x->x_n; i++){
-        t_float in = x->x_ins[0][i];
-        t_float g = x->x_ins[1][i];
-        t_float pos = x->x_ins[2][i];
-        t_float spread = x->x_ins[3][i];
+        t_float in = input[i];
+        t_float g = gain[i];
+        t_float pos = azimuth[i];
+        t_float spread = spreadin[i];
         pos -= x->x_offset;
         while(pos < 0)
             pos += 1;
@@ -39,38 +42,38 @@ static t_int *pan_perform(t_int *w){
             float chanpos = (pos - j) / spread;
             chanpos = chanpos - range * floor(chanpos/range);
             float chanamp = chanpos >= 1 ? 0 : read_sintab(chanpos*0.5);
-            x->x_outs[j][i] = (in * chanamp) * g;
+            out[j*x->x_n+i] = (in * chanamp) * g;
         }
     };
-    return(w+2);
+    return(w+7);
 }
 
-static void pan_dsp(t_pan *x, t_signal **sp){
+void panmc_dsp(t_panmc *x, t_signal **sp){
     x->x_n = sp[0]->s_n;
-    t_signal **sigp = sp;
-    int i;
-    for(i = 0; i < 4; i++) // inlets
-        *(x->x_ins+i) = (*sigp++)->s_vec;
-    for(i = 0; i < x->x_n_outlets; i++) // outlets
-        *(x->x_outs+i) = (*sigp++)->s_vec;
-    dsp_add(pan_perform, 1, x);
+    signal_setmultiout(&sp[4], x->x_n_outlets);
+    if(sp[0]->s_nchans > 1 || sp[1]->s_nchans > 1
+    || sp[2]->s_nchans > 1 || sp[2]->s_nchans > 1){
+        dsp_add_zero(sp[4]->s_vec, x->x_n_outlets*x->x_n);
+        pd_error(x, "[pan.mc~] input channels cannot be greater than 1");
+        return;
+    }
+    dsp_add(panmc_perform, 6, x, sp[0]->s_vec, sp[1]->s_vec,
+        sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
 
-static void pan_offset(t_pan *x, t_floatarg f){
+static void panmc_offset(t_panmc *x, t_floatarg f){
     x->x_offset = (f < 0 ? 0 : f) / 360;
 }
 
-void *pan_free(t_pan *x){
-    freebytes(x->x_outs, x->x_n_outlets * sizeof(*x->x_outs));
-    freebytes(x->x_ins, 4 * sizeof(*x->x_ins));
+void *panmc_free(t_panmc *x){
     inlet_free(x->x_inlet_spread);
     inlet_free(x->x_inlet_gain);
     return(void *)x;
 }
 
-static void *pan_new(t_symbol *s, int ac, t_atom *av){
+static void *panmc_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    t_pan *x = (t_pan *)pd_new(pan_class);
+    t_panmc *x = (t_panmc *)pd_new(panmc_class);
     init_sine_table();
     t_float n_outlets = 2;
     float spread = 1, gain = 1;
@@ -94,22 +97,19 @@ static void *pan_new(t_symbol *s, int ac, t_atom *av){
     else if(n_outlets > (t_float)MAXOUTPUT)
         n_outlets = MAXOUTPUT;
     x->x_n_outlets = (int)n_outlets;
-    x->x_ins = getbytes(4 * sizeof(*x->x_ins));
-    x->x_outs = getbytes(n_outlets * sizeof(*x->x_outs));
     x->x_inlet_gain = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_gain, gain);
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal); // azimuth
     x->x_inlet_spread = inlet_new(&x->x_obj, &x->x_obj.ob_pd,  &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_spread, spread);
-    for(int i = 0; i < n_outlets; i++)
-        outlet_new((t_object *)x, &s_signal);
+    outlet_new((t_object *)x, &s_signal);
     return(x);
 }
 
-void pan_tilde_setup(void){
-    pan_class = class_new(gensym("pan~"), (t_newmethod)pan_new,
-        (t_method)pan_free, sizeof(t_pan), CLASS_DEFAULT, A_GIMME, 0);
-    class_addmethod(pan_class, nullfn, gensym("signal"), 0);
-    class_addmethod(pan_class, (t_method)pan_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(pan_class, (t_method)pan_offset, gensym("offset"), A_FLOAT, 0);
+void setup_pan0x2emc_tilde(void){
+    panmc_class = class_new(gensym("pan.mc~"), (t_newmethod)panmc_new,
+        (t_method)panmc_free, sizeof(t_panmc), CLASS_MULTICHANNEL, A_GIMME, 0);
+    class_addmethod(panmc_class, nullfn, gensym("signal"), 0);
+    class_addmethod(panmc_class, (t_method)panmc_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(panmc_class, (t_method)panmc_offset, gensym("offset"), A_FLOAT, 0);
 }
