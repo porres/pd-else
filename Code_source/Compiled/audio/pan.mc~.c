@@ -128,5 +128,5 @@ void setup_pan0x2emc_tilde(void){
     class_addmethod(panmc_class, (t_method)panmc_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(panmc_class, (t_method)panmc_offset, gensym("offset"), A_FLOAT, 0);
     class_addmethod(panmc_class, (t_method)panmc_n, gensym("n"), A_FLOAT, 0);
-    class_addmethod(pan_class, (t_method)panmc_radians, gensym("radians"), A_FLOAT, 0);
+    class_addmethod(panmc_class, (t_method)panmc_radians, gensym("radians"), A_FLOAT, 0);
 }

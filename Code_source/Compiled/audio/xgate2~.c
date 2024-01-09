@@ -25,7 +25,6 @@ static void xgate2_index(t_xgate2 *x, t_floatarg f){
 
 static t_int *xgate2_perform(t_int *w){
     t_xgate2 *x = (t_xgate2 *)(w[1]);
-    int nblock = (int)(w[2]);
     int i, j;
     for(i = 0; i < x->x_n; i++){
         t_float input = x->x_in[i];
@@ -44,7 +43,7 @@ static t_int *xgate2_perform(t_int *w){
             x->x_outs[j][i] = input * read_sintab(chanpos*0.5);
         }
     };
-    return(w+3);
+    return(w+2);
 }
 
 static void xgate2_dsp(t_xgate2 *x, t_signal **sp){
