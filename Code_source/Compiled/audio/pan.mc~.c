@@ -11,6 +11,7 @@ typedef struct _panmc{
     t_inlet    *x_inlet_gain;
     int         x_n;            // block size
     int         x_nchs;         // outlets
+    int         x_rad;
     t_float     x_offset;
 }t_panmc;
 
@@ -28,6 +29,8 @@ static t_int *panmc_perform(t_int *w){
         t_float g = gain[i];
         t_float pos = azimuth[i];
         t_float spread = spreadin[i];
+        if(x->x_rad)
+            pos /= TWO_PI;
         pos -= x->x_offset;
         while(pos < 0)
             pos += 1;
@@ -66,6 +69,10 @@ static void panmc_n(t_panmc *x, t_floatarg f){
     canvas_update_dsp();
 }
 
+static void panmc_radians(t_panmc *x, t_floatarg f){
+    x->x_rad = (f != 0);
+}
+
 static void panmc_offset(t_panmc *x, t_floatarg f){
     x->x_offset = (f < 0 ? 0 : f) / 360;
 }
@@ -84,9 +91,8 @@ static void *panmc_new(t_symbol *s, int ac, t_atom *av){
     float spread = 1, gain = 1;
 //    x->x_offset = 90. / 360.;
     x->x_offset = 0;
-    if(atom_getsymbol(av) == gensym("-offset")){
-        ac--, av++;
-        x->x_offset = atom_getfloat(av) / 360.;
+    if(atom_getsymbol(av) == gensym("-radians")){
+        x->x_rad = 1;
         ac--, av++;
     }
     if(ac){
@@ -95,6 +101,10 @@ static void *panmc_new(t_symbol *s, int ac, t_atom *av){
     }
     if(ac){
         spread = atom_getfloat(av);
+        ac--, av++;
+    }
+    if(ac){
+        x->x_offset = atom_getfloat(av) / 360.;
         ac--, av++;
     }
     if(n_outlets < 2)
@@ -118,4 +128,5 @@ void setup_pan0x2emc_tilde(void){
     class_addmethod(panmc_class, (t_method)panmc_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(panmc_class, (t_method)panmc_offset, gensym("offset"), A_FLOAT, 0);
     class_addmethod(panmc_class, (t_method)panmc_n, gensym("n"), A_FLOAT, 0);
+    class_addmethod(pan_class, (t_method)panmc_radians, gensym("radians"), A_FLOAT, 0);
 }

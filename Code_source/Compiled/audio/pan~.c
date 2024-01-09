@@ -13,6 +13,7 @@ typedef struct _pan{
     t_inlet    *x_inlet_gain;
     int         x_n;            // block size
     int         x_n_outlets;    // outlets
+    int         x_rad;
     t_float     x_offset;
 }t_pan;
 
@@ -25,6 +26,8 @@ static t_int *pan_perform(t_int *w){
         t_float g = x->x_ins[1][i];
         t_float pos = x->x_ins[2][i];
         t_float spread = x->x_ins[3][i];
+        if(x->x_rad)
+            pos /= TWO_PI;
         pos -= x->x_offset;
         while(pos < 0)
             pos += 1;
@@ -60,6 +63,10 @@ static void pan_offset(t_pan *x, t_floatarg f){
     x->x_offset = (f < 0 ? 0 : f) / 360;
 }
 
+static void pan_radians(t_pan *x, t_floatarg f){
+    x->x_rad = (f != 0);
+}
+
 void *pan_free(t_pan *x){
     freebytes(x->x_outs, x->x_n_outlets * sizeof(*x->x_outs));
     freebytes(x->x_ins, 4 * sizeof(*x->x_ins));
@@ -76,9 +83,8 @@ static void *pan_new(t_symbol *s, int ac, t_atom *av){
     float spread = 1, gain = 1;
 //    x->x_offset = 90. / 360.;
     x->x_offset = 0;
-    if(atom_getsymbol(av) == gensym("-offset")){
-        ac--, av++;
-        x->x_offset = atom_getfloat(av) / 360.;
+    if(atom_getsymbol(av) == gensym("-radians")){
+        x->x_rad = 1;
         ac--, av++;
     }
     if(ac){
@@ -87,6 +93,10 @@ static void *pan_new(t_symbol *s, int ac, t_atom *av){
     }
     if(ac){
         spread = atom_getfloat(av);
+        ac--, av++;
+    }
+    if(ac){
+        x->x_offset = atom_getfloat(av) / 360.;
         ac--, av++;
     }
     if(n_outlets < 2)
@@ -112,4 +122,5 @@ void pan_tilde_setup(void){
     class_addmethod(pan_class, nullfn, gensym("signal"), 0);
     class_addmethod(pan_class, (t_method)pan_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(pan_class, (t_method)pan_offset, gensym("offset"), A_FLOAT, 0);
+    class_addmethod(pan_class, (t_method)pan_radians, gensym("radians"), A_FLOAT, 0);
 }
