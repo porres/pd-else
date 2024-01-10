@@ -1,130 +1,99 @@
+// porres 2024
+
 #include "m_pd.h"
 #include "buffer.h"
-#include <stdlib.h>
+
+#define MAX_INOUT 4096
 
 static t_class *spread_class;
 
 typedef struct _spread{
     t_object    x_obj;
-    long        inChans;
-    long        outChans;
-    t_float    *inarr;
-    t_float   **loc_invecs;
-    t_float   **outs;
-    double      advFrac;
-    double     *pangains1;
-    double     *pangains2;
-    long       *indexList;
+    int         x_n, x_n_ins, x_n_outs;
+    t_float   **x_ins, **x_outs;         // inputs and outputs
+    t_float    *x_input;                 // inputs copy
+    t_float    *x_spread;                // spread signal
+    t_float     x_ratio;
+    t_inlet    *x_inlet_spread;
 }t_spread;
 
 t_int *spread_perform(t_int *w){
     t_spread *x = (t_spread*) w[1];
-	long inChans = x->inChans;
-    long outChans = x->outChans;
-    t_float *inarr = x->inarr;
-    t_float **loc_invecs = x->loc_invecs;
-    t_float *invec;
-    t_float **outs = x->outs;
-    double *pangains1 = x->pangains1;
-    double *pangains2 = x->pangains2;
-	int chan,i, j;
-    long outIndex;
-    long *indexList = x->indexList;
-    int n = (int) w[inChans + outChans + 2]; // assign output vector pointers
-    for(i = 0; i < outChans; i++)
-        outs[i] = (t_float *) w[2 + inChans + i];
-    for(i = 0; i < inChans; i++){ // copy inputs to local 2D array
-        invec = (t_float *) w[2 + i];
-        for(j = 0; j < n; j++)
-            loc_invecs[i][j] = invec[j];
-    }
-	for( j = 0; j < n; j++){
-        for(chan = 0; chan < inChans; chan++) // copy local input sample frame
-            inarr[chan] = loc_invecs[chan][j];
-        
-        for(chan = 1; chan < outChans - 1; chan++) // zero out output channels
-            outs[chan][j] = 0.0;
-        
-        // copy outer channel samples directly
-        outs[0][j] = inarr[0];
-        outs[outChans - 1][j] = inarr[inChans - 1];
-        
-        // spread internal input channels to respective output channels
-        for(chan = 1; chan < inChans - 1; chan++){
-            outIndex = indexList[chan];
-            outs[outIndex][j] += pangains1[chan] * inarr[chan];
-            outs[outIndex+1][j] += pangains2[chan] * inarr[chan];
+	int n, ch, i, o, n_ins = x->x_n_ins, n_outs = x->x_n_outs;
+    t_float *in = x->x_input;
+	for(n = 0; n < x->x_n; n++){ // block loop
+        t_float spread = x->x_spread[n];
+        if(spread < 0.1)
+            spread = 0.1;
+        float spread2 = spread*2;
+        float range = n_outs / spread2;
+        for(ch = 0; ch < n_ins; ch++) // copy input sample frames
+            in[ch] = x->x_ins[ch][n];
+        for(ch = 0; ch < n_outs; ch++) // zero outs
+            x->x_outs[ch][n] = 0.0;
+        for(i = 0; i < n_ins; i++){ // in loop
+            float pos = i * x->x_ratio + spread;
+            for(o = 0; o < n_outs; o++){ // out loop
+                float chanpos = (pos - o) / spread2;
+                chanpos = chanpos - range * floor(chanpos/range);
+                float g = chanpos >= 1 ? 0 : read_sintab(chanpos*0.5);
+                x->x_outs[o][n] += in[i] * g;
+            }
         }
 	}
-    return(w + inChans + outChans + 3);
+    return(w+2);
 }
 
-void spread_dsp(t_spread *x, t_signal **sp){
-	long i;
-    int pointer_count = x->inChans + x->outChans + 2;
-    t_int* sigvec = (t_int*)calloc(pointer_count, sizeof(t_int));
-
-	sigvec[0] = (t_int)x; // first pointer is to the object
-	sigvec[pointer_count - 1] = (t_int)sp[0]->s_n; // last pointer is to vector size (N)
-	for(i = 1; i < pointer_count - 1; i++) // attach inlet and all outlets
-		sigvec[i] = (t_int)sp[i-1]->s_vec;
-    dsp_addv(spread_perform, pointer_count, (t_int *)sigvec);
-    free(sigvec);
+static void spread_dsp(t_spread *x, t_signal **sp){
+    int i;
+    x->x_n = sp[0]->s_n;
+    t_signal **sigp = sp;
+    for(i = 0; i < x->x_n_ins; i++)  // 'n' inlets
+        *(x->x_ins+i) = (*sigp++)->s_vec;
+    x->x_spread = (*sigp++)->s_vec;  // spread
+    for(i = 0; i < x->x_n_outs; i++) // 'n' outlets
+        *(x->x_outs+i) = (*sigp++)->s_vec;
+    dsp_add(spread_perform, 1, x);
 }
 
 void spread_free(t_spread *x){
-    int i;
-    free(x->inarr);
-    free(x->pangains1);
-    free(x->pangains2);
-    free(x->indexList);
-    for(i = 0; i < x->inChans; i++)
-        free(x->loc_invecs[i]);
-    free(x->loc_invecs);
-    free(x->outs);
+    freebytes(x->x_input, x->x_n_ins * sizeof(*x->x_input));
+    freebytes(x->x_ins, x->x_n_ins * sizeof(*x->x_ins));
+    freebytes(x->x_outs, x->x_n_outs * sizeof(*x->x_outs));
+    inlet_free(x->x_inlet_spread);
 }
 
 void *spread_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_spread *x = (t_spread *)pd_new(spread_class);
     init_sine_table();
-    int i;
-    double fullFrac, thisFrac, panloc;
-    long outIndex;
-    x->inChans = (long)atom_getfloatarg(0, ac, av);
-    x->outChans = (long)atom_getfloatarg(1, ac, av);
-    if(x->inChans < 2)
-        x->inChans = 2;
-    if(x->outChans < 2)
-        x->outChans = 2;
-    if(x->inChans > 512)
-        x->inChans = 512;
-    if(x->outChans > 512)
-        x->outChans = 512;
-    for(i = 0; i < x->inChans - 1; i++)
+    int i, ins = 2, outs = 2;
+    float spread = 1;
+    x->x_n = sys_getblksize();
+    if(ac){
+        ins = atom_getint(av);
+        ac--, av++;
+    }
+    if(ac){
+        outs = atom_getint(av);
+        ac--, av++;
+    }
+    if(ac){
+        spread = atom_getfloat(av);
+        ac--, av++;
+    }
+    x->x_n_ins = ins < 2 ? 2 : ins > MAX_INOUT ? MAX_INOUT : ins;
+    x->x_n_outs = outs < 2 ? 2 : outs > MAX_INOUT ? MAX_INOUT : outs;
+    x->x_ratio = (t_float)(x->x_n_outs - 1)/(t_float)(x->x_n_ins - 1);
+    x->x_input = getbytes(x->x_n_ins * sizeof(*x->x_input));
+    x->x_ins = getbytes(x->x_n_ins * sizeof(*x->x_ins));
+    x->x_outs = getbytes(x->x_n_outs * sizeof(*x->x_outs));
+    for(i = 1; i < x->x_n_ins; i++)
         inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"),gensym("signal"));
-    for(i=0; i < x->outChans; i++)
+    x->x_inlet_spread = inlet_new(&x->x_obj, &x->x_obj.ob_pd,  &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_inlet_spread, spread);
+    for(i = 0; i < x->x_n_outs; i++)
         outlet_new(&x->x_obj, gensym("signal"));
-    
-    x->inarr = (t_float *) malloc(x->inChans * sizeof(t_float));
-    x->loc_invecs = (t_float **) malloc(x->inChans * sizeof(t_float *));
-    for(i = 0; i < x->inChans; i++){
-        x->loc_invecs[i] = (t_float *) malloc(8192 * sizeof(t_float));
-    }
-    x->pangains1 = (double *) malloc(x->inChans * sizeof(double));
-    x->pangains2 = (double *) malloc(x->inChans * sizeof(double));
-    x->indexList = (long *) malloc(x->inChans * sizeof(long));
-    x->advFrac = (double)(x->outChans - 1)/(double)(x->inChans - 1);
-    x->outs = (t_float **)malloc(x->outChans * sizeof(t_float *)); // temporary holding for output vectors
-    for(i = 1; i < x->inChans - 1; i++){
-        fullFrac = i * x->advFrac;
-        outIndex = floor(fullFrac);
-        thisFrac = fullFrac - outIndex;
-        panloc = thisFrac * 0.25;
-        x->indexList[i] = outIndex;
-        x->pangains1[i] = read_sintab(panloc + 0.25);
-        x->pangains2[i] = read_sintab(panloc);
-    }
     return(x);
 }
 
