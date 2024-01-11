@@ -56,19 +56,18 @@ t_int *spreadmc_perform(t_int *w){
 
 void spreadmc_dsp(t_spreadmc *x, t_signal **sp){
     x->x_n = sp[0]->s_n;
-    signal_setmultiout(&sp[2], x->x_n_outs);
     int ins = sp[0]->s_nchans;
-    if(ins == 1){
-        dsp_add_zero(sp[2]->s_vec, x->x_n_outs*x->x_n);
-        return;
-    }
     if(x->x_n_ins != ins){ // check if only one and add zero, check right inlet too
         x->x_input = (t_float *)resizebytes(x->x_input,
             x->x_n_ins * sizeof(t_float), ins * sizeof(t_float));
         x->x_n_ins = ins;
         x->x_ratio = (float)(x->x_n_outs - 1)/(float)(x->x_n_ins - 1);
     }
-    dsp_add(spreadmc_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
+    signal_setmultiout(&sp[2], x->x_n_outs);
+    if(x->x_n_ins  == 1)
+        dsp_add_zero(sp[2]->s_vec, x->x_n_outs*x->x_n);
+    else
+        dsp_add(spreadmc_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
 }
 
 void spreadmc_free(t_spreadmc *x){
