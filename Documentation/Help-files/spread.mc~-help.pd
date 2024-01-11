@@ -27,8 +27,8 @@
 #X obj 188 257 else/s2f~;
 #X listbox 188 287 26 0 0 0 - - - 12;
 #X obj 188 150 else/sigs~ 1 2 3;
-#X text 34 222 see also:;
-#X obj 24 250 else/spread~;
+#X text 34 214 see also:;
+#X obj 24 242 else/spread~;
 #X text 64 90 [spread.mc~] spreads any number of input channels across any number of output channels with equal power panning. It takes and outputs a multichannel signal., f 62;
 #X text 176 422 - 'n' number of output channels (2 to 512 \, default 2);
 #X text 118 422 1) float;
@@ -39,9 +39,10 @@
 #X msg 199 186 n 4;
 #X msg 234 186 n 5, f 4;
 #X msg 274 186 n 6, f 4;
-#X obj 24 277 else/rotate.mc~;
 #X text 252 330 - multichannel input, f 31;
 #X text 252 385 - multichannel output;
+#X obj 24 291 else/rotate.mc~;
+#X obj 24 267 else/pan.mc~;
 #X connect 20 0 21 0;
 #X connect 21 0 22 0;
 #X connect 23 0 20 0;
