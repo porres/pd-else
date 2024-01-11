@@ -58,6 +58,10 @@ void spreadmc_dsp(t_spreadmc *x, t_signal **sp){
     x->x_n = sp[0]->s_n;
     signal_setmultiout(&sp[2], x->x_n_outs);
     int ins = sp[0]->s_nchans;
+    if(ins == 1){
+        dsp_add_zero(sp[2]->s_vec, x->x_n_outs*x->x_n);
+        return;
+    }
     if(x->x_n_ins != ins){ // check if only one and add zero, check right inlet too
         x->x_input = (t_float *)resizebytes(x->x_input,
             x->x_n_ins * sizeof(t_float), ins * sizeof(t_float));
