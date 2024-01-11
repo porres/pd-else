@@ -51,7 +51,6 @@
 #X text 148 318 float;
 #X text 203 318 MIDI channel, f 31;
 #X obj 114 315 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
-#X obj 163 145 midiin;
 #X text 301 217 MIDI channel;
 #X obj 282 213 else/display;
 #X obj 219 216 else/display;
@@ -65,7 +64,7 @@
 #X obj 31 214 else/pgm.out;
 #X obj 219 190 else/pgm.in;
 #X text 69 85 [pgm.in] extracts MIDI Program information from raw MIDI input (such as from [midiin]). Unlike vanilla's [pgmin] and [pgmout] \, the program change values are from 0 to 127!, f 68;
-#N canvas 653 199 427 384 external 0;
+#N canvas 653 199 427 384 external 1;
 #X obj 175 221 else/midi;
 #X obj 175 309 print;
 #X msg 111 240 ext \$1;
@@ -85,8 +84,7 @@
 #X text 204 288 - non zero sets to listen only to external input source;
 #X obj 2 398 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
 #X text 121 410 -ext: - only listen to external input source, f 46;
-#X connect 31 0 43 0;
-#X connect 36 0 43 0;
-#X connect 38 0 43 0;
-#X connect 43 0 34 0;
-#X connect 43 1 33 0;
+#X connect 35 0 42 0;
+#X connect 37 0 42 0;
+#X connect 42 0 33 0;
+#X connect 42 1 32 0;
