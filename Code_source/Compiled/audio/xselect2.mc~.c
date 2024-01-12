@@ -3,25 +3,30 @@
 #include "m_pd.h"
 #include "buffer.h"
 
-#define MAXOUTPUT 512
+#define MAXINTPUT 4096
 
-static t_class *xselect2mc_class;
+static t_class *xsel2mc_class;
 
-typedef struct _xselect2mc{
+typedef struct _xsel2mc{
     t_object    x_obj;
     int         x_nchs;
     int         x_block;
     int         x_inchs;
     t_int       x_index;
+    int         x_circular;
     t_inlet    *x_inlet_spread;
-}t_xselect2mc;
+}t_xsel2mc;
 
-static void xselect2mc_index(t_xselect2mc *x, t_floatarg f){
+static void xsel2mc_index(t_xsel2mc *x, t_floatarg f){
     x->x_index = f != 0;
 }
 
-t_int *xselect2mc_perform(t_int *w){
-    t_xselect2mc *x = (t_xselect2mc*)w[1];
+static void xsel2mc_circular(t_xsel2mc *x, t_floatarg f){
+    x->x_circular = f != 0;
+}
+
+t_int *xsel2mc_perform(t_int *w){
+    t_xsel2mc *x = (t_xsel2mc*)w[1];
     t_float *in = (t_float *)(w[2]);
     t_float *ch_select = (t_float *)(w[3]);
     t_float *spreadin = (t_float *)(w[4]);
@@ -32,26 +37,37 @@ t_int *xselect2mc_perform(t_int *w){
         t_float spread = spreadin[i];
         if(spread < 0.1)
             spread = 0.1;
-        spread *= 2;
-        float range = inchs / spread;
         if(!x->x_index)
-            pos *= inchs;
-        if(pos < 0)
-            pos = 0;
-        else if(pos > inchs)
-            pos = inchs;
-        pos += (spread * 0.5);
-        for(int j = 0; j < inchs; j++){
+            pos *= (inchs - !x->x_circular);
+        if(x->x_circular){
+            while(pos < 0)
+                pos += 1;
+            while(pos > inchs)
+                pos -= inchs;
+        }
+        pos += spread;
+        spread *= 2;
+        int j;
+        if(x->x_circular){
+            float range = inchs / spread;
+            for(j = 0; j < inchs; j++){
+                float chanpos = (pos - j) / spread;
+                chanpos = chanpos - range * floor(chanpos/range);
+                float g = chanpos >= 1 ? 0 : read_sintab(chanpos*0.5);
+                out[i] += in[j*n + i] * g;
+            }
+        }
+        else for(j = 0; j < inchs; j++){
             float chanpos = (pos - j) / spread;
-            chanpos = chanpos - range * floor(chanpos/range);
-            float chanamp = chanpos >= 1 ? 0 : read_sintab(chanpos*0.5);
-            out[i] += in[j*n + i] * chanamp;
+            if(chanpos >= 1 || chanpos < 0)
+                chanpos = 0;
+            out[i] += in[j*n + i] * read_sintab(chanpos*0.5);
         }
 	}
     return(w+6);
 }
 
-void xselect2mc_dsp(t_xselect2mc *x, t_signal **sp){
+void xsel2mc_dsp(t_xsel2mc *x, t_signal **sp){
     x->x_block = sp[0]->s_n, x->x_inchs = sp[0]->s_nchans;
     signal_setmultiout(&sp[3], 1);
     if(sp[1]->s_nchans > 1 || sp[2]->s_nchans > 1){
@@ -59,23 +75,27 @@ void xselect2mc_dsp(t_xselect2mc *x, t_signal **sp){
         pd_error(x, "[xselect2.mc~] secondary input channels cannot be greater than 1");
         return;
     }
-    dsp_add(xselect2mc_perform, 5, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+    dsp_add(xsel2mc_perform, 5, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
-void xselect2mc_free(t_xselect2mc *x){
+void xsel2mc_free(t_xsel2mc *x){
     inlet_free(x->x_inlet_spread);
 }
 
-void *xselect2mc_new(t_symbol *s, int ac, t_atom *av){
+void *xsel2mc_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    t_xselect2mc *x = (t_xselect2mc *)pd_new(xselect2mc_class);
+    t_xsel2mc *x = (t_xsel2mc *)pd_new(xsel2mc_class);
     init_sine_table();
     float spread = 1;
+    x->x_index = x->x_circular = 0;
     if(ac){
-        if(av->a_type == A_SYMBOL){
-            t_symbol *curarg = atom_getsymbol(av);
-            if(curarg == gensym("-index")){
+        while(av->a_type == A_SYMBOL){
+            if(atom_getsymbol(av) == gensym("-index")){
                 x->x_index = 1;
+                ac--, av++;
+            }
+            else if(atom_getsymbol(av) == gensym("-circular")){
+                x->x_circular = 1;
                 ac--, av++;
             }
             else
@@ -97,9 +117,10 @@ void *xselect2mc_new(t_symbol *s, int ac, t_atom *av){
 }
 
 void setup_xselect20x2emc_tilde(void){
-    xselect2mc_class = class_new(gensym("xselect2.mc~"), (t_newmethod)xselect2mc_new,
-        (t_method)xselect2mc_free, sizeof(t_xselect2mc), CLASS_MULTICHANNEL, A_GIMME, 0);
-    class_addmethod(xselect2mc_class, nullfn, gensym("signal"), 0);
-    class_addmethod(xselect2mc_class, (t_method)xselect2mc_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(xselect2mc_class, (t_method)xselect2mc_index, gensym("index"), A_FLOAT, 0);
+    xsel2mc_class = class_new(gensym("xselect2.mc~"), (t_newmethod)xsel2mc_new,
+        (t_method)xsel2mc_free, sizeof(t_xsel2mc), CLASS_MULTICHANNEL, A_GIMME, 0);
+    class_addmethod(xsel2mc_class, nullfn, gensym("signal"), 0);
+    class_addmethod(xsel2mc_class, (t_method)xsel2mc_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(xsel2mc_class, (t_method)xsel2mc_index, gensym("index"), A_FLOAT, 0);
+    class_addmethod(xsel2mc_class, (t_method)xsel2mc_circular, gensym("circular"), A_FLOAT, 0);
 }
