@@ -102,11 +102,12 @@ static void *ctlin_new(t_symbol *s, int ac, t_atom *av){
         }
         if(ac){
             if(ac == 1)
-                channel = (t_int)atom_getfloatarg(0, ac, av);
+                channel = atom_getint(av);
             else{
-                ctl = (t_int)atom_getfloatarg(0, ac, av);
+                ctl = atom_getint(av);
                 ac--, av++;
-                channel = (t_int)atom_getfloatarg(0, ac, av);
+                if(ac)
+                    channel = atom_getint(av);
             }
         }
     }
