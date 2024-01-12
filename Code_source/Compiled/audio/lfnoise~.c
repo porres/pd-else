@@ -104,35 +104,43 @@ static void *lfnoise_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_lfnoise *x = (t_lfnoise *)pd_new(lfnoise_class);
     x->x_id = random_get_id();
-    int seeded = 0;
+    lfnoise_seed(x, s, 0, NULL);
 // default parameters
     t_float hz = 0;
     t_int interp = 0;
-    if(av->a_type == A_SYMBOL){
-        if(ac >= 2 && atom_getsymbol(av) == gensym("-seed")){
-            t_atom at[1];
-            SETFLOAT(at, atom_getfloat(av+1));
-            ac-=2, av+=2;
-            lfnoise_seed(x, s, 1, at);
-            seeded = 1;
+    if(ac){
+        while(av->a_type == A_SYMBOL){
+            if(atom_getsymbol(av) == gensym("-seed")){
+                if(ac >= 2){
+                    t_atom at[1];
+                    SETFLOAT(at, atom_getfloat(av+1));
+                    ac-=2, av+=2;
+                    lfnoise_seed(x, s, 1, at);
+                }
+                else{
+                    pd_error(x, "[lfnoise~]: -seed needs a seed value");
+                    return(NULL);
+                }
+            }
+            else{
+                pd_error(x, "[lfnoise~]: improper flag (%s)", atom_getsymbol(av)->s_name);
+                return(NULL);
+            }
         }
-        else
-            goto errstate;
     }
-    if(ac && av->a_type == A_FLOAT)
+    if(ac){
         hz = atom_getfloat(av);
+        ac--, av++;
+    }
     if(ac && av->a_type == A_FLOAT)
         interp = atom_getfloat(av) != 0;
     x->x_freq = hz;
-    x->x_interp = interp != 0;
+    x->x_interp = interp;
 // in/out
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_inlet_sync, 0);
     outlet_new(&x->x_obj, &s_signal);
-    pd_float((t_pd *)x->x_inlet_sync, 0);
     return(x);
-errstate:
-    pd_error(x, "[lfnoise~]: improper args");
-    return(NULL);
 }
 
 void lfnoise_tilde_setup(void){
@@ -140,6 +148,6 @@ void lfnoise_tilde_setup(void){
         (t_method)lfnoise_free, sizeof(t_lfnoise), CLASS_DEFAULT, A_GIMME, 0);
     CLASS_MAINSIGNALIN(lfnoise_class, t_lfnoise, x_freq);
     class_addmethod(lfnoise_class, (t_method)lfnoise_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(lfnoise_class, (t_method)lfnoise_interp, gensym("interp"), A_DEFFLOAT, 0);
     class_addmethod(lfnoise_class, (t_method)lfnoise_seed, gensym("seed"), A_GIMME, 0);
+    class_addmethod(lfnoise_class, (t_method)lfnoise_interp, gensym("interp"), A_DEFFLOAT, 0);
 }
