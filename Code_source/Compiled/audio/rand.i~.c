@@ -113,27 +113,29 @@ static void *randi_new(t_symbol *s, int ac, t_atom *av){
     randi_seed(x, s, 0, NULL);
     float low = 0, high = 1;
     x->x_ch = 1;
-    while(av->a_type == A_SYMBOL){
-        if(ac >= 2 && atom_getsymbol(av) == gensym("-seed")){
-            t_atom at[1];
-            SETFLOAT(at, atom_getfloat(av+1));
-            ac-=2, av+=2;
-            randi_seed(x, s, 1, at);
+    if(ac){
+        while(av->a_type == A_SYMBOL){
+            if(ac >= 2 && atom_getsymbol(av) == gensym("-seed")){
+                t_atom at[1];
+                SETFLOAT(at, atom_getfloat(av+1));
+                ac-=2, av+=2;
+                randi_seed(x, s, 1, at);
+            }
+            else if(ac >= 2 && atom_getsymbol(av) == gensym("-ch")){
+                int n = atom_getint(av+1);
+                x->x_ch = n < 1 ? 1 : n;
+                ac-=2, av+=2;
+            }
+            else
+                goto errstate;
         }
-        else if(ac >= 2 && atom_getsymbol(av) == gensym("-ch")){
-            int n = atom_getint(av+1);
-            x->x_ch = n < 1 ? 1 : n;
-            ac-=2, av+=2;
-        }
-        else
-            goto errstate;
-    }
-    if(ac && av->a_type == A_FLOAT){
-        low = atom_getintarg(0, ac, av);
-        ac--, av++;
         if(ac && av->a_type == A_FLOAT){
-            high = atom_getintarg(0, ac, av);
+            low = atom_getintarg(0, ac, av);
             ac--, av++;
+            if(ac && av->a_type == A_FLOAT){
+                high = atom_getintarg(0, ac, av);
+                ac--, av++;
+            }
         }
     }
     x->x_low_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
