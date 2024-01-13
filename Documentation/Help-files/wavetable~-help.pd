@@ -241,9 +241,9 @@
 #X msg 348 85 cos;
 #X msg 355 105 lagrange;
 #X msg 362 126 spline;
-#X text 61 36 By default \, [wavetebale~] uses the spline interpolation method but you can set it to linear \, cosine \, lagrange or no interpolation at all. For more details \, check the subsection 'interpolation' of chapter 28 (buffer) in the live elctronics tutorial., f 34;
 #X text 408 126 default;
 #X text 330 17 set different interpolation methods, f 36;
+#X text 61 36 By default \, [wavetebale~] uses the spline interpolation method but you can set it to linear \, cosine \, lagrange or no interpolation at all. For more details \, check the subsection 'interpolation' of chapter 28 (buffer) in the live electronics tutorial., f 34;
 #X connect 3 0 4 0;
 #X connect 4 0 2 0;
 #X connect 5 0 4 0;
@@ -273,7 +273,7 @@
 #X coords 0 1 4095 -1 200 140 1 0 0;
 #X restore 696 126 graph;
 #X obj 530 293 else/wavetable~ 110;
-#X obj 464 209 else/initmess set \$0-saw;
+#X obj 469 219 else/initmess set \$0-saw;
 #X text 700 279 generate-saw;
 #X obj 701 302 else/tabgen \$0-saw sin 1 0 1 2 0 0.5 3 0 0.333 4 0 0.25 5 0 0.2, f 32;
 #X obj 136 291 nbx 6 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
@@ -286,10 +286,9 @@
 #X text 484 96 -->;
 #X obj 138 103 else/sample~ \$0-table baglama.wav, f 34;
 #X obj 120 330 else/wavetable~ -midi \$0-table 60;
-#X obj 501 232 message set \$0-saw;
 #X text 42 152 By default \, frequency input is in hertz \, but if you use the 'midi' message or '-midi' flag you can change it to MIDI pitch input \, where it is not really bound to the 0 to 127 range \, neither it has to be integers. This is just like using [mtof~].;
 #X text 38 31 The [wavetable~] object needs an array name in Pd to load the wavetable. You can also use [sample~] to load a wavefile into an array as this one used in this example and in the parent patch. The array name is the first argument.;
-#X text 451 30 Besides the first argument \, the "set" message followed by an array name sets an entire array to be used as a waveform. If no name is given or if you send a name that doesn't correspond to an exist array \, then the output is silent. Below we use [tabgen] to generate a wavetable. Yu can get more wavetable files -->, f 76;
+#X text 451 30 Besides the first argument \, the "set" message followed by an array name sets an entire array to be used as a waveform. If no name is given or if you send a name that doesn't correspond to an exist array \, then the output is silent. Below we use [tabgen] to generate a wavetable. You can get more wavetable files -->, f 76;
 #X connect 0 0 5 0;
 #X connect 5 0 1 0;
 #X connect 5 0 2 0;
@@ -299,7 +298,6 @@
 #X connect 13 0 12 0;
 #X connect 18 0 10 0;
 #X connect 18 0 11 0;
-#X connect 19 0 5 0;
 #X restore 488 139 pd basic;
 #X text 45 85 [wavetable~] is an interpolating wavetable oscillator like [tabosc4~] \, but has more features like more interpolation options \, inlets for phase sync \, phase modulation and also an inlet for scanning through slices., f 74;
 #X obj 320 219 else/wt~;
