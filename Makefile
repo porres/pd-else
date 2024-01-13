@@ -321,7 +321,7 @@ Code_source/shared/buffer.c
     sine~.class.sources := Code_source/Compiled/audio/sine~.c $(bufmagic)
     wavetable~.class.sources = Code_source/Compiled/audio/wavetable~.c $(bufmagic)
     wt~.class.sources = Code_source/Compiled/extra_source/Aliases/wt~.c $(bufmagic)
-    wt2d~.class.sources = Code_source/Compiled/extra_source/Aliases/wt2d~.c $(bufmagic)
+    wt2d~.class.sources = Code_source/Compiled/audio/wt2d~.c $(bufmagic)
     tabplayer~.class.sources = Code_source/Compiled/audio/tabplayer~.c $(bufmagic)
 
 
