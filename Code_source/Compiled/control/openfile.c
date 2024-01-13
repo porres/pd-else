@@ -11,7 +11,6 @@ typedef struct _openfile{
     int        x_vissize;
     int        x_vislength;
     int        x_rtextactive;
-    t_symbol  *x_dirsym;
     t_symbol  *x_filename;
     t_canvas  *x_cv;
 }t_openfile;
@@ -107,7 +106,7 @@ static void openfile_click(t_openfile *x, t_floatarg xpos, t_floatarg ypos, t_fl
     alt = ctrl = shift = ypos = xpos = 0;
     t_symbol *fn = openfile_doopen(x, x->x_filename);
     if(fn != NULL)
-        sys_vgui("openfile_open {%s} {%s}\n", fn->s_name, x->x_dirsym->s_name);
+        sys_vgui("openfile_open {%s}\n", fn->s_name);
 }
 
 static int openfile_wbclick(t_gobj *z, t_glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
@@ -238,7 +237,6 @@ static void *openfile_new(t_symbol *s, int ac, t_atom *av){
     }
     x = (t_openfile *)pd_new(xgen.x_isboxed ? openfilebox_class : openfile_class);
     x->x_cv = canvas_getrootfor(canvas_getcurrent());
-    x->x_dirsym = canvas_getdir(canvas_getcurrent());  // FIXME - make it "paths"
     x->x_isboxed = xgen.x_isboxed;
     x->x_vistext = xgen.x_vistext;
     x->x_vissize = xgen.x_vissize;
@@ -270,18 +268,11 @@ void openfile_setup(void){
     class_addmethod(openfilebox_class, (t_method)openfile_click, gensym("click"),
         A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(openfilebox_class, (t_method)openfile_open, gensym("open"), A_DEFSYMBOL, 0);
-    sys_vgui("proc openfile_open {filename dir} {\n");
+    sys_vgui("proc openfile_open {filename} {\n");
     sys_vgui("    if {[string first \"://\" $filename] > -1} {\n");
     sys_vgui("        menu_openfile $filename\n");
     sys_vgui("    } elseif {[file pathtype $filename] eq \"absolute\"} {\n");
     sys_vgui("        menu_openfile $filename\n");
-    sys_vgui("    } elseif {[file exists [file join $dir $filename]]} {\n");
-    sys_vgui("        set fullpath [file normalize [file join $dir $filename]]\n");
-    sys_vgui("        set dir [file dirname $fullpath]\n");
-    sys_vgui("        set filename [file tail $fullpath]\n");
-    sys_vgui("        menu_doc_open $dir $filename\n");
-    sys_vgui("    } else {\n");
-    sys_vgui("        pdtk_post \"openfile: $filename can't be opened\n\"\n");
     sys_vgui("    }\n");
     sys_vgui("}\n");
 }
