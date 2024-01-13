@@ -1,7 +1,6 @@
 // based on pddplink
 
 #include "m_pd.h"
-#include "m_imp.h"  // FIXME need access to c_externdir...
 #include "g_canvas.h"
 #include <string.h>
 
@@ -14,7 +13,7 @@ typedef struct _openfile{
     int        x_rtextactive;
     t_symbol  *x_dirsym;
     t_symbol  *x_filename;
-//    int        x_linktype;
+    t_canvas  *x_cv;
 }t_openfile;
 
 static t_class *openfile_class;
@@ -26,7 +25,7 @@ static void openfile_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int 
     int width, height;
     float x1, y1, x2, y2;
     if(glist->gl_editor && glist->gl_editor->e_rtext){
-        if (x->x_rtextactive){
+        if(x->x_rtextactive){
             t_rtext *y = glist_findrtext(glist, (t_text *)x);
             width = rtext_width(y);
             height = rtext_height(y) - 2;
@@ -89,25 +88,26 @@ static void openfile_vis(t_gobj *z, t_glist *glist, int vis){
         rtext_erase(y);
 }
 
-static t_symbol* openfile_doopen(t_symbol *fn){
-    static char fname[MAXPDSTRING];
-    char *bufptr;
-    int fd = canvas_open(canvas_getcurrent(), fn->s_name, "", fname, &bufptr, MAXPDSTRING, 1);
-    if(fd < 0)
-        return(NULL);
-    else{
-        fname[strlen(fname)]='/';
+static t_symbol* openfile_doopen(t_openfile *x, t_symbol *file){
+    char path[MAXPDSTRING], *fn;
+    int fd = canvas_open(x->x_cv, file->s_name, "", path, &fn, MAXPDSTRING, 1);
+    if(fd >= 0){
         sys_close(fd);
-        return(gensym(fname));
+        if(fn > path)
+            fn[-1] = '/';
+        return(gensym(path));
+    }
+    else{
+        post("[openfile] can't open %s", file->s_name);
+        return(NULL);
     }
 }
 
 static void openfile_click(t_openfile *x, t_floatarg xpos, t_floatarg ypos, t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
     alt = ctrl = shift = ypos = xpos = 0;
-    t_symbol *fn = openfile_doopen(x->x_filename);
+    t_symbol *fn = openfile_doopen(x, x->x_filename);
     if(fn != NULL)
-        x->x_filename = fn;
-    sys_vgui("openfile_open {%s} {%s}\n", x->x_filename->s_name, x->x_dirsym->s_name);
+        sys_vgui("openfile_open {%s} {%s}\n", fn->s_name, x->x_dirsym->s_name);
 }
 
 static int openfile_wbclick(t_gobj *z, t_glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
@@ -174,7 +174,7 @@ static int openfile_dohyperlink(char *dst, int maxsize, int ac, t_atom *av){
             dst += len;
         }
     }
-    return (sz);
+    return(sz);
 }
 
 static char *openfile_hyperlink(int *sizep, int ac, t_atom *av){
@@ -201,7 +201,7 @@ static void *openfile_new(t_symbol *s, int ac, t_atom *av){
     xgen.x_isboxed = 1;
     xgen.x_vistext = 0;
     xgen.x_vissize = 0;
-    xgen.x_filename = 0;
+    xgen.x_filename = &s_;
     int argn = 0;
     while(ac > 0){
         if(av->a_type == A_SYMBOL){
@@ -213,7 +213,7 @@ static void *openfile_new(t_symbol *s, int ac, t_atom *av){
                 if(!ac)
                     goto errstate;
                 if(av->a_type == A_SYMBOL){
-                    xgen.x_filename = atom_getsymbolarg(0, ac, av);
+                    xgen.x_filename = atom_getsymbol(av);
                     if(ac == 1)
                         xgen.x_vistext = openfile_hyperlink(&xgen.x_vissize, ac, av);
                     ac--, av++;
@@ -227,7 +227,7 @@ static void *openfile_new(t_symbol *s, int ac, t_atom *av){
             }
             else{
                 argn = 1;
-                xgen.x_filename = atom_getsymbolarg(0, ac, av);
+                xgen.x_filename = atom_getsymbol(av);
                 ac--, av++;
                 if(ac)
                     goto errstate;
@@ -237,6 +237,7 @@ static void *openfile_new(t_symbol *s, int ac, t_atom *av){
             goto errstate;
     }
     x = (t_openfile *)pd_new(xgen.x_isboxed ? openfilebox_class : openfile_class);
+    x->x_cv = canvas_getrootfor(canvas_getcurrent());
     x->x_dirsym = canvas_getdir(canvas_getcurrent());  // FIXME - make it "paths"
     x->x_isboxed = xgen.x_isboxed;
     x->x_vistext = xgen.x_vistext;
@@ -252,24 +253,22 @@ static void *openfile_new(t_symbol *s, int ac, t_atom *av){
     }
     return(x);
 errstate:
-        pd_error(x, "[openfile]: improper args");
-        return(NULL);
+    pd_error(x, "[openfile]: improper args");
+    return(NULL);
 }
 
 void openfile_setup(void){
 // GUI
-    openfile_class = class_new(gensym("openfile"), (t_newmethod)openfile_new, (t_method)openfile_free,
-        sizeof(t_openfile), CLASS_PATCHABLE, // patchable what?
+    openfile_class = class_new(gensym("openfile"), (t_newmethod)openfile_new, (t_method)openfile_free, sizeof(t_openfile), CLASS_PATCHABLE, // patchable what?
         A_GIMME, 0);
     class_addbang(openfile_class, openfile_bang);
     class_addmethod(openfile_class, (t_method)openfile_open, gensym("open"), A_DEFSYMBOL, 0);
     class_setwidget(openfile_class, &openfile_widgetbehavior);
 // Non GUI
-    openfilebox_class = class_new(gensym("openfile"), 0, (t_method)openfile_free, sizeof(t_openfile),
-        0, A_GIMME, 0);
+    openfilebox_class = class_new(gensym("openfile"), 0, (t_method)openfile_free, sizeof(t_openfile), 0, A_GIMME, 0);
     class_addbang(openfilebox_class, openfile_bang);
     class_addmethod(openfilebox_class, (t_method)openfile_click, gensym("click"),
-		    A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
+        A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(openfilebox_class, (t_method)openfile_open, gensym("open"), A_DEFSYMBOL, 0);
     sys_vgui("proc openfile_open {filename dir} {\n");
     sys_vgui("    if {[string first \"://\" $filename] > -1} {\n");
