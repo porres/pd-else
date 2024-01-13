@@ -12,8 +12,6 @@ typedef struct else_obj{
 
 t_class *else_obj_class;
 
-//static int printed;
-
 static int min_major = 0;
 static int min_minor = 54;
 static int min_bugfix = 1;
@@ -62,7 +60,7 @@ void else_obj_about(t_else_obj *x){
     post("-------------------------------------------------------------------");
     post("  -----> ELSE - EL Locus Solus' Externals for Pure Data <-----");
     post("-------------------------------------------------------------------");
-    post("- Version: %d.%d-%d %s-%d; (Unreleased test build #3 from jan 12th 2024)", else_major, else_minor, else_bugfix, STATUS, status_number);
+    post("- Version: %d.%d-%d %s-%d; (Released January 18th 2024)", else_major, else_minor, else_bugfix, STATUS, status_number);
     post("- Author: Alexandre Torres Porres & others");
     post("- Repository: https://github.com/porres/pd-else");
     post("- License: Do What The Fuck You Want To Public License");

@@ -65,7 +65,7 @@ proc category_else_menu::load_menutree {} {
             {fx\ assorted
                 {downsample~ conv~ chorus~ shaper~ crusher~ drive~ power~ flanger~ freq.shift~ pitch.shift~ ping.pong~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~ phaser~}}
             {fx\ delay
-                {del\ in~ del\ out~ fbdelay~ ffdelay~ revdelay~ filterdelay~}}
+                {del~ in~ del~\ out fbdelay~ ffdelay~ revdelay~ filterdelay~}}
             {fx\ dynamics
                 {compress~ duck~ expand~ noisegate~ norm~}}
             {fx\ reverberation
