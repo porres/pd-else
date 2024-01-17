@@ -26,7 +26,11 @@ static t_int *xfademc_perform(t_int *w){
             pos = 1;
         if(pos < -1)
             pos = -1;
-        pos = (pos + 1) * 0.125; // xfade from 0 to 1
+        pos += 1; // Mix from 0 to 2
+        if(x->x_lin)
+            pos *= 0.5; // Mix from 0 to 1
+        else
+            pos *= 0.125; // Mix from 0 to 0.25
         for(int j = 0; j < chs; j++){
             if(x->x_lin)
                 out[j*n + i] = in1[j*n + i] * (1-pos) + in2[j*n + i] * pos;

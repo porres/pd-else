@@ -30,7 +30,11 @@ static t_int *xfade_perform(t_int *w){
             mix_f = 1;
         if(mix_f < -1)
             mix_f = -1;
-        mix_f = (mix_f + 1) * 0.125; // Mix from 0 to 1
+        mix_f += 1; // Mix from 0 to 2
+        if(x->x_lin)
+            mix_f *= 0.5; // Mix from 0 to 1
+        else
+            mix_f *= 0.125; // Mix from 0 to 0.25
         for(i = 0; i < x->n_in; i++)
             x->buffer[i] = (t_sample) x->in[i][j];
         for(i = 0; i < x->channels; i++){
@@ -38,7 +42,7 @@ static t_int *xfade_perform(t_int *w){
             if(x->x_lin)
                 out[j] = x->buffer[i] * (1-mix_f) + x->buffer[i+x->channels] * mix_f;
             else
-                out[j] = (x->buffer[i] * (mix_f == 1 ? 0 : read_sintab(mix_f+0.25)))
+                out[j] = (x->buffer[i] * read_sintab(mix_f+0.25))
                     + (x->buffer[i+x->channels] * read_sintab(mix_f));
         }
     }
