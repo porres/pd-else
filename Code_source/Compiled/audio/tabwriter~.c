@@ -4,9 +4,7 @@
 #include "m_imp.h"
 #include "buffer.h"
 
-#define MAXBD           1E+32       // cheap higher bound for boundary points
 #define DRAW_PERIOD     500.        // draw period
-#define INT_MAX         0x7FFFFFFF
 
 typedef struct _tabwriter{
     t_object            x_obj;
@@ -14,8 +12,8 @@ typedef struct _tabwriter{
     t_float             x_f; // dummy input float
     t_float            *x_gate_vec; // gate signal vector
     t_float             x_last_gate;
-    t_int               x_continue_flag;
-    t_int               x_loop_flag;
+    t_int               x_continue;
+    t_int               x_loop;
     t_int               x_phase;       // write head
     t_clock            *x_clock;
     double              x_clocklasttick;
@@ -68,16 +66,16 @@ static void tabwriter_reset(t_tabwriter *x){
 }
 
 static void tabwriter_continue(t_tabwriter *x, t_floatarg f){
-	x->x_continue_flag = (f != 0);
+	x->x_continue = (f != 0);
 }
 
 static void tabwriter_loop(t_tabwriter *x, t_floatarg f){
-    x->x_loop_flag = (f != 0);
+    x->x_loop = (f != 0);
 }
 
 static void tabwriter_rec(t_tabwriter *x){
     if(x->x_buffer != NULL){
-        if(!x->x_continue_flag)
+        if(!x->x_continue)
             x->x_phase = 0.;
         x->x_isrunning = x->x_newrun = 1;
         buffer_redraw(x->x_buffer);
@@ -86,11 +84,15 @@ static void tabwriter_rec(t_tabwriter *x){
 
 static void tabwriter_stop(t_tabwriter *x){
     if(x->x_buffer != NULL){
-        if(!x->x_continue_flag)
+        if(!x->x_continue)
             x->x_phase = 0.;
         x->x_isrunning = 0;
         buffer_redraw(x->x_buffer);
     }
+}
+
+static void tabwriter_float(t_tabwriter *x, t_floatarg f){
+    f > 0 ? tabwriter_rec(x) : tabwriter_stop(x);
 }
 
 static t_int *tabwriter_perform(t_int *w){
@@ -141,14 +143,14 @@ static t_int *tabwriter_perform(t_int *w){
             last_gate = gate;
             if((start < end) && c->c_playable && x->x_isrunning){
                 range = end - start;
-                if(x->x_newrun == 1 && x->x_continue_flag == 0){ // continue shouldn't reset phase
+                if(x->x_newrun == 1 && x->x_continue == 0){ // continue shouldn't reset phase
                     x->x_newrun = 0;
                     x->x_phase = start;
                 };
                 phase = x->x_phase;
                 if(phase >= end){ // boundscheck (might've changed when paused)
                     bang = 1;
-                    if(x->x_loop_flag == 1)
+                    if(x->x_loop == 1)
                         phase = start;
                     else{ // stop
                         x->x_isrunning = 0;
@@ -238,7 +240,6 @@ static void tabwriter_range(t_tabwriter *x, t_floatarg f1, t_floatarg f2){
     tabwriter_range_check(x);
 }
 
-
 static void *tabwriter_new(t_symbol *s, int ac, t_atom *av){
     t_symbol *dummy = s;
     dummy = NULL;
@@ -246,11 +247,12 @@ static void *tabwriter_new(t_symbol *s, int ac, t_atom *av){
     x->x_ksr = (float)sys_getsr() * 0.001;
     x->x_last_gate = x->x_newrun = x->x_isrunning = x->x_phase = 0;
     t_float numchan = 1;
-    t_float continue_flag = 0;
-    t_float loop_flag = 0;
     t_float start = 0;
     t_float end = -1;
     x->x_whole_array = 1;
+    x->x_continue = 0;
+    x->x_loop = 0;
+    x->x_indexed = 0;
     t_int nameset = 0;     // flag if name is set
     t_int argn = 0;
     t_symbol *name = NULL;
@@ -259,17 +261,17 @@ static void *tabwriter_new(t_symbol *s, int ac, t_atom *av){
         if(av->a_type == A_SYMBOL){
             t_symbol *curarg = atom_getsymbolarg(0, ac, av);
             if(curarg == gensym("-continue") && !argn){
-                if(ac >= 2){
-                    continue_flag = atom_getfloatarg(1, ac, av);
-                    ac-=2, av+=2;
+                if(ac >= 1){
+                    x->x_continue = 1;
+                    ac--, av++;
                 }
                 else
                     goto errstate;
             }
             else if(curarg == gensym("-loop") && !argn){
-                if(ac >= 2){
-                    loop_flag = atom_getfloatarg(1, ac, av);
-                    ac-=2, av+=2;
+                if(ac >= 1){
+                    x->x_loop = 1;
+                    ac--, av++;
                 }
                 else
                     goto errstate;
@@ -294,6 +296,14 @@ static void *tabwriter_new(t_symbol *s, int ac, t_atom *av){
                 if(ac >= 2){
                     numchan = atom_getfloatarg(1, ac, av);
                     ac-=2, av+=2;
+                }
+                else
+                    goto errstate;
+            }
+            else if(curarg == gensym("-index") && !argn){
+                if(ac >= 1){
+                    x->x_indexed = 1;
+                    ac--, av++;
                 }
                 else
                     goto errstate;
@@ -326,8 +336,6 @@ static void *tabwriter_new(t_symbol *s, int ac, t_atom *av){
     x->x_ins = getbytes(x->x_numchans * sizeof(*x->x_ins)); // allocate in vectors
     x->x_startindex = start < 0 ? 0 : (unsigned long long)(start * x->x_ksr);
     tabwriter_end(x, end);
-    x->x_continue_flag = (continue_flag != 0);
-    x->x_loop_flag = (loop_flag != 0);
     x->x_clock = clock_new(x, (t_method)tabwriter_tick);
     x->x_clocklasttick = clock_getlogicaltime();
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
@@ -345,8 +353,10 @@ errstate:
 void tabwriter_tilde_setup(void){
     tabwriter_class = class_new(gensym("tabwriter~"), (t_newmethod)tabwriter_new,
         (t_method)tabwriter_free, sizeof(t_tabwriter), CLASS_DEFAULT, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(tabwriter_class, t_tabwriter, x_f);
-    class_addbang(tabwriter_class, tabwriter_draw);
+    class_addfloat(tabwriter_class, tabwriter_float);
+    class_addbang(tabwriter_class, tabwriter_draw); // for pd-dsp-stopped, undocumented
+//    class_addbang(tabwriter_class, tabwriter_rec);
+    class_addmethod(tabwriter_class, nullfn, gensym("signal"), 0);
     class_addmethod(tabwriter_class, (t_method)tabwriter_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(tabwriter_class, (t_method)tabwriter_continue, gensym("continue"), A_FLOAT, 0);
     class_addmethod(tabwriter_class, (t_method)tabwriter_loop, gensym("loop"), A_FLOAT, 0);
