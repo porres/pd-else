@@ -20,7 +20,7 @@ typedef struct _gendyn{
     int            x_n;            // number of points in the period
     double         x_bw;           // bandwidth around center frequency
     t_float        x_cf;           // center frequency
-    t_float        x_last_cf;      // center frequency
+    t_float        x_last_cf;      // last center frequency
     int            x_cents;        // flag for bandwidth in cents
     int            x_ad;           // amplitude distribution number
     int            x_fd;           // frequency distribution number
@@ -49,9 +49,8 @@ static inline double gendyn_fold(double in, double min, double max){
 }
 
 static double gendyn_rand(t_gendyn *x, int d, double p){
-    double temp, c = 0;
     uint32_t *s1 = &x->x_rstate.s1, *s2 = &x->x_rstate.s2, *s3 = &x->x_rstate.s3;
-    double f = ((double)(random_frand(s1, s2, s3)));
+    double temp, c = 0, f = ((double)(random_frand(s1, s2, s3)));
     if(d){
         f = (f * 0.5 + 0.5);
         switch(d){

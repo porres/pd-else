@@ -4,8 +4,8 @@
 #include "m_imp.h"
 #include "buffer.h"
 
-#define MAXBD           1E+32 // cheap higher bound for boundary points
-#define DRAW_PERIOD     500.  // draw period
+#define MAXBD           1E+32       // cheap higher bound for boundary points
+#define DRAW_PERIOD     500.        // draw period
 #define INT_MAX         0x7FFFFFFF
 
 typedef struct _tabwriter{
@@ -27,11 +27,13 @@ typedef struct _tabwriter{
     unsigned long long  x_startindex;
     unsigned long long  x_endindex;
     unsigned long long  x_index;
+    int                 x_indexed;
+    int                 x_n;
     t_float             x_ksr;
     t_int               x_numchans;
     t_outlet           *x_outlet_bang;
-    t_float           **x_ivecs; // input vectors
-    t_float            *x_ovec; // signal output
+    t_float           **x_ins; // input vectors
+    t_float            *x_out; // signal output
 }t_tabwriter;
 
 static t_class *tabwriter_class;
@@ -93,94 +95,108 @@ static void tabwriter_stop(t_tabwriter *x){
 
 static t_int *tabwriter_perform(t_int *w){
     t_tabwriter *x = (t_tabwriter *)(w[1]);
-    t_int nblock = (int)(w[2]);
-    if(x->x_buffer == NULL){
-        return(w+3);
-    }
+    if(x->x_buffer == NULL)
+        return(w+2);
     t_buffer *c = x->x_buffer;
     t_int nch = c->c_numchans;
     t_float *gatein = x->x_gate_vec;
-    t_float *out = x->x_ovec;
+    t_float *out = x->x_out;
     t_int i, j, bang = 0;
     unsigned long long phase, range;
     buffer_validate(c, 0);
     t_float last_gate = x->x_last_gate;
     clock_delay(x->x_clock, 0);
-    for(i = 0; i < nblock; i++){
-        t_float gate = gatein[i];
-        if(gate != 0 && last_gate == 0)
-            tabwriter_rec(x);
-        else if(gate == 0 && last_gate != 0)
-            tabwriter_stop(x);
-        last_gate = gate;
+    for(i = 0; i < x->x_n; i++){
         unsigned long long start = x->x_startindex;
         unsigned long long end;
-        unsigned long long index = x->x_index;
-        unsigned long long arraysmp = (unsigned long long)c->c_npts;
+        unsigned long long npts = (unsigned long long)c->c_npts;
         if(x->x_whole_array)
-            end = arraysmp;
+            end = npts;
         else{
             end = x->x_endindex;
-            if(end > arraysmp)
-                end = arraysmp;
+            if(end > npts)
+                end = npts;
         }
-        if((start < end) && c->c_playable && x->x_isrunning){
-            range = end - start;
-            if(x->x_newrun == 1 && x->x_continue_flag == 0){ // continue shouldn't reset phase
-                x->x_newrun = 0;
-                x->x_phase = start;
-            };
-            phase = x->x_phase;
-            if(phase >= end){ // boundscheck (might've changed when paused)
-                bang = 1;
-                if(x->x_loop_flag == 1)
+        if(x->x_indexed){
+            if((start < end) && c->c_playable){
+                unsigned long long idx = (unsigned long long)gatein[i];
+                if(idx >= start && idx < end){
+                    for(j = 0; j < nch; j++){
+                        t_word *vp = c->c_vectors[j];
+                        t_float *insig = x->x_ins[j];
+                        if(vp)
+                            vp[idx].w_float = insig[i];
+                    };
+                }
+            }
+            out[i] = 0;
+        }
+        else{
+            unsigned long long index = x->x_index;
+            t_float gate = gatein[i];
+            if(gate != 0 && last_gate == 0)
+                tabwriter_rec(x);
+            else if(gate == 0 && last_gate != 0)
+                tabwriter_stop(x);
+            last_gate = gate;
+            if((start < end) && c->c_playable && x->x_isrunning){
+                range = end - start;
+                if(x->x_newrun == 1 && x->x_continue_flag == 0){ // continue shouldn't reset phase
+                    x->x_newrun = 0;
+                    x->x_phase = start;
+                };
+                phase = x->x_phase;
+                if(phase >= end){ // boundscheck (might've changed when paused)
+                    bang = 1;
+                    if(x->x_loop_flag == 1)
+                        phase = start;
+                    else{ // stop
+                        x->x_isrunning = 0;
+                        buffer_redraw(x->x_buffer);
+                    };
+                };
+                if(phase < start)
                     phase = start;
-                else{ // stop
-                    x->x_isrunning = 0;
-                    buffer_redraw(x->x_buffer);
-                };
+                if(x->x_isrunning == 1){ // if we're still running after boundschecking
+                    for(j = 0; j < nch; j++){
+                        t_word *vp = c->c_vectors[j];
+                        t_float *insig = x->x_ins[j];
+                        if(vp)
+                            vp[phase].w_float = insig[i];
+                    };
+                    index = phase;
+                    phase++;
+                    x->x_phase = phase;
+                 };
             };
-            if(phase < start)
-                phase = start;
-            if(x->x_isrunning == 1){ // if we're still running after boundschecking
-                for(j = 0; j < nch; j++){
-                    t_word *vp = c->c_vectors[j];
-                    t_float *insig = x->x_ivecs[j];
-                    if(vp)
-                        vp[phase].w_float = insig[i];
-                };
-                index = phase;
-                phase++;
-                x->x_phase = phase;
-             };
-        };
-        out[i] = index;
-        x->x_index = index;
+            out[i] = index;
+            x->x_index = index;
+        }
     };
     if(bang)
         outlet_bang(x->x_outlet_bang);
     x->x_last_gate = last_gate;
-    return(w+3);
+    return(w+2);
 }
 
 static void tabwriter_dsp(t_tabwriter *x, t_signal **sp){
     if(x->x_buffer != NULL)
         buffer_checkdsp(x->x_buffer);
     x->x_ksr = sp[0]->s_sr * 0.001;
-    int i, nblock = sp[0]->s_n;
+    x->x_n = sp[0]->s_n;
     t_signal **sigp = sp;
-    x->x_gate_vec = (*sigp++)->s_vec; // first sig is the gate input
-    for(i = 0; i < x->x_numchans; i++) // input vectors for each channel
-        *(x->x_ivecs+i) = (*sigp++)->s_vec;
-    x->x_ovec = (*sigp++)->s_vec; // output
-    dsp_add(tabwriter_perform, 2, x, nblock);
+    for(int i = 0; i < x->x_numchans; i++)  // input vectors for each channel
+        *(x->x_ins+i) = (*sigp++)->s_vec;
+    x->x_gate_vec = (*sigp++)->s_vec;       // last is gate or index
+    x->x_out = (*sigp++)->s_vec;            // output
+    dsp_add(tabwriter_perform, 1, x);
 }
 
 static void tabwriter_free(t_tabwriter *x){
     if(x->x_buffer != NULL)
         buffer_free(x->x_buffer);
-//    outlet_free(x->x_outlet);
-    freebytes(x->x_ivecs, x->x_numchans * sizeof(*x->x_ivecs));
+    outlet_free(x->x_outlet_bang);
+    freebytes(x->x_ins, x->x_numchans * sizeof(*x->x_ins));
     if(x->x_clock)
         clock_free(x->x_clock);
     pd_unbind(&x->x_obj.ob_pd, gensym("pd-dsp-stopped"));
@@ -192,6 +208,10 @@ static void tabwriter_range_check(t_tabwriter *x){
         x->x_startindex = x->x_endindex;
         x->x_endindex = temp;
     }
+}
+
+static void tabwriter_index(t_tabwriter *x, t_float f){
+    x->x_indexed = f != 0;
 }
 
 static void tabwriter_start(t_tabwriter *x, t_float f){
@@ -231,7 +251,7 @@ static void *tabwriter_new(t_symbol *s, int ac, t_atom *av){
     t_float start = 0;
     t_float end = -1;
     x->x_whole_array = 1;
-    t_int nameset = 0; // flag if name is set
+    t_int nameset = 0;     // flag if name is set
     t_int argn = 0;
     t_symbol *name = NULL;
     x->x_buffer = NULL;
@@ -303,7 +323,7 @@ static void *tabwriter_new(t_symbol *s, int ac, t_atom *av){
             buffer_setminsize(x->x_buffer, 2);
     }
     x->x_numchans = chn_n;
-    x->x_ivecs = getbytes(x->x_numchans * sizeof(*x->x_ivecs)); // allocate in vectors
+    x->x_ins = getbytes(x->x_numchans * sizeof(*x->x_ins)); // allocate in vectors
     x->x_startindex = start < 0 ? 0 : (unsigned long long)(start * x->x_ksr);
     tabwriter_end(x, end);
     x->x_continue_flag = (continue_flag != 0);
@@ -319,12 +339,12 @@ static void *tabwriter_new(t_symbol *s, int ac, t_atom *av){
     return(x);
 errstate:
     post("[tabwriter~]: improper args");
-    return NULL;
+    return(NULL);
 }
 
 void tabwriter_tilde_setup(void){
-    tabwriter_class = class_new(gensym("tabwriter~"), (t_newmethod)tabwriter_new, (t_method)tabwriter_free,
-        sizeof(t_tabwriter), CLASS_DEFAULT, A_GIMME, 0);
+    tabwriter_class = class_new(gensym("tabwriter~"), (t_newmethod)tabwriter_new,
+        (t_method)tabwriter_free, sizeof(t_tabwriter), CLASS_DEFAULT, A_GIMME, 0);
     CLASS_MAINSIGNALIN(tabwriter_class, t_tabwriter, x_f);
     class_addbang(tabwriter_class, tabwriter_draw);
     class_addmethod(tabwriter_class, (t_method)tabwriter_dsp, gensym("dsp"), A_CANT, 0);
@@ -335,6 +355,7 @@ void tabwriter_tilde_setup(void){
     class_addmethod(tabwriter_class, (t_method)tabwriter_start, gensym("start"), A_FLOAT, 0);
     class_addmethod(tabwriter_class, (t_method)tabwriter_range, gensym("range"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(tabwriter_class, (t_method)tabwriter_end, gensym("end"), A_FLOAT, 0);
+    class_addmethod(tabwriter_class, (t_method)tabwriter_index, gensym("index"), A_FLOAT, 0);
     class_addmethod(tabwriter_class, (t_method)tabwriter_rec, gensym("rec"), 0);
     class_addmethod(tabwriter_class, (t_method)tabwriter_stop, gensym("stop"), 0);
 }
