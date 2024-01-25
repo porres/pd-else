@@ -96,10 +96,8 @@ static t_symbol* openfile_doopen(t_openfile *x, t_symbol *file){
             fn[-1] = '/';
         return(gensym(path));
     }
-    else{
-        post("[openfile] can't open %s", file->s_name);
-        return(NULL);
-    }
+    else
+        return(file);
 }
 
 static void openfile_click(t_openfile *x, t_floatarg xpos, t_floatarg ypos, t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
