@@ -1,4 +1,4 @@
-#N canvas 526 32 564 634 10;
+#N canvas 458 29 564 634 10;
 #X obj 2 4 cnv 15 301 42 empty empty knob 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -66,9 +66,10 @@
 #X msg 150 180 start;
 #X msg 143 161 start 90;
 #X text 19 345 The 'load' message sets the initial value for when the object is loaded (0 by default). This value is not output when loading the patch \, so you need [loadbang] if you want that. If you only send it 'load' \, then [knob] saves the current state by capturing the current value as the initialization value. The 'start' value is where the arc starts \, just 'start' also sets current value. alt+clicking on the object restores to the 'start' value., f 65;
-#X text 429 314 When in edit mode \, [knob] shows its inlet/outlet and an outline. The outline can hidden when not in edit modg if you use the "outline 0" message \, set it via properties/flag or use the '-nooutline' flag. The inlet will always be hidden if you have a receive symbol \, same with the outlet if you have a send symbol. You can set a send symbol above to send messages to a matching [receive] object. A receive symbol makes [send] objects communicate to it. If you set send/receive names to "empty" then the symbols are cleared and inlet/outlet are shown again. Note you need to escape dollar signs with backslashes to set send receive names via messages or flags \, but not via properties!, f 69;
 #X text 19 6 By default \, the angular range is 320 degrees. The object also draws an 'arc' by default with its own color \, which is useful to display the initial and final position. You can change this with the 'arc' or 'angle' messages \, properties or flags. A full 360 degree is possible and the arc is then useful to differentiate from the fully turned down (background color) to the turned up [knob] (foreground color). The default range is from 0 to 127 \, but you can change that in the same way. A float sets and outputs values \, which get clipped to the [knob]'s range. A 'set' message only sets the value (no output)., f 65;
 #X obj 457 120 loadbang;
+#X text 429 314 When in edit mode \, [knob] shows its inlet/outlet and an outline. The outline can hidden when not in edit mode if you use the "outline 0" message \, set it via properties or use the '-nooutline' flag. The inlet will always be hidden if you have a receive symbol \, same with the outlet if you have a send symbol. You can set a send symbol above to send messages to a matching [receive] object. A receive symbol makes [send] objects communicate to it. If you set send/receive names to "empty" then the symbols are cleared and inlet/outlet are shown again. Note you need to escape dollar signs with backslashes to set send receive names via messages or flags \, but not via properties!, f 69;
+#X text 918 424 (outline hidden);
 #X connect 1 0 21 0;
 #X connect 2 0 21 0;
 #X connect 3 0 21 0;
@@ -100,7 +101,7 @@
 #X connect 36 0 22 0;
 #X connect 38 0 21 0;
 #X connect 39 0 21 0;
-#X connect 43 0 12 0;
+#X connect 42 0 12 0;
 #X restore 495 106 pd basic;
 #N canvas 422 73 772 634 +parameters 0;
 #X obj 327 123 else/knob 90 0 1 4 0 empty empty #9a9f9c #feffc6 #402420 0 0 2 0 0 320 0 0 0;

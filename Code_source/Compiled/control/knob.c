@@ -248,7 +248,6 @@ static void knob_config_io(t_knob *x, t_canvas *cv){
 // configure arc
 static void knob_config_arc(t_knob *x, t_canvas *cv){
     pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_arc,
-//        "-state", x->x_arc && x->x_fval != x->x_load ? "normal" : "hidden");
         "-state", x->x_arc && x->x_fval != x->x_start ? "normal" : "hidden");
     pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_bg_arc,
         "-state", x->x_arc ? "normal" : "hidden");
@@ -815,7 +814,8 @@ static void knob_exp(t_knob *x, t_floatarg f){
 
 static void knob_outline(t_knob *x, t_floatarg f){
     x->x_outline = (int)f;
-    knob_config_io(x, glist_getcanvas(x->x_glist));
+    if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
+        knob_config_io(x, glist_getcanvas(x->x_glist));
 }
 
 static void knob_zoom(t_knob *x, t_floatarg f){
@@ -1138,8 +1138,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     int arc = 1, angle = 320, offset = 0;
     x->x_bg = gensym("#dfdfdf"), x->x_mg = gensym("#7c7c7c"), x->x_fg = gensym("black");
     x->x_clicked = x->x_log = 0;
-    x->x_jump = 0;
-    x->x_outline = 1;
+    x->x_outline = x->x_jump = 0;
     x->x_glist = (t_glist *)canvas_getcurrent();
     x->x_zoom = x->x_glist->gl_zoom;
     x->x_flag = 0;
@@ -1334,18 +1333,10 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
                     else
                         goto errstate;
                 }
-                else if(sym == gensym("-noarc")){
+                else if(sym == gensym("-arc")){
                     if(ac >= 1){
                         x->x_flag = 1, av++, ac--;
-                        arc = 0;
-                    }
-                    else
-                        goto errstate;
-                }
-                else if(sym == gensym("-nooutline")){
-                    if(ac >= 1){
-                        x->x_flag = 1, av++, ac--;
-                        x->x_outline = 0;
+                        arc = 1;
                     }
                     else
                         goto errstate;
