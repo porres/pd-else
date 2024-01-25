@@ -179,7 +179,7 @@
 #X obj 3 437 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
 #X text 133 476 -soft: sets to soft sync mode (default hard), f 58;
 #X text 133 461 -midi: sets frequency input in MIDI pitch (default hertz), f 58;
-#X text 103 446 -mc <list>: sets multichannel output wirh a list of frequencies, f 63;
+#X text 103 446 -mc <list>: sets multichannel output with a list of frequencies, f 63;
 #X obj 98 290 cnv 17 3 58 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 146 305 midi <float> -;
 #X text 236 305 non zero sets to frequency input in MIDI pitch, f 50;

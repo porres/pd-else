@@ -144,7 +144,7 @@
 #X msg 25 222 0;
 #X msg 79 514 log \$1;
 #X obj 79 485 tgl 19 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
-#X text 447 487 The log mode supersedes the exp mode \, so the exponential setting gets ingnored and is only valid if the log mode is removed., f 32;
+#X text 447 487 The log mode supersedes the exp mode \, so the exponential setting gets ignored and is only valid if the log mode is removed., f 32;
 #X text 496 437 log mode built into iemguis \, check its help file., f 19;
 #X text 447 540 When in log mode \, you cannot have or cross zero in the output range., f 32;
 #X msg 28 115 1;

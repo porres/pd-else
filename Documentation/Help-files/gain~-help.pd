@@ -301,7 +301,7 @@
 #X msg 217 165 forget;
 #X text 233 221 <-- alt+click to learn;
 #X text 233 241 <-- alt+shift+click to forget;
-#X text 82 36 If you send the 'learn' message or "alt+click" the object \, it learns a MIDI controller so you can controll the gain. You can also forget it with the 'forget' message or "alt+shift+click".;
+#X text 82 36 If you send the 'learn' message or "alt+click" the object \, it learns a MIDI controller so you can control the gain. You can also forget it with the 'forget' message or "alt+shift+click".;
 #X connect 2 0 1 0;
 #X connect 3 0 1 0;
 #X restore 449 259 pd learn/forget;

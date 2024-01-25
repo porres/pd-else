@@ -39,7 +39,7 @@
 0;
 #X obj 107 332 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 242 333 phase sync (ressets internal phase);
+#X text 242 333 phase sync (resets internal phase);
 #X text 164 446 1) float;
 #X text 230 465 - initial phase offset (default 0);
 #X text 230 446 - frequency in hertz (default 0);

@@ -57,7 +57,7 @@
 #X obj 359 33 else/player~ bubul.wav 1 1;
 #X text 25 201 The freeze parameter stops recording the input into the delay line and the feedback value is set to 1 (if >= 0) or -1 (if negative). Delay time modulation and filtering is still possible., f 50;
 #X text 25 21 The filter is a 2nd order lowpass filter much like [lowpass~]. Note that it gets bypassed when the cutoff is 20 khz or more. The resonance parameter is from 0 to 1 \, where at 0 there's no resonance. Since the filter output can be fed back into the delay line \, the resonance behaves as an increasing feedback parameter around this center frequency. This is minimized by a soft clipping stage (an atan function just like in the [drive~] object)., f 50;
-#X text 25 127 The feeback parameter can be positive or negative and there are no restrains \, hence you can have values over 1 or below -1 \, but the soft clipping also takes care of high feeback values. A DC block filter is also present to prevent other artifacts from the processing., f 50;
+#X text 25 127 The feedback parameter can be positive or negative and there are no restrains \, hence you can have values over 1 or below -1 \, but the soft clipping also takes care of high feedback values. A DC block filter is also present to prevent other artifacts from the processing., f 50;
 #X obj 659 18 else/knob 41 0 1 0 0 empty empty #dfdfdf #afafaf black 1 0 0 0 1 320 0 0 0;
 #X floatatom 585 196 5 0 100 0 - - - 0;
 #X obj 585 144 else/knob 41 0 1 0 0.5 empty empty #dfdfdf #afafaf black 1 0 0 0 1 320 0 0 0;

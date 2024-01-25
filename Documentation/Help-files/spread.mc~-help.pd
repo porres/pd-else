@@ -13,7 +13,7 @@
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 304 3 pd;
 #X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
-#X obj 22 40 cnv 4 4 4 empty empty Spread\ multichannel\ inpu\ to\ to\ a\ multichannel\ output 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 22 40 cnv 4 4 4 empty empty Spread\ multichannel\ input\ to\ a\ multichannel\ output 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
@@ -58,8 +58,8 @@
 #X obj 137 295 sigs~ 1 2 3;
 #X obj 137 392 else/s2f~;
 #X listbox 137 423 28 0 0 0 - - - 0;
-#X text 46 16 The algorithm is basically the same as [pan~] where each input gets it's location according proportional to the output. In the first example below \, ths signals "1" and "3" correspond exactly to the outter channels \, but "2" sits in between the two middle outputs \, so the signal is panned to both at mid point via the usual Sine/Cosine equal power function. This is considering the default spread value of 1!, f 71;
-#X text 46 95 Spread values greater than 1 spreads the signal to more channels while smaller than 1 narrows the crossfading point closer to the selected channel. In the example below \, if you give it a spread value of 0.5 \, "2" doesn't reach any of the outputs while "1" and "3" still match the exact spot of the outter outputs. Values greater than one will spread "1" and "3 to adjacent channels (and it spreads circularly like [pan~])., f 71;
+#X text 46 16 The algorithm is basically the same as [pan~] where each input gets it's location according proportional to the output. In the first example below \, the signals "1" and "3" correspond exactly to the outer channels \, but "2" sits in between the two middle outputs \, so the signal is panned to both at mid point via the usual Sine/Cosine equal power function. This is considering the default spread value of 1!, f 71;
+#X text 46 95 Spread values greater than 1 spreads the signal to more channels while smaller than 1 narrows the crossfading point closer to the selected channel. In the example below \, if you give it a spread value of 0.5 \, "2" doesn't reach any of the outputs while "1" and "3" still match the exact spot of the outer outputs. Values greater than one will spread "1" and "3 to adjacent channels (and it spreads circularly like [pan~])., f 71;
 #X msg 159 326 n 4;
 #X msg 192 326 n 5;
 #X text 50 185 Try also the other exanmple by setting 'n' to '5' to see if you can figure this out., f 70;

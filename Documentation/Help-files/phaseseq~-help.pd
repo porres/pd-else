@@ -24,8 +24,8 @@
 #X text 202 275 signal;
 #X text 178 293 set <list>;
 #X text 249 275 - phase signal input, f 30;
-#X text 249 293 - set treshold values, f 30;
-#X text 226 380 - treshold values (default none);
+#X text 249 293 - set threshold values, f 30;
+#X text 226 380 - threshold values (default none);
 #X text 202 326 signal;
 #X text 62 90 [phaseseq~] takes a list of thresholds and outputs impulses when reaching the threshold values., f 62;
 #X obj 156 196 else/out~;

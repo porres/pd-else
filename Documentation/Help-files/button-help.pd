@@ -133,7 +133,7 @@
 #X text 90 225 <-- [pic];
 #X text 207 474 -bang: set to bang mode (default: latch), f 42;
 #X text 195 489 -toggle: set to toggle mode (default: latch);
-#X text 108 324 <latch/toglle/bang>;
+#X text 108 324 <latch/toggle/bang>;
 #X connect 22 0 24 0;
 #X connect 23 0 22 0;
 #X connect 24 0 21 0;

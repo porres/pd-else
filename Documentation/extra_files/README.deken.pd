@@ -32,7 +32,7 @@
 #X text 457 27 You can add 'else' to you search path in 'preferences' and can also use [declare] as in:, f 54;
 #X obj 714 54 declare -path else;
 #X obj 489 355 else/openfile -h https://www.instagram.com/alexandre.torres.porres/;
-#X text 488 303 I post lots of Pd stuff in my instagram \, you can folow me if you like for some ELSE news and more stuff:, f 48;
+#X text 488 303 I post lots of Pd stuff in my instagram \, you can follow me if you like for some ELSE news and more stuff:, f 48;
 #X obj 550 403 else/openfile -h https://www.instagram.com/el.locus.solus/;
 #X text 490 382 sometimes it is named as:;
 #X text 278 644 Bug/Issue report:;

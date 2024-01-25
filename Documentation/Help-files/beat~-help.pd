@@ -36,7 +36,7 @@
 #X msg 328 132 window 512 \, hop 128, f 11;
 #X floatatom 312 281 9 0 0 1 BPM - - 16;
 #X text 107 40 Testing on proper rhythmic loop., f 18;
-#N canvas 128 110 626 558 modes 0;
+#N canvas 248 110 626 558 modes 0;
 #X text 63 39 [beat~] makes use of different Onset detection methods \, which are:, f 70;
 #X text 65 76 Mode 0 --> "hfc": High-Frequency content (Default) \; - Computes the High Frequency Content (HFC) of the input spectral frame. This is efficient at detecting percussive onsets. Reference: Paul Masri. Computer modeling of Sound for Transformation and Synthesis of Musical Signal. PhD dissertation \, University of Bristol \, UK \, 1996, f 82;
 #X text 65 140 Mode 1 --> "energy": Energy based distance \; - Calculates the local energy of the input spectral frame., f 82;
@@ -45,8 +45,8 @@
 #X text 66 299 Mode 4 --> "wphase": weighted phase deviation, f 82;
 #X text 66 319 Mode 5 --> "specdiff": Spectral difference \; Reference: Jonhatan Foote and Shingo Uchihashi. The beat spectrum: a new approach to rhythm analysis. In IEEE International Conference on Multimedia and Expo (ICME 2001) \, pages 881­884 \, Tokyo \, Japan \, August 2001, f 82;
 #X text 66 372 Mode 6 --> "specflux": Spectral flux \; Reference: Simon Dixon \, Onset Detection Revisited \, in ``Proceedings of the 9th International Conference on Digital Audio Effects'' (DAFx-06) \, Montreal \, Canada \, 2006, f 82;
-#X text 66 425 Mode 7 --> "kl": Kulback-Liebler function \; Reference: Stephen Hainsworth and Malcom Macleod. Onset detection in music audio signals. In Proceedings of the International Computer Music Conference (ICMC) \, Singapore \, 2003, f 82;
 #X text 66 477 Mode 8 --> "mkl": Modified Kulback-Liebler function \; Reference: Paul Brossier \, 'Automatic annotation of musical audio for interactive systems' \, Chapter 2 \, Temporal segmentation \, PhD thesis \, Centre for Digital music \, Queen Mary University of London \, London \, UK \, 2006, f 82;
+#X text 66 425 Mode 7 --> "kl": Kulback-Liebler function \; Reference: Stephen Hainsworth and Malcolm Macleod. Onset detection in music audio signals. In Proceedings of the International Computer Music Conference (ICMC) \, Singapore \, 2003, f 82;
 #X restore 424 94 pd modes;
 #X text 369 93 see -->;
 #X msg 346 172 silence -40;

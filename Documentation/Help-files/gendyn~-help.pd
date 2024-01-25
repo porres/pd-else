@@ -64,7 +64,7 @@
 #X floatatom 480 164 5 0 0 0 - - - 0;
 #X msg 480 184 bw \$1;
 #X text 18 23 You can set the number of points in the waveform with the 'n' message or '-n' flag. The higher the number \, the brighter the sound is. Each point will then change (both in amplitude and frequency) according to a random walk as in the [brown]/][brown~] objects. The maximum amplitude and frequency steps are given as percentages., f 69;
-#X text 18 83 The frequency percentage is in respect to a given bandwidth above and below a center frequency \, which is set via a float or signal input. The bandwidth can be either in hertz or cents. By default \, the center frequency is 440 and the bandwidth is 1200 cents. If the bandwidth is set in cents \, the steps are then logarithmic \, otherwise it's linear. Use the 'bw' message or flag to set the bandwith and the 'cents' message to set if the bandwidth is in cents or not., f 69;
+#X text 18 83 The frequency percentage is in respect to a given bandwidth above and below a center frequency \, which is set via a float or signal input. The bandwidth can be either in hertz or cents. By default \, the center frequency is 440 and the bandwidth is 1200 cents. If the bandwidth is set in cents \, the steps are then logarithmic \, otherwise it's linear. Use the 'bw' message or flag to set the bandwidth and the 'cents' message to set if the bandwidth is in cents or not., f 69;
 #X text 18 165 Alternatively \, you can set the minimum and maximum frequencies with the 'frange' message or '-frange' flag. This sets the frequency steps to be linear. Hence the bandwidth is calculated in hertz and you can change the center frequency., f 69;
 #X text 18 213 The frequency deviation step is set via the 'freq_step' message or '-freq_step' flag. This is the maximum random step set in percentage \, where 100% means that the frequency deviation is up to the frequency range (maximum frequency minus minimum frequency)., f 69;
 #X connect 0 0 6 0;
@@ -311,12 +311,12 @@
 #X text 193 511 (none);
 #X obj 4 456 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
 #X text 194 430 - dynamic stochastic synthesis output;
-#X text 42 89 [gendyn~] implements "Dynamic Strochastic Synthesis" based on Xenakis' 'GenDyn' algorythm. The waveform has a given number of points (linearly interpolated by default). The period of each point and its value changes according to a random walk (a.k.a. brownian motion) with given distributions., f 79;
+#X text 42 89 [gendyn~] implements "Dynamic Strochastic Synthesis" based on Xenakis' 'GenDyn' algorithm. The waveform has a given number of points (linearly interpolated by default). The period of each point and its value changes according to a random walk (a.k.a. brownian motion) with given distributions., f 79;
 #X text 193 367 - sets interpolation mode (default 1 \, linear), f 59;
 #X obj 41 223 else/rand.dist;
 #X text 109 322 frange <f \, f>;
 #X text 115 278 float/signal;
-#X text 193 278 - center frequency in herts (defaut 440), f 59;
+#X text 193 278 - center frequency in herts (default 440), f 59;
 #X text 127 293 bw <float>;
 #X text 193 293 - set bandwidth in cents or hz (default 1200 cents), f 59;
 #X text 109 308 cents <float>;

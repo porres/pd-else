@@ -149,7 +149,7 @@
 #X text 132 139 select output (0 = none);
 #X obj 108 243 meter8~;
 #X listbox 122 437 20 0 0 0 - - - 16;
-#X text 37 23 The object can also take multichannel inputs. In this case \, the total output channels are actually the number of outputs set by the argument times the number of input channels \, which actually become the number of grouped channels. Then \, tne channel selection routes to the given group., f 73;
+#X text 37 23 The object can also take multichannel inputs. In this case \, the total output channels are actually the number of outputs set by the argument times the number of input channels \, which actually become the number of grouped channels. Then \, the channel selection routes to the given group., f 73;
 #X obj 139 172 else/sigs~ 0.1 1;
 #X obj 122 408 else/s2f~;
 #X obj 108 206 xgate.mc~ 4 200;

@@ -612,9 +612,9 @@
 #X msg 110 284 show 55 58 62 67;
 #X msg 92 228 play 55 58 62 67;
 #X msg 102 251 play 51 53 66 69;
-#X text 238 142 The 'play' message is like the 'on' message preceeded by 'flush' \, so it flushes hanging notes and sets the pitches on the given list On., f 35;
+#X text 238 142 The 'play' message is like the 'on' message preceded by 'flush' \, so it flushes hanging notes and sets the pitches on the given list On., f 35;
 #X msg 60 146 flush;
-#X text 238 194 The 'play' message is like the 'on' message preceeded by 'flush' \, so it flushes hanging notes and sets the pitches on the given list On., f 35;
+#X text 238 194 The 'play' message is like the 'on' message preceded by 'flush' \, so it flushes hanging notes and sets the pitches on the given list On., f 35;
 #X text 238 252 The 'show' message is like 'play' but there's no output., f 35;
 #X connect 0 0 6 0;
 #X connect 1 0 0 0;

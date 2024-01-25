@@ -154,7 +154,7 @@
 #X text 178 298 set equal occurrence for all indexes;
 #X msg 152 353 size 100;
 #X text 212 355 clears and resizes histogram;
-#X text 21 18 You can use [keyboard] and the "inc" message to feed and generate the internal histogram. The 'dec' message decreases it. The set message sets index and occurrence. The 'eq' message sets equal occurances for all indexes. The clear message clears the histogram and is like the 'eq 0' message. The size message clears and resizes the histogram., f 68;
+#X text 21 18 You can use [keyboard] and the "inc" message to feed and generate the internal histogram. The 'dec' message decreases it. The set message sets index and occurrence. The 'eq' message sets equal occurrences for all indexes. The clear message clears the histogram and is like the 'eq 0' message. The size message clears and resizes the histogram., f 68;
 #X obj 480 102 else/keyboard 17 80 3 3 0 0 empty empty;
 #X msg 519 207 export;
 #X obj 520 318 else/display 3;

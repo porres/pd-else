@@ -225,7 +225,7 @@
 #X text 19 114 Negative exponentials are allowed. In this case \, it's like the curve shape has been mirrored in reverse., f 36;
 #X msg 88 509 log \$1;
 #X obj 88 480 tgl 19 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
-#X text 437 497 The log mode supersedes the exp mode \, so the exponential setting gets ingnored and is only valid if the log mode is removed., f 32;
+#X text 437 497 The log mode supersedes the exp mode \, so the exponential setting gets ignored and is only valid if the log mode is removed., f 32;
 #X text 505 432 log mode built into iemguis \, check its help file., f 19;
 #X text 437 550 When in log mode \, you cannot have or cross zero in the output range., f 32;
 #X obj 103 307 else/rescale~;

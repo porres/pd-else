@@ -31,7 +31,7 @@
 #X obj 132 252 else/imp~ 4;
 #X obj 133 67 else/imp~ 1;
 #X text 54 18 If no argument is given \, the chances are 50/50! Moreover \, you get a float inlet to set the chance as a percentage value.;
-#X text 54 184 If just one argi \, emt is given \, it is als considered a percentage value and the second inlet changes it as well., f 47;
+#X text 54 184 If just one argi \, emt is given \, it is also considered a percentage value and the second inlet changes it as well., f 47;
 #X obj 132 281 else/chance~ 70, f 18;
 #X floatatom 237 251 5 0 0 0 - - - 0;
 #X floatatom 238 61 5 0 0 0 - - - 0;

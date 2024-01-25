@@ -164,7 +164,7 @@
 #X obj 135 246 else/suspedal -retrig 1;
 #X text 267 397 extra;
 #X text 28 22 In retrigger mode 0 (default) \, [voices] sends repeated note on messages to the same voice number. One case possible is when you have a Note Off message with a release time. This can also happen without a Note Off message and in this case no Note Off is given prior to the repeated Note On., f 62;
-#X text 28 83 Here we use [suspedal] in mode "1" \, wich does not send a Note Off message and produces repeated Note On messages. It then outputs a single note off message when turned off., f 62;
+#X text 28 83 Here we use [suspedal] in mode "1" \, which does not send a Note Off message and produces repeated Note On messages. It then outputs a single note off message when turned off., f 62;
 #X obj 135 340 else/voices -retrig 0 2;
 #X listbox 535 374 9 0 0 0 - - - 12;
 #X msg 535 110 60;
@@ -174,7 +174,7 @@
 #X msg 586 110 60;
 #X obj 586 150 del 300;
 #X msg 586 172 62;
-#X text 437 20 Below we emulate a repeated Note On with [pipe] ans we have a release time of 250 ms. The repeated note comes before the release time is finished and goes to the same voice allocation number., f 44;
+#X text 437 20 Below we emulate a repeated Note On with [pipe] and we have a release time of 250 ms. The repeated note comes before the release time is finished and goes to the same voice allocation number., f 44;
 #X text 474 110 repeated;
 #X text 616 109 non repeated;
 #X obj 535 410 print retrig mode 0 -->;
@@ -355,7 +355,7 @@
 #X connect 6 0 7 0;
 #X connect 7 0 2 0;
 #X restore 449 179 pd list input;
-#X text 161 336 anything - other cutom messages to route to active voices, f 62;
+#X text 161 336 anything - other custom messages to route to active voices, f 62;
 #N canvas 700 90 519 383 custom 0;
 #X obj 133 297 else/voices 4;
 #X msg 133 227 60 127;
@@ -365,7 +365,7 @@
 #X obj 210 229 else/midi.in;
 #X obj 210 254 else/display;
 #X text 46 18 Other ("anything") messages are treated as custom messages and are sent out according to the voice allocation. Say for instance you want to send poliphonic aftertouch to an active voice. See an example below for that where we have a MIDI Note message (pitch 60) activating voice number 0 \, then you can click on the message to the right to generate a polyphonic message for the same pitch., f 64;
-#X text 46 106 A message like this will be routet to the same voice allocaion if the first element in the list after the selector corresponds to an allocated pitch (float or symbol)., f 64;
+#X text 46 106 A message like this will be routed to the same voice allocation if the first element in the list after the selector corresponds to an allocated pitch (float or symbol)., f 64;
 #X text 294 177 <-- ployphonic aftertouch;
 #X msg 227 204 128 \, 60 \, 88;
 #X connect 0 0 3 0;

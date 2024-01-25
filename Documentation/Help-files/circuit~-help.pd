@@ -63,7 +63,7 @@
 #X obj 196 436 else/oscope~ 200 100 2 3 128 -1 1 200 0 0 0 30 30 30 190 190 190 160 160 160 0 empty;
 #X text 328 197 <- set frequency;
 #X obj 260 45 loadbang;
-#X text 301 76 In real life \, the ciruit would self-oscillate from environment noise. Since our simulation doesn't have environment noise \, we need to send a click into it to start the feedback loop, f 53;
+#X text 301 76 In real life \, the circuit would self-oscillate from environment noise. Since our simulation doesn't have environment noise \, we need to send a click into it to start the feedback loop, f 53;
 #X connect 1 0 7 0;
 #X connect 3 0 0 0;
 #X connect 3 0 14 0;

@@ -343,7 +343,7 @@
 #X coords 0 1 100 -1 121 140 1 0 0;
 #X restore 801 165 graph;
 #X text 432 39 With the '-n' flag or 'n' message you can set a number of slices to split the wavetable into. This way you can have multilple waveforms in a single array/file., f 81;
-#X text 432 70 The rightmost inlet scans through the diffrent frames applying a linear crossfad between two adjacent frames. The range is from 0 to 1 and in this example it means that 0 is the first frame and going to 0.25 crossfades to the second frame., f 81;
+#X text 432 70 The rightmost inlet scans through the different frames applying a linear crossfad between two adjacent frames. The range is from 0 to 1 and in this example it means that 0 is the first frame and going to 0.25 crossfades to the second frame., f 81;
 #X obj 68 179 else/wavetable~ -n 4 \$0-frames 220;
 #X text 468 360 for 2D scanning \, see also:;
 #X obj 641 359 else/wt2d~;

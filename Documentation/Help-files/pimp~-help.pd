@@ -251,7 +251,7 @@
 #X text 147 393 float/signal -;
 #X obj 104 392 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 252 393 phase offset (modulation input);
-#X text 252 373 phase sync (ressets internal phase);
+#X text 252 373 phase sync (resets internal phase);
 #X text 147 373 float/signal -;
 #N canvas 461 182 707 329 example 0;
 #X obj 309 201 else/sh~;
