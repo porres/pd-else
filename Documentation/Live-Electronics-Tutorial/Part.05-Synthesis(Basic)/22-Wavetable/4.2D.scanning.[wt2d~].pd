@@ -100,10 +100,12 @@
 #X obj 411 503 tabreader~ -loop -index \$0-2d-wave, f 12;
 #X obj 558 81 hradio 19 1 0 8 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0;
 #X obj 275 81 hradio 19 1 0 8 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0;
-#X text 640 184 Please refer back to the 2 previous examples as this is just a merge of them. We have the same crossfading structure from the wavetable scanning example but now we also add a row offset for vertical scanning., f 35;
-#X text 640 299 On the left section of the patch we have a crossfading between two columns and we add an index that corresponds to the row offset given by the Y axis \, which is multiplied by 8 because we have 8 rows., f 35;
-#X text 640 399 The right part is the same thing but corresponds to a crossfade between colimns in the 'next' row. A last crossfading section that is controlled by the fractional part of the vertical scanning controls the crossfade between both sections., f 35;
+#X text 640 154 Please refer back to the 2 previous examples as this is just a merge of them. We have the same crossfading structure from the wavetable scanning example but now we also add a row offset for vertical scanning., f 35;
+#X text 640 269 On the left section of the patch we have a crossfading between two columns and we add an index that corresponds to the row offset given by the Y axis \, which is multiplied by 8 because we have 8 rows., f 35;
+#X text 640 369 The right part is the same thing but corresponds to a crossfade between colimns in the 'next' row. A last crossfading section that is controlled by the fractional part of the vertical scanning controls the crossfade between both sections., f 35;
 #X text 528 397 fractional part for crossfade, f 10;
+#X text 640 494 Just like 1D scanning \, note that a full Vanilla implementation has issues because of the need of extra guard points \, which is not to worry with ELSE objects. You could still do it \, as it wouldn't really be significantly audible most of the time \, but it wouldn't be pretty or elegant., f 35;
+#X text 477 43 Use horizontal sliders to select exact frames;
 #X connect 0 0 20 0;
 #X connect 1 0 3 1;
 #X connect 2 0 5 0;
@@ -184,9 +186,9 @@
 #X text 613 428 You should also open the help file of [wt2d~] for more details and note how it quite similar to [wavetable~]/[wt~] and it just has an extra inlet for crossfading vertically., f 32;
 #X text 613 528 The '-n' flag in [wt2d~] defines how it must split the loades wavetable in number of columns and rows (8 8 in this case)., f 32;
 #X text 29 293 set frequency in hz --->;
-#X text 23 99 We can expand from the last example and show how to use a single wavetable to slice into different frames in two dimensions \, that is different columns and rows! We also expand the idea to crossfade between much more than 4 sources. In this example the wavetable is split into 8 columns and 8 rows. Note that if it had 2 columns and 2 rows \, it'd be the same thing as the previous Vector Synthesis example., f 51;
 #X text 429 372 <------------------------;
 #X text 431 63 Use the 2D slider below to crossfade between frames in two dimensions., f 18;
+#X text 23 99 We can expand from the last example and show how to use a single wavetable to slice into different frames in two dimensions \, that is different columns and rows! We also expand the idea to crossfade between much more than 4 sources. In this example the wavetable is split into 8 columns and 8 rows. Note that if it had 2 columns and 2 rows \, it'd be the same thing as the previous Vector Synthesis example \, and also note this can also be considered a kind of Vector Synthesis., f 51;
 #X connect 3 0 10 0;
 #X connect 4 0 5 0;
 #X connect 6 0 9 0;

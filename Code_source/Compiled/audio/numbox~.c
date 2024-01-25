@@ -333,7 +333,7 @@ static void numbox_properties(t_gobj *z, t_glist *owner){ // called in right cli
     t_numbox *x = (t_numbox *)z;
     char buf[800];
     sprintf(buf, "::dialog_numbox::pdtk_numbox_dialog %%s -------dimensions(digits)(pix):------- \
-        %d %d %d %d %d %d %f %s %s %g %g\n", x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE,
+        %d %d %d %d %d %d %g %s %s %g %g\n", x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE,
         x->x_ramp_ms, x->x_rate, x->x_set_val, x->x_bg->s_name, x->x_fg->s_name, x->x_lower, x->x_upper);
     gfxstub_new(&x->x_obj.ob_pd, x, buf); // no idea what this does...
 }
@@ -344,7 +344,7 @@ static void numbox_dialog(t_numbox *x, t_symbol *s, int ac, t_atom *av){
     int size = atom_getintarg(1, ac, av);
     int ramp_ms = atom_getintarg(2, ac, av);
     int rate = atom_getintarg(3, ac, av);
-    int initial = atom_getintarg(4, ac, av);
+    float initial = atom_getfloatarg(4, ac, av);
     t_symbol *bgcolor = atom_getsymbolarg(5, ac, av);
     t_symbol *fgcolor = atom_getsymbolarg(6, ac, av);
     t_float min = atom_getfloatarg(7, ac, av);
