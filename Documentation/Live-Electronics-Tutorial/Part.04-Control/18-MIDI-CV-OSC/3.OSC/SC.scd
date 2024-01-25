@@ -1,7 +1,7 @@
 // GET MESSAGES FROM PURE DATA
 
 /*
-This "OSC definition gets OSC messages, its name is "\Pd" and the message is retrieved as the 'msg' argument, which we print below with 'postln'. The '/SC' is the message adress and recvPort sets to listen to port 8000.
+This "OSC definition gets OSC messages, its name is "\Pd" and the message is retrieved as the 'msg' argument, which we print below with 'postln'. The '/SC' is the message address and recvPort sets to listen to port 8000.
 */
 
 s.boot; // first boot the server
@@ -31,7 +31,7 @@ OSCdef.freeAll
 
 // SEND MESSAGES TO PURE DATA
 
-/* Sending messages is much simpler, all you need to do is creat a network address with NetAddr. Below we create one with locahost (127.0.0.1) and port '8031' */
+/* Sending messages is much simpler, all you need to do is creat a network address with NetAddr. Below we create one with localhost (127.0.0.1) and port '8031' */
 
 b = NetAddr.new("127.0.0.1", 8031);
 

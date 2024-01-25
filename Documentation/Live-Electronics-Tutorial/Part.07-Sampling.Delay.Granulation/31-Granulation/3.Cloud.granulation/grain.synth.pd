@@ -64,7 +64,7 @@ check if the instance number is not zero \, if not \, then the random
 range is 1000!, f 49;
 #X obj 286 195 expr (\$1 != 0) * 1000 \; \$1 * (1000./16);
 #X text 513 245 For the synchronous mode \, the grains are equally
-spaced. So we get the time interval by divding the event length (1000ms)
+spaced. So we get the time interval by dividing the event length (1000ms)
 by the number of instances (16) \, then we multiply byt the instance
 number so each one is placed in the correct spot., f 49;
 #X obj 180 196 router;

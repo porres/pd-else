@@ -175,7 +175,7 @@
 #X text 46 71 The following two bytes represent \, respectively \, Pitch and Aftertouch (whose values are from 0 to 127)., f 81;
 #X text 46 107 Polyphonic (or "key") Aftertouch (or "pressure") is a control that became rare in modern controllers \, but it used to capture the pressure of each key after you played a note. This allows the synthesizer to add a specific modulation for each key voice. Nowadays the key aftertouch is more present in pad controllers., f 81;
 #X obj 114 307 ptouch.in;
-#X text 46 173 Pd Vanilla has [polytouch] for polyphonic aftertouch. The ELSE library has [ptouch.in] wich outputs the data in a different order than the Vanilla counterpart and more like the note message \, where the pitch comes first., f 81;
+#X text 46 173 Pd Vanilla has [polytouch] for polyphonic aftertouch. The ELSE library has [ptouch.in] which outputs the data in a different order than the Vanilla counterpart and more like the note message \, where the pitch comes first., f 81;
 #X msg 128 269 160 \, 60 \, 0;
 #X msg 114 246 160 \, 69 \, 127;
 #X text 212 245 Key Aftertouch in channel 1 \, key (60) \, Aftertouch (127);

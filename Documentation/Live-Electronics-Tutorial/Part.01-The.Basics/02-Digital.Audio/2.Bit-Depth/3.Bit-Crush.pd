@@ -39,7 +39,7 @@
 #X obj 319 500 expr~ rint($v1*$f2)/$f2;
 #X text 602 481 The parameters vary from 0 to 1 \, where 0 is the original sound and the higher the parameter is \, the more crushing/decimation we have., f 42;
 #X text 336 428 And here's how to perform one type of signal rounding with [expr~]:, f 27;
-#X text 21 80 The [quantizer~] object \, from ELSE \, performs different types of rounding (check its help file) and can be used for this (it is also multichannel aware \, cehck its help file). It receives a step value and rounds to multiples of it. In this example \, we find a step value according to a bit depth resolution., f 64;
+#X text 21 80 The [quantizer~] object \, from ELSE \, performs different types of rounding (check its help file) and can be used for this (it is also multichannel aware \, check its help file). It receives a step value and rounds to multiples of it. In this example \, we find a step value according to a bit depth resolution., f 64;
 #X connect 1 0 5 1;
 #X connect 5 0 0 0;
 #X connect 5 0 12 0;

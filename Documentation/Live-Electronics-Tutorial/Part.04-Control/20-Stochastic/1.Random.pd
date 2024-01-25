@@ -8,7 +8,7 @@ and also many stochastic processes common in computer music. But first
 let's talk about the simplest form of probability distribution \, which
 is a "uniform distribution". This means that all events have the same
 chance of occurring and this is opposed to what is known as a weighted
-random \, where particular elements can have more chances of occuring
+random \, where particular elements can have more chances of occurring
 than others (which is defined by a probability density function).,
 f 61;
 #X text 130 383 - vanilla object for generating integer random numbers
@@ -38,7 +38,7 @@ f 61;
 #X obj 102 279 white~;
 #X text 48 181 Hence \, all regular random (that is "unformly distributed"
 random) objects in Pd are "stochastic. We've seen many of them already
-in this tutorial \, let's now list them all. Starting wit white noise
+in this tutorial \, let's now list them all. Starting with white noise
 generators \, which are also random number generators with a uniform
 distribution., f 61;
 #X text 156 279 - White noise;

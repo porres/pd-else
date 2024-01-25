@@ -19,7 +19,7 @@
 #X floatatom 213 357 5 0 0 0 - - - 0;
 #X listbox 88 472 17 0 0 0 - - - 0;
 #X text 250 407 There's no way to convert a multichhanel signal to a list of floats in Vanilla \, but the [sig2float~] object from ELSE does that. ELSE also provides [sigs~] \, a multichannel version of [sig~] that is similar to a [snake~ in] object but has the convenience to set the values as arguments., f 74;
-#X text 475 83 Note the the [float2sig~] object can also generate multichannel signals. In this case \, the object can take lists of different lenghts and adjust the number of channels accordingly., f 38;
+#X text 475 83 Note the the [float2sig~] object can also generate multichannel signals. In this case \, the object can take lists of different lengths and adjust the number of channels accordingly., f 38;
 #X obj 639 240 nbx 5 14 0 1000 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 698 239 ramp time;
 #X listbox 495 232 15 0 0 0 - - - 12;

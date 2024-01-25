@@ -96,7 +96,7 @@ this loss \, so it acts like a frequency cutoff., f 51;
 #dcdcdc #000000 #000000 0 256;
 #X text 11 9 The "Z-plane" also refers to the "Z Transform" and is
 a complex plane with a real (horizontal) and imaginary (vertical) axis.
-It plots Poles (with an "X") and Zeros (with "O") whose location represets
+It plots Poles (with an "X") and Zeros (with "O") whose location represents
 the frequency and the coefficcient's amplitude., f 64;
 #X obj 772 66 hsl 128 15 20 7050 0 0 \$0-hip xxx empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;

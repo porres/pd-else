@@ -12,7 +12,7 @@
 #X obj 122 301 bl.saw~;
 #X obj 122 272 rescale 50 200;
 #X obj 352 195 impulse~ 10;
-#X text 42 67 These objects are for "brownian motion" \, which is a type of random walk. The difference to "drunkard" is that we have the same probability to go up or down and when we reach the bounds the values are folded back. We've seen [brown~] before as a "brown noise" generator. If there's a signal conected to it \, it takes impulses to generate new random steps. Check the help files., f 67;
+#X text 42 67 These objects are for "brownian motion" \, which is a type of random walk. The difference to "drunkard" is that we have the same probability to go up or down and when we reach the bounds the values are folded back. We've seen [brown~] before as a "brown noise" generator. If there's a signal connected to it \, it takes impulses to generate new random steps. Check the help files., f 67;
 #X text 96 416 Brownian motion is the basis of a stochastic synthesis technique by Iannis Xenakis called "dynamic stochastic synthesis". We'll see it in Part.11-Synthesis(Advanced)!;
 #X connect 0 0 10 0;
 #X connect 1 0 5 0;

@@ -12,14 +12,14 @@
 #X obj 244 175 outlet;
 #X obj 244 129 + 2;
 #X text 99 58 LEFT INLET;
-#X text 232 55 RIGH INLET;
 #X text 85 37 Corresponds to;
 #X text 216 37 Corresponds to;
 #X text 89 209 Corresponds to;
 #X text 220 209 Corresponds to;
 #X text 100 229 LEFT OUTLET;
-#X text 236 227 RIGH OUTLET;
 #X text 57 284 Note that the name of the subpatch is shown in the title bar on top of the patch window!, f 45;
+#X text 229 55 RIGHT INLET;
+#X text 236 229 RIGHT OUTLET;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X connect 3 0 5 0;

@@ -30,9 +30,9 @@
 #X text 505 366 0 Volts reference value is "60"., f 17;
 #X text 504 490 Now we have 1 volt per octave values!, f 22;
 #X obj 310 265 setdsp~;
-#X text 31 17 A convesion from MIDI to CV would look like this and you can send it out to a modular system via a regular [dac~] output. By the way \, you need proper gear such as a DC coupled audio interface to send and receive CV values \, or a specialized module. Calibration is also needed to get the right value in and out of Pd., f 68;
+#X text 31 17 A conversion from MIDI to CV would look like this and you can send it out to a modular system via a regular [dac~] output. By the way \, you need proper gear such as a DC coupled audio interface to send and receive CV values \, or a specialized module. Calibration is also needed to get the right value in and out of Pd., f 68;
 #X text 492 416 Let's consider a -5V to +5V range. All we need is to multiply by the CV out by 5 \, or divide by 12 instead of 60!, f 39;
-#X text 425 108 A convesion from MIDI to CV in a particular standard range must take that into account and convert properly. Say \, for instance \, you want a -5v to +5v standard. We then need to rescale to this range., f 47;
+#X text 425 108 A conversion from MIDI to CV in a particular standard range must take that into account and convert properly. Say \, for instance \, you want a -5v to +5v standard. We then need to rescale to this range., f 47;
 #X text 386 541 This isn't really useful for practical terms because if you need to send values out of Pd you have to send signals in the -1 to +1 range. Therefore we won't deal with such kind of conversion here in this tutorial., f 52;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;

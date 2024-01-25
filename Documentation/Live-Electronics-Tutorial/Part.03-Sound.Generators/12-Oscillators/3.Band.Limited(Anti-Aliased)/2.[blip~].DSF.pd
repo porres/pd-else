@@ -16,7 +16,7 @@
 #X obj 517 101 blip~ 200 20;
 #X text 33 60 The [gbuzz~] object from ELSE is based on a CSound opcode
 and is a band-limited oscillator that can generate different waveforms
-\, incluing a band limited impulse just like you get with [bl.osc~
+\, including a band limited impulse just like you get with [bl.osc~
 imp]. This means it provides band limiting by limiting the number of
 partials \, so beware that you can still generate aliasing if you have
 too many partials and a high enough fundamental., f 63;

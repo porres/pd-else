@@ -13,7 +13,6 @@
 #X msg 141 304 11025;
 #X msg 153 332 5512.5;
 #X obj 67 415 downsample~;
-#X text 20 124 Nonethelees \, in this section \, we'll focus in downsampling in order to change the sound quality. In other words \, for sound generating purposes \, and not random/stochastic control. Let's start with [white~] \, which has energy equally distributed over the whole spectral range. Let's listen and see what happens when we downsample. We can hear artifacts from aliasing \, since we're reducing the sample rate \, but the energy is still present throughout the spectrum. We can see dips in the spectrograph when we use half or one fourth of the sample rate more clearly \, even more if we have the interpolation mode on. This shows us that the spectral image gets "mirrorred" and copied., f 72;
 #X msg 673 197 interp \$1;
 #X obj 673 170 tgl 16 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 600 417 out~;
@@ -28,6 +27,7 @@
 #X obj 864 386 out~;
 #X text 601 509 ELSE also has [stepnoise~] and [rampnoise~] which are white noise being downsample without ("step") and with ("ramp") interpolation., f 32;
 #X text 367 425 [spectograph~];
+#X text 20 124 Nonethelees \, in this section \, we'll focus in downsampling in order to change the sound quality. In other words \, for sound generating purposes \, and not random/stochastic control. Let's start with [white~] \, which has energy equally distributed over the whole spectral range. Let's listen and see what happens when we downsample. We can hear artifacts from aliasing \, since we're reducing the sample rate \, but the energy is still present throughout the spectrum. We can see dips in the spectrograph when we use half or one fourth of the sample rate more clearly \, even more if we have the interpolation mode on. This shows us that the spectral image gets "mirrored" and copied., f 72;
 #X connect 0 0 12 1;
 #X connect 2 0 0 0;
 #X connect 3 0 12 0;
@@ -37,10 +37,10 @@
 #X connect 11 0 2 0;
 #X connect 12 0 7 0;
 #X connect 12 0 1 0;
-#X connect 14 0 20 0;
-#X connect 15 0 14 0;
-#X connect 17 0 16 0;
-#X connect 18 0 20 0;
-#X connect 20 0 17 0;
+#X connect 13 0 19 0;
+#X connect 14 0 13 0;
+#X connect 16 0 15 0;
+#X connect 17 0 19 0;
+#X connect 19 0 16 0;
+#X connect 21 0 23 0;
 #X connect 22 0 24 0;
-#X connect 23 0 25 0;

@@ -36,7 +36,7 @@
 #X text 16 336 To avoid an infinite loop \, we need to perform a feedback with a delay of one block of audio (also simply known as a "feedback loop"). This can be done with native object pairs such as: [send~]/[receive~] \, [tabsend~]/[tabreceive~] \, [throw~]/[catch~] and also [delwrite~]/[delread~](or)[delread4~] (delay objects)., f 63;
 #X text 615 197 For 1 sample feedback loop see:, f 21;
 #N canvas 680 23 497 349 1-sample-feedback 0;
-#X text 46 28 The default block size is 64 and this is needed for [adc~] and [dac~] objects \, but we usualy need to perform feedback loops with a block size of just 1 sample \, as we'll do in this tutorial in some examples for some DSP algorithms., f 59;
+#X text 46 28 The default block size is 64 and this is needed for [adc~] and [dac~] objects \, but we usually need to perform feedback loops with a block size of just 1 sample \, as we'll do in this tutorial in some examples for some DSP algorithms., f 59;
 #X obj 273 213 +~ 1;
 #X obj 273 182 r~ \$0-fb;
 #X obj 298 245 s~ \$0-fb;

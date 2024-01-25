@@ -1,7 +1,6 @@
 #N canvas 312 23 939 723 12;
 #X declare -path else;
-#X obj 439 76 vsl 22 157 0 1.1 0 0 \$0-gain-send \$0-gain empty 0 -9
-0 10 #404040 #fc0400 #000000 0 1;
+#X obj 439 76 vsl 22 157 0 1.1 0 0 \$0-gain-send \$0-gain empty 0 -9 0 10 #404040 #fc0400 #000000 0 1;
 #X obj 446 124 cnv 5 5 5 empty empty G 0 0 0 14 #404040 #fcfcfc 0;
 #X obj 446 140 cnv 5 5 5 empty empty A 0 0 0 14 #404040 #fcfcfc 0;
 #X obj 446 156 cnv 5 5 5 empty empty I 0 0 0 14 #404040 #fcfcfc 0;
@@ -9,12 +8,10 @@
 #X obj 331 347 noise~;
 #X obj 331 440 out~;
 #X obj 446 176 cnv 5 5 5 empty empty N 0 0 0 14 #404040 #fcfcfc 0;
-#X obj 92 353 hsl 128 15 20 22050 1 0 empty empty empty -2 -8 0 10
-#dcdcdc #000000 #000000 0 1;
+#X obj 92 353 hsl 128 15 20 22050 1 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X floatatom 89 385 0 0 0 0 - - - 0;
 #X obj 89 454 s \$0-coeffs;
-#X obj 247 400 nbx 5 14 -24 24 0 0 empty empty empty 0 -8 0 10 #dcdcdc
-#000000 #000000 0 256;
+#X obj 247 400 nbx 5 14 -24 24 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 118 351 frequency;
 #X text 166 375 Q/Slope;
 #X obj 89 423 bicoeff2 lowpass 500 10;
@@ -42,13 +39,9 @@
 #X obj 347 172 highshelf~;
 #X obj 427 172 lowshelf~;
 #X obj 499 172 allpass.2nd~;
-#X text 261 27 Note that all of these filters are also implemented
-in single separate objects in the ELSE library \, and the main difference
-is that they take signal input to control the parameters. Another difference
-is that only [eq~] \, [lowshelf~] and [highshelf~] have a gain input.
-, f 54;
+#X text 261 27 Note that all of these filters are also implemented in single separate objects in the ELSE library \, and the main difference is that they take signal input to control the parameters. Another difference is that only [eq~] \, [lowshelf~] and [highshelf~] have a gain input., f 54;
 #X text 273 228 see also: [bicoeff];
-#X obj 265 262 bicoeff;
+#X obj 265 262 bicoeff 450 150 peaking;
 #X connect 0 0 9 0;
 #X connect 1 0 9 0;
 #X connect 2 0 9 0;
@@ -60,10 +53,9 @@ is that only [eq~] \, [lowshelf~] and [highshelf~] have a gain input.
 #X connect 8 0 9 0;
 #X connect 11 0 0 0;
 #X restore 32 316 pd menu;
-#X obj 168 400 nbx 5 14 0 100 0 0 empty empty empty 0 -8 0 10 #dcdcdc
-#000000 #000000 0 256;
+#X obj 168 400 nbx 5 14 0 100 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 777 32 declare -path else;
-#N canvas 345 23 1021 510 vanilla 0;
+#N canvas 345 23 1021 510 vanilla 1;
 #N canvas 114 184 549 267 lowpass 0;
 #X obj 39 165 pack f f f f f;
 #X obj 164 165 v b0;
@@ -78,13 +70,8 @@ is that only [eq~] \, [lowshelf~] and [highshelf~] have a gain input.
 #X connect 3 0 2 0;
 #X restore 39 21 pd get-coef;
 #X obj 206 165 v alphaQ;
-#X text 272 34 LPF \; - b1 = 2*cos(w) / b0 \; - b2 = (alphaQ - 1) /
-b0 \; - a0 = (1-cos(w)) / (2*b0) \; - a1 = (1-cos(w)) / b0 \; - a2
-= (1-cos(w)) / (2*b0) \; - b0 = alphaQ + 1 \; - alphaQ = sin(w) / (2*Q)
-;
-#X obj 39 47 expr 2*cos(w) / b0 \; (alphaQ - 1) / b0 \; (1 - cos(w))
-/ (2*b0) \; (1 - cos(w)) / b0 \; (1 - cos(w)) / (2*b0) \; alphaQ +
-1 \; sin(w) / (2*Q);
+#X text 272 34 LPF \; - b1 = 2*cos(w) / b0 \; - b2 = (alphaQ - 1) / b0 \; - a0 = (1-cos(w)) / (2*b0) \; - a1 = (1-cos(w)) / b0 \; - a2 = (1-cos(w)) / (2*b0) \; - b0 = alphaQ + 1 \; - alphaQ = sin(w) / (2*Q);
+#X obj 39 47 expr 2*cos(w) / b0 \; (alphaQ - 1) / b0 \; (1 - cos(w)) / (2*b0) \; (1 - cos(w)) / b0 \; (1 - cos(w)) / (2*b0) \; alphaQ + 1 \; sin(w) / (2*Q);
 #X obj 39 197 s \$0-coeffs;
 #X connect 0 0 7 0;
 #X connect 3 0 6 0;
@@ -108,15 +95,10 @@ b0 \; - a0 = (1-cos(w)) / (2*b0) \; - a1 = (1-cos(w)) / b0 \; - a2
 #X connect 2 0 3 0;
 #X connect 3 0 1 0;
 #X restore 15 40 pd get-coef;
-#X text 213 50 HPF \; - b1 = 2*cos(w) / b0 \; - b2 = (alphaQ - 1) /
-b0 \; - a0 = (1 + cos(w)) / (2*b0) \; - a1 = -(1 + cos(w)) / b0 \;
-- a2 = (1 + cos(w)) / (2*b0) \; - b0 = alphaQ + 1 \; - alphaQ = sin(w)
-/ (2*Q);
+#X text 213 50 HPF \; - b1 = 2*cos(w) / b0 \; - b2 = (alphaQ - 1) / b0 \; - a0 = (1 + cos(w)) / (2*b0) \; - a1 = -(1 + cos(w)) / b0 \; - a2 = (1 + cos(w)) / (2*b0) \; - b0 = alphaQ + 1 \; - alphaQ = sin(w) / (2*Q);
 #X obj 140 191 v b0;
 #X obj 191 191 v alphaQ;
-#X obj 15 76 expr 2*cos(w) / b0 \; (alphaQ - 1) / b0 \; (cos(w) + 1)
-/ (2*b0) \; -(cos(w) + 1) / b0 \; (cos(w) + 1) / (2*b0) \; alphaQ +
-1 \; sin(w) / (2*Q);
+#X obj 15 76 expr 2*cos(w) / b0 \; (alphaQ - 1) / b0 \; (cos(w) + 1) / (2*b0) \; -(cos(w) + 1) / b0 \; (cos(w) + 1) / (2*b0) \; alphaQ + 1 \; sin(w) / (2*Q);
 #X obj 15 228 s \$0-coeffs;
 #X connect 0 0 7 0;
 #X connect 2 0 6 0;
@@ -141,11 +123,8 @@ b0 \; - a0 = (1 + cos(w)) / (2*b0) \; - a1 = -(1 + cos(w)) / b0 \;
 #X connect 3 0 1 0;
 #X restore 186 48 pd get-coef;
 #X obj 344 232 v alphaQ;
-#X obj 186 96 expr 2*cos(w) / b0 \; (alphaQ - 1) / b0 \; alphaQ / b0
-\; 0 \; -alphaQ / b0 \; alphaQ + 1 \; sin(w) / (2*Q);
-#X text 366 70 BPF \; - b1 = 2*cos(w) / b0 \; - b2 = (alphaQ - 1) /
-b0 \; - a0 = alphaQ / b0 \; - a1 = 0 \; - a2 = -alphaQ / b0 \; - b0
-= alphaQ + 1 \; - alphaQ = sin(w) / (2*Q);
+#X obj 186 96 expr 2*cos(w) / b0 \; (alphaQ - 1) / b0 \; alphaQ / b0 \; 0 \; -alphaQ / b0 \; alphaQ + 1 \; sin(w) / (2*Q);
+#X text 366 70 BPF \; - b1 = 2*cos(w) / b0 \; - b2 = (alphaQ - 1) / b0 \; - a0 = alphaQ / b0 \; - a1 = 0 \; - a2 = -alphaQ / b0 \; - b0 = alphaQ + 1 \; - alphaQ = sin(w) / (2*Q);
 #X obj 65 264 s \$0-coeffs;
 #X connect 0 0 6 0;
 #X connect 2 0 4 0;
@@ -170,11 +149,8 @@ b0 \; - a0 = alphaQ / b0 \; - a1 = 0 \; - a2 = -alphaQ / b0 \; - b0
 #X connect 3 0 1 0;
 #X restore 92 33 pd get-coef;
 #X obj 222 174 v alphaQ;
-#X obj 92 67 expr 2*cos(w) / b0 \; (alphaQ - 1) / b0 \; alphaQ * Q
-/ b0 \; 0 \; -alphaQ * Q / b0 \; alphaQ + 1 \; sin(w) / (2*Q);
-#X text 272 51 Resonant \; - b1 = 2*cos(w) / b0 \; - b2 = (alphaQ -
-1) / b0 \; - a0 = alphaQ * Q / b0 \; - a1 = 0 \; - a2 = -alphaQ * Q
-/ b0 \; - b0 = alphaQ + 1 \; - alphaQ = sin(w) / (2*Q);
+#X obj 92 67 expr 2*cos(w) / b0 \; (alphaQ - 1) / b0 \; alphaQ * Q / b0 \; 0 \; -alphaQ * Q / b0 \; alphaQ + 1 \; sin(w) / (2*Q);
+#X text 272 51 Resonant \; - b1 = 2*cos(w) / b0 \; - b2 = (alphaQ - 1) / b0 \; - a0 = alphaQ * Q / b0 \; - a1 = 0 \; - a2 = -alphaQ * Q / b0 \; - b0 = alphaQ + 1 \; - alphaQ = sin(w) / (2*Q);
 #X obj 85 223 s \$0-coeffs;
 #X connect 1 0 6 0;
 #X connect 2 0 4 0;
@@ -199,13 +175,8 @@ b0 \; - a0 = alphaQ / b0 \; - a1 = 0 \; - a2 = -alphaQ / b0 \; - b0
 #X connect 3 0 1 0;
 #X restore 67 50 pd get-coef;
 #X obj 203 192 v alphaQ;
-#X obj 67 81 expr 2*cos(w) / b0 \; (alphaQ/G - 1) / b0 \; (1 + alphaQ*G)
-/ b0 \; -2*cos(w) / b0 \; (1 - alphaQ*G) / b0 \; alphaQ/G + 1 \; sin(w)
-/ (2*Q) \;;
-#X text 227 63 Peak \; - b1 = 2*cos(w) / bO \; - b2 = (alphaQ/G - 1)
-/ b0 \; - a0 = (1 + alphaQ*G) / b0 \; - a1 = -2*cos(w) / b0 \; - a2
-= (1 - alphaQ*G) / b0 \; - b0 = alphaQ/G + 1 \; - alphaQ = sin(w) /
-(2*Q);
+#X obj 67 81 expr 2*cos(w) / b0 \; (alphaQ/G - 1) / b0 \; (1 + alphaQ*G) / b0 \; -2*cos(w) / b0 \; (1 - alphaQ*G) / b0 \; alphaQ/G + 1 \; sin(w) / (2*Q) \;;
+#X text 227 63 Peak \; - b1 = 2*cos(w) / bO \; - b2 = (alphaQ/G - 1) / b0 \; - a0 = (1 + alphaQ*G) / b0 \; - a1 = -2*cos(w) / b0 \; - a2 = (1 - alphaQ*G) / b0 \; - b0 = alphaQ/G + 1 \; - alphaQ = sin(w) / (2*Q);
 #X obj 60 249 s \$0-coeffs;
 #X connect 0 0 6 0;
 #X connect 2 0 4 0;
@@ -230,16 +201,8 @@ b0 \; - a0 = alphaQ / b0 \; - a1 = 0 \; - a2 = -alphaQ / b0 \; - b0
 #X connect 3 0 1 0;
 #X restore 46 42 pd get-coef;
 #X obj 337 187 v alphaS;
-#X obj 46 73 expr 2*(G-1 + (G+1)*cos(w)) / b0 \; -(G+1 + (G-1)*cos(w)
-- alphaS) / b0 \; G*(G+1 - (G-1)*cos(w) + alphaS) / b0 \; 2*G*(G-1
-- (G+1)*cos(w)) / b0 \; G*(G+1 - (G-1)*cos(w) - alphaS) / b0 \; G+1
-+ (G-1)*cos(w) + alphaS \; sin(w) * sqrt((G*G + 1) * (1/S - 1) + 2*G)
-;
-#X text 378 49 LowShelf \; - b1 = 2*(G-1 + (G+1)*cos(w)) / b0 \; -
-b2 = -(G+1 + (G-1)*cos(w) - alphaS) / b0 \; - a0 = G*(G+1 - (G-1)*cos(w)
-+ alphaS) / b0 \; - a1 = 2*G*(G-1 - (G+1)*cos(w)) / b0 \; - a2 = G*(G+1
-- (G-1)*cos(w) - alphaS) / b0 \; - b0 = G+1 + (G-1)*cos(w) + alphaS
-\; - alphaS = sin(w)*sqrt((G*G + 1) * (1/S - 1) + 2*G);
+#X obj 46 73 expr 2*(G-1 + (G+1)*cos(w)) / b0 \; -(G+1 + (G-1)*cos(w) - alphaS) / b0 \; G*(G+1 - (G-1)*cos(w) + alphaS) / b0 \; 2*G*(G-1 - (G+1)*cos(w)) / b0 \; G*(G+1 - (G-1)*cos(w) - alphaS) / b0 \; G+1 + (G-1)*cos(w) + alphaS \; sin(w) * sqrt((G*G + 1) * (1/S - 1) + 2*G);
+#X text 378 49 LowShelf \; - b1 = 2*(G-1 + (G+1)*cos(w)) / b0 \; - b2 = -(G+1 + (G-1)*cos(w) - alphaS) / b0 \; - a0 = G*(G+1 - (G-1)*cos(w) + alphaS) / b0 \; - a1 = 2*G*(G-1 - (G+1)*cos(w)) / b0 \; - a2 = G*(G+1 - (G-1)*cos(w) - alphaS) / b0 \; - b0 = G+1 + (G-1)*cos(w) + alphaS \; - alphaS = sin(w)*sqrt((G*G + 1) * (1/S - 1) + 2*G);
 #X obj 120 227 s \$0-coeffs;
 #X connect 1 0 6 0;
 #X connect 2 0 4 0;
@@ -264,11 +227,8 @@ b2 = -(G+1 + (G-1)*cos(w) - alphaS) / b0 \; - a0 = G*(G+1 - (G-1)*cos(w)
 #X restore 31 24 pd get-coef;
 #X obj 138 172 v b0;
 #X obj 176 172 v alphaQ;
-#X obj 31 61 expr 2*cos(w) / b0 \; (alphaQ - 1) / b0 \; (1 - alphaQ)
-/ b0 \; -2*cos(w) / b0 \; 1 \; alphaQ + 1 \; sin(w) / (2*Q);
-#X text 225 44 APF \; - b1 = 2*cos(w) / b0 \; - b2 = (alphaQ - 1) /
-b0 \; - a0 = (1 - alphaQ) / b0 \; - a1 = -2*cos(w) / b0 \; - a2 = 1
-\; - b0 = 1 + alphaQ \; - alphaQ = sin(w) / (2*Q);
+#X obj 31 61 expr 2*cos(w) / b0 \; (alphaQ - 1) / b0 \; (1 - alphaQ) / b0 \; -2*cos(w) / b0 \; 1 \; alphaQ + 1 \; sin(w) / (2*Q);
+#X text 225 44 APF \; - b1 = 2*cos(w) / b0 \; - b2 = (alphaQ - 1) / b0 \; - a0 = (1 - alphaQ) / b0 \; - a1 = -2*cos(w) / b0 \; - a2 = 1 \; - b0 = 1 + alphaQ \; - alphaQ = sin(w) / (2*Q);
 #X obj 25 203 s \$0-coeffs;
 #X connect 0 0 6 0;
 #X connect 1 0 4 0;
@@ -293,16 +253,8 @@ b0 \; - a0 = (1 - alphaQ) / b0 \; - a1 = -2*cos(w) / b0 \; - a2 = 1
 #X obj 281 175 v b0;
 #X obj 113 180 pack f f f f f;
 #X obj 330 176 v alphaS;
-#X obj 39 57 expr -2*(G-1 - (G+1)*cos(w)) / b0 \; -(G+1 - (G-1)*cos(w)
--alphaS) / b0 \; G*(G+1 + (G-1)*cos(w) + alphaS) / b0 \; -2*G*(G-1
-+ (G+1)*cos(w)) / b0 \; G*(G+1 + (G-1)*cos(w) - alphaS) / b0 \; (G+1)
-- (G-1)*cos(w) + alphaS \; sin(w) * sqrt((G*G + 1) * (1/S - 1) + 2*G)
-;
-#X text 379 43 HighShelf \; - b1 = -2*(G-1 - (G+1)*cos(w)) / b0 \;
-- b2 = -(G+1 - (G-1)*cos(w) -alphaS) / b0 \; - a0 = G*(G+1 + (G-1)*cos(w)
-+ alphaS) / b0 \; - a1 = -2*G*(G-1 + (G+1)*cos(w)) / b0 \; - a2 = G*(G+1
-+ (G-1)*cos(w) - alphaS) / b0 \; - b0 = (G+1) - (G-1)*cos(w) + alphaS
-\; - alphaS = sin(w) * sqrt((G*G + 1) * (1/S - 1) + 2*G);
+#X obj 39 57 expr -2*(G-1 - (G+1)*cos(w)) / b0 \; -(G+1 - (G-1)*cos(w) -alphaS) / b0 \; G*(G+1 + (G-1)*cos(w) + alphaS) / b0 \; -2*G*(G-1 + (G+1)*cos(w)) / b0 \; G*(G+1 + (G-1)*cos(w) - alphaS) / b0 \; (G+1) - (G-1)*cos(w) + alphaS \; sin(w) * sqrt((G*G + 1) * (1/S - 1) + 2*G);
+#X text 379 43 HighShelf \; - b1 = -2*(G-1 - (G+1)*cos(w)) / b0 \; - b2 = -(G+1 - (G-1)*cos(w) -alphaS) / b0 \; - a0 = G*(G+1 + (G-1)*cos(w) + alphaS) / b0 \; - a1 = -2*G*(G-1 + (G+1)*cos(w)) / b0 \; - a2 = G*(G+1 + (G-1)*cos(w) - alphaS) / b0 \; - b0 = (G+1) - (G-1)*cos(w) + alphaS \; - alphaS = sin(w) * sqrt((G*G + 1) * (1/S - 1) + 2*G);
 #X obj 113 212 s \$0-coeffs;
 #X connect 0 0 4 0;
 #X connect 2 0 6 0;
@@ -339,19 +291,13 @@ b0 \; - a0 = (1 - alphaQ) / b0 \; - a1 = -2*cos(w) / b0 \; - a2 = 1
 #X obj 380 451 s \$0-nyquist;
 #X obj 380 390 sr~;
 #X text 330 391 init:;
-#X obj 212 164 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
-#dcdcdc #000000 #000000 0 256;
-#X obj 447 164 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 14
-#dcdcdc #000000 #000000 0 256;
-#X obj 326 164 nbx 5 18 0 100 0 0 empty empty empty 0 -8 0 14 #dcdcdc
-#000000 #000000 0 256;
-#X text 44 74 First \, the frequency value in Hz is converted to radians
-per sample. The gain input value in dB is also converted to linear
-amplitude.;
+#X obj 212 164 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12 #dcdcdc #000000 #000000 0 256;
+#X obj 447 164 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 14 #dcdcdc #000000 #000000 0 256;
+#X obj 326 164 nbx 5 18 0 100 0 0 empty empty empty 0 -8 0 14 #dcdcdc #000000 #000000 0 256;
+#X text 44 74 First \, the frequency value in Hz is converted to radians per sample. The gain input value in dB is also converted to linear amplitude.;
 #X obj 595 304 display;
 #X text 66 172 Filter type;
-#X obj 67 201 vradio 18 1 0 9 empty empty empty 0 -8 0 10 #dcdcdc #000000
-#000000 0;
+#X obj 67 201 vradio 18 1 0 9 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0;
 #X obj 67 388 trigger bang float;
 #X obj 190 441 v type_\$0;
 #X obj 67 440 s \$0-get-coeff;
@@ -363,10 +309,7 @@ amplitude.;
 #X text 91 308 lowshelf;
 #X text 91 326 highshelf;
 #X text 91 345 allpass;
-#X text 538 25 The calculation is done in the subpatches below. For
-a comparison of all formulas \, open the [pd formulas] subpatch below.
-To check the implementation of each filter \, open the corresponding
-subpatch., f 48;
+#X text 538 25 The calculation is done in the subpatches below. For a comparison of all formulas \, open the [pd formulas] subpatch below. To check the implementation of each filter \, open the corresponding subpatch., f 48;
 #N canvas 447 145 493 279 bandstop 0;
 #X obj 54 173 pack f f f f f;
 #X obj 162 174 v b0;
@@ -380,11 +323,8 @@ subpatch., f 48;
 #X connect 3 0 1 0;
 #X restore 54 25 pd get-coef;
 #X obj 202 174 v alphaQ;
-#X obj 54 61 expr 2*cos(w) / b0 \; (alphaQ - 1) / b0 \; 1 / b0 \; -2*cos(w)
-/ b0 \; 1 / b0 \; alphaQ + 1 \; sin(w) / (2*Q);
-#X text 235 43 Notch \; - b1 = 2*cos(w) / b0 \; - b2 = (alphaQ - 1)
-/ b0 \; - a0 = 1 / b0 \; - a1 = -2*cos(w) / b0 \; - a2 = 1 / b0 \;
-- b0 = alphaQ + 1 \; - alphaQ = sin(w) / (2*Q);
+#X obj 54 61 expr 2*cos(w) / b0 \; (alphaQ - 1) / b0 \; 1 / b0 \; -2*cos(w) / b0 \; 1 / b0 \; alphaQ + 1 \; sin(w) / (2*Q);
+#X text 235 43 Notch \; - b1 = 2*cos(w) / b0 \; - b2 = (alphaQ - 1) / b0 \; - a0 = 1 / b0 \; - a1 = -2*cos(w) / b0 \; - a2 = 1 / b0 \; - b0 = alphaQ + 1 \; - alphaQ = sin(w) / (2*Q);
 #X obj 54 209 s \$0-coeffs;
 #X connect 0 0 6 0;
 #X connect 2 0 4 0;
@@ -400,51 +340,25 @@ subpatch., f 48;
 #X obj 610 336 noise~;
 #X obj 595 409 out~;
 #N canvas 304 125 874 502 all_formulas 0;
-#X text 503 136 LowShelf \; - b0 = G+1 + (G-1)*cos(w) + alphaS \; -
-b1 = 2*(G-1 + (G+1)*cos(w)) / b0 \; - b2 = -(G+1 + (G-1)*cos(w) - alphaS)
-/ b0 \; - a0 = G*(G+1 - (G-1)*cos(w) + alphaS) / b0 \; - a1 = 2*G*(G-1
-- (G+1)*cos(w)) / b0 \; - a2 = G*(G+1 - (G-1)*cos(w) - alphaS) / b0
-\;;
-#X text 272 355 Peak \; - b0 = alphaQ/G + 1 \; - b1 = 2*cos(w) / bO
-\; - b2 = (alphaQ/G - 1) / b0 \; - a0 = (1 + alphaQ*G) / b0 \; - a1
-= -2*cos(w) / b0 \; - a2 = (1 - alphaQ*G) / b0;
-#X text 506 247 HighShelf \; - b0 = (G+1) - (G-1)*cos(w) + alphaS \;
-- b1 = -2*(G-1 - (G+1)*cos(w)) / b0 \; - b2 = -(G+1 - (G-1)*cos(w)
--alphaS) / b0 \; - a0 = G*(G+1 + (G-1)*cos(w) + alphaS) / b0 \; - a1
-= -2*G*(G-1 + (G+1)*cos(w)) / b0 \; - a2 = G*(G+1 + (G-1)*cos(w) -
-alphaS) / b0;
-#X text 63 244 Resonant \; - b0 = alphaQ + 1 \; - b1 = 2*cos(w) / b0
-\; - b2 = (alphaQ - 1) / b0 \; - a0 = alphaQ * Q / b0 \; - a1 = 0 \;
-- a2 = -alphaQ * Q / b0;
-#X text 56 133 Lowpass \; - b0 = alphaQ + 1 \; - b1 = 2*cos(w) / b0
-\; - b2 = (alphaQ - 1) / b0 \; - a0 = (1-cos(w)) / (2*b0) \; - a1 =
-(1-cos(w)) / b0 \; - a2 = (1-cos(w)) / (2*b0);
-#X text 265 132 Highpass \; - b0 = alphaQ + 1 \; - b1 = 2*cos(w) /
-b0 \; - b2 = (alphaQ - 1) / b0 \; - a0 = (1 + cos(w)) / (2*b0) \; -
-a1 = -(1 + cos(w)) / b0 \; - a2 = (1 + cos(w)) / (2*b0);
-#X text 66 356 Bandpass \; - b0 = alphaQ + 1 \; - b1 = 2*cos(w) / b0
-\; - b2 = (alphaQ - 1) / b0 \; - a0 = alphaQ / b0 \; - a1 = 0 \; -
-a2 = -alphaQ / b0;
-#X text 518 360 Allpass \; - b0 = 1 + alphaQ \; - b1 = 2*cos(w) / b0
-\; - b2 = (alphaQ - 1) / b0 \; - a0 = (1 - alphaQ) / b0 \; - a1 = -2*cos(w)
-/ b0 \; - a2 = 1;
-#X text 87 39 For all resonant filters \, "alphaQ" is calculated as:
-, f 34;
+#X text 503 136 LowShelf \; - b0 = G+1 + (G-1)*cos(w) + alphaS \; - b1 = 2*(G-1 + (G+1)*cos(w)) / b0 \; - b2 = -(G+1 + (G-1)*cos(w) - alphaS) / b0 \; - a0 = G*(G+1 - (G-1)*cos(w) + alphaS) / b0 \; - a1 = 2*G*(G-1 - (G+1)*cos(w)) / b0 \; - a2 = G*(G+1 - (G-1)*cos(w) - alphaS) / b0 \;;
+#X text 272 355 Peak \; - b0 = alphaQ/G + 1 \; - b1 = 2*cos(w) / bO \; - b2 = (alphaQ/G - 1) / b0 \; - a0 = (1 + alphaQ*G) / b0 \; - a1 = -2*cos(w) / b0 \; - a2 = (1 - alphaQ*G) / b0;
+#X text 506 247 HighShelf \; - b0 = (G+1) - (G-1)*cos(w) + alphaS \; - b1 = -2*(G-1 - (G+1)*cos(w)) / b0 \; - b2 = -(G+1 - (G-1)*cos(w) -alphaS) / b0 \; - a0 = G*(G+1 + (G-1)*cos(w) + alphaS) / b0 \; - a1 = -2*G*(G-1 + (G+1)*cos(w)) / b0 \; - a2 = G*(G+1 + (G-1)*cos(w) - alphaS) / b0;
+#X text 63 244 Resonant \; - b0 = alphaQ + 1 \; - b1 = 2*cos(w) / b0 \; - b2 = (alphaQ - 1) / b0 \; - a0 = alphaQ * Q / b0 \; - a1 = 0 \; - a2 = -alphaQ * Q / b0;
+#X text 56 133 Lowpass \; - b0 = alphaQ + 1 \; - b1 = 2*cos(w) / b0 \; - b2 = (alphaQ - 1) / b0 \; - a0 = (1-cos(w)) / (2*b0) \; - a1 = (1-cos(w)) / b0 \; - a2 = (1-cos(w)) / (2*b0);
+#X text 265 132 Highpass \; - b0 = alphaQ + 1 \; - b1 = 2*cos(w) / b0 \; - b2 = (alphaQ - 1) / b0 \; - a0 = (1 + cos(w)) / (2*b0) \; - a1 = -(1 + cos(w)) / b0 \; - a2 = (1 + cos(w)) / (2*b0);
+#X text 66 356 Bandpass \; - b0 = alphaQ + 1 \; - b1 = 2*cos(w) / b0 \; - b2 = (alphaQ - 1) / b0 \; - a0 = alphaQ / b0 \; - a1 = 0 \; - a2 = -alphaQ / b0;
+#X text 518 360 Allpass \; - b0 = 1 + alphaQ \; - b1 = 2*cos(w) / b0 \; - b2 = (alphaQ - 1) / b0 \; - a0 = (1 - alphaQ) / b0 \; - a1 = -2*cos(w) / b0 \; - a2 = 1;
+#X text 87 39 For all resonant filters \, "alphaQ" is calculated as:, f 34;
 #X text 92 74 - alphaQ = sin(w)/2*Q;
-#X text 415 73 - alphaS = sin(w) * sqrt((G*G + 1) * (1/S - 1) + 2*G)
-;
-#X text 411 37 For shelving filters \, we have an "alphaS" variable
-defined as:, f 41;
-#X text 271 241 Bandstop \; - b0 = alphaQ + 1 \; - b1 = 2*cos(w) /
-b0 \; - b2 = (alphaQ - 1) / b0 \; - a0 = 1 / b0 \; - a1 = -2*cos(w)
-/ b0 \; - a2 = 1 / b0;
+#X text 415 73 - alphaS = sin(w) * sqrt((G*G + 1) * (1/S - 1) + 2*G);
+#X text 411 37 For shelving filters \, we have an "alphaS" variable defined as:, f 41;
+#X text 271 241 Bandstop \; - b0 = alphaQ + 1 \; - b1 = 2*cos(w) / b0 \; - b2 = (alphaQ - 1) / b0 \; - a0 = 1 / b0 \; - a1 = -2*cos(w) / b0 \; - a2 = 1 / b0;
 #X restore 646 129 pd all_formulas;
 #X obj 595 365 biquad~;
 #X obj 376 231 max 0.5;
 #X obj 595 274 r \$0-coeffs;
-#X text 44 26 With the parameters of: frequency \, Q (for resonant
-filters) or S (for shelving filters) and gain (for peak/shelving) we
-can calculate biquad coefficients., f 60;
+#X text 44 26 With the parameters of: frequency \, Q (for resonant filters) or S (for shelving filters) and gain (for peak/shelving) we can calculate biquad coefficients., f 60;
+#X obj 520 417 outlet;
 #X connect 9 0 25 0;
 #X connect 10 0 16 0;
 #X connect 10 1 22 0;
@@ -465,6 +379,7 @@ can calculate biquad coefficients., f 60;
 #X connect 34 0 9 0;
 #X connect 35 0 23 0;
 #X connect 37 0 57 0;
+#X connect 37 0 61 0;
 #X connect 39 0 40 0;
 #X connect 40 0 42 0;
 #X connect 40 1 41 0;
@@ -479,19 +394,11 @@ can calculate biquad coefficients., f 60;
 #X obj 461 74 zbiplot;
 #X obj 13 525 biplot;
 #X obj 13 497 r \$0-coeffs;
-#X text 29 104 Check this subpatch with a vanilla implementation of
-all these biquad coefficient calculations., f 50;
-#X text 28 188 Open [pd menu] to select the filter type. Lowshelf and
-highshelf take a slope value (between 0 and 1) instead of "Q". They
-also need a gain parameter (in dB). The "Eq" filter also needs a gain
-parameter \, but for others this is optional and only affects overall
-gain. Check the filters' response below and the poles/zeros to the
-right., f 53;
+#X text 29 104 Check this subpatch with a vanilla implementation of all these biquad coefficient calculations., f 50;
+#X text 28 188 Open [pd menu] to select the filter type. Lowshelf and highshelf take a slope value (between 0 and 1) instead of "Q". They also need a gain parameter (in dB). The "Eq" filter also needs a gain parameter \, but for others this is optional and only affects overall gain. Check the filters' response below and the poles/zeros to the right., f 53;
 #X text 90 317 <= open;
 #X floatatom 398 280 6 0 0 0 - - - 0;
-#X text 29 41 The filter equations from Robert Bristow-Johnson's "Cookbook
-formulae for audio EQ biquad filter coefficients" is the basis of the
-[bicoeff] and [bicoeff2] objects., f 50;
+#X text 29 41 The filter equations from Robert Bristow-Johnson's "Cookbook formulae for audio EQ biquad filter coefficients" is the basis of the [bicoeff] and [bicoeff2] objects., f 50;
 #X text 226 158 <-- open;
 #X connect 0 0 30 0;
 #X connect 4 0 6 0;

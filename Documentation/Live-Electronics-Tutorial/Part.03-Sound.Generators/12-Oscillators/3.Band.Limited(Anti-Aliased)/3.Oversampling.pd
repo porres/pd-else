@@ -118,7 +118,7 @@ below., f 68;
 44.1 Khz can also be quite useful \, for it gives us even more room
 to filter and prevent aliasing. The problem is that oversampling is
 quite CPU intensive! Nonetheless \, you can try this technique and
-cretae some abstractions for yourself., f 68;
+create some abstractions for yourself., f 68;
 #X connect 2 0 9 0;
 #X connect 2 0 5 0;
 #X connect 5 0 3 0;

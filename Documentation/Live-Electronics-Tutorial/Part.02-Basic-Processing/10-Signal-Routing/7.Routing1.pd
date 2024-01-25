@@ -1,5 +1,5 @@
-#N struct 1008-cell float x float y float cellsize float color;
-#N canvas 458 50 848 571 12;
+#N struct 1033-cell float x float y float cellsize float color;
+#N canvas 290 50 848 571 12;
 #X declare -path else;
 #X obj 39 33 vradio 15 1 0 5 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0;
 #X floatatom 39 139 5 0 0 0 - - - 0;
@@ -42,7 +42,7 @@
 #X obj 660 300 osc~ 400;
 #X obj 699 325 osc~ 500;
 #X obj 738 351 osc~ 600;
-#X text 598 409 0;
+#X text 611 410 0;
 #X text 626 372 0;
 #X text 664 372 1;
 #X text 703 372 2;
@@ -50,14 +50,14 @@
 #X text 479 278 output 0;
 #X text 479 293 output 1;
 #X text 496 307 input:;
-#X text 692 409 1;
+#X text 741 410 1;
 #X obj 540 329 display;
 #X obj 540 279 mtx.ctl 4 2 15;
 #X msg 604 246 clear;
 #X text 435 150 The [mtx~] object \, from ELSE \, performs more complex routings with equal power crossfades. It can have any number of inputs and outputs \, and you can map any input to one or more outputs. This is more conveniently done with the [mtx.ctl] (from "matrix control") \, also provided in ELSE., f 55;
 #X obj 622 390 mtx~ 4 2 100, f 17;
 #X obj 637 55 declare -path else;
-#X obj 604 434 out~;
+#X obj 636 435 out~;
 #X text 141 40 The [xselect~] object \, from ELSE \, receives different audio signals \, but only selects one of them. When changing from one source to another \, a crossfade is performed.;
 #X text 293 346 none;
 #X connect 0 0 1 0;

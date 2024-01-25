@@ -62,7 +62,7 @@ that already. But now we'll talk about "Weighted random" \, where some
 random values have more probabilities of happening than others. A simple
 vanilla mechanism for this is with [moses] \, and you can stack many
 of them for that matter., f 74;
-#X text 531 348 Above \, each output has the weigthed chance according
+#X text 531 348 Above \, each output has the weighted chance according
 to its corresponding argument., f 37;
 #X connect 1 0 2 0;
 #X connect 2 0 5 0;

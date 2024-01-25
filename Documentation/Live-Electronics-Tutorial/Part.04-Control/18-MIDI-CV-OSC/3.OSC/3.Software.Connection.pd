@@ -12,7 +12,7 @@
 #X text 19 216 Open the "SC.scd" file to communicate to this patch! Below \, to the left \, we send a float via the localhost to port "8017". The message is sent with the "/SC" address. Once you connect and initialize stuff in SuperCollider \, change the slider values and see the effect., f 68;
 #X text 278 308 Messages sent from the SuperCollider example are received here on port "8031"., f 22;
 #X text 527 60 Of course you need a minimum understanding on how SuperCollider works to make this happen. SuperCollider is a powerful open source language for computer music. Get it/install it from: https://supercollider.github.io/, f 45;
-#X text 19 121 Communicating to MAX is quite simple via its buitin [udpsend] and [udpreceive] objects \, that behave quite similarly as [osc.send] and [osc.receive] from ELSE. Just provide the host address and port and have fun. Below we have examples to communicate to "SuperCollider" and "Processing". You can find corresponding codes for each of them in the same folder as this example. Let's start with SuperCollider!, f 68;
+#X text 19 121 Communicating to MAX is quite simple via its builtin [udpsend] and [udpreceive] objects \, that behave quite similarly as [osc.send] and [osc.receive] from ELSE. Just provide the host address and port and have fun. Below we have examples to communicate to "SuperCollider" and "Processing". You can find corresponding codes for each of them in the same folder as this example. Let's start with SuperCollider!, f 68;
 #X obj 621 428 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
 #X msg 621 355 /ratio \$1;
 #X obj 621 394 osc.send 12001;

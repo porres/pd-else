@@ -34,7 +34,7 @@
 #X text 755 241 Output random value;
 #X obj 297 293 display;
 #X obj 297 261 rand.list 13 60 60 500 700 700 700;
-#X text 224 122 The [rand.list] object is a bit related and outputs random elements from a sequence. All outputs have equal chance as it's a uniform distribution \, but you can repeat values for a weigthed histogram., f 45;
+#X text 224 122 The [rand.list] object is a bit related and outputs random elements from a sequence. All outputs have equal chance as it's a uniform distribution \, but you can repeat values for a weighted histogram., f 45;
 #N canvas 506 45 523 633 MIDI-File 0;
 #X msg 174 272 export;
 #X obj 253 426 mtof;

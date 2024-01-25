@@ -16,7 +16,7 @@
 #X obj 577 314 out~;
 #X obj 760 24 declare -path else;
 #X text 542 63 On the other hand \, [oscbank2~] from ELSE has an independent control for each partial's frequency., f 49;
-#X text 244 310 Both can also ouput a multichannel audio connection where each oscillator is in a different channel. Check their help files., f 42;
+#X text 244 310 Both can also output a multichannel audio connection where each oscillator is in a different channel. Check their help files., f 42;
 #X connect 0 0 3 0;
 #X connect 1 0 4 0;
 #X connect 3 0 12 0;

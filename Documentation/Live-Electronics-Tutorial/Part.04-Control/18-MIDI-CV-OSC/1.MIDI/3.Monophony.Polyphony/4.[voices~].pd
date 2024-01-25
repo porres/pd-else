@@ -31,7 +31,7 @@
 #X obj 180 450 meter4~;
 #X obj 55 512 out.mc~;
 #X obj 55 478 spread.mc~ 2;
-#X text 223 304 This is an bastraction based on [voices]. Check its help file for more details., f 41;
+#X text 223 304 This is an abstraction based on [voices]. Check its help file for more details., f 41;
 #X text 17 60 The [voices~] object offers a different approach for polyphony by making usage of multichannel connections by carrying each voice in a different channel of the multichannel connection. This procedure discards completely the need of [clone] \, but is abit more CPU intensive., f 67;
 #X obj 198 358 adsr~ 150 25 0.75 350;
 #X obj 138 344 sine~ -midi, f 5;

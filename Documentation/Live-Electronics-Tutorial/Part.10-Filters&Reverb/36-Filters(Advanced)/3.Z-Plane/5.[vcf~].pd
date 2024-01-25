@@ -412,7 +412,7 @@ cf * qinv \, 0) \; max($f1 * 2 * pi / sr \, 0) \; 1/Q \; max($f2 \,
 #X obj 175 252 s \$0-gain;
 #X obj 99 252 s \$0-im;
 #X obj 24 252 s \$0-re;
-#X text 57 306 This is taken fromm [vcf~]'s source code, f 20;
+#X text 57 306 This is taken from [vcf~]'s source code, f 20;
 #X connect 0 0 3 0;
 #X connect 1 0 2 0;
 #X connect 2 0 11 0;

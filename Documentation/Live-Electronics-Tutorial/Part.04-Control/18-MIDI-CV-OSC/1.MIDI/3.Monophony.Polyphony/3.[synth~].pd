@@ -8,7 +8,7 @@
 #X obj 153 484 synth~;
 #X text 209 484 <-- click to open template.;
 #X text 35 81 The [synth~] object is a conjuntcion of [clone] \, [voices] and [mono]. It can thus load abstractions and perform either monophonic or polyphonic management. It takes an argument with an abstraction name to load and we're using the same example used before., f 57;
-#X text 54 403 Note \, however \, that the [synth~] object makes usage of a specific template for abstractions. Also \, when you do not give an abtraction name \, it loads an internal template example., f 58;
+#X text 54 403 Note \, however \, that the [synth~] object makes usage of a specific template for abstractions. Also \, when you do not give an abstraction name \, it loads an internal template example., f 58;
 #X text 123 535 Check its help file for more details.;
 #X connect 1 0 4 0;
 #X connect 4 0 3 0;

@@ -192,7 +192,7 @@ value from the sine \, whereas x' is the cosine value., f 58;
 \, in which the amplitude is the vertical axis and the horizontal axis
 is the angle. The cosine output draws the same function but starting
 at 1 \, or at a different initial phase. So Sine and Cosine are the
-same function with a phase diference of 90 degrees.;
+same function with a phase difference of 90 degrees.;
 #X text 474 51 The native Pd objects [sin] and [cos] take angles in
 radians (from 0 to 2pi). The ELSE library provides the [pi] object
 \, which outputs the value of pi. We then insert it into a variable

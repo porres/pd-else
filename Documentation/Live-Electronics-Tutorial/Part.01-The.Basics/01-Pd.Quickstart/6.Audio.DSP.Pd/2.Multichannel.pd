@@ -14,7 +14,7 @@
 #X obj 94 199 snake~ out 2;
 #X obj 633 141 snake~ in 2;
 #X obj 633 173 out.mc~;
-#X text 33 21 Pd also has support for connections with multichannel signals. That is a single connection cable transmiting more than one channel of audio. Use the [snake~] object to combine single channels into a multichannel signal (as [snake~ in]). conversely \, use [snake~ out] to extract the channels separately., f 55;
+#X text 33 21 Pd also has support for connections with multichannel signals. That is a single connection cable transmitting more than one channel of audio. Use the [snake~] object to combine single channels into a multichannel signal (as [snake~ in]). conversely \, use [snake~ out] to extract the channels separately., f 55;
 #X text 37 310 As of Pd 0.54 \, many built in objects have support for multi channel signals. The [inlet~] object deals with multichannel inputs \, so this means you can have abstractions that deal with multichannel signals and send multichannel signals to a [pd~] object as well. The [clone] object also handles multichannels Check its help file., f 53;
 #X obj 488 342 sum~;
 #X obj 488 366 merge~;

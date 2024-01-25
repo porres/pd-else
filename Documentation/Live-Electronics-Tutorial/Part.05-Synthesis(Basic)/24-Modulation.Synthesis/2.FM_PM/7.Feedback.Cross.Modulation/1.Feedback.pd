@@ -41,8 +41,8 @@
 #X obj 128 80 receive~ \$0-pm-fb;
 #X obj 96 167 sine~;
 #X text 403 40 The native [send~] object connects to a [receive~] earlier in the chain and forms a feedback loop., f 42;
-#X text 403 90 As already mentioned very early in this tutorial \, this generates a delay of one block \, so the [receive~] object ouputs the last block of audio. In this case \, the block is composed of only 1 sample (see the [block~ 1] object) \, hence there's a single sample delay feedback., f 42;
-#X text 403 196 Note that this single sample delay implies a time delay that is dependent on the sample rate. So if you cange the sample rate you also change the delay time and this affects the sound result., f 42;
+#X text 403 90 As already mentioned very early in this tutorial \, this generates a delay of one block \, so the [receive~] object outputs the last block of audio. In this case \, the block is composed of only 1 sample (see the [block~ 1] object) \, hence there's a single sample delay feedback., f 42;
+#X text 403 196 Note that this single sample delay implies a time delay that is dependent on the sample rate. So if you change the sample rate you also change the delay time and this affects the sound result., f 42;
 #X connect 1 0 15 2;
 #X connect 4 0 9 0;
 #X connect 5 0 15 0;

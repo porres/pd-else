@@ -582,7 +582,7 @@
 #X coords 0 1 4095 -1 200 140 1 0 0;
 #X restore 299 316 graph;
 #X text 68 22 The [tabgen] object can generate sinusoids with partials
-with any abritrary ratios \, not only integers. this can then generate
+with any arbitrary ratios \, not only integers. this can then generate
 sinusoid tables with cycles that do not fit in the tables \, generating
 discontinuities. This is nothing but also another way of having a "hard
 sync" oscillator \, only wave table based. So here we use the [wavetable~]

@@ -34,7 +34,7 @@ lower (negative). Both positive and negative can have the same outline
 with th epolarity reversed \, as the example to the right - but we're
 only highlighting the above envelope.;
 #X text 53 367 The [env~] object is named after "envelope" \, as it
-analyzes the overal amplitude envelope of a signal., f 32;
+analyzes the overall amplitude envelope of a signal., f 32;
 #X connect 0 0 1 0;
 #X connect 1 0 10 0;
 #X connect 5 0 7 0;

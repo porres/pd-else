@@ -41,7 +41,7 @@ with metronomes. You can convert from 'BPM' to ms and vice versa with
 #X msg 732 274 set 60 4;
 #X msg 723 251 set 90 4;
 #X msg 711 226 set 60 90 4;
-#X text 180 436 overal time in ms;
+#X text 180 436 overall time in ms;
 #X obj 529 384 out~;
 #X text 537 79 Here we use [speed] to implement accellerando or ritardando
 with [metro]. We use the 'set' message to arm the object and wait for

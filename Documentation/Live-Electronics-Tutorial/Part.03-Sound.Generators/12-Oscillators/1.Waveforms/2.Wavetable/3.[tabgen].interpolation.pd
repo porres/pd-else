@@ -1,4 +1,4 @@
-#N canvas 191 89 1124 572 12;
+#N canvas 134 65 1124 572 12;
 #X declare -path else;
 #X obj 421 19 declare -path else;
 #X obj 86 270 cnv 15 198 138 empty empty empty 20 12 0 14 #dcdcdc #404040 0;
@@ -21,11 +21,11 @@
 #X coords 0 1 4 -1 200 150 2 0 0;
 #X restore 874 371 graph;
 #X obj 614 503 out~;
-#X obj 614 350 graph~;
+#X obj 614 348 graph~;
 #X msg 642 217 lin;
-#X obj 915 307 buffer \$0-table;
+#X obj 925 307 buffer \$0-table;
 #X msg 627 187 lagrange;
-#X obj 915 278 initmess 0 1 0 -1;
+#X obj 925 278 initmess 0 1 0 -1;
 #X text 672 217 linear: 2 point;
 #X text 611 133 change mode:;
 #X msg 665 276 none;
@@ -34,14 +34,14 @@
 #X msg 654 245 cos;
 #X text 686 245 cosine: 2 point;
 #X text 612 73 The 'lin' and 'cos' modes are 2 point interpolation methods. They need a single guard point which is a copy of the first point at the end \, which is also done internally., f 63;
-#X text 834 148 The "linear" method draws a line between the two points. The "cosine" method draws half of a cosine cycle to connect the points. Check the difference with a table that only has 4 points in total., f 36;
-#X text 22 428 By default \, [wavetable~] uses a different 4 point interpolation method than [tabosc4~]'s \, called 'spline'. Unlike 'sinesum' \, [tabgen] doesn't generate extra (guard) points and [wavetable~] doesn't need them. These extra points are just copies: you have a copy of the last point in the beggining \, and a copy of the first two in the end (we'll see this in detail later on). Such copies are made internally in [wavetable~] so the table should not have them (hence \, sinesum is not suited for [wavetable~])., f 76;
-#X text 612 20 Besides spline \, [wavetable~] also has 'lagrange' and other interpolation modes: 'lin' (linear) and 'cos' (cosine). You can also choose no interpolation ar all., f 63;
+#X text 839 144 The "linear" method draws a line between the two points. The "cosine" method draws half of a cosine cycle to connect the points. Check the difference with a table that only has 4 points in total., f 36;
 #X text 666 158 default: 4 point;
 #X msg 614 157 spline;
 #X text 693 186 4 point;
 #X msg 154 184 noise;
 #X text 205 184 a wild and fun idea \, white noise as a waveform!;
+#X text 22 428 By default \, [wavetable~] uses a different 4 point interpolation method than [tabosc4~]'s \, called 'spline'. Unlike 'sinesum' \, [tabgen] doesn't generate extra (guard) points and [wavetable~] doesn't need them. These extra points are just copies: you have a copy of the last point in the beginning \, and a copy of the first two in the end (we'll see this in detail later on). Such copies are made internally in [wavetable~] so the table should not have them (hence \, the 'sinesum' command is not suited for [wavetable~])., f 76;
+#X text 612 20 Besides spline \, [wavetable~] also has 'lagrange' (used in [tabosc4~] and other interpolation modes: 'lin' (linear) and 'cos' (cosine). You can choose no interpolation ar all as well., f 63;
 #X connect 3 0 7 0;
 #X connect 7 0 5 0;
 #X connect 9 0 6 0;
@@ -52,5 +52,5 @@
 #X connect 21 0 23 0;
 #X connect 23 0 14 0;
 #X connect 24 0 23 0;
-#X connect 31 0 23 0;
-#X connect 33 0 6 0;
+#X connect 29 0 23 0;
+#X connect 31 0 6 0;

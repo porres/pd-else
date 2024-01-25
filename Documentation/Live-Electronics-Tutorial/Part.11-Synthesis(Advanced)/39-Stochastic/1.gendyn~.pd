@@ -1,0 +1,16 @@
+#N canvas 426 37 554 492 12;
+#X declare -path else;
+#X obj 351 24 declare -path else;
+#X obj 307 398 out~;
+#X obj 310 288 hsl 162 19 200 800 1 0 empty empty empty -2 -10 0 12 #dfdfdf #000000 #000000 0 1;
+#X floatatom 307 316 7 0 0 0 - - - 0;
+#X obj 307 371 gendyn~ -bw 100;
+#X obj 307 343 sig~ 200;
+#X text 41 145 The stochastic process affects the reading speed of the waveform (hence the frequency) and also how the points in the waveform change (that is their amplitude and waveform in general). These points can be interpolated with two types (linear and cosine) or not. The original algorithm sets a frequency range \, but the object from ELSE can also operate with a center frequency input \, for which you can set a bandwidth (below it is 100 cents above and below)., f 65;
+#X text 69 384 There are plenty more features. Open the help file for more details., f 31;
+#X text 162 315 center frequcny -->;
+#X text 42 66 [gendyn~] is based on Xenakis' 'GenDyn' algorithm \, a technique for stochastic synthesis that is based on Brownian motion (a type of random walk). You can go back to Part.04-Control and revise the chapter 20-Stochastic for a basis on stochastic processes and what brownian motion is., f 65;
+#X connect 2 0 3 0;
+#X connect 3 0 5 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;

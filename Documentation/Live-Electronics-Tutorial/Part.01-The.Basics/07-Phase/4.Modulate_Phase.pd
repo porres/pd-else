@@ -179,7 +179,7 @@ a single (not continuous) variation of the running phase signal. In
 this example we have two oscillators \, and by modulating their phase
 \, they can come in and out of phase., f 59;
 #X text 18 195 On the other hand \, in this 50 ms period \, we have
-either an accelleration or deceleration of the angular velocity \,
+either an acceleration or deceleration of the angular velocity \,
 and this promotes a frequency shift within that period \, but the original
 frequency is reestablished when reaching the new phase destination.
 ;

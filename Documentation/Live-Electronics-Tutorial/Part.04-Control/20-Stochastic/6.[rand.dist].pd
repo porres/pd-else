@@ -30,7 +30,7 @@
 #X obj 762 280 hsl 128 15 0 127 0 0 eefgege rwgegeg empty -2 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X obj 762 339 hsl 128 15 0 127 0 0 eefgege rwgegeg empty -2 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X text 552 81 The input range is from 0 to 127 and you can see that the output is weighted according to the probability density function \, so below the output is centered around the half of the output range., f 49;
-#X text 749 167 This alllows us to use different random inputs. To the left \, we use an input from a random source \, which is a ramp noise generator., f 24;
+#X text 749 167 This allows us to use different random inputs. To the left \, we use an input from a random source \, which is a ramp noise generator., f 24;
 #X obj 335 208 initmess gauss 0.3;
 #X obj 50 314 rand.dist \$0-gauss 0 1;
 #X obj 608 212 rand.dist \$0-gauss;

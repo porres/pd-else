@@ -66,7 +66,7 @@ in practice \, not theory. If the phase modulation signal is a sine
 wave \, the frequency modulation signal needs to be a cosine wave.
 Another detail is that we need to adjust the value of the modulation
 index \, which is also done in this patch., f 55;
-#X text 445 127 This is a crucial diference \, that the modulating
+#X text 445 127 This is a crucial difference \, that the modulating
 frequency affects the index \, so to speak \, in phase modulation.
 ;
 #X connect 0 0 8 1;
