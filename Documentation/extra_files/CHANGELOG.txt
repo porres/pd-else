@@ -11,6 +11,77 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 
 
 ----------------------------------------------------------------------------
+1.0-0 Release Candidate 11:
+----------------------------------------------------------------------------
+
+--------------------------------------
+CHANGELOG:
+--------------------------------------
+
+**LIBRARY:**
+
+Breaking changes:
+- [pan8~] removed, use the new [pan~] object now
+- [autofade~] and [autofade2~], changed inlet order, gate is now the rightmost, for consistency. Removed status output cause that was kinda really stupid. Fade-in/out work better now by the way.
+- [xgate2~], [xselect2~] big redesign, almost new objects, also changed inlet order for consistency and stuff
+- [rec.file~] also changed inlet order, removed 1st control input, for consistency and stuff as well, no more toggle input though
+- [tabwriter~] changed inlet order, gate is now the rightmost, for consistency. Changed some flags. 
+- [mtx~] removed dump outlet, 'fade' renamed to 'ramp', gain input is now not just on <non zero> and off <zero>
+- [mtx.ctl] changed output for export message 
+- [note2pitch] and [pitch2note] renamed to [note2midi] and [midi2note] 
+- [note2dur] renamed to [notedur2ratio] 
+- [canvas.file] renamed to [findfile] (this object will quite likely be removed anyway as soon as Pd's [file which] is updated in Pd, so forget about it already...
+- [noisegate~] added release time in ms
+- [wavetable~] and [bl.wavetable~] removed 'offset' and 'size'
+- [conv~] swapped args order
+
+Enhancements/fixes/other changes:
+- fix crash of some objects in arm mac: [lfnoise~], [dust~], [dust2~], [rand.f~], [rand.i~], [pgm.in] and [ptouch.in] (these last two got fix by unkown reasons).
+- [midi.learn] fixed (it wasn't working at all)
+- [xfade~] and [xfade.mc~] added linear crossfading
+- [xgate2~] added spread parameter and allow crossfading to silence when out of range
+- [xselect2~] has a new spread parameter and is now either circular or crossfades to silence when out of range.
+- [xgate.mc~] can now also route more than one channel and can now set number of out channels as a message as well
+- [xselect.mc~] can now also set -n flag as a message 
+- [spread~] and [spread.mc~] added spread parameter
+- [mtx~] added gain value so you can connect knobs, added print message.
+- [mtx.ctl] and [drum.seq] fixed embed bugs
+- [knob] fixed flags issues, a tcl/tk error and outline is now on by default
+- [numbox~] fixed 'init' value in properties
+- [rand.f~] fixed range bug
+- [sine~], [impulse~], added 'set' message to set a single frequency channel
+- [autotune], [autotune2], [retune], added support for lists
+- [note2midi] and [midi2note] added support for quarter tones
+- [keyboard] added 'show' and 'play' methods
+- [chance~] now has a list method and a 2nd inlet for 1 arg and it all works like [chance] now
+- [wavetable~] added slice parameter and inlet for crossfading between slices.
+- [gendyn~] added signal input for center freq in hz, added 'bw' and 'cents' methods.
+- [op] added support for lists in 2nd inlet
+- [openfile] fixed bug not opening files in the current folder
+- [sequencer], set message now works when [sequencer] is initialized without arguments, and sequence defults to 0 now.
+- [crusher~] added support for signal input in secondary inlets
+- [quantizer~], [fold~] and [wrap2~] added signal support (and also multichannel support) for secondary inlets
+- [tabwriter~] added index mode to set index to record to with a signal
+- added MC awareness and capabilities to [fader~], [pan2~], [pan4~], [mix2~], [balance~] and [mix4~]
+- 10 new objects: [wt2d~], [pan~], [pan.mc~], [autofade.mc~], [autofade2.mc~], [xgate2.mc~], [xselect2.mc~], [mtx.mc~], [abs.pd~] and [sendmidi]
+
+Objects count: total of 527 (285 signal objects [82 of which are MC aware] and 242 control objects)! 
+
+- 307 coded objects (200 signal objects / 107 control objects)
+- 220 abstractions (85 signal objects / 135 control objects)
+
+--------------------------------------
+
+**TUTORIAL:**
+- New examples and revisions to add the new objects, features and breaking changes in ELSE. 
+- New chapter on Wavetable Synthesis (with wavetable scanning, vector synthesis and stuff). 
+- Revision and improvement of panning/routing section. Explanation about 'spread' in routing objects.
+- Total number of examples is now 515!
+
+--------------------------------------
+
+
+----------------------------------------------------------------------------
 1.0-0 Release Candidate 10:
 ----------------------------------------------------------------------------
 
