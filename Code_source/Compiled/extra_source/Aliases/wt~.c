@@ -29,6 +29,8 @@ typedef struct _wt{
 
 static double wt_read(t_wt *x, double xpos, int frame, int size, t_word *vp){
     double val = 0;
+    if(frame >= x->x_slices)
+        return(val);
     int offset = (frame*size);
     int ndx = (int)xpos;
     if(ndx == size)

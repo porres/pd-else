@@ -29,6 +29,8 @@ typedef struct _wavetable{
 
 static double wavetable_read(t_wavetable *x, double xpos, int frame, int size, t_word *vp){
     double val = 0;
+    if(frame >= x->x_slices)
+        return(val);
     int offset = (frame*size);
     int ndx = (int)xpos;
     if(ndx == size)

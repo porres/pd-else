@@ -19,7 +19,7 @@ typedef struct _wt2d{
     t_int soft;
     t_float   x_sr;
     t_int     x_interp;
-    t_int     x_columns, x_rows;
+    t_int     x_columns, x_rows, x_nframes;
 // MAGIC:
     t_glist  *x_glist;              // object list
     t_float  *x_signalscalar;       // right inlet's float field
@@ -27,9 +27,11 @@ typedef struct _wt2d{
     t_float   x_phase_sync_float;   // float from magic
 }t_wt2d;
 
-static double wt2d_read(t_wt2d *x, double pos, int frame1, int size, t_word *vp){
+static double wt2d_read(t_wt2d *x, double pos, int frame, int size, t_word *vp){
     double val = 0;
-    int offset = (frame1*size);
+    if(frame >= x->x_nframes)
+        return(val);
+    int offset = (frame*size);
     int ndx = (int)pos;
     if(ndx == size)
         ndx = 0;
@@ -86,7 +88,7 @@ static t_int *wt2d_perform(t_int *w){
     double phase = x->x_phase;
     double last_phase_offset = x->x_last_phase_offset;
     double sr = x->x_sr;
-    int npts_frame = (t_int)(x->x_buffer->c_npts) / (x->x_columns * x->x_rows);
+    int npts_frame = (t_int)(x->x_buffer->c_npts) / x->x_nframes;
     while(n--){
         if(x->x_buffer->c_playable){
             double hz = *in1++;
@@ -121,7 +123,7 @@ static t_int *wt2d_perform(t_int *w){
                     *out++ = 0;
                 else{
                     double pos = phase*(double)npts_frame;
-                    if(x->x_columns * x->x_rows == 1)
+                    if(x->x_nframes == 1)
                         *out++ = wt2d_read(x, pos, 0, npts_frame, vp);
                     else{
                         if(xpos < 0)
@@ -182,6 +184,7 @@ static void wt2d_dsp(t_wt2d *x, t_signal **sp){
 static void wt2d_slices(t_wt2d *x, t_floatarg f1, t_floatarg f2){
     x->x_columns = f1 < 1 ? 1 : (int)f1;
     x->x_rows = f1 < 1 ? 1 : (int)f2;
+    x->x_nframes = x->x_columns * x->x_rows;
 }
 
 static void wt2d_set(t_wt2d *x, t_symbol *s){
@@ -229,7 +232,7 @@ static void *wt2d_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_symbol *name = NULL;
     int nameset = 0, floatarg = 0;
-    x->x_columns = x->x_rows = 1;
+    x->x_columns = x->x_rows;
     x->x_freq = x->x_phase = x->x_last_phase_offset = 0.;
     t_float phaseoff = 0;
     x->x_interp = 4;
@@ -305,6 +308,7 @@ static void *wt2d_new(t_symbol *s, int ac, t_atom *av){
             floatarg++, ac--, av++;
         };
     };
+    x->x_nframes = x->x_columns * x->x_rows;
     x->x_inlet_sync = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     x->x_inlet_phase = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_phase, phaseoff < 0 || phaseoff > 1 ? 0 : phaseoff);
