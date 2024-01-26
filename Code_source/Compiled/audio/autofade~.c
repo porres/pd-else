@@ -8,19 +8,25 @@
 typedef struct _autofade{
     t_object  x_obj;
     int       x_n;
+    int       x_control_gate;
+    int       x_lastkgate;
     int       x_n_chans;
-    int       x_fade;                           // fade size in samples
-    int       x_nleft;                          // n samples left
-    float     x_ksr, x_fade_ms, x_inc;          // sr in khz, fade size in ms and inc step
-    t_float **x_ins, **x_outs;                  // inputs and outputs
-    t_float  *x_inputs;                         // inputs copy
-    t_float  *x_gate;                           // gate
+    int       x_fade;                        // fade size in samples
+    int       x_nleft;                       // n samples left
+    float     x_ksr, x_fade_ms, x_inc;       // sr in khz, fade size in ms and inc step
+    t_float **x_ins, **x_outs;               // inputs and outputs
+    t_float  *x_inputs;                      // inputs copy
+    t_float  *x_gate;                        // gate
     t_int     x_gate_on;                     // gate status
     t_float   x_lastgate, x_lastfade, x_start, x_end, x_delta, x_phase;
     t_int     x_table;
 }t_autofade;
 
 static t_class *autofade_class;
+
+static void autofade_float(t_autofade *x, t_floatarg f){
+    x->x_control_gate = f != 0;
+}
 
 static void autofade_fade(t_autofade *x, t_floatarg f){
     x->x_fade_ms = f < 0 ? 0 : f;
@@ -65,17 +71,22 @@ static t_int *autofade_perform(t_int *w){
     }
     t_float *gate = x->x_gate;
     t_float lastgate = x->x_lastgate;
+    t_float lastkgate = x->x_lastkgate;
     t_float lastfade = x->x_lastfade;
     t_float phase = x->x_phase;
     for(int n = 0; n < x->x_n; n++){ // n sample in block
         if((gate[n] <= 0 && lastgate > 0)
-        || (gate[n] > 0 && lastgate <= 0)){ // gate status changed, update
+           || (x->x_control_gate == 0 && lastkgate == 1)
+           || (gate[n] > 0 && lastgate <= 0)
+           || (x->x_control_gate == 1 && lastkgate == 0)
+           ){
             x->x_nleft = x->x_fade;
             float inc = x->x_nleft > 0 ? 1./x->x_fade : 0;
             x->x_start = lastfade;
-            x->x_end = gate[n];
+            x->x_end = x->x_control_gate ? x->x_control_gate : gate[n];
             x->x_delta = x->x_end - x->x_start;
-            x->x_gate_on = gate[n] > 0;
+            x->x_gate_on = gate[n] > 0 || x->x_control_gate;
+//            x->x_gate_on = gate[n] > 0;
             if(x->x_gate_on){ // gate on
                 phase = 0.;
                 x->x_inc = inc;
@@ -86,8 +97,11 @@ static t_int *autofade_perform(t_int *w){
             }
         }
         lastgate = gate[n];
+        lastkgate = x->x_control_gate;
         float fadeval = read_fadetab(phase, x->x_table);
+//        float fadeval = phase;
         lastfade = fadeval;
+//        post("fadeval = %g", fadeval);
         if(x->x_nleft > 0){
             phase += x->x_inc;
             x->x_nleft--;
@@ -103,6 +117,7 @@ static t_int *autofade_perform(t_int *w){
             x->x_outs[i][n] = ins[i*x->x_n + n] * finalfade;
     }
     x->x_lastgate = lastgate;
+    x->x_lastkgate = lastkgate;
     x->x_lastfade = lastfade;
     x->x_phase = phase;
     return(w+2);
@@ -190,6 +205,7 @@ void autofade_tilde_setup(void){
         (t_method)autofade_free, sizeof(t_autofade), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(autofade_class, nullfn, gensym("signal"), 0);
     class_addmethod(autofade_class, (t_method)autofade_dsp, gensym("dsp"), A_CANT, 0);
+    class_addfloat(autofade_class, autofade_float); // undocumented feature for rec.file~
     class_addmethod(autofade_class, (t_method)autofade_fade, gensym("fade"), A_FLOAT, 0);
     class_addmethod(autofade_class, (t_method)autofade_quartic, gensym("quartic"), 0);
     class_addmethod(autofade_class, (t_method)autofade_lin, gensym("lin"), 0);
