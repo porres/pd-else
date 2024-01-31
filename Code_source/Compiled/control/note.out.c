@@ -11,6 +11,7 @@ typedef struct _noteout{
     t_int     x_pitch;
     t_int     x_rel;
     t_int     x_both;
+    t_int     x_ext;
 }t_noteout;
 
 static t_class *noteout_class;
@@ -26,7 +27,12 @@ void noteout_midiout(int value){
 
 static void noteout_output(t_noteout *x, t_float f){
     outlet_float(((t_object *)x)->ob_outlet, f);
-    noteout_midiout(f);
+    if(!x->x_ext)
+        noteout_midiout(f);
+}
+
+static void noteout_ext(t_noteout *x, t_floatarg f){
+    x->x_ext = f != 0;
 }
 
 static void noteout_float(t_noteout *x, t_float f){
@@ -80,6 +86,7 @@ static void *noteout_new(t_symbol *s, int ac, t_atom *av){
     s = NULL; // get rid of warning
     float channel = 1;
     int argn = 0;
+    x->x_both = x->x_rel = x->x_ext = 0;
     if(ac){
         while(ac > 0){
             if(av->a_type == A_FLOAT){
@@ -95,6 +102,10 @@ static void *noteout_new(t_symbol *s, int ac, t_atom *av){
                 }
                 else if(curarg == gensym("-both")){
                     x->x_both = 1;
+                    ac--, av++;
+                }
+                else if(atom_getsymbolarg(0, ac, av) == gensym("-ext") && !argn){
+                    x->x_ext = 1;
                     ac--, av++;
                 }
                 else
@@ -123,4 +134,5 @@ void setup_note0x2eout(void){
     noteout_class = class_new(gensym("note.out"), (t_newmethod)noteout_new, 0,
         sizeof(t_noteout), 0, A_GIMME, 0);
     class_addfloat(noteout_class, noteout_float);
+    class_addmethod(noteout_class, (t_method)noteout_ext, gensym("ext"), A_FLOAT, 0);
 }

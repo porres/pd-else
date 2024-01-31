@@ -7,6 +7,7 @@ typedef struct _ctlout{
     t_object  x_ob;
     t_float   x_channel;
     t_float   x_n;
+    t_int     x_ext;
 }t_ctlout;
 
 static t_class *ctlout_class;
@@ -22,7 +23,12 @@ void ctlout_midiout(int value){
 
 static void ctlout_output(t_ctlout *x, t_float f){
     outlet_float(((t_object *)x)->ob_outlet, f);
-    ctlout_midiout(f);
+    if(!x->x_ext)
+        ctlout_midiout(f);
+}
+
+static void ctlout_ext(t_ctlout *x, t_floatarg f){
+    x->x_ext = f != 0;
 }
 
 static void ctlout_float(t_ctlout *x, t_float f){
@@ -47,12 +53,17 @@ static void *ctlout_new(t_symbol *s, int ac, t_atom *av){
     t_ctlout *x = (t_ctlout *)pd_new(ctlout_class);
     x->x_channel = 1,
     x->x_n = 0;
+    x->x_ext = 0;
     if(ac){
+        if(atom_getsymbol(av) == gensym("-ext")){
+            x->x_ext = 1;
+            ac--, av++;
+        }
         if(ac == 1){
             if(av->a_type == A_FLOAT)
                 x->x_channel = (t_int)atom_getfloatarg(0, ac, av);
         }
-        else{
+        else if(ac == 2){
             x->x_n = atom_getfloatarg(0, ac, av);
             ac--, av++;
             x->x_channel = (t_int)atom_getfloatarg(0, ac, av);
@@ -68,4 +79,5 @@ void setup_ctl0x2eout(void){
     ctlout_class = class_new(gensym("ctl.out"), (t_newmethod)ctlout_new,
         0, sizeof(t_ctlout), 0, A_GIMME, 0);
     class_addfloat(ctlout_class, ctlout_float);
+    class_addmethod(ctlout_class, (t_method)ctlout_ext, gensym("ext"), A_FLOAT, 0);
 }

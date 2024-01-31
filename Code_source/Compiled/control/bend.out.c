@@ -7,6 +7,7 @@ typedef struct _bendout{
     t_object  x_ob;
     t_float   x_channel;
     t_int     x_raw;
+    t_int     x_ext;
 }t_bendout;
 
 static t_class *bendout_class;
@@ -22,7 +23,12 @@ void bendout_midiout(int value){
 
 static void bendout_output(t_bendout *x, t_float f){
     outlet_float(((t_object *)x)->ob_outlet, f);
-    bendout_midiout(f);
+    if(!x->x_ext)
+        bendout_midiout(f);
+}
+
+static void bendout_ext(t_bendout *x, t_floatarg f){
+    x->x_ext = f != 0;
 }
 
 static void bendout_float(t_bendout *x, t_float f){
@@ -48,6 +54,7 @@ static void *bendout_new(t_symbol *s, int ac, t_atom *av){
     outlet_new((t_object *)x, &s_float);
     t_float channel = 1;
     int floatarg = 0;
+    x->x_ext = x->x_raw = 0;
     if(ac){
         while(ac > 0){
             if(av->a_type == A_FLOAT){
@@ -56,9 +63,13 @@ static void *bendout_new(t_symbol *s, int ac, t_atom *av){
                 ac--, av++;
             }
             else if(av->a_type == A_SYMBOL && !floatarg){
-                curarg = atom_getsymbolarg(0, ac, av);
+                curarg = atom_getsymbol(av);
                 if(curarg == gensym("-raw")){
                     x->x_raw = 1;
+                    ac--, av++;
+                }
+                else if(atom_getsymbol(av) == gensym("-ext")){
+                    x->x_ext = 1;
                     ac--, av++;
                 }
                 else
@@ -79,4 +90,5 @@ void setup_bend0x2eout(void){
     bendout_class = class_new(gensym("bend.out"), (t_newmethod)bendout_new,
             0, sizeof(t_bendout), 0, A_GIMME, 0);
     class_addfloat(bendout_class, bendout_float);
+    class_addmethod(bendout_class, (t_method)bendout_ext, gensym("ext"), A_FLOAT, 0);
 }

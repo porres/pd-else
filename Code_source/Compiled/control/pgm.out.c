@@ -7,6 +7,7 @@ typedef struct _pgmout{
     t_object  x_ob;
     t_float   x_channel;
     t_int     x_raw;
+    t_int     x_ext;
 }t_pgmout;
 
 static t_class *pgmout_class;
@@ -22,7 +23,12 @@ void pgmout_midiout(int value){
 
 static void pgmout_output(t_pgmout *x, t_float f){
     outlet_float(((t_object *)x)->ob_outlet, f);
-    pgmout_midiout(f);
+    if(!x->x_ext)
+        pgmout_midiout(f);
+}
+
+static void pgmout_ext(t_pgmout *x, t_floatarg f){
+    x->x_ext = f != 0;
 }
 
 static void pgmout_float(t_pgmout *x, t_float f){
@@ -42,7 +48,12 @@ static void *pgmout_new(t_symbol *s, int ac, t_atom *av){
     floatinlet_new((t_object *)x, &x->x_channel);
     outlet_new((t_object *)x, &s_float);
     t_float channel = 1;
+    x->x_ext = 0;
     if(ac){
+        if(atom_getsymbol(av) == gensym("-ext")){
+            x->x_ext = 1;
+            ac--, av++;
+        }
         while(ac > 0){
             if(av->a_type == A_FLOAT){
                 channel = (t_int)atom_getfloatarg(0, ac, av);
@@ -63,4 +74,5 @@ void setup_pgm0x2eout(void){
     pgmout_class = class_new(gensym("pgm.out"), (t_newmethod)pgmout_new,
         0, sizeof(t_pgmout), 0, A_GIMME, 0);
     class_addfloat(pgmout_class, pgmout_float);
+    class_addmethod(pgmout_class, (t_method)pgmout_ext, gensym("ext"), A_FLOAT, 0);
 }

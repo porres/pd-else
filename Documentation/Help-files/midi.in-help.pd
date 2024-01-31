@@ -89,7 +89,7 @@
 #X text 214 270 - Raw MIDI data;
 #X obj 244 218 else/display -noflash;
 #X text 148 352 anything;
-#N canvas 670 144 610 527 example 0;
+#N canvas 670 144 610 527 example 1;
 #X obj 34 25 hsl 155 18 0 127 0 0 empty empty empty -2 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X obj 31 126 s \$0-raw;
 #X obj 43 331 r \$0-raw;
@@ -114,11 +114,11 @@
 #X obj 426 182 hsl 155 18 -1 1 0 0 empty empty empty -2 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X obj 43 364 else/midi.in;
 #X obj 43 449 else/display -noflash;
-#X obj 107 449 else/display -noflash;
-#X obj 172 449 else/display -noflash;
-#X obj 236 449 else/display -noflash;
-#X obj 301 449 else/display -noflash;
-#X obj 365 449 else/display -noflash;
+#X obj 106 449 else/display -noflash;
+#X obj 170 449 else/display -noflash;
+#X obj 234 449 else/display -noflash;
+#X obj 298 449 else/display -noflash;
+#X obj 362 449 else/display -noflash;
 #X text 152 340 The [midi.in] object is useful in conjunction to [route] if you need to collect more than one type of MIDI data.;
 #X obj 286 237 else/ptouch.out 12;
 #X obj 43 400 route list noteoff ctl touch polytouch pgm bend, f 75;
