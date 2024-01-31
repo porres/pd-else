@@ -232,7 +232,7 @@ static void *wt2d_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_symbol *name = NULL;
     int nameset = 0, floatarg = 0;
-    x->x_columns = x->x_rows;
+    x->x_columns = x->x_rows = 1;
     x->x_freq = x->x_phase = x->x_last_phase_offset = 0.;
     t_float phaseoff = 0;
     x->x_interp = 4;
