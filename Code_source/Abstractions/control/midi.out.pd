@@ -1,4 +1,4 @@
-#N canvas 348 99 623 357 12;
+#N canvas 413 131 623 357 12;
 #X declare -path else;
 #X obj 66 29 inlet;
 #N canvas 452 265 330 249 ctl 0;
@@ -79,5 +79,16 @@
 #X connect 2 0 3 0;
 #X connect 3 0 1 0;
 #X restore 194 92 pd noteoff;
+#N canvas 88 74 372 259 init 0;
+#X obj 120 39 loadbang;
+#X obj 120 63 else/args;
+#X msg 120 164 ext 1;
+#X obj 120 208 s \$0-cooked;
+#X obj 120 98 route -ext;
+#X connect 0 0 1 0;
+#X connect 1 0 4 0;
+#X connect 2 0 3 0;
+#X connect 4 0 2 0;
+#X restore 74 154 pd init;
 #X connect 0 0 11 0;
 #X connect 12 0 7 0;
