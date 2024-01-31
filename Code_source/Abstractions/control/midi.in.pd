@@ -1,4 +1,4 @@
-#N canvas 407 99 623 357 12;
+#N canvas 359 74 623 357 12;
 #X declare -path else;
 #X obj 66 136 s \$0-raw;
 #X obj 64 234 r \$0-out;
@@ -7,7 +7,7 @@
 #X text 324 174 Part of ELSE \; https://github.com/porres/pd-else;
 #X obj 366 107 declare -path else;
 #X text 326 155 Alexandre Torres Porres (2023);
-#N canvas 190 74 382 330 guts 1;
+#N canvas 190 74 382 330 guts 0;
 #N canvas 452 265 363 279 ctl 0;
 #X obj 86 183 else/insert ctl;
 #X obj 102 39 r \$0-raw;
@@ -81,7 +81,7 @@
 #X obj 62 181 s \$0-out;
 #X obj 34 74 else/sysrt.in;
 #X restore 170 248 pd sysrt;
-#N canvas 143 357 524 323 note 1;
+#N canvas 143 357 524 323 note 0;
 #X obj 86 40 r \$0-raw;
 #X obj 86 113 else/note.in;
 #X obj 167 164 s \$0-ch;
@@ -90,7 +90,7 @@
 #X connect 1 1 2 0;
 #X connect 3 0 1 1;
 #X restore 170 44 pd note on;
-#N canvas 452 265 332 243 note 1;
+#N canvas 452 265 332 243 note 0;
 #X obj 69 60 r \$0-raw;
 #X obj 127 155 s \$0-out;
 #X obj 211 94 s \$0-ch;
@@ -110,14 +110,14 @@
 #X obj 164 286 outlet;
 #X obj 164 234 r \$0-ch;
 #X obj 196 93 s \$0-channel;
-#N canvas 88 74 360 272 init 0;
+#N canvas 88 74 372 259 init 0;
 #X obj 120 208 s \$0-raw;
 #X obj 120 39 loadbang;
 #X obj 120 63 else/args;
 #X obj 120 127 t b f;
 #X obj 120 98 route -ext float;
 #X obj 174 158 s \$0-channel;
-#X msg 120 164 ext 0;
+#X msg 120 164 ext 1;
 #X connect 1 0 2 0;
 #X connect 2 0 4 0;
 #X connect 3 0 6 0;
