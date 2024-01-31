@@ -6,7 +6,6 @@
 #X obj 91 372 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 91 334 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 216 406 (none);
-#X obj 501 70 cyclone/setdsp~;
 #X obj 56 180 expr~ log(-1);
 #X obj 212 180 expr~ atanh(1);
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
@@ -54,11 +53,12 @@
 #X text 118 334 signal(s);
 #X text 118 371 signal(s);
 #X text 183 371 - the filtered signal(s);
-#X connect 8 0 21 0;
-#X connect 9 0 31 0;
-#X connect 21 0 25 0;
-#X connect 23 0 27 0;
-#X connect 25 0 29 0;
-#X connect 26 0 28 0;
-#X connect 27 0 30 0;
-#X connect 31 0 26 0;
+#X obj 501 70 else/setdsp~;
+#X connect 7 0 20 0;
+#X connect 8 0 30 0;
+#X connect 20 0 24 0;
+#X connect 22 0 26 0;
+#X connect 24 0 28 0;
+#X connect 25 0 27 0;
+#X connect 26 0 29 0;
+#X connect 30 0 25 0;
