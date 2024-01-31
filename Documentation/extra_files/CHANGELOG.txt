@@ -18,7 +18,6 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 CHANGELOG:
 --------------------------------------
 
-**LIBRARY:**
 
 Breaking changes:
 - [pan8~] removed, use the new [pan~] object now
@@ -30,7 +29,7 @@ Breaking changes:
 - [mtx.ctl] changed output for export message 
 - [note2pitch] and [pitch2note] renamed to [note2midi] and [midi2note] 
 - [note2dur] renamed to [notedur2ratio] 
-- [canvas.file] renamed to [findfile] (this object will quite likely be removed anyway as soon as Pd's [file which] is updated in Pd, so forget about it already...
+- [canvas.file] renamed to [findfile] (this object will quite likely be removed anyway as soon as Pd's [file which] is updated in Pd, so forget about it already...)
 - [noisegate~] added release time in ms
 - [wavetable~] and [bl.wavetable~] removed 'offset' and 'size'
 - [conv~] swapped args order
@@ -61,7 +60,10 @@ Enhancements/fixes/other changes:
 - [sequencer], set message now works when [sequencer] is initialized without arguments, and sequence defults to 0 now.
 - [crusher~] added support for signal input in secondary inlets
 - [quantizer~], [fold~] and [wrap2~] added signal support (and also multichannel support) for secondary inlets
-- [tabwriter~] added index mode to set index to record to with a signal
+- [tabwriter~] added index mode to set index to record 
+- [midi.in] fixed ext message/flagto with a signal
+- [midi.out] added channel arg/inlet
+- [bend.out], [ctl.out], [note.out], [pgm.out], [ptouch.out], [touch.out], [midi.out], added '-ext' flag/message 
 - added MC awareness and capabilities to [fader~], [pan2~], [pan4~], [mix2~], [balance~] and [mix4~]
 - 10 new objects: [wt2d~], [pan~], [pan.mc~], [autofade.mc~], [autofade2.mc~], [xgate2.mc~], [xselect2.mc~], [mtx.mc~], [abs.pd~] and [sendmidi]
 
