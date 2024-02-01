@@ -125,14 +125,20 @@ void plaits_dump(t_plaits *x){
     outlet_anything(x->x_info_out, gensym("timbre"), 1, at);
     SETFLOAT(at, x->x_morph);
     outlet_anything(x->x_info_out, gensym("morph"), 1, at);
-    SETFLOAT(at, x->x_trigger_mode);
-    outlet_anything(x->x_info_out, gensym("trigger mode"), 1, at);
-    SETFLOAT(at, x->x_level_active);
-    outlet_anything(x->x_info_out, gensym("level active"), 1, at);
     SETFLOAT(at, x->x_lpg_cutoff);
     outlet_anything(x->x_info_out, gensym("cutoff"), 1, at);
     SETFLOAT(at, x->x_decay);
     outlet_anything(x->x_info_out, gensym("decay"), 1, at);
+    SETFLOAT(at, x->x_trigger_mode);
+    outlet_anything(x->x_info_out, gensym("trigger mode"), 1, at);
+    SETFLOAT(at, x->x_level_active);
+    outlet_anything(x->x_info_out, gensym("level active"), 1, at);
+    SETFLOAT(at, x->x_morph_active);
+    outlet_anything(x->x_info_out, gensym("morph active"), 1, at);
+    SETFLOAT(at, x->x_frequency_active);
+    outlet_anything(x->x_info_out, gensym("freq active"), 1, at);
+    SETFLOAT(at, x->x_timbre_active);
+    outlet_anything(x->x_info_out, gensym("timbre active"), 1, at);
 }
 
 void plaits_list(t_plaits *x, t_symbol *s, int argc, t_atom *argv){
@@ -234,14 +240,15 @@ static float plaits_get_pitch(t_plaits *x, t_floatarg f){
 
 t_int *plaits_perform(t_int *w){
     t_plaits *x     = (t_plaits *) (w[1]);
-    t_sample *freq  = (t_sample *) (w[2]);
-    t_sample *trig  = (t_sample *) (w[3]);
-    t_sample *level = (t_sample *) (w[4]);
-//    t_sample *tmod  = (t_sample *) (w[5]);
-//    t_sample *fmod  = (t_sample *) (w[6]);
-//    t_sample *mmod  = (t_sample *) (w[7]);
-    t_sample *out   = (t_sample *) (w[8]);
-    t_sample *aux   = (t_sample *) (w[9]);
+    t_sample *freq  = (t_sample *) (w[2]); // frequency input
+    t_sample *trig  = (t_sample *) (w[3]); // trigger input
+    t_sample *level = (t_sample *) (w[4]); // level input
+    t_sample *tmod  = (t_sample *) (w[5]); // timbre modulation input
+    t_sample *fmod  = (t_sample *) (w[6]); // frequency modulation input
+    t_sample *mmod  = (t_sample *) (w[7]); // morph modulation input
+    t_sample *hmod  = (t_sample *) (w[8]); // harmonics modulation input
+    t_sample *out   = (t_sample *) (w[9]);
+    t_sample *aux   = (t_sample *) (w[10]);
     int n = x->x_n; // block size
     if(n != x->x_last_n){
         if(n > 24){ // Plaits uses a block size of 24 max
@@ -283,6 +290,10 @@ t_int *plaits_perform(t_int *w){
         pitch += x->x_pitch_correction;
         x->x_patch.note = 60.f + pitch * 12.f;
         x->x_modulations.level = level[x->x_block_size * j];
+        x->x_modulations.frequency = fmod[x->block_size * j] * 6.f;
+        x->x_modulations.harmonics = hmod[x->block_size * j] / 5.f;
+        x->x_modulations.timbre = tmod[x->block_size * j] / 8.f;
+        x->x_modulations.morph = mmod[x->block_size * j] / 8.f;
         if(x->x_trigger_mode) // trigger mode
             x->x_modulations.trigger = (trig[x->x_block_size * j] != 0);
         plaits::Voice::Frame output[x->x_block_size];
@@ -292,14 +303,14 @@ t_int *plaits_perform(t_int *w){
             aux[i + (x->x_block_size * j)] = output[i].aux / 32768.0f;
         }
     }
-    return(w+10);
+    return(w+11);
 }
 
 void plaits_dsp(t_plaits *x, t_signal **sp){
     x->x_pitch_correction = log2f(48000.f / sys_getsr());
     x->x_n = sp[0]->s_n;
-    dsp_add(plaits_perform, 9, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec,
-        sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec);
+    dsp_add(plaits_perform, 10, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec,
+        sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec);
 }
 
 void plaits_free(t_plaits *x){
@@ -372,6 +383,7 @@ void *plaits_new(t_symbol *s, int ac, t_atom *av){
             }
         }
     }
+    inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym ("signal"));
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym ("signal"));
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym ("signal"));
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym ("signal"));
