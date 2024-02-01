@@ -29,7 +29,7 @@ typedef struct _plaits{
     t_float             x_mod_morph;
     bool                x_frequency_active;
     bool                x_timbre_active;
-    bool                x_morph_active;
+    bool                x_morph_active;    
     bool                x_trigger_mode;
     bool                x_level_active;
     t_int               x_block_size;
@@ -388,7 +388,7 @@ errstate:
 
 void plaits_tilde_setup(void){
     plaits_class = class_new(gensym("plaits~"), (t_newmethod)plaits_new,
-        (t_method)plaits_free, sizeof(t_plaits), CLASS_NOPROMOTESIG, A_GIMME, 0);
+        (t_method)plaits_free, sizeof(t_plaits), 0, A_GIMME, 0);
     class_addmethod(plaits_class, (t_method)plaits_dsp, gensym("dsp"), A_CANT, 0);
     CLASS_MAINSIGNALIN(plaits_class, t_plaits, x_f);
     class_addlist(plaits_class, plaits_list);
