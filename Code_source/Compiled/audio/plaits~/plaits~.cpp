@@ -27,9 +27,9 @@ typedef struct _plaits{
     t_float             x_mod_timbre;
     t_float             x_mod_fm;
     t_float             x_mod_morph;
-    bool                x_frequency_active; // frequency_active
-    bool                x_timbre_active;    // x_timbre_active
-    bool                x_morph_active;     // x_morph_active
+    bool                x_frequency_active;
+    bool                x_timbre_active;
+    bool                x_morph_active;
     bool                x_trigger_mode;
     bool                x_level_active;
     t_int               x_block_size;
@@ -67,6 +67,9 @@ extern "C"{ // Pd methods (cause we're using C++)
     void    plaits_print(t_plaits *x);
     void    plaits_trigger_mode(t_plaits *x, t_floatarg f);
     void    plaits_level_active(t_plaits *x, t_floatarg f);
+    void    plaits_morph_active(t_plaits *x, t_floatarg f);
+    void    plaits_freq_active(t_plaits *x, t_floatarg f);
+    void    plaits_timbre_active(t_plaits *x, t_floatarg f);
     void    plaits_list(t_plaits *x, t_symbol *s, int ac, t_atom *av);
 }
 
@@ -107,6 +110,9 @@ void plaits_print(t_plaits *x){
     post("- cutoff: %f", x->x_lpg_cutoff);
     post("- decay: %f", x->x_decay);
     post("- level active: %d", x->x_level_active);
+    post("- morph active: %d", x->x_morph_active);
+    post("- freq active: %d", x->x_freq_active);
+    post("- timbre active: %d", x->x_timbre_active);
 }
 
 void plaits_dump(t_plaits *x){
@@ -203,6 +209,18 @@ void plaits_level_active(t_plaits *x, t_floatarg f){
     x->x_level_active = (int)(f != 0);
 }
 
+void plaits_morph_active(t_plaits *x, t_floatarg f){
+    x->x_morph_active = (int)(f != 0);
+}
+
+void plaits_freq_active(t_plaits *x, t_floatarg f){
+    x->x_frequency_active = (int)(f != 0);
+}
+
+void plaits_timbre_active(t_plaits *x, t_floatarg f){
+    x->x_timbre_active = (int)(f != 0);
+}
+
 static float plaits_get_pitch(t_plaits *x, t_floatarg f){
     if(x->x_pitch_mode == 0){
         f = log2f((f < 0 ? f * -1 : f)/440) + 0.75;
@@ -280,6 +298,7 @@ t_int *plaits_perform(t_int *w){
 void plaits_dsp(t_plaits *x, t_signal **sp){
     x->x_pitch_correction = log2f(48000.f / sys_getsr());
     x->x_n = sp[0]->s_n;
+    post("(%d) / (%d) / (%d)", sp[3]->s_n, sp[4]->s_n, sp[5]->s_n);
     dsp_add(plaits_perform, 9, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec,
         sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec);
 }
@@ -370,17 +389,20 @@ errstate:
 
 void plaits_tilde_setup(void){
     plaits_class = class_new(gensym("plaits~"), (t_newmethod)plaits_new,
-        (t_method)plaits_free, sizeof(t_plaits), 0, A_GIMME, 0);
+        (t_method)plaits_free, sizeof(t_plaits), CLASS_NOPROMOTESIG, A_GIMME, 0);
     class_addmethod(plaits_class, (t_method)plaits_dsp, gensym("dsp"), A_CANT, 0);
     CLASS_MAINSIGNALIN(plaits_class, t_plaits, x_f);
     class_addlist(plaits_class, plaits_list);
     class_addmethod(plaits_class, (t_method)plaits_model, gensym("model"), A_FLOAT, 0);
     class_addmethod(plaits_class, (t_method)plaits_harmonics, gensym("harmonics"), A_FLOAT, 0);
+    class_addmethod(plaits_class, (t_method)plaits_freq_active, gensym("freq_active"), A_FLOAT, 0);
+    class_addmethod(plaits_class, (t_method)plaits_fmatt, gensym("freq_mod"), A_FLOAT, 0);
     class_addmethod(plaits_class, (t_method)plaits_timbre, gensym("timbre"), A_FLOAT, 0);
+    class_addmethod(plaits_class, (t_method)plaits_timbre_active, gensym("timbre_active"), A_FLOAT, 0);
     class_addmethod(plaits_class, (t_method)plaits_timbreatt, gensym("timbre_mod"), A_FLOAT, 0);
     class_addmethod(plaits_class, (t_method)plaits_morph, gensym("morph"), A_FLOAT, 0);
+    class_addmethod(plaits_class, (t_method)plaits_morph_active, gensym("morph_active"), A_FLOAT, 0);
     class_addmethod(plaits_class, (t_method)plaits_morphatt, gensym("morph_mod"), A_FLOAT, 0);
-    class_addmethod(plaits_class, (t_method)plaits_fmatt, gensym("freq_mod"), A_FLOAT, 0);
     class_addmethod(plaits_class, (t_method)plaits_trigger_mode, gensym("trigger"), A_FLOAT, 0);
     class_addmethod(plaits_class, (t_method)plaits_level_active, gensym("level"), A_FLOAT, 0);
     class_addmethod(plaits_class, (t_method)plaits_lpg_cutoff, gensym("cutoff"), A_FLOAT, 0);
