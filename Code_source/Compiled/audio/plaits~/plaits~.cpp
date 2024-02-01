@@ -12,64 +12,64 @@
 static t_class *plts_class;
 
 typedef struct _plts{
-    t_object x_obj;
-    t_glist  *x_glist;
-    t_sample pitch_in;
-    t_int model;
-    t_float pitch;
-    t_float pitch_correction;
-    t_float harmonics;
-    t_float timbre;
-    t_float morph;
-    t_float lpg_cutoff;
-    t_int pitch_mode;
-    t_float decay;
-    t_float mod_timbre;
-    t_float mod_fm;
-    t_float mod_morph;
-    bool frequency_active;
-    bool timbre_active;
-    bool morph_active;
-    bool trigger_mode;
-    bool level_active;
-    t_int block_size;
-    t_int block_count;
-    t_int last_n;
-    t_float last_tigger;
-    t_int last_engine;
-    t_int last_engine_perform;
-    plaits::Voice voice;
-    plaits::Patch patch;
+    t_object            x_obj;
+    t_glist            *x_glist;
+    t_sample            pitch_in;
+    t_int               model;
+    t_float             pitch;
+    t_float             pitch_correction;
+    t_float             harmonics;
+    t_float             timbre;
+    t_float             morph;
+    t_float             lpg_cutoff;
+    t_int               pitch_mode;
+    t_float             decay;
+    t_float             mod_timbre;
+    t_float             mod_fm;
+    t_float             mod_morph;
+    bool                frequency_active;
+    bool                timbre_active;
+    bool                morph_active;
+    bool                trigger_mode;
+    bool                level_active;
+    t_int               block_size;
+    t_int               block_count;
+    t_int               last_n;
+    t_float             last_tigger;
+    t_int               last_engine;
+    t_int               last_engine_perform;
+    plaits::Voice       voice;
+    plaits::Patch       patch;
     plaits::Modulations modulations;
-    char shared_buffer[16384];
-    t_inlet *x_trig_in;
-    t_inlet *x_level_in;
-    t_outlet *x_out1;
-    t_outlet *x_out2;
-    t_outlet *x_info_out;
+    char                shared_buffer[16384];
+    t_inlet            *x_trig_in;
+    t_inlet            *x_level_in;
+    t_outlet           *x_out1;
+    t_outlet           *x_out2;
+    t_outlet           *x_info_out;
 }t_plts;
 
-extern "C"  { // Pure data methods, needed because we are using C++
-    t_int *plts_perform(t_int *w);
-    void plts_dsp(t_plts *x, t_signal **sp);
-    void plts_free(t_plts *x);
-    void *plts_new(t_symbol *s, int ac, t_atom *av);
-    void plaits_tilde_setup(void);
-    void plts_model(t_plts *x, t_floatarg f);
-    void plts_harmonics(t_plts *x, t_floatarg f);
-    void plts_timbre(t_plts *x, t_floatarg f);
-    void plts_morph(t_plts *x, t_floatarg f);
-    void plts_lpg_cutoff(t_plts *x, t_floatarg f);
-    void plts_decay(t_plts *x, t_floatarg f);
-    void plts_midi(t_plts *x);
-    void plts_hz(t_plts *x);
-    void plts_cv(t_plts *x);
-    void plts_voct(t_plts *x);
-    void plts_dump(t_plts *x);
-    void plts_print(t_plts *x);
-    void plts_trigger_mode(t_plts *x, t_floatarg f);
-    void plts_level_active(t_plts *x, t_floatarg f);
-    void plts_list(t_plts *x, t_symbol *s, int ac, t_atom *av);
+extern "C"{ // Pd methods (cause we're using C++)
+    t_int  *plts_perform(t_int *w);
+    void    plts_dsp(t_plts *x, t_signal **sp);
+    void    plts_free(t_plts *x);
+    void   *plts_new(t_symbol *s, int ac, t_atom *av);
+    void    plaits_tilde_setup(void);
+    void    plts_model(t_plts *x, t_floatarg f);
+    void    plts_harmonics(t_plts *x, t_floatarg f);
+    void    plts_timbre(t_plts *x, t_floatarg f);
+    void    plts_morph(t_plts *x, t_floatarg f);
+    void    plts_lpg_cutoff(t_plts *x, t_floatarg f);
+    void    plts_decay(t_plts *x, t_floatarg f);
+    void    plts_midi(t_plts *x);
+    void    plts_hz(t_plts *x);
+    void    plts_cv(t_plts *x);
+    void    plts_voct(t_plts *x);
+    void    plts_dump(t_plts *x);
+    void    plts_print(t_plts *x);
+    void    plts_trigger_mode(t_plts *x, t_floatarg f);
+    void    plts_level_active(t_plts *x, t_floatarg f);
+    void    plts_list(t_plts *x, t_symbol *s, int ac, t_atom *av);
 }
 
 static const char* modelLabels[24] = {
@@ -135,16 +135,14 @@ void plts_list(t_plts *x, t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     if(argc == 0)
         return;
-    if(argc != 2){
+    if(argc != 2)
         obj_list(&x->x_obj, NULL, argc, argv);
-    }
     else{
         t_atom at[3];
         SETFLOAT(at, atom_getfloat(argv));
         SETFLOAT(at+1, atom_getfloat(argv+1));
         SETFLOAT(at+2, atom_getfloat(argv+1));
         obj_list(&x->x_obj, NULL, 3, at);
-        return;
     }
 }
 
@@ -207,12 +205,12 @@ static float plts_get_pitch(t_plts *x, t_floatarg f){
 }
 
 t_int *plts_perform(t_int *w){
-    t_plts *x = (t_plts *) (w[1]);
-    t_sample *pitch_inlet = (t_sample *) (w[2]);
-    t_sample *trig = (t_sample *) (w[3]);
-    t_sample *level = (t_sample *) (w[4]);
-    t_sample *out = (t_sample *) (w[5]);
-    t_sample *aux = (t_sample *) (w[6]);
+    t_plts *x               = (t_plts *) (w[1]);
+    t_sample *pitch_inlet   = (t_sample *) (w[2]);
+    t_sample *trig          = (t_sample *) (w[3]);
+    t_sample *level         = (t_sample *) (w[4]);
+    t_sample *out           = (t_sample *) (w[5]);
+    t_sample *aux           = (t_sample *) (w[6]);
     int n = (int)(w[7]); // Determine block size
     if(n != x->last_n){
         if(n > 24){ // Plaits uses a block size of 24 max
@@ -266,7 +264,7 @@ t_int *plts_perform(t_int *w){
     return(w+8);
 }
 
-int connected_inlet(t_object *x, t_glist *glist, int inno, t_symbol *outsym){
+/*int connected_inlet(t_object *x, t_glist *glist, int inno, t_symbol *outsym){
     t_linetraverser t;
     linetraverser_start(&t, glist);
     while(linetraverser_next(&t))
@@ -274,7 +272,7 @@ int connected_inlet(t_object *x, t_glist *glist, int inno, t_symbol *outsym){
         (!outsym || outsym == outlet_getsymbol(t.tr_outlet)))
             return (1);
     return(0);
-}
+}*/
 
 void plts_dsp(t_plts *x, t_signal **sp){
     x->pitch_correction = log2f(48000.f / sys_getsr());
