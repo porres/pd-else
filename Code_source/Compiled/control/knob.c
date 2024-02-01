@@ -1138,7 +1138,8 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     int arc = 1, angle = 320, offset = 0;
     x->x_bg = gensym("#dfdfdf"), x->x_mg = gensym("#7c7c7c"), x->x_fg = gensym("black");
     x->x_clicked = x->x_log = 0;
-    x->x_outline = x->x_jump = 0;
+    x->x_outline = 1;
+    x->x_jump = 0;
     x->x_glist = (t_glist *)canvas_getcurrent();
     x->x_zoom = x->x_glist->gl_zoom;
     x->x_flag = 0;
@@ -1333,10 +1334,18 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
                     else
                         goto errstate;
                 }
-                else if(sym == gensym("-arc")){
+                else if(sym == gensym("-noarc")){
                     if(ac >= 1){
                         x->x_flag = 1, av++, ac--;
-                        arc = 1;
+                        arc = 0;
+                    }
+                    else
+                        goto errstate;
+                }
+                else if(sym == gensym("-nooutline")){
+                    if(ac >= 1){
+                        x->x_flag = 1, av++, ac--;
+                        x->x_outline = 0;
                     }
                     else
                         goto errstate;
