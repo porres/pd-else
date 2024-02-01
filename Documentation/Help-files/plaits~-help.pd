@@ -1,4 +1,4 @@
-#N canvas 419 25 561 706 10;
+#N canvas 432 32 561 706 10;
 #X obj 236 145 else/out~;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -1148,13 +1148,17 @@
 #X msg 608 371 timbre_mod;
 #X msg 591 498 morph_mod \$1;
 #X msg 504 498 freq_mod \$1;
-#X obj 506 430 knob 50 -1 1 0 0 empty empty #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0;
-#X obj 594 437 knob 50 -1 1 0 0 empty empty #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0;
+#X obj 506 430 knob 50 -1 1 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0;
+#X obj 594 437 knob 50 -1 1 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0;
 #X obj 131 671 pack;
 #X msg 36 608 60;
 #X obj 24 576 tempo -on 50;
 #X obj 15 613 bng 16 250 50 0 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000;
-#X obj 31 639 makenote 100 2500;
+#X obj 31 639 makenote 100 500;
+#X msg 539 633 timbre_active \$1;
+#X msg 538 566 morph_active \$1;
+#X msg 530 541 freq_active \$1;
+#X obj 627 596 tgl 16 0 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0 1;
 #X connect 11 0 21 0;
 #X connect 12 0 16 0;
 #X connect 12 0 21 0;
@@ -1172,9 +1176,16 @@
 #X connect 30 0 27 0;
 #X connect 31 0 12 0;
 #X connect 32 0 35 0;
+#X connect 33 0 32 0;
 #X connect 34 0 32 0;
 #X connect 35 0 31 0;
 #X connect 35 1 31 1;
+#X connect 36 0 21 0;
+#X connect 37 0 21 0;
+#X connect 38 0 21 0;
+#X connect 39 0 36 0;
+#X connect 39 0 37 0;
+#X connect 39 0 38 0;
 #X restore 232 257 pd 07-Vowel & Speech Synthesis;
 #N canvas 399 23 617 704 08-Granular 0;
 #X obj 65 106 else/note 102 13 Menlo empty 4 0 0 0 0 223 223 223 1 1 HARMONICS:;
@@ -1726,6 +1737,7 @@
 #X obj 31 602 makenote 120 50;
 #X obj 31 540 tempo -on -mul 4 120;
 #X msg 31 582 50;
+#X obj 30 498 tgl 16 0 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0 1;
 #X connect 11 0 21 0;
 #X connect 12 0 16 0;
 #X connect 12 0 21 0;
@@ -1745,6 +1757,7 @@
 #X connect 30 1 29 1;
 #X connect 31 0 28 0;
 #X connect 32 0 30 0;
+#X connect 33 0 31 0;
 #X restore 670 257 pd 23-Chiptune;
 #X text 61 100 set model ->;
 #X obj 162 482 else/plaits~ 500;
@@ -2124,7 +2137,7 @@
 #X text 228 303 - level input;
 #X text 155 511 -level: enables level input (default disabled), f 57;
 #X text 36 105 [plaits~] is a synthesizer with 24 different synth engines based on "plaits" by Mutable Instruments. This object is still experimental., f 26;
-#N canvas 475 107 473 301 other_messages 1;
+#N canvas 475 107 473 301 other_messages 0;
 #X text 55 37 trigger <float>;
 #X text 155 37 - non zero sets to trigger mode, f 49;
 #X text 67 67 model <float>;
