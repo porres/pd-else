@@ -219,8 +219,11 @@ t_int *plaits_perform(t_int *w){
     t_sample *freq  = (t_sample *) (w[2]);
     t_sample *trig  = (t_sample *) (w[3]);
     t_sample *level = (t_sample *) (w[4]);
-    t_sample *out   = (t_sample *) (w[5]);
-    t_sample *aux   = (t_sample *) (w[6]);
+//    t_sample *tmod  = (t_sample *) (w[5]);
+//    t_sample *fmod  = (t_sample *) (w[6]);
+//    t_sample *mmod  = (t_sample *) (w[7]);
+    t_sample *out   = (t_sample *) (w[8]);
+    t_sample *aux   = (t_sample *) (w[9]);
     int n = x->x_n; // block size
     if(n != x->x_last_n){
         if(n > 24){ // Plaits uses a block size of 24 max
@@ -249,8 +252,8 @@ t_int *plaits_perform(t_int *w){
     x->x_patch.morph = x->x_morph;
     x->x_patch.lpg_colour = x->x_lpg_cutoff;
     x->x_patch.decay = x->x_decay;
-    x->x_patch.frequency_modulation_amount = x->x_mod_fm;
     x->x_patch.timbre_modulation_amount = x->x_mod_timbre;
+    x->x_patch.frequency_modulation_amount = x->x_mod_fm;
     x->x_patch.morph_modulation_amount = x->x_mod_morph;
     x->x_modulations.trigger_patched = x->x_trigger_mode;
     x->x_modulations.frequency_patched = x->x_frequency_active;
@@ -271,14 +274,14 @@ t_int *plaits_perform(t_int *w){
             aux[i + (x->x_block_size * j)] = output[i].aux / 32768.0f;
         }
     }
-    return(w+7);
+    return(w+10);
 }
 
 void plaits_dsp(t_plaits *x, t_signal **sp){
     x->x_pitch_correction = log2f(48000.f / sys_getsr());
     x->x_n = sp[0]->s_n;
-    dsp_add(plaits_perform, 6, x, sp[0]->s_vec, sp[1]->s_vec,
-        sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
+    dsp_add(plaits_perform, 9, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec,
+        sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec);
 }
 
 void plaits_free(t_plaits *x){
@@ -351,6 +354,9 @@ void *plaits_new(t_symbol *s, int ac, t_atom *av){
             }
         }
     }
+    inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym ("signal"));
+    inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym ("signal"));
+    inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym ("signal"));
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym ("signal"));
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym ("signal"));
     outlet_new(&x->x_obj, &s_signal);
