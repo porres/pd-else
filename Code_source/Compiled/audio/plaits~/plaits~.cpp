@@ -111,7 +111,7 @@ void plaits_print(t_plaits *x){
     post("- decay: %f", x->x_decay);
     post("- level active: %d", x->x_level_active);
     post("- morph active: %d", x->x_morph_active);
-    post("- freq active: %d", x->x_freq_active);
+    post("- freq active: %d", x->x_frequency_active);
     post("- timbre active: %d", x->x_timbre_active);
 }
 
