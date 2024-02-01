@@ -9,14 +9,15 @@
 #include "m_pd.h"
 #include "g_canvas.h"
 
-static t_class *plts_class;
+static t_class *plaits_class;
 
-typedef struct _plts{
+typedef struct _plaits{
     t_object            x_obj;
     t_glist            *x_glist;
-    t_sample            pitch_in;
-    t_int               model;
-    t_float             pitch;
+    t_float             x_f;
+    t_int               x_n;
+    t_int               x_model;
+//    t_float             pitch;
     t_float             pitch_correction;
     t_float             harmonics;
     t_float             timbre;
@@ -41,35 +42,35 @@ typedef struct _plts{
     plaits::Voice       voice;
     plaits::Patch       patch;
     plaits::Modulations modulations;
-    char                shared_buffer[16384];
+    char                x_shared_buffer[16384];
     t_inlet            *x_trig_in;
     t_inlet            *x_level_in;
     t_outlet           *x_out1;
     t_outlet           *x_out2;
     t_outlet           *x_info_out;
-}t_plts;
+}t_plaits;
 
 extern "C"{ // Pd methods (cause we're using C++)
-    t_int  *plts_perform(t_int *w);
-    void    plts_dsp(t_plts *x, t_signal **sp);
-    void    plts_free(t_plts *x);
-    void   *plts_new(t_symbol *s, int ac, t_atom *av);
+    t_int  *plaits_perform(t_int *w);
+    void    plaits_dsp(t_plaits *x, t_signal **sp);
+    void    plaits_free(t_plaits *x);
+    void   *plaits_new(t_symbol *s, int ac, t_atom *av);
     void    plaits_tilde_setup(void);
-    void    plts_model(t_plts *x, t_floatarg f);
-    void    plts_harmonics(t_plts *x, t_floatarg f);
-    void    plts_timbre(t_plts *x, t_floatarg f);
-    void    plts_morph(t_plts *x, t_floatarg f);
-    void    plts_lpg_cutoff(t_plts *x, t_floatarg f);
-    void    plts_decay(t_plts *x, t_floatarg f);
-    void    plts_midi(t_plts *x);
-    void    plts_hz(t_plts *x);
-    void    plts_cv(t_plts *x);
-    void    plts_voct(t_plts *x);
-    void    plts_dump(t_plts *x);
-    void    plts_print(t_plts *x);
-    void    plts_trigger_mode(t_plts *x, t_floatarg f);
-    void    plts_level_active(t_plts *x, t_floatarg f);
-    void    plts_list(t_plts *x, t_symbol *s, int ac, t_atom *av);
+    void    plaits_model(t_plaits *x, t_floatarg f);
+    void    plaits_harmonics(t_plaits *x, t_floatarg f);
+    void    plaits_timbre(t_plaits *x, t_floatarg f);
+    void    plaits_morph(t_plaits *x, t_floatarg f);
+    void    plaits_lpg_cutoff(t_plaits *x, t_floatarg f);
+    void    plaits_decay(t_plaits *x, t_floatarg f);
+    void    plaits_midi(t_plaits *x);
+    void    plaits_hz(t_plaits *x);
+    void    plaits_cv(t_plaits *x);
+    void    plaits_voct(t_plaits *x);
+    void    plaits_dump(t_plaits *x);
+    void    plaits_print(t_plaits *x);
+    void    plaits_trigger_mode(t_plaits *x, t_floatarg f);
+    void    plaits_level_active(t_plaits *x, t_floatarg f);
+    void    plaits_list(t_plaits *x, t_symbol *s, int ac, t_atom *av);
 }
 
 static const char* modelLabels[24] = {
@@ -99,9 +100,9 @@ static const char* modelLabels[24] = {
     "Chiptune"
 };
 
-void plts_print(t_plts *x){
+void plaits_print(t_plaits *x){
     post("[plaits~] settings:");
-    post("- name: %s", modelLabels[x->model]);
+    post("- name: %s", modelLabels[x->x_model]);
     post("- harmonics: %f", x->harmonics);
     post("- timbre: %f", x->timbre);
     post("- morph: %f", x->morph);
@@ -111,9 +112,9 @@ void plts_print(t_plts *x){
     post("- level active: %d", x->level_active);
 }
 
-void plts_dump(t_plts *x){
+void plaits_dump(t_plaits *x){
     t_atom at[1];
-    SETSYMBOL(at, gensym(modelLabels[x->model]));
+    SETSYMBOL(at, gensym(modelLabels[x->x_model]));
     outlet_anything(x->x_info_out, gensym("name"), 1, at);
     SETFLOAT(at, x->harmonics);
     outlet_anything(x->x_info_out, gensym("harmonics"), 1, at);
@@ -131,7 +132,7 @@ void plts_dump(t_plts *x){
     outlet_anything(x->x_info_out, gensym("decay"), 1, at);
 }
 
-void plts_list(t_plts *x, t_symbol *s, int argc, t_atom *argv){
+void plaits_list(t_plaits *x, t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     if(argc == 0)
         return;
@@ -146,54 +147,54 @@ void plts_list(t_plts *x, t_symbol *s, int argc, t_atom *argv){
     }
 }
 
-void plts_model(t_plts *x, t_floatarg f){
-    x->model = f < 0 ? 0 : f > 23 ? 23 : (int)f;
+void plaits_model(t_plaits *x, t_floatarg f){
+    x->x_model = f < 0 ? 0 : f > 23 ? 23 : (int)f;
     t_atom at[1];
-    SETSYMBOL(at, gensym(modelLabels[x->model]));
+    SETSYMBOL(at, gensym(modelLabels[x->x_model]));
     outlet_anything(x->x_info_out, gensym("name"), 1, at);
 }
 
-void plts_harmonics(t_plts *x, t_floatarg f){
+void plaits_harmonics(t_plaits *x, t_floatarg f){
     x->harmonics = f < 0 ? 0 : f > 1 ? 1 : f;
 }
 
-void plts_timbre(t_plts *x, t_floatarg f){
+void plaits_timbre(t_plaits *x, t_floatarg f){
     x->timbre = f < 0 ? 0 : f > 1 ? 1 : f;
 }
 
-void plts_morph(t_plts *x, t_floatarg f){
+void plaits_morph(t_plaits *x, t_floatarg f){
     x->morph = f < 0 ? 0 : f > 1 ? 1 : f;
 }
 
-void plts_lpg_cutoff(t_plts *x, t_floatarg f){
+void plaits_lpg_cutoff(t_plaits *x, t_floatarg f){
     x->lpg_cutoff = f < 0 ? 0 : f > 1 ? 1 : f;
 }
 
-void plts_decay(t_plts *x, t_floatarg f){
+void plaits_decay(t_plaits *x, t_floatarg f){
     x->decay = f < 0 ? 0 : f > 1 ? 1 : f;
 }
 
-void plts_hz(t_plts *x){
+void plaits_hz(t_plaits *x){
     x->pitch_mode = 0;
 }
 
-void plts_midi(t_plts *x){
+void plaits_midi(t_plaits *x){
     x->pitch_mode = 1;
 }
 
-void plts_cv(t_plts *x){
+void plaits_cv(t_plaits *x){
     x->pitch_mode = 2;
 }
 
-void plts_trigger_mode(t_plts *x, t_floatarg f){
+void plaits_trigger_mode(t_plaits *x, t_floatarg f){
     x->trigger_mode = (int)(f != 0);
 }
 
-void plts_level_active(t_plts *x, t_floatarg f){
+void plaits_level_active(t_plaits *x, t_floatarg f){
     x->level_active = (int)(f != 0);
 }
 
-static float plts_get_pitch(t_plts *x, t_floatarg f){
+static float plaits_get_pitch(t_plaits *x, t_floatarg f){
     if(x->pitch_mode == 0){
         f = log2f((f < 0 ? f * -1 : f)/440) + 0.75;
         return(f);
@@ -204,14 +205,14 @@ static float plts_get_pitch(t_plts *x, t_floatarg f){
         return(f*5);
 }
 
-t_int *plts_perform(t_int *w){
-    t_plts *x               = (t_plts *) (w[1]);
-    t_sample *pitch_inlet   = (t_sample *) (w[2]);
-    t_sample *trig          = (t_sample *) (w[3]);
-    t_sample *level         = (t_sample *) (w[4]);
-    t_sample *out           = (t_sample *) (w[5]);
-    t_sample *aux           = (t_sample *) (w[6]);
-    int n = (int)(w[7]); // Determine block size
+t_int *plaits_perform(t_int *w){
+    t_plaits *x     = (t_plaits *) (w[1]);
+    t_sample *freq  = (t_sample *) (w[2]);
+    t_sample *trig  = (t_sample *) (w[3]);
+    t_sample *level = (t_sample *) (w[4]);
+    t_sample *out   = (t_sample *) (w[5]);
+    t_sample *aux   = (t_sample *) (w[6]);
+    int n = x->x_n; // block size
     if(n != x->last_n){
         if(n > 24){ // Plaits uses a block size of 24 max
             int block_size = 24;
@@ -226,7 +227,7 @@ t_int *plts_perform(t_int *w){
         }
         x->last_n = n;
     }
-    x->patch.engine = x->model; // Model
+    x->patch.engine = x->x_model; // Model
     int active_engine = x->voice.active_engine(); // Send current engine
     if(x->last_engine_perform > 128 && x->last_engine != active_engine){
         x->last_engine = active_engine;
@@ -248,7 +249,7 @@ t_int *plts_perform(t_int *w){
     x->modulations.morph_patched = x->morph_active;
     x->modulations.level_patched = x->level_active;
     for(int j = 0; j < x->block_count; j++){ // Render frames
-        float pitch = plts_get_pitch(x, pitch_inlet[x->block_size * j]); // get pitch
+        float pitch = plaits_get_pitch(x, freq[x->block_size * j]); // get pitch
         pitch += x->pitch_correction;
         x->patch.note = 60.f + pitch * 12.f;
         x->modulations.level = level[x->block_size * j];
@@ -261,26 +262,17 @@ t_int *plts_perform(t_int *w){
             aux[i + (x->block_size * j)] = output[i].aux / 32768.0f;
         }
     }
-    return(w+8);
+    return(w+7);
 }
 
-/*int connected_inlet(t_object *x, t_glist *glist, int inno, t_symbol *outsym){
-    t_linetraverser t;
-    linetraverser_start(&t, glist);
-    while(linetraverser_next(&t))
-        if(t.tr_ob2 == x && t.tr_inno == inno &&
-        (!outsym || outsym == outlet_getsymbol(t.tr_outlet)))
-            return (1);
-    return(0);
-}*/
-
-void plts_dsp(t_plts *x, t_signal **sp){
+void plaits_dsp(t_plaits *x, t_signal **sp){
     x->pitch_correction = log2f(48000.f / sys_getsr());
-    dsp_add(plts_perform, 7, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec,
-        sp[3]->s_vec, sp[4]->s_vec, sp[0]->s_n);
+    x->x_n = sp[0]->s_n;
+    dsp_add(plaits_perform, 6, x, sp[0]->s_vec, sp[1]->s_vec,
+        sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
 
-void plts_free(t_plts *x){
+void plaits_free(t_plaits *x){
     x->voice.FreeEngines();
     inlet_free(x->x_trig_in);
     inlet_free(x->x_level_in);
@@ -289,18 +281,18 @@ void plts_free(t_plts *x){
     outlet_free(x->x_info_out);
 }
 
-void *plts_new(t_symbol *s, int ac, t_atom *av){
+void *plaits_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    t_plts *x = (t_plts *)pd_new(plts_class);
-    stmlib::BufferAllocator allocator(x->shared_buffer, sizeof(x->shared_buffer));
+    t_plaits *x = (t_plaits *)pd_new(plaits_class);
+    stmlib::BufferAllocator allocator(x->x_shared_buffer, sizeof(x->x_shared_buffer));
     x->voice.Init(&allocator);
     x->x_glist = (t_glist *)canvas_getcurrent();
     int floatarg = 0;
     x->patch.engine = 0;
     x->patch.lpg_colour = 0.5f;
     x->patch.decay = 0.5f;
-    x->model = 0;
-    x->pitch = 0;
+    x->x_model = 0;
+//    x->pitch = 0;
     x->pitch_correction = log2f(48000.f / sys_getsr());
     x->harmonics = 0.5f;
     x->timbre = 0.5f;
@@ -331,7 +323,7 @@ void *plts_new(t_symbol *s, int ac, t_atom *av){
             else if(sym == gensym("-model")){
                 if((av)->a_type == A_FLOAT){
                     t_float m = atom_getfloat(av);
-                    x->model = m < 0 ? 0 : m > 23 ? 23 : (int)m;
+                    x->x_model = m < 0 ? 0 : m > 23 ? 23 : (int)m;
                     ac--, av++;
                 }
             }
@@ -344,7 +336,7 @@ void *plts_new(t_symbol *s, int ac, t_atom *av){
         }
         else{
             floatarg = 1;
-            x->pitch_in = atom_getfloat(av); // pitch
+            x->x_f = atom_getfloat(av); // pitch
             ac--, av++;
             if(ac && (av)->a_type == A_FLOAT){ // harmonics
                 x->harmonics = atom_getfloat(av);
@@ -380,22 +372,22 @@ errstate:
 }
 
 void plaits_tilde_setup(void){
-    plts_class = class_new(gensym("plaits~"), (t_newmethod)plts_new,
-        (t_method)plts_free, sizeof(t_plts), 0, A_GIMME, 0);
-    class_addmethod(plts_class, (t_method)plts_dsp, gensym("dsp"), A_NULL);
-    CLASS_MAINSIGNALIN(plts_class, t_plts, pitch_in);
-    class_addlist(plts_class, plts_list);
-    class_addmethod(plts_class, (t_method)plts_model, gensym("model"), A_DEFFLOAT, A_NULL);
-    class_addmethod(plts_class, (t_method)plts_harmonics, gensym("harmonics"), A_DEFFLOAT, A_NULL);
-    class_addmethod(plts_class, (t_method)plts_timbre, gensym("timbre"), A_DEFFLOAT, A_NULL);
-    class_addmethod(plts_class, (t_method)plts_morph, gensym("morph"), A_DEFFLOAT, A_NULL);
-    class_addmethod(plts_class, (t_method)plts_trigger_mode, gensym("trigger"), A_DEFFLOAT, A_NULL);
-    class_addmethod(plts_class, (t_method)plts_level_active, gensym("level"), A_DEFFLOAT, A_NULL);
-    class_addmethod(plts_class, (t_method)plts_lpg_cutoff, gensym("cutoff"), A_DEFFLOAT, A_NULL);
-    class_addmethod(plts_class, (t_method)plts_decay, gensym("decay"), A_DEFFLOAT, A_NULL);
-    class_addmethod(plts_class, (t_method)plts_cv, gensym("cv"), A_NULL);
-    class_addmethod(plts_class, (t_method)plts_midi, gensym("midi"), A_NULL);
-    class_addmethod(plts_class, (t_method)plts_hz, gensym("hz"), A_NULL);
-    class_addmethod(plts_class, (t_method)plts_dump, gensym("dump"), A_NULL);
-    class_addmethod(plts_class, (t_method)plts_print, gensym("print"), A_NULL);
+    plaits_class = class_new(gensym("plaits~"), (t_newmethod)plaits_new,
+        (t_method)plaits_free, sizeof(t_plaits), 0, A_GIMME, 0);
+    class_addmethod(plaits_class, (t_method)plaits_dsp, gensym("dsp"), A_NULL);
+    CLASS_MAINSIGNALIN(plaits_class, t_plaits, x_f);
+    class_addlist(plaits_class, plaits_list);
+    class_addmethod(plaits_class, (t_method)plaits_model, gensym("model"), A_DEFFLOAT, A_NULL);
+    class_addmethod(plaits_class, (t_method)plaits_harmonics, gensym("harmonics"), A_DEFFLOAT, A_NULL);
+    class_addmethod(plaits_class, (t_method)plaits_timbre, gensym("timbre"), A_DEFFLOAT, A_NULL);
+    class_addmethod(plaits_class, (t_method)plaits_morph, gensym("morph"), A_DEFFLOAT, A_NULL);
+    class_addmethod(plaits_class, (t_method)plaits_trigger_mode, gensym("trigger"), A_DEFFLOAT, A_NULL);
+    class_addmethod(plaits_class, (t_method)plaits_level_active, gensym("level"), A_DEFFLOAT, A_NULL);
+    class_addmethod(plaits_class, (t_method)plaits_lpg_cutoff, gensym("cutoff"), A_DEFFLOAT, A_NULL);
+    class_addmethod(plaits_class, (t_method)plaits_decay, gensym("decay"), A_DEFFLOAT, A_NULL);
+    class_addmethod(plaits_class, (t_method)plaits_cv, gensym("cv"), A_NULL);
+    class_addmethod(plaits_class, (t_method)plaits_midi, gensym("midi"), A_NULL);
+    class_addmethod(plaits_class, (t_method)plaits_hz, gensym("hz"), A_NULL);
+    class_addmethod(plaits_class, (t_method)plaits_dump, gensym("dump"), A_NULL);
+    class_addmethod(plaits_class, (t_method)plaits_print, gensym("print"), A_NULL);
 }
