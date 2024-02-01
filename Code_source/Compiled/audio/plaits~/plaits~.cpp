@@ -111,7 +111,7 @@ void plaits_print(t_plaits *x){
     post("- decay: %f", x->x_decay);
     post("- level active: %d", x->x_level_active);
     post("- morph active: %d", x->x_morph_active);
-    post("- freq active: %d", x->x_frequency_active);
+    post("- freq active: %d", x->x_freq_active);
     post("- timbre active: %d", x->x_timbre_active);
 }
 
@@ -298,7 +298,6 @@ t_int *plaits_perform(t_int *w){
 void plaits_dsp(t_plaits *x, t_signal **sp){
     x->x_pitch_correction = log2f(48000.f / sys_getsr());
     x->x_n = sp[0]->s_n;
-    post("(%d) / (%d) / (%d)", sp[3]->s_n, sp[4]->s_n, sp[5]->s_n);
     dsp_add(plaits_perform, 9, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec,
         sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec);
 }
