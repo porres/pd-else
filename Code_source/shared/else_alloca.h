@@ -14,8 +14,7 @@
 #  include <stdlib.h> /* BSDs for example */
 # endif
 
-
-#define MAX_ALLOCA_BYTES 100
+#define MAX_ALLOCA_BYTES 128
 
 # define ALLOCA(type, nmemb) (type *)((nmemb) < (MAX_ALLOCA_BYTES) ? \
             alloca((nmemb) * sizeof(type)) : getbytes((nmemb) * sizeof(type)))

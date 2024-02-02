@@ -4,7 +4,6 @@
 #include "else_alloca.h"
 #include <stdlib.h>
 #include "random.h"
-#include "else_alloca.h"
 
 typedef struct _chance{
 	t_object       x_obj;
