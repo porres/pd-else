@@ -80,7 +80,7 @@ static void route2_anything(t_route2 *x, t_symbol *s, int ac, t_atom *av){
         }
     }
     route2_list(x, s = &s_list, ac+1, at);
-    free(at);
+    FREEA(at);
 }
 
 static void route2_free(t_route2 *x){
