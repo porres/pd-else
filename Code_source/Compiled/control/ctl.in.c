@@ -27,7 +27,6 @@ static void ctlin_float(t_ctlin *x, t_float f){
         return;
     }
     else{
-        pd_error(NULL, "%f", f);
         t_int ch = (t_int)x->x_ch_in;
         if(ch != x->x_ch && ch >= 0 && ch <= 16)
             x->x_omni = ((x->x_ch = (t_int)ch) == 0);
