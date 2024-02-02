@@ -221,7 +221,7 @@ static void *message_new(t_symbol *s, int ac, t_atom *av){
         }
         else
             x->x_s = x->x_sel = &s_list; // list selector otherwise
-        x->x_av = (t_atom *)resizebytes(x->x_av, ac * sizeof(t_atom), x->x_ac * sizeof(t_atom));
+        x->x_av = (t_atom *)resizebytes(x->x_av, x->x_ac * sizeof(t_atom), ac * sizeof(t_atom));
         x->x_ac = ac;
         int i;
         for(i = 0; i < ac; i++)
