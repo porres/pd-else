@@ -87,7 +87,7 @@ static void metronome_div(t_metronome *x, t_atom *av){
     if(av->a_type == A_SYMBOL){
         char *s = (char *)atom_getsymbol(av)->s_name;
         int len = strlen(s);
-        t_atom *d_av = getbytes(2*sizeof(t_atom));
+        t_atom d_av[2];
         if(s[0] == '(' && s[len-1] == ')' && strstr(s, "/")){ // in parenthesis alright and a fraction
             s[len-1] = '\0'; // removing the last ')'
             s++;
@@ -136,7 +136,7 @@ static void metronome_div(t_metronome *x, t_atom *av){
 static void metronome_symbol(t_metronome *x, t_symbol *s){
     char *ch = (char*)s->s_name;
     if(strstr(ch, "/")){
-        t_atom *av = getbytes(2*sizeof(t_atom));
+        t_atom av[2];
         char *d = strstr(ch, "/");
         if(d == ch || !strcmp(d, "/"))
             goto error;
@@ -169,7 +169,7 @@ static void metronome_beat(t_metronome *x, t_symbol *s, int argc, t_atom *argv){
         s = atom_getsymbol(argv);
         char *ch = (char*)s->s_name;
         if(strstr(ch, "/")){
-            t_atom *av = getbytes(2*sizeof(t_atom));
+            t_atom av[2];
             char *d = strstr(ch, "/");
             if(d == ch || !strcmp(d, "/"))
                 goto error;

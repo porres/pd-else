@@ -14,8 +14,9 @@ typedef struct _ctlin{
     unsigned char  x_ready;
     unsigned char  x_control;
     unsigned char  x_channel;
-    t_outlet      *x_chanout;
+    t_outlet      *x_val_out;
     t_outlet      *x_n_out;
+    t_outlet      *x_chanout;
 }t_ctlin;
 
 static t_class *ctlin_class;
@@ -26,6 +27,7 @@ static void ctlin_float(t_ctlin *x, t_float f){
         return;
     }
     else{
+        pd_error(NULL, "%f", f);
         t_int ch = (t_int)x->x_ch_in;
         if(ch != x->x_ch && ch >= 0 && ch <= 16)
             x->x_omni = ((x->x_ch = (t_int)ch) == 0);
@@ -44,7 +46,7 @@ static void ctlin_float(t_ctlin *x, t_float f){
                 else{ // ready
                     outlet_float(x->x_chanout, x->x_channel);
                     outlet_float(x->x_n_out, x->x_n);
-                    outlet_float(((t_object *)x)->ob_outlet, val);
+                    outlet_float(x->x_val_out, val);
                     x->x_control = x->x_ready = 0;
                 }
             }
@@ -62,7 +64,7 @@ static void ctlin_float(t_ctlin *x, t_float f){
                     }
                     else{
                         outlet_float(x->x_n_out, x->x_n);
-                        outlet_float(((t_object *)x)->ob_outlet, val);
+                        outlet_float(x->x_val_out, val);
                         x->x_control = x->x_ready = 0;
                     }
                 }
@@ -122,7 +124,7 @@ static void *ctlin_new(t_symbol *s, int ac, t_atom *av){
     x->x_ctl_in = ctl;
     floatinlet_new((t_object *)x, &x->x_ctl_in);
     floatinlet_new((t_object *)x, &x->x_ch_in);
-    outlet_new((t_object *)x, &s_float);
+    x->x_val_out = outlet_new((t_object *)x, &s_float);
     x->x_n_out = outlet_new((t_object *)x, &s_float);
     x->x_chanout = outlet_new((t_object *)x, &s_float);
     pd_bind(&x->x_obj.ob_pd, gensym("#midiin"));

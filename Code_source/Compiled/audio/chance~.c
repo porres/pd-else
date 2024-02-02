@@ -1,6 +1,7 @@
 // porres 2020
 
 #include "m_pd.h"
+#include "else_alloca.h"
 #include <stdlib.h>
 #include "random.h"
 
@@ -83,13 +84,13 @@ static void chance_seed(t_chance *x, t_symbol *s, int ac, t_atom *av){
 
 static void chance_dsp(t_chance *x, t_signal **sp){
     int n_sig = x->x_n_outlets + 3; // outs + 3 (ob / in / block size)
-    t_int* sigvec = (t_int*)calloc(n_sig, sizeof(t_int));
+    t_int* sigvec = ALLOCA(t_int, n_sig);
 	sigvec[0] = (t_int)x; // object
     for(int i = 1; i < n_sig - 1; i++) // I/O
         sigvec[i] = (t_int)sp[i-1]->s_vec;
     sigvec[n_sig - 1] = (t_int)sp[0]->s_n; // block size (n)
     dsp_addv(chance_perform, n_sig, (t_int *)sigvec);
-    free(sigvec);
+    FREEA(sigvec, t_int, n_sig);
 }
 
 static void chance_free(t_chance *x){

@@ -117,3 +117,6 @@ void setup_canvas0x2emouse(void){
     canvas_mouse_proxy_class = class_new(0, 0, 0, sizeof(t_canvas_mouse_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(canvas_mouse_proxy_class, canvas_mouse_proxy_any);
 }
+
+
+

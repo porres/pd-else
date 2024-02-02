@@ -2,6 +2,7 @@
 
 #include "m_pd.h"
 #include "g_canvas.h"
+#include "else_alloca.h"
 #include <string.h>
 
 static t_class *message_class;
@@ -17,7 +18,6 @@ typedef struct _message{
     t_message_proxy x_proxy;
     t_int           x_ac;
     t_int           x_first;
-    t_atom         *x_atom;
     t_atom         *x_av;
     t_symbol       *x_s;
     t_symbol       *x_sel;
@@ -38,12 +38,12 @@ static void message_proxy_anything(t_message_proxy *p, t_symbol *s, int ac, t_at
         x->x_av = NULL;
     }
     else{
+        x->x_av = (t_atom *)resizebytes(x->x_av, x->x_ac * sizeof(t_atom), ac * sizeof(t_atom));
         x->x_ac = ac;
-        x->x_av = x->x_atom = (t_atom *)getbytes(x->x_ac * sizeof(t_atom));
         for(int i = 0; i < ac; i++){
             if(av[i].a_type == A_SYMBOL)
                 av[i].a_w.w_symbol = canvas_realizedollar(x->x_cv, av[i].a_w.w_symbol);
-            x->x_av[i] = x->x_atom[i] = av[i];
+            x->x_av[i] = av[i];
         }
     }
 }
@@ -164,14 +164,17 @@ static void message_send(t_message *x, t_symbol *s, int ac, t_atom *av){
 static void message_output(t_message *x){
     if(x->x_sel != NULL){
         if(x->x_first){
-            x->x_atom = (t_atom *)getbytes((x->x_ac+1) * sizeof(t_atom));
+            int ac = x->x_ac+1;
+            t_atom* av = ALLOCA(t_atom, ac);
             for(int i = 0; i < x->x_ac; i++)
-                x->x_atom[i] = x->x_av[i];
-            message_send(x, x->x_sel, x->x_ac, x->x_atom);
+                av[i] = x->x_av[i];
+            message_send(x, x->x_sel, x->x_ac, av);
+            FREEA(av, t_atom, ac);
+            
         x->x_first = 0;
         }
         else
-            message_send(x, x->x_sel, x->x_ac, x->x_atom);
+            message_send(x, x->x_sel, x->x_ac, x->x_av);
     }
     else
         outlet_bang(x->x_obj.ob_outlet);
@@ -185,12 +188,12 @@ static void message_any(t_message *x, t_symbol *s, int ac, t_atom *av){
         x->x_av = NULL;
     }
     else{
+        x->x_av = (t_atom *)resizebytes(x->x_av, x->x_ac * sizeof(t_atom), ac * sizeof(t_atom));
         x->x_ac = ac;
-        x->x_av = x->x_atom = (t_atom *)getbytes(x->x_ac * sizeof(t_atom));
         for(int i = 0; i < ac; i++){
             if(av[i].a_type == A_SYMBOL)
                 av[i].a_w.w_symbol = canvas_realizedollar(x->x_cv, av[i].a_w.w_symbol);
-            x->x_av[i] = x->x_atom[i] = av[i];
+            x->x_av[i] = av[i];
         }
     }
     message_output(x);
@@ -218,11 +221,11 @@ static void *message_new(t_symbol *s, int ac, t_atom *av){
         }
         else
             x->x_s = x->x_sel = &s_list; // list selector otherwise
+        x->x_av = (t_atom *)resizebytes(x->x_av, x->x_ac * sizeof(t_atom), ac * sizeof(t_atom));
         x->x_ac = ac;
-        x->x_av = x->x_atom = (t_atom *)getbytes(x->x_ac * sizeof(t_atom));
         int i;
         for(i = 0; i < ac; i++)
-            x->x_av[i] = x->x_atom[i] = av[i];
+            x->x_av[i] = av[i];
     }
     message_proxy_init(&x->x_proxy, x);
     inlet_new(&x->x_obj, &x->x_proxy.p_pd, 0, 0);

@@ -1,6 +1,7 @@
 // Porres 2018
 
 #include "m_pd.h"
+#include "else_alloca.h"
 #include <math.h>
 #include <stdlib.h>
 
@@ -15,11 +16,11 @@ static void rint_list(t_rint *x, t_symbol *s, int ac, t_atom *av){
     if(ac == 1)
         outlet_float(x->x_obj.ob_outlet, rint(atom_getfloat(av)));
     else if(ac > 1){
-        t_atom* at = calloc(ac, sizeof(t_atom));
+        t_atom* at = ALLOCA(t_atom, ac);
         for(int i = 0; i < ac; i++)
             SETFLOAT(at+i, rint(atom_getfloatarg(i, ac, av)));
         outlet_list(x->x_obj.ob_outlet, &s_list, ac, at);
-        free(at);
+        FREEA(at, t_atom, ac);
     }
 }
 
