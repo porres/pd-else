@@ -1,4 +1,5 @@
 #include "m_pd.h"
+#include "else_alloca.h"
 #include <stdlib.h>
 
 static t_class *route2_class;
@@ -69,7 +70,7 @@ static void route2_list(t_route2 *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void route2_anything(t_route2 *x, t_symbol *s, int ac, t_atom *av){
-    t_atom* at = calloc(ac + 1, sizeof(t_atom));
+    t_atom* at = ALLOCA(t_atom, ac + 1);
     SETSYMBOL(at, s);
     for(int i = 0; i < ac; i++){
         if((av+i)->a_type == A_FLOAT)

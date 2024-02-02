@@ -1,5 +1,6 @@
 #include "m_pd.h"
 #include "buffer.h"
+#include "else_alloca.h"
 #include <stdlib.h>
 
 static t_class *rotate_class;
@@ -59,14 +60,14 @@ static void rotate_dsp(t_rotate *x, t_signal **sp){
     t_int i;
 
     int pointer_count = (x->x_ch * 2) + 3; // I/O chs + obj + panner + blocksize
-    t_int* sigvec = (t_int*)calloc(pointer_count, sizeof(t_int));
+    t_int* sigvec = ALLOCA(t_int, pointer_count);
 
     sigvec[0] = (t_int)x; // object
     sigvec[pointer_count - 1] = (t_int)sp[0]->s_n; // block size
     for(i = 1; i < pointer_count - 1; i++) // inlet and outlets
         sigvec[i] = (t_int)sp[i-1]->s_vec;
     dsp_addv(rotate_perform, pointer_count, (t_int *)sigvec);
-    free(sigvec);
+    FREEA(sigvec, t_int, pointer_count);
 }
 
 static void rotate_free(t_rotate *x){

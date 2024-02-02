@@ -1,6 +1,7 @@
 // Porres 2016 - 2023
  
 #include "m_pd.h"
+#include "else_alloca.h"
 #include <math.h>
 #include <stdlib.h>
 
@@ -69,11 +70,11 @@ static void rescale_list(t_rescale *x, t_symbol *s, int ac, t_atom *av){
     else if(ac == 1)
         outlet_float(x->x_obj.ob_outlet, convert(x, atom_getfloat(av)));
     else{
-        t_atom* at = calloc(ac, sizeof(t_atom));
+        t_atom* at = ALLOCA(t_atom, ac);
         for(int i = 0; i < ac; i++)
             SETFLOAT(at+i, convert(x, atom_getfloatarg(i, ac, av)));
         outlet_list(x->x_obj.ob_outlet, &s_list, ac, at);
-        free(at);
+        FREEA(at, t_atom, ac);
     }
 }
 

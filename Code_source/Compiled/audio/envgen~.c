@@ -1,6 +1,7 @@
 // porres 2018-2022
 
 #include "m_pd.h"
+#include "else_alloca.h"
 #include <stdlib.h>
 #include <math.h>
 
@@ -247,7 +248,7 @@ static void envgen_init(t_envgen *x, int ac, t_atom *av){
         }
         int exp = (ac % 3) + 1;
         int nlines = (int)(ac/3);
-        t_atom* temp_at = calloc(ac-nlines, sizeof(t_atom));
+        t_atom* temp_at = ALLOCA(t_atom, ac-nlines);
         int j = 0, k = 0;
         for(i = 0; i < ac; i++){
             if(i % 3 == exp){
@@ -263,7 +264,7 @@ static void envgen_init(t_envgen *x, int ac, t_atom *av){
 //        x->x_av = getbytes(x->x_ac * sizeof(*(x->x_av)));
         copy_atoms(temp_at, x->x_av, x->x_ac);
         envgen_attack(x, x->x_ac, x->x_av);
-        free(temp_at);
+        FREEA(temp_at, t_atom, (ac-nlines));
     }
 }
 
@@ -460,7 +461,7 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
                         goto errstate;
                     int exp = (z % 3) + 1;
                     int nlines = (int)(z/3);
-                    t_atom* temp_at = calloc(z-nlines, sizeof(t_atom));
+                    t_atom* temp_at = ALLOCA(t_atom, z-nlines);
                     int j = 0, k = 0;
                     for(i = 0; i < ac; i++){
                         if(i % 3 == exp){
@@ -475,7 +476,7 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
                     x->x_exp = 1;
 //                    x->x_av = getbytes(k*sizeof(*(x->x_av)));
                     copy_atoms(temp_at, x->x_av, x->x_ac = k);
-                    free(temp_at);
+                    FREEA(temp_at, t_atom, (z-nlines));
                     ac-=z, av+=z;
                 }
                 else

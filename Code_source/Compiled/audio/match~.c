@@ -1,6 +1,7 @@
 // porres 2017
 
 #include "m_pd.h"
+#include "else_alloca.h"
 #include <stdlib.h>
 
 typedef struct _match{
@@ -88,13 +89,13 @@ static void *match_list(t_match *x, t_symbol *s, int argc, t_atom *argv){
 static void match_dsp(t_match *x, t_signal **sp){
 	int i;
     int n_sig = x->x_n_outlets + 3; // outs + 3 (ob / in / block size)
-    t_int* sigvec = (t_int*)calloc(n_sig, sizeof(t_int));
+    t_int* sigvec = ALLOCA(t_int, n_sig);
 	sigvec[0] = (t_int)x; // object
 	sigvec[n_sig - 1] = (t_int)sp[0]->s_n; // block size (n)
 	for(i = 1; i < n_sig - 1; i++) // I/O
 		sigvec[i] = (t_int)sp[i-1]->s_vec;
     dsp_addv(match_perform, n_sig, (t_int *)sigvec);
-    free(sigvec);
+    FREEA(sigvec, t_int, n_sig);
 }
 
 static void match_free(t_match *x){

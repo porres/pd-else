@@ -6,6 +6,7 @@
 #include "m_pd.h"
 #include "g_canvas.h"
 #include "s_elseutf8.h"
+#include "else_alloca.h"
 
 // #include "../extra_source/compat.h"
 
@@ -110,7 +111,7 @@ static void note_initialize(t_note *x){
     int n_args = binbuf_getnatom(bb) - 1; // number of arguments
     if(x->x_text_flag){ // let's get the text from the attribute
         int n = x->x_text_n, ac = x->x_text_size;
-        t_atom* av = (t_atom *)getbytes(ac*sizeof(t_atom));
+        t_atom* av = ALLOCA(t_atom, ac);
         char buf[128];
         for(int i = 0;  i < ac; i++){
             atom_string(binbuf_getvec(bb) + n + 1 + i, buf, 128);
@@ -118,13 +119,13 @@ static void note_initialize(t_note *x){
         }
         binbuf_clear(x->x_binbuf);
         binbuf_restore(x->x_binbuf, ac, av);
-        freebytes(av, ac*sizeof(t_atom));
+        FREEA(av, t_atom, ac);
     }
     else{
         int n = 14; // = x->x_old ? 8 : 14;
         if(n_args > n){
             int ac = n_args - n;
-            t_atom* av = (t_atom *)getbytes(ac*sizeof(t_atom));
+            t_atom* av = ALLOCA(t_atom, ac);
             char buf[128];
             for(int i = 0;  i < ac; i++){
                 atom_string(binbuf_getvec(bb) + n + 1 + i, buf, 128);
@@ -132,7 +133,7 @@ static void note_initialize(t_note *x){
             }
             binbuf_clear(x->x_binbuf);
             binbuf_restore(x->x_binbuf, ac, av);
-            freebytes(av, ac*sizeof(t_atom));
+            FREEA(av, t_atom, ac);
         }
     }
     binbuf_gettext(x->x_binbuf, &x->x_buf, &x->x_bufsize);
@@ -825,7 +826,7 @@ static void note_append(t_note *x, t_symbol *s, int ac, t_atom * av){
         note_initialize(x);
     if(ac){
         int n = binbuf_getnatom(x->x_binbuf); // number of arguments
-        t_atom *at = (t_atom *)getbytes((n+ac)*sizeof(t_atom));
+        t_atom *at = ALLOCA(t_atom, (n+ac));
         char buf[128];
         int i = 0;
         for(i = 0;  i < n; i++){
@@ -839,7 +840,7 @@ static void note_append(t_note *x, t_symbol *s, int ac, t_atom * av){
         binbuf_gettext(x->x_binbuf, &x->x_buf, &x->x_bufsize);
         x->x_bbset = 0;
         note_redraw(x);
-        freebytes(at, (n+ac)*sizeof(t_atom));
+        FREEA(at, t_atom, (n+ac));
     }
 }
 
@@ -850,7 +851,7 @@ static void note_prepend(t_note *x, t_symbol *s, int ac, t_atom * av){
         note_initialize(x);
     if(ac){
         int n = binbuf_getnatom(x->x_binbuf); // number of arguments
-        t_atom* at = (t_atom *)getbytes((n+ac)*sizeof(t_atom));
+        t_atom* at = ALLOCA(t_atom, (n+ac));
         char buf[128];
         int i = 0;
         for(i = 0; i < ac; i++)
@@ -864,7 +865,7 @@ static void note_prepend(t_note *x, t_symbol *s, int ac, t_atom * av){
         binbuf_gettext(x->x_binbuf, &x->x_buf, &x->x_bufsize);
         x->x_bbset = 0;
         note_redraw(x);
-        freebytes(at, (n+ac)*sizeof(t_atom));
+        FREEA(at, t_atom, (n+ac));
     }
 }
 
@@ -1124,7 +1125,8 @@ static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
     if(strcmp(x->x_bgcolor, bg_color->s_name)){
         strcpy(x->x_bgcolor, bg_color->s_name);
         x->x_changed = 1;
-        char* hex = malloc(strlen(bg_color->s_name+1) + 2);
+        int hexlen = strlen(bg_color->s_name+1) + 2;
+        char* hex = ALLOCA(char, hexlen);
         char* ptr;
         strcpy(hex + 2, bg_color->s_name + 1);
         hex[0] = '0';
@@ -1133,13 +1135,14 @@ static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
         x->x_bg[0] = (char)((rgb >> 16) & 0xFF);
         x->x_bg[1] = (char)((rgb >> 8) & 0xFF);
         x->x_bg[2] = (char)((rgb) & 0xFF);
-        free(hex);
+        FREEA(hex, char, hexlen);
     }
     t_symbol *fg_color = atom_getsymbolarg(9, ac, av);
     if(strcmp(x->x_color, fg_color->s_name)){
         strcpy(x->x_color, fg_color->s_name);
         x->x_changed = 1;
-        char* hex = malloc(strlen(fg_color->s_name+1) + 2);
+        int hexlen = strlen(fg_color->s_name+1) + 2;
+        char* hex = ALLOCA(char, hexlen);
         char* ptr;
         strcpy(hex + 2, fg_color->s_name + 1);
         hex[0] = '0';
@@ -1148,7 +1151,7 @@ static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
         x->x_red = (char)((rgb >> 16) & 0xFF);
         x->x_green = (char)((rgb >> 8) & 0xFF);
         x->x_blue = (char)((rgb) & 0xFF);
-        free(hex);
+        FREEA(hex, char, hexlen);
     }
     int outline = atom_getfloatarg(10, ac, av);
     if(x->x_outline != outline)

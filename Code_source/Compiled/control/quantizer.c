@@ -1,6 +1,7 @@
 // Porres 2018
 
 #include "m_pd.h"
+#include "else_alloca.h"
 #include <math.h>
 #include <stdlib.h>
 
@@ -40,11 +41,11 @@ static float get_qtz(t_quantizer *x, t_float f){
 
 static void quantizer_list(t_quantizer *x, t_symbol *s, int argc, t_atom *argv){
     s = NULL;
-    t_atom* at = calloc(argc, sizeof(t_atom));
+    t_atom* at = ALLOCA(t_atom, argc);
 	for(int i = 0; i < argc; i++) // get output list
 		SETFLOAT(at+i, get_qtz(x, atom_getfloatarg(i, argc, argv)));
 	outlet_list(x->x_obj.ob_outlet, &s_list, argc, at);
-    free(at);
+    FREEA(at, t_atom, argc);
 }
 
 static void *quantizer_new(t_symbol *s, int argc, t_atom *argv){

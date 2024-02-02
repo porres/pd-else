@@ -54,7 +54,7 @@ static void suspedal_check_arrsz(t_suspedal *x, int sz){
         //copy stack contents to heap
         memcpy(newarr, x->x_ord, sizeof(int)*suspedal_NORD);
         //point to heap
-        x->x_ord = newarr;
+        x->x_ord = newarr; // TS: doesn't this make the old content of x_ord leak?
         x->x_array_size = newsz;
         x->x_heaped = 1;
     }

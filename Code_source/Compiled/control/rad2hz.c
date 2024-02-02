@@ -1,6 +1,7 @@
 // Porres 2016
  
 #include "m_pd.h"
+#include "else_alloca.h"
 #include <stdlib.h>
 
 #define TWO_PI (2 * 3.14159265358979323846)
@@ -23,11 +24,11 @@ static void rad2hz_list(t_rad2hz *x, t_symbol *s, int ac, t_atom *av){
     if(ac == 1)
         outlet_float(x->x_outlet, convert(atom_getfloat(av)));
     else if(ac > 1){
-        t_atom* at = calloc(ac, sizeof(t_atom));
+        t_atom* at = ALLOCA(t_atom, ac);
         for(int i = 0; i < ac; i++)
             SETFLOAT(at+i, convert(atom_getfloatarg(i, ac, av)));
         outlet_list(x->x_obj.ob_outlet, &s_list, ac, at);
-        free(at);
+        FREEA(at, t_atom, ac);
     }
 }
 

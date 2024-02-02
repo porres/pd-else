@@ -1,6 +1,7 @@
 
 
 #include "m_pd.h"
+#include "else_alloca.h"
 #include <stdlib.h>
 
 static t_class *merge_class;
@@ -70,11 +71,11 @@ static void merge_inlet_list(t_merge_inlet *x, t_symbol* s, int ac, t_atom* av){
 }
 
 static void merge_inlet_anything(t_merge_inlet *x, t_symbol* s, int ac, t_atom* av){
-    t_atom* at = calloc(ac + 1, sizeof(t_atom));
+    t_atom* at = ALLOCA(t_atom, ac + 1);
     SETSYMBOL(at, s);
     atoms_copy(ac, av, at+1);
     merge_inlet_list(x, 0, ac+1, at);
-    free(at);
+    FREEA(at, t_atom, ac + 1);
 }
 
 static void* merge_free(t_merge *x){
@@ -127,7 +128,7 @@ static void *merge_new(t_symbol *s, int ac, t_atom* av){
     int n = (int)numinlets;
     x->x_numinlets = n < 2 ? 2 : n > 512 ? 512 : n;
     int * triggervals;
-    triggervals = (int *)calloc(x->x_numinlets, sizeof(int));
+    triggervals = ALLOCA(int, x->x_numinlets);
     triggervals[0] = 1;
     if(hot){
         for(i = 0; i < x->x_numinlets; i++)
