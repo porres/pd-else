@@ -292,8 +292,8 @@ t_int *plaits_perform(t_int *w){
         x->x_modulations.level = level[x->x_block_size * j];
         x->x_modulations.frequency = fmod[x->x_block_size * j] * 6.f;
         x->x_modulations.harmonics = hmod[x->x_block_size * j] / 5.f;
-        x->x_modulations.timbre = tmod[x->x_block_size * j] / 8.f;
-        x->x_modulations.morph = mmod[x->x_block_size * j] / 8.f;
+        x->x_modulations.timbre = tmod[x->x_block_size * j];
+        x->x_modulations.morph = mmod[x->x_block_size * j];
         if(x->x_trigger_mode) // trigger mode
             x->x_modulations.trigger = (trig[x->x_block_size * j] != 0);
         plaits::Voice::Frame output[x->x_block_size];
@@ -354,6 +354,12 @@ void *plaits_new(t_symbol *s, int ac, t_atom *av){
                 x->x_trigger_mode = 1;
             else if(sym == gensym("-level"))
                 x->x_level_active = 1;
+            else if(sym == gensym("-timbre"))
+                x->x_timbre_active = 1;
+            else if(sym == gensym("-freq"))
+                x->x_frequency_active = 1;
+            else if(sym == gensym("-morph"))
+                x->x_morph_active = 1;
             else
                 goto errstate;
         }
@@ -376,6 +382,18 @@ void *plaits_new(t_symbol *s, int ac, t_atom *av){
                             if(ac && (av)->a_type == A_FLOAT){ // decay
                                 x->x_decay = atom_getfloat(av);
                                 ac--, av++;
+                                if(ac && (av)->a_type == A_FLOAT){ // timbre att
+                                    x->x_mod_timbre = atom_getfloat(av);
+                                    ac--, av++;
+                                    if(ac && (av)->a_type == A_FLOAT){ // freq att
+                                        x->x_mod_fm = atom_getfloat(av);
+                                        ac--, av++;
+                                        if(ac && (av)->a_type == A_FLOAT){ // morph att
+                                            x->x_mod_morph = atom_getfloat(av);
+                                            ac--, av++;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
