@@ -147,7 +147,7 @@ static void *merge_new(t_symbol *s, int ac, t_atom* av){
         inlet_new((t_object *)x, &(x->x_ins[i].x_pd), 0, 0);
     };
     outlet_new(&x->x_obj, &s_list);
-    free(triggervals);
+    FREEA(triggervals);
     return(x);
 errstate:
     pd_error(x, "[merge]: improper args");
