@@ -136,7 +136,7 @@ static void metronome_div(t_metronome *x, t_atom *av){
 static void metronome_symbol(t_metronome *x, t_symbol *s){
     char *ch = (char*)s->s_name;
     if(strstr(ch, "/")){
-        t_atom *av[2];
+        t_atom av[2];
         char *d = strstr(ch, "/");
         if(d == ch || !strcmp(d, "/"))
             goto error;
@@ -169,7 +169,7 @@ static void metronome_beat(t_metronome *x, t_symbol *s, int argc, t_atom *argv){
         s = atom_getsymbol(argv);
         char *ch = (char*)s->s_name;
         if(strstr(ch, "/")){
-            t_atom *av[2];
+            t_atom av[2];
             char *d = strstr(ch, "/");
             if(d == ch || !strcmp(d, "/"))
                 goto error;
