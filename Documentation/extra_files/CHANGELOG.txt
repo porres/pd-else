@@ -18,6 +18,7 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 CHANGELOG:
 --------------------------------------
 
+**LIBRARY:**
 
 Breaking changes:
 - [pan8~] removed, use the new [pan~] object now
@@ -35,6 +36,7 @@ Breaking changes:
 - [conv~] swapped args order
 
 Enhancements/fixes/other changes:
+- [plaits~] added attenuverters and sig modulation inputs, making it fully functional at last, documentation revised.
 - fix crash of some objects in arm mac: [lfnoise~], [dust~], [dust2~], [rand.f~], [rand.i~], [pgm.in] and [ptouch.in] (these last two got fix by unkown reasons).
 - [midi.learn] fixed (it wasn't working at all)
 - [xfade~] and [xfade.mc~] added linear crossfading
@@ -60,16 +62,16 @@ Enhancements/fixes/other changes:
 - [sequencer], set message now works when [sequencer] is initialized without arguments, and sequence defults to 0 now.
 - [crusher~] added support for signal input in secondary inlets
 - [quantizer~], [fold~] and [wrap2~] added signal support (and also multichannel support) for secondary inlets
-- [tabwriter~] added index mode to set index to record 
-- [midi.in] fixed ext message/flagto with a signal
-- [midi.out] added channel arg/inlet
+- [tabwriter~] added index mode to set index to record to with a signal
+- [midi.in] fixed ext message/flag
+- fixed memory leak and allocation in several objects
 - [bend.out], [ctl.out], [note.out], [pgm.out], [ptouch.out], [touch.out], [midi.out], added '-ext' flag/message 
 - added MC awareness and capabilities to [fader~], [pan2~], [pan4~], [mix2~], [balance~] and [mix4~]
 - 10 new objects: [wt2d~], [pan~], [pan.mc~], [autofade.mc~], [autofade2.mc~], [xgate2.mc~], [xselect2.mc~], [mtx.mc~], [abs.pd~] and [sendmidi]
 
 Objects count: total of 527 (285 signal objects [82 of which are MC aware] and 242 control objects)! 
 
-- 307 coded objects (200 signal objects / 107 control objects)
+- 307 coded objects (200 signal objects  / 107 control objects)
 - 220 abstractions (85 signal objects / 135 control objects)
 
 --------------------------------------
