@@ -289,10 +289,10 @@ t_int *plaits_perform(t_int *w){
         float pitch = plaits_get_pitch(x, freq[x->x_block_size * j]);
         x->x_patch.note = 60.f + (pitch + x->x_pitch_correction) * 12.f;
         x->x_modulations.level = level[x->x_block_size * j];
-        x->x_modulations.frequency = fmod[x->x_block_size * j] * 6.f; // ???
-        x->x_modulations.harmonics = hmod[x->x_block_size * j] / 5.f; // ???
-        x->x_modulations.timbre = tmod[x->x_block_size * j]; // ???
-        x->x_modulations.morph = mmod[x->x_block_size * j]; // ???
+        x->x_modulations.timbre = tmod[x->x_block_size * j] * 4;        // ???
+        x->x_modulations.frequency = fmod[x->x_block_size * j] * 60.f;  // ???
+        x->x_modulations.morph = mmod[x->x_block_size * j] * 4;         // ???
+        x->x_modulations.harmonics = hmod[x->x_block_size * j] * 0.5;   // ???
         if(x->x_trigger_mode) // trigger mode
             x->x_modulations.trigger = (trig[x->x_block_size * j] != 0);
         plaits::Voice::Frame output[x->x_block_size];
