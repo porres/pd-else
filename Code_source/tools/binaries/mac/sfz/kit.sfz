@@ -1,0 +1,14 @@
+<global> loop_mode=one_shot
+
+<region> key=60 sample=samples/s1.wav
+<region> key=61 sample=samples/s2.wav
+<region> key=62 sample=samples/s3.wav
+<region> key=63 sample=samples/s4.wav
+<region> key=64 sample=samples/s5.wav
+<region> key=65 sample=samples/s6.wav
+<region> key=66 sample=samples/s7.wav
+<region> key=67 sample=samples/s8.wav
+<region> key=68 sample=samples/s9.wav
+<region> key=69 sample=samples/s10.wav
+<region> key=70 sample=samples/s11.wav
+<region> key=71 sample=samples/s12.wav
