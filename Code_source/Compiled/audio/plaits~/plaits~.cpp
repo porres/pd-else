@@ -44,33 +44,33 @@ typedef struct _plaits{
     t_outlet           *x_info_out;
 }t_plaits;
 
-extern "C"{ // Pd methods (cause we're using C++)
-    t_int  *plaits_perform(t_int *w);
-    void   *plaits_new(t_symbol *s, int ac, t_atom *av);
-    void    plaits_dsp(t_plaits *x, t_signal **sp);
-    void    plaits_free(t_plaits *x);
-    void    plaits_tilde_setup(void);
-    void    plaits_model(t_plaits *x, t_floatarg f);
-    void    plaits_harmonics(t_plaits *x, t_floatarg f);
-    void    plaits_timbre(t_plaits *x, t_floatarg f);
-    void    plaits_timbreatt(t_plaits *x, t_floatarg f);
-    void    plaits_morph(t_plaits *x, t_floatarg f);
-    void    plaits_morphatt(t_plaits *x, t_floatarg f);
-    void    plaits_fmatt(t_plaits *x, t_floatarg f);
-    void    plaits_lpg_cutoff(t_plaits *x, t_floatarg f);
-    void    plaits_decay(t_plaits *x, t_floatarg f);
-    void    plaits_midi(t_plaits *x);
-    void    plaits_hz(t_plaits *x);
-    void    plaits_cv(t_plaits *x);
-    void    plaits_voct(t_plaits *x);
-    void    plaits_dump(t_plaits *x);
-    void    plaits_print(t_plaits *x);
-    void    plaits_trigger_mode(t_plaits *x, t_floatarg f);
-    void    plaits_level_active(t_plaits *x, t_floatarg f);
-    void    plaits_morph_active(t_plaits *x, t_floatarg f);
-    void    plaits_freq_active(t_plaits *x, t_floatarg f);
-    void    plaits_timbre_active(t_plaits *x, t_floatarg f);
-    void    plaits_list(t_plaits *x, t_symbol *s, int ac, t_atom *av);
+extern "C"{
+    t_int *plaits_perform(t_int *w);
+    void  *plaits_new(t_symbol *s, int ac, t_atom *av);
+    void   plaits_dsp(t_plaits *x, t_signal **sp);
+    void   plaits_free(t_plaits *x);
+    void   plaits_tilde_setup(void);
+    void   plaits_model(t_plaits *x, t_floatarg f);
+    void   plaits_harmonics(t_plaits *x, t_floatarg f);
+    void   plaits_timbre(t_plaits *x, t_floatarg f);
+    void   plaits_timbreatt(t_plaits *x, t_floatarg f);
+    void   plaits_morph(t_plaits *x, t_floatarg f);
+    void   plaits_morphatt(t_plaits *x, t_floatarg f);
+    void   plaits_fmatt(t_plaits *x, t_floatarg f);
+    void   plaits_lpg_cutoff(t_plaits *x, t_floatarg f);
+    void   plaits_decay(t_plaits *x, t_floatarg f);
+    void   plaits_midi(t_plaits *x);
+    void   plaits_hz(t_plaits *x);
+    void   plaits_cv(t_plaits *x);
+    void   plaits_voct(t_plaits *x);
+    void   plaits_dump(t_plaits *x);
+    void   plaits_print(t_plaits *x);
+    void   plaits_trigger_mode(t_plaits *x, t_floatarg f);
+    void   plaits_level_active(t_plaits *x, t_floatarg f);
+    void   plaits_morph_active(t_plaits *x, t_floatarg f);
+    void   plaits_freq_active(t_plaits *x, t_floatarg f);
+    void   plaits_timbre_active(t_plaits *x, t_floatarg f);
+    void   plaits_list(t_plaits *x, t_symbol *s, int ac, t_atom *av);
 }
 
 static const char* modelLabels[24] = {
@@ -240,15 +240,15 @@ static float plaits_get_pitch(t_plaits *x, t_floatarg f){
 
 t_int *plaits_perform(t_int *w){
     t_plaits *x     = (t_plaits *) (w[1]);
-    t_sample *freq  = (t_sample *) (w[2]); // frequency input
-    t_sample *trig  = (t_sample *) (w[3]); // trigger input
-    t_sample *level = (t_sample *) (w[4]); // level input
-    t_sample *tmod  = (t_sample *) (w[5]); // timbre modulation input
-    t_sample *fmod  = (t_sample *) (w[6]); // frequency modulation input
-    t_sample *mmod  = (t_sample *) (w[7]); // morph modulation input
-    t_sample *hmod  = (t_sample *) (w[8]); // harmonics modulation input
-    t_sample *out   = (t_sample *) (w[9]);
-    t_sample *aux   = (t_sample *) (w[10]);
+    t_sample *freq  = (t_sample *) (w[2]);  // frequency input
+    t_sample *trig  = (t_sample *) (w[3]);  // trigger input
+    t_sample *level = (t_sample *) (w[4]);  // level input
+    t_sample *tmod  = (t_sample *) (w[5]);  // timbre modulation input
+    t_sample *fmod  = (t_sample *) (w[6]);  // frequency modulation input
+    t_sample *mmod  = (t_sample *) (w[7]);  // morph modulation input
+    t_sample *hmod  = (t_sample *) (w[8]);  // harmonics modulation input
+    t_sample *out   = (t_sample *) (w[9]);  // out
+    t_sample *aux   = (t_sample *) (w[10]); // aux out
     int n = x->x_n; // block size
     if(n != x->x_last_n){
         if(n > 24){ // Plaits uses a block size of 24 max
@@ -285,15 +285,14 @@ t_int *plaits_perform(t_int *w){
     x->x_modulations.timbre_patched = x->x_timbre_active;
     x->x_modulations.morph_patched = x->x_morph_active;
     x->x_modulations.level_patched = x->x_level_active;
-    for(int j = 0; j < x->x_block_count; j++){ // Render frames
-        float pitch = plaits_get_pitch(x, freq[x->x_block_size * j]); // get pitch
-        pitch += x->x_pitch_correction;
-        x->x_patch.note = 60.f + pitch * 12.f;
+    for(int j = 0; j < x->x_block_count; j++){
+        float pitch = plaits_get_pitch(x, freq[x->x_block_size * j]);
+        x->x_patch.note = 60.f + (pitch + x->x_pitch_correction) * 12.f;
         x->x_modulations.level = level[x->x_block_size * j];
-        x->x_modulations.frequency = fmod[x->x_block_size * j] * 6.f;
-        x->x_modulations.harmonics = hmod[x->x_block_size * j] / 5.f;
-        x->x_modulations.timbre = tmod[x->x_block_size * j];
-        x->x_modulations.morph = mmod[x->x_block_size * j];
+        x->x_modulations.frequency = fmod[x->x_block_size * j] * 6.f; // ???
+        x->x_modulations.harmonics = hmod[x->x_block_size * j] / 5.f; // ???
+        x->x_modulations.timbre = tmod[x->x_block_size * j]; // ???
+        x->x_modulations.morph = mmod[x->x_block_size * j]; // ???
         if(x->x_trigger_mode) // trigger mode
             x->x_modulations.trigger = (trig[x->x_block_size * j] != 0);
         plaits::Voice::Frame output[x->x_block_size];
@@ -345,8 +344,8 @@ void *plaits_new(t_symbol *s, int ac, t_atom *av){
                 x->x_pitch_mode = 2;
             else if(sym == gensym("-model")){
                 if((av)->a_type == A_FLOAT){
-                    t_float m = atom_getfloat(av);
-                    x->x_model = m < 0 ? 0 : m > 23 ? 23 : (int)m;
+                    t_float m = atom_getint(av);
+                    x->x_model = m < 0 ? 0 : m > 23 ? 23 : m;
                     ac--, av++;
                 }
             }
