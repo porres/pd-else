@@ -21,7 +21,7 @@
 
 #define HALF_PI (M_PI / 2)
 
-#define MIN_SIZE   16
+#define MIN_SIZE 16
 
 t_widgetbehavior knob_widgetbehavior;
 static t_class *knob_class, *edit_proxy_class;
@@ -38,12 +38,12 @@ typedef struct _knob{
     t_edit_proxy   *x_proxy;
     t_glist        *x_glist;
     int             x_size;
-    double          x_pos; // 0-1 normalized position
+    double          x_pos;          // 0-1 normalized position
     t_float         x_exp;
     int             x_expmode;
     int             x_log;
-    t_float         x_load;    // value when loading patch
-    t_float         x_start;   // arc start value
+    t_float         x_load;         // value when loading patch
+    t_float         x_start;        // arc start value
     int             x_start_angle;
     int             x_end_angle;
     int             x_range;
@@ -764,6 +764,10 @@ static void knob_receive(t_knob *x, t_symbol *s){
 }
 
 static void knob_range(t_knob *x, t_floatarg f1, t_floatarg f2){
+    if(f1 == f2){
+        pd_error(x, "[knob]: lower and upper values can't be the same");
+        return;
+    }
     x->x_lower = (double)f1;
     x->x_upper = (double)f2;
     x->x_fval = knob_clipfloat(x, x->x_fval);
@@ -1138,8 +1142,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     int arc = 1, angle = 320, offset = 0;
     x->x_bg = gensym("#dfdfdf"), x->x_mg = gensym("#7c7c7c"), x->x_fg = gensym("black");
     x->x_clicked = x->x_log = 0;
-    x->x_outline = 1;
-    x->x_jump = 0;
+    x->x_outline = x->x_jump = 0;
     x->x_glist = (t_glist *)canvas_getcurrent();
     x->x_zoom = x->x_glist->gl_zoom;
     x->x_flag = 0;
@@ -1334,18 +1337,10 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
                     else
                         goto errstate;
                 }
-                else if(sym == gensym("-noarc")){
+                else if(sym == gensym("-arc")){
                     if(ac >= 1){
                         x->x_flag = 1, av++, ac--;
-                        arc = 0;
-                    }
-                    else
-                        goto errstate;
-                }
-                else if(sym == gensym("-nooutline")){
-                    if(ac >= 1){
-                        x->x_flag = 1, av++, ac--;
-                        x->x_outline = 0;
+                        arc = 1;
                     }
                     else
                         goto errstate;
