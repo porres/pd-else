@@ -21,7 +21,7 @@ static int else_minor = 0;
 static int else_bugfix = 0;
 
 #define STATUS "rc"
-static int status_number = 11;
+static int status_number = 12;
 
 static void else_obj_version(t_else_obj *x){
     int ac = 5;
@@ -60,7 +60,7 @@ void else_obj_about(t_else_obj *x){
     post("-------------------------------------------------------------------");
     post("  -----> ELSE - EL Locus Solus' Externals for Pure Data <-----");
     post("-------------------------------------------------------------------");
-    post("- Version: %d.%d-%d %s-%d; (Released February 06th 2024)", else_major, else_minor, else_bugfix, STATUS, status_number);
+    post("- Version: %d.%d-%d %s-%d; (Unreleased)", else_major, else_minor, else_bugfix, STATUS, status_number);
     post("- Author: Alexandre Torres Porres & others");
     post("- Repository: https://github.com/porres/pd-else");
     post("- License: Do What The Fuck You Want To Public License");
@@ -118,4 +118,6 @@ void else_setup(void){
     pdgui_vmess("load_plugin_script", "s", plugin);
     sprintf(plugin, "%s/browser-else.tcl", else_obj_class->c_externdir->s_name);
     pdgui_vmess("load_plugin_script", "s", plugin);
+/*    sprintf(plugin, "%s/browser-merda.tcl", else_obj_class->c_externdir->s_name);
+    pdgui_vmess("load_plugin_script", "s", plugin);*/
 }
