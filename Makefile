@@ -243,6 +243,7 @@ toggleff~.class.sources := Code_source/Compiled/audio/toggleff~.c
 trighold~.class.sources := Code_source/Compiled/audio/trighold~.c
 unmerge~.class.sources := Code_source/Compiled/audio/unmerge~.c
 vu~.class.sources := Code_source/Compiled/audio/vu~.c
+vcf2~.class.sources := Code_source/Compiled/audio/vcf2~.c
 xmod~.class.sources := Code_source/Compiled/audio/xmod~.c
 xmod2~.class.sources := Code_source/Compiled/audio/xmod2~.c
 wrap2.class.sources := Code_source/Compiled/control/wrap2.c
