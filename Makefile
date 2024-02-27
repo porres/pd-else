@@ -6,6 +6,22 @@
 
 lib.name = else
 
+# set this to no to exclude pdlua from build/install
+luamake = yes
+
+ifeq ($(luamake),yes)
+luaflags=-DMAKE_LIB -Ilua/lua -DELSE -ICode_source/Compiled/control/pd-lua/lua
+define forDarwin
+luaflags += -DLUA_USE_MACOSX
+endef
+define forLinux
+luaflags += -DLUA_USE_LINUX
+endef
+define forWindows
+luaflags += -DLUA_USE_WINDOWS
+endef
+endif
+
 aubioflags = -ICode_source/shared/aubio/src
 
 define forDarwin
@@ -13,7 +29,7 @@ define forDarwin
 plaitsflags = arch="$(target.arch)"
 endef
 
-cflags = -ICode_source/shared -DHAVE_STRUCT_TIMESPEC $(aubioflags)
+cflags = -ICode_source/shared -DHAVE_STRUCT_TIMESPEC $(aubioflags) ${luaflags}
 
 uname := $(shell uname -s)
 
@@ -362,23 +378,32 @@ midi := \
     Code_source/shared/mifi.c \
     Code_source/shared/elsefile.c
     midi.class.sources := Code_source/Compiled/control/midi.c $(midi)
-    
+
 file := Code_source/shared/elsefile.c
     rec.class.sources := Code_source/Compiled/control/rec.c $(file)
 
 smagic := Code_source/shared/magic.c
     oscope~.class.sources := Code_source/Compiled/audio/oscope~.c $(smagic)
-    
+
 utf := Code_source/shared/s_elseutf8.c
 	note.class.sources := Code_source/Compiled/control/note.c $(utf)
-    
+
+ifeq ($(luamake),yes)
+ lua := Code_source/Compiled/control/pd-lua/lua/onelua.c
+    lua.class.sources := Code_source/Compiled/control/pd-lua/pdlua.c $(lua)
+endif
+
+
 define forWindows
-  ldlibs += -lws2_32 
+  ldlibs += -lws2_32
 endef
 
 #########################################################################
 
 # extra files
+ifeq ($(luamake),yes)
+pdlua_data = ./pdlua/pd.lua
+endif
 
 extrafiles = \
 $(wildcard Code_source/Abstractions/control/*.pd) \
@@ -388,6 +413,7 @@ $(wildcard Code_source/Compiled/extra_source/*.tcl) \
 $(wildcard Documentation/Help-files/*.pd) \
 $(wildcard Documentation/extra_files/*.*) \
 $(wildcard *.txt) \
+$(pdlua_data) \
 Documentation/README.pdf
 
 # Change the arch to arm64 if the extension is d_arm64
@@ -427,15 +453,15 @@ plaits-install:
 
 plaits-clean:
 	$(MAKE) -C Code_source/Compiled/audio/plaits~ clean $(plaitsflags)
-    
-# Same for sfz    
+
+# Same for sfz
 
 sfz:
 	$(MAKE) -C Code_source/Compiled/audio/sfz~ system=$(system)
 
 sfz-install:
 	$(MAKE) -C Code_source/Compiled/audio/sfz~ install system=$(system) exten=$(extension) installpath="$(abspath $(PDLIBDIR))/else"
-    
+
 sfz-clean:
 	$(MAKE) -C Code_source/Compiled/audio/sfz~ clean
 
@@ -451,3 +477,8 @@ install: installplus
 
 installplus:
 	for v in $(extrafiles); do $(INSTALL_DATA) "$$v" "$(installpath)"; done
+ifeq ($(luamake),yes)
+	cp -r ./pdlua/pdlua "${installpath}"/pdlua
+else
+	rm -f "${installpath}"/pdlua*.pd
+endif

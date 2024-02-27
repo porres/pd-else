@@ -1,0 +1,13 @@
+#N canvas 592 156 450 345 10;
+#X declare -lib pdlua;
+#X obj 144 159 requirer complex;
+#X obj 146 214 requirer sqlite3;
+#X text 57 68 This should find the package next to the .pd_lua?;
+#X text 57 95 Or should it look next to the containing .pd patch?;
+#X text 56 183 This only "works" because of a dirty dirty hack...;
+#X text 52 283 TODO: some kind of "my location" necessary for .pd_lua scripts to access?;
+#X text 45 131 If it fails a list of paths searched will appear in the Pd console.;
+#X obj 56 261 requirer string;
+#X text 155 261 built-in modules are found OK;
+#X obj 57 241 requirer math;
+#X obj 279 23 declare -lib pdlua;

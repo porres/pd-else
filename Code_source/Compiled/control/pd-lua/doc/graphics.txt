@@ -1,0 +1,111 @@
+pdlua graphics
+===
+
+pdlua's graphics allow you to draw basic vector graphics and receive mouse events on pure-data and plugdata. Drawing functions are prefixed with 'gfx.', and should only be called from within the "paint" function
+
+You can enable GUI mode by setting the self.gui variable in the constructor, like this:
+
+function yourclass:initialize(sel, atoms)
+    self.inlets = 1
+    self.gui = 1
+    return true
+end
+
+Painting:
+--------------
+You can paint by defining the "paint" function, for example: 
+
+function yourclass:paint()
+    gfx.set_color(250, 200, 240)
+    gfx.fill_all()
+end
+
+
+Mouse Events:
+--------------
+You can receive mouse events by defining the "mouse_down", "mouse_up", "mouse_move" and "mouse_drag" functions. Both pass the x,y coordinates as arguments. For example:
+
+function yourclass:mouse_down(x, y)
+    pd.post(tostring(x))
+    pd.post(tostring(y))
+end
+
+
+API overview
+--------------
+-- Callback functions you can define
+paint()                                                             -- Paint callback. This is the only place where you're allowed to call any of the paint functions
+pd:Class:mouse_down(x, y)                                           -- Mouse down callback, called when the mouse is clicked
+pd:Class:mouse_up(x, y)                                             -- Mouse up callback, called when the mouse button is released
+pd:Class:mouse_move(x, y)                                           -- Mouse move callback, called when the mouse is moved while not being down
+pd:Class:mouse_drag(x, y)                                           -- Mouse drag callback, called when the mouse is moved while also being down
+
+-- Functions you can call
+pd:Class:repaint()                                                  -- Request a repaint, after this the "paint" callback will occur
+
+gfx.set_size(w, h)                                                  -- Sets the size of the drawing object.
+
+gfx.set_color(r, g, b, a=1.0)                                       -- Sets the color for the next drawing operation.
+
+gfx.fill_ellipse(x, y, w, h)                                        -- Draws a filled ellipse at the specified position and size.
+gfx.stroke_ellipse(x, y, w, h, line_width)                          -- Draws the outline of an ellipse at the specified position and size.
+
+gfx.fill_rect(x, y, w, h)                                           -- Draws a filled rectangle at the specified position and size.
+gfx.stroke_rect(x, y, w, h, line_width)                             -- Draws the outline of a rectangle at the specified position and size.
+
+gfx.fill_rounded_rect(x, y, w, h, corner_radius)                    -- Draws a filled rounded rectangle at the specified position and size.
+gfx.troke_rounded_rect(x, y, w, h, corner_radius, line_width)       -- Draws the outline of a rounded rectangle at the specified position and size.
+
+gfx.draw_line(x1, y1, x2, y2)                                       -- Draws a line between two points.
+gfx.draw_text(text, x, y, w, fontsize)                              -- Draws text at the specified position and size.
+
+gfx.start_path(x, y)                                                -- Initiates a new path at the specified point.
+gfx.line_to(x, y)                                                   -- Adds a line segment to the current path.
+gfx.quad_to(x1, y1, x2, y2)                                         -- Adds a quadratic Bezier curve to the current path.
+gfx.cubic_to(x1, y1, x2, y2, x3, y)                                 -- Adds a cubic Bezier curve to the current path.
+gfx.close_path()                                                    -- Closes the current path.
+gfx.stroke_path(line_width)                                         -- Draws the outline of the current path with the specified line width.
+gfx.fill_path()                                                     -- Fills the current path.
+
+gfx.fill_all()                                                      -- Fills the entire drawing area with the current color. Also will draw an object outline in the style of the host (ie. pure-data or plugdata)
+
+gfx.translate(tx, ty)                                               -- Translates the coordinate system by the specified amounts.
+gfx.scale(sx, sy)                                                   -- Scales the coordinate system by the specified factors. This will always happen after the translation
+gfx.reset_transform()                                               -- Resets current scale and translation
+
+
+Basic example
+---------------------
+
+-- Create an object named "example"
+local example = pd.Class:new():register("example")
+
+function example:initialize(sel, atoms)
+    self.inlets = 1
+    self.circle_x = 10
+    self.circle_y = 10
+
+     -- Enabled GUI mode
+    self.gui = 1
+    return true
+end
+
+-- Receive mouse drag events
+function example:mouse_drag(x, y)
+    -- Set circle position
+    self.circle_x = x - 15
+    self.circle_y = y - 15
+
+    -- Request a repaint
+    self:repaint() 
+end
+
+function example:paint()
+    -- Fill background with color
+    gfx.set_color(255, 0, 0, 1)
+    gfx.fill_all()
+
+    -- Draw an ellipse
+    gfx.set_color(0, 255, 0, 1)
+    gfx.fill_ellipse(self.circle_x, self.circle_y, 30, 30)
+end
