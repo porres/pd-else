@@ -1,0 +1,10 @@
+#N canvas 579 203 398 197 12;
+#X declare -lib pdlua;
+#X obj 75 92 tgl 20 0 empty \$0-onoff empty 17 7 0 10 #dfdfdf #000000 #000000 0 1;
+#X floatatom 75 126 5 0 0 0 - - - 0;
+#X obj 185 92 bng 20 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000 #000000;
+#X obj 185 126 luasend \$0-onoff;
+#X text 213 91 <-- click me;
+#X obj 175 39 declare -lib pdlua;
+#X connect 0 0 1 0;
+#X connect 2 0 3 0;
