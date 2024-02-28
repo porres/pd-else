@@ -38,7 +38,11 @@ uname := $(shell uname -s)
 #########################################################################
 
 # Lib:
-else.class.sources := Code_source/Compiled/control/else.c
+ifeq ($(luamake),yes)
+lua := Code_source/Compiled/control/pd-lua/pdlua.c Code_source/Compiled/control/pd-lua/lua/onelua.c
+endif
+
+else.class.sources := Code_source/Compiled/control/else.c $(lua)
 
 # GUI:
 knob.class.sources := Code_source/Compiled/control/knob.c
@@ -388,10 +392,7 @@ smagic := Code_source/shared/magic.c
 utf := Code_source/shared/s_elseutf8.c
 	note.class.sources := Code_source/Compiled/control/note.c $(utf)
 
-ifeq ($(luamake),yes)
- lua := Code_source/Compiled/control/pd-lua/lua/onelua.c
-    lua.class.sources := Code_source/Compiled/control/pd-lua/pdlua.c $(lua)
-endif
+
 
 
 define forWindows

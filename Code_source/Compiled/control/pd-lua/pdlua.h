@@ -45,7 +45,6 @@ typedef struct _pdlua_gfx
     char current_color[8]; // Keep track of current color
 #else
     void(*plugdata_draw_callback)(void*, t_symbol*, int, t_atom*); // Callback to perform drawing in plugdata
-    void* plugdata_callback_target; // Pointer to plugdata object, the target for our draw callback
 #endif
     
     // Size variables
@@ -57,15 +56,16 @@ typedef struct pdlua
 {
     t_object                pd; /**< We are a Pd object. */
     int                     inlets; /**< Number of inlets. */
-    struct pdlua_proxyinlet *in; /**< The inlets themselves. */
+    struct pdlua_proxyinlet *proxy_in; /**< The inlets themselves. */
+    t_inlet                 **in;
     int                     outlets; /**< Number of outlets. */
+    t_outlet                **out; /**< The outlets themselves. */
     int                     siginlets; /**< Number of signal inlets. */
     int                     sigoutlets; /**< Number of signal outlets. */
-    t_outlet                **out; /**< The outlets themselves. */
     t_canvas                *canvas; /**< The canvas that the object was created on. */
-    int                     has_gui;  /**< True if graphics are enabled. */
-    t_pdlua_gfx             gfx;      /**< Holds state for graphics. */
-    t_int** w;                        /**< Holds state for signals. */
+    int                     has_gui; /**< True if graphics are enabled. */
+    t_pdlua_gfx             gfx; /**< Holds state for graphics. */
+    t_int**                 w; /**< Holds state for signals. */
 } t_pdlua;
 
 

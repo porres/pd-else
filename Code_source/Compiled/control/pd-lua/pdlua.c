@@ -672,8 +672,8 @@ static void pdlua_delete(t_gobj *z, t_glist *glist){
     }
     if(glist_isvisible(glist) && gobj_shouldvis(z, glist)) {
         pdlua_vis(z, glist, 0);
-        canvas_deletelinesfor(glist, (t_text *)z);
     }
+    canvas_deletelinesfor(glist, (t_text *)z);
 }
 
 static void pdlua_motion(t_gobj *z, t_floatarg dx, t_floatarg dy,
@@ -724,10 +724,8 @@ static int pdlua_click(t_gobj *z, t_glist *gl, int xpos, int ypos, int shift, in
         x->gfx.mouse_down = doit;
         return 1;
     }
-    
-    return text_widgetbehavior.w_clickfn(z, gl, xpos, ypos, shift, alt, dbl, doit);
-
 #endif
+    return text_widgetbehavior.w_clickfn(z, gl, xpos, ypos, shift, alt, dbl, doit);
 }
 
 // The _reload method will tell the pdlua object to reload the original script that spawned it
@@ -741,6 +739,7 @@ static void pdlua_reload(t_gobj* z)
 static void pdlua_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     t_pdlua *x = (t_pdlua *)z;
     
+
     if(x->has_gui)
     {
        x->pd.te_xpix += dx, x->pd.te_ypix += dy;
@@ -921,9 +920,7 @@ static t_int *pdlua_perform(t_int *w){
     lua_pushlightuserdata(__L(), o);     // Use a unique key for your userdata
     lua_seti(__L(), -2, PDLUA_OBJECT_REGISTRTY_ID); // Store the userdata in the registry
     lua_pop(__L(), 1);     // Pop the registry table from the stack
-    
-    //t_float *in1 = (t_float *)(w[3]);
-    //t_float *in2 = (t_float *)(w[4]);
+
     PDLUA_DEBUG("pdlua_perform: stack top %d", lua_gettop(__L()));
     lua_getglobal(__L(), "pd");
     lua_getfield (__L(), -1, "_perform_dsp");
@@ -1094,6 +1091,7 @@ static int pdlua_object_new(lua_State *L)
                 
                 o->inlets = 0;
                 o->in = NULL;
+                o->proxy_in = NULL;
                 o->outlets = 0;
                 o->out = NULL;
                 o->siginlets = 0;
@@ -1113,7 +1111,6 @@ static int pdlua_object_new(lua_State *L)
 #else
                 // NULL until plugdata overrides them with something useful
                 o->gfx.plugdata_draw_callback = NULL;
-                o->gfx.plugdata_callback_target = NULL;
 #endif
                 
                 lua_pushlightuserdata(L, o);
@@ -1129,12 +1126,8 @@ static int pdlua_object_new(lua_State *L)
 static int pdlua_object_creategui(lua_State *L)
 {
     t_pdlua *o = lua_touserdata(L, 1);
-    o->has_gui = luaL_checknumber(L, 2);
-    if(o->has_gui)
-    {
-        gfx_initialize(o);
-    }
-    
+    o->has_gui = 1;
+    gfx_initialize(o);
     return 0;
 }
 
@@ -1150,38 +1143,40 @@ static int pdlua_object_createinlets(lua_State *L)
     if (lua_islightuserdata(L, 1))
     {
         t_pdlua *o = lua_touserdata(L, 1);
-        if (o)
-        {
+        if(o) {
             if (lua_isnumber(L, 2)) {
                 // If it's a number, it means the number of data inlets
                 o->inlets = luaL_checknumber(L, 2);
-                o->in = malloc(o->inlets * sizeof(t_pdlua_proxyinlet));
+                o->proxy_in = malloc(o->inlets * sizeof(t_pdlua_proxyinlet));
+                o->in = malloc(o->inlets * sizeof(t_inlet*));
                 for (int i = 0; i < o->inlets; ++i)
                 {
-                    pdlua_proxyinlet_init(&o->in[i], o, i);
-                    inlet_new(&o->pd, &o->in[i].pd, 0, 0);
+                    pdlua_proxyinlet_init(&o->proxy_in[i], o, i);
+                    o->in[i] = inlet_new(&o->pd, &o->proxy_in[i].pd, 0, 0);
                 }
             } else if (lua_istable(L, 2)) {
                 // If it's a table, it means a list of inlet types (data or signal)
                 o->inlets = lua_rawlen(L, 2);
-                o->in = malloc(o->inlets * sizeof(t_pdlua_proxyinlet));
+                o->proxy_in = malloc(o->inlets * sizeof(t_pdlua_proxyinlet));
+                o->in = malloc(o->inlets * sizeof(t_inlet*));
                 for (int i = 0; i < o->inlets; ++i)
                 {
                     lua_rawgeti(L, 2, i + 1); // Get element at index i+1
                     if (lua_isnumber(L, -1)) {
                         int is_signal = lua_tonumber(L, -1);
                         o->siginlets += is_signal;
-                    
-                        pdlua_proxyinlet_init(&o->in[i], o, i);
-                        inlet_new(&o->pd, &o->in[i].pd, is_signal ? &s_signal : 0, is_signal ? &s_signal : 0);
+                        
+                        pdlua_proxyinlet_init(&o->proxy_in[i], o, i);
+                        o->in[i] = inlet_new(&o->pd, &o->proxy_in[i].pd, is_signal ? &s_signal : 0, is_signal ? &s_signal : 0);
                     }
                     lua_pop(L, 1); // Pop the value from the stack
                 }
             } else {
                 // Invalid argument type
-                return luaL_error(L, "Second argument must be a number or a table");
+                return luaL_error(L, "inlets must be a number or a table");
             }
         }
+        
     }
     PDLUA_DEBUG("pdlua_object_createinlets: end. stack top is %d", lua_gettop(L));
     return 0;
@@ -1222,7 +1217,6 @@ static int pdlua_object_createoutlets(lua_State *L)
                         if (lua_isnumber(L, -1)) {
                             int is_signal = lua_tonumber(L, -1);
                             o->sigoutlets += is_signal;
-                            // Do something with the value
                             o->out[i] = outlet_new(&o->pd, is_signal ? &s_signal : 0);
                         }
                         lua_pop(L, 1); // Pop the value from the stack
@@ -1231,8 +1225,9 @@ static int pdlua_object_createoutlets(lua_State *L)
                 else o->out = NULL;
             } else {
                 // Invalid argument type
-                return luaL_error(L, "Second argument must be a number or a table");
+                return luaL_error(L, "outlets must be a number or a table");
             }
+            
         }
     }
     PDLUA_DEBUG("pdlua_object_createoutlets: end stack top is %d", lua_gettop(L));
@@ -1431,7 +1426,15 @@ static int pdlua_object_free(lua_State *L)
  
         if (o)
         {
-            if (o->in) free(o->in);
+            if(o->in)
+            {
+                for (i = 0; i < o->inlets; ++i) inlet_free(o->in[i]);
+                free(o->in);
+                o->in = NULL;
+            }
+            
+            if (o->proxy_in) freebytes(o->proxy_in, sizeof(struct pdlua_proxyinlet) * o->inlets);
+            
             if(o->out)
             {
                 for (i = 0; i < o->outlets; ++i) outlet_free(o->out[i]);
@@ -1474,6 +1477,8 @@ static void pdlua_dispatch
         lua_pop(__L(), 1); /* pop the error string */
     }
     lua_pop(__L(), 1); /* pop the global "pd" */
+    
+    
     
     PDLUA_DEBUG("pdlua_dispatch: end. stack top %d", lua_gettop(__L()));
     return;  
@@ -1964,6 +1969,77 @@ static void pdlua_clearrequirepath
     PDLUA_DEBUG("pdlua_clearrequirepath: end. stack top %d", lua_gettop(L));
 }
 
+/** Run a Lua script using class path */
+static int pdlua_dofilex(lua_State *L)
+/**< Lua interpreter state.
+  * \par Inputs:
+  * \li \c 1 Pd class pointer.
+  * \li \c 2 Filename string.
+  * \par Outputs:
+  * \li \c * Determined by the script.
+  * */
+{
+    char                buf[MAXPDSTRING];
+    char                *ptr;
+    t_pdlua_readerdata  reader;
+    int                 fd;
+    int                 n;
+    const char          *filename;
+    t_class             *c;
+
+    PDLUA_DEBUG("pdlua_dofilex: stack top %d", lua_gettop(L));
+    n = lua_gettop(L);
+    if (lua_islightuserdata(L, 1))
+    {
+        c = lua_touserdata(L, 1);
+        if (c)
+        {
+            filename = luaL_optstring(L, 2, NULL);
+            fd = sys_trytoopenone(c->c_externdir->s_name, filename, "",
+              buf, &ptr, MAXPDSTRING, 1);
+            if (fd >= 0)
+            {
+                PDLUA_DEBUG("pdlua_dofilex path is %s", buf);
+                pdlua_setrequirepath(L, buf);
+                reader.fd = fd;
+#if LUA_VERSION_NUM	< 502
+                if (lua_load(L, pdlua_reader, &reader, filename))
+#else // 5.2 style
+                if (lua_load(L, pdlua_reader, &reader, filename, NULL))
+#endif // LUA_VERSION_NUM	< 502
+                {
+                    close(fd);
+                    pdlua_clearrequirepath(L);
+                    lua_error(L);
+                }
+                else
+                {
+                    if (lua_pcall(L, 0, LUA_MULTRET, 0))
+                    {
+                        pd_error(NULL, "lua: error running `%s':\n%s", filename, lua_tostring(L, -1));
+                        lua_pop(L, 1);
+                        close(fd);
+                        pdlua_clearrequirepath(L);
+                    }
+                    else
+                    {
+                        /* succeeded */
+                        close(fd);
+                        pdlua_clearrequirepath(L);
+                    }
+                }
+            }
+            else pd_error(NULL, "lua: error loading `%s': sys_trytoopenone() failed", filename);
+        }
+        else pd_error(NULL, "lua: error in class:dofilex() - class is null");
+    }
+    else pd_error(NULL, "lua: error in class:dofilex() - object is wrong type");
+    lua_pushstring(L, buf); /* return the path as well so we can open it later with pdlua_menu_open() */
+    PDLUA_DEBUG("pdlua_dofilex end. stack top is %d", lua_gettop(L));
+ 
+    return lua_gettop(L) - n;
+}
+
 /** Run a Lua script using Pd's path. */
 static int pdlua_dofile(lua_State *L)
 /**< Lua interpreter state.
@@ -2096,6 +2172,9 @@ static void pdlua_init(lua_State *L)
     lua_settable(L, -3);
     lua_pushstring(L, "_dofile");
     lua_pushcfunction(L, pdlua_dofile);
+    lua_settable(L, -3);
+    lua_pushstring(L, "_dofilex");
+    lua_pushcfunction(L, pdlua_dofilex);
     lua_settable(L, -3);
     lua_pushstring(L, "send");
     lua_pushcfunction(L, pdlua_send);
