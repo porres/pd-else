@@ -161,6 +161,10 @@ function pd.Prototype:new(o)
   return o
 end
 
+DATA = 0
+SIGNAL = 1
+Colors = {background = 0, foreground = 1, outline = 2}
+
 -- clocks
 pd.Clock = pd.Prototype:new()
 
@@ -289,10 +293,6 @@ function pd.Receive:dispatch(sel, atoms)
   self._target[self._method](self._target, sel, atoms)
 end
 
-DATA = "0"
-SIGNAL = "1"
-Colors = {background = "0", foreground = "1", outline = "2"}
-
 -- patchable objects
 pd.Class = pd.Prototype:new()
 
@@ -345,12 +345,13 @@ function pd.Class:construct(sel, atoms)
   self._object = pd._create(self._class)
   self.inlets = 0
   self.outlets = 0
-  self.gui = 0
   self._canvaspath = pd._canvaspath(self._object) .. "/"
   if self:initialize(sel, atoms) then
     pd._createinlets(self._object, self.inlets)
     pd._createoutlets(self._object, self.outlets)
-    pd._creategui(self._object, self.gui)
+    if type(self.paint) == "function" then
+        pd._creategui(self._object)
+    end
     self:postinitialize()
     return self
   else
@@ -471,6 +472,7 @@ end
 function pd.Class:get_class() -- accessor for t_class*
   return self._class or nil
 end
+
 
 local lua = pd.Class:new():register("lua")  -- global controls (the [pdlua] object only)
 
@@ -625,6 +627,3 @@ end
 function lua:__gc()
     os.remove(self.temp_name)
 end
-
-
--- fin pd.lua

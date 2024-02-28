@@ -23,6 +23,8 @@ static int else_bugfix = 0;
 #define STATUS "rc"
 static int status_number = 12;
 
+extern void pdlua_setup();
+
 static void else_obj_version(t_else_obj *x){
     int ac = 5;
     t_atom at[5];
@@ -37,14 +39,14 @@ static void else_obj_version(t_else_obj *x){
 #else
     outlet_symbol(x->x_out3, gensym("Pd-Vanilla"));
 #endif
-    
+
     int major = 0, minor = 0, bugfix = 0;
     sys_getversion(&major, &minor, &bugfix);
     SETFLOAT(at+0, major);
     SETFLOAT(at+1, minor);
     SETFLOAT(at+2, bugfix);
     outlet_list(x->x_out2,  &s_list, 3, at);
-    
+
     SETFLOAT(at, else_major);
     SETFLOAT(at+1, else_minor);
     SETFLOAT(at+2, else_bugfix);
@@ -120,4 +122,6 @@ void else_setup(void){
     pdgui_vmess("load_plugin_script", "s", plugin);
 /*    sprintf(plugin, "%s/browser-merda.tcl", else_obj_class->c_externdir->s_name);
     pdgui_vmess("load_plugin_script", "s", plugin);*/
+
+    pdlua_setup();
 }

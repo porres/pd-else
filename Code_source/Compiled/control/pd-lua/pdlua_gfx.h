@@ -244,8 +244,8 @@ static int get_size(lua_State* L)
 // Wrapper around draw callback to plugdata
 static inline void plugdata_draw(t_pdlua* obj, t_symbol* sym, int argc, t_atom* argv)
 {
-    if(obj->gfx.plugdata_callback_target) {
-        obj->gfx.plugdata_draw_callback(obj->gfx.plugdata_callback_target, sym, argc, argv);
+    if(obj->gfx.plugdata_draw_callback) {
+        obj->gfx.plugdata_draw_callback(obj, sym, argc, argv);
     }
 }
 
@@ -637,9 +637,11 @@ static void gfx_displace(t_pdlua *x, t_glist *glist, int dx, int dy)
     sys_vgui(".x%lx.c move .x%lx %d %d\n", glist_getcanvas(x->canvas), (long)x, dx, dy);
     canvas_fixlinesfor(glist, (t_text*)x);
     
+    int scale = glist_getzoom(glist_getcanvas(x->canvas));
+    
     int xpos = text_xpix((t_object*)x, x->canvas);
     int ypos = text_ypix((t_object*)x, x->canvas);
-    glist_drawiofor(glist_getcanvas(x->canvas), (t_object*)x, 0, x->gfx.object_tag, xpos, ypos, xpos + x->gfx.width, ypos + x->gfx.height);
+    glist_drawiofor(x->canvas, (t_object*)x, 0, x->gfx.object_tag, xpos, ypos, xpos + (x->gfx.width * scale), ypos + (x->gfx.height * scale));
 }
 
 static const char* register_drawing(t_pdlua *object)
@@ -668,6 +670,7 @@ static int set_size(lua_State* L)
     obj->gfx.width = luaL_checknumber(L, 1);
     obj->gfx.height = luaL_checknumber(L, 2);
     pdlua_gfx_repaint(obj, 0);
+    canvas_fixlinesfor(obj->canvas, (t_text*)obj);
     return 0;
 }
 
@@ -709,10 +712,12 @@ static int end_paint(lua_State* L) {
     t_canvas *cnv = glist_getcanvas(obj->canvas);
     t_pdlua_gfx *gfx = &obj->gfx;
     
+    int scale = glist_getzoom(glist_getcanvas(obj->canvas));
+    
     // Draw iolets on top
     int xpos = text_xpix((t_object*)obj, obj->canvas);
     int ypos = text_ypix((t_object*)obj, obj->canvas);
-    glist_drawiofor(glist_getcanvas(obj->canvas), (t_object*)obj, 1, gfx->object_tag, xpos, ypos, xpos + gfx->width, ypos + gfx->height);
+    glist_drawiofor(glist_getcanvas(obj->canvas), (t_object*)obj, 1, gfx->object_tag, xpos, ypos, xpos + (obj->gfx.width * scale), ypos + (obj->gfx.height * scale));
     
     if(!gfx->first_draw && gfx->order_tag[0] != '\0') {
         // Move everything to below the order marker, to make sure redrawn stuff isn't always on top
