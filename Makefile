@@ -431,6 +431,10 @@ include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 # directory (PDLIBDIR, objectsdir) should be specified as an absolute path.
 # E.g.: make install sfont-install objectsdir=/usr/lib/pd/extra
 
+# M.E.R.D.A
+
+	cp -r Code_source/MERDA/Modules/ "${installpath}"
+
 sfont:
 	$(MAKE) -C Code_source/Compiled/audio/sfont~
 

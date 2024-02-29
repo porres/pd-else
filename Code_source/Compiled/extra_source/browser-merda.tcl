@@ -14,15 +14,17 @@ proc menu_send_merda_obj {w x y item} {
 # set nested list
 proc category_merda_menu::load_menutree {} {
     set menutree { 
-        {merda
-            {assorted
-                {else}}
-            {gui
-                {knob numbox~ drum.seq bicoeff openfile oscope~}}
-            {time
-                {chrono datetime}}
-            {fft
-                {hann~ bin.shift~}}
+        {m.e.r.d.a.
+            {classic
+                {adsr.m~ lfo.m~ seq8.m~ vca.m~ vcf.m~ vco.m~}}
+            {fx
+                {chorus.m~ delay.m~ drive.m~ flanger.m~ phaser.m~ plate.rev.m~ rm.m~}}
+            {oscillators
+                {gendyn.m~ plaits.m~ pluck.m~ pm6.m~}}
+            {tools
+                {presets.m sig.m~}}
+            {extra
+                {brane.m~}}
         }
     }
     return $menutree
