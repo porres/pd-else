@@ -10,7 +10,7 @@ lib.name = else
 luamake = yes
 
 ifeq ($(luamake),yes)
-luaflags=-DMAKE_LIB -Ilua/lua -DELSE -ICode_source/Compiled/control/pd-lua/lua
+luaflags=-DMAKE_LIB -Ilua/lua -DELSE -ICode_source/Compiled/control/lua/lua
 define forDarwin
 luaflags += -DLUA_USE_MACOSX
 endef
@@ -39,7 +39,7 @@ uname := $(shell uname -s)
 
 # Lib:
 ifeq ($(luamake),yes)
-lua := Code_source/Compiled/control/pd-lua/pdlua.c Code_source/Compiled/control/pd-lua/lua/onelua.c
+lua := Code_source/Compiled/control/lua/pdlua.c Code_source/Compiled/control/lua/lua/onelua.c
 endif
 
 else.class.sources := Code_source/Compiled/control/else.c $(lua)
