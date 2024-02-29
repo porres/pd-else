@@ -401,9 +401,6 @@ endef
 
 #########################################################################
 # extra files
-ifeq ($(luamake),yes)
-pdlua_data = Code_source/Compiled/control/lua/pd.lua
-endif
 
 extrafiles = \
 $(wildcard Code_source/Abstractions/control/*.pd) \
