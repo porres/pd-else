@@ -475,6 +475,7 @@ circuit-clean:
 install: installplus
 
 installplus:
+	cp -r Code_source/Merda/Modules/ "${installpath}"/
 	for v in $(extrafiles); do $(INSTALL_DATA) "$$v" "$(installpath)"; done
 ifeq ($(luamake),yes)
 	cp -r Code_source/Compiled/control/lua/luadoc/ "${installpath}"/lua
@@ -482,5 +483,3 @@ else
 	rm -f "${installpath}"/pdlua*.pd
 endif
 
-
-#    cp -r Code_source/Merda/Modules/ "${installpath}"/
