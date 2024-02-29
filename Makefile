@@ -401,11 +401,6 @@ endef
 
 #########################################################################
 
-# extra files
-ifeq ($(luamake),yes)
-pdlua_data = ./pdlua/pd.lua
-endif
-
 extrafiles = \
 $(wildcard Code_source/Abstractions/control/*.pd) \
 $(wildcard Code_source/Abstractions/audio/*.pd) \
@@ -414,7 +409,7 @@ $(wildcard Code_source/Compiled/extra_source/*.tcl) \
 $(wildcard Documentation/Help-files/*.pd) \
 $(wildcard Documentation/extra_files/*.*) \
 $(wildcard *.txt) \
-$(pdlua_data) \
+Code_source/Compiled/control/lua/pd.lua) \
 Documentation/README.pdf
 
 # Change the arch to arm64 if the extension is d_arm64
