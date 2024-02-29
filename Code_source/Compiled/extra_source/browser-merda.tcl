@@ -14,7 +14,7 @@ proc menu_send_merda_obj {w x y item} {
 # set nested list
 proc category_merda_menu::load_menutree {} {
     set menutree { 
-        {m.e.r.d.a.
+        {merda
             {classic
                 {adsr.m~ lfo.m~ seq8.m~ vca.m~ vcf.m~ vco.m~}}
             {fx
