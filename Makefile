@@ -433,7 +433,7 @@ include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 
 # M.E.R.D.A
 
-	cp -r Code_source/MERDA/Modules/ "${installpath}"
+	cp -r Code_source/Merda/Modules/ "${installpath}"
 
 sfont:
 	$(MAKE) -C Code_source/Compiled/audio/sfont~
