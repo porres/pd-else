@@ -1,0 +1,14 @@
+#N canvas 509 54 526 429 12;
+#X declare -path else;
+#X obj 42 306 out~;
+#X obj 42 37 bl.saw~ 110;
+#X obj 351 184 chorus~;
+#X text 295 125 This is just a wrapper around [chorus~] from ELSE \, check it out., f 22;
+#X obj 42 90 chorus.m~;
+#A saved 0.121077 17.1921 0;
+#X text 289 328 see -->;
+#X obj 329 80 declare -path else;
+#X obj 350 327 about.MERDA;
+#X text 302 225 this is still a simple module \, with no CV input yet \, so kinda like a pedal still., f 22;
+#X connect 1 0 4 0;
+#X connect 4 0 0 0;

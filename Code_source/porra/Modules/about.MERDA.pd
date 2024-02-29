@@ -1,0 +1,9 @@
+#N canvas 426 42 572 582 12;
+#X obj 33 20 note 488 40 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© M.E.R.D.A í ½í²© MODULAR EURORACKS DANCING ALONG;
+#X text 38 289 The absctractions have savestating and you can also use [presets.m] to save different presets., f 71;
+#X obj 145 242 note 272 21 Menlo empty 4 0 0 0 1 223 223 223 1 1 General Operation:;
+#X text 38 328 M.E.R.D.A. Modules allow you to set values via knobs and other controls like number boxes and buttons. They all have a state saving mechanism \, which means it loads the values from the last time it was saved in a patch., f 71;
+#X text 39 537 More details in the help files of each modules., f 71;
+#X text 38 394 This is still exerimental and some modules aren't really ready \, don't have CV input and still work linda like pedals., f 71;
+#X text 38 438 Some moludes have CV Input and some of these have attenuverters \, which are knob controls that control the amount of CV \, so it attenuates with values from 0 to 100 \, but it also inverts the signal and attenuates it (by using values from 0 to -100). Usually these CV parameters are also controlled by GUIs like knobs and or number boxes \, so the CV values are actually ADDED to the set value., f 71;
+#X text 38 178 This is a collection of Pure Data Abstractions that are inspired by Eurorack Modules. This is a submodule of the ELSE library for Pure Data \, so it requires ELSE. ELSE is by Porres. MERDA is also by Porres., f 71;

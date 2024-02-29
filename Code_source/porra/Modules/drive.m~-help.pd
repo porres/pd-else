@@ -1,0 +1,16 @@
+#N canvas 484 25 529 499 12;
+#X declare -path else;
+#X obj 162 270 out~;
+#X obj 95 275 meter~;
+#X obj 95 91 drive.m~;
+#A saved 3.16228;
+#X obj 95 50 play.file~ bubul.wav 1 1;
+#X text 230 385 see -->;
+#X obj 317 92 declare -path else;
+#X text 307 155 This is just a wrapper around [drive~] from ELSE (default mode only) \, check it out., f 22;
+#X obj 362 234 drive~;
+#X obj 290 385 about.MERDA;
+#X text 314 277 this is still a simple module \, with no CV input yet \, so kinda like a pedal still., f 22;
+#X connect 2 0 0 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;

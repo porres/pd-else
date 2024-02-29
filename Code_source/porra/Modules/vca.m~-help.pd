@@ -1,0 +1,16 @@
+#N canvas 484 25 604 628 12;
+#X declare -path else;
+#X obj 81 506 out~;
+#X obj 81 86 bl.saw~ 110;
+#X obj 190 99 glide~ 50;
+#X obj 190 75 pulse~ 1;
+#X obj 81 141 vca.m~;
+#A saved 1;
+#X text 353 350 see -->;
+#X obj 325 173 declare -path else;
+#X text 314 240 This mono VCA module has a signal input and a CV control to set the VCA level., f 23;
+#X obj 413 350 about.MERDA;
+#X connect 1 0 4 0;
+#X connect 2 0 4 1;
+#X connect 3 0 2 0;
+#X connect 4 0 0 0;

@@ -1,0 +1,14 @@
+#N canvas 484 25 503 402 12;
+#X declare -path else;
+#X obj 76 299 out~;
+#X obj 76 39 bl.saw~ 110;
+#X obj 76 78 rm.m~;
+#A saved 0;
+#X text 267 317 see -->;
+#X obj 258 61 declare -path else;
+#X obj 307 193 rm~;
+#X text 248 124 This is just a wrapper around [rm~] from ELSE \, check it out., f 22;
+#X obj 327 317 about.MERDA;
+#X text 245 235 this is still a simple module \, with no CV input yet \, so kinda like a pedal still., f 22;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;

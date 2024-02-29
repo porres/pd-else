@@ -1,0 +1,15 @@
+#N canvas 496 26 563 520 12;
+#X declare -path else;
+#X obj 105 405 out~;
+#X obj 66 57 player~ bubul.wav 1 1;
+#X obj 66 93 plate.rev.m~;
+#A saved 10.0054 0.5 0.25 0.75 0.5;
+#X text 339 351 see -->;
+#X obj 339 104 declare -path else;
+#X obj 355 208 plate.rev~;
+#X text 277 162 This is just a wrapper around [plate.rev~] from ELSE \, check it out., f 29;
+#X obj 399 351 about.MERDA;
+#X text 317 252 this is still a simple module \, with no CV input yet \, so kinda like a pedal still., f 22;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 2 1 0 1;

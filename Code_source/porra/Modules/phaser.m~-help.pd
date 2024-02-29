@@ -1,0 +1,14 @@
+#N canvas 484 25 548 430 12;
+#X declare -path else;
+#X obj 60 315 out~;
+#X obj 60 65 bl.saw~ 55;
+#X obj 60 106 phaser.m~;
+#A saved 0.104163 3 0.5;
+#X text 301 358 see -->;
+#X obj 318 44 declare -path else;
+#X obj 363 186 phaser~;
+#X text 308 107 This is just a wrapper around [phaser~] from ELSE \, check it out., f 22;
+#X obj 361 358 about.MERDA;
+#X text 321 235 this is still a simple module \, with no CV input yet \, so kinda like a pedal still., f 22;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;

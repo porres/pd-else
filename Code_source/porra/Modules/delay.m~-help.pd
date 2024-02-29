@@ -1,0 +1,14 @@
+#N canvas 452 38 585 550 12;
+#X declare -path else;
+#X obj 62 396 out~;
+#X text 349 197 This is just a wrapper around [filterdelay~] from ELSE \, check it out., f 22;
+#X obj 405 256 filterdelay~;
+#X obj 62 60 player~ bubul.wav 1 1;
+#X obj 62 111 delay.m~;
+#A saved 100 0 100 0 0.5;
+#X text 360 397 see -->;
+#X obj 385 108 declare -path else;
+#X obj 420 397 about.MERDA;
+#X text 359 301 this is still a simple module \, with no CV input yet \, so kinda like a pedal still., f 22;
+#X connect 3 0 4 0;
+#X connect 4 0 0 0;
