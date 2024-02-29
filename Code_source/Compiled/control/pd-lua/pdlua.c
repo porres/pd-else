@@ -2401,10 +2401,10 @@ void pdlua_setup(void)
              pdlua_version, lvm, lvl);
 #endif
 // post version and other information
-    post(pdluaver);
 #ifdef ELSE
-    post("Distributed as part of ELSE");
+    post("ELSE loads a modified version of [pdlua] by Claude Heiland-Allen, Martin Peach et al");
 #else
+    post(pdluaver);
     post(compiled);
 #endif
     post(luaversionStr);
