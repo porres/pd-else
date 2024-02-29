@@ -243,10 +243,10 @@ t_int *plaits_perform(t_int *w){
     t_sample *freq  = (t_sample *) (w[2]);  // frequency input
     t_sample *trig  = (t_sample *) (w[3]);  // trigger input
     t_sample *level = (t_sample *) (w[4]);  // level input
-    t_sample *tmod  = (t_sample *) (w[5]);  // timbre modulation input
-    t_sample *fmod  = (t_sample *) (w[6]);  // frequency modulation input
-    t_sample *mmod  = (t_sample *) (w[7]);  // morph modulation input
-    t_sample *hmod  = (t_sample *) (w[8]);  // harmonics modulation input
+    t_sample *fmod  = (t_sample *) (w[5]);  // frequency modulation input
+    t_sample *tmod  = (t_sample *) (w[6]);  // timbre modulation input
+    t_sample *hmod  = (t_sample *) (w[7]);  // harmonics modulation input
+    t_sample *mmod  = (t_sample *) (w[8]);  // morph modulation input
     t_sample *out   = (t_sample *) (w[9]);  // out
     t_sample *aux   = (t_sample *) (w[10]); // aux out
     int n = x->x_n; // block size

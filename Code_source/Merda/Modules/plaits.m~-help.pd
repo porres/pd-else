@@ -28,6 +28,7 @@
 #X text 334 338 This example connects to the level input \, enabling level mode. For trigger mode \, see below., f 28;
 #X obj 429 483 about.MERDA;
 #X text 542 58 This is a wrapper around [plaits~] from ELSE \, check it out., f 27;
+#X obj 400 210 sig~ 0.5;
 #X connect 2 0 4 0;
 #X connect 3 0 2 0;
 #X connect 4 0 7 0;
