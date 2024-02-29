@@ -745,7 +745,7 @@ static void pdlua_displace(t_gobj *z, t_glist *glist, int dx, int dy){
        x->pd.te_xpix += dx, x->pd.te_ypix += dy;
        dx *= glist_getzoom(glist), dy *= glist_getzoom(glist);
 #if !PLUGDATA
-        gfx_displace(z, glist, dx, dy);
+        gfx_displace((t_pdlua *)z, glist, dx, dy);
 #endif
     }
     else {

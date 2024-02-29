@@ -560,7 +560,7 @@ static int reset_transform(lua_State* L) {
 
 static int can_draw(t_pdlua* obj)
 {
-    return (glist_isvisible(obj->canvas) && gobj_shouldvis(obj, obj->canvas)) || obj->gfx.first_draw;
+    return (glist_isvisible(obj->canvas) && gobj_shouldvis((t_gobj *)obj, obj->canvas)) || obj->gfx.first_draw;
 }
 
 static int free_path(lua_State* L)
