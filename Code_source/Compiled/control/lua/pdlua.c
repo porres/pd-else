@@ -2402,7 +2402,7 @@ void pdlua_setup(void)
 #endif
 // post version and other information
 #ifdef ELSE
-    post("ELSE loads a modified version of [pdlua] by Claude Heiland-Allen, Martin Peach et al");
+    post("ELSE loads a modified version of [pdlua] by Tim Schoen");
 #else
     post(pdluaver);
     post(compiled);
