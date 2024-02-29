@@ -431,9 +431,7 @@ include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 # directory (PDLIBDIR, objectsdir) should be specified as an absolute path.
 # E.g.: make install sfont-install objectsdir=/usr/lib/pd/extra
 
-# M.E.R.D.A
 
-	cp -r Code_source/Merda/Modules/ "${installpath}"
 
 sfont:
 	$(MAKE) -C Code_source/Compiled/audio/sfont~
@@ -483,3 +481,6 @@ ifeq ($(luamake),yes)
 else
 	rm -f "${installpath}"/pdlua*.pd
 endif
+
+
+#    cp -r Code_source/Merda/Modules/ "${installpath}"/
