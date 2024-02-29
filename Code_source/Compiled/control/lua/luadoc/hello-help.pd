@@ -1,0 +1,10 @@
+#N canvas 503 68 453 299 10;
+#X declare -lib pdlua;
+#X obj 230 238 pdlua;
+#X obj 235 29 declare -lib pdlua;
+#X obj 119 137 hello;
+#X text 66 238 check the help file of -->;
+#X text 160 136 <-- loaded from 'hello.pd_lua';
+#X text 90 175 Right click to open the source file if your system has a known application for it., f 43;
+#X text 39 61 This is a simple help file for the 'hello' external written in lua that is loaded with the [pdlua] library. This is just an example on how you can provide help files for your externals. Just create a "objectname-help.pd" file and it'll be called when you right click on it and ask for help., f 62;
+#X text 272 239 for more details.;
