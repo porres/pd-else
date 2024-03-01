@@ -52,7 +52,7 @@ ELSE comes as a set of separate binaries and abstractions, so it works if you ju
 
 But it's important that you add ELSE's path in Preferences ==> Path, so it loads an object browser plugin!
 
-It might still be important to stress this library runs in Pd Vanilla and is not compatible to forks like the long dead "Pd Extended" and its new reincarnations "Pd-L2ork/Purr Data". Nevertheless, ELSE is included in the PlugData fork --> <https://github.com/timothyschoen/PlugData>, and a port of ELSE to Purr Data was started aome time ago and there's a chance it might evolve into full support, see --> https://github.com/agraef/purr-data/tree/pd-else.
+This library runs in Pd Vanilla and do I still need to say it doesn't run in the long dead "Pd Extended"? Neither its new (and unfortunate) reincarnations "Pd-L2ork/Purr Data". Nevertheless, it can run in other forks that are actually compatible to Vanilla, most notably, ELSE is included in the PlugData fork --> <https://github.com/timothyschoen/PlugData>.
 
 --------------------------------------------------------------------------
 
@@ -96,7 +96,7 @@ But the library grew to encompass functionalities found in other Pd objects/libr
 
 The goal of ELSE also outgrew the didactic material as it now includes objects not necessarily depicted in the computer music examples. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects. So that's it, ELSE is becoming a quite big library and keeps growing and growing. 
 
-ELSE has been in active development for over 5 years but it will still take a little while for it to stabilize into a final version. For now, it's at a "Release Candidate" stage of development, where changes may occur and backwards compatibility is not guaranteed until a final release is available. 
+ELSE has been in active development since early 2017 for real, but it hasn't stabilized into a final version yet. The aim is to do so as soon as PlugData's 1.0 version comes out! For now, it's at a "Release Candidate" stage of development, where changes may occur and backwards compatibility is not guaranteed until a final release is available. 
 
 --------------------------------------------------------------------------
 
@@ -108,9 +108,7 @@ I'd also like to thank my Cyclone buddies Derek Kwan and Matt Barber, cause I st
 
 Lucarda is an active tester and has helped countless times with compilation issues for windows and more. Seb shader is a tcl/tk master that helped me a lot with this (which I know next to nothing) and is responsible for the [keycode] object.
 
-Albert Graef from Purr Data is working on a port of ELSE so it builds and runs on Purr Data (still experimental and a long way to go). He's also doing several valuable contributions to the code and being helpful in general in this process - check <https://github.com/agraef/purr-data/releases/tag/2.19.2+ELSE>.
-
-Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of ELSE for other systems as well as ELSE for Camomile and libpd projects, which opened the way for PlugData by Timothy Schoen, who's doing an amazing jaw dropping job with this project based on camomile that includes ELSE. Timothy has also helped me fix many ELSE related issues and coded first versions of some objects like the band limited oscillators. Other folks from the PlugData gang are being very helpful like Alex Mitchell and Amy. PlugData is a fork of Pd with a revamped GUI and comes with the ELSE library. See: <https://github.com/timothyschoen/PlugData>.
+Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of ELSE for other systems as well as ELSE for Camomile and libpd projects, which opened the way for PlugData by Timothy Schoen, who's doing an amazing jaw dropping job with this project based on camomile that includes ELSE. Timothy has also helped me fix many ELSE related issues and has made incredible and countless contributions to ELSE. Other folks from the PlugData gang are being very helpful like Alex Mitchell and Amy. PlugData is a fork of Pd with a revamped GUI and comes with the ELSE library. See: <https://github.com/timothyschoen/PlugData>.
 
 --------------------------------------------------------------------------
 
