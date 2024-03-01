@@ -1,7 +1,7 @@
-#N struct 1009-cell float x float y float cellsize float color;
-#N struct 1011-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
-#N struct 1030-point float x0 float y0 float size float fg float in float grid;
-#N struct 1083-slot float x float y float slotsize float color float width float bordercolor;
+#N struct 1015-cell float x float y float cellsize float color;
+#N struct 1017-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
+#N struct 1036-point float x0 float y0 float size float fg float in float grid;
+#N struct 1089-slot float x float y float slotsize float color float width float bordercolor;
 #N canvas 480 25 543 652 10;
 #N canvas 347 36 974 668 GUI 0;
 #X text 40 146 [biplot];
@@ -185,7 +185,6 @@
 #X obj 48 425 else/trunc~;
 #X obj 48 789 else/op;
 #X obj 48 401 else/trunc;
-#X obj 48 817 else/cmul~;
 #X obj 48 151 else/frac.add;
 #X obj 48 175 else/frac.mul;
 #X restore 270 284 pd Math_functions;
