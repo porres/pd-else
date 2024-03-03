@@ -97,7 +97,7 @@ errstate:
 
 void drive_tilde_setup(void){
     drive_class = class_new(gensym("drive~"), (t_newmethod)drive_new, 0,
-            sizeof(t_drive), CLASS_DEFAULT, A_GIMME, 0);
+        sizeof(t_drive), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(drive_class, nullfn, gensym("signal"), 0);
     class_addmethod(drive_class, (t_method) drive_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(drive_class, (t_method)drive_mode, gensym("mode"), A_DEFFLOAT, 0);
