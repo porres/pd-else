@@ -410,7 +410,9 @@ $(wildcard Documentation/Help-files/*.pd) \
 $(wildcard Documentation/extra_files/*.*) \
 $(wildcard *.txt) \
 Documentation/README.pdf \
-Code_source/Compiled/control/lua/pd.lua
+Code_source/Compiled/control/lua/pd.lua \
+Code_source/Compiled/control/lua/luadoc/hello.lua \
+Code_source/Compiled/control/lua/luadoc/hello.pd_lua
 
 # Change the arch to arm64 if the extension is d_arm64
 ifeq ($(extension),d_arm64)
@@ -429,8 +431,6 @@ include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 # will work as intended. Note that to make that work, any target installation
 # directory (PDLIBDIR, objectsdir) should be specified as an absolute path.
 # E.g.: make install sfont-install objectsdir=/usr/lib/pd/extra
-
-
 
 sfont:
 	$(MAKE) -C Code_source/Compiled/audio/sfont~
@@ -476,9 +476,8 @@ install: installplus
 installplus:
 	cp -r Code_source/Merda/Modules/ "${installpath}"/
 	for v in $(extrafiles); do $(INSTALL_DATA) "$$v" "$(installpath)"; done
-ifeq ($(luamake),yes)
-	cp -r Code_source/Compiled/control/lua/luadoc/ "${installpath}"/lua
-else
-	rm -f "${installpath}"/pdlua*.pd
-endif
-
+#ifeq ($(luamake),yes)
+#	cp -r Code_source/Compiled/control/lua/luadoc/ "${installpath}"/lua
+#else
+#	rm -f "${installpath}"/pdlua*.pd
+#endif
