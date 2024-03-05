@@ -15,7 +15,7 @@ This work is free. You can redistribute it and/or modify it under the terms of t
 
 For details on authorship check the source code. Other licenses also apply for specific objects and this is also informed in the source code. 
 For instance:
-- [beat~], [sfont~], [giga.rev~] are licensed under the GNU GPL library
+- [beat~], [sfont~], [giga.rev~] and [lua] are licensed under the GNU GPL library
 - [sfz~] and band limited oscillators like [bl.saw~] are licensed under the BSD 2-Clause library
 - [plaits~], [osc.format], [osc.parse] and [osc.route] are licensed under the MIT library
 
@@ -48,9 +48,7 @@ You can get ELSE from https://github.com/porres/pd-else/releases - where all rel
 
 ### Installing ELSE:
 
-ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path or use **[declare -path else]**. ELSE comes with a binary that you can use load via "Preferences => Startup" or with [declare -lib else], but all that this does is print information of what version of ELSE you have when you open Pd. You can also just load the 'else' external for that same purpose, check its help file. 
-
-But it's important that you add ELSE's path in Preferences ==> Path, so it loads an object browser plugin!
+ELSE comes mostly as a set of separate binaries and abstractions, which work if you just add its folder to the path or use **[declare -path else]**. Nonetheless, you must also load ELSE as a library via "Preferences => Startup" or with **[declare -lib else]**. Loading the library loads an object browsing plugin and a modified version of [pdlua], which allows you to load objects coded in lua. Some objects in ELSE are coded in lua, like the [lua] object itself. Loading the library also prints information of what version of ELSE you have when you open Pd. 
 
 This library runs in Pd Vanilla and do I still need to say it doesn't run in the long dead "Pd Extended"? Neither its new (and unfortunate) reincarnations "Pd-L2ork/Purr Data". Nevertheless, it can run in other forks that are actually compatible to Vanilla, most notably, ELSE is included in the PlugData fork --> <https://github.com/timothyschoen/PlugData>.
 
@@ -168,6 +166,9 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 #analog circuitry emulation
     circuit~
     
+#scripting
+    lua
+    
 #fx: assorted
     downsample~ conv~ chorus~ shaper~ crusher~ drive~ power~ flanger~ freq.shift~ pitch.shift~ stretch.shift~ stretch.shift~ ping.pong~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~ phaser~
     
@@ -181,7 +182,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     allpass.rev~ comb.rev~ echo.rev~ mono.rev~ stereo.rev~ free.rev~ giga.rev~ plate.rev~ fdn.rev~
     
 #fx: filters
-    allpass.2nd~ allpass.filt~ bitnormal~ comb.filt~ lop.bw~ hip.bw~ biquads~ bandpass~ bandstop~ crossover~ bpbank~ bicoeff2 brickwall~ eq~ highpass~ highshelf~ lop2~ lowpass~ lowshelf~ mov.avg~ resonbank~ resonbank2~ resonant~ resonant2~ svfilter~
+    allpass.2nd~ allpass.filt~ bitnormal~ comb.filt~ lop.bw~ hip.bw~ biquads~ bandpass~ bandstop~ crossover~ bpbank~ bicoeff2 brickwall~ eq~ highpass~ highshelf~ lop2~ lowpass~ lowshelf~ mov.avg~ resonbank~ resonbank2~ vcf2~ resonant~ resonant2~ svfilter~
     
 #sampling, playing, granulation
     player~ gran.player~ pvoc.player~ pvoc.live~ batch.rec~ bach.write~ rec.file~ play.file~ tabplayer~ tabwriter~ sample~
@@ -196,7 +197,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     pluck~
     
 #synthesis: oscillators
-    cosine~ impulse~ impulse2~ parabolic~ pulse~ saw~ saw2~ oscbank~ oscbank2~ oscnoise~ sine~ square~ tri~ gaussian~ vsaw~ fm~ pm~ wavetable~ wt2d~ blip~ bl.osc~ bl.imp~ bl.imp2~ bl.saw~ bl.saw2~ bl.square~ bl.tri~ bl.vsaw~ bl.wavetable~
+    cosine~ impulse~ impulse2~ parabolic~ pulse~ saw~ saw2~ oscbank~ oscbank2~ oscnoise~ sine~ square~ tri~ gaussian~ vsaw~ fm~ pm~ wavetable~ wt2d~ blip~ bl.osc~ bl.imp~ bl.imp2~ bl.saw~ bl.saw2~ bl.square~ bl.tri~ bl.vsaw~ bl.wavetable~ damp.osc~
     
 #synthesis: chaotic, stochastic, noise
     white~ brown~ perlin~ crackle~ cusp~ fbsine~ fbsine2~ gbman~ gray~ henon~ ikeda~ latoocarfian~ lorenz~ lfnoise~ lincong~ logistic~ quad~ stepnoise~ rampnoise~ randpulse~ randpulse2~ standard~ pink~ xmod~ xmod2~ gendyn~

@@ -1,14 +1,14 @@
-Copyright © 2017-2023 Alexandre Torres Porres and others 
+Copyright © 2017-2024 Alexandre Torres Porres and others 
 
 This work is free. You can redistribute it and/or modify it under the terms of the particular licenses, mostly under the "Do What The Fuck You Want To Public License, Version 2", as published by Sam Hocevar. See 'LICENSE WTFPL' for more details!
 
 Other licenses apply for specific objects and this is informed in the source code of objects, which also carries information on specific authorship of objects. 
 
 Examples of other licenses include:
-- [beat~], [sfont~], [giga.rev~] - licensed under the GNU GPL library
+- [beat~], [sfont~], [giga.rev~], [lua] - licensed under the GNU GPL library
 - [sfz~] and band limited oscillators like [bl.saw~] - licensed under the BSD 2-Clause library
 - [plaits~], [osc.format], [osc.parse] and [osc.route] - licensed under the MIT library
 
-ELSE comes with a Live Electronics tutorial as part of its documentation written by Alexandre Torres Porres, this work is licensed under a Creative Common (CC} License. 
+ELSE comes with a Live Electronics Tutorial as part of its documentation written by Alexandre Torres Porres, this work is licensed under a Creative Common (CC} License. 
 
 For copies of the licenses and the terms, please check the files in this 'license' folder.
