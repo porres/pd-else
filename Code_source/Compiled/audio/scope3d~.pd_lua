@@ -12,25 +12,23 @@ function scope3d:initialize(sel, atoms)
     rotatey     = {function(s, a) return s:pd_rotatey(a)     end, 2, 1},
     rotate      = {function(s, a) return s:pd_rotate(a)      end, 1, 2},
 
-    width       = {function(s, a) return s:pd_width(a)       end, 3, 1},
-    height      = {function(s, a) return s:pd_height(a)      end, 4, 1},
-    size        = {function(s, a) return s:pd_size(a)        end, 3, 2},
+    dim         = {function(s, a) return s:pd_dim(a)         end, 3, 2},
 
     zoom        = {function(s, a) return s:pd_zoom(a)        end, 5, 1},
     drag        = {function(s, a) return s:pd_drag(a)        end, 6, 1},
     grid        = {function(s, a) return s:pd_grid(a)        end, 7, 1},
     perspective = {function(s, a) return s:pd_perspective(a) end, 8, 1},
-    stroke      = {function(s, a) return s:pd_stroke(a)      end, 9, 1},
+    width       = {function(s, a) return s:pd_width(a)       end, 9, 1},
 
-    buffer      = {function(s, a) return s:pd_buffer(a)      end, 10, 1},
-    interval    = {function(s, a) return s:pd_interval(a)    end, 11, 1},
+    nlines      = {function(s, a) return s:pd_nlines(a)      end, 10, 1},
+    nsamples    = {function(s, a) return s:pd_nsamples(a)    end, 11, 1},
     framerate   = {function(s, a) return s:pd_framerate(a)   end, 12, 1},
 
     fgcolor     = {function(s, a) return s:pd_fgcolor(a)     end, 13, 3},
     bgcolor     = {function(s, a) return s:pd_bgcolor(a)     end, 16, 3},
     gridcolor   = {function(s, a) return s:pd_gridcolor(a)   end, 19, 3},
 
-    reset       = {function(s, a) return s:pd_reset()        end}
+    receive     = {function(s, a) return s:pd_receive(a)     end, 22, 1},
   }
   self:reset_state()
   self:reset_data()
@@ -62,7 +60,7 @@ function scope3d:restore_state(atoms)
     if method[2] then -- if method has state index
       local args = {}
       for i = method[2], method[2] + method[3]-1 do
-        if type(atoms[i]) == "number" then table.insert(args, atoms[i]) end
+        if atoms[i] ~= "empty" then table.insert(args, atoms[i]) end
       end
       if #args > 0 then self:call_pd_method(key, args) end
     end 
@@ -77,14 +75,11 @@ function scope3d:reset_state()
   self.state = {}
   local count = 0
   -- get state args count
-  local i = 1
   for _, method in pairs(self.methods) do
     if method[2] then
-      count = math.max(count, i + method[3])
+      count = math.max(count, method[2] + method[3] - 1)
     end
-    i = i + 1
   end
-  -- prefill state with -1
   for i = 1, count do
     table.insert(self.state, "empty")
   end
@@ -132,6 +127,7 @@ end
 
 function scope3d:finalize()
   self.clock:destruct()
+  if self.recv then self.recv:destruct() end
 end
 
 function scope3d:handle_args(atoms)
@@ -267,11 +263,22 @@ function scope3d:in_n(n, sel, atoms)
   self:call_pd_method(sel, atoms)
 end
 
+function scope3d:receive(sel, atoms)
+  self:call_pd_method(sel, atoms)
+end
+
 -- /////////////////////////////////////////////////////////////
+
+function scope3d:pd_receive(x)
+  if self.recv then self.recv:destruct() end
+  if x[1] then
+    self.recv = pd.Receive:new():register(self, tostring(x[1]), "receive")
+  end
+end
 
 function scope3d:pd_rotatex(x)
   if type(x[1]) == "number" then
-    self.rotationAngleX = -x[1]
+    self.rotationAngleX = x[1]
     self.rotationStartAngleX = self.rotationAngleX
   end
 end
@@ -304,8 +311,7 @@ function scope3d:pd_grid(x)
   self.DRAW_GRID = type(x[1]) == "number" and x[1] or 1 - self.DRAW_GRID
 end
 
-function scope3d:pd_size(x)
-  if #x == 1 then x = {x[1], x[1]} end
+function scope3d:pd_dim(x)
   if #x == 2 and
      type(x[1]) == "number" and
      type(x[2]) == "number" then
@@ -317,34 +323,20 @@ function scope3d:pd_size(x)
   end
 end
 
-function scope3d:pd_width(x)
-  if type(x[1]) == "number" then
-    self.WIDTH = math.max(1, x[1])
-    self:set_size(self.WIDTH, self.HEIGHT)
-  end
-end
-
-function scope3d:pd_height(x)
-  if type(x[1]) == "number" then
-    self.HEIGHT = math.max(1, x[1])
-    self:set_size(self.WIDTH, self.HEIGHT)
-  end
-end
-
-function scope3d:pd_buffer(x)
+function scope3d:pd_nlines(x)
   if type(x[1]) == "number" then
     self.BUFFERSIZE = math.min(1024, math.max(2, math.floor(x[1])))
     self:reset_buffer()
   end
 end
 
-function scope3d:pd_interval(x)
+function scope3d:pd_nsamples(x)
   if type(x[1]) == "number" then
-    self.SAMPLING_INTERVAL = math.max(1, math.floor(x[1]))
+    self.SAMPLING_INTERVAL = math.max(2, math.floor(x[1])) - 1
   end
 end
 
-function scope3d:pd_stroke(x)
+function scope3d:pd_width(x)
   self.STROKE_WIDTH = type(x[1]) == "number" and math.max(1, x[1]) or 1
 end
 
@@ -355,6 +347,8 @@ end
 function scope3d:pd_framerate(x)
   if type(x[1]) == "number" then
     self.FRAMEINTERVAL = 1 / math.min(120, math.max(1, x[1])) * 1000
+    self.clock:unset()
+    self.clock:delay(self.FRAMEINTERVAL)
   end
 end
 
@@ -386,10 +380,4 @@ function scope3d:pd_gridcolor(x)
      type(x[3]) == "number" then
     self.GRIDCOLOR = {x[1], x[2], x[3]}
   end
-end
-
-function scope3d:pd_reset()
-  self:reset_data()
-  self:reset_state()
-  self:save_state()
 end
