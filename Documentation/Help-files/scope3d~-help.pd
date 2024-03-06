@@ -1,4 +1,4 @@
-#N struct 1005-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
+#N struct 1007-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
 #N canvas 444 37 569 686 10;
 #X obj 4 647 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
 #X obj 5 263 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
@@ -152,12 +152,12 @@
 #X connect 15 0 0 0;
 #X connect 16 0 0 0;
 #X restore 416 160 pd rotation;
-#X text 24 152 [scope3d~] displays signals in 3D. This is an object coded in Lua and is very very experimental and likely to change and break., f 26;
+#X text 24 126 [scope3d~] displays signals in 3D. This is an object coded in Lua and is very very experimental and likely to change and break., f 26;
 #N canvas 305 23 727 624 appearance_basic 0;
 #X obj 353 146 osc~ 80;
 #X obj 429 146 osc~ 40.1;
 #X obj 525 146 osc~ 120;
-#X obj 325 193 scope3d~ empty empty 250 empty 0.592387 0 1 0 3.6 empty empty empty empty empty empty empty empty empty empty empty empty;
+#X obj 325 193 scope3d~ empty empty 250 empty 0.592387 0 1 0 3.6 empty empty empty empty empty empty empty empty empty empty;
 #X obj 70 558 s \$0-basic;
 #X obj 325 104 r \$0-basic;
 #X obj 98 269 hsl 136 16 0.25 1.5 1 0 empty empty empty -2 -10 0 12 #dfdfdf #000000 #000000 0 1;
@@ -234,6 +234,11 @@
 #X text 216 396 - sets frame rate refresh, f 55;
 #X text 142 466 rotatex <f>;
 #X text 142 480 rotatey <f>;
+#N canvas 626 294 419 280 see 0;
+#X text 127 22 For up to 2D plots \, see:;
+#X text 159 49 [oscope~];
+#X obj 106 86 oscope~ 200 100 256 3 128 -1 1 0 0 0 0 30 30 30 190 190 190 160 160 160 0 empty;
+#X restore 80 209 pd see also;
 #X connect 34 0 33 0;
 #X connect 35 0 33 1;
 #X connect 36 0 33 2;
