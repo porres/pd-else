@@ -8,8 +8,8 @@ function scope3d:initialize(sel, atoms)
     --
     -- methods that allow variable arg count (like rotate) need to be 
     -- listed after the other methods for correct state restoring 
-    xrotate     = {function(s, a) return s:pd_xrotate(a)     end, 1, 1},
-    yrotate     = {function(s, a) return s:pd_yrotate(a)     end, 2, 1},
+    rotatex     = {function(s, a) return s:pd_rotatex(a)     end, 1, 1},
+    rotatey     = {function(s, a) return s:pd_rotatey(a)     end, 2, 1},
     rotate      = {function(s, a) return s:pd_rotate(a)      end, 1, 2},
 
     width       = {function(s, a) return s:pd_width(a)       end, 3, 1},
@@ -269,14 +269,14 @@ end
 
 -- /////////////////////////////////////////////////////////////
 
-function scope3d:pd_xrotate(x)
+function scope3d:pd_rotatex(x)
   if type(x[1]) == "number" then
     self.rotationAngleX = -x[1]
     self.rotationStartAngleX = self.rotationAngleX
   end
 end
 
-function scope3d:pd_yrotate(x)
+function scope3d:pd_rotatey(x)
   if type(x[1]) == "number" then
     self.rotationAngleY = x[1]
     self.rotationStartAngleY = self.rotationAngleY
@@ -287,7 +287,7 @@ function scope3d:pd_rotate(x)
   if #x == 2 and
      type(x[1]) == "number" and
      type(x[2]) == "number" then
-    self.rotationAngleX, self.rotationAngleY = -x[1], x[2]
+    self.rotationAngleX, self.rotationAngleY = x[1], x[2]
     self.rotationStartAngleX, self.rotationStartAngleY = self.rotationAngleX, self.rotationAngleY
   end
 end
