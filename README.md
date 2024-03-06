@@ -263,7 +263,7 @@ A submodule of ELSE by Porres (this is also by Porres).
 
 **ALTERNATIVES TO CYCLONE**
 
-ELSE offers alternatives to objects from the Cyclone library (a library that clones objects from MAX/MSP). The objects that have no similar counterpart in ELSE (at least so far) are: anal / buddy / capture / capture~ / coll / cycle / decide / decode / frameaccum~ / framedelta~ / funbuff / funnel / flush / forward / histo / kink~ / linedrive / prob / match / maximum / minimum / mousefilter / next / offer / peak / prob / pv / spray / substitute / teeth~ / trough / universal / vectral~
+ELSE offers alternatives to objects from the Cyclone library (a library that clones objects from MAX/MSP). The objects that have no similar counterpart in ELSE (at least so far) are: anal / buddy / capture / capture~ / coll / cycle / decide / decode / frameaccum~ / framedelta~ / funbuff / funnel / flush / forward / kink~ / linedrive / prob / match / maximum / minimum / mousefilter / next / offer / peak / prob / pv / spray / substitute / teeth~ / trough / universal / vectral~
 
 But, here are some considerations:
 - maximum/minimum => [array max] [array min] (you need to set an array with the list)
@@ -278,7 +278,7 @@ But, here are some considerations:
 
 Alternatives:
 
-- 2d.wave~ => else/wt2d~
+- 2d.wave~ => else/wt2d~ (sort of)
 - +=~ / [plusequals~] => else/add~
 - operators >~ / <~ / %~ / etc => else/op~ => [expr~]
 - bitwise operators (bitand~ / bitor~, etc) => [expr~]
@@ -314,6 +314,7 @@ Alternatives:
 - grab => else/retrieve
 - gate => else/router
 - gate~ => else/xgate~
+- histo => else/histogram
 - index~ => else/ramp~
 - iter => else/iterate
 - join => else/merge
