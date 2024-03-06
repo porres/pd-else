@@ -120,7 +120,7 @@
 #X text 172 535 signal;
 #X text 216 535 - signal to be displayed on the Z axis, f 55;
 #N canvas 484 76 654 653 rotation 0;
-#X obj 146 413 scope3d~ 0 0 200 empty 0.75 empty empty empty empty empty empty empty empty empty empty empty empty empty empty;
+#X obj 146 413 scope3d~ 317.48 141.732 200 empty 0.75 empty empty empty empty empty empty empty empty empty empty empty empty empty empty empty empty;
 #X obj 174 368 osc~ 100;
 #X obj 242 368 osc~ 201;
 #X obj 339 370 osc~ 302;
@@ -130,7 +130,7 @@
 #X floatatom 165 312 5 0 0 0 - - - 0;
 #X floatatom 146 241 5 0 0 0 - - - 0;
 #X listbox 97 169 20 0 0 0 - - - 0;
-#X obj 97 37 slider2d 127 127 -180 180 -90 90 1 255 255 255 0 0 0 0 0 0 -180 90 empty empty;
+#X obj 97 37 slider2d 127 127 0 360 0 360 1 255 255 255 0 0 0 0 0 0 141.732 317.48 empty empty;
 #X msg 62 322 drag \$1;
 #X obj 62 294 tgl 21 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X text 371 439 <-- click and dgrag to rotate., f 17;
@@ -157,7 +157,7 @@
 #X obj 353 146 osc~ 80;
 #X obj 429 146 osc~ 40.1;
 #X obj 525 146 osc~ 120;
-#X obj 325 193 scope3d~ empty empty 250 empty 0.592387 0 1 0 3.6 empty empty empty empty empty empty empty empty empty empty;
+#X obj 325 193 scope3d~ empty empty 250 empty 0.592387 0 1 0 3.6 empty empty empty empty empty empty empty empty empty empty empty empty;
 #X obj 70 558 s \$0-basic;
 #X obj 325 104 r \$0-basic;
 #X obj 98 269 hsl 136 16 0.25 1.5 1 0 empty empty empty -2 -10 0 12 #dfdfdf #000000 #000000 0 1;
