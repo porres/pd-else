@@ -386,7 +386,7 @@ file := Code_source/shared/elsefile.c
     rec.class.sources := Code_source/Compiled/control/rec.c $(file)
 
 smagic := Code_source/shared/magic.c
-    oscope~.class.sources := Code_source/Compiled/audio/oscope~.c $(smagic)
+    scope~.class.sources := Code_source/Compiled/audio/scope~.c $(smagic)
 
 utf := Code_source/shared/s_elseutf8.c
 	note.class.sources := Code_source/Compiled/control/note.c $(utf)

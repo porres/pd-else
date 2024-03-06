@@ -118,7 +118,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     else
     
 #gui
-    knob numbox~ drum.seq bicoeff pad messbox mtx.ctl biplot zbiplot pic colors function circle slider2d display out.mc~ out~ out4~ out8~ gain~ gain2~ button keyboard graph~ range.hsl multi.vsl spectrograph~ meter~ meter2~ meter4~ meter8~ note mix2~ mix4~ setdsp~ openfile oscope~ scope3d~
+    knob numbox~ drum.seq bicoeff pad messbox mtx.ctl biplot zbiplot pic colors function circle slider2d display out.mc~ out~ out4~ out8~ gain~ gain2~ button keyboard graph~ range.hsl multi.vsl spectrograph~ meter~ meter2~ meter4~ meter8~ note mix2~ mix4~ setdsp~ openfile scope~ scope3d~
     
 #time
     chrono datetime
@@ -385,6 +385,6 @@ Alternatives:
 
 GUI:
 
-- scope~ => else/oscope~
+- scope~ => else/scope~ (not the same but quite similar)
 - comment => else/note (actually, comment is deprecated and based on else’s [note] now.
 

@@ -3,8 +3,6 @@
 #include "m_pd.h"
 #include "g_canvas.h"
 
-#include "../extra_source/compat.h"
-
 static t_class *pad_class, *edit_proxy_class;
 static t_widgetbehavior pad_widgetbehavior;
 
