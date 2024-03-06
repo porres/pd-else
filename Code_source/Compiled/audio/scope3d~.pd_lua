@@ -62,7 +62,6 @@ function scope3d:restore_state(atoms)
       for i = method[2], method[2] + method[3]-1 do
         if atoms[i] ~= "empty" then table.insert(args, atoms[i]) end
       end
-      pd.post('calling'..key..table.concat( args, ", "))
       if #args > 0 then self:call_pd_method(key, args) end
     end 
   end
@@ -81,7 +80,6 @@ function scope3d:reset_state()
       count = math.max(count, method[2] + method[3] - 1)
     end
   end
-  pd.post(count)
   for i = 1, count do
     table.insert(self.state, "empty")
   end
