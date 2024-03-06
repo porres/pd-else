@@ -50,7 +50,9 @@ You can get ELSE from https://github.com/porres/pd-else/releases - where all rel
 
 This library runs in Pd Vanilla and do I still need to say it doesn't run in the long dead "Pd Extended"? Neither its new (and unfortunate) reincarnations "Pd-L2ork/Purr Data". Nevertheless, it can run in other forks that are actually compatible to Vanilla, most notably, ELSE is included in the PlugData fork --> <https://github.com/timothyschoen/PlugData> and you don't need to install it there.
 
-ELSE comes mostly as a set of separate binaries and abstractions, which work if you just add the 'else' folder to the path via "Preferences => Path" or via **[declare -path else]**. Nonetheless, you must also load ELSE as a library via "Preferences => Startup" or **[declare -lib else]**. Loading the library loads an object browsing plugin and a modified version of [pdlua], which allows you to load objects coded in lua. Some objects in ELSE are coded in lua, like the [lua] object itself. Loading the library also prints information of what version of ELSE you have when you open Pd. 
+ELSE comes mostly as a set of separate binaries and abstractions, which work if you just add the 'else' folder to the path via "Preferences => Path" or via **[declare -path else]**. Nonetheless, you must also load ELSE as a library via "Preferences => Startup" or **[declare -lib else]**. 
+
+Loading the library loads an object browsing plugin. It also registers a loader that allows Pd externals written in Lua (with the "*.pd_lua" extension) to be loaded. Some objects in ELSE are coded in lua, like the [lua] object itself. Loading the library also prints information of what version of ELSE you have when you open Pd. Check else-help.pd for more details.
 
 --------------------------------------------------------------------------
 

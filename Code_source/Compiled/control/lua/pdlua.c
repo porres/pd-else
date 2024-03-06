@@ -2484,7 +2484,7 @@ void pdlua_setup(void)
 #endif
 // post version and other information
 #ifdef ELSE
-    post("ELSE ships a modified version of [pdlua]");
+    post("ELSE registers a loader that allows Pd externals written in Lua, see lua-help.pd for more details");
 #else
     post(pdluaver);
     post(compiled);
