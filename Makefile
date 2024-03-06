@@ -404,7 +404,7 @@ endef
 extrafiles = \
 $(wildcard Code_source/Abstractions/control/*.pd) \
 $(wildcard Code_source/Abstractions/audio/*.pd) \
-$(wildcard Code_source/Abstractions/extra_abs/*.pd) \
+$(wildcard Code_source/Abstractions/extra_abs/*.*) \
 $(wildcard Code_source/Compiled/extra_source/*.tcl) \
 $(wildcard Code_source/Compiled/audio/scope3d~.pd_lua) \
 $(wildcard Documentation/Help-files/*.pd) \
