@@ -6,7 +6,7 @@
 
 ### Version: 1.0-0 RC-12 (release candidate #12) With Live Electronics Tutorial. 
 
-### Released March 8th 2024
+### Released March 18th 2024
 
 Copyright © 2017-2024 Alexandre Torres Porres and others 
 
@@ -48,9 +48,9 @@ You can get ELSE from https://github.com/porres/pd-else/releases - where all rel
 
 ### Installing ELSE:
 
-ELSE comes mostly as a set of separate binaries and abstractions, which work if you just add its folder to the path or use **[declare -path else]**. Nonetheless, you must also load ELSE as a library via "Preferences => Startup" or with **[declare -lib else]**. Loading the library loads an object browsing plugin and a modified version of [pdlua], which allows you to load objects coded in lua. Some objects in ELSE are coded in lua, like the [lua] object itself. Loading the library also prints information of what version of ELSE you have when you open Pd. 
+This library runs in Pd Vanilla and do I still need to say it doesn't run in the long dead "Pd Extended"? Neither its new (and unfortunate) reincarnations "Pd-L2ork/Purr Data". Nevertheless, it can run in other forks that are actually compatible to Vanilla, most notably, ELSE is included in the PlugData fork --> <https://github.com/timothyschoen/PlugData> and you don't need to install it there.
 
-This library runs in Pd Vanilla and do I still need to say it doesn't run in the long dead "Pd Extended"? Neither its new (and unfortunate) reincarnations "Pd-L2ork/Purr Data". Nevertheless, it can run in other forks that are actually compatible to Vanilla, most notably, ELSE is included in the PlugData fork --> <https://github.com/timothyschoen/PlugData>.
+ELSE comes mostly as a set of separate binaries and abstractions, which work if you just add the 'else' folder to the path via "Preferences => Path" or via **[declare -path else]**. Nonetheless, you must also load ELSE as a library via "Preferences => Startup" or **[declare -lib else]**. Loading the library loads an object browsing plugin and a modified version of [pdlua], which allows you to load objects coded in lua. Some objects in ELSE are coded in lua, like the [lua] object itself. Loading the library also prints information of what version of ELSE you have when you open Pd. 
 
 --------------------------------------------------------------------------
 
@@ -71,28 +71,28 @@ Cross compiling is also possible with something like this
 
 <pre>make CC=arm-linux-gnueabihf-gcc target.arch=arm7l install objectsdir=~/else-build</pre>
 
-##### Installing sfont~, sfz~ and plaits~
+##### Installing [sfont~], [sfz~], [plaits~] and [circuit~]
 
 For technical reasons these objects reside in their own subdirectories of the ELSE source directory, so a normal build as described above will skip them. You cam install these separately and you can also check their subfolders for their own READMEs and instructions.
 
-To install them with the rest of ELSE you can build from the toplevel source directory using the special 'sfont', 'sfz' and 'plaits' targets, such as:
+To install them with the rest of ELSE you can build from the toplevel source directory using the special 'sfont', 'sfz' 'plaits' and 'circuit' targets, such as:
 
 <pre>make sfz plaits pdincludepath=~/pd-0.54-1/src/</pre>
 <pre>make sfz-install plaits-install objectsdir=~/else-build</pre>
 
-For sfont you should do the same but you also must run a script in the sfont subfolder to copy the needed dependencies, check its readme for more details.
+For [sfont~] you should do the same but you also must run a script in the sfont subfolder to copy the needed dependencies, check its readme for more details.
 
 --------------------------------------------------------------------------
 
 ### More About ELSE
 
-**"EL Locus Solus"** is run by yours truly, Alexandre Torres Porres, and it organizes cultural events/concerts and music technology courses (<http://alexandre-torres.wixsite.com/el-locus-solus> ) where a Live Electronics tutorial is provided with examples in Pure Data for its courses. These have been recently translated and completely rewritten to English with plans of being accompanied by a book. The latest releases are available at: <https://github.com/porres/Live-Electronic-Music-Tutorial>. This tutorial solely depends on the ELSE library and is a great didactic companion to this library. Both the library and the tutorial are provided as a single download, directly via Pure Data or GitHub.
+**"EL Locus Solus"** is run by yours truly, Alexandre Torres Porres, and it organizes cultural events/concerts and computer music courses (<http://alexandre-torres.wixsite.com/el-locus-solus> ). The course uses Porres' Live Electronics Tutorial as a main textbook. The tutorial is here: <https://github.com/porres/Live-Electronic-Music-Tutorial>. This tutorial solely depends on the ELSE library and is a great didactic companion to this library. Both the library and the tutorial are provided as a single download, directly via Pure Data or GitHub.
 
 The examples from the first incarnation of this tutorial were first developed for the now abandoned Pd Extended, making extensive use of the existing objects available in Pd Extended's libraries. Even though Pd Extended had many externals, there was the need at some point for something "else" - thus, this library emerged with the goal of providing more objects to include missing functionalities in the Pd Ecosystem.
 
 But the library grew to encompass functionalities found in other Pd objects/libraries from old Pd Extended as well, with a different design and more functionalities. This was done in order to remove ALL the dependencies of the didactic material from these other libraries - with the goal to rely on just a single library that's alive (in active development) instead of many projects that are now long gone abandoned or not receiving much attention. I'm also involved in maintaining Cyclone, a legacy library for Pd (see: <https://github.com/porres/pd-cyclone>). But ELSE also superseeds cyclone for the purposes of this didactic material. See below in this document a list of alternatives to Cyclone provided by ELSE.
 
-The goal of ELSE also outgrew the didactic material as it now includes objects not necessarily depicted in the computer music examples. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects. So that's it, ELSE is becoming a quite big library and keeps growing and growing. 
+The goal of ELSE also outgrew the didactic material as it now includes objects not necessarily depicted in the computer music examples. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects. So that's it, ELSE is becoming a quite big library and keeps growing and growing. A recent addition to it is 'M.E.R.D.A' a set of abstractions inspired by EuroRack modules.
 
 ELSE has been in active development since early 2017 for real, but it hasn't stabilized into a final version yet. The aim is to do so as soon as PlugData's 1.0 version comes out! For now, it's at a "Release Candidate" stage of development, where changes may occur and backwards compatibility is not guaranteed until a final release is available. 
 
@@ -110,13 +110,13 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 --------------------------------------------------------------------------
 
-## Current Object list (527 objects):
+## Current Object list (530 objects):
 
 #assorted
     else
     
 #gui
-    knob numbox~ drum.seq bicoeff pad messbox mtx.ctl biplot zbiplot pic colors function circle slider2d display out.mc~ out~ out4~ out8~ gain~ gain2~ button keyboard graph~ range.hsl multi.vsl spectrograph~ meter~ meter2~ meter4~ meter8~ note mix2~ mix4~ setdsp~ openfile oscope~
+    knob numbox~ drum.seq bicoeff pad messbox mtx.ctl biplot zbiplot pic colors function circle slider2d display out.mc~ out~ out4~ out8~ gain~ gain2~ button keyboard graph~ range.hsl multi.vsl spectrograph~ meter~ meter2~ meter4~ meter8~ note mix2~ mix4~ setdsp~ openfile oscope~ scope3d~
     
 #time
     chrono datetime
@@ -203,13 +203,13 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     white~ brown~ perlin~ crackle~ cusp~ fbsine~ fbsine2~ gbman~ gray~ henon~ ikeda~ latoocarfian~ lorenz~ lfnoise~ lincong~ logistic~ quad~ stepnoise~ rampnoise~ randpulse~ randpulse2~ standard~ pink~ xmod~ xmod2~ gendyn~
     
 #control: mouse/keyboard
-mouse canvas.mouse keycode keymap keypress
+    mouse canvas.mouse keycode keymap keypress
 
 #control: fade/pan/routing
-fader~ autofade~ autofade.mc~ autofade2~ autofade2.mc~ balance~ pan~ pan.mc~ pan2~ pan4~ spread~ spread.mc~ rotate~ rotate.mc~ xfade~  xfade.mc~ xgate~ xgate.mc~ xgate2~ xgate2.mc~ xselect~ xselect.mc~ xselect2~ xselect2.mc~ mtx~ mtx.mc~
+    euclid fader~ autofade~ autofade.mc~ autofade2~ autofade2.mc~ balance~ pan~ pan.mc~ pan2~ pan4~ spread~ spread.mc~ rotate~ rotate.mc~ xfade~  xfade.mc~ xgate~ xgate.mc~ xgate2~ xgate2.mc~ xselect~ xselect.mc~ xselect2~ xselect2.mc~ mtx~ mtx.mc~
 
 #control: sequencers
-    euclid score score2 pattern list.seq sequencer sequencer~ phaseseq~ impseq~ rec rec2
+    score score2 pattern list.seq sequencer sequencer~ phaseseq~ impseq~ rec rec2
     
 #control: envelopes
     adsr~ asr~ decay~ decay2~ envelope~ envgen~
@@ -231,6 +231,31 @@ fader~ autofade~ autofade.mc~ autofade2~ autofade2.mc~ balance~ pan~ pan.mc~ pan
     
 #analysis
     changed~ changed2~ detect~ lastvalue~ median~ peak~ tap range range~ maxpeak~ rms~ mov.rms~ vu~ zerocross~ beat~
+
+--------------------------------------------------------------------------
+
+# M.E.R.D.A.
+(Modular EuroRacks Dancing Along)
+
+A submodule of ELSE by Porres (this is also by Porres).
+
+## Modules list (20 objects):
+
+#classic
+    adsr.m~ lfo.m~ seq8.m~ vca.m~ vcf.m~ vco.m~
+    
+#FX
+    chorus.m~ delay.m~ drive.m~ flanger.m~ phaser.m~ plate.rev.m~ rm.m~ 
+    
+#oscillators
+    gendyn.m~ plaits.m~ pluck.m~ pm6.m~ 
+    
+#tools
+    presets.m sig.m~ 
+    
+#extra
+    brane.m~ 
+
 
 --------------------------------------------------------------------------
 
