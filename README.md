@@ -268,7 +268,7 @@ ELSE offers alternatives to objects from the Cyclone library (a library that clo
 But, here are some considerations:
 - maximum/minimum => [array max] [array min] (you need to set an array with the list)
 - for [capture~] you can use [print~] 
-- for [kink~] you can use [function~] (and function)
+- for [kink~] you can use [function~] (and [function])
 - [spike~] => [else/status~] + [else/detect~] => [threshold~] + [timer]
 - [anal] is usually used with [prob] for markov chains, but you can use [else/markov] instead
 - [teeth~] is just a comb reverberator which can be constructed with [else/ffdelay~] + [else/fbdelay~]
