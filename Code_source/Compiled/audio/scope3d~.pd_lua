@@ -27,6 +27,8 @@ function scope3d:initialize(sel, atoms)
     fgcolor     = {function(s, a) return s:pd_fgcolor(a)     end, 13, 3},
     bgcolor     = {function(s, a) return s:pd_bgcolor(a)     end, 16, 3},
     gridcolor   = {function(s, a) return s:pd_gridcolor(a)   end, 19, 3},
+
+    receive     = {function(s, a) return s:pd_receive(a)     end, 22, 1},
   }
   self:reset_state()
   self:reset_data()
@@ -58,8 +60,9 @@ function scope3d:restore_state(atoms)
     if method[2] then -- if method has state index
       local args = {}
       for i = method[2], method[2] + method[3]-1 do
-        if type(atoms[i]) == "number" then table.insert(args, atoms[i]) end
+        if atoms[i] ~= "empty" then table.insert(args, atoms[i]) end
       end
+      pd.post('calling'..key..table.concat( args, ", "))
       if #args > 0 then self:call_pd_method(key, args) end
     end 
   end
@@ -73,14 +76,12 @@ function scope3d:reset_state()
   self.state = {}
   local count = 0
   -- get state args count
-  local i = 1
   for _, method in pairs(self.methods) do
     if method[2] then
-      count = math.max(count, i + method[3])
+      count = math.max(count, method[2] + method[3] - 1)
     end
-    i = i + 1
   end
-  -- prefill state with -1
+  pd.post(count)
   for i = 1, count do
     table.insert(self.state, "empty")
   end
@@ -128,6 +129,7 @@ end
 
 function scope3d:finalize()
   self.clock:destruct()
+  if self.recv then self.recv:destruct() end
 end
 
 function scope3d:handle_args(atoms)
@@ -263,7 +265,18 @@ function scope3d:in_n(n, sel, atoms)
   self:call_pd_method(sel, atoms)
 end
 
+function scope3d:receive(sel, atoms)
+  self:call_pd_method(sel, atoms)
+end
+
 -- /////////////////////////////////////////////////////////////
+
+function scope3d:pd_receive(x)
+  if self.recv then self.recv:destruct() end
+  if x[1] then
+    self.recv = pd.Receive:new():register(self, tostring(x[1]), "receive")
+  end
+end
 
 function scope3d:pd_rotatex(x)
   if type(x[1]) == "number" then
@@ -336,6 +349,8 @@ end
 function scope3d:pd_framerate(x)
   if type(x[1]) == "number" then
     self.FRAMEINTERVAL = 1 / math.min(120, math.max(1, x[1])) * 1000
+    self.clock:unset()
+    self.clock:delay(self.FRAMEINTERVAL)
   end
 end
 
