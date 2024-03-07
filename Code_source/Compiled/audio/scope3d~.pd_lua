@@ -315,8 +315,8 @@ function scope3d:pd_dim(x)
   if #x == 2 and
      type(x[1]) == "number" and
      type(x[2]) == "number" then
-    local width = math.max(1, x[1])
-    local height = math.max(1, x[2])
+    local width = math.max(20, x[1])
+    local height = math.max(20, x[2])
     self.WIDTH = width
     self.HEIGHT = height
     self:set_size(self.WIDTH, self.HEIGHT)
