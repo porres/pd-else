@@ -22,7 +22,7 @@ function scope3d:initialize(sel, atoms)
 
     nlines      = {function(s, a) return s:pd_nlines(a)      end, 10, 1},
     nsamples    = {function(s, a) return s:pd_nsamples(a)    end, 11, 1},
-    delay       = {function(s, a) return s:pd_delay(a)       end, 12, 1},
+    rate       = {function(s, a) return s:pd_rate(a)         end, 12, 1},
 
     fgcolor     = {function(s, a) return s:pd_fgcolor(a)     end, 13, 3},
     bgcolor     = {function(s, a) return s:pd_bgcolor(a)     end, 16, 3},
@@ -97,7 +97,7 @@ function scope3d:reset_data()
   self.BGCOLOR = {190, 190, 190} -- was Colors.background for plugdata
 
   self.WIDTH, self.HEIGHT = 140, 140
-  self.DELAY = 20
+  self.RATE = 50
   self.BUFFERSIZE = 512
   self.SAMPLING_INTERVAL = 8
   self.DRAW_GRID = 1
@@ -122,7 +122,7 @@ end
 
 function scope3d:postinitialize()
   self.clock = pd.Clock:new():register(self, "tick")
-  self.clock:delay(self.DELAY)
+  self.clock:rate(self.RATE)
 end
 
 function scope3d:finalize()
@@ -152,7 +152,7 @@ end
 
 function scope3d:tick()
   self:repaint()
-  self.clock:delay(self.DELAY)
+  self.clock:rate(self.RATE)
 end
 
 function scope3d:create_grid(minVal, maxVal, step)
@@ -344,12 +344,12 @@ function scope3d:pd_perspective(x)
   self.PERSPECTIVE = type(x[1]) == "number" and x[1] or 1
 end
 
-function scope3d:pd_delay(x)
+function scope3d:pd_rate(x)
   if type(x[1]) == "number" then
-    self.DELAY = math.max(8, x[1])
+    self.RATE = math.max(8, x[1])
     if self.clock then
       self.clock:unset()
-      self.clock:delay(self.DELAY)
+      self.clock:rate(self.RATE)
     end
   end
 end
