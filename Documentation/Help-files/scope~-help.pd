@@ -12,7 +12,6 @@
 #X text 196 320 - signal to be displayed in the X axis, f 58;
 #X text 205 616 (none);
 #X obj 4 566 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
-#X text 196 485 - onset time delay between displays (default 0), f 58;
 #X text 196 349 - sets number of lines in buffer (8-256 \, default 128), f 58;
 #X text 196 396 - sets vertical range (default -1 1), f 58;
 #X text 196 457 - sets trigger mode: 0 (none \, default) \, 1 (up) or 2 (down);
@@ -173,7 +172,6 @@
 #X text 92 499 receive <symbol>;
 #X text 98 456 trigger <float>;
 #X text 86 471 triglevel <float>;
-#X text 110 485 delay <float>;
 #X text 196 499 - receive symbol (default empty), f 58;
 #N canvas 643 128 501 338 receive 0;
 #X obj 67 175 else/scope~ 130 130 2 3 128 -1 1 100 0 0 0 30 30 30 190 190 190 160 160 160 0 \$0-rcv;
@@ -196,7 +194,7 @@
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 304 3 pd;
 #X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
-#X obj 22 40 cnv 4 4 4 empty empty Oscillscope 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 22 40 cnv 4 4 4 empty empty Oscillscope\ display 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
@@ -206,7 +204,6 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X obj 124 40 cnv 4 4 4 empty empty display 0 28 2 18 #e0e0e0 #000000 0;
 #X text 196 412 - sets front/signal RGB color (values 0-255), f 58;
 #X text 196 427 - sets background RGB color (values 0-255), f 58;
 #X text 196 441 - sets grid RGB color (values 0-255), f 58;
@@ -287,9 +284,11 @@
 #X text 127 22 For up to 3D plots \, see:;
 #X text 159 49 [scope3d~];
 #X restore 479 199 pd see also;
-#X connect 19 0 20 0;
-#X connect 20 0 36 0;
-#X connect 36 0 61 0;
-#X connect 65 0 61 0;
-#X connect 66 0 65 0;
-#X connect 70 0 61 0;
+#X text 110 485 rate <float>;
+#X text 196 485 - onset time delay between displays (default 0), f 58;
+#X connect 18 0 19 0;
+#X connect 19 0 35 0;
+#X connect 35 0 58 0;
+#X connect 62 0 58 0;
+#X connect 63 0 62 0;
+#X connect 67 0 58 0;
