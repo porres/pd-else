@@ -347,8 +347,10 @@ end
 function scope3d:pd_framerate(x)
   if type(x[1]) == "number" then
     self.FRAMEINTERVAL = 1 / math.min(120, math.max(1, x[1])) * 1000
-    self.clock:unset()
-    self.clock:delay(self.FRAMEINTERVAL)
+    if self.clock then
+      self.clock:unset()
+      self.clock:delay(self.FRAMEINTERVAL)
+    end
   end
 end
 
