@@ -1,5 +1,5 @@
-#N struct 1005-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
-#N canvas 493 36 570 660 10;
+#N struct 1006-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
+#N canvas 493 37 570 660 10;
 #X obj 4 613 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
 #X obj 5 243 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 6 529 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
@@ -207,15 +207,12 @@
 #X text 136 446 drag <float>;
 #X text 136 278 zoom <float>;
 #X text 216 278 - sets zoom level, f 55;
-#X text 106 348 framerate <float>;
-#X text 216 348 - sets frame rate refresh, f 55;
 #N canvas 626 294 417 233 see 0;
 #X text 127 22 For up to 2D plots \, see:;
 #X text 159 49 [scope~];
 #X obj 106 86 else/scope~ 200 100 256 3 128 -1 1 0 0 0 0 30 30 30 190 190 190 160 160 160 0 empty;
 #X restore 94 178 pd see also;
 #X text 94 292 perspective <float>;
-#X text 216 292 - sets perspective level, f 55;
 #X text 216 404 - rotate around x/y axis in degrees, f 55;
 #X text 216 418 - rotate around x axis in degrees, f 55;
 #X text 216 432 - rotate around y axis in degrees, f 55;
@@ -254,6 +251,9 @@
 #X connect 7 0 0 0;
 #X connect 9 0 7 0;
 #X restore 396 204 pd receive;
+#X text 130 348 delay <float>;
+#X text 216 348 - sets frame delay in ms, f 55;
+#X text 216 292 - sets perspective level, f 55;
 #X connect 34 0 33 0;
 #X connect 35 0 33 1;
 #X connect 36 0 33 2;

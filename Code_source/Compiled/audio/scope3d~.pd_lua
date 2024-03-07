@@ -22,7 +22,7 @@ function scope3d:initialize(sel, atoms)
 
     nlines      = {function(s, a) return s:pd_nlines(a)      end, 10, 1},
     nsamples    = {function(s, a) return s:pd_nsamples(a)    end, 11, 1},
-    framerate   = {function(s, a) return s:pd_framerate(a)   end, 12, 1},
+    delay       = {function(s, a) return s:pd_delay(a)       end, 12, 1},
 
     fgcolor     = {function(s, a) return s:pd_fgcolor(a)     end, 13, 3},
     bgcolor     = {function(s, a) return s:pd_bgcolor(a)     end, 16, 3},
@@ -93,18 +93,18 @@ function scope3d:reset_data()
   self.rotationAngleX, self.rotationAngleY = 0, 0
   self.rotationStartAngleX, self.rotationStartAngleY = 0, 0
 
-  self.FGCOLOR = {Colors.foreground}
-  self.BGCOLOR = {Colors.background}
+  self.FGCOLOR = {30, 30, 30} -- was Color.foreground for plugdata
+  self.BGCOLOR = {190, 190, 190} -- was Colors.background for plugdata
 
   self.WIDTH, self.HEIGHT = 140, 140
-  self.FRAMEINTERVAL = 1 / 50 * 1000
+  self.DELAY = 20
   self.BUFFERSIZE = 512
   self.SAMPLING_INTERVAL = 8
   self.DRAW_GRID = 1
   self.DRAG = 1
   self.STROKE_WIDTH = 1
   self.ZOOM = 1
-  self.GRIDCOLOR = {192, 192, 192}
+  self.GRIDCOLOR = {160, 160, 160}
   self.PERSPECTIVE = 1
   self:set_size(self.WIDTH, self.HEIGHT)
   self:reset_buffer()
@@ -122,7 +122,7 @@ end
 
 function scope3d:postinitialize()
   self.clock = pd.Clock:new():register(self, "tick")
-  self.clock:delay(self.FRAMEINTERVAL)
+  self.clock:delay(self.DELAY)
 end
 
 function scope3d:finalize()
@@ -152,7 +152,7 @@ end
 
 function scope3d:tick()
   self:repaint()
-  self.clock:delay(self.FRAMEINTERVAL)
+  self.clock:delay(self.DELAY)
 end
 
 function scope3d:create_grid(minVal, maxVal, step)
@@ -315,8 +315,8 @@ function scope3d:pd_dim(x)
   if #x == 2 and
      type(x[1]) == "number" and
      type(x[2]) == "number" then
-    local width = math.max(1, x[1])
-    local height = math.max(1, x[2])
+    local width = math.max(20, x[1])
+    local height = math.max(20, x[2])
     self.WIDTH = width
     self.HEIGHT = height
     self:set_size(self.WIDTH, self.HEIGHT)
@@ -344,12 +344,12 @@ function scope3d:pd_perspective(x)
   self.PERSPECTIVE = type(x[1]) == "number" and x[1] or 1
 end
 
-function scope3d:pd_framerate(x)
+function scope3d:pd_delay(x)
   if type(x[1]) == "number" then
-    self.FRAMEINTERVAL = 1 / math.min(120, math.max(1, x[1])) * 1000
+    self.DELAY = math.max(8, x[1])
     if self.clock then
       self.clock:unset()
-      self.clock:delay(self.FRAMEINTERVAL)
+      self.clock:delay(self.DELAY)
     end
   end
 end
