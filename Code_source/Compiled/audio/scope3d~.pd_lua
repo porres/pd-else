@@ -93,8 +93,8 @@ function scope3d:reset_data()
   self.rotationAngleX, self.rotationAngleY = 0, 0
   self.rotationStartAngleX, self.rotationStartAngleY = 0, 0
 
-  self.FGCOLOR = {Colors.foreground}
-  self.BGCOLOR = {Colors.background}
+  self.FGCOLOR = {30, 30, 30} -- was Color.foreground for plugdata
+  self.BGCOLOR = {190, 190, 190} -- was Colors.background for plugdata
 
   self.WIDTH, self.HEIGHT = 140, 140
   self.FRAMEINTERVAL = 1 / 50 * 1000
@@ -104,7 +104,7 @@ function scope3d:reset_data()
   self.DRAG = 1
   self.STROKE_WIDTH = 1
   self.ZOOM = 1
-  self.GRIDCOLOR = {192, 192, 192}
+  self.GRIDCOLOR = {160, 160, 160}
   self.PERSPECTIVE = 1
   self:set_size(self.WIDTH, self.HEIGHT)
   self:reset_buffer()
