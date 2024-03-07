@@ -1,4 +1,4 @@
-#N struct 1009-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
+#N struct 1007-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
 #N canvas 467 35 570 660 10;
 #X obj 4 613 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
 #X obj 5 243 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
@@ -37,7 +37,7 @@
 #X floatatom 243 191 5 0 0 0 - - - 0;
 #X obj 283 49 vsl 15 128 0 255 0 0 qdaskjlf \$0-Bb empty 0 -9 0 10 #0000fc #fcfcfc #000000 0 1;
 #X floatatom 283 191 5 0 0 0 - - - 0;
-#X obj 326 311 scope3d~ empty empty 200 empty 0.75 empty empty empty empty empty empty 20 0 0 0 255 255 255 136.535 138.543 132.52 empty;
+#X obj 326 311 scope3d~ empty empty 200 empty 0.75 empty empty empty empty empty empty 50 0 0 0 255 255 255 136.535 138.543 132.52 empty;
 #X obj 422 272 osc~ 49;
 #X obj 131 375 else/setdsp~;
 #X connect 0 0 23 0;
@@ -100,7 +100,7 @@
 #X obj 377 92 else/setdsp~;
 #X obj 165 219 osc~ 200;
 #X obj 234 219 osc~ 300.1;
-#X obj 113 255 scope3d~ empty empty 250 250 0.75 empty empty empty empty 1024 2 113.645 empty empty empty empty empty empty empty empty empty empty;
+#X obj 113 255 scope3d~ empty empty 250 250 0.75 empty empty empty empty 1024 2 50 empty empty empty empty empty empty empty empty empty empty;
 #X obj 356 221 osc~ 500.1;
 #X text 250 20 Settings for buffer size and refresh rate period., f 24;
 #X msg 189 168 rate \$1;
@@ -118,14 +118,14 @@
 #X connect 14 0 13 2;
 #X connect 16 0 13 0;
 #X restore 396 184 pd buffer_period;
-#X obj 226 92 scope3d~ empty empty empty empty 0.75 empty empty empty empty empty empty 20 empty empty empty empty empty empty empty empty empty empty;
+#X obj 226 92 scope3d~ empty empty empty empty 0.75 empty empty empty empty empty empty 50 empty empty empty empty empty empty empty empty empty empty;
 #X obj 226 68 osc~ 100;
 #X obj 292 68 osc~ 201;
 #X obj 359 70 osc~ 302;
 #X obj 78 501 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 172 501 signal;
-#N canvas 530 48 511 631 rotation 0;
-#X obj 124 397 scope3d~ 0 2.83465 200 200 0.75 empty empty empty empty empty empty 20 empty empty empty empty empty empty empty empty empty empty;
+#N canvas 609 48 511 631 rotation 0;
+#X obj 124 397 scope3d~ 0 0 200 200 0.75 empty empty empty empty empty empty 50 empty empty empty empty empty empty empty empty empty empty;
 #X obj 152 352 osc~ 100;
 #X obj 220 352 osc~ 201;
 #X obj 317 354 osc~ 302;
@@ -135,7 +135,7 @@
 #X floatatom 143 296 5 0 0 0 - - - 0;
 #X floatatom 124 225 5 0 0 0 - - - 0;
 #X listbox 75 153 20 0 0 0 - - - 0;
-#X obj 75 21 slider2d 127 127 0 360 0 360 1 211 211 211 0 0 0 0 0 0 2.83465 0 empty empty;
+#X obj 75 21 slider2d 127 127 0 360 0 360 1 211 211 211 0 0 0 0 0 0 0 0 empty empty;
 #X msg 40 306 drag \$1;
 #X obj 40 278 tgl 21 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X text 343 423 <-- click and dgrag to rotate., f 17;
@@ -163,7 +163,7 @@
 #X obj 353 156 osc~ 80;
 #X obj 446 156 osc~ 40.1;
 #X obj 568 156 osc~ 120;
-#X obj 325 203 scope3d~ empty empty 250 250 1 0 1 0 5 empty empty 20 empty empty empty empty empty empty empty empty empty empty;
+#X obj 325 203 scope3d~ empty empty 250 250 1 0 1 0 5 empty empty 50 empty empty empty empty empty empty empty empty empty empty;
 #X obj 70 508 s \$0-basic;
 #X obj 325 114 r \$0-basic;
 #X obj 98 269 hsl 136 16 0.25 1.5 1 0 empty empty empty -2 -10 0 12 #dfdfdf #000000 #000000 0 1;
@@ -239,7 +239,7 @@
 #X text 130 306 width <float>;
 #X text 216 306 - sets line width, f 55;
 #N canvas 687 69 512 582 receive 0;
-#X obj 105 286 scope3d~ empty empty 250 250 0.472543 empty empty empty empty 64 64 20 empty empty empty empty empty empty empty empty empty \\\$0-x;
+#X obj 105 286 scope3d~ empty empty 250 250 0.472543 empty empty empty empty 64 64 50 empty empty empty empty empty empty empty empty empty \\\$0-x;
 #X obj 238 122 hsl 136 16 0.25 1 1 0 empty empty empty -2 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X floatatom 235 145 5 0 0 0 - - - 0;
 #X msg 235 169 zoom \$1;
