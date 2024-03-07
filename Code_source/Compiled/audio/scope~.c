@@ -6,7 +6,7 @@
 #include "g_canvas.h"
 #include "magic.h"
 
-#define SCOPE_MINSIZE       18
+#define SCOPE_MINSIZE       20
 #define SCOPE_MINPERIOD     2
 #define SCOPE_MAXPERIOD     8192
 #define SCOPE_MINBUFSIZE    8
@@ -20,7 +20,7 @@ typedef struct _edit_proxy{
     t_object        p_obj;
     t_symbol       *p_sym;
     t_clock        *p_clock;
-    struct _scope *p_cnv;
+    struct _scope  *p_cnv;
 }t_edit_proxy;
 
 typedef struct _scope{
