@@ -7,8 +7,6 @@
 #include "buffer.h"
 #include "else_alloca.h"
 
-#include "../extra_source/compat.h"
-
 static t_class *function_class, *edit_proxy_class;
 static t_widgetbehavior function_widgetbehavior;
 

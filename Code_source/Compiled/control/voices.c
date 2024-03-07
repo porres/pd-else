@@ -141,7 +141,8 @@ static void voices_noteon(t_voices *x, int ac, t_atom *av){
             if(pitchsym != NULL)
                SETSYMBOL(at, pitchsym);                              // pitch
             else
-               SETFLOAT(at+1, vel);                                  // Note-On velocity
+                SETFLOAT(at, pitch);
+            SETFLOAT(at+1, vel);                                  // Note-On velocity
             outlet_list(x->x_extra, &s_list, 2, at);
         }
     }

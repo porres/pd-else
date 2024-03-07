@@ -257,7 +257,6 @@
 #A 0 -0.0571427 0.514287 -0.571428 0.871429 -0.957155;
 #X coords 0 1 5 -1 200 140 1;
 #X restore 65 168 graph;
-#X obj 332 206 else/oscope~ 200 100 10 3 128 -1 1 10 0 0 0 30 30 30 190 190 190 160 160 160 0 empty;
 #X msg 332 42 none;
 #X msg 341 63 lin;
 #X msg 348 85 cos;
@@ -267,12 +266,13 @@
 #X text 330 17 set different interpolation methods, f 36;
 #X obj 332 152 else/bl.wavetable~ -none \$0-interp 50;
 #X text 61 36 By default \, [bl.wavetebale~] uses the spline interpolation method but you can set it to linear \, cosine \, lagrange or no interpolation at all. For more details \, check the subsection 'interpolation' of chapter 28 (buffer) in the live elctronics tutorial., f 35;
-#X connect 3 0 10 0;
-#X connect 4 0 10 0;
-#X connect 5 0 10 0;
-#X connect 6 0 10 0;
-#X connect 7 0 10 0;
-#X connect 10 0 2 0;
+#X obj 332 206 else/scope~ 200 100 10 3 128 -1 1 10 0 0 0 30 30 30 190 190 190 160 160 160 0 empty;
+#X connect 2 0 9 0;
+#X connect 3 0 9 0;
+#X connect 4 0 9 0;
+#X connect 5 0 9 0;
+#X connect 6 0 9 0;
+#X connect 9 0 11 0;
 #X restore 441 232 pd interpolation;
 #N canvas 693 127 445 488 midi 0;
 #X obj 134 168 nbx 6 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;

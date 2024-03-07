@@ -118,7 +118,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     else
     
 #gui
-    knob numbox~ drum.seq bicoeff pad messbox mtx.ctl biplot zbiplot pic colors function circle slider2d display out.mc~ out~ out4~ out8~ gain~ gain2~ button keyboard graph~ range.hsl multi.vsl spectrograph~ meter~ meter2~ meter4~ meter8~ note mix2~ mix4~ setdsp~ openfile oscope~ scope3d~
+    knob numbox~ drum.seq bicoeff pad messbox mtx.ctl biplot zbiplot pic colors function circle slider2d display out.mc~ out~ out4~ out8~ gain~ gain2~ button keyboard graph~ range.hsl multi.vsl spectrograph~ meter~ meter2~ meter4~ meter8~ note mix2~ mix4~ setdsp~ openfile scope~ scope3d~
     
 #time
     chrono datetime
@@ -263,12 +263,12 @@ A submodule of ELSE by Porres (this is also by Porres).
 
 **ALTERNATIVES TO CYCLONE**
 
-ELSE offers alternatives to objects from the Cyclone library (a library that clones objects from MAX/MSP). The objects that have no similar counterpart in ELSE (at least so far) are: anal / buddy / capture / capture~ / coll / cycle / decide / decode / frameaccum~ / framedelta~ / funbuff / funnel / flush / forward / histo / kink~ / linedrive / prob / match / maximum / minimum / mousefilter / next / offer / peak / prob / pv / spray / substitute / teeth~ / trough / universal / vectral~
+ELSE offers alternatives to objects from the Cyclone library (a library that clones objects from MAX/MSP). The objects that have no similar counterpart in ELSE (at least so far) are: anal / buddy / capture / capture~ / coll / cycle / decide / decode / frameaccum~ / framedelta~ / funbuff / funnel / flush / forward / kink~ / linedrive / prob / match / maximum / minimum / mousefilter / next / offer / peak / prob / pv / spray / substitute / teeth~ / trough / universal / vectral~
 
 But, here are some considerations:
 - maximum/minimum => [array max] [array min] (you need to set an array with the list)
 - for [capture~] you can use [print~] 
-- for [kink~] you can use [function~] (and function)
+- for [kink~] you can use [function~] (and [function])
 - [spike~] => [else/status~] + [else/detect~] => [threshold~] + [timer]
 - [anal] is usually used with [prob] for markov chains, but you can use [else/markov] instead
 - [teeth~] is just a comb reverberator which can be constructed with [else/ffdelay~] + [else/fbdelay~]
@@ -278,7 +278,7 @@ But, here are some considerations:
 
 Alternatives:
 
-- 2d.wave~ => else/wt2d~
+- 2d.wave~ => else/wt2d~ (sort of)
 - +=~ / [plusequals~] => else/add~
 - operators >~ / <~ / %~ / etc => else/op~ => [expr~]
 - bitwise operators (bitand~ / bitor~, etc) => [expr~]
@@ -314,6 +314,7 @@ Alternatives:
 - grab => else/retrieve
 - gate => else/router
 - gate~ => else/xgate~
+- histo => else/histogram
 - index~ => else/ramp~
 - iter => else/iterate
 - join => else/merge
@@ -385,6 +386,6 @@ Alternatives:
 
 GUI:
 
-- scope~ => else/oscope~
+- scope~ => else/scope~ (not the same but quite similar)
 - comment => else/note (actually, comment is deprecated and based on else’s [note] now.
 

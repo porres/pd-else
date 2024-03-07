@@ -1,4 +1,4 @@
-// oscope~'s properties dialog
+// scope~'s properties dialog
 
 sys_gui("package provide dialog_scope 0.1\n");
 sys_gui("namespace eval ::dialog_scope:: {   \n");
@@ -414,7 +414,7 @@ sys_gui("set $var_scope_tr_mode0 $tr_mode0_label\n");
 sys_gui("set $var_scope_tr_mode1 $tr_mode1_label\n");
 sys_gui("set $var_scope_tr_mode2 $tr_mode2_label\n");
 sys_gui("toplevel $mytoplevel -class DialogWindow\n");
-sys_gui("wm title $mytoplevel [format [_ \"oscope~ Properties\"] ]\n");
+sys_gui("wm title $mytoplevel [format [_ \"Scope~ Properties\"] ]\n");
 sys_gui("wm group $mytoplevel .\n");
 sys_gui("wm resizable $mytoplevel 0 0\n");
 sys_gui("wm transient $mytoplevel $::focused_window\n");

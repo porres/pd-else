@@ -48,7 +48,7 @@
 #X obj 266 158 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 351 157 rate in Hz;
 #X obj 266 206 else/out~;
-#N canvas 615 81 517 559 parameters 1;
+#N canvas 615 81 480 516 parameters 0;
 #X obj 66 113 hsl 128 15 441 44100 1 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 63 137 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 93 112 rate in Hz;
@@ -75,9 +75,6 @@
 #X msg 122 333 clear;
 #X obj 106 295 else/pack2 coeffs 10 28 2.667 0.05, f 40;
 #X text 61 15 By default \, the initial s \, r \, b and h values are 10 \, 28 \, 2.667 and 0.05 respectively \, but can be changed via arguments or via the "coeffs" message.;
-#X obj 199 401 oscope~ 200 100 9 3 128 -1 1 0 0 0 0 30 30 30 190 190 190 160 160 160 0 empty;
-#X floatatom 246 370 5 0 0 0 - - - 0;
-#X obj 57 505 numbox~ 6 10 100 #C0C0C4 #440008 10 0 0 0;
 #X connect 0 0 1 0;
 #X connect 1 0 21 0;
 #X connect 4 0 22 0;
@@ -88,12 +85,9 @@
 #X connect 15 0 24 3;
 #X connect 16 0 24 4;
 #X connect 21 0 3 0;
-#X connect 21 0 26 0;
-#X connect 21 0 28 0;
 #X connect 22 0 21 0;
 #X connect 23 0 21 0;
 #X connect 24 0 21 0;
-#X connect 27 0 26 0;
 #X restore 443 235 pd parameters;
 #X obj 266 181 else/lorenz~;
 #X text 178 306 list;

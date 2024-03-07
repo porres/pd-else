@@ -5,7 +5,7 @@ This work is free. You can redistribute it and/or modify it under the terms of t
 Other licenses apply for specific objects and this is informed in the source code of objects, which also carries information on specific authorship of objects. 
 
 Examples of other licenses include:
-- [beat~], [sfont~], [giga.rev~], [lua] - licensed under the GNU GPL library
+- [beat~], [sfont~], [giga.rev~], [conv~], [lua] - licensed under the GNU GPL library
 - [sfz~] and band limited oscillators like [bl.saw~] - licensed under the BSD 2-Clause library
 - [plaits~], [osc.format], [osc.parse] and [osc.route] - licensed under the MIT library
 

@@ -1,12 +1,10 @@
-// stolen from (and based on) scope~
+// stolen from (and based on) cyclone/scope~
 
 #include <stdlib.h>
 #include <string.h>
 #include "m_pd.h"
 #include "g_canvas.h"
 #include "magic.h"
-
-#include "../extra_source/compat.h"
 
 #define SCOPE_MINSIZE       18
 #define SCOPE_MINPERIOD     2
@@ -1223,12 +1221,12 @@ static void *scope_new(t_symbol *s, int ac, t_atom *av){
     x->x_clock = clock_new(x, (t_method)scope_tick);
     return(x);
 errstate:
-    pd_error(x, "[oscope~]: improper creation arguments");
+    pd_error(x, "[scope~]: improper creation arguments");
     return(NULL);
 }
 
-void oscope_tilde_setup(void){
-    scope_class = class_new(gensym("oscope~"), (t_newmethod)scope_new,
+void scope_tilde_setup(void){
+    scope_class = class_new(gensym("scope~"), (t_newmethod)scope_new,
         (t_method)scope_free, sizeof(t_scope), 0, A_GIMME, 0);
     class_addmethod(scope_class, nullfn, gensym("signal"), 0);
     class_addmethod(scope_class, (t_method) scope_dsp, gensym("dsp"), A_CANT, 0);
@@ -1268,7 +1266,7 @@ void oscope_tilde_setup(void){
     scope_widgetbehavior.w_deletefn   = scope_delete;
     scope_widgetbehavior.w_visfn      = scope_vis;
     scope_widgetbehavior.w_clickfn    = (t_clickfn)scope_click;
-    #include "../extra_source/oscope~_dialog.c"
+    #include "../extra_source/scope~_dialog.c"
 }
 
 

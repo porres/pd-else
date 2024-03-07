@@ -386,7 +386,7 @@ file := Code_source/shared/elsefile.c
     rec.class.sources := Code_source/Compiled/control/rec.c $(file)
 
 smagic := Code_source/shared/magic.c
-    oscope~.class.sources := Code_source/Compiled/audio/oscope~.c $(smagic)
+    scope~.class.sources := Code_source/Compiled/audio/scope~.c $(smagic)
 
 utf := Code_source/shared/s_elseutf8.c
 	note.class.sources := Code_source/Compiled/control/note.c $(utf)
@@ -404,7 +404,7 @@ endef
 extrafiles = \
 $(wildcard Code_source/Abstractions/control/*.pd) \
 $(wildcard Code_source/Abstractions/audio/*.pd) \
-$(wildcard Code_source/Abstractions/extra_abs/*.pd) \
+$(wildcard Code_source/Abstractions/extra_abs/*.*) \
 $(wildcard Code_source/Compiled/extra_source/*.tcl) \
 $(wildcard Code_source/Compiled/audio/scope3d~.pd_lua) \
 $(wildcard Documentation/Help-files/*.pd) \
