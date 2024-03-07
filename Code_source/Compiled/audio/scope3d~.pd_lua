@@ -22,7 +22,7 @@ function scope3d:initialize(sel, atoms)
 
     nlines      = {function(s, a) return s:pd_nlines(a)      end, 10, 1},
     nsamples    = {function(s, a) return s:pd_nsamples(a)    end, 11, 1},
-    rate       = {function(s, a) return s:pd_rate(a)         end, 12, 1},
+    rate        = {function(s, a) return s:pd_rate(a)        end, 12, 1},
 
     fgcolor     = {function(s, a) return s:pd_fgcolor(a)     end, 13, 3},
     bgcolor     = {function(s, a) return s:pd_bgcolor(a)     end, 16, 3},
@@ -122,7 +122,7 @@ end
 
 function scope3d:postinitialize()
   self.clock = pd.Clock:new():register(self, "tick")
-  self.clock:rate(self.RATE)
+  self.clock:delay(self.RATE)
 end
 
 function scope3d:finalize()
@@ -152,7 +152,7 @@ end
 
 function scope3d:tick()
   self:repaint()
-  self.clock:rate(self.RATE)
+  self.clock:delay(self.RATE)
 end
 
 function scope3d:create_grid(minVal, maxVal, step)
@@ -349,7 +349,7 @@ function scope3d:pd_rate(x)
     self.RATE = math.max(8, x[1])
     if self.clock then
       self.clock:unset()
-      self.clock:rate(self.RATE)
+      self.clock:delay(self.RATE)
     end
   end
 end
