@@ -254,10 +254,10 @@ function scope3d:rotate_x(vertex, angle)
 end
 
 function scope3d:projectVertex(vertex)
-  local minDim = math.min(self.WIDTH, self.HEIGHT)
+  -- local minDim = math.min(self.WIDTH - 2, self.HEIGHT - 2)
   local scale = self.cameraDistance / (self.cameraDistance + vertex[3] * self.PERSPECTIVE)
-  local screenX = self.WIDTH / 2 + (vertex[1] * scale * self.ZOOM * minDim * 0.5)
-  local screenY = self.HEIGHT / 2 - (vertex[2] * scale * self.ZOOM * minDim * 0.5)
+  local screenX = self.WIDTH / 2 + 0.5 + (vertex[1] * scale * self.ZOOM * self.WIDTH * 0.5)
+  local screenY = self.HEIGHT / 2 + 0.5 - (vertex[2] * scale * self.ZOOM * self.HEIGHT * 0.5)
   return screenX, screenY
 end
 
