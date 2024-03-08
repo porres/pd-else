@@ -4,43 +4,41 @@
 #include <stdlib.h>
 #include "m_pd.h"
 
-#define COMB_STACK 48000 //stack buf size, 1 sec at 48k for good measure
-#define COMB_DELAY  10.0 //maximum delay
-#define COMB_MIND 1 //minimum delay
-#define COMB_MAXD 4294967294 //max delay = 2**32 - 2
+#define COMB_STACK  48000       // stack buf size, 1 sec at 48k for good measure
+#define COMB_DELAY  10.0        // maximum delay
+#define COMB_MIND   1           // minimum delay
+#define COMB_MAXD   4294967294  // max delay = 2**32 - 2
 
-#define COMB_MINMS 0. //min delay in ms
+#define COMB_MINMS  0.          // min delay in ms
 
-#define COMB_DEFGAIN 0. //default gain
-#define COMB_DEFFF 0. //default ff gain
-#define COMB_DEFFB 0. //default fb gain
+#define COMB_DEFGAIN 0.         // default gain
+#define COMB_DEFFF   0.         // default ff gain
+#define COMB_DEFFB   0.         // default fb gain
 
 static t_class *comb_class;
 
-typedef struct _comb
-{
-    t_object  x_obj;
-    t_inlet  *x_dellet;
-    t_inlet  *x_alet;
-    t_inlet  *x_blet;
-    t_inlet  *x_clet;
-    t_outlet  *x_outlet;
-    int     x_sr;
+typedef struct _comb{
+    t_object    x_obj;
+    t_inlet    *x_dellet;
+    t_inlet    *x_alet;
+    t_inlet    *x_blet;
+    t_inlet    *x_clet;
+    t_outlet   *x_outlet;
+    int         x_sr;
     //pointers to the delay bufs
-    double  * x_ybuf;
-    double x_ffstack[COMB_STACK];
-    double * x_xbuf;
-    double x_fbstack[COMB_STACK];
-    int     x_alloc; //if we are using allocated bufs
-    unsigned int     x_sz; //actual size of each delay buffer
-    
-    t_float     x_maxdel;  //maximum delay in ms
-    unsigned int       x_wh;     //writehead
-} t_comb;
+    double     *x_ybuf;
+    double      x_ffstack[COMB_STACK];
+    double     *x_xbuf;
+    double      x_fbstack[COMB_STACK];
+    int         x_alloc;    // if we are using allocated bufs
+    unsigned int x_sz;      // actual size of each delay buffer
+    t_float     x_maxdel;   // maximum delay in ms
+    unsigned int x_wh;      // writehead
+}t_comb;
 
 static void comb_clear(t_comb *x){
     unsigned int i;
-    for(i=0; i<x->x_sz; i++){
+    for(i = 0; i < x->x_sz; i++){
         x->x_xbuf[i] = 0.;
         x->x_ybuf[i] = 0.;
     };
@@ -59,12 +57,10 @@ static void comb_sz(t_comb *x){
     int alloc = x->x_alloc;
     unsigned int cursz = x->x_sz; //current size
     
-    if(newsz < 0){
+    if(newsz < 0)
         newsz = 0;
-    }
-    else if(newsz > COMB_MAXD){
+    else if(newsz > COMB_MAXD)
         newsz = COMB_MAXD;
-    };
     if(!alloc && newsz > COMB_STACK){
         x->x_xbuf = (double *)malloc(sizeof(double)*newsz);
         x->x_ybuf = (double *)malloc(sizeof(double)*newsz);
@@ -87,17 +83,14 @@ static void comb_sz(t_comb *x){
     comb_clear(x);
 }
 
-
-
-
 static double comb_getlin(double tab[], unsigned int sz, double idx){
-    //copying from my own library, linear interpolated reader - DK
+    // copying from my own library, linear interpolated reader - DK
     double output;
     unsigned int tabphase1 = (unsigned int)idx;
     unsigned int tabphase2 = tabphase1 + 1;
     double frac = idx - (double)tabphase1;
     if(tabphase1 >= sz - 1){
-        tabphase1 = sz - 1; //checking to see if index falls within bounds
+        tabphase1 = sz - 1; // checking to see if index falls within bounds
         output = tab[tabphase1];
     }
     else if(tabphase1 < 0){
@@ -105,38 +98,30 @@ static double comb_getlin(double tab[], unsigned int sz, double idx){
         output = tab[tabphase1];
     }
     else{
-        double yb = tab[tabphase2]; //linear interp
+        double yb = tab[tabphase2]; // linear interp
         double ya = tab[tabphase1];
         output = ya+((yb-ya)*frac);
-        
     };
-    return output;
+    return(output);
 }
 
 static double comb_readmsdelay(t_comb *x, double arr[], t_float ms){
-    //helper func, basically take desired ms delay, convert to samp, read from arr[]
-    
-    //eventual reading head
-    double rh = (double)ms*((double)x->x_sr*0.001); //converting ms to samples
-    //bounds checking for minimum delay in samples
-    if(rh < COMB_MIND){
+    // read from arr[]
+    // eventual reading head
+    double rh = (double)ms*((double)x->x_sr*0.001); // convert to samples
+    // bounds checking for minimum delay in samples
+    if(rh < COMB_MIND)
         rh = COMB_MIND;
-    };
-    rh = (double)x->x_wh+((double)x->x_sz-rh); //essentially subracting from writehead to find proper position in buffer
-    //wrapping into length of delay buffer
-    while(rh >= x->x_sz){
+    rh = (double)x->x_wh+((double)x->x_sz-rh); // essentially subracting from writehead to find proper position in buffer
+    // wrapping into length of delay buffer
+    while(rh >= x->x_sz)
         rh -= (double)x->x_sz;
-    };
-    //now to read from the buffer!
+    // read from buffer!
     double output = comb_getlin(arr, x->x_sz, rh);
-    return output;
-    
+    return(output);
 }
 
-
-
-static t_int *comb_perform(t_int *w)
-{
+static t_int *comb_perform(t_int *w){
     t_comb *x = (t_comb *)(w[1]);
     int n = (int)(w[2]);
     t_float *xin = (t_float *)(w[3]);
@@ -145,9 +130,8 @@ static t_int *comb_perform(t_int *w)
     t_float *bin = (t_float *)(w[6]);
     t_float *cin = (t_float *)(w[7]);
     t_float *out = (t_float *)(w[8]);
-    
     int i;
-    for(i=0; i<n;i++){
+    for(i = 0; i < n; i++){
         int wh = x->x_wh;
         double input = (double)xin[i];
         //first off, write input to delay buf
@@ -155,39 +139,30 @@ static t_int *comb_perform(t_int *w)
         //get delayed values of x and y
         t_float delms = din[i];
         //first bounds checking
-        if(delms < 0){
+        if(delms < 0)
             delms = 0;
-        }
-        else if(delms > x->x_maxdel){
+        else if(delms > x->x_maxdel)
             delms = x->x_maxdel;
-        };
-        //now get those delayed vals
+        // get delayed vals
         double delx = comb_readmsdelay(x, x->x_xbuf, delms);
         double dely = comb_readmsdelay(x, x->x_ybuf, delms);
-        //figure out your current y term: y[n] = a*x[n] + b*x[n-d] + c*y[n-d]
+        // y[n] = a*x[n] + b*x[n-d] + c*y[n-d]
         double output = (double)ain[i]*input + (double)bin[i]*delx + (double)cin[i]*dely;
-        //stick this guy in the ybuffer and output
-        x->x_ybuf[wh] = output;
-        out[i] = output;
-        
-        //increment writehead
-        x->x_wh = (wh + 1) % x->x_sz;
+        out[i] = x->x_ybuf[wh] = output;
+        x->x_wh = (wh + 1) % x->x_sz; // increment writehead
     };
-    
-    return (w + 9);
+    return(w+9);
 }
 
-static void comb_dsp(t_comb *x, t_signal **sp)
-{
+static void comb_dsp(t_comb *x, t_signal **sp){
     int sr = sp[0]->s_sr;
     if(sr != x->x_sr){
         //if new sample rate isn't old sample rate, need to realloc
         x->x_sr = sr;
         comb_sz(x);
     };
-    dsp_add(comb_perform, 8, x, sp[0]->s_n,
-            sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec,
-            sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec);
+    dsp_add(comb_perform, 8, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec,
+        sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec);
 }
 
 static void comb_size(t_comb *x, t_floatarg f1){
@@ -256,7 +231,7 @@ static void *comb_new(t_symbol *s, int argc, t_atom * argv){
     x->x_clet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_clet, fbcoeff);
     x->x_outlet = outlet_new((t_object *)x, &s_signal);
-    return (x);
+    return(x);
 }
 
 static void * comb_free(t_comb *x){
@@ -272,14 +247,11 @@ static void * comb_free(t_comb *x){
     return (void *)x;
 }
 
-
-void setup_comb0x2erev_tilde(void)
-{
+void setup_comb0x2erev_tilde(void){
     comb_class = class_new(gensym("comb.rev~"), (t_newmethod)comb_new,
-                               (t_method)comb_free, sizeof(t_comb), 0, A_GIMME, 0);
+        (t_method)comb_free, sizeof(t_comb), 0, A_GIMME, 0);
     class_addmethod(comb_class, nullfn, gensym("signal"), 0);
     class_addmethod(comb_class, (t_method)comb_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(comb_class, (t_method)comb_clear, gensym("clear"), 0);
     class_addmethod(comb_class, (t_method)comb_size, gensym("size"), A_DEFFLOAT, 0);
 }
-
