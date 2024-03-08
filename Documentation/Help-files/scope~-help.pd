@@ -194,7 +194,7 @@
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 304 3 pd;
 #X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
-#X obj 22 40 cnv 4 4 4 empty empty Oscillscope\ display 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 22 40 cnv 4 4 4 empty empty Oscilloscope\ display 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
@@ -278,7 +278,7 @@
 #X floatatom 168 162 5 0 0 0 - - - 12;
 #X text 211 162 samples per line;
 #X text 98 572 -fgcolor <f f f> | -bgcolor <f f f> | -gridcolor <f f f> | -range <f f> | -trigger <f> | -triglevel <f> | -nsamples <f> | -nlines <f> | -delay <f> | -dim <f f> | -receive <sym>, f 62;
-#X text 207 60 [scope~] displays signals in the style of an oscillscope. It works up to two dimensions., f 40;
+#X text 207 60 [scope~] displays signals in the style of an oscilloscope. It works up to two dimensions., f 40;
 #N canvas 626 294 419 280 see 0;
 #X obj 128 86 scope3d~;
 #X text 127 22 For up to 3D plots \, see:;

@@ -29,6 +29,8 @@ function scope3d:initialize(sel, atoms)
     gridcolor   = {function(s, a) return s:pd_gridcolor(a)   end, 19, 3},
 
     receive     = {function(s, a) return s:pd_receive(a)     end, 22, 1},
+
+    list        = {function(s, a) return s:pd_list(a)        end},
   }
   self:reset_state()
   self:reset_data()
@@ -259,7 +261,7 @@ function scope3d:projectVertex(vertex)
   return screenX, screenY
 end
 
-function scope3d:in_n(n, sel, atoms)
+function scope3d:in_1(sel, atoms)
   self:call_pd_method(sel, atoms)
 end
 
@@ -333,6 +335,13 @@ end
 function scope3d:pd_nsamples(x)
   if type(x[1]) == "number" then
     self.SAMPLING_INTERVAL = math.max(2, math.floor(x[1])) - 1
+  end
+end
+
+function scope3d:pd_list(x)
+  self:call_pd_method("nsamples", {x[1]})
+  if #x >= 2 then
+    self:call_pd_method("nlines", {x[2]})
   end
 end
 
