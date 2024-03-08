@@ -29,7 +29,8 @@ function scope3d:initialize(sel, atoms)
     gridcolor   = {function(s, a) return s:pd_gridcolor(a)   end, 19, 3},
 
     receive     = {function(s, a) return s:pd_receive(a)     end, 22, 1},
-    list        = {function(s, a) return s:pd_list(a)        end, 23, 2},
+
+    list        = {function(s, a) return s:pd_list(a)        end},
   }
   self:reset_state()
   self:reset_data()
@@ -338,9 +339,9 @@ function scope3d:pd_nsamples(x)
 end
 
 function scope3d:pd_list(x)
-  self:pd_nsamples(x)
+  self:call_pd_method("nsamples", {x[1]})
   if #x >= 2 then
-    self:pd_nlines({x[2]})
+    self:call_pd_method("nlines", {x[2]})
   end
 end
 
