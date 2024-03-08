@@ -12,7 +12,6 @@
 #X text 196 320 - signal to be displayed in the X axis, f 58;
 #X text 205 616 (none);
 #X obj 4 566 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
-#X text 196 349 - sets number of lines in buffer (8-256 \, default 128), f 58;
 #X text 196 396 - sets vertical range (default -1 1), f 58;
 #X text 196 457 - sets trigger mode: 0 (none \, default) \, 1 (up) or 2 (down);
 #X text 196 471 - sets threshold level for the trigger mode (default 0), f 58;
@@ -286,9 +285,10 @@
 #X restore 479 199 pd see also;
 #X text 110 485 rate <float>;
 #X text 196 485 - onset time delay between displays (default 0), f 58;
-#X connect 18 0 19 0;
-#X connect 19 0 35 0;
-#X connect 35 0 58 0;
-#X connect 62 0 58 0;
-#X connect 63 0 62 0;
-#X connect 67 0 58 0;
+#X text 196 349 - sets number of lines in buffer (8-256 \, default 8), f 58;
+#X connect 17 0 18 0;
+#X connect 18 0 34 0;
+#X connect 34 0 57 0;
+#X connect 61 0 57 0;
+#X connect 62 0 61 0;
+#X connect 66 0 57 0;

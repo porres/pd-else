@@ -123,13 +123,12 @@
 #X text 203 348 - sets refresh rate period in ms (default 50), f 55;
 #X text 203 404 - rotate around x/y axis in degrees (default 0 0), f 55;
 #X text 203 446 - enable/disable mouse interaction (default 1), f 55;
-#X text 203 320 - sets number of lines to draw (values 1-1024 \, def 512);
 #X text 203 334 - sets number of samples per line (def 8 \, values >= 2), f 55;
 #N canvas 302 113 969 542 basic 0;
 #X obj 370 187 osc~ 80;
 #X obj 463 187 osc~ 40.1;
 #X obj 585 187 osc~ 120;
-#X obj 342 224 scope3d~ 5.66929 0 250 250 0.5 1 1 1 1 empty empty 50 empty empty empty empty empty empty empty empty empty empty;
+#X obj 342 224 scope3d~ 0 0 250 250 0.5 1 1 1 1 empty empty 50 empty empty empty empty empty empty empty empty empty empty;
 #X obj 70 458 s \$0-basic;
 #X obj 342 155 r \$0-basic;
 #X obj 98 269 hsl 136 16 0.25 1.5 1 0 empty empty empty -2 -10 0 12 #dfdfdf #000000 #000000 0 1;
@@ -149,7 +148,7 @@
 #X msg 713 196 rotate \$2 \$1;
 #X floatatom 640 295 5 0 0 0 - - - 0;
 #X listbox 713 174 13 0 0 0 - - - 0;
-#X obj 713 42 slider2d 127 127 0 360 0 360 1 211 211 211 0 0 0 0 0 0 0 5.66929 empty empty;
+#X obj 713 42 slider2d 127 127 0 360 0 360 1 211 211 211 0 0 0 0 0 0 0 0 empty empty;
 #X msg 747 376 drag \$1;
 #X obj 747 348 tgl 21 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X msg 640 319 rotatex \$1;
@@ -255,5 +254,6 @@
 #X connect 22 0 9 3;
 #X connect 24 0 23 1;
 #X restore 483 162 pd colors;
+#X text 203 320 - sets number of lines to draw (values 1-1024 \, def 256);
 #X connect 33 0 32 0;
 #X connect 34 0 32 1;
