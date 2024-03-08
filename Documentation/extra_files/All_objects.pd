@@ -1,7 +1,6 @@
 #N struct 1004-cell float x float y float cellsize float color;
 #N struct 1006-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
-#N struct 1025-point float x0 float y0 float size float fg float in float grid;
-#N struct 1078-slot float x float y float slotsize float color float width float bordercolor;
+#N struct 1059-slot float x float y float slotsize float color float width float bordercolor;
 #N canvas 448 23 541 693 10;
 #N canvas 240 37 974 682 GUI 0;
 #X text 40 146 [biplot];
@@ -72,10 +71,10 @@
 #X obj 615 866 else/knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0;
 #X text 561 874 [knob];
 #X obj 65 1091 else/out.mc~;
-#X obj 633 1635 scope3d~;
-#X text 547 1676 [scope3d~];
+#X text 572 1675 [scope3d~];
 #X obj 498 1490 else/scope~ 200 100 256 3 128 -1 1 0 0 0 0 30 30 30 190 190 190 160 160 160 0 empty;
 #X text 537 1462 [scope~];
+#X obj 669 1633 scope3d~;
 #X restore 150 222 pd GUI;
 #X obj 385 121 switch~;
 #X obj 18 34 cnv 30 279 30 empty empty ALL\ OBJECTS\ IN\ THE\ ELSE\ LIBRARY: 12 15 0 14 #e0e0e0 #404040 0;
@@ -685,8 +684,8 @@
 #X obj 133 151 All_about_else;
 #X text 143 131 see also:;
 #X text 7 628 =====================================================================================, f 85;
-#X obj 308 655 about.MERDA;
-#X text 69 655 ELSE includes M.E.R.D.A \, check it out:;
+#X obj 328 655 about.MERDA;
+#X text 89 655 ELSE includes M.E.R.D.A \, check it out:;
 #X connect 45 0 1 0;
 #X connect 46 0 47 0;
 #X connect 48 0 1 0;
