@@ -100,7 +100,7 @@ function scope3d:reset_data()
 
   self.WIDTH, self.HEIGHT = 140, 140
   self.RATE = 50
-  self.BUFFERSIZE = 512
+  self.BUFFERSIZE = 256
   self.SAMPLING_INTERVAL = 8
   self.DRAW_GRID = 1
   self.DRAG = 1
