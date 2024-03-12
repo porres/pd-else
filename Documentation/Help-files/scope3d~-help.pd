@@ -49,7 +49,7 @@
 #X obj 372 139 else/setdsp~;
 #X obj 199 378 osc~ 200;
 #X obj 268 378 osc~ 300.1;
-#X obj 147 414 scope3d~ empty empty 250 250 0.75 empty empty empty empty 582.125 9.6242 79.6806 empty empty empty empty empty empty empty empty empty empty;
+#X obj 147 414 scope3d~ empty empty 250 250 0.75 empty empty empty empty 128 256 79.6806 empty empty empty empty empty empty empty empty empty empty;
 #X text 268 87 Settings for buffer size and refresh rate period., f 24;
 #X msg 189 330 rate \$1;
 #X text 239 310 refresh rate in ms;
@@ -134,7 +134,7 @@
 #X obj 370 187 osc~ 80;
 #X obj 463 187 osc~ 40.1;
 #X obj 585 187 osc~ 120;
-#X obj 342 224 scope3d~ 0 0 250 250 0.5 1 1 1 1 empty empty 50 empty empty empty empty empty empty empty empty empty empty;
+#X obj 342 224 scope3d~ 0 0 250 250 0.752244 1 1 1 1 empty empty 50 empty empty empty empty empty empty empty empty empty empty;
 #X obj 70 458 s \$0-basic;
 #X obj 342 155 r \$0-basic;
 #X obj 98 269 hsl 136 16 0.25 1.5 1 0 empty empty empty -2 -10 0 12 #dfdfdf #000000 #000000 0 1;
