@@ -272,7 +272,6 @@ end
 
 function scope3d:mapRange(x, xrangeFrom, xrangeTo)
   local xNew = (x + 1) * (xrangeTo - xrangeFrom) * 0.5 + xrangeFrom
-  pd.post('range '..xrangeFrom..' '..xrangeTo..' '..x..' '..xNew)
   return xNew
 end
 
