@@ -30,6 +30,10 @@ function scope3d:initialize(sel, atoms)
 
     receive     = {function(s, a) return s:pd_receive(a)     end, 22, 1},
 
+    range       = {function(s, a) return s:pd_range(a)       end, 23, 4},
+    xrange      = {function(s, a) return s:pd_xrange(a)      end, 23, 2},
+    yrange      = {function(s, a) return s:pd_yrange(a)      end, 25, 2},
+
     list        = {function(s, a) return s:pd_list(a)        end},
   }
   self:reset_state()
@@ -99,7 +103,7 @@ function scope3d:reset_data()
   self.BGCOLOR = {190, 190, 190} -- was Colors.background for plugdata
 
   self.WIDTH, self.HEIGHT = 140, 140
-  self.RATE = 50
+  self.RATE = 20
   self.BUFFERSIZE = 256
   self.SAMPLING_INTERVAL = 8
   self.DRAW_GRID = 1
@@ -108,6 +112,8 @@ function scope3d:reset_data()
   self.ZOOM = 1
   self.GRIDCOLOR = {160, 160, 160}
   self.PERSPECTIVE = 1
+  self.XRANGEFROM, self.XRANGETO = -1, 1
+  self.YRANGEFROM, self.YRANGETO = -1, 1
   self:set_size(self.WIDTH, self.HEIGHT)
   self:reset_buffer()
 end
@@ -215,6 +221,7 @@ function scope3d:paint(g)
 
       local startX, startY = self:projectVertex(lineFrom, self.ZOOM)
       local   endX,   endY = self:projectVertex(  lineTo, self.ZOOM)
+
       if lineFrom[3] > -self.cameraDistance and lineTo[3] > -self.cameraDistance then
         g:draw_line(startX, startY, endX, endY, 1)
       end
@@ -258,7 +265,15 @@ function scope3d:projectVertex(vertex)
   local scale = self.cameraDistance / (self.cameraDistance + vertex[3] * self.PERSPECTIVE)
   local screenX = self.WIDTH / 2 + 0.5 + (vertex[1] * scale * self.ZOOM * self.WIDTH * 0.5)
   local screenY = self.HEIGHT / 2 + 0.5 - (vertex[2] * scale * self.ZOOM * self.HEIGHT * 0.5)
+  screenX = self:mapRange(screenX, self.XRANGEFROM, self.XRANGETO)
+  screenY = self:mapRange(screenY, self.YRANGEFROM, self.YRANGETO) 
   return screenX, screenY
+end
+
+function scope3d:mapRange(x, xrangeFrom, xrangeTo)
+  local xNew = (x + 1) * (xrangeTo - xrangeFrom) * 0.5 + xrangeFrom
+  pd.post('range '..xrangeFrom..' '..xrangeTo..' '..x..' '..xNew)
+  return xNew
 end
 
 function scope3d:in_1(sel, atoms)
@@ -280,15 +295,15 @@ end
 
 function scope3d:pd_rotatex(x)
   if type(x[1]) == "number" then
-    self.rotationAngleX = x[1]
-    self.rotationStartAngleX = self.rotationAngleX
+    self.rotationAngleY = x[1]
+    self.rotationStartAngleY = self.rotationAngleY
   end
 end
 
 function scope3d:pd_rotatey(x)
   if type(x[1]) == "number" then
-    self.rotationAngleY = x[1]
-    self.rotationStartAngleY = self.rotationAngleY
+    self.rotationAngleX = x[1]
+    self.rotationStartAngleX = self.rotationAngleX
   end
 end
 
@@ -296,8 +311,37 @@ function scope3d:pd_rotate(x)
   if #x == 2 and
      type(x[1]) == "number" and
      type(x[2]) == "number" then
-    self.rotationAngleX, self.rotationAngleY = x[1], x[2]
+    self.rotationAngleX, self.rotationAngleY = x[2], x[1]
     self.rotationStartAngleX, self.rotationStartAngleY = self.rotationAngleX, self.rotationAngleY
+  end
+end
+
+function scope3d:pd_range(x)
+  if #x == 2 and
+     type(x[1]) == "number" and
+     type(x[2]) == "number" then
+    self.XRANGEFROM = x[1]
+    self.XRANGETO   = x[2]
+    self.YRANGEFROM = x[1]
+    self.YRANGETO   = x[2]
+  end
+end
+
+function scope3d:pd_xrange(x)
+  if #x == 2 and
+     type(x[1]) == "number" and
+     type(x[2]) == "number" then
+    self.XRANGEFROM = x[1]
+    self.XRANGETO   = x[2]
+  end
+end
+
+function scope3d:pd_yrange(x)
+  if #x == 2 and
+     type(x[1]) == "number" and
+     type(x[2]) == "number" then
+    self.YRANGEFROM = x[1]
+    self.YRANGETO   = x[2]
   end
 end
 
