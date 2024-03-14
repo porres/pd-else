@@ -1,5 +1,4 @@
-#N canvas 541 23 693 723 12;
-#X declare -path else;
+#N canvas 360 23 693 723 12;
 #X obj 388 322 text define \$0-scl;
 #X msg 244 236 read \$1;
 #X obj 244 152 openpanel;
@@ -44,9 +43,9 @@
 #X obj 150 476 list;
 #X obj 33 116 route bang;
 #X obj 175 258 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
-#X obj 345 136 declare -path else;
 #X obj 361 486 else/nmess 1;
-#X obj 100 204 file which 1;
+#X obj 100 226 file which;
+#X obj 100 199 list append 1;
 #X connect 1 0 13 0;
 #X connect 2 0 1 0;
 #X connect 2 0 25 0;
@@ -55,7 +54,7 @@
 #X connect 5 0 18 0;
 #X connect 5 1 6 0;
 #X connect 6 0 19 0;
-#X connect 6 1 45 0;
+#X connect 6 1 44 0;
 #X connect 7 0 11 0;
 #X connect 8 0 17 0;
 #X connect 9 0 8 0;
@@ -67,7 +66,7 @@
 #X connect 12 1 5 1;
 #X connect 12 1 38 0;
 #X connect 12 1 33 1;
-#X connect 12 1 45 1;
+#X connect 12 1 44 1;
 #X connect 13 0 12 0;
 #X connect 13 1 0 0;
 #X connect 14 0 46 0;
@@ -105,5 +104,6 @@
 #X connect 42 0 2 0;
 #X connect 42 1 14 0;
 #X connect 43 0 12 0;
-#X connect 45 0 31 0;
-#X connect 46 0 1 0;
+#X connect 44 0 31 0;
+#X connect 45 0 1 0;
+#X connect 46 0 45 0;

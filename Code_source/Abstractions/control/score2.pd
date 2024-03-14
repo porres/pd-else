@@ -1,5 +1,4 @@
 #N canvas 437 23 533 308 12;
-#X declare -path else;
 #X obj 66 213 outlet;
 #X obj 44 27 inlet;
 #X obj 303 210 outlet;
@@ -422,14 +421,16 @@
 #X msg 221 192 \$1 file not found;
 #X obj 221 222 print [score2];
 #X msg 98 220 read \$1;
-#X obj 98 160 file which 1;
+#X obj 98 160 file which;
+#X obj 97 124 list append 1;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
-#X connect 2 0 7 0;
+#X connect 2 0 8 0;
 #X connect 4 0 5 0;
 #X connect 6 0 3 0;
 #X connect 7 0 6 0;
 #X connect 7 1 4 0;
+#X connect 8 0 7 0;
 #X restore 294 224 pd init;
 #N canvas 454 23 286 477 save 0;
 #X obj 136 215 pdcontrol;
@@ -507,7 +508,6 @@
 #X connect 13 3 2 0;
 #X connect 13 4 5 0;
 #X restore 139 90 pd score;
-#X obj 266 136 declare -path else;
 #X connect 1 0 6 0;
 #X connect 6 0 13 0;
 #X connect 6 1 18 0;
