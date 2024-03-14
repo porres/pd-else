@@ -20,17 +20,17 @@
 #X obj 98 61 else/args;
 #X obj 98 88 route symbol;
 #X obj 98 224 outlet;
-#X obj 98 123 else/findfile 1;
 #X msg 221 155 \$1 file not found;
 #X obj 221 185 print [score];
 #X msg 98 172 read \$1;
+#X obj 98 123 file which 1;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
-#X connect 2 0 4 0;
-#X connect 4 0 7 0;
-#X connect 4 1 5 0;
-#X connect 5 0 6 0;
-#X connect 7 0 3 0;
+#X connect 2 0 7 0;
+#X connect 4 0 5 0;
+#X connect 6 0 3 0;
+#X connect 7 0 6 0;
+#X connect 7 1 4 0;
 #X restore 284 224 pd init;
 #N canvas 183 76 286 477 open 0;
 #X obj 136 215 pdcontrol;
@@ -126,8 +126,7 @@
 #X obj 269 181 &&;
 #X obj 318 85 t b b;
 #X obj 368 238 t b b;
-#X obj 71 53 route float bang start stop pause continue play, f 50
-;
+#X obj 71 53 route float bang start stop pause continue play, f 50;
 #X msg 239 249 0;
 #X obj 110 316 s \$0-rewind;
 #X obj 42 317 t b b;
@@ -291,10 +290,8 @@
 #X obj 684 227 v S2_\$0;
 #X obj 623 227 v S1_\$0;
 #X obj 215 205 expr $f1 <= N_\$0;
-#X obj 215 258 expr T_\$0 / ln_Q_\$0 * ln(($f1 * ln_Q_\$0 / (T_\$0
-* S1_\$0 ))+1), f 21;
-#X text 222 114 considering tempos that sum up to N exactly, f 18
-;
+#X obj 215 258 expr T_\$0 / ln_Q_\$0 * ln(($f1 * ln_Q_\$0 / (T_\$0 * S1_\$0 ))+1), f 21;
+#X text 222 114 considering tempos that sum up to N exactly, f 18;
 #X msg 481 443 tempo \$1;
 #X obj 752 256 v delta_\$0;
 #X obj 487 288 sel 1;
@@ -308,8 +305,7 @@
 #X obj 171 275 * 60000;
 #X msg 239 335 0;
 #X obj 239 308 r \$0-init;
-#X obj 171 219 expr T_\$0 / ln_Q_\$0 * ln(($f1 * ln_Q_\$0 / (T_\$0
-* S1_\$0 ))+1), f 21;
+#X obj 171 219 expr T_\$0 / ln_Q_\$0 * ln(($f1 * ln_Q_\$0 / (T_\$0 * S1_\$0 ))+1), f 21;
 #X obj 203 108 r N_\$0;
 #X obj 150 84 r \$0-init;
 #X obj 132 140 f;
@@ -362,8 +358,7 @@
 #X obj 247 432 else/bpm;
 #X obj 247 463 expr bpm_\$0 / $f1;
 #X obj 73 347 expr $f1 - N_\$0, f 16;
-#X obj 590 286 expr N_\$0 * ln_Q_\$0 / delta_\$0 \; ln(Q_\$0) \; S2_\$0/S1_\$0
-;
+#X obj 590 286 expr N_\$0 * ln_Q_\$0 / delta_\$0 \; ln(Q_\$0) \; S2_\$0/S1_\$0;
 #X obj 215 404 sel 0;
 #X msg 215 441 0;
 #X connect 0 0 24 0;

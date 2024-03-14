@@ -83,7 +83,6 @@ dir.class.sources := Code_source/Compiled/control/dir.c
 datetime.class.sources := Code_source/Compiled/control/datetime.c
 default.class.sources := Code_source/Compiled/control/default.c
 dollsym.class.sources := Code_source/Compiled/control/dollsym.c
-findfile.class.sources := Code_source/Compiled/control/findfile.c
 floor.class.sources := Code_source/Compiled/control/floor.c
 fold.class.sources := Code_source/Compiled/control/fold.c
 hot.class.sources := Code_source/Compiled/control/hot.c

@@ -22,8 +22,7 @@
 #X obj 269 181 &&;
 #X obj 318 85 t b b;
 #X obj 368 238 t b b;
-#X obj 71 53 route float bang start stop pause continue play, f 50
-;
+#X obj 71 53 route float bang start stop pause continue play, f 50;
 #X msg 239 249 0;
 #X obj 110 316 s \$0-rewind;
 #X obj 42 317 t b b;
@@ -164,17 +163,14 @@
 #X obj 734 227 v S2_\$0;
 #X obj 673 227 v S1_\$0;
 #X obj 265 205 expr $f1 <= N_\$0;
-#X obj 265 258 expr T_\$0 / ln_Q_\$0 * ln(($f1 * ln_Q_\$0 / (T_\$0
-* S1_\$0 ))+1), f 21;
-#X obj 640 286 expr N_\$0 * ln_Q_\$0 / (S2_\$0 - S1_\$0) \; ln(Q_\$0)
-\; S2_\$0/S1_\$0;
+#X obj 265 258 expr T_\$0 / ln_Q_\$0 * ln(($f1 * ln_Q_\$0 / (T_\$0 * S1_\$0 ))+1), f 21;
+#X obj 640 286 expr N_\$0 * ln_Q_\$0 / (S2_\$0 - S1_\$0) \; ln(Q_\$0) \; S2_\$0/S1_\$0;
 #X obj 100 203 abs;
 #X obj 100 177 t f f;
 #X obj 132 220 v n_\$0;
 #X obj 297 479 expr copysign($f1 \, n_\$0);
 #X obj 113 397 expr copysign($f1 - N_\$0 \, n_\$0), f 17;
-#X text 272 114 considering tempos that sum up to N exactly, f 18
-;
+#X text 272 114 considering tempos that sum up to N exactly, f 18;
 #X msg 511 443 tempo \$1;
 #X obj 802 256 v delta_\$0;
 #X obj 537 288 sel 1;
@@ -188,8 +184,7 @@
 #X obj 170 275 * 60000;
 #X msg 238 335 0;
 #X obj 238 308 r \$0-init;
-#X obj 170 219 expr T_\$0 / ln_Q_\$0 * ln(($f1 * ln_Q_\$0 / (T_\$0
-* S1_\$0 ))+1), f 21;
+#X obj 170 219 expr T_\$0 / ln_Q_\$0 * ln(($f1 * ln_Q_\$0 / (T_\$0 * S1_\$0 ))+1), f 21;
 #X obj 202 108 r N_\$0;
 #X obj 149 84 r \$0-init;
 #X obj 131 140 f;
@@ -424,17 +419,17 @@
 #X obj 98 61 else/args;
 #X obj 98 88 route symbol;
 #X obj 98 264 outlet;
-#X obj 98 160 else/findfile 1;
 #X msg 221 192 \$1 file not found;
 #X obj 221 222 print [score2];
 #X msg 98 220 read \$1;
+#X obj 98 160 file which 1;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
-#X connect 2 0 4 0;
-#X connect 4 0 7 0;
-#X connect 4 1 5 0;
-#X connect 5 0 6 0;
-#X connect 7 0 3 0;
+#X connect 2 0 7 0;
+#X connect 4 0 5 0;
+#X connect 6 0 3 0;
+#X connect 7 0 6 0;
+#X connect 7 1 4 0;
 #X restore 294 224 pd init;
 #N canvas 454 23 286 477 save 0;
 #X obj 136 215 pdcontrol;
