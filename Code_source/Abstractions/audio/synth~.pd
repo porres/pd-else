@@ -2,6 +2,7 @@
 #X declare -path /Users/porres/Desktop/Git/Live-Electronics-Tutorial/Examples/Part.04-Control/18-MIDI-CV-OSC/1.MIDI/3.Monophony.Polyphony;
 #X declare -path /Users/porres/Desktop/Git/pd-else/Code_source/Abstractions/audio;
 #X declare -path /Users/porres/Desktop/Git/pd-else/Code_source/Abstractions/audio;
+#X declare -path /Users/porres/Desktop/Git/pd-else/Code_source/Abstractions/audio;
 #X declare -path else;
 #X obj 88 53 inlet;
 #X obj 88 259 outlet~;
@@ -64,6 +65,7 @@
 #X obj 425 213 pdcontrol;
 #X msg 425 181 sendcanvas obj 425 250 declare -path \$1;
 #X obj 425 250 declare -path /Users/porres/Desktop/Git/Live-Electronics-Tutorial/Examples/Part.04-Control/18-MIDI-CV-OSC/1.MIDI/3.Monophony.Polyphony;
+#X obj 425 250 declare -path /Users/porres/Desktop/Git/pd-else/Code_source/Abstractions/audio;
 #X obj 425 250 declare -path /Users/porres/Desktop/Git/pd-else/Code_source/Abstractions/audio;
 #X obj 425 250 declare -path /Users/porres/Desktop/Git/pd-else/Code_source/Abstractions/audio;
 #X connect 0 0 15 0;
@@ -138,13 +140,13 @@
 #X obj 288 289 else/slice -1;
 #X obj 288 225 trigger symbol symbol, f 42;
 #X obj 376 320 trigger symbol symbol;
-#X obj 481 428 symbol;
-#X obj 540 428 symbol;
-#X obj 540 551 s \$0-load;
-#X obj 540 390 bng 19 250 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000 #000000;
-#X obj 481 390 bng 19 250 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000 #000000;
-#X obj 540 469 file splitext;
-#X msg 540 518 symbol \$1;
+#X obj 481 458 symbol;
+#X obj 540 458 symbol;
+#X obj 540 581 s \$0-load;
+#X obj 540 420 bng 19 250 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000 #000000;
+#X obj 481 420 bng 19 250 50 0 empty empty empty 0 -10 0 12 #fcfcfc #000000 #000000;
+#X obj 540 499 file splitext;
+#X msg 540 548 symbol \$1;
 #X obj 90 238 else/router;
 #X msg 199 116 1;
 #X msg 364 110 0;
@@ -157,7 +159,8 @@
 #X obj 132 149 f;
 #X obj 164 204 change;
 #X msg 210 256 0;
-#X obj 376 353 file which 1;
+#X obj 376 383 file which;
+#X obj 376 354 list append 1;
 #X connect 0 0 18 0;
 #X connect 1 0 2 0;
 #X connect 3 0 25 0;
@@ -171,7 +174,7 @@
 #X connect 8 1 10 0;
 #X connect 9 0 7 0;
 #X connect 9 1 12 1;
-#X connect 10 0 30 0;
+#X connect 10 0 31 0;
 #X connect 10 1 11 1;
 #X connect 11 0 16 0;
 #X connect 12 0 16 0;
@@ -197,6 +200,7 @@
 #X connect 29 0 28 0;
 #X connect 30 0 15 0;
 #X connect 30 1 14 0;
+#X connect 31 0 30 0;
 #X restore 265 245 pd click;
 #X connect 0 0 10 0;
 #X connect 1 0 2 0;
