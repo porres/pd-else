@@ -13,8 +13,8 @@ typedef struct else_obj{
 t_class *else_obj_class;
 
 static int min_major = 0;
-static int min_minor = 54;
-static int min_bugfix = 1;
+static int min_minor = 55;
+static int min_bugfix = 0;
 
 static int else_major = 1;
 static int else_minor = 0;

@@ -42,11 +42,11 @@
 #X obj 156 426 s \$0-tabplayer~;
 #X obj 99 158 else/click;
 #X msg 296 387 sr \$1;
-#X obj 300 142 else/findfile 1;
+#X obj 300 142 file which 1;
 #X obj 327 196 print [player~];
 #X msg 327 171 \$1 file not found;
 #X obj 300 107 r \$0-file;
-#X obj 27 277 else/findfile 1;
+#X obj 27 277 file which 1;
 #X obj 27 340 print [player~];
 #X msg 27 315 \$1 file not found;
 #X connect 0 0 20 0;
@@ -356,7 +356,7 @@
 #X connect 4 1 1 0;
 #X restore 106 323 pd check;
 #X obj 27 115 t b b;
-#X obj 557 237 else/findfile 1;
+#X obj 557 237 file which 1;
 #X msg 686 221 \$1 file not found;
 #X obj 686 247 print [player~];
 #X connect 1 0 0 0;
