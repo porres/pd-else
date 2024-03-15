@@ -1,4 +1,4 @@
-#N struct 1103-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
+#N struct 1046-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
 #N canvas 460 43 575 659 10;
 #X obj 4 618 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
 #X obj 5 237 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
@@ -56,7 +56,7 @@
 #X listbox 164 249 10 0 0 0 - - - 12;
 #X obj 164 222 else/initmess 256 128;
 #X text 52 7 "nlines" sets the number of lines in the display. The number of samples represented by each line is set by "nsamples". Therefore \, the total number of samples (or period) displayed in the scope is equal to: nsamples * nlines. You can also set both parameters with a list input., f 63;
-#X obj 147 414 scope3d~ 0 0 250 250 1 1 1 1 0.75 1 50 4 512 30 30 30 190 190 190 160 160 160 empty;
+#X obj 147 414 scope3d~ -dim 250 250 -zoom 0.75;
 #X connect 0 0 1 0;
 #X connect 1 0 9 0;
 #X connect 2 0 3 0;
