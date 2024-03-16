@@ -6,13 +6,13 @@ function scope3d:initialize(name, args)
   local methods =
   {
     { name = "rotate",      defaults = { 0, 0 } },
-    { name = "hrotate" },
-    { name = "vrotate" },
+    { name = "rotatex" },
+    { name = "rotatey" },
 
     { name = "dim",         defaults = { 140, 140 } },
 
     { name = "width",       defaults = { 1 } },
-    { name = "clip",        defaults = { 1 } },
+    { name = "clip",        defaults = { 0 } },
     { name = "grid",        defaults = { 1 } },
     { name = "drag",        defaults = { 1 } },
     { name = "zoom",        defaults = { 1 } },
@@ -78,7 +78,7 @@ end
 
 function scope3d:pd_rate(x)
   if type(x[1]) == "number" then
-    self.framedelay = math.max(8, 1000 / x[1])
+    self.framedelay = x[1] -- math.max(8, 1000 / x[1])
   end
   if self.clock then
     self.clock:unset() 
@@ -87,7 +87,7 @@ function scope3d:pd_rate(x)
 end
 
 function scope3d:pd_list(x)
-  self.nsamples = math.max(2, math.floor(x[1])) - 1 or 8
+  self.nsamples = (math.max(2, math.floor(x[1])) - 1) or 8
   self.nlines = math.min(1024, math.max(2, math.floor(x[2]))) or 256
   self:reset_buffer()
 end
@@ -105,17 +105,21 @@ function scope3d:pd_nlines(x)
 end
 
 function scope3d:pd_rotate(x)
-  self.rotationAngleY, self.rotationAngleX = x[1], x[2]
-  self.rotationStartAngleX, self.rotationStartAngleY = self.rotationAngleX, self.rotationAngleY
+  if #x == 2 and
+     type(x[1]) == "number" and
+     type(x[2]) == "number" then
+    self.rotationAngleY, self.rotationAngleX = x[1], x[2]
+    self.rotationStartAngleX, self.rotationStartAngleY = self.rotationAngleX, self.rotationAngleY
+end
 end
 
-function scope3d:pd_hrotate(x)
+function scope3d:pd_rotatex(x)
   local allAtoms = {self.rotationAngleY, self.rotationAngleX}
   allAtoms[1] = x[1]
   self:handle_pd_message('rotate', allAtoms)
 end
 
-function scope3d:pd_vrotate(x)
+function scope3d:pd_rotatey(x)
   local allAtoms = {self.rotationAngleY, self.rotationAngleX}
   allAtoms[2] = x[1]
   self:handle_pd_message('rotate', allAtoms)
@@ -148,7 +152,7 @@ end
 
 function scope3d:perform(in1, in2, in3)
   while self.sampleIndex <= self.blocksize do
-    -- circular buffer
+    -- ring buffer
     self.signal[self.bufferIndex] = {in1[self.sampleIndex], in2[self.sampleIndex], in3[self.sampleIndex]}
     self.bufferIndex = (self.bufferIndex % self.nlines) + 1
     self.sampleIndex = self.sampleIndex + self.nsamples
@@ -159,7 +163,6 @@ end
 function scope3d:clipLine(x1, y1, x2, y2)
     local xmin, ymin, xmax, ymax = 1, 1, self.pd_methods.dim.val[1]-1, self.pd_methods.dim.val[2]-1
 
-    -- Check if a point is inside the bounding box
     local function isInside(x, y)
         return x >= xmin and x <= xmax and y >= ymin and y <= ymax
     end
@@ -204,10 +207,10 @@ function scope3d:clipLine(x1, y1, x2, y2)
     local accept = false
 
     while true do
-        if outcode1 == 0 and outcode2 == 0 then -- Both points inside
+        if outcode1 == 0 and outcode2 == 0 then -- both points inside
             accept = true
             break
-        elseif (outcode1 & outcode2) ~= 0 then -- Both points share an outside zone
+        elseif (outcode1 & outcode2) ~= 0 then -- both points share an outside zone
             break
         else
             local x, y
@@ -252,8 +255,6 @@ function scope3d:paint(g)
         startX, startY, endX, endY = self:clipLine(startX, startY, endX, endY)
       end
       if startX then g:draw_line(startX, startY, endX, endY, 1) end
-      -- if lineFrom[3] > -self.cameraDistance and lineTo[3] > -self.cameraDistance then
-      -- end
     end
   end
 
@@ -263,17 +264,22 @@ function scope3d:paint(g)
     self.rotatedSignal[i] = self:rotate_x(rotatedVertex, self.rotationAngleX)
   end
 
-
   g:set_color(table.unpack(self.pd_methods.fgcolor.val))
-  local startX, startY = self:projectVertex(self.rotatedSignal[1], self.pd_methods.zoom.val[1])
-  for i = 2, self.nlines do
-    local endX, endY = self:projectVertex(self.rotatedSignal[i], self.pd_methods.zoom.val[1])
-    local prevX, prevY = endX, endY
-    if self.pd_methods.clip.val[1] == 1 then
+  if self.pd_methods.clip.val[1] == 1 then
+    local startX, startY = self:projectVertex(self.rotatedSignal[1], self.pd_methods.zoom.val[1])
+    for i = 2, self.nlines do
+      local endX, endY = self:projectVertex(self.rotatedSignal[i], self.pd_methods.zoom.val[1])
+      local prevX, prevY = endX, endY
       startX, startY, endX, endY = self:clipLine(startX, startY, endX, endY)
+      if startX then g:draw_line(startX, startY, endX, endY, self.pd_methods.width.val[1]) end
+      startX, startY = prevX, prevY
     end
-    if startX then g:draw_line(startX, startY, endX, endY, self.pd_methods.width.val[1]) end
-    startX, startY = prevX, prevY
+  else
+    local p = Path(self:projectVertex(self.rotatedSignal[1], self.pd_methods.zoom.val[1]))
+    for i = 2, self.nlines do
+      p:line_to(self:projectVertex(self.rotatedSignal[i], self.pd_methods.zoom.val[1]))
+    end
+    g:stroke_path(p, self.pd_methods.width.val[1])
   end
 end
 
@@ -318,29 +324,6 @@ function scope3d:pd_receive(x)
   end
 end
 
--------------------------------------------------------------------------------
---                                       ██  
---                             ▓▓      ██    
---                                 ████▒▒██  
---                               ████▓▓████  
---                             ██▓▓▓▓▒▒██    
---                             ██▓▓▓▓▓▓██    
---                           ████▒▒▓▓▓▓████  
---                           ██▒▒▓▓░░▓▓▒▒▓▓██
---                           ██████▓▓░░▓▓░░██
---                             ██░░░░▒▒░░████
---                             ██░░  ░░░░██  
---                               ░░    ░░
---
--- initializing methods and state (with defaults or creation arguments)
--- creates:
---   * self.pd_args for saving state
---   * self.pd_env for object name (used in error log) and more config
---   * self.pd_methods for look-ups of:
---     1. corresponding function if defined
---     2. state index for saving method states
---     3. method's argument count
---     4. current values
 function pdlua_flames:init_pd_methods(pdclass, name, methods, atoms)
   pdclass.handle_pd_message = pdlua_flames.handle_pd_message
   pdclass.pd_env = pdclass.pd_env or {}
@@ -387,30 +370,23 @@ function pdlua_flames:parse_atoms(atoms)
   local collectKey = nil
   for _, atom in ipairs(atoms) do
     if type(atom) ~= 'number' and string.sub(atom, 1, 1) == '-' then
-      -- start collecting values for a new key if key detected
       collectKey = string.sub(atom, 2)
       kwargs[collectKey] = {}
     elseif collectKey then
-      -- if collecting values for a key, add atom to current key's table
       table.insert(kwargs[collectKey], atom)
     else
-      -- otherwise treat as a positional argument
       table.insert(args, atom)
     end
   end
   return kwargs, args
 end
 
--- handle messages and update state
--- function gets mixed into object's class for use as self:handle_pd_messages
 function pdlua_flames:handle_pd_message(sel, atoms, n)
   if self.pd_methods[sel] then
     local startIndex = self.pd_methods[sel].index
     local valueCount = self.pd_methods[sel].arg_count
-    -- call function an save result (if returned)
     local returnValues = self.pd_methods[sel].func and self.pd_methods[sel].func(self, atoms)
     local values = {}
-    -- clip incoming values to arg_count
     if startIndex and valueCount then
       for i, atom in ipairs(returnValues or atoms) do
         if i > valueCount then break end
@@ -419,7 +395,6 @@ function pdlua_flames:handle_pd_message(sel, atoms, n)
       end
     end
     self.pd_methods[sel].val = values
-    -- update object state
     self:set_args(self.pd_args)
   else
     local baseMessage = self.pd_env.name .. ': no method for \'' .. sel .. '\''
