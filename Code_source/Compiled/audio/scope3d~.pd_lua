@@ -159,13 +159,13 @@ end
 
 function scope3d:pd_rotatex(x)
   local allAtoms = {self.rotationAngleY, self.rotationAngleX}
-  allAtoms[1] = x[1]
+  allAtoms[2] = x[1]
   self:handle_pd_message('rotate', allAtoms)
 end
 
 function scope3d:pd_rotatey(x)
   local allAtoms = {self.rotationAngleY, self.rotationAngleX}
-  allAtoms[2] = x[1]
+  allAtoms[1] = x[1]
   self:handle_pd_message('rotate', allAtoms)
 end
 
