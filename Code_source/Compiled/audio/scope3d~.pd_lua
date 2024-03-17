@@ -124,7 +124,7 @@ end
 
 function scope3d:pd_rate(x)
   if type(x[1]) == "number" then
-    self.frameDelay = x[1] -- math.max(8, 1000 / x[1])
+    self.frameDelay = math.max(8, x[1])
   end
   if self.clock then
     self.clock:unset() 
@@ -303,8 +303,10 @@ function scope3d:paint(g)
       local endX, endY = self:projectVertex(lineToX, lineToY, lineToZ, self.zoom)
       if self.clip == 1 then 
         startX, startY, endX, endY = self:clipLine(startX, startY, endX, endY)
+        if startX then g:draw_line(startX, startY, endX, endY, self.strokeWidth) end
+      else
+        g:draw_line(startX, startY, endX, endY, 1)
       end
-      g:draw_line(startX, startY, endX, endY, 1)
     end
   end
 
