@@ -35,7 +35,6 @@ function scope3d:initialize(name, args)
 
   self.pd_env = { ignorewarnings = true }
   pdlua_flames:init_pd_methods(self, name, methods, args)
-  self:set_size(table.unpack(self.pd_methods.dim.val))
   self:reset_buffer()
   return true
 end
@@ -43,8 +42,8 @@ end
 function scope3d:create_grid(minVal, maxVal, step)
   local grid = {}
   for i = minVal, maxVal, step do
-    table.insert(grid, {{i, 0, minVal}, {i, 0, maxVal}})
-    table.insert(grid, {{minVal, 0, i}, {maxVal, 0, i}})
+    table.insert(grid, {i, 0, minVal, i, 0, maxVal})
+    table.insert(grid, {minVal, 0, i, maxVal, 0, i})
   end
   return grid
 end
@@ -52,12 +51,12 @@ end
 function scope3d:reset_buffer()
   self.bufferIndex = 1
   self.sampleIndex = 1
-  self.signal = {}
-  self.rotatedSignal = {}
+  self.signalX, self.signalY, self.signalZ = {}, {}, {}
+  self.rotatedX, self.rotatedY, self.rotatedZ = {}, {}, {}
   -- prefill ring buffer
   for i = 1, self.nlines do 
-    self.signal[i] = {0, 0, 0}
-    self.rotatedSignal[i] = {0, 0, 0}
+    self.signalX[i], self.signalY[i], self.signalZ[i] = 0, 0, 0
+    self.rotatedX[i], self.rotatedY[i], self.rotatedZ[i] = 0, 0, 0
   end
 end
 
@@ -68,7 +67,7 @@ end
 
 function scope3d:tick()
   self:repaint()
-  self.clock:delay(self.framedelay)
+  self.clock:delay(self.frameDelay)
 end
 
 function scope3d:finalize()
@@ -76,13 +75,60 @@ function scope3d:finalize()
   if self.recv then self.recv:destruct() end
 end
 
+function scope3d:pd_width(x)
+  if type(x[1]) == "number" then self.strokeWidth = x[1] end
+end
+
+function scope3d:pd_zoom(x)
+  if type(x[1]) == "number" then self.zoom = x[1] end
+end
+
+function scope3d:pd_perspective(x)
+  if type(x[1]) == "number" then self.perspective = x[1] end
+end
+
+function scope3d:pd_grid(x)
+  if type(x[1]) == "number" then self.grid = x[1] end
+end
+
+function scope3d:pd_clip(x)
+  if type(x[1]) == "number" then self.clip = x[1] end
+end
+
+function scope3d:pd_gridcolor(x)
+  if #x == 3 and
+     type(x[1]) == "number" and
+     type(x[2]) == "number" and
+     type(x[3]) == "number" then
+    self.gridColorR, self.gridColorG, self.gridColorB = table.unpack(x)
+  end
+end
+
+function scope3d:pd_bgcolor(x)
+  if #x == 3 and
+     type(x[1]) == "number" and
+     type(x[2]) == "number" and
+     type(x[3]) == "number" then
+    self.bgColorR, self.bgColorG, self.bgColorB = table.unpack(x)
+  end
+end
+
+function scope3d:pd_fgcolor(x)
+  if #x == 3 and
+     type(x[1]) == "number" and
+     type(x[2]) == "number" and
+     type(x[3]) == "number" then
+    self.fgColorR, self.fgColorG, self.fgColorB = table.unpack(x)
+  end
+end
+
 function scope3d:pd_rate(x)
   if type(x[1]) == "number" then
-    self.framedelay = x[1] -- math.max(8, 1000 / x[1])
+    self.frameDelay = x[1] -- math.max(8, 1000 / x[1])
   end
   if self.clock then
     self.clock:unset() 
-    self.clock:delay(self.framedelay)
+    self.clock:delay(self.frameDelay)
   end
 end
 
@@ -93,15 +139,13 @@ function scope3d:pd_list(x)
 end
 
 function scope3d:pd_nsamples(x)
-  local allAtoms = self.pd_methods.list.val
-  allAtoms[1] = x[1]
-  self:handle_pd_message('list', allAtoms)
+  self.pd_methods.list.val[1] = x[1]
+  self:handle_pd_message('list', self.pd_methods.list.val)
 end
 
 function scope3d:pd_nlines(x)
-  local allAtoms = self.pd_methods.list.val
-  allAtoms[2] = x[1]
-  self:handle_pd_message('list', allAtoms)
+  self.pd_methods.list.val[2] = x[1]
+  self:handle_pd_message('list', self.pd_methods.list.val)
 end
 
 function scope3d:pd_rotate(x)
@@ -110,7 +154,7 @@ function scope3d:pd_rotate(x)
      type(x[2]) == "number" then
     self.rotationAngleY, self.rotationAngleX = x[1], x[2]
     self.rotationStartAngleX, self.rotationStartAngleY = self.rotationAngleX, self.rotationAngleY
-end
+  end
 end
 
 function scope3d:pd_rotatex(x)
@@ -126,7 +170,13 @@ function scope3d:pd_rotatey(x)
 end
 
 function scope3d:pd_dim(x)
-  self:set_size(x[1], x[2])
+  if #x == 2 and
+     type(x[1]) == "number" and
+     type(x[2]) == "number" then
+    self.width, self.height = x[1], x[2]
+    self.widthMinusOne, self.heightMinusOne = self.width-1, self.height-1
+    self:set_size(self.width, self.height)
+  end
 end
 
 function scope3d:dsp(sr, bs)
@@ -153,7 +203,9 @@ end
 function scope3d:perform(in1, in2, in3)
   while self.sampleIndex <= self.blocksize do
     -- ring buffer
-    self.signal[self.bufferIndex] = {in1[self.sampleIndex], in2[self.sampleIndex], in3[self.sampleIndex]}
+    self.signalX[self.bufferIndex] = in1[self.sampleIndex]
+    self.signalY[self.bufferIndex] = in2[self.sampleIndex]
+    self.signalZ[self.bufferIndex] = in3[self.sampleIndex]
     self.bufferIndex = (self.bufferIndex % self.nlines) + 1
     self.sampleIndex = self.sampleIndex + self.nsamples
   end
@@ -161,22 +213,20 @@ function scope3d:perform(in1, in2, in3)
 end
 
 function scope3d:clipLine(x1, y1, x2, y2)
-    local xmin, ymin, xmax, ymax = 1, 1, self.pd_methods.dim.val[1]-1, self.pd_methods.dim.val[2]-1
-
     local function isInside(x, y)
-        return x >= xmin and x <= xmax and y >= ymin and y <= ymax
+        return x >= 1 and x <= self.widthMinusOne and y >= 1 and y <= self.heightMinusOne
     end
 
     local function computeOutCode(x, y)
         local code = 0
-        if x < xmin then -- to the left of clip window
+        if x < 1 then -- to the left of clip window
             code = code | 1
-        elseif x > xmax then -- to the right of clip window
+        elseif x > self.widthMinusOne then -- to the right of clip window
             code = code | 2
         end
-        if y < ymin then -- below the clip window
+        if y < 1 then -- below the clip window
             code = code | 4
-        elseif y > ymax then -- above the clip window
+        elseif y > self.heightMinusOne then -- above the clip window
             code = code | 8
         end
         return code
@@ -187,17 +237,17 @@ function scope3d:clipLine(x1, y1, x2, y2)
         local dy = y2 - y1
 
         if outcode & 8 ~= 0 then -- point is above the clip window
-            x = x1 + dx * (ymax - y) / dy
-            y = ymax
+            x = x1 + dx * (self.heightMinusOne - y) / dy
+            y = self.heightMinusOne
         elseif outcode & 4 ~= 0 then -- point is below the clip window
-            x = x1 + dx * (ymin - y) / dy
-            y = ymin
+            x = x1 + dx * (1 - y) / dy
+            y = 1
         elseif outcode & 2 ~= 0 then -- point is to the right of clip window
-            y = y1 + dy * (xmax - x) / dx
-            x = xmax
+            y = y1 + dy * (self.widthMinusOne - x) / dx
+            x = self.widthMinusOne
         elseif outcode & 1 ~= 0 then -- point is to the left of clip window
-            y = y1 + dy * (xmin - x) / dx
-            x = xmin
+            y = y1 + dy * (1 - x) / dx
+            x = 1
         end
         return x, y
     end
@@ -234,78 +284,76 @@ function scope3d:clipLine(x1, y1, x2, y2)
 end
 
 function scope3d:paint(g)
-  g:set_color(table.unpack(self.pd_methods.bgcolor.val))
+  g:set_color(self.bgColorR, self.bgColorG, self.bgColorB)
   g:fill_all()
 
   -- draw ground grid
-  if self.pd_methods.grid.val[1] == 1 then
-    g:set_color(table.unpack(self.pd_methods.gridcolor.val))
+  if self.grid == 1 then
+    g:set_color(self.gridColorR, self.gridColorG, self.gridColorB)
     for i = 1, #self.gridLines do
-      local lineFrom, lineTo = table.unpack(self.gridLines[i])
+      local lineFromX, lineFromY, lineFromZ, lineToX, lineToY, lineToZ = table.unpack(self.gridLines[i])
       
       -- apply rotation to grid lines
-      lineFrom = self:rotate_y(lineFrom, self.rotationAngleY)
-      lineFrom = self:rotate_x(lineFrom, self.rotationAngleX)
-      lineTo   = self:rotate_y(lineTo  , self.rotationAngleY)
-      lineTo   = self:rotate_x(lineTo  , self.rotationAngleX)
+      lineFromX, lineFromY, lineFromZ = self:rotate_y(lineFromX, lineFromY, lineFromZ, self.rotationAngleY)
+      lineFromX, lineFromY, lineFromZ = self:rotate_x(lineFromX, lineFromY, lineFromZ, self.rotationAngleX)
+      lineToX, lineToY, lineToZ = self:rotate_y(lineToX, lineToY, lineToZ, self.rotationAngleY)
+      lineToX, lineToY, lineToZ = self:rotate_x(lineToX, lineToY, lineToZ, self.rotationAngleX)
 
-      local startX, startY = self:projectVertex(lineFrom, self.pd_methods.zoom.val[1])
-      local   endX,   endY = self:projectVertex(  lineTo, self.pd_methods.zoom.val[1])
-      if self.pd_methods.clip.val[1] == 1 then 
+      local startX, startY = self:projectVertex(lineFromX, lineFromY, lineFromZ, self.zoom)
+      local endX, endY = self:projectVertex(lineToX, lineToY, lineToZ, self.zoom)
+      if self.clip == 1 then 
         startX, startY, endX, endY = self:clipLine(startX, startY, endX, endY)
       end
-      if startX then g:draw_line(startX, startY, endX, endY, 1) end
+      g:draw_line(startX, startY, endX, endY, 1)
     end
   end
 
   for i = 1, self.nlines do
     local offsetIndex = (i + self.bufferIndex-2) % self.nlines + 1
-    local rotatedVertex = self:rotate_y(self.signal[offsetIndex], self.rotationAngleY)
-    self.rotatedSignal[i] = self:rotate_x(rotatedVertex, self.rotationAngleX)
+    local rotatedX, rotatedY, rotatedZ = self:rotate_y(self.signalX[offsetIndex], self.signalY[offsetIndex], self.signalZ[offsetIndex], self.rotationAngleY)
+    self.rotatedX[i], self.rotatedY[i], self.rotatedZ[i] = self:rotate_x(rotatedX, rotatedY, rotatedZ, self.rotationAngleX)
   end
 
-  g:set_color(table.unpack(self.pd_methods.fgcolor.val))
-  if self.pd_methods.clip.val[1] == 1 then
-    local startX, startY = self:projectVertex(self.rotatedSignal[1], self.pd_methods.zoom.val[1])
+  g:set_color(self.fgColorR, self.fgColorG, self.fgColorB)
+  if self.clip == 1 then 
+    local startX, startY = self:projectVertex(self.rotatedX[1], self.rotatedY[1], self.rotatedZ[1], self.pd_methods.zoom.val[1])
     for i = 2, self.nlines do
-      local endX, endY = self:projectVertex(self.rotatedSignal[i], self.pd_methods.zoom.val[1])
+      local endX, endY = self:projectVertex(self.rotatedX[i], self.rotatedY[i], self.rotatedZ[i], self.pd_methods.zoom.val[1])
       local prevX, prevY = endX, endY
       startX, startY, endX, endY = self:clipLine(startX, startY, endX, endY)
-      if startX then g:draw_line(startX, startY, endX, endY, self.pd_methods.width.val[1]) end
+      if startX then g:draw_line(startX, startY, endX, endY, self.strokeWidth) end
       startX, startY = prevX, prevY
     end
   else
-    local p = Path(self:projectVertex(self.rotatedSignal[1], self.pd_methods.zoom.val[1]))
+    local p = Path(self:projectVertex(self.rotatedX[1], self.rotatedY[1], self.rotatedZ[1], self.zoom))
     for i = 2, self.nlines do
-      p:line_to(self:projectVertex(self.rotatedSignal[i], self.pd_methods.zoom.val[1]))
+      p:line_to(self:projectVertex(self.rotatedX[i], self.rotatedY[i], self.rotatedZ[i], self.zoom))
     end
-    g:stroke_path(p, self.pd_methods.width.val[1])
+    g:stroke_path(p, self.strokeWidth)
   end
 end
 
-function scope3d:rotate_y(vertex, angle)
-  local x, y, z = table.unpack(vertex)
+function scope3d:rotate_y(x, y ,z , angle)
   local cosTheta = math.cos(angle * math.pi / 180)
   local sinTheta = math.sin(angle * math.pi / 180)
   local newX = x * cosTheta - z * sinTheta
   local newZ = x * sinTheta + z * cosTheta
-  return {newX, y, newZ}
+  return newX, y, newZ
 end
 
-function scope3d:rotate_x(vertex, angle)
-  local x, y, z = table.unpack(vertex)
+function scope3d:rotate_x(x, y, z, angle)
   local cosTheta = math.cos(-angle * math.pi / 180)
   local sinTheta = math.sin(-angle * math.pi / 180)
   local newY = y * cosTheta - z * sinTheta
   local newZ = y * sinTheta + z * cosTheta
-  return {x, newY, newZ}
+  return x, newY, newZ
 end
 
-function scope3d:projectVertex(vertex)
-  local maxDim = math.max(self.pd_methods.dim.val[1] - 2, self.pd_methods.dim.val[2] - 2)
-  local scale = self.cameraDistance / (self.cameraDistance + vertex[3] * self.pd_methods.perspective.val[1])
-  local screenX = self.pd_methods.dim.val[1] / 2 + 0.5 + (vertex[1] * scale * self.pd_methods.zoom.val[1] * maxDim * 0.5)
-  local screenY = self.pd_methods.dim.val[2] / 2 + 0.5 - (vertex[2] * scale * self.pd_methods.zoom.val[1] * maxDim * 0.5)
+function scope3d:projectVertex(x, y, z)
+  local maxDim = math.max(self.width - 2, self.height - 2)
+  local scale = self.cameraDistance / (self.cameraDistance + z * self.perspective)
+  local screenX = self.width / 2 + 0.5 + (x * scale * self.zoom * maxDim * 0.5)
+  local screenY = self.height / 2 + 0.5 - (y * scale * self.zoom * maxDim * 0.5)
   return screenX, screenY
 end
 
