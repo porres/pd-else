@@ -9,7 +9,7 @@ function scope3d:initialize(name, args)
     { name = "rotatex" },
     { name = "rotatey" },
 
-    { name = "dim",         defaults = { 140, 140 } },
+    { name = "dim",         defaults = { 140.0, 140.0 } },
 
     { name = "width",       defaults = { 1 } },
     { name = "clip",        defaults = { 0 } },
@@ -26,7 +26,7 @@ function scope3d:initialize(name, args)
     { name = "fgcolor",     defaults = { 30, 30, 30 } },
     { name = "bgcolor",     defaults = { 190, 190, 190 } },
     { name = "gridcolor",   defaults = { 160, 160, 160 } },
-    { name = "receive",     defaults = { "empty" } },
+    { name = "receive",     defaults = { nil } },
   }
   self.cameraDistance = 6
   self.rotationAngleX, self.rotationAngleY = 0, 0
@@ -159,13 +159,13 @@ end
 
 function scope3d:pd_rotatex(x)
   local allAtoms = {self.rotationAngleY, self.rotationAngleX}
-  allAtoms[1] = x[1]
+  allAtoms[2] = x[1]
   self:handle_pd_message('rotate', allAtoms)
 end
 
 function scope3d:pd_rotatey(x)
   local allAtoms = {self.rotationAngleY, self.rotationAngleX}
-  allAtoms[2] = x[1]
+  allAtoms[1] = x[1]
   self:handle_pd_message('rotate', allAtoms)
 end
 
@@ -173,7 +173,9 @@ function scope3d:pd_dim(x)
   if #x == 2 and
      type(x[1]) == "number" and
      type(x[2]) == "number" then
-    self.width, self.height = x[1], x[2]
+      pd.post(table.concat(x, ' '))
+    self.width, self.height = math.floor(x[1]), math.floor(x[2])
+      pd.post('after: '..table.concat(x, ' '))
     self.widthMinusOne, self.heightMinusOne = self.width-1, self.height-1
     self:set_size(self.width, self.height)
   end
@@ -364,12 +366,18 @@ function scope3d:receive(sel, atoms)
 end
 
 function scope3d:in_n(n, sel, atoms)
-  self:handle_pd_message(sel, atoms, n)
+  if n == 1 then
+    self:handle_pd_message(sel, atoms, 1)
+  else
+    local baseMessage = self.pd_env.name .. ': no method for \'' .. sel .. '\''
+    local inletMessage = n and ' on inlet ' .. string.format('%d', n) or ''
+    self:error(baseMessage .. inletMessage)
+  end
 end
 
 function scope3d:pd_receive(x)
-  if self.recv then self.recv:destruct() end
-  if x[1] then
+  if x[1] and x[1] ~= "empty" then
+    if self.recv then self.recv:destruct() end
     self.recv = pd.Receive:new():register(self, tostring(x[1]), "receive")
   end
 end
