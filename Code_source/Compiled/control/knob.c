@@ -5,6 +5,10 @@
 #include "g_canvas.h"
 #include <math.h>
 
+#define NAN_V   0x7FFFFFFFul
+#define POS_INF 0x7F800000ul
+#define NEG_INF 0xFF800000ul
+
 #ifdef _MSC_VER
 #define snprintf _snprintf
 #endif
@@ -543,6 +547,8 @@ static void knob_save(t_gobj *z, t_binbuf *b){
 // ------------------------ knob methods -----------------------------
 
 static void knob_set(t_knob *x, t_floatarg f){
+    if(isnan(f) || isinf(f))
+        return;
     double old = x->x_pos;
     x->x_fval = knob_clipfloat(x, f);
     x->x_pos = knob_getpos(x, x->x_fval);
@@ -555,11 +561,15 @@ static void knob_set(t_knob *x, t_floatarg f){
 
 static void knob_bang(t_knob *x){
     outlet_float(x->x_obj.ob_outlet, x->x_fval);
+    if(x->x_snd == gensym("empty") || x->x_snd == &s_)
+        return;
     if(x->x_snd->s_thing)
         pd_float(x->x_snd->s_thing, x->x_fval);
 }
 
 static void knob_float(t_knob *x, t_floatarg f){
+    if(isnan(f) || isinf(f))
+        return;
     knob_set(x, f);
     knob_bang(x);
 }
