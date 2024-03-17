@@ -158,24 +158,26 @@ function scope3d:pd_rotate(x)
 end
 
 function scope3d:pd_rotatex(x)
-  local allAtoms = {self.rotationAngleY, self.rotationAngleX}
-  allAtoms[2] = x[1]
-  self:handle_pd_message('rotate', allAtoms)
+  if type(x[1]) == "number" then
+    local rotation = {self.rotationAngleY, self.rotationAngleX}
+    rotation[1] = x[1]
+    self:handle_pd_message('rotate', rotation)
+  end
 end
 
 function scope3d:pd_rotatey(x)
-  local allAtoms = {self.rotationAngleY, self.rotationAngleX}
-  allAtoms[1] = x[1]
-  self:handle_pd_message('rotate', allAtoms)
+  if type(x[1]) == "number" then
+    local rotation = {self.rotationAngleY, self.rotationAngleX}
+    rotation[2] = x[1]
+    self:handle_pd_message('rotate', rotation)
+  end
 end
 
 function scope3d:pd_dim(x)
   if #x == 2 and
      type(x[1]) == "number" and
      type(x[2]) == "number" then
-      pd.post(table.concat(x, ' '))
     self.width, self.height = math.floor(x[1]), math.floor(x[2])
-      pd.post('after: '..table.concat(x, ' '))
     self.widthMinusOne, self.heightMinusOne = self.width-1, self.height-1
     self:set_size(self.width, self.height)
   end
