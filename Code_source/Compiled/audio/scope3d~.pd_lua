@@ -76,19 +76,31 @@ function scope3d:finalize()
 end
 
 function scope3d:pd_width(x)
-  if type(x[1]) == "number" then self.strokeWidth = x[1] end
+  if type(x[1]) == "number" then
+    self.strokeWidth = x[1]
+    self:repaint()
+  end
 end
 
 function scope3d:pd_zoom(x)
-  if type(x[1]) == "number" then self.zoom = x[1] end
+  if type(x[1]) == "number" then 
+    self.zoom = x[1]
+    self:repaint()
+  end
 end
 
 function scope3d:pd_perspective(x)
-  if type(x[1]) == "number" then self.perspective = x[1] end
+  if type(x[1]) == "number" then 
+    self.perspective = x[1]
+    self:repaint()
+  end
 end
 
 function scope3d:pd_grid(x)
-  if type(x[1]) == "number" then self.grid = x[1] end
+  if type(x[1]) == "number" then
+    self.grid = x[1]
+    self:repaint()
+  end
 end
 
 function scope3d:pd_clip(x)
@@ -101,6 +113,7 @@ function scope3d:pd_gridcolor(x)
      type(x[2]) == "number" and
      type(x[3]) == "number" then
     self.gridColorR, self.gridColorG, self.gridColorB = table.unpack(x)
+    self:repaint()
   end
 end
 
@@ -110,6 +123,7 @@ function scope3d:pd_bgcolor(x)
      type(x[2]) == "number" and
      type(x[3]) == "number" then
     self.bgColorR, self.bgColorG, self.bgColorB = table.unpack(x)
+    self:repaint()
   end
 end
 
@@ -119,6 +133,7 @@ function scope3d:pd_fgcolor(x)
      type(x[2]) == "number" and
      type(x[3]) == "number" then
     self.fgColorR, self.fgColorG, self.fgColorB = table.unpack(x)
+    self:repaint()
   end
 end
 
@@ -129,6 +144,7 @@ function scope3d:pd_rate(x)
   if self.clock then
     self.clock:unset() 
     self.clock:delay(self.frameDelay)
+    self:repaint()
   end
 end
 
@@ -136,6 +152,7 @@ function scope3d:pd_list(x)
   self.nsamples = (math.max(2, math.floor(x[1])) - 1) or 8
   self.nlines = math.min(1024, math.max(2, math.floor(x[2]))) or 256
   self:reset_buffer()
+  self:repaint()
 end
 
 function scope3d:pd_nsamples(x)
@@ -154,6 +171,7 @@ function scope3d:pd_rotate(x)
      type(x[2]) == "number" then
     self.rotationAngleY, self.rotationAngleX = x[1], x[2]
     self.rotationStartAngleX, self.rotationStartAngleY = self.rotationAngleX, self.rotationAngleY
+    self:repaint()
   end
 end
 
@@ -201,6 +219,7 @@ function scope3d:mouse_drag(x, y)
   if self.pd_methods.drag.val[1] == 1 then 
     self.rotationAngleY = self.rotationStartAngleY + ((x-self.dragStartX) / 2)
     self.rotationAngleX = self.rotationStartAngleX + ((y-self.dragStartY) / 2)
+    self:repaint()
   end
 end
 
@@ -217,74 +236,74 @@ function scope3d:perform(in1, in2, in3)
 end
 
 function scope3d:clipLine(x1, y1, x2, y2)
-    local function isInside(x, y)
-        return x >= 1 and x <= self.widthMinusOne and y >= 1 and y <= self.heightMinusOne
+  local function isInside(x, y)
+    return x >= 1 and x <= self.widthMinusOne and y >= 1 and y <= self.heightMinusOne
+  end
+
+  local function computeOutCode(x, y)
+    local code = 0
+    if x < 1 then -- to the left of clip window
+      code = code | 1
+    elseif x > self.widthMinusOne then -- to the right of clip window
+      code = code | 2
     end
-
-    local function computeOutCode(x, y)
-        local code = 0
-        if x < 1 then -- to the left of clip window
-            code = code | 1
-        elseif x > self.widthMinusOne then -- to the right of clip window
-            code = code | 2
-        end
-        if y < 1 then -- below the clip window
-            code = code | 4
-        elseif y > self.heightMinusOne then -- above the clip window
-            code = code | 8
-        end
-        return code
+    if y < 1 then -- below the clip window
+      code = code | 4
+    elseif y > self.heightMinusOne then -- above the clip window
+      code = code | 8
     end
+    return code
+  end
 
-    local function clipPoint(x, y, outcode)
-        local dx = x2 - x1
-        local dy = y2 - y1
+  local function clipPoint(x, y, outcode)
+    local dx = x2 - x1
+    local dy = y2 - y1
 
-        if outcode & 8 ~= 0 then -- point is above the clip window
-            x = x1 + dx * (self.heightMinusOne - y) / dy
-            y = self.heightMinusOne
-        elseif outcode & 4 ~= 0 then -- point is below the clip window
-            x = x1 + dx * (1 - y) / dy
-            y = 1
-        elseif outcode & 2 ~= 0 then -- point is to the right of clip window
-            y = y1 + dy * (self.widthMinusOne - x) / dx
-            x = self.widthMinusOne
-        elseif outcode & 1 ~= 0 then -- point is to the left of clip window
-            y = y1 + dy * (1 - x) / dx
-            x = 1
-        end
-        return x, y
+    if outcode & 8 ~= 0 then -- point is above the clip window
+      x = x1 + dx * (self.heightMinusOne - y) / dy
+      y = self.heightMinusOne
+    elseif outcode & 4 ~= 0 then -- point is below the clip window
+      x = x1 + dx * (1 - y) / dy
+      y = 1
+    elseif outcode & 2 ~= 0 then -- point is to the right of clip window
+      y = y1 + dy * (self.widthMinusOne - x) / dx
+      x = self.widthMinusOne
+    elseif outcode & 1 ~= 0 then -- point is to the left of clip window
+      y = y1 + dy * (1 - x) / dx
+      x = 1
     end
+    return x, y
+  end
 
-    local outcode1 = computeOutCode(x1, y1)
-    local outcode2 = computeOutCode(x2, y2)
-    local accept = false
+  local outcode1 = computeOutCode(x1, y1)
+  local outcode2 = computeOutCode(x2, y2)
+  local accept = false
 
-    while true do
-        if outcode1 == 0 and outcode2 == 0 then -- both points inside
-            accept = true
-            break
-        elseif (outcode1 & outcode2) ~= 0 then -- both points share an outside zone
-            break
-        else
-            local x, y
-            local outcodeOut = (outcode1 ~= 0) and outcode1 or outcode2
+  while true do
+    if outcode1 == 0 and outcode2 == 0 then -- both points inside
+      accept = true
+      break
+    elseif (outcode1 & outcode2) ~= 0 then -- both points share an outside zone
+      break
+    else
+      local x, y
+      local outcodeOut = (outcode1 ~= 0) and outcode1 or outcode2
 
-            x, y = clipPoint(x1, y1, outcodeOut)
+      x, y = clipPoint(x1, y1, outcodeOut)
 
-            if outcodeOut == outcode1 then
-                x1, y1 = x, y
-                outcode1 = computeOutCode(x1, y1)
-            else
-                x2, y2 = x, y
-                outcode2 = computeOutCode(x2, y2)
-            end
-        end
+      if outcodeOut == outcode1 then
+        x1, y1 = x, y
+        outcode1 = computeOutCode(x1, y1)
+      else
+        x2, y2 = x, y
+        outcode2 = computeOutCode(x2, y2)
+      end
     end
+  end
 
-    if accept then
-        return x1, y1, x2, y2
-    end
+  if accept then
+    return x1, y1, x2, y2
+  end
 end
 
 function scope3d:paint(g)
