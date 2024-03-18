@@ -218,7 +218,7 @@ end
 function scope3d:mouse_drag(x, y)
   if self.pd_methods.drag.val[1] == 1 then 
     self.rotationAngleY = self.rotationStartAngleY + ((x-self.dragStartX) / 2)
-    self.rotationAngleX = self.rotationStartAngleX + ((y-self.dragStartY) / 2)
+    self.rotationAngleX = self.rotationStartAngleX + ((y+self.dragStartY) / 2)
     self:repaint()
   end
 end
@@ -367,8 +367,8 @@ function scope3d:rotate_y(x, y ,z , angle)
 end
 
 function scope3d:rotate_x(x, y, z, angle)
-  local cosTheta = math.cos(-angle * math.pi / 180)
-  local sinTheta = math.sin(-angle * math.pi / 180)
+  local cosTheta = math.cos(angle * math.pi / 180)
+  local sinTheta = math.sin(angle * math.pi / 180)
   local newY = y * cosTheta - z * sinTheta
   local newZ = y * sinTheta + z * cosTheta
   return x, newY, newZ
