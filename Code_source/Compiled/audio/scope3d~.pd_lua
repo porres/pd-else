@@ -107,6 +107,10 @@ function scope3d:pd_clip(x)
   if type(x[1]) == "number" then self.clip = x[1] end
 end
 
+function scope3d:pd_drag(x)
+  if type(x[1]) == "number" then self.drag = x[1] end
+end
+
 function scope3d:pd_gridcolor(x)
   if #x == 3 and
      type(x[1]) == "number" and
@@ -206,19 +210,19 @@ function scope3d:dsp(sr, bs)
 end
 
 function scope3d:mouse_down(x, y)
-  if self.pd_methods.drag.val[1] == 1 then self.dragStartX, self.dragStartY = x, y end
+  if self.drag == 1 then self.dragStartX, self.dragStartY = x, y end
 end
 
 function scope3d:mouse_up(x, y)
-  if self.pd_methods.drag.val[1] == 1  then
+  if self.drag == 1  then
     self.rotationStartAngleX, self.rotationStartAngleY = self.rotationAngleX, self.rotationAngleY
   end
 end
 
 function scope3d:mouse_drag(x, y)
-  if self.pd_methods.drag.val[1] == 1 then 
+  if self.drag == 1 then 
     self.rotationAngleY = self.rotationStartAngleY + ((x-self.dragStartX) / 2)
-    self.rotationAngleX = self.rotationStartAngleX + ((y+self.dragStartY) / 2)
+    self.rotationAngleX = self.rotationStartAngleX + ((-y+self.dragStartY) / 2)
     self:repaint()
   end
 end
