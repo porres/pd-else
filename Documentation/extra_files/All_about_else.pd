@@ -19,7 +19,6 @@
 #X obj 182 292 else/openfile -h README.pdf;
 #X obj 251 364 else/openfile -h All_objects.pd;
 #X obj 160 397 else/openfile -h http://www.github.com/porres/pd-else;
-#X obj 160 430 else/openfile -h https://github.com/porres/pd-issues;
 #X text 47 364 All objects in the ELSE library:;
 #X obj 179 322 else/openfile -h changelog.txt;
 #X text 50 322 Check the CHANGELOG:;
@@ -40,3 +39,4 @@
 #X text 443 323 sometimes it is named as:;
 #X text 175 166 Check [declare]'s help file for more information., f 27;
 #X text 52 213 Also \, check the [else] object and its help file \, which carries more information about the library:, f 42;
+#X obj 160 430 else/openfile -h https://github.com/porres/pd-else/issues;
