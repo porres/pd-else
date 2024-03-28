@@ -1,4 +1,5 @@
-// based on the plaits engine by Mutable instruments, ported to Pd by Porres 2023-2024
+// based on the plaits engine by Mutable instruments
+// ported to Pd by Porres 2023-2024
 // MIT Liscense
 
 #include <stdint.h>
@@ -116,6 +117,7 @@ void plaits_print(t_plaits *x){
     post("- morph active: %d", x->x_morph_active);
     post("- freq active: %d", x->x_frequency_active);
     post("- timbre active: %d", x->x_timbre_active);
+    post("- midi active: %d", x->x_midi_mode);
 }
 
 void plaits_dump(t_plaits *x){
@@ -142,25 +144,15 @@ void plaits_dump(t_plaits *x){
     outlet_anything(x->x_info_out, gensym("freq active"), 1, at);
     SETFLOAT(at, x->x_timbre_active);
     outlet_anything(x->x_info_out, gensym("timbre active"), 1, at);
+    SETFLOAT(at, x->x_midi_mode);
+    outlet_anything(x->x_info_out, gensym("midi active"), 1, at);
 }
 
 void plaits_list(t_plaits *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 0)
         return;
-    if(x->x_midi_mode){
-        post("midi mode input");
-        x->x_midi_tr = x->x_midi_lvl = 0;
-        x->x_midi_pitch = atom_getfloat(av);
-        ac--, av++;
-        if(ac){
-            x->x_midi_tr = x->x_midi_lvl = atom_getfloat(av);
-            ac--, av++;
-        }
-        if(ac)
-            x->x_midi_lvl = atom_getfloat(av);
-    }
-    else{
+//    else{
         if(ac != 2)
             obj_list(&x->x_obj, NULL, ac, av);
         else{
@@ -170,6 +162,18 @@ void plaits_list(t_plaits *x, t_symbol *s, int ac, t_atom *av){
             SETFLOAT(at+2, atom_getfloat(av+1));
             obj_list(&x->x_obj, NULL, 3, at);
         }
+//    }
+    if(x->x_midi_mode){
+//        post("midi mode input");
+        x->x_midi_tr = x->x_midi_lvl = 0;
+        x->x_midi_pitch = atom_getfloat(av);
+        ac--, av++;
+        if(ac){
+            x->x_midi_tr = x->x_midi_lvl = atom_getfloat(av);
+            ac--, av++;
+        }
+        if(ac)
+            x->x_midi_lvl = atom_getfloat(av);
     }
 }
 
@@ -246,7 +250,7 @@ void plaits_timbre_active(t_plaits *x, t_floatarg f){
 
 void plaits_midi_active(t_plaits *x, t_floatarg f){
     x->x_midi_mode = (int)(f != 0);
-    post("set midi mode = %d", x->x_midi_mode);
+//    post("set midi mode = %d", x->x_midi_mode);
 }
 
 static float plaits_get_pitch(t_plaits *x, t_floatarg f){
@@ -400,7 +404,7 @@ void plaits_dsp(t_plaits *x, t_signal **sp){
     x->x_pitch_correction = log2f(48000.f / sys_getsr());
     x->x_n = sp[0]->s_n;
     if(x->x_midi_mode){
-        post("dsp midi mode = %d", x->x_midi_mode);
+//        post("dsp midi mode = %d", x->x_midi_mode);
         dsp_add(plaits_perform_midi, 7, x, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec,
             sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec);
     }
