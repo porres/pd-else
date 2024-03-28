@@ -309,7 +309,7 @@ t_int *plaits_perform(t_int *w){
     x->x_modulations.level_patched = x->x_level_active;
     for(int j = 0; j < x->x_block_count; j++){
         float pitch;
-        if(x->x_midi_mode{
+        if(x->x_midi_mode){
             pitch = plaits_get_pitch(x, x->x_midi_pitch);
             if(x->x_trigger_mode) // trigger mode
                 x->x_modulations.trigger = x->x_midi_tr;
