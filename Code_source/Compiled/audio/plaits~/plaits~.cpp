@@ -404,7 +404,7 @@ void plaits_dsp(t_plaits *x, t_signal **sp){
         dsp_add(plaits_perform_midi, 7, x, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec,
             sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec);
     }
-    else*/
+    else
         dsp_add(plaits_perform, 10, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec,
             sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec);
 }
