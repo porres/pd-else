@@ -233,7 +233,7 @@ static float plaits_get_pitch(t_plaits *x, t_floatarg f){
         return(f);
     }
     else if(x->x_pitch_mode == 1)
-        return((f - 60) / 12);
+        return(f > 0 ? (f - 60) / 12 : 0);
     else
         return(f*5);
 }
