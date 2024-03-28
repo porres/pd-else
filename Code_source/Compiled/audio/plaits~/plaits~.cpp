@@ -396,15 +396,6 @@ t_int *plaits_perform_midi(t_int *w){
     return(w+8);
 }
 
-int check_connection(t_object *x, t_glist *glist, int inno, t_symbol *outsym){
-    t_linetraverser t;
-    linetraverser_start(&t, glist);
-    while(linetraverser_next(&t))
-        if(t.tr_ob2 == x && t.tr_inno == inno && (!outsym || outsym == outlet_getsymbol(t.tr_outlet)))
-            return (1);
-    return(0);
-}
-
 void plaits_dsp(t_plaits *x, t_signal **sp){
     x->x_pitch_correction = log2f(48000.f / sys_getsr());
     x->x_n = sp[0]->s_n;
