@@ -232,8 +232,10 @@ static float plaits_get_pitch(t_plaits *x, t_floatarg f){
         f = log2f((f < 0 ? f * -1 : f)/440) + 0.75;
         return(f);
     }
-    else if(x->x_pitch_mode == 1)
-        return(f > 0 ? (f - 60) / 12 : 0);
+    else if(x->x_pitch_mode == 1){
+        f = f > 0 ? ((f - 60) / 12) : 0;
+        return(f);
+    }
     else
         return(f*5);
 }
