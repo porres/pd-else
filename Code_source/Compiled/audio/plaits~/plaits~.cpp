@@ -2,12 +2,10 @@
 // MIT Liscense
 
 #include <stdint.h>
+#include "m_pd.h"
 #include "plaits/dsp/dsp.h"
 #include "plaits/dsp/engine/engine.h"
 #include "plaits/dsp/voice.h"
-
-#include "m_pd.h"
-//#include "g_canvas.h"
 
 static t_class *plaits_class;
 
@@ -151,6 +149,7 @@ void plaits_list(t_plaits *x, t_symbol *s, int ac, t_atom *av){
     if(ac == 0)
         return;
     if(x->x_midi_mode){
+        post("midi mode input");
         x->x_midi_tr = x->x_midi_lvl = 0;
         x->x_midi_pitch = atom_getfloat(av);
         ac--, av++;
@@ -247,6 +246,7 @@ void plaits_timbre_active(t_plaits *x, t_floatarg f){
 
 void plaits_midi_active(t_plaits *x, t_floatarg f){
     x->x_midi_mode = (int)(f != 0);
+    post("set midi mode = %d", x->x_midi_mode);
 }
 
 static float plaits_get_pitch(t_plaits *x, t_floatarg f){
@@ -399,6 +399,7 @@ t_int *plaits_perform_midi(t_int *w){
 void plaits_dsp(t_plaits *x, t_signal **sp){
     x->x_pitch_correction = log2f(48000.f / sys_getsr());
     x->x_n = sp[0]->s_n;
+    post("midi mode = %d", x->x_midi_mode);
     if(x->x_midi_mode)
         dsp_add(plaits_perform_midi, 7, x, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec,
             sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec);
