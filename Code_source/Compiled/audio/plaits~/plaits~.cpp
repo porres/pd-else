@@ -452,7 +452,7 @@ void *plaits_new(t_symbol *s, int ac, t_atom *av){
                 x->x_frequency_active = 1;
             else if(sym == gensym("-morph_active"))
                 x->x_morph_active = 1;
-            if(sym == gensym("-midi_active"))
+            else if(sym == gensym("-midi_active"))
                 x->x_midi_mode = 1;
             else
                 goto errstate;
