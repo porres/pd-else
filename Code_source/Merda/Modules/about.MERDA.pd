@@ -39,8 +39,8 @@
 #N canvas 272 128 1019 575 oscillators 0;
 #X obj 328 32 else/gendyn.m~;
 #A saved 50 8 1 10 10;
-#X obj 43 60 else/plaits.m~;
-#A saved 0 0.5 0.5 0.5 0 0.5 0.5 0 0 0 0;
+#X obj 43 40 else/plaits.m~;
+#A saved 0 0.5 0.5 0.5 0 0.5 0.5 0 0 0 0 0 0 0 0;
 #X obj 334 358 else/pluck.m~;
 #A saved 500 10000;
 #X obj 537 106 else/pm6.m~;
