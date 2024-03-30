@@ -87,9 +87,9 @@
 #X obj 255 451 r \$0-depth;
 #X obj 89 491 chorus~, f 36;
 #X obj 338 451 r \$0-wet;
-#N canvas 227 82 394 451 (subpatch) 0;
+#N canvas 227 82 394 451 (subpatch) 1;
 #X obj 112 112 cnv 15 175 135 empty empty empty 20 12 0 14 #dbdbdb #373737 0;
-#X obj 136 121 note 104 24 Inter empty 5 54 54 54 0 187 187 187 1 1 CHORUS;
+#X obj 136 121 note 118 24 Inter empty 5 54 54 54 0 187 187 187 1 1 CHORUS;
 #X obj 121 187 else/knob 41 0.1 5 4 0.1 \$0-rate \$0-set-rate #dfdfdf #bbbbbb #000000 0 0 0 0 1 320 0 0 0.1;
 #X obj 232 187 else/knob 41 0 1 0 0 \$0-wet \$0-set-wet #9f9f9f #afafaf black 0 0 0 0 1 320 0 0 0;
 #X text 225 168 Dry/Wet;
