@@ -1,7 +1,6 @@
-// porres 2018
+// porres 2018-2024
 
 #include "m_pd.h"
-#include <string.h>
 
 typedef struct _ctlin{
     t_object       x_obj;
@@ -76,10 +75,18 @@ static void ctlin_float(t_ctlin *x, t_float f){
 
 static void ctlin_list(t_ctlin *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    if(!ac)
+    if(!ac || x->x_ext)
         return;
-    if(!x->x_ext)
-        ctlin_float(x, atom_getfloat(av));
+    int n = atom_getfloatarg(0, ac, av);
+    int value = atom_getfloatarg(1, ac, av);
+    int channel = atom_getfloatarg(2, ac, av);
+    if(x->x_ch_in > 0 && x->x_ch_in != channel)
+        return;
+    if(x->x_ctl_in > 0 && x->x_ctl_in != n)
+        return;
+    outlet_float(x->x_chanout, channel);
+    outlet_float(x->x_n_out, n);
+    outlet_float(x->x_val_out, value);
 }
 
 static void ctlin_ext(t_ctlin *x, t_floatarg f){
@@ -87,7 +94,7 @@ static void ctlin_ext(t_ctlin *x, t_floatarg f){
 }
 
 static void ctlin_free(t_ctlin *x){
-    pd_unbind(&x->x_obj.ob_pd, gensym("#midiin"));
+    pd_unbind(&x->x_obj.ob_pd, gensym("#ctlin"));
 }
 
 static void *ctlin_new(t_symbol *s, int ac, t_atom *av){
@@ -112,21 +119,15 @@ static void *ctlin_new(t_symbol *s, int ac, t_atom *av){
             }
         }
     }
-    if(channel < 0)
-        channel = 0;
-    if(channel > 16)
-        channel = 16;
-    if(ctl > 127)
-        channel = 127;
-    x->x_omni = (channel == 0);
+    x->x_omni = (channel <= 0);
     x->x_ch = x->x_ch_in = channel;
-    x->x_ctl_in = ctl;
+    x->x_ctl_in = ctl > 127 ? 127 : ctl;
     floatinlet_new((t_object *)x, &x->x_ctl_in);
     floatinlet_new((t_object *)x, &x->x_ch_in);
     x->x_val_out = outlet_new((t_object *)x, &s_float);
     x->x_n_out = outlet_new((t_object *)x, &s_float);
     x->x_chanout = outlet_new((t_object *)x, &s_float);
-    pd_bind(&x->x_obj.ob_pd, gensym("#midiin"));
+    pd_bind(&x->x_obj.ob_pd, gensym("#ctlin"));
     return(x);
 }
 
