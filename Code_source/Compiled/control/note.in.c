@@ -57,8 +57,7 @@ static void notein_float(t_notein *x, t_float f){
         else if(x->x_ready){
             int on = (x->x_status == 0x90);
             if(x->x_both){
-                if(x->x_omni)
-                    outlet_float(x->x_chanout, x->x_channel + 1);
+                outlet_float(x->x_chanout, x->x_channel + 1);
                 if(on){ // Note On
                     t_atom at[3];
                     SETFLOAT(at, x->x_pitch);
@@ -75,8 +74,7 @@ static void notein_float(t_notein *x, t_float f){
                 }
             }
             else if(x->x_rel){
-                if(x->x_omni)
-                    outlet_float(x->x_chanout, x->x_channel + 1);
+                outlet_float(x->x_chanout, x->x_channel + 1);
                 t_atom at[2];
                 if(!on){ // Note Off
                     SETFLOAT(at, x->x_pitch);
@@ -90,16 +88,14 @@ static void notein_float(t_notein *x, t_float f){
                 }
             }
             else if(on){ // Note On
-                if(x->x_omni)
-                    outlet_float(x->x_chanout, x->x_channel + 1);
+                outlet_float(x->x_chanout, x->x_channel + 1);
                 t_atom at[2];
                 SETFLOAT(at, x->x_pitch);
                 SETFLOAT(at+1, bval);
                 outlet_list(((t_object *)x)->ob_outlet, &s_list, 2, at);
             }
             else{ // Note Off
-                if(x->x_omni)
-                    outlet_float(x->x_chanout, x->x_channel + 1);
+                outlet_float(x->x_chanout, x->x_channel + 1);
                 t_atom at[2];
                 SETFLOAT(at, x->x_pitch);
                 SETFLOAT(at+1, 0);

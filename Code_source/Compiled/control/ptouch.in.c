@@ -23,9 +23,7 @@ static void ptouchin_float(t_ptouchin *x, t_float f){
         return;
     }
     else{
-        t_int ch = (t_int)x->x_ch_in;
-        if(ch != x->x_ch && ch >= 0 && ch <= 16)
-            x->x_omni = ((x->x_ch = (t_int)ch) == 0);
+        x->x_omni = (x->x_ch_in <= 0);
         unsigned char val = (int)f;
         if(val & 0x80){ // message type > 128)
             x->x_ready = 0;
@@ -53,6 +51,7 @@ static void ptouchin_float(t_ptouchin *x, t_float f){
                     x->x_ready = 1;
                 }
                 else{
+                    outlet_float(x->x_chanout, x->x_channel);
                     t_atom at[2];
                     SETFLOAT(at, x->x_key);
                     SETFLOAT(at+1, val);
@@ -68,18 +67,25 @@ static void ptouchin_float(t_ptouchin *x, t_float f){
 
 static void ptouchin_list(t_ptouchin *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    if(!ac)
+    if(!ac || x->x_ext)
         return;
-    if(!x->x_ext)
-        ptouchin_float(x, atom_getfloat(av));
+    int pitch = atom_getfloatarg(0, ac, av);
+    int touch = atom_getfloatarg(1, ac, av);
+    int channel = atom_getfloatarg(2, ac, av);
+    if(x->x_ch_in > 0 && x->x_ch_in != channel)
+        return;
+    outlet_float(x->x_chanout, channel);
+    t_atom at[2];
+    SETFLOAT(at, pitch);
+    SETFLOAT(at+1, touch);
+    outlet_list(((t_object *)x)->ob_outlet, &s_list, 2, at);
 }
-
 static void ptouchin_ext(t_ptouchin *x, t_floatarg f){
     x->x_ext = f != 0;
 }
 
 static void ptouchin_free(t_ptouchin *x){
-    pd_unbind(&x->x_obj.ob_pd, gensym("#midiin"));
+    pd_unbind(&x->x_obj.ob_pd, gensym("#polytouchin"));
 }
 
 static void *ptouchin_new(t_symbol *s, int ac, t_atom *av){
@@ -100,7 +106,7 @@ static void *ptouchin_new(t_symbol *s, int ac, t_atom *av){
     floatinlet_new((t_object *)x, &x->x_ch_in);
     outlet_new((t_object *)x, &s_float);
     x->x_chanout = outlet_new((t_object *)x, &s_float);
-    pd_bind(&x->x_obj.ob_pd, gensym("#midiin"));
+    pd_bind(&x->x_obj.ob_pd, gensym("#polytouchin"));
     return(x);
 }
 

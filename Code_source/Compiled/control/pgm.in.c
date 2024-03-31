@@ -23,12 +23,14 @@ static void pgmin_float(t_pgmin *x, t_float f){
                 x->x_channel = (val & 0x0F) + 1; // get channel
         }
         else if(x->x_pgm && val < 128){ // output value
-            if(x->x_ch_in <= 0 || x->x_ch_in > 16){ // omni
+            if(x->x_ch_in <= 0){ // omni
                 outlet_float(x->x_chanout, x->x_channel);
                 outlet_float(((t_object *)x)->ob_outlet, val);
             }
-            else if(x->x_channel == (t_int)x->x_ch_in)
+            else if(x->x_channel == (t_int)x->x_ch_in){
+                outlet_float(x->x_chanout, x->x_channel);
                 outlet_float(((t_object *)x)->ob_outlet, val);
+            }
             x->x_pgm = 0;
         }
         else

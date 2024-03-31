@@ -26,9 +26,7 @@ static void ctlin_float(t_ctlin *x, t_float f){
         return;
     }
     else{
-        t_int ch = (t_int)x->x_ch_in;
-        if(ch != x->x_ch && ch >= 0 && ch <= 16)
-            x->x_omni = ((x->x_ch = (t_int)ch) == 0);
+        x->x_omni = (x->x_ch_in <= 0);
         unsigned char val = (int)f;
         if(val & 0x80){ // message type > 128)
             x->x_ready = 0;
@@ -56,11 +54,14 @@ static void ctlin_float(t_ctlin *x, t_float f){
                 else{
                     if(x->x_ctl_in >= 0){
                         if(x->x_ctl_in == x->x_n){
+                            outlet_float(x->x_chanout, x->x_channel);
+                            outlet_float(x->x_n_out, x->x_n);
                             outlet_float(((t_object *)x)->ob_outlet, val);
                             x->x_control = x->x_ready = 0;
                         }
                     }
                     else{
+                        outlet_float(x->x_chanout, x->x_channel);
                         outlet_float(x->x_n_out, x->x_n);
                         outlet_float(x->x_val_out, val);
                         x->x_control = x->x_ready = 0;
