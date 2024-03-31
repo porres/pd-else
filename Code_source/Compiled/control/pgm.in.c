@@ -38,10 +38,14 @@ static void pgmin_float(t_pgmin *x, t_float f){
 
 static void pgmin_list(t_pgmin *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    if(!ac)
+    if(!ac || x->x_ext)
         return;
-    if(!x->x_ext)
-        pgmin_float(x, atom_getfloat(av));
+    int pgm = atom_getfloatarg(0, ac, av);
+    int channel = atom_getfloatarg(1, ac, av);
+    if(x->x_ch_in > 0 && x->x_ch_in != channel)
+        return;
+    outlet_float(x->x_chanout, channel);
+    outlet_float(((t_object *)x)->ob_outlet, pgm);
 }
 
 static void pgmin_ext(t_pgmin *x, t_floatarg f){
@@ -50,7 +54,7 @@ static void pgmin_ext(t_pgmin *x, t_floatarg f){
 
 void *pgmin_free(t_pgmin *x){
     outlet_free(x->x_chanout);
-    pd_unbind(&x->x_obj.ob_pd, gensym("#midiin"));
+    pd_unbind(&x->x_obj.ob_pd, gensym("#pgmin"));
     return(void *)x;
 }
 
@@ -71,7 +75,7 @@ static void *pgmin_new(t_symbol *s, int ac, t_atom *av){
     floatinlet_new((t_object *)x, &x->x_ch_in);
     outlet_new((t_object *)x, &s_float);
     x->x_chanout = outlet_new((t_object *)x, &s_float);
-    pd_bind(&x->x_obj.ob_pd, gensym("#midiin"));
+    pd_bind(&x->x_obj.ob_pd, gensym("#pgmin"));
     return(x);
 }
 
