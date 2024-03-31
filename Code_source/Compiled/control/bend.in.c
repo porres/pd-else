@@ -1,4 +1,4 @@
-// porres 2018
+// porres 2018-2024
 
 #include "m_pd.h"
 
@@ -72,10 +72,19 @@ static void bendin_float(t_bendin *x, t_float f){
 
 static void bendin_list(t_bendin *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    if(!ac)
+    if(!ac || x->x_ext)
         return;
-    if(!x->x_ext)
-        bendin_float(x, atom_getfloat(av));
+    int bend = atom_getfloatarg(0, ac, av);
+    int channel = atom_getfloatarg(1, ac, av);
+    if(x->x_ch_in > 0 && x->x_ch_in != channel)
+        return;
+    outlet_float(x->x_chanout, channel);
+    if(!x->x_raw){ // normalize
+        bend = (bend - 8192) / 8191;
+        if(bend < -1)
+            bend = -1;
+    }
+    outlet_float(((t_object *)x)->ob_outlet, bend);
 }
 
 static void bendin_ext(t_bendin *x, t_floatarg f){
@@ -83,7 +92,7 @@ static void bendin_ext(t_bendin *x, t_floatarg f){
 }
 
 static void bendin_free(t_bendin *x){
-    pd_unbind(&x->x_obj.ob_pd, gensym("#midiin"));
+    pd_unbind(&x->x_obj.ob_pd, gensym("#bendin"));
 }
 
 static void *bendin_new(t_symbol *s, int ac, t_atom *av){
@@ -116,13 +125,13 @@ static void *bendin_new(t_symbol *s, int ac, t_atom *av){
                 goto errstate;
         }
     }
-    x->x_omni = (channel == 0);
+    x->x_omni = (channel <= 0);
     if(!x->x_omni)
         x->x_channel = (unsigned char)--channel;
     floatinlet_new((t_object *)x, &x->x_ch_in);
     outlet_new((t_object *)x, &s_float);
     x->x_chanout = outlet_new((t_object *)x, &s_float);
-    pd_bind(&x->x_obj.ob_pd, gensym("#midiin"));
+    pd_bind(&x->x_obj.ob_pd, gensym("#bendin"));
     return(x);
     errstate:
         pd_error(x, "[bend.in]: improper args");

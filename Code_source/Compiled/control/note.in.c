@@ -1,4 +1,4 @@
-// porres 2018
+// porres 2018-2024
 
 #include "m_pd.h"
 
@@ -8,6 +8,7 @@ typedef struct _notein{
     t_int          x_both;
     t_int          x_rel;
     t_int          x_ext;
+    t_int          x_port;
     t_float        x_ch;
     t_float        x_ch_in;
     unsigned char  x_ready;
@@ -26,7 +27,7 @@ static void notein_float(t_notein *x, t_float f){
         return;
     t_int ch = x->x_ch_in;
     if(ch != x->x_ch){
-        if(ch == 0){
+        if(ch <= 0){
             x->x_ch = ch;
             x->x_omni = 1;
         }
@@ -44,6 +45,7 @@ static void notein_float(t_notein *x, t_float f){
                 x->x_status = x->x_ready = 0; // clear
             else if(status == 0x80 || status == 0x90){
                 unsigned char channel = bval & 0x0F;
+                channel += x->x_port;
                 if(x->x_omni)
                     x->x_channel = channel;
                 x->x_status = (x->x_channel == channel ? status : 0);
@@ -116,10 +118,11 @@ static void notein_float(t_notein *x, t_float f){
 
 static void notein_list(t_notein *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    if(!ac)
+    if(!ac || x->x_ext)
         return;
-    if(!x->x_ext)
-        notein_float(x, atom_getfloat(av));
+    x->x_port = atom_getfloatarg(1, ac, av) * 16;
+    notein_float(x, atom_getfloat(av));
+    x->x_port = 0;
 }
 
 static void notein_ext(t_notein *x, t_floatarg f){
@@ -164,7 +167,7 @@ static void *notein_new(t_symbol *s, int ac, t_atom *av){
                 goto errstate;
         }
     }
-    x->x_omni = (channel == 0);
+    x->x_omni = (channel <= 0);
     if(!x->x_omni)
         x->x_channel = (unsigned char)--channel;
     floatinlet_new((t_object *)x, &x->x_ch_in);
