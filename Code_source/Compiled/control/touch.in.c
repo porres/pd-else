@@ -4,8 +4,6 @@
 
 typedef struct _touchin{
     t_object       x_obj;
-    t_int          x_omni;
-    t_float        x_ch;
     t_float        x_ch_in;
     t_int          x_ext;
     unsigned char  x_pressure;
@@ -24,9 +22,6 @@ static void touchin_float(t_touchin *x, t_float f){
         return;
     }
     else{
-        t_int ch = (t_int)x->x_ch_in;
-        if(ch != x->x_ch && ch >= 0 && ch <= 16)
-            x->x_omni = ((x->x_ch = (t_int)ch) == 0);
         unsigned char val = (int)f;
         if(val & 0x80){ // message type > 128)
             x->x_ready = 0;
@@ -34,11 +29,11 @@ static void touchin_float(t_touchin *x, t_float f){
                 x->x_channel = (val & 0x0F) + 1; // get channel
         }
         else if(x->x_atouch && val < 128){
-            if(x->x_omni){
+            if(x->x_ch_in <= 0){ // omni
                 outlet_float(x->x_chanout, x->x_channel);
                 outlet_float(((t_object *)x)->ob_outlet, val);
             }
-            else if(x->x_ch == x->x_channel)
+            else if(x->x_ch_in == x->x_channel)
                 outlet_float(((t_object *)x)->ob_outlet, val);
         }
         else
@@ -69,17 +64,14 @@ static void touchin_free(t_touchin *x){
 static void *touchin_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_touchin *x = (t_touchin *)pd_new(touchin_class);
-    x->x_atouch =  x->x_ready = x->x_pressure = 0;
-    int ch = 0;
+    x->x_atouch = x->x_ch_in = x->x_ready = x->x_pressure = 0;
     if(ac){
         if(atom_getsymbolarg(0, ac, av) == gensym("-ext")){
             x->x_ext = 1;
             ac--, av++;
         }
-        ch = (t_int)atom_getintarg(0, ac, av);
+        x->x_ch_in = atom_getint(av);
     }
-    x->x_omni = (ch <= 0);
-    x->x_ch = x->x_ch_in = ch < 0 ? 0 : ch;
     floatinlet_new((t_object *)x, &x->x_ch_in);
     outlet_new((t_object *)x, &s_float);
     x->x_chanout = outlet_new((t_object *)x, &s_float);

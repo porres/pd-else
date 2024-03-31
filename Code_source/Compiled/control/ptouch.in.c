@@ -100,8 +100,7 @@ static void *ptouchin_new(t_symbol *s, int ac, t_atom *av){
         }
         ch = (t_int)atom_getintarg(0, ac, av);
     }
-    ch = ch < 0 ? 0 : ch > 16 ? 16 : ch;
-    x->x_omni = (ch == 0);
+    x->x_omni = (ch <= 0);
     x->x_ch = x->x_ch_in = ch;
     floatinlet_new((t_object *)x, &x->x_ch_in);
     outlet_new((t_object *)x, &s_float);

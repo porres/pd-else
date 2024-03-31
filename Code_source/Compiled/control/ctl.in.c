@@ -4,8 +4,6 @@
 
 typedef struct _ctlin{
     t_object       x_obj;
-    t_int          x_omni;
-    t_float        x_ch;
     t_float        x_ch_in;
     t_float        x_ctl_in;
     t_int          x_ext;
@@ -26,7 +24,6 @@ static void ctlin_float(t_ctlin *x, t_float f){
         return;
     }
     else{
-        x->x_omni = (x->x_ch_in <= 0);
         unsigned char val = (int)f;
         if(val & 0x80){ // message type > 128)
             x->x_ready = 0;
@@ -34,7 +31,7 @@ static void ctlin_float(t_ctlin *x, t_float f){
                 x->x_channel = (val & 0x0F) + 1; // get channel
         }
         else if(x->x_control && val < 128){
-            if(x->x_omni){
+            if(x->x_ch_in <= 0){ // omni
                 if(!x->x_ready){
                     x->x_n = val;
                     x->x_ready = 1;
@@ -46,7 +43,7 @@ static void ctlin_float(t_ctlin *x, t_float f){
                     x->x_control = x->x_ready = 0;
                 }
             }
-            else if(x->x_ch == x->x_channel){
+            else if(x->x_ch_in == x->x_channel){
                 if(!x->x_ready){
                     x->x_n = val;
                     x->x_ready = 1;
@@ -116,13 +113,11 @@ static void *ctlin_new(t_symbol *s, int ac, t_atom *av){
                 ctl = atom_getint(av);
                 ac--, av++;
                 if(ac)
-                    channel = atom_getint(av);
+                    x->x_ch_in = atom_getint(av);
             }
         }
     }
-    x->x_omni = (channel <= 0);
-    x->x_ch = x->x_ch_in = channel;
-    x->x_ctl_in = ctl > 127 ? 127 : ctl;
+    x->x_ctl_in = ctl < 0 ? 0 : ctl > 127 ? 127 : ctl;
     floatinlet_new((t_object *)x, &x->x_ctl_in);
     floatinlet_new((t_object *)x, &x->x_ch_in);
     x->x_val_out = outlet_new((t_object *)x, &s_float);
