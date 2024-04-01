@@ -5,7 +5,7 @@
 typedef struct _pgmin{
     t_object       x_obj;
     t_int          x_ext, x_pgm, x_channel;
-    t_float        x_ch_in; // float input channel
+    t_float        x_ch_in;
     t_outlet      *x_chanout;
 }t_pgmin;
 
@@ -27,7 +27,7 @@ static void pgmin_float(t_pgmin *x, t_float f){
                 outlet_float(x->x_chanout, x->x_channel);
                 outlet_float(((t_object *)x)->ob_outlet, val);
             }
-            else if(x->x_channel == (t_int)x->x_ch_in){
+            else if(x->x_channel == x->x_ch_in){
                 outlet_float(x->x_chanout, x->x_channel);
                 outlet_float(((t_object *)x)->ob_outlet, val);
             }
@@ -42,8 +42,8 @@ static void pgmin_list(t_pgmin *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(!ac || x->x_ext)
         return;
-    int pgm = atom_getfloatarg(0, ac, av);
-    int channel = atom_getfloatarg(1, ac, av);
+    int pgm = atom_getintarg(0, ac, av);
+    int channel = atom_getintarg(1, ac, av);
     if(x->x_ch_in > 0 && x->x_ch_in != channel)
         return;
     outlet_float(x->x_chanout, channel);
