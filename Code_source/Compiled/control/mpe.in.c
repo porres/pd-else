@@ -10,7 +10,7 @@ typedef struct _mpein{
     int            x_type;
     int            x_ext;
     t_int          x_port;
-    t_int          x_port_in;
+    t_float        x_port_in;
     unsigned char  x_channel;
     unsigned char  x_byte1;
     t_outlet      *x_portout;
@@ -61,6 +61,8 @@ static void mpein_float(t_mpein *x, t_float f){ // raw MIDI
             }
         }
         else{ // it's ready
+            if(x->x_port_in > 0 && x->x_port_in != x->x_port)
+                goto ignore;
             outlet_float(x->x_portout, x->x_port);
             if(x->x_type == NOTEON){
                 t_atom at[4];
@@ -111,6 +113,7 @@ static void mpein_float(t_mpein *x, t_float f){ // raw MIDI
                 SETFLOAT(at + 2, (val << 7) + x->x_byte1);
                 outlet_list(((t_object *)x)->ob_outlet, &s_list, 3, at);
             }
+            ignore:
             x->x_ready = 0;
             x->x_type = -1;
         }
@@ -122,6 +125,8 @@ static void mpein_list(t_mpein *x, t_symbol *s, int ac, t_atom *av){
     if(!ac || x->x_ext)
         return;
     x->x_port = atom_getfloatarg(1, ac, av) + 1;
+    if(x->x_port_in > 0 && x->x_port_in != x->x_port)
+        return;
     mpein_float(x, atom_getfloat(av));
     x->x_port = 0;
 }
@@ -139,8 +144,16 @@ static void *mpein_new(t_symbol *s, int ac, t_atom *av){
     t_mpein *x = (t_mpein *)pd_new(mpein_class);
     x->x_ready = x->x_ext = 0;
     x->x_type = -1;
-    if(ac && atom_getsymbol(av) == gensym("-ext"))
-        x->x_ext = 1;
+    x->x_port_in = 0;
+    if(ac > 0){
+        if(av->a_type == A_SYMBOL && (atom_getsymbol(av) == gensym("-ext"))){
+            x->x_ext = 1;
+            ac--, av++;
+        }
+        if(ac)
+            x->x_port_in = atom_getint(av);
+    }
+    floatinlet_new((t_object *)x, &x->x_port_in);
     outlet_new((t_object *)x, &s_list);
     x->x_portout = outlet_new((t_object *)x, &s_float);
     pd_bind (&x->x_obj.ob_pd, gensym("#midiin"));
