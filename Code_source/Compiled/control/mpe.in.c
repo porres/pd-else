@@ -1,4 +1,4 @@
-// porres 2023
+// porres 2023-2024
 
 #include "m_pd.h"
 
@@ -9,8 +9,11 @@ typedef struct _mpein{
     int            x_ready;
     int            x_type;
     int            x_ext;
+    t_int          x_port;
+    t_int          x_port_in;
     unsigned char  x_channel;
     unsigned char  x_byte1;
+    t_outlet      *x_portout;
 }t_mpein;
 
 static t_class *mpein_class;
@@ -58,6 +61,7 @@ static void mpein_float(t_mpein *x, t_float f){ // raw MIDI
             }
         }
         else{ // it's ready
+            outlet_float(x->x_portout, x->x_port);
             if(x->x_type == NOTEON){
                 t_atom at[4];
                 
@@ -115,10 +119,11 @@ static void mpein_float(t_mpein *x, t_float f){ // raw MIDI
 
 static void mpein_list(t_mpein *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    if(!ac)
+    if(!ac || x->x_ext)
         return;
-    if(!x->x_ext)
-        mpein_float(x, atom_getfloat(av));
+    x->x_port = atom_getfloatarg(1, ac, av) + 1;
+    mpein_float(x, atom_getfloat(av));
+    x->x_port = 0;
 }
 
 static void mpein_ext(t_mpein *x, t_floatarg f){
@@ -137,6 +142,7 @@ static void *mpein_new(t_symbol *s, int ac, t_atom *av){
     if(ac && atom_getsymbol(av) == gensym("-ext"))
         x->x_ext = 1;
     outlet_new((t_object *)x, &s_list);
+    x->x_portout = outlet_new((t_object *)x, &s_float);
     pd_bind (&x->x_obj.ob_pd, gensym("#midiin"));
     return(x);
 }
