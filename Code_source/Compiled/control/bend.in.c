@@ -23,7 +23,7 @@ static void bendin_float(t_bendin *x, t_float f){
         return;
     t_int ch = x->x_ch_in;
     if(ch != x->x_ch){
-        if(ch == 0){
+        if(ch <= 0){
             x->x_ch = ch;
             x->x_omni = 1;
         }
@@ -50,8 +50,7 @@ static void bendin_float(t_bendin *x, t_float f){
                 x->x_status = x->x_ready = 0; // clear
         }
         else if(x->x_ready){
-            if(x->x_omni)
-                outlet_float(x->x_chanout, x->x_channel + 1);
+            outlet_float(x->x_chanout, x->x_channel + 1);
             float bend = (bval << 7) + x->x_lsb;
             if(!x->x_raw){ // normalize
                 bend = (bend - 8192) / 8191;

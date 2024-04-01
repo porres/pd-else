@@ -89,7 +89,7 @@
 #X text 214 270 - Raw MIDI data;
 #X obj 244 218 else/display -noflash;
 #X text 148 352 anything;
-#N canvas 670 144 610 527 example 1;
+#N canvas 670 144 610 527 example 0;
 #X obj 34 25 hsl 155 18 0 127 0 0 empty empty empty -2 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X obj 31 126 s \$0-raw;
 #X obj 43 331 r \$0-raw;
@@ -167,7 +167,7 @@
 #X obj 120 376 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 165 377 float;
 #X text 209 378 - MIDI Channel;
-#N canvas 792 220 442 303 channel 0;
+#N canvas 792 220 432 376 channel 0;
 #X msg 202 149 1;
 #X msg 235 149 5;
 #X text 265 149 <= channel;
@@ -177,6 +177,7 @@
 #X obj 202 215 else/display;
 #X obj 133 249 else/display;
 #X obj 133 187 else/midi.in;
+#X text 27 301 Port number is encoded as the channel number. Channels 1 to 16 are for port 1 \, channels 17 to 32 is the same as channels 1 to 16 for port 2 \, channels 33 to 48 represents channels 1 to 16 in port 3 \, and so on..., f 63;
 #X connect 0 0 8 1;
 #X connect 1 0 8 1;
 #X connect 3 0 8 1;
