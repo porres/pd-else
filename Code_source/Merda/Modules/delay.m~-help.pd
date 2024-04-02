@@ -1,4 +1,4 @@
-#N canvas 655 278 585 550 12;
+#N canvas 578 54 585 550 12;
 #X declare -path else;
 #X obj 62 426 out~;
 #X text 349 197 This is just a wrapper around [filterdelay~] from ELSE \, check it out., f 22;
@@ -9,7 +9,7 @@
 #X text 360 397 see -->;
 #X obj 385 108 declare -path else;
 #X obj 420 397 about.MERDA;
-#N canvas 189 62 742 352 messages 1;
+#N canvas 189 62 742 352 messages 0;
 #X obj 387 247 outlet;
 #X obj 163 68 else/knob 41 100 5000 2 100 empty empty #dfdfdf #afafaf black 1 0 0 0 1 320 0 0 100;
 #X obj 387 68 else/knob 41 -2 2 0 0 empty empty #000000 #afafaf #ffffff 1 0 0 0 1 320 0 0 0;

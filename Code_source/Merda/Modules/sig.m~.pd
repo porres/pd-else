@@ -1,4 +1,4 @@
-#N canvas 379 67 409 439 12;
+#N canvas 379 67 1 1 12;
 #X declare -path else;
 #X obj 65 349 outlet~;
 #N canvas 243 43 424 397 preset 0;
@@ -65,6 +65,11 @@
 #X restore 209 135 graph;
 #X obj 65 244 r \$0-sig;
 #X obj 65 277 else/f2s~;
+#X obj 75 27 inlet;
+#X obj 75 61 route set;
+#X obj 75 90 s \$0-set-sig;
 #X connect 5 0 6 0;
 #X connect 6 0 0 0;
+#X connect 7 0 8 0;
+#X connect 8 0 9 0;
 #X coords 0 1 100 -1 112 177 2 200 125;

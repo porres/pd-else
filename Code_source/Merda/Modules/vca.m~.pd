@@ -58,7 +58,7 @@
 #X connect 1 0 0 0;
 #X restore 196 530 pd GUI;
 #X text 200 125 IN;
-#N canvas 227 82 591 511 (subpatch) 0;
+#N canvas 227 82 398 512 (subpatch) 0;
 #X obj 112 112 cnv 15 95 315 empty empty empty 20 12 0 14 #dbdbdb #373737 0;
 #X obj 125 121 note 62 18 Inter empty 5 54 54 54 0 187 187 187 1 1 VCA;
 #X obj 127 253 vu 24 160 \$0-vu empty -1 -10 0 12 #404040 #000000 1 0;
@@ -101,7 +101,15 @@
 #X connect 12 0 9 0;
 #X restore 100 422 pd vu;
 #X obj 103 341 f2s~;
+#N canvas 165 143 367 250 route 0;
+#X obj 136 57 inlet;
+#X obj 136 148 s \$0-set-master;
+#X obj 136 102 route master;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X restore 111 133 pd route;
 #X connect 0 0 7 0;
+#X connect 0 1 14 0;
 #X connect 7 0 10 0;
 #X connect 8 0 7 1;
 #X connect 10 0 12 0;
