@@ -1,4 +1,4 @@
-#N canvas 379 67 553 607 12;
+#N canvas 379 67 1 1 12;
 #X declare -path else;
 #N canvas 227 82 394 451 (subpatch) 0;
 #X obj 112 112 cnv 15 175 135 empty empty empty 20 12 0 14 #dbdbdb #373737 0;
@@ -84,7 +84,19 @@
 #X obj 231 427 osc~;
 #X obj 231 457 rescale~ 50 2000;
 #X obj 111 403 r \$0-phaser;
+#N canvas 202 189 278 259 route 0;
+#X obj 56 30 inlet;
+#X obj 69 170 s \$0-set-rate;
+#X obj 97 140 s \$0-set-q;
+#X obj 133 105 s \$0-set-wet;
+#X obj 56 74 route rate bw wet;
+#X connect 0 0 4 0;
+#X connect 4 0 1 0;
+#X connect 4 1 2 0;
+#X connect 4 2 3 0;
+#X restore 128 71 pd route;
 #X connect 1 0 8 0;
+#X connect 1 1 18 0;
 #X connect 7 0 15 0;
 #X connect 8 0 2 0;
 #X connect 11 0 10 0;
