@@ -1,4 +1,4 @@
-#N canvas 434 82 526 429 12;
+#N canvas 428 80 526 429 12;
 #X declare -path else;
 #X obj 52 327 out~;
 #X obj 52 38 bl.saw~ 110;

@@ -1,7 +1,7 @@
-#N canvas 379 67 1 1 12;
+#N canvas 300 95 617 520 12;
 #X declare -path else;
 #X obj 89 35 inlet~;
-#X obj 89 583 outlet~;
+#X obj 89 453 outlet~;
 #N canvas 243 43 499 411 preset 0;
 #X obj 125 121 else/sender 1 \\\$0-presets;
 #X msg 125 86 name \$1;
@@ -34,7 +34,7 @@
 #X connect 3 0 5 0;
 #X connect 4 0 1 0;
 #X connect 4 0 2 0;
-#X restore 277 399 pd preset;
+#X restore 501 224 pd preset;
 #N canvas 171 120 601 317 init-savestate 0;
 #X obj 74 87 savestate;
 #X obj 320 171 declare -path else;
@@ -49,7 +49,7 @@
 #X connect 3 0 2 0;
 #X connect 4 0 6 0;
 #X connect 5 0 0 0;
-#X restore 219 366 pd init-savestate;
+#X restore 443 191 pd init-savestate;
 #N canvas 200 115 764 360 GUI 0;
 #X obj 81 62 r \$0-wet;
 #X msg 81 99 wet \$1;
@@ -81,12 +81,12 @@
 #X connect 12 0 6 0;
 #X connect 14 0 7 0;
 #X connect 15 0 14 0;
-#X restore 217 399 pd GUI;
+#X restore 441 224 pd GUI;
 #X text 201 129 IN;
-#X obj 172 451 r \$0-rate;
-#X obj 255 451 r \$0-depth;
-#X obj 89 491 chorus~, f 36;
-#X obj 338 451 r \$0-wet;
+#X obj 172 351 r \$0-rate;
+#X obj 255 351 r \$0-depth;
+#X obj 89 391 chorus~, f 36;
+#X obj 338 351 r \$0-wet;
 #N canvas 227 82 394 451 (subpatch) 0;
 #X obj 112 112 cnv 15 175 135 empty empty empty 20 12 0 14 #dbdbdb #373737 0;
 #X obj 136 121 note 118 24 Inter empty 5 54 54 54 0 187 187 187 1 1 CHORUS;
@@ -108,7 +108,7 @@
 #X connect 4 0 1 0;
 #X connect 4 1 2 0;
 #X connect 4 2 3 0;
-#X restore 129 71 pd route;
+#X restore 128 71 pd route;
 #X connect 0 0 8 0;
 #X connect 0 1 11 0;
 #X connect 6 0 8 1;
