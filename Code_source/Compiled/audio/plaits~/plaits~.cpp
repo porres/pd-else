@@ -1,6 +1,7 @@
 // based on the plaits engine by Mutable instruments
-// ported to Pd by Porres 2023-2024
-// MIT Liscense
+// also based on the pd port from github.com/jnonis/pd-plaits
+// redesigned and rewritten by Porres 2023-2024
+// Liscense: MIT Liscense (which is the original liscense of plaits)
 
 #include <stdint.h>
 #include "m_pd.h"
@@ -22,6 +23,7 @@ typedef struct _plaits{
     t_float             x_morph;
     t_float             x_lpg_cutoff;
     t_float             x_decay;
+    t_float             x_transp;
     t_float             x_mod_timbre;
     t_float             x_mod_fm;
     t_float             x_mod_morph;
@@ -62,6 +64,7 @@ extern "C"{
     void   plaits_fmatt(t_plaits *x, t_floatarg f);
     void   plaits_lpg_cutoff(t_plaits *x, t_floatarg f);
     void   plaits_decay(t_plaits *x, t_floatarg f);
+    void   plaits_transp(t_plaits *x, t_floatarg f);
     void   plaits_midi(t_plaits *x);
     void   plaits_hz(t_plaits *x);
     void   plaits_cv(t_plaits *x);
@@ -211,6 +214,10 @@ void plaits_decay(t_plaits *x, t_floatarg f){
     x->x_decay = f < 0 ? 0 : f > 1 ? 1 : f;
 }
 
+void plaits_transp(t_plaits *x, t_floatarg f){
+    x->x_transp = 60 + f;
+}
+
 void plaits_hz(t_plaits *x){
     x->x_pitch_mode = 0;
 }
@@ -321,7 +328,7 @@ t_int *plaits_perform(t_int *w){
                 x->x_modulations.trigger = (trig[x->x_block_size * j] != 0);
             x->x_modulations.level = level[x->x_block_size * j];
         }
-        x->x_patch.note = 60.f + (pitch + x->x_pitch_correction) * 12.f;
+        x->x_patch.note = x->x_transp + (pitch + x->x_pitch_correction) * 12.f;
         x->x_modulations.timbre = tmod[x->x_block_size * j] * 0.5;
         x->x_modulations.frequency = fmod[x->x_block_size * j] * 60.f;
         x->x_modulations.morph = mmod[x->x_block_size * j] * 0.5;
@@ -361,6 +368,7 @@ void *plaits_new(t_symbol *s, int ac, t_atom *av){
     x->x_frequency_active = x->x_timbre_active = false;
     x->x_morph_active = x->x_trigger_mode = x->x_level_active = false;
     x->x_last_engine = x->x_last_engine_perform = 0;
+    x->x_transp = 60.0;
     while(ac){
         if((av)->a_type == A_SYMBOL){
             if(floatarg)
@@ -467,6 +475,7 @@ void plaits_tilde_setup(void){
     class_addmethod(plaits_class, (t_method)plaits_midi_active, gensym("midi_active"), A_FLOAT, 0);
     class_addmethod(plaits_class, (t_method)plaits_lpg_cutoff, gensym("cutoff"), A_FLOAT, 0);
     class_addmethod(plaits_class, (t_method)plaits_decay, gensym("decay"), A_FLOAT, 0);
+    class_addmethod(plaits_class, (t_method)plaits_transp, gensym("transp"), A_FLOAT, 0);
     class_addmethod(plaits_class, (t_method)plaits_cv, gensym("cv"), A_NULL);
     class_addmethod(plaits_class, (t_method)plaits_midi, gensym("midi"), A_NULL);
     class_addmethod(plaits_class, (t_method)plaits_hz, gensym("hz"), A_NULL);
