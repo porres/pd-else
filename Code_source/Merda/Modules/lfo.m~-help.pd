@@ -27,8 +27,8 @@
 #X msg 183 171 unipolar \$1;
 #X msg 294 171 waveform \$1;
 #X floatatom 294 139 4 0 0 0 - - - 0;
-#X obj 416 95 else/knob 35 -1 1 0 0 empty empty #bbbbbb #7c7c7c black 0 0 0 0 1 320 0 0 0;
-#X obj 506 95 else/knob 35 -1 1 0 0 empty empty #bbbbbb #7c7c7c black 0 0 0 0 1 320 0 0 0;
+#X obj 416 95 else/knob 35 -1 1 0 0 empty empty #bbbbbb #7c7c7c black 1 0 0 0 1 320 0 0 0;
+#X obj 506 95 else/knob 35 -1 1 0 0 empty empty #bbbbbb #7c7c7c black 1 0 0 0 1 320 0 0 0;
 #X msg 416 171 att_fm \$1;
 #X floatatom 416 139 5 0 0 0 - - - 0;
 #X floatatom 506 139 5 0 0 0 - - - 0;
