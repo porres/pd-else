@@ -1049,9 +1049,23 @@ static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
         knob_float(x, x->x_fval);
 }
 
+static void knob_learn(t_knob *x){
+    if(x->x_snd == gensym("empty") || x->x_snd == &s_)
+        return;
+    char buff[512];
+    sprintf(buff, "%s-learn", x->x_snd->s_name);
+    t_symbol *snd_learn = gensym(buff);
+    if(snd_learn->s_thing)
+        pd_bang(snd_learn->s_thing);
+}
+
 static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
     dbl = 0;
     t_knob *x = (t_knob *)z;
+    if(alt && shift && doit){
+        knob_learn(x);
+        return(1);
+    }
     if(alt && doit){
         knob_set(x, x->x_start);
         knob_bang(x);
@@ -1461,6 +1475,7 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_apply, gensym("dialog"), A_GIMME, 0);
     class_addmethod(knob_class, (t_method)knob_motion, gensym("motion"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_outline, gensym("outline"), A_DEFFLOAT, 0);
+    class_addmethod(knob_class, (t_method)knob_learn, gensym("learn"), 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
     knob_widgetbehavior.w_getrectfn  = knob_getrect;
