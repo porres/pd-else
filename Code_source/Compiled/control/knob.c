@@ -41,6 +41,7 @@ typedef struct _knob{
     t_object        x_obj;
     t_edit_proxy   *x_proxy;
     t_glist        *x_glist;
+    int             x_ctrl;
     int             x_size;
     double          x_pos;          // 0-1 normalized position
     t_float         x_exp;
@@ -985,15 +986,25 @@ static void knob_arrow_motion(t_knob *x, t_floatarg dir){
 }
 
 static void knob_list(t_knob *x, t_symbol *sym, int ac, t_atom *av){ // get key events
-    if(ac == 1 && av->a_type == A_FLOAT){ // also implement bang (to do)
+    if(!ac){
+        knob_bang(x);
+        return;
+    }
+    if(ac == 1 && av->a_type == A_FLOAT){
         knob_float(x, atom_getfloat(av));
         return;
     }
-    if(!x->x_clicked || ac != 2 || x->x_edit)
+    if(ac != 2 || x->x_edit)
         return;
-    int dir = 0;
     int flag = (int)atom_getfloat(av); // 1 for press, 0 for release
     sym = atom_getsymbol(av+1); // get key name
+    if(sym == gensym("Meta_L")){
+        x->x_ctrl = flag;
+        return;
+    }
+    if(!x->x_clicked)
+        return;
+    int dir = 0;
     if(flag && (sym == gensym("Up") || (sym == gensym("Right"))))
         dir = 1;
     else if(flag && (sym == gensym("Down") || (sym == gensym("Left"))))
@@ -1037,14 +1048,22 @@ static void knob_motion(t_knob *x, t_floatarg dx, t_floatarg dy){
 }
 
 static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
-    keysym = NULL; // unused, avoid warning
     t_knob *x = z;
-    char c = fkey, buf[3];
+    char c = fkey;
+/*    char buf[20];
     buf[1] = 0;
+    post("c = %d, keysym = %s", c, keysym->s_name);*/
+    keysym = NULL;
     if(c == 0){ // click out
-        pd_unbind((t_pd *)x, gensym("#keyname"));
+//        pd_unbind((t_pd *)x, gensym("#keyname"));
         knob_config_wcenter(x, glist_getcanvas(x->x_glist), x->x_clicked = 0);
     }
+    
+/*    else if ((c >= '0' && c <= '9') || c == '.' || c == '-' || c == '+' || c == 'e'
+    || c == 'E' || c == '\b'){
+        // is number
+    }*/
+
     else if(((c == '\n') || (c == 13))) // enter
         knob_float(x, x->x_fval);
 }
@@ -1059,20 +1078,36 @@ static void knob_learn(t_knob *x){
         pd_bang(snd_learn->s_thing);
 }
 
+static void knob_forget(t_knob *x){
+    if(x->x_snd == gensym("empty") || x->x_snd == &s_)
+        return;
+    char buff[512];
+    sprintf(buff, "%s-forget", x->x_snd->s_name);
+    t_symbol *snd_forget = gensym(buff);
+    if(snd_forget->s_thing)
+        pd_bang(snd_forget->s_thing);
+}
+
 static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
     dbl = 0;
     t_knob *x = (t_knob *)z;
+/*    if(doit)
+        post("shift = %d, alt = %d", shift, alt);*/
+    if(x->x_ctrl && shift && doit){
+        knob_forget(x);
+        return(1);
+    }
     if(alt && shift && doit){
         knob_learn(x);
         return(1);
     }
-    if(alt && doit){
+    if(alt && !x->x_ctrl && doit){
         knob_set(x, x->x_start);
         knob_bang(x);
         return(1);
     }
     if(doit){
-        pd_bind(&x->x_obj.ob_pd, gensym("#keyname")); // listen to key events
+//        pd_bind(&x->x_obj.ob_pd, gensym("#keyname")); // listen to key events
         knob_config_wcenter(x, glist_getcanvas(x->x_glist), x->x_clicked = 1);
         x->x_shift = shift;
         if(x->x_circular){
@@ -1149,7 +1184,7 @@ static t_edit_proxy *edit_proxy_new(t_knob *x, t_symbol *s){
 }
 
 static void knob_free(t_knob *x){
-    if(x->x_clicked)
+//    if(x->x_clicked)
         pd_unbind((t_pd *)x, gensym("#keyname"));
     if(x->x_rcv != gensym("empty"))
         pd_unbind(&x->x_obj.ob_pd, x->x_rcv);
@@ -1439,6 +1474,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     sprintf(x->x_tag_out, "%pOUT", x);
     if(x->x_rcv != gensym("empty"))
         pd_bind(&x->x_obj.ob_pd, x->x_rcv);
+    pd_bind(&x->x_obj.ob_pd, gensym("#keyname")); // listen to key events
     outlet_new(&x->x_obj, &s_float);
     return(x);
 errstate:
@@ -1476,6 +1512,7 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_motion, gensym("motion"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_outline, gensym("outline"), A_DEFFLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_learn, gensym("learn"), 0);
+    class_addmethod(knob_class, (t_method)knob_forget, gensym("forget"), 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
     knob_widgetbehavior.w_getrectfn  = knob_getrect;
