@@ -1,9 +1,9 @@
-#N canvas 431 25 532 480 12;
+#N canvas 431 25 510 467 12;
 #X declare -path else;
 #X obj 42 359 out~;
 #X obj 42 37 bl.saw~ 110;
 #X obj 42 120 flanger.m~;
-#A saved 0.104163 5.94884 -0.414634 -0.853659;
+#A saved 11 7 0 0;
 #X text 263 364 see -->;
 #X obj 281 78 declare -path else;
 #X text 271 141 This is just a wrapper around [flanger~] from ELSE \, check it out., f 22;
