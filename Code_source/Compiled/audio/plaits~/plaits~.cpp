@@ -378,6 +378,7 @@ void *plaits_new(t_symbol *s, int ac, t_atom *av){
     x->x_morph_active = x->x_trigger_mode = x->x_level_active = false;
     x->x_last_engine = x->x_last_engine_perform = 0;
     x->x_transp = 60.0;
+    x->x_last_n = 0;
     while(ac){
         if((av)->a_type == A_SYMBOL){
             if(floatarg)
