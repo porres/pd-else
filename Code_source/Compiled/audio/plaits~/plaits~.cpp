@@ -168,11 +168,12 @@ void plaits_list(t_plaits *x, t_symbol *s, int ac, t_atom *av){
     x->x_midi_pitch = atom_getfloat(av);
     ac--, av++;
     if(ac){
-        x->x_midi_tr = x->x_midi_lvl = atom_getfloat(av);
+        x->x_midi_tr = x->x_midi_lvl = atom_getfloat(av) != 0;
         ac--, av++;
     }
     if(ac)
-        x->x_midi_lvl = atom_getfloat(av);
+        x->x_midi_lvl = atom_getfloat(av) != 0;
+//    post("midi_tr (%d) midi_lvl (%d)", x->x_midi_tr, x->x_midi_lvl);
 }
 
 void plaits_model(t_plaits *x, t_floatarg f){
