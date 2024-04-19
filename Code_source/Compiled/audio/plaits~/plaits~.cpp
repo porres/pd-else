@@ -160,8 +160,8 @@ void plaits_list(t_plaits *x, t_symbol *s, int ac, t_atom *av){
     else{
         t_atom at[3];
         SETFLOAT(at, atom_getfloat(av));
-        SETFLOAT(at+1, atom_getfloat(av+1));
-        SETFLOAT(at+2, atom_getfloat(av+1));
+        SETFLOAT(at+1, atom_getfloat(av+1) / 127.);
+        SETFLOAT(at+2, atom_getfloat(av+1) / 127.);
         obj_list(&x->x_obj, NULL, 3, at);
     }
     x->x_midi_tr = x->x_midi_lvl = 0;
