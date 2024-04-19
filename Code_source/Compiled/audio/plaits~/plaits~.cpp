@@ -155,25 +155,33 @@ void plaits_list(t_plaits *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 0)
         return;
-    if(ac != 2)
+    if(ac == 1)
         obj_list(&x->x_obj, NULL, ac, av);
-    else{
+    else if(ac == 2){
         t_atom at[3];
         SETFLOAT(at, atom_getfloat(av));
         SETFLOAT(at+1, atom_getfloat(av+1) / 127.);
         SETFLOAT(at+2, atom_getfloat(av+1) / 127.);
         obj_list(&x->x_obj, NULL, 3, at);
     }
+    else if(ac == 3){
+        t_atom at[3];
+        SETFLOAT(at, atom_getfloat(av));
+        SETFLOAT(at+1, atom_getfloat(av+1) / 127.);
+        SETFLOAT(at+2, atom_getfloat(av+2) / 127.);
+        obj_list(&x->x_obj, NULL, 3, at);
+    }
     x->x_midi_tr = x->x_midi_lvl = 0;
     x->x_midi_pitch = atom_getfloat(av);
     ac--, av++;
     if(ac){
-        x->x_midi_tr = x->x_midi_lvl = atom_getfloat(av) != 0;
+        float vel = atom_getfloat(av);
+        x->x_midi_tr = vel != 0;
+        x->x_midi_lvl = vel / 127.;
         ac--, av++;
     }
     if(ac)
-        x->x_midi_lvl = atom_getfloat(av) != 0;
-//    post("midi_tr (%d) midi_lvl (%d)", x->x_midi_tr, x->x_midi_lvl);
+        x->x_midi_lvl = atom_getfloat(av) / 127.;
 }
 
 void plaits_model(t_plaits *x, t_floatarg f){
