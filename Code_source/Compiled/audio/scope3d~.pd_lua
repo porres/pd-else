@@ -352,7 +352,7 @@ function scope3d:paint(g)
   end
 end
 
-function scope3d:rotate_y(x, y ,z, angle)
+function scope3d:rotate_y(x, y, z, angle)
   local cosTheta = math.cos(angle * math.pi / 180)
   local sinTheta = math.sin(angle * math.pi / 180)
   local newX = x * cosTheta - z * sinTheta
