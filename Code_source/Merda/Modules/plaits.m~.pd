@@ -384,7 +384,7 @@
 #X connect 16 0 11 0;
 #X connect 17 0 12 0;
 #X connect 18 0 2 0;
-#X restore 459 102 pd mode;
+#X restore 440 101 pd mode;
 #N canvas 149 120 708 477 midi 0;
 #X obj 122 194 s \$0-set-midi-mode;
 #X obj 94 294 s \$0-set-n-voices;
@@ -414,8 +414,10 @@
 #X connect 11 1 9 0;
 #X connect 12 0 2 0;
 #X connect 12 1 0 0;
-#X restore 482 158 pd midi;
-#X obj 37 54 route list freq timbre harmonics morph cutoff decay fm_att timbre_att harm_att morph_att;
+#X restore 440 135 pd midi;
+#X obj 37 54 route list freq timbre harmonics morph cutoff decay fm_att timbre_att harm_att morph_att print;
+#X obj 398 206 s \$0-to-plaits;
+#X msg 398 180 0 print;
 #X connect 0 0 14 0;
 #X connect 12 0 13 0;
 #X connect 14 0 11 0;
@@ -429,7 +431,9 @@
 #X connect 14 8 8 0;
 #X connect 14 9 9 0;
 #X connect 14 10 10 0;
-#X connect 14 11 12 0;
+#X connect 14 11 16 0;
+#X connect 14 12 12 0;
+#X connect 16 0 15 0;
 #X restore 175 88 pd route;
 #X connect 1 0 4 0;
 #X connect 2 0 0 0;

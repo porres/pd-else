@@ -1,5 +1,11 @@
 local circle = pd.Class:new():register("circle-gui")
 
+function math.clamp(x, min, max)
+    if x < min then return min end
+    if x > max then return max end
+    return x
+end
+
 function circle:initialize(sel, atoms)
     self.slider_position_x = 0.5
     self.slider_position_y = 0.5
@@ -63,13 +69,13 @@ function circle:mouse_drag(x, y)
         local distance = math.sqrt(new_x^2 + new_y^2)
         local angle = math.atan(new_y, new_x)
 
-        distance = math.max(0, math.min(0.5, distance))
+        distance = math.clamp(distance, 0.0, 0.5)
 
         self.slider_position_x = (math.cos(angle) * distance) + 0.5
         self.slider_position_y = (math.sin(angle) * distance) + 0.5
     else
-        self.slider_position_x = math.max(0, math.min(1, new_x + 0.5))
-        self.slider_position_y = math.max(0, math.min(1, new_y + 0.5))
+        self.slider_position_x = math.clamp(new_x + 0.5, 0, 1)
+        self.slider_position_y = math.clamp(new_y + 0.5, 0, 1)
     end
 
     self:in_1_bang()
@@ -186,11 +192,18 @@ function circle:in_1_list(atoms)
     end
 
     local width, height = self:get_size()
-    self.slider_position_x = atoms[1]
-    self.slider_position_y = atoms[2]
+    self.slider_position_x = self:unscale_value(atoms[1], self.x_range_start, self.x_range_end)
+    self.slider_position_y = self:unscale_value(atoms[2], self.y_range_start, self.y_range_end)
     self:save_state()
     self:repaint()
     self:in_1_bang()
+end
+
+function circle:in_1_set(atoms)
+    self.slider_position_x = self:unscale_value(atoms[1], self.x_range_start, self.x_range_end)
+    self.slider_position_y = self:unscale_value(atoms[2], self.y_range_start, self.y_range_end)
+    self:repaint();
+    self:save_state()
 end
 
 function circle:in_1_size(atoms)
