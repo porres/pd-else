@@ -2483,10 +2483,10 @@ void pdlua_setup(void)
              pdlua_version, lvm, lvl);
 #endif
 // post version and other information
-#ifdef ELSE
-    post("ELSE registers a loader that allows Pd externals written in Lua, see lua-help.pd for more details");
-#else
     post(pdluaver);
+#ifdef ELSE
+    post("Distributed as part of ELSE");
+#else
     post(compiled);
 #endif
     post(luaversionStr);
