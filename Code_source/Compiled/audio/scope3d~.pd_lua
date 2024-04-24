@@ -68,7 +68,6 @@ end
 function scope3d:tick()
   self.width, self.height = self:get_size()
   self:repaint()
-  pd.post(tostring(self.frameDelay))
   self.clock:delay(self.frameDelay)
 end
 
@@ -399,7 +398,6 @@ function scope3d:pd_receive(x)
 end
 
 function pdlua_flames:init_pd_methods(pdclass, name, methods, atoms)
-  pd.post('initializing')
   pdclass.handle_pd_message = pdlua_flames.handle_pd_message
   pdclass.pd_env = pdclass.pd_env or {}
   pdclass.pd_env.name = name
