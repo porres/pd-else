@@ -110,14 +110,15 @@
 #X msg 570 -200 -1;
 #X obj -317 0 symbol;
 #X obj -244 0 symbol;
+#X obj 274 177 change 127;
 #X connect 0 0 37 0;
-#X connect 3 0 32 0;
+#X connect 3 0 61 0;
 #X connect 4 0 5 0;
 #X connect 5 0 9 0;
 #X connect 5 0 31 0;
 #X connect 5 0 41 0;
 #X connect 6 0 34 0;
-#X connect 7 0 32 0;
+#X connect 7 0 61 0;
 #X connect 8 0 10 0;
 #X connect 9 0 7 0;
 #X connect 10 0 42 0;
@@ -125,7 +126,7 @@
 #X connect 11 1 4 0;
 #X connect 13 0 59 0;
 #X connect 13 1 60 0;
-#X connect 14 0 32 0;
+#X connect 14 0 61 0;
 #X connect 15 0 10 0;
 #X connect 18 0 35 0;
 #X connect 20 0 19 1;
@@ -175,4 +176,5 @@
 #X connect 58 0 50 1;
 #X connect 59 0 17 0;
 #X connect 60 0 16 0;
+#X connect 61 0 32 0;
 #X coords 0 127 127 0 127 127 2 0 0;
