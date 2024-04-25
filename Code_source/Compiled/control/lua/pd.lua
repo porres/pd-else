@@ -472,6 +472,7 @@ function pd.Class:get_class() -- accessor for t_class*
   return self._class or nil
 end
 
+
 local lua = pd.Class:new():register("lua")  -- global controls (the [pdlua] object only)
 
 function lua:initialize(sel, atoms)
@@ -570,7 +571,6 @@ function lua:initialize(sel, atoms)
 
   return true
 end
-
 
 function lua:dsp(sample_rate, block_size)
     local m = _G[self.function_prefix .. "dsp"]

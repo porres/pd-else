@@ -695,7 +695,9 @@ static int set_size(lua_State* L)
     obj->gfx.width = luaL_checknumber(L, 2);
     obj->gfx.height = luaL_checknumber(L, 3);
     pdlua_gfx_repaint(obj, 0);
-    canvas_fixlinesfor(obj->canvas, (t_text*)obj);
+    if(glist_isvisible(obj->canvas) && gobj_shouldvis(&obj->pd.te_g, obj->canvas)) {
+        canvas_fixlinesfor(obj->canvas, (t_text*)obj);
+    }
     return 0;
 }
 

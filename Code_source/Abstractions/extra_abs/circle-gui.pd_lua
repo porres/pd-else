@@ -34,20 +34,19 @@ end
 
 function circle:mouse_down(x, y)
     local width, height = self:get_size()
+
+    if self.jump == 1 then
+        self.slider_position_x = (x / width)
+        self.slider_position_y = (y / height)
+    end
+
     self.mouse_down_x = x
     self.mouse_down_y = y
     self.last_mouse_x = x
     self.last_mouse_y = y
     self.mouse_down_slider_x = self.slider_position_x * width
     self.mouse_down_slider_y = self.slider_position_y * height
-
-    if self.jump == 1 then
-        self.slider_position_x = x
-        self.slider_position_y = y
-        self.mouse_down_slider_x = x
-        self.mouse_down_slider_y = y
-        self:repaint()
-    end
+    self:repaint()
 end
 
 function circle:mouse_drag(x, y)
@@ -182,7 +181,7 @@ end
 function circle:in_1_bang()
     local x = self:scale_value(self.slider_position_x, self.x_range_start, self.x_range_end)
     local y = self:scale_value(self.slider_position_y, self.y_range_start, self.y_range_end)
-    self:outlet(1, "list", {x, y})
+    self:outlet(1, "list", {x, -y})
 end
 
 function circle:in_1_list(atoms)
