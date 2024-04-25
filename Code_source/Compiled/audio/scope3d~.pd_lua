@@ -50,7 +50,9 @@ end
 
 function scope3d:reset_buffer()
   self.bufferIndex = 1
+  self.displayBufferIndex = 1
   self.sampleIndex = 1
+  self.displaySignalX, self.displaySignalY, self.displaySignalZ = {}, {}, {}
   self.signalX, self.signalY, self.signalZ = {}, {}, {}
   self.rotatedX, self.rotatedY, self.rotatedZ = {}, {}, {}
   -- prefill ring buffer
@@ -58,6 +60,7 @@ function scope3d:reset_buffer()
     self.signalX[i], self.signalY[i], self.signalZ[i] = 0, 0, 0
     self.rotatedX[i], self.rotatedY[i], self.rotatedZ[i] = 0, 0, 0
   end
+  self:update_lines()
 end
 
 function scope3d:postinitialize()
@@ -67,6 +70,7 @@ end
 
 function scope3d:tick()
   self.width, self.height = self:get_size()
+  self:update_lines()
   self:repaint()
   self.clock:delay(self.frameDelay)
 end
@@ -214,6 +218,7 @@ function scope3d:mouse_drag(x, y)
   if self.drag == 1 then 
     self.rotationAngleY = self.rotationStartAngleY + ((x-self.dragStartX) / 2)
     self.rotationAngleX = self.rotationStartAngleX + ((-y+self.dragStartY) / 2)
+    self:repaint()
   end
 end
 
@@ -328,8 +333,8 @@ function scope3d:paint(g)
   end
 
   for i = 1, self.nlines do
-    local offsetIndex = (i + self.bufferIndex-2) % self.nlines + 1
-    local rotatedX, rotatedY, rotatedZ = self:rotate_y(self.signalX[offsetIndex], self.signalY[offsetIndex], self.signalZ[offsetIndex], self.rotationAngleY)
+    local offsetIndex = (i + self.displayBufferIndex-2) % self.nlines + 1
+    local rotatedX, rotatedY, rotatedZ = self:rotate_y(self.displaySignalX[offsetIndex], self.displaySignalY[offsetIndex], self.displaySignalZ[offsetIndex], self.rotationAngleY)
     self.rotatedX[i], self.rotatedY[i], self.rotatedZ[i] = self:rotate_x(rotatedX, rotatedY, rotatedZ, self.rotationAngleX)
   end
 
@@ -349,6 +354,13 @@ function scope3d:paint(g)
       p:line_to(self:projectVertex(self.rotatedX[i], self.rotatedY[i], self.rotatedZ[i], self.zoom))
     end
     g:stroke_path(p, self.strokeWidth)
+  end
+end
+
+function scope3d:update_lines()
+  self.displayBufferIndex = self.bufferIndex
+  for i = 1, self.nlines do
+    self.displaySignalX[i], self.displaySignalY[i], self.displaySignalZ[i] = self.signalX[i], self.signalY[i], self.signalZ[i]
   end
 end
 
@@ -436,6 +448,8 @@ function pdlua_flames:init_pd_methods(pdclass, name, methods, atoms)
     pdclass:handle_pd_message(sel, atoms)
   end
 end
+
+---------------------------------------------------------------------------------------------
 
 function pdlua_flames:parse_atoms(atoms)
   local kwargs = {}
