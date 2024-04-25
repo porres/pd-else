@@ -14,8 +14,8 @@ function circle:initialize(sel, atoms)
     self.gui = 1
     self.x_range_start = -1
     self.x_range_end = 1
-    self.y_range_start = -1
-    self.y_range_end = 1
+    self.y_range_end = -1
+    self.y_range_start = 1
     self.clip = 1
     self.mode = 1
     self.savestate = 0
@@ -37,7 +37,8 @@ function circle:mouse_down(x, y)
 
     if self.jump == 1 then
         self.slider_position_x = (x / width)
-        self.slider_position_y = (y / height)
+        self.slider_position_y = 1.0 - (y / height)
+        self:in_1_bang()
     end
 
     self.mouse_down_x = x
@@ -45,7 +46,7 @@ function circle:mouse_down(x, y)
     self.last_mouse_x = x
     self.last_mouse_y = y
     self.mouse_down_slider_x = self.slider_position_x * width
-    self.mouse_down_slider_y = self.slider_position_y * height
+    self.mouse_down_slider_y = (1.0 - self.slider_position_y) * height
     self:repaint()
 end
 
@@ -71,10 +72,10 @@ function circle:mouse_drag(x, y)
         distance = math.clamp(distance, 0.0, 0.5)
 
         self.slider_position_x = (math.cos(angle) * distance) + 0.5
-        self.slider_position_y = (math.sin(angle) * distance) + 0.5
+        self.slider_position_y = -(math.sin(angle) * distance) + 0.5
     else
         self.slider_position_x = math.clamp(new_x + 0.5, 0, 1)
-        self.slider_position_y = math.clamp(new_y + 0.5, 0, 1)
+        self.slider_position_y = -math.clamp(new_y + 0.5, 0, 1)
     end
 
     self:in_1_bang()
@@ -94,8 +95,8 @@ function circle:restore_state(atoms)
         local size = atoms[index]
         self.x_range_start = atoms[index + 1]
         self.x_range_end = atoms[index + 2]
-        self.y_range_start = atoms[index + 3]
-        self.y_range_end = atoms[index + 4]
+        self.y_range_end = atoms[index + 3]
+        self.y_range_start = atoms[index + 4]
         self.mode = atoms[index + 5]
 
         self.bg1 = {atoms[index + 6], atoms[index + 7], atoms[index + 8]}
@@ -117,7 +118,7 @@ function circle:restore_state(atoms)
         self.savestate = atoms[index + 17]
         if self.savestate ~= 0 then
             self.slider_position_x = self:unscale_value(atoms[index + 18], self.x_range_start, self.x_range_end)
-            self.slider_position_y = self:unscale_value(atoms[index + 19], self.y_range_start, self.y_range_end)
+            self.slider_position_y = self:unscale_value(atoms[index + 19], self.y_range_end, self.y_range_start)
         end
         self.send_sym = atoms[index + 20]
         self.receive_sym = atoms[index + 21]
@@ -132,7 +133,7 @@ function circle:save_state()
     local width, height = self:get_size()
 
     local state = {
-        "state", width, self.x_range_start, self.x_range_end, self.y_range_start, self.y_range_end, self.mode
+        "state", width, self.x_range_start, self.x_range_end, self.y_range_end, self.y_range_start, self.mode
     }
 
     local function append_color(color)
@@ -156,7 +157,7 @@ function circle:save_state()
     state[#state + 1] = self.jump
     state[#state + 1] = self.savestate
     state[#state + 1] = self:scale_value(self.slider_position_x, self.x_range_start, self.x_range_end)
-    state[#state + 1] = self:scale_value(self.slider_position_y, self.y_range_start, self.y_range_end)
+    state[#state + 1] = self:scale_value(self.slider_position_y, self.y_range_end, self.y_range_start)
     state[#state + 1] = self.send_sym
     state[#state + 1] = self.receive_sym
 
@@ -180,8 +181,8 @@ end
 
 function circle:in_1_bang()
     local x = self:scale_value(self.slider_position_x, self.x_range_start, self.x_range_end)
-    local y = self:scale_value(self.slider_position_y, self.y_range_start, self.y_range_end)
-    self:outlet(1, "list", {x, -y})
+    local y = self:scale_value(self.slider_position_y, self.y_range_end, self.y_range_start)
+    self:outlet(1, "list", {x, y})
 end
 
 function circle:in_1_list(atoms)
@@ -192,7 +193,7 @@ function circle:in_1_list(atoms)
 
     local width, height = self:get_size()
     self.slider_position_x = self:unscale_value(atoms[1], self.x_range_start, self.x_range_end)
-    self.slider_position_y = self:unscale_value(atoms[2], self.y_range_start, self.y_range_end)
+    self.slider_position_y = self:unscale_value(atoms[2], self.y_range_end, self.y_range_start)
     self:save_state()
     self:repaint()
     self:in_1_bang()
@@ -200,7 +201,7 @@ end
 
 function circle:in_1_set(atoms)
     self.slider_position_x = self:unscale_value(atoms[1], self.x_range_start, self.x_range_end)
-    self.slider_position_y = self:unscale_value(atoms[2], self.y_range_start, self.y_range_end)
+    self.slider_position_y = self:unscale_value(atoms[2], self.y_range_end, self.y_range_start)
     self:repaint();
     self:save_state()
 end
@@ -213,8 +214,8 @@ end
 function circle:in_1_range(atoms)
     self.x_range_start = atoms[1]
     self.x_range_end = atoms[2]
-    self.y_range_start = atoms[1]
-    self.y_range_end = atoms[2]
+    self.y_range_end = atoms[1]
+    self.y_range_start = atoms[2]
     self:save_state()
 end
 
@@ -225,8 +226,8 @@ function circle:in_1_xrange(atoms)
 end
 
 function circle:in_1_yrange(atoms)
-    self.y_range_start = atoms[1]
-    self.y_range_end = atoms[2]
+    self.y_range_end = atoms[1]
+    self.y_range_start = atoms[2]
     self:save_state()
 end
 
@@ -312,7 +313,7 @@ end
 function circle:paint(g)
     local width, height = self:get_size()
     local x = self.slider_position_x * width
-    local y = self.slider_position_y * height
+    local y = (1.0 - self.slider_position_y) * height
 
    if type(self.bg1) == "number" then
         g:set_color(self.bg1)
