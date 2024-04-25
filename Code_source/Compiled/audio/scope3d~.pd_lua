@@ -17,7 +17,7 @@ function scope3d:initialize(name, args)
     { name = "drag",        defaults = { 1 } },
     { name = "zoom",        defaults = { 1 } },
     { name = "perspective", defaults = { 1 } },
-    { name = "rate",        defaults = { 50 } },
+    { name = "rate",        defaults = { 20 } },
 
     { name = "list",        defaults = { 8, 256 } },
     { name = "nsamples" },
@@ -50,7 +50,9 @@ end
 
 function scope3d:reset_buffer()
   self.bufferIndex = 1
+  self.displayBufferIndex = 1
   self.sampleIndex = 1
+  self.displaySignalX, self.displaySignalY, self.displaySignalZ = {}, {}, {}
   self.signalX, self.signalY, self.signalZ = {}, {}, {}
   self.rotatedX, self.rotatedY, self.rotatedZ = {}, {}, {}
   -- prefill ring buffer
@@ -58,14 +60,17 @@ function scope3d:reset_buffer()
     self.signalX[i], self.signalY[i], self.signalZ[i] = 0, 0, 0
     self.rotatedX[i], self.rotatedY[i], self.rotatedZ[i] = 0, 0, 0
   end
+  self:update_lines()
 end
 
 function scope3d:postinitialize()
   self.clock = pd.Clock:new():register(self, "tick")
-  self:pd_rate(self.pd_methods.rate.val)
+  self.clock:delay(self.frameDelay)
 end
 
 function scope3d:tick()
+  self.width, self.height = self:get_size()
+  self:update_lines()
   self:repaint()
   self.clock:delay(self.frameDelay)
 end
@@ -78,28 +83,24 @@ end
 function scope3d:pd_width(x)
   if type(x[1]) == "number" then
     self.strokeWidth = x[1]
-    self:repaint()
   end
 end
 
 function scope3d:pd_zoom(x)
   if type(x[1]) == "number" then 
     self.zoom = x[1]
-    self:repaint()
   end
 end
 
 function scope3d:pd_perspective(x)
   if type(x[1]) == "number" then 
     self.perspective = x[1]
-    self:repaint()
   end
 end
 
 function scope3d:pd_grid(x)
   if type(x[1]) == "number" then
     self.grid = x[1]
-    self:repaint()
   end
 end
 
@@ -117,7 +118,6 @@ function scope3d:pd_gridcolor(x)
      type(x[2]) == "number" and
      type(x[3]) == "number" then
     self.gridColorR, self.gridColorG, self.gridColorB = table.unpack(x)
-    self:repaint()
   end
 end
 
@@ -127,7 +127,6 @@ function scope3d:pd_bgcolor(x)
      type(x[2]) == "number" and
      type(x[3]) == "number" then
     self.bgColorR, self.bgColorG, self.bgColorB = table.unpack(x)
-    self:repaint()
   end
 end
 
@@ -137,7 +136,6 @@ function scope3d:pd_fgcolor(x)
      type(x[2]) == "number" and
      type(x[3]) == "number" then
     self.fgColorR, self.fgColorG, self.fgColorB = table.unpack(x)
-    self:repaint()
   end
 end
 
@@ -148,7 +146,6 @@ function scope3d:pd_rate(x)
   if self.clock then
     self.clock:unset() 
     self.clock:delay(self.frameDelay)
-    self:repaint()
   end
 end
 
@@ -156,7 +153,6 @@ function scope3d:pd_list(x)
   self.nsamples = (math.max(2, math.floor(x[1])) - 1) or 8
   self.nlines = math.min(1024, math.max(2, math.floor(x[2]))) or 256
   self:reset_buffer()
-  self:repaint()
 end
 
 function scope3d:pd_nsamples(x)
@@ -175,7 +171,6 @@ function scope3d:pd_rotate(x)
      type(x[2]) == "number" then
     self.rotationAngleY, self.rotationAngleX = x[1], x[2]
     self.rotationStartAngleX, self.rotationStartAngleY = self.rotationAngleX, self.rotationAngleY
-    self:repaint()
   end
 end
 
@@ -338,8 +333,8 @@ function scope3d:paint(g)
   end
 
   for i = 1, self.nlines do
-    local offsetIndex = (i + self.bufferIndex-2) % self.nlines + 1
-    local rotatedX, rotatedY, rotatedZ = self:rotate_y(self.signalX[offsetIndex], self.signalY[offsetIndex], self.signalZ[offsetIndex], self.rotationAngleY)
+    local offsetIndex = (i + self.displayBufferIndex-2) % self.nlines + 1
+    local rotatedX, rotatedY, rotatedZ = self:rotate_y(self.displaySignalX[offsetIndex], self.displaySignalY[offsetIndex], self.displaySignalZ[offsetIndex], self.rotationAngleY)
     self.rotatedX[i], self.rotatedY[i], self.rotatedZ[i] = self:rotate_x(rotatedX, rotatedY, rotatedZ, self.rotationAngleX)
   end
 
@@ -362,7 +357,14 @@ function scope3d:paint(g)
   end
 end
 
-function scope3d:rotate_y(x, y ,z , angle)
+function scope3d:update_lines()
+  self.displayBufferIndex = self.bufferIndex
+  for i = 1, self.nlines do
+    self.displaySignalX[i], self.displaySignalY[i], self.displaySignalZ[i] = self.signalX[i], self.signalY[i], self.signalZ[i]
+  end
+end
+
+function scope3d:rotate_y(x, y, z, angle)
   local cosTheta = math.cos(angle * math.pi / 180)
   local sinTheta = math.sin(angle * math.pi / 180)
   local newX = x * cosTheta - z * sinTheta
@@ -446,6 +448,8 @@ function pdlua_flames:init_pd_methods(pdclass, name, methods, atoms)
     pdclass:handle_pd_message(sel, atoms)
   end
 end
+
+---------------------------------------------------------------------------------------------
 
 function pdlua_flames:parse_atoms(atoms)
   local kwargs = {}
