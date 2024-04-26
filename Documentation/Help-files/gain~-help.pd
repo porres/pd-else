@@ -1,4 +1,4 @@
-#N canvas 470 44 563 617 10;
+#N canvas 409 48 563 617 10;
 #X obj 4 591 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0 14 #dcdcdc #404040 0;
 #X obj 4 457 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 508 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
@@ -143,14 +143,12 @@
 #X floatatom 334 165 5 0 0 0 - - - 0;
 #X text 350 145 set slider (0-1);
 #X obj 154 193 else/gain~ 1 0 0 0 0;
-#A saved;
 #X text 58 25 [gain~] has 3 scaling modes for its slider (the default is "quartic"). You can set a linear gain multiplier \, which needs to be greater than zero and also represents the maximum linear gain achieved., f 40;
 #X obj 133 321 dac~;
 #X obj 167 322 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 154 127 noise~;
 #X obj 615 43 adc~;
 #X obj 615 76 else/gain~;
-#A saved;
 #X obj 615 198 else/meter~;
 #X text 659 94 Use it in conjunction with [else/meter~], f 16;
 #X obj 334 322 s \$0-set;
@@ -219,7 +217,6 @@
 #X text 290 121 dB: This mode adopts a decibel scale with a range of 100 dB (using the [dbtorms~] object)., f 55;
 #X text 290 77 Quartic (default): This mode just gets the slider values to the power of 4 (so \, for instance \, an input slider value of 0.5 becomes 0.125)., f 57;
 #X obj 463 344 else/gain~;
-#A saved;
 #X text 33 337 The gain value is a simple multiplier to the output value of the slider and determines the maximum linear gain output regardless of the scaling mode. For example \, "2" will output the double of the input amplitude \, and "0.5" half of it. This is useful if your input isn't loud enough \, if it is too high or even if you're using multiple [gain~] and they're all adding up to the same output.;
 #X obj 441 225 else/db2lin;
 #X connect 23 0 33 0;
@@ -230,7 +227,6 @@
 #X connect 35 0 26 0;
 #X restore 466 204 pd scaling \; modes & gain;
 #X obj 289 177 else/gain~ 1 0 20 0 0;
-#A saved;
 #X obj 5 7 cnv 15 301 42 empty empty gain~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -240,7 +236,6 @@
 #X text 75 556 -ramp <float>: sets ramp time (minimum 5 \, default 20), f 76;
 #X text 197 410 - non zero sets to init mode, f 58;
 #X obj 48 199 else/gain2~;
-#A saved;
 #X text 38 175 see also:;
 #X text 88 257 <= [else/gain2~];
 #X obj 1 315 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13 #dcdcdc #000000 0;
@@ -263,7 +258,6 @@
 #X text 85 410 savestate <float>;
 #N canvas 684 159 548 397 savestate 0;
 #X obj 93 96 else/gain~ 1 0 20 1 0.677778;
-#A saved;
 #X obj 93 218 else/meter~;
 #X obj 93 33 noise~;
 #X msg 108 63 savestate 1;
@@ -285,7 +279,6 @@
 #X obj 97 74 osc~ 440;
 #X obj 160 74 osc~ 660;
 #X obj 97 148 else/gain~ 1 0 20 0 0.0666667;
-#A saved;
 #X obj 97 265 dac~ 1;
 #X connect 0 0 5 0;
 #X connect 3 0 0 0;
@@ -296,12 +289,11 @@
 #N canvas 721 242 484 354 learn/forget 0;
 #X text 82 95 The controller settings get saved with the pacth.;
 #X obj 197 202 else/gain~ 1 0 20 0 0.491444;
-#A saved;
 #X msg 197 135 learn;
 #X msg 217 165 forget;
-#X text 233 221 <-- alt+click to learn;
-#X text 233 241 <-- alt+shift+click to forget;
 #X text 82 36 If you send the 'learn' message or "alt+click" the object \, it learns a MIDI controller so you can control the gain. You can also forget it with the 'forget' message or "alt+shift+click".;
+#X text 233 221 <-- alt+shift+click to learn;
+#X text 233 241 <-- alt+shift+control to forget;
 #X connect 2 0 1 0;
 #X connect 3 0 1 0;
 #X restore 449 259 pd learn/forget;

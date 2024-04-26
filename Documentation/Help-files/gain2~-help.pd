@@ -1,4 +1,4 @@
-#N canvas 608 29 564 673 10;
+#N canvas 571 29 564 673 10;
 #X obj 2 327 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 2 494 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
@@ -145,10 +145,8 @@
 #X obj 758 61 adc~;
 #X text 628 19 Use it in conjunction with [else/meter2~];
 #X obj 758 94 else/gain2~;
-#A saved;
 #X obj 702 210 else/meter2~;
 #X obj 371 205 else/gain2~ 0.1 0 0.519685 0 0.519685;
-#A saved;
 #X obj 517 275 s \$0-set;
 #X obj 371 142 r \$0-set;
 #X msg 533 198 set \$1;
@@ -220,7 +218,6 @@
 #X text 290 77 Quartic (default): This mode just gets the slider values to the power of 4 (so \, for instance \, an input slider value of 0.5 becomes 0.125)., f 57;
 #X text 33 350 The gain value is a simple multiplier to the output value of the slider and determines the maximum linear gain output regardless of the scaling mode. For example \, "2" will output the double of the input amplitude \, and "0.5" half of it. This is useful if your input isn't loud enough \, if it is too high or even if you're using multiple [gain~] and they're all adding up to the same output.;
 #X obj 523 343 else/gain2~;
-#A saved;
 #X obj 511 454 dac~;
 #X obj 361 225 else/db2lin;
 #X connect 23 0 34 0;
@@ -235,7 +232,6 @@
 #X restore 462 247 pd scaling \; modes & gain;
 #X text 153 206 [else/gain2~] ==>;
 #X obj 276 171 else/gain2~ 1 0 20 0 0;
-#A saved;
 #X obj 75 470 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 146 470 signal;
 #X text 189 470 - right channel signal whose gain will be adjusted;
@@ -256,7 +252,6 @@
 #X text 38 168 see also:;
 #X text 78 252 <= [else/gain~];
 #X obj 50 192 else/gain~;
-#A saved;
 #X obj 247 145 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #X text 170 144 mute/unmute;
 #X obj 76 334 cnv 17 3 132 empty \$0-pddp.cnv.let.0 0 5 9 0 16 #dcdcdc #9c9c9c 0;
@@ -275,7 +270,6 @@
 #N canvas 730 201 588 422 savestate 0;
 #X obj 114 61 noise~;
 #X obj 114 114 else/gain2~ 1 0 20 1 0.666667;
-#A saved;
 #X obj 134 88 else/brown~;
 #X obj 114 242 else/meter2~;
 #X text 328 237 see also;
@@ -299,13 +293,12 @@
 #X text 82 95 The controller settings get saved with the pacth.;
 #X msg 197 135 learn;
 #X msg 217 165 forget;
-#X text 233 224 <-- alt+click to learn;
-#X text 233 244 <-- alt+shift+click to forget;
 #X text 82 36 If you send the 'learn' message or "alt+click" the object \, it learns a MIDI controller so you can control the gain. You can also forget it with the 'forget' message or "alt+shift+click".;
 #X obj 197 202 else/gain2~;
-#A saved none;
-#X connect 1 0 6 0;
-#X connect 2 0 6 0;
+#X text 233 221 <-- alt+shift+click to learn;
+#X text 233 241 <-- alt+shift+control to forget;
+#X connect 1 0 4 0;
+#X connect 2 0 4 0;
 #X restore 444 280 pd learn/forget;
 #X text 146 450 forget;
 #X text 192 450 - forgets a MIDI controller, f 58;
