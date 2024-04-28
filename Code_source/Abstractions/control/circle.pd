@@ -96,7 +96,7 @@
 #X obj 307 463 change 127;
 #X obj 115 281 s \$0-to-circle-gui;
 #X obj 388 357 s \$0-to-circle-gui;
-#X msg 307 559 \; \$2-cnv donecanvasdialog 1 -1 3 0 \$1 \$1 0 \$1 \$1 0 0, f 51;
+#X msg 307 559 \; \$2-cnv donecanvasdialog 1 -1 3 0 \$1 \$1 0 \$1 \$1 175 100, f 51;
 #X obj 85 560 r \$0-to-circle-gui;
 #X obj 85 614 outlet;
 #X obj 452 87 else/canvas.setname \$0-cnv 1;
