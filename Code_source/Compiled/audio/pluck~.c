@@ -187,6 +187,10 @@ static t_int *pluck_perform_noise_input(t_int *w){
         t_float hz = hz_in[i];
         t_float trig = t_in[i];
         float a_in = ain[i];
+        if(x->x_midi_mode){
+            hz = x->x_midi_pitch;
+            trig = 0;
+        }
         if(hz < 1){
             out[i] = sum = 0;
             xnm1 = ynm1 = 0;

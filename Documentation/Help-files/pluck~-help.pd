@@ -138,7 +138,7 @@
 #X text 29 225 * output is muted if less than 1 hz, f 17;
 #X text 121 178 pitch *;
 #X text 127 360 midi <float>;
-#N canvas 204 187 1120 494 trigger 0;
+#N canvas 204 187 1120 494 trigger 1;
 #X obj 97 273 else/out~;
 #X obj 146 151 else/impseq~ 1 0.5 0.25 0.1;
 #X obj 174 177 else/trighold~;
