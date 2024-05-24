@@ -1,9 +1,9 @@
-#N canvas 444 56 533 600 12;
+#N canvas 560 50 533 600 12;
 #X declare -path else;
 #X obj 41 57 keyboard 17 80 3 2 0 127 empty empty;
 #X obj 41 23 keymap -1;
 #X obj 40 506 out~;
-#X obj 40 154 voices~ 4, f 10;
+#X obj 65 154 voices~ 4, f 10;
 #X obj 40 239 pluck.m~;
 #A saved 0 1 0 0;
 #X text 295 467 see -->;
@@ -41,8 +41,7 @@
 #X connect 12 0 0 0;
 #X restore 118 192 pd messages;
 #X connect 0 0 3 0;
+#X connect 0 0 4 0;
 #X connect 1 0 0 0;
-#X connect 3 0 4 0;
-#X connect 3 1 4 1;
 #X connect 4 0 2 0;
 #X connect 12 0 4 0;

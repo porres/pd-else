@@ -1,4 +1,4 @@
-// Porres 2017-2022
+// Porres 2017-2024
 
 #include "m_pd.h"
 #include "random.h"
@@ -7,8 +7,8 @@
 
 #define TWO_PI      (3.14159265358979323846 * 2)
 #define DEF_RADIANS (0.31830989569 * 0.5)
-#define PLUCK_STACK 48000 // stack buf size
-#define PLUCK_MAXD  4294967294 // max delay = 2**32 - 2
+#define PLUCK_STACK 48000       // stack buf size
+#define PLUCK_MAXD  4294967294  // max delay = 2**32 - 2
 
 static t_class *pluck_class;
 
@@ -18,6 +18,8 @@ typedef struct _pluck{
     t_inlet        *x_trig_let;
     t_inlet        *x_decay_inlet;
     t_inlet        *x_cutoff_inlet;
+    t_int           x_midi_mode;
+    float           x_midi_pitch;
     float           x_sr;
     t_int           x_midi;
     float           x_freq;
@@ -47,8 +49,6 @@ typedef struct _pluck{
     double          x_b1;
 }t_pluck;
 
-
-
 static void update_coeffs(t_pluck *x, double f){
     x->x_f = f;
     double omega = f * TWO_PI/x->x_sr;
@@ -62,6 +62,10 @@ static void update_coeffs(t_pluck *x, double f){
         x->x_a0 = x->x_a1 = omega * 0.5;
         x->x_b1 = 1 - omega;
     }
+}
+
+void pluck_midi_active(t_pluck *x, t_floatarg f){
+    x->x_midi_mode = (int)(f != 0);
 }
 
 static void update_fb(t_pluck *x, double fb, double delms){
@@ -98,7 +102,7 @@ static void pluck_list(t_pluck *x, t_symbol *s, int argc, t_atom *argv){
     if(atom_getfloat(argv+1) == 0)
         return;
     if(argc >= 2){
-        obj_list(&x->x_obj, 0, 1, argv);
+        x->x_midi_pitch = atom_getfloat(argv);
         argc--, argv++;
         x->x_float_trig = atom_getfloat(argv)/ 127.f;
         x->x_control_trig = 1;
@@ -264,6 +268,10 @@ static t_int *pluck_perform(t_int *w){
         t_float hz = hz_in[i];
         t_float trig = t_in[i];
         float a_in = ain[i];
+        if(x->x_midi_mode){
+            hz = x->x_midi_pitch;
+            trig = 0;
+        }
         if(hz < 1){
             out[i] = sum = 0;
             xnm1 = ynm1 = 0;
@@ -345,6 +353,8 @@ static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
     float freq = 0;
     float decay = 0;
     float cut_freq = DEF_RADIANS * x->x_sr;
+    x->x_midi_pitch = 0;
+    x->x_midi_mode = 0;
     x->x_midi = 0;
     x->x_float_trig = 1;
     x->x_control_trig = 0;
@@ -377,6 +387,10 @@ static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
             }
             else if(curarg == gensym("-midi")){
                 x->x_midi = 1;
+                argc--, argv++;
+            }
+            else if(curarg == gensym("-midi_active")){
+                x->x_midi_mode = 1;
                 argc--, argv++;
             }
             else
@@ -441,5 +455,6 @@ void pluck_tilde_setup(void){
     CLASS_MAINSIGNALIN(pluck_class, t_pluck, x_freq);
     class_addlist(pluck_class, pluck_list);
     class_addmethod(pluck_class, (t_method)pluck_midi, gensym("midi"), A_DEFFLOAT, 0);
+    class_addmethod(pluck_class, (t_method)pluck_midi_active, gensym("midi_active"), A_FLOAT, 0);
     class_addmethod(pluck_class, (t_method)pluck_clear, gensym("clear"), 0);
 }
