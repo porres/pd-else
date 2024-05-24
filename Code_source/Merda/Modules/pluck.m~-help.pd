@@ -1,11 +1,10 @@
-#N canvas 568 50 531 678 12;
+#N canvas 588 49 533 626 12;
 #X declare -path else;
 #X obj 41 57 keyboard 17 80 3 2 0 127 empty empty;
 #X obj 41 23 keymap -1;
-#X obj 40 556 out~;
-#X obj 65 154 voices~ 4, f 10;
+#X obj 40 538 out~;
 #X obj 40 239 pluck.m~;
-#A saved 0 1 0 0;
+#A saved 0.999999 1 0 0 1 4;
 #X text 295 467 see -->;
 #X obj 243 18 declare -path else;
 #X text 247 257 This is just a wrapper around [pluck~] from ELSE \, check it out., f 29;
@@ -39,9 +38,8 @@
 #X connect 10 0 12 0;
 #X connect 11 0 0 0;
 #X connect 12 0 0 0;
-#X restore 118 192 pd messages;
+#X restore 138 189 pd messages;
+#X obj 77 154 voices~ 4, f 10;
 #X connect 0 0 3 0;
-#X connect 0 0 4 0;
-#X connect 1 0 0 0;
-#X connect 4 0 2 0;
-#X connect 12 0 4 0;
+#X connect 3 0 2 0;
+#X connect 11 0 3 0;
