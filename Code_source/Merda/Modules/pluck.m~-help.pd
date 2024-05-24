@@ -1,8 +1,8 @@
-#N canvas 560 50 533 600 12;
+#N canvas 568 50 531 678 12;
 #X declare -path else;
 #X obj 41 57 keyboard 17 80 3 2 0 127 empty empty;
 #X obj 41 23 keymap -1;
-#X obj 40 506 out~;
+#X obj 40 556 out~;
 #X obj 65 154 voices~ 4, f 10;
 #X obj 40 239 pluck.m~;
 #A saved 0 1 0 0;
