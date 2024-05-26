@@ -11,7 +11,6 @@
 #X obj 369 9 declare -path else;
 #X obj 639 25 about.MERDA;
 #X text 568 61 This is a wrapper around [plaits~] from ELSE \, check it out., f 27;
-#X text 468 186 This example uses a MIDI Input \, note the MIDI toggle on. You can then use the toggles to set Trigger or Level mode. To use signals for Trigger and Level \, see below., f 45;
 #N canvas 499 36 687 578 reference 0;
 #X text 19 19 Signal inlets \; 0- frequency in midi \; 1- trigger \; 2- Level \; 3- Frequency Modulation \; 4- Timbre Modulation \; 5- Harmonics Modulation \; 6- Morph Modulation \;, f 54;
 #X obj 361 169 s \$0-messages;
@@ -59,7 +58,7 @@
 #X obj 46 425 tgl 16 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X obj 166 425 tgl 16 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X msg 101 449 voices \$1;
-#X floatatom 101 425 5 1 8 0 - - - 0;
+#X floatatom 101 425 5 1 32 0 - - - 0;
 #X msg 166 449 trigger \$1;
 #X obj 237 425 tgl 16 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X msg 237 449 level \$1;
@@ -140,7 +139,7 @@
 #X connect 6 1 5 1;
 #X connect 7 0 6 0;
 #X connect 7 1 6 2;
-#X restore 560 258 pd trigger/level-input;
+#X restore 560 250 pd trigger/level-input;
 #X text 462 303 Other inlets are for modulations and are controlled by the attenuverter knobs. Unlike the original object \, you don't need to activate the modulations via messages. When you connect to these inlets \, the modulation becomes active automatically., f 47;
 #N canvas 443 107 708 344 +details 0;
 #X obj 274 292 else/openfile -h https://pichenettes.github.io/mutable-instruments-documentation/modules/plaits/manual/# Manual;
@@ -1873,8 +1872,9 @@
 #X text 190 40 Here we have details and examples for each single mode:;
 #X restore 632 398 pd +details;
 #X text 518 127 (But this module has polyphonic capabilities and is much friendlier)., f 37;
+#X text 468 180 This example uses a MIDI Input \, note the MIDI toggle on. You then need to set the number of voices (1 voice makes it like [mono]) and can then use the toggles to set Trigger or Level mode. To use signals for Trigger and Level \, see below., f 45;
 #X connect 1 0 5 0;
 #X connect 2 0 1 0;
 #X connect 5 0 3 0;
 #X connect 5 1 4 0;
-#X connect 11 0 5 0;
+#X connect 10 0 5 0;
