@@ -51,24 +51,21 @@ static void voices_newvoice(t_voices *x, int ac, t_atom *av){
         if(v->v_used && v->v_count < count_used){ // find first used (on) voice
             first_used = v;
             used_idx = i;
-            count_used = (unsigned int)v->v_count; // update min valu3
+            count_used = (unsigned int)v->v_count; // update min count value
         }
         else if(!v->v_used && v->v_count < count_unused){ // find first unused (off) voice
             first_unused = v;
             unused_idx = i;
             count_unused = (unsigned int)v->v_count;
-/*            post("find first unused");
-            post("unused_idx = %d", unused_idx);
-            post("count_unused = %d", v->v_count);*/
         }
     }
     if(first_unused){ // if there's an unused voice, use it
         first_unused->v_used = 1; // mark as used
         if(pitchsym != NULL)
-           first_unused->v_pitchsym = pitchsym;     // set pitch
+           first_unused->v_pitchsym = pitchsym; // set pitch
         else
-            first_unused->v_pitch = pitch;           // set pitch
-        first_unused->v_count = x->x_count++;       // increase counter
+            first_unused->v_pitch = pitch;      // set pitch
+        first_unused->v_count = x->x_count++;   // increase counter
         t_atom* at = ALLOCA(t_atom, ac + 1);
         SETFLOAT(at, unused_idx + x->x_offset); // voice number
         for(i = 0; i < ac; i++){
@@ -89,7 +86,7 @@ static void voices_newvoice(t_voices *x, int ac, t_atom *av){
             outlet_list(x->x_obj.ob_outlet, &s_list, 3, at1);
             // note on
             t_atom* at2 = ALLOCA(t_atom, ac + 1);
-            SETFLOAT(at2, used_idx + x->x_offset);     // voice number
+            SETFLOAT(at2, used_idx + x->x_offset);    // voice number
             for(i = 0; i < ac; i++){
                 if((av+i)->a_type == A_FLOAT)
                     SETFLOAT(at2+i+1, atom_getfloat(av+i));
@@ -103,8 +100,8 @@ static void voices_newvoice(t_voices *x, int ac, t_atom *av){
             if(pitchsym != NULL)
                first_used->v_pitchsym = pitchsym; // set new pitch
             else
-               first_used->v_pitch = pitch; // set new pitch
-            first_used->v_count = x->x_count++; // increase counter
+               first_used->v_pitch = pitch;       // set new pitch
+            first_used->v_count = x->x_count++;   // increase counter
         }
         else{ // don't steal, output in extra outlet
             t_atom at[2];
@@ -279,7 +276,8 @@ static void voices_flush(t_voices *x){
                 SETFLOAT(at+1, v->v_pitch);               // pitch
             SETFLOAT(at+2, 0);                            // Note-Off
             outlet_list(x->x_obj.ob_outlet, &s_list, 3, at);
-            v->v_used = v->v_count = v->v_pitch = 0; // fuck release time
+            clock_unset(v->v_clock);
+            v->v_used = v->v_count = v->v_pitch = 0;      // fuck release time
             v->v_pitchsym = NULL;
         }
     }
@@ -287,7 +285,6 @@ static void voices_flush(t_voices *x){
 }
 
 static void voices_n(t_voices *x, t_float f){
-    t_voice *v;
     int n = (int)f < 1 ? 1 : (int)f;
     if(n == x->x_n)
         return;
@@ -297,7 +294,8 @@ static void voices_n(t_voices *x, t_float f){
     x->x_vec = (t_voice *)getbytes(n * sizeof(*x->x_vec));
     x->x_n = n;
     int i;
-    for(v = x->x_vec, i = n; i--; v++){ // initialize voices
+    t_voice *v;
+    for(v = x->x_vec, i = x->x_n; i--; v++){ // initialize voices
         v->v_pitch = v->v_used = v->v_count = 0;
         v->v_pitchsym = NULL;
         v->v_clock = clock_new(v, (t_method)voice_tick);
@@ -310,6 +308,7 @@ static void voices_clear(t_voices *x){
     int i;
     for(v = x->x_vec, i = x->x_n; i--; v++){
         v->v_pitch = v->v_used = v->v_released = v->v_count = 0; // zero voices
+        v->v_clock = clock_new(v, (t_method)voice_tick);
         v->v_pitchsym = NULL;
     }
     x->x_count = 0;
@@ -324,16 +323,14 @@ static void voices_free(t_voices *x){
 }
 
 static void *voices_new(t_symbol *s, int ac, t_atom *av){
-    t_symbol *dummy = s;
-    dummy = NULL;
+    s = NULL;
     t_voices *x = (t_voices *)pd_new(voices_class);
-    t_voice *v;
-// default
     x->x_offset = 0;
     int retrig = 0;
     int n = 1;
     x->x_steal = 0;
     float release = 0;
+    x->x_count = 0;
 /////////////////////////////////////////////////////////////////////////////////
     int argnum = 0;
     while(ac > 0){
@@ -363,6 +360,18 @@ static void *voices_new(t_symbol *s, int ac, t_atom *av){
                 else
                     goto errstate;
             }
+            else if(cursym ==  gensym("-offset")){
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    x->x_offset = atom_getintarg(1, ac, av);
+                    ac-=2, av+=2;
+                }
+                else
+                    goto errstate;
+            }
+            else if(cursym ==  gensym("-steal")){
+                x->x_steal = 1;
+                ac--, av++;
+            }
             else
                 goto errstate;
         }
@@ -389,13 +398,13 @@ static void *voices_new(t_symbol *s, int ac, t_atom *av){
     x->x_n = n < 1 ? 1 : n;
     x->x_vec = (t_voice *)getbytes(n * sizeof(*x->x_vec));
     int i;
+    t_voice *v;
     for(v = x->x_vec, i = n; i--; v++){ // initialize voices
         v->v_pitch = v->v_used = v->v_count = 0;
         v->v_pitchsym = NULL;
         v->v_clock = clock_new(v, (t_method)voice_tick);
         v->v_owner = x;
     }
-    x->x_count = 0;
     floatinlet_new(&x->x_obj, &x->x_release);
     outlet_new(&x->x_obj, &s_list);
     x->x_extra = outlet_new((t_object *)x, &s_list);
