@@ -6,7 +6,8 @@
 
 static t_class *voices_class;
 
-typedef struct voice{
+typedef struct _voice{
+    struct _voices *v_owner;
     t_clock        *v_clock;
     t_float         v_pitch;
     t_symbol       *v_pitchsym;
@@ -15,12 +16,11 @@ typedef struct voice{
     unsigned long   v_count;     // serial count id for voice (which was pressed first)
 }t_voice;
 
-typedef struct voices{
+typedef struct _voices{
     t_object        x_obj;
     t_voice        *x_vec;
     t_outlet      **x_outs;
     t_outlet       *x_extra;
-    t_clock        *x_clock; // clock to check voices
     unsigned long   x_count;
     int             x_n;
     int             x_retrig;
@@ -30,28 +30,11 @@ typedef struct voices{
     float           x_offset;
 }t_voices;
 
-static void voices_tick(t_voices *x){
-    if(x->x_count != 0){ // check if voices are unused, if so: reset counter
-        int used = 0;
-        int i;
-        t_voice *v;
-        for(v = x->x_vec, i = 0; i < x->x_n; v++, i++){ // search used voices
-            if(v->v_used){
-                used = 1;
-                break;
-            }
-        }
-        if(!used){ // all are unused, reset counter
-            for(v = x->x_vec, i = x->x_n; i--; v++)
-                v->v_count = 0;
-            x->x_count = 0;
-        }
-    }
-}
-
 static void voice_tick(t_voice *v_n){
     v_n->v_used = v_n->v_released = v_n->v_pitch = 0.;
     v_n->v_pitchsym = NULL;
+    t_voices *x = v_n->v_owner;
+    v_n->v_count = x->x_count++;
 }
 
 static void voices_newvoice(t_voices *x, int ac, t_atom *av){
@@ -136,8 +119,6 @@ static void voices_newvoice(t_voices *x, int ac, t_atom *av){
             }
             first_used->v_released = 0;
             clock_unset(first_used->v_clock);
-            clock_unset(x->x_clock);
-            
             if(pitchsym != NULL)
                first_used->v_pitchsym = pitchsym; // set new pitch
             else
@@ -170,7 +151,7 @@ static void voices_list(t_voices *x, t_symbol *s, int ac, t_atom *av){
     int i;
     t_voice *v;
     if(vel > 0){ // Note-on
-        if(x->x_retrig == 1) // retrigger mode 1: different output
+        if(x->x_retrig == 0) // retrigger mode 0: different output
             voices_newvoice(x, ac, av); // add new note, nothing different
         else{ // retrigger mode 0 & 2
             t_voice *prev = 0;
@@ -188,7 +169,7 @@ static void voices_list(t_voices *x, t_symbol *s, int ac, t_atom *av){
                 }
             }
             if(prev){ // note already in voice allocation
-                if(x->x_retrig == 0){ // retrigger on the same voice allocation
+                if(x->x_retrig == 1){ // retrigger on the same voice allocation
                     if(x->x_list_mode){
                         t_atom* at = ALLOCA(t_atom, ac + 1);
                         SETFLOAT(at, prev_idx + x->x_offset);  // voice number
@@ -205,7 +186,6 @@ static void voices_list(t_voices *x, t_symbol *s, int ac, t_atom *av){
                         outlet_list(x->x_outs[prev_idx], &s_list, ac, av);
                     prev->v_released = 0;
                     clock_unset(prev->v_clock);
-                    clock_unset(x->x_clock);
                 }
                 else if(x->x_retrig == 2) // go to extra
                     outlet_list(x->x_extra, &s_list, ac, av);
@@ -215,7 +195,6 @@ static void voices_list(t_voices *x, t_symbol *s, int ac, t_atom *av){
         }
     }
     else{ // Note off (vel = 0)
-//        post("Note off (vel = 0)");
         t_voice *used_pitch = 0;
         unsigned int used_idx = 0, count = 0xffffffff;
         for(v = x->x_vec, i = 0; i < x->x_n; v++, i++){ // search existing pitch
@@ -224,18 +203,11 @@ static void voices_list(t_voices *x, t_symbol *s, int ac, t_atom *av){
                 check_pitch = 1;
             else if(v->v_pitchsym == NULL && v->v_pitch == pitch)
                 check_pitch = 1;
-/*            post("i = %d", i);
-            post("check_pitch", check_pitch);
-            post("v->v_count = %d / count = %d", v->v_count, count);*/
-            if(v->v_used && !v->v_released && check_pitch && v->v_count < count){
-//                post("break");
+            if(v->v_used && !v->v_released && check_pitch && v->v_count < count)
                 used_pitch = v, count = (unsigned int)v->v_count, used_idx = i;
-                break;
-            }
         }
         if(used_pitch){ // pitch was found in a used and unreleased voice
             // send note-off
-//            post("used_pitch");
             if(x->x_list_mode){
                 t_atom* at = ALLOCA(t_atom, ac + 1);
                 SETFLOAT(at, used_idx + x->x_offset); // voice number
@@ -252,29 +224,12 @@ static void voices_list(t_voices *x, t_symbol *s, int ac, t_atom *av){
                 outlet_list(x->x_outs[used_idx], &s_list, ac, av);
             if(x->x_release > 0){ // free voice after release time
                 clock_delay(used_pitch->v_clock, x->x_release);
-                clock_delay(x->x_clock, x->x_release);
                 used_pitch->v_released = 1;
             }
             else{
                 used_pitch->v_used = used_pitch->v_pitch = 0;
                 used_pitch->v_pitchsym = NULL;
-                used_pitch->v_count = x->x_count++; // precisa disso tb
-//                post("free voice");
-/* // A MERDA TAVA AQUI!!!
-                if(x->x_count != 0){ // check if all are unused, if so: reset counter
-                    int used = 0;
-                    for(v = x->x_vec, i = 0; i < x->x_n; v++, i++){ // search used voices
-                        if(v->v_used){
-                            used = 1;
-                            break;
-                        }
-                    }
-                    if(!used){ // all are unused, reset counter
-                        for(v = x->x_vec, i = x->x_n; i--; v++)
-                            v->v_count = 0;
-                        x->x_count = 0;
-                    }
-                }*/
+                used_pitch->v_count = x->x_count++;
             }
         }
         else // pitch not found, send note-off in extra outlet
@@ -392,6 +347,7 @@ static void voices_n(t_voices *x, t_float f){
             v->v_pitch = v->v_used = v->v_count = 0;
             v->v_pitchsym = NULL;
             v->v_clock = clock_new(v, (t_method)voice_tick);
+            v->v_owner = x;
         }
     }
     else
@@ -411,11 +367,8 @@ static void voices_clear(t_voices *x){
 static void voices_free(t_voices *x){
     t_voice *v;
     int i;
-    for(v = x->x_vec, i = x->x_n; i--; v++){
-        if(v->v_clock) // needed ???
-            clock_free(v->v_clock);
-    }
-    clock_free(x->x_clock);
+    for(v = x->x_vec, i = x->x_n; i--; v++)
+        clock_free(v->v_clock);
     freebytes(x->x_vec, x->x_n * sizeof (*x->x_vec));
     if(x->x_outs)
         freebytes(x->x_outs, x->x_n * sizeof(*x->x_outs));
@@ -496,8 +449,8 @@ static void *voices_new(t_symbol *s, int ac, t_atom *av){
         v->v_pitch = v->v_used = v->v_count = 0;
         v->v_pitchsym = NULL;
         v->v_clock = clock_new(v, (t_method)voice_tick);
+        v->v_owner = x;
     }
-    x->x_clock = clock_new(x, (t_method)voices_tick);
     x->x_count = 0;
     floatinlet_new(&x->x_obj, &x->x_release);
     if(x->x_list_mode)
