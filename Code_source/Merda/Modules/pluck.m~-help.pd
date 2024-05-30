@@ -4,7 +4,7 @@
 #X obj 40 23 keymap -1;
 #X obj 40 508 out~;
 #X obj 40 209 pluck.m~;
-#A saved 0.999999 1 0 0 1 1;
+#A saved 0.52 0.6 0 0 1 4;
 #X text 310 436 see -->;
 #X obj 242 18 declare -path else;
 #X text 265 187 This is just a wrapper around [pluck~] from ELSE \, check it out., f 29;

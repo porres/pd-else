@@ -23,7 +23,6 @@
 #X obj 102 478 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 103 322 cnv 17 3 115 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 4 504 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
-#X text 125 378 retrig <float> - non zero sets to retrigger mode., f 68;
 #X text 179 392 clear - clears memory without output, f 59;
 #X text 179 406 flush - clears memory and output hanging notes, f 59;
 #X text 161 604 1) float - sets number of voices (default 1);
@@ -374,9 +373,10 @@
 #X connect 34 0 15 0;
 #X connect 35 0 15 0;
 #X restore 487 208 pd basic;
-#X connect 30 0 31 0;
-#X connect 30 1 31 1;
-#X connect 31 0 54 0;
-#X connect 32 0 54 0;
-#X connect 54 0 28 0;
-#X connect 54 1 29 0;
+#X text 125 378 retrig <float> - non zero sets to retrigger mode, f 68;
+#X connect 29 0 30 0;
+#X connect 29 1 30 1;
+#X connect 30 0 53 0;
+#X connect 31 0 53 0;
+#X connect 53 0 27 0;
+#X connect 53 1 28 0;

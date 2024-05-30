@@ -21,7 +21,6 @@
 #X obj 102 373 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 103 300 cnv 17 3 32 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 161 434 1) float - sets number of voices (default 1);
-#X text 125 315 voices <float> - sets number of voices (in list mode only), f 68;
 #X text 19 219 see also:;
 #X obj 130 148 notein;
 #X obj 130 172 pack;
@@ -88,11 +87,12 @@
 #X connect 9 0 10 0;
 #X connect 10 0 5 0;
 #X restore 471 205 pd example;
-#X connect 20 0 21 0;
-#X connect 20 1 21 1;
-#X connect 21 0 29 0;
-#X connect 22 0 29 0;
+#X text 155 315 n <float> - sets number of voices, f 63;
+#X connect 19 0 20 0;
+#X connect 19 1 20 1;
+#X connect 20 0 28 0;
+#X connect 21 0 28 0;
+#X connect 28 0 29 0;
+#X connect 28 1 32 0;
 #X connect 29 0 30 0;
-#X connect 29 1 33 0;
-#X connect 30 0 31 0;
-#X connect 33 0 34 0;
+#X connect 32 0 33 0;
