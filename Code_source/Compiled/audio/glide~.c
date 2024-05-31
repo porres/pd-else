@@ -16,7 +16,7 @@ typedef struct _glide{
     float    *x_delta;
     float    x_sr_khz;
     float    x_exp;
-    float    x_in;
+    t_float    x_in;
 }t_glide;
 
 static t_class *glide_class;

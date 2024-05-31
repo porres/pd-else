@@ -7,7 +7,7 @@
 
 typedef struct _function{
     t_object    x_obj;
-    float       x_f;
+    t_float       x_f;
     float      *x_points;
     float      *x_durations;
     float       x_power;

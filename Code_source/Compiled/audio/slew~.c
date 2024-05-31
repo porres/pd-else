@@ -8,7 +8,7 @@ typedef struct _slew{
     t_float   x_sr_rec;
 	t_inlet  *x_inlet;
     int       x_nchans;
-    float    x_f;
+    t_float    x_f;
 }t_slew;
 
 static t_class *slew_class;

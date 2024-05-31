@@ -22,7 +22,7 @@ typedef struct _pluck{
     float           x_midi_pitch;
     float           x_sr;
     t_int           x_midi;
-    float           x_freq;
+    t_float           x_freq;
     float           x_hz;
     float           x_float_trig;
     int             x_control_trig;
