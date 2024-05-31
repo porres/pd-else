@@ -10,7 +10,7 @@ typedef struct _slew2{
     t_inlet  *x_downlet;
     t_inlet  *x_uplet;
     int       x_nchans;
-    float    x_f;
+    t_float    x_f;
 }t_slew2;
 
 static t_class *slew2_class;

@@ -15,7 +15,7 @@ typedef struct _lag2{
     double     *x_last_out;
     int         x_reset;
     int         x_nchans;
-    float    x_f;
+    t_float    x_f;
 }t_lag2;
 
 static t_class *lag2_class;
