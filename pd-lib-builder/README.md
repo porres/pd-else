@@ -35,7 +35,8 @@ Makefile.pdlibbuilder at the end of the Makefile. Like so:
 
       datafiles = myclass1-help.pd myclass2-help.pd README.txt LICENSE.txt
 
-      include Makefile.pdlibbuilder
+      PDLIBBUILDER_DIR=.
+      include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 
 
 For files in class.sources it is assumed that class name == source file
@@ -68,6 +69,43 @@ Root directory for installation of Pd library directories. Overrides the
 default install location.
 
 
+### platform detection and predefined variables ###
+
+
+Makefile.pdlibbuilder tries to detect architecture and operating system in
+order to define platform-specific variables. Since v0.6.0 we let the compiler
+report target platform, rather than taking the build machine as reference. This
+simplifies cross compilation. The kind of build options that are predefined:
+
+- optimizations useful for realtime DSP processing
+- options strictly required for the platform
+- options to make the build work accross a range of CPU's and OS versions
+
+The exact choice and definition predefined variables changes over time, as new
+platforms arrive and older platforms become obsolete. The easiest way to get an
+overview for your platform is by checking the flags categories in the output of
+target `vars`. Variables written in capitals (like `CFLAGS`) are intentionally
+exposed as user variables, although technically all makefile variables can be
+overridden by make command arguments.
+
+
+### specific language versions ###
+
+
+Makefile.pdlibbuilder handles C and C++, but can not detect if your code uses
+features of a specific version (like C99, C++11, C++14 etc.). In such cases
+your makefile should specify that version as compiler option:
+
+    cflags = -std=c++11
+
+Also you may need to be explicit about minimum OSX version. For example, C++11
+needs OSX 10.9 or higher:
+
+    define forDarwin
+      cflags = -mmacosx-version-min=10.9
+    endef
+
+
 ### documentation ###
 
 
@@ -83,7 +121,7 @@ advanced compilation see tips-tricks.md.
 
 The project is versioned in MAJOR.MINOR.BUGFIX format (see http://semver.org),
 and maintained at https://github.com/pure-data/pd-lib-builder. Pd lib developers
-are invited to regularly check for updates, and to contribute and discuss
+are invited to regulary check for updates, and to contribute and discuss
 improvements here. If you really need to distribute a personalized version with
 your library, rename Makefile.pdlibbuilder to avoid confusion.
 

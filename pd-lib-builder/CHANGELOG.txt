@@ -1,5 +1,13 @@
 Changelog for Makefile.pdlibbuilder.
 
+v0.7.0, dated 2023-07-06
+- build double-precision externals with the 'floatsize' variable
+- allow building multiple flavours of an external side-by-side (#78)
+- facilitate multiple platform co-installation of shared lib (#58)
+- fix use of shared.ldflags with helper-library (#64)
+- fix broken armv6l platform detection (#71)
+- improve documentation
+
 v0.6.0, dated 2019-12-21
 - detect target platform (OS and architecture) rather than build platform (#55)
 - introduce optional user variable 'PLATFORM' for cross compilation
