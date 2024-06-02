@@ -1,5 +1,5 @@
 # Makefile.pdlibbuilder dated 2019-12-21
-version = 0.6.0
+version = 0.7.0
 
 # Helper makefile for Pure Data external libraries.
 # Written by Katja Vetter March-June 2015 for the public domain. No warranties.
@@ -102,6 +102,8 @@ version = 0.6.0
 # Optional user variables for make command line or environment:
 #
 # - PLATFORM
+# - extension
+# - floatsize
 #
 # Deprecated path variables:
 #
@@ -204,6 +206,19 @@ version = 0.6.0
 # pdlibbuilder will use, if installed and locatable. System and architecture
 # will then be autodefined accordingly. In most cases no other variables need to
 # be overridden.
+#
+# extension:
+# Extension for the external to use. Example: m_amd64
+# A sane default is picked, but it is useful if you want to provide
+# co-installable externals for multiple platforms (for the same operating
+# systems)
+#
+# floatsize:
+# the size of the t_float in bits. Example: 32
+# t_float are usually single precision (32bit), which is the default.
+# For double precision use floatsize=64
+# When building double precision externals, you will want to set the extension
+# as well, e.g. extension=windows-amd64-64.dll (<system>-<cpu>-<floatsize>.<ext>)
 #
 # CPPFLAGS:
 # Preprocessor flags which are not strictly required for building.
@@ -370,78 +385,6 @@ Makefile.pdlibbuilder = true
 
 
 ################################################################################
-### variables: library name and version ########################################
-################################################################################
-
-
-# strip possibles spaces from lib.name, they mess up calculated file names
-lib.name := $(strip $(lib.name))
-
-# if meta file exists, check library version
-metafile := $(wildcard $(lib.name)-meta.pd)
-
-ifdef metafile
-  lib.version := $(shell sed -n \
-    's|^\#X text [0-9][0-9]* [0-9][0-9]* VERSION \(.*\);|\1|p' \
-    $(metafile))
-endif
-
-
-################################################################################
-### variables: files ###########################################################
-################################################################################
-
-
-#=== sources ===================================================================
-
-
-# (re)define <classname>.class.sources using file names in class.sources
-
-define add-class-source
-$(notdir $(basename $v)).class.sources += $v
-endef
-
-$(foreach v, $(class.sources), $(eval $(add-class-source)))
-
-# derive class names from <classname>.class.sources variables
-sourcevariables := $(filter %.class.sources, $(.VARIABLES))
-classes := $(basename $(basename $(sourcevariables)))
-
-# accumulate all source files specified in makefile
-classes.sources := $(sort $(foreach v, $(sourcevariables), $($v)))
-all.sources := $(classes.sources) $(lib.setup.sources) \
-  $(shared.sources) $(common.sources)
-
-
-#=== object files ==============================================================
-
-
-# construct object filenames from all C and C++ source file names
-classes.objects := $(addsuffix .o, $(basename $(classes.sources)))
-common.objects := $(addsuffix .o, $(basename $(common.sources)))
-shared.objects := $(addsuffix .o, $(basename $(shared.sources)))
-lib.setup.objects := $(addsuffix .o, $(basename $(lib.setup.sources)))
-all.objects = $(classes.objects) $(common.objects) $(shared.objects) \
-  $(lib.setup.objects)
-
-
-#=== executables ===============================================================
-
-
-# use recursive variables here because executable extension is not yet known
-
-# construct class executable names from class names
-classes.executables = $(addsuffix .$(extension), $(classes))
-
-# construct shared lib executable name if shared sources are defined
-ifdef shared.sources
-  shared.lib = lib$(lib.name).$(shared.extension)
-else
-  shared.lib =
-endif
-
-
-################################################################################
 ### target platform detection ##################################################
 ################################################################################
 
@@ -514,6 +457,14 @@ target.arch := $(firstword $(target.triplet))
 ### variables per platform #####################################################
 ################################################################################
 
+#=== flags per floatsize == ====================================================
+floatsize = 32
+ifneq ($(filter-out 32,$(floatsize)),)
+  floatsize.flags = -DPD_FLOATSIZE=$(floatsize)
+else
+  floatsize.flags =
+endif
+
 
 #=== flags per architecture ====================================================
 
@@ -523,7 +474,7 @@ target.arch := $(firstword $(target.triplet))
 # $ gcc -Q --help=target
 
 # ARMv6: Raspberry Pi 1st gen, not detectable from target.arch
-ifeq ($(shell uname), armv6l)
+ifeq ($(shell uname -m), armv6l)
   arch.c.flags = -march=armv6 -mfpu=vfp -mfloat-abi=hard
 
 # ARMv7: Beagle, Udoo, RPi2 etc.
@@ -565,7 +516,7 @@ ifeq ($(system), Linux)
   cxx.ldflags := -rdynamic -shared -fPIC -Wl,-rpath,"\$$ORIGIN",--enable-new-dtags
   cxx.ldlibs := -lc -lm -lstdc++
   shared.extension = so
-  shared.ldflags := -rdynamic -fPIC -shared -Wl,-soname,$(shared.lib)
+  shared.ldflags = -rdynamic -fPIC -shared -Wl,-soname,$(shared.lib)
 endif
 
 
@@ -656,14 +607,14 @@ ifeq ($(system), Windows)
   extension = dll
   c.flags :=
   c.ldflags := -static-libgcc -shared \
-    -Wl,--enable-auto-import "$(PDBINDIR)/pd.dll"
+    -Wl,--enable-auto-import "$(PDBINDIR)/pd$(filter-out 32,$(floatsize)).dll"
   c.ldlibs :=
   cxx.flags := -fcheck-new
   cxx.ldflags := -static-libgcc -static-libstdc++ -shared \
-    -Wl,--enable-auto-import "$(PDBINDIR)/pd.dll"
+    -Wl,--enable-auto-import "$(PDBINDIR)/pd$(filter-out 32,$(floatsize)).dll"
   cxx.ldlibs :=
   shared.extension = dll
-  shared.ldflags := -static-libgcc -shared "$(PDBINDIR)/pd.dll"
+  shared.ldflags := -static-libgcc -shared "$(PDBINDIR)/pd$(filter-out 32,$(floatsize)).dll"
   stripflags = --strip-all
 endif
 
@@ -711,7 +662,7 @@ endif
 CFLAGS = $(warn.flags) $(optimization.flags) $(arch.c.flags)
 
 # preprocessor flags
-cpp.flags := -DPD -I "$(PDINCLUDEDIR)" $(cpp.flags) $(CPPFLAGS)
+cpp.flags := -DPD -I "$(PDINCLUDEDIR)" $(floatsize.flags) $(cpp.flags) $(CPPFLAGS)
 
 # flags for dependency checking (cflags from makefile may define -I options)
 depcheck.flags := $(cpp.flags) $(cflags)
@@ -720,7 +671,7 @@ depcheck.flags := $(cpp.flags) $(cflags)
 LDFLAGS := $(arch.ld.flags)
 
 # now add the same ld flags to shared dynamic lib
-shared.ldflags := $(shared.ldflags) $(LDFLAGS)
+shared.ldflags += $(LDFLAGS)
 
 # accumulated flags for C compiler / linker
 c.flags := $(cpp.flags) $(c.flags) $(cflags) $(CFLAGS)
@@ -731,6 +682,84 @@ c.ldlibs := $(c.ldlibs) $(ldlibs)
 cxx.flags := $(cpp.flags) $(cxx.flags) $(cflags) $(CFLAGS)
 cxx.ldflags := $(cxx.ldflags) $(ldflags) $(LDFLAGS)
 cxx.ldlibs := $(cxx.ldlibs) $(ldlibs)
+
+
+################################################################################
+### variables: library name and version ########################################
+################################################################################
+
+
+# strip possibles spaces from lib.name, they mess up calculated file names
+lib.name := $(strip $(lib.name))
+
+# if meta file exists, check library version
+metafile := $(wildcard $(lib.name)-meta.pd)
+
+ifdef metafile
+  lib.version := $(shell sed -n \
+    's|^\#X text [0-9][0-9]* [0-9][0-9]* VERSION \(.*\);|\1|p' \
+    $(metafile))
+endif
+
+
+################################################################################
+### variables: files ###########################################################
+################################################################################
+
+object.extension = $(extension).o
+
+#=== sources ===================================================================
+
+
+# (re)define <classname>.class.sources using file names in class.sources
+
+define add-class-source
+$(notdir $(basename $v)).class.sources += $v
+endef
+
+$(foreach v, $(class.sources), $(eval $(add-class-source)))
+
+# derive class names from <classname>.class.sources variables
+sourcevariables := $(filter %.class.sources, $(.VARIABLES))
+classes := $(basename $(basename $(sourcevariables)))
+
+# accumulate all source files specified in makefile
+classes.sources := $(sort $(foreach v, $(sourcevariables), $($v)))
+all.sources := $(classes.sources) $(lib.setup.sources) \
+  $(shared.sources) $(common.sources)
+
+
+#=== object files ==============================================================
+
+
+# construct object filenames from all C and C++ source file names
+classes.objects := $(addsuffix .$(object.extension), $(basename $(classes.sources)))
+common.objects := $(addsuffix .$(object.extension), $(basename $(common.sources)))
+shared.objects := $(addsuffix .$(object.extension), $(basename $(shared.sources)))
+lib.setup.objects := $(addsuffix .$(object.extension), $(basename $(lib.setup.sources)))
+all.objects = $(classes.objects) $(common.objects) $(shared.objects) \
+  $(lib.setup.objects)
+
+
+#=== executables ===============================================================
+
+
+# construct class executable names from class names
+classes.executables := $(addsuffix .$(extension), $(classes))
+
+# Construct shared lib executable name if shared sources are defined.
+# If extension does not end with shared extension, use both to facilitate co-
+# installation for different platforms, like .m_i386.dll and .linux-amd64-32.so
+ifdef shared.sources
+  ifneq ($(filter %.$(shared.extension), .$(extension)), )
+    # $(extension) already ends with $(shared.extension), no need to duplicate it
+    shared.lib = lib$(lib.name).$(extension)
+  else
+    shared.lib = lib$(lib.name).$(extension).$(shared.extension)
+  endif
+else
+  shared.lib :=
+endif
 
 
 ################################################################################
@@ -786,7 +815,7 @@ endif
 
 # store path to pd.dll; if not found, ls will give a useful error
 ifeq ($(system), Windows)
-  pddll := $(shell ls "$(PDBINDIR)/pd.dll")
+  pddll := $(shell ls "$(PDBINDIR)/pd$(filter-out 32,$(floatsize)).dll")
 endif
 
 # when making target all, check if m_pd.h is found and print info about it
@@ -870,8 +899,8 @@ define link-class
   $(compile-$1) \
   $($1.ldflags) $($2.class.ldflags) \
   -o $2.$(extension) \
-  $(addsuffix .o, $(basename $($2.class.sources))) \
-  $(addsuffix .o, $(basename $(common.sources))) \
+  $(addsuffix .$(object.extension), $(basename $($2.class.sources))) \
+  $(addsuffix .$(object.extension), $(basename $(common.sources))) \
   $($1.ldlibs) $($2.class.ldlibs) $(shared.lib)
 endef
 
@@ -917,13 +946,13 @@ endif
 define link-shared
   $(compile-$1) \
   $(shared.ldflags) \
-  -o lib$(lib.name).$(shared.extension) $(shared.objects) \
+  -o $(shared.lib) $(shared.objects) \
   $($1.ldlibs) $(shared.ldlibs)
 endef
 
 # rule for linking objects in shared executable
 # build recipe is in macro 'link-shared'
-lib$(lib.name).$(shared.extension): $(shared.objects)
+$(shared.lib): $(shared.objects)
 	$(info ++++ info: linking objects in shared lib $@)
 	$(if $(filter %.cc %.cpp, $(shared.sources)), \
         $(call link-shared,cxx), \
@@ -945,13 +974,13 @@ endef
 # Three rules to create .o files. These are double colon 'terminal' rules,
 # meaning they are the last in a rules chain.
 
-%.o:: %.c
+%.$(object.extension):: %.c
 	$(call make-object-file,c)
 
-%.o:: %.cc
+%.$(object.extension):: %.cc
 	$(call make-object-file,cxx)
 
-%.o:: %.cpp
+%.$(object.extension):: %.cpp
 	$(call make-object-file,cxx)
 
 
@@ -970,8 +999,8 @@ endef
 # declare explicit prerequisites rule like 'class.extension: object1.o object2.o'
 # argument $v is class basename
 define declare-class-executable-target
-$v.$(extension): $(addsuffix .o, $(basename $($v.class.sources))) \
-  $(addsuffix .o, $(basename $(common.sources)))
+$v.$(extension): $(addsuffix .$(object.extension), $(basename $($v.class.sources))) \
+  $(addsuffix .$(object.extension), $(basename $(common.sources)))
 endef
 
 # evaluate explicit prerequisite rules for all classes
@@ -1001,7 +1030,7 @@ endif
 # argument $1 is input source file(s)
 # dir is explicitly added because option -MM strips it by default
 define declare-object-target
-$(dir $1)$(filter %.o: %.h, $(shell $(CPP) $(depcheck.flags) -MM $1)) $(MAKEFILE_LIST)
+$(dir $1)$(patsubst %.o:,%.$(object.extension):,$(filter %.o: %.h, $(shell $(CPP) $(depcheck.flags) -MM $1))) $(MAKEFILE_LIST)
 endef
 
 # evaluate implicit prerequisite rules when rebuilding everything
