@@ -169,7 +169,7 @@ sys_gui("\n" // Tcl/Tk properties code based on IEMGUI's
             "    ::dialog_numbox::cancel $mytoplevel\n"
             "}\n"
             "\n"
-            "proc ::dialog_numbox::pdtk_numbox_dialog {mytoplevel dim_header \\\n"
+            "proc ::dialog_numbox::pdtk_numbox_dialog {mytoplevel \\\n"
             "                                       wdt min_wdt \\\n"
             "                                       hgt min_hgt \\\n"
             "                                       ramp interval initial \\\n"

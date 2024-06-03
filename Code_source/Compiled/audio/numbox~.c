@@ -6,8 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-//#include "../extra_source/compat.h"
-
 #define MINDIGITS      1
 #define MAX_NUMBOX_LEN 32
 #define MINSIZE        8
@@ -43,6 +41,11 @@ typedef struct _numbox{
     int       x_zoom;
     int       x_outmode;
     char      x_buf[MAX_NUMBOX_LEN]; // number buffer
+    char      x_tag_number[128];
+    char      x_tag_out[128];
+    char      x_tag_in[128];
+    char      x_tag_base[128];
+    char      x_tag_all[128];
 }t_numbox;
 
 static t_class *numbox_class;
@@ -71,17 +74,17 @@ static void numbox_update_number(t_numbox *x){ // update number value
     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
        t_canvas *cv = glist_getcanvas(x->x_glist);
         if(x->x_clicked && x->x_buf[0] && x->x_outmode){ // keyboard input values
-             char *cp = x->x_buf;
+            char *cp = x->x_buf;
             int sl = (int)strlen(x->x_buf);
             x->x_buf[sl] = '>';
             x->x_buf[sl+1] = 0;
             if(sl >= (x->x_numwidth + 1))
                 cp += sl - x->x_numwidth + 1;
-            sys_vgui(".x%lx.c itemconfigure %lxNUM -text {%s}\n", cv, x, cp);
+            pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_number, "-text", cp);
             x->x_buf[sl] = 0;
         }
         else{ // plain update
-            sys_vgui(".x%lx.c itemconfigure %lxNUM -text {%s}\n", cv, x, set_x_buf(x));
+            pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_number, "-text", set_x_buf(x));
             x->x_buf[0] = 0;
         }
     }
@@ -97,8 +100,9 @@ static void clock_update(t_numbox *x){
 
 static void numbox_resize(t_numbox *x){
     int x1 = text_xpix(&x->x_obj, x->x_glist), y1 = text_ypix(&x->x_obj, x->x_glist);
-    sys_vgui(".x%lx.c coords %lxBASE %d %d %d %d\n", glist_getcanvas(x->x_glist), x,
+    pdgui_vmess(0, "crs iiii", glist_getcanvas(x->x_glist), "coords", x->x_tag_base,
         x1, y1, x1+x->x_width*x->x_zoom, y1+x->x_height*x->x_zoom);
+    
 }
 
 static void numbox_width_calc(t_numbox *x){
@@ -133,10 +137,13 @@ static void numbox_size(t_numbox *x, t_floatarg f){
         x->x_fontsize = size;
         int oldheight = x->x_height;
         x->x_height = size + 4;
-        sys_vgui(".x%lx.c move %lxOUT 0 %d\n", cv, x, (x->x_height - oldheight) * x->x_zoom);
-        sys_vgui(".x%lx.c itemconfigure %lxNUM -font {{%s} -%d}\n", cv, x,
-            def_font, x->x_fontsize*x->x_zoom);
-        sys_vgui(".x%lx.c moveto %lxNUM %d %d\n", cv, x,
+        pdgui_vmess(0, "crs ii", cv, "move",
+            x->x_tag_out, 0, (x->x_height - oldheight) * x->x_zoom);
+        t_atom at[2];
+        SETSYMBOL(at, gensym(def_font));
+        SETFLOAT (at+1, -x->x_fontsize*x->x_zoom);
+        pdgui_vmess(0, "crs rA", cv, "itemconfigure", x->x_tag_number, "-font", 2, at);
+        pdgui_vmess(0, "crs ii", cv, "moveto", x->x_tag_number,
             x->x_obj.te_xpix*x->x_zoom, (x->x_obj.te_ypix+2)*x->x_zoom);
         numbox_width_calc(x);
         numbox_resize(x);
@@ -197,7 +204,8 @@ static void numbox_bg(t_numbox *x, t_symbol *s, int ac, t_atom *av){
         bg = atom_getsymbolarg(0, ac, av);
     if(x->x_bg != bg && bg != NULL){
         x->x_bg = bg;
-        sys_vgui(".x%lx.c itemconfigure %lxBASE -fill %s\n", glist_getcanvas(x->x_glist), x, x->x_bg->s_name);
+        pdgui_vmess(0, "crs rs", glist_getcanvas(x->x_glist), "itemconfigure",
+            x->x_tag_base, "-fill", x->x_bg->s_name);
     }
 //    else if(ac == 3 && av->a_type == A_SYMBOL)
 }
@@ -209,7 +217,8 @@ static void numbox_fg(t_numbox *x, t_symbol *s, int ac, t_atom *av){
         fg = atom_getsymbolarg(0, ac, av);
     if(x->x_fg != fg && fg != NULL){
         x->x_fg = fg;
-        sys_vgui(".x%lx.c itemconfigure %lxNUM -fill %s\n", glist_getcanvas(x->x_glist), x, x->x_fg->s_name);
+        pdgui_vmess(0, "crs rs", glist_getcanvas(x->x_glist), "itemconfigure",
+            x->x_tag_number, "-fill", x->x_fg->s_name);
     }
 }
 
@@ -226,7 +235,8 @@ static void numbox_key(void *z, t_symbol *keysym, t_floatarg fkey){
     if(c == 0){ // click out
         x->x_clicked = 0;
         pd_unbind((t_pd *)x, gensym("#keyname"));
-        sys_vgui(".x%lx.c itemconfigure %lxBASE -width %d\n", glist_getcanvas(x->x_glist), x, x->x_zoom);
+        pdgui_vmess(0, "crs ri", glist_getcanvas(x->x_glist), "itemconfigure",
+            x->x_tag_base, "-width", x->x_zoom);
         numbox_update_number(x);
     }
     else if(((c >= '0') && (c <= '9')) || (c == '.') || (c == '-') ||
@@ -268,7 +278,8 @@ static int numbox_newclick(t_gobj *z, struct _glist *glist, int xpix, int ypix, 
         x->x_clicked = 1;
         pd_bind(&x->x_obj.ob_pd, gensym("#keyname")); // listen to key events
         x->x_buf[0] = 0;
-        sys_vgui(".x%lx.c itemconfigure %lxBASE -width %d\n", glist_getcanvas(glist), x, x->x_zoom*2);
+        pdgui_vmess(0, "crs ri", glist_getcanvas(x->x_glist), "itemconfigure",
+            x->x_tag_base, "-width", x->x_zoom*2);
         glist_grab(glist, &x->x_obj.te_g, (t_glistmotionfn)numbox_motion, numbox_key,
             (t_floatarg)xpix, (t_floatarg)ypix);
     }
@@ -287,21 +298,22 @@ static void numbox_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *x
 
 static void numbox_select(t_gobj *z, t_glist *glist, int sel){
     t_numbox *x = (t_numbox *)z;
-    t_canvas *cv = glist_getcanvas(glist);
+    t_canvas *cv = glist_getcanvas(x->x_glist = glist); // ????
     if(sel){
-        sys_vgui(".x%lx.c itemconfigure %lxNUM -fill blue\n", cv, x);
-        sys_vgui(".x%lx.c itemconfigure %lxBASE -outline blue\n", cv, x);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_number, "-fill", "blue");
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_base, "-outline", "blue");
     }
     else{
-        sys_vgui(".x%lx.c itemconfigure %lxNUM -fill %s\n", cv, x, x->x_fg->s_name);
-        sys_vgui(".x%lx.c itemconfigure %lxBASE -outline black\n", cv, x);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_number, "-fill", x->x_fg->s_name);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_base, "-outline", "black");
     }
 }
 
 static void numbox_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     t_numbox *x = (t_numbox *)z;
     x->x_obj.te_xpix += dx, x->x_obj.te_ypix += dy;
-    sys_vgui(".x%lx.c move %lxALL %d %d\n", glist_getcanvas(glist), x, dx*x->x_zoom, dy*x->x_zoom);
+    pdgui_vmess(0, "crs ii", glist_getcanvas(glist), "move", x->x_tag_all,
+        dx*x->x_zoom, dy*x->x_zoom);
     canvas_fixlinesfor(glist, (t_text*)x);
 }
 
@@ -312,30 +324,48 @@ void numbox_vis(t_gobj *z, t_glist *glist, int vis){
         int x1 = text_xpix(&x->x_obj, glist), y1 = text_ypix(&x->x_obj, glist), zoom = x->x_zoom;
         int x2 = x1 + x->x_width*zoom, y2 = y1 + x->x_height*zoom;
     // draw base / background
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline black -fill %s -tags [list %lxBASE %lxALL]\n", cv, x1, y1, x2, y2, zoom, x->x_bg->s_name, x, x);
+        char *tags_base[] = {x->x_tag_base, x->x_tag_all};
+        pdgui_vmess(0, "crr iiii ri rsrs rS", cv, "create", "rectangle",
+            x1, y1, x2, y2,
+            "-width", zoom,
+            "-outline", "black", "-fill", x->x_bg->s_name,
+            "-tags", 2, tags_base);
     // draw inlet/outlet
         int iow = IOWIDTH*zoom, ioh = OHEIGHT*zoom;
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lxIN %lxALL]\n",
-            cv, x1, y1, x1+iow, y1+ioh-zoom, x, x);
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lxOUT %lxALL]\n",
-            cv, x1, y2-ioh+zoom, x1+iow, y2, x, x);
+        char *tags_in[] = {x->x_tag_in, x->x_tag_all};
+        pdgui_vmess(0, "crr iiii rs rS", cv, "create", "rectangle",
+            x1, y1, x1+iow, y1+ioh-zoom,
+            "-fill", "black",
+            "-tags", 2, tags_in);
+        char *tags_out[] = {x->x_tag_out, x->x_tag_all};
+        pdgui_vmess(0, "crr iiii rs rS", cv, "create", "rectangle",
+            x1, y2-ioh+zoom, x1+iow, y2,
+            "-fill", "black",
+            "-tags", 2, tags_out);
     // draw number
         int size = x->x_fontsize*zoom, half = x->x_height*zoom/2, d = zoom + x->x_height/(34*zoom); // d??
-        sys_vgui(".x%lx.c create text %d %d -text {%s} -anchor w -font {{%s} -%d} -fill %s -tags [list %lxNUM %lxALL]\n",
-            cv, x1+2*zoom, y1+half+d, set_x_buf(x), def_font, size, x->x_fg->s_name, x, x);
+        t_atom at[2];
+        SETSYMBOL(at, gensym(def_font));
+        SETFLOAT (at+1, -size);
+        char *tags_number[] = {x->x_tag_number, x->x_tag_all};
+        pdgui_vmess(0, "crr ii rs rs rA rs rS", cv, "create", "text",
+            x1+2*zoom, y1+half+d,
+            "-text", set_x_buf(x),
+            "-anchor", "w",
+            "-font", 2, at,
+            "-fill", x->x_fg->s_name,
+            "-tags", 2, tags_number);
     }
     else // erase
-        sys_vgui(".x%lx.c delete %lxALL\n", glist_getcanvas(glist), x);
+        pdgui_vmess(0, "crs", glist_getcanvas(glist), "delete", x->x_tag_all);
 }
 
-static void numbox_properties(t_gobj *z, t_glist *owner){ // called in right click for propeties
-    owner = NULL; // not used for some reason, avoid warning
+static void numbox_properties(t_gobj *z, t_glist *owner){
     t_numbox *x = (t_numbox *)z;
-    char buf[800];
-    sprintf(buf, "::dialog_numbox::pdtk_numbox_dialog %%s -------dimensions(digits)(pix):------- \
-        %d %d %d %d %d %d %g %s %s %g %g\n", x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE,
-        x->x_ramp_ms, x->x_rate, x->x_set_val, x->x_bg->s_name, x->x_fg->s_name, x->x_lower, x->x_upper);
-    gfxstub_new(&x->x_obj.ob_pd, x, buf); // no idea what this does...
+    pdgui_stub_vnew(&x->x_obj.ob_pd, "::dialog_numbox::pdtk_numbox_dialog",
+        owner, "iiiiii fssff", x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE,
+        x->x_ramp_ms, x->x_rate, x->x_set_val, x->x_bg->s_name, x->x_fg->s_name,
+        x->x_lower, x->x_upper);
 }
 
 static void numbox_dialog(t_numbox *x, t_symbol *s, int ac, t_atom *av){
@@ -421,7 +451,7 @@ static void numbox_free(t_numbox *x){
     if(x->x_clicked)
         pd_unbind((t_pd *)x, gensym("#keyname"));
     clock_free(x->x_clock_update);
-    gfxstub_deleteforkey(x);
+    pdgui_stub_deleteforkey(x);
 }
 
 static void *numbox_new(t_symbol *s, int ac, t_atom *av){
@@ -527,6 +557,11 @@ static void *numbox_new(t_symbol *s, int ac, t_atom *av){
     x->x_sr_khz = sys_getsr() * 0.001;
     x->x_clock_update = clock_new(x, (t_method)clock_update);
     clock_delay(x->x_clock_update, x->x_rate); // Start repaint clock
+    sprintf(x->x_tag_number, "%pNUM", x);
+    sprintf(x->x_tag_out, "%pOUT", x);
+    sprintf(x->x_tag_in, "%pIN", x);
+    sprintf(x->x_tag_all, "%pALL", x);
+    sprintf(x->x_tag_base, "%pBASE", x);
     outlet_new(&x->x_obj, &s_signal);
     return(x);
 errstate:
