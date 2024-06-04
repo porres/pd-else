@@ -144,7 +144,6 @@ sys_gui("\n"
 "                                       arc_width \\\n"
 "                                       angle_range angle_offset \\\n"
 "                                       outline arcstart} {\n"
-//"                                       outline} {\n"
 // The vid indicates the instance ID of this dialog
 "    set vid [string trimleft $mytoplevel .]\n"
 "    set snd [::pdtk_text::unescape $snd]\n"

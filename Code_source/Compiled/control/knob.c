@@ -839,34 +839,16 @@ static void knob_zoom(t_knob *x, t_floatarg f){
 
 // --------------- properties stuff --------------------
 static void knob_properties(t_gobj *z, t_glist *owner){
-    owner = NULL;
     t_knob *x = (t_knob *)z;
     knob_get_snd(x);
     knob_get_rcv(x);
-    char buffer[512];
-    sprintf(buffer, "knob_dialog %%s %g %g %g %g %d {%s} {%s} %d %g %d {%s} {%s} {%s} %d %d %d %d %d %d %g\n",
-        (float)(x->x_size / x->x_zoom),
-        x->x_lower,
-        x->x_upper,
-        x->x_load,
-        x->x_circular,
-        x->x_snd_raw->s_name,
-        x->x_rcv_raw->s_name,
-        x->x_expmode,
-        x->x_exp,
-        x->x_jump,
-        x->x_bg->s_name,
-        x->x_fg->s_name,
-        x->x_mg->s_name,
-        x->x_discrete,
-        x->x_ticks,
-        x->x_arc,
-        x->x_range,
-        x->x_offset,
-        x->x_outline,
-        x->x_start
-    );
-    gfxstub_new(&x->x_obj.ob_pd, x, buffer);
+    pdgui_stub_vnew(&x->x_obj.ob_pd, "knob_dialog",
+        owner, "ffffi ss ifi sss iiiiiif",
+        (float)(x->x_size / x->x_zoom), x->x_lower, x->x_upper, x->x_load, x->x_circular,
+        x->x_snd_raw->s_name, x->x_rcv_raw->s_name,
+        x->x_expmode, x->x_exp, x->x_jump,
+        x->x_bg->s_name, x->x_fg->s_name, x->x_mg->s_name,
+        x->x_discrete, x->x_ticks, x->x_arc, x->x_range, x->x_offset, x->x_outline, x->x_start);
 }
 
 static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
@@ -1189,7 +1171,7 @@ static void knob_free(t_knob *x){
     if(x->x_rcv != gensym("empty"))
         pd_unbind(&x->x_obj.ob_pd, x->x_rcv);
     x->x_proxy->p_cnv = NULL;
-    gfxstub_deleteforkey(x);
+    pdgui_stub_deleteforkey(x);
 }
 
 static void *knob_new(t_symbol *s, int ac, t_atom *av){
