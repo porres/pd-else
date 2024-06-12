@@ -20,11 +20,14 @@ make install objectsdir=../
 
 make install objectsdir=../ arch="arm64 x86_64" extension=d_fat
 
+make install objectsdir=../ floatsize=32 arch="arm64 x86_64" extension=darwin-fat-32.so
+
 make install objectsdir=../ arch=i386 extension=d_i386
 
 make install objectsdir=../ arch= x86_64 extension=d_amd64
 
 make install objectsdir=../ floatsize=64 extension=darwin-amd64-64.so
+
 
 --------------------------------------------------------------------------------------
 
