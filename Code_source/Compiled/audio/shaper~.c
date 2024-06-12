@@ -107,10 +107,10 @@ static t_int *shaper_perform(t_int *w){
             double pos = ph * maxidx;
             int ndx = (int)pos;
             double frac = pos - (double)ndx;
-            int ndxm1 = ndx - 1, ndx1 = ndx + 1, ndx2 = ndx + 2;
+            int ndxm1 = (ndx == 0 ? 0 : ndx - 1), ndx1 = ndx + 1, ndx2 = ndx + 2;
             if(ndxm1 < 0)
                 ndxm1 = maxidx - ndxm1;
-            if(ndx1 > maxidx)
+            if(ndx1 >= maxidx)
                 ndx1 -= maxidx;
             if(ndx2 >= maxidx)
                 ndx2 -= maxidx;
