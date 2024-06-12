@@ -147,21 +147,22 @@ void init_fade_tables(void){
 double read_fadetab(double phase, int tab){
     double tabphase = phase * ELSE_FADE_TABSIZE;
     int i = (int)tabphase;
+    int i_next = i == ELSE_FADE_TABSIZE ? i : i + 1;
     double frac = tabphase - i, p1 = 0, p2 = 0;
     if(tab == 0)
-        p1 = tab_fade_quartic[i], p2 = tab_fade_quartic[i+1];
+        p1 = tab_fade_quartic[i], p2 = tab_fade_quartic[i_next];
     else if(tab == 1)
         return(phase);
     else if(tab == 2)
-        p1 = tab_fade_linsin[i], p2 = tab_fade_linsin[i+1];
+        p1 = tab_fade_linsin[i], p2 = tab_fade_linsin[i_next];
     else if(tab == 3)
-        p1 = tab_fade_sqrt[i], p2 = tab_fade_sqrt[i+1];
+        p1 = tab_fade_sqrt[i], p2 = tab_fade_sqrt[i_next];
     else if(tab == 4)
-        p1 = tab_fade_sin[i], p2 = tab_fade_sin[i+1];
+        p1 = tab_fade_sin[i], p2 = tab_fade_sin[i_next];
     else if(tab == 5)
-        p1 = tab_fade_hannsin[i], p2 = tab_fade_hannsin[i+1];
+        p1 = tab_fade_hannsin[i], p2 = tab_fade_hannsin[i_next];
     else if(tab == 6)
-        p1 = tab_fade_hann[i], p2 = tab_fade_hann[i+1];
+        p1 = tab_fade_hann[i], p2 = tab_fade_hann[i_next];
     return(interp_lin(frac, p1, p2));
 }
 
