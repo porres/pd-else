@@ -455,7 +455,7 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
                 if(ac >= 5 && (av+1)->a_type == A_FLOAT){
                     ac--, av++;
                     int z = 0;
-                    while(((av+z)->a_type == A_FLOAT) && ((ac-z)>0))
+                    while(((ac-z)>0) && ((av+z)->a_type == A_FLOAT))
                         z++;
                     if((z % 3) == 2)
                         goto errstate;
