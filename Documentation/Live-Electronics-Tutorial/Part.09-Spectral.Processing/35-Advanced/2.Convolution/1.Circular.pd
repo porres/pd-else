@@ -1,13 +1,11 @@
-#N canvas 555 85 900 438 12;
+#N canvas 338 87 900 438 12;
 #X declare -path else;
 #X obj 89 270 r~ \$0-sample1;
 #X obj 251 269 r~ \$0-sample2;
 #X obj 714 245 r~ \$0-sample2;
 #X obj 556 245 r~ \$0-sample1;
-#X obj 286 90 hradio 15 1 0 8 empty \$0-size empty 0 -8 0 10 -228856
--1 -1 4;
-#X obj 286 138 nbx 5 14 64 1e+37 0 0 \$0-w_size \$0-w_size-set empty
-0 -8 0 10 -228856 -1 -1 2048 256;
+#X obj 286 90 hradio 15 1 0 8 empty \$0-size empty 0 -8 0 10 #dcdcdc #000000 #000000 0;
+#X obj 286 138 nbx 5 14 64 1e+37 0 0 \$0-w_size \$0-w_size-set empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #N canvas 550 30 347 301 Window 0;
 #X obj 111 176 s \$0-set-block;
 #X obj 79 86 t b f;
@@ -37,8 +35,7 @@
 #X obj 91 264 *~;
 #X obj 144 263 +~;
 #X obj 99 354 rifft~;
-#X text 414 151 Re = (Re1 * Re2) - (Im1 * Im2) \; Im = (Im1 * Re2)
-+ (Re1 * Im2);
+#X text 414 151 Re = (Re1 * Re2) - (Im1 * Im2) \; Im = (Im1 * Re2) + (Re1 * Im2);
 #X obj 184 331 r \$0-set-block;
 #X obj 184 358 block~;
 #X obj 54 211 car2pol~;
@@ -47,17 +44,14 @@
 #X obj 142 122 hann~;
 #X obj 99 399 hann~;
 #X obj 142 211 car2pol~;
-#X obj 509 278 expr~ ($v1 * $v3) - ($v2 * $v4) \; ($v2 * $v3) + ($v1
-* $v4);
+#X obj 509 278 expr~ ($v1 * $v3) - ($v2 * $v4) \; ($v2 * $v3) + ($v1 * $v4);
 #X obj 509 230 rfft~;
 #X obj 656 230 rfft~;
 #X obj 595 354 rifft~;
 #X obj 155 446 expr 1 / ($f1 * 1.5);
 #X obj 99 446 *~;
 #X obj 155 419 blocksize~;
-#X text 330 49 The properties of complex math says that a multiplication
-is done in the polar form by multiplying the amplitudes and suming
-the phases.;
+#X text 330 49 The properties of complex math says that a multiplication is done in the polar form by multiplying the amplitudes and suming the phases.;
 #X obj 357 293 *~;
 #X obj 389 293 *~;
 #X obj 357 320 -~;
@@ -67,13 +61,8 @@ the phases.;
 #X obj 357 226 rfft~;
 #X obj 440 223 rfft~;
 #X obj 397 364 rifft~;
-#X text 330 99 Let's remember how the complex multiplication works
-in the cartesian form \, here's the formula below and how to implement
-with native Pd objects:;
-#X text 364 416 The cartesian form is more accurate and efficient.
-For optimal efficiency you can also use the [cmul~] object from the
-ELSE library.;
-#X obj 587 477 cmul~;
+#X text 330 99 Let's remember how the complex multiplication works in the cartesian form \, here's the formula below and how to implement with native Pd objects:;
+#X text 383 411 The cartesian form is more accurate and efficient., f 27;
 #X connect 0 0 15 0;
 #X connect 1 0 16 0;
 #X connect 5 0 13 0;
@@ -117,16 +106,9 @@ ELSE library.;
 #X connect 34 1 31 1;
 #X connect 34 1 28 1;
 #X restore 556 288 pd Circular-Convolutoin;
-#X text 483 157 Here we have an example of a circular convolution \,
-we'll see the linear example next. The result of this example is a
-hybrid that combines both amplitude and phase information. Open the
-subpatch below., f 54;
+#X text 483 157 Here we have an example of a circular convolution \, we'll see the linear example next. The result of this example is a hybrid that combines both amplitude and phase information. Open the subpatch below., f 54;
 #X obj 89 309 out~;
-#X text 483 69 The convolution of two signals can be implemented via
-a complex multiplication of two FFT analysis. As any other multiplication
-\, this is a commutative operation. That is \, it doesn't matter if
-you're convolution A with B or B with A \, it's the same output.,
-f 54;
+#X text 483 69 The convolution of two signals can be implemented via a complex multiplication of two FFT analysis. As any other multiplication \, this is a commutative operation. That is \, it doesn't matter if you're convolution A with B or B with A \, it's the same output., f 54;
 #X obj 642 27 declare -path else;
 #X obj 45 111 s~ \$0-sample1;
 #X obj 43 190 s~ \$0-sample2;
