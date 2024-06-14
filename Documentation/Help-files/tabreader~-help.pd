@@ -1,4 +1,4 @@
-#N canvas 499 33 561 651 10;
+#N canvas 439 33 561 651 10;
 #X obj 4 624 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
 #X obj 5 261 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 5 444 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
@@ -117,9 +117,9 @@
 #X obj 138 390 else/numbox~ 6 10 100 #C0C0C4 #440008 10 0 0 0;
 #X obj 137 223 else/tabreader~ -loop \$0-table;
 #X obj 138 357 else/tabreader~ -index -loop \$0-table;
-#X text 52 45 The buffer is considered to be circular in loop mode \, so when you reach 1 is the same going back to 0 when not in indexed mode. If you're in indexed mode \, then the table undex range is from 0 to the table size (512) in this example \, where the table size index (512) is the same as the table start (0). You can set it to indexed mode with the 'index' flag or the 'index' message., f 48;
 #X obj 482 184 else/tabreader~ -loop;
 #X text 403 24 If you connect a [phasor~] into [tabreader~] \, in loop mode \, it becomes a wavetable oscillator like [tabosc4~] or [else/wavetable~]. Note that besides the first argument \, the "set" message followed by an array name sets an array to be read., f 47;
+#X text 52 45 The buffer is considered to be circular in loop mode. When not in indexed mode \, if you reach "1" it is the same as going back to "0". If you're in indexed mode \, then the table index range is from 0 to the table size (512 in this example) if you're in loop mode. This way \, the table size index (512) is the same as the table start (0). You can set it to indexed mode with the 'index' flag or the 'index' message., f 48;
 #X connect 0 0 15 0;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;
@@ -129,12 +129,12 @@
 #X connect 6 0 7 0;
 #X connect 7 0 16 0;
 #X connect 10 0 11 0;
-#X connect 11 0 18 0;
-#X connect 12 0 18 0;
+#X connect 11 0 17 0;
+#X connect 12 0 17 0;
 #X connect 15 0 13 0;
 #X connect 16 0 14 0;
-#X connect 18 0 8 0;
-#X connect 18 0 9 0;
+#X connect 17 0 8 0;
+#X connect 17 0 9 0;
 #X restore 465 207 pd loop-mode;
 #N canvas 724 88 408 281 indexed-mode 0;
 #X obj 150 146 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
