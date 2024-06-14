@@ -84,7 +84,7 @@ static void s2f_offset(t_s2f *x, t_floatarg f){
 static t_int *s2f_perform(t_int *w){
     t_s2f *x = (t_s2f *)(w[1]);
     t_sample *in = (t_sample *)(w[2]);
-    t_float offset = x->x_offset % x->x_nblock;
+    int offset = x->x_offset % x->x_nblock;
     for(int i = 0; i < x->x_nchs; i++)
         SETFLOAT(x->x_vec + i, in[i * x->x_nblock + offset]);
     if(x->x_on){
