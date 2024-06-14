@@ -99,6 +99,8 @@ static t_int *fbdelay_perform(t_int *w){
             double frac = 1 - ((double)del - floor(del));
             unsigned int ndxm1 = (unsigned int)rp;
             unsigned int ndx = ndxm1 + 1, ndx1 = ndxm1 + 2, ndx2 = ndxm1 + 3;
+            if(ndx1 > x->x_sz - 1)
+                ndx1 = x->x_sz - 1;
             if(ndx2 > x->x_sz - 1)
                 ndx2 = x->x_sz - 1;
             double a = x->x_ybuf[ndxm1];
