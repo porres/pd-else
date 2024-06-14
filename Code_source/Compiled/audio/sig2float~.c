@@ -84,8 +84,9 @@ static void sig2float_offset(t_sig2float *x, t_floatarg f){
 static t_int *sig2float_perform(t_int *w){
     t_sig2float *x = (t_sig2float *)(w[1]);
     t_sample *in = (t_sample *)(w[2]);
+    int offset = x->x_offset % x->x_nblock;
     for(int i = 0; i < x->x_nchs; i++)
-        SETFLOAT(x->x_vec + i, in[i * x->x_nblock + x->x_offset]);
+        SETFLOAT(x->x_vec + i, in[i * x->x_nblock + offset]);
     if(x->x_on){
         if(x->x_nleft < x->x_nblock){
             clock_delay(x->x_clock, 0);
@@ -110,7 +111,7 @@ static void sig2float_dsp(t_sig2float *x, t_signal **sp){
     }
     sig2float_correct(x);
     x->x_nleft = x->x_offset;
-    dsp_add(sig2float_perform, 2, x, sp[0]->s_vec + (sp[0]->s_n-1));
+    dsp_add(sig2float_perform, 2, x, sp[0]->s_vec);
 }
 
 static void sig2float_free(t_sig2float *x){

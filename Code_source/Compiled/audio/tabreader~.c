@@ -82,11 +82,11 @@ static t_int *tabreader_perform(t_int *w){
                 xpos = x->x_loop ? 0 : npts;
             int ndx = (int)xpos;
             double frac = xpos - ndx;
-            if(ndx == npts && x->x_loop)
+            if(ndx == npts - 1 && x->x_loop)
                 ndx = 0;
             int ndx1 = ndx + 1;
-            if(ndx1 == npts)
-                ndx1 = x->x_loop ? 0 : npts;
+            if(ndx1 >= npts - 1)
+                ndx1 = x->x_loop ? 0 : npts - 1;
             int ndxm1 = 0, ndx2 = 0;
             if(x->x_i_mode){
                 ndxm1 = ndx - 1;

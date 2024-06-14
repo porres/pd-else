@@ -36,7 +36,7 @@ static void string2atom(t_separate *x, t_atom *ap, char* cp, int clen){
     t_float ftest = strtod(buf, endptr);
     if(buf+clen != *endptr) // strtof() failed, we have a symbol
         SETSYMBOL(ap, gensym(buf));
-    else{ // probably a number
+    else if(clen) { // probably a number
         if(ishex(buf)) // test for hexadecimal (inf/nan are still floats)
             SETSYMBOL(ap, gensym(buf));
         else if(gensym(buf) == gensym("")) // if symbol ends with separator
