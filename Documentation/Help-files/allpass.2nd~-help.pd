@@ -364,6 +364,9 @@
 #X connect 22 0 24 1;
 #X connect 24 0 0 1;
 #X restore 476 195 pd example;
+#X text 40 188 see also:;
+#X obj 30 216 else/allpass.filt~;
+#X obj 30 238 else/allpass.rev~;
 #X connect 17 0 50 0;
 #X connect 18 0 50 1;
 #X connect 19 0 50 2;
