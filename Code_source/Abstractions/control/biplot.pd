@@ -1,11 +1,11 @@
-#N canvas 204 62 1040 458 10;
+#N canvas 295 388 1040 458 10;
 #X declare -path else;
 #N canvas 660 137 340 350 plot 0;
-#N canvas 902 365 351 322 init 0;
-#X obj 154 274 s \$0-dbrange;
+#N canvas 902 365 568 468 init 0;
+#X obj 178 304 s \$0-dbrange;
 #X obj 236 72 v sr_\$0;
-#X msg 184 212 400;
-#X msg 154 241 24;
+#X msg 210 242 400;
+#X msg 178 271 24;
 #X obj 227 151 v midi_range_\$0;
 #X obj 227 125 ftom;
 #X msg 227 99 8750.55;
@@ -81,8 +81,7 @@
 #X connect 26 0 14 0;
 #X restore 88 129 pd loop;
 #X obj 211 257 s freq_\$0;
-#X obj 73 280 expr cos($f1) \; sin($f1) \; cos($f1 * 2) \; sin($f1
-* 2) \; $f2;
+#X obj 73 280 expr cos($f1) \; sin($f1) \; cos($f1 * 2) \; sin($f1 * 2) \; $f2;
 #X obj 66 433 tabwrite sinW_\$0;
 #X obj 99 461 tabwrite cos2W_\$0;
 #X obj 35 397 tabwrite cosW_\$0;
@@ -104,7 +103,7 @@
 #X connect 8 4 10 1;
 #X connect 8 4 11 1;
 #X connect 8 4 12 1;
-#X restore 184 240 pd get-freq;
+#X restore 210 270 pd get-freq;
 #X obj 26 255 table sin2W_\$0 400;
 #X obj 26 239 table cos2W_\$0 400;
 #X obj 27 204 table sinW_\$0 400;
@@ -118,6 +117,9 @@
 #X obj 17 94 else/pack2 \$0-amp \$0-fase, f 15;
 #X obj 219 182 else/pi;
 #X obj 90 23 else/lb;
+#X obj 159 396 s \$0-amp;
+#X obj 169 369 s \$0-fase;
+#X msg 159 342 edit 0 \, color 1 \, width 1;
 #X connect 2 0 8 0;
 #X connect 3 0 0 0;
 #X connect 5 0 4 0;
@@ -125,6 +127,7 @@
 #X connect 13 0 19 0;
 #X connect 13 1 2 0;
 #X connect 13 1 3 0;
+#X connect 13 1 24 0;
 #X connect 13 2 6 0;
 #X connect 13 2 18 0;
 #X connect 13 2 20 0;
@@ -135,8 +138,10 @@
 #X connect 20 0 7 0;
 #X connect 20 0 17 0;
 #X connect 21 0 13 0;
+#X connect 24 0 22 0;
+#X connect 24 0 23 0;
 #X restore 227 150 pd init \; tables;
-#N canvas 436 43 788 438 H(z) 0;
+#N canvas 432 370 788 438 H(z) 0;
 #X obj 79 42 inlet;
 #X obj 195 44 inlet;
 #X text 126 43 index;
@@ -152,10 +157,7 @@
 #X obj 69 119 s \$0-i;
 #X obj 296 349 outlet;
 #X obj 172 350 outlet;
-#X obj 123 147 expr $f4 + ($f5 * cosW_\$0[$f1]) + ($f6 * cos2W_\$0[$f1])
-\; ($f5 * sinW_\$0[$f1]) + ($f6 * sin2W_\$0[$f1]) \; 1 - ($f2 * cosW_\$0[$f1])
-- ($f3 * cos2W_\$0[$f1]) \; 0 - ($f2 * sinW_\$0[$f1]) - ($f3 * sin2W_\$0[$f1])
-, f 57;
+#X obj 123 147 expr $f4 + ($f5 * cosW_\$0[$f1]) + ($f6 * cos2W_\$0[$f1]) \; ($f5 * sinW_\$0[$f1]) + ($f6 * sin2W_\$0[$f1]) \; 1 - ($f2 * cosW_\$0[$f1]) - ($f3 * cos2W_\$0[$f1]) \; 0 - ($f2 * sinW_\$0[$f1]) - ($f3 * sin2W_\$0[$f1]), f 57;
 #X obj 121 238 else/car2pol;
 #X obj 343 234 else/car2pol;
 #X obj 171 325 else/lin2db;
@@ -253,32 +255,22 @@
 #X connect 9 0 1 0;
 #X connect 10 0 2 0;
 #X restore 29 198 pd plot;
-#X obj 101 103 cnv 15 898 283 empty empty empty 18 9 1 15 #fcfcfc #000000
-0;
-#X obj 153 109 cnv 15 805 235 empty empty empty 20 12 0 14 #000000
-#404040 0;
-#X obj 488 366 cnv 15 15 15 empty empty Kilohertz 18 9 1 16 #fcfcfc
-#000000 0;
-#X obj 157 314 cnv 15 798 27 empty empty empty 20 12 0 14 #f8f8f8 #404040
-0;
-#X obj 157 258 cnv 15 798 27 empty empty empty 20 12 0 14 #f8f8f8 #404040
-0;
-#X obj 157 286 cnv 15 798 27 empty empty empty 20 12 0 14 #e8e8ec #404040
-0;
-#X obj 157 230 cnv 15 798 27 empty empty empty 20 12 0 14 #e8e8ec #404040
-0;
+#X obj 101 103 cnv 15 898 283 empty empty empty 18 9 1 15 #fcfcfc #000000 0;
+#X obj 153 109 cnv 15 805 235 empty empty empty 20 12 0 14 #000000 #404040 0;
+#X obj 488 366 cnv 15 15 15 empty empty Kilohertz 18 9 1 16 #fcfcfc #000000 0;
+#X obj 157 314 cnv 15 798 27 empty empty empty 20 12 0 14 #f8f8f8 #404040 0;
+#X obj 157 258 cnv 15 798 27 empty empty empty 20 12 0 14 #f8f8f8 #404040 0;
+#X obj 157 286 cnv 15 798 27 empty empty empty 20 12 0 14 #e8e8ec #404040 0;
+#X obj 157 230 cnv 15 798 27 empty empty empty 20 12 0 14 #e8e8ec #404040 0;
 #N canvas 391 118 975 563 (subpatch) 0;
 #X array \$0-fase 400 float 0;
 #X coords 0 3.14159 399 -3.14159 800 111 1 0 0;
 #X restore 156 230 graph;
-#X obj 157 198 cnv 15 798 27 empty empty empty 20 12 0 14 #f8f8f8 #404040
-0;
-#X obj 157 142 cnv 15 798 27 empty empty empty 20 12 0 14 #f8f8f8 #404040
-0;
+#X obj 157 198 cnv 15 798 27 empty empty empty 20 12 0 14 #f8f8f8 #404040 0;
+#X obj 157 142 cnv 15 798 27 empty empty empty 20 12 0 14 #f8f8f8 #404040 0;
 #X text 261 344 0.05;
 #X text 161 344 0.02;
-#X obj 157 170 cnv 15 798 27 empty empty empty 20 12 0 14 #e8e8ec #404040
-0;
+#X obj 157 170 cnv 15 798 27 empty empty empty 20 12 0 14 #e8e8ec #404040 0;
 #X text 862 343 10;
 #X text 939 344 20;
 #X text 787 343 5;
@@ -289,11 +281,9 @@
 #X text 338 344 0.1;
 #X text 960 216 -24;
 #X text 967 164 0;
-#X obj 114 176 cnv 15 15 15 empty empty dB 0 9 1 17 #fcfcfc #000000
-0;
+#X obj 114 176 cnv 15 15 15 empty empty dB 0 9 1 17 #fcfcfc #000000 0;
 #X text 961 193 -12;
-#X obj 157 114 cnv 15 798 27 empty empty empty 20 12 0 14 #e8e8ec #404040
-0;
+#X obj 157 114 cnv 15 798 27 empty empty empty 20 12 0 14 #e8e8ec #404040 0;
 #N canvas 64 23 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 100 227 1;
 #X restore 174 114 graph;
@@ -325,25 +315,20 @@
 #X array \$0-amp 400 float 0;
 #X coords 0 1 399 -1 800 113 1 0 0;
 #X restore 156 113 graph;
-#X obj 106 162 cnv 15 15 15 empty empty Amp 0 0 1 17 #fcfcfc #000000
-0;
-#X obj 102 276 cnv 15 15 15 empty empty Phase 0 0 1 17 #fcfcfc #000000
-0;
+#X obj 106 162 cnv 15 15 15 empty empty Amp 0 0 1 17 #fcfcfc #000000 0;
+#X obj 102 276 cnv 15 15 15 empty empty Phase 0 0 1 17 #fcfcfc #000000 0;
 #X text 958 332 -pi;
 #X text 957 306 -pi/2;
 #X text 960 276 0;
 #X text 960 249 pi/2;
 #X text 961 227 pi;
-#X obj 109 296 cnv 15 15 15 empty empty rad 0 0 1 17 #fcfcfc #000000
-0;
+#X obj 109 296 cnv 15 15 15 empty empty rad 0 0 1 17 #fcfcfc #000000 0;
 #X text 962 134 12;
 #X text 964 109 24;
 #X obj 18 156 inlet;
-#X obj 108 101 cnv 8 888 8 empty empty empty 18 9 1 15 #fcfcfc #000000
-0;
+#X obj 108 101 cnv 8 888 8 empty empty empty 18 9 1 15 #fcfcfc #000000 0;
 #X obj 18 235 outlet;
-#X obj 108 381 cnv 8 888 8 empty empty empty 18 9 1 15 #fcfcfc #000000
-0;
+#X obj 108 381 cnv 8 888 8 empty empty empty 18 9 1 15 #fcfcfc #000000 0;
 #X text 173 45 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 175 26 Alexandre Torres Porres (2017);
 #X obj 442 43 declare -path else;
