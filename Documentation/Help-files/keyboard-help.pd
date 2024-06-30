@@ -1,4 +1,4 @@
-#N canvas 442 23 561 695 10;
+#N canvas 442 38 561 695 10;
 #X obj 5 259 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 5 528 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 5 587 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
@@ -202,7 +202,7 @@
 #X connect 14 2 12 0;
 #X connect 14 3 13 0;
 #X restore 466 182 pd normalize;
-#N canvas 645 30 517 652 send/receive 0;
+#N canvas 645 38 517 652 send/receive 0;
 #X text 48 22 You can set send/receive names with the -send/-receive flags or the 'send'/'receive' messages - make sure to escape "\$0" properly with backslashes (as in: "\\\$0"). Setting these to 'empty' removes the send/receive symbols., f 67;
 #X obj 51 99 else/keyboard 19 80 3 3 0 0 empty empty;
 #X obj 54 353 else/keyboard 19 80 3 3 0 0 \$0-keyboard-snd \$0-keyboard-rcv;
@@ -311,7 +311,7 @@
 #X obj 213 136 else/adsr~ 500 200 0.5 1000;
 #X obj 262 179 else/sig2float~;
 #X obj 39 144 * 1.497;
-#X obj 128 278 throw~ \$0-norm;
+#X obj 128 278 throw~ \$0-voice;
 #X connect 0 0 9 0;
 #X connect 1 0 4 0;
 #X connect 2 0 7 2;
@@ -329,6 +329,7 @@
 #X connect 11 0 6 0;
 #X connect 12 0 7 0;
 #X restore 67 500 pd voice;
+#X obj 67 393 route 0 1 2 3;
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
@@ -343,7 +344,7 @@
 #X obj 213 136 else/adsr~ 500 200 0.5 1000;
 #X obj 262 179 else/sig2float~;
 #X obj 39 144 * 1.497;
-#X obj 128 278 throw~ \$0-norm;
+#X obj 128 278 throw~ \$0-voice;
 #X connect 0 0 9 0;
 #X connect 1 0 4 0;
 #X connect 2 0 7 2;
@@ -375,7 +376,7 @@
 #X obj 213 136 else/adsr~ 500 200 0.5 1000;
 #X obj 262 179 else/sig2float~;
 #X obj 39 144 * 1.497;
-#X obj 128 278 throw~ \$0-norm;
+#X obj 128 278 throw~ \$0-voice;
 #X connect 0 0 9 0;
 #X connect 1 0 4 0;
 #X connect 2 0 7 2;
@@ -407,7 +408,7 @@
 #X obj 213 136 else/adsr~ 500 200 0.5 1000;
 #X obj 262 179 else/sig2float~;
 #X obj 39 144 * 1.497;
-#X obj 128 278 throw~ \$0-norm;
+#X obj 128 278 throw~ \$0-voice;
 #X connect 0 0 9 0;
 #X connect 1 0 4 0;
 #X connect 2 0 7 2;
@@ -425,7 +426,6 @@
 #X connect 11 0 6 0;
 #X connect 12 0 7 0;
 #X restore 123 426 pd voice;
-#X obj 67 393 route 0 1 2 3;
 #X connect 0 0 1 0;
 #X connect 1 0 8 0;
 #X connect 2 0 10 0;
@@ -440,11 +440,11 @@
 #X connect 18 0 7 0;
 #X connect 20 0 17 0;
 #X connect 20 1 17 1;
-#X connect 21 0 26 0;
-#X connect 26 0 22 0;
-#X connect 26 1 23 0;
-#X connect 26 2 24 0;
-#X connect 26 3 25 0;
+#X connect 21 0 23 0;
+#X connect 23 0 22 0;
+#X connect 23 1 24 0;
+#X connect 23 2 25 0;
+#X connect 23 3 26 0;
 #X restore 442 123 pd basic example;
 #N canvas 660 91 506 579 toggle/shift 0;
 #X obj 48 175 else/keyboard 19 80 3 3 1 0 empty empty;
@@ -475,7 +475,7 @@
 #X obj 213 136 else/adsr~ 500 200 0.5 1000;
 #X obj 262 179 else/sig2float~;
 #X obj 39 144 * 1.497;
-#X obj 128 278 throw~ \$0-norm;
+#X obj 128 278 throw~ \$0-tgl;
 #X connect 0 0 9 0;
 #X connect 1 0 4 0;
 #X connect 2 0 7 2;
@@ -493,6 +493,7 @@
 #X connect 11 0 6 0;
 #X connect 12 0 7 0;
 #X restore 48 438 pd voice;
+#X obj 48 331 route 0 1 2 3;
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
@@ -507,7 +508,7 @@
 #X obj 213 136 else/adsr~ 500 200 0.5 1000;
 #X obj 262 179 else/sig2float~;
 #X obj 39 144 * 1.497;
-#X obj 128 278 throw~ \$0-norm;
+#X obj 128 278 throw~ \$0-tgl;
 #X connect 0 0 9 0;
 #X connect 1 0 4 0;
 #X connect 2 0 7 2;
@@ -539,7 +540,7 @@
 #X obj 213 136 else/adsr~ 500 200 0.5 1000;
 #X obj 262 179 else/sig2float~;
 #X obj 39 144 * 1.497;
-#X obj 128 278 throw~ \$0-norm;
+#X obj 128 278 throw~ \$0-tgl;
 #X connect 0 0 9 0;
 #X connect 1 0 4 0;
 #X connect 2 0 7 2;
@@ -571,7 +572,7 @@
 #X obj 213 136 else/adsr~ 500 200 0.5 1000;
 #X obj 262 179 else/sig2float~;
 #X obj 39 144 * 1.497;
-#X obj 128 278 throw~ \$0-norm;
+#X obj 128 278 throw~ \$0-tgl;
 #X connect 0 0 9 0;
 #X connect 1 0 4 0;
 #X connect 2 0 7 2;
@@ -589,7 +590,6 @@
 #X connect 11 0 6 0;
 #X connect 12 0 7 0;
 #X restore 104 364 pd voice;
-#X obj 48 331 route 0 1 2 3;
 #X connect 0 0 8 0;
 #X connect 2 0 0 0;
 #X connect 3 0 2 0;
@@ -599,13 +599,13 @@
 #X connect 8 0 13 0;
 #X connect 10 0 9 0;
 #X connect 10 1 9 1;
-#X connect 13 0 18 0;
-#X connect 18 0 14 0;
-#X connect 18 1 15 0;
-#X connect 18 2 16 0;
-#X connect 18 3 17 0;
+#X connect 13 0 15 0;
+#X connect 15 0 14 0;
+#X connect 15 1 16 0;
+#X connect 15 2 17 0;
+#X connect 15 3 18 0;
 #X restore 448 142 pd toggle/shift;
-#N canvas 545 37 527 524 on/off/play/show 0;
+#N canvas 545 38 527 524 on/off/play/show 0;
 #X obj 60 351 else/keyboard 17 80 3 3 1 0 empty empty;
 #X msg 35 119 on 55 65 70 74 77;
 #X msg 71 177 off 55 70 74;
