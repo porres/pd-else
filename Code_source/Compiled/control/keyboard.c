@@ -340,6 +340,7 @@ static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
 // ------------------------- Methods ------------------------------
 void keyboard_float(t_keyboard *x, t_floatarg f){
     int note = (int)f;
+    if(note < 0 || note >= 255) return;
     if(x->x_vel_in < 0)
         x->x_vel_in = 0;
     if(x->x_vel_in > 127)
@@ -365,6 +366,8 @@ void keyboard_float(t_keyboard *x, t_floatarg f){
 
 static void keyboard_set(t_keyboard *x, t_floatarg f1, t_floatarg f2){
     int note = (int)f1;
+    if(note < 0 || note >= 255) return;
+
     x->x_vel_in = f2 < 0 ? 0 : f2 > 127 ? 127 : (int)f2;
     int on = x->x_tgl_notes[note] = x->x_vel_in > 0;
     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
