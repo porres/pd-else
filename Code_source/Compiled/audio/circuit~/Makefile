@@ -6,7 +6,7 @@ XINCLUDE = \
     -I./Libraries/AMD \
     -I./Libraries/BTF \
     -I./Libraries/KLU \
-    -I./Libraries/libsamplerate \
+    -I../../../shared/ \
     -I./Libraries/SuiteSparse_config \
     -I./Source \
     ${empty}
@@ -25,7 +25,9 @@ endef
 define forWindows
     cflags += -std=c++1z
 endef
-    
+
+LIBSAMPLERATE=../../../shared/libsamplerate
+
 circuit~.class.sources = \
     ./Libraries/AMD/amd_1.c \
     ./Libraries/AMD/amd_2.c \
@@ -117,10 +119,10 @@ circuit~.class.sources = \
     ./Libraries/KLU/klu_z_solve.c \
     ./Libraries/KLU/klu_z_sort.c \
     ./Libraries/KLU/klu_z_tsolve.c \
-    ./Libraries/libsamplerate/samplerate.c \
-    ./Libraries/libsamplerate/src_linear.c \
-    ./Libraries/libsamplerate/src_sinc.c \
-    ./Libraries/libsamplerate/src_zoh.c \
+    $(LIBSAMPLERATE)/samplerate.c \
+    $(LIBSAMPLERATE)/src_linear.c \
+    $(LIBSAMPLERATE)/src_sinc.c \
+    $(LIBSAMPLERATE)/src_zoh.c \
     ./Libraries/SuiteSparse_config/SuiteSparse_config.c \
     ./Source/Simulator.cpp \
     ./Source/circuit~.c \
