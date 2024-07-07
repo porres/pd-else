@@ -83,6 +83,7 @@ jobs:
       - name: Build ffplay~
         run: |
           cd ./Code_source/Compiled/audio/ffplay~
+          make ffmpeg
           make extension=l_amd64
 
       - name: Build pd-else
@@ -192,6 +193,7 @@ jobs:
         name: Build ffplay~
         shell: msys2 {0}
         run: |
+          make ffmpeg
           make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 ffplay
 
       - if: runner.os == 'Windows'
@@ -251,6 +253,7 @@ jobs:
       - name: Build ffplay~
         run: |
           cd ./Code_source/Compiled/audio/ffplay~
+          make ffmpeg
           make extension=d_amd64
 
       - name: Build pd-else
@@ -315,6 +318,7 @@ jobs:
       - name: Build ffplay~
         run: |
           cd ./Code_source/Compiled/audio/ffplay~
+          make ffmpeg
           make extension=d_arm64
 
       - name: Build pd-else
