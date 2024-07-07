@@ -44,4 +44,4 @@ $(FFMPEG_DIR): $(FFMPEG_TAR)
 	rm -f $(FFMPEG_TAR)
 
 $(FFMPEG_TAR):
-	wget $(FFMPEG_URL)
+	curl -O $(FFMPEG_URL)
