@@ -463,6 +463,16 @@ sfz-install:
 sfz-clean:
 	$(MAKE) -C Code_source/Compiled/audio/sfz~ clean
 
+# and for ffplay
+ffplay:
+	$(MAKE) -C Code_source/Compiled/audio/ffplay~ system=$(system)
+
+ffplay-install:
+	$(MAKE) -C Code_source/Compiled/audio/ffplay~ install exten=$(extension) installpath="$(abspath $(PDLIBDIR))/else"
+
+ffplay-clean:
+	$(MAKE) -C Code_source/Compiled/audio/ffplay~ clean
+
 .PHONY: circuit
 
 circuit:
