@@ -251,7 +251,7 @@ jobs:
       - name: Build ffplay~
         run: |
           cd ./Code_source/Compiled/audio/ffplay~
-          make extension=l_amd64
+          make extension=d_amd64
 
       - name: Build pd-else
         run: |
@@ -315,7 +315,7 @@ jobs:
       - name: Build ffplay~
         run: |
           cd ./Code_source/Compiled/audio/ffplay~
-          make extension=l_amd64
+          make extension=d_arm64
 
       - name: Build pd-else
         run: |
