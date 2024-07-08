@@ -49,7 +49,7 @@ ffmpeg: $(FFMPEG_DIR)
 
 $(FFMPEG_DIR):
 	tar xjf $(FFMPEG_TAR)
-	cd $(FFMPEG_DIR) && ./configure --enable-static --disable-shared --enable-optimizations --disable-debug --disable-doc --disable-programs --disable-avdevice --disable-postproc --disable-network --disable-everything --enable-avcodec --enable-avformat --enable-avutil --enable-swscale --enable-swresample --enable-decoder=mp3*,pcm*,aac*,flac,vorbis,opus --enable-parser=mpegaudio,aac --enable-demuxer=mp3,wav,aiff,flac,aac,ogg,pcm* --enable-filter=aresample --enable-protocol=file $(ffmpeg_config)
+	cd $(FFMPEG_DIR) && ./configure --enable-static --disable-shared --enable-optimizations --disable-debug --disable-doc --disable-programs --disable-iconv --disable-avdevice --disable-postproc --disable-network --disable-everything --enable-avcodec --enable-avformat --enable-avutil --enable-swscale --enable-swresample --enable-decoder=mp3*,pcm*,aac*,flac,vorbis,opus --enable-parser=mpegaudio,aac --enable-demuxer=mp3,wav,aiff,flac,aac,ogg,pcm* --enable-filter=aresample --enable-protocol=file $(ffmpeg_config)
 	cd $(FFMPEG_DIR) && make
 
 clean:
