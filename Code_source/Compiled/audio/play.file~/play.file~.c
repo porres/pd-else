@@ -114,7 +114,7 @@ static t_int *ffplay_perform(t_int *w) {
 				data->output_frames_gen--;
 				continue;
 			}
-            
+
 			libsamplerate_speed(r, x->speed);
 
 			process:
@@ -157,12 +157,19 @@ static t_int *ffplay_perform(t_int *w) {
 				p->play = 0;
 				n++; // don't iterate in case there's another track
 				outlet_bang(p->o_meta);
-			} else if(x->loop) {
+			}
+			if(x->loop) {
+			    if(x->play_next)
+                {
+                    ffbase_open(&x->b, x->play_next);
+                    x->play_next = NULL;
+                }
                 ffbase_start(&x->b, 1.0f, 0.0f);
             } else {
                 if(x->play_next)
                 {
                     ffbase_open(&x->b, x->play_next);
+                    ffbase_stop(&x->b)
                     x->play_next = NULL;
                 }
 				ffplay_seek(x, 0);
@@ -221,7 +228,7 @@ static void *ffplay_new(t_symbol *s, int ac, t_atom *av) {
             }
         }
     }
-    
+
 	t_ffplay *x = (t_ffplay *)ffbase_new(ffplay_class, ac, av);
     int err = libsamplerate_init(&x->r, ac == 0 ? 1 : (int)atom_getfloat(av));
 	if (err) {
@@ -236,22 +243,22 @@ static void *ffplay_new(t_symbol *s, int ac, t_atom *av) {
         ffbase_open(&x->b, atom_getsymbol(av + 1));
         ffbase_stop(&x->b); // open normally also starts playback
     }
-    
+
     // Autostart argument
     if(ac > 2 && av[2].a_type == A_FLOAT)  {
         ffbase_start(&x->b, atom_getfloat(av + 2), 0.0f);
     }
-    
+
     // Loop argument
     if(ac > 3 && av[3].a_type == A_FLOAT) loop = atom_getfloat(av + 3);
     else loop = 0;
-    
+
 	x->in  = (t_sample *)getbytes(ac * FRAMES * sizeof(t_sample));
     x->out = (t_sample *)getbytes(ac * FRAMES * sizeof(t_sample));
     x->speed = 1;
     x->loop = loop;
-    
-    
+
+
 	return x;
 }
 
@@ -276,9 +283,9 @@ void ffplay_tilde_setup(void) {
 	, gensym("speed"), A_FLOAT, 0);
 	class_addmethod(ffplay_class, (t_method)ffplay_interp
 	, gensym("interp"), A_FLOAT, 0);
-    
+
     class_addmethod(ffplay_class, (t_method)ffplay_loop
     , gensym("loop"), A_FLOAT, 0);
-    
+
     class_addmethod(ffplay_class, (t_method)ffplay_set, gensym("set"), A_SYMBOL, 0);
 }
