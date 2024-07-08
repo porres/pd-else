@@ -1,7 +1,5 @@
-FFMPEG_VERSION := 7.0.1
-FFMPEG_DIR := ffmpeg-$(FFMPEG_VERSION)
+FFMPEG_DIR := ffmpeg-7.0.1
 FFMPEG_TAR := $(FFMPEG_DIR).tar.bz2
-FFMPEG_URL := https://ffmpeg.org/releases/$(FFMPEG_TAR)
 FFMPEG_LIBS := libavcodec.a libavformat.a libavutil.a libswresample.a
 
 LIBSAMPLERATE=../../../shared/libsamplerate
@@ -49,12 +47,7 @@ all: ffmpeg
 
 ffmpeg: $(FFMPEG_DIR)
 
-$(FFMPEG_DIR): $(FFMPEG_TAR)
+$(FFMPEG_DIR):
 	tar xjf $(FFMPEG_TAR)
-#	cd libs && ./compile.sh
 	cd $(FFMPEG_DIR) && ./configure --enable-static --disable-shared --disable-debug --disable-doc --disable-programs --disable-avdevice --disable-postproc --disable-network --disable-everything --enable-avcodec --enable-avformat --enable-avutil --enable-swscale --enable-swresample --enable-decoder=mp3*,pcm*,flac,aac,vorbis,opus --enable-parser=mpegaudio,aac --enable-demuxer=mp3,wav,aiff,flac,aac,ogg --enable-filter=aresample --enable-protocol=file $(ffmpeg_config)
 	cd $(FFMPEG_DIR) && make
-	rm -f $(FFMPEG_TAR)
-
-$(FFMPEG_TAR):
-	curl -O $(FFMPEG_URL)
