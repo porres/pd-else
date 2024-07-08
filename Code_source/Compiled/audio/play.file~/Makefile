@@ -6,7 +6,7 @@ LIBSAMPLERATE=../../../shared/libsamplerate
 
 cflags = -I$(LIBSAMPLERATE) -I$(FFMPEG_DIR) -DHAVE_STRUCT_TIMESPEC
 
-lib.name = ffplay~
+lib.name = play.file~
 
 define forDarwin
     cflags += -mmacosx-version-min=10.9
@@ -14,7 +14,7 @@ endef
 
 LIBSAMPLERATE=../../../shared/libsamplerate
 
-ffplay~.class.sources := ffplay~.c $(LIBSAMPLERATE)/samplerate.c $(LIBSAMPLERATE)/src_linear.c $(LIBSAMPLERATE)/src_sinc.c $(LIBSAMPLERATE)/src_zoh.c
+play.file~.class.sources := play.file~.c $(LIBSAMPLERATE)/samplerate.c $(LIBSAMPLERATE)/src_linear.c $(LIBSAMPLERATE)/src_sinc.c $(LIBSAMPLERATE)/src_zoh.c
 
 ldlibs = -L$(FFMPEG_DIR)/libavutil -L$(FFMPEG_DIR)/libavcodec -L$(FFMPEG_DIR)/libavformat -L$(FFMPEG_DIR)/libswresample -lavutil -lavcodec -lavformat -lswresample
 
@@ -43,7 +43,7 @@ include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 
 .PHONY: clean
 
-both: ffmpeg ffplay~
+both: ffmpeg play.file~
 
 ffmpeg: $(FFMPEG_DIR)
 
