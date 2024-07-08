@@ -48,7 +48,7 @@ ffmpeg: $(FFMPEG_DIR)
 $(FFMPEG_DIR): $(FFMPEG_TAR)
 	tar xjf $(FFMPEG_TAR)
 #	cd libs && ./compile.sh
-	cd $(FFMPEG_DIR) && ./configure --enable-static --disable-shared --disable-debug --disable-doc --disable-programs --disable-avdevice --disable-postproc --disable-network --disable-everything --enable-avcodec --enable-avformat --enable-avutil --enable-swscale --enable-swresample --extra-cflags="$(ffmpeg_cflags)" --extra-ldflags="$(ffmpeg_ldflags)"
+	cd $(FFMPEG_DIR) && ./configure --enable-static --disable-shared --disable-debug --disable-doc --disable-programs --disable-avdevice --disable-postproc --disable-network --disable-everything --enable-avcodec --enable-avformat --enable-avutil --enable-swscale --enable-swresample --enable-decoder=mp3*,pcm*,flac,aac --enable-parser=mpegaudio,aac --enable-demuxer=mp3,wav,flac,aac --enable-filter=aresample --enable-protocol=file --extra-cflags="$(ffmpeg_cflags)" --extra-ldflags="$(ffmpeg_ldflags)"
 	cd $(FFMPEG_DIR) && make
 	rm -f $(FFMPEG_TAR)
 
