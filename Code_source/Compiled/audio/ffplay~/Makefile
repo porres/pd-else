@@ -34,7 +34,7 @@ ffmpeg_config = --enable-pic
 endef
 
 define forDarwin
-  ffmpeg_config = "--extra-cflags=-mmacosx-version-min=10.9 --extra-ldflags=-mmacosx-version-min=10.9"
+  ffmpeg_config = --extra-cflags=-mmacosx-version-min=10.9 --extra-ldflags=-mmacosx-version-min=10.9
 endef
 
 # Makefile based on pd-lib-builder by Katja Vetter, see: https://github.com/pure-data/pd-lib-builder
