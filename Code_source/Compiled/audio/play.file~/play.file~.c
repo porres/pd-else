@@ -668,7 +668,7 @@ void setup_play0x2efile_tilde(void) {
 
     playfile_class = class_new(gensym("play.file~"), (t_newmethod)playfile_new, (t_method)playfile_free, sizeof(t_playfile), 0, A_GIMME, 0);
     class_addbang(playfile_class, player_bang);
-    class_addmethod(playfile_class, (t_method)player_play, gensym("play"), A_GIMME, 0);
+    class_addmethod(playfile_class, (t_method)player_play, gensym("start"), A_GIMME, 0);
 
 	class_addfloat(playfile_class, playfile_base_float);
 	class_addmethod(playfile_class, (t_method)playfile_base_open, gensym("open"), A_SYMBOL, 0);
