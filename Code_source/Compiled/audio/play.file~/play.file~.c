@@ -4,16 +4,47 @@
 #include <samplerate.h>
 #include <m_pd.h>
 
-/* ---------------------- player ------------------------ */
+typedef struct _avstream {
+    AVCodecContext *ctx;
+    int idx; /* stream index */
+} t_avstream;
 
-typedef struct _player {
-    t_object obj;
-    t_sample **outs;
-    unsigned char play; /* play/pause toggle */
-    unsigned char open; /* true when a file has been successfully opened */
-    unsigned nch;       /* number of channels */
-    t_outlet *o_meta;   /* outputs bang when finished */
-} t_player;
+typedef struct _playlist {
+    t_symbol **arr; /* m3u list of tracks */
+    t_symbol *dir;  /* starting directory */
+    int size;       /* size of the list */
+    int max;        /* size of the memory allocation */
+} t_playlist;
+
+typedef struct _libsamplerate {
+    SRC_STATE *state;
+    SRC_DATA data;
+    double ratio;  /* resampling ratio */
+} t_libsamplerate;
+
+typedef struct _playfile {
+    t_object x_obj;
+    t_sample **x_outs;
+    unsigned char x_play; /* play/pause toggle */
+    unsigned char x_open; /* true when a file has been successfully opened */
+    unsigned x_nch;       /* number of channels */
+    t_outlet *x_o_meta;   /* outputs bang when finished */
+    t_avstream x_a;   /* audio stream */
+    AVPacket *x_pkt;
+    AVFrame *x_frm;
+    SwrContext *x_swr;
+    AVFormatContext *x_ic;
+    AVChannelLayout x_layout;
+    t_playlist x_plist;
+    t_canvas* x_canvas;
+    t_libsamplerate x_r;
+    t_sample *x_in;
+    t_sample *x_out;
+    t_float x_speed;
+    int x_loop;
+    t_symbol* x_play_next;
+} t_playfile;
+/* ---------------------- player ------------------------ */
 
 // @return 1 if the current state is the same as the one being requested
 static inline int pause_state(unsigned char *pause, int ac, t_atom *av) {
@@ -30,54 +61,28 @@ static inline int pause_state(unsigned char *pause, int ac, t_atom *av) {
     return 0;
 }
 
-static void player_play(t_player *x, t_symbol *s, int ac, t_atom *av) {
+static void player_play(t_playfile *x, t_symbol *s, int ac, t_atom *av) {
     (void)s;
-    if (!x->open) {
+    if (!x->x_open) {
         return post("No file opened.");
     }
-    if (pause_state(&x->play, ac, av)) {
+    if (pause_state(x, ac, av)) {
         return;
     }
 }
 
-static void player_bang(t_player *x) {
+static void player_bang(t_playfile *x) {
     player_play(x, 0, 0, 0);
 }
 
-static t_player *player_new(t_class *cl, unsigned nch) {
-    t_player *x = (t_player *)pd_new(cl);
-    x->nch = nch;
-    x->outs = (t_sample **)getbytes(nch * sizeof(t_sample *));
-    while (nch--) {
-        outlet_new(&x->obj, &s_signal);
-    }
-    x->o_meta = outlet_new(&x->obj, 0);
-    x->open = x->play = 0;
-    return x;
+static void player_free(t_playfile *x) {
+    freebytes(x->x_outs, x->x_nch * sizeof(t_sample *));
 }
 
-static void player_free(t_player *x) {
-    freebytes(x->outs, x->nch * sizeof(t_sample *));
-}
-
-static t_class *class_player
-(t_symbol *s, t_newmethod newm, t_method free, size_t size) {
-    t_class *cls = class_new(s, newm, free, size, 0, A_GIMME, 0);
-    class_addbang(cls, player_bang);
-    class_addmethod(cls, (t_method)player_play, gensym("play"), A_GIMME, 0);
-    return cls;
-}
 
 /* ---------------------- playlist ------------------------ */
 
 typedef const char *err_t;
-
-typedef struct _playlist {
-    t_symbol **arr; /* m3u list of tracks */
-    t_symbol *dir;  /* starting directory */
-    int size;       /* size of the list */
-    int max;        /* size of the memory allocation */
-} t_playlist;
 
     // prevents self-referencing m3u's from causing an infinite loop
 static int depth;
@@ -156,52 +161,35 @@ static inline err_t playlist_m3u(t_playlist *pl, t_symbol *s) {
 /* ---------------------- FFmpeg player (base class) ------------------------ */
 static err_t (*playfile_base_reset)(void *);
 
-typedef struct _avstream {
-	AVCodecContext *ctx;
-	int idx; /* stream index */
-} t_avstream;
-
-typedef struct _ffbase {
-	t_player p;
-	t_avstream a;   /* audio stream */
-	AVPacket *pkt;
-	AVFrame *frm;
-	SwrContext *swr;
-	AVFormatContext *ic;
-	AVChannelLayout layout;
-	t_playlist plist;
-    t_canvas* canvas;
-} t_ffbase;
-
-static void playfile_base_seek(t_ffbase *x, t_float f) {
-	if (!x->p.open) {
+static void playfile_base_seek(t_playfile *x, t_float f) {
+	if (!x->x_open) {
 		return;
 	}
-	avformat_seek_file(x->ic, -1, 0, f * 1000, x->ic->duration, 0);
-	AVRational ratio = x->ic->streams[x->a.idx]->time_base;
-	x->frm->pts = f * ratio.den / (ratio.num * 1000);
-	swr_init(x->swr);
+	avformat_seek_file(x->x_ic, -1, 0, f * 1000, x->x_ic->duration, 0);
+	AVRational ratio = x->x_ic->streams[x->x_a.idx]->time_base;
+	x->x_frm->pts = f * ratio.den / (ratio.num * 1000);
+	swr_init(x->x_swr);
 
-	// avcodec_flush_buffers(x->a.ctx); // doesn't always flush properly
-	avcodec_free_context(&x->a.ctx);
-	x->a.ctx = avcodec_alloc_context3(NULL);
-	avcodec_parameters_to_context(x->a.ctx, x->ic->streams[x->a.idx]->codecpar);
-	x->a.ctx->pkt_timebase = x->ic->streams[x->a.idx]->time_base;
-	const AVCodec *codec = avcodec_find_decoder(x->a.ctx->codec_id);
-	avcodec_open2(x->a.ctx, codec, NULL);
+	// avcodec_flush_buffers(x->x_a.ctx); // doesn't always flush properly
+	avcodec_free_context(&x->x_a.ctx);
+	x->x_a.ctx = avcodec_alloc_context3(NULL);
+	avcodec_parameters_to_context(x->x_a.ctx, x->x_ic->streams[x->x_a.idx]->codecpar);
+	x->x_a.ctx->pkt_timebase = x->x_ic->streams[x->x_a.idx]->time_base;
+	const AVCodec *codec = avcodec_find_decoder(x->x_a.ctx->codec_id);
+	avcodec_open2(x->x_a.ctx, codec, NULL);
 }
 
-static inline err_t playfile_base_context(t_ffbase *x, t_avstream *s) {
+static inline err_t playfile_base_context(t_playfile *x, t_avstream *s) {
 	int i = s->idx;
 	avcodec_free_context(&s->ctx);
 	s->ctx = avcodec_alloc_context3(NULL);
 	if (!s->ctx) {
 		return "Failed to allocate AVCodecContext";
 	}
-	if (avcodec_parameters_to_context(s->ctx, x->ic->streams[i]->codecpar) < 0) {
+	if (avcodec_parameters_to_context(s->ctx, x->x_ic->streams[i]->codecpar) < 0) {
 		return "Failed to fill codec with parameters";
 	}
-	s->ctx->pkt_timebase = x->ic->streams[i]->time_base;
+	s->ctx->pkt_timebase = x->x_ic->streams[i]->time_base;
 
 	const AVCodec *codec = avcodec_find_decoder(s->ctx->codec_id);
 	if (!codec) {
@@ -214,169 +202,142 @@ static inline err_t playfile_base_context(t_ffbase *x, t_avstream *s) {
 	return 0;
 }
 
-static AVChannelLayout playfile_base_layout(t_ffbase *x) {
+static AVChannelLayout playfile_base_layout(t_playfile *x) {
 	AVChannelLayout layout_in;
-	if (x->a.ctx->ch_layout.u.mask) {
-		av_channel_layout_from_mask(&layout_in, x->a.ctx->ch_layout.u.mask);
+	if (x->x_a.ctx->ch_layout.u.mask) {
+		av_channel_layout_from_mask(&layout_in, x->x_a.ctx->ch_layout.u.mask);
 	} else {
-		av_channel_layout_default(&layout_in, x->a.ctx->ch_layout.nb_channels);
+		av_channel_layout_default(&layout_in, x->x_a.ctx->ch_layout.nb_channels);
 	}
 	return layout_in;
 }
 
-static err_t playfile_base_load(t_ffbase *x, int index) {
+static err_t playfile_base_load(t_playfile *x, int index) {
 	char url[MAXPDSTRING];
-	const char *fname = x->plist.arr[index]->s_name;
+	const char *fname = x->x_plist.arr[index]->s_name;
 	if (fname[0] == '/') { // absolute path
 		strcpy(url, fname);
 	} else {
-		strcpy(url, x->plist.dir->s_name);
+		strcpy(url, x->x_plist.dir->s_name);
 		strcat(url, fname);
 	}
 
-	avformat_close_input(&x->ic);
-	x->ic = avformat_alloc_context();
-    int err = 0;
-	if ((err = avformat_open_input(&x->ic, url, NULL, NULL))!=0) {
+	avformat_close_input(&x->x_ic);
+	x->x_ic = avformat_alloc_context();
+	if (avformat_open_input(&x->x_ic, url, NULL, NULL)) {
 		return "Failed to open input stream";
 	}
-	if (avformat_find_stream_info(x->ic, NULL) < 0) {
+	if (avformat_find_stream_info(x->x_ic, NULL) < 0) {
 		return "Failed to find stream information";
 	}
-	x->ic->seek2any = 1;
+	x->x_ic->seek2any = 1;
 
 	int i = -1;
-	for (unsigned j = x->ic->nb_streams; j--;) {
-		if (x->ic->streams[j]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+	for (unsigned j = x->x_ic->nb_streams; j--;) {
+		if (x->x_ic->streams[j]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
 			i = j;
 			break;
 		}
 	}
-	x->a.idx = i;
+	x->x_a.idx = i;
 	if (i < 0) {
 		return "No audio stream found";
 	}
-	err_t err_msg = playfile_base_context(x, &x->a);
+	err_t err_msg = playfile_base_context(x, &x->x_a);
 	if (err_msg) {
 		return err_msg;
 	}
-	x->frm->pts = 0;
+	x->x_frm->pts = 0;
 	return playfile_base_reset(x);
 }
 
-static void playfile_base_start(t_ffbase *x, t_float f, t_float ms) {
+static void playfile_base_start(t_playfile *x, t_float f, t_float ms) {
     int track = f;
     err_t err_msg = "";
-    if (0 < track && track <= x->plist.size) {
+    if (0 < track && track <= x->x_plist.size) {
         if ( (err_msg = playfile_base_load(x, track - 1)) ) {
             pd_error(x, "playfile_base_start: %s.", err_msg);
         } else if (ms > 0) {
             playfile_base_seek(x, ms);
         }
-        x->p.open = !err_msg;
+        x->x_open = !err_msg;
     } else {
         playfile_base_seek(x, 0);
     }
-    x->p.play = !err_msg;
+    x->x_play = !err_msg;
 }
 
-static void playfile_base_open(t_ffbase *x, t_symbol *s) {
-	x->p.play = 0;
+static void playfile_find_file(t_playfile *x, t_symbol* file, t_symbol** dir_out, t_symbol** filename_out)
+{
+    const char *filename = file->s_name;
+    const char *dirname = canvas_getdir(x->x_canvas)->s_name;
+
+    char dirout[MAXPDSTRING];
+    char* fileout;
+    open_via_path(dirname, filename, "", dirout, &fileout, MAXPDSTRING-1, 0);
+
+    *filename_out = gensym(fileout);
+    strcat(dirout, "/"); // need to happen after filename has been gensym'd!
+    *dir_out = gensym(dirout);
+}
+
+static void playfile_base_open(t_playfile *x, t_symbol *s) {
+	x->x_play = 0;
 	err_t err_msg = 0;
 
 	const char *sym = s->s_name;
 	if (strlen(sym) >= MAXPDSTRING) {
 		err_msg = "File path is too long";
 	} else {
-        const char *filename = s->s_name;
-        const char *dirname = canvas_getdir(x->canvas)->s_name;
+        t_symbol* filename;
+        t_symbol* dirname;
+        playfile_find_file(x, s, &dirname, &filename);
+		t_playlist *pl = &x->x_plist;
+        pl->dir = dirname;
 
-        char dir[MAXPDSTRING];
-        char* file;
-        open_via_path(dirname, filename, "", dir, &file, MAXPDSTRING-1, 0);
-
-        t_symbol* filesym = gensym(file);
-        strcat(dir, "/");
-		t_playlist *pl = &x->plist;
-		pl->dir = gensym(dir);
-
-		const char *ext = strrchr(file, '.');
+		const char *ext = strrchr(filename->s_name, '.');
 		if (ext && !strcmp(ext + 1, "m3u")) {
-			err_msg = playlist_m3u(pl, filesym);
+			err_msg = playlist_m3u(pl, filename);
 		} else {
 			pl->size = 1;
-			pl->arr[0] = filesym;
+			pl->arr[0] = filename;
 		}
 	}
 
 	if (err_msg || (err_msg = playfile_base_load(x, 0))) {
 		pd_error(x, "playfile_base_open: %s.", err_msg);
 	}
-	x->p.open = !err_msg;
+	x->x_open = !err_msg;
 
     playfile_base_start(x, 1.0f, 0.0f);
 }
 
-static void playfile_base_float(t_ffbase *x, t_float f) {
+static void playfile_base_float(t_playfile *x, t_float f) {
 	playfile_base_start(x, f, 0);
 }
 
-static void playfile_base_stop(t_ffbase *x) {
+static void playfile_base_stop(t_playfile *x) {
 	playfile_base_start(x, 0, 0);
-	x->frm->pts = 0; // reset internal position
+	x->x_frm->pts = 0; // reset internal position
 }
 
-static t_ffbase *playfile_base_new(t_class *cl, int ac, t_atom *av) {
-    int nch = ac ? atom_getfloat(av) : 1;
+static void playfile_base_free(t_playfile *x) {
+	av_channel_layout_uninit(&x->x_layout);
+	avcodec_free_context(&x->x_a.ctx);
+	avformat_close_input(&x->x_ic);
+	av_packet_free(&x->x_pkt);
+	av_frame_free(&x->x_frm);
+	swr_free(&x->x_swr);
 
-	// channel layout masking details: libavutil/channel_layout.h
-	uint64_t mask = 0;
-	AVChannelLayout layout;
-    for (int ch = 0; ch < nch; ch++) {
-        mask |= (ch + 1);
-	}
-	int err = av_channel_layout_from_mask(&layout, mask);
-	if (err) {
-		pd_error(0, "playfile_base_new: invalid channel layout (%d).", err);
-		return NULL;
-	}
-
-	t_ffbase *x = (t_ffbase *)player_new(cl, nch);
-	x->pkt = av_packet_alloc();
-	x->frm = av_frame_alloc();
-	x->layout = layout;
-    x->canvas = canvas_getcurrent();
-
-	t_playlist *pl = &x->plist;
-	pl->size = 0;
-	pl->max = 1;
-	pl->arr = (t_symbol **)getbytes(pl->max * sizeof(t_symbol *));
-
-	return x;
-}
-
-static void playfile_base_free(t_ffbase *x) {
-	av_channel_layout_uninit(&x->layout);
-	avcodec_free_context(&x->a.ctx);
-	avformat_close_input(&x->ic);
-	av_packet_free(&x->pkt);
-	av_frame_free(&x->frm);
-	swr_free(&x->swr);
-
-	t_playlist *pl = &x->plist;
+	t_playlist *pl = &x->x_plist;
 	freebytes(pl->arr, pl->max * sizeof(t_symbol *));
-	player_free(&x->p);
+	player_free(x);
 }
 
 #define FRAMES 0x10
 
 /* ------------------------- libsamplerate helpers ------------------------- */
 
-typedef struct _libsamplerate {
-    SRC_STATE *state;
-    SRC_DATA data;
-    double ratio;  /* resampling ratio */
-} t_libsamplerate;
 
 // SRC can get stuck if it's too close to the fastest possible speed
 static const t_float fastest = FRAMES - (1. / 128.);
@@ -423,46 +384,34 @@ static int libsamplerate_init(t_libsamplerate *x, unsigned nch) {
 /* ------------------------- FFmpeg player ------------------------- */
 static t_class *playfile_class;
 
-typedef struct _ffplay {
-	t_ffbase b;
-	t_libsamplerate r;
-	t_sample *in;
-	t_sample *out;
-	t_float speed;
-    int loop;
-    t_symbol* play_next;
-} t_ffplay;
-
-static void playfile_seek(t_ffplay *x, t_float f) {
-	playfile_base_seek(&x->b, f);
-	libsamplerate_reset(&x->r);
+static void playfile_seek(t_playfile *x, t_float f) {
+	playfile_base_seek(x, f);
+	libsamplerate_reset(&x->x_r);
 }
 
-static void playfile_speed(t_ffplay *x, t_float f) {
-	x->speed = f;
+static void playfile_speed(t_playfile *x, t_float f) {
+	x->x_speed = f;
 }
 
-static void playfile_loop(t_ffplay *x, t_float f) {
-    x->loop = f;
+static void playfile_loop(t_playfile *x, t_float f) {
+    x->x_loop = f;
 }
 
-static void playfile_set(t_ffplay *x, t_symbol* s) {
-    x->play_next = s;
+static void playfile_set(t_playfile *x, t_symbol* s) {
+    x->x_play_next = s;
 }
 
 static t_int *playfile_perform(t_int *w) {
-	t_ffplay *x = (t_ffplay *)(w[1]);
-	t_ffbase *b = &x->b;
-	t_player *p = &b->p;
-	unsigned nch = p->nch;
+	t_playfile *x = (t_playfile *)(w[1]);
+	unsigned nch = x->x_nch;
 	t_sample *outs[nch];
 	for (int i = nch; i--;) {
-		outs[i] = p->outs[i];
+		outs[i] = x->x_outs[i];
 	}
 
 	int n = (int)(w[2]);
-	if (p->play) {
-		t_libsamplerate *r = &x->r;
+	if (x->x_play) {
+		t_libsamplerate *r = &x->x_r;
 		SRC_DATA *data = &r->data;
 		while (n--) {
 			if (data->output_frames_gen > 0) {
@@ -475,17 +424,17 @@ static t_int *playfile_perform(t_int *w) {
 				continue;
 			}
 
-			libsamplerate_speed(r, x->speed);
+			libsamplerate_speed(r, x->x_speed);
 
 			process:
 			if (data->input_frames > 0) {
-				data->data_out = x->out;
+				data->data_out = x->x_out;
 				src_process(r->state, data);
 				data->input_frames -= data->input_frames_used;
 				if (data->input_frames <= 0) {
-					data->data_in = x->in;
-					data->input_frames = swr_convert(b->swr
-					, (uint8_t **)&x->in, FRAMES
+					data->data_in = x->x_in;
+					data->input_frames = swr_convert(x->x_swr
+					, (uint8_t **)&x->x_in, FRAMES
 					, 0, 0);
 				} else {
 					data->data_in += data->input_frames_used * nch;
@@ -497,40 +446,40 @@ static t_int *playfile_perform(t_int *w) {
 				}
 			}
 			// receive
-			data->data_in = x->in;
-			for (; av_read_frame(b->ic, b->pkt) >= 0; av_packet_unref(b->pkt)) {
-				if (b->pkt->stream_index == b->a.idx) {
-					if (avcodec_send_packet(b->a.ctx, b->pkt) < 0
-					 || avcodec_receive_frame(b->a.ctx, b->frm) < 0) {
+			data->data_in = x->x_in;
+			for (; av_read_frame(x->x_ic, x->x_pkt) >= 0; av_packet_unref(x->x_pkt)) {
+				if (x->x_pkt->stream_index == x->x_a.idx) {
+					if (avcodec_send_packet(x->x_a.ctx, x->x_pkt) < 0
+					 || avcodec_receive_frame(x->x_a.ctx, x->x_frm) < 0) {
 						continue;
 					}
-					data->input_frames = swr_convert(b->swr
-					, (uint8_t **)&x->in, FRAMES
-					, (const uint8_t **)b->frm->extended_data, b->frm->nb_samples);
-					av_packet_unref(b->pkt);
+					data->input_frames = swr_convert(x->x_swr
+					, (uint8_t **)&x->x_in, FRAMES
+					, (const uint8_t **)x->x_frm->extended_data, x->x_frm->nb_samples);
+					av_packet_unref(x->x_pkt);
 					goto process;
 				}
 			}
 
 			// reached the end
-			if (p->play) {
-				p->play = 0;
+			if (x->x_play) {
+				x->x_play = 0;
 				n++; // don't iterate in case there's another track
-				outlet_bang(p->o_meta);
+				outlet_bang(x->x_o_meta);
 			}
-			if(x->loop) {
-			    if(x->play_next)
+			if(x->x_loop) {
+			    if(x->x_play_next)
                 {
-                    playfile_base_open(&x->b, x->play_next);
-                    x->play_next = NULL;
+                    playfile_base_open(x, x->x_play_next);
+                    x->x_play_next = NULL;
                 }
-                playfile_base_start(&x->b, 1.0f, 0.0f);
+                playfile_base_start(x, 1.0f, 0.0f);
             } else {
-                if(x->play_next)
+                if(x->x_play_next)
                 {
-                    playfile_base_open(&x->b, x->play_next);
-                    playfile_base_stop(&x->b);
-                    x->play_next = NULL;
+                    playfile_base_open(x, x->x_play_next);
+                    playfile_base_stop(x);
+                    x->x_play_next = NULL;
                 }
 				playfile_seek(x, 0);
 				goto silence;
@@ -545,34 +494,77 @@ static t_int *playfile_perform(t_int *w) {
 	return (w + 4);
 }
 
-static void playfile_dsp(t_ffplay *x, t_signal **sp) {
-	t_player *p = &x->b.p;
-	for (int i = p->nch; i--;) {
-		p->outs[i] = sp[i]->s_vec;
+static void playfile_dsp(t_playfile *x, t_signal **sp) {
+	for (int i = x->x_nch; i--;) {
+		x->x_outs[i] = sp[i]->s_vec;
 	}
 	dsp_add(playfile_perform, 3, x, sp[0]->s_n, sp[0]->s_vec);
 }
 
 static err_t playfile_reset(void *y) {
-	t_ffplay *x = (t_ffplay *)y;
-	t_ffbase *b = &x->b;
-	swr_free(&b->swr);
+	t_playfile *x = (t_playfile *)y;
+	t_playfile *b = x;
+	swr_free(&x->x_swr);
 	AVChannelLayout layout_in = playfile_base_layout(b);
-	swr_alloc_set_opts2(&b->swr
-	, &b->layout, AV_SAMPLE_FMT_FLT   , b->a.ctx->sample_rate
-	, &layout_in, b->a.ctx->sample_fmt, b->a.ctx->sample_rate
+	swr_alloc_set_opts2(&x->x_swr
+	, &x->x_layout, AV_SAMPLE_FMT_FLT   , x->x_a.ctx->sample_rate
+	, &layout_in, x->x_a.ctx->sample_fmt, x->x_a.ctx->sample_rate
 	, 0, NULL);
-	if (swr_init(b->swr) < 0) {
+	if (swr_init(x->x_swr) < 0) {
 		return "SWResampler initialization failed";
 	}
 
-	if (!x->r.state) {
+	if (!x->x_r.state) {
 		return "SRC has not been initialized";
 	}
-	libsamplerate_reset(&x->r);
-	x->r.ratio = (double)x->b.a.ctx->sample_rate / sys_getsr();
-	libsamplerate_speed(&x->r, x->speed);
+	libsamplerate_reset(&x->x_r);
+	x->x_r.ratio = (double)x->x_a.ctx->sample_rate / sys_getsr();
+	libsamplerate_speed(&x->x_r, x->x_speed);
 	return 0;
+}
+
+AVChannelLayout playfile_get_channel_layout_for_file(const char *dirname, const char *filename) {
+    char input_path[MAXPDSTRING];
+    if (!input_path) {
+        fprintf(stderr, "Could not allocate memory for input path\n");
+        goto error;
+    }
+    snprintf(input_path, MAXPDSTRING, "%s/%s", dirname, filename);
+
+    AVFormatContext *format_context = NULL;
+    if (avformat_open_input(&format_context, input_path, NULL, NULL) != 0) {
+        fprintf(stderr, "Could not open input file '%s'\n", input_path);
+        goto error;
+    }
+
+    // Retrieve stream information
+    if (avformat_find_stream_info(format_context, NULL) < 0) {
+        fprintf(stderr, "Could not find stream information\n");
+        goto error;
+    }
+
+    int audio_stream_index = -1;
+    for (unsigned int i = 0; i < format_context->nb_streams; i++) {
+        if (format_context->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+            audio_stream_index = i;
+            break;
+        }
+    }
+
+    if (audio_stream_index == -1) {
+        fprintf(stderr, "Could not find any audio stream in the file\n");
+        goto error;
+    }
+
+    AVCodecParameters *codec_parameters = format_context->streams[audio_stream_index]->codecpar;
+    return codec_parameters->ch_layout;
+
+error:
+    if(format_context) avformat_close_input(&format_context);
+
+    AVChannelLayout l;
+    av_channel_layout_default(&l, 1);
+    return l;
 }
 
 static void *playfile_new(t_symbol *s, int ac, t_atom *av) {
@@ -589,12 +581,52 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av) {
         }
     }
 
-	t_ffplay *x = (t_ffplay *)playfile_base_new(playfile_class, ac, av);
-    int err = libsamplerate_init(&x->r, ac == 0 ? 1 : (int)atom_getfloat(av));
-    libsamplerate_interp(&x->r, x->b.p.nch, 1);
+    t_playfile *x = (t_playfile *)pd_new(playfile_class);
+    x->x_canvas = canvas_getcurrent();
+    x->x_open = x->x_play = 0;
+
+    x->x_pkt = av_packet_alloc();
+    x->x_frm = av_frame_alloc();
+
+    t_playlist *pl = &x->x_plist;
+    pl->size = 0;
+    pl->max = 1;
+    pl->arr = (t_symbol **)getbytes(pl->max * sizeof(t_symbol *));
+
+    int nch = 1;
+    AVChannelLayout layout;
+
+    if(ac && av[0].a_type == A_FLOAT) // Num channels from float arg
+    {
+        nch = atom_getfloat(av);
+        uint64_t mask = 0;
+        for (int ch = 0; ch < nch; ch++) {
+            mask |= (ch + 1);
+        }
+        av_channel_layout_from_mask(&layout, mask);
+    }
+    else if(ac && av[0].a_type == A_SYMBOL) // Num channels from file
+    {
+        t_symbol* dir, *file;
+        playfile_find_file(x, atom_getsymbol(av), &dir, &file);
+        layout = playfile_get_channel_layout_for_file(dir->s_name, file->s_name);
+        nch = layout.nb_channels;
+    }
+
+    int err = libsamplerate_init(&x->x_r, nch);
+    libsamplerate_interp(&x->x_r, nch, 1);
+
+    // channel layout masking details: libavutil/channel_layout.h
+    x->x_layout = layout;
+    x->x_outs = (t_sample **)getbytes(nch * sizeof(t_sample *));
+    while (nch--) {
+        outlet_new(&x->x_obj, &s_signal);
+    }
+
+    x->x_o_meta = outlet_new(&x->x_obj, 0);
 
 	if (err) {
-		player_free(&x->b.p);
+		player_free(x);
 		pd_free((t_pd *)x);
 		return NULL;
 	}
@@ -602,38 +634,41 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av) {
     // File argument
     if(ac > 1 && av[1].a_type == A_SYMBOL)
     {
-        playfile_base_open(&x->b, atom_getsymbol(av + 1));
-        playfile_base_stop(&x->b); // open normally also starts playback
+        playfile_base_open(x, atom_getsymbol(av + 1));
+        playfile_base_stop(x); // open normally also starts playback
     }
 
     // Autostart argument
     if(ac > 2 && av[2].a_type == A_FLOAT)  {
-        playfile_base_start(&x->b, atom_getfloat(av + 2), 0.0f);
+        playfile_base_start(x, atom_getfloat(av + 2), 0.0f);
     }
 
     // Loop argument
     if(ac > 3 && av[3].a_type == A_FLOAT) loop = atom_getfloat(av + 3);
     else loop = 0;
 
-	x->in  = (t_sample *)getbytes(x->b.p.nch * FRAMES * sizeof(t_sample));
-    x->out = (t_sample *)getbytes(x->b.p.nch * FRAMES * sizeof(t_sample));
-    x->speed = 1;
-    x->loop = loop;
+	x->x_in  = (t_sample *)getbytes(x->x_nch * FRAMES * sizeof(t_sample));
+    x->x_out = (t_sample *)getbytes(x->x_nch * FRAMES * sizeof(t_sample));
+    x->x_speed = 1;
+    x->x_loop = loop;
 
 
 	return x;
 }
 
-static void playfile_free(t_ffplay *x) {
-	playfile_base_free(&x->b);
-	src_delete(x->r.state);
-	freebytes(x->in, x->b.p.nch * sizeof(t_sample) * FRAMES);
-	freebytes(x->out, x->b.p.nch * sizeof(t_sample) * FRAMES);
+static void playfile_free(t_playfile *x) {
+	playfile_base_free(x);
+	src_delete(x->x_r.state);
+	freebytes(x->x_in, x->x_nch * sizeof(t_sample) * FRAMES);
+	freebytes(x->x_out, x->x_nch * sizeof(t_sample) * FRAMES);
 }
 
 void setup_play0x2efile_tilde(void) {
 	playfile_base_reset = playfile_reset;
-	playfile_class = class_player(gensym("play.file~"), (t_newmethod)playfile_new, (t_method)playfile_free, sizeof(t_ffplay));
+
+    playfile_class = class_new(gensym("play.file~"), (t_newmethod)playfile_new, (t_method)playfile_free, sizeof(t_playfile), 0, A_GIMME, 0);
+    class_addbang(playfile_class, player_bang);
+    class_addmethod(playfile_class, (t_method)player_play, gensym("play"), A_GIMME, 0);
 
 	class_addfloat(playfile_class, playfile_base_float);
 	class_addmethod(playfile_class, (t_method)playfile_base_open, gensym("open"), A_SYMBOL, 0);
