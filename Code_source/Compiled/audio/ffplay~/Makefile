@@ -29,6 +29,10 @@ define forLinux
 ffmpeg_config = --enable-pic --disable-asm
 endef
 
+define forWindows
+ffmpeg_config = --disable-x86asm
+endef
+
 define forDarwin
   ffmpeg_config = --extra-cflags=-mmacosx-version-min=10.9 --extra-ldflags=-mmacosx-version-min=10.9
 endef
