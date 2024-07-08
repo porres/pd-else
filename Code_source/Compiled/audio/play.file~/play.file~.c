@@ -75,13 +75,6 @@ static void ffplay_speed(t_ffplay *x, t_float f) {
 	x->speed = f;
 }
 
-static void ffplay_interp(t_ffplay *x, t_float f) {
-	int err = libsamplerate_interp(&x->r, x->b.p.nch, f);
-	if (err) {
-		x->b.p.open = x->b.p.play = 0;
-	}
-}
-
 static void ffplay_loop(t_ffplay *x, t_float f) {
     x->loop = f;
 }
@@ -231,6 +224,8 @@ static void *ffplay_new(t_symbol *s, int ac, t_atom *av) {
 
 	t_ffplay *x = (t_ffplay *)ffbase_new(ffplay_class, ac, av);
     int err = libsamplerate_init(&x->r, ac == 0 ? 1 : (int)atom_getfloat(av));
+    libsamplerate_interp(&x->r, x->b.p.nch, 1);
+
 	if (err) {
 		player_free(&x->b.p);
 		pd_free((t_pd *)x);
@@ -281,8 +276,6 @@ void ffplay_tilde_setup(void) {
 	, gensym("seek"), A_FLOAT, 0);
 	class_addmethod(ffplay_class, (t_method)ffplay_speed
 	, gensym("speed"), A_FLOAT, 0);
-	class_addmethod(ffplay_class, (t_method)ffplay_interp
-	, gensym("interp"), A_FLOAT, 0);
 
     class_addmethod(ffplay_class, (t_method)ffplay_loop
     , gensym("loop"), A_FLOAT, 0);
