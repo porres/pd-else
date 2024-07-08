@@ -218,7 +218,7 @@ static void *ffplay_new(t_symbol *s, int ac, t_atom *av) {
 
 	(void)s;
 	t_ffplay *x = (t_ffplay *)ffbase_new(ffplay_class, ac, av);
-	int err = libsamplerate_init(&x->r, ac);
+    int err = libsamplerate_init(&x->r, ac == 0 ? 1 : ac);
 	if (err) {
 		player_free(&x->b.p);
 		pd_free((t_pd *)x);
