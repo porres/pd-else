@@ -30,7 +30,8 @@ ifeq ($(extension),d_arm64)
 endif
 
 define forLinux
-ffmpeg_config = --enable-pic
+# ASM causes static linker issues on Linux
+ffmpeg_config = --enable-pic --disable-asm
 endef
 
 define forDarwin
