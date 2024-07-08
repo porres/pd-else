@@ -83,8 +83,8 @@ jobs:
       - name: Build ffplay~
         run: |
           cd ./Code_source/Compiled/audio/ffplay~
-          make ffmpeg
-          make extension=l_amd64
+          make PDINCLUDEDIR=./pure-data/src/ ffmpeg
+          make PDINCLUDEDIR=./pure-data/src/ extension=l_amd64
 
       - name: Build pd-else
         run: |
