@@ -4,8 +4,6 @@
 #include <m_pd.h>
 /* ---------------------- player ------------------------ */
 
-static t_symbol *s_open;
-static t_symbol *s_play;
 static t_atom(*fn_meta)(void *, t_symbol *);
 
 typedef struct _vinlet {
@@ -93,19 +91,6 @@ static void player_info_custom(t_player *x, int ac, t_atom *av) {
     endpost();
 }
 
-static void player_send(t_player *x, t_symbol *s) {
-    if (!x->open) {
-        return post("No file opened.");
-    }
-    t_atom meta = fn_meta(x, s);
-    outlet_anything(x->o_meta, s, 1, &meta);
-}
-
-static void player_anything(t_player *x, t_symbol *s, int ac, t_atom *av) {
-    (void)ac;
-    (void)av;
-    player_send(x, s);
-}
 
 static void player_play(t_player *x, t_symbol *s, int ac, t_atom *av) {
     (void)s;
@@ -115,8 +100,6 @@ static void player_play(t_player *x, t_symbol *s, int ac, t_atom *av) {
     if (pause_state(&x->play, ac, av)) {
         return;
     }
-    t_atom play = { .a_type = A_FLOAT, .a_w = {.w_float = x->play} };
-    outlet_anything(x->o_meta, s_play, 1, &play);
 }
 
 static void player_bang(t_player *x) {
@@ -141,13 +124,8 @@ static void player_free(t_player *x) {
 
 static t_class *class_player
 (t_symbol *s, t_newmethod newm, t_method free, size_t size) {
-    s_open = gensym("open");
-    s_play = gensym("play");
-
     t_class *cls = class_new(s, newm, free, size, 0, A_GIMME, 0);
     class_addbang(cls, player_bang);
-    class_addanything(cls, player_anything);
-    class_addmethod(cls, (t_method)player_send, gensym("send"), A_SYMBOL, 0);
     class_addmethod(cls, (t_method)player_play, gensym("play"), A_GIMME, 0);
     return cls;
 }
@@ -238,8 +216,6 @@ static inline err_t playlist_m3u(t_playlist *pl, t_symbol *s) {
 }
 
 /* ---------------------- FFmpeg player (base class) ------------------------ */
-static t_symbol *s_done;
-static t_symbol *s_pos;
 static err_t (*ffbase_reset)(void *);
 
 typedef struct _avstream {
@@ -250,13 +226,13 @@ typedef struct _avstream {
 typedef struct _ffbase {
 	t_player p;
 	t_avstream a;   /* audio stream */
-	t_avstream sub; /* subtitle stream */
 	AVPacket *pkt;
 	AVFrame *frm;
 	SwrContext *swr;
 	AVFormatContext *ic;
 	AVChannelLayout layout;
 	t_playlist plist;
+    t_canvas* canvas;
 } t_ffbase;
 
 static void ffbase_seek(t_ffbase *x, t_float f) {
@@ -275,16 +251,6 @@ static void ffbase_seek(t_ffbase *x, t_float f) {
 	x->a.ctx->pkt_timebase = x->ic->streams[x->a.idx]->time_base;
 	const AVCodec *codec = avcodec_find_decoder(x->a.ctx->codec_id);
 	avcodec_open2(x->a.ctx, codec, NULL);
-}
-
-static void ffbase_position(t_ffbase *x) {
-	if (!x->p.open) {
-		return;
-	}
-	AVRational ratio = x->ic->streams[x->a.idx]->time_base;
-	t_float f = x->frm->pts * ratio.num * 1000 / (t_float)ratio.den;
-	t_atom pos = { .a_type = A_FLOAT, .a_w = {.w_float = f} };
-	outlet_anything(x->p.o_meta, s_pos, 1, &pos);
 }
 
 static inline err_t ffbase_context(t_ffbase *x, t_avstream *s) {
@@ -351,17 +317,6 @@ static void ffbase_audio(t_ffbase *x, t_float f) {
 	}
 }
 
-static void ffbase_subtitle(t_ffbase *x, t_float f) {
-	if (f < 0) {
-		x->sub.idx = -1;
-		return;
-	}
-	err_t err_msg = ffbase_stream(x, &x->sub, f, AVMEDIA_TYPE_SUBTITLE);
-	if (err_msg) {
-		logpost(x, PD_DEBUG, "ffbase_subtitle: %s.", err_msg);
-	}
-}
-
 static err_t ffbase_load(t_ffbase *x, int index) {
 	char url[MAXPDSTRING];
 	const char *fname = x->plist.arr[index]->s_name;
@@ -371,10 +326,11 @@ static err_t ffbase_load(t_ffbase *x, int index) {
 		strcpy(url, x->plist.dir->s_name);
 		strcat(url, fname);
 	}
-
+    
 	avformat_close_input(&x->ic);
 	x->ic = avformat_alloc_context();
-	if (avformat_open_input(&x->ic, url, NULL, NULL) != 0) {
+    int err = 0;
+	if ((err = avformat_open_input(&x->ic, url, NULL, NULL))!=0) {
 		return "Failed to open input stream";
 	}
 	if (avformat_find_stream_info(x->ic, NULL) < 0) {
@@ -401,32 +357,48 @@ static err_t ffbase_load(t_ffbase *x, int index) {
 	return ffbase_reset(x);
 }
 
+static void ffbase_start(t_ffbase *x, t_float f, t_float ms) {
+    int track = f;
+    err_t err_msg = "";
+    if (0 < track && track <= x->plist.size) {
+        if ( (err_msg = ffbase_load(x, track - 1)) ) {
+            pd_error(x, "ffbase_start: %s.", err_msg);
+        } else if (ms > 0) {
+            ffbase_seek(x, ms);
+        }
+        x->p.open = !err_msg;
+    } else {
+        ffbase_seek(x, 0);
+    }
+    x->p.play = !err_msg;
+}
+
 static void ffbase_open(t_ffbase *x, t_symbol *s) {
 	x->p.play = 0;
 	err_t err_msg = 0;
+    
 	const char *sym = s->s_name;
 	if (strlen(sym) >= MAXPDSTRING) {
 		err_msg = "File path is too long";
 	} else {
+        const char *filename = s->s_name;
+        const char *dirname = canvas_getdir(x->canvas)->s_name;
+        
+        char dir[MAXPDSTRING];
+        char* file;
+        open_via_path(dirname, filename, "", dir, &file, MAXPDSTRING-1, 0);
+      
+        t_symbol* filesym = gensym(file);
+        strcat(dir, "/");
 		t_playlist *pl = &x->plist;
-		char dir[MAXPDSTRING];
-		const char *fname = strrchr(sym, '/');
-		if (fname) {
-			int len = ++fname - sym;
-			strncpy(dir, sym, len);
-			dir[len] = '\0';
-		} else {
-			fname = sym;
-			strcpy(dir, "./");
-		}
 		pl->dir = gensym(dir);
 
-		const char *ext = strrchr(sym, '.');
+		const char *ext = strrchr(file, '.');
 		if (ext && !strcmp(ext + 1, "m3u")) {
-			err_msg = playlist_m3u(pl, s);
+			err_msg = playlist_m3u(pl, filesym);
 		} else {
 			pl->size = 1;
-			pl->arr[0] = gensym(fname);
+			pl->arr[0] = filesym;
 		}
 	}
 
@@ -434,8 +406,8 @@ static void ffbase_open(t_ffbase *x, t_symbol *s) {
 		pd_error(x, "ffbase_open: %s.", err_msg);
 	}
 	x->p.open = !err_msg;
-	t_atom open = { .a_type = A_FLOAT, .a_w = {.w_float = x->p.open} };
-	outlet_anything(x->p.o_meta, s_open, 1, &open);
+    
+    ffbase_start(x, 1.0f, 0.0f);
 }
 
 static t_symbol *dict[11];
@@ -506,24 +478,6 @@ static void ffbase_print(t_ffbase *x, t_symbol *s, int ac, t_atom *av) {
 	}
 }
 
-static void ffbase_start(t_ffbase *x, t_float f, t_float ms) {
-	int track = f;
-	err_t err_msg = "";
-	if (0 < track && track <= x->plist.size) {
-		if ( (err_msg = ffbase_load(x, track - 1)) ) {
-			pd_error(x, "ffbase_start: %s.", err_msg);
-		} else if (ms > 0) {
-			ffbase_seek(x, ms);
-		}
-		x->p.open = !err_msg;
-	} else {
-		ffbase_seek(x, 0);
-	}
-	x->p.play = !err_msg;
-	t_atom play = { .a_type = A_FLOAT, .a_w = {.w_float = x->p.play} };
-	outlet_anything(x->p.o_meta, s_play, 1, &play);
-}
-
 static void ffbase_list(t_ffbase *x, t_symbol *s, int ac, t_atom *av) {
 	(void)s;
 	ffbase_start(x, atom_getfloatarg(0, ac, av), atom_getfloatarg(1, ac, av));
@@ -539,23 +493,13 @@ static void ffbase_stop(t_ffbase *x) {
 }
 
 static t_ffbase *ffbase_new(t_class *cl, int ac, t_atom *av) {
-	t_atom defarg[2] = {
-	  { .a_type = A_FLOAT, .a_w = {.w_float = 1} }
-	, { .a_type = A_FLOAT, .a_w = {.w_float = 2} }
-	};
-	if (!ac) {
-		ac = 2;
-		av = defarg;
-	}
-
+    int nch = ac ? atom_getfloat(av) : 1;
+    
 	// channel layout masking details: libavutil/channel_layout.h
 	uint64_t mask = 0;
 	AVChannelLayout layout;
-	for (int i = ac; i--;) {
-		int ch = atom_getfloatarg(i, ac, av);
-		if (ch > 0) {
-			mask |= 1 << (ch - 1);
-		}
+    for (int ch = 0; ch < nch; ch++) {
+        mask |= (ch + 1);
 	}
 	int err = av_channel_layout_from_mask(&layout, mask);
 	if (err) {
@@ -563,16 +507,17 @@ static t_ffbase *ffbase_new(t_class *cl, int ac, t_atom *av) {
 		return NULL;
 	}
 
-	t_ffbase *x = (t_ffbase *)player_new(cl, ac);
+	t_ffbase *x = (t_ffbase *)player_new(cl, nch);
 	x->pkt = av_packet_alloc();
 	x->frm = av_frame_alloc();
 	x->layout = layout;
-	x->sub.idx = -1;
-
+    x->canvas = canvas_getcurrent();
+    
 	t_playlist *pl = &x->plist;
 	pl->size = 0;
 	pl->max = 1;
 	pl->arr = (t_symbol **)getbytes(pl->max * sizeof(t_symbol *));
+
 	return x;
 }
 
@@ -603,18 +548,14 @@ static t_class *class_ffbase
 	dict[9] = gensym("date");
 	dict[10] = gensym("bpm");
 
-	s_done = gensym("done");
-	s_pos = gensym("pos");
 	fn_meta = ffbase_meta;
 
 	t_class *cls = class_player(s, newm, free, size);
 	class_addfloat(cls, ffbase_float);
 	class_addlist(cls, ffbase_list);
 	class_addmethod(cls, (t_method)ffbase_audio, gensym("audio"), A_FLOAT, 0);
-	class_addmethod(cls, (t_method)ffbase_subtitle, gensym("subtitle"), A_FLOAT, 0);
 	class_addmethod(cls, (t_method)ffbase_print, gensym("print"), A_GIMME, 0);
 	class_addmethod(cls, (t_method)ffbase_open, gensym("open"), A_SYMBOL, 0);
 	class_addmethod(cls, (t_method)ffbase_stop, gensym("stop"), A_NULL);
-	class_addmethod(cls, (t_method)ffbase_position, gensym("pos"), A_NULL);
 	return cls;
 }

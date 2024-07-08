@@ -61,7 +61,9 @@ typedef struct _ffplay {
 	t_libsamplerate r;
 	t_sample *in;
 	t_sample *out;
-	t_vinlet speed; /* rate of playback */
+	t_float speed;
+    int loop;
+    t_symbol* play_next;
 } t_ffplay;
 
 static void ffplay_seek(t_ffplay *x, t_float f) {
@@ -70,7 +72,7 @@ static void ffplay_seek(t_ffplay *x, t_float f) {
 }
 
 static void ffplay_speed(t_ffplay *x, t_float f) {
-	*x->speed.p = f;
+	x->speed = f;
 }
 
 static void ffplay_interp(t_ffplay *x, t_float f) {
@@ -78,6 +80,14 @@ static void ffplay_interp(t_ffplay *x, t_float f) {
 	if (err) {
 		x->b.p.open = x->b.p.play = 0;
 	}
+}
+
+static void ffplay_loop(t_ffplay *x, t_float f) {
+    x->loop = f;
+}
+
+static void ffplay_set(t_ffplay *x, t_symbol* s) {
+    x->play_next = s;
 }
 
 static t_int *ffplay_perform(t_int *w) {
@@ -92,10 +102,9 @@ static t_int *ffplay_perform(t_int *w) {
 
 	int n = (int)(w[2]);
 	if (p->play) {
-		t_sample *in2 = (t_sample *)(w[3]);
 		t_libsamplerate *r = &x->r;
 		SRC_DATA *data = &r->data;
-		for (; n--; in2++) {
+		while (n--) {
 			if (data->output_frames_gen > 0) {
 				perform:
 				for (int i = nch; i--;) {
@@ -105,8 +114,8 @@ static t_int *ffplay_perform(t_int *w) {
 				data->output_frames_gen--;
 				continue;
 			}
-			x->speed.v = *in2;
-			libsamplerate_speed(r, *in2);
+            
+			libsamplerate_speed(r, x->speed);
 
 			process:
 			if (data->input_frames > 0) {
@@ -140,12 +149,6 @@ static t_int *ffplay_perform(t_int *w) {
 					, (const uint8_t **)b->frm->extended_data, b->frm->nb_samples);
 					av_packet_unref(b->pkt);
 					goto process;
-				} else if (b->pkt->stream_index == b->sub.idx) {
-					int got;
-					AVSubtitle sub;
-					if (avcodec_decode_subtitle2(b->sub.ctx, &sub, &got, b->pkt) >= 0 && got) {
-						post("\n%s", b->pkt->data);
-					}
 				}
 			}
 
@@ -153,11 +156,16 @@ static t_int *ffplay_perform(t_int *w) {
 			if (p->play) {
 				p->play = 0;
 				n++; // don't iterate in case there's another track
-				outlet_anything(p->o_meta, s_done, 0, 0);
-			} else {
+				outlet_bang(p->o_meta);
+			} else if(x->loop) {
+                ffbase_start(&x->b, 1.0f, 0.0f);
+            } else {
+                if(x->play_next)
+                {
+                    ffbase_open(&x->b, x->play_next);
+                    x->play_next = NULL;
+                }
 				ffplay_seek(x, 0);
-				t_atom play = { .a_type = A_FLOAT, .a_w = {.w_float = p->play} };
-				outlet_anything(p->o_meta, s_play, 1, &play);
 				goto silence;
 			}
 		}
@@ -173,7 +181,7 @@ static t_int *ffplay_perform(t_int *w) {
 static void ffplay_dsp(t_ffplay *x, t_signal **sp) {
 	t_player *p = &x->b.p;
 	for (int i = p->nch; i--;) {
-		p->outs[i] = sp[i + 1]->s_vec;
+		p->outs[i] = sp[i]->s_vec;
 	}
 	dsp_add(ffplay_perform, 3, x, sp[0]->s_n, sp[0]->s_vec);
 }
@@ -196,38 +204,54 @@ static err_t ffplay_reset(void *y) {
 	}
 	libsamplerate_reset(&x->r);
 	x->r.ratio = (double)x->b.a.ctx->sample_rate / sys_getsr();
-	libsamplerate_speed(&x->r, x->speed.v);
+	libsamplerate_speed(&x->r, x->speed);
 	return 0;
 }
 
 static void *ffplay_new(t_symbol *s, int ac, t_atom *av) {
-    struct _inlet {
-        t_pd i_pd;
-        struct _inlet *i_next;
-        t_object *i_owner;
-        t_pd *i_dest;
-        t_symbol *i_symfrom;
-        union {
-            t_symbol *iu_symto;
-            t_gpointer *iu_pointerslot;
-            t_float *iu_floatslot;
-            t_symbol **iu_symslot;
-            t_float iu_floatsignalvalue;
-        };
-    };
-
-	(void)s;
+    int loop = 0;
+    for(int i = 0; i < ac; i++){
+        if(av[i].a_type == A_SYMBOL){ // if name not passed so far, count arg as array name
+            s = atom_getsymbolarg(i, ac, av);
+            if(s == gensym("-loop")){
+                loop = 1;
+                for(int j = i; j < ac - 1; j++) {
+                    av[j] = av[j + 1];
+                }
+            }
+        }
+    }
+    
 	t_ffplay *x = (t_ffplay *)ffbase_new(ffplay_class, ac, av);
-    int err = libsamplerate_init(&x->r, ac == 0 ? 1 : ac);
+    int err = libsamplerate_init(&x->r, ac == 0 ? 1 : (int)atom_getfloat(av));
 	if (err) {
 		player_free(&x->b.p);
 		pd_free((t_pd *)x);
 		return NULL;
 	}
-	t_inlet *in2 = signalinlet_new(&x->b.p.obj, (x->speed.v = 1.0));
-	x->speed.p = &in2->iu_floatsignalvalue;
+
+    // File argument
+    if(ac > 1 && av[1].a_type == A_SYMBOL)
+    {
+        ffbase_open(&x->b, atom_getsymbol(av + 1));
+        ffbase_stop(&x->b); // open normally also starts playback
+    }
+    
+    // Autostart argument
+    if(ac > 2 && av[2].a_type == A_FLOAT)  {
+        ffbase_start(&x->b, atom_getfloat(av + 2), 0.0f);
+    }
+    
+    // Loop argument
+    if(ac > 3 && av[3].a_type == A_FLOAT) loop = atom_getfloat(av + 3);
+    else loop = 0;
+    
 	x->in  = (t_sample *)getbytes(ac * FRAMES * sizeof(t_sample));
-	x->out = (t_sample *)getbytes(ac * FRAMES * sizeof(t_sample));
+    x->out = (t_sample *)getbytes(ac * FRAMES * sizeof(t_sample));
+    x->speed = 1;
+    x->loop = loop;
+    
+    
 	return x;
 }
 
@@ -252,4 +276,9 @@ void ffplay_tilde_setup(void) {
 	, gensym("speed"), A_FLOAT, 0);
 	class_addmethod(ffplay_class, (t_method)ffplay_interp
 	, gensym("interp"), A_FLOAT, 0);
+    
+    class_addmethod(ffplay_class, (t_method)ffplay_loop
+    , gensym("loop"), A_FLOAT, 0);
+    
+    class_addmethod(ffplay_class, (t_method)ffplay_set, gensym("set"), A_SYMBOL, 0);
 }
