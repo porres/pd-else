@@ -16,7 +16,7 @@ LIBSAMPLERATE=../../../shared/libsamplerate
 
 play.file~.class.sources := play.file~.c $(LIBSAMPLERATE)/samplerate.c $(LIBSAMPLERATE)/src_linear.c $(LIBSAMPLERATE)/src_sinc.c $(LIBSAMPLERATE)/src_zoh.c
 
-ldlibs = -L$(FFMPEG_DIR)/libavutil -L$(FFMPEG_DIR)/libavcodec -L$(FFMPEG_DIR)/libavformat -L$(FFMPEG_DIR)/libswresample -lavutil -lavcodec -lavformat -lswresample
+ldlibs = -L$(FFMPEG_DIR)/libavutil -L$(FFMPEG_DIR)/libavcodec -L$(FFMPEG_DIR)/libavformat -L$(FFMPEG_DIR)/libswresample -lavcodec -lavformat -lswresample -lavutil -lz -liconv
 
 # Change the arch to arm64 if the extension is d_arm64
 
