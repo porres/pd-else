@@ -618,6 +618,7 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av) {
 
     // channel layout masking details: libavutil/channel_layout.h
     x->x_layout = layout;
+    x->x_nch = nch;
     x->x_outs = (t_sample **)getbytes(nch * sizeof(t_sample *));
     while (nch--) {
         outlet_new(&x->x_obj, &s_signal);
@@ -630,28 +631,27 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av) {
 		pd_free((t_pd *)x);
 		return NULL;
 	}
+    int shift = ac > 0 && av[0].a_type == A_SYMBOL;
 
-    // File argument
-    if(ac > 1 && av[1].a_type == A_SYMBOL)
+    if(ac > 1 - shift && av[1 - shift].a_type == A_SYMBOL)
     {
-        playfile_base_open(x, atom_getsymbol(av + 1));
+        playfile_base_open(x, atom_getsymbol(av + 1 - shift));
         playfile_base_stop(x); // open normally also starts playback
     }
 
     // Autostart argument
-    if(ac > 2 && av[2].a_type == A_FLOAT)  {
-        playfile_base_start(x, atom_getfloat(av + 2), 0.0f);
+    if(ac > 2 - shift && av[2 - shift].a_type == A_FLOAT)  {
+        playfile_base_start(x, atom_getfloat(av + 2 - shift), 0.0f);
     }
 
     // Loop argument
-    if(ac > 3 && av[3].a_type == A_FLOAT) loop = atom_getfloat(av + 3);
+    if(ac > 3 - shift && av[3 - shift].a_type == A_FLOAT) loop = atom_getfloat(av + 3 - shift);
     else loop = 0;
 
 	x->x_in  = (t_sample *)getbytes(x->x_nch * FRAMES * sizeof(t_sample));
     x->x_out = (t_sample *)getbytes(x->x_nch * FRAMES * sizeof(t_sample));
     x->x_speed = 1;
     x->x_loop = loop;
-
 
 	return x;
 }
