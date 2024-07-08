@@ -21,9 +21,18 @@ ffplay~.class.sources := ffplay~.c $(LIBSAMPLERATE)/samplerate.c $(LIBSAMPLERATE
 ldlibs = -L$(FFMPEG_DIR)/libavutil -L$(FFMPEG_DIR)/libavcodec -L$(FFMPEG_DIR)/libavformat -L$(FFMPEG_DIR)/libswresample -lavutil -lavcodec -lavformat -lswresample
 
 # Change the arch to arm64 if the extension is d_arm64
+
+#ffmpeg_cflags = -I./libs/include
+#ffmpeg_ldflags = -L./libs/lib
+
 ifeq ($(extension),d_arm64)
   override arch := arm64
 endif
+
+define forDarwin
+  ffmpeg_cflags = -mmacosx-version-min=10.9
+  ffmpeg_ldflags = -mmacosx-version-min=10.9
+endef
 
 # Makefile based on pd-lib-builder by Katja Vetter, see: https://github.com/pure-data/pd-lib-builder
 
@@ -38,8 +47,8 @@ ffmpeg: $(FFMPEG_DIR)
 
 $(FFMPEG_DIR): $(FFMPEG_TAR)
 	tar xjf $(FFMPEG_TAR)
-	cd $(FFMPEG_DIR) && ./configure --enable-static --disable-shared --disable-debug --disable-doc --disable-programs --disable-avdevice --disable-postproc --disable-network --disable-everything --enable-avcodec --enable-avformat --enable-avutil --enable-swscale --enable-swresample --extra-cflags=-mmacosx-version-min=10.9 --extra-ldflags=-mmacosx-version-min=10.9
-	cd $(FFMPEG_DIR) && make
+#	cd libs && ./compile.sh
+	cd $(FFMPEG_DIR) && ./configure --enable-static --disable-shared --disable-debug --disable-doc --disable-programs --disable-avdevice --disable-postproc --disable-network --disable-everything --enable-avcodec --enable-avformat --enable-avutil --enable-swscale --enable-swresample --extra-cflags="$(ffmpeg_cflags)" --extra-ldflags="$(ffmpeg_ldflags)"
 	cd $(FFMPEG_DIR) && make
 	rm -f $(FFMPEG_TAR)
 
