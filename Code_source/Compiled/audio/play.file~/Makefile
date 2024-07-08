@@ -16,7 +16,7 @@ LIBSAMPLERATE=../../../shared/libsamplerate
 
 play.file~.class.sources := play.file~.c $(LIBSAMPLERATE)/samplerate.c $(LIBSAMPLERATE)/src_linear.c $(LIBSAMPLERATE)/src_sinc.c $(LIBSAMPLERATE)/src_zoh.c
 
-ldlibs = -L$(FFMPEG_DIR)/libavutil -L$(FFMPEG_DIR)/libavcodec -L$(FFMPEG_DIR)/libavformat -L$(FFMPEG_DIR)/libswresample -lavformat -lavcodec -lswresample -lavutil -lz -lbcrypt
+ldlibs = -L$(FFMPEG_DIR)/libavutil -L$(FFMPEG_DIR)/libavcodec -L$(FFMPEG_DIR)/libavformat -L$(FFMPEG_DIR)/libswresample -lavformat -lavcodec -lswresample -lavutil -lz
 
 # Change the arch to arm64 if the extension is d_arm64
 
@@ -31,6 +31,7 @@ endef
 
 define forWindows
 ffmpeg_config = --disable-x86asm
+ldlibs += -lbcrypt
 endef
 
 define forDarwin
