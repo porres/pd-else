@@ -615,8 +615,8 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av) {
     if(ac > 3 && av[3].a_type == A_FLOAT) loop = atom_getfloat(av + 3);
     else loop = 0;
 
-	x->in  = (t_sample *)getbytes(ac * FRAMES * sizeof(t_sample));
-    x->out = (t_sample *)getbytes(ac * FRAMES * sizeof(t_sample));
+	x->in  = (t_sample *)getbytes(x->b.p.nch * FRAMES * sizeof(t_sample));
+    x->out = (t_sample *)getbytes(x->b.p.nch * FRAMES * sizeof(t_sample));
     x->speed = 1;
     x->loop = loop;
 
