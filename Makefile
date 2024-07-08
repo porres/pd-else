@@ -463,12 +463,12 @@ sfz-install:
 sfz-clean:
 	$(MAKE) -C Code_source/Compiled/audio/sfz~ clean
 
-# and for ffplay
+# and for play.file
 play.file:
 	$(MAKE) -C Code_source/Compiled/audio/play.file~ system=$(system) extension=$(extension) both
 
 play.file-install:
-	$(MAKE) -C Code_source/Compiled/audio/ffplay~ install extension=$(extension) installpath="$(abspath $(PDLIBDIR))/else"
+	$(MAKE) -C Code_source/Compiled/audio/play.file~ install extension=$(extension) installpath="$(abspath $(PDLIBDIR))/else"
 
 play.file-clean:
 	$(MAKE) -C Code_source/Compiled/audio/play.file~ clean
