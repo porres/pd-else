@@ -16,7 +16,7 @@ LIBSAMPLERATE=../../../shared/libsamplerate
 
 play.file~.class.sources := play.file~.c $(LIBSAMPLERATE)/samplerate.c $(LIBSAMPLERATE)/src_linear.c $(LIBSAMPLERATE)/src_sinc.c $(LIBSAMPLERATE)/src_zoh.c
 
-ldlibs = -L$(FFMPEG_DIR)/libavutil -L$(FFMPEG_DIR)/libavcodec -L$(FFMPEG_DIR)/libavformat -L$(FFMPEG_DIR)/libswresample -lavcodec -lavformat -lswresample -lavutil -lz -liconv
+ldlibs = -L$(FFMPEG_DIR)/libavutil -L$(FFMPEG_DIR)/libavcodec -L$(FFMPEG_DIR)/libavformat -L$(FFMPEG_DIR)/libswresample -lavformat -lavcodec -lswresample -lavutil -lz
 
 # Change the arch to arm64 if the extension is d_arm64
 
@@ -31,6 +31,7 @@ endef
 
 define forWindows
 ffmpeg_config = --disable-x86asm
+ldlibs += -lbcrypt
 endef
 
 define forDarwin
@@ -49,7 +50,7 @@ ffmpeg: $(FFMPEG_DIR)
 
 $(FFMPEG_DIR):
 	tar xjf $(FFMPEG_TAR)
-	cd $(FFMPEG_DIR) && ./configure --enable-static --disable-shared --enable-optimizations --disable-debug --disable-doc --disable-programs --disable-avdevice --disable-postproc --disable-network --disable-everything --enable-avcodec --enable-avformat --enable-avutil --enable-swscale --enable-swresample --enable-decoder=mp3*,pcm*,aac*,flac,vorbis,opus --enable-parser=mpegaudio,aac --enable-demuxer=mp3,wav,aiff,flac,aac,ogg,pcm* --enable-filter=aresample --enable-protocol=file $(ffmpeg_config)
+	cd $(FFMPEG_DIR) && ./configure --enable-static --disable-shared --enable-optimizations --disable-debug --disable-doc --disable-programs --disable-iconv --disable-avdevice --disable-postproc --disable-network --disable-everything --enable-avcodec --enable-avformat --enable-avutil --enable-swscale --enable-swresample --enable-decoder=mp3*,pcm*,aac*,flac,vorbis,opus --enable-parser=mpegaudio,aac --enable-demuxer=mp3,wav,aiff,flac,aac,ogg,pcm* --enable-filter=aresample --enable-protocol=file $(ffmpeg_config)
 	cd $(FFMPEG_DIR) && make
 
 clean:
