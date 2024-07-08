@@ -203,7 +203,7 @@ jobs:
           cp -r ./out/else/*.* ./else-Windows
           cp -r ./Code_source/Compiled/audio/sfont~/out/sfont~/*.* ./else-Windows
           cp -r ./Code_source/Compiled/audio/plaits~/out/plaits~/*.* ./else-Windows
-          cp ./play.file~.m_amd64 ./else-Windows
+          cp ./Code_source/Compiled/audio/play.file~/play.file~.m_amd64 ./else-Windows
 
       - name: Upload Zip
         uses: actions/upload-artifact@v3
