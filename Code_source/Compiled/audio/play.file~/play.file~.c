@@ -293,10 +293,10 @@ static void playfile_open(t_playfile *x, t_symbol *s, int ac, t_atom *av){
     }
 }
 
-static void playfile_click(t_loadbanger *x, t_floatarg xpos,
+static void playfile_click(t_playfile *x, t_floatarg xpos,
 t_floatarg ypos, t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
     xpos = ypos = shift = ctrl = alt = 0;
-    playfile_open(x, NULL, 0, NULL)
+    playfile_open(x, NULL, 0, NULL);
 }
 
 /*
