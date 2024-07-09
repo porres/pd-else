@@ -6,6 +6,8 @@
 #include <samplerate.h>
 #include <m_pd.h>
 
+#define FRAMES 0x10
+
 typedef struct _avstream{
     AVCodecContext *ctx;
     int idx;  // stream index
@@ -14,71 +16,38 @@ typedef struct _avstream{
 typedef struct _playlist{
     t_symbol **arr;     // m3u list of tracks
     t_symbol *dir;      // starting directory
-    int size;           // size of the list
-    int max;            // size of the memory allocation
+    int       size;     // size of the list
+    int       max;      // size of the memory allocation
 }t_playlist;
 
 typedef struct _libsamplerate{
-    SRC_STATE *state;
-    SRC_DATA data;
-    double ratio;       // resampling ratio
+    SRC_STATE  *state;
+    SRC_DATA    data;
+    double      ratio;  // resampling ratio
 }t_libsamplerate;
 
 typedef struct _playfile{
-    t_object x_obj;
-    t_sample **x_outs;
-    unsigned char x_play; // play/pause toggle
-    unsigned char x_open; // true when a file has been successfully opened
-    unsigned x_nch;       // number of channels
-    t_outlet *x_o_meta;   // outputs bang when finished
-    t_avstream x_a;       // audio stream
-    AVPacket *x_pkt;
-    AVFrame *x_frm;
-    SwrContext *x_swr;
+    t_object        x_obj;
+    t_sample      **x_outs;
+    unsigned char   x_play;     // play/pause toggle
+    unsigned char   x_open;     // true when a file has been successfully opened
+    unsigned        x_nch;      // number of channels
+    t_outlet       *x_o_meta;   // outputs bang when finished
+    t_avstream      x_a;        // audio stream
+    AVPacket       *x_pkt;
+    AVFrame        *x_frm;
+    SwrContext     *x_swr;
     AVFormatContext *x_ic;
     AVChannelLayout x_layout;
-    t_playlist x_plist;
-    t_canvas* x_canvas;
+    t_playlist      x_plist;
+    t_canvas       *x_canvas;
     t_libsamplerate x_r;
-    t_sample *x_in;
-    t_sample *x_out;
-    t_float x_speed;
-    int x_loop;
-    t_symbol* x_play_next;
+    t_sample       *x_in;
+    t_sample       *x_out;
+    t_float         x_speed;
+    int             x_loop;
+    t_symbol       *x_play_next;
 }t_playfile;
-
-// ---------------------- player ------------------------
-
-// @return 1 if the current state is the same as the one being requested
-static inline int pause_state(unsigned char *pause, int ac, t_atom *av){
-    if(ac && av->a_type == A_FLOAT){
-        int state = (av->a_w.w_float != 0);
-        if(*pause == state){
-            return 1;
-        }
-        else
-            *pause = state;
-    }
-    else
-        *pause = !*pause;
-    return(0);
-}
-
-static void player_play(t_playfile *x, t_symbol *s, int ac, t_atom *av){
-    (void)s;
-    if(!x->x_open)
-        return post("No file opened.");
-    if(pause_state(x, ac, av))
-        return;
-}
-
-static void player_bang(t_playfile *x){
-    player_play(x, 0, 0, 0);
-}
-
-static void player_free(t_playfile *x){
-    freebytes(x->x_outs, x->x_nch * sizeof(t_sample *));
-}
 
 // ---------------------- playlist ------------------------
 
@@ -258,7 +227,7 @@ static void playfile_find_file(t_playfile *x, t_symbol* file, t_symbol** dir_out
     *dir_out = gensym(dirout);
 }
 
-static void playfile_base_open(t_playfile *x, t_symbol *s){
+static void playfile_open(t_playfile *x, t_symbol *s){
 	x->x_play = 0;
 	err_t err_msg = 0;
 	const char *sym = s->s_name;
@@ -279,33 +248,56 @@ static void playfile_base_open(t_playfile *x, t_symbol *s){
 		}
 	}
 	if(err_msg || (err_msg = playfile_base_load(x, 0)))
-		pd_error(x, "playfile_base_open: %s.", err_msg);
+		pd_error(x, "playfile_open: %s.", err_msg);
 	x->x_open = !err_msg;
     playfile_base_start(x, 1.0f, 0.0f);
 }
 
-static void playfile_base_float(t_playfile *x, t_float f){
+/*
+ // return '1' if the current state is the same as the one being requested
+ static inline int pause_state(unsigned char *pause, int ac, t_atom *av){
+     if(ac && av->a_type == A_FLOAT){
+         int state = (av->a_w.w_float != 0);
+         if(*pause == state){
+             return(1);
+         }
+         else
+             *pause = state;
+     }
+     else
+         *pause = !*pause;
+     return(0);
+ }
+ 
+ static void player_play(t_playfile *x, t_symbol *s, int ac, t_atom *av){
+    (void)s;
+    if(!x->x_open)
+        return post("No file opened.");
+    if(pause_state(x, ac, av))
+        return;
+}
+
+static void playfile_bang(t_playfile *x){
+    player_play(x, 0, 0, 0);
+}
+ 
+static void playfile_stop(t_playfile *x){
+     playfile_base_start(x, 0, 0);
+     x->x_frm->pts = 0; // reset internal position
+ }
+ */
+
+static void playfile_float(t_playfile *x, t_float f){
 	playfile_base_start(x, f, 0);
 }
 
-static void playfile_base_stop(t_playfile *x){
-	playfile_base_start(x, 0, 0);
-	x->x_frm->pts = 0; // reset internal position
+static void playfile_bang(t_playfile *x){
+    playfile_float(x, 1);
 }
 
-static void playfile_base_free(t_playfile *x){
-	av_channel_layout_uninit(&x->x_layout);
-	avcodec_free_context(&x->x_a.ctx);
-	avformat_close_input(&x->x_ic);
-	av_packet_free(&x->x_pkt);
-	av_frame_free(&x->x_frm);
-	swr_free(&x->x_swr);
-	t_playlist *pl = &x->x_plist;
-	freebytes(pl->arr, pl->max * sizeof(t_symbol *));
-	player_free(x);
+static void playfile_stop(t_playfile *x){
+    playfile_float(x, 0);
 }
-
-#define FRAMES 0x10
 
 // ------------------------- libsamplerate helpers -------------------------
 
@@ -427,15 +419,15 @@ static t_int *playfile_perform(t_int *w){
 			}
 			if(x->x_loop){
 			    if(x->x_play_next){
-                    playfile_base_open(x, x->x_play_next);
+                    playfile_open(x, x->x_play_next);
                     x->x_play_next = NULL;
                 }
                 playfile_base_start(x, 1.0f, 0.0f);
             } 
             else{
                 if(x->x_play_next){
-                    playfile_base_open(x, x->x_play_next);
-                    playfile_base_stop(x);
+                    playfile_open(x, x->x_play_next);
+                    playfile_stop(x);
                     x->x_play_next = NULL;
                 }
 				playfile_seek(x, 0);
@@ -560,14 +552,14 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
         outlet_new(&x->x_obj, &s_signal);
     x->x_o_meta = outlet_new(&x->x_obj, 0);
 	if(err){
-		player_free(x);
+        freebytes(x->x_outs, x->x_nch * sizeof(t_sample *));
 		pd_free((t_pd *)x);
 		return NULL;
 	}
     int shift = ac > 0 && av[0].a_type == A_SYMBOL;
     if(ac > 1 - shift && av[1 - shift].a_type == A_SYMBOL){
-        playfile_base_open(x, atom_getsymbol(av + 1 - shift));
-        playfile_base_stop(x); // open normally also starts playback
+        playfile_open(x, atom_getsymbol(av + 1 - shift));
+        playfile_stop(x); // open normally also starts playback
     }
     // Autostart argument
     if(ac > 2 - shift && av[2 - shift].a_type == A_FLOAT)
@@ -584,8 +576,16 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
 	return(x);
 }
 
-static void playfile_free(t_playfile *x) {
-	playfile_base_free(x);
+static void playfile_free(t_playfile *x){
+    av_channel_layout_uninit(&x->x_layout);
+    avcodec_free_context(&x->x_a.ctx);
+    avformat_close_input(&x->x_ic);
+    av_packet_free(&x->x_pkt);
+    av_frame_free(&x->x_frm);
+    swr_free(&x->x_swr);
+    t_playlist *pl = &x->x_plist;
+    freebytes(pl->arr, pl->max * sizeof(t_symbol *));
+    freebytes(x->x_outs, x->x_nch * sizeof(t_sample *));
 	src_delete(x->x_r.state);
 	freebytes(x->x_in, x->x_nch * sizeof(t_sample) * FRAMES);
 	freebytes(x->x_out, x->x_nch * sizeof(t_sample) * FRAMES);
@@ -595,11 +595,12 @@ void setup_play0x2efile_tilde(void) {
 	playfile_base_reset = playfile_reset;
     playfile_class = class_new(gensym("play.file~"), (t_newmethod)playfile_new, 
         (t_method)playfile_free, sizeof(t_playfile), 0, A_GIMME, 0);
-    class_addbang(playfile_class, player_bang);
-    class_addfloat(playfile_class, playfile_base_float); // toggle on/off
-    class_addmethod(playfile_class, (t_method)player_play, gensym("start"), A_GIMME, 0);
-	class_addmethod(playfile_class, (t_method)playfile_base_open, gensym("open"), A_SYMBOL, 0);
-	class_addmethod(playfile_class, (t_method)playfile_base_stop, gensym("stop"), A_NULL);
+    class_addbang(playfile_class, playfile_bang);
+    class_addfloat(playfile_class, playfile_float); // toggle on/off
+//    class_addmethod(playfile_class, (t_method)player_play, gensym("start"), A_GIMME, 0);
+    class_addmethod(playfile_class, (t_method)playfile_bang, gensym("start"), A_NULL);
+    class_addmethod(playfile_class, (t_method)playfile_stop, gensym("stop"), A_NULL);
+	class_addmethod(playfile_class, (t_method)playfile_open, gensym("open"), A_SYMBOL, 0);
 	class_addmethod(playfile_class, (t_method)playfile_dsp, gensym("dsp"), A_CANT, 0);
 	class_addmethod(playfile_class, (t_method)playfile_seek, gensym("seek"), A_FLOAT, 0);
 	class_addmethod(playfile_class, (t_method)playfile_speed, gensym("speed"), A_FLOAT, 0);
