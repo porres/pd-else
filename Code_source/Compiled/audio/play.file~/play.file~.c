@@ -221,37 +221,33 @@ static void playfile_find_file(t_playfile *x, t_symbol* file, char* dir_out, cha
     strcat(dir_out, "/");
 }
 
-static void playfile_openpanel_callback(t_playfile *x, t_symbol *s, int argc, t_atom *argv) {
-    if (argc == 1 && argv->a_type == A_SYMBOL)
-    {
+static void playfile_openpanel_callback(t_playfile *x, t_symbol *s, int argc, t_atom *argv){
+    if(argc == 1 && argv->a_type == A_SYMBOL){
         int err_msg = 0;
         t_symbol* path = atom_getsymbol(argv);
         const char *sym = path->s_name;
         t_playlist *pl = &x->x_plist;
-
         char dir[MAXPDSTRING];
         const char *fname = strrchr(sym, '/');
-        if (fname) {
+        if(fname){
             int len = ++fname - sym;
             strncpy(dir, sym, len);
             dir[len] = '\0';
-        } else {
+        } 
+        else{
             fname = sym;
             strcpy(dir, "./");
         }
         pl->dir = gensym(dir);
-
         const char *ext = strrchr(sym, '.');
-        if (ext && !strcmp(ext + 1, "m3u")) {
-            err_msg = playlist_m3u(pl, s);
-        } else {
+        if (ext && !strcmp(ext + 1, "m3u"))
+            err_msg = (int)playlist_m3u(pl, s);
+        else{
             pl->size = 1;
             pl->arr[0] = gensym(fname);
         }
-
-        if(err_msg || (err_msg = playfile_base_load(x, 0)))
+        if(err_msg || (err_msg = (int)playfile_base_load(x, 0)))
             pd_error(x, "[play.file~]: open: %i", err_msg);
-
         x->x_open = !err_msg;
         playfile_base_start(x, 1.0f, 0.0f);
     }
@@ -260,9 +256,7 @@ static void playfile_openpanel_callback(t_playfile *x, t_symbol *s, int argc, t_
 static void playfile_open(t_playfile *x, t_symbol *s, int ac, t_atom *av){
     x->x_play = 0;
     err_t err_msg = 0;
-
-    if(ac == 0)
-    {
+    if(ac == 0){
         char buf[50];
         snprintf(buf, 50, "d%lx", (t_int)x);
         t_symbol* sym = gensym(buf);
@@ -273,7 +267,7 @@ static void playfile_open(t_playfile *x, t_symbol *s, int ac, t_atom *av){
         const char *sym = av->a_w.w_symbol->s_name;
         if(strlen(sym) >= MAXPDSTRING)
             err_msg = "File path is too long";
-        else {
+        else{
             char filename[MAXPDSTRING];
             char dirname[MAXPDSTRING];
             playfile_find_file(x, av->a_w.w_symbol, dirname, filename);
@@ -286,14 +280,18 @@ static void playfile_open(t_playfile *x, t_symbol *s, int ac, t_atom *av){
                 pl->size = 1;
                 pl->arr[0] = gensym(filename);
             }
-
             if(err_msg || (err_msg = playfile_base_load(x, 0)))
                 pd_error(x, "[play.file~]: open: %s.", err_msg);
-
             x->x_open = !err_msg;
             playfile_base_start(x, 1.0f, 0.0f);
         }
     }
+}
+
+static void playfile_click(t_playfile *x, t_floatarg xpos,
+t_floatarg ypos, t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
+    xpos = ypos = shift = ctrl = alt = 0;
+    playfile_open(x, NULL, 0, NULL);
 }
 
 /*
@@ -590,5 +588,7 @@ void setup_play0x2efile_tilde(void) {
     class_addmethod(playfile_class, (t_method)playfile_seek, gensym("seek"), A_FLOAT, 0);
     class_addmethod(playfile_class, (t_method)playfile_loop, gensym("loop"), A_FLOAT, 0);
     class_addmethod(playfile_class, (t_method)playfile_set, gensym("set"), A_SYMBOL, 0);
+    class_addmethod(playfile_class, (t_method)playfile_click, gensym("click"),
+        A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT,0);
     class_addmethod(playfile_class, (t_method)playfile_openpanel_callback, gensym("callback"), A_GIMME, 0);
 }
