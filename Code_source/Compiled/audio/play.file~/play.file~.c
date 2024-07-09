@@ -5,8 +5,9 @@
 #include <libswresample/swresample.h>
 #include <samplerate.h>
 #include <m_pd.h>
+#include <g_canvas.h>
 
-#define FRAMES 0x10
+#define FRAMES 16
 
 typedef struct _avstream{
     AVCodecContext *ctx;
@@ -127,78 +128,78 @@ static inline err_t playlist_m3u(t_playlist *pl, t_symbol *s){
 static err_t (*playfile_base_reset)(void *);
 
 static void playfile_base_seek(t_playfile *x, t_float f){
-	if(!x->x_open)
-		return;
-	avformat_seek_file(x->x_ic, -1, 0, f * 1000, x->x_ic->duration, 0);
-	AVRational ratio = x->x_ic->streams[x->x_a.idx]->time_base;
-	x->x_frm->pts = f * ratio.den / (ratio.num * 1000);
-	swr_init(x->x_swr);
-	// avcodec_flush_buffers(x->x_a.ctx); // doesn't always flush properly
-	avcodec_free_context(&x->x_a.ctx);
-	x->x_a.ctx = avcodec_alloc_context3(NULL);
-	avcodec_parameters_to_context(x->x_a.ctx, x->x_ic->streams[x->x_a.idx]->codecpar);
-	x->x_a.ctx->pkt_timebase = x->x_ic->streams[x->x_a.idx]->time_base;
-	const AVCodec *codec = avcodec_find_decoder(x->x_a.ctx->codec_id);
-	avcodec_open2(x->x_a.ctx, codec, NULL);
+    if(!x->x_open)
+        return;
+    avformat_seek_file(x->x_ic, -1, 0, f * 1000, x->x_ic->duration, 0);
+    AVRational ratio = x->x_ic->streams[x->x_a.idx]->time_base;
+    x->x_frm->pts = f * ratio.den / (ratio.num * 1000);
+    swr_init(x->x_swr);
+    // avcodec_flush_buffers(x->x_a.ctx); // doesn't always flush properly
+    avcodec_free_context(&x->x_a.ctx);
+    x->x_a.ctx = avcodec_alloc_context3(NULL);
+    avcodec_parameters_to_context(x->x_a.ctx, x->x_ic->streams[x->x_a.idx]->codecpar);
+    x->x_a.ctx->pkt_timebase = x->x_ic->streams[x->x_a.idx]->time_base;
+    const AVCodec *codec = avcodec_find_decoder(x->x_a.ctx->codec_id);
+    avcodec_open2(x->x_a.ctx, codec, NULL);
 }
 
 static inline err_t playfile_base_context(t_playfile *x, t_avstream *s){
-	int i = s->idx;
-	avcodec_free_context(&s->ctx);
-	s->ctx = avcodec_alloc_context3(NULL);
-	if(!s->ctx)
-		return ("Failed to allocate AVCodecContext");
-	if(avcodec_parameters_to_context(s->ctx, x->x_ic->streams[i]->codecpar) < 0)
-		return ("Failed to fill codec with parameters");
-	s->ctx->pkt_timebase = x->x_ic->streams[i]->time_base;
-	const AVCodec *codec = avcodec_find_decoder(s->ctx->codec_id);
-	if(!codec)
-		return ("Codec not found");
-	if(avcodec_open2(s->ctx, codec, NULL) < 0)
-		return ("Failed to open codec");
-	return(0);
+    int i = s->idx;
+    avcodec_free_context(&s->ctx);
+    s->ctx = avcodec_alloc_context3(NULL);
+    if(!s->ctx)
+        return ("Failed to allocate AVCodecContext");
+    if(avcodec_parameters_to_context(s->ctx, x->x_ic->streams[i]->codecpar) < 0)
+        return ("Failed to fill codec with parameters");
+    s->ctx->pkt_timebase = x->x_ic->streams[i]->time_base;
+    const AVCodec *codec = avcodec_find_decoder(s->ctx->codec_id);
+    if(!codec)
+        return ("Codec not found");
+    if(avcodec_open2(s->ctx, codec, NULL) < 0)
+        return ("Failed to open codec");
+    return(0);
 }
 
 static AVChannelLayout playfile_base_layout(t_playfile *x) {
-	AVChannelLayout layout_in;
-	if (x->x_a.ctx->ch_layout.u.mask)
-		av_channel_layout_from_mask(&layout_in, x->x_a.ctx->ch_layout.u.mask);
-	else
-		av_channel_layout_default(&layout_in, x->x_a.ctx->ch_layout.nb_channels);
-	return(layout_in);
+    AVChannelLayout layout_in;
+    if (x->x_a.ctx->ch_layout.u.mask)
+        av_channel_layout_from_mask(&layout_in, x->x_a.ctx->ch_layout.u.mask);
+    else
+        av_channel_layout_default(&layout_in, x->x_a.ctx->ch_layout.nb_channels);
+    return(layout_in);
 }
 
 static err_t playfile_base_load(t_playfile *x, int index) {
-	char url[MAXPDSTRING];
-	const char *fname = x->x_plist.arr[index]->s_name;
-	if (fname[0] == '/') // absolute path
-		strcpy(url, fname);
-	else{
-		strcpy(url, x->x_plist.dir->s_name);
-		strcat(url, fname);
-	}
-	avformat_close_input(&x->x_ic);
-	x->x_ic = avformat_alloc_context();
-	if(avformat_open_input(&x->x_ic, url, NULL, NULL))
-		return("Failed to open input stream");
-	if(avformat_find_stream_info(x->x_ic, NULL) < 0)
-		return("Failed to find stream information");
-	x->x_ic->seek2any = 1;
-	int i = -1;
-	for(unsigned j = x->x_ic->nb_streams; j--;){
-		if(x->x_ic->streams[j]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO){
-			i = j;
-			break;
-		}
-	}
-	x->x_a.idx = i;
-	if(i < 0)
-		return("No audio stream found");
-	err_t err_msg = playfile_base_context(x, &x->x_a);
-	if(err_msg)
-		return(err_msg);
-	x->x_frm->pts = 0;
-	return(playfile_base_reset(x));
+    char url[MAXPDSTRING];
+    const char *fname = x->x_plist.arr[index]->s_name;
+    if (fname[0] == '/') // absolute path
+        strcpy(url, fname);
+    else{
+        strcpy(url, x->x_plist.dir->s_name);
+        strcat(url, fname);
+    }
+    avformat_close_input(&x->x_ic);
+    x->x_ic = avformat_alloc_context();
+    if(avformat_open_input(&x->x_ic, url, NULL, NULL))
+        return("Failed to open input stream");
+    if(avformat_find_stream_info(x->x_ic, NULL) < 0)
+        return("Failed to find stream information");
+    x->x_ic->seek2any = 1;
+    int i = -1;
+    for(unsigned j = x->x_ic->nb_streams; j--;){
+        if(x->x_ic->streams[j]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO){
+            i = j;
+            break;
+        }
+    }
+    x->x_a.idx = i;
+    if(i < 0)
+        return("No audio stream found");
+    err_t err_msg = playfile_base_context(x, &x->x_a);
+    if(err_msg)
+        return(err_msg);
+    x->x_frm->pts = 0;
+    return(playfile_base_reset(x));
 }
 
 static void playfile_base_start(t_playfile *x, t_float f, t_float ms){
@@ -210,47 +211,94 @@ static void playfile_base_start(t_playfile *x, t_float f, t_float ms){
         else if (ms > 0)
             playfile_base_seek(x, ms);
         x->x_open = !err_msg;
-    } 
+    }
     else
         playfile_base_seek(x, 0);
     x->x_play = !err_msg;
 }
 
-static void playfile_find_file(t_playfile *x, t_symbol* file, t_symbol** dir_out, t_symbol** filename_out){
+static void playfile_find_file(t_playfile *x, t_symbol* file, char* dir_out, char* filename_out){
     const char *filename = file->s_name;
     const char *dirname = canvas_getdir(x->x_canvas)->s_name;
-    char dirout[MAXPDSTRING];
     char* fileout;
-    open_via_path(dirname, filename, "", dirout, &fileout, MAXPDSTRING-1, 0);
-    *filename_out = gensym(fileout);
-    strcat(dirout, "/"); // need to happen after filename has been gensym'd!
-    *dir_out = gensym(dirout);
+    open_via_path(dirname, filename, "", dir_out, &fileout, MAXPDSTRING-1, 0);
+    memcpy(filename_out, fileout, strlen(fileout) + 1);
+    strcat(dir_out, "/");
 }
 
-static void playfile_open(t_playfile *x, t_symbol *s){
-	x->x_play = 0;
-	err_t err_msg = 0;
-	const char *sym = s->s_name;
-	if(strlen(sym) >= MAXPDSTRING)
-		err_msg = "File path is too long";
-    else{
-        t_symbol* filename;
-        t_symbol* dirname;
-        playfile_find_file(x, s, &dirname, &filename);
-		t_playlist *pl = &x->x_plist;
-        pl->dir = dirname;
-		const char *ext = strrchr(filename->s_name, '.');
-		if(ext && !strcmp(ext + 1, "m3u"))
-			err_msg = playlist_m3u(pl, filename);
-		else{
-			pl->size = 1;
-			pl->arr[0] = filename;
-		}
-	}
-	if(err_msg || (err_msg = playfile_base_load(x, 0)))
-		pd_error(x, "[play.file~]: open: %s.", err_msg);
-	x->x_open = !err_msg;
-    playfile_base_start(x, 1.0f, 0.0f);
+static void playfile_openpanel_callback(t_playfile *x, t_symbol *s, int argc, t_atom *argv) {
+    if (argc == 1 && argv->a_type == A_SYMBOL)
+    {
+        int err_msg = 0;
+        t_symbol* path = atom_getsymbol(argv);
+        const char *sym = path->s_name;
+        t_playlist *pl = &x->x_plist;
+
+        char dir[MAXPDSTRING];
+        const char *fname = strrchr(sym, '/');
+        if (fname) {
+            int len = ++fname - sym;
+            strncpy(dir, sym, len);
+            dir[len] = '\0';
+        } else {
+            fname = sym;
+            strcpy(dir, "./");
+        }
+        pl->dir = gensym(dir);
+
+        const char *ext = strrchr(sym, '.');
+        if (ext && !strcmp(ext + 1, "m3u")) {
+            err_msg = playlist_m3u(pl, s);
+        } else {
+            pl->size = 1;
+            pl->arr[0] = gensym(fname);
+        }
+
+        if(err_msg || (err_msg = playfile_base_load(x, 0)))
+            pd_error(x, "[play.file~]: open: %i", err_msg);
+
+        x->x_open = !err_msg;
+        playfile_base_start(x, 1.0f, 0.0f);
+    }
+}
+
+static void playfile_open(t_playfile *x, t_symbol *s, int ac, t_atom *av){
+    x->x_play = 0;
+    err_t err_msg = 0;
+
+    if(ac == 0)
+    {
+        char buf[50];
+        snprintf(buf, 50, "d%lx", (t_int)x);
+        t_symbol* sym = gensym(buf);
+        pd_bind(&x->x_obj.ob_pd, sym);
+        pdgui_vmess("pdtk_openpanel", "ssic", buf, canvas_getdir(x->x_canvas)->s_name, 0, glist_getcanvas(x->x_canvas));
+    }
+    else if(ac == 1 && av->a_type == A_SYMBOL) {
+        const char *sym = av->a_w.w_symbol->s_name;
+        if(strlen(sym) >= MAXPDSTRING)
+            err_msg = "File path is too long";
+        else {
+            char filename[MAXPDSTRING];
+            char dirname[MAXPDSTRING];
+            playfile_find_file(x, av->a_w.w_symbol, dirname, filename);
+            t_playlist *pl = &x->x_plist;
+            pl->dir = gensym(dirname);
+            const char *ext = strrchr(filename, '.');
+            if(ext && !strcmp(ext + 1, "m3u"))
+                err_msg = playlist_m3u(pl, gensym(filename));
+            else{
+                pl->size = 1;
+                pl->arr[0] = gensym(filename);
+            }
+
+            if(err_msg || (err_msg = playfile_base_load(x, 0)))
+                pd_error(x, "[play.file~]: open: %s.", err_msg);
+
+            x->x_open = !err_msg;
+            playfile_base_start(x, 1.0f, 0.0f);
+        }
+    }
 }
 
 /*
@@ -268,7 +316,7 @@ static void playfile_open(t_playfile *x, t_symbol *s){
          *pause = !*pause;
      return(0);
  }
- 
+
  static void player_play(t_playfile *x, t_symbol *s, int ac, t_atom *av){
     (void)s;
     if(!x->x_open)
@@ -280,7 +328,7 @@ static void playfile_open(t_playfile *x, t_symbol *s){
 static void playfile_bang(t_playfile *x){
     player_play(x, 0, 0, 0);
 }
- 
+
 static void playfile_stop(t_playfile *x){
      playfile_base_start(x, 0, 0);
      x->x_frm->pts = 0; // reset internal position
@@ -288,7 +336,7 @@ static void playfile_stop(t_playfile *x){
  */
 
 static void playfile_float(t_playfile *x, t_float f){
-	playfile_base_start(x, f, 0);
+    playfile_base_start(x, f, 0);
 }
 
 static void playfile_bang(t_playfile *x){
@@ -343,12 +391,12 @@ static int libsamplerate_init(t_libsamplerate *x, unsigned nch){
 static t_class *playfile_class;
 
 static void playfile_seek(t_playfile *x, t_float f){
-	playfile_base_seek(x, f);
-	libsamplerate_reset(&x->x_r);
+    playfile_base_seek(x, f);
+    libsamplerate_reset(&x->x_r);
 }
 
 static void playfile_speed(t_playfile *x, t_float f){
-	x->x_speed = f;
+    x->x_speed = f;
 }
 
 static void playfile_loop(t_playfile *x, t_float f){
@@ -360,111 +408,111 @@ static void playfile_set(t_playfile *x, t_symbol* s){
 }
 
 static t_int *playfile_perform(t_int *w){
-	t_playfile *x = (t_playfile *)(w[1]);
-	unsigned nch = x->x_nch;
-	t_sample *outs[nch];
-	for (int i = nch; i--;)
-		outs[i] = x->x_outs[i];
-	int n = (int)(w[2]);
-	if(x->x_play){
-		t_libsamplerate *r = &x->x_r;
-		SRC_DATA *data = &r->data;
-		while(n--){
-			if(data->output_frames_gen > 0){
-				perform:
-				for(int i = nch; i--;)
-					*outs[i]++ = data->data_out[i];
-				data->data_out += nch;
-				data->output_frames_gen--;
-				continue;
-			}
-			libsamplerate_speed(r, x->x_speed);
-			process:
-			if(data->input_frames > 0){
-				data->data_out = x->x_out;
-				src_process(r->state, data);
-				data->input_frames -= data->input_frames_used;
-				if(data->input_frames <= 0){
-					data->data_in = x->x_in;
-					data->input_frames = swr_convert(x->x_swr, 
+    t_playfile *x = (t_playfile *)(w[1]);
+    unsigned nch = x->x_nch;
+    t_sample *outs[nch];
+    for (int i = nch; i--;)
+        outs[i] = x->x_outs[i];
+    int n = (int)(w[2]);
+    if(x->x_play){
+        t_libsamplerate *r = &x->x_r;
+        SRC_DATA *data = &r->data;
+        while(n--){
+            if(data->output_frames_gen > 0){
+                perform:
+                for(int i = nch; i--;)
+                    *outs[i]++ = data->data_out[i];
+                data->data_out += nch;
+                data->output_frames_gen--;
+                continue;
+            }
+            libsamplerate_speed(r, x->x_speed);
+            process:
+            if(data->input_frames > 0){
+                data->data_out = x->x_out;
+                src_process(r->state, data);
+                data->input_frames -= data->input_frames_used;
+                if(data->input_frames <= 0){
+                    data->data_in = x->x_in;
+                    data->input_frames = swr_convert(x->x_swr,
                     (uint8_t **)&x->x_in, FRAMES, 0, 0);
-				}
+                }
                 else
-					data->data_in += data->input_frames_used * nch;
-				if(data->output_frames_gen > 0){
-					goto perform;
-				} 
+                    data->data_in += data->input_frames_used * nch;
+                if(data->output_frames_gen > 0){
+                    goto perform;
+                }
                 else
-					goto process;
-			}
-			// receive
-			data->data_in = x->x_in;
-			for(; av_read_frame(x->x_ic, x->x_pkt) >= 0; av_packet_unref(x->x_pkt)){
-				if(x->x_pkt->stream_index == x->x_a.idx){
-					if (avcodec_send_packet(x->x_a.ctx, x->x_pkt) < 0
+                    goto process;
+            }
+            // receive
+            data->data_in = x->x_in;
+            for(; av_read_frame(x->x_ic, x->x_pkt) >= 0; av_packet_unref(x->x_pkt)){
+                if(x->x_pkt->stream_index == x->x_a.idx){
+                    if (avcodec_send_packet(x->x_a.ctx, x->x_pkt) < 0
                         || avcodec_receive_frame(x->x_a.ctx, x->x_frm) < 0){
-						continue;
-					}
-					data->input_frames = swr_convert(x->x_swr, (uint8_t **)&x->x_in, FRAMES,
+                        continue;
+                    }
+                    data->input_frames = swr_convert(x->x_swr, (uint8_t **)&x->x_in, FRAMES,
                         (const uint8_t **)x->x_frm->extended_data, x->x_frm->nb_samples);
-					av_packet_unref(x->x_pkt);
-					goto process;
-				}
-			}
-			// reached the end
-			if (x->x_play){
-				x->x_play = 0;
-				n++; // don't iterate in case there's another track
-				outlet_bang(x->x_o_meta);
-			}
-			if(x->x_loop){
-			    if(x->x_play_next){
-                    playfile_open(x, x->x_play_next);
+                    av_packet_unref(x->x_pkt);
+                    goto process;
+                }
+            }
+            // reached the end
+            if (x->x_play){
+                x->x_play = 0;
+                n++; // don't iterate in case there's another track
+                outlet_bang(x->x_o_meta);
+            }
+            if(x->x_loop){
+                if(x->x_play_next){
+                    playfile_open(x, gensym("open"), 1, &(t_atom){.a_type = A_SYMBOL, .a_w = { .w_symbol = x->x_play_next }});
                     x->x_play_next = NULL;
                 }
                 playfile_base_start(x, 1.0f, 0.0f);
-            } 
+            }
             else{
                 if(x->x_play_next){
-                    playfile_open(x, x->x_play_next);
+                    playfile_open(x, gensym("open"), 1, &(t_atom){.a_type = A_SYMBOL, .a_w = { .w_symbol = x->x_play_next }});
                     playfile_stop(x);
                     x->x_play_next = NULL;
                 }
-				playfile_seek(x, 0);
-				goto silence;
-			}
-		}
-	} 
+                playfile_seek(x, 0);
+                goto silence;
+            }
+        }
+    }
     else while(n--){
-		silence:
-		for(int i = nch; i--;)
-			*outs[i]++ = 0;
-	}
-	return(w+4);
+        silence:
+        for(int i = nch; i--;)
+            *outs[i]++ = 0; // TODO: this is unsafe
+    }
+    return(w+4);
 }
 
 static void playfile_dsp(t_playfile *x, t_signal **sp){
-	for(int i = x->x_nch; i--;)
-		x->x_outs[i] = sp[i]->s_vec;
-	dsp_add(playfile_perform, 3, x, sp[0]->s_n, sp[0]->s_vec);
+    for(int i = x->x_nch; i--;)
+        x->x_outs[i] = sp[i]->s_vec;
+    dsp_add(playfile_perform, 3, x, sp[0]->s_n, sp[0]->s_vec);
 }
 
 static err_t playfile_reset(void *y){
-	t_playfile *x = (t_playfile *)y;
-	t_playfile *b = x;
-	swr_free(&x->x_swr);
-	AVChannelLayout layout_in = playfile_base_layout(b);
-	swr_alloc_set_opts2(&x->x_swr, &x->x_layout, AV_SAMPLE_FMT_FLT,
+    t_playfile *x = (t_playfile *)y;
+    t_playfile *b = x;
+    swr_free(&x->x_swr);
+    AVChannelLayout layout_in = playfile_base_layout(b);
+    swr_alloc_set_opts2(&x->x_swr, &x->x_layout, AV_SAMPLE_FMT_FLT,
         x->x_a.ctx->sample_rate, &layout_in, x->x_a.ctx->sample_fmt,
         x->x_a.ctx->sample_rate, 0, NULL);
-	if(swr_init(x->x_swr) < 0)
-		return("SWResampler initialization failed");
-	if(!x->x_r.state)
-		return("SRC has not been initialized");
-	libsamplerate_reset(&x->x_r);
-	x->x_r.ratio = (double)x->x_a.ctx->sample_rate / sys_getsr();
-	libsamplerate_speed(&x->x_r, x->x_speed);
-	return(0);
+    if(swr_init(x->x_swr) < 0)
+        return("SWResampler initialization failed");
+    if(!x->x_r.state)
+        return("SRC has not been initialized");
+    libsamplerate_reset(&x->x_r);
+    x->x_r.ratio = (double)x->x_a.ctx->sample_rate / sys_getsr();
+    libsamplerate_speed(&x->x_r, x->x_speed);
+    return(0);
 }
 
 AVChannelLayout playfile_get_channel_layout_for_file(const char *dirname, const char *filename) {
@@ -498,7 +546,7 @@ AVChannelLayout playfile_get_channel_layout_for_file(const char *dirname, const 
     AVCodecParameters *codec_parameters = format_context->streams[audio_stream_index]->codecpar;
     return(codec_parameters->ch_layout);
 error:
-    if(format_context) 
+    if(format_context)
         avformat_close_input(&format_context);
     AVChannelLayout l;
     av_channel_layout_default(&l, 1);
@@ -537,9 +585,11 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
         av_channel_layout_from_mask(&layout, mask);
     }
     else if(ac && av[0].a_type == A_SYMBOL){ // Num channels from file
-        t_symbol* dir, *file;
-        playfile_find_file(x, atom_getsymbol(av), &dir, &file);
-        layout = playfile_get_channel_layout_for_file(dir->s_name, file->s_name);
+        char dir[MAXPDSTRING];
+        char file[MAXPDSTRING];
+
+        playfile_find_file(x, atom_getsymbol(av), dir, file);
+        layout = playfile_get_channel_layout_for_file(dir, file);
         nch = layout.nb_channels;
     }
     int err = libsamplerate_init(&x->x_r, nch);
@@ -551,27 +601,27 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
     while(nch--)
         outlet_new(&x->x_obj, &s_signal);
     x->x_o_meta = outlet_new(&x->x_obj, 0);
-	if(err){
+    if(err){
         freebytes(x->x_outs, x->x_nch * sizeof(t_sample *));
-		pd_free((t_pd *)x);
-		return NULL;
-	}
+        pd_free((t_pd *)x);
+        return NULL;
+    }
     int shift = ac > 0 && av[0].a_type == A_SYMBOL;
     if(ac > 1 - shift && av[1 - shift].a_type == A_SYMBOL){
-        playfile_open(x, atom_getsymbol(av + 1 - shift));
+        playfile_open(x, gensym("open"), 1, av + 1 - shift);
         playfile_stop(x); // open normally also starts playback
     }
     // Autostart argument
     if(ac > 2 - shift && av[2 - shift].a_type == A_FLOAT)
         playfile_base_start(x, atom_getfloat(av + 2 - shift), 0.0f);
     // Loop argument
-    if(ac > 3 - shift && av[3 - shift].a_type == A_FLOAT) 
+    if(ac > 3 - shift && av[3 - shift].a_type == A_FLOAT)
         loop = atom_getfloat(av + 3 - shift);
     x->x_speed = 1;
     x->x_loop = loop;
-	x->x_in  = (t_sample *)getbytes(x->x_nch * FRAMES * sizeof(t_sample));
+    x->x_in  = (t_sample *)getbytes(x->x_nch * FRAMES * sizeof(t_sample));
     x->x_out = (t_sample *)getbytes(x->x_nch * FRAMES * sizeof(t_sample));
-	return(x);
+    return(x);
 }
 
 static void playfile_free(t_playfile *x){
@@ -584,24 +634,26 @@ static void playfile_free(t_playfile *x){
     t_playlist *pl = &x->x_plist;
     freebytes(pl->arr, pl->max * sizeof(t_symbol *));
     freebytes(x->x_outs, x->x_nch * sizeof(t_sample *));
-	src_delete(x->x_r.state);
-	freebytes(x->x_in, x->x_nch * sizeof(t_sample) * FRAMES);
-	freebytes(x->x_out, x->x_nch * sizeof(t_sample) * FRAMES);
+    src_delete(x->x_r.state);
+    freebytes(x->x_in, x->x_nch * sizeof(t_sample) * FRAMES);
+    freebytes(x->x_out, x->x_nch * sizeof(t_sample) * FRAMES);
 }
 
 void setup_play0x2efile_tilde(void) {
-	playfile_base_reset = playfile_reset;
-    playfile_class = class_new(gensym("play.file~"), (t_newmethod)playfile_new, 
+    playfile_base_reset = playfile_reset;
+    playfile_class = class_new(gensym("play.file~"), (t_newmethod)playfile_new,
         (t_method)playfile_free, sizeof(t_playfile), 0, A_GIMME, 0);
     class_addbang(playfile_class, playfile_bang);
     class_addfloat(playfile_class, playfile_float); // toggle on/off
 //    class_addmethod(playfile_class, (t_method)player_play, gensym("start"), A_GIMME, 0);
     class_addmethod(playfile_class, (t_method)playfile_bang, gensym("start"), A_NULL);
     class_addmethod(playfile_class, (t_method)playfile_stop, gensym("stop"), A_NULL);
-	class_addmethod(playfile_class, (t_method)playfile_open, gensym("open"), A_SYMBOL, 0);
-	class_addmethod(playfile_class, (t_method)playfile_dsp, gensym("dsp"), A_CANT, 0);
-	class_addmethod(playfile_class, (t_method)playfile_seek, gensym("seek"), A_FLOAT, 0);
-	class_addmethod(playfile_class, (t_method)playfile_speed, gensym("speed"), A_FLOAT, 0);
+    class_addmethod(playfile_class, (t_method)playfile_open, gensym("open"), A_GIMME, 0);
+    class_addmethod(playfile_class, (t_method)playfile_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(playfile_class, (t_method)playfile_seek, gensym("seek"), A_FLOAT, 0);
+    class_addmethod(playfile_class, (t_method)playfile_speed, gensym("speed"), A_FLOAT, 0);
     class_addmethod(playfile_class, (t_method)playfile_loop, gensym("loop"), A_FLOAT, 0);
     class_addmethod(playfile_class, (t_method)playfile_set, gensym("set"), A_SYMBOL, 0);
+    class_addmethod(playfile_class, (t_method)playfile_openpanel_callback, gensym("callback"), A_GIMME, 0);
+
 }
