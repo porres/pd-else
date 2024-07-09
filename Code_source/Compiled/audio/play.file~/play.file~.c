@@ -206,7 +206,7 @@ static void playfile_base_start(t_playfile *x, t_float f, t_float ms){
     err_t err_msg = "";
     if(0 < track && track <= x->x_plist.size){
         if((err_msg = playfile_base_load(x, track - 1)))
-            pd_error(x, "playfile_base_start: %s.", err_msg);
+            pd_error(x, "[play.file~] 'base start': %s.", err_msg);
         else if (ms > 0)
             playfile_base_seek(x, ms);
         x->x_open = !err_msg;
@@ -248,7 +248,7 @@ static void playfile_open(t_playfile *x, t_symbol *s){
 		}
 	}
 	if(err_msg || (err_msg = playfile_base_load(x, 0)))
-		pd_error(x, "playfile_open: %s.", err_msg);
+		pd_error(x, "[play.file~]: open: %s.", err_msg);
 	x->x_open = !err_msg;
     playfile_base_start(x, 1.0f, 0.0f);
 }
@@ -332,7 +332,7 @@ static int libsamplerate_init(t_libsamplerate *x, unsigned nch){
     int err;
     SRC_STATE *state;
     if(!(state = src_new(SRC_SINC_FASTEST, nch, &err)))
-        pd_error(0, "src_new() failed : %s.", src_strerror(err));
+        pd_error(0, "[play.file~]: src_new() failed : %s.", src_strerror(err));
     x->state = state;
     x->data.src_ratio = x->ratio = 1.0;
     x->data.output_frames = FRAMES;
@@ -567,12 +567,10 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
     // Loop argument
     if(ac > 3 - shift && av[3 - shift].a_type == A_FLOAT) 
         loop = atom_getfloat(av + 3 - shift);
-    else 
-        loop = 0;
-	x->x_in  = (t_sample *)getbytes(x->x_nch * FRAMES * sizeof(t_sample));
-    x->x_out = (t_sample *)getbytes(x->x_nch * FRAMES * sizeof(t_sample));
     x->x_speed = 1;
     x->x_loop = loop;
+	x->x_in  = (t_sample *)getbytes(x->x_nch * FRAMES * sizeof(t_sample));
+    x->x_out = (t_sample *)getbytes(x->x_nch * FRAMES * sizeof(t_sample));
 	return(x);
 }
 
