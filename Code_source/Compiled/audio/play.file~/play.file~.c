@@ -293,6 +293,12 @@ static void playfile_open(t_playfile *x, t_symbol *s, int ac, t_atom *av){
     }
 }
 
+static void playfile_click(t_loadbanger *x, t_floatarg xpos,
+t_floatarg ypos, t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
+    xpos = ypos = shift = ctrl = alt = 0;
+    playfile_open(x, NULL, 0, NULL)
+}
+
 /*
  // return '1' if the current state is the same as the one being requested
  static inline int pause_state(unsigned char *pause, int ac, t_atom *av){
@@ -646,6 +652,8 @@ void setup_play0x2efile_tilde(void) {
     class_addmethod(playfile_class, (t_method)playfile_speed, gensym("speed"), A_FLOAT, 0);
     class_addmethod(playfile_class, (t_method)playfile_loop, gensym("loop"), A_FLOAT, 0);
     class_addmethod(playfile_class, (t_method)playfile_set, gensym("set"), A_SYMBOL, 0);
+    class_addmethod(playfile_class, (t_method)playfile_click, gensym("click"),
+        A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT,0);
     class_addmethod(playfile_class, (t_method)playfile_openpanel_callback, gensym("callback"), A_GIMME, 0);
 
 }
