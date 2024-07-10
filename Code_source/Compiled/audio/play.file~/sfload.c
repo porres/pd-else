@@ -9,13 +9,15 @@
 #define FRAMES 4096
 
 typedef struct _avstream{
-    AVCodecContext *ctx;
-    int idx;  // stream index
+
 }t_avstream;
+
+static t_class *sfload_class;
 
 typedef struct _sfload{
     t_object        x_obj;
-    t_avstream      x_a;        // audio stream
+    AVCodecContext *x_stream_ctx;
+    int            x_stream_idx;
     AVPacket       *x_pkt;
     AVFrame        *x_frm;
     SwrContext     *x_swr;
@@ -41,8 +43,6 @@ static void sfload_find_file(t_sfload *x, t_symbol* file, char* dir_out, char* f
     memcpy(filename_out, fileout, strlen(fileout) + 1);
     strcat(dir_out, "/");
 }
-
-static t_class *sfload_class;
 
 void* sfload_read_audio(void *arg) {
     t_sfload *x = (t_sfload*)arg;
@@ -74,7 +74,7 @@ void* sfload_read_audio(void *arg) {
         return NULL;
     }
 
-    x->x_a.idx = audio_stream_index;
+    x->x_stream_idx = audio_stream_index;
     AVCodecParameters *codec_parameters = x->x_ic->streams[audio_stream_index]->codecpar;
     const AVCodec *codec = avcodec_find_decoder(codec_parameters->codec_id);
     if (!codec) {
@@ -82,31 +82,31 @@ void* sfload_read_audio(void *arg) {
         return NULL;
     }
 
-    x->x_a.ctx = avcodec_alloc_context3(codec);
-    if (!x->x_a.ctx) {
+    x->x_stream_ctx = avcodec_alloc_context3(codec);
+    if (!x->x_stream_ctx) {
         pd_error(x, "sfload: Could not allocate audio codec context\n");
         return NULL;
     }
-    if (avcodec_parameters_to_context(x->x_a.ctx, codec_parameters) < 0) {
+    if (avcodec_parameters_to_context(x->x_stream_ctx, codec_parameters) < 0) {
         pd_error(x, "sfload: Could not copy codec parameters to context\n");
         return NULL;
     }
-    if (avcodec_open2(x->x_a.ctx, codec, NULL) < 0) {
+    if (avcodec_open2(x->x_stream_ctx, codec, NULL) < 0) {
         pd_error(x, "sfload: Could not open codec\n");
         return NULL;
     }
 
     AVChannelLayout layout;
-    if (x->x_a.ctx->ch_layout.u.mask)
-        av_channel_layout_from_mask(&layout, x->x_a.ctx->ch_layout.u.mask);
+    if (x->x_stream_ctx->ch_layout.u.mask)
+        av_channel_layout_from_mask(&layout, x->x_stream_ctx->ch_layout.u.mask);
     else
-        av_channel_layout_default(&layout, x->x_a.ctx->ch_layout.nb_channels);
+        av_channel_layout_default(&layout, x->x_stream_ctx->ch_layout.nb_channels);
     
     unsigned int nch = layout.nb_channels;
     
     swr_alloc_set_opts2(&x->x_swr, &layout, AV_SAMPLE_FMT_FLT,
-                                       x->x_a.ctx->sample_rate, &layout, x->x_a.ctx->sample_fmt,
-                                       x->x_a.ctx->sample_rate, 0, NULL);
+                                       x->x_stream_ctx->sample_rate, &layout, x->x_stream_ctx->sample_fmt,
+                                       x->x_stream_ctx->sample_rate, 0, NULL);
     
     if (!x->x_swr || swr_init(x->x_swr) < 0) {
         pd_error(x, "sfload: Could not initialize the resampling context\n");
@@ -116,8 +116,8 @@ void* sfload_read_audio(void *arg) {
     x->x_out = av_mallocz(nch * FRAMES * sizeof(t_sample));
     int output_index = 0;
     while (av_read_frame(x->x_ic, x->x_pkt) >= 0) {
-        if (x->x_pkt->stream_index == x->x_a.idx) {
-            if (avcodec_send_packet(x->x_a.ctx, x->x_pkt) < 0 || avcodec_receive_frame(x->x_a.ctx, x->x_frm) < 0) {
+        if (x->x_pkt->stream_index == x->x_stream_idx) {
+            if (avcodec_send_packet(x->x_stream_ctx, x->x_pkt) < 0 || avcodec_receive_frame(x->x_stream_ctx, x->x_frm) < 0) {
                 continue;
             }
 
@@ -236,14 +236,14 @@ static void *sfload_new(t_symbol *s, int ac, t_atom *av){
 
 static void sfload_free(t_sfload *x){
     av_channel_layout_uninit(&x->x_layout);
-    avcodec_free_context(&x->x_a.ctx);
+    avcodec_free_context(&x->x_stream_ctx);
     avformat_close_input(&x->x_ic);
     av_packet_free(&x->x_pkt);
     av_frame_free(&x->x_frm);
     swr_free(&x->x_swr);
 }
 
-void sfload_tilde_setup(void) {
+void sfload_setup(void) {
     sfload_class = class_new(gensym("sfload"), (t_newmethod)sfload_new,
         (t_method)sfload_free, sizeof(t_sfload), 0, A_GIMME, 0);
     class_addmethod(sfload_class, (t_method)sfload_load, gensym("load"), A_GIMME, 0);
