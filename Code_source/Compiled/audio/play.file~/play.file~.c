@@ -9,11 +9,6 @@
 
 t_canvas *glist_getcanvas(t_glist *x);
 
-typedef struct _avstream{
-    AVCodecContext *ctx;
-    int idx;  // stream index
-}t_avstream;
-
 typedef struct _playlist{
     t_symbol **arr;     // m3u list of tracks
     t_symbol *dir;      // starting directory
@@ -28,7 +23,8 @@ typedef struct _playfile{
     unsigned char   x_open;     // true when a file has been successfully opened
     unsigned        x_nch;      // number of channels
     t_outlet       *x_o_meta;   // outputs bang when finished
-    t_avstream      x_a;        // audio stream
+    AVCodecContext *x_stream_ctx;
+    int            x_stream_idx;
     AVPacket       *x_pkt;
     AVFrame        *x_frm;
     SwrContext     *x_swr;
@@ -39,6 +35,7 @@ typedef struct _playfile{
     t_sample       *x_out;
     int             x_out_buffer_index;
     int             x_out_buffer_size;
+    t_float         x_speed;
     int             x_loop;
     t_symbol       *x_play_next;
     t_symbol       *x_openpanel_sym;
@@ -117,42 +114,42 @@ static void playfile_seek(t_playfile *x, t_float f){
     if(!x->x_open)
         return;
     avformat_seek_file(x->x_ic, -1, 0, f * 1000, x->x_ic->duration, 0);
-    AVRational ratio = x->x_ic->streams[x->x_a.idx]->time_base;
+    AVRational ratio = x->x_ic->streams[x->x_stream_idx]->time_base;
     x->x_frm->pts = f * ratio.den / (ratio.num * 1000);
     swr_init(x->x_swr);
-    // avcodec_flush_buffers(x->x_a.ctx); // doesn't always flush properly
-    avcodec_free_context(&x->x_a.ctx);
-    x->x_a.ctx = avcodec_alloc_context3(NULL);
-    avcodec_parameters_to_context(x->x_a.ctx, x->x_ic->streams[x->x_a.idx]->codecpar);
-    x->x_a.ctx->pkt_timebase = x->x_ic->streams[x->x_a.idx]->time_base;
-    const AVCodec *codec = avcodec_find_decoder(x->x_a.ctx->codec_id);
-    avcodec_open2(x->x_a.ctx, codec, NULL);
+    // avcodec_flush_buffers(x->x_stream_ctx); // doesn't always flush properly
+    avcodec_free_context(&x->x_stream_ctx);
+    x->x_stream_ctx = avcodec_alloc_context3(NULL);
+    avcodec_parameters_to_context(x->x_stream_ctx, x->x_ic->streams[x->x_stream_idx]->codecpar);
+    x->x_stream_ctx->pkt_timebase = x->x_ic->streams[x->x_stream_idx]->time_base;
+    const AVCodec *codec = avcodec_find_decoder(x->x_stream_ctx->codec_id);
+    avcodec_open2(x->x_stream_ctx, codec, NULL);
     x->x_out_buffer_size = 0;
 }
 
-static inline err_t playfile_context(t_playfile *x, t_avstream *s){
-    int i = s->idx;
-    avcodec_free_context(&s->ctx);
-    s->ctx = avcodec_alloc_context3(NULL);
-    if(!s->ctx)
+static inline err_t playfile_context(t_playfile *x){
+    int i = x->x_stream_idx;
+    avcodec_free_context(&x->x_stream_ctx);
+    x->x_stream_ctx = avcodec_alloc_context3(NULL);
+    if(!x->x_stream_ctx)
         return ("Failed to allocate AVCodecContext");
-    if(avcodec_parameters_to_context(s->ctx, x->x_ic->streams[i]->codecpar) < 0)
+    if(avcodec_parameters_to_context(x->x_stream_ctx, x->x_ic->streams[i]->codecpar) < 0)
         return ("Failed to fill codec with parameters");
-    s->ctx->pkt_timebase = x->x_ic->streams[i]->time_base;
-    const AVCodec *codec = avcodec_find_decoder(s->ctx->codec_id);
+    x->x_stream_ctx->pkt_timebase = x->x_ic->streams[i]->time_base;
+    const AVCodec *codec = avcodec_find_decoder(x->x_stream_ctx->codec_id);
     if(!codec)
         return ("Codec not found");
-    if(avcodec_open2(s->ctx, codec, NULL) < 0)
+    if(avcodec_open2(x->x_stream_ctx, codec, NULL) < 0)
         return ("Failed to open codec");
     return(0);
 }
 
 static AVChannelLayout playfile_layout(t_playfile *x){
     AVChannelLayout layout_in;
-    if(x->x_a.ctx->ch_layout.u.mask)
-        av_channel_layout_from_mask(&layout_in, x->x_a.ctx->ch_layout.u.mask);
+    if(x->x_stream_ctx->ch_layout.u.mask)
+        av_channel_layout_from_mask(&layout_in, x->x_stream_ctx->ch_layout.u.mask);
     else
-        av_channel_layout_default(&layout_in, x->x_a.ctx->ch_layout.nb_channels);
+        av_channel_layout_default(&layout_in, x->x_stream_ctx->ch_layout.nb_channels);
     return(layout_in);
 }
 
@@ -162,8 +159,8 @@ static err_t playfile_reset(void *y){
     swr_free(&x->x_swr);
     AVChannelLayout layout_in = playfile_layout(b);
     swr_alloc_set_opts2(&x->x_swr, &x->x_layout, AV_SAMPLE_FMT_FLT,
-        x->x_a.ctx->sample_rate, &layout_in, x->x_a.ctx->sample_fmt,
-        x->x_a.ctx->sample_rate, 0, NULL);
+        x->x_stream_ctx->sample_rate, &layout_in, x->x_stream_ctx->sample_fmt,
+        x->x_stream_ctx->sample_rate, 0, NULL);
     if(swr_init(x->x_swr) < 0)
         return("SWResampler initialization failed");
     return(0);
@@ -195,11 +192,14 @@ static err_t playfile_load(t_playfile *x, int index) {
                 break;
             }
         }
-        x->x_a.idx = i;
+        x->x_stream_idx = i;
+
         if(i < 0)
             return("No audio stream found");
     }
-    err_t err_msg = playfile_context(x, &x->x_a);
+
+    err_t err_msg = playfile_context(x);
+
     if(err_msg)
         return(err_msg);
     x->x_frm->pts = 0;
@@ -374,9 +374,9 @@ static t_int *playfile_perform(t_int *w){
                 x->x_out_buffer_index = 0;
                 x->x_out_buffer_size = 0;
                 while(av_read_frame(x->x_ic, x->x_pkt) >= 0){
-                    if(x->x_pkt->stream_index == x->x_a.idx){
-                        if(avcodec_send_packet(x->x_a.ctx, x->x_pkt) < 0
-                        || avcodec_receive_frame(x->x_a.ctx, x->x_frm) < 0)
+                    if(x->x_pkt->stream_index == x->x_stream_idx){
+                        if(avcodec_send_packet(x->x_stream_ctx, x->x_pkt) < 0
+                        || avcodec_receive_frame(x->x_stream_ctx, x->x_frm) < 0)
                             continue;
                         int samples_converted = swr_convert(x->x_swr, (uint8_t **)&x->x_out, FRAMES,
                             (const uint8_t **)x->x_frm->extended_data, x->x_frm->nb_samples);
@@ -424,7 +424,7 @@ static t_int *playfile_perform(t_int *w){
             }
         }
     }
-    else 
+    else
         while(samples_filled < n){
             silence:
             for(int ch = nch; ch--;)
@@ -466,7 +466,7 @@ AVChannelLayout playfile_get_channel_layout_for_file(t_playfile* x, const char *
         fprintf(stderr, "Could not find any audio stream in the file\n");
         goto error;
     }
-    x->x_a.idx = audio_stream_index;
+    x->x_stream_idx = audio_stream_index;
     AVCodecParameters *codec_parameters = x->x_ic->streams[audio_stream_index]->codecpar;
     return(codec_parameters->ch_layout);
 error:
@@ -539,6 +539,7 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
     // Loop argument
     if(ac > 3 - shift && av[3 - shift].a_type == A_FLOAT)
         loop = atom_getfloat(av + 3 - shift);
+    x->x_speed = 1;
     x->x_loop = loop;
     x->x_out = (t_sample *)getbytes(x->x_nch * FRAMES * sizeof(t_sample));
     char buf[50];
@@ -550,7 +551,7 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
 
 static void playfile_free(t_playfile *x){
     av_channel_layout_uninit(&x->x_layout);
-    avcodec_free_context(&x->x_a.ctx);
+    avcodec_free_context(&x->x_stream_ctx);
     avformat_close_input(&x->x_ic);
     av_packet_free(&x->x_pkt);
     av_frame_free(&x->x_frm);
