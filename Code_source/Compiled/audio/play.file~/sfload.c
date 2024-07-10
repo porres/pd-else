@@ -48,11 +48,11 @@ void* sfload_read_audio(void *arg){
     x->x_ic->probesize = 128;
     x->x_ic->max_probe_packets = 1;
     if(avformat_open_input(&x->x_ic, x->x_path, NULL, NULL) != 0){
-        pd_error(x, "sfload: Could not open input file '%s'\n", x->x_path);
+        pd_error(x, "[sfload]: Could not open file '%s'\n", x->x_path);
         return (NULL);
     }
     if(avformat_find_stream_info(x->x_ic, NULL) < 0){
-        pd_error(x, "sfload: Could not find stream information\n");
+        pd_error(x, "[sfload]: Could not find stream information\n");
         return (NULL);
     }
     int audio_stream_index = -1;
@@ -63,27 +63,27 @@ void* sfload_read_audio(void *arg){
         }
     }
     if(audio_stream_index == -1){
-        pd_error(x, "sfload: Could not find any audio stream in the file\n");
+        pd_error(x, "[sfload]: Could not find any audio stream in the file\n");
         return (NULL);
     }
     x->x_stream_idx = audio_stream_index;
     AVCodecParameters *codec_parameters = x->x_ic->streams[audio_stream_index]->codecpar;
     const AVCodec *codec = avcodec_find_decoder(codec_parameters->codec_id);
     if(!codec){
-        pd_error(x, "sfload: Codec not found\n");
+        pd_error(x, "[sfload]: Codec not found\n");
         return (NULL);
     }
     x->x_stream_ctx = avcodec_alloc_context3(codec);
     if(!x->x_stream_ctx){
-        pd_error(x, "sfload: Could not allocate audio codec context\n");
+        pd_error(x, "[sfload]: Could not allocate audio codec context\n");
         return (NULL);
     }
     if(avcodec_parameters_to_context(x->x_stream_ctx, codec_parameters) < 0){
-        pd_error(x, "sfload: Could not copy codec parameters to context\n");
+        pd_error(x, "[sfload]: Could not copy codec parameters to context\n");
         return (NULL);
     }
     if(avcodec_open2(x->x_stream_ctx, codec, NULL) < 0){
-        pd_error(x, "sfload: Could not open codec\n");
+        pd_error(x, "[sfload]: Could not open codec\n");
         return (NULL);
     }
     AVChannelLayout layout;
@@ -95,7 +95,7 @@ void* sfload_read_audio(void *arg){
     swr_alloc_set_opts2(&x->x_swr, &layout, AV_SAMPLE_FMT_FLT, x->x_stream_ctx->sample_rate,
         &layout, x->x_stream_ctx->sample_fmt, x->x_stream_ctx->sample_rate, 0, NULL);
     if(!x->x_swr || swr_init(x->x_swr) < 0){
-        pd_error(x, "sfload: Could not initialize the resampling context\n");
+        pd_error(x, "[sfload]: Could not initialize the resampling context\n");
         return (NULL);
     }
     t_sample* x_out = (t_sample*)av_mallocz(nch * FRAMES * sizeof(t_sample));
@@ -108,7 +108,7 @@ void* sfload_read_audio(void *arg){
             int samples_converted = swr_convert(x->x_swr, (uint8_t **)&x_out, FRAMES,
                 (const uint8_t **)x->x_frm->extended_data, x->x_frm->nb_samples);
             if(samples_converted < 0){
-                pd_error(x, "sfload: Error converting samples\n");
+                pd_error(x, "[sfload]: Error converting samples\n");
                 continue;
             }
             x->x_all_out = realloc(x->x_all_out, (output_index + (samples_converted / nch)) * sizeof(t_sample));
@@ -150,10 +150,12 @@ void sfload_set(t_sfload* x, t_symbol* s){
 }
 
 void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av){
-    if(x->x_arr_name == NULL)
+    if(x->x_arr_name == NULL){
+        pd_error(x, "[sfload]: No array set\n");
         return;
+    }
     if(!pd_findbyclass(x->x_arr_name, garray_class)){
-        pd_error(x, "sfload: Array not found\n");
+        pd_error(x, "[sfload]: Array not found\n");
         return;
     }
     t_symbol* path = NULL;
@@ -164,7 +166,7 @@ void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av){
     else
         x->x_channel = 0;
     if(!path){
-        pd_error(x, "sfload: Invalid arguments float 'load' message\n");
+        pd_error(x, "[sfload]: Invalid arguments float 'load' message\n");
         return;
     }
     char dir[MAXPDSTRING];
@@ -172,7 +174,7 @@ void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av){
     sfload_find_file(x, path, dir, file);
     snprintf(x->x_path, MAXPDSTRING, "%s/%s", dir, file);
     if(pthread_create(&x->x_process_thread, NULL, sfload_read_audio, x) != 0){
-        pd_error(x, "sfload: Error creating thread\n");
+        pd_error(x, "[sfload]: Error creating thread\n");
         return;
     }
     clock_delay(x->x_result_clock, 20);
