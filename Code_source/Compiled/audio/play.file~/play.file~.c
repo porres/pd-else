@@ -134,6 +134,7 @@ static void playfile_seek(t_playfile *x, t_float f){
     x->x_a.ctx->pkt_timebase = x->x_ic->streams[x->x_a.idx]->time_base;
     const AVCodec *codec = avcodec_find_decoder(x->x_a.ctx->codec_id);
     avcodec_open2(x->x_a.ctx, codec, NULL);
+    x->x_out_buffer_size = 0;
 }
 
 static inline err_t playfile_context(t_playfile *x, t_avstream *s){
@@ -184,23 +185,30 @@ static err_t playfile_load(t_playfile *x, int index) {
         strcpy(url, x->x_plist.dir->s_name);
         strcat(url, fname);
     }
-    avformat_close_input(&x->x_ic);
-    x->x_ic = avformat_alloc_context();
-    if(avformat_open_input(&x->x_ic, url, NULL, NULL))
-        return("Failed to open input stream");
-    if(avformat_find_stream_info(x->x_ic, NULL) < 0)
-        return("Failed to find stream information");
-    x->x_ic->seek2any = 1;
-    int i = -1;
-    for(unsigned j = x->x_ic->nb_streams; j--;){
-        if(x->x_ic->streams[j]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO){
-            i = j;
-            break;
+    if(!x->x_ic || !x->x_ic->url || strncmp(x->x_ic->url, url, MAXPDSTRING) != 0) {
+        avformat_close_input(&x->x_ic);
+        x->x_ic = avformat_alloc_context();
+        x->x_ic->probesize = 128;
+        x->x_ic->max_probe_packets = 1;
+
+        if(avformat_open_input(&x->x_ic, url, NULL, NULL))
+            return("Failed to open input stream");
+        if(avformat_find_stream_info(x->x_ic, NULL) < 0)
+            return("Failed to find stream information");
+        x->x_ic->seek2any = 1;
+        int i = -1;
+        for(unsigned j = x->x_ic->nb_streams; j--;){
+            if(x->x_ic->streams[j]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO){
+                i = j;
+                break;
+            }
         }
+        x->x_a.idx = i;
+
+        if(i < 0)
+            return("No audio stream found");
     }
-    x->x_a.idx = i;
-    if(i < 0)
-        return("No audio stream found");
+
     err_t err_msg = playfile_context(x, &x->x_a);
     if(err_msg)
         return(err_msg);
@@ -234,31 +242,31 @@ static void playfile_find_file(t_playfile *x, t_symbol* file, char* dir_out, cha
 
 static void playfile_openpanel_callback(t_playfile *x, t_symbol *s, int argc, t_atom *argv){
     if(argc == 1 && argv->a_type == A_SYMBOL){
-        int err_msg = 0;
+        err_t err_msg = 0;
         t_symbol* path = atom_getsymbol(argv);
-        const char *sym = path->s_name;
+        const char *path_str = path->s_name;
         t_playlist *pl = &x->x_plist;
         char dir[MAXPDSTRING];
-        const char *fname = strrchr(sym, '/');
+        const char *fname = strrchr(path_str, '/');
         if(fname){
-            int len = ++fname - sym;
-            strncpy(dir, sym, len);
+            int len = ++fname - path_str;
+            strncpy(dir, path_str, len);
             dir[len] = '\0';
         }
         else{
-            fname = sym;
+            fname = path_str;
             strcpy(dir, "./");
         }
         pl->dir = gensym(dir);
-        const char *ext = strrchr(sym, '.');
+        const char *ext = strrchr(path_str, '.');
         if (ext && !strcmp(ext + 1, "m3u"))
-            err_msg = (int)playlist_m3u(pl, s);
+            err_msg = playlist_m3u(pl, s);
         else{
             pl->size = 1;
             pl->arr[0] = gensym(fname);
         }
-        if(err_msg || (err_msg = (int)playfile_load(x, 0)))
-            pd_error(x, "[play.file~]: open: %i", err_msg);
+        if(err_msg || (err_msg = playfile_load(x, 0)))
+            pd_error(x, "[play.file~]: open: %li", (long)err_msg);
         x->x_open = !err_msg;
         playfile_start(x, 1.0f, 0.0f);
     }
@@ -274,6 +282,37 @@ static void playfile_open(t_playfile *x, t_symbol *s, int ac, t_atom *av){
         const char *sym = av->a_w.w_symbol->s_name;
         if(strlen(sym) >= MAXPDSTRING)
             err_msg = "File path is too long";
+        else if(strncmp(av->a_w.w_symbol->s_name, "http:", strlen("http:")) == 0 ||
+                strncmp(av->a_w.w_symbol->s_name, "https:", strlen("https:")) == 0 ||
+                strncmp(av->a_w.w_symbol->s_name, "ftp:", strlen("ftp:")) == 0)
+        {
+            t_symbol* path = atom_getsymbol(av);
+            const char *path_str = path->s_name;
+            t_playlist *pl = &x->x_plist;
+            char dir[MAXPDSTRING];
+            const char *fname = strrchr(path_str, '/');
+            if(fname){
+                int len = ++fname - path_str;
+                strncpy(dir, path_str, len);
+                dir[len] = '\0';
+            }
+            else{
+                fname = path_str;
+                strcpy(dir, "./");
+            }
+            pl->dir = gensym(dir);
+            const char *ext = strrchr(path_str, '.');
+            if (ext && !strcmp(ext + 1, "m3u"))
+                err_msg = playlist_m3u(pl, s);
+            else{
+                pl->size = 1;
+                pl->arr[0] = gensym(fname);
+            }
+            if(err_msg || (err_msg = playfile_load(x, 0)))
+                pd_error(x, "[play.file~]: open: %s.", err_msg);
+            x->x_open = !err_msg;
+            playfile_start(x, 1.0f, 0.0f);
+        }
         else{
             char filename[MAXPDSTRING];
             char dirname[MAXPDSTRING];
@@ -373,7 +412,8 @@ static t_int *playfile_perform(t_int *w){
                             playfile_open(x, gensym("open"), 1, &(t_atom){.a_type = A_SYMBOL, .a_w = { .w_symbol = x->x_play_next }});
                             x->x_play_next = NULL;
                         }
-                        playfile_start(x, 1.0f, 0.0f);
+                        playfile_seek(x, 0.0f);
+                        x->x_play = 1;
                     }
                     else{
                         if(x->x_play_next){
@@ -389,7 +429,7 @@ static t_int *playfile_perform(t_int *w){
 
             // Fill the output buffer
             while (samples_filled < n && x->x_out_buffer_index < x->x_out_buffer_size) {
-                for (int ch = 0; ch < nch; ++ch) {
+                for (unsigned int ch = 0; ch < nch; ch++) {
                     outs[ch][samples_filled] = x->x_out[x->x_out_buffer_index + ch];
                 }
                 x->x_out_buffer_index += nch;
@@ -412,26 +452,25 @@ static void playfile_dsp(t_playfile *x, t_signal **sp){
     dsp_add(playfile_perform, 3, x, sp[0]->s_n, sp[0]->s_vec);
 }
 
-AVChannelLayout playfile_get_channel_layout_for_file(const char *dirname, const char *filename) {
+AVChannelLayout playfile_get_channel_layout_for_file(t_playfile* x, const char *dirname, const char *filename) {
     char input_path[MAXPDSTRING];
-    if(!input_path){
-        fprintf(stderr, "Could not allocate memory for input path\n");
-        goto error;
-    }
     snprintf(input_path, MAXPDSTRING, "%s/%s", dirname, filename);
-    AVFormatContext *format_context = NULL;
-    if(avformat_open_input(&format_context, input_path, NULL, NULL) != 0){
+
+    x->x_ic = avformat_alloc_context();
+    x->x_ic->probesize = 128;
+    x->x_ic->max_probe_packets = 1;
+    if(avformat_open_input(&x->x_ic, input_path, NULL, NULL) != 0){
         fprintf(stderr, "Could not open input file '%s'\n", input_path);
         goto error;
     }
     // Retrieve stream information
-    if(avformat_find_stream_info(format_context, NULL) < 0){
+    if(avformat_find_stream_info(x->x_ic, NULL) < 0){
         fprintf(stderr, "Could not find stream information\n");
         goto error;
     }
     int audio_stream_index = -1;
-    for(unsigned int i = 0; i < format_context->nb_streams; i++){
-        if(format_context->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO){
+    for(unsigned int i = 0; i < x->x_ic->nb_streams; i++){
+        if(x->x_ic->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO){
             audio_stream_index = i;
             break;
         }
@@ -440,11 +479,13 @@ AVChannelLayout playfile_get_channel_layout_for_file(const char *dirname, const 
         fprintf(stderr, "Could not find any audio stream in the file\n");
         goto error;
     }
-    AVCodecParameters *codec_parameters = format_context->streams[audio_stream_index]->codecpar;
+
+    x->x_a.idx = audio_stream_index;
+    AVCodecParameters *codec_parameters = x->x_ic->streams[audio_stream_index]->codecpar;
     return(codec_parameters->ch_layout);
 error:
-    if(format_context)
-        avformat_close_input(&format_context);
+    if(x->x_ic)
+        avformat_close_input(&x->x_ic);
     AVChannelLayout l;
     av_channel_layout_default(&l, 1);
     return(l);
@@ -468,6 +509,7 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
     x->x_open = x->x_play = 0;
     x->x_pkt = av_packet_alloc();
     x->x_frm = av_frame_alloc();
+    x->x_ic = NULL;
     t_playlist *pl = &x->x_plist;
     pl->size = 0;
     pl->max = 1;
@@ -486,7 +528,7 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
         char file[MAXPDSTRING];
 
         playfile_find_file(x, atom_getsymbol(av), dir, file);
-        layout = playfile_get_channel_layout_for_file(dir, file);
+        layout = playfile_get_channel_layout_for_file(x, dir, file);
         nch = layout.nb_channels;
     }
     else {
