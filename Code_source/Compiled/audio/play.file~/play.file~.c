@@ -4,9 +4,10 @@
 #include <libavformat/avformat.h>
 #include <libswresample/swresample.h>
 #include <m_pd.h>
-#include <g_canvas.h>
 
 #define FRAMES 4096
+
+t_canvas *glist_getcanvas(t_glist *x);
 
 typedef struct _avstream{
     AVCodecContext *ctx;
