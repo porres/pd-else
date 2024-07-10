@@ -4,9 +4,10 @@
 #include <libavformat/avformat.h>
 #include <libswresample/swresample.h>
 #include <m_pd.h>
-#include <g_canvas.h>
 
 #define FRAMES 4096
+
+t_canvas *glist_getcanvas(t_glist *x);
 
 typedef struct _avstream{
     AVCodecContext *ctx;
@@ -35,14 +36,13 @@ typedef struct _playfile{
     AVChannelLayout x_layout;
     t_playlist      x_plist;
     t_canvas       *x_canvas;
-    t_sample       *x_in;
     t_sample       *x_out;
+    int             x_out_buffer_index;
+    int             x_out_buffer_size;
     t_float         x_speed;
     int             x_loop;
     t_symbol       *x_play_next;
-    int             x_out_buffer_index;
-    int             x_out_buffer_size;
-    t_sample       *x_out_buffer;
+    t_symbol       *x_openpanel_sym;
 }t_playfile;
 
 // ---------------------- playlist ------------------------
@@ -268,11 +268,7 @@ static void playfile_open(t_playfile *x, t_symbol *s, int ac, t_atom *av){
     x->x_play = 0;
     err_t err_msg = 0;
     if(ac == 0){
-        char buf[50];
-        snprintf(buf, 50, "d%lx", (t_int)x);
-        t_symbol* sym = gensym(buf);
-        pd_bind(&x->x_obj.ob_pd, sym);
-        pdgui_vmess("pdtk_openpanel", "ssic", buf, canvas_getdir(x->x_canvas)->s_name, 0, glist_getcanvas(x->x_canvas));
+        pdgui_vmess("pdtk_openpanel", "ssic", x->x_openpanel_sym->s_name, canvas_getdir(x->x_canvas)->s_name, 0, glist_getcanvas(x->x_canvas));
     }
     else if(ac == 1 && av->a_type == A_SYMBOL) {
         const char *sym = av->a_w.w_symbol->s_name;
@@ -493,6 +489,13 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
         layout = playfile_get_channel_layout_for_file(dir, file);
         nch = layout.nb_channels;
     }
+    else {
+        uint64_t mask = 0;
+        for(int ch = 0; ch < nch; ch++)
+            mask |= (ch + 1);
+        av_channel_layout_from_mask(&layout, mask);
+    }
+
     // channel layout masking details: libavutil/channel_layout.h
     x->x_layout = layout;
     x->x_nch = nch;
@@ -513,8 +516,12 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
         loop = atom_getfloat(av + 3 - shift);
     x->x_speed = 1;
     x->x_loop = loop;
-    x->x_in  = (t_sample *)getbytes(x->x_nch * FRAMES * sizeof(t_sample));
     x->x_out = (t_sample *)getbytes(x->x_nch * FRAMES * sizeof(t_sample));
+
+    char buf[50];
+    snprintf(buf, 50, "d%lx", (t_int)x);
+    x->x_openpanel_sym = gensym(buf);
+    pd_bind(&x->x_obj.ob_pd, x->x_openpanel_sym);
     return(x);
 }
 
@@ -528,8 +535,8 @@ static void playfile_free(t_playfile *x){
     t_playlist *pl = &x->x_plist;
     freebytes(pl->arr, pl->max * sizeof(t_symbol *));
     freebytes(x->x_outs, x->x_nch * sizeof(t_sample *));
-    freebytes(x->x_in, x->x_nch * sizeof(t_sample) * FRAMES);
     freebytes(x->x_out, x->x_nch * sizeof(t_sample) * FRAMES);
+    pd_unbind(&x->x_obj.ob_pd, x->x_openpanel_sym);
 }
 
 void setup_play0x2efile_tilde(void) {
