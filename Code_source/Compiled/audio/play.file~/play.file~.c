@@ -412,7 +412,8 @@ static t_int *playfile_perform(t_int *w){
                             playfile_open(x, gensym("open"), 1, &(t_atom){.a_type = A_SYMBOL, .a_w = { .w_symbol = x->x_play_next }});
                             x->x_play_next = NULL;
                         }
-                        playfile_start(x, 1.0f, 0.0f);
+                        playfile_seek(x, 0.0f);
+                        x->x_play = 1;
                     }
                     else{
                         if(x->x_play_next){
