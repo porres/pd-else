@@ -39,7 +39,6 @@ typedef struct _playfile{
     t_sample       *x_out;
     int             x_out_buffer_index;
     int             x_out_buffer_size;
-    t_float         x_speed;
     int             x_loop;
     t_symbol       *x_play_next;
     t_symbol       *x_openpanel_sym;
@@ -564,7 +563,6 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
     // Loop argument
     if(ac > 3 - shift && av[3 - shift].a_type == A_FLOAT)
         loop = atom_getfloat(av + 3 - shift);
-    x->x_speed = 1;
     x->x_loop = loop;
     x->x_out = (t_sample *)getbytes(x->x_nch * FRAMES * sizeof(t_sample));
 
