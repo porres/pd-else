@@ -24,15 +24,13 @@ typedef struct _sfload{
     AVFormatContext *x_ic;
     AVChannelLayout x_layout;
     unsigned int    x_channel;
-    t_sample       *x_out;
     t_sample       *x_all_out;
     t_canvas       *x_canvas;
     t_symbol       *x_arr_name;
     pthread_t       x_process_thread;
     _Atomic int     x_result_ready;
     t_clock        *x_result_clock;
-    char            x_dir[MAXPDSTRING];
-    char            x_file[MAXPDSTRING];
+    char            x_path[MAXPDSTRING];
 }t_sfload;
 
 static void sfload_find_file(t_sfload *x, t_symbol* file, char* dir_out, char* filename_out){
@@ -46,17 +44,15 @@ static void sfload_find_file(t_sfload *x, t_symbol* file, char* dir_out, char* f
 
 void* sfload_read_audio(void *arg) {
     t_sfload *x = (t_sfload*)arg;
-    char input_path[MAXPDSTRING];
-    snprintf(input_path, MAXPDSTRING, "%s/%s", x->x_dir, x->x_file);
 
     x->x_ic = avformat_alloc_context();
     x->x_ic->probesize = 128;
     x->x_ic->max_probe_packets = 1;
-    if (avformat_open_input(&x->x_ic, input_path, NULL, NULL) != 0) {
-        pd_error(x, "sfload: Could not open input file '%s'\n", input_path);
+    if (avformat_open_input(&x->x_ic, x->x_path, NULL, NULL) != 0) {
+        pd_error(x, "sfload: Could not open input file '%s'\n", x->x_path);
         return NULL;
     }
-    
+
     if (avformat_find_stream_info(x->x_ic, NULL) < 0) {
         pd_error(x, "sfload: Could not find stream information\n");
         return NULL;
@@ -101,19 +97,19 @@ void* sfload_read_audio(void *arg) {
         av_channel_layout_from_mask(&layout, x->x_stream_ctx->ch_layout.u.mask);
     else
         av_channel_layout_default(&layout, x->x_stream_ctx->ch_layout.nb_channels);
-    
+
     unsigned int nch = layout.nb_channels;
-    
+
     swr_alloc_set_opts2(&x->x_swr, &layout, AV_SAMPLE_FMT_FLT,
                                        x->x_stream_ctx->sample_rate, &layout, x->x_stream_ctx->sample_fmt,
                                        x->x_stream_ctx->sample_rate, 0, NULL);
-    
+
     if (!x->x_swr || swr_init(x->x_swr) < 0) {
         pd_error(x, "sfload: Could not initialize the resampling context\n");
         return NULL;
     }
-    
-    x->x_out = av_mallocz(nch * FRAMES * sizeof(t_sample));
+
+    t_sample* x_out = (t_sample*)av_mallocz(nch * FRAMES * sizeof(t_sample));
     int output_index = 0;
     while (av_read_frame(x->x_ic, x->x_pkt) >= 0) {
         if (x->x_pkt->stream_index == x->x_stream_idx) {
@@ -121,21 +117,21 @@ void* sfload_read_audio(void *arg) {
                 continue;
             }
 
-            int samples_converted = swr_convert(x->x_swr, (uint8_t **)&x->x_out, FRAMES,
+            int samples_converted = swr_convert(x->x_swr, (uint8_t **)&x_out, FRAMES,
                                                 (const uint8_t **)x->x_frm->extended_data, x->x_frm->nb_samples);
 
             if (samples_converted < 0) {
                 pd_error(x, "sfload: Error converting samples\n");
                 continue;
             }
-            
+
             x->x_all_out = realloc(x->x_all_out, (output_index + (samples_converted / nch)) * sizeof(t_sample));
-            
+
             int n = 0;
             while (n < samples_converted) {
                 for (unsigned int ch = 0; ch < nch; ch++) {
                     if(ch == x->x_channel) {
-                        x->x_all_out[output_index] = x->x_out[n];
+                        x->x_all_out[output_index] = x_out[n];
                     }
                     n++;
                 }
@@ -144,10 +140,10 @@ void* sfload_read_audio(void *arg) {
         }
         av_packet_unref(x->x_pkt);
     }
-    
+
     x->x_result_ready = output_index;
-    
-    av_free(x->x_out);
+
+    av_free(x_out);
     return NULL;
 }
 
@@ -157,22 +153,22 @@ void sfload_check_done(t_sfload* x)
     {
         t_garray* garray = (t_garray*)pd_findbyclass(x->x_arr_name, garray_class);
         garray_resize_long(garray, x->x_result_ready);
-        
+
         t_word* vec = ((t_word*)garray_vec(garray));
-        
+
         for(int i = 0; i < x->x_result_ready; i++)
         {
             vec[i].w_float = x->x_all_out[i];
         }
-        
+
         garray_redraw(garray);
-        
+
         x->x_result_ready = 0;
         free(x->x_all_out);
         x->x_all_out = NULL;
     }
     else {
-        clock_delay(x->x_result_clock, 50);
+        clock_delay(x->x_result_clock, 20);
     }
 }
 
@@ -188,7 +184,7 @@ void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av)
         pd_error(x, "sfload: Array not found\n");
         return;
     }
-    
+
     t_symbol* path = NULL;
     if(ac == 1 && av[0].a_type == A_SYMBOL) {
         path = atom_getsymbol(av);
@@ -204,21 +200,24 @@ void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av)
         pd_error(x, "sfload: Invalid arguments float 'load' message\n");
         return;
     }
-    
-    sfload_find_file(x, path, x->x_dir, x->x_file);
+
+    char dir[MAXPDSTRING];
+    char file[MAXPDSTRING];
+    sfload_find_file(x, path, dir, file);
+    snprintf(x->x_path, MAXPDSTRING, "%s/%s", dir, file);
 
     if(pthread_create(&x->x_process_thread, NULL, sfload_read_audio, x) != 0)
     {
         pd_error(x, "sfload: Error creating thread\n");
         return;
     }
-    
-    clock_delay(x->x_result_clock, 50);
+
+    clock_delay(x->x_result_clock, 20);
 }
 
 static void *sfload_new(t_symbol *s, int ac, t_atom *av){
     t_sfload *x = (t_sfload *)pd_new(sfload_class);
-    
+
     if(ac >= 1 && av[0].a_type == A_SYMBOL) {
         x->x_arr_name = atom_getsymbol(av);
     }
@@ -227,7 +226,6 @@ static void *sfload_new(t_symbol *s, int ac, t_atom *av){
     x->x_frm = av_frame_alloc();
     x->x_ic = NULL;
     x->x_all_out = NULL;
-    x->x_out = NULL;
     x->x_canvas = canvas_getcurrent();
     x->x_result_ready = 0;
     x->x_result_clock = clock_new(x, (t_method)sfload_check_done);
@@ -235,6 +233,8 @@ static void *sfload_new(t_symbol *s, int ac, t_atom *av){
 }
 
 static void sfload_free(t_sfload *x){
+    clock_free(x->x_result_clock);
+    pthread_join(x->x_process_thread, NULL);
     av_channel_layout_uninit(&x->x_layout);
     avcodec_free_context(&x->x_stream_ctx);
     avformat_close_input(&x->x_ic);
