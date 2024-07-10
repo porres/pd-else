@@ -83,8 +83,7 @@ jobs:
       - name: Build play.file~
         run: |
           cd ./Code_source/Compiled/audio/play.file~
-          make PDINCLUDEDIR=./pure-data/src/ ffmpeg
-          make PDINCLUDEDIR=./pure-data/src/ extension=l_amd64
+          make PDINCLUDEDIR=./pure-data/src/ extension=l_amd64 all_obj
 
       - name: Build pd-else
         run: |
@@ -203,7 +202,7 @@ jobs:
           cp -r ./out/else/*.* ./else-Windows
           cp -r ./Code_source/Compiled/audio/sfont~/out/sfont~/*.* ./else-Windows
           cp -r ./Code_source/Compiled/audio/plaits~/out/plaits~/*.* ./else-Windows
-          cp ./Code_source/Compiled/audio/play.file~/play.file~.m_amd64 ./else-Windows
+          cp ./Code_source/Compiled/audio/play.file~/*.m_amd64 ./else-Windows
 
       - name: Upload Zip
         uses: actions/upload-artifact@v3
@@ -251,8 +250,7 @@ jobs:
       - name: Build play.file~
         run: |
           cd ./Code_source/Compiled/audio/play.file~
-          make ffmpeg
-          make extension=d_amd64
+          make extension=d_amd64 all_obj
 
       - name: Build pd-else
         run: |
@@ -316,8 +314,7 @@ jobs:
       - name: Build play.file~
         run: |
           cd ./Code_source/Compiled/audio/play.file~
-          make ffmpeg
-          make extension=d_arm64
+          make extension=d_arm64 all_obj
 
       - name: Build pd-else
         run: |

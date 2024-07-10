@@ -14,7 +14,8 @@ endef
 
 LIBSAMPLERATE=../../../shared/libsamplerate
 
-play.file~.class.sources := play.file~.c $(LIBSAMPLERATE)/samplerate.c $(LIBSAMPLERATE)/src_linear.c $(LIBSAMPLERATE)/src_sinc.c $(LIBSAMPLERATE)/src_zoh.c
+play.file~.class.sources := play.file~.c
+sfload.class.sources := sfload.c
 
 ldlibs = -L$(FFMPEG_DIR)/libavutil -L$(FFMPEG_DIR)/libavcodec -L$(FFMPEG_DIR)/libavformat -L$(FFMPEG_DIR)/libswresample -lavformat -lavcodec -lswresample -lavutil -lz
 
@@ -44,7 +45,7 @@ include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
 
 .PHONY: clean
 
-both: ffmpeg play.file~
+all_obj: ffmpeg play.file~ sfload
 
 ffmpeg: $(FFMPEG_DIR)
 

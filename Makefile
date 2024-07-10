@@ -465,7 +465,7 @@ sfz-clean:
 
 # and for play.file
 play.file:
-	$(MAKE) -C Code_source/Compiled/audio/play.file~ system=$(system) extension=$(extension) both
+	$(MAKE) -C Code_source/Compiled/audio/play.file~ system=$(system) extension=$(extension) all_obj
 
 play.file-install:
 	$(MAKE) -C Code_source/Compiled/audio/play.file~ install extension=$(extension) installpath="$(abspath $(PDLIBDIR))/else"
