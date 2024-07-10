@@ -146,7 +146,7 @@ static inline err_t playfile_context(t_playfile *x){
 
 static AVChannelLayout playfile_layout(t_playfile *x){
     AVChannelLayout layout_in;
-    if (x->x_stream_ctx->ch_layout.u.mask)
+    if(x->x_stream_ctx->ch_layout.u.mask)
         av_channel_layout_from_mask(&layout_in, x->x_stream_ctx->ch_layout.u.mask);
     else
         av_channel_layout_default(&layout_in, x->x_stream_ctx->ch_layout.nb_channels);
@@ -199,6 +199,7 @@ static err_t playfile_load(t_playfile *x, int index) {
     }
 
     err_t err_msg = playfile_context(x);
+
     if(err_msg)
         return(err_msg);
     x->x_frm->pts = 0;
@@ -219,7 +220,6 @@ static void playfile_start(t_playfile *x, t_float f, t_float ms){
     if(0 < track && track <= x->x_plist.size){
         if((err_msg = playfile_load(x, track - 1)))
             pd_error(x, "[play.file~] 'base start': %s.", err_msg);
-
         playfile_seek(x, ms);
         x->x_open = !err_msg;
     }
@@ -373,10 +373,10 @@ static t_int *playfile_perform(t_int *w){
                 // Need to read and convert more data
                 x->x_out_buffer_index = 0;
                 x->x_out_buffer_size = 0;
-                while (av_read_frame(x->x_ic, x->x_pkt) >= 0) {
-                    if (x->x_pkt->stream_index == x->x_stream_idx) {
-                        if (avcodec_send_packet(x->x_stream_ctx, x->x_pkt) < 0
-                        || avcodec_receive_frame(x->x_stream_ctx, x->x_frm) < 0){
+                while(av_read_frame(x->x_ic, x->x_pkt) >= 0){
+                    if(x->x_pkt->stream_index == x->x_stream_idx){
+                        if(avcodec_send_packet(x->x_stream_ctx, x->x_pkt) < 0
+                        || avcodec_receive_frame(x->x_stream_ctx, x->x_frm) < 0)
                             continue;
                         int samples_converted = swr_convert(x->x_swr, (uint8_t **)&x->x_out, FRAMES,
                             (const uint8_t **)x->x_frm->extended_data, x->x_frm->nb_samples);
@@ -466,7 +466,6 @@ AVChannelLayout playfile_get_channel_layout_for_file(t_playfile* x, const char *
         fprintf(stderr, "Could not find any audio stream in the file\n");
         goto error;
     }
-
     x->x_stream_idx = audio_stream_index;
     AVCodecParameters *codec_parameters = x->x_ic->streams[audio_stream_index]->codecpar;
     return(codec_parameters->ch_layout);
