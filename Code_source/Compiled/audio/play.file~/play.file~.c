@@ -134,6 +134,7 @@ static void playfile_seek(t_playfile *x, t_float f){
     x->x_a.ctx->pkt_timebase = x->x_ic->streams[x->x_a.idx]->time_base;
     const AVCodec *codec = avcodec_find_decoder(x->x_a.ctx->codec_id);
     avcodec_open2(x->x_a.ctx, codec, NULL);
+    x->x_out_buffer_size = 0;
 }
 
 static inline err_t playfile_context(t_playfile *x, t_avstream *s){
@@ -186,6 +187,9 @@ static err_t playfile_load(t_playfile *x, int index) {
     }
     avformat_close_input(&x->x_ic);
     x->x_ic = avformat_alloc_context();
+    x->x_ic->probesize = 32;
+    x->x_ic->max_probe_packets = 1;
+
     if(avformat_open_input(&x->x_ic, url, NULL, NULL))
         return("Failed to open input stream");
     if(avformat_find_stream_info(x->x_ic, NULL) < 0)
@@ -414,10 +418,6 @@ static void playfile_dsp(t_playfile *x, t_signal **sp){
 
 AVChannelLayout playfile_get_channel_layout_for_file(const char *dirname, const char *filename) {
     char input_path[MAXPDSTRING];
-    if(!input_path){
-        fprintf(stderr, "Could not allocate memory for input path\n");
-        goto error;
-    }
     snprintf(input_path, MAXPDSTRING, "%s/%s", dirname, filename);
     AVFormatContext *format_context = NULL;
     if(avformat_open_input(&format_context, input_path, NULL, NULL) != 0){
