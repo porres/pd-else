@@ -216,11 +216,11 @@ static err_t playfile_load(t_playfile *x, int index) {
     return(playfile_reset(x));
 }
 
-static void playfile_pause(t_playfile *x, t_float f, t_float ms){
+static void playfile_pause(t_playfile *x){
     x->x_play = 0;
 }
 
-static void playfile_continue(t_playfile *x, t_float f, t_float ms){
+static void playfile_continue(t_playfile *x){
     x->x_play = 1;
 }
 
