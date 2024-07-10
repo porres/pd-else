@@ -222,8 +222,8 @@ static void playfile_start(t_playfile *x, t_float f, t_float ms){
     if(0 < track && track <= x->x_plist.size){
         if((err_msg = playfile_load(x, track - 1)))
             pd_error(x, "[play.file~] 'base start': %s.", err_msg);
-        else if (ms > 0)
-            playfile_seek(x, ms);
+
+        playfile_seek(x, ms);
         x->x_open = !err_msg;
     }
     else
