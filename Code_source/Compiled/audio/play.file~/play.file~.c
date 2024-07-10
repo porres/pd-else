@@ -317,13 +317,7 @@ static void playfile_stop(t_playfile *x){
     playfile_float(x, 0);
 }
 
-// ------------------------- FFmpeg player -------------------------
 static t_class *playfile_class;
-
-static void playfile_seek(t_playfile *x, t_float f){
-    playfile_seek(x, f);
-}
-
 
 static void playfile_loop(t_playfile *x, t_float f){
     x->x_loop = f;
