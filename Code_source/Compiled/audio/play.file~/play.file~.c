@@ -80,19 +80,13 @@ static int depth;
 
 static int m3u_size(FILE *fp, char *dir, int dlen){
     int size = 0;
-    M3U_MAIN (
-      size += m3u_size(m3u, dir, dlen + len)
-    , size++
-    )
+    M3U_MAIN(size += m3u_size(m3u, dir, dlen + len), size++)
     return(size);
 }
 
 static int playlist_fill(t_playlist *pl, FILE *fp, char *dir, int dlen, int i) {
     int oldlen = strlen(pl->dir->s_name);
-    M3U_MAIN (
-      i = playlist_fill(pl, m3u, dir, dlen + len, i)
-    , pl->arr[i++] = gensym(dir + oldlen)
-    )
+    M3U_MAIN (i = playlist_fill(pl, m3u, dir, dlen + len, i), pl->arr[i++] = gensym(dir + oldlen))
     return(i);
 }
 
@@ -107,8 +101,8 @@ static inline err_t playlist_m3u(t_playlist *pl, t_symbol *s){
     if(size < 1)
         return ("Playlist is empty");
     if(size > pl->max){
-        pl->arr = (t_symbol **)resizebytes(pl->arr
-        , pl->max * sizeof(t_symbol *), size * sizeof(t_symbol *));
+        pl->arr = (t_symbol **)resizebytes(pl->arr,
+            pl->max * sizeof(t_symbol *), size * sizeof(t_symbol *));
         pl->max = size;
     }
     pl->size = size;
@@ -153,9 +147,9 @@ static inline err_t playfile_context(t_playfile *x, t_avstream *s){
     return(0);
 }
 
-static AVChannelLayout playfile_layout(t_playfile *x) {
+static AVChannelLayout playfile_layout(t_playfile *x){
     AVChannelLayout layout_in;
-    if (x->x_a.ctx->ch_layout.u.mask)
+    if(x->x_a.ctx->ch_layout.u.mask)
         av_channel_layout_from_mask(&layout_in, x->x_a.ctx->ch_layout.u.mask);
     else
         av_channel_layout_default(&layout_in, x->x_a.ctx->ch_layout.nb_channels);
@@ -189,7 +183,6 @@ static err_t playfile_load(t_playfile *x, int index) {
         x->x_ic = avformat_alloc_context();
         x->x_ic->probesize = 128;
         x->x_ic->max_probe_packets = 1;
-
         if(avformat_open_input(&x->x_ic, url, NULL, NULL))
             return("Failed to open input stream");
         if(avformat_find_stream_info(x->x_ic, NULL) < 0)
@@ -203,16 +196,14 @@ static err_t playfile_load(t_playfile *x, int index) {
             }
         }
         x->x_a.idx = i;
-
         if(i < 0)
             return("No audio stream found");
     }
-
     err_t err_msg = playfile_context(x, &x->x_a);
     if(err_msg)
         return(err_msg);
     x->x_frm->pts = 0;
-    return(playfile_reset(x));
+    return (playfile_reset(x));
 }
 
 static void playfile_pause(t_playfile *x){
@@ -229,7 +220,6 @@ static void playfile_start(t_playfile *x, t_float f, t_float ms){
     if(0 < track && track <= x->x_plist.size){
         if((err_msg = playfile_load(x, track - 1)))
             pd_error(x, "[play.file~] 'base start': %s.", err_msg);
-
         playfile_seek(x, ms);
         x->x_open = !err_msg;
     }
@@ -266,7 +256,7 @@ static void playfile_openpanel_callback(t_playfile *x, t_symbol *s, int argc, t_
         }
         pl->dir = gensym(dir);
         const char *ext = strrchr(path_str, '.');
-        if (ext && !strcmp(ext + 1, "m3u"))
+        if(ext && !strcmp(ext + 1, "m3u"))
             err_msg = playlist_m3u(pl, s);
         else{
             pl->size = 1;
@@ -377,40 +367,32 @@ static t_int *playfile_perform(t_int *w){
         outs[i] = x->x_outs[i];
     int n = (int)(w[2]);
     int samples_filled = 0;
-
     if(x->x_play){
         while (samples_filled < n) {
             if (x->x_out_buffer_index >= x->x_out_buffer_size) {
                 // Need to read and convert more data
                 x->x_out_buffer_index = 0;
                 x->x_out_buffer_size = 0;
-
-                while (av_read_frame(x->x_ic, x->x_pkt) >= 0) {
-                    if (x->x_pkt->stream_index == x->x_a.idx) {
-                        if (avcodec_send_packet(x->x_a.ctx, x->x_pkt) < 0
-                            || avcodec_receive_frame(x->x_a.ctx, x->x_frm) < 0){
+                while(av_read_frame(x->x_ic, x->x_pkt) >= 0){
+                    if(x->x_pkt->stream_index == x->x_a.idx){
+                        if(avcodec_send_packet(x->x_a.ctx, x->x_pkt) < 0
+                        || avcodec_receive_frame(x->x_a.ctx, x->x_frm) < 0)
                             continue;
-                        }
-
                         int samples_converted = swr_convert(x->x_swr, (uint8_t **)&x->x_out, FRAMES,
-                                                            (const uint8_t **)x->x_frm->extended_data, x->x_frm->nb_samples);
-
+                            (const uint8_t **)x->x_frm->extended_data, x->x_frm->nb_samples);
                         x->x_out_buffer_size = samples_converted;
-
-                        if (samples_converted < 0) {
+                        if(samples_converted < 0){
                             fprintf(stderr, "Error converting samples\n");
                             x->x_out_buffer_size = 0;
                             continue;
                         }
-
                         x->x_out_buffer_size = samples_converted * nch;
                         break; // Break out of the inner while loop
                     }
                     av_packet_unref(x->x_pkt);
                 }
-
-                if (x->x_out_buffer_size == 0) {
-                    if (x->x_play){
+                if(x->x_out_buffer_size == 0){
+                    if(x->x_play){
                         x->x_play = 0;
                         outlet_bang(x->x_o_meta);
                     }
@@ -433,23 +415,22 @@ static t_int *playfile_perform(t_int *w){
                     }
                 }
             }
-
             // Fill the output buffer
-            while (samples_filled < n && x->x_out_buffer_index < x->x_out_buffer_size) {
-                for (unsigned int ch = 0; ch < nch; ch++) {
+            while(samples_filled < n && x->x_out_buffer_index < x->x_out_buffer_size){
+                for(unsigned int ch = 0; ch < nch; ch++)
                     outs[ch][samples_filled] = x->x_out[x->x_out_buffer_index + ch];
-                }
                 x->x_out_buffer_index += nch;
                 samples_filled++;
             }
         }
     }
-    else while (samples_filled < n) {
-    silence:
-        for(int ch = nch; ch--;)
-            outs[ch][samples_filled] = 0.0f;
-        samples_filled++;
-    }
+    else 
+        while(samples_filled < n){
+            silence:
+            for(int ch = nch; ch--;)
+                outs[ch][samples_filled] = 0.0f;
+            samples_filled++;
+        }
     return(w+4);
 }
 
@@ -462,7 +443,6 @@ static void playfile_dsp(t_playfile *x, t_signal **sp){
 AVChannelLayout playfile_get_channel_layout_for_file(t_playfile* x, const char *dirname, const char *filename) {
     char input_path[MAXPDSTRING];
     snprintf(input_path, MAXPDSTRING, "%s/%s", dirname, filename);
-
     x->x_ic = avformat_alloc_context();
     x->x_ic->probesize = 128;
     x->x_ic->max_probe_packets = 1;
@@ -486,7 +466,6 @@ AVChannelLayout playfile_get_channel_layout_for_file(t_playfile* x, const char *
         fprintf(stderr, "Could not find any audio stream in the file\n");
         goto error;
     }
-
     x->x_a.idx = audio_stream_index;
     AVCodecParameters *codec_parameters = x->x_ic->streams[audio_stream_index]->codecpar;
     return(codec_parameters->ch_layout);
@@ -531,20 +510,17 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
         av_channel_layout_from_mask(&layout, mask);
     }
     else if(ac && av[0].a_type == A_SYMBOL){ // Num channels from file
-        char dir[MAXPDSTRING];
-        char file[MAXPDSTRING];
-
+        char dir[MAXPDSTRING], file[MAXPDSTRING];
         playfile_find_file(x, atom_getsymbol(av), dir, file);
         layout = playfile_get_channel_layout_for_file(x, dir, file);
         nch = layout.nb_channels;
     }
-    else {
+    else{
         uint64_t mask = 0;
         for(int ch = 0; ch < nch; ch++)
             mask |= (ch + 1);
         av_channel_layout_from_mask(&layout, mask);
     }
-
     // channel layout masking details: libavutil/channel_layout.h
     x->x_layout = layout;
     x->x_nch = nch;
@@ -565,7 +541,6 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
         loop = atom_getfloat(av + 3 - shift);
     x->x_loop = loop;
     x->x_out = (t_sample *)getbytes(x->x_nch * FRAMES * sizeof(t_sample));
-
     char buf[50];
     snprintf(buf, 50, "d%lx", (t_int)x);
     x->x_openpanel_sym = gensym(buf);
