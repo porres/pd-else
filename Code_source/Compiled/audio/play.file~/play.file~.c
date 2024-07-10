@@ -39,7 +39,6 @@ typedef struct _playfile{
     t_sample       *x_out;
     int             x_out_buffer_index;
     int             x_out_buffer_size;
-    t_float         x_speed;
     int             x_loop;
     t_symbol       *x_play_next;
     t_symbol       *x_openpanel_sym;
@@ -216,14 +215,22 @@ static err_t playfile_load(t_playfile *x, int index) {
     return(playfile_reset(x));
 }
 
+static void playfile_pause(t_playfile *x){
+    x->x_play = 0;
+}
+
+static void playfile_continue(t_playfile *x){
+    x->x_play = 1;
+}
+
 static void playfile_start(t_playfile *x, t_float f, t_float ms){
     int track = f;
     err_t err_msg = "";
     if(0 < track && track <= x->x_plist.size){
         if((err_msg = playfile_load(x, track - 1)))
             pd_error(x, "[play.file~] 'base start': %s.", err_msg);
-        else if (ms > 0)
-            playfile_seek(x, ms);
+
+        playfile_seek(x, ms);
         x->x_open = !err_msg;
     }
     else
@@ -556,7 +563,6 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
     // Loop argument
     if(ac > 3 - shift && av[3 - shift].a_type == A_FLOAT)
         loop = atom_getfloat(av + 3 - shift);
-    x->x_speed = 1;
     x->x_loop = loop;
     x->x_out = (t_sample *)getbytes(x->x_nch * FRAMES * sizeof(t_sample));
 
@@ -593,6 +599,8 @@ void setup_play0x2efile_tilde(void) {
     class_addmethod(playfile_class, (t_method)playfile_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(playfile_class, (t_method)playfile_seek, gensym("seek"), A_FLOAT, 0);
     class_addmethod(playfile_class, (t_method)playfile_loop, gensym("loop"), A_FLOAT, 0);
+    class_addmethod(playfile_class, (t_method)playfile_continue, gensym("continue"), A_NULL);
+    class_addmethod(playfile_class, (t_method)playfile_pause, gensym("pause"), A_NULL);
     class_addmethod(playfile_class, (t_method)playfile_set, gensym("set"), A_SYMBOL, 0);
     class_addmethod(playfile_class, (t_method)playfile_click, gensym("click"),
         A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT,0);
