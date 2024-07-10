@@ -216,6 +216,14 @@ static err_t playfile_load(t_playfile *x, int index) {
     return(playfile_reset(x));
 }
 
+static void playfile_pause(t_playfile *x, t_float f, t_float ms){
+    x->x_play = 0;
+}
+
+static void playfile_continue(t_playfile *x, t_float f, t_float ms){
+    x->x_play = 1;
+}
+
 static void playfile_start(t_playfile *x, t_float f, t_float ms){
     int track = f;
     err_t err_msg = "";
@@ -593,6 +601,8 @@ void setup_play0x2efile_tilde(void) {
     class_addmethod(playfile_class, (t_method)playfile_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(playfile_class, (t_method)playfile_seek, gensym("seek"), A_FLOAT, 0);
     class_addmethod(playfile_class, (t_method)playfile_loop, gensym("loop"), A_FLOAT, 0);
+    class_addmethod(playfile_class, (t_method)playfile_continue, gensym("continue"), A_NULL);
+    class_addmethod(playfile_class, (t_method)playfile_pause, gensym("pause"), A_NULL);
     class_addmethod(playfile_class, (t_method)playfile_set, gensym("set"), A_SYMBOL, 0);
     class_addmethod(playfile_class, (t_method)playfile_click, gensym("click"),
         A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT,0);
