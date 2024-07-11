@@ -33,16 +33,7 @@ typedef struct _sfload{
     char            x_path[MAXPDSTRING];
 }t_sfload;
 
-static void sfload_find_file(t_sfload *x, t_symbol* file, char* dir_out, char* filename_out){
-    const char *filename = file->s_name;
-    const char *dirname = canvas_getdir(x->x_canvas)->s_name;
-    char* fileout;
-    open_via_path(dirname, filename, "", dir_out, &fileout, MAXPDSTRING-1, 0);
-    memcpy(filename_out, fileout, strlen(fileout) + 1);
-    strcat(dir_out, "/");
-}
-
-void* sfload_read_audio(void *arg){
+void* sfload_read_audio(void *arg){ // read audio into array
     t_sfload *x = (t_sfload*)arg;
     x->x_ic = avformat_alloc_context();
     x->x_ic->probesize = 128;
@@ -129,7 +120,7 @@ void* sfload_read_audio(void *arg){
     return (NULL);
 }
 
-void sfload_check_done(t_sfload* x){
+void sfload_check_done(t_sfload* x){ // result clock
     if(x->x_result_ready){
         t_garray* garray = (t_garray*)pd_findbyclass(x->x_arr_name, garray_class);
         garray_resize_long(garray, x->x_result_ready);
@@ -145,8 +136,13 @@ void sfload_check_done(t_sfload* x){
         clock_delay(x->x_result_clock, 20);
 }
 
-void sfload_set(t_sfload* x, t_symbol* s){
-    x->x_arr_name = s;
+static void sfload_find_file(t_sfload *x, t_symbol* file, char* dir_out, char* filename_out){
+    const char *filename = file->s_name;
+    const char *dirname = canvas_getdir(x->x_canvas)->s_name;
+    char* fileout;
+    open_via_path(dirname, filename, "", dir_out, &fileout, MAXPDSTRING-1, 0);
+    memcpy(filename_out, fileout, strlen(fileout) + 1);
+    strcat(dir_out, "/");
 }
 
 void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av){
@@ -158,6 +154,10 @@ void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av){
         pd_error(x, "[sfload]: Array not found\n");
         return;
     }
+    if(!ac){
+        pd_error(x, "[sfload]: no filename given\n");
+        return;
+    }
     t_symbol* path = NULL;
     if(ac == 1 && av[0].a_type == A_SYMBOL)
         path = atom_getsymbol(av);
@@ -166,11 +166,10 @@ void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av){
     else
         x->x_channel = 0;
     if(!path){
-        pd_error(x, "[sfload]: Invalid arguments float 'load' message\n");
+        pd_error(x, "[sfload]: Invalid arguments for 'load' message\n");
         return;
     }
-    char dir[MAXPDSTRING];
-    char file[MAXPDSTRING];
+    char dir[MAXPDSTRING], file[MAXPDSTRING];
     sfload_find_file(x, path, dir, file);
     snprintf(x->x_path, MAXPDSTRING, "%s/%s", dir, file);
     if(pthread_create(&x->x_process_thread, NULL, sfload_read_audio, x) != 0){
@@ -178,6 +177,21 @@ void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av){
         return;
     }
     clock_delay(x->x_result_clock, 20);
+}
+
+void sfload_set(t_sfload* x, t_symbol* s){
+    x->x_arr_name = s;
+}
+
+static void sfload_free(t_sfload *x){
+    clock_free(x->x_result_clock);
+    pthread_join(x->x_process_thread, NULL);
+    av_channel_layout_uninit(&x->x_layout);
+    avcodec_free_context(&x->x_stream_ctx);
+    avformat_close_input(&x->x_ic);
+    av_packet_free(&x->x_pkt);
+    av_frame_free(&x->x_frm);
+    swr_free(&x->x_swr);
 }
 
 static void *sfload_new(t_symbol *s, int ac, t_atom *av){
@@ -193,17 +207,6 @@ static void *sfload_new(t_symbol *s, int ac, t_atom *av){
     x->x_result_ready = 0;
     x->x_result_clock = clock_new(x, (t_method)sfload_check_done);
     return(x);
-}
-
-static void sfload_free(t_sfload *x){
-    clock_free(x->x_result_clock);
-    pthread_join(x->x_process_thread, NULL);
-    av_channel_layout_uninit(&x->x_layout);
-    avcodec_free_context(&x->x_stream_ctx);
-    avformat_close_input(&x->x_ic);
-    av_packet_free(&x->x_pkt);
-    av_frame_free(&x->x_frm);
-    swr_free(&x->x_swr);
 }
 
 void sfload_setup(void) {
