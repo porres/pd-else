@@ -228,7 +228,7 @@ static void playfile_start(t_playfile *x, t_float f, t_float ms){
     x->x_play = !err_msg;
 }
 
-static t_symbol* playfile_doopen(t_openfile *x, t_symbol *file){
+/*static t_symbol* playfile_doopen(t_playfile *x, t_symbol *file){
     char path[MAXPDSTRING], *fn;
     int fd = canvas_open(x->x_cv, file->s_name, "", path, &fn, MAXPDSTRING, 1);
     if(fd >= 0){
@@ -239,7 +239,7 @@ static t_symbol* playfile_doopen(t_openfile *x, t_symbol *file){
     }
     else
         return(file);
-}
+}*/
 
 static void playfile_find_file(t_playfile *x, t_symbol* file, char* dir_out, char* filename_out){
     const char *filename = file->s_name;
@@ -490,6 +490,20 @@ error:
     return(l);
 }
 
+static void playfile_free(t_playfile *x){
+    av_channel_layout_uninit(&x->x_layout);
+    avcodec_free_context(&x->x_stream_ctx);
+    avformat_close_input(&x->x_ic);
+    av_packet_free(&x->x_pkt);
+    av_frame_free(&x->x_frm);
+    swr_free(&x->x_swr);
+    t_playlist *pl = &x->x_plist;
+    freebytes(pl->arr, pl->max * sizeof(t_symbol *));
+    freebytes(x->x_outs, x->x_nch * sizeof(t_sample *));
+    freebytes(x->x_out, x->x_nch * sizeof(t_sample) * FRAMES);
+    pd_unbind(&x->x_obj.ob_pd, x->x_openpanel_sym);
+}
+
 static void *playfile_new(t_symbol *s, int ac, t_atom *av){
     int loop = 0;
     for(int i = 0; i < ac; i++){
@@ -560,20 +574,6 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
     x->x_openpanel_sym = gensym(buf);
     pd_bind(&x->x_obj.ob_pd, x->x_openpanel_sym);
     return(x);
-}
-
-static void playfile_free(t_playfile *x){
-    av_channel_layout_uninit(&x->x_layout);
-    avcodec_free_context(&x->x_stream_ctx);
-    avformat_close_input(&x->x_ic);
-    av_packet_free(&x->x_pkt);
-    av_frame_free(&x->x_frm);
-    swr_free(&x->x_swr);
-    t_playlist *pl = &x->x_plist;
-    freebytes(pl->arr, pl->max * sizeof(t_symbol *));
-    freebytes(x->x_outs, x->x_nch * sizeof(t_sample *));
-    freebytes(x->x_out, x->x_nch * sizeof(t_sample) * FRAMES);
-    pd_unbind(&x->x_obj.ob_pd, x->x_openpanel_sym);
 }
 
 void setup_play0x2efile_tilde(void) {
