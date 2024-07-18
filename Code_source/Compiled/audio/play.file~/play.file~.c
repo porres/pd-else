@@ -228,6 +228,19 @@ static void playfile_start(t_playfile *x, t_float f, t_float ms){
     x->x_play = !err_msg;
 }
 
+static t_symbol* playfile_doopen(t_openfile *x, t_symbol *file){
+    char path[MAXPDSTRING], *fn;
+    int fd = canvas_open(x->x_cv, file->s_name, "", path, &fn, MAXPDSTRING, 1);
+    if(fd >= 0){
+        sys_close(fd);
+        if(fn > path)
+            fn[-1] = '/';
+        return(gensym(path));
+    }
+    else
+        return(file);
+}
+
 static void playfile_find_file(t_playfile *x, t_symbol* file, char* dir_out, char* filename_out){
     const char *filename = file->s_name;
     const char *dirname = canvas_getdir(x->x_canvas)->s_name;
