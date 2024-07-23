@@ -1,4 +1,4 @@
-#N canvas 384 32 618 621 12;
+#N canvas 384 38 618 621 12;
 #X text 392 516 harmony-voice;
 #X text 216 516 root-voice;
 #X obj 555 554 bng 25 250 50 0 empty empty empty 17 7 0 10 #b8b8b8 #000000 #000000;
@@ -435,14 +435,14 @@
 #X text 453 552 When reaching loop bounds, f 13;
 #X text 145 177 <--;
 #X text 172 170 details on controls and manual of operation, f 23;
-#X obj 40 223 brane.m~ 1 bubul.wav;
 #X text 12 11 This is an extra module which consist of a ganulator sampler with stretch/compress and a harmonizer pitch shifter. The sampler records or plays mono files and runs two Pitch Shifters for a "root" and a "harmony" voice. An autotuner can quantize pitches to any scale (and has a built-in scale generator based on Equal Divisions). You have automatic looping \, bouncing \, freeze and selection of audio slices \, and also a granulator and random playing settings. You can load/store 40 presets., f 83;
 #X text 386 116 Being an extra M.E.R.D.A module \, it doesn't have state saving and has its own preset system management., f 24;
 #X text 305 118 Important:;
 #X obj 500 186 about.MERDA;
-#X connect 4 0 12 0;
-#X connect 6 0 12 0;
-#X connect 12 0 5 0;
-#X connect 12 1 8 0;
-#X connect 12 2 8 1;
-#X connect 12 3 2 0;
+#X obj 40 223 brane.m~ 1 sax.wav;
+#X connect 4 0 16 0;
+#X connect 6 0 16 0;
+#X connect 16 0 5 0;
+#X connect 16 1 8 0;
+#X connect 16 2 8 1;
+#X connect 16 3 2 0;
