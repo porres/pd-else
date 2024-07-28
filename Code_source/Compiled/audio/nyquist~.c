@@ -13,6 +13,7 @@ typedef struct _nyquist{
     float       x_sr;
     int         x_khz;
     int         x_period;
+    t_symbol   *x_sym;    // [v] name
 }t_nyquist;
 
 static void nyquist_bang(t_nyquist *x){
@@ -22,6 +23,8 @@ static void nyquist_bang(t_nyquist *x){
         nyquist *= 0.001;
     if(x->x_period)
         nyquist = 1./nyquist;
+    if(x->x_sym != &s_)
+        value_setfloat(x->x_sym, nyquist);
     outlet_float(x->x_obj.ob_outlet, nyquist);
 }
 
@@ -81,15 +84,22 @@ static void nyquist_free(t_nyquist *x){
 static void *nyquist_new(t_symbol *s, int ac, t_atom *av){
     t_nyquist *x = (t_nyquist *)pd_new(nyquist_class);
     s = NULL;
+    x->x_sym = &s_;
     x->x_khz = x->x_period = 0;
-    if(ac && av->a_type == A_SYMBOL){
-        t_symbol *curarg = atom_getsymbolarg(0, ac, av);
-        if(!strcmp(curarg->s_name, "-khz"))
-            x->x_khz = 1;
-        else if(!strcmp(curarg->s_name, "-ms"))
-            x->x_khz = x->x_period = 1;
-        else if(!strcmp(curarg->s_name, "-sec"))
-            x->x_period = 1;
+    while(ac){
+        if(av->a_type == A_SYMBOL){
+            t_symbol *sym = s; // get rid of warning
+            sym = atom_getsymbolarg(0, ac, av);
+            if(sym == gensym("-khz"))
+                x->x_khz = 1;
+            else if(sym == gensym("-ms"))
+                x->x_khz = x->x_period = 1;
+            else if(sym == gensym("-sec"))
+                x->x_period = 1;
+            else
+                value_get(x->x_sym = atom_getsymbol(av));
+            ac--, av++;
+        }
         else
             goto errstate;
     }
