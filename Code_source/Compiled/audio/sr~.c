@@ -87,6 +87,12 @@ static void sr_bang(t_sr *x){
     outlet_float(x->x_obj.ob_outlet, sr);
 }
 
+static void sr_click(t_sr *x, t_floatarg xpos,
+t_floatarg ypos, t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
+    xpos = ypos = shift = ctrl = alt = 0;
+    sr_bang(x);
+}
+
 static void sr_hz(t_sr *x){
     x->x_khz = x->x_period = 0;
     sr_bang(x);
@@ -182,4 +188,6 @@ void sr_tilde_setup(void){
     class_addmethod(sr_class, (t_method)sr_sec, gensym("sec"), 0);
 //    class_addmethod(sr_class, (t_method)sr_set, gensym("set"), A_DEFFLOAT, 0);
     class_addbang(sr_class, (t_method)sr_bang);
+    class_addmethod(sr_class, (t_method)sr_click, gensym("click"),
+        A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT,0);
 }

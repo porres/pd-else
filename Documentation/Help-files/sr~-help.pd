@@ -73,6 +73,7 @@
 #X text 159 415 none;
 #X obj 233 225 else/sr~ -khz;
 #X text 61 88 [sr~] can set the sample rate and also reports the sample rate frequency or period when loading the patch \, when receiving a bang or when it changes. It also outputs the value at 'init' time (that is before [loadbang]). The frequency is reported either in hz or khz and the period either in seconds os milliseconds. Unlike [samplerate~] \, it doesn't report up/down sampling rates. The default output is the sample rate frequency in hertz., f 76;
+#X text 322 224 <-- click is the same as bang;
 #X connect 17 0 48 0;
 #X connect 26 0 48 0;
 #X connect 27 0 48 0;

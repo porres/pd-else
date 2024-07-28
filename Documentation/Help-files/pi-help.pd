@@ -60,10 +60,10 @@
 #X obj 229 228 else/pi 2;
 #X text 201 301 - calculate or output the last calculated value;
 #X obj 229 256 else/display;
-#X text 80 229 click (same as bang) =>;
 #X text 62 131 [pi] outputs the result when loading a patch and also when receiving a bang. Since it's an abstraction with [loadbang] \, it load output comes before other [loadbang] objects in the patch.;
 #X text 167 370 1) float (optional) - multiplier (default 1);
 #X text 167 390 2) symbol - variable name (default pi);
+#X text 80 229 click (same as bang) -->;
 #X connect 6 0 30 0;
 #X connect 18 0 30 1;
 #X connect 30 0 32 0;

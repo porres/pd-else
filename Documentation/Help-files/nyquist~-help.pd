@@ -37,7 +37,7 @@
 #X connect 8 0 0 0;
 #X connect 9 0 3 0;
 #X connect 10 0 2 0;
-#X restore 415 256 pd up/downsampling;
+#X restore 415 265 pd up/downsampling;
 #X obj 4 298 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 400 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 435 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -75,6 +75,7 @@
 #X text 59 229 see also:;
 #X obj 68 251 else/sr~;
 #X text 64 90 [nyquist~] reports the nyquist (which is half the sample rate) as a frequency or period. It sends it when loading the patch 'init' time (that is before [loadbang]) \, when receiving a bang or when the sample rate changes. It reports it either in hz or khz and the period either in seconds os milliseconds. like [else/sr~] \, it doesn't report up/down sampling rates., f 79;
+#X text 331 231 <-- click is the same as bang;
 #X connect 39 0 46 0;
 #X connect 40 0 46 0;
 #X connect 41 0 46 0;

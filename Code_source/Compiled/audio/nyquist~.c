@@ -25,6 +25,12 @@ static void nyquist_bang(t_nyquist *x){
     outlet_float(x->x_obj.ob_outlet, nyquist);
 }
 
+static void nyquist_click(t_nyquist *x, t_floatarg xpos,
+t_floatarg ypos, t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
+    xpos = ypos = shift = ctrl = alt = 0;
+    nyquist_bang(x);
+}
+
 static void nyquist_hz(t_nyquist *x){
     x->x_khz = x->x_period = 0;
     nyquist_bang(x);
@@ -106,4 +112,6 @@ void nyquist_tilde_setup(void){
     class_addmethod(nyquist_class, (t_method)nyquist_ms, gensym("ms"), 0);
     class_addmethod(nyquist_class, (t_method)nyquist_sec, gensym("sec"), 0);
     class_addbang(nyquist_class, (t_method)nyquist_bang);
+    class_addmethod(nyquist_class, (t_method)nyquist_click, gensym("click"),
+        A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT,0);
 }
