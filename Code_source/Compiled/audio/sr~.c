@@ -110,7 +110,7 @@ static void sr_sec(t_sr *x){
 }
 
 static void sr_loadbang(t_sr *x, t_floatarg action){
-    if(action == LB_LOAD)
+    if(action == LB_INIT)
         sr_bang(x);
 }
 

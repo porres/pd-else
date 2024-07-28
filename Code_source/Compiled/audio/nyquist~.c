@@ -48,7 +48,7 @@ static void nyquist_sec(t_nyquist *x){
 }
 
 static void nyquist_loadbang(t_nyquist *x, t_floatarg action){
-    if(action == LB_LOAD)
+    if(action == LB_INIT)
         nyquist_bang(x);
 }
 
