@@ -1,4 +1,4 @@
-#N canvas 549 94 496 243 10;
+#N canvas 700 158 496 243 10;
 #X declare -path else;
 #N canvas 707 257 236 257 coeffs 0;
 #X obj 38 25 inlet;
@@ -7,27 +7,24 @@
 #X obj 75 178 t b f;
 #X obj 23 103 clip 0 1;
 #X obj 23 75 /;
-#X obj 63 74 t f b;
 #X obj 75 132 *;
 #X obj 75 154 tan;
 #X obj 112 131 v half_pi_\$0;
-#X obj 23 15 inlet;
+#X obj 23 35 inlet;
 #X obj 75 212 outlet;
 #X obj 128 174 v r;
-#X obj 63 48 else/nyquist~;
+#X obj 61 70 else/nyquist~;
 #X obj 90 100 else/pi 0.5;
-#X connect 0 0 8 0;
-#X connect 0 1 9 0;
-#X connect 1 0 4 0;
+#X connect 0 0 7 0;
+#X connect 0 1 8 0;
+#X connect 1 0 3 0;
 #X connect 2 0 1 0;
-#X connect 3 0 2 1;
-#X connect 3 1 11 0;
-#X connect 4 0 5 0;
-#X connect 5 0 0 0;
-#X connect 7 0 2 0;
-#X connect 10 0 3 0;
-#X connect 11 0 4 1;
-#X connect 11 0 6 0;
+#X connect 3 0 4 0;
+#X connect 4 0 0 0;
+#X connect 6 0 2 0;
+#X connect 9 0 2 1;
+#X connect 10 0 3 1;
+#X connect 10 0 5 0;
 #X restore 105 77 pd r;
 #N canvas 682 374 441 300 coeffs 0;
 #X obj 47 11 inlet;
@@ -37,12 +34,9 @@
 #X obj 209 86 v re;
 #X obj 325 86 v im;
 #X obj 94 87 v g;
-#X obj 94 43 expr (pow(re - 1 \, 2) + pow(im \, 2)) / 4 \; (1 - r*r)
-/ (1 + r*r + r*2*cos(phi)) \; r*2*sin(phi) / (1 + r*r + r*2*cos(phi))
-;
+#X obj 94 43 expr (pow(re - 1 \, 2) + pow(im \, 2)) / 4 \; (1 - r*r) / (1 + r*r + r*2*cos(phi)) \; r*2*sin(phi) / (1 + r*r + r*2*cos(phi));
 #X obj 95 191 pack f f f f f;
-#X obj 47 115 expr 2 * re \; -pow(sqrt(re*re + im*im) \, 2) \; g \;
-2 * g \; g, f 30;
+#X obj 47 115 expr 2 * re \; -pow(sqrt(re*re + im*im) \, 2) \; g \; 2 * g \; g, f 30;
 #X obj 95 254 outlet;
 #X obj 47 55 t b b;
 #X obj 95 220 else/insert append;
@@ -97,8 +91,7 @@
 #X obj 106 45 inlet;
 #X obj 133 185 v even_\$0;
 #X obj 274 185 v order_\$0;
-#X obj 133 149 expr 1 - (order_\$0 % 2) \; min(max($f1 \, 2) \, 100)
-;
+#X obj 133 149 expr 1 - (order_\$0 % 2) \; min(max($f1 \, 2) \, 100);
 #X obj 106 123 t b f;
 #X obj 60 46 inlet;
 #X text 65 26 hz;
