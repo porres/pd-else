@@ -86,7 +86,6 @@
 #X text 218 509 sets a file to open next time it starts playing, f 50;
 #X msg 270 201 open MouthBow.wav;
 #X obj 221 288 else/play.file~ violin.wav 1 1;
-#X text 68 91 [play.file~] is similar to [readsf~] and reads/plays files from your computer. Note that the file sample needs to be at the same sample rate as Pd's. It supports MP3 \, FLAC \, WAV \, AIF \, AAC \, OGG & OPUS filie extensions., f 68;
 #X msg 278 226 open;
 #X text 34 289 click: opens dialog window -->;
 #X text 310 226 <-- opens dialog window (like clicking);
@@ -95,6 +94,7 @@
 #X msg 329 252 continue;
 #X text 170 452 pause - stop playing the sample, f 58;
 #X text 152 467 continue - stop playing the sample, f 61;
+#X text 68 91 [play.file~] is similar to [readsf~] and reads/plays files from your computer. Note that the file sample needs to be at the same sample rate as Pd's. It supports MP3 \, FLAC \, WAV \, AIF \, AAC \, OGG & OPUS file extensions., f 68;
 #X connect 0 0 55 0;
 #X connect 1 0 55 0;
 #X connect 2 0 55 0;
@@ -104,6 +104,6 @@
 #X connect 54 0 55 0;
 #X connect 55 0 28 0;
 #X connect 55 1 35 0;
-#X connect 57 0 55 0;
+#X connect 56 0 55 0;
+#X connect 60 0 55 0;
 #X connect 61 0 55 0;
-#X connect 62 0 55 0;
