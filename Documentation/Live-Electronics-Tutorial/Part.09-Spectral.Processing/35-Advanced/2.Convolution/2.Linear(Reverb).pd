@@ -17,7 +17,7 @@
 #X obj 548 233 out~;
 #X text 252 603 "zero-padded";
 #X text 585 585 click =>;
-#N canvas 613 113 476 633 linear.convolution 1;
+#N canvas 613 113 476 633 linear.convolution 0;
 #X obj 66 284 rfft~;
 #X obj 76 411 rifft~;
 #X obj 76 528 outlet~;

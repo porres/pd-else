@@ -1,4 +1,4 @@
-#N canvas 209 23 957 696 12;
+#N canvas 209 38 957 696 12;
 #X declare -path else;
 #X obj 630 141 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #X obj 630 178 impseq~;
@@ -71,7 +71,6 @@
 #X obj 104 248 initmess set 1000, f 8;
 #X text 243 233 t60 (decay time in ms);
 #X text 239 568 t60 (decay time in ms);
-#X text 228 312 <= seconds;
 #X text 189 522 <= seconds;
 #X text 25 78 The bandwidth and Q of a bandpass resonant filter also specifies a decay time (a.k.a "damping time" or "ring time"). The "t60" is a measure of the decay time \, and is the time it takes for the impulse signal to drop 60dB. You can convert bandwidth to t60 and back with the same formula (see below). We also convert bandwidth to Q with center frequency.;
 #X text 25 11 A resonator or reverberator filter is a type of resonant filter that has a decay time for an impulse excitation. For instance \, the [resonant~] object from ELSE can either take a resonance value as either Q or t60 (default).;
@@ -81,12 +80,13 @@
 #X obj 732 16 declare -path else;
 #X obj 630 286 out~;
 #X obj 645 659 resonbank2~;
+#X text 228 312 <-- seconds;
 #X connect 0 0 1 0;
 #X connect 1 0 3 0;
 #X connect 2 0 4 0;
 #X connect 3 0 2 0;
-#X connect 3 0 43 0;
-#X connect 7 0 41 0;
+#X connect 3 0 42 0;
+#X connect 7 0 40 0;
 #X connect 9 0 10 0;
 #X connect 10 0 11 0;
 #X connect 11 0 13 1;
@@ -106,4 +106,4 @@
 #X connect 31 0 14 0;
 #X connect 31 1 9 0;
 #X connect 32 0 14 0;
-#X connect 41 0 8 0;
+#X connect 40 0 8 0;
