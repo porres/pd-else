@@ -1,7 +1,7 @@
 #N struct 1004-cell float x float y float cellsize float color;
 #N struct 1006-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
 #N struct 1059-slot float x float y float slotsize float color float width float bordercolor;
-#N canvas 448 23 541 693 10;
+#N canvas 448 38 541 693 10;
 #N canvas 240 37 974 682 GUI 0;
 #X text 40 146 [biplot];
 #X text 196 83 [pic] =>;
@@ -257,7 +257,7 @@
 #X obj 42 40 else/bitnormal~;
 #X obj 41 641 else/vcf2~;
 #X restore 46 406 pd DSP(filters);
-#N canvas 709 140 229 403 Buffer/Sampling/Playing/Granulation 0;
+#N canvas 709 140 229 422 Buffer/Sampling/Playing/Granulation 0;
 #X obj 58 54 else/sample~;
 #X obj 58 78 else/player~;
 #X obj 58 103 else/tabplayer~;
@@ -272,6 +272,7 @@
 #X obj 58 327 else/batch.write~;
 #X obj 58 352 else/play.file~;
 #X obj 59 30 else/tabreader~;
+#X obj 58 378 else/sfload;
 #X restore 154 407 pd Buffer/Sampling/Playing/Granulation;
 #N canvas 1011 188 230 109 Granular_synth 0;
 #X obj 62 47 else/grain.synth~;
