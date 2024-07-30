@@ -2483,13 +2483,13 @@ void pdlua_setup(void)
              pdlua_version, lvm, lvl);
 #endif
 // post version and other information
-    post(pdluaver);
 #ifdef ELSE
-    post("Distributed as part of ELSE");
+    post("A modification of [pdlua] was loaded as part of ELSE");
 #else
+    post(pdluaver);
     post(compiled);
-#endif
     post(luaversionStr);
+#endif
 
     pdlua_proxyinlet_setup();
     PDLUA_DEBUG("pdlua pdlua_proxyinlet_setup done", 0);
