@@ -37,15 +37,10 @@
 #X restore 132 105 pd rename;
 #N canvas 262 191 479 442 \$0-buffers 0;
 #X obj 6 20 cnv 15 448 80 empty empty empty 3 10 2 14 #e0e0e0 #404040 0;
-#N canvas 0 22 450 300 ch0_1026 0;
-#X array 0-1003-sample 87741 float 2;
-#X coords 0 1 87741 -1 450 82 2 0 0;
-#X restore 5 19 pd ch0_1026;
-#X obj 6 120 cnv 15 448 80 empty empty empty 3 10 2 14 #e0e0e0 #404040 0;
-#N canvas 0 22 450 300 ch1_1026 0;
-#X array 1-1003-sample 87741 float 2;
-#X coords 0 1 87741 -1 450 82 2 0 0;
-#X restore 5 119 pd ch1_1026;
+#N canvas 0 22 450 300 ch0_1003 0;
+#X array sample_1003 44100 float 2;
+#X coords 0 1 44100 -1 450 82 2 0 0;
+#X restore 5 19 pd ch0_1003;
 #X coords 0 0 0 0 10 20 0;
 #X restore 726 182 pd \$0-buffers;
 #N canvas 386 286 457 330 clear 0;
@@ -651,7 +646,6 @@
 #X connect 3 0 5 0;
 #X connect 4 0 5 0;
 #X connect 6 0 5 0;
-#X connect 7 0 5 0;
 #X connect 8 0 1 0;
 #X restore 318 85 pd bytes;
 #X obj 406 84 s \$0-sr;
@@ -796,7 +790,7 @@
 #X obj 433 436 else/pack2 write -rate 0 -bytes 2 -aiff, f 22;
 #X obj 338 189 else/separate .;
 #X obj 441 255 else/separate .;
-#X obj 54 58 route open load write depth sr, f 74;
+#X obj 54 58 route open load save depth sr, f 74;
 #X connect 0 0 27 0;
 #X connect 0 0 35 0;
 #X connect 1 0 2 0;
