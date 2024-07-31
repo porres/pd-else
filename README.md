@@ -6,7 +6,7 @@
 
 ### Version: 1.0-0 RC-12 (release candidate #12) With Live Electronics Tutorial. 
 
-### Released May 18th 2024
+### Released August 06th 2024
 
 Copyright © 2017-2024 Alexandre Torres Porres and others 
 
@@ -28,7 +28,7 @@ For copies of the licenses and the terms, please check the 'license' subfolder.
 
 ###   About ELSE
 
-This version of ELSE needs **Pd 0.54-1** or above.
+This version of ELSE needs **Pd 0.55-0** or above.
 
 ELSE is a big library of externals that extends the performance Pure Data (Pd) - Miller S. Puckette's realtime computer music environment (download Pd from: http://msp.ucsd.edu/software.html).
 
@@ -60,7 +60,7 @@ Loading the library loads an object browsing plugin. It also registers a loader 
 
 ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example (assuming the unpacked Pd package is in ~/pd-0.54-1; for Windows/MinGW add `pdbinpath=~/pd-0.54-1/bin/`):
 
-<pre>make pdincludepath=~/pd-0.54-1/src/</pre>
+<pre>make pdincludepath=~/pd-0.55-0/src/</pre>
 
 ##### Installing with pdlibbuilder
 
@@ -73,11 +73,11 @@ Cross compiling is also possible with something like this
 
 <pre>make CC=arm-linux-gnueabihf-gcc target.arch=arm7l install objectsdir=~/else-build</pre>
 
-##### Installing [sfont~], [sfz~], [plaits~] and [circuit~]
+##### Installing [sfload~], [play.file~], [sfont~], [sfz~], [plaits~] and [circuit~]
 
-For technical reasons these objects reside in their own subdirectories of the ELSE source directory, so a normal build as described above will skip them. You cam install these separately and you can also check their subfolders for their own READMEs and instructions.
+For technical reasons these objects reside in their own subdirectories of the ELSE source directory (note, however, that [sfload] and [play.file~] is on a single 'play.file~' folder). This means that a normal build as described above will skip them. You can install these separately and you can also check their subfolders for their own READMEs and instructions.
 
-To install them with the rest of ELSE you can build from the toplevel source directory using the special 'sfont', 'sfz' 'plaits' and 'circuit' targets, such as:
+To install them with the rest of ELSE you can build from the toplevel source directory using the special 'sfont', 'sfz', 'plaits', 'play.file' and 'circuit' targets, such as:
 
 <pre>make sfz plaits pdincludepath=~/pd-0.54-1/src/</pre>
 <pre>make sfz-install plaits-install objectsdir=~/else-build</pre>
@@ -187,7 +187,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     allpass.2nd~ allpass.filt~ bitnormal~ comb.filt~ lop.bw~ hip.bw~ biquads~ bandpass~ bandstop~ crossover~ bpbank~ bicoeff2 brickwall~ eq~ highpass~ highshelf~ lop2~ lowpass~ lowshelf~ mov.avg~ resonbank~ resonbank2~ vcf2~ resonant~ resonant2~ svfilter~
     
 #sampling, playing, granulation
-    player~ gran.player~ pvoc.player~ pvoc.live~ batch.rec~ bach.write~ rec.file~ play.file~ tabplayer~ tabwriter~ sample~
+    player~ gran.player~ pvoc.player~ pvoc.live~ batch.rec~ bach.write~ rec.file~ play.file~ tabplayer~ tabwriter~ sample~ sfload
     
 #synthesis: synthesizers
     pm2~ pm4~ pm6~ sfont~ sfz~ plaits~ synth~
