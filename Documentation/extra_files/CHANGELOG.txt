@@ -13,10 +13,6 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 1.0-0 Release Candidate 11:
 ----------------------------------------------------------------------------
 
---------------------------------------
-CHANGELOG:
---------------------------------------
-
 **LIBRARY:**
 
 Breaking changes:
@@ -43,15 +39,15 @@ Enhancements/fixes/other changes:
 - [pluck~] added a new functionality to allow MIDI input to supersede signal connections (needed for the 'merda' version).
 - [mpe.in] now outputs port number and you can select which port to listen to.
 - Other MIDI in objects now deal with port number encoded to channel as native Pd objects. Objects affected are [midi.learn], [midi.in], [note.in], [ctl.in], [bend.in], [pgm.in], [touch.in] and [ptouch.in].
-- added multichannel features to [cosine~] and fixed sync input.
 - [pi]/[e] now takes a value name argument.
 - [sr~]/[nyquist~] take clicks now and a value name argument.
-- 25 new objects, [vcf2~], [damp.osc~], [scope3d~] [sfload] and [lua] (this one very very experimental still), plus abstractions from a newly included submodule called "Modular Euro Racks Dancing Along" (M.E.R.D.A)! Warning, this is all just very very experimental still, the object are: [adsr.m~], [brane.m~], [chorus.m~], [delay.m~], [drive.m~], [flanger.m~], [gendyn.m~], [lfo.m~], [phaser.m~], [plaits.m~], [plate.rev.m~], [pluck.m~], [pm6.m~], [presets.m], [rm.m~], [seq8.m~], [sig.m~], [vca.m~], [vcf.m~] and [vco.m~] (6 of these are multichannel aware).
+- added multichannel features to [cosine~] and fixed sync input.
+- 25 new objects, [vcf2~], [damp.osc~], [scope3d~], [sfload] and [lua] (this one very very experimental still), plus abstractions from a newly included submodule called "Modular Euro Racks Dancing Along" (M.E.R.D.A)! Warning, this is all just very very experimental still, the object are: [adsr.m~], [brane.m~], [chorus.m~], [delay.m~], [drive.m~], [flanger.m~], [gendyn.m~], [lfo.m~], [phaser.m~], [plaits.m~], [plate.rev.m~], [pluck.m~], [pm6.m~], [presets.m], [rm.m~], [seq8.m~], [sig.m~], [vca.m~], [vcf.m~] and [vco.m~] (6 of these are multichannel aware).
 
-Objects count: total of 550 (305 signal objects [89 of which are MC aware] and 243 control objects)! 
+Objects count: total of 550 (305 signal objects [89 of which are MC aware] and 245 control objects)! 
 
-- 309 coded objects (201 signal objects  / 107 control objects and 1 for both? (lua))
-- 241 abstractions (105 signal objects / 135 control objects)
+- 310 coded objects (202 signal objects  / 107 control objects and 1 for both? (lua))
+- 240 abstractions (104 signal objects / 136 control objects)
 
 --------------------------------------
 
@@ -65,11 +61,7 @@ Objects count: total of 550 (305 signal objects [89 of which are MC aware] and 2
 
 ----------------------------------------------------------------------------
 1.0-0 Release Candidate 11:
-----------------------------------------------------------------------------
-
---------------------------------------
-CHANGELOG:
---------------------------------------
+------------------------------------------
 
 **LIBRARY:**
 
@@ -140,11 +132,7 @@ Objects count: total of 527 (285 signal objects [82 of which are MC aware] and 2
 
 ----------------------------------------------------------------------------
 1.0-0 Release Candidate 10:
-----------------------------------------------------------------------------
-
---------------------------------------
-CHANGELOG:
---------------------------------------
+-----------------------------------------
 
 **LIBRARY:**
 
@@ -202,9 +190,6 @@ Objects count: total of 518 (277 signal objects and 241 control objects)!
 1.0-0 Release Candidate 9:
 ----------------------------------------------------------------------------
 
---------------------------------------
-CHANGELOG:
---------------------------------------
 
 **LIBRARY:**
 
