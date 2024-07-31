@@ -9,11 +9,10 @@
 #X obj 88 243 /~;
 #X obj 106 204 clip~ 1 1;
 #X obj 195 33 inlet;
-#X floatatom 195 206 5 0 0 0 - - -;
-#X floatatom 381 201 5 0 0 0 - - -;
-#X floatatom 195 78 5 0 100 0 - - -;
-#X obj 195 139 expr 1 - ($f1 / 100) \; if ($f1 <= 1 \, 1 \, $f1 * $f1)
-;
+#X floatatom 195 206 5 0 0 0 - - - 0;
+#X floatatom 381 201 5 0 0 0 - - - 0;
+#X floatatom 195 78 5 0 100 0 - - - 0;
+#X obj 195 139 expr 1 - ($f1 / 100) \; if ($f1 <= 1 \, 1 \, $f1 * $f1);
 #X text 393 146 <==;
 #X obj 106 166 mag~;
 #X obj 56 78 hann~;
@@ -45,21 +44,17 @@
 #X connect 16 0 1 0;
 #X connect 17 0 20 0;
 #X connect 20 0 16 1;
-#X restore 163 260 pd Compressor;
-#X obj 301 220 vsl 15 100 0 100 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
-#X obj 301 337 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 321 312 Original;
+#X restore 163 270 pd Compressor;
+#X obj 287 277 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X text 220 233 Original;
 #X obj 163 314 out~;
-#X text 320 212 Compressed/Normalized;
-#X text 62 66 This is basically the same as last example but we have
-a slider control to morph between the original and normalized or "compressed"
-output. The math is simple and relies on the [clip~] object.;
-#X text 95 260 click =>;
+#X text 354 231 Compressed/Normalized;
+#X text 62 66 This is basically the same as last example but we have a slider control to morph between the original and normalized or "compressed" output. The math is simple and relies on the [clip~] object.;
 #X obj 338 24 declare -path else;
-#X obj 163 175 play.file~ bubul.wav 1 1;
-#X connect 0 0 4 0;
-#X connect 1 0 2 0;
+#X obj 163 175 play.file~ bubul.mp3 1 1;
+#X obj 287 210 knob 50 0 100 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0;
+#X text 85 270 click -->;
+#X connect 0 0 3 0;
 #X connect 1 0 0 1;
-#X connect 9 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 1 0;

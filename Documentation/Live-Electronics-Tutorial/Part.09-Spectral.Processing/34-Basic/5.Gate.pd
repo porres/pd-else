@@ -1,10 +1,8 @@
-#N canvas 469 36 952 604 12;
+#N canvas 469 38 952 604 12;
 #X declare -path else;
-#X obj 264 350 nbx 5 14 0 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 1 256;
+#X obj 264 350 nbx 5 14 0 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 726 276 signal;
-#X obj 702 128 nbx 5 14 0 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 1 256;
+#X obj 702 128 nbx 5 14 0 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 301 411 signal;
 #X obj 80 230 noise~;
 #N canvas 411 67 503 581 Spectral-Gate(median) 0;
@@ -109,10 +107,7 @@
 #X connect 19 0 18 1;
 #X restore 155 378 pd Spectral-Gate;
 #X text 71 407 noise floor;
-#X text 59 115 Here we divide the spectral components above and below
-an amplitude threshold. We'll consider the components above as the
-signal and the ones below as the noise floor. The first example considers
-a threshold., f 49;
+#X text 59 115 Here we divide the spectral components above and below an amplitude threshold. We'll consider the components above as the signal and the ones below as the noise floor. The first example considers a threshold., f 49;
 #X text 759 127 level;
 #N canvas 460 23 558 701 Spectral-Gate(average) 0;
 #X obj 198 460 *~;
@@ -165,10 +160,8 @@ a threshold., f 49;
 #X connect 20 0 19 1;
 #X restore 530 149 pd Spectral-Gate(average);
 #X text 541 278 noise floor;
-#X text 480 18 The next example considers an average as the threshold.
-A level parameter is multiplied by this average., f 45;
-#X obj 703 420 nbx 5 14 0 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 1 256;
+#X text 480 18 The next example considers an average as the threshold. A level parameter is multiplied by this average., f 45;
+#X obj 703 420 nbx 5 14 0 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 760 419 level;
 #X obj 538 490 out~;
 #X obj 703 486 out~;
@@ -183,10 +176,8 @@ A level parameter is multiplied by this average., f 45;
 #X text 545 546 noise floor;
 #X obj 90 46 declare -path else;
 #X text 324 349 threshold;
-#X text 476 320 The last example also uses an average value for the
-threshold \, but now it's a median instead of an average. This seems
-to work better for extracting tonal peaks., f 55;
-#X obj 137 231 play.file~ 1 kantele.wav 1 1;
+#X text 476 320 The last example also uses an average value for the threshold \, but now it's a median instead of an average. This seems to work better for extracting tonal peaks., f 55;
+#X obj 137 231 play.file~ 1 kantele.flac 1 1;
 #X connect 0 0 10 1;
 #X connect 2 0 14 1;
 #X connect 5 0 19 0;

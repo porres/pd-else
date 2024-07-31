@@ -15,11 +15,11 @@
 #X obj 481 370 clone 50 oscillator;
 #X text 640 416 compare this pitch shifter with the last two we've seen, f 20;
 #X obj 639 14 declare -path else;
-#X obj 155 370 play.file~ bubul.wav 1 1;
 #X text 31 21 The phase difference from one FFT frame to another is crucial in determining the actual pitch of a sine component. This and other elements combined form what is also known as "Phase Vocoder Analysis" and by getting the accurate pitch and amplitude of a component \, we can use this information to feed a bank of oscillators to resynthesize an analyzed sound. This opens other possibilities \, like having an independent control over each sine component. But in this example we just perform a simple pitch shift., f 52;
 #X text 439 56 The "tracks" argument in [sigmund~] sends the highest energy components (a.k.a peaks) separately into different 'tracks' \, where each one is fed into a separate oscillator. For the oscillator bank we use an abstraction loaded 50 times in [clone]. We set an initial number of 50 peaks (with -npeak) but it's possible to change that with the npeak message. Try that! The pitch shift is trivial \, in each oscillator we perform a simple transposition. Open the subpatch for more info., f 52;
 #X text 31 184 The native [sigmund~] object is a powerful pitch tracker and has other features we've seen earlier. It's not strictly speaking a "Phase vocoder" but it uses the same type of frequency estimating technique that the Phase Vocoder does. Being FFT based \, we give it parameters like window size (-npts) and hop size (-hop). One possible output of [sigmund~] is 'peaks' \, which outputs sinusoidal peaks in order of amplitude \, but we need the 'tracks' output that spits separate tone components as different 'tracks' and we use this to feed a bank of oscillators., f 52;
 #X text 269 461 original sound, f 8;
+#X obj 155 370 play.file~ bubul.mp3 1 1;
 #X connect 0 0 2 0;
 #X connect 2 0 3 0;
 #X connect 3 0 12 0;
@@ -27,5 +27,5 @@
 #X connect 8 0 10 0;
 #X connect 10 0 12 1;
 #X connect 12 0 7 0;
-#X connect 15 0 4 0;
-#X connect 15 0 6 0;
+#X connect 19 0 4 0;
+#X connect 19 0 6 0;

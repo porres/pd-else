@@ -1,12 +1,9 @@
 #N canvas 699 72 586 517 12;
 #X declare -path else;
 #X text 291 305 cents;
-#X obj 273 327 nbx 5 16 -1e+37 1e+37 0 0 empty \$0-cents empty 0 -8
-0 13 #dcdcdc #000000 #000000 0 256;
-#X obj 211 326 nbx 4 16 -1e+37 1e+37 0 0 empty \$0-speed empty 0 -8
-0 13 #dcdcdc #000000 #000000 0 256;
-#X obj 346 326 nbx 4 16 64 8192 0 0 empty \$0-block empty 0 -8 0 13
-#dcdcdc #000000 #000000 0 256;
+#X obj 273 327 nbx 5 16 -1e+37 1e+37 0 0 empty \$0-cents empty 0 -8 0 13 #dcdcdc #000000 #000000 0 256;
+#X obj 211 326 nbx 4 16 -1e+37 1e+37 0 0 empty \$0-speed empty 0 -8 0 13 #dcdcdc #000000 #000000 0 256;
+#X obj 346 326 nbx 4 16 64 8192 0 0 empty \$0-block empty 0 -8 0 13 #dcdcdc #000000 #000000 0 256;
 #X msg 360 210 512;
 #X msg 383 276 1024;
 #X msg 374 233 2048;
@@ -17,20 +14,16 @@
 #X text 218 306 speed;
 #N canvas 251 23 1115 723 pitch-shift/time-stretch 0;
 #X obj 266 262 bang~;
-#X obj 338 251 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#c4fcfc #000000 #000000 0 256;
+#X obj 338 251 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #c4fcfc #000000 #000000 0 256;
 #X obj 367 700 outlet~;
 #X obj 338 39 inlet;
 #X obj 569 39 inlet;
 #X msg 588 295 set \$1;
 #X obj 450 548 phasor~;
 #X obj 454 39 inlet;
-#X obj 454 99 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15
-#e4ccb4 #000000 #000000 0 256;
-#X obj 338 100 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15
-#b0e0e0 #000000 #000000 0 256;
-#X obj 569 258 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15
-#f8f4bc #000000 #000000 0 256;
+#X obj 454 99 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15 #e4ccb4 #000000 #000000 0 256;
+#X obj 338 100 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15 #b0e0e0 #000000 #000000 0 256;
+#X obj 569 258 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15 #f8f4bc #000000 #000000 0 256;
 #X obj 432 619 *~;
 #X obj 367 666 +~;
 #X obj 588 323 block~;
@@ -74,15 +67,10 @@
 #X text 374 222 step;
 #X obj 454 202 expr 1 - $f1;
 #X obj 338 162 expr 1 - $f1;
-#X text 694 313 This is pretty straight forward adaptation of the earlier
-example. Both speed and transposition ratio now need to account for
-the read head speed \, and since we now read from [delread4~] instead
-of [tabread4~] \, we need values in ms instead of samples., f 43;
+#X text 694 313 This is pretty straight forward adaptation of the earlier example. Both speed and transposition ratio now need to account for the read head speed \, and since we now read from [delread4~] instead of [tabread4~] \, we need values in ms instead of samples., f 43;
 #X text 489 413 overlap;
 #X text 597 513 overlap;
-#X text 694 416 For the overlapping second grain \, we need to sum
-to half the new grain size instead of subtracting because this means
-"back' in the buffer., f 43;
+#X text 694 416 For the overlapping second grain \, we need to sum to half the new grain size instead of subtracting because this means "back' in the buffer., f 43;
 #X obj 266 578 del~ out \$0-buffer, f 9;
 #X obj 356 560 del~ out \$0-buffer, f 9;
 #X obj 217 39 inlet~;
@@ -150,17 +138,12 @@ to half the new grain size instead of subtracting because this means
 #X connect 62 0 25 0;
 #X connect 62 0 39 0;
 #X restore 149 360 pd pitch-shift/time-stretch;
-#X obj 400 400 initmess \; \$0-speed 50 \; \$0-cents -400 \; \$0-block
-2048;
+#X obj 400 400 initmess \; \$0-speed 50 \; \$0-cents -400 \; \$0-block 2048;
 #X obj 350 26 declare -path else;
-#X obj 149 177 play.file~ bubul.wav 1 1;
-#X text 87 68 This example now adapts for live input (or delay lines)
-an earlier pitch shit / time stretch patch in which the grain size
-depends on the block size. As the earlier one \, this is the basis
-of a Phase Vocoder example presented later. Open the subpatch for details.
-;
+#X text 87 68 This example now adapts for live input (or delay lines) an earlier pitch shit / time stretch patch in which the grain size depends on the block size. As the earlier one \, this is the basis of a Phase Vocoder example presented later. Open the subpatch for details.;
 #X text 163 249 <= force order of execution, f 14;
 #X obj 149 218 del~ in \$0-buffer 10000;
+#X obj 149 177 play.file~ bubul.mp3 1 1;
 #X connect 1 0 12 2;
 #X connect 2 0 12 1;
 #X connect 3 0 12 3;
@@ -170,5 +153,5 @@ of a Phase Vocoder example presented later. Open the subpatch for details.
 #X connect 7 0 3 0;
 #X connect 8 0 3 0;
 #X connect 12 0 9 0;
-#X connect 15 0 18 0;
-#X connect 18 0 12 0;
+#X connect 17 0 12 0;
+#X connect 18 0 17 0;

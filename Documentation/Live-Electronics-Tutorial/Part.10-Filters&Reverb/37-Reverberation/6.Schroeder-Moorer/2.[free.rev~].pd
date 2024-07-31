@@ -16,7 +16,7 @@
 #X obj 331 16 declare -path else;
 #X obj 177 530 out~;
 #X text 58 219 Additionally \, it has a 'width' parameter that controls how much both inputs are mixed or not. This controls the stereo spread. Open the abstraction to check it out. Check also its help file.;
-#X obj 60 386 play.file~ didge.aif 1 1, f 14;
+#X obj 60 386 play.file~ didge.flac 1 1, f 14;
 #X connect 0 0 14 0;
 #X connect 0 1 14 1;
 #X connect 4 0 5 0;

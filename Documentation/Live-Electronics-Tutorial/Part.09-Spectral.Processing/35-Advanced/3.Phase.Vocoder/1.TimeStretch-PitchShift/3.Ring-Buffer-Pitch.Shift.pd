@@ -1,10 +1,8 @@
-#N canvas 729 59 545 443 12;
+#N canvas 610 58 545 443 12;
 #X declare -path else;
 #X text 279 189 cents;
-#X obj 325 189 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-cents empty 0 -8
-0 10 -228856 -1 -1 100 256;
-#X obj 328 169 hsl 128 15 -2400 2400 0 0 empty empty empty -2 -8 0
-10 -228856 -1 -1 0 1;
+#X obj 325 189 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-cents empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 328 169 hsl 128 15 -2400 2400 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #N canvas 403 131 1098 606 Pitch-Shift_PVoc 0;
 #X obj 383 555 outlet~;
 #X obj 74 456 table \$0-re 1024;
@@ -48,14 +46,12 @@
 #N canvas 377 157 654 496 Phase.Accum 0;
 #X obj 205 427 outlet~;
 #X obj 426 424 outlet~;
-#X obj 205 322 expr~ ($v1 * $v3) - ($v2 * $v4) \; ($v2 * $v3) + ($v1
-* $v4);
+#X obj 205 322 expr~ ($v1 * $v3) - ($v2 * $v4) \; ($v2 * $v3) + ($v1 * $v4);
 #X obj 243 34 inlet~;
 #X obj 296 34 inlet~;
 #X obj 375 34 inlet~;
 #X obj 426 34 inlet~;
-#X obj 75 123 expr~ ($v1 * $v3) + ($v2 * $v4) \; ($v2 * $v3) - ($v1
-* $v4);
+#X obj 75 123 expr~ ($v1 * $v3) + ($v2 * $v4) \; ($v2 * $v3) - ($v1 * $v4);
 #N canvas 228 78 542 340 phase_lock 0;
 #X obj 385 133 lrshift~ 1;
 #X obj 300 133 lrshift~ -1;
@@ -93,8 +89,7 @@
 #X obj 57 187 outlet~;
 #X obj 317 31 inlet~;
 #X obj 68 29 inlet~;
-#X obj 57 127 expr~ $v1 / sqrt(pow ($v1 \, 2) + pow($v2 \, 2)) \; $v2
-/ sqrt(pow ($v1 \, 2) + pow($v2 \, 2)) \;;
+#X obj 57 127 expr~ $v1 / sqrt(pow ($v1 \, 2) + pow($v2 \, 2)) \; $v2 / sqrt(pow ($v1 \, 2) + pow($v2 \, 2)) \;;
 #X obj 68 71 expr~ if($v1 == 0 && $v2 == 0 \, 1 \, $v1) \; $v2;
 #X connect 2 0 5 1;
 #X connect 3 0 5 0;
@@ -121,23 +116,14 @@
 #X connect 13 1 2 1;
 #X restore 351 423 pd Phase.Accum;
 #X obj 352 42 cents2ratio;
-#X obj 352 73 expr max(-length_\$0 \, 0) \; max(length_\$0 \, 0) \;
-window_ms_\$0 \; (1 - $f1) * window_ms_\$0 \; (window_ms_\$0 * $f1)
-/ 4 \;;
+#X obj 352 73 expr max(-length_\$0 \, 0) \; max(length_\$0 \, 0) \; window_ms_\$0 \; (1 - $f1) * window_ms_\$0 \; (window_ms_\$0 * $f1) / 4 \;;
 #X text 504 250 new hop;
 #X obj 264 291 delread4~ \$0-buffer;
 #X obj 413 289 delread4~ \$0-buffer;
 #X text 301 361 back;
 #X text 459 364 front;
-#X text 628 237 The cents interval is converted to ratio and used to
-get a new window size (length_\$0). The direction of the reading depends
-whether is negative or not. As before \, grains need to be apart by
-a new hop size.;
-#X text 630 303 Something new not yet told is that some objects (such
-as the delay objects and [vline~]) will behave differently because
-of the overlap. Actually \, under the hood in Pd \, an overlap changes
-the sample rate. So here we divide by the overlap number (4) in different
-locations marked with * for that reason.;
+#X text 628 237 The cents interval is converted to ratio and used to get a new window size (length_\$0). The direction of the reading depends whether is negative or not. As before \, grains need to be apart by a new hop size.;
+#X text 630 303 Something new not yet told is that some objects (such as the delay objects and [vline~]) will behave differently because of the overlap. Actually \, under the hood in Pd \, an overlap changes the sample rate. So here we divide by the overlap number (4) in different locations marked with * for that reason.;
 #X connect 4 0 16 0;
 #X connect 5 0 43 0;
 #X connect 6 0 16 1;
@@ -179,14 +165,11 @@ locations marked with * for that reason.;
 #X connect 44 0 36 0;
 #X restore 325 213 pd Pitch-Shift_PVoc;
 #X obj 325 263 out~;
-#X text 52 66 Now we adapt the pitch shifter from the granular examples
-to include the phase accumulation process \, which is implemented in
-the cartesian form with phase lock on. Open the subpatch.;
+#X text 52 66 Now we adapt the pitch shifter from the granular examples to include the phase accumulation process \, which is implemented in the cartesian form with phase lock on. Open the subpatch.;
 #X obj 81 234 delwrite~ \$0-buffer 500;
-#X text 105 368 Compare this pitch shifter with the earlier version
-that only relies in granulation., f 43;
+#X text 105 368 Compare this pitch shifter with the earlier version that only relies in granulation., f 43;
 #X obj 343 26 declare -path else;
-#X obj 81 200 play.file~ bubul.wav 1 1;
+#X obj 81 200 play.file~ bubul.mp3 1 1;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
 #X connect 3 0 4 0;

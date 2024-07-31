@@ -1,83 +1,44 @@
 #N canvas 311 67 981 512 12;
 #X declare -path else;
 #X obj 45 289 mtof;
-#X obj 45 268 nbx 5 14 25 74 0 0 \$0-ramp_note \$0-pitch empty 0 -8
-0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 45 268 nbx 5 14 25 74 0 0 \$0-ramp_note \$0-pitch empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 45 317 bl.saw~;
-#X text 59 14 The Vocoder is a multiband processing not much different
-than an equalizer \, but the gain adjustment is controlled by a filterbank
-analysis from a second sound source., f 56;
-#X text 59 64 We usually have a tonal input to be filtered \, such
-as an instrument/synth \, and another input (usually a speech) that
-gets analysed to control the filter. Hence \, both audios are sort
-of "combined". The term "Cross Synthesis" is also used in respect to
-vocoders to denote a hybrid result., f 56;
+#X text 59 14 The Vocoder is a multiband processing not much different than an equalizer \, but the gain adjustment is controlled by a filterbank analysis from a second sound source., f 56;
+#X text 59 64 We usually have a tonal input to be filtered \, such as an instrument/synth \, and another input (usually a speech) that gets analysed to control the filter. Hence \, both audios are sort of "combined". The term "Cross Synthesis" is also used in respect to vocoders to denote a hybrid result., f 56;
 #X obj 189 320 r \$0-clone;
 #N canvas 739 92 552 215 Vocoder 0;
-#X obj 21 21 cnv 15 308 148 empty empty empty 20 12 0 14 #dcdcdc #404040
-0;
-#X obj 24 30 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq1 \$0-band-freq1-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 265 30 nbx 3 18 30 500 0 0 \$0-Q-set \$0-Q Q 47 9 0 12 #b8b8b8
-#000000 #000000 0 256;
-#X obj 82 30 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq2 \$0-band-freq2-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 140 30 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq3 \$0-band-freq3-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 198 30 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq4 \$0-band-freq4-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 24 50 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq5 \$0-band-freq5-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 82 50 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq6 \$0-band-freq6-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 140 50 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq7 \$0-band-freq7-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 198 50 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq8 \$0-band-freq8-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 24 70 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq9 \$0-band-freq9-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 82 70 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq10 \$0-band-freq10-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 140 70 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq11 \$0-band-freq11-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 198 70 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq12 \$0-band-freq12-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 24 90 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq13 \$0-band-freq13-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 82 90 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq14 \$0-band-freq14-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 140 90 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq15 \$0-band-freq15-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 198 90 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq16 \$0-band-freq16-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 24 110 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq17 \$0-band-freq17-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 82 110 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq18 \$0-band-freq18-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 140 110 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq19 \$0-band-freq19-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 198 110 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq20 \$0-band-freq20-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 24 130 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq21 \$0-band-freq21-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 82 130 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq22 \$0-band-freq22-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 140 130 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq23 \$0-band-freq23-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 198 130 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq24 \$0-band-freq24-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 24 150 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq25 \$0-band-freq25-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 82 150 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq26 \$0-band-freq26-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 140 150 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq27 \$0-band-freq27-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 198 150 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq28 \$0-band-freq28-set
-empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
-#X obj 265 102 nbx 5 14 -1e+37 1e+37 0 0 \$0-bottom-set \$0-bottom
-empty 0 -8 0 10 #789c78 #fcfcfc #000000 0 256;
-#X obj 274 139 nbx 3 14 1 5 0 0 \$0-steps-set \$0-steps empty 0 -8
-0 10 #607c5c #fcfcfc #000000 0 256;
+#X obj 21 21 cnv 15 308 148 empty empty empty 20 12 0 14 #dcdcdc #404040 0;
+#X obj 24 30 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq1 \$0-band-freq1-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 265 30 nbx 3 18 30 500 0 0 \$0-Q-set \$0-Q Q 47 9 0 12 #b8b8b8 #000000 #000000 0 256;
+#X obj 82 30 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq2 \$0-band-freq2-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 140 30 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq3 \$0-band-freq3-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 198 30 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq4 \$0-band-freq4-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 24 50 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq5 \$0-band-freq5-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 82 50 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq6 \$0-band-freq6-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 140 50 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq7 \$0-band-freq7-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 198 50 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq8 \$0-band-freq8-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 24 70 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq9 \$0-band-freq9-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 82 70 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq10 \$0-band-freq10-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 140 70 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq11 \$0-band-freq11-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 198 70 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq12 \$0-band-freq12-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 24 90 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq13 \$0-band-freq13-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 82 90 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq14 \$0-band-freq14-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 140 90 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq15 \$0-band-freq15-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 198 90 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq16 \$0-band-freq16-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 24 110 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq17 \$0-band-freq17-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 82 110 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq18 \$0-band-freq18-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 140 110 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq19 \$0-band-freq19-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 198 110 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq20 \$0-band-freq20-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 24 130 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq21 \$0-band-freq21-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 82 130 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq22 \$0-band-freq22-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 140 130 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq23 \$0-band-freq23-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 198 130 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq24 \$0-band-freq24-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 24 150 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq25 \$0-band-freq25-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 82 150 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq26 \$0-band-freq26-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 140 150 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq27 \$0-band-freq27-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 198 150 nbx 5 14 -1e+37 1e+37 0 0 \$0-band-freq28 \$0-band-freq28-set empty 0 -8 0 10 #c4fcc4 #000000 #000000 0 256;
+#X obj 265 102 nbx 5 14 -1e+37 1e+37 0 0 \$0-bottom-set \$0-bottom empty 0 -8 0 10 #789c78 #fcfcfc #000000 0 256;
+#X obj 274 139 nbx 3 14 1 5 0 0 \$0-steps-set \$0-steps empty 0 -8 0 10 #607c5c #fcfcfc #000000 0 256;
 #X text 276 122 step;
 #X text 268 66 bottom freq, f 7;
 #X obj 403 53 initmess \; \$0-bottom 27 \; \$0-steps 3;
@@ -107,9 +68,7 @@ empty 0 -8 0 10 #789c78 #fcfcfc #000000 0 256;
 #X obj 207 158 t b b f;
 #X obj 74 102 r \$0-steps-set;
 #X obj 207 132 r \$0-bottom-set;
-#X text 29 22 A [loop] object generates MIDI pitches from a "bottom
-note". The "steps" are the increment in semitones. The numbers are
-sent to number boxes., f 48;
+#X text 29 22 A [loop] object generates MIDI pitches from a "bottom note". The "steps" are the increment in semitones. The numbers are sent to number boxes., f 48;
 #X obj 74 220 loop -step 3 -offset 27 28, f 12;
 #X connect 0 0 3 0;
 #X connect 1 0 12 0;
@@ -278,26 +237,16 @@ sent to number boxes., f 48;
 #X obj 45 418 out~;
 #X obj 45 380 norm~ -6;
 #X msg 363 375 30 2;
-#X text 500 115 A logic routine sets a base frequency and semitones
-steps for the frequencies - open:;
+#X text 500 115 A logic routine sets a base frequency and semitones steps for the frequencies - open:;
 #X obj 45 351 clone 28 vocoder.band;
 #X text 340 293 Presets:;
-#X text 605 427 See also the [vocoder~] object from the ELSE library
-\, based on this patch., f 44;
+#X text 605 427 See also the [vocoder~] object from the ELSE library \, based on this patch., f 44;
 #X obj 829 456 vocoder~ 24;
 #X obj 782 16 declare -path else;
-#X obj 117 275 play.file~ numbers.wav 1 1, f 27;
-#X text 59 162 Now we have a bank with 28 bandpass filters \, where
-each parameter can be set independently. The left input is our synth
-with tonal quality. It gets filtered and the output amplitude depends
-on the analysis of the right input \, a sample with a noisy human speech.
-, f 56;
-#X text 498 52 The filterbank is loaded inside [clone]. Click and open
-it to check how each instance works. The central frequency of each
-filter can be set in the number boxes below as MIDI pitch. The bandwidth
-for all filters is set in the "Q" number box., f 61;
-#X text 512 180 Depending on the Q \, the output gain changes \, this
-is why it's useful to have a normalizer with the [norm~] object.;
+#X text 59 162 Now we have a bank with 28 bandpass filters \, where each parameter can be set independently. The left input is our synth with tonal quality. It gets filtered and the output amplitude depends on the analysis of the right input \, a sample with a noisy human speech., f 56;
+#X text 498 52 The filterbank is loaded inside [clone]. Click and open it to check how each instance works. The central frequency of each filter can be set in the number boxes below as MIDI pitch. The bandwidth for all filters is set in the "Q" number box., f 61;
+#X text 512 180 Depending on the Q \, the output gain changes \, this is why it's useful to have a normalizer with the [norm~] object.;
+#X obj 117 275 play.file~ numbers.mp3 1 1, f 27;
 #X connect 0 0 2 0;
 #X connect 1 0 0 0;
 #X connect 2 0 25 0;
@@ -315,4 +264,4 @@ is why it's useful to have a normalizer with the [norm~] object.;
 #X connect 22 0 21 0;
 #X connect 23 0 14 0;
 #X connect 25 0 22 0;
-#X connect 30 0 25 1;
+#X connect 33 0 25 1;

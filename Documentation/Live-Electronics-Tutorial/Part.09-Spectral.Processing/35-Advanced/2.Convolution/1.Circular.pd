@@ -112,8 +112,8 @@
 #X obj 642 27 declare -path else;
 #X obj 45 111 s~ \$0-sample1;
 #X obj 43 190 s~ \$0-sample2;
-#X obj 43 158 play.file~ numbers.wav 1 1;
-#X obj 45 78 play.file~ 1 kantele.wav 1 1;
+#X obj 45 78 play.file~ 1 kantele.flac 1 1;
+#X obj 43 158 play.file~ numbers.mp3 1 1;
 #X connect 0 0 13 0;
 #X connect 1 0 8 0;
 #X connect 2 0 11 1;
@@ -122,5 +122,5 @@
 #X connect 5 0 6 0;
 #X connect 7 0 5 0;
 #X connect 11 0 10 0;
-#X connect 18 0 17 0;
-#X connect 19 0 16 0;
+#X connect 18 0 16 0;
+#X connect 19 0 17 0;

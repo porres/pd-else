@@ -35,13 +35,13 @@
 #X obj 738 28 declare -path else;
 #X obj 221 254 initmess symbol baglama.wav;
 #X text 254 345 <-- number of samples, f 11;
-#X text 20 106 It's relatively easy to find around waveforms as .wav or .aif files to be used in Pd. to load them into an array \, we use the native [soundfiler] object. Check the help file of [wavetable~] and [soundfiler] for more details., f 68;
 #X text 569 81 For a nice bank of free wavetables \, check:;
 #X obj 533 106 else/openfile -h https://github.com/KristofferKarlAxelEkstrand/AKWF-FREE;
 #X obj 623 139 else/openfile -h https://waveeditonline.com;
 #X text 586 141 and:;
 #X text 20 24 ELSE provides another wavetable oscillator called [wavetable~]. One difference to [tabosc4~] is that it can load tables of any size (so it doesn't have to be a power of 2 plus 3 extra points). In the example below \, instead of generating a waveform \, we load it from a sound file., f 68;
 #X text 259 406 Note that the object can also scan through a wavetable scnanning \, something we'll see later in "Part 5" \, on Basic Synthesis Techniques., f 75;
+#X text 20 102 It's relatively easy to find around waveforms as .wav or .aif files to be used in Pd. to load them into an array \, we use the native [soundfiler] object for that \, which we'll see more in detail only later in this tutorial. Check the help file of [wavetable~] and [soundfiler] for more details., f 68;
 #X connect 0 0 11 0;
 #X connect 3 0 13 0;
 #X connect 5 0 0 0;

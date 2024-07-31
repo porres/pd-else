@@ -10,7 +10,6 @@
 #X text 44 56 Again we adapt a previously presented patch in the granulation series. Now is time to check out the Pitch Shifter and Time Stretch on a ring buffer with the phase accumulation. Nothing should be new \, just the same kind of adaptation., f 62;
 #X obj 292 492 pvoc.live~ 6000;
 #X obj 334 21 declare -path else;
-#X obj 155 153 play.file~ bubul.wav 1 1;
 #X text 99 443 The [pvoc.live~] \, from the ELSE library \, is based on this patch. Check its help file., f 43;
 #N canvas 586 112 795 699 pvoc-live 0;
 #X obj 352 338 +~;
@@ -203,9 +202,10 @@
 #X restore 156 291 pd pvoc-live;
 #X f 18;
 #X obj 155 181 del~ in \$0-buffer 10000;
-#X connect 1 0 12 2;
+#X obj 155 153 play.file~ bubul.mp3 1 1;
+#X connect 1 0 11 2;
 #X connect 2 0 1 0;
-#X connect 3 0 12 1;
-#X connect 10 0 13 0;
-#X connect 12 0 5 0;
+#X connect 3 0 11 1;
+#X connect 11 0 5 0;
+#X connect 12 0 11 0;
 #X connect 13 0 12 0;

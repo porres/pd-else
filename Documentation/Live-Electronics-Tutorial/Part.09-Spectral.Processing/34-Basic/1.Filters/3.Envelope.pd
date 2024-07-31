@@ -1,9 +1,7 @@
 #N canvas 476 78 652 490 12;
 #X declare -path else;
-#X obj 389 411 nbx 5 14 64 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 2048 256;
-#X obj 389 363 hradio 15 1 0 8 empty \$0-set-window empty 0 -8 0 10
--228856 -1 -1 5;
+#X obj 389 411 nbx 5 14 64 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 389 363 hradio 15 1 0 8 empty \$0-set-window empty 0 -8 0 10 #dcdcdc #000000 #000000 0;
 #X obj 389 386 expr pow(2 \, $f1 + 6);
 #N canvas 344 26 427 302 Window 0;
 #X obj 102 160 s \$0-set-block;
@@ -24,8 +22,7 @@
 #X connect 7 0 1 0;
 #X coords 0 0 1 1 120 60 0;
 #X restore 389 436 pd Window;
-#X obj 462 433 nbx 2 14 1 1e+37 0 1 \$0-overlap \$0-overlap-set empty
-0 -8 0 10 -228856 -1 -1 4 256;
+#X obj 462 433 nbx 2 14 1 1e+37 0 1 \$0-overlap \$0-overlap-set empty 0 -8 0 10 #dcdcdc #000000 #000000 4 256;
 #X text 493 432 overlaps;
 #X obj 238 398 out~;
 #N canvas 385 106 731 354 filter-table 0;
@@ -40,10 +37,7 @@
 #X obj 66 224 tabsend~ \$0-filter;
 #X obj 231 228 s \$0-filter;
 #X obj 73 264 table \$0-filter;
-#X text 348 125 With the output of [function~] \, we generate a filter
-table via [tabsend~]. The window size needs to be half of the actual
-FFT cause we're using [rfft~] and only need frequency points up to
-Nyquist., f 46;
+#X text 348 125 With the output of [function~] \, we generate a filter table via [tabsend~]. The window size needs to be half of the actual FFT cause we're using [rfft~] and only need frequency points up to Nyquist., f 46;
 #X obj 66 192 function~;
 #X connect 0 0 12 0;
 #X connect 1 0 5 0;
@@ -88,21 +82,17 @@ Nyquist., f 46;
 #X connect 14 0 12 1;
 #X restore 238 362 pd filter;
 #X text 447 408 window size;
-#X text 125 78 Here we have a very similar example \, but we use an
-envelope generator to generate the filter table. We can also say we're
-applying a "Spectral Envelope" into a FFT analysis. Open subpatches
-below to see the implementation.;
+#X text 125 78 Here we have a very similar example \, but we use an envelope generator to generate the filter table. We can also say we're applying a "Spectral Envelope" into a FFT analysis. Open subpatches below to see the implementation.;
 #X obj 418 29 declare -path else;
-#X obj 238 322 play.file~ 1 didge.aif 1 1;
-#X obj 85 196 function 200 100 empty empty 0 1 220 220 220 50 50 50
-1 0 0 0 1 1 1;
+#X obj 85 196 function 200 100 empty empty 0 1 220 220 220 50 50 50 1 0 0 0 1 1 1;
 #X text 304 238 <= Click and drag;
 #X obj 85 165 initmess 1 1 1;
+#X obj 238 322 play.file~ 1 didge.flac 1 1;
 #X connect 0 0 3 0;
 #X connect 1 0 2 0;
 #X connect 2 0 0 0;
 #X connect 4 0 3 1;
 #X connect 8 0 6 0;
-#X connect 12 0 8 0;
-#X connect 13 0 7 0;
-#X connect 15 0 13 0;
+#X connect 12 0 7 0;
+#X connect 14 0 12 0;
+#X connect 15 0 8 0;

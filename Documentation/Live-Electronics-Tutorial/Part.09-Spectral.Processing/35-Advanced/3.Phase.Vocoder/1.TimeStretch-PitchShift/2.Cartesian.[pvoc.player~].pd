@@ -1,19 +1,13 @@
-#N canvas 706 23 557 674 12;
+#N canvas 706 38 557 674 12;
 #X declare -path else;
-#X obj 101 382 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-speed empty 0 -8
-0 10 #dcdcdc #000000 #000000 0 256;
-#X obj 176 382 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-transpo empty 0
--8 0 10 #dcdcdc #000000 #000000 0 256;
-#X obj 460 379 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
-#000000 0 1;
-#X obj 61 382 tgl 18 0 empty \$0-play empty 17 7 0 10 #dcdcdc #000000
-#000000 0 1;
+#X obj 101 382 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-speed empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 176 382 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-transpo empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 460 379 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 61 382 tgl 18 0 empty \$0-play empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
 #X text 54 363 Play;
 #X text 181 362 Cents;
-#X obj 267 304 nbx 5 14 256 1e+37 0 0 \$0-window_size \$0-window_size-set
-empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
-#X obj 267 256 hradio 15 1 0 7 \$0-window_size-radio \$0-window_size-radio-set
-empty 0 -8 0 10 #dcdcdc #000000 #000000 0;
+#X obj 267 304 nbx 5 14 256 1e+37 0 0 \$0-window_size \$0-window_size-set empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 267 256 hradio 15 1 0 7 \$0-window_size-radio \$0-window_size-radio-set empty 0 -8 0 10 #dcdcdc #000000 #000000 0;
 #X obj 267 279 expr pow(2 \, $f1 + 8);
 #X obj 61 468 out~;
 #X text 98 362 Speed (%);
@@ -41,10 +35,8 @@ empty 0 -8 0 10 #dcdcdc #000000 #000000 0;
 #X obj 97 52 inlet;
 #X obj 166 52 inlet;
 #X obj 326 53 inlet;
-#X obj 166 93 nbx 5 20 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15
-#dcdcdc #000000 #000000 0 256;
-#X obj 326 93 nbx 5 20 -1e+37 1e+37 0 0 empty \$0-transpo empty 0 -8
-0 15 #dcdcdc #000000 #000000 0 256;
+#X obj 166 93 nbx 5 20 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15 #dcdcdc #000000 #000000 0 256;
+#X obj 326 93 nbx 5 20 -1e+37 1e+37 0 0 empty \$0-transpo empty 0 -8 0 15 #dcdcdc #000000 #000000 0 256;
 #X text 100 26 play;
 #X obj 112 246 +;
 #X obj 58 278 f;
@@ -55,15 +47,12 @@ empty 0 -8 0 10 #dcdcdc #000000 #000000 0;
 #X obj 246 151 r \$0-window_size;
 #X obj 58 301 spigot;
 #X obj 280 402 +;
-#X obj 97 179 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
-#000000 0 1;
+#X obj 97 179 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
 #X text 330 27 cents;
 #X text 170 26 %;
 #X obj 213 434 pack f f f;
-#X obj 166 232 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
-#X obj 326 435 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
+#X obj 166 232 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 326 435 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 326 192 cents2ratio;
 #X obj 112 278 wrap2;
 #X text 386 433 new hop;
@@ -151,8 +140,7 @@ empty 0 -8 0 10 #dcdcdc #000000 #000000 0;
 #X obj 26 177 outlet~;
 #X obj 339 21 inlet~;
 #X obj 68 19 inlet~;
-#X obj 26 117 expr~ $v1 / sqrt(pow ($v1 \, 2) + pow($v2 \, 2)) \; $v2
-/ sqrt(pow ($v1 \, 2) + pow($v2 \, 2)) \;;
+#X obj 26 117 expr~ $v1 / sqrt(pow ($v1 \, 2) + pow($v2 \, 2)) \; $v2 / sqrt(pow ($v1 \, 2) + pow($v2 \, 2)) \;;
 #X obj 68 61 expr~ if($v1 == 0 && $v2 == 0 \, 1 \, $v1) \; $v2;
 #X text 354 68 If both parts are equal to 0 \, Real part is 0;
 #X text 355 124 Divide by amplitude to normalize to one.;
@@ -168,17 +156,9 @@ empty 0 -8 0 10 #dcdcdc #000000 #000000 0;
 #X text 302 286 Imaginary;
 #X text 49 25 Back;
 #X text 181 27 Front;
-#X text 428 56 Following the same steps \, we need to get the phase
-difference from the front and back window and sum to the last output.
-We do that by first getting the phase difference from a complex division
-\, which divides the amplitudes and subtract the phases., f 51;
-#X text 428 144 But we need to normalize all the amplitudes of the
-back window to 1 \, so we divide by 1 and don't alter the ampltidues
-of the front window., f 51;
-#X text 428 209 Summing the phase follows the same idea \, but performing
-a complex multiplication \, which multiplies the amplitudes and sums
-the phases. We also need to normalize the amplitudes from the last
-output. Open the subpatches for more details \,, f 51;
+#X text 428 56 Following the same steps \, we need to get the phase difference from the front and back window and sum to the last output. We do that by first getting the phase difference from a complex division \, which divides the amplitudes and subtract the phases., f 51;
+#X text 428 144 But we need to normalize all the amplitudes of the back window to 1 \, so we divide by 1 and don't alter the ampltidues of the front window., f 51;
+#X text 428 209 Summing the phase follows the same idea \, but performing a complex multiplication \, which multiplies the amplitudes and sums the phases. We also need to normalize the amplitudes from the last output. Open the subpatches for more details \,, f 51;
 #N canvas 304 91 632 354 Phase-Difference 0;
 #X obj 59 109 inlet~;
 #X obj 132 108 inlet~;
@@ -186,13 +166,11 @@ output. Open the subpatches for more details \,, f 51;
 #X obj 280 110 inlet~;
 #X obj 59 214 outlet~;
 #X obj 280 212 outlet~;
-#X obj 59 153 expr~ ($v1 * $v3) + ($v2 * $v4) \; ($v2 * $v3) - ($v1
-* $v4);
+#X obj 59 153 expr~ ($v1 * $v3) + ($v2 * $v4) \; ($v2 * $v3) - ($v1 * $v4);
 #X text 290 246 Im = (Im1*Re2) - (Re1*Im2);
 #X text 51 247 Re = (Re1*Re2) + (Im1*Im2);
 #X text 112 65 Complex division;
-#X text 357 135 We don't need the normalization factor for the division
-as the amplitudes are equal to one., f 31;
+#X text 357 135 We don't need the normalization factor for the division as the amplitudes are equal to one., f 31;
 #X connect 0 0 6 0;
 #X connect 1 0 6 1;
 #X connect 2 0 6 2;
@@ -203,8 +181,7 @@ as the amplitudes are equal to one., f 31;
 #N canvas 472 252 510 322 Sum-Phases 0;
 #X obj 69 209 outlet~;
 #X obj 290 203 outlet~;
-#X obj 69 149 expr~ ($v1 * $v3) - ($v2 * $v4) \; ($v2 * $v3) + ($v1
-* $v4);
+#X obj 69 149 expr~ ($v1 * $v3) - ($v2 * $v4) \; ($v2 * $v3) + ($v1 * $v4);
 #X text 66 241 Re = (Re1*Re2) - (Im1*Im2);
 #X text 292 244 Im = (Im1*Re2) + (Re1*Im2);
 #X obj 69 113 inlet~;
@@ -224,8 +201,7 @@ as the amplitudes are equal to one., f 31;
 #X obj 26 177 outlet~;
 #X obj 339 21 inlet~;
 #X obj 68 19 inlet~;
-#X obj 26 117 expr~ $v1 / sqrt(pow ($v1 \, 2) + pow($v2 \, 2)) \; $v2
-/ sqrt(pow ($v1 \, 2) + pow($v2 \, 2)) \;;
+#X obj 26 117 expr~ $v1 / sqrt(pow ($v1 \, 2) + pow($v2 \, 2)) \; $v2 / sqrt(pow ($v1 \, 2) + pow($v2 \, 2)) \;;
 #X obj 68 61 expr~ if($v1 == 0 && $v2 == 0 \, 1 \, $v1) \; $v2;
 #X text 354 68 If both parts are equal to 0 \, Real part is 0;
 #X text 355 124 Divide by amplitude to normalize to one.;
@@ -296,8 +272,7 @@ as the amplitudes are equal to one., f 31;
 #X connect 23 1 9 0;
 #X restore 61 416 pd Cartesian;
 #X text 327 304 window size;
-#X obj 129 261 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
-#000000 #000000;
+#X obj 129 261 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #N canvas 460 148 731 302 sampler 0;
 #X obj 38 177 soundfiler;
 #X obj 38 64 openpanel;
@@ -307,8 +282,7 @@ as the amplitudes are equal to one., f 31;
 #X obj 122 205 table \$0-sample;
 #X obj 38 205 s \$0-size;
 #X obj 51 91 r \$0-file;
-#X obj 284 60 initmess bang \; \$0-window_size-radio-set 3 \; \$0-speed
-100 \; \$0-transpo 0 \; \$0-file symbol bubul.wav \; \$0-play 1;
+#X obj 284 60 initmess bang \; \$0-window_size-radio-set 3 \; \$0-speed 100 \; \$0-transpo 0 \; \$0-file symbol bubul.wav \; \$0-play 1;
 #X connect 0 0 6 0;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
@@ -316,12 +290,9 @@ as the amplitudes are equal to one., f 31;
 #X connect 4 0 1 0;
 #X connect 7 0 2 0;
 #X restore 129 290 pd sampler;
-#X obj 325 380 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-speed empty 0 -8
-0 10 #dcdcdc #000000 #000000 0 256;
-#X obj 398 380 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-transpo empty 0
--8 0 10 #dcdcdc #000000 #000000 0 256;
-#X obj 274 380 tgl 18 0 empty \$0-play empty 17 7 0 10 #dcdcdc #000000
-#000000 0 1;
+#X obj 325 380 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-speed empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 398 380 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-transpo empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 274 380 tgl 18 0 empty \$0-play empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
 #X text 267 361 Play;
 #X text 403 360 Cents;
 #X obj 274 494 out~;
@@ -346,10 +317,8 @@ as the amplitudes are equal to one., f 31;
 #X obj 97 52 inlet;
 #X obj 166 52 inlet;
 #X obj 326 53 inlet;
-#X obj 166 93 nbx 5 20 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15
-#dcdcdc #000000 #000000 0 256;
-#X obj 326 93 nbx 5 20 -1e+37 1e+37 0 0 empty \$0-transpo empty 0 -8
-0 15 #dcdcdc #000000 #000000 0 256;
+#X obj 166 93 nbx 5 20 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15 #dcdcdc #000000 #000000 0 256;
+#X obj 326 93 nbx 5 20 -1e+37 1e+37 0 0 empty \$0-transpo empty 0 -8 0 15 #dcdcdc #000000 #000000 0 256;
 #X text 100 26 play;
 #X obj 112 246 +;
 #X obj 58 278 f;
@@ -360,15 +329,12 @@ as the amplitudes are equal to one., f 31;
 #X obj 246 151 r \$0-window_size;
 #X obj 58 301 spigot;
 #X obj 280 402 +;
-#X obj 97 179 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
-#000000 0 1;
+#X obj 97 179 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
 #X text 330 27 cents;
 #X text 170 26 %;
 #X obj 213 434 pack f f f;
-#X obj 166 232 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
-#X obj 326 435 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
+#X obj 166 232 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 326 435 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 326 192 cents2ratio;
 #X obj 112 278 wrap2;
 #X text 386 433 new hop;
@@ -450,16 +416,14 @@ as the amplitudes are equal to one., f 31;
 #N canvas 267 247 815 452 phase.lock 0;
 #X obj 196 359 outlet~;
 #X obj 417 358 outlet~;
-#X obj 196 294 expr~ ($v1 * $v3) - ($v2 * $v4) \; ($v2 * $v3) + ($v1
-* $v4);
+#X obj 196 294 expr~ ($v1 * $v3) - ($v2 * $v4) \; ($v2 * $v3) + ($v1 * $v4);
 #X obj 234 66 inlet~;
 #X obj 284 66 inlet~;
 #X obj 363 66 inlet~;
 #X obj 417 66 inlet~;
 #X obj 87 66 inlet~;
 #X obj 139 66 inlet~;
-#X obj 87 125 expr~ ($v1 * $v3) + ($v2 * $v4) \; ($v2 * $v3) - ($v1
-* $v4);
+#X obj 87 125 expr~ ($v1 * $v3) + ($v2 * $v4) \; ($v2 * $v3) - ($v1 * $v4);
 #N canvas 228 78 806 376 phase_lock 0;
 #X obj 412 126 lrshift~ 1;
 #X obj 327 126 lrshift~ -1;
@@ -479,9 +443,7 @@ as the amplitudes are equal to one., f 31;
 #X obj 113 196 r \$0-lock;
 #X text 68 22 real;
 #X text 301 20 imaginária;
-#X text 521 139 When on (1) \, the "lock" parameter forces neighbor
-channels to stay in phase. The [lrshift~] object shifts 1 channel to
-the left and right so these channels are summed., f 34;
+#X text 521 139 When on (1) \, the "lock" parameter forces neighbor channels to stay in phase. The [lrshift~] object shifts 1 channel to the left and right so these channels are summed., f 34;
 #X connect 0 0 6 1;
 #X connect 1 0 6 0;
 #X connect 2 0 3 1;
@@ -509,8 +471,7 @@ the left and right so these channels are summed., f 34;
 #X obj 26 177 outlet~;
 #X obj 339 21 inlet~;
 #X obj 68 19 inlet~;
-#X obj 26 117 expr~ $v1 / sqrt(pow ($v1 \, 2) + pow($v2 \, 2)) \; $v2
-/ sqrt(pow ($v1 \, 2) + pow($v2 \, 2)) \;;
+#X obj 26 117 expr~ $v1 / sqrt(pow ($v1 \, 2) + pow($v2 \, 2)) \; $v2 / sqrt(pow ($v1 \, 2) + pow($v2 \, 2)) \;;
 #X obj 68 61 expr~ if($v1 == 0 && $v2 == 0 \, 1 \, $v1) \; $v2;
 #X text 354 68 If both parts are equal to 0 \, Real part is 0;
 #X text 355 124 Divide by amplitude to normalize to one.;
@@ -525,10 +486,7 @@ the left and right so these channels are summed., f 34;
 #X text 415 389 Imaginary;
 #X text 19 132 Division;
 #X text 87 303 Multiplication;
-#X text 467 140 Here the order has been altered. First we get the phase
-difference between the last output and back window \, then we sum to
-the front window. This order is necessary to apply the phase lock stage.
-, f 42;
+#X text 467 140 Here the order has been altered. First we get the phase difference between the last output and back window \, then we sum to the front window. This order is necessary to apply the phase lock stage., f 42;
 #X text 119 191 open =>;
 #X connect 2 0 0 0;
 #X connect 2 1 1 0;
@@ -573,21 +531,12 @@ the front window. This order is necessary to apply the phase lock stage.
 #X connect 24 1 4 1;
 #X restore 274 414 pd Cartesian(pd phase.lock);
 #X text 480 370 phase lock, f 5;
-#X text 290 444 This example is equivalent to the Pd example I07.phase.vocoder
-, f 32;
+#X text 290 444 This example is equivalent to the Pd example I07.phase.vocoder, f 32;
 #X obj 329 626 pvoc.player~;
-#X text 71 589 The [pvoc.player~] \, from the ELSE library \, is based
-on this patch. Check its help file.;
+#X text 71 589 The [pvoc.player~] \, from the ELSE library \, is based on this patch. Check its help file.;
 #X obj 374 28 declare -path else;
-#X text 61 69 Here we have a more mathematically complicated version
-of the last example as it avoids the phase computation. This is needed
-for implementing Miller Puckette's "phase-locked" algorithm. It's also
-a bit more accurate and efficient. This patch also allows changing
-the window size., f 63;
-#X text 61 151 The "Phase-Lock" makes it more stable \, specially for
-very slow speeds \, or even when freezing (with a speed of 0). Check
-first the [pd Cartesian] example and then the variation with the phase
-locking ([pd Cartesian(pd phase.lock)])., f 63;
+#X text 61 69 Here we have a more mathematically complicated version of the last example as it avoids the phase computation. This is needed for implementing Miller Puckette's "phase-locked" algorithm. It's also a bit more accurate and efficient. This patch also allows changing the window size., f 63;
+#X text 61 151 The "Phase-Lock" makes it more stable \, specially for very slow speeds \, or even when freezing (with a speed of 0). Check first the [pd Cartesian] example and then the variation with the phase locking ([pd Cartesian(pd phase.lock)])., f 63;
 #X connect 0 0 11 1;
 #X connect 1 0 11 2;
 #X connect 2 0 22 3;

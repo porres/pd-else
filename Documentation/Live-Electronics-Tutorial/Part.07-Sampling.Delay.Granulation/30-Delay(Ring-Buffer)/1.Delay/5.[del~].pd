@@ -1,4 +1,4 @@
-#N canvas 532 23 561 682 12;
+#N canvas 532 38 561 682 12;
 #X declare -path else;
 #X obj 308 301 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 326 451 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
@@ -6,7 +6,6 @@
 #X obj 308 367 out~;
 #X obj 326 517 out~;
 #X obj 378 21 declare -path else;
-#X obj 79 306 play.file~ bubul.wav 1 1;
 #X obj 104 471 del~ in \$0-del 3000;
 #X obj 326 481 del~ out \$0-del 1500;
 #X msg 104 341 size 1500;
@@ -20,13 +19,14 @@
 #X obj 308 331 del~ out -samps \$0-del 22050;
 #X text 449 355 same as 500 ms, f 7;
 #X text 32 57 The [del~] object from ELSE basically comprises both [delwrite~] and [dlread4~]. This object behaves like [delwrite~] if created as [del~ in] \, and as [delred4~] if created as [del~ out]. It uses a different interpolation method (apline) and offers more functionalitites not present in the native delay objects (at least yet) \, like being able to resize the delay line in [del~ in] and also "freeze" the recording. We can also set the delay time in samples instead of ms., f 71;
-#X connect 0 0 17 0;
-#X connect 1 0 8 0;
-#X connect 6 0 2 0;
-#X connect 6 0 7 0;
-#X connect 8 0 4 0;
-#X connect 9 0 7 0;
-#X connect 10 0 7 0;
-#X connect 11 0 7 0;
-#X connect 12 0 11 0;
-#X connect 17 0 3 0;
+#X obj 79 306 play.file~ bubul.mp3 1 1;
+#X connect 0 0 16 0;
+#X connect 1 0 7 0;
+#X connect 7 0 4 0;
+#X connect 8 0 6 0;
+#X connect 9 0 6 0;
+#X connect 10 0 6 0;
+#X connect 11 0 10 0;
+#X connect 16 0 3 0;
+#X connect 19 0 2 0;
+#X connect 19 0 6 0;

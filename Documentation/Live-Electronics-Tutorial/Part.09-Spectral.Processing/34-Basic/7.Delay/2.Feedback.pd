@@ -64,25 +64,18 @@
 #X connect 18 0 3 1;
 #X coords 0 0 1 1 230 100 0;
 #X restore 78 88 pd Feedback-Delay;
-#X obj 137 398 hsl 160 23 0 200 0 0 \$0-del-depth \$0-del-depth-set
-Delay-Depth 15 11 0 19 -66577 -204800 -262144 0 0;
-#X obj 347 397 hsl 160 23 0 1 0 0 \$0-feedback \$0-feedback-set Feedback
-40 11 0 19 -66577 -204800 -262144 0 0;
+#X obj 137 398 hsl 160 23 0 200 0 0 \$0-del-depth \$0-del-depth-set Delay-Depth 15 11 0 19 #404040 #c4fcfc #fcfcfc 0 0;
+#X obj 347 397 hsl 160 23 0 1 0 0 \$0-feedback \$0-feedback-set Feedback 40 11 0 19 #404040 #c4fcfc #fcfcfc 0 0;
 #X obj 328 211 initmess 0 0.5 1 0.5 0;
-#X text 242 99 As a variation of the last example \, we have also a
-feedback line and use the [comb.rev~] object for both feedforward and
-feedback lines. We also have an envelope for different feedback values
-for each frequency bin., f 47;
+#X text 242 99 As a variation of the last example \, we have also a feedback line and use the [comb.rev~] object for both feedforward and feedback lines. We also have an envelope for different feedback values for each frequency bin., f 47;
 #X obj 457 31 declare -path else;
-#X obj 78 53 play.file~ guitar.wav 1 1;
-#X obj 111 253 function 200 100 empty empty 0 1 220 220 220 50 50 50
-0 0 0 0 0 0.5 1 0.5 0;
-#X obj 328 253 function 200 100 empty empty 0 1 220 220 220 50 50 50
-0 0 0 0 0 0.5 1 0.5 0;
+#X obj 111 253 function 200 100 empty empty 0 1 220 220 220 50 50 50 0 0 0 0 0 0.5 1 0.5 0;
+#X obj 328 253 function 200 100 empty empty 0 1 220 220 220 50 50 50 0 0 0 0 0 0.5 1 0.5 0;
+#X obj 78 53 play.file~ guitar.mp3 1 1;
 #X connect 2 0 1 0;
+#X connect 5 0 8 0;
 #X connect 5 0 9 0;
-#X connect 5 0 10 0;
-#X connect 8 0 2 0;
-#X connect 9 0 0 0;
-#X connect 10 0 0 1;
+#X connect 8 0 0 0;
+#X connect 9 0 0 1;
+#X connect 10 0 2 0;
 #X coords 0 0 1 1 560 350 0;

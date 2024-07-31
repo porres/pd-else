@@ -1,4 +1,4 @@
-#N canvas 472 23 631 792 12;
+#N canvas 472 38 631 792 12;
 #X declare -path else;
 #X msg 151 342 0;
 #X text 180 343 reset;
@@ -12,8 +12,7 @@
 #X obj 55 231 loadbang;
 #X obj 105 534 +~;
 #X obj 239 518 *~;
-#X obj 481 346 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-cents empty 0 -8
-0 10 -228856 -1 -1 0 256;
+#X obj 481 346 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-cents empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 542 342 Cents;
 #X obj 481 393 expr~ 1 - $v1;
 #X obj 362 640 *~;
@@ -21,13 +20,10 @@
 #X obj 301 563 +~;
 #X obj 239 557 *~;
 #X obj 463 551 *~;
-#X obj 193 243 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-speed empty 0 -8
-0 10 -228856 -1 -1 100 256;
+#X obj 193 243 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-speed empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 94 255 buffer (ms);
-#X obj 408 278 hsl 128 15 0 1000 0 0 empty \$0-size grain-ms -2 -8
-0 10 -228856 -1 -1 1270 1;
-#X obj 405 302 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 100 256;
+#X obj 408 278 hsl 128 15 0 1000 0 0 empty \$0-size grain-ms -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 405 302 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X msg 55 255 6000;
 #X obj 344 710 out~;
 #X obj 310 218 delwrite~ \$0-buffer 6000;
@@ -45,22 +41,14 @@
 #X obj 481 522 sh~;
 #X obj 105 499 sh~;
 #X obj 405 331 f2s~ 50;
-#X obj 467 653 initmess \; \$0-speed 100 \; \$0-size 100 \; \$0-cents
-0;
+#X obj 467 653 initmess \; \$0-speed 100 \; \$0-size 100 \; \$0-cents 0;
 #X text 190 221 speed (%);
 #X text 37 399 position;
 #X obj 139 162 stretch.shift~;
 #X text 30 162 Check it out =>;
 #X obj 435 137 declare -path else;
-#X obj 310 173 play.file~ bubul.wav 1 1;
-#X text 61 23 In this example we put together the last two for a pitch
-shift / time stretch patch! As in the first example \, we multiply
-a transposition ratio to the grain reading speed \, but to the phase
-\, not frequency. We do this to make this adjustment go through another
-sample and hold and only change at grain transitions. This is useful
-for not to make this adjustment change the reading speed. The [stretch.shift~]
-object \, from ELSE \, is based on this patch \, check its help file.
-, f 70;
+#X text 61 23 In this example we put together the last two for a pitch shift / time stretch patch! As in the first example \, we multiply a transposition ratio to the grain reading speed \, but to the phase \, not frequency. We do this to make this adjustment go through another sample and hold and only change at grain transitions. This is useful for not to make this adjustment change the reading speed. The [stretch.shift~] object \, from ELSE \, is based on this patch \, check its help file., f 70;
+#X obj 310 173 play.file~ bubul.mp3 1 1;
 #X connect 0 0 2 1;
 #X connect 2 0 34 0;
 #X connect 3 0 32 0;
@@ -108,4 +96,4 @@ object \, from ELSE \, is based on this patch \, check its help file.
 #X connect 40 0 11 1;
 #X connect 40 0 16 1;
 #X connect 40 0 3 0;
-#X connect 47 0 26 0;
+#X connect 48 0 26 0;

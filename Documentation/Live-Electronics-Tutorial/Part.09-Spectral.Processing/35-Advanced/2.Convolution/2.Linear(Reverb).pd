@@ -1,4 +1,4 @@
-#N canvas 249 39 958 688 12;
+#N canvas 343 107 958 684 12;
 #X declare -path else;
 #X obj 566 196 s~ \$0-input;
 #X obj 652 555 r~ \$0-input;
@@ -150,11 +150,11 @@
 #X text 48 51 For instance \, in the following A & B arrays:, f 23;
 #X text 485 46 Note that this is not a proper Impulse Response file that was recorded from an actual room. This is just a "clap" sample \, which is also interesting to show how you can experiment with all sorts of files and use the convolution as a general sound processor rather than just an actual reverberator. Play the input sound and the IR below:;
 #X obj 762 13 declare -path else;
-#X obj 548 158 play.file~ 1 didge.aif 1 1;
 #X text 479 322 Here we're using the overlap-add method technique \, which needs zero-padding. The IR size is 16.384 samples \, but we have a FFT window size of 32.768 (twice as big). The second half of the table is filled with zeroes (hence \, zero-padded)., f 61;
+#X obj 548 158 play.file~ 1 didge.flac 1 1;
 #X connect 1 0 14 0;
 #X connect 2 0 3 0;
 #X connect 3 0 7 0;
 #X connect 14 0 10 0;
-#X connect 29 0 0 0;
-#X connect 29 0 11 0;
+#X connect 30 0 0 0;
+#X connect 30 0 11 0;

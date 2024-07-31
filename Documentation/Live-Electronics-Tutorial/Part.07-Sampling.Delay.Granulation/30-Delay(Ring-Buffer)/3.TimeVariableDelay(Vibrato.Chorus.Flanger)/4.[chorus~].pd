@@ -27,10 +27,10 @@
 #X obj 603 84 osc~;
 #X text 836 132 The [chorus~] object from the ELSE is based on this patch. Check its help file., f 22;
 #X obj 865 27 declare -path else;
-#X obj 245 198 play.file~ guitar.wav 1 1;
 #X text 44 25 In the vibrato example \, we've seen how mixing a dry signal with a processed vibrato gives us a chorus like effect. Indeed \, a chorus adds an input to one or more copies with slight pitch deviations (vibratos). Here we do that with a comb reverberator that mixes the input to a pitch deviated feedforward line controlled by [osc~]., f 63;
 #X text 44 118 We also use the feedback delay line with negative coefficients. Let's note that it can cancel the feedforwars line \, so when this is at a -1 \, we only have the dry signal \, and this acts like a dry/wet parameter., f 63;
 #X obj 603 155 rescale~, f 9;
+#X obj 245 198 play.file~ guitar.mp3 1 1;
 #X connect 0 0 19 0;
 #X connect 3 0 24 0;
 #X connect 4 0 3 0;
@@ -38,12 +38,12 @@
 #X connect 7 0 13 0;
 #X connect 8 0 12 0;
 #X connect 9 0 8 0;
-#X connect 12 0 30 2;
+#X connect 12 0 29 2;
 #X connect 13 0 18 4;
 #X connect 14 0 18 0;
 #X connect 15 0 23 0;
 #X connect 18 0 17 0;
 #X connect 23 0 16 0;
-#X connect 24 0 30 0;
-#X connect 27 0 1 0;
-#X connect 30 0 18 1;
+#X connect 24 0 29 0;
+#X connect 29 0 18 1;
+#X connect 30 0 1 0;

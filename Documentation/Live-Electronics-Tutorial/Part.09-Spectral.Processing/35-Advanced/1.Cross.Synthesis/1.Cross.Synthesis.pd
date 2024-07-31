@@ -1,9 +1,7 @@
 #N canvas 503 60 730 479 12;
 #X declare -path else;
-#X obj 464 176 hradio 15 1 0 10 empty \$0-window empty 0 -8 0 10 -228856
--1 -1 4;
-#X obj 464 224 nbx 5 14 64 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 2048 256;
+#X obj 464 176 hradio 15 1 0 10 empty \$0-window empty 0 -8 0 10 #dcdcdc #000000 #000000 0;
+#X obj 464 224 nbx 5 14 64 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #N canvas 150 61 493 184 Window 0;
 #X obj 134 116 s \$0-set-block;
 #X obj 134 41 inlet;
@@ -50,13 +48,8 @@
 #X obj 522 317 mag~;
 #X text 392 269 A;
 #X text 505 271 B;
-#X text 360 136 The ampltidues get normalized to 1 as we did before.
-This removes the amplitude information so when we multiply by the amplitudes
-of the second source (B) \, those amplitudes get through with the phase
-information of the first source (A)., f 37;
-#X text 361 38 Check to the left how we did this. The alternative below
-avoids the phase computation with atan2 and [car2pol~] and [poltocar~]
-objects. This is a bit more efficient and accurate., f 37;
+#X text 360 136 The ampltidues get normalized to 1 as we did before. This removes the amplitude information so when we multiply by the amplitudes of the second source (B) \, those amplitudes get through with the phase information of the first source (A)., f 37;
+#X text 361 38 Check to the left how we did this. The alternative below avoids the phase computation with atan2 and [car2pol~] and [poltocar~] objects. This is a bit more efficient and accurate., f 37;
 #X connect 0 0 10 0;
 #X connect 2 0 11 0;
 #X connect 3 0 13 0;
@@ -97,20 +90,13 @@ objects. This is a bit more efficient and accurate., f 37;
 #X obj 269 380 out~;
 #X obj 76 335 r~ \$0-Phase;
 #X obj 269 336 r~ \$0-Amp;
-#X text 28 216 Remember that the phase information codifies the tonal
-quality of the input. We then have a tonal source for the phase information
-and a noisy speech for the amplitude (or filter control). Listen to
-both below and the crossed synthesized to the right, f 47;
+#X text 28 216 Remember that the phase information codifies the tonal quality of the input. We then have a tonal source for the phase information and a noisy speech for the amplitude (or filter control). Listen to both below and the crossed synthesized to the right, f 47;
 #X text 522 221 window size;
 #X obj 529 20 declare -path else;
-#X obj 103 39 play.file~ 1 kantele.wav 1 1;
-#X obj 429 76 play.file~ numbers.wav 1 1;
-#X text 28 119 We've seen how to implement a Cross synthesis Vocoder
-with filters \, now we do it with FFT by combining the phase output
-of a sound source to the amplitude of another. In the same way as a
-Vocoder \, the amplitude envelope can be considered as an equalizer/filter.
-, f 47;
-#X text 574 352 <= click;
+#X text 28 119 We've seen how to implement a Cross synthesis Vocoder with filters \, now we do it with FFT by combining the phase output of a sound source to the amplitude of another. In the same way as a Vocoder \, the amplitude envelope can be considered as an equalizer/filter., f 47;
+#X obj 103 39 play.file~ 1 kantele.flac 1 1;
+#X obj 429 76 play.file~ numbers.mp3 1 1;
+#X text 574 352 <-- click;
 #X connect 0 0 3 0;
 #X connect 1 0 2 0;
 #X connect 3 0 1 0;
@@ -119,5 +105,5 @@ Vocoder \, the amplitude envelope can be considered as an equalizer/filter.
 #X connect 9 0 7 1;
 #X connect 13 0 11 0;
 #X connect 14 0 12 0;
-#X connect 18 0 4 0;
-#X connect 19 0 5 0;
+#X connect 19 0 4 0;
+#X connect 20 0 5 0;

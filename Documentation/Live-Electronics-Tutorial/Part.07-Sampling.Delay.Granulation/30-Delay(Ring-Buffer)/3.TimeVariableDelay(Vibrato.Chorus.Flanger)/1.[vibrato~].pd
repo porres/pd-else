@@ -1,4 +1,4 @@
-#N canvas 504 23 638 639 12;
+#N canvas 504 38 638 639 12;
 #X declare -path else;
 #X obj 347 198 nbx 5 14 0.1 20 0 0 empty \$0-LFO empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 347 180 Rate;
@@ -25,14 +25,14 @@
 #X text 554 475 cents;
 #X text 59 483 The [vibrato~] object \, an abstraction from ELSE \, is actually based on a granular pitch shifter \, that we'll see later. Here it performs a vibrato where the depth is the pitch deviation in cents., f 35;
 #X obj 419 10 declare -path else;
-#X obj 75 217 play.file~ guitar.wav 1 1;
 #X text 88 53 Varying the delay time can be used for vibrato \, chorus and flanger effects. In this example a LFO controls the delay time \, which ascellerates and deascelerates the reading speed \, promoting a vibrato effect. The LFO's frequency is the vibrato "rate" \, and its amplitude the "depth". A crossfade allows you to mix between the original (or dry) and processed (or wet) output. When in the middle and summing both of them \, you get a bit of a chorus effect., f 62;
 #X obj 347 254 rescale~, f 12;
+#X obj 75 217 play.file~ guitar.mp3 1 1;
 #X connect 0 0 5 0;
 #X connect 2 0 6 0;
 #X connect 4 0 7 1;
-#X connect 5 0 27 0;
-#X connect 6 0 27 2;
+#X connect 5 0 26 0;
+#X connect 6 0 26 2;
 #X connect 7 0 8 0;
 #X connect 9 0 13 0;
 #X connect 13 0 7 2;
@@ -40,7 +40,7 @@
 #X connect 15 0 20 2;
 #X connect 19 0 20 0;
 #X connect 20 0 21 0;
-#X connect 25 0 4 0;
-#X connect 25 0 7 0;
-#X connect 25 0 18 0;
-#X connect 27 0 4 1;
+#X connect 26 0 4 1;
+#X connect 27 0 4 0;
+#X connect 27 0 7 0;
+#X connect 27 0 18 0;
