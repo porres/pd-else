@@ -464,7 +464,7 @@ sfz-install:
 sfz-clean:
 	$(MAKE) -C Code_source/Compiled/audio/sfz~ clean
 
-# and for play.file
+# and for play.file + sfload
 play.file:
 	$(MAKE) -C Code_source/Compiled/audio/play.file~ system=$(system) extension=$(extension) all_obj
 
