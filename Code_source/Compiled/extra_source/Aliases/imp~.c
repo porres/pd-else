@@ -27,7 +27,6 @@ typedef struct _imp{
     t_inlet    *x_inlet_sync;
     t_outlet   *x_outlet;
     double      x_sr_rec;
-    int x_posfreq; // positive frequency flag
 // MAGIC:
     t_glist    *x_glist; // object list
     t_float    *x_signalscalar; // right inlet's float field
@@ -35,14 +34,6 @@ typedef struct _imp{
 }t_imp;
 
 static t_class *imp_class;
-
-double imp_wrap_phase(double phase){
-    while(phase >= 1)
-        phase -= 1.;
-    while(phase < 0)
-        phase += 1.;
-    return(phase);
-}
 
 static t_int *imp_perform(t_int *w){
     t_imp *x = (t_imp *)(w[1]);
@@ -96,22 +87,22 @@ static t_int *imp_perform(t_int *w){
             if(hz >= 0){ // POSITIVE freq
                 if(!synced) // if not synced
                     phase[j] += phase_dev;
+                out[j*n + i] = phase[j] >= 1. || phase[j] < 0.;
                 if(phase_dev != 0 && phase[j] <= 0)
                     phase[j] += 1.;
                 if(phase[j] >= 1.)
                     phase[j] -= 1; // wrapped phase
-                out[j*n + i] = phase[j];
             }
             else{ // negative freq
                 if(synced && phase[j] == 1.)
                     phase[j] = 0.;
                 if(!synced) // if not synced
                     phase[j] += phase_dev;
+                out[j*n + i] = phase[j] > 1. || phase[j] <= 0.;
                 if(phase_dev != 0 && phase[j] > 1)
                     phase[j] -= 1.;
                 if(phase[j] <= 0.)
                     phase[j] += 1; // wrapped phase
-                out[j*n + i] = phase[j];
             }
             phase[j] += step; // next phase
             lastoffset[j] = phase_offset; // last phase offset
