@@ -77,7 +77,7 @@ static t_int *pimp_perform(t_int *w){
             step = step > 1 ? 1 : step < -1 ? -1 : step; // clipped phase_step
             double phase_offset = x->x_ch3 == 1 ? in3[i] : in3[j*n + i];
             double phase_dev = phase_offset - lastoffset[j];
-            if (phase_dev >= 1 || phase_dev <= -1)
+            if(phase_dev >= 1 || phase_dev <= -1)
                 phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
             if(x->x_soft){
                 if(dir[j] == 0)
@@ -95,13 +95,12 @@ static t_int *pimp_perform(t_int *w){
                         phase[j] = trig;
                 }
             }
-            if(hz >= 0){
-                if(!synced){ // if not synced
+            if(hz >= 0){ // POSITIVE freq
+                if(!synced) // if not synced
                     phase[j] += phase_dev;
-                    if(phase_dev != 0 && phase <= 0)
-                        phase[j] += 1.; // wrap deviated phase
-                }
-                out2[j*n + i] = phase[j] >= 1.;
+                out2[j*n + i] = phase[j] >= 1. || phase[j] < 0.;
+                if(phase_dev != 0 && phase[j] <= 0)
+                    phase[j] += 1.;
                 if(phase[j] >= 1.)
                     phase[j] -= 1; // wrapped phase
                 out1[j*n + i] = phase[j];
@@ -109,14 +108,13 @@ static t_int *pimp_perform(t_int *w){
             else{ // negative freq
                 if(synced && phase[j] == 1.)
                     phase[j] = 0.;
-                if(!synced){ // if not synced
+                if(!synced) // if not synced
                     phase[j] += phase_dev;
-                    if (phase[j] >= 1)
-                        phase[j] -= - 1.; // wrap deviated phase
-                }
-                out2[j*n + i] = phase[j] <= 0.;
+                out2[j*n + i] = phase[j] > 1. || phase[j] <= 0.;
+                if(phase_dev != 0 && phase[j] > 1)
+                    phase[j] -= 1.;
                 if(phase[j] <= 0.)
-                    phase[j] += 1.; // wrapped phase
+                    phase[j] += 1; // wrapped phase
                 out1[j*n + i] = phase[j];
             }
             phase[j] += step; // next phase
