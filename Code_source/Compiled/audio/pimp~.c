@@ -1,4 +1,4 @@
-// Porres 2017-2023
+// Porres 2017-2024
 
 #include "m_pd.h"
 #include "magic.h"
@@ -11,6 +11,7 @@
 typedef struct _pimp{
     t_object    x_obj;
     double     *x_phase;
+    double     *x_lastoffset;
     int         x_nchans;
     t_int       x_n;
     t_int       x_sig1;
@@ -27,6 +28,7 @@ typedef struct _pimp{
     t_outlet   *x_out_0;
     t_outlet   *x_out_1;
     double      x_sr_rec;
+    int x_posfreq; // positive frequency flag
 // MAGIC:
     t_glist    *x_glist; // object list
     t_float    *x_signalscalar; // right inlet's float field
@@ -52,6 +54,7 @@ static t_int *pimp_perform(t_int *w){
     t_float *out2 = (t_float *)(w[6]);
     t_int *dir = x->x_dir;
     double *phase = x->x_phase;
+    double *lastoffset = x->x_lastoffset;
 // Magic Start
     if(!x->x_sig2){
         t_float *scalar = x->x_signalscalar;
@@ -71,29 +74,57 @@ static t_int *pimp_perform(t_int *w){
             if(x->x_midi)
                 hz = hz <= 0 ? 0 : pow(2, (hz - 69)/12) * 440;
             double step = hz * x->x_sr_rec; // phase step
-            step = step > 1.0 ? 1.0 : step < -1.0 ? -1.0 : step;
+            step = step > 1 ? 1 : step < -1 ? -1 : step; // clipped phase_step
+            double phase_offset = x->x_ch3 == 1 ? in3[i] : in3[j*n + i];
+            double phase_dev = phase_offset - lastoffset[j];
+            if (phase_dev >= 1 || phase_dev <= -1)
+                phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
+            if(x->x_soft){
+                if(dir[j] == 0)
+                    dir[j] = 1;
+                step *= (dir[j]);
+            }
+            int synced = 0;
             if(x->x_sig2){
-                if(x->x_soft){
-                    if(dir[j] == 0)
-                        dir[j] = 1;
-                    step *= (dir[j]);
-                }
                 t_float trig = x->x_ch2 == 1 ? in2[i] : in2[j*n + i];
-                if(trig > 0 && trig <= 1){
+                if(trig > 0 && trig <= 1){ // if sync
+                    synced = 1;
                     if(x->x_soft)
                         dir[j] = dir[j] == 1 ? -1 : 1;
                     else
                         phase[j] = trig;
                 }
             }
-            double phase_offset = x->x_ch3 == 1 ? in3[i] : in3[j*n + i];
-            out1[j*n + i] = pimp_wrap_phase(phase[j] + phase_offset);
-            out2[j*n + i] = phase[j] >= 1 || phase[j] < 0;;
-            phase[j] = pimp_wrap_phase(phase[j]);
-            phase[j] += step;
+            if(hz >= 0){
+                if(!synced){ // if not synced
+                    phase[j] += phase_dev;
+                    if(phase_dev != 0 && phase <= 0)
+                        phase[j] += 1.; // wrap deviated phase
+                }
+                out2[j*n + i] = phase[j] >= 1.;
+                if(phase[j] >= 1.)
+                    phase[j] -= 1; // wrapped phase
+                out1[j*n + i] = phase[j];
+            }
+            else{ // negative freq
+                if(synced && phase[j] == 1.)
+                    phase[j] = 0.;
+                if(!synced){ // if not synced
+                    phase[j] += phase_dev;
+                    if (phase[j] >= 1)
+                        phase[j] -= - 1.; // wrap deviated phase
+                }
+                out2[j*n + i] = phase[j] <= 0.;
+                if(phase[j] <= 0.)
+                    phase[j] += 1.; // wrapped phase
+                out1[j*n + i] = phase[j];
+            }
+            phase[j] += step; // next phase
+            lastoffset[j] = phase_offset; // last phase offset
         }
     }
     x->x_phase = phase;
+    x->x_lastoffset = lastoffset;
     x->x_dir = dir;
     return(w+7);
 }
@@ -106,6 +137,8 @@ static void pimp_dsp(t_pimp *x, t_signal **sp){
     int chs = x->x_sig1 ? sp[0]->s_nchans : x->x_list_size;
     if(x->x_nchans != chs){
         x->x_phase = (double *)resizebytes(x->x_phase,
+            x->x_nchans * sizeof(double), chs * sizeof(double));
+        x->x_lastoffset = (double *)resizebytes(x->x_lastoffset,
             x->x_nchans * sizeof(double), chs * sizeof(double));
         x->x_dir = (t_int *)resizebytes(x->x_dir,
             x->x_nchans * sizeof(double), chs * sizeof(double));
@@ -127,18 +160,8 @@ static void pimp_midi(t_pimp *x, t_floatarg f){
     x->x_midi = (int)(f != 0);
 }
 
-static void pimp_set(t_pimp *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
-    if(ac != 2)
-        return;
-    int i = atom_getint(av);
-    float f = atom_getint(av+1);
-    if(i >= x->x_list_size)
-        i = x->x_list_size;
-    if(i <= 0)
-        i = 1;
-    i--;
-    x->x_freq_list[i] = f;
+static void pimp_soft(t_pimp *x, t_floatarg f){
+    x->x_soft = (int)(f != 0);
 }
 
 static void pimp_list(t_pimp *x, t_symbol *s, int ac, t_atom * av){
@@ -153,8 +176,18 @@ static void pimp_list(t_pimp *x, t_symbol *s, int ac, t_atom * av){
         x->x_freq_list[i] = atom_getfloat(av+i);
 }
 
-static void pimp_soft(t_pimp *x, t_floatarg f){
-    x->x_soft = (int)(f != 0);
+static void pimp_set(t_pimp *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(ac != 2)
+        return;
+    int i = atom_getint(av);
+    float f = atom_getint(av+1);
+    if(i >= x->x_list_size)
+        i = x->x_list_size;
+    if(i <= 0)
+        i = 1;
+    i--;
+    x->x_freq_list[i] = f;
 }
 
 static void *pimp_free(t_pimp *x){
@@ -163,6 +196,7 @@ static void *pimp_free(t_pimp *x){
     outlet_free(x->x_out_0);
     outlet_free(x->x_out_1);
     freebytes(x->x_phase, x->x_nchans * sizeof(*x->x_phase));
+    freebytes(x->x_lastoffset, x->x_nchans * sizeof(*x->x_lastoffset));
     freebytes(x->x_dir, x->x_nchans * sizeof(*x->x_dir));
     free(x->x_freq_list);
     return(void *)x;
@@ -174,8 +208,9 @@ static void *pimp_new(t_symbol *s, int ac, t_atom *av){
     x->x_midi = x->x_soft = 0;
     x->x_dir = (t_int *)getbytes(sizeof(*x->x_dir));
     x->x_phase = (double *)getbytes(sizeof(*x->x_phase));
+    x->x_lastoffset = (double *)getbytes(sizeof(*x->x_lastoffset));
     x->x_freq_list = (float*)malloc(MAXLEN * sizeof(float));
-    x->x_freq_list[0] = x->x_phase[0] = 0;
+    x->x_freq_list[0] = x->x_phase[0] = x->x_lastoffset[0] = 0;
     x->x_list_size = 1;
     while(ac && av->a_type == A_SYMBOL){
         if(atom_getsymbol(av) == gensym("-midi")){
