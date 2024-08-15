@@ -1,7 +1,7 @@
 #N struct 1004-cell float x float y float cellsize float color;
 #N struct 1006-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
 #N struct 1059-slot float x float y float slotsize float color float width float bordercolor;
-#N canvas 448 38 541 693 10;
+#N canvas 487 38 541 693 10;
 #N canvas 240 37 974 682 GUI 0;
 #X text 40 146 [biplot];
 #X text 196 83 [pic] =>;
@@ -668,6 +668,7 @@
 #X obj 85 59 else/white~;
 #X obj 83 697 else/pink~;
 #X obj 84 32 else/gendyn~;
+#X obj 83 783 else/velvet~;
 #X restore 45 469 pd Noise/chaotic/stochastic;
 #X obj 459 56 else/setdsp~;
 #X obj 385 56 bng 33 250 50 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000;
