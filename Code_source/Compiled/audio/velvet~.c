@@ -12,6 +12,7 @@ typedef struct _velvet{
     int         x_nchans;
     t_float     x_hz;
     t_int       x_n;
+    t_int       x_ch;
     t_int       x_ch2;
     t_int       x_ch3;
     t_inlet    *x_inlet_reg;
@@ -19,10 +20,15 @@ typedef struct _velvet{
     t_outlet   *x_outlet;
     double      x_sr_rec;
     int         x_id;
-    t_random_state  x_rstate;
+    t_random_state x_rstate;
 }t_velvet;
 
 static t_class *velvet_class;
+
+static void velvet_ch(t_velvet *x, t_floatarg f){
+    x->x_ch = f < 1 ? 1 : (int)f;
+    canvas_update_dsp();
+}
 
 t_float velvet_random(t_velvet *x){
     uint32_t *s1 = &x->x_rstate.s1;
@@ -33,21 +39,24 @@ t_float velvet_random(t_velvet *x){
 
 static void velvet_seed(t_velvet *x, t_symbol *s, int ac, t_atom *av){
     random_init(&x->x_rstate, get_seed(s, ac, av, x->x_id));
-    for(int j = 0; j < x->x_nchans; j++)
+    for(int j = 0; j < x->x_nchans; j++){
         x->x_rand[j] = velvet_random(x);
+        x->x_phase[j] = 0;
+    }
 }
 
 static t_int *velvet_perform(t_int *w){
     t_velvet *x = (t_velvet *)(w[1]);
-    t_float *in1 = (t_float *)(w[2]);
-    t_float *in2 = (t_float *)(w[3]); // bias
-    t_float *in3 = (t_float *)(w[4]); // reg
-    t_float *out = (t_float *)(w[5]);
+    int chs = (t_int)(w[2]); // number of channels in main input signal (hz)
+    t_float *in1 = (t_float *)(w[3]);
+    t_float *in2 = (t_float *)(w[4]); // bias
+    t_float *in3 = (t_float *)(w[5]); // reg
+    t_float *out = (t_float *)(w[6]);
     double *phase = x->x_phase;
     double *lastphase = x->x_lastphase;
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0, n = x->x_n; i < n; i++){
-            double hz = in1[j*n + i];
+            double hz = chs == 1 ? in1[i] : in1[j*x->x_n + i];
             double step = hz * x->x_sr_rec; // phase step
             step = step > 1 ? 1 : step < 0 ? 0 : step; // clip step
             t_float bias = x->x_ch2 == 1 ? in2[i] : in2[j*n + i];
@@ -71,12 +80,14 @@ static t_int *velvet_perform(t_int *w){
     }
     x->x_phase = phase;
     x->x_lastphase = lastphase;
-    return(w+6);
+    return(w+7);
 }
 
 static void velvet_dsp(t_velvet *x, t_signal **sp){
     x->x_n = sp[0]->s_n, x->x_sr_rec = 1.0 / (double)sp[0]->s_sr;
     int chs = sp[0]->s_nchans;
+    if(chs == 1)
+        chs = x->x_ch;
     x->x_ch2 = sp[1]->s_nchans, x->x_ch3 = sp[2]->s_nchans;
     if(x->x_nchans != chs){
         x->x_lastphase = (double *)resizebytes(x->x_lastphase,
@@ -98,7 +109,7 @@ static void velvet_dsp(t_velvet *x, t_signal **sp){
         pd_error(x, "[velvet~]: channel sizes mismatch");
         return;
     }
-    dsp_add(velvet_perform, 5, x, sp[0]->s_vec,
+    dsp_add(velvet_perform, 6, x, sp[0]->s_nchans, sp[0]->s_vec,
         sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
@@ -124,6 +135,7 @@ static void *velvet_new(t_symbol *s, int ac, t_atom *av){
     x->x_rand = (t_float *)getbytes(sizeof(*x->x_rand));
     x->x_phase[0] = x->x_lastphase[0] = 0;
     x->x_hz = 0;
+    x->x_ch = 1;
     float bias = 0.5;
     float reg = 0;
     velvet_seed(x, s, 0, NULL);
@@ -134,6 +146,17 @@ static void *velvet_new(t_symbol *s, int ac, t_atom *av){
                 SETFLOAT(at, atom_getfloat(av+1));
                 ac-=2, av+=2;
                 velvet_seed(x, s, 1, at);
+            }
+            else if(atom_getsymbol(av) == gensym("-ch")){
+                if(ac >= 2){
+                    int n = atom_getint(av+1);
+                    x->x_ch = n < 1 ? 1 : n;
+                    ac-=2, av+=2;
+                }
+                else{
+                    pd_error(x, "[velvet~]: -ch needs a channel number value");
+                    return(NULL);
+                }
             }
             else
                 goto errstate;
@@ -168,4 +191,5 @@ void velvet_tilde_setup(void){
     CLASS_MAINSIGNALIN(velvet_class, t_velvet, x_hz);
     class_addmethod(velvet_class, (t_method)velvet_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(velvet_class, (t_method)velvet_seed, gensym("seed"), A_GIMME, 0);
+    class_addmethod(velvet_class, (t_method)velvet_ch, gensym("ch"), A_DEFFLOAT, 0);
 }
