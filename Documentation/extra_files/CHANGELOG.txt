@@ -19,6 +19,7 @@ Breaking changes:
 - [oscope~] renamed to [scope~]
 - [plaits~] changed inlet order of modulation inputs and some method/flags name. If a MIDI pitch of 0 or less input is given, it becomes a '0hz'.
 - [gbman~] changed signal output range, it is now filtered to remove DC and rescaled to a sane -1 to 1 audio range.
+- [dust~] and [dust2~] go now up to the sample rate and become white noise (removed restriction that forced actual impulses, that is, no conscutive non zero values)
 - [cmul~] object removed (this was only used in the old conv~ abstraction to try and reduce a bit the terrible CPU load)
 - [findfile] object removed (use vanilla's [file which] now that it has been updated in Pd 0.55-0)
 - [voices] swapped retrig modes 0 and 1, 'voices' renamed to 'n', now it always changes voice number by default as in [poly] (this was already happening unintentionally as a bug when one voice was already taken). The 'split' mode was removed (just use [route], will you?)

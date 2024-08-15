@@ -1,4 +1,4 @@
-#N canvas 538 29 563 532 10;
+#N canvas 538 38 563 532 10;
 #X obj 3 3 cnv 15 301 42 empty empty dust2~ 20 20 2 37 #e0e0e0 #000000 0;
 #X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -62,7 +62,6 @@
 #X text 217 360 - set number of output channels;
 #X text 147 447 -ch <float>: number of output channels (default 1);
 #X text 218 396 - random impulses;
-#X text 53 87 [dust~] is based on SuperCollider's "Dust2" UGEN and outputs random impulse values (from -1 to 1) at random times according to a density parameter. The difference to SuperCollider's is that it only produces actual impulses (one non zero value in between 0 valued samples). It has support for multichannel output., f 71;
 #N canvas 494 125 607 338 multichannel 0;
 #X obj 100 87 hsl 128 15 1 5000 1 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 97 116 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
@@ -85,6 +84,7 @@
 #X connect 10 0 6 0;
 #X restore 430 277 pd multichannel;
 #X text 145 360 ch <float>;
+#X text 53 87 [dust~] is based on SuperCollider's "Dust2" UGEN and outputs random impulse values (from -1 to 1) at random times according to a density parameter. At high frequencies there's a good chance of consecutive non zero values. To the extreme \, it becomes white noiset., f 68;
 #X connect 10 0 12 0;
 #X connect 12 0 14 0;
 #X connect 14 0 11 0;

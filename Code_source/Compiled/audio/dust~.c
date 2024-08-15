@@ -10,7 +10,6 @@ typedef struct _dust{
     t_float        x_sample_dur;
     t_random_state x_rstate;
     t_float        x_density;
-    t_float       *x_lastout;
     int            x_id;
     int            x_nchans;
     int            x_ch;
@@ -31,23 +30,19 @@ static t_int *dust_perform(t_int *w){
     int chs = (t_int)(w[2]); // number of channels in main input signal (density)
     t_float *in = (t_float *)(w[3]);
     t_float *out = (t_sample *)(w[4]);
-    t_float *lastout = x->x_lastout;
     uint32_t *s1 = &x->x_rstate.s1;
     uint32_t *s2 = &x->x_rstate.s2;
     uint32_t *s3 = &x->x_rstate.s3;
     for(int i = 0; i < x->x_n; i++){
         for(int j = 0; j < x->x_nchans; j++){ // for 'n' out channels
-        t_float density = chs == 1 ? in[i] : in[j*x->x_n + i];
-        t_float thresh = density * x->x_sample_dur;
-        t_float scale = thresh > 0 ? 1./thresh : 0;
+            t_float density = chs == 1 ? in[i] : in[j*x->x_n + i];
+            t_float thresh = density * x->x_sample_dur;
+            t_float scale = thresh > 0 ? 1./thresh : 0;
             t_float random = (t_float)(random_frand(s1, s2, s3) * 0.5 + 0.5);
             t_float output = random < thresh ? random * scale : 0;
-            if(output != 0 && lastout[j] != 0)
-                output = 0;
-            out[j*x->x_n + i] = lastout[j] = output;
+            out[j*x->x_n + i] = output;
         }
     }
-    x->x_lastout = lastout;
     return(w+5);
 }
 
@@ -57,18 +52,9 @@ static void dust_dsp(t_dust *x, t_signal **sp){
     int chs = sp[0]->s_nchans;
     if(chs == 1)
         chs = x->x_ch;
-    if(x->x_nchans != chs){
-        x->x_lastout = (t_float *)resizebytes(x->x_lastout,
-            x->x_nchans * sizeof(t_float), chs * sizeof(t_float));
-        x->x_nchans = chs;
-    }
+    x->x_nchans = chs;
     signal_setmultiout(&sp[1], x->x_nchans);
     dsp_add(dust_perform, 4, x, sp[0]->s_nchans, sp[0]->s_vec, sp[1]->s_vec);
-}
-
-static void *dust_free(t_dust *x){
-    freebytes(x->x_lastout, x->x_nchans * sizeof(*x->x_lastout));
-    return(void *)x;
 }
 
 static void *dust_new(t_symbol *s, int ac, t_atom *av){
@@ -76,7 +62,6 @@ static void *dust_new(t_symbol *s, int ac, t_atom *av){
     x->x_id = random_get_id();
     x->x_nchans = 1;
     dust_seed(x, s, 0, NULL);
-    x->x_lastout = (t_float *)getbytes(sizeof(*x->x_lastout));
     x->x_ch = 1;
     x->x_density = 0;
     if(ac){
@@ -118,7 +103,7 @@ static void *dust_new(t_symbol *s, int ac, t_atom *av){
 
 void dust_tilde_setup(void){
     dust_class = class_new(gensym("dust~"), (t_newmethod)dust_new,
-        (t_method)dust_free, sizeof(t_dust), CLASS_MULTICHANNEL, A_GIMME, 0);
+        0, sizeof(t_dust), CLASS_MULTICHANNEL, A_GIMME, 0);
     CLASS_MAINSIGNALIN(dust_class, t_dust, x_density);
     class_addmethod(dust_class, (t_method)dust_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(dust_class, (t_method)dust_seed, gensym("seed"), A_GIMME, 0);
