@@ -35,26 +35,28 @@ Enhancements/fixes/other changes:
 - fixed [voices] consistency check bug in rightmost outlet and other minor bugs, added flags for 'n', 'steal' and offset.
 - [gain~] and [gain2~] changed learn/forget shortcut
 - [knob] fixed sending messages to 'empty' when it shouldn't, ignore nan/inf, prevent a tcl/tk error if lower and upper values are the same; added "learn/forget" messages and shortcut for a midi learn mechanism.
-- [plaits~] added a new 'transp' message and a functionality to allow MIDI input to supersede signal connections (needed for the 'merda' version), fixed MIDI velocity.
-- [pluck~] added a new functionality to allow MIDI input to supersede signal connections (needed for the 'merda' version).
 - [mpe.in] now outputs port number and you can select which port to listen to.
 - Other MIDI in objects now deal with port number encoded to channel as native Pd objects. Objects affected are [midi.learn], [midi.in], [note.in], [ctl.in], [bend.in], [pgm.in], [touch.in] and [ptouch.in].
 - [pi]/[e] now takes a value name argument.
 - [sr~]/[nyquist~] take clicks now and a value name argument.
-- added multichannel features to [cosine~] and fixed sync input.
-- 25 new objects, [vcf2~], [damp.osc~], [scope3d~], [sfload] and [lua] (this one very very experimental still), plus abstractions from a newly included submodule called "Modular Euro Racks Dancing Along" (M.E.R.D.A)! Warning, this is all just very very experimental still, the object are: [adsr.m~], [brane.m~], [chorus.m~], [delay.m~], [drive.m~], [flanger.m~], [gendyn.m~], [lfo.m~], [phaser.m~], [plaits.m~], [plate.rev.m~], [pluck.m~], [pm6.m~], [presets.m], [rm.m~], [seq8.m~], [sig.m~], [vca.m~], [vcf.m~] and [vco.m~] (6 of these are multichannel aware).
+- fixed phase modulation issues with [impulse~] and [pimp~].
+- [cosine~] fixed sync input.
+- added multichannel features to [cosine~] and [pimp~].
+- [plaits~] added a new 'transp' message and a functionality to allow MIDI input to supersede signal connections (needed for the 'merda' version [see below]), fixed MIDI velocity.
+- [pluck~] added a new functionality to allow MIDI input to supersede signal connections (needed for the 'merda' version [see below]).
+- 26 new objects, [velvet~], [vcf2~], [damp.osc~], [scope3d~] [sfload] and [lua] (this one very very experimental still), plus abstractions from a newly included submodule called "Modular Euro Racks Dancing Along" (M.E.R.D.A)! Warning, this is all just very very experimental still, the object are: [adsr.m~], [brane.m~], [chorus.m~], [delay.m~], [drive.m~], [flanger.m~], [gendyn.m~], [lfo.m~], [phaser.m~], [plaits.m~], [plate.rev.m~], [pluck.m~], [pm6.m~], [presets.m], [rm.m~], [seq8.m~], [sig.m~], [vca.m~], [vcf.m~] and [vco.m~] (6 of these are multichannel aware).
 
-Objects count: total of 550 (305 signal objects [89 of which are MC aware] and 245 control objects)! 
+Objects count: total of 551 (306 signal objects [91 of which are MC aware] and 243 control objects)! 
 
 - 310 coded objects (202 signal objects  / 107 control objects and 1 for both? (lua))
-- 240 abstractions (104 signal objects / 136 control objects)
+- 241 abstractions (105 signal objects / 135 control objects)
 
 --------------------------------------
 
 **TUTORIAL:**
 - New examples and revisions to add the new objects, features and breaking changes in ELSE. 
 - Section 36-Filters(Advanced) revised, added more examples and details on how [slop~] works.
-- Total number of examples is now 525!
+- Total number of examples is now 526!
 
 --------------------------------------
 
