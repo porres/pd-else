@@ -227,7 +227,7 @@ jobs:
 
       - name: Build sfont~
         run: |
-          cd sfont~
+          cd ./Code_source/Compiled/audio/sfont~
           make extension=d_amd64
       - name: Build pd-sfz~
         run: |
@@ -289,7 +289,7 @@ jobs:
 
       - name: Build sfont~
         run: |
-          cd sfont~
+          cd ./Code_source/Compiled/audio/sfont~
           make extension=d_arm64
       - name: Build pd-sfz~
         run: |
