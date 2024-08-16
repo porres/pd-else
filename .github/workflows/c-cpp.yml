@@ -262,8 +262,7 @@ jobs:
           cp ./Code_source/Compiled/audio/play.file~/*.d_amd64 ./else-MacOS
           cp -r ./Code_source/Compiled/audio/sfz~/sfizz/build/pd/sfizz/*.pd_darwin ./else-MacOS
           mv ./else-MacOS/sfizz.pd_darwin ./else-MacOS/sfz~.d_amd64
-          cp -r ./Code_source/Compiled/audio/sfont~/sfont-compiled/* ./else-MacOS
-          cp -r ./Code_source/Compiled/audio/sfont~/sf ./else-MacOS
+          cp -r ./Code_source/Compiled/audio/sfont~/sfont~.d_amd64 ./else-MacOS
 
       - name: Upload Zip
         uses: actions/upload-artifact@v3
@@ -325,7 +324,7 @@ jobs:
           cp ./Code_source/Compiled/audio/play.file~/*.d_arm64 ./else-MacOS
           cp -r ./Code_source/Compiled/audio/sfz~/sfizz/build/pd/sfizz/*.pd_darwin ./else-MacOS
           mv ./else-MacOS/sfizz.pd_darwin ./else-MacOS/sfz~.d_arm64
-          cp -r ./Code_source/Compiled/audio/sfont~/sfont-compiled/* ./else-MacOS
+          cp -r ./Code_source/Compiled/audio/sfont~/sfont~.d_arm64 ./else-MacOS
 
       - name: Upload Zip
         uses: actions/upload-artifact@v3
