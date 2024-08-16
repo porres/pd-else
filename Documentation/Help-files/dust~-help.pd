@@ -85,6 +85,7 @@
 #X text 145 353 ch <float>;
 #X text 217 352 - set number of output channels;
 #X text 53 95 [dust~] is based on SuperCollider's "Dust" UGEN and outputs random impulse values (only positive values up to 1) at random times according to a density parameter. At high frequencies there's a good chance of consecutive non zero values. To the extreme \, it becomes white noise with a DC offset., f 71;
+#X obj 38 281 else/velvet~;
 #X connect 0 0 20 0;
 #X connect 20 0 24 0;
 #X connect 24 0 1 0;
