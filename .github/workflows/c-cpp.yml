@@ -58,10 +58,10 @@ jobs:
           sudo ldconfig
           sudo ldconfig -v
 
-      # - name: Build sfont~
-      #   run: |
-      #     cd ./Code_source/Compiled/audio/sfont~
-      #     make PDLIBDIR=${{github.workspace}}/else-Linux/ extension=l_amd64 localdep_linux
+      - name: Build sfont~
+        run: |
+          cd ./Code_source/Compiled/audio/sfont~
+          make PDLIBDIR=${{github.workspace}}/else-Linux/ extension=l_amd64
 
       - name: Build pd-sfz~
         run: |
@@ -162,10 +162,8 @@ jobs:
         shell: msys2 {0}
         run: |
           cd Code_source/Compiled/audio/sfont~/
-          make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 localdep_windows
+          make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64
           cd ../../../../
-      #         make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 install
-      #         ./scripts/localdeps.win.sh ./out/else/sfont~.m_amd64
 
       - if: runner.os == 'Windows'
         name: Build plaits~
@@ -227,11 +225,10 @@ jobs:
           brew install --cask pd
           brew install fluidsynth pkg-config
 
-      # - name: Build sfont~
-      #   run: |
-      #     cd sfont~
-      #     make extension=d_amd64
-      #     ./scripts/localdeps.macos.sh sfont~.d_amd64
+      - name: Build sfont~
+        run: |
+          cd sfont~
+          make extension=d_amd64
       - name: Build pd-sfz~
         run: |
           cd ./Code_source/Compiled/audio/sfz~
@@ -291,11 +288,10 @@ jobs:
           brew install --cask pd
           brew install fluidsynth pkg-config
 
-      #    - name: Build sfont~
-      #      run: |
-      #        cd sfont~
-      #        make extension=d_arm64
-      #        ./scripts/localdeps.macos.sh sfont~.d_arm64
+      - name: Build sfont~
+        run: |
+          cd sfont~
+          make extension=d_arm64
       - name: Build pd-sfz~
         run: |
           cd ./Code_source/Compiled/audio/sfz~
