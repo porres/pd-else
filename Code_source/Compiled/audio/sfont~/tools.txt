@@ -1,1 +1,0 @@
-make CPPFLAGS+=-I/opt/homebrew/include LDFLAGS+=-L/opt/homebrew/lib arch="arm64 x86_64" extension=d_fat PDDIR=/Users/porres/Desktop/git/pure-data/ PDLIBDIR=/Users/porres/Desktop/git/ localdep_macos 
