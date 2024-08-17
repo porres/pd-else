@@ -1,12 +1,21 @@
 local hello = pd.Class:new():register("hello-gui")
 
+-- rendering speed (slows down rendering by the given factor)
+-- In most cases it should be fine to just set this to 1 to run at full speed,
+-- if you have a modern high-speed CPU and GPU. But we use a larger value as
+-- default here to deal with low frame rates on some systems (Purr Data on Mac
+-- being the main culprit). You may have to increase the value even further
+-- when running on low-spec systems like the Raspberry Pi.
+local R = 3
+
 function hello:initialize(sel, atoms)
     self.inlets = 1
 
     self.circle_x = 485
     self.circle_y = 15
     self.circle_radius = 15
-    self.animation_speed = 2
+    self.animation_speed = 2*R
+    self.delay_time = 16*R
 
     self.draggable_rect_x = 550
     self.draggable_rect_y = 130
@@ -26,7 +35,7 @@ end
 
 function hello:postinitialize()
     self.clock = pd.Clock:new():register(self, "tick")
-    self.clock:delay(16)
+    self.clock:delay(self.delay_time)
 end
 
 function hello:finalize()
@@ -161,7 +170,7 @@ function hello:tick()
         self.circle_y = -self.circle_radius
     end
     self:repaint()
-    self.clock:delay(16)
+    self.clock:delay(self.delay_time)
 end
 
 

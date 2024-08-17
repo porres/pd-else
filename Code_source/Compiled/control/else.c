@@ -89,9 +89,9 @@ void else_obj_about(t_else_obj *x){
     post("\"Live-Electronics-Tutorial\" folder inside the ELSE folder.");
     post("It has a CC license. Please check its README on how to install it!");
     post("-------------------------------------------------------------------");
-    post("- ALSO NOTE: Loading this binary did not install the ELSE library");
-    post("you must add it to the \"path preferences\" in order to load objects");
-    post("without a prefix");
+    post("- ALSO NOTE: Loading this binary did not install the ELSE library,");
+    post("you must add it to the \"path preferences\" or use");
+    post("[declare -path else] to load objects without a prefix");
     post("-------------------------------------------------------------------");
     post("- ALSO ALSO NOTE: Loading this binary did install an object browser");
     post("plugin for Vanilla and ELSE objects when right clicking on a canvas.");
@@ -122,6 +122,5 @@ void else_setup(void){
     pdgui_vmess("load_plugin_script", "s", plugin);
     sprintf(plugin, "%s/browser-merda.tcl", else_obj_class->c_externdir->s_name);
     pdgui_vmess("load_plugin_script", "s", plugin);
-
     pdlua_setup();
 }

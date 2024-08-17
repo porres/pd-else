@@ -21,9 +21,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Current maintainer: Albert Gräf <aggraef@gmail.com>
 This source is available on GitHub: https://github.com/agraef/pd-lua
 
-Since the contents of the original README has become rather outdated, I've
-updated the information below.
-
 pdlua works with all Pd flavors out there and makes Pd external programming
 incredibly easy (please check the included examples and the tutorial in the
 corresponding subdirectories). Originally written by Claude Heiland-Allen,
@@ -44,7 +41,7 @@ tutorial first. See:
 https://agraef.github.io/pd-lua/tutorial/pd-lua-intro.html
 
 This contains a fairly gentle introduction to pdlua, walks you through the
-creation of a basic example, and then goes on to cover all major features of
+creation of a basic example, and then goes on to cover most major features of
 pdlua, including the special facilities for tables, clocks, receivers, and
 live-coding, in quite some detail. This will be helpful when embarking on your
 own projects, or trying to make sense of the included examples.
@@ -54,9 +51,7 @@ History and Credits:
 
 pdlua was originally written by Claude Heiland-Allen, with contributions by
 Frank Barknecht and Martin Peach, according to the original source.
-
-Claude's repository is still online at https://code.mathr.co.uk/pdlua; please
-also check Claude's website at https://mathr.co.uk/, and
+Please check Claude's website at https://mathr.co.uk/, and
 https://mathr.co.uk/blog/lua.html for Lua-related content on his blog
 (including pdlua's original announcement).
 
@@ -65,17 +60,17 @@ the history in Pd's old svn repository at SourceForge, including IOhannes
 Zmölnig's loader update for Pd 0.47. See
 https://sourceforge.net/p/pure-data/svn/HEAD/tree/trunk/externals/loaders/pdlua/
 
-The present source is a fork of umlaeute's repository at
-https://anonscm.debian.org/git/pkg-multimedia/pd-lua.git, from which the
-official Debian packages are built. This in turn is apparently based on the
-0.7.3 version of pdlua in Pd's svn repository.
+The present source is a fork of umlaeute's 0.7.3 version in the Debian package
+repository at https://anonscm.debian.org/git/pkg-multimedia/pd-lua.git, which
+in turn was based on the 0.7.3 version of pdlua in Pd's svn repository.
 
-The current version (0.8 and later) is actively maintained by Albert Gräf
-<aggraef@gmail.com>, with contributions by Claude Heiland-Allen (Lua 5.4
-update, bugfixes), Alexandre Porres (documentation updates), sebshader
-(relative path loading), and Timothy Schoen (plugdata compatibility). This is
-also the version included in Purr Data (https://github.com/agraef/purr-data)
-and Timothy Schoen's plugdata (https://github.com/plugdata-team/plugdata).
+The current version (0.8 and later) is actively maintained by Albert Gräf,
+with contributions by Claude Heiland-Allen (Lua 5.4 update, bugfixes),
+Alexandre Porres (documentation updates, Deken package), sebshader (relative
+path loading), and Timothy Schoen (plugdata compatibility, signal and graphics
+support). This is also the version included in Purr Data
+(https://github.com/agraef/purr-data) and Timothy Schoen's plugdata
+(https://github.com/plugdata-team/plugdata).
 
 Please file bugs and requests at https://github.com/agraef/pd-lua. I maintain
 a lot of packages and thus it may take a while at times, but I look at all the
@@ -86,10 +81,11 @@ Ready-Made Packages:
 
 The latest vanilla binaries for Ubuntu, Mac and Windows can always be found on
 https://github.com/agraef/pd-lua. The same version is also in the Arch
-community repository (maintained by dvzrv, thanks David!). On other Linux
-systems you'll have to compile pdlua yourself from source, which isn't hard to
-do (see below). Also, both Purr Data and plugdata ship with pdlua, so no 3rd
-party package is needed.
+community repository (maintained by dvzrv, thanks David!). Other packages are
+available in Debian (maintained by IOhannes Zmölnig) and Deken (maintained by
+Alexandre Porres). You can also compile pdlua yourself from source, which
+isn't hard to do (see below). Also, both Purr Data and plugdata ship with
+pdlua, so no 3rd party package is needed in those environments.
 
 To enable the pdlua loader in Pd after installation, just add `pdlua` to your
 startup libraries (after adding its parent directory to Pd's search path if
