@@ -10,7 +10,7 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 
 
 ----------------------------------------------------------------------------
-1.0-0 Release Candidate 11:
+1.0-0 Release Candidate 12:
 ----------------------------------------------------------------------------
 
 **LIBRARY:**
@@ -25,12 +25,12 @@ Breaking changes:
 - [voices] swapped retrig modes 0 and 1, 'voices' renamed to 'n', now it always changes voice number by default as in [poly] (this was already happening unintentionally as a bug when one voice was already taken). The 'split' mode was removed (just use [route], will you?)
 - [voices~] was also affected by changes in [voices] of course, such as 'voices' message being renamed to 'n'.
 - [sr~]/[nyquist] changed output loading time to 'init' bang
-- [sample~] object was significantly redesigned and lots of stuff changed, new messages and flags, added support for 64-bit audio files (Pd 0.55 in double precision is required for this) and info outlet now also outputs values for ms and bits.
+- [sample~] object was significantly redesigned and lots of stuff changed, new messages and flags, added support for 64-bit audio files (Pd 0.55 in double precision and ELSE compiled for 64 bits is required for this). Info outlet now also outputs values for lenght in ms and bit depth.
 
 Enhancements/fixes/other changes:
-- Compilation and binaries in double precision is now supported and provided
 - [play.file~] is now a compiled object instead of an abstraction thanks to Tim Schoen, and it supports MP3, FLAC, WAV, AIF, AAC, OGG & OPUS file extensions.
-- The ELSE library now loads a modified version of [pdlua] by Tim Schoen that allows graphics and also a new object for lua scripting.
+- Support for double precision compilation was improved and should be working for all objects (not yet providing binaries and fully tested yet by the way).
+- The ELSE binary now loads a modified version of [pdlua], but no [pdlua] and [pdluax] objects are provided. 
 - added signal to 2nd inlet of [rm~].
 - fixed 'glide' message for [mono~].
 - fixed [voices] consistency check bug in rightmost outlet and other minor bugs, added flags for 'n', 'steal' and offset.
@@ -45,7 +45,7 @@ Enhancements/fixes/other changes:
 - added multichannel features to [cosine~] and [pimp~].
 - [plaits~] added a new 'transp' message and a functionality to allow MIDI input to supersede signal connections (needed for the 'merda' version [see below]), fixed MIDI velocity.
 - [pluck~] added a new functionality to allow MIDI input to supersede signal connections (needed for the 'merda' version [see below]).
-- 26 new objects, [velvet~], [vcf2~], [damp.osc~], [scope3d~] [sfload] and [lua] (this one very very experimental still), plus abstractions from a newly included submodule called "Modular Euro Racks Dancing Along" (M.E.R.D.A)! Warning, this is all just very very experimental still, the object are: [adsr.m~], [brane.m~], [chorus.m~], [delay.m~], [drive.m~], [flanger.m~], [gendyn.m~], [lfo.m~], [phaser.m~], [plaits.m~], [plate.rev.m~], [pluck.m~], [pm6.m~], [presets.m], [rm.m~], [seq8.m~], [sig.m~], [vca.m~], [vcf.m~] and [vco.m~] (6 of these are multichannel aware).
+- 26 new objects, [velvet~], [vcf2~], [damp.osc~], [scope3d~] [sfload] and [lua] (this one very very experimental still and not really functional yet), plus abstractions from a newly included submodule called "Modular Euro Racks Dancing Along" (M.E.R.D.A)! Warning, this is all just very very experimental still, the object are: [adsr.m~], [brane.m~], [chorus.m~], [delay.m~], [drive.m~], [flanger.m~], [gendyn.m~], [lfo.m~], [phaser.m~], [plaits.m~], [plate.rev.m~], [pluck.m~], [pm6.m~], [presets.m], [rm.m~], [seq8.m~], [sig.m~], [vca.m~], [vcf.m~] and [vco.m~] (6 of these are multichannel aware).
 
 Objects count: total of 551 (306 signal objects [91 of which are MC aware] and 243 control objects)! 
 
