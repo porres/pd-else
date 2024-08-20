@@ -15,7 +15,9 @@ typedef struct _velvet{
     t_int       x_ch;
     t_int       x_ch2;
     t_int       x_ch3;
+    t_int       x_ch4;
     t_inlet    *x_inlet_reg;
+    t_inlet    *x_inlet_ireg;
     t_inlet    *x_inlet_bias;
     t_outlet   *x_outlet;
     double      x_sr_rec;
@@ -51,7 +53,8 @@ static t_int *velvet_perform(t_int *w){
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]); // bias
     t_float *in3 = (t_float *)(w[5]); // reg
-    t_float *out = (t_float *)(w[6]);
+    t_float *in4 = (t_float *)(w[6]); // ireg
+    t_float *out = (t_float *)(w[7]);
     double *phase = x->x_phase;
     double *lastphase = x->x_lastphase;
     for(int j = 0; j < x->x_nchans; j++){
@@ -63,9 +66,16 @@ static t_int *velvet_perform(t_int *w){
             bias = bias > 1 ? 1 : bias < 0 ? 0 : bias; // clip bias
             t_float reg = x->x_ch3 == 1 ? in3[i] : in3[j*n + i];
             reg = reg > 1 ? 1 : reg < 0 ? 0 : reg; // clip reg
+            t_float ireg = x->x_ch4 == 1 ? in4[i] : in4[j*n + i];
+            ireg = ireg > 1 ? 1 : ireg < 0 ? 0 : ireg; // clip ireg
             t_float imp = 0;
-            if(phase[j] >= x->x_rand[j] && ((lastphase[j] < x->x_rand[j]) || (x->x_1st[j])))
-                imp = velvet_random(x) > bias ? 1 : -1;
+            if(phase[j] >= x->x_rand[j] && ((lastphase[j] < x->x_rand[j]) || (x->x_1st[j]))){
+                imp = 1;
+                if(ireg > 0)
+                    imp = imp - (velvet_random(x) * ireg);
+                if(velvet_random(x) > bias)
+                    imp *= -1;
+            }
             out[j*n + i] = imp;
             x->x_1st[j] = 0;
             if(phase[j] >= 1.){
@@ -80,7 +90,7 @@ static t_int *velvet_perform(t_int *w){
     }
     x->x_phase = phase;
     x->x_lastphase = lastphase;
-    return(w+7);
+    return(w+8);
 }
 
 static void velvet_dsp(t_velvet *x, t_signal **sp){
@@ -88,7 +98,7 @@ static void velvet_dsp(t_velvet *x, t_signal **sp){
     int chs = sp[0]->s_nchans;
     if(chs == 1)
         chs = x->x_ch;
-    x->x_ch2 = sp[1]->s_nchans, x->x_ch3 = sp[2]->s_nchans;
+    x->x_ch2 = sp[1]->s_nchans, x->x_ch3 = sp[2]->s_nchans, x->x_ch4 = sp[3]->s_nchans;
     if(x->x_nchans != chs){
         x->x_lastphase = (double *)resizebytes(x->x_lastphase,
             x->x_nchans * sizeof(double), chs * sizeof(double));
@@ -102,20 +112,22 @@ static void velvet_dsp(t_velvet *x, t_signal **sp){
         for(int j = 0; j < x->x_nchans; j++)
             x->x_rand[j] = velvet_random(x);
     }
-    signal_setmultiout(&sp[3], x->x_nchans);
+    signal_setmultiout(&sp[4], x->x_nchans);
     if((x->x_ch2 > 1 && x->x_ch2 != x->x_nchans)
-    || (x->x_ch3 > 1 && x->x_ch3 != x->x_nchans)){
-        dsp_add_zero(sp[3]->s_vec, x->x_nchans*x->x_n);
+    || (x->x_ch3 > 1 && x->x_ch3 != x->x_nchans)
+    || (x->x_ch4 > 1 && x->x_ch4 != x->x_nchans)){
+        dsp_add_zero(sp[4]->s_vec, x->x_nchans*x->x_n);
         pd_error(x, "[velvet~]: channel sizes mismatch");
         return;
     }
-    dsp_add(velvet_perform, 6, x, sp[0]->s_nchans, sp[0]->s_vec,
-        sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+    dsp_add(velvet_perform, 7, x, sp[0]->s_nchans, sp[0]->s_vec,
+        sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
 
 static void *velvet_free(t_velvet *x){
     inlet_free(x->x_inlet_bias);
     inlet_free(x->x_inlet_reg);
+    inlet_free(x->x_inlet_ireg);
     outlet_free(x->x_outlet);
     freebytes(x->x_phase, x->x_nchans * sizeof(*x->x_phase));
     freebytes(x->x_lastphase, x->x_nchans * sizeof(*x->x_lastphase));
@@ -138,6 +150,7 @@ static void *velvet_new(t_symbol *s, int ac, t_atom *av){
     x->x_ch = 1;
     float bias = 0.5;
     float reg = 0;
+    float ireg = 0;
     velvet_seed(x, s, 0, NULL);
     if(ac){
         while(av->a_type == A_SYMBOL){
@@ -170,6 +183,10 @@ static void *velvet_new(t_symbol *s, int ac, t_atom *av){
                 if(ac && av->a_type == A_FLOAT){
                     reg = av->a_w.w_float;
                     ac--, av++;
+                    if(ac && av->a_type == A_FLOAT){
+                        ireg = av->a_w.w_float;
+                        ac--, av++;
+                    }
                 }
             }
         }
@@ -178,6 +195,8 @@ static void *velvet_new(t_symbol *s, int ac, t_atom *av){
         pd_float((t_pd *)x->x_inlet_bias, bias);
     x->x_inlet_reg = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_reg, reg);
+    x->x_inlet_ireg = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_inlet_reg, ireg);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     return(x);
 errstate:
