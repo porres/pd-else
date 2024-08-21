@@ -24,9 +24,18 @@ make install objectsdir=../ floatsize=32 arch="arm64 x86_64" extension=darwin-fa
 make install objectsdir=../ floatsize=64 arch="arm64 x86_64" extension=darwin-fat-64.so
 
 
-make install pdincludepath=../pd-0.55-0/src/ objectsdir=../ floatsize=32 arch="x86_64" extension=linux-amd64-32.so 
+make install pdincludepath=../pd-0.55-0/src/ objectsdir=../ floatsize=32 arch="x86_64" extension=linux-amd64-32.so
 
-make install pdincludepath=../pd-0.55-0/src/ objectsdir=../ floatsize=64 arch="x86_64" extension=linux-amd64-64.so 
+make install pdincludepath=../pd-0.55-0/src/ objectsdir=../ floatsize=64 arch="x86_64" extension=linux-amd64-64.so
+
+
+make install pdincludepath=../pd-0.55-0/src/ objectsdir=../ floatsize=32 arch="arm" extension=linux-arm-32.so
+
+make install pdincludepath=../pd-0.55-0/src/ objectsdir=../ floatsize=64 arch="arm" extension=linux-arm-64.so
+
+make install pdincludepath=../pd-0.55-0/src/ objectsdir=../ floatsize=32 arch="arm64" extension=linux-arm64-32.so
+
+make install pdincludepath=../pd-0.55-0/src/ objectsdir=../ floatsize=64 arch="arm64" extension=linux-arm64-64.so
 
 
 
