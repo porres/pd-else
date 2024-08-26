@@ -473,7 +473,8 @@ static void sfont_info(t_sfont *x){
     post("Loaded soundfont: %s", fluid_sfont_get_name(x->x_sfont));
     post("------------------- presets -------------------");
     int i = 1;
-    fluid_preset_t* preset;
+    fluid_preset_t* preset = fluid_sfont_get_preset(x->x_sfont, 0, 0);
+    if(!preset) return;
     fluid_sfont_iteration_start(x->x_sfont);
         while((fluid_sfont_iteration_next(x->x_sfont, preset))){
         int bank = preset->get_banknum(preset), pgm = preset->get_num(preset);
