@@ -58,10 +58,10 @@ jobs:
           sudo ldconfig
           sudo ldconfig -v
 
-      # - name: Build sfont~
-      #   run: |
-      #     cd ./Code_source/Compiled/audio/sfont~
-      #     make PDLIBDIR=${{github.workspace}}/else-Linux/ extension=l_amd64 localdep_linux
+      - name: Build sfont~
+        run: |
+          cd ./Code_source/Compiled/audio/sfont~
+          make PDLIBDIR=${{github.workspace}}/else-Linux/ extension=l_amd64
 
       - name: Build pd-sfz~
         run: |
@@ -155,17 +155,15 @@ jobs:
         name: Build pd-else
         shell: msys2 {0}
         run: |
-          make PDDIR=./pd PDLIBDIR=./out extension=m_amd64 install
+          make PDDIR=./pd extension=m_amd64 install
 
       - if: runner.os == 'Windows'
         name: Build sfont~
         shell: msys2 {0}
         run: |
           cd Code_source/Compiled/audio/sfont~/
-          make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 localdep_windows
+          make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64
           cd ../../../../
-      #         make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 install
-      #         ./scripts/localdeps.win.sh ./out/else/sfont~.m_amd64
 
       - if: runner.os == 'Windows'
         name: Build plaits~
@@ -200,7 +198,7 @@ jobs:
         run: |
           mkdir ./else-Windows
           cp -r ./out/else/*.* ./else-Windows
-          cp -r ./Code_source/Compiled/audio/sfont~/out/sfont~/*.* ./else-Windows
+          cp -r ./Code_source/Compiled/audio/sfont~/*.m_amd64 ./else-Windows
           cp -r ./Code_source/Compiled/audio/plaits~/out/plaits~/*.* ./else-Windows
           cp ./Code_source/Compiled/audio/play.file~/*.m_amd64 ./else-Windows
 
@@ -227,11 +225,10 @@ jobs:
           brew install --cask pd
           brew install fluidsynth pkg-config
 
-      # - name: Build sfont~
-      #   run: |
-      #     cd sfont~
-      #     make extension=d_amd64
-      #     ./scripts/localdeps.macos.sh sfont~.d_amd64
+      - name: Build sfont~
+        run: |
+          cd ./Code_source/Compiled/audio/sfont~
+          make extension=d_amd64
       - name: Build pd-sfz~
         run: |
           cd ./Code_source/Compiled/audio/sfz~
@@ -265,8 +262,7 @@ jobs:
           cp ./Code_source/Compiled/audio/play.file~/*.d_amd64 ./else-MacOS
           cp -r ./Code_source/Compiled/audio/sfz~/sfizz/build/pd/sfizz/*.pd_darwin ./else-MacOS
           mv ./else-MacOS/sfizz.pd_darwin ./else-MacOS/sfz~.d_amd64
-          cp -r ./Code_source/Compiled/audio/sfont~/sfont-compiled/* ./else-MacOS
-          cp -r ./Code_source/Compiled/audio/sfont~/sf ./else-MacOS
+          cp -r ./Code_source/Compiled/audio/sfont~/sfont~.d_amd64 ./else-MacOS
 
       - name: Upload Zip
         uses: actions/upload-artifact@v3
@@ -291,11 +287,10 @@ jobs:
           brew install --cask pd
           brew install fluidsynth pkg-config
 
-      #    - name: Build sfont~
-      #      run: |
-      #        cd sfont~
-      #        make extension=d_arm64
-      #        ./scripts/localdeps.macos.sh sfont~.d_arm64
+      - name: Build sfont~
+        run: |
+          cd ./Code_source/Compiled/audio/sfont~
+          make extension=d_arm64
       - name: Build pd-sfz~
         run: |
           cd ./Code_source/Compiled/audio/sfz~
@@ -329,7 +324,7 @@ jobs:
           cp ./Code_source/Compiled/audio/play.file~/*.d_arm64 ./else-MacOS
           cp -r ./Code_source/Compiled/audio/sfz~/sfizz/build/pd/sfizz/*.pd_darwin ./else-MacOS
           mv ./else-MacOS/sfizz.pd_darwin ./else-MacOS/sfz~.d_arm64
-          cp -r ./Code_source/Compiled/audio/sfont~/sfont-compiled/* ./else-MacOS
+          cp -r ./Code_source/Compiled/audio/sfont~/sfont~.d_arm64 ./else-MacOS
 
       - name: Upload Zip
         uses: actions/upload-artifact@v3
