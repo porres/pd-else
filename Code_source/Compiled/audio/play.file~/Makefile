@@ -15,11 +15,13 @@ define forDarwin
 endef
 
 define forLinux
-ffmpeg_config = --enable-pic
+    ffmpeg_config = --enable-pic
+    ffmpeg_cc="$(CC)"
 endef
 
 define forWindows
-ldlibs += -lbcrypt
+    ldlibs += -lbcrypt
+    ffmpeg_cc="$(CC)"
 endef
 
 LIBSAMPLERATE=../../../shared/libsamplerate
