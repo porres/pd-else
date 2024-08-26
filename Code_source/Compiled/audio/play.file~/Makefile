@@ -10,6 +10,16 @@ lib.name = play.file~
 
 define forDarwin
     cflags += -mmacosx-version-min=10.9
+    ffmpeg_config = --extra-cflags=-mmacosx-version-min=10.9 --extra-ldflags=-mmacosx-version-min=10.9
+    ffmpeg_cc="clang -arch x86_64 -arch arm64"
+endef
+
+define forLinux
+ffmpeg_config = --enable-pic
+endef
+
+define forWindows
+ldlibs += -lbcrypt
 endef
 
 LIBSAMPLERATE=../../../shared/libsamplerate
@@ -25,20 +35,6 @@ ifeq ($(extension),d_arm64)
   override arch := arm64
 endif
 
-define forLinux
-# ASM causes static linker issues on Linux
-ffmpeg_config = --enable-pic --disable-asm
-endef
-
-define forWindows
-ffmpeg_config = --disable-x86asm
-ldlibs += -lbcrypt
-endef
-
-define forDarwin
-  ffmpeg_config = --disable-x86asm --extra-cflags=-mmacosx-version-min=10.9 --extra-ldflags=-mmacosx-version-min=10.9
-endef
-
 # Makefile based on pd-lib-builder by Katja Vetter, see: https://github.com/pure-data/pd-lib-builder
 PDLIBBUILDER_DIR=../../../../pd-lib-builder/
 include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
@@ -50,9 +46,10 @@ all_obj: ffmpeg play.file~ sfload
 ffmpeg: $(FFMPEG_DIR)
 
 $(FFMPEG_DIR):
+	rm -rf $(FFMPEG_DIR)
 	tar xjf $(FFMPEG_TAR)
-	cd $(FFMPEG_DIR) && ./configure --enable-static --disable-shared  --enable-optimizations --disable-debug --disable-doc --disable-programs --disable-iconv --disable-avdevice --disable-postproc --disable-network --disable-everything --enable-avcodec --enable-avformat --enable-avutil --enable-swscale --enable-swresample --enable-decoder=mp3*,pcm*,aac*,flac,vorbis,opus --enable-parser=mpegaudio,aac --enable-demuxer=mp3,wav,aiff,flac,aac,ogg,pcm* --enable-filter=aresample --enable-protocol=file $(ffmpeg_config)
-	cd $(FFMPEG_DIR) && make
+	cd $(FFMPEG_DIR) && ./configure --disable-asm --enable-static --disable-shared  --enable-optimizations --disable-debug --disable-doc --disable-programs --disable-iconv --disable-avdevice --disable-postproc --disable-network --disable-everything --enable-avcodec --enable-avformat --enable-avutil --enable-swscale --enable-swresample --enable-decoder=mp3*,pcm*,aac*,flac,vorbis,opus --enable-parser=mpegaudio,aac --enable-demuxer=mp3,wav,aiff,flac,aac,ogg,pcm* --enable-filter=aresample --enable-protocol=file $(ffmpeg_config)
+	cd $(FFMPEG_DIR) && make CC=$(ffmpeg_cc)
 
 clean:
 	rm -rf $(FFMPEG_DIR)
