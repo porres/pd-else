@@ -128,12 +128,31 @@ void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
 
     // Get pd platform identifier (only what's known at compile time, so any external will report pure-data)
     char pd_platform[MAXPDSTRING];
+    char os[MAXPDSTRING];
+
+    #if _WIN32
+        snprintf(os, MAXPDSTRING, "Windows");
+    #elif __APPLE__
+        #include "TargetConditionals.h"
+        #if TARGET_OS_IPHONE && TARGET_IPHONE_SIMULATOR
+            snprintf(os, MAXPDSTRING, "iOS Simulator");
+        #elif TARGET_OS_IPHONE
+            snprintf(os, MAXPDSTRING, "iOS");
+        #else
+            snprintf(os, MAXPDSTRING, "macOS");
+        #endif
+    #elif __linux__
+        snprintf(os, MAXPDSTRING, "Linux");
+    #else
+        snprintf(os, MAXPDSTRING, "Unknown OS");
+    #endif
+
 #if PLUGDATA
-    snprintf(pd_platform, MAXPDSTRING, "plugdata %s", PD_PLUGDATA_VERSION);
+    snprintf(pd_platform, MAXPDSTRING, "plugdata %s\n%s", PD_PLUGDATA_VERSION, os);
 #else
     int major = 0, minor = 0, bugfix = 0;
     sys_getversion(&major, &minor, &bugfix);
-    snprintf(pd_platform, MAXPDSTRING, "pure-data %i.%i-%i", major, minor, bugfix);
+    snprintf(pd_platform, MAXPDSTRING, "pure-data %i.%i-%i\n%s", major, minor, bugfix, os);
 #endif
     // Initialise link and loop clock
     x->x_link = link_init(x->x_name->s_name, pd_platform, x->x_local);
