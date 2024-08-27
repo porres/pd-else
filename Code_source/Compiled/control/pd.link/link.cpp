@@ -57,17 +57,17 @@ public:
 
     bool try_bind()
     {
-        int i = 10;
-        while(server.socket_bind() != 0 && i > 0) {
+        int tries = 0;
+        while(server.socket_bind() != 0 && tries < 16) {
             port = get_random_port();
             server.set_port(port);
-            i--;
-            std::this_thread::sleep_for(std::chrono::microseconds(20)); // unfortunate, but othewise random generation breaks!
+            std::this_thread::sleep_for(std::chrono::microseconds(tries * 200 + 5)); // unfortunate, but othewise random generation breaks!
+            tries++;
         }
 
         server.set_blocking(false);
 
-        return i != 0;
+        return tries != 16;
     }
 
     std::string get_hostname() const
