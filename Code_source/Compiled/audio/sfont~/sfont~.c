@@ -73,7 +73,6 @@ static void sfont_float(t_sfont *x, t_float f);
 
 static void sfont_getversion(void){
     post("[sfont~] is using fluidlite 1.2.2");
-    post("\n");
 }
 
 static void sfont_verbose(t_sfont *x, t_floatarg f){
@@ -247,16 +246,15 @@ static void sfont_sel_tuning(t_sfont *x, t_float bank, t_float pgm, t_float ch){
 static void set_key_tuning(t_sfont *x, double *pitches){
     int ch = x->x_tune_ch, bank = x->x_tune_bank, pgm = x->x_tune_prog;
     const char* name = x->x_tune_name->s_name;
-
     int key[128];
-    for(int i = 0; i < 128; i++) key[i] = i;
-
+    for(int i = 0; i < 128; i++) 
+        key[i] = i;
     fluid_synth_tune_notes(x->x_synth, bank, pgm, 128, key, pitches, 1, name);
-
     if(ch > 0)
         fluid_synth_activate_tuning(x->x_synth, ch-1, bank, pgm, 1);
-    else if(!ch) for(int i = 0; i < x->x_ch; i++)
-        fluid_synth_activate_tuning(x->x_synth, i, bank, pgm, 1);
+    else if(!ch)
+        for(int i = 0; i < x->x_ch; i++)
+            fluid_synth_activate_tuning(x->x_synth, i, bank, pgm, 1);
 }
 
 static void sfont_set_tuning(t_sfont *x,  t_symbol *s, int ac, t_atom *av){
@@ -270,7 +268,6 @@ static void sfont_set_tuning(t_sfont *x,  t_symbol *s, int ac, t_atom *av){
         x->x_tune_name = atom_getsymbolarg(3, ac, av);
     else
         x->x_tune_name = gensym("Custom-tuning");
-
 }
 
 static void sfont_remap(t_sfont *x, t_symbol *s, int ac, t_atom *av){
@@ -282,21 +279,29 @@ static void sfont_remap(t_sfont *x, t_symbol *s, int ac, t_atom *av){
         set_key_tuning(x, pitches);
     }
     else
-        post("[sinfo~]: remap needs 128 key values");
+        post("[sfont~]: remap needs 128 key values");
 }
 
 static void sfont_scale(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    if(!ac){
-        set_key_tuning(x, NULL);
-        return;
+    int i, div, n1, n_m1;
+    double *scale;
+    if(!ac){ // default, equal temperament
+        scale = calloc(sizeof(double), 13);
+        for(i = 0; i < 13; i++){
+            scale[i] = i * 100;
+            post("def scale[%d] = %d", i, (int)scale[i]);
+        }
     }
-    double* scale = calloc(sizeof(double), ac);
-    int n_m1 = ac-1;
-    int i;
-    for(i = 0; i < ac; i++) // set array{
-        scale[i] = atom_getfloatarg(i, ac, av);
-    int n1 = -(int)x->x_base, div;
+    else{
+        scale = calloc(sizeof(double), ac);
+        for(i = 0; i < ac; i++){
+            scale[i] = atom_getfloatarg(i, ac, av);
+            post("scale[%d] = %d", i, (int)scale[i]);
+        }
+    }
+    n_m1 = ac-1;
+    n1 = -(int)x->x_base;
     n1 -= (n_m1-1);
     div = n1 / n_m1;
     float shift_down = div * scale[n_m1] + x->x_base * 100.;
@@ -545,7 +550,7 @@ static void fluid_do_load(t_sfont *x, t_symbol *name){
             const char* pname = fluid_preset_get_name(preset);
             t_atom at[1];
             SETSYMBOL(&at[0], gensym(pname));
-            outlet_anything(x->x_info_out, gensym("pname"), 1, at);
+            outlet_anything(x->x_info_out, gensym("preset"), 1, at);
         }
     }
     else
@@ -690,7 +695,7 @@ void sfont_tilde_setup(void){
     class_addfloat(sfont_class, (t_method)sfont_float); // raw midi input
     class_addlist(sfont_class, (t_method)sfont_note); // list is the same as "note"
     class_addmethod(sfont_class, (t_method)sfont_note, gensym("note"), A_GIMME, 0);
-    class_addmethod(sfont_class, (t_method)sfont_open, gensym("open"), A_SYMBOL, 0);
+    class_addmethod(sfont_class, (t_method)sfont_open, gensym("open"), A_DEFSYMBOL, 0);
     class_addmethod(sfont_class, (t_method)sfont_bank, gensym("bank"), A_GIMME, 0);
     class_addmethod(sfont_class, (t_method)sfont_control_change, gensym("ctl"), A_GIMME, 0);
     class_addmethod(sfont_class, (t_method)sfont_program_change, gensym("pgm"), A_GIMME, 0);
