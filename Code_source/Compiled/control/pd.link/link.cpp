@@ -6,7 +6,9 @@
 #include <unordered_map>
 #include <unistd.h>
 #include <sys/types.h>
+#ifndef __MINGW32__
 #include <ifaddrs.h>
+#endif
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
@@ -173,7 +175,7 @@ public:
             memcpy(data.sndrcv, token.c_str(), token.length());
             data.sndrcv[token.length()] = '\0';
         }
-        
+
         // Extract platform
         if (std::getline(iss, token, '\x1F')) {
             data.platform = (char*)malloc(token.length() + 1);
