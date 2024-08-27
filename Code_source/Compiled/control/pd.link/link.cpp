@@ -199,7 +199,9 @@ public:
             {
                 handle_ping(message);
             }
-            callback(object, message.size(), message.c_str());
+            else {
+                callback(object, message.size(), message.c_str());
+            }
         }
     }
 
