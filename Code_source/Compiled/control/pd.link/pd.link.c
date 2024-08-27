@@ -39,6 +39,7 @@ void pdlink_anything(t_pdlink *x, t_symbol *s, int argc, t_atom *argv) {
 
     // Send the data
     link_send(x->x_link, (size_t)len, buf);
+    binbuf_free(binbuf);
 }
 
 void pdlink_receive(void *x, size_t len, const char* message) {
@@ -49,6 +50,7 @@ void pdlink_receive(void *x, size_t len, const char* message) {
 
     // Call the outlet with the deserialized data
     outlet_anything(((t_pdlink*)x)->x_outlet, atom_getsymbol(&argv[0]), argc - 1, &argv[1]);
+    binbuf_free(binbuf);
 }
 
 void pdlink_receive_loop(t_pdlink *x)

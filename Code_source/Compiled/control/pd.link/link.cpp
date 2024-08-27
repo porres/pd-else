@@ -6,7 +6,6 @@
 #include <unordered_map>
 #include <unistd.h>
 #include <sys/types.h>
-#include <sys/socket.h>
 #include <ifaddrs.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
