@@ -21,6 +21,7 @@ typedef struct _pdlink {
     t_link_handle x_link;
     t_clock* x_clock;
     t_outlet* x_outlet;
+    int* x_last_connections;
 } t_pdlink;
 
 // Send any messages that arrive at inlet
@@ -61,9 +62,39 @@ void pdlink_receive(void *x, size_t len, const char* message) {
 void pdlink_receive_loop(t_pdlink *x)
 {
     // Occasionally check for new devices
-    if((x->x_loopcount & 7) == 0) {
+    if((x->x_loopcount & 63) == 0) {
         link_discover(x->x_link);
         int num_peers = link_get_num_peers(x->x_link);
+
+        link_ping(x->x_link);
+
+        if(x->x_debug)
+        {
+            int new_last_connections[128] = {0};
+            int new_size = 0;
+            for(int i = 0; i < 128; i++) {
+                int last_connection = x->x_last_connections[i];
+                if(last_connection == 0) break;
+                int found = 0;
+                for(int j = 0; j < num_peers; j++)
+                {
+                    t_link_discovery_data data = link_get_discovered_peer_data(x->x_link, j);
+                    if(data.port == last_connection)
+                    {
+                        found = 1;
+                    }
+                }
+                if(!found)
+                {
+                    post("[pd.link]: connection lost: %i", last_connection);
+                }
+                else {
+                    new_last_connections[new_size++] = last_connection;
+                }
+            }
+            memcpy(x->x_last_connections, new_last_connections, 128 * sizeof(int));
+        }
+
         for(int i = 0; i < num_peers; i++)
         {
             t_link_discovery_data data = link_get_discovered_peer_data(x->x_link, i);
@@ -73,9 +104,10 @@ void pdlink_receive_loop(t_pdlink *x)
                 if(!x->x_local && strcmp(data.ip, "127.0.0.1") == 0) continue;
 
                 int created = link_connect(x->x_link, data.port, data.ip);
-                if(created && x->x_debug) // Debug logging
+                if(created && x->x_debug)
                 {
-                    post("[pd.link]: connected to:\n%s\n%s : %i\n%s\n%s", data.hostname, data.ip, data.port, data.platform, data.sndrcv);
+                   x->x_last_connections[i] = data.port;
+                   post("[pd.link]: connected to:\n%s\n%s : %i\n%s\n%s", data.hostname, data.ip, data.port, data.platform, data.sndrcv);
                 }
             }
             if(data.hostname) free(data.hostname);
@@ -162,6 +194,7 @@ void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
 
     if(x->x_debug)
     {
+        x->x_last_connections = calloc(128, sizeof(int));
         post("[pd.link]: current IP:\n%s : %i", link_get_own_ip(x->x_link), link_get_own_port(x->x_link));
     }
     return (void *)x;

@@ -25,6 +25,7 @@ public:
     int port;
     udp_server server;
     std::unordered_map<int, std::unique_ptr<udp_client>> clients;
+    std::unordered_map<int, int> client_ping;
     bool socket_bound;
     std::string ip;
 
@@ -59,7 +60,12 @@ public:
         peer.Stop();
     }
 
-    int get_random_port() const
+    static int get_current_time_ms() {
+        using namespace std::chrono;
+        return duration_cast<milliseconds>(steady_clock::now().time_since_epoch()).count();
+    }
+
+    static int get_random_port()
     {
         // Get random port number outside of system ranges
         return (rand() % 48127) + 1024;
@@ -172,6 +178,7 @@ public:
         auto& client = clients[target_port];
         if(!client) { // Check if we already have a client for this port
             client = std::make_unique<udp_client>(target_port, target_ip);
+            client_ping[target_port] = get_current_time_ms();
             return true;
         }
         return false;
@@ -188,7 +195,46 @@ public:
         std::string message;
         while(server.receive_data(message))
         {
+            if (message.rfind("#PING#", 0) == 0) // Check if the message starts with "#PING#"
+            {
+                handle_ping(message);
+            }
             callback(object, message.size(), message.c_str());
+        }
+    }
+
+    void handle_ping(std::string& ping)
+    {
+        std::string port_num_str = ping.substr(6); // Extract the port number part
+        if (!port_num_str.empty())
+        {
+            try
+            {
+                int port_num = std::stoi(port_num_str); // Convert the port number string to an integer
+                client_ping[port_num] = get_current_time_ms();
+            }
+            catch (const std::invalid_argument&)
+            {
+            }
+            catch (const std::out_of_range&)
+            {
+            }
+        }
+    }
+
+    void ping()
+    {
+        for(auto& [port_num, client] : clients)
+        {
+            client->send_data(std::string("#PING#") + std::to_string(port_num));
+        }
+
+        for(auto& [port_num, ping] : client_ping)
+        {
+            if(ping - get_current_time_ms() > 3000)
+            {
+                clients.erase(port_num);
+            }
         }
     }
 
@@ -325,4 +371,9 @@ const char* link_get_own_ip(t_link_handle link_handle)
 int link_get_own_port(t_link_handle link_handle)
 {
     return static_cast<t_link*>(link_handle)->port;
+}
+
+void link_ping(t_link_handle link_handle)
+{
+    return static_cast<t_link*>(link_handle)->ping();
 }
