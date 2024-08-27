@@ -3,8 +3,6 @@
 #include "link.h"
 #include <cstring>
 #include <iostream>
-#include <array>
-#include <vector>
 #include <unordered_map>
 #include <unistd.h>
 #include <sys/types.h>
@@ -12,7 +10,6 @@
 #include <ifaddrs.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
-#include <limits.h>
 
 const int kPort = 12021;
 const uint64_t kApplicationId = 7681412;
