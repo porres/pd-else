@@ -14,7 +14,7 @@
 #endif
 
 const int kPort = 12021;
-const uint64_t kApplicationId = 7681412;
+const uint64_t kApplicationId = 7680412;
 const unsigned int kMulticastAddress = (224 << 24) + (0 << 16) + (0 << 8) + 123; // 224.0.0.123
 
 // t_link manages the process of finding connectable devices, and opening a 2-way UDP connection
