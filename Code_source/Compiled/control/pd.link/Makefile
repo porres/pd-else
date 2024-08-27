@@ -1,5 +1,5 @@
 
-lib.name = plaits~
+lib.name = pd.link
 
 common.sources =  ./udp/udp_discovery_peer.cpp \
                   ./udp/udp_discovery_protocol.cpp \
