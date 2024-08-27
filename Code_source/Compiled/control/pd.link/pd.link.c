@@ -62,7 +62,7 @@ void pdlink_receive(void *x, size_t len, const char* message) {
 void pdlink_receive_loop(t_pdlink *x)
 {
     // Occasionally check for new devices
-    if((x->x_loopcount & 63) == 0) {
+    if((x->x_loopcount & 127) == 0) {
         link_discover(x->x_link);
         int num_peers = link_get_num_peers(x->x_link);
 
