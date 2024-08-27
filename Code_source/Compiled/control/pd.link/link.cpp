@@ -12,7 +12,6 @@
 #include <ifaddrs.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
-#define __USE_POSIX
 #include <limits.h>
 
 const int kPort = 12021;
@@ -28,11 +27,11 @@ public:
     udp_server server;
     std::unordered_map<int, std::unique_ptr<udp_client>> clients;
     bool socket_bound;
-    
+
     t_link(std::string identifier, bool local) : port(get_random_port()), server(port) {
         auto ip = local ? std::string("127.0.0.1") : get_ip();
         socket_bound = try_bind();
-        
+
         identifier += std::string(" ") + get_hostname() + std::string(" ") + ip + std::string(" ") + std::to_string(port);
         udpdiscovery::PeerParameters parameters;
         parameters.set_can_discover(true);
@@ -54,12 +53,12 @@ public:
     {
         peer.Stop();
     }
-    
+
     int get_random_port()
     {
         return (rand() % 48127) + 1024;
     }
-    
+
     bool try_bind()
     {
         int i = 10;
@@ -69,19 +68,19 @@ public:
             i--;
             std::this_thread::sleep_for(std::chrono::microseconds(20)); // unfortunate, but othewise random generation breaks!
         }
-        
+
         server.set_blocking(false);
-        
+
         return i != 0;
     }
-    
+
     std::string get_hostname() const
     {
         char hostname[128] = {0};
         if (gethostname(hostname, sizeof(hostname)) == 0) {
             return std::string(hostname);
         }
-        
+
         return {};
     }
 
@@ -134,14 +133,14 @@ public:
             socket_bound = try_bind();
             return;
         }
-        
+
         std::string message;
         while(server.receive_data(message))
         {
             callback(object, message.size(), message.c_str());
         }
     }
-    
+
     void send(const std::string& data)
     {
         for(auto& [port_num, client] : clients)
@@ -149,17 +148,17 @@ public:
             client->send_data(data);
         }
     }
-    
+
     void discover()
     {
         discovered_peers = peer.ListDiscovered();
     }
-    
+
     int get_num_peers()
     {
         return discovered_peers.size();
     }
-    
+
     t_link_discovery_data get_discovered_peer(int idx)
     {
         auto peer_front = discovered_peers.begin();
@@ -171,21 +170,21 @@ public:
         // Use a stringstream to parse the user_data
         std::istringstream iss(user_data);
         std::string token;
-        
+
         // Extract name
         if (std::getline(iss, token, ' ')) {
             data.sndrcv = (char*)malloc(token.length() + 1);
             memcpy(data.sndrcv, token.c_str(), token.length());
             data.sndrcv[token.length()] = '\0';
         }
-        
+
         // Extract hostname
         if (std::getline(iss, token, ' ')) {
             data.hostname = (char*)malloc(token.length() + 1);
             memcpy(data.hostname, token.c_str(), token.length());
             data.hostname[token.length()] = '\0';
         }
-        
+
         // Extract IP
         if (std::getline(iss, token, ' ')) {
             data.ip = (char*)malloc(token.length() + 1);
@@ -203,7 +202,7 @@ public:
                 data.port = 0; // Or handle error as appropriate
             }
         }
-        
+
         return data;
     }
 };
