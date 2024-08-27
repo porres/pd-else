@@ -160,7 +160,7 @@ void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
 
     // Get pd platform identifier (only what's known at compile time, so any external will report pure-data)
     char pd_platform[MAXPDSTRING];
-    char os[MAXPDSTRING];
+    char os[16];
 
     #if _WIN32
         snprintf(os, MAXPDSTRING, "Windows");
