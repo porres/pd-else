@@ -163,6 +163,12 @@ jobs:
           make PDDIR=./pd extension=m_amd64 install
 
       - if: runner.os == 'Windows'
+        name: Build pd.link
+        shell: msys2 {0}
+        run: |
+          make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 pd.link
+
+      - if: runner.os == 'Windows'
         name: Build sfont~
         shell: msys2 {0}
         run: |
@@ -190,12 +196,6 @@ jobs:
         shell: msys2 {0}
         run: |
           make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 circuit
-
-      - if: runner.os == 'Windows'
-        name: Build pd.link
-        shell: msys2 {0}
-        run: |
-          make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 pd.link
 
       - if: runner.os == 'Windows'
         name: Build play.file~
