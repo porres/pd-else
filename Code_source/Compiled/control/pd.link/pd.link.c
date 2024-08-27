@@ -78,10 +78,10 @@ void pdlink_receive_loop(t_pdlink *x)
                     post("[pd.link]: connected to:\n%s\n%s : %i\n%s\n%s", data.hostname, data.ip, data.port, data.platform, data.sndrcv);
                 }
             }
-            free(data.hostname);
-            free(data.sndrcv);
-            free(data.platform);
-            free(data.ip);
+            if(data.hostname) free(data.hostname);
+            if(data.sndrcv) free(data.sndrcv);
+            if(data.platform) free(data.platform);
+            if(data.ip) free(data.ip);
         }
     }
     // Receive messages if we're connected

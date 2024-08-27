@@ -221,6 +221,7 @@ public:
 
         std::string user_data = peer_front->user_data();
         t_link_discovery_data data;
+        memset(&data, 0, sizeof(t_link_discovery_data));
 
         // Use a stringstream to parse the user_data
         std::istringstream iss(user_data);
