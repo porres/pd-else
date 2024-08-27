@@ -26,9 +26,10 @@ public:
     udp_server server;
     std::unordered_map<int, std::unique_ptr<udp_client>> clients;
     bool socket_bound;
+    std::string ip;
 
     t_link(std::string identifier, std::string platform, bool local) : port(get_random_port()), server(port) {
-        auto ip = local ? std::string("127.0.0.1") : get_ip();
+        ip = local ? std::string("127.0.0.1") : get_ip();
 
         // Try to bind our server UDP socket
         socket_bound = try_bind();
@@ -92,7 +93,7 @@ public:
     }
 
     // Get IP address. It picks the one from your first network adapter. If you have multiple network adapters, it could pick the wrong one!
-    std::string get_ip() const
+    static std::string get_ip()
     {
 #ifdef _WIN32
     ULONG flags = GAA_FLAG_INCLUDE_PREFIX;
@@ -160,12 +161,17 @@ public:
         return "127.0.0.1";
     }
 
-    // Connect to a port and IP combination
-    bool connect(int port_num, std::string ip)
+    const char* get_own_ip()
     {
-        auto& client = clients[port_num];
+        return ip.c_str();
+    }
+
+    // Connect to a port and IP combination
+    bool connect(int target_port, std::string target_ip)
+    {
+        auto& client = clients[target_port];
         if(!client) { // Check if we already have a client for this port
-            client = std::make_unique<udp_client>(port_num, ip);
+            client = std::make_unique<udp_client>(target_port, target_ip);
             return true;
         }
         return false;
@@ -308,4 +314,9 @@ int link_connect(t_link_handle link_handle, int port, const char* ip)
 int link_isconnected(t_link_handle link_handle)
 {
     return !static_cast<t_link*>(link_handle)->clients.empty();
+}
+
+const char* link_get_own_ip(t_link_handle link_handle)
+{
+    return static_cast<t_link*>(link_handle)->get_own_ip();
 }

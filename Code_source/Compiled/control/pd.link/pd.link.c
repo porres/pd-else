@@ -75,7 +75,7 @@ void pdlink_receive_loop(t_pdlink *x)
                 int created = link_connect(x->x_link, data.port, data.ip);
                 if(created && x->x_debug) // Debug logging
                 {
-                    post("Connected to:\n%s\n%s : %i\n%s\n%s", data.hostname, data.ip, data.port, data.platform, data.sndrcv);
+                    post("[pd.link]: connected to:\n%s\n%s : %i\n%s\n%s", data.hostname, data.ip, data.port, data.platform, data.sndrcv);
                 }
             }
             free(data.hostname);
@@ -140,6 +140,11 @@ void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
     x->x_clock = clock_new(x, (t_method)pdlink_receive_loop);
     x->x_outlet = outlet_new((t_object*)x, 0);
     clock_delay(x->x_clock, 0);
+
+    if(x->x_debug)
+    {
+        post("[pd.link]: current IP: %s", link_get_own_ip(x->x_link));
+    }
     return (void *)x;
 }
 
