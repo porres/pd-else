@@ -9,8 +9,6 @@
 #ifndef __MINGW32__
 #include <ifaddrs.h>
 #endif
-#include <arpa/inet.h>
-#include <netinet/in.h>
 
 const int kPort = 12021;
 const uint64_t kApplicationId = 7681412;
