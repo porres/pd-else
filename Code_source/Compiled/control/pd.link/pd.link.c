@@ -163,20 +163,20 @@ void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
     char os[16];
 
     #if _WIN32
-        snprintf(os, MAXPDSTRING, "Windows");
+        snprintf(os, 16, "Windows");
     #elif __APPLE__
         #include "TargetConditionals.h"
         #if TARGET_OS_IPHONE && TARGET_IPHONE_SIMULATOR
-            snprintf(os, MAXPDSTRING, "iOS Simulator");
+            snprintf(os, 16, "iOS Simulator");
         #elif TARGET_OS_IPHONE
-            snprintf(os, MAXPDSTRING, "iOS");
+            snprintf(os, 16, "iOS");
         #else
-            snprintf(os, MAXPDSTRING, "macOS");
+            snprintf(os, 16, "macOS");
         #endif
     #elif __linux__
-        snprintf(os, MAXPDSTRING, "Linux");
+        snprintf(os, 16, "Linux");
     #else
-        snprintf(os, MAXPDSTRING, "Unknown OS");
+        snprintf(os, 16, "Unknown OS");
     #endif
 
 #if PLUGDATA
