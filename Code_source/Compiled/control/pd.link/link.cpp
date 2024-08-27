@@ -82,9 +82,41 @@ public:
 
     std::string get_ip() const
     {
-        struct ifaddrs *ifaddr, *ifa;
-        char ip[INET_ADDRSTRLEN];
+#if _WIN32
+    ULONG flags = GAA_FLAG_INCLUDE_PREFIX;
+    ULONG family = AF_INET;  // Use AF_INET6 for IPv6 addresses
+    ULONG bufferSize = 0;
 
+    // First, call GetAdaptersAddresses to get the required buffer size.
+    GetAdaptersAddresses(family, flags, nullptr, nullptr, &bufferSize);
+
+    std::vector<BYTE> buffer(bufferSize);
+    PIP_ADAPTER_ADDRESSES adapterAddresses = reinterpret_cast<PIP_ADAPTER_ADDRESSES>(buffer.data());
+
+    // Now call GetAdaptersAddresses again with the allocated buffer.
+    if (GetAdaptersAddresses(family, flags, nullptr, adapterAddresses, &bufferSize) == NO_ERROR)
+    {
+        for (PIP_ADAPTER_ADDRESSES adapter = adapterAddresses; adapter != nullptr; adapter = adapter->Next)
+        {
+            for (PIP_ADAPTER_UNICAST_ADDRESS unicast = adapter->FirstUnicastAddress; unicast != nullptr; unicast = unicast->Next)
+            {
+                if (unicast->Address.lpSockaddr->sa_family == AF_INET)
+                {
+                    char ip[INET_ADDRSTRLEN];
+                    sockaddr_in* sa_in = reinterpret_cast<sockaddr_in*>(unicast->Address.lpSockaddr);
+                    inet_ntop(AF_INET, &(sa_in->sin_addr), ip, INET_ADDRSTRLEN);
+
+                    // Skip loopback addresses
+                    if (strcmp(ip, "127.0.0.1") != 0)
+                    {
+                        return std::string(ip);
+                    }
+                }
+            }
+        }
+    }
+#else
+        struct ifaddrs *ifaddr, *ifa;
         // Get a linked list of network interfaces
         if (getifaddrs(&ifaddr) == -1) {
             perror("getifaddrs");
@@ -98,19 +130,22 @@ public:
 
             // Check if the address is IPv4
             if (ifa->ifa_addr->sa_family == AF_INET) {
+                char ip[INET_ADDRSTRLEN];
                 // Convert the address to a human-readable string
                 void *addr = &((struct sockaddr_in *)ifa->ifa_addr)->sin_addr;
                 inet_ntop(AF_INET, addr, ip, INET_ADDRSTRLEN);
                 // Skip loopback addresses
                 if (strcmp(ip, "127.0.0.1") != 0) {
-                    break;
+                    freeifaddrs(ifaddr);
+                    return std::string(ip);
                 }
             }
         }
 
         // Free the linked list of interfaces
         freeifaddrs(ifaddr);
-        return std::string(ip, strlen(ip));
+#endif
+        return "127.0.0.1";
     }
 
     bool connect(int port_num, std::string ip)
