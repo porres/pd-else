@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #ifdef _WIN32
+#include <vector>
 #include <iphlpapi.h>
 #else
 #include <ifaddrs.h>
