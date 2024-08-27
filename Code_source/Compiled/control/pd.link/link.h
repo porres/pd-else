@@ -17,9 +17,9 @@ typedef struct
 
 t_link_handle link_init(const char* user_data, int local);
 
-void link_cleanup(t_link_handle link_handle);
+void link_free(t_link_handle link_handle);
 
-void link_run_discovery_loop(t_link_handle link_handle);
+void link_discover(t_link_handle link_handle);
 
 int link_get_num_peers(t_link_handle link_handle);
 

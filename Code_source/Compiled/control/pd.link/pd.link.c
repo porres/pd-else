@@ -56,7 +56,7 @@ void pdlink_receive(void *x, size_t len, const char* message) {
 void pdlink_receive_loop(t_pdlink *x)
 {
     if((x->x_loopcount & 7) == 0) {
-        link_run_discovery_loop(x->x_link);
+        link_discover(x->x_link);
         int num_peers = link_get_num_peers(x->x_link);
         for(int i = 0; i < num_peers; i++)
         {
@@ -84,7 +84,7 @@ void pdlink_receive_loop(t_pdlink *x)
 
 void pdlink_free(t_pdlink *x)
 {
-    if(x->x_link) link_cleanup(x->x_link);
+    if(x->x_link) link_free(x->x_link);
     if(x->x_clock) clock_free(x->x_clock);
 }
 

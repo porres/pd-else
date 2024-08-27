@@ -213,7 +213,7 @@ t_link_handle link_init(const char* user_data, int local) {
     }
 }
 
-void link_cleanup(t_link_handle link_handle) {
+void link_free(t_link_handle link_handle) {
     if (link_handle) delete static_cast<t_link*>(link_handle);
 }
 
@@ -226,7 +226,7 @@ t_link_discovery_data link_get_discovered_peer_data(t_link_handle link_handle, i
 }
 
 // C-compatible function to run the discovery loop
-void link_run_discovery_loop(t_link_handle link_handle) {
+void link_discover(t_link_handle link_handle) {
     static_cast<t_link*>(link_handle)->discover();
 }
 
