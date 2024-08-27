@@ -6,7 +6,9 @@
 #include <unordered_map>
 #include <unistd.h>
 #include <sys/types.h>
-#ifndef __MINGW32__
+#ifdef _WIN32
+#include <iphlpapi.h>
+#else
 #include <ifaddrs.h>
 #endif
 
@@ -82,7 +84,7 @@ public:
 
     std::string get_ip() const
     {
-#if _WIN32
+#ifdef _WIN32
     ULONG flags = GAA_FLAG_INCLUDE_PREFIX;
     ULONG family = AF_INET;  // Use AF_INET6 for IPv6 addresses
     ULONG bufferSize = 0;
