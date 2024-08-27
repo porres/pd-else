@@ -13,9 +13,10 @@ typedef struct
     char* ip;
     int port;
     char* hostname;
+    char* platform;
 } t_link_discovery_data;
 
-t_link_handle link_init(const char* user_data, int local);
+t_link_handle link_init(const char* user_data, const char* platform, int local);
 
 void link_free(t_link_handle link_handle);
 

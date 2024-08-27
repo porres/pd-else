@@ -62,12 +62,12 @@ void pdlink_receive_loop(t_pdlink *x)
         {
             t_link_discovery_data data = link_get_discovered_peer_data(x->x_link, i);
             if(strcmp(data.sndrcv, x->x_name->s_name) == 0) {
-                //if(x->x_local && strcmp(data.ip, "127.0.0.1") != 0) continue;
-                //if(!x->x_local && strcmp(data.ip, "127.0.0.1") == 0) continue;
+                if(x->x_local && strcmp(data.ip, "127.0.0.1") != 0) continue;
+                if(!x->x_local && strcmp(data.ip, "127.0.0.1") == 0) continue;
                 int created = link_connect(x->x_link, data.port, data.ip);
                 if(created && x->x_debug)
                 {
-                    post("Connected to:\n%s\n%s : %i\n%s", data.hostname, data.ip, data.port, data.sndrcv);
+                    post("Connected to:\n%s\n%s : %i\n%s\n%s", data.hostname, data.ip, data.port, data.platform, data.sndrcv);
                 }
             }
             free(data.hostname);
@@ -117,8 +117,17 @@ void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
         pd_free((t_pd*)x);
         return NULL;
     }
-
-    x->x_link = link_init(x->x_name->s_name, x->x_local);
+    
+    char pd_platform[MAXPDSTRING];
+#if PLUGDATA
+    snprintf(pd_platform, MAXPDSTRING, "plugdata %s", PD_PLUGDATA_VERSION);
+#else
+    int major = 0, minor = 0, bugfix = 0;
+    sys_getversion(&major, &minor, &bugfix);
+    snprintf(pd_platform, MAXPDSTRING, "pure-data %i.%i-%i", major, minor, bugfix);
+#endif
+    
+    x->x_link = link_init(x->x_name->s_name, pd_platform, x->x_local);
     x->x_clock = clock_new(x, (t_method)pdlink_receive_loop);
 
     x->x_outlet = outlet_new((t_object*)x, 0);

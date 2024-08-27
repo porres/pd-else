@@ -24,11 +24,11 @@ public:
     std::unordered_map<int, std::unique_ptr<udp_client>> clients;
     bool socket_bound;
 
-    t_link(std::string identifier, bool local) : port(get_random_port()), server(port) {
+    t_link(std::string identifier, std::string platform, bool local) : port(get_random_port()), server(port) {
         auto ip = local ? std::string("127.0.0.1") : get_ip();
         socket_bound = try_bind();
 
-        identifier += std::string(" ") + get_hostname() + std::string(" ") + ip + std::string(" ") + std::to_string(port);
+        identifier += std::string("\x1F") + platform + std::string("\x1F") + get_hostname() + std::string("\x1F") + ip + std::string("\x1F") + std::to_string(port);
         udpdiscovery::PeerParameters parameters;
         parameters.set_can_discover(true);
         parameters.set_can_be_discovered(true);
@@ -168,28 +168,35 @@ public:
         std::string token;
 
         // Extract name
-        if (std::getline(iss, token, ' ')) {
+        if (std::getline(iss, token, '\x1F')) {
             data.sndrcv = (char*)malloc(token.length() + 1);
             memcpy(data.sndrcv, token.c_str(), token.length());
             data.sndrcv[token.length()] = '\0';
         }
+        
+        // Extract platform
+        if (std::getline(iss, token, '\x1F')) {
+            data.platform = (char*)malloc(token.length() + 1);
+            memcpy(data.platform, token.c_str(), token.length());
+            data.platform[token.length()] = '\0';
+        }
 
         // Extract hostname
-        if (std::getline(iss, token, ' ')) {
+        if (std::getline(iss, token, '\x1F')) {
             data.hostname = (char*)malloc(token.length() + 1);
             memcpy(data.hostname, token.c_str(), token.length());
             data.hostname[token.length()] = '\0';
         }
 
         // Extract IP
-        if (std::getline(iss, token, ' ')) {
+        if (std::getline(iss, token, '\x1F')) {
             data.ip = (char*)malloc(token.length() + 1);
             memcpy(data.ip, token.c_str(), token.length());
             data.ip[token.length()] = '\0';
         }
 
         // Extract port
-        if (std::getline(iss, token, ' ')) {
+        if (std::getline(iss, token, '\x1F')) {
             try {
                 data.port = std::stoi(token); // Convert string to integer
             } catch (const std::invalid_argument& e) {
@@ -204,9 +211,9 @@ public:
 };
 
 // C interface for pd object
-t_link_handle link_init(const char* user_data, int local) {
+t_link_handle link_init(const char* identifier, const char* platform, int local) {
     try {
-        t_link* wrapper = new t_link(user_data, local);
+        t_link* wrapper = new t_link(identifier, platform, local);
         return static_cast<t_link_handle>(wrapper);
     } catch (const std::exception&) {
         return nullptr;
