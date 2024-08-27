@@ -36,6 +36,8 @@ int link_isconnected(t_link_handle link_handle);
 
 const char* link_get_own_ip(t_link_handle link_handle);
 
+int link_get_own_port(t_link_handle link_handle);
+
 #ifdef __cplusplus
 }
 #endif

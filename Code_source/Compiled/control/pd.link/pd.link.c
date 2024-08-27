@@ -143,7 +143,7 @@ void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
 
     if(x->x_debug)
     {
-        post("[pd.link]: current IP: %s", link_get_own_ip(x->x_link));
+        post("[pd.link]: current IP:\n%s : %i", link_get_own_ip(x->x_link), link_get_own_port(x->x_link));
     }
     return (void *)x;
 }

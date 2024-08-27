@@ -19,6 +19,7 @@ endef
 
 define forWindows
 ldlibs += -lws2_32 -liphlpapi -lstdc++
+ldflags += -static-libgcc -static-libstdc++ -static
 endef
 
 # Change the arch to arm64 if the extension is d_arm64

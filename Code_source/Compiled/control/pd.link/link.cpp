@@ -320,3 +320,8 @@ const char* link_get_own_ip(t_link_handle link_handle)
 {
     return static_cast<t_link*>(link_handle)->get_own_ip();
 }
+
+int link_get_own_port(t_link_handle link_handle)
+{
+    return static_cast<t_link*>(link_handle)->port;
+}
