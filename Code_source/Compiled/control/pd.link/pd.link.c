@@ -23,7 +23,9 @@ typedef struct _pdlink {
     t_outlet* x_outlet;
 } t_pdlink;
 
+// Send any messages that arrive at inlet
 void pdlink_anything(t_pdlink *x, t_symbol *s, int argc, t_atom *argv) {
+    // Format symbol and atoms into binbuf
     t_atom symbol;
     SETSYMBOL(&symbol, s);
 
@@ -37,12 +39,14 @@ void pdlink_anything(t_pdlink *x, t_symbol *s, int argc, t_atom *argv) {
     int len;
     binbuf_gettext(binbuf, &buf, &len);
 
-    // Send the data
+    // Send the binbuf data as text
     link_send(x->x_link, (size_t)len, buf);
     binbuf_free(binbuf);
 }
 
+// Receive callback for messages
 void pdlink_receive(void *x, size_t len, const char* message) {
+    // Convert text to atoms using binbuf
     t_binbuf *binbuf = binbuf_new();
     binbuf_text(binbuf, message, len);
     int argc = binbuf_getnatom(binbuf);
@@ -53,8 +57,10 @@ void pdlink_receive(void *x, size_t len, const char* message) {
     binbuf_free(binbuf);
 }
 
+// Discovery and message retrieval loop
 void pdlink_receive_loop(t_pdlink *x)
 {
+    // Occasionally check for new devices
     if((x->x_loopcount & 7) == 0) {
         link_discover(x->x_link);
         int num_peers = link_get_num_peers(x->x_link);
@@ -62,20 +68,23 @@ void pdlink_receive_loop(t_pdlink *x)
         {
             t_link_discovery_data data = link_get_discovered_peer_data(x->x_link, i);
             if(strcmp(data.sndrcv, x->x_name->s_name) == 0) {
+                // Only connect to localhost in -local mode
                 if(x->x_local && strcmp(data.ip, "127.0.0.1") != 0) continue;
                 if(!x->x_local && strcmp(data.ip, "127.0.0.1") == 0) continue;
+
                 int created = link_connect(x->x_link, data.port, data.ip);
-                if(created && x->x_debug)
+                if(created && x->x_debug) // Debug logging
                 {
                     post("Connected to:\n%s\n%s : %i\n%s\n%s", data.hostname, data.ip, data.port, data.platform, data.sndrcv);
                 }
             }
             free(data.hostname);
             free(data.sndrcv);
+            free(data.platform);
             free(data.ip);
         }
     }
-
+    // Receive messages if we're connected
     if(link_isconnected(x->x_link)) link_receive(x->x_link, x, pdlink_receive);
     clock_delay(x->x_clock, 5);
     x->x_loopcount++;
@@ -102,22 +111,22 @@ void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
         if (argv[i].a_type == A_SYMBOL) {
             t_symbol *sym = atom_getsymbol(&argv[i]);
             if (strcmp(sym->s_name, "-local") == 0) {
-                x->x_local = 1;
+                x->x_local = 1; // Localhost only connection
             } else if (strcmp(sym->s_name, "-debug") == 0) {
-                x->x_debug = 1;
+                x->x_debug = 1; // Enable debug logging
             } else if (x->x_name == NULL) {
                 // Assign the first non-flag symbol to x_name
                 x->x_name = sym;
             }
         }
     }
-
     if (x->x_name == NULL) {
         pd_error(NULL, "[pdlink]: No name argument specified");
         pd_free((t_pd*)x);
         return NULL;
     }
-    
+
+    // Get pd platform identifier (only what's known at compile time, so any external will report pure-data)
     char pd_platform[MAXPDSTRING];
 #if PLUGDATA
     snprintf(pd_platform, MAXPDSTRING, "plugdata %s", PD_PLUGDATA_VERSION);
@@ -126,10 +135,9 @@ void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
     sys_getversion(&major, &minor, &bugfix);
     snprintf(pd_platform, MAXPDSTRING, "pure-data %i.%i-%i", major, minor, bugfix);
 #endif
-    
+    // Initialise link and loop clock
     x->x_link = link_init(x->x_name->s_name, pd_platform, x->x_local);
     x->x_clock = clock_new(x, (t_method)pdlink_receive_loop);
-
     x->x_outlet = outlet_new((t_object*)x, 0);
     clock_delay(x->x_clock, 0);
     return (void *)x;

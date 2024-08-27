@@ -17,7 +17,7 @@ const int kPort = 12021;
 const uint64_t kApplicationId = 7681412;
 const unsigned int kMulticastAddress = (224 << 24) + (0 << 16) + (0 << 8) + 123; // 224.0.0.123
 
-// A wrapper class to manage the peer
+// t_link manages the process of finding connectable devices, and opening a 2-way UDP connection
 class t_link {
 public:
     udpdiscovery::Peer peer;
@@ -29,9 +29,14 @@ public:
 
     t_link(std::string identifier, std::string platform, bool local) : port(get_random_port()), server(port) {
         auto ip = local ? std::string("127.0.0.1") : get_ip();
+
+        // Try to bind our server UDP socket
         socket_bound = try_bind();
 
+        // Create identifier for UDP discovery. This should contain all the necessary info to establish a socket connection
         identifier += std::string("\x1F") + platform + std::string("\x1F") + get_hostname() + std::string("\x1F") + ip + std::string("\x1F") + std::to_string(port);
+
+        // Set discovery parameters
         udpdiscovery::PeerParameters parameters;
         parameters.set_can_discover(true);
         parameters.set_can_be_discovered(true);
@@ -53,11 +58,13 @@ public:
         peer.Stop();
     }
 
-    int get_random_port()
+    int get_random_port() const
     {
+        // Get random port number outside of system ranges
         return (rand() % 48127) + 1024;
     }
 
+    // Try to bind the server socket to a port
     bool try_bind()
     {
         int tries = 0;
@@ -73,6 +80,7 @@ public:
         return tries != 16;
     }
 
+    // Get hostname as a string. This is a readable identifier for your computers identity
     std::string get_hostname() const
     {
         char hostname[128] = {0};
@@ -83,6 +91,7 @@ public:
         return {};
     }
 
+    // Get IP address. It picks the one from your first network adapter. If you have multiple network adapters, it could pick the wrong one!
     std::string get_ip() const
     {
 #ifdef _WIN32
@@ -151,16 +160,18 @@ public:
         return "127.0.0.1";
     }
 
+    // Connect to a port and IP combination
     bool connect(int port_num, std::string ip)
     {
         auto& client = clients[port_num];
-        if(!client) {
+        if(!client) { // Check if we already have a client for this port
             client = std::make_unique<udp_client>(port_num, ip);
             return true;
         }
         return false;
     }
 
+    // Receive messages sent to server into the passed in callback
     void receive(void* object, void(*callback)(void*, size_t, const char*))
     {
         if(!socket_bound) {
@@ -175,6 +186,7 @@ public:
         }
     }
 
+    // Send data from client to connected server
     void send(const std::string& data)
     {
         for(auto& [port_num, client] : clients)
@@ -183,16 +195,19 @@ public:
         }
     }
 
+    // Update discoverable devices
     void discover()
     {
         discovered_peers = peer.ListDiscovered();
     }
 
+    // Get number of discoverable devices
     int get_num_peers()
     {
         return discovered_peers.size();
     }
 
+    // Get info about a discoverable device
     t_link_discovery_data get_discovered_peer(int idx)
     {
         auto peer_front = discovered_peers.begin();
@@ -248,7 +263,7 @@ public:
     }
 };
 
-// C interface for pd object
+// C interface
 t_link_handle link_init(const char* identifier, const char* platform, int local) {
     try {
         t_link* wrapper = new t_link(identifier, platform, local);
