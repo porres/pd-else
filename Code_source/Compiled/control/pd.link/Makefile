@@ -17,6 +17,10 @@ define forDarwin
   CXX += -stdlib=libc++
 endef
 
+define forWindows
+ldlibs += -lws2_32 -liphlpapi
+endef
+
 # Change the arch to arm64 if the extension is d_arm64
 ifeq ($(extension),d_arm64)
   override arch := arm64
