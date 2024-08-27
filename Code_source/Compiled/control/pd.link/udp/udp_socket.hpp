@@ -7,7 +7,6 @@
 #include <signal.h>
 
 #ifdef _WIN32
-#pragma comment(lib,"ws2_32.lib")
 #define WIN32_LEAN_AND_MEAN
 #undef TEXT
 #include <winsock2.h>
@@ -16,7 +15,6 @@ typedef SSIZE_T ssize_t;
 // Unix
 #else
 #include <sys/types.h>
-#include <sys/socket.h>
 #include <netdb.h>
 #include <unistd.h>
 #include <arpa/inet.h>
@@ -64,7 +62,7 @@ public:
 
         return;
     }
-    
+
     void set_port(u_short port)
     {
         m_addr.sin_port = htons(port);
@@ -105,7 +103,7 @@ protected:
         ++s_count;
 #endif
     }
-    
+
 #ifdef WIN32
     ~_socket_base()
     {
@@ -117,7 +115,7 @@ protected:
 #else
     ~_socket_base() = default;
 #endif
-    
+
     SOCKET m_socket;
     sockaddr_in m_addr;
 private:
@@ -141,7 +139,7 @@ public:
         size_t message_length = message.length();
         size_t offset = 0;
         size_t chunk_size = 512;
-        
+
         while (offset < message_length)
         {
             size_t bytes_to_send = std::min(chunk_size, message_length - offset);
