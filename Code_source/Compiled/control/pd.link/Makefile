@@ -9,11 +9,12 @@ common.sources =  ./udp/udp_discovery_peer.cpp \
 class.sources = pd.link.c
 
 cflags = -I$(shell pwd)
-CXX += --std=c++17 -stdlib=libc++
+CXX += --std=c++17
 
 # all extra files to be included in binary distribution of the library
 define forDarwin
   cflags += -I/usr/include/c++/v1 -mmacosx-version-min=10.9
+  CXX += -stdlib=libc++
 endef
 
 # Change the arch to arm64 if the extension is d_arm64

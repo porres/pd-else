@@ -1,5 +1,5 @@
 # pd.link: local network send/receive object for Pd
-pd.link simplifies the process of establishing a UDP connection over network to simply using the same send/receive identifier. IP and port configuration are automatically managed for you.
+\[pd.link] simplifies the process of establishing a UDP connection over network to simply using the same send/receive identifier. IP and port configuration are automatically managed for you.
 Some common use cases are sending messages between Pd on different computers (or a Raspberry Pi), sending messages between different Pd flavours (pure-data/purr-data/plugdata), or sending messages between different plugdata instances on separate DAW tracks.
 
 # Usage
