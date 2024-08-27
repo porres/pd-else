@@ -379,14 +379,14 @@ void buffer_free(t_buffer *c){
 void *buffer_init(t_class *owner, t_symbol *bufname, int numchans, int singlemode){
 // name of buffer (multichan usu, or not) and the number of channels associated with buffer
     t_buffer *c = (t_buffer *)getbytes(sizeof(t_buffer));
-    t_float **vectors;
+    t_word **vectors;
     t_symbol **channames = 0;
     if(!bufname)
         bufname = &s_;
     c->c_bufname = bufname;
     singlemode = singlemode > 0 ? 1 : 0; // single mode forces numchans = 1
     numchans = (numchans < 1 || singlemode) ? 1 : (numchans > buffer_MAXCHANS ? buffer_MAXCHANS : numchans);
-    if(!(vectors = (t_float **)getbytes(numchans* sizeof(*vectors))))
+    if(!(vectors = (t_word **)getbytes(numchans* sizeof(*vectors))))
 		return(0);
 	if(!(channames = (t_symbol **)getbytes(numchans * sizeof(*channames)))){
 		freebytes(vectors, numchans * sizeof(*vectors));
@@ -395,7 +395,7 @@ void *buffer_init(t_class *owner, t_symbol *bufname, int numchans, int singlemod
     c->c_single = singlemode;
     c->c_owner = owner;
     c->c_npts = 0;
-    c->c_vectors = (t_word**)vectors;
+    c->c_vectors = vectors;
     c->c_channames = channames;
     c->c_disabled = 0;
     c->c_playable = 0;
