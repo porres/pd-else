@@ -84,14 +84,16 @@ void pdlink_receive_loop(t_pdlink *x)
 
 void pdlink_free(t_pdlink *x)
 {
-    link_cleanup(x->x_link);
-    clock_free(x->x_clock);
+    if(x->x_link) link_cleanup(x->x_link);
+    if(x->x_clock) clock_free(x->x_clock);
 }
 
 void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_pdlink *x = (t_pdlink *)pd_new(pdlink_class);
     x->x_name = NULL;
+    x->x_link = NULL;
+    x->x_clock = NULL;
     x->x_local = 0;
     x->x_debug = 0;
     x->x_loopcount = 0;
@@ -118,6 +120,7 @@ void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
 
     x->x_link = link_init(x->x_name->s_name, x->x_local);
     x->x_clock = clock_new(x, (t_method)pdlink_receive_loop);
+
     x->x_outlet = outlet_new((t_object*)x, 0);
     clock_delay(x->x_clock, 0);
     return (void *)x;
