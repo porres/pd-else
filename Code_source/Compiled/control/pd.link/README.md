@@ -11,6 +11,11 @@ Messages passed into the inlet will be sent to any other \[pd.link] with the sam
 The outlet will output any messages sent to a \[pd.link] with the same name.
 Note that messages sent into the inlet will also go to its own outlet. These messages should have gone to your router and back, meaning they will have a similar amount of latency to messages received remotely. You can use this to keep values more closely synced in time.
 
+# Troubleshooting
+- If you have multiple network adapters, it is possible \[pd.link] will pick the wrong one. The only solution as of now is to disable unused network adapters.
+- Make sure your firewall (either on your PC or router) is not blocking local UDP connections
+  - If you suspect that this is the case, try creating a regular OSC connection. If that also doesn't work, a firewall is likely the problem
+
 # Credits
 - Made by Timothy Schoen
 - Documentation and maintainance by Alexandre Porres
