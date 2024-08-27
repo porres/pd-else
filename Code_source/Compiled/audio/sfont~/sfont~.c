@@ -1,6 +1,6 @@
-
-// Soundfont player based on FluidSynth (https://www.fluidsynth.org/)
-// Copyright by Porres, see https://github.com/porres/pd-sfont
+// [sfont~]: by Porres and Tim Schoen, a Soundfont player based on
+// FluidLite https://github.com/divideconcept/FluidLite, which is a
+// light version of FluidSynth (https://www.fluidsynth.org/)
 
 /*
 LICENSE:
@@ -73,6 +73,7 @@ static void sfont_float(t_sfont *x, t_float f);
 
 static void sfont_getversion(void){
     post("[sfont~] is using fluidlite 1.2.2");
+    post("\n");
 }
 
 static void sfont_verbose(t_sfont *x, t_floatarg f){
@@ -135,13 +136,13 @@ static void sfont_program_change(t_sfont *x, t_symbol *s, int ac, t_atom *av){
             int bank = fluid_preset_get_banknum(preset);
             if(preset == NULL){
                 if(x->x_verbosity)
-                    post("[sfont~]: couldn't load progam %d from bank %d", x->x_pgm, bank);
+                    post("[sfont~]: couldn't load progam %d from bank %d\n", x->x_pgm, bank);
             }
             else{
                 x->x_bank = bank;
                 const char* pname = fluid_preset_get_name(preset);
                 if(x->x_verbosity)
-                    post("[sfont~]: loaded \"%s\" (bank %d, pgm %d) in channel %d",
+                    post("[sfont~]: loaded \"%s\" (bank %d, pgm %d) in channel %d\n",
                         pname, x->x_bank, x->x_pgm, ch + 1);
                 t_atom at[1];
                 SETSYMBOL(&at[0], gensym(pname));
@@ -171,17 +172,17 @@ static void sfont_bank(t_sfont *x, t_symbol *s, int ac, t_atom *av){
             fluid_preset_t* preset = fluid_sfont_get_preset(x->x_sfont, x->x_bank, x->x_pgm);
             if(preset == NULL){
                 if(x->x_verbosity)
-                    post("[sfont~]: couldn't load progam %d from bank %d", x->x_pgm, x->x_bank);
+                    post("[sfont~]: couldn't load progam %d from bank %d\n", x->x_pgm, x->x_bank);
             }
             else{
                 fluid_synth_program_reset(x->x_synth);
                 const char* pname = fluid_preset_get_name(preset);
                 if(x->x_verbosity)
-                    post("[sfont~]: loaded \"%s\" (bank %d, pgm %d) in channel %d",
+                    post("[sfont~]: loaded \"%s\" (bank %d, pgm %d) in channel %d\n",
                          pname, x->x_bank, x->x_pgm, ch + 1);
                 t_atom at[1];
                 SETSYMBOL(&at[0], gensym(pname));
-                outlet_anything(x->x_info_out, gensym("pname"), 1, at);
+                outlet_anything(x->x_info_out, gensym("preset"), 1, at);
             }
         }
         else
@@ -472,16 +473,37 @@ static void sfont_info(t_sfont *x){
     }
     post("Loaded soundfont: %s", fluid_sfont_get_name(x->x_sfont));
     post("------------------- presets -------------------");
-    int i = 1;
     fluid_preset_t* preset = fluid_sfont_get_preset(x->x_sfont, 0, 0);
-    if(!preset) return;
+    if(!preset) 
+        return;
     fluid_sfont_iteration_start(x->x_sfont);
         while((fluid_sfont_iteration_next(x->x_sfont, preset))){
         int bank = preset->get_banknum(preset), pgm = preset->get_num(preset);
         const char* name = preset->get_name(preset);
-        post("%03d - bank (%d) pgm (%d) name (%s)", i++, bank, pgm, name);
+        post("bank (%02d) pgm (%03d) preset name (%s)", bank, pgm, name);
     }
     post("\n");
+}
+
+static void sfont_dump(t_sfont *x){
+    if(x->x_sfname == NULL){
+        post("[sfont~]: no soundfont loaded, nothing to dump");
+        return;
+    }
+    t_atom at[3];
+    SETSYMBOL(&at[0], gensym("name"));
+    SETSYMBOL(&at[1], gensym(fluid_sfont_get_name(x->x_sfont)));
+    outlet_list(x->x_info_out, &s_list, 2, at);
+    fluid_preset_t* preset = fluid_sfont_get_preset(x->x_sfont, 0, 0);
+    if(!preset) 
+        return;
+    fluid_sfont_iteration_start(x->x_sfont);
+        while((fluid_sfont_iteration_next(x->x_sfont, preset))){
+        SETFLOAT(&at[0], preset->get_banknum(preset));
+        SETFLOAT(&at[1], preset->get_num(preset));
+        SETSYMBOL(&at[2], gensym(preset->get_name(preset)));
+        outlet_list(x->x_info_out, &s_list, 3, at);
+    }
 }
 
 static void fluid_do_load(t_sfont *x, t_symbol *name){
@@ -689,6 +711,7 @@ void sfont_tilde_setup(void){
     class_addmethod(sfont_class, (t_method)sfont_getversion, gensym("version"), 0);
     class_addmethod(sfont_class, (t_method)sfont_verbose, gensym("verbose"), A_FLOAT, 0);
     class_addmethod(sfont_class, (t_method)sfont_info, gensym("info"), 0);
+    class_addmethod(sfont_class, (t_method)sfont_dump, gensym("dump"), 0);
     class_addmethod(sfont_class, (t_method)sfont_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     elsefile_setup();
 }
