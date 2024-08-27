@@ -80,6 +80,11 @@ jobs:
           cd ./Code_source/Compiled/audio/circuit~
           make PDINCLUDEDIR=${{github.workspace}}/pure-data/src extension=l_amd64
 
+      - name: Build pd.link
+        run: |
+          cd ./Code_source/Compiled/control/pd.link
+          make PDINCLUDEDIR=${{github.workspace}}/pure-data/src extension=l_amd64
+
       - name: Build play.file~
         run: |
           cd ./Code_source/Compiled/audio/play.file~
@@ -187,6 +192,12 @@ jobs:
           make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 circuit
 
       - if: runner.os == 'Windows'
+        name: Build pd.link
+        shell: msys2 {0}
+        run: |
+          make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 pd.link
+
+      - if: runner.os == 'Windows'
         name: Build play.file~
         shell: msys2 {0}
         run: |
@@ -242,6 +253,11 @@ jobs:
       - name: Build circuit~
         run: |
           cd ./Code_source/Compiled/audio/circuit~
+          make extension=d_amd64
+
+      - name: Build pd.link
+        run: |
+          cd ./Code_source/Compiled/control/pd.link
           make extension=d_amd64
 
       - name: Build play.file~
@@ -304,6 +320,11 @@ jobs:
       - name: Build circuit~
         run: |
           cd ./Code_source/Compiled/audio/circuit~
+          make extension=d_arm64
+
+      - name: Build pd.link
+        run: |
+          cd ./Code_source/Compiled/control/pd.link
           make extension=d_arm64
 
       - name: Build play.file~
