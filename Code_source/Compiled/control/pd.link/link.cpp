@@ -14,7 +14,6 @@
 #endif
 
 constexpr int kPort = 12021;
-constexpr uint64_t kApplicationId = 7680412;
 constexpr unsigned int kMulticastAddress = (224 << 24) + (0 << 16) + (0 << 8) + 123; // 224.0.0.123
 
 // t_link manages the process of finding connectable devices, and opening a 2-way UDP connection
@@ -29,7 +28,7 @@ public:
     bool socket_bound;
     std::string ip;
 
-    t_link(std::string identifier, std::string platform, bool local) : port(get_random_port()), server(port) {
+    t_link(std::string identifier, std::string platform, bool local, uint64_t application_id) : port(get_random_port()), server(port) {
         ip = local ? std::string("127.0.0.1") : get_ip();
 
         // Try to bind our server UDP socket
@@ -47,7 +46,7 @@ public:
         parameters.set_can_use_multicast(true);
         parameters.set_discover_self(true);
         parameters.set_port(kPort);
-        parameters.set_application_id(kApplicationId);
+        parameters.set_application_id(application_id);
 
         if (!peer.Start(parameters, identifier)) {
             std::cerr << "Failed to start peer!" << std::endl;
@@ -82,6 +81,7 @@ public:
             tries++;
         }
 
+        server.set_timeout(1); // Just to be sure, in case set_blocking fails
         server.set_blocking(false);
 
         return tries != 16;
@@ -187,11 +187,6 @@ public:
     // Receive messages sent to server into the passed in callback
     void receive(void* object, void(*callback)(void*, size_t, const char*))
     {
-        if(!socket_bound) {
-            socket_bound = try_bind();
-            return;
-        }
-
         std::string message;
         while(server.receive_data(message))
         {
@@ -224,20 +219,30 @@ public:
         }
     }
 
-    void ping()
+    void ping(void* object, void(*connection_lost_callback)(void*, int))
     {
         for(auto& [port_num, client] : clients)
         {
-            client->send_data(std::string("#PING#") + std::to_string(port_num));
+            client->send_data(std::string("#PING#") + std::to_string(port));
         }
 
+        auto current_time = get_current_time_ms();
         for(auto& [port_num, ping] : client_ping)
         {
-            if(ping - get_current_time_ms() > 3000)
+            if((current_time - ping) > 5000)
             {
-                clients.erase(port_num);
+                connection_lost_callback(object, port_num);
             }
         }
+
+        std::erase_if(client_ping, [current_time](const auto& item) {
+            auto const& [port_num, ping] = item;
+            return (current_time - ping) > 5000;
+        });
+        std::erase_if(clients, [this](const auto& item) {
+            auto const& [port_num, client] = item;
+            return !client_ping.count(port_num);
+        });
     }
 
     // Send data from client to connected server
@@ -319,9 +324,14 @@ public:
 };
 
 // C interface
-t_link_handle link_init(const char* identifier, const char* platform, int local) {
+t_link_handle link_init(const char* identifier, const char* platform, int local, uint64_t application_id) {
     try {
-        t_link* wrapper = new t_link(identifier, platform, local);
+        t_link* wrapper = new t_link(identifier, platform, local, application_id);
+        if(!wrapper->socket_bound)
+        {
+            delete wrapper;
+            return nullptr;
+        }
         return static_cast<t_link_handle>(wrapper);
     } catch (const std::exception&) {
         return nullptr;
@@ -375,7 +385,7 @@ int link_get_own_port(t_link_handle link_handle)
     return static_cast<t_link*>(link_handle)->port;
 }
 
-void link_ping(t_link_handle link_handle)
+void link_ping(t_link_handle link_handle, void* object, void(*connection_lost_callback)(void*, int))
 {
-    return static_cast<t_link*>(link_handle)->ping();
+    return static_cast<t_link*>(link_handle)->ping(object, connection_lost_callback);
 }

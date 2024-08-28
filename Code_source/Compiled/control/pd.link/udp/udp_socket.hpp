@@ -63,6 +63,18 @@ public:
         return;
     }
 
+     void set_timeout(int timeout_ms) {
+#ifdef _WIN32
+        setsockopt(m_socket, SOL_SOCKET, param, (const char*)&timeout_ms,
+                    sizeof(timeout_ms));
+#else
+        struct timeval timeout;
+        timeout.tv_sec = timeout_ms / 1000;
+        timeout.tv_usec = 1000 * (timeout_ms % 1000);
+        setsockopt(m_socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout));
+#endif
+     }
+
     void set_port(u_short port)
     {
         m_addr.sin_port = htons(port);

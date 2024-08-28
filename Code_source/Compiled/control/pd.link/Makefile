@@ -3,13 +3,15 @@ lib.name = pd.link
 
 common.sources =  ./udp/udp_discovery_peer.cpp \
                   ./udp/udp_discovery_protocol.cpp \
-                  ./link.cpp
+                  ./link.cpp \
+                  ./../../../shared/magic.c
+
 
 # input source file (class name == source file basename)
-class.sources = pd.link.c
+class.sources = pd.link.c pd.link~.c
 
-cflags = -I$(shell pwd)
-CXX += --std=c++17
+cflags = -I$(shell pwd) -I../../../shared
+CXX += --std=c++20
 
 # all extra files to be included in binary distribution of the library
 define forDarwin

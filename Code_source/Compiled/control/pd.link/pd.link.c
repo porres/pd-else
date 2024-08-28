@@ -21,7 +21,6 @@ typedef struct _pdlink {
     t_link_handle x_link;
     t_clock* x_clock;
     t_outlet* x_outlet;
-    int* x_last_connections;
 } t_pdlink;
 
 // Send any messages that arrive at inlet
@@ -46,7 +45,8 @@ void pdlink_anything(t_pdlink *x, t_symbol *s, int argc, t_atom *argv) {
 }
 
 // Receive callback for messages
-void pdlink_receive(void *x, size_t len, const char* message) {
+void pdlink_receive(void *ptr, size_t len, const char* message) {
+     t_pdlink *x = (t_pdlink *)ptr;
     // Convert text to atoms using binbuf
     t_binbuf *binbuf = binbuf_new();
     binbuf_text(binbuf, message, len);
@@ -54,47 +54,28 @@ void pdlink_receive(void *x, size_t len, const char* message) {
     t_atom* argv = binbuf_getvec(binbuf);
 
     // Call the outlet with the deserialized data
-    outlet_anything(((t_pdlink*)x)->x_outlet, atom_getsymbol(&argv[0]), argc - 1, &argv[1]);
+    outlet_anything(x->x_outlet, atom_getsymbol(&argv[0]), argc - 1, &argv[1]);
     binbuf_free(binbuf);
+}
+
+void pdlink_connection_lost(void*x, int port)
+{
+    if(((t_pdlink*)x)->x_debug)
+    {
+         post("[pd.link]: connection lost: %i", port);
+    }
 }
 
 // Discovery and message retrieval loop
 void pdlink_receive_loop(t_pdlink *x)
 {
+    clock_delay(x->x_clock, 5);
+
     // Occasionally check for new devices
     if((x->x_loopcount & 127) == 0) {
         link_discover(x->x_link);
+
         int num_peers = link_get_num_peers(x->x_link);
-
-        link_ping(x->x_link);
-
-        if(x->x_debug)
-        {
-            int new_last_connections[128] = {0};
-            int new_size = 0;
-            for(int i = 0; i < 128; i++) {
-                int last_connection = x->x_last_connections[i];
-                if(last_connection == 0) break;
-                int found = 0;
-                for(int j = 0; j < num_peers; j++)
-                {
-                    t_link_discovery_data data = link_get_discovered_peer_data(x->x_link, j);
-                    if(data.port == last_connection)
-                    {
-                        found = 1;
-                    }
-                }
-                if(!found)
-                {
-                    post("[pd.link]: connection lost: %i", last_connection);
-                }
-                else {
-                    new_last_connections[new_size++] = last_connection;
-                }
-            }
-            memcpy(x->x_last_connections, new_last_connections, 128 * sizeof(int));
-        }
-
         for(int i = 0; i < num_peers; i++)
         {
             t_link_discovery_data data = link_get_discovered_peer_data(x->x_link, i);
@@ -106,8 +87,7 @@ void pdlink_receive_loop(t_pdlink *x)
                 int created = link_connect(x->x_link, data.port, data.ip);
                 if(created && x->x_debug)
                 {
-                   x->x_last_connections[i] = data.port;
-                   post("[pd.link]: connected to:\n%s\n%s : %i\n%s\n%s", data.hostname, data.ip, data.port, data.platform, data.sndrcv);
+                   post("[pd.link]: connected to:\n%s\n%s:%i\n%s", data.hostname, data.ip, data.port, data.platform);
                 }
             }
             if(data.hostname) free(data.hostname);
@@ -115,10 +95,12 @@ void pdlink_receive_loop(t_pdlink *x)
             if(data.platform) free(data.platform);
             if(data.ip) free(data.ip);
         }
+
+        // Send ping to connected servers, and remove connections that we have not received a ping from in the last 1.5 seconds
+        link_ping(x->x_link, x, pdlink_connection_lost);
     }
     // Receive messages if we're connected
-    if(link_isconnected(x->x_link)) link_receive(x->x_link, x, pdlink_receive);
-    clock_delay(x->x_clock, 5);
+    link_receive(x->x_link, x, pdlink_receive);
     x->x_loopcount++;
 }
 
@@ -180,22 +162,26 @@ void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
     #endif
 
 #if PLUGDATA
-    snprintf(pd_platform, MAXPDSTRING, "plugdata %s\n%s", PD_PLUGDATA_VERSION, os);
+    snprintf(pd_platform, MAXPDSTRING, "plugdata %s - %s", PD_PLUGDATA_VERSION, os);
 #else
     int major = 0, minor = 0, bugfix = 0;
     sys_getversion(&major, &minor, &bugfix);
-    snprintf(pd_platform, MAXPDSTRING, "pure-data %i.%i-%i\n%s", major, minor, bugfix, os);
+    snprintf(pd_platform, MAXPDSTRING, "pure-data %i.%i-%i - %s", major, minor, bugfix, os);
 #endif
     // Initialise link and loop clock
-    x->x_link = link_init(x->x_name->s_name, pd_platform, x->x_local);
+    x->x_link = link_init(x->x_name->s_name, pd_platform, x->x_local, 7680412);
+    if(!x->x_link)
+    {
+        pd_error(x, "[pd.link]: failed to bind server socket");
+        pd_free((t_pd*)x);
+    }
     x->x_clock = clock_new(x, (t_method)pdlink_receive_loop);
     x->x_outlet = outlet_new((t_object*)x, 0);
     clock_delay(x->x_clock, 0);
 
     if(x->x_debug)
     {
-        x->x_last_connections = calloc(128, sizeof(int));
-        post("[pd.link]: current IP:\n%s : %i", link_get_own_ip(x->x_link), link_get_own_port(x->x_link));
+        post("[pd.link]: own IP:\n%s:%i", link_get_own_ip(x->x_link), link_get_own_port(x->x_link));
     }
     return (void *)x;
 }
