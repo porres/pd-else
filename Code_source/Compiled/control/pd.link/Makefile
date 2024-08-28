@@ -11,7 +11,7 @@ common.sources =  ./udp/udp_discovery_peer.cpp \
 class.sources = pd.link.c pd.link~.c
 
 cflags = -I$(shell pwd) -I../../../shared
-CXX += --std=c++20
+CXX += --std=c++17
 
 # all extra files to be included in binary distribution of the library
 define forDarwin
