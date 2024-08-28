@@ -4,7 +4,7 @@
 Albert Gräf \<<aggraef@gmail.com>\>  
 Computer Music Dept., Institute of Art History and Musicology  
 Johannes Gutenberg University (JGU) Mainz, Germany  
-February 2023
+July 2024
 
 This document is licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Other formats: [Markdown](https://github.com/agraef/pd-lua/blob/master/tutorial/pd-lua-intro.md) source, [PDF](https://github.com/agraef/pd-lua/blob/master/pdlua/tutorial/pd-lua-intro.pdf)  
 Permanent link: <https://agraef.github.io/pd-lua/tutorial/pd-lua-intro.html>
@@ -15,7 +15,7 @@ Pd's facilities for data structures, iteration, and recursion are somewhat limit
 
 Enter Pd-Lua, the Pd programmer's secret weapon, which lets you develop your externals in the [Lua](https://www.lua.org/) scripting language. Pd-Lua was originally written by Claude Heiland-Allen and has since been maintained by a number of other people in the Pd community. Lua, from [PUC Rio](http://www.puc-rio.br/), is open-source (under the MIT license), mature, very popular, and supported by a large developer community. It is a small programming language, but very capable, and is generally considered to be relatively easy to learn. For programming Pd externals, you'll also need to learn a few bits and pieces which let you interface your Lua functions to Pd, as explained in this tutorial, but programming externals in Lua is still quite easy and a lot of fun.
 
-Using Pd-Lua, you can program your own externals ranging from little helper objects to full-blown sequencers and algorithmic composition tools. Pd-Lua only allows you to program control objects at this time (for doing dsp, you might consider using [Faust](https://faust.grame.fr/) instead), but it gives you access to Pd arrays and tables, as well as a number of other useful facilities such as clocks and receivers, which we'll explain in some detail. Pd-Lua also ships with a large collection of instructive examples which you'll find helpful when exploring its possibilities.
+Using Pd-Lua, you can program your own externals ranging from little helper objects to full-blown sequencers and algorithmic composition tools. Pd-Lua is primarily aimed at control objects at this time (for doing dsp, you might consider using [Faust](https://faust.grame.fr/) instead), but thanks to contributions by Timothy Schoen, the most recent version also provides some support for signal processing and even graphics. It also gives you access to Pd arrays and tables, as well as a number of other useful facilities such as clocks and receivers, which we'll explain in some detail. Pd-Lua also ships with a large collection of instructive examples which you'll find helpful when exploring its possibilities.
 
 Note that we can't possibly cover Pd or the Lua language themselves here, so you'll have to refer to other online resources to learn about those. In particular, check out the Lua website, which has extensive [documentation](https://www.lua.org/docs.html) available, and maybe have a look at Derek Banas' [video tutorial](https://www.youtube.com/watch?v=iMacxZQMPXs) for a quick overview of Lua. For Pd, we recommend the Pd FLOSS Manual at https://flossmanuals.net/ to get started.
 
@@ -23,7 +23,7 @@ Note that we can't possibly cover Pd or the Lua language themselves here, so you
 
 Pd-Lua works inside any reasonably modern Pd flavor. This encompasses vanilla [Pd](http://msp.ucsd.edu/software.html), of course, but also [Purr Data](https://agraef.github.io/purr-data/) which includes an up-to-date version of Pd-Lua for Lua 5.4 and has it enabled by default, so you should be ready to go immediately; no need to install anything else. The same is true for [plugdata](https://plugdata.org/) (version 0.6.3 or later), a Pd flavor which can also run as a plug-in inside a DAW.
 
-With vanilla Pd, you can install the pdlua package from Deken (not recommended, because at the time of this writing that's a really old version based on Lua 5.1). The official [Debian](https://salsa.debian.org/multimedia-team/pd/pd-lua) package, maintained by IOhannes Zmölnig, is based on Lua 5.2. If you want to use a reasonably up-to-date Lua version, your best bet is to get Pd-Lua from the author's [Github repository](https://github.com/agraef/pd-lua), which has been updated to work with Lua 5.3 and later. Compilation instructions are in the README, and you'll also find some Mac and Windows binaries there. In either case, after installing Pd-Lua you also have to add `pdlua` to Pd's startup libraries.
+With vanilla Pd, you can install the pdlua package from Deken. There's also an official [Debian](https://salsa.debian.org/multimedia-team/pd/pd-lua) package, maintained by IOhannes Zmölnig. You can also compile Pd-Lua from source, using the author's [Github repository](https://github.com/agraef/pd-lua). Compilation instructions are in the README, and you'll also find some Mac and Windows binaries there. In either case, after installing Pd-Lua you also have to add `pdlua` to Pd's startup libraries.
 
 If all is well, you should see a message like the following in the Pd console (note that for vanilla Pd you'll have to switch the log level to 2 or more to see that message):
 
@@ -33,9 +33,9 @@ pdlua: compiled for pd-0.53 on Jan 16 2023 23:36:09
 Using lua version 5.4
 ~~~
 
-This will also tell you the Lua version that Pd-Lua is using, so that you can install a matching version of the stand-alone Lua interpreter if needed. Lua should be readily available from your package repositories on Linux, and for Mac and Windows you can find binaries on the Lua website. In the following we generally assume that you're using Lua 5.3 or later.
+This will also tell you the Lua version that Pd-Lua is using, so that you can install a matching version of the stand-alone Lua interpreter if needed. Lua should be readily available from your package repositories on Linux, and for Mac and Windows you can find binaries on the Lua website. In the following we generally assume that you're using Lua 5.3 or later (using Lua versions older than 5.3 is not recommended).
 
-If all is not well and you do *not* see that message, then most likely Pd-Lua refused to load because the Lua library is missing. This shouldn't happen if you installed Pd-Lua from a binary package, but if it does then you'll have to manually install the right version of the Lua library to make Pd-Lua work (5.1 for the Deken package, 5.2 for the Debian package, and usually 5.4 otherwise). Make sure that you install the package with the Lua *library* in it; on Debian, Ubuntu and their derivatives this will be something like liblua5.4-0.
+If all is not well and you do *not* see that message, then most likely Pd-Lua refused to load because the Lua library is missing. This shouldn't happen if you installed Pd-Lua from a binary package, but if it does then you may have to manually install the right version of the Lua library to make Pd-Lua work. Make sure that you install the package with the Lua *library* in it; on Debian, Ubuntu and their derivatives this will be something like liblua5.4-0.
 
 ## A basic example
 
@@ -503,7 +503,7 @@ And here you can see the object running in a little test patch which outputs the
 
 Pd's arrays provide an efficient means to store possibly large vectors of float values. These are often used for sample data (waveforms) of a given size (the number of samples), but can also be employed to store copious amounts of numerical control data. Arrays are usually associated with a graphical display (called a *graph*), and Pd's table object lets you create an array along with a graph as a special kind of subpatch.
 
-While Pd-Lua cannot currently process audio data in real-time, it does provide a `Table` class to represent array and table data, and a few functions to query and manipulate that data. This comes in handy, e.g., if you want to fill an array with a computed waveform. While Pd has its own corresponding facilities, complicated waveforms are often much easier to create in Lua, which offers a fairly complete set of basic mathematical functions in its standard library, and a whole lot more through 3rd party libraries such as [Numeric Lua](http://numlua.luaforge.net/).
+Pd-Lua provides a `Table` class to represent array and table data, and a few functions to query and manipulate that data. This comes in handy, e.g., if you want to fill an array with a computed waveform. While Pd has its own corresponding facilities, complicated waveforms are often much easier to create in Lua, which offers a fairly complete set of basic mathematical functions in its standard library, and a whole lot more through 3rd party libraries such as [Numeric Lua](https://github.com/carvalho/numlua).
 
 Here are the array/table functions provided by Pd-Lua. Note that like in Pd arrays, indices are zero-based and thus range from `0` to `tab:length()-1`.
 
@@ -994,4 +994,6 @@ Congratulations! If you made it this far, you should have learned more than enou
 
 The examples accompanying this tutorial (including the pdx.lua, pdlua-remote.el and pdlua-remote.pd files mentioned at the end of the previous section) are also available for your perusal in the examples subdirectory of the folder where you found this document.
 
-Kudos to Claude Heiland-Allen for creating such an amazing tool, it makes programming Pd externals really easy and fun. Thanks are also due to Roberto Ierusalimschy for Lua, which for me is one of the best-designed, easiest to learn, and most capable multi-paradigm scripting languages there are today, while also being fast, simple, and light-weight.
+But wait, there's more! As briefly mentioned in the introduction, the most recent Pd-Lua version also provides new facilities for audio signal processing and graphics. As these features are still fairly new, they are not yet covered in this tutorial. But you can find corresponding examples under pdlua/examples in the source or in the help browser. Specifically, check the sig-example folder for a simple example illustrating the use of signal inlets and outlets, and gui-example as well as osci3d for some GUI and graphics examples.
+
+Finally, I'd like to thank Claude Heiland-Allen for creating such an amazing tool, it makes programming Pd externals really easy and fun. Kudos also to Roberto Ierusalimschy for Lua, which for me is one of the best-designed, easiest to learn, and most capable multi-paradigm scripting languages there are today, while also being fast, simple, and light-weight.

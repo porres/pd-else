@@ -401,6 +401,8 @@ endef
 #########################################################################
 # extra files
 
+extradirs = Documentation/extra_files/sf
+
 extrafiles = \
 $(wildcard Code_source/Abstractions/control/*.pd) \
 $(wildcard Code_source/Abstractions/audio/*.pd) \
