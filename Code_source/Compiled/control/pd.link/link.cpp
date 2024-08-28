@@ -4,6 +4,8 @@
 #include <cstring>
 #include <iostream>
 #include <unordered_map>
+#include <thread>
+#include <chrono>
 #include <unistd.h>
 #include <sys/types.h>
 #ifdef _WIN32
@@ -235,14 +237,24 @@ public:
             }
         }
 
-        std::erase_if(client_ping, [current_time](const auto& item) {
-            auto const& [port_num, ping] = item;
-            return (current_time - ping) > 5000;
-        });
-        std::erase_if(clients, [this](const auto& item) {
-            auto const& [port_num, client] = item;
-            return !client_ping.count(port_num);
-        });
+        // C++17 equivalent for std::erase_if
+        // TODO: use std::erase_if once C++20 is ready on all platforms
+        for (auto it = client_ping.begin(); it != client_ping.end();) {
+            auto const& [port_num, ping] = *it;
+            if ((current_time - ping) > 5000) {
+                it = client_ping.erase(it);
+            } else {
+                ++it;
+            }
+        }
+        for (auto it = clients.begin(); it != clients.end();) {
+            auto const& [port_num, client] = *it;
+            if (!client_ping.count(port_num)) {
+                it = clients.erase(it);
+            } else {
+                ++it;
+            }
+        }
     }
 
     // Send data from client to connected server
