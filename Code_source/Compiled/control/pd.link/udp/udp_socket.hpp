@@ -65,7 +65,7 @@ public:
 
      void set_timeout(int timeout_ms) {
 #ifdef _WIN32
-        setsockopt(m_socket, SOL_SOCKET, param, (const char*)&timeout_ms,
+        setsockopt(m_socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout_ms,
                     sizeof(timeout_ms));
 #else
         struct timeval timeout;
