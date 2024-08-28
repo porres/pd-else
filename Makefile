@@ -485,6 +485,13 @@ circuit:
 circuit-clean:
 	$(MAKE) -C Code_source/Compiled/audio/circuit~ clean
 
+pd.link:
+	$(MAKE) -C Code_source/Compiled/control/pd.link install extension=$(extension) installpath="$(abspath $(PDLIBDIR))/else"
+
+pd.link-clean:
+	$(MAKE) -C Code_source/Compiled/control/pd.link clean
+
+
 install: installplus
 
 installplus:

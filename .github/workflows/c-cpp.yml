@@ -80,6 +80,11 @@ jobs:
           cd ./Code_source/Compiled/audio/circuit~
           make PDINCLUDEDIR=${{github.workspace}}/pure-data/src extension=l_amd64
 
+      - name: Build pd.link
+        run: |
+          cd ./Code_source/Compiled/control/pd.link
+          make PDINCLUDEDIR=${{github.workspace}}/pure-data/src extension=l_amd64
+
       - name: Build play.file~
         run: |
           cd ./Code_source/Compiled/audio/play.file~
@@ -97,6 +102,7 @@ jobs:
           cp -r ./Code_source/Abstractions/audio/* ./else-Linux
           cp -r ./Code_source/Abstractions/extra_abs/* ./else-Linux
           cp -r ./Documentation/Live-Electronics-Tutorial ./else-Linux
+          cp -r ./Code_source/Compiled/control/pd.link/*.l_amd64 ./else-Linux
           cp -r ./Code_source/Compiled/audio/plaits~/*.l_amd64 ./else-Linux
           cp -r ./Code_source/Compiled/audio/circuit~/*.l_amd64 ./else-Linux
           cp -r ./Code_source/Compiled/audio/play.file~/*.l_amd64 ./else-Linux
@@ -156,6 +162,12 @@ jobs:
         shell: msys2 {0}
         run: |
           make PDDIR=./pd extension=m_amd64 install
+
+      - if: runner.os == 'Windows'
+        name: Build pd.link
+        shell: msys2 {0}
+        run: |
+          make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 pd.link
 
       - if: runner.os == 'Windows'
         name: Build sfont~
@@ -244,6 +256,11 @@ jobs:
           cd ./Code_source/Compiled/audio/circuit~
           make extension=d_amd64
 
+      - name: Build pd.link
+        run: |
+          cd ./Code_source/Compiled/control/pd.link
+          make extension=d_amd64
+
       - name: Build play.file~
         run: |
           cd ./Code_source/Compiled/audio/play.file~
@@ -257,6 +274,7 @@ jobs:
         run: |
           mkdir else-MacOS
           cp *.d_amd64 ./else-MacOS
+          cp ./Code_source/Compiled/control/pd.link/*.d_amd64 ./else-MacOS
           cp ./Code_source/Compiled/audio/plaits~/*.d_amd64 ./else-MacOS
           cp ./Code_source/Compiled/audio/circuit~/*.d_amd64 ./else-MacOS
           cp ./Code_source/Compiled/audio/play.file~/*.d_amd64 ./else-MacOS
@@ -306,6 +324,11 @@ jobs:
           cd ./Code_source/Compiled/audio/circuit~
           make extension=d_arm64
 
+      - name: Build pd.link
+        run: |
+          cd ./Code_source/Compiled/control/pd.link
+          make extension=d_arm64
+
       - name: Build play.file~
         run: |
           cd ./Code_source/Compiled/audio/play.file~
@@ -319,6 +342,7 @@ jobs:
         run: |
           mkdir else-MacOS
           cp *.d_arm64 ./else-MacOS
+          cp ./Code_source/Compiled/control/pd.link/*.d_arm64 ./else-MacOS
           cp ./Code_source/Compiled/audio/plaits~/*.d_arm64 ./else-MacOS
           cp ./Code_source/Compiled/audio/circuit~/*.d_arm64 ./else-MacOS
           cp ./Code_source/Compiled/audio/play.file~/*.d_arm64 ./else-MacOS
