@@ -6,7 +6,6 @@
 #include <unordered_map>
 #include <thread>
 #include <chrono>
-#include <unistd.h>
 #include <sys/types.h>
 #ifdef _WIN32
 #include <vector>
