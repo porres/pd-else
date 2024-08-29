@@ -25,6 +25,8 @@ typedef struct _pdlink {
 
 // Send any messages that arrive at inlet
 void pdlink_anything(t_pdlink *x, t_symbol *s, int argc, t_atom *argv) {
+    if(x->x_name == gensym("")) return;
+    
     // Format symbol and atoms into binbuf
     t_atom symbol;
     SETSYMBOL(&symbol, s);
@@ -47,6 +49,7 @@ void pdlink_anything(t_pdlink *x, t_symbol *s, int argc, t_atom *argv) {
 // Receive callback for messages
 void pdlink_receive(void *ptr, size_t len, const char* message) {
      t_pdlink *x = (t_pdlink *)ptr;
+    
     // Convert text to atoms using binbuf
     t_binbuf *binbuf = binbuf_new();
     binbuf_text(binbuf, message, len);
@@ -114,7 +117,7 @@ void pdlink_free(t_pdlink *x)
 void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_pdlink *x = (t_pdlink *)pd_new(pdlink_class);
-    x->x_name = NULL;
+    x->x_name = gensym("");
     x->x_link = NULL;
     x->x_clock = NULL;
     x->x_local = 0;
@@ -134,12 +137,8 @@ void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
             }
         }
     }
-    if (x->x_name == NULL) {
-        pd_error(NULL, "[pdlink]: No name argument specified");
-        pd_free((t_pd*)x);
-        return NULL;
-    }
-
+    int is_valid = x->x_name != gensym("");
+    
     // Get pd platform identifier (only what's known at compile time, so any external will report pure-data)
     char pd_platform[MAXPDSTRING];
     char os[16];
@@ -175,9 +174,11 @@ void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
         pd_error(x, "[pd.link]: failed to bind server socket");
         pd_free((t_pd*)x);
     }
-    x->x_clock = clock_new(x, (t_method)pdlink_receive_loop);
+    if(is_valid) {
+        x->x_clock = clock_new(x, (t_method)pdlink_receive_loop);
+        clock_delay(x->x_clock, 0);
+    }
     x->x_outlet = outlet_new((t_object*)x, 0);
-    clock_delay(x->x_clock, 0);
 
     if(x->x_debug)
     {

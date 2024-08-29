@@ -161,6 +161,8 @@ static t_int *pdlink_tilde_perform(t_int *w){
 }
 
 void pdlink_tilde_dsp(t_pdlink_tilde *x, t_signal **sp) {
+    if(x->x_name == gensym("")) return;
+
     int samplerate = sys_getsr();
     if(x->x_compress && x->x_last_sr != samplerate) {
         x->x_audio_encoder = udp_audio_encoder_init(samplerate);
@@ -225,7 +227,7 @@ void pdlink_tilde_free(t_pdlink_tilde *x)
 void *pdlink_tilde_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_pdlink_tilde *x = (t_pdlink_tilde *)pd_new(pdlink_tilde_class);
-    x->x_name = NULL;
+    x->x_name = gensym("");
     x->x_link = NULL;
     x->x_clock = NULL;
     x->x_local = 0;
@@ -253,12 +255,8 @@ void *pdlink_tilde_new(t_symbol *s, int argc, t_atom *argv)
             }
         }
     }
-
-    if (x->x_name == NULL) {
-        pd_error(NULL, "[pd.link~]: No name argument specified");
-        pd_free((t_pd*)x);
-        return NULL;
-    }
+    
+    int is_valid = x->x_name != gensym("");
 
     for(int i = 0; i < MAX_SEND; i++)
     {
@@ -306,9 +304,11 @@ void *pdlink_tilde_new(t_symbol *s, int argc, t_atom *argv)
         pd_free((t_pd*)x);
         return NULL;
     }
-    x->x_clock = clock_new(x, (t_method)pdlink_tilde_discover_loop);
+    if(is_valid) {
+        x->x_clock = clock_new(x, (t_method)pdlink_tilde_discover_loop);
+        clock_delay(x->x_clock, 0);
+    }
     x->x_outlet = outlet_new((t_object*)x, &s_signal);
-    clock_delay(x->x_clock, 0);
 
     if(x->x_delay < 64)
     {
