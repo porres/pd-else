@@ -120,6 +120,8 @@ public:
     {
         for (PIP_ADAPTER_ADDRESSES adapter = adapterAddresses; adapter != nullptr; adapter = adapter->Next)
         {
+            if (adapter->OperStatus != IfOperStatusUp) continue;
+
             for (PIP_ADAPTER_UNICAST_ADDRESS unicast = adapter->FirstUnicastAddress; unicast != nullptr; unicast = unicast->Next)
             {
                 if (unicast->Address.lpSockaddr->sa_family == AF_INET)
