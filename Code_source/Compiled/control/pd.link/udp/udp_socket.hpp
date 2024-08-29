@@ -1,6 +1,7 @@
 #include <wchar.h>
 #include <iostream>
 #include <array>
+#undef min
 #include <algorithm>
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
