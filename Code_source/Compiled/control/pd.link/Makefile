@@ -40,12 +40,13 @@ opus_sources =    ./opus/src/analysis.c \
 
 common.sources =  ./udp/udp_discovery_peer.cpp \
                   ./udp/udp_discovery_protocol.cpp \
-                  ./link.cpp \
-                  ./../../../shared/magic.c \
-                  $(opus_sources)
+                  ./link.cpp
+
 
 # input source file (class name == source file basename)
 class.sources = pd.link.c pd.link~.c
+
+pd.link~.class.sources += $(opus_sources) ./../../../shared/magic.c
 
 cflags = $(opus_flags) -I$(shell pwd) -I../../../shared
 CXX += --std=c++17
