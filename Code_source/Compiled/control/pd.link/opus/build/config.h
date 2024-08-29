@@ -1,0 +1,1 @@
+/* #undef PACKAGE_VERSION */
