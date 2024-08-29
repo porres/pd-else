@@ -8,7 +8,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-#include <unistd.h>
 
 static t_class *pdlink_class;
 
@@ -118,7 +117,7 @@ static void pdlink_free(t_pdlink *x)
 static void pdlink_set(t_pdlink *x, t_symbol *s)
 {
     x->x_name = s;
-    
+
     // Get pd platform identifier (only what's known at compile time, so any external will report pure-data)
     char pd_platform[MAXPDSTRING];
     char os[16];
@@ -147,7 +146,7 @@ static void pdlink_set(t_pdlink *x, t_symbol *s)
     sys_getversion(&major, &minor, &bugfix);
     snprintf(pd_platform, MAXPDSTRING, "pure-data %i.%i-%i - %s", major, minor, bugfix, os);
 #endif
-    
+
     if(x->x_link) link_free(x->x_link);
     x->x_link = link_init(x->x_name->s_name, pd_platform, x->x_local, 7680412);
     if(!x->x_link)
@@ -192,7 +191,7 @@ static void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
         x->x_clock = clock_new(x, (t_method)pdlink_receive_loop);
         clock_delay(x->x_clock, 0);
     }
-    
+
     x->x_set_inlet = inlet_new((t_object*)x, (t_pd*)x, &s_symbol, gensym("__set"));
     x->x_outlet = outlet_new((t_object*)x, 0);
 
