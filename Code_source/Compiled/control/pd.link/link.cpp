@@ -49,6 +49,8 @@ public:
         parameters.set_discover_self(true);
         parameters.set_port(kPort);
         parameters.set_application_id(application_id);
+        parameters.set_send_timeout_ms(2500);
+        parameters.set_discovered_peer_ttl_ms(5000);
 
         if (!peer.Start(parameters, identifier)) {
             std::cerr << "Failed to start peer!" << std::endl;
