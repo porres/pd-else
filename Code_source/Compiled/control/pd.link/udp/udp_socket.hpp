@@ -4,6 +4,9 @@
 #undef min
 #include <algorithm>
 #ifdef _WIN32
+#ifdef _MSC_VER
+#pragma comment(lib, "iphlpapi.lib")
+#endif
 #define WIN32_LEAN_AND_MEAN
 #undef TEXT
 #include <winsock2.h>
