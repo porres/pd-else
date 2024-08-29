@@ -317,11 +317,11 @@ void *pdlink_tilde_new(t_symbol *s, int argc, t_atom *argv)
         post("bufsize set to 64 samples");
         x->x_delay = 64;
     }
-    if(x->x_delay > 8192)
+    if(x->x_delay > 8191)
     {
-        post("[pd.link~]: bufsize cannot be larger than 8192");
-        post("bufsize set to 8192 samples");
-        x->x_delay = 8192;
+        post("[pd.link~]: bufsize cannot be larger than 8191");
+        post("bufsize set to 8191 samples");
+        x->x_delay = 8191;
     }
     if(x->x_debug)
     {
