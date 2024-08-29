@@ -1,3 +1,7 @@
+/**
+ * include the interface to Pd
+ */
+
 #include "m_pd.h"
 #include "magic.h"
 #include "else_alloca.h"
@@ -23,7 +27,7 @@ typedef struct _pdlink_tilde {
     t_link_handle x_link;
     t_clock* x_clock;
     t_outlet* x_outlet;
-    t_float x_signal_buffer[MAX_SEND][16384]; // 1mb of buffers, oh well
+    t_float x_signal_buffer[MAX_SEND][16384]; // 1mb of buffer, oh well
     t_int x_buf_write_pos[MAX_SEND];
     t_int x_buf_read_pos[MAX_SEND];
     t_int x_buf_num_ready[MAX_SEND];
@@ -43,7 +47,6 @@ int pdlink_tilde_get_signal_idx(t_pdlink_tilde *x, int port) {
              return i;
          }
     }
-
     for(int i = 0; i < MAX_SEND; i++)
     {
         if(x->x_receiver_ports[i] == 0)
@@ -52,19 +55,14 @@ int pdlink_tilde_get_signal_idx(t_pdlink_tilde *x, int port) {
             return i;
         }
     }
-
     return 0;
 }
 
-static void pdlink_send_signal_message(t_link_handle link, uint16_t compressed, uint16_t blocksize, size_t size, const char* data)
+static void pdlink_send_signal_message(t_link_handle link, uint16_t compressed, uint16_t blocksize, size_t bufsize, const char* buffer)
 {
-    char* message_buf = ALLOCA(char, size + 16);
-    memset(message_buf, 0, size + 16);
-
-    pdlink_signal_header(message_buf, , 1, (uint16_t)sys_getsr(), 120);
-    memcpy(message_buf + 16, data, size);
-    link_send((t_link_handle)link, size + 16, message_buf);
-    FREEA(message_buf, char, size + 16);
+    size_t size = bufsize + 16;
+    char* message_buf = ALLOCA(char, size);
+    memset(message_buf, 0, size);
 
     uint16_t port = (uint16_t)link_get_own_port(link);
     uint32_t samplerate = (uint32_t)sys_getsr();
@@ -77,21 +75,21 @@ static void pdlink_send_signal_message(t_link_handle link, uint16_t compressed, 
     // leave space for future additions...
 
     // Copy signal data
-    memcpy(message_buf + 16, in1, nblock * sizeof(t_float));
+    memcpy(message_buf + 16, buffer, bufsize);
 
     // Send message
-    link_send(link, bufsize, message_buf);
-    FREEA(message_buf);
+    link_send(link, size, message_buf);
+    FREEA(message_buf, char, size);
 }
 
 void pdlink_tilde_receive(void *ptr, size_t len, const char* message) {
     t_pdlink_tilde *x = (t_pdlink_tilde *)ptr;
     const t_float* samples = (const t_float*)(message + 16);
 
-    uint16_t port = *((uint16_t*)ptr)
-    uint16_t compressed = *((uint16_t*)ptr+2)
-    //uint16_t samplerate = *((uint16_t*)ptr+4)
-    //uint16_t blocksize = *((uint16_t*)ptr+6)
+    uint16_t port = pdlink_tilde_get_signal_idx(x, *((uint16_t*)message));
+    uint16_t compressed = *((uint16_t*)(message+2));
+    //uint32_t samplerate = *((uint32_t*)(message+4))
+    //uint16_t blocksize = *((uint16_t*)(message+8))
 
     if(port < 0 || port > MAX_SEND) return;
     x->x_used_receiver_ports[port] = 1;
@@ -111,7 +109,7 @@ void pdlink_tilde_receive(void *ptr, size_t len, const char* message) {
         }
     }
     else {
-        int num_float = (len - 32) / 4;
+        int num_float = (len - 16) / 4;
         for(int i = 0; i < num_float; i++)
         {
             x->x_signal_buffer[port][x->x_buf_write_pos[port]] = samples[i];
@@ -141,7 +139,7 @@ static t_int *pdlink_tilde_perform(t_int *w){
             udp_audio_encoder_encode(x->x_audio_encoder, in1, nblock, x->x_link, pdlink_send_compressed);
         }
         else {
-            pdlink_send_signal_message(x->x_link, 0, nblock, in1, nblock * sizeof(t_float));
+            pdlink_send_signal_message(x->x_link, 0, nblock, nblock * sizeof(t_float), in1);
         }
     }
 
@@ -332,8 +330,8 @@ void *pdlink_tilde_new(t_symbol *s, int argc, t_atom *argv)
     }
     if(x->x_delay > 8192)
     {
-        post("[pd.link~]: bufsize cannot be larger than 8192");
-        post("bufsize set to 8192 samples");
+        post("[pd.link~]: bufsize cannot be larger than 8191");
+        post("bufsize set to 8191 samples");
         x->x_delay = 8192;
     }
     if(x->x_debug)
