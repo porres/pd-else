@@ -209,7 +209,7 @@ public:
         {
             try
             {
-                int port_num = std::stoi(port_num_str); // Convert the port number string to an integer
+                const int port_num = std::stoi(port_num_str); // Convert the port number string to an integer
                 client_ping[port_num] = get_current_time_ms();
             }
             catch (const std::invalid_argument&)
@@ -223,13 +223,13 @@ public:
 
     void ping(void* object, void(*connection_lost_callback)(void*, int))
     {
-        for(auto& [port_num, client] : clients)
+        for(const auto& [port_num, client] : clients)
         {
             client->send_data(std::string("#PING#") + std::to_string(port));
         }
 
         auto current_time = get_current_time_ms();
-        for(auto& [port_num, ping] : client_ping)
+        for(const auto& [port_num, ping] : client_ping)
         {
             if((current_time - ping) > 5000)
             {
@@ -279,7 +279,7 @@ public:
     }
 
     // Get info about a discoverable device
-    t_link_discovery_data get_discovered_peer(int idx)
+    t_link_discovery_data get_discovered_peer(int idx) const
     {
         auto peer_front = discovered_peers.begin();
         std::advance(peer_front, idx);
