@@ -8,23 +8,23 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-#include <unistd.h>
 
 static t_class *pdlink_class;
 
 typedef struct _pdlink {
-    t_object  x_obj;
+    t_object x_obj;
     t_int x_local;
     t_int x_debug;
     t_int x_loopcount;
-    t_symbol* x_name;
+    t_symbol *x_name;
     t_link_handle x_link;
-    t_clock* x_clock;
-    t_outlet* x_outlet;
+    t_clock *x_clock;
+    t_inlet *x_set_inlet;
+    t_outlet *x_outlet;
 } t_pdlink;
 
 // Send any messages that arrive at inlet
-void pdlink_anything(t_pdlink *x, t_symbol *s, int argc, t_atom *argv) {
+static void pdlink_anything(t_pdlink *x, t_symbol *s, int argc, t_atom *argv) {
     if(x->x_name == gensym("")) return;
 
     // Format symbol and atoms into binbuf
@@ -47,7 +47,7 @@ void pdlink_anything(t_pdlink *x, t_symbol *s, int argc, t_atom *argv) {
 }
 
 // Receive callback for messages
-void pdlink_receive(void *ptr, size_t len, const char* message) {
+static void pdlink_receive(void *ptr, const size_t len, const char* message) {
      t_pdlink *x = (t_pdlink *)ptr;
 
     // Convert text to atoms using binbuf
@@ -61,7 +61,7 @@ void pdlink_receive(void *ptr, size_t len, const char* message) {
     binbuf_free(binbuf);
 }
 
-void pdlink_connection_lost(void*x, int port)
+static void pdlink_connection_lost(void *x, const int port)
 {
     if(((t_pdlink*)x)->x_debug)
     {
@@ -70,7 +70,7 @@ void pdlink_connection_lost(void*x, int port)
 }
 
 // Discovery and message retrieval loop
-void pdlink_receive_loop(t_pdlink *x)
+static void pdlink_receive_loop(t_pdlink *x)
 {
     clock_delay(x->x_clock, 5);
 
@@ -108,36 +108,15 @@ void pdlink_receive_loop(t_pdlink *x)
 }
 
 
-void pdlink_free(t_pdlink *x)
+static void pdlink_free(t_pdlink *x)
 {
     if(x->x_link) link_free(x->x_link);
     if(x->x_clock) clock_free(x->x_clock);
 }
 
-void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
+static void pdlink_set(t_pdlink *x, t_symbol *s)
 {
-    t_pdlink *x = (t_pdlink *)pd_new(pdlink_class);
-    x->x_name = gensym("");
-    x->x_link = NULL;
-    x->x_clock = NULL;
-    x->x_local = 0;
-    x->x_debug = 0;
-    x->x_loopcount = 0;
-
-    for (int i = 0; i < argc; i++) {
-        if (argv[i].a_type == A_SYMBOL) {
-            t_symbol *sym = atom_getsymbol(&argv[i]);
-            if (strcmp(sym->s_name, "-local") == 0) {
-                x->x_local = 1; // Localhost only connection
-            } else if (strcmp(sym->s_name, "-debug") == 0) {
-                x->x_debug = 1; // Enable debug logging
-            } else if (x->x_name == gensym("")) {
-                // Assign the first non-flag symbol to x_name
-                x->x_name = sym;
-            }
-        }
-    }
-    int is_valid = x->x_name != gensym("");
+    x->x_name = s;
 
     // Get pd platform identifier (only what's known at compile time, so any external will report pure-data)
     char pd_platform[MAXPDSTRING];
@@ -167,8 +146,42 @@ void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
     sys_getversion(&major, &minor, &bugfix);
     snprintf(pd_platform, MAXPDSTRING, "pure-data %i.%i-%i - %s", major, minor, bugfix, os);
 #endif
-    // Initialise link and loop clock
+
+    if(x->x_link) link_free(x->x_link);
     x->x_link = link_init(x->x_name->s_name, pd_platform, x->x_local, 7680412);
+    if(!x->x_link)
+    {
+        pd_error(x, "[pd.link]: failed to bind server socket");
+        x->x_link = NULL; // TODO: handle this state!
+    }
+}
+
+static void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
+{
+    t_pdlink *x = (t_pdlink *)pd_new(pdlink_class);
+    x->x_name = gensym("");
+    x->x_link = NULL;
+    x->x_clock = NULL;
+    x->x_local = 0;
+    x->x_debug = 0;
+    x->x_loopcount = 0;
+
+    for (int i = 0; i < argc; i++) {
+        if (argv[i].a_type == A_SYMBOL) {
+            t_symbol *sym = atom_getsymbol(&argv[i]);
+            if (strcmp(sym->s_name, "-local") == 0) {
+                x->x_local = 1; // Localhost only connection
+            } else if (strcmp(sym->s_name, "-debug") == 0) {
+                x->x_debug = 1; // Enable debug logging
+            } else if (x->x_name == gensym("")) {
+                // Assign the first non-flag symbol to x_name
+                x->x_name = sym;
+            }
+        }
+    }
+    int is_valid = x->x_name != gensym("");
+
+    pdlink_set(x, x->x_name);
     if(!x->x_link)
     {
         pd_error(x, "[pd.link]: failed to bind server socket");
@@ -178,6 +191,8 @@ void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
         x->x_clock = clock_new(x, (t_method)pdlink_receive_loop);
         clock_delay(x->x_clock, 0);
     }
+
+    x->x_set_inlet = inlet_new((t_object*)x, (t_pd*)x, &s_symbol, gensym("__set"));
     x->x_outlet = outlet_new((t_object*)x, 0);
 
     if(x->x_debug)
@@ -197,4 +212,5 @@ void setup_pd0x2elink(void) {
 
 
     class_addanything(pdlink_class, pdlink_anything);
+    class_addmethod(pdlink_class, (t_method)pdlink_set, gensym("__set"), A_SYMBOL, 0);
 }
