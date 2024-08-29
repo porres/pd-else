@@ -1,4 +1,4 @@
-#N canvas 484 38 559 493 10;
+#N canvas 484 38 605 566 10;
 #X obj 4 285 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 320 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 354 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
@@ -20,8 +20,6 @@
 #X restore 3 3 graph;
 #X obj 323 223 else/display;
 #X obj 113 328 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
-#X text 236 293 - disconnects from network;
-#X text 237 329 - connection status;
 #X text 142 423 1) symbol -;
 #X obj 181 239 else/pd.link abc;
 #X text 176 293 anything;
@@ -31,12 +29,18 @@
 #X obj 323 194 else/pd.link abc;
 #X floatatom 181 185 5 0 0 0 - - - 0;
 #X msg 195 210 anything;
-#X obj 4 404 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
-#X text 55 89 [pd.link] allows you to communicate to/from different Pd instances \, as different versions and even forks of Pure Data (such as PlugData). It works like [send]/[receive] (or [else/sender]/[else/receiver]) as it just needs a symbol address. It works via network but it's simlper as it doesn't require network or OSC configuration! It also allows you to communicate to a [pd~] subprocess., f 70;
+#X obj 4 414 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
 #X obj 22 206 else/pd.link~;
 #X text 26 183 see also:;
 #X obj 22 227 else/sender;
 #X obj 22 248 else/osc.send;
-#X connect 25 0 15 0;
-#X connect 26 0 20 0;
-#X connect 27 0 20 0;
+#X text 236 293 - send message over network;
+#X text 237 329 - message received from network;
+#X text 55 89 [pd.link] allows you to communicate to/from different Pd instances over local network \, as different versions and even forks of Pure Data (such as plugdata). It works like [send]/[receive] (or [else/sender]/[else/receiver]) as it just needs a symbol address. It works via network but it's simpler as it doesn't require network or OSC configuration! It also allows you to communicate to a [pd~] subprocess., f 70;
+#X text 187 361 -debug;
+#X text 238 361 - print information about connection status;
+#X text 188 380 -local;
+#X text 239 380 - only connect over localhost;
+#X connect 23 0 15 0;
+#X connect 24 0 18 0;
+#X connect 25 0 18 0;
