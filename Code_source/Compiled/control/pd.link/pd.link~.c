@@ -140,7 +140,7 @@ static t_int *pdlink_tilde_perform(t_int *w){
             udp_audio_encoder_encode(x->x_audio_encoder, in1, nblock, x->x_link, pdlink_send_compressed);
         }
         else {
-            pdlink_send_signal_message(x->x_link, 0, nblock, nblock * sizeof(t_float), in1);
+            pdlink_send_signal_message(x->x_link, 0, nblock, nblock * sizeof(t_float), (const char*)in1);
         }
     }
 
@@ -240,7 +240,7 @@ static void pdlink_tilde_free(t_pdlink_tilde *x)
 static void pdlink_tilde_set(t_pdlink_tilde *x, t_symbol *s)
 {
     x->x_name = s;
-    
+
     // Get pd platform identifier (only what's known at compile time, so any external will report pure-data)
     char pd_platform[MAXPDSTRING];
     char os[16];
@@ -269,7 +269,7 @@ static void pdlink_tilde_set(t_pdlink_tilde *x, t_symbol *s)
     sys_getversion(&major, &minor, &bugfix);
     snprintf(pd_platform, MAXPDSTRING, "pure-data %i.%i-%i - %s", major, minor, bugfix, os);
 #endif
-    
+
     if(x->x_link) link_free(x->x_link);
     x->x_link = link_init(x->x_name->s_name, pd_platform, x->x_local, 7680413);
     if(!x->x_link)
@@ -324,7 +324,7 @@ static void *pdlink_tilde_new(t_symbol *s, int argc, t_atom *argv)
     }
 
     pdlink_tilde_set(x, x->x_name);
-    
+
     if(!x->x_link)
     {
         pd_error(x, "[pd.link~]: failed to bind server socket");
@@ -335,7 +335,7 @@ static void *pdlink_tilde_new(t_symbol *s, int argc, t_atom *argv)
         x->x_clock = clock_new(x, (t_method)pdlink_tilde_discover_loop);
         clock_delay(x->x_clock, 0);
     }
-    
+
     x->x_set_inlet = inlet_new((t_object*)x, (t_pd*)x, &s_symbol, gensym("__set"));
     x->x_outlet = outlet_new((t_object*)x, &s_signal);
 
