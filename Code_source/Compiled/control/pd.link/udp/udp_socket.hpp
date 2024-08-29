@@ -1,7 +1,6 @@
 #include <wchar.h>
 #include <iostream>
 #include <array>
-#undef min
 #include <algorithm>
 #ifdef _WIN32
 #ifdef _MSC_VER
@@ -11,6 +10,7 @@
 #undef TEXT
 #include <winsock2.h>
 #include <ws2tcpip.h>
+#undef min
 typedef SSIZE_T ssize_t;
 // Unix
 #else
