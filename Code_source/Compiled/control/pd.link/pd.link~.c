@@ -249,13 +249,13 @@ void *pdlink_tilde_new(t_symbol *s, int argc, t_atom *argv)
                 i++;
                 x->x_delay = atom_getfloat(argv + i);
             }
-            else if (x->x_name == NULL) {
+            else if (x->x_name == gensym("")) {
                 // Assign the first non-flag symbol to x_name
                 x->x_name = sym;
             }
         }
     }
-    
+
     int is_valid = x->x_name != gensym("");
 
     for(int i = 0; i < MAX_SEND; i++)

@@ -26,7 +26,7 @@ typedef struct _pdlink {
 // Send any messages that arrive at inlet
 void pdlink_anything(t_pdlink *x, t_symbol *s, int argc, t_atom *argv) {
     if(x->x_name == gensym("")) return;
-    
+
     // Format symbol and atoms into binbuf
     t_atom symbol;
     SETSYMBOL(&symbol, s);
@@ -49,7 +49,7 @@ void pdlink_anything(t_pdlink *x, t_symbol *s, int argc, t_atom *argv) {
 // Receive callback for messages
 void pdlink_receive(void *ptr, size_t len, const char* message) {
      t_pdlink *x = (t_pdlink *)ptr;
-    
+
     // Convert text to atoms using binbuf
     t_binbuf *binbuf = binbuf_new();
     binbuf_text(binbuf, message, len);
@@ -131,14 +131,14 @@ void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
                 x->x_local = 1; // Localhost only connection
             } else if (strcmp(sym->s_name, "-debug") == 0) {
                 x->x_debug = 1; // Enable debug logging
-            } else if (x->x_name == NULL) {
+            } else if (x->x_name == gensym("")) {
                 // Assign the first non-flag symbol to x_name
                 x->x_name = sym;
             }
         }
     }
     int is_valid = x->x_name != gensym("");
-    
+
     // Get pd platform identifier (only what's known at compile time, so any external will report pure-data)
     char pd_platform[MAXPDSTRING];
     char os[16];
