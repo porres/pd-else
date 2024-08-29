@@ -23,7 +23,7 @@ t_udp_audio_encoder *udp_audio_encoder_init(int sample_rate) {
     ctx->encoder = opus_encoder_create(48000, 1, OPUS_APPLICATION_AUDIO, &error);
     opus_encoder_ctl(ctx->encoder, OPUS_SET_BITRATE(256000));
     opus_encoder_ctl(ctx->encoder, OPUS_SET_BANDWIDTH(OPUS_BANDWIDTH_FULLBAND));
-    
+
     if (!ctx->encoder) {
         free(ctx);
         return NULL;
@@ -52,22 +52,22 @@ void udp_audio_encoder_encode(t_udp_audio_encoder *ctx, float *samples, int num_
     }
 
     // Encode audio when we have enough samples in the buffer
-    while (ctx->buffer_num_ready >= 240) {
-        float ready_samples[240];
-        for (int i = 0; i < 240; i++) {
+    while (ctx->buffer_num_ready >= 120) {
+        float ready_samples[120];
+        for (int i = 0; i < 120; i++) {
             ready_samples[i] = ctx->buffer[ctx->buffer_tail];
             ctx->buffer_tail = (ctx->buffer_tail+1) % ctx->buffer_size;
         }
-        
-        unsigned char encoded_data[1275];
-        int encoded_size = opus_encode_float(ctx->encoder, ready_samples, 240, encoded_data, 1275);
+
+        unsigned char encoded_data[4000];
+        int encoded_size = opus_encode_float(ctx->encoder, ready_samples, 120, encoded_data, 4000);
         if (encoded_size < 0) {
             // TODO: handle error
             break;
         }
 
         encode_callback(target, encoded_size, (const char*)encoded_data);
-        ctx->buffer_num_ready -= 240;
+        ctx->buffer_num_ready -= 120;
     }
 }
 
