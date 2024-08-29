@@ -164,8 +164,9 @@ void pdlink_tilde_dsp(t_pdlink_tilde *x, t_signal **sp) {
     if(x->x_name == gensym("")) return;
 
     int samplerate = sys_getsr();
-    if(x->x_compress && x->x_last_sr != samplerate) {
-        x->x_audio_encoder = udp_audio_encoder_init(samplerate);
+    if(x->x_last_sr != samplerate) {
+        if(x->x_compress) x->x_audio_encoder = udp_audio_encoder_init(samplerate);
+        // We always need to have decoders ready, because we don't know what kind of signal encoding we're gonna receive
         for(int i = 0; i < MAX_SEND; i++) {
             x->x_audio_decoder[i] = udp_audio_decoder_init(samplerate);
         }
