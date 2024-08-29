@@ -1,11 +1,16 @@
 #include <wchar.h>
 #include <iostream>
 #include <array>
+#include <algorithm>
 #ifdef _WIN32
+#ifdef _MSC_VER
+#pragma comment(lib, "iphlpapi.lib")
+#endif
 #define WIN32_LEAN_AND_MEAN
 #undef TEXT
 #include <winsock2.h>
 #include <ws2tcpip.h>
+#undef min
 typedef SSIZE_T ssize_t;
 // Unix
 #else
