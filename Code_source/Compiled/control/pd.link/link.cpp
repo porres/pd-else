@@ -83,7 +83,7 @@ public:
             tries++;
         }
 
-        server.set_timeout(1); // Just to be sure, in case set_blocking fails
+        //server.set_timeout(1);
         server.set_blocking(false);
 
         return tries != 16;
