@@ -150,7 +150,7 @@ public:
     {
         size_t message_length = message.length();
         size_t offset = 0;
-        size_t chunk_size = 512;
+        constexpr size_t chunk_size = 512;
 
         while (offset < message_length)
         {
@@ -180,6 +180,7 @@ public:
 
 class udp_server : public _socket_base
 {
+    std::string message_buffer;
 public:
     udp_server(u_short port, const std::string& ip_address = "0.0.0.0") : _socket_base(SocketType::TYPE_DGRAM)
     {
@@ -218,15 +219,17 @@ public:
                 return false;
             }
 
-            full_message.append(buffer.data(), recv_len);
+            message_buffer.append(buffer.data(), recv_len);
 
             // Break the loop if the received chunk is smaller than buffer size (indicating the end of the message)
             if ((size_t)recv_len < buffer.size())
             {
-                break;
+                full_message = message_buffer;
+                message_buffer.clear();
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 };
