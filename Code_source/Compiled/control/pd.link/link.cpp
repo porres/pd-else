@@ -1,10 +1,13 @@
 #include "udp/udp_discovery_peer.hpp"
 #include "udp/udp_socket.hpp"
+#include "readerwriterqueue/readerwriterqueue.h"
 #include "link.h"
 #include <cstring>
 #include <iostream>
 #include <unordered_map>
 #include <thread>
+#include <atomic>
+#include <mutex>
 #include <chrono>
 #include <sys/types.h>
 #ifdef _WIN32
@@ -28,12 +31,18 @@ public:
     std::unordered_map<int, int> client_ping;
     bool socket_bound;
     std::string ip;
-
+    moodycamel::ReaderWriterQueue<std::string, 1024> send_queue;
+    moodycamel::ReaderWriterQueue<std::string, 1024> receive_queue;
+    std::mutex client_lock;
+    std::thread socket_thread;
+    std::atomic<bool> quit;
+    
     t_link(std::string identifier, std::string platform, bool local, uint64_t application_id) : port(get_random_port()), server(port) {
         ip = local ? std::string("127.0.0.1") : get_ip();
 
         // Try to bind our server UDP socket
         socket_bound = try_bind();
+        if(!socket_bound) throw std::runtime_error("Socket bind failed");
 
         // Create identifier for UDP discovery. This should contain all the necessary info to establish a socket connection
         identifier += std::string("\x1F") + platform + std::string("\x1F") + get_hostname() + std::string("\x1F") + ip + std::string("\x1F") + std::to_string(port);
@@ -48,8 +57,10 @@ public:
         parameters.set_discover_self(true);
         parameters.set_port(kPort);
         parameters.set_application_id(application_id);
-        parameters.set_send_timeout_ms(2500);
-        parameters.set_discovered_peer_ttl_ms(5000);
+        parameters.set_send_timeout_ms(1500);
+        parameters.set_discovered_peer_ttl_ms(10000);
+        
+        socket_thread = std::thread(&t_link::process_sockets, this);
 
         if (!peer.Start(parameters, identifier)) {
             std::cerr << "Failed to start peer!" << std::endl;
@@ -60,6 +71,8 @@ public:
     ~t_link()
     {
         peer.Stop();
+        quit = true;
+        socket_thread.join();
     }
 
     static int get_current_time_ms() {
@@ -72,22 +85,47 @@ public:
         // Get random port number outside of system ranges
         return (rand() % 48127) + 1024;
     }
+    
+    void process_sockets()
+    {
+        while(!quit) {
+            using namespace std::chrono;
+            auto interval = microseconds(200);
+            auto next_time = high_resolution_clock::now() + interval;
+        
+            std::string message;
+            while(server.receive_data(message))
+            {
+                receive_queue.enqueue(message);
+            }
+            
+            while(send_queue.try_dequeue(message)) {
+                std::lock_guard lock(client_lock);
+                for(auto& [port_num, client] : clients)
+                {
+                    client->send_data(message);
+                }
+            }
+            std::this_thread::sleep_until(next_time);
+            next_time += interval;
+        }
+    }
 
     // Try to bind the server socket to a port
     bool try_bind()
     {
         int tries = 0;
-        while(server.socket_bind() != 0 && tries < 16) {
+        while(server.socket_bind() != 0 && tries < 32) {
             port = get_random_port();
             server.set_port(port);
-            std::this_thread::sleep_for(std::chrono::microseconds(tries * 200 + 5)); // unfortunate, but othewise random generation breaks!
+            std::this_thread::sleep_for(std::chrono::microseconds(tries * 150 + 5)); // unfortunate, but othewise random generation breaks!
             tries++;
         }
 
         //server.set_timeout(1);
         server.set_blocking(false);
 
-        return tries != 16;
+        return tries != 32;
     }
 
     // Get hostname as a string. This is a readable identifier for your computers identity
@@ -180,6 +218,7 @@ public:
     // Connect to a port and IP combination
     bool connect(int target_port, std::string target_ip)
     {
+        std::lock_guard lock(client_lock);
         auto& client = clients[target_port];
         if(!client) { // Check if we already have a client for this port
             client = std::make_unique<udp_client>(target_port, target_ip);
@@ -193,7 +232,7 @@ public:
     void receive(void* object, void(*callback)(void*, size_t, const char*))
     {
         std::string message;
-        while(server.receive_data(message))
+        while(receive_queue.try_dequeue(message))
         {
             if (message.rfind("#PING#", 0) == 0) // Check if the message starts with "#PING#"
             {
@@ -226,10 +265,7 @@ public:
 
     void ping(void* object, void(*connection_lost_callback)(void*, int))
     {
-        for(const auto& [port_num, client] : clients)
-        {
-            client->send_data(std::string("#PING#") + std::to_string(port));
-        }
+        send_queue.enqueue(std::string("#PING#") + std::to_string(port));
 
         auto current_time = get_current_time_ms();
         for(const auto& [port_num, ping] : client_ping)
@@ -250,6 +286,8 @@ public:
                 ++it;
             }
         }
+        
+        std::lock_guard lock(client_lock);
         for (auto it = clients.begin(); it != clients.end();) {
             auto const& [port_num, client] = *it;
             if (!client_ping.count(port_num)) {
@@ -263,10 +301,7 @@ public:
     // Send data from client to connected server
     void send(const std::string& data)
     {
-        for(auto& [port_num, client] : clients)
-        {
-            client->send_data(data);
-        }
+        send_queue.enqueue(data);
     }
 
     // Update discoverable devices
@@ -342,11 +377,6 @@ public:
 t_link_handle link_init(const char* identifier, const char* platform, int local, uint64_t application_id) {
     try {
         t_link* wrapper = new t_link(identifier, platform, local, application_id);
-        if(!wrapper->socket_bound)
-        {
-            delete wrapper;
-            return nullptr;
-        }
         return static_cast<t_link_handle>(wrapper);
     } catch (const std::exception&) {
         return nullptr;
