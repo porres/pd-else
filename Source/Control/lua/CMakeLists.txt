@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(pdlua C)
 
-# Set the library name
-set(LIB_NAME "pdlua")
-
 # Get the version from git
 execute_process(
     COMMAND git describe --tags
@@ -28,18 +25,13 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(LUA_FLAGS "${LUA_FLAGS} -DLUA_USE_WINDOWS")
 endif()
 
-# Compiler flags
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${LUA_FLAGS} -DPDLUA_VERSION=\"${pdlua_version}\"")
-
-# Source files
-set(SOURCES
-    pdlua.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/lua/onelua.c
-)
+add_library(lua STATIC ${CMAKE_CURRENT_SOURCE_DIR}/lua/onelua.c)
 
 # Define the external
-add_pd_external(${LIB_NAME} ${LIB_NAME} ${SOURCES})
+add_pd_external(pdlua pdlua pdlua.c)
 
 # Libraries to link against
-target_link_libraries(${LIB_NAME} PRIVATE ${LUA_LIBS})
-target_include_directories(${LIB_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/lua)
+target_link_libraries(pdlua PRIVATE lua)
+target_include_directories(pdlua PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/lua)
+target_compile_options(lua PUBLIC ${LUA_FLAGS})
+target_compile_definitions(pdlua PRIVATE PDLUA_VERSION=${pdlua_version})
