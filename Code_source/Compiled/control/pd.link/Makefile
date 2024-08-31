@@ -46,9 +46,9 @@ common.sources =  ./udp/udp_discovery_peer.cpp \
 # input source file (class name == source file basename)
 class.sources = pd.link.c pd.link~.c
 
-pd.link~.class.sources += $(opus_sources) ./../../../shared/magic.c
+pd.link~.class.sources += $(opus_sources) $(wildcard ../../../shared/libsamplerate/*.c) ./../../../shared/magic.c
 
-cflags = $(opus_flags) -I$(shell pwd) -I../../../shared
+cflags = $(opus_flags) -I$(shell pwd) -I../../../shared -I../../../shared/libsamplerate
 CXX += --std=c++17
 
 # all extra files to be included in binary distribution of the library
