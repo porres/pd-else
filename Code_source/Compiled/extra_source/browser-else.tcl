@@ -48,8 +48,8 @@ proc category_else_menu::load_menutree {} {
                 {dir}}
             {midi
                 {midi midi.learn midi.in midi.out sysrt.in sysrt.out ctl.in ctl.out touch.in touch.out ptouch.in ptouch.out pgm.in pgm.out bend.in bend.out note.in note.out midi.clock noteinfo panic mono mono~ voices voices~ suspedal}}
-            {osc
-                {osc.route osc.format osc.parse osc.send osc.receive}}
+            {osc/network
+                {osc.route osc.format osc.parse osc.send osc.receive pd.link pd.link~}}
             {math\ functions
                 {add add~ median avg mov.avg count gcd lcm frac.add frac.mul ceil ceil~ factor floor floor~ trun trunc~ rint rint~ quantizer quantizer~ fold fold~ lastvalue mag mag~ sin~ wrap2 wrap2~ op op~}}
             {math\ conversion
