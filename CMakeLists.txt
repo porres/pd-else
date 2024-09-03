@@ -38,7 +38,7 @@ file(GLOB else_sources
 
 file(GLOB aubio_sources
    ${CMAKE_CURRENT_SOURCE_DIR}/Source/Shared/aubio/src/**/*.c
-   ${CMAKE_CURRENT_SOURCE_DIR}/Source/shared/aubio/src/*.c
+   ${CMAKE_CURRENT_SOURCE_DIR}/Source/Shared/aubio/src/*.c
 )
 
 include_directories(${PD_SOURCES_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/Source/Shared ${CMAKE_CURRENT_SOURCE_DIR}/Source/Shared/aubio/src)
