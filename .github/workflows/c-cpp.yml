@@ -92,7 +92,7 @@ jobs:
           curl -L -o pure-data.zip http://msp.ucsd.edu/Software/pd-0.55-0.msw.zip
           unzip pure-data.zip
           rm pure-data.zip
-          mv pd-0.54-0 pd
+          mv pd-0.55-0 pd
 
       - name: Configure pd-else
         shell: bash
