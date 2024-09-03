@@ -26,10 +26,10 @@
 //
 // DSP utility routines.
 
-#define TEST
-
 #ifndef STMLIB_UTILS_DSP_DSP_H_
 #define STMLIB_UTILS_DSP_DSP_H_
+
+#define TEST 1
 
 #include "stmlib/stmlib.h"
 

@@ -1,16 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Project name and version
-project(plaits_tilde VERSION 1.0)
-
-# Add the pd-cmake module
-include(${CMAKE_SOURCE_DIR}/pd.cmake)
-
-# Set the library name
-set(LIB_NAME "plaits_tilde")
+project(plaits)
 
 # Add the source files
-set(COMMON_SOURCES
+set(PLAITS_SOURCES
     stmlib/dsp/units.cc
     stmlib/utils/random.cc
     stmlib/dsp/atan.cc
@@ -53,19 +47,12 @@ set(COMMON_SOURCES
     plaits/resources.cc
 )
 
-set(CLASS_SOURCES
-    plaits~.cpp
-)
-
-# Combine all sources
-set(SOURCES ${COMMON_SOURCES} ${CLASS_SOURCES})
+add_library(plaits STATIC ${PLAITS_SOURCES})
+target_compile_definitions(plaits PUBLIC TEST=1 _USE_MATH_DEFINES=1)
+target_compile_options(plaits PRIVATE -Wno-unused-local-typedefs)
+target_include_directories(plaits PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Create the Pure Data external
-add_pd_external(${LIB_NAME}_obj ${LIB_NAME} ${SOURCES})
+add_pd_external(plaits_tilde plaits_tilde plaits~.cpp)
 
-# Set compiler flags
-target_compile_options(${LIB_NAME}_obj PRIVATE
-    -DTEST
-    -Wno-unused-local-typedefs
-    -I${CMAKE_CURRENT_SOURCE_DIR}
-)
+target_link_libraries(plaits_tilde PRIVATE plaits)

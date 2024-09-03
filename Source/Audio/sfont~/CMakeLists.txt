@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(sfont~ C)
 
-# Set the library name
-set(LIB_NAME "sfont_tilde")
-
 # Define the source files
 set(FLUID_SOURCES
     FluidLite/src/fluid_init.c
@@ -55,14 +52,8 @@ set(OGG_SOURCES
     FluidLite/libogg-1.3.2/src/framing.c
 )
 
-set(EXTRA_SOURCES
-    ../../../Shared/elsefile.c
-)
-
 # Combine all sources
-set(SOURCES
-    sfont~.c
-    ${EXTRA_SOURCES}
+set(FLUIDSYNTH_SOURCES
     ${FLUID_SOURCES}
     ${VORBIS_SOURCES}
     ${OGG_SOURCES}
@@ -70,7 +61,6 @@ set(SOURCES
 
 # Include directories
 include_directories(
-    ../../
     FluidLite/libvorbis-1.3.5/include
     FluidLite/libvorbis-1.3.5/lib
     FluidLite/libogg-1.3.2/include
@@ -80,18 +70,10 @@ include_directories(
 # Set compiler flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DHAVE_STRUCT_TIMESPEC ${EXTRA_INCLUDES}")
 
-# Check for architecture-specific flags
-if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm64" AND ${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
-    set(CMAKE_OSX_ARCHITECTURES "arm64")
-endif()
-
 # Linker flags
 set(CMAKE_SHARED_LINKER_FLAGS "${EXTRA_LDFLAGS}")
 
+add_library(fluidsynth STATIC ${FLUIDSYNTH_SOURCES})
 # Add the Pure Data external library
-add_pd_external(${LIB_NAME} ${LIB_NAME} ${SOURCES})
-
-# Install data files and directories (if needed)
-# Uncomment and adjust if there are data files or directories to install
-# install(FILES sfont~-help.pd DESTINATION pd/extra/${LIB_NAME})
-# install(DIRECTORY sf DESTINATION pd/extra/${LIB_NAME})
+add_pd_external(sfont_tilde sfont_tilde sfont~.c)
+target_link_libraries(sfont_tilde PRIVATE fluidsynth else_shared)

@@ -4,10 +4,13 @@ on:
   workflow_dispatch:
   push:
     branches: ["master", "CI"]
-    paths-ignore: ["md-help/**"]
   pull_request:
     branches: ["master", "CI"]
-    paths-ignore: ["Documentation/**"]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+  CMAKE_BUILD_PARALLEL_LEVEL: 4
 
 jobs:
   # ===============================================================
@@ -15,20 +18,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install PureData
-        run: sudo apt-get install puredata -y
+        with:
+          submodules: recursive
+          fetch-depth: 0
 
       - name: Downloads pd-Sources
+        shell: bash
         run: |
-          PD_URL=$(curl -L -s https://api.github.com/repos/pure-data/pure-data/tags | grep zipball_url | grep -v latest | grep -v pd-0.54 | grep -v tagtest | head -n 1 | cut -d '"' -f 4)
-          curl -L -o pure-data.zip $PD_URL
+          curl -L -o pure-data.zip https://api.github.com/repos/pure-data/pure-data/zipball/refs/tags/0.55-0
           unzip pure-data.zip
           rm pure-data.zip
           mv pure-data-* pure-data
 
       - name: Configure pd-else
         run: |
-          cmake -BBuild -DPD_DIR=${{github.workspace}}/pure-data
+          cmake -BBuild -DPD_PATH=${{github.workspace}}/pure-data
 
       - name: Build pd-else
         run: |
@@ -38,35 +42,10 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: else
-          path: ./else/*
-
-  # # ===============================================================
-
-  Mac-Intel:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: recursive
-          fetch-depth: 0
-
-      - name: Configure pd-else
-        run: |
-          cmake -BBuild -DPD_DIR=${{github.workspace}}/pure-data
-
-      - name: Build pd-else
-        run: |
-          cmake --build Build
-
-      - name: Upload Zip
-        uses: actions/upload-artifact@v3
-        with:
-          name: else
-          path: ./else/*
+          path: ./Build/else
 
   # ===============================================================
-
-  Mac-ARM:
+  macOS-Build:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
@@ -74,9 +53,17 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
+      - name: Downloads pd sources
+        shell: bash
+        run: |
+          curl -L -o pure-data.zip https://api.github.com/repos/pure-data/pure-data/zipball/refs/tags/0.55-0
+          unzip pure-data.zip
+          rm pure-data.zip
+          mv pure-data-* pure-data
+
       - name: Configure pd-else
         run: |
-          cmake -BBuild -DPD_DIR=${{github.workspace}}/pure-data
+          cmake -BBuild -DPD_PATH=${{github.workspace}}/pure-data
 
       - name: Build pd-else
         run: |
@@ -86,53 +73,39 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: else
-          path: ./else/*
+          path: ./Build/else
 
   # ===============================================================
 
   Windows-Build:
-      runs-on: windows-latest
-      timeout-minutes: 25
-      steps:
-        - uses: actions/checkout@v3
-          with:
-            submodules: recursive
-            fetch-depth: 0
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          fetch-depth: 0
 
-        - uses: actions/setup-python@v4
-          with:
-            python-version: "3.10"
+      - name: Get Pd
+        shell: bash
+        run: |
+          curl -L -o pure-data.zip http://msp.ucsd.edu/Software/pd-0.54-0.msw.zip
+          unzip pure-data.zip
+          rm pure-data.zip
+          mv pd-0.54-0 pd
 
-        - if: runner.os == 'Windows'
-          name: "Install mingw deps"
-          uses: msys2/setup-msys2@v2
-          with:
-            install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-ntldd-git     mingw-w64-x86_64-fluidsynth mingw64/mingw-w64-x86_64-cmake unzip curl
-            update: false
+      - name: Configure pd-else
+        shell: bash
+        run: |
+          cmake -BBuild -DPD_PATH=./pd -DPD_LIB_PATH=./pd/bin -G"MinGW Makefiles"
 
-        - if: runner.os == 'Windows'
-          name: Get Pd
-          shell: msys2 {0}
-          run: |
-            curl -L -o pure-data.zip http://msp.ucsd.edu/Software/pd-0.54-0.msw.zip
-            unzip pure-data.zip
-            rm pure-data.zip
-            rename  pd-0.54-0 pd pd-0.54-0
+      - name: Build pd-else
+        shell: bash
+        run: |
+          cmake --build Build
 
-        - if: runner.os == 'Windows'
-          name: Configure pd-else
-          shell: msys2 {0}
-          run: |
-            cmake -BBuild -DPD_DIR=./pd -G"MSYS Makefiles"
-
-        - if: runner.os == 'Windows'
-          name: Build pd-else
-          shell: msys2 {0}
-          run: |
-            cmake --build Build
-
-        - name: Upload Zip
-          uses: actions/upload-artifact@v3
-          with:
-            name: else
-            path: ./else/*
+      - name: Upload Zip
+        uses: actions/upload-artifact@v3
+        with:
+          name: else
+          path: ./Build/else
