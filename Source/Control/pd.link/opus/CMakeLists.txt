@@ -194,7 +194,7 @@ if(OPUS_CPU_X86 OR OPUS_CPU_X64)
   set(OPUS_X86_MAY_HAVE_AVX2_HELP_STR "does runtime check for AVX FMA AVX2 support.")
   cmake_dependent_option(OPUS_X86_MAY_HAVE_AVX2
                          ${OPUS_X86_MAY_HAVE_AVX2_HELP_STR}
-                         ON
+                         OFF
                          "AVX2_SUPPORTED; NOT OPUS_DISABLE_INTRINSICS"
                          OFF)
   add_feature_info(OPUS_X86_MAY_HAVE_AVX2 OPUS_X86_MAY_HAVE_AVX2 ${OPUS_X86_MAY_HAVE_AVX2_HELP_STR})

@@ -36,7 +36,7 @@ public:
     std::mutex client_lock;
     std::thread socket_thread;
     std::atomic<bool> quit;
-    
+
     t_link(std::string identifier, std::string platform, bool local, uint64_t application_id) : port(get_random_port()), server(port) {
         ip = local ? std::string("127.0.0.1") : get_ip();
 
@@ -59,7 +59,7 @@ public:
         parameters.set_application_id(application_id);
         parameters.set_send_timeout_ms(1500);
         parameters.set_discovered_peer_ttl_ms(10000);
-        
+
         socket_thread = std::thread(&t_link::process_sockets, this);
 
         if (!peer.Start(parameters, identifier)) {
@@ -85,20 +85,20 @@ public:
         // Get random port number outside of system ranges
         return (rand() % 48127) + 1024;
     }
-    
+
     void process_sockets()
     {
         while(!quit) {
             using namespace std::chrono;
             auto interval = microseconds(200);
             auto next_time = high_resolution_clock::now() + interval;
-        
+
             std::string message;
             while(server.receive_data(message))
             {
                 receive_queue.enqueue(message);
             }
-            
+
             while(send_queue.try_dequeue(message)) {
                 std::lock_guard lock(client_lock);
                 for(auto& [port_num, client] : clients)
@@ -166,7 +166,7 @@ public:
                 {
                     char ip[INET_ADDRSTRLEN];
                     sockaddr_in* sa_in = reinterpret_cast<sockaddr_in*>(unicast->Address.lpSockaddr);
-                    inet_ntop(AF_INET, &(sa_in->sin_addr), ip, INET_ADDRSTRLEN);
+                    InetNtop(AF_INET, &(sa_in->sin_addr), ip, INET_ADDRSTRLEN);
 
                     // Skip loopback addresses
                     if (strcmp(ip, "127.0.0.1") != 0)
@@ -286,7 +286,7 @@ public:
                 ++it;
             }
         }
-        
+
         std::lock_guard lock(client_lock);
         for (auto it = clients.begin(); it != clients.end();) {
             auto const& [port_num, client] = *it;

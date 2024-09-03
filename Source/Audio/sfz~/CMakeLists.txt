@@ -112,6 +112,9 @@ target_include_directories(sfz_tilde PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/sfizz/l
 target_compile_definitions(sfz_tilde PRIVATE MIDI_CC_COUNT=127 SFIZZ_VERSION="1.2.2")
 add_dependencies(sfz_tilde sfizz_build)
 
+if(UNIX AND NOT APPLE)
+    target_link_libraries(sfz_tilde PUBLIC m)
+endif()
 if(WIN32)
     target_link_options(sfz_tilde PUBLIC -static-libgcc -static-libstdc++ -static)
     target_link_libraries(sfz_tilde PUBLIC "ws2_32;iphlpapi;")
