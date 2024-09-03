@@ -69,9 +69,10 @@ file(GLOB extra_files
 )
 
 file(GLOB merda_files "${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Merda/Modules/*")
+file(GLOB tcl_files "${CMAKE_CURRENT_SOURCE_DIR}/Source/Extra/*.tcl")
 file(GLOB abstractions ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Audio/* ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Control/* ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Extra/*)
 file(MAKE_DIRECTORY ${else})
-file(COPY ${pdf_help} ${extra_files} ${help_files} ${abstractions} DESTINATION ${PD_OUTPUT_PATH})
+file(COPY ${pdf_help} ${extra_files} ${help_files} ${abstractions} ${tcl_files} DESTINATION ${PD_OUTPUT_PATH})
 file(COPY ${merda_files} DESTINATION ${PD_OUTPUT_PATH}/Merda)
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Source/Audio/sfz~/sfz" DESTINATION ${PD_OUTPUT_PATH}/sfz)
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Documentation/Live-Electronics-Tutorial" DESTINATION ${PD_OUTPUT_PATH}/Live-Electronics-Tutorial)

@@ -53,6 +53,6 @@ target_compile_options(plaits PRIVATE -Wno-unused-local-typedefs)
 target_include_directories(plaits PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Create the Pure Data external
-add_pd_external(plaits_tilde plaits_tilde plaits~.cpp)
+add_pd_external(plaits_tilde plaits~ plaits~.cpp)
 
 target_link_libraries(plaits_tilde PRIVATE plaits)
