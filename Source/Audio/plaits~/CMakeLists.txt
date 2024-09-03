@@ -52,6 +52,11 @@ target_compile_definitions(plaits PUBLIC TEST=1 _USE_MATH_DEFINES=1)
 target_compile_options(plaits PRIVATE -Wno-unused-local-typedefs)
 target_include_directories(plaits PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
+if(WIN32)
+    target_link_options(plaits PUBLIC -static-libgcc -static-libstdc++ -static)
+    target_link_libraries(plaits PUBLIC "ws2_32;stdc++")
+endif()
+
 # Create the Pure Data external
 add_pd_external(plaits_tilde plaits~ plaits~.cpp)
 
