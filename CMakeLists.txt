@@ -67,10 +67,6 @@ file(GLOB extra_files
     ${CMAKE_CURRENT_SOURCE_DIR}/Documentation/Extra-files/audio/*
 )
 
-/Users/timschoen/Repositories/pd-else/
-
-
-
 file(GLOB merda_files "${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Merda/Modules/*")
 file(GLOB abstractions "${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Audio/* ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Control/* ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Extra/*")
 file(MAKE_DIRECTORY ${else})
