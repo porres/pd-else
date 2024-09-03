@@ -68,12 +68,19 @@ file(GLOB extra_files
     ${CMAKE_CURRENT_SOURCE_DIR}/Documentation/Extra-files/audio/*
 )
 
+set(lua_resources
+    ${CMAKE_CURRENT_SOURCE_DIR}/Source/Audio/scope3d~.pd_lua
+    ${CMAKE_CURRENT_SOURCE_DIR}/Source/Control/lua/pd.lua
+    ${CMAKE_CURRENT_SOURCE_DIR}/Source/Control/lua/luadoc/hello.lua
+    ${CMAKE_CURRENT_SOURCE_DIR}/Source/Control/lua/luadoc/hello.pd_lua
+)
+
 file(GLOB merda_files "${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Merda/Modules/*")
 file(GLOB tcl_files "${CMAKE_CURRENT_SOURCE_DIR}/Source/Extra/*.tcl")
-file(GLOB abstractions ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Audio/* ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Control/* ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Extra/*)
+file(GLOB abstractions ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Audio/*.pd ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Control/*.pd ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Extra/*)
 file(MAKE_DIRECTORY ${else})
-file(COPY ${pdf_help} ${extra_files} ${help_files} ${abstractions} ${tcl_files} DESTINATION ${PD_OUTPUT_PATH})
-file(COPY ${merda_files} DESTINATION ${PD_OUTPUT_PATH}/Merda)
+file(COPY ${pdf_help} ${extra_files} ${help_files} ${abstractions} ${tcl_files} ${lua_resources} DESTINATION ${PD_OUTPUT_PATH})
+file(COPY ${merda_files} DESTINATION ${PD_OUTPUT_PATH})
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Source/Audio/sfz~/sfz" DESTINATION ${PD_OUTPUT_PATH}/sfz)
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Documentation/Live-Electronics-Tutorial" DESTINATION ${PD_OUTPUT_PATH}/Live-Electronics-Tutorial)
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE" DESTINATION ${PD_OUTPUT_PATH}/LICENSE)
