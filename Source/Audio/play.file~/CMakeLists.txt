@@ -57,7 +57,7 @@ execute_process(
 )
 
 add_custom_target(ffmpeg
-    COMMAND bash -c "./configure --disable-asm --enable-static --disable-shared --enable-optimizations --disable-debug --disable-doc --disable-programs --disable-iconv --disable-avdevice --disable-postproc --disable-network --disable-everything --enable-avcodec --enable-avformat --enable-avutil --enable-swscale --enable-swresample --enable-decoder=mp3*,pcm*,aac*,flac,vorbis,opus --enable-parser=mpegaudio,aac --enable-demuxer=mp3,wav,aiff,flac,aac,ogg,pcm* --enable-filter=aresample --enable-protocol=file ${FFMPEG_CONFIG_FLAGS}"
+    COMMAND bash -c "./configure --disable-asm --disable-libdrm --enable-static --disable-shared --enable-optimizations --disable-debug --disable-doc --disable-programs --disable-iconv --disable-avdevice --disable-postproc --disable-network --disable-everything --enable-avcodec --enable-avformat --enable-avutil --enable-swscale --enable-swresample --enable-decoder=mp3*,pcm*,aac*,flac,vorbis,opus --enable-parser=mpegaudio,aac --enable-demuxer=mp3,wav,aiff,flac,aac,ogg,pcm* --enable-filter=aresample --enable-protocol=file ${FFMPEG_CONFIG_FLAGS}"
     COMMAND bash -c "make"
     WORKING_DIRECTORY ${FFMPEG_OUT_DIR}
 )
