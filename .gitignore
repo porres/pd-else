@@ -1,3 +1,6 @@
 .DS_Store
 classes/dir.c
 *.o
+Build
+build
+else
