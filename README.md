@@ -6,7 +6,7 @@
 
 ### Version: 1.0-0 RC-12 (release candidate #12) With Live Electronics Tutorial. 
 
-### Released August 06th 2024
+### Released September 3rd 2024
 
 Copyright © 2017-2024 Alexandre Torres Porres and others 
 
@@ -15,6 +15,7 @@ This work is free. You can redistribute it and/or modify it under the terms of t
 
 For details on authorship check the source code. Other licenses also apply for specific objects and this is also informed in the source code. 
 For instance:
+
 - [beat~], [sfont~], [giga.rev~] and [lua] are licensed under the GNU GPL library
 - [sfz~] and band limited oscillators like [bl.saw~] are licensed under the BSD 2-Clause library
 - [plaits~], [osc.format], [osc.parse] and [osc.route] are licensed under the MIT library
@@ -42,23 +43,23 @@ This project is still in an experimental phase (currently at a 'release candidat
 
 ### Downloading ELSE:
 
-You can get ELSE from https://github.com/porres/pd-else/releases - where all releases are available, but ELSE is also found via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else'). In any case, you should download the folder to a place Pd automatically searches for, and the common place is the **~/Documents/Pd/externals** folder. Instructions on how to install and build ELSE are provided below.
+You can get ELSE from https://github.com/porres/pd-else/releases - where all releases are available, but ELSE is also found via Pd's external manager (In Pd, just go for **Help --> Find Externals** and search for '**else**'). In any case, you should download the folder to a place Pd automatically searches for, and the common place is the **~/Documents/Pd/externals** folder. Instructions on how to install and build ELSE are provided below.
 
 --------------------------------------------------------------------------
 
 ### Installing ELSE:
 
-This library runs in Pd Vanilla and do I still need to say it doesn't run in the long dead "Pd Extended"? Neither its new (and unfortunate) reincarnations "Pd-L2ork/Purr Data". Nevertheless, it can run in other forks that are actually compatible to Vanilla, most notably, ELSE is included in the PlugData fork --> <https://github.com/timothyschoen/PlugData> and you don't need to install it there.
+This library runs in Pd Vanilla and do I still need to say it doesn't run in the long dead "Pd Extended"? Neither its new (and unfortunately forever outdated) reincarnations "Pd-L2ork/Purr Data". Nevertheless, it can run in other forks that are actually compatible to Vanilla and up to date, most notably, ELSE is included in the PlugData fork --> <https://github.com/timothyschoen/PlugData> and you don't need to install it there.
 
-ELSE comes mostly as a set of separate binaries and abstractions, which work if you just add the 'else' folder to the path via "Preferences => Path" or via **[declare -path else]**. Nonetheless, you must also load ELSE as a library via "Preferences => Startup" or **[declare -lib else]**. 
+ELSE comes mostly as a set of separate binaries and abstractions, which work if you just add the '**else**' folder to the path via "**Preferences --> Path**" or via **[declare -path else]**. Nonetheless, you must also load ELSE as a library via "**Preferences --> Startup**" or with **[declare -lib else]**. 
 
-Loading the library loads an object browsing plugin. It also registers a loader that allows Pd externals written in Lua (with the "*.pd_lua" extension) to be loaded. Some objects in ELSE are coded in lua, like the [lua] object itself. Loading the library also prints information of what version of ELSE you have when you open Pd. Check else-help.pd for more details.
+Loading the library loads an object browsing plugin. It also registers a loader that allows Pd externals written in Lua (with the "*.pd_lua" extension) to be loaded. Some objects in ELSE are coded in lua, like the [lua] object itself. Loading the library also prints information of what version of ELSE you have when you open Pd. Check **else-help.pd** for more details.
 
 --------------------------------------------------------------------------
 
 #### Building ELSE for Pd Vanilla:
 
-ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example (assuming the unpacked Pd package is in ~/pd-0.54-1; for Windows/MinGW add `pdbinpath=~/pd-0.54-1/bin/`):
+ELSE relies on the build system called "**pd-lib-builder**" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example (assuming the unpacked Pd package is in ~/pd-0.55-0; for Windows/MinGW add `pdbinpath=~/pd-0.55-0/bin/`):
 
 <pre>make pdincludepath=~/pd-0.55-0/src/</pre>
 
@@ -73,7 +74,7 @@ Cross compiling is also possible with something like this
 
 <pre>make CC=arm-linux-gnueabihf-gcc target.arch=arm7l install objectsdir=~/else-build</pre>
 
-##### Installing [sfload~], [play.file~], [sfont~], [sfz~], [plaits~] and [circuit~]
+##### Installing [sfload], [play.file~], [sfont~], [sfz~], [plaits~] and [circuit~]
 
 For technical reasons these objects reside in their own subdirectories of the ELSE source directory (note, however, that [sfload] and [play.file~] is on a single 'play.file~' folder). This means that a normal build as described above will skip them. You can install these separately and you can also check their subfolders for their own READMEs and instructions.
 
@@ -96,7 +97,7 @@ But the library grew to encompass functionalities found in other Pd objects/libr
 
 The goal of ELSE also outgrew the didactic material as it now includes objects not necessarily depicted in the computer music examples. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects. So that's it, ELSE is becoming a quite big library and keeps growing and growing. A recent addition to it is 'M.E.R.D.A' a set of abstractions inspired by EuroRack modules.
 
-ELSE has been in active development since early 2017 for real, but it hasn't stabilized into a final version yet. The aim is to do so as soon as PlugData's 1.0 version comes out! For now, it's at a "Release Candidate" stage of development, where changes may occur and backwards compatibility is not guaranteed until a final release is available. 
+ELSE has been in active development since early 2017 for real, but it hasn't stabilized into a final version yet. The aim is to do so as soon as PlugData's 1.0 version comes out! For now, it's at a "Release Candidate" stage of development, where changes may occur and backwards compatibility is not guaranteed until a final stable release is available. 
 
 --------------------------------------------------------------------------
 
@@ -108,11 +109,11 @@ I'd also like to thank my Cyclone buddies Derek Kwan and Matt Barber, cause I st
 
 Lucarda is an active tester and has helped countless times with compilation issues for windows and more. Seb shader is a tcl/tk master that helped me a lot with this (which I know next to nothing) and is responsible for the [keycode] object. Ben Wesch made [scope3d~] for ELSE, a nice 3D oscilloscope.
 
-Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of ELSE for other systems as well as ELSE for Camomile and libpd projects, which opened the way for PlugData by Timothy Schoen, who's doing an amazing jaw dropping job with this project based on camomile that includes ELSE. Timothy has also helped me fix many ELSE related issues and has made incredible and countless contributions to ELSE. Other folks from the PlugData gang are being very helpful like Alex Mitchell and Amy. PlugData is a fork of Pd with a revamped GUI and comes with the ELSE library. See: <https://github.com/timothyschoen/PlugData>.
+Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of ELSE for other systems as well as ELSE for Camomile and libpd projects, which opened the way for PlugData by Timothy Schoen, who's doing an amazing jaw dropping job with this project based on camomile that includes ELSE. Timothy has also helped me fix many ELSE related issues and has made incredible and countless contributions to ELSE with fixes, improvements and new objects. Other folks from the PlugData gang are being very helpful like Alex Mitchell and Amy. PlugData is a fork of Pd with a revamped GUI and comes with the ELSE library. See: <https://github.com/timothyschoen/PlugData>.
 
 --------------------------------------------------------------------------
 
-## Current Object list (551 objects):
+## Current Object list (553 objects):
 
 #assorted
     else
@@ -147,8 +148,8 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 #midi
     midi midi.learn midi.in midi.out sysrt.in sysrt.out ctl.in ctl.out touch.in touch.out ptouch.in ptouch.out  pgm.in pgm.out nemd.in bend.out note.in note.out midi.clock noteinfo panic mono mono~ voices voices~ suspedal
     
-#osc
-    osc.route osc.format osc.parse osc.send osc.receive
+#osc/network
+    osc.route osc.format osc.parse osc.send osc.receive pd.link pd.link~
     
 #math functions
     add add~ median avg mov.avg count gcd lcm frac.add frac.mul ceil ceil~ factor floor floor~ trunc trunc~ rint rint~ quantizer quantizer~ fold fold~ lastvalue mag mag~ sin~ wrap2 wrap2~ op op~
