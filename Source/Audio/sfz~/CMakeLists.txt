@@ -107,12 +107,12 @@ set(SFIZZ_LIBS
 )
 
 add_pd_external(sfz_tilde sfz~ sfz~.c)
-target_link_libraries(sfz_tilde PRIVATE ${SFIZZ_LIBS} else_shared)
+target_link_libraries(sfz_tilde PRIVATE ${SFIZZ_LIBS} else_shared stdc++)
 target_include_directories(sfz_tilde PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/sfizz/library/src)
 target_compile_definitions(sfz_tilde PRIVATE MIDI_CC_COUNT=127 SFIZZ_VERSION="1.2.2")
 add_dependencies(sfz_tilde sfizz_build)
 
 if(WIN32)
     target_link_options(sfz_tilde PUBLIC -static-libgcc -static-libstdc++ -static)
-    target_link_libraries(sfz_tilde PUBLIC "ws2_32;iphlpapi;stdc++")
+    target_link_libraries(sfz_tilde PUBLIC "ws2_32;iphlpapi;")
 endif()
