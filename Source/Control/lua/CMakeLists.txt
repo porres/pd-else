@@ -15,17 +15,16 @@ if(NOT git_result EQUAL 0)
     set(pdlua_version "unknown")
 endif()
 
-set(LUA_FLAGS "-DMAKE_LIB -Ilua")
-
-if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    set(LUA_FLAGS "${LUA_FLAGS} -DLUA_USE_MACOSX")
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    set(LUA_FLAGS "${LUA_FLAGS} -DLUA_USE_LINUX")
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    set(LUA_FLAGS "${LUA_FLAGS} -DLUA_USE_WINDOWS")
-endif()
-
 add_library(lua STATIC ${CMAKE_CURRENT_SOURCE_DIR}/lua/onelua.c)
+target_include_directories(lua PUBLIC lua)
+
+if(APPLE)
+    target_compile_definitions(lua PUBLIC LUA_USE_MACOSX=1 MAKE_LIB=1)
+elseif(UNIX)
+    target_compile_definitions(lua PUBLIC LUA_USE_LINUX=1 MAKE_LIB=1)
+elseif(WIN32)
+    target_compile_definitions(lua PUBLIC LUA_USE_WINDOWS=1 MAKE_LIB=1)
+endif()
 
 # Define the external
 add_pd_external(pdlua pdlua pdlua.c)
@@ -33,5 +32,4 @@ add_pd_external(pdlua pdlua pdlua.c)
 # Libraries to link against
 target_link_libraries(pdlua PRIVATE lua)
 target_include_directories(pdlua PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/lua)
-target_compile_options(lua PUBLIC ${LUA_FLAGS})
 target_compile_definitions(pdlua PRIVATE PDLUA_VERSION=${pdlua_version})
