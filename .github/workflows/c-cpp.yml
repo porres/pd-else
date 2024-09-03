@@ -7,11 +7,9 @@ on:
     paths-ignore: ["md-help/**"]
   pull_request:
     branches: ["master", "CI"]
-    paths-ignore: ["md-help/**", "Help-files/**"]
+    paths-ignore: ["Documentation/**"]
 
 jobs:
-  # ===============================================================
-  # ===============================================================
   # ===============================================================
   Linux-Build:
     runs-on: ubuntu-latest
@@ -28,201 +26,22 @@ jobs:
           rm pure-data.zip
           mv pure-data-* pure-data
 
-      - name: Install FluidSynth deps
+      - name: Configure pd-else
         run: |
-          sudo apt update
-          sudo apt install cmake libglib2.0-dev libpcre++-dev libsndfile1-dev patchelf -y
-
-      - name: build FluidSynth
-        run: |
-          mkdir ./else-Linux
-          cd Code_source/Compiled/audio/sfont~
-          URL=$(curl -L -s https://api.github.com/repos/FluidSynth/fluidsynth/releases/latest | grep zipball_url | cut -d '"' -f 4)
-          curl -L -o fluidsynth.zip $URL
-          unzip fluidsynth.zip
-          rm fluidsynth.zip
-          mv FluidSynth-* FluidSynth
-          cd FluidSynth
-          mkdir build
-          cd build
-          cmake -Denable-libsndfile=on -Denable-jack=off -Denable-alsa=off -Denable-oss=off -Denable-pulseaudio=off -Denable-ladspa=off -Denable-aufile=off -Denable-network=off -Denable-ipv6=off -Denable-getopt=off -Denable-sdl2=off -Denable-threads=off ..
-          sudo ldconfig /lib/x86_64-linux-gnu/
-          sudo ldconfig -v
-          sudo make install
-
-      - name: Add Dynamic libraries
-        run: |
-          sudo sh -c 'echo "/lib/x86_64-linux-gnu/" >> /etc/ld.so.conf'
-          sudo sh -c 'echo "/lib64/" >> /etc/ld.so.conf'
-          sudo sh -c 'echo "/usr/local/lib/" >> /etc/ld.so.conf'
-          sudo ldconfig
-          sudo ldconfig -v
-
-      - name: Build sfont~
-        run: |
-          cd ./Code_source/Compiled/audio/sfont~
-          make PDLIBDIR=${{github.workspace}}/else-Linux/ extension=l_amd64
-
-      - name: Build pd-sfz~
-        run: |
-          cd ./Code_source/Compiled/audio/sfz~
-          make PDINCLUDEDIR=./pure-data/src/
-          cd ./sfizz/build/pd/sfizz/
-          ls
-
-      - name: Build plaits~
-        run: |
-          cd ./Code_source/Compiled/audio/plaits~
-          make PDINCLUDEDIR=${{github.workspace}}/pure-data/src extension=l_amd64
-
-      - name: Build circuit~
-        run: |
-          cd ./Code_source/Compiled/audio/circuit~
-          make PDINCLUDEDIR=${{github.workspace}}/pure-data/src extension=l_amd64
-
-      - name: Build pd.link
-        run: |
-          cd ./Code_source/Compiled/control/pd.link
-          make PDINCLUDEDIR=${{github.workspace}}/pure-data/src extension=l_amd64
-
-      - name: Build play.file~
-        run: |
-          cd ./Code_source/Compiled/audio/play.file~
-          make PDINCLUDEDIR=./pure-data/src/ extension=l_amd64 all_obj
+          cmake -BBuild -DPD_DIR=${{github.workspace}}/pure-data
 
       - name: Build pd-else
         run: |
-          make PDINCLUDEDIR=./pure-data/src/ extension=l_amd64
-
-      - name: Create Library Folder
-        run: |
-          cp *.l_amd64 ./else-Linux
-          cp ./Documentation/Help-files/* ./else-Linux
-          cp -r ./Code_source/Abstractions/control/* ./else-Linux
-          cp -r ./Code_source/Abstractions/audio/* ./else-Linux
-          cp -r ./Code_source/Abstractions/extra_abs/* ./else-Linux
-          cp -r ./Documentation/Live-Electronics-Tutorial ./else-Linux
-          cp -r ./Code_source/Compiled/control/pd.link/*.l_amd64 ./else-Linux
-          cp -r ./Code_source/Compiled/audio/plaits~/*.l_amd64 ./else-Linux
-          cp -r ./Code_source/Compiled/audio/circuit~/*.l_amd64 ./else-Linux
-          cp -r ./Code_source/Compiled/audio/play.file~/*.l_amd64 ./else-Linux
-          cp -r ./Code_source/Compiled/extra_source/*.tcl ./else-Linux
-          cp -r ./Code_source/Compiled/audio/sfz~/sfizz/build/pd/sfizz/sfizz.pd_linux ./else-Linux
-          mv ./else-Linux/sfizz.pd_linux ./else-Linux/sfz~.l_amd64
-          cp -r ./Documentation/extra_files/* ./else-Linux
-          cp ./Documentation/README.pdf ./else-Linux
-          rm -rf ./else-Linux/sfont~
+          cmake --build Build
 
       - name: Upload Zip
         uses: actions/upload-artifact@v3
         with:
           name: else
-          path: ./else-Linux/*
-
-  # # # # ===============================================================
-  # # # # ===============================================================
-  # # # # ===============================================================
-
-  Windows-Build:
-    runs-on: windows-latest
-    timeout-minutes: 25
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: recursive
-          fetch-depth: 0
-
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-
-      - if: runner.os == 'Windows'
-        name: "Install mingw deps"
-        uses: msys2/setup-msys2@v2
-        with:
-          install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-ntldd-git     mingw-w64-x86_64-fluidsynth mingw64/mingw-w64-x86_64-cmake unzip curl
-          update: false
-
-      #     - name: Configure Environment
-      #       run: |
-      #         mkdir py4pd_WIN64
-      #         choco install puredata --yes
-
-      - if: runner.os == 'Windows'
-        name: Get Pd
-        shell: msys2 {0}
-        run: |
-          curl -L -o pure-data.zip http://msp.ucsd.edu/Software/pd-0.54-0.msw.zip
-          unzip pure-data.zip
-          rm pure-data.zip
-          rename  pd-0.54-0 pd pd-0.54-0
-      #         mv ./pd-* ./pd
-      - if: runner.os == 'Windows'
-        name: Build pd-else
-        shell: msys2 {0}
-        run: |
-          make PDDIR=./pd extension=m_amd64 install
-
-      - if: runner.os == 'Windows'
-        name: Build pd.link
-        shell: msys2 {0}
-        run: |
-          make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 pd.link
-
-      - if: runner.os == 'Windows'
-        name: Build sfont~
-        shell: msys2 {0}
-        run: |
-          cd Code_source/Compiled/audio/sfont~/
-          make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64
-          cd ../../../../
-
-      - if: runner.os == 'Windows'
-        name: Build plaits~
-        shell: msys2 {0}
-        run: |
-          cd Code_source/Compiled/audio/plaits~
-          make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 install
-          cd ../../../../
-
-      - if: runner.os == 'Windows'
-        name: Build sfz~
-        shell: msys2 {0}
-        run: |
-          make PDDIR=./pd PDLIBDIR=./out extension=m_amd64 sfz
-          make PDDIR=./pd PDLIBDIR=./out extension=m_amd64 sfz-install
-
-      - if: runner.os == 'Windows'
-        name: Build circuit~
-        shell: msys2 {0}
-        run: |
-          make PDDIR=../../../../pd PDLIBDIR=./out extension=m_amd64 circuit
-
-      - if: runner.os == 'Windows'
-        name: Build play.file~
-        shell: msys2 {0}
-        run: |
-          make PDDIR=../../../../pd extension=m_amd64 play.file
-
-      - if: runner.os == 'Windows'
-        name: Create Library Folder
-        shell: msys2 {0}
-        run: |
-          mkdir ./else-Windows
-          cp -r ./out/else/*.* ./else-Windows
-          cp -r ./Code_source/Compiled/audio/sfont~/*.m_amd64 ./else-Windows
-          cp -r ./Code_source/Compiled/audio/plaits~/out/plaits~/*.* ./else-Windows
-          cp ./Code_source/Compiled/audio/play.file~/*.m_amd64 ./else-Windows
-
-      - name: Upload Zip
-        uses: actions/upload-artifact@v3
-        with:
-          name: else
-          path: ./else-Windows/*
+          path: ./else/*
 
   # # ===============================================================
-  # # ===============================================================
-  # # ===============================================================
+
   Mac-Intel:
     runs-on: macos-latest
     steps:
@@ -231,66 +50,22 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
-      - name: set Enviroment
+      - name: Configure pd-else
         run: |
-          brew cleanup --prune=all
-          brew install --cask pd
-          brew install fluidsynth pkg-config
-
-      - name: Build sfont~
-        run: |
-          cd ./Code_source/Compiled/audio/sfont~
-          make extension=d_amd64
-      - name: Build pd-sfz~
-        run: |
-          cd ./Code_source/Compiled/audio/sfz~
-          make extension=d_amd64
-
-      - name: Build plaits~
-        run: |
-          cd ./Code_source/Compiled/audio/plaits~
-          make extension=d_amd64
-
-      - name: Build circuit~
-        run: |
-          cd ./Code_source/Compiled/audio/circuit~
-          make extension=d_amd64
-
-      - name: Build pd.link
-        run: |
-          cd ./Code_source/Compiled/control/pd.link
-          make extension=d_amd64
-
-      - name: Build play.file~
-        run: |
-          cd ./Code_source/Compiled/audio/play.file~
-          make extension=d_amd64 all_obj
+          cmake -BBuild -DPD_DIR=${{github.workspace}}/pure-data
 
       - name: Build pd-else
         run: |
-          make extension=d_amd64
-
-      - name: Create Library Folder
-        run: |
-          mkdir else-MacOS
-          cp *.d_amd64 ./else-MacOS
-          cp ./Code_source/Compiled/control/pd.link/*.d_amd64 ./else-MacOS
-          cp ./Code_source/Compiled/audio/plaits~/*.d_amd64 ./else-MacOS
-          cp ./Code_source/Compiled/audio/circuit~/*.d_amd64 ./else-MacOS
-          cp ./Code_source/Compiled/audio/play.file~/*.d_amd64 ./else-MacOS
-          cp -r ./Code_source/Compiled/audio/sfz~/sfizz/build/pd/sfizz/*.pd_darwin ./else-MacOS
-          mv ./else-MacOS/sfizz.pd_darwin ./else-MacOS/sfz~.d_amd64
-          cp -r ./Code_source/Compiled/audio/sfont~/sfont~.d_amd64 ./else-MacOS
+          cmake --build Build
 
       - name: Upload Zip
         uses: actions/upload-artifact@v3
         with:
           name: else
-          path: ./else-MacOS/*
+          path: ./else/*
 
   # ===============================================================
-  # ===============================================================
-  # ===============================================================
+
   Mac-ARM:
     runs-on: macos-latest
     steps:
@@ -299,59 +74,65 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
-      - name: set Enviroment
+      - name: Configure pd-else
         run: |
-          brew cleanup --prune=all
-          brew install --cask pd
-          brew install fluidsynth pkg-config
-
-      - name: Build sfont~
-        run: |
-          cd ./Code_source/Compiled/audio/sfont~
-          make extension=d_arm64
-      - name: Build pd-sfz~
-        run: |
-          cd ./Code_source/Compiled/audio/sfz~
-          make extension=d_arm64
-
-      - name: Build plaits~
-        run: |
-          cd ./Code_source/Compiled/audio/plaits~
-          make extension=d_arm64
-
-      - name: Build circuit~
-        run: |
-          cd ./Code_source/Compiled/audio/circuit~
-          make extension=d_arm64
-
-      - name: Build pd.link
-        run: |
-          cd ./Code_source/Compiled/control/pd.link
-          make extension=d_arm64
-
-      - name: Build play.file~
-        run: |
-          cd ./Code_source/Compiled/audio/play.file~
-          make extension=d_arm64 all_obj
+          cmake -BBuild -DPD_DIR=${{github.workspace}}/pure-data
 
       - name: Build pd-else
         run: |
-          make extension=d_arm64
-
-      - name: Create Library Folder
-        run: |
-          mkdir else-MacOS
-          cp *.d_arm64 ./else-MacOS
-          cp ./Code_source/Compiled/control/pd.link/*.d_arm64 ./else-MacOS
-          cp ./Code_source/Compiled/audio/plaits~/*.d_arm64 ./else-MacOS
-          cp ./Code_source/Compiled/audio/circuit~/*.d_arm64 ./else-MacOS
-          cp ./Code_source/Compiled/audio/play.file~/*.d_arm64 ./else-MacOS
-          cp -r ./Code_source/Compiled/audio/sfz~/sfizz/build/pd/sfizz/*.pd_darwin ./else-MacOS
-          mv ./else-MacOS/sfizz.pd_darwin ./else-MacOS/sfz~.d_arm64
-          cp -r ./Code_source/Compiled/audio/sfont~/sfont~.d_arm64 ./else-MacOS
+          cmake --build Build
 
       - name: Upload Zip
         uses: actions/upload-artifact@v3
         with:
           name: else
-          path: ./else-MacOS/*
+          path: ./else/*
+
+  # ===============================================================
+
+  Windows-Build:
+      runs-on: windows-latest
+      timeout-minutes: 25
+      steps:
+        - uses: actions/checkout@v3
+          with:
+            submodules: recursive
+            fetch-depth: 0
+
+        - uses: actions/setup-python@v4
+          with:
+            python-version: "3.10"
+
+        - if: runner.os == 'Windows'
+          name: "Install mingw deps"
+          uses: msys2/setup-msys2@v2
+          with:
+            install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-ntldd-git     mingw-w64-x86_64-fluidsynth mingw64/mingw-w64-x86_64-cmake unzip curl
+            update: false
+
+        - if: runner.os == 'Windows'
+          name: Get Pd
+          shell: msys2 {0}
+          run: |
+            curl -L -o pure-data.zip http://msp.ucsd.edu/Software/pd-0.54-0.msw.zip
+            unzip pure-data.zip
+            rm pure-data.zip
+            rename  pd-0.54-0 pd pd-0.54-0
+
+        - if: runner.os == 'Windows'
+          name: Configure pd-else
+          shell: msys2 {0}
+          run: |
+            cmake -BBuild -DPD_DIR=./pd -G"MSYS Makefiles"
+
+        - if: runner.os == 'Windows'
+          name: Build pd-else
+          shell: msys2 {0}
+          run: |
+            cmake --build Build
+
+        - name: Upload Zip
+          uses: actions/upload-artifact@v3
+          with:
+            name: else
+            path: ./else/*

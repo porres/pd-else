@@ -48,3 +48,19 @@ file(GLOB merda_files "${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Merda/Modules/*"
 file(MAKE_DIRECTORY ${else})
 file(COPY ${extra_files} ${help_files} DESTINATION ${PD_OUTPUT_PATH})
 file(COPY ${merda_files} DESTINATION ${PD_OUTPUT_PATH}/Merda)
+
+#cp *.l_amd64 ./else-Linux
+#cp -r ./Code_source/Abstractions/control/* ./else-Linux
+#cp -r ./Code_source/Abstractions/audio/* ./else-Linux
+#cp -r ./Code_source/Abstractions/extra_abs/* ./else-Linux
+#cp -r ./Documentation/Live-Electronics-Tutorial ./else-Linux
+#cp -r ./Code_source/Compiled/control/pd.link/*.l_amd64 ./else-Linux
+#cp -r ./Code_source/Compiled/audio/plaits~/*.l_amd64 ./else-Linux
+#cp -r ./Code_source/Compiled/audio/circuit~/*.l_amd64 ./else-Linux
+#cp -r ./Code_source/Compiled/audio/play.file~/*.l_amd64 ./else-Linux
+#cp -r ./Code_source/Compiled/extra_source/*.tcl ./else-Linux
+#cp -r ./Code_source/Compiled/audio/sfz~/sfizz/build/pd/sfizz/sfizz.pd_linux ./else-Linux
+#mv ./else-Linux/sfizz.pd_linux ./else-Linux/sfz~.l_amd64
+#cp -r ./Documentation/extra_files/* ./else-Linux
+#cp ./Documentation/README.pdf ./else-Linux
+#rm -rf ./else-Linux/sfont~
