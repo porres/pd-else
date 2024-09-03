@@ -74,5 +74,5 @@ file(COPY ${pdf_help} ${extra_files} ${help_files} ${abstractions} DESTINATION $
 file(COPY ${merda_files} DESTINATION ${PD_OUTPUT_PATH}/Merda)
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Source/Audio/sfz~/sfz" DESTINATION ${PD_OUTPUT_PATH}/sfz)
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Documentation/Live-Electronics-Tutorial" DESTINATION ${PD_OUTPUT_PATH}/Live-Electronics-Tutorial)
-file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Documentation/LICENCE" DESTINATION ${PD_OUTPUT_PATH}/LICENSE)
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE" DESTINATION ${PD_OUTPUT_PATH}/LICENSE)
 file(REMOVE_RECURSE ${PD_OUTPUT_PATH}/audio)
