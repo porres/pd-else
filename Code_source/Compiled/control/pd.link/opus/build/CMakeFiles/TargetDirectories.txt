@@ -1,9 +1,0 @@
-/Users/timschoen/Repositories/pd-else/Code_source/Compiled/control/pd.link/opus/build/CMakeFiles/opus.dir
-/Users/timschoen/Repositories/pd-else/Code_source/Compiled/control/pd.link/opus/build/CMakeFiles/package.dir
-/Users/timschoen/Repositories/pd-else/Code_source/Compiled/control/pd.link/opus/build/CMakeFiles/package_source.dir
-/Users/timschoen/Repositories/pd-else/Code_source/Compiled/control/pd.link/opus/build/CMakeFiles/edit_cache.dir
-/Users/timschoen/Repositories/pd-else/Code_source/Compiled/control/pd.link/opus/build/CMakeFiles/rebuild_cache.dir
-/Users/timschoen/Repositories/pd-else/Code_source/Compiled/control/pd.link/opus/build/CMakeFiles/list_install_components.dir
-/Users/timschoen/Repositories/pd-else/Code_source/Compiled/control/pd.link/opus/build/CMakeFiles/install.dir
-/Users/timschoen/Repositories/pd-else/Code_source/Compiled/control/pd.link/opus/build/CMakeFiles/install/local.dir
-/Users/timschoen/Repositories/pd-else/Code_source/Compiled/control/pd.link/opus/build/CMakeFiles/install/strip.dir
