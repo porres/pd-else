@@ -1,9 +1,9 @@
 // Matt Barber and Porres (2017-2022)
 
-#include "m_pd.h"
-#include "g_canvas.h"
-#include "magic.h"
-#include "random.h"
+#include <m_pd.h>
+#include <g_canvas.h>
+#include <magic.h>
+#include <random.h>
 
 static t_class *brown_class;
 

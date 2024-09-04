@@ -1,8 +1,8 @@
 // porres 2020
 
-#include "m_pd.h"
-#include "magic.h"
-#include "buffer.h"
+#include <m_pd.h>
+#include <magic.h>
+#include <buffer.h>
 #include <stdlib.h>
 
 typedef struct _tabplayer{

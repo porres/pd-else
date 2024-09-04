@@ -1,7 +1,7 @@
 // Porres 2018
 
-#include "m_pd.h"
-#include "random.h"
+#include <m_pd.h>
+#include <random.h>
 
 static t_class *randpulse2_class;
 

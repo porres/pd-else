@@ -1,5 +1,5 @@
-#include "m_pd.h"
-#include "buffer.h"
+#include <m_pd.h>
+#include <buffer.h>
 #include <string.h>
 
 #define FFDEL_DEFSIZE   192000                          // default buffer size

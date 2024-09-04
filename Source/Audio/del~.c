@@ -1,8 +1,8 @@
 // based on delwrite~/delread4~
 
-#include "m_pd.h"
-#include "g_canvas.h"
-#include "buffer.h"
+#include <m_pd.h>
+#include <g_canvas.h>
+#include <buffer.h>
 #include <string.h>
 extern int ugen_getsortno(void);
 

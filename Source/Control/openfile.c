@@ -1,7 +1,7 @@
 // based on pddplink
 
-#include "m_pd.h"
-#include "g_canvas.h"
+#include <m_pd.h>
+#include <g_canvas.h>
 #include <string.h>
 
 typedef struct _openfile{

@@ -1,9 +1,9 @@
 // porres 2020
 
-#include "m_pd.h"
-#include "else_alloca.h"
+#include <m_pd.h>
+#include <else_alloca.h>
 #include <stdlib.h>
-#include "random.h"
+#include <random.h>
 
 typedef struct _chance{
 	t_object       x_obj;

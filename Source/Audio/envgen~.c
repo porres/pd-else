@@ -1,7 +1,7 @@
 // porres 2018-2022
 
-#include "m_pd.h"
-#include "else_alloca.h"
+#include <m_pd.h>
+#include <else_alloca.h>
 #include <stdlib.h>
 #include <math.h>
 

@@ -1,8 +1,8 @@
 // matt barber and porres (2018)
 // based on SuperCollider's white UGen
 
-#include "m_pd.h"
-#include "random.h"
+#include <m_pd.h>
+#include <random.h>
 
 static t_class *white_class;
 

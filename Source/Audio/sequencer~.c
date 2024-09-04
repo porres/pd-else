@@ -1,6 +1,6 @@
 // Porres 2017-2022
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include <stdlib.h>
 
 static t_class *sequencer_class;

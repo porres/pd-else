@@ -2,7 +2,7 @@
 // coded by matt barber
 
 #include <m_pd.h>
-#include "random.h"
+#include <random.h>
 
 
 static int instance_number = 0;

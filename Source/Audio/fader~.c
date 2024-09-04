@@ -1,7 +1,7 @@
 // porres
 
-#include "m_pd.h"
-#include "buffer.h"
+#include <m_pd.h>
+#include <buffer.h>
 
 typedef struct _fader_tilde{
     t_object    x_obj;

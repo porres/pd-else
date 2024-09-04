@@ -1,7 +1,7 @@
 // porres 2020
 
-#include "m_pd.h"
-#include "g_canvas.h"
+#include <m_pd.h>
+#include <g_canvas.h>
 
 static t_class *zoom_class, *zoom_proxy_class;
 

@@ -1,8 +1,8 @@
 // porres
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include "string.h"
-#include "g_canvas.h"
+#include <g_canvas.h>
 
 static t_class *args_class;
 

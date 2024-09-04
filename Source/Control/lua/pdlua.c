@@ -50,8 +50,8 @@
 #include "pdlua.h"
 
 #include "s_stuff.h" // for sys_register_loader()
-#include "m_imp.h" // for struct _class
-#include "g_canvas.h"
+#include <m_imp.h> // for struct _class
+#include <g_canvas.h>
 /* BAD: support for Pd < 0.41 */
 
 #include "pdlua_gfx.h"

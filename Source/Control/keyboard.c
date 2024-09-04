@@ -1,7 +1,7 @@
 // Prototype By Flávio Schiavoni, developed by Alexandre Porres
 
-#include "m_pd.h"
-#include "g_canvas.h"
+#include <m_pd.h>
+#include <g_canvas.h>
 
 //#include "../extra_source/compat.h"
 

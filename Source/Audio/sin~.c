@@ -1,7 +1,7 @@
 // porres
 
-#include "m_pd.h"
-#include "buffer.h"
+#include <m_pd.h>
+#include <buffer.h>
 
 typedef struct _sin{
     t_object  x_obj;

@@ -1,8 +1,8 @@
 // Porres 2019
 
-#include "m_pd.h"
-#include "g_canvas.h"
-#include "else_alloca.h"
+#include <m_pd.h>
+#include <g_canvas.h>
+#include <else_alloca.h>
 #include <string.h>
 
 static t_class *message_class;

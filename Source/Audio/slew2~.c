@@ -1,6 +1,6 @@
 // porres 2021
 
-#include "m_pd.h"
+#include <m_pd.h>
 
 typedef struct _slew2{
     t_object  x_obj;

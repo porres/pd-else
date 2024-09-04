@@ -1,7 +1,7 @@
 // porres 2019-2020
 
-#include "m_pd.h"
-#include "g_canvas.h"
+#include <m_pd.h>
+#include <g_canvas.h>
 
 static t_class *canvas_mouse_class, *canvas_mouse_proxy_class;
 

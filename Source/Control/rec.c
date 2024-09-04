@@ -6,9 +6,9 @@
 #include <unistd.h>
 #endif
 
-#include "m_pd.h"
-#include "elsefile.h"
-#include "else_alloca.h"
+#include <m_pd.h>
+#include <elsefile.h>
+#include <else_alloca.h>
 #include <stdlib.h>
 #include <string.h>
 

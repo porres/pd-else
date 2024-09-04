@@ -1,7 +1,7 @@
 // stolen from cyclone
 
-#include "m_pd.h"
-#include "g_canvas.h"
+#include <m_pd.h>
+#include <g_canvas.h>
 #include <string.h>
 
 typedef struct _mouse_gui{

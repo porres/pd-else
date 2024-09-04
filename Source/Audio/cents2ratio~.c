@@ -1,6 +1,6 @@
 // Porres 2016
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include <math.h>
 
 static t_class *cents2ratio_class;

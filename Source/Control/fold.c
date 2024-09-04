@@ -1,7 +1,7 @@
 // Porres 2016
  
-#include "m_pd.h"
-#include "else_alloca.h"
+#include <m_pd.h>
+#include <else_alloca.h>
 #include <stdlib.h>
 
 static t_class *fold_class;

@@ -1,8 +1,8 @@
 // Porres 2017-2023
 
-#include "m_pd.h"
-#include "magic.h"
-#include "buffer.h"
+#include <m_pd.h>
+#include <magic.h>
+#include <buffer.h>
 
 typedef struct _fbsine{
     t_object    x_obj;

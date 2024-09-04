@@ -1,8 +1,8 @@
 // matt barber and porres (2017-2018)
 // based on SuperCollider's GrayNoise UGen
 
-#include "m_pd.h"
-#include "random.h"
+#include <m_pd.h>
+#include <random.h>
 
 static t_class *gray_class;
 

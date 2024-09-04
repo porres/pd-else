@@ -1,14 +1,14 @@
 // porres 2019-2020 - sort code from 'sort' class (based M. Barber's code)
 
-#include "m_pd.h"
-#include "g_canvas.h"
-#include "m_imp.h"
+#include <m_pd.h>
+#include <g_canvas.h>
+#include <m_imp.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
 
 #ifdef _MSC_VER
-#include "dirent_msvc.h"
+#include <dirent_msvc.h>
 #else
 #include <dirent.h>
 #endif

@@ -1,7 +1,7 @@
 // porres 2019, based on cyclone active
 
-#include "m_pd.h"
-#include "g_canvas.h"
+#include <m_pd.h>
+#include <g_canvas.h>
 #include <string.h>
 
 static t_class *mouse_proxy_class, *active_gui_class, *active_class;

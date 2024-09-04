@@ -8,9 +8,9 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "m_pd.h"
-#include "elsefile.h"
-#include "mifi.h"
+#include <m_pd.h>
+#include <elsefile.h>
+#include <mifi.h>
 
 #define PANIC_VOID                  0xFF
 #define MIDI_INISEQSIZE             256    // LATER rethink

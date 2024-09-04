@@ -1,7 +1,7 @@
 // based/inspired on MAX's borax
 
 #include <string.h>
-#include "m_pd.h"
+#include <m_pd.h>
 
 #define noteinfo_MAXVOICES  128
 

@@ -1,9 +1,9 @@
 // porres 2021-2022
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include <stdlib.h>
 #include <string.h>
-#include "g_canvas.h"
+#include <g_canvas.h>
 
 #define DEFNTICKS   960
 #define MAX_N       10

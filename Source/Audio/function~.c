@@ -1,7 +1,7 @@
 // porres 2018
 
 #include <m_pd.h>
-#include "buffer.h"
+#include <buffer.h>
 
 #define MAX_SIZE  4096
 

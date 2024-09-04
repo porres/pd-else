@@ -1,7 +1,7 @@
 // porres 2024
 
-#include "m_pd.h"
-#include "buffer.h"
+#include <m_pd.h>
+#include <buffer.h>
 
 #define MAX_INOUT 4096
 

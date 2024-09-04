@@ -30,7 +30,7 @@ HEREUNDER IS PROVIDED "AS IS". REGENTS HAS NO OBLIGATION TO PROVIDE
 MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
-#include "m_pd.h"
+#include <m_pd.h>
 
 #define MAX_NUM 256 // maximum number of paths (prefixes) we can route
 

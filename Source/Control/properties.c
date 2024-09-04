@@ -1,5 +1,5 @@
-#include "m_pd.h"
-#include "g_canvas.h"
+#include <m_pd.h>
+#include <g_canvas.h>
 
 typedef struct _cnv_objlist{
     const t_pd *obj;

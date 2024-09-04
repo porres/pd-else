@@ -1,6 +1,6 @@
 // based on vanilla's pipe
 
-#include "m_pd.h"
+#include <m_pd.h>
 
 static t_class *pipe2_class;
 
