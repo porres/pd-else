@@ -1,7 +1,7 @@
 // based from cyclone/grab and simplified
 
-#include "m_pd.h"
-#include "m_imp.h"
+#include <m_pd.h>
+#include <m_imp.h>
 
 struct _outlet{
     t_object        *o_owner;

@@ -1,6 +1,6 @@
 // porres
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include <stdlib.h>
 
 static t_class *merge_class;

@@ -1,6 +1,6 @@
 // seb shader 2023
 
-#include "m_pd.h"
+#include <m_pd.h>
 
 // common mapping for every platform, from https://github.com/depp/keycode 
 #ifdef __APPLE__

@@ -1,7 +1,7 @@
 // Porres 2017-2023
 
-#include "m_pd.h"
-#include "buffer.h"
+#include <m_pd.h>
+#include <buffer.h>
 
 typedef struct _pm{
     t_object    x_obj;

@@ -1,7 +1,7 @@
 // Porres 2017
 
-#include "m_pd.h"
-#include "g_canvas.h"
+#include <m_pd.h>
+#include <g_canvas.h>
 
 typedef struct _loadbanger{
     t_object    x_ob;

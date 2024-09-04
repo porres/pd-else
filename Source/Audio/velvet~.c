@@ -1,7 +1,7 @@
 // Porres 2024
 
-#include "m_pd.h"
-#include "random.h"
+#include <m_pd.h>
+#include <random.h>
 
 typedef struct _velvet{
     t_object    x_obj;

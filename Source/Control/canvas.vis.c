@@ -1,7 +1,7 @@
 // porres 2019
 
-#include "m_pd.h"
-#include "g_canvas.h"
+#include <m_pd.h>
+#include <g_canvas.h>
 
 static t_class *canvas_vis_class, *canvas_vis_proxy_class;
 

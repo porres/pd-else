@@ -38,4 +38,4 @@ cd "$FFMPEG_DIR"
             --enable-demuxer=mp3,wav,aiff,flac,aac,ogg,pcm* --enable-filter=aresample --enable-protocol=file \
             $ffmpeg_config
 
-make CC="$ffmpeg_cc"
+make CC="$2 $ffmpeg_cc"

@@ -1,8 +1,8 @@
 // porres 2020
 
-#include "m_pd.h"
-#include "m_imp.h"
-#include "buffer.h"
+#include <m_pd.h>
+#include <m_imp.h>
+#include <buffer.h>
 
 #define DRAW_PERIOD     500.        // draw period
 

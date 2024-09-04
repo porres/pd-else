@@ -1,9 +1,9 @@
 // [gendyn~]: "Dinamic Stochastic Synthesis" based/inspired on Xenakis' GenDyn stuff
 // code by porres, 2022
 
-#include "m_pd.h"
-#include "random.h"
-#include "buffer.h"
+#include <m_pd.h>
+#include <random.h>
+#include <buffer.h>
 
 #define _USE_MATH_DEFINES
 #include <math.h>

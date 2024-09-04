@@ -1,6 +1,6 @@
 // porres, based on zexy's externals, by request on=f a plugdata user
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include <time.h>
 
 #if (defined __WIN32__)

@@ -5,7 +5,7 @@
 // Synthesis" by Jari Kleimola, Victor Lazzarini, Joseph Timoney, and Vesa
 // Valimaki. http://www.acoustics.hut.fi/publications/papers/smc2010-phaseshaping/
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include <math.h>
 #include <stdint.h>
 

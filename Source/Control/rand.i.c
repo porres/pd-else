@@ -1,8 +1,8 @@
 // porres
 
-#include "m_pd.h"
-#include "else_alloca.h"
-#include "random.h"
+#include <m_pd.h>
+#include <else_alloca.h>
+#include <random.h>
 
 static t_class *randi_class;
 

@@ -1,7 +1,7 @@
 // Porres 2018
 
-#include "m_pd.h"
-#include "buffer.h"
+#include <m_pd.h>
+#include <buffer.h>
 #include <math.h>
 #include <stdlib.h>
 

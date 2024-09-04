@@ -1,9 +1,9 @@
 // based on filterview
 
 #include <stdio.h>
-#include "m_pd.h"
-#include "m_imp.h"
-#include "g_canvas.h"
+#include <m_pd.h>
+#include <m_imp.h>
+#include <g_canvas.h>
 
 typedef struct bicoeff{
     t_object    x_obj;

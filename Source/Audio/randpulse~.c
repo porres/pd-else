@@ -1,8 +1,8 @@
 // Porres 2016
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include "math.h"
-#include "random.h"
+#include <random.h>
 
 static t_class *randpulse_class;
 

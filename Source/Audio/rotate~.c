@@ -1,6 +1,6 @@
-#include "m_pd.h"
-#include "buffer.h"
-#include "else_alloca.h"
+#include <m_pd.h>
+#include <buffer.h>
+#include <else_alloca.h>
 #include <stdlib.h>
 
 static t_class *rotate_class;

@@ -1,7 +1,7 @@
 // porres
 
-#include "m_pd.h"
-#include "buffer.h"
+#include <m_pd.h>
+#include <buffer.h>
 
 static t_class *xfade_class;
 

@@ -2,9 +2,9 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "m_pd.h"
-#include "g_canvas.h"
-#include "magic.h"
+#include <m_pd.h>
+#include <g_canvas.h>
+#include <magic.h>
 
 #define SCOPE_MINSIZE       20
 #define SCOPE_MINPERIOD     2

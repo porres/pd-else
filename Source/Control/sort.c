@@ -2,7 +2,7 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include "m_pd.h"
+#include <m_pd.h>
 
 #define INISIZE 128
 #define MAXSIZE 2147483647

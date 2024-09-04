@@ -1,7 +1,7 @@
 // Porres 2017-2024
 
-#include "m_pd.h"
-#include "random.h"
+#include <m_pd.h>
+#include <random.h>
 #include <math.h>
 #include <stdlib.h>
 

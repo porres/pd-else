@@ -1,7 +1,7 @@
 // Porres 2018
 
-#include "m_pd.h"
-#include "g_canvas.h"
+#include <m_pd.h>
+#include <g_canvas.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>

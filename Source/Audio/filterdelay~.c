@@ -1,8 +1,8 @@
 // porres 2023, inspired by and modified from Tom Erbe's [+delay~]
 
 #include <math.h>
-#include "m_pd.h"
-#include "buffer.h"
+#include <m_pd.h>
+#include <buffer.h>
 
 #define DELSIZE 1048576
 

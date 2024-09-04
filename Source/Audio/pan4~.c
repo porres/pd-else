@@ -1,7 +1,7 @@
 // Porres 2016
 
-#include "m_pd.h"
-#include "buffer.h"
+#include <m_pd.h>
+#include <buffer.h>
 
 static t_class *pan4_class;
 

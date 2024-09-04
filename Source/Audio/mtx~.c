@@ -1,6 +1,6 @@
 // porres 2023, rewrote from scratcg and ditched old version based on cyclone's
 
-#include "m_pd.h"
+#include <m_pd.h>
 
 #define mtx_MAX_INOUT  4096
 

@@ -1,8 +1,8 @@
 // By Porres and Tim Schoen
 // Based on the knob proposal for vanilla by Ant1, Porres and others
 
-#include "m_pd.h"
-#include "g_canvas.h"
+#include <m_pd.h>
+#include <g_canvas.h>
 #include <math.h>
 
 #define NAN_V   0x7FFFFFFFul

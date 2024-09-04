@@ -1,7 +1,7 @@
 /* ---------------- vu~ - envelope follower. ----------------- */
 /* based on msp's env~ object: outputs both linear and dBFS vu */
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include "math.h"
 
 #define MAXOVERLAP 32

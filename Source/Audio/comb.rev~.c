@@ -2,7 +2,7 @@
 
 #include <math.h>
 #include <stdlib.h>
-#include "m_pd.h"
+#include <m_pd.h>
 
 #define COMB_STACK  48000       // stack buf size, 1 sec at 48k for good measure
 #define COMB_DELAY  10.0        // maximum delay

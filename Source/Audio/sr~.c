@@ -1,8 +1,8 @@
 // Porres 2017-2020
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include "s_stuff.h"
-#include "g_canvas.h"
+#include <g_canvas.h>
 #include <string.h>
 
 static t_class *sr_class;
