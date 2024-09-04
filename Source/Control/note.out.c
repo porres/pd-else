@@ -1,6 +1,6 @@
 // porres 2018-2023
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include "s_stuff.h"
 
 typedef struct _noteout{

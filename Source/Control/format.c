@@ -1,6 +1,6 @@
 // based on cyclone sprintf
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include <string.h>
 
 // Pattern types

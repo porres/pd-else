@@ -1,8 +1,8 @@
 // matt barber and porres (2018)
 // based on SuperCollider's pink UGen
 
-#include "m_pd.h"
-#include "random.h"
+#include <m_pd.h>
+#include <random.h>
 
 #define PINK_MAX_OCT 40
 

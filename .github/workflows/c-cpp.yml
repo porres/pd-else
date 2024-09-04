@@ -8,7 +8,6 @@ on:
     branches: ["master", "CI"]
 
 env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
   CMAKE_BUILD_PARALLEL_LEVEL: 4
 
@@ -78,13 +77,19 @@ jobs:
   # ===============================================================
 
   Windows-Build:
-    runs-on: windows-latest
-    timeout-minutes: 25
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
           fetch-depth: 0
+
+      - if: runner.os == 'Windows'
+        name: "Install mingw deps"
+        uses: msys2/setup-msys2@v2
+        with:
+          install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-cmake
+          update: false
 
       - name: Get Pd
         shell: bash
@@ -95,14 +100,15 @@ jobs:
           mv pd-0.55-0 pd
 
       - name: Configure pd-else
-        shell: bash
+        shell: msys2 {0}
         run: |
-          cmake -BBuild -DPD_PATH=./pd -DPD_LIB_PATH=./pd/bin -G"MinGW Makefiles"
+          cmake -G"MSYS Makefiles" -BBuild -DPD_PATH=./pd
 
       - name: Build pd-else
-        shell: bash
+        shell: msys2 {0}
         run: |
           cmake --build Build
+          rm -rf ./Build/else/*.a
 
       - name: Upload Zip
         uses: actions/upload-artifact@v3

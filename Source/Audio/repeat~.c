@@ -1,6 +1,6 @@
 // porres
 
-#include "m_pd.h"
+#include <m_pd.h>
 
 static t_class *repeat_tilde_class;
 

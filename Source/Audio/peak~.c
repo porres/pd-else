@@ -1,6 +1,6 @@
 // similar to rms~ but outputs peak amplitude
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include <math.h>
 
 #define MAXOVERLAP 32

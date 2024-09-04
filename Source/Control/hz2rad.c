@@ -1,7 +1,7 @@
 // Porres 2016
  
-#include "m_pd.h"
-#include "else_alloca.h"
+#include <m_pd.h>
+#include <else_alloca.h>
 #include <stdlib.h>
 
 #define TWO_PI (2 * 3.14159265358979323846)

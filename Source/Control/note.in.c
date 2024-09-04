@@ -1,6 +1,6 @@
 // porres 2018-2024
 
-#include "m_pd.h"
+#include <m_pd.h>
 
 typedef struct _notein{
     t_object       x_obj;

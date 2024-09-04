@@ -1,7 +1,7 @@
 // porres 2017
 
-#include "m_pd.h"
-#include "else_alloca.h"
+#include <m_pd.h>
+#include <else_alloca.h>
 #include <stdlib.h>
 
 typedef struct _match{

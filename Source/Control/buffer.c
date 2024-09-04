@@ -1,7 +1,7 @@
 // based on vanilla's array
 
-#include "m_pd.h"
-#include "g_canvas.h"
+#include <m_pd.h>
+#include <g_canvas.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>

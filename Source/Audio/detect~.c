@@ -1,6 +1,6 @@
 // Porres 2016-2018
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include <string.h>
 
 static t_class *detect_class;

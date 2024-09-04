@@ -1,6 +1,6 @@
 // porres 2018-2023
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include "math.h"
 
 static t_class *lin2db_tilde_class;

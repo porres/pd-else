@@ -1,8 +1,8 @@
 // Porres 2024
 
-#include "m_pd.h"
-#include "magic.h"
-#include "buffer.h"
+#include <m_pd.h>
+#include <magic.h>
+#include <buffer.h>
 
 static t_class *wt2d_class;
 

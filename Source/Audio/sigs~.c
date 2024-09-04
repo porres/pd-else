@@ -1,6 +1,6 @@
 // porres based on a suggestion by cristoph ressi
 
-#include "m_pd.h"
+#include <m_pd.h>
 
 static t_class *sigs_tilde_class;
 

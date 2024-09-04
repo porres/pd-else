@@ -21,7 +21,7 @@
  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include <math.h>
 #include <string.h>
 

@@ -1,8 +1,8 @@
 // Porres 2017
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include "math.h"
-#include "random.h"
+#include <random.h>
 
 typedef struct _tempo{
     t_object       x_obj;

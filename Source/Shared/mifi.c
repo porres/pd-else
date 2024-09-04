@@ -2,8 +2,8 @@
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.  */
 
-#include "m_pd.h"
-#include "mifi.h"
+#include <m_pd.h>
+#include <mifi.h>
 #ifdef _WIN32
 #include <io.h>
 #else

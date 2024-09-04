@@ -1,7 +1,7 @@
 // porres 2017-2024
 
-#include "m_pd.h"
-#include "buffer.h"
+#include <m_pd.h>
+#include <buffer.h>
 
 static t_class *xgate_class;
 

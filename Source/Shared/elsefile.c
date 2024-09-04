@@ -8,9 +8,9 @@
 #include <stdlib.h>
 #endif
 
-#include "m_pd.h"
-#include "g_canvas.h"
-#include "elsefile.h"
+#include <m_pd.h>
+#include <g_canvas.h>
+#include <elsefile.h>
 #include <string.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

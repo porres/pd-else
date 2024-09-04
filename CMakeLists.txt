@@ -6,8 +6,14 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_MACOSX_RPATH ON)
-set(CMAKE_BUILD_RPATH "$ORIGIN")
-set(CMAKE_INSTALL_RPATH "$ORIGIN")
+if(UNIX AND NOT APPLE)
+    set(CMAKE_BUILD_RPATH "$ORIGIN")
+    set(CMAKE_INSTALL_RPATH "$ORIGIN")
+endif()
+if(APPLE)
+    set(CMAKE_BUILD_RPATH "@loader_path")
+    set(CMAKE_INSTALL_RPATH "@loader_path")
+endif()
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment version")
 set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "" FORCE)
@@ -38,7 +44,7 @@ file(GLOB else_sources
 
 file(GLOB aubio_sources
    ${CMAKE_CURRENT_SOURCE_DIR}/Source/Shared/aubio/src/**/*.c
-   ${CMAKE_CURRENT_SOURCE_DIR}/Source/shared/aubio/src/*.c
+   ${CMAKE_CURRENT_SOURCE_DIR}/Source/Shared/aubio/src/*.c
 )
 
 include_directories(${PD_SOURCES_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/Source/Shared ${CMAKE_CURRENT_SOURCE_DIR}/Source/Shared/aubio/src)
@@ -52,6 +58,7 @@ foreach(file ${else_sources})
 endforeach()
 
 target_sources(beat_tilde PRIVATE ${aubio_sources})
+target_link_libraries(else PRIVATE pdlua)
 
 add_subdirectory(Source/Control/pd.link)
 add_subdirectory(Source/Audio/circuit~)
@@ -60,8 +67,6 @@ add_subdirectory(Source/Audio/play.file~)
 add_subdirectory(Source/Audio/sfont~)
 add_subdirectory(Source/Audio/sfz~)
 add_subdirectory(Source/Control/lua)
-
-target_link_libraries(else PRIVATE pdlua)
 
 set(pdf_help "${CMAKE_CURRENT_SOURCE_DIR}/Documentation/README.pdf")
 file(GLOB help_files "${CMAKE_CURRENT_SOURCE_DIR}/Documentation/Help-files/*")
@@ -80,11 +85,9 @@ set(lua_resources
 file(GLOB merda_files "${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Merda/Modules/*")
 file(GLOB tcl_files "${CMAKE_CURRENT_SOURCE_DIR}/Source/Extra/*.tcl")
 file(GLOB abstractions ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Audio/*.pd ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Control/*.pd ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Extra/*)
-file(MAKE_DIRECTORY ${else})
 file(COPY ${pdf_help} ${extra_files} ${help_files} ${abstractions} ${tcl_files} ${lua_resources} DESTINATION ${PD_OUTPUT_PATH})
 file(COPY ${merda_files} DESTINATION ${PD_OUTPUT_PATH})
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Source/Audio/sfz~/sfz" DESTINATION ${PD_OUTPUT_PATH}/sfz)
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Documentation/Live-Electronics-Tutorial" DESTINATION ${PD_OUTPUT_PATH}/Live-Electronics-Tutorial)
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE" DESTINATION ${PD_OUTPUT_PATH}/LICENSE)
 file(REMOVE_RECURSE ${PD_OUTPUT_PATH}/audio)
-file(REMOVE_RECURSE ${PD_OUTPUT_PATH}/*.a)

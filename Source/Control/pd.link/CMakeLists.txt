@@ -23,6 +23,7 @@ endif()
 
 if(WIN32)
 target_compile_definitions(opus PRIVATE FLOAT_APPROX=1 _POSIX_SEM_VALUE_MAX=32767)
+target_compile_options(opus PRIVATE -msse2)
 target_compile_definitions(pdlink_common PUBLIC _POSIX_SEM_VALUE_MAX=32767)
 endif()
 

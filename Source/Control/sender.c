@@ -1,7 +1,7 @@
 // porres
 
-#include "m_pd.h"
-#include "g_canvas.h"
+#include <m_pd.h>
+#include <g_canvas.h>
 
 static t_class *sender_class;
 

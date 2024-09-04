@@ -3,10 +3,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "m_pd.h"
-#include "g_canvas.h"
-#include "s_elseutf8.h"
-#include "else_alloca.h"
+#include <m_pd.h>
+#include <g_canvas.h>
+#include <s_elseutf8.h>
+#include <else_alloca.h>
 
 // #include "../extra_source/compat.h"
 

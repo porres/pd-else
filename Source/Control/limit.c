@@ -1,7 +1,7 @@
 // porres
 
 #include <string.h>
-#include "m_pd.h"
+#include <m_pd.h>
 #include <stdlib.h>
 
 #define INISIZE 32

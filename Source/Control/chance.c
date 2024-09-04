@@ -1,7 +1,7 @@
 // porres 2020
 
-#include "m_pd.h"
-#include "random.h"
+#include <m_pd.h>
+#include <random.h>
 
 static t_class *chance_class;
 

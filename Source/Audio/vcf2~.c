@@ -3,7 +3,7 @@
 #define LOG001 log(0.001)
 #define TWO_PI (2 * 3.14159265358979323846)
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include <math.h>
 
 static t_class *vcf2_class;

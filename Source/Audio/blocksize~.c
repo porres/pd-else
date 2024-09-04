@@ -1,6 +1,6 @@
 // porres 2018-2020
 
-#include "m_pd.h"
+#include <m_pd.h>
 
 static t_class *blocksize_class;
 

@@ -1,6 +1,6 @@
 // porres 2017
 
-#include "m_pd.h"
+#include <m_pd.h>
 
 static t_class *changed_class;
 static t_class *changed_proxy_class;

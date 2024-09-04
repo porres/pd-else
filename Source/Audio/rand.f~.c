@@ -1,7 +1,7 @@
 // Porres 2017
 
-#include "m_pd.h"
-#include "random.h"
+#include <m_pd.h>
+#include <random.h>
 #include <stdlib.h>
 
 static t_class *randf_class;

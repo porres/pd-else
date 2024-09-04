@@ -1,5 +1,5 @@
 #include <string.h>
-#include "m_pd.h"
+#include <m_pd.h>
 
 #define PANIC_NCHANNELS  16
 #define PANIC_NPITCHES   128

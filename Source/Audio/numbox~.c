@@ -1,8 +1,8 @@
 // By Porres and Tim Schoen
 
-#include "m_pd.h"
-#include "g_canvas.h"
-#include "magic.h"
+#include <m_pd.h>
+#include <g_canvas.h>
+#include <magic.h>
 #include <stdlib.h>
 #include <string.h>
 

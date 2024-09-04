@@ -1,8 +1,8 @@
 // porres 2017-2020
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include <stdlib.h>
-#include "buffer.h"
+#include <buffer.h>
 
 static t_class *xgatemc_class;
 

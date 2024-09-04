@@ -1,7 +1,7 @@
 // Porres 2017-2024
 
-#include "m_pd.h"
-#include "magic.h"
+#include <m_pd.h>
+#include <magic.h>
 
 #include <stdlib.h>
 #include <math.h>

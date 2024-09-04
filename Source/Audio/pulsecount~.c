@@ -1,6 +1,6 @@
 // Porres 2017
 
-#include "m_pd.h"
+#include <m_pd.h>
 #include <math.h>
 
 static t_class *pulsecount_class;

@@ -1,7 +1,7 @@
 
 
-#include "m_pd.h"
-#include "else_alloca.h"
+#include <m_pd.h>
+#include <else_alloca.h>
 #include <stdlib.h>
 
 static t_class *merge_class;

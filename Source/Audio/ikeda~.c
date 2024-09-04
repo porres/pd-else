@@ -1,7 +1,7 @@
 // Porres 2017
 
 #include <math.h>
-#include "m_pd.h"
+#include <m_pd.h>
 
 static t_class *ikeda_class;
 

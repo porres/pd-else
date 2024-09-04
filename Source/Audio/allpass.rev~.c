@@ -3,7 +3,7 @@
 
 #include <math.h>
 #include <stdlib.h>
-#include "m_pd.h"
+#include <m_pd.h>
 
 #define allpass_rev_STACK 48000 // stack buf size, 1 sec at 48k
 #define allpass_rev_MAXD 4294967294 // max delay = 2**32 - 2

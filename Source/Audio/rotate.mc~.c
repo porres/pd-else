@@ -1,7 +1,7 @@
 // porres 2023
 
-#include "m_pd.h"
-#include "buffer.h"
+#include <m_pd.h>
+#include <buffer.h>
 
 static t_class *rotatemc_class;
 
