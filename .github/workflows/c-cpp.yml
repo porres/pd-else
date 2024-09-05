@@ -143,9 +143,7 @@ jobs:
 
   merge:
     runs-on: ubuntu-latest
-    needs: Windows-Build
-    needs: macOS-Build
-    needs: Linux-Build
+    needs: Windows-Build macOS-Build Linux-Build
     steps:
       - name: Merge Artifacts
         uses: actions/upload-artifact/merge@v4
