@@ -56,6 +56,10 @@
 
 #include "pdlua_gfx.h"
 
+// Removed from public API for pd 0.55-1, but still exists
+int sys_trytoopenone(const char *dir, const char *name, const char* ext,
+    char *dirresult, char **nameresult, unsigned int size, int bin);
+
 #ifdef PDINSTANCE
 
 typedef struct _lua_Instance {
