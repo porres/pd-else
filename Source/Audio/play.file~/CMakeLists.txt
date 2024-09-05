@@ -18,6 +18,7 @@ set(FFMPEG_LIBS
     "${FFMPEG_OUT_DIR}/libswresample/libswresample.a"
 )
 
+message(STATUS "Configuring ffmpeg")
 execute_process(
     COMMAND tar xjf ./ffmpeg-7.0.1.tar.bz2 -C ${CMAKE_CURRENT_BINARY_DIR}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
@@ -25,7 +26,7 @@ execute_process(
 
 add_custom_command(
     OUTPUT ${FFMPEG_LIBS}
-    COMMAND bash -c "${CMAKE_CURRENT_SOURCE_DIR}/build_ffmpeg.sh ${CMAKE_CURRENT_SOURCE_DIR}"
+    COMMAND bash -c "${CMAKE_CURRENT_SOURCE_DIR}/build_ffmpeg.sh ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_C_COMPILER_LAUNCHER}"
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Building FFmpeg libraries..."
     VERBATIM

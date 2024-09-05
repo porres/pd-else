@@ -38,9 +38,9 @@ jobs:
           cmake --build Build
 
       - name: Upload Zip
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: else
+          name: else-linux
           path: ./Build/else
 
   # ===============================================================
@@ -69,9 +69,9 @@ jobs:
           cmake --build Build
 
       - name: Upload Zip
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: else
+          name: else-macos
           path: ./Build/else
 
   # ===============================================================
@@ -88,8 +88,17 @@ jobs:
         name: "Install mingw deps"
         uses: msys2/setup-msys2@v2
         with:
-          install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-cmake
-          update: false
+          install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-cmake mingw64/mingw-w64-x86_64-ccache
+          cache: true
+
+      - name: Restore build cache
+        uses: actions/cache/restore@v4
+        with:
+          path: D:/ccache
+          key: ccache-windows-${{ github.run_id }}
+          restore-keys: |
+            ccache-windows-${{ github.sha }}
+            ccache-windows-
 
       - name: Get Pd
         shell: bash
@@ -102,16 +111,41 @@ jobs:
       - name: Configure pd-else
         shell: msys2 {0}
         run: |
-          cmake -G"MSYS Makefiles" -BBuild -DPD_PATH=./pd
+          cmake -GNinja -BBuild -DPD_PATH=./pd -DCMAKE_C_COMPILER_LAUNCHER="ccache" -DCMAKE_CXX_COMPILER_LAUNCHER="ccache"
 
       - name: Build pd-else
         shell: msys2 {0}
         run: |
+          export CCACHE_COMPRESS=1
+          export CCACHE_COMPRESSLEVEL=6
+          export CCACHE_MAXSIZE=1G
+          export CCACHE_DIR=D:/ccache
           cmake --build Build
+          ccache -s
           rm -rf ./Build/else/*.a
+        env:
+          CCACHE_COMPRESS: "1"
+          CCACHE_COMPRESSLEVEL: "6"
+          CCACHE_MAXSIZE: "1G"
+          CCACHE_DIR: D:/ccache
+
+      - name: Save build cache
+        uses: actions/cache/save@v4
+        with:
+          path: D:/ccache
+          key: ccache-windows-${{ github.run_id }}
 
       - name: Upload Zip
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
+        with:
+          name: else-windows
+          path: ./Build/else
+
+  merge:
+    runs-on: ubuntu-latest
+    needs: [Windows-Build, macOS-Build, Linux-Build]
+    steps:
+      - name: Merge Artifacts
+        uses: actions/upload-artifact/merge@v4
         with:
           name: else
-          path: ./Build/else

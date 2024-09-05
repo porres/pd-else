@@ -35,6 +35,8 @@ set(BASEFLAGS
     "-DSFIZZ_PROFILE_BUILD=OFF"
     "-DSFIZZ_RELEASE_ASSERTS=OFF"
     "-DCMAKE_BUILD_TYPE=Release"
+    "-DCMAKE_C_COMPILER_LAUNCHER=${CMAKE_C_COMPILER_LAUNCHER}"
+    "-DCMAKE_CXX_COMPILER_LAUNCHER=${CMAKE_CXX_COMPILER_LAUNCHER}"
 )
 
 message(STATUS "Configuring sfizz")
@@ -43,10 +45,6 @@ execute_process(COMMAND ${CMAKE_COMMAND} .. -G${CMAKE_GENERATOR} ${BASEFLAGS} ${
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/sfizz/library/build
 )
 
-add_custom_target(sfizz_build
-    COMMAND ${CMAKE_COMMAND} --build .
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/sfizz/library/build
-)
 
 set(SFIZZ_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/sfizz/library/build/library/lib)
 
@@ -106,11 +104,28 @@ set(SFIZZ_LIBS
     ${SFIZZ_LIB_DIR}/libaiff.a
 )
 
+add_custom_target(
+    sfizz
+    ALL
+    DEPENDS ${SFIZZ_LIBS}
+)
+
+add_custom_command(
+    OUTPUT ${SFIZZ_LIBS}
+    COMMAND ${CMAKE_COMMAND} --build .
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/sfizz/library/build
+    VERBATIM
+)
+
+add_custom_target(sfizz_build
+    DEPENDS ${SFIZZ_LIBS}
+)
+
 add_pd_external(sfz_tilde sfz~ sfz~.c)
 target_link_libraries(sfz_tilde PRIVATE ${SFIZZ_LIBS} else_shared stdc++)
 target_include_directories(sfz_tilde PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/sfizz/library/src)
 target_compile_definitions(sfz_tilde PRIVATE MIDI_CC_COUNT=127 SFIZZ_VERSION="1.2.2")
-add_dependencies(sfz_tilde sfizz_build)
+add_dependencies(sfz_tilde sfizz)
 
 if(UNIX AND NOT APPLE)
     target_link_libraries(sfz_tilde PUBLIC m)
