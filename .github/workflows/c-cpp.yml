@@ -16,10 +16,15 @@ jobs:
   Linux-Build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
+
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ccache-linux
 
       - name: Downloads pd-Sources
         shell: bash
@@ -31,7 +36,7 @@ jobs:
 
       - name: Configure pd-else
         run: |
-          cmake -BBuild -DPD_PATH=${{github.workspace}}/pure-data
+          cmake -BBuild -DPD_PATH=${{github.workspace}}/pure-data -DCMAKE_C_COMPILER_LAUNCHER="ccache" -DCMAKE_CXX_COMPILER_LAUNCHER="ccache"
 
       - name: Build pd-else
         run: |
@@ -47,10 +52,12 @@ jobs:
   macOS-Build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
         with:
-          submodules: recursive
-          fetch-depth: 0
+          key: ccache-macos
 
       - name: Downloads pd sources
         shell: bash
@@ -62,7 +69,7 @@ jobs:
 
       - name: Configure pd-else
         run: |
-          cmake -BBuild -DPD_PATH=${{github.workspace}}/pure-data
+          cmake -BBuild -DPD_PATH=${{github.workspace}}/pure-data -DCMAKE_C_COMPILER_LAUNCHER="ccache" -DCMAKE_CXX_COMPILER_LAUNCHER="ccache"
 
       - name: Build pd-else
         run: |
@@ -79,14 +86,9 @@ jobs:
   Windows-Build:
     runs-on: windows-2022
     steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: recursive
-          fetch-depth: 0
+      - uses: actions/checkout@v4
 
-      - if: runner.os == 'Windows'
-        name: "Install mingw deps"
-        uses: msys2/setup-msys2@v2
+      - uses: msys2/setup-msys2@v2
         with:
           install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-cmake mingw64/mingw-w64-x86_64-ccache
           cache: true
