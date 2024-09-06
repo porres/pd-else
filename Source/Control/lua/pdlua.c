@@ -313,9 +313,9 @@ static int pdlua_loader_legacy (t_canvas *canvas, char *name);
 __declspec(dllexport)
 #endif
 #ifdef PLUGDATA
-void pdlua_setup(const char *datadir, char *versbuf, int versbuf_length, void(*register_class_callback)(const char*));
+void lua_setup(const char *datadir, char *versbuf, int versbuf_length, void(*register_class_callback)(const char*));
 #else
-void pdlua_setup (void);
+void lua_setup (void);
 #endif
 /* end prototypes*/
 
@@ -2474,9 +2474,9 @@ void pdlua_instance_setup()
 }
 
 #ifdef PLUGDATA
-void pdlua_setup(const char *datadir, char *versbuf, int versbuf_length, void(*register_class_callback)(const char*))
+void lua_setup(const char *datadir, char *versbuf, int versbuf_length, void(*register_class_callback)(const char*))
 #else
-void pdlua_setup(void)
+void lua_setup(void)
 #endif
 {
     char                pd_lua_path[MAXPDSTRING];

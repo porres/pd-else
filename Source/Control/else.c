@@ -23,7 +23,7 @@ static int else_bugfix = 0;
 #define STATUS "rc"
 static int status_number = 12;
 
-extern void pdlua_setup();
+extern void lua_setup();
 
 static void else_obj_version(t_else_obj *x){
     int ac = 5;
@@ -122,5 +122,5 @@ void else_setup(void){
     pdgui_vmess("load_plugin_script", "s", plugin);
     sprintf(plugin, "%s/browser-merda.tcl", else_obj_class->c_externdir->s_name);
     pdgui_vmess("load_plugin_script", "s", plugin);
-    pdlua_setup();
+    lua_setup();
 }

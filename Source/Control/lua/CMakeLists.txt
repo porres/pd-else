@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(pdlua C)
 
 # Define the external
-add_pd_external(pdlua pdlua pdlua.c)
+add_pd_external(pdlua lua pdlua.c)
 target_sources(pdlua PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/lua/onelua.c)
 
 target_include_directories(pdlua PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/lua)
