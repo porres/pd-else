@@ -100,22 +100,26 @@ file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE" DESTINATION ${PD_OUTPUT_PATH}/LI
 file(REMOVE_RECURSE ${PD_OUTPUT_PATH}/audio)
 
 # Log the object count
-function(count_files_and_directories dir extension file_count)
+function(count_files_and_directories dir extension file_count count_dirs)
     file(GLOB files "${dir}/*")
     foreach(file ${files})
         get_filename_component(file_name "${file}" NAME)
-        if(NOT file_name MATCHES "^\\.")  # Exclude hidden files
+        if(NOT file_name MATCHES "^\\."
+           AND NOT file_name MATCHES "-help\\.pd$"
+           AND NOT file_name MATCHES ".unit\\.pd$"
+           AND NOT file_name MATCHES "about.MERDA.pd"
+           AND NOT (IS_DIRECTORY ${file} AND NOT count_dirs))  # Exclude hidden files and help files
             math(EXPR ${file_count} "${${file_count}} + 1")
         endif()
     endforeach()
     set(${file_count} ${${file_count}} PARENT_SCOPE)
 endfunction()
 
-count_files_and_directories("${CMAKE_CURRENT_SOURCE_DIR}/Source/Control" "c" control_c_file_count)
-count_files_and_directories("${CMAKE_CURRENT_SOURCE_DIR}/Source/Audio" "c" signal_c_file_count)
-count_files_and_directories("${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Control" "pd" control_pd_file_count)
-count_files_and_directories("${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Audio" "pd" signal_pd_file_count)
-count_files_and_directories("${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Merda/Modules" "pd" modules_pd_file_count)
+count_files_and_directories("${CMAKE_CURRENT_SOURCE_DIR}/Source/Control" "c" control_c_file_count YES)
+count_files_and_directories("${CMAKE_CURRENT_SOURCE_DIR}/Source/Audio" "c" signal_c_file_count YES)
+count_files_and_directories("${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Control" "pd" control_pd_file_count YES)
+count_files_and_directories("${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Audio" "pd" signal_pd_file_count YES)
+count_files_and_directories("${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Merda/Modules" "pd" modules_pd_file_count NO)
 math(EXPR total_compiled "${control_c_file_count} + ${signal_c_file_count}")
 math(EXPR total_abstractions "${control_pd_file_count} + ${signal_pd_file_count}")
 
