@@ -65,7 +65,7 @@ static void pdlink_connection_lost(void *x, const int port)
 {
     if(((t_pdlink*)x)->x_debug)
     {
-         post("[pd.link]: connection lost: %i", port);
+         post("[pdlink]: connection lost: %i", port);
     }
 }
 
@@ -90,7 +90,7 @@ static void pdlink_receive_loop(t_pdlink *x)
                 int created = link_connect(x->x_link, data.port, data.ip);
                 if(created && x->x_debug)
                 {
-                   post("[pd.link]: connected to:\n%s\n%s:%i\n%s", data.hostname, data.ip, data.port, data.platform);
+                   post("[pdlink]: connected to:\n%s\n%s:%i\n%s", data.hostname, data.ip, data.port, data.platform);
                 }
             }
             if(data.hostname) free(data.hostname);
@@ -151,7 +151,7 @@ static void pdlink_set(t_pdlink *x, t_symbol *s)
     x->x_link = link_init(x->x_name->s_name, pd_platform, x->x_local, 7680412);
     if(!x->x_link)
     {
-        pd_error(x, "[pd.link]: failed to bind server socket");
+        pd_error(x, "[pdlink]: failed to bind server socket");
         x->x_link = NULL; // TODO: handle this state!
     }
 }
@@ -184,7 +184,7 @@ static void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
     pdlink_set(x, x->x_name);
     if(!x->x_link)
     {
-        pd_error(x, "[pd.link]: failed to bind server socket");
+        pd_error(x, "[pdlink]: failed to bind server socket");
         pd_free((t_pd*)x);
     }
     if(is_valid) {
@@ -197,13 +197,13 @@ static void *pdlink_new(t_symbol *s, int argc, t_atom *argv)
 
     if(x->x_debug)
     {
-        post("[pd.link]: own IP:\n%s:%i", link_get_own_ip(x->x_link), link_get_own_port(x->x_link));
+        post("[pdlink]: own IP:\n%s:%i", link_get_own_ip(x->x_link), link_get_own_port(x->x_link));
     }
     return (void *)x;
 }
 
-void setup_pd0x2elink(void) {
-    pdlink_class = class_new(gensym("pd.link"),
+void pdlink_setup(void) {
+    pdlink_class = class_new(gensym("pdlink"),
                              (t_newmethod)pdlink_new,
                              (t_method)pdlink_free,
                              sizeof(t_pdlink),
