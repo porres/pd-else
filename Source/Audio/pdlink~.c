@@ -59,11 +59,11 @@ static void pdlink_audio_stream_init(t_pdlink_tilde *x, t_pdlink_audio_stream *s
     stream->stream_id = stream_id;
     stream->stream_active = 0;
     stream->signal_buffer = calloc(x->x_buf_size, sizeof(t_float));
-    
+
     int error;
     stream->samplerate_converter = src_new(SRC_LINEAR, 1, &error);
     if (stream->samplerate_converter == NULL || error) {
-        pd_error(x, "[pd.link~]: failed to initialise libsamplerate");
+        pd_error(x, "[pdlink~]: failed to initialise libsamplerate");
         stream->samplerate_converter = NULL;
     }
 }
@@ -84,9 +84,9 @@ static void pdlink_tilde_audio_stream_convert_samplerate(t_pdlink_audio_stream *
     src_data.output_frames = *output_frames;
     src_data.src_ratio = sr_target / sr_original;
     src_data.end_of_input = 0;
-    
+
     src_process(stream->samplerate_converter, &src_data);
-    
+
     *output_frames = src_data.output_frames_gen;
 }
 
@@ -152,7 +152,7 @@ static void pdlink_send_signal_message(t_link_handle link, const uint16_t channe
     memcpy(message_buf + 2, &channel, sizeof(uint16_t));
     memcpy(message_buf + 4, &compressed, sizeof(uint16_t));
     memcpy(message_buf + 6, &samplerate, sizeof(float));
-    
+
     // Copy signal data
     memcpy(message_buf + 16, buffer, bufsize);
 
@@ -169,7 +169,7 @@ void pdlink_tilde_receive(void *ptr, const size_t len, const char* message) {
     uint32_t stream_id;
     uint16_t stream_channel;
     uint16_t stream_compressed;
-    
+
     float stream_samplerate;
     memcpy(&stream_id, message, sizeof(uint32_t));
     memcpy(&stream_channel, message + 2, sizeof(uint16_t));
@@ -180,22 +180,22 @@ void pdlink_tilde_receive(void *ptr, const size_t len, const char* message) {
     t_pdlink_audio_stream *stream = pdlink_tilde_get_audio_stream(x, stream_id);
     stream->stream_active = 1;
     stream->stream_channel = stream_channel;
-    
+
     if(stream_compressed)
     {
         // Decode
         t_float output_buffer[120];
         int num_decoded = udp_audio_decoder_decode(stream->audio_decoder, (unsigned char*)message+16, len - 16, output_buffer, 120);
-        
+
         // Convert samplerate. Compresed streams are always 48khz
         int max_buffer_size = ceil((double)num_decoded * 48000.0 / current_samplerate);
         t_float* converted_samples = ALLOCA(t_float, max_buffer_size);
         long output_frames = max_buffer_size;
         pdlink_tilde_audio_stream_convert_samplerate(stream, output_buffer, num_decoded, converted_samples, &output_frames, 48000.0f, current_samplerate);
-        
+
         if(x->x_debug && stream->buf_num_ready + output_frames > x->x_buf_size)
         {
-            if(!x->x_overrun) post("[pd.link~]: buffer overrun for port %i", (uint16_t)stream->stream_id);
+            if(!x->x_overrun) post("[pdlink~]: buffer overrun for port %i", (uint16_t)stream->stream_id);
             stream->buf_write_pos = (stream->buf_read_pos + x->x_delay) % x->x_buf_size;
             stream->buf_num_ready = x->x_delay;
             memset(stream->signal_buffer, 0, x->x_buf_size * sizeof(t_float));
@@ -218,10 +218,10 @@ void pdlink_tilde_receive(void *ptr, const size_t len, const char* message) {
             long output_frames = max_buffer_size;
             t_float* converted_samples = ALLOCA(t_float, max_buffer_size);
             pdlink_tilde_audio_stream_convert_samplerate(stream, samples, num_float, converted_samples, &output_frames, stream_samplerate, current_samplerate);
-            
+
             if(x->x_debug && stream->buf_num_ready + output_frames > x->x_buf_size)
             {
-                if(!x->x_overrun) post("[pd.link~]: buffer overrun for port %i", (uint16_t)stream->stream_id);
+                if(!x->x_overrun) post("[pdlink~]: buffer overrun for port %i", (uint16_t)stream->stream_id);
                 stream->buf_write_pos = (stream->buf_read_pos + x->x_delay) % x->x_buf_size;
                 stream->buf_num_ready = x->x_delay;
                 x->x_overrun++;
@@ -238,7 +238,7 @@ void pdlink_tilde_receive(void *ptr, const size_t len, const char* message) {
         else {
             if(x->x_debug &&  stream->buf_num_ready + num_float > x->x_buf_size)
             {
-                if(!x->x_overrun) post("[pd.link~]: buffer overrun for port %i", (uint16_t)stream->stream_id);
+                if(!x->x_overrun) post("[pdlink~]: buffer overrun for port %i", (uint16_t)stream->stream_id);
                 stream->buf_write_pos = (stream->buf_read_pos + x->x_delay) % x->x_buf_size;
                 stream->buf_num_ready = x->x_delay;
                 x->x_overrun++;
@@ -284,7 +284,7 @@ static t_int *pdlink_tilde_perform(t_int *w){
     }
 
     link_receive(x->x_link, x, pdlink_tilde_receive);
-    
+
     // Num channel changed, update DSP chain
     if(pdlink_tilde_get_num_stream_channels(x) != x->x_out_nchs)
     {
@@ -298,7 +298,7 @@ static t_int *pdlink_tilde_perform(t_int *w){
         {
             if(x->x_debug)
             {
-                post("[pd.link~]: buffer underrun for port %i", (uint16_t)stream->stream_id);
+                post("[pdlink~]: buffer underrun for port %i", (uint16_t)stream->stream_id);
             }
             stream->stream_active = 0;
             continue;
@@ -317,7 +317,7 @@ static t_int *pdlink_tilde_perform(t_int *w){
 
 static void pdlink_tilde_dsp(t_pdlink_tilde *x, t_signal **sp) {
     if(x->x_name == gensym("")) return;
-        
+
     if(x->x_compress && sp[0]->s_nchans != x->x_in_nchs)
     {
         if(x->x_audio_encoders) {
@@ -343,7 +343,7 @@ static void pdlink_tilde_connection_lost(void *x, const int port)
 {
     if(((t_pdlink_tilde*)x)->x_debug)
     {
-         post("[pd.link~]: connection lost: %i", port);
+         post("[pdlink~]: connection lost: %i", port);
     }
 }
 
@@ -366,7 +366,7 @@ static void pdlink_tilde_discover_loop(t_pdlink_tilde *x)
             int created = link_connect(x->x_link, data.port, data.ip);
             if(created && x->x_debug)
             {
-               post("[pd.link~]: connected to:\n%s\n%s:%i\n%s", data.hostname, data.ip, data.port, data.platform);
+               post("[pdlink~]: connected to:\n%s\n%s:%i\n%s", data.hostname, data.ip, data.port, data.platform);
             }
         }
         if(data.hostname) free(data.hostname);
@@ -384,7 +384,7 @@ static void pdlink_tilde_free(t_pdlink_tilde *x)
     if(x->x_link) link_free(x->x_link);
     if(x->x_ping_clock) clock_free(x->x_ping_clock);
     if(x->x_dsp_reset_clock) clock_free(x->x_dsp_reset_clock);
-    
+
     if(x->x_audio_streams) {
         for(int i = 0; i < x->x_num_streams; i++)
         {
@@ -443,7 +443,7 @@ static void pdlink_tilde_set(t_pdlink_tilde *x, t_symbol *s)
     x->x_link = link_init(x->x_name->s_name, pd_platform, x->x_local, 7680413);
     if(!x->x_link)
     {
-        pd_error(x, "[pd.link]: failed to bind server socket");
+        pd_error(x, "[pdlink]: failed to bind server socket");
         x->x_link = NULL; // TODO: handle this state!
     }
 }
@@ -491,7 +491,7 @@ static void *pdlink_tilde_new(t_symbol *s, int argc, t_atom *argv)
 
     if(!x->x_link)
     {
-        pd_error(x, "[pd.link~]: failed to bind server socket");
+        pd_error(x, "[pdlink~]: failed to bind server socket");
         pd_free((t_pd*)x);
         return NULL;
     }
@@ -503,24 +503,24 @@ static void *pdlink_tilde_new(t_symbol *s, int argc, t_atom *argv)
 
     if(x->x_delay < 64)
     {
-        post("[pd.link~]: bufsize needs to be at least 64 samples");
+        post("[pdlink~]: bufsize needs to be at least 64 samples");
         post("bufsize set to 64 samples");
         x->x_delay = 64;
     }
 
     if(x->x_debug)
     {
-        post("[pd.link~]: own IP:\n%s:%i", link_get_own_ip(x->x_link), link_get_own_port(x->x_link));
+        post("[pdlink~]: own IP:\n%s:%i", link_get_own_ip(x->x_link), link_get_own_port(x->x_link));
     }
-    
+
     x->x_set_inlet = inlet_new((t_object*)x, (t_pd*)x, &s_symbol, gensym("__set"));
     x->x_outlet = outlet_new((t_object*)x, &s_signal);
     x->x_buf_size = x->x_delay >= 4096 ? x->x_delay * 2 : 8192; // needs to have at least a decent size to prevent overruns
     return (void *)x;
 }
 
-void setup_pd0x2elink_tilde(void) {
-    pdlink_tilde_class = class_new(gensym("pd.link~"),
+void pdlink_tilde_setup(void) {
+    pdlink_tilde_class = class_new(gensym("pdlink~"),
                              (t_newmethod)pdlink_tilde_new,
                              (t_method)pdlink_tilde_free,
                              sizeof(t_pdlink_tilde),
