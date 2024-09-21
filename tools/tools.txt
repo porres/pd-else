@@ -3,7 +3,7 @@
 -------------------------------------------------------------------------
 
 
-cmake -BBuild -DPD_PATH="/Applications/Pd-0.55-1test1.app/Contents/Resources/"
+cmake -BBuild -DPD_PATH="/Applications/Pd-0.55-1.app/Contents/Resources/"
 cd Build
 make -j7
 

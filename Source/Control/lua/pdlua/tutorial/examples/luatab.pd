@@ -1,4 +1,5 @@
-#N canvas 203 479 460 310 12;
+#N canvas 205 479 460 310 12;
+#X declare -stdpath pdlua;
 #X declare -lib pdlua;
 #N canvas 0 0 450 300 (subpatch) 0;
 #X array wave 1024 float 1 black black;
@@ -147,9 +148,10 @@
 #X obj 30 220 luatab wave;
 #X obj 30 249 bng 20 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000;
-#X obj 292 49 declare -lib pdlua;
-#X obj 292 120 pd-remote;
-#X msg 292 90 pdluax reload;
+#X obj 270 50 declare -stdpath pdlua;
+#X obj 270 121 pd-remote;
+#X msg 270 91 pdluax reload;
+#X obj 270 270 declare -lib pdlua;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
 #X connect 6 0 5 0;

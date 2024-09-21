@@ -92,8 +92,8 @@ assert(io.output():seek("end") == string.len("alo joao"))
 
 assert(io.output():seek("set") == 0)
 
-assert(io.write('"álo"', "{a}\n", "second line\n", "third line \n"))
-assert(io.write('çfourth_line'))
+assert(io.write('"alo"', "{a}\n", "second line\n", "third line \n"))
+assert(io.write('Xfourth_line'))
 io.output(io.stdout)
 collectgarbage()  -- file should be closed by GC
 assert(io.input() == io.stdin and rawequal(io.output(), io.stdout))
@@ -300,14 +300,14 @@ do  -- test error returns
 end
 checkerr("invalid format", io.read, "x")
 assert(io.read(0) == "")   -- not eof
-assert(io.read(5, 'l') == '"álo"')
+assert(io.read(5, 'l') == '"alo"')
 assert(io.read(0) == "")
 assert(io.read() == "second line")
 local x = io.input():seek()
 assert(io.read() == "third line ")
 assert(io.input():seek("set", x))
 assert(io.read('L') == "third line \n")
-assert(io.read(1) == "ç")
+assert(io.read(1) == "X")
 assert(io.read(string.len"fourth_line") == "fourth_line")
 assert(io.input():seek("cur", -string.len"fourth_line"))
 assert(io.read() == "fourth_line")
@@ -507,15 +507,17 @@ load((io.lines(file, 1)))()
 assert(_G.X == 4)
 load((io.lines(file, 3)))()
 assert(_G.X == 8)
+_G.X = nil
 
 print('+')
 
 local x1 = "string\n\n\\com \"\"''coisas [[estranhas]] ]]'"
 io.output(file)
-assert(io.write(string.format("x2 = %q\n-- comment without ending EOS", x1)))
+assert(io.write(string.format("X2 = %q\n-- comment without ending EOS", x1)))
 io.close()
 assert(loadfile(file))()
-assert(x1 == x2)
+assert(x1 == _G.X2)
+_G.X2 = nil
 print('+')
 assert(os.remove(file))
 assert(not os.remove(file))

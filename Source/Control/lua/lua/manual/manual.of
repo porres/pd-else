@@ -20,7 +20,7 @@ making it ideal for configuration, scripting,
 and rapid prototyping.
 
 Lua is implemented as a library, written in @emphx{clean C},
-the common subset of @N{Standard C} and C++.
+the common subset of @N{standard C} and C++.
 The Lua distribution includes a host program called @id{lua},
 which uses the Lua library to offer a complete,
 standalone Lua interpreter,
@@ -289,7 +289,7 @@ Whenever there is an error,
 an @def{error object}
 is propagated with information about the error.
 Lua itself only generates errors whose error object is a string,
-but programs may generate errors with
+but programs can generate errors with
 any value as the error object.
 It is up to the Lua program or its host to handle such error objects.
 For historical reasons,
@@ -298,7 +298,7 @@ even though it does not have to be a string.
 
 
 When you use @Lid{xpcall} (or @Lid{lua_pcall}, in C)
-you may give a @def{message handler}
+you can give a @def{message handler}
 to be called in case of errors.
 This function is called with the original error object
 and returns a new error object.
@@ -343,7 +343,7 @@ which is then called a @def{metamethod}.
 In the previous example, the key is the string @St{__add}
 and the metamethod is the function that performs the addition.
 Unless stated otherwise,
-a metamethod may in fact be any @x{callable value},
+a metamethod can in fact be any @x{callable value},
 which is either a function or a value with a @idx{__call} metamethod.
 
 You can query the metatable of any value
@@ -1417,7 +1417,7 @@ labels in Lua are considered statements too:
 
 A label is visible in the entire block where it is defined,
 except inside nested functions.
-A goto may jump to any visible label as long as it does not
+A goto can jump to any visible label as long as it does not
 enter into the scope of a local variable.
 A label should not be declared
 where a label with the same name is visible,
@@ -2963,7 +2963,7 @@ static void *l_alloc (void *ud, void *ptr, size_t osize,
     return realloc(ptr, nsize);
 }
 }
-Note that @N{Standard C} ensures
+Note that @N{ISO C} ensures
 that @T{free(NULL)} has no effect and that
 @T{realloc(NULL,size)} is equivalent to @T{malloc(size)}.
 
@@ -3164,6 +3164,27 @@ A @idx{__close} metamethod cannot yield
 when called through this function.
 
 (This function was introduced in @N{release 5.4.3}.)
+
+}
+
+@APIEntry{int lua_closethread (lua_State *L, lua_State *from);|
+@apii{0,?,-}
+
+Resets a thread, cleaning its call stack and closing all pending
+to-be-closed variables.
+Returns a status code:
+@Lid{LUA_OK} for no errors in the thread
+(either the original error that stopped the thread or
+errors in closing methods),
+or an error status otherwise.
+In case of error,
+leaves the error object on the top of the stack.
+
+The parameter @id{from} represents the coroutine that is resetting @id{L}.
+If there is no such coroutine,
+this parameter can be @id{NULL}.
+
+(This function was introduced in @N{release 5.4.6}.)
 
 }
 
@@ -4160,23 +4181,12 @@ and then pops the top element.
 
 }
 
-@APIEntry{int lua_resetthread (lua_State *L, lua_State *from);|
+@APIEntry{int lua_resetthread (lua_State *L);|
 @apii{0,?,-}
 
-Resets a thread, cleaning its call stack and closing all pending
-to-be-closed variables.
-Returns a status code:
-@Lid{LUA_OK} for no errors in the thread
-(either the original error that stopped the thread or
-errors in closing methods),
-or an error status otherwise.
-In case of error,
-leaves the error object on the top of the stack.
-
-The parameter @id{from} represents the coroutine that is resetting @id{L}.
-If there is no such coroutine,
-this parameter can be @id{NULL}.
-(This parameter was introduced in @N{release 5.4.5}.)
+This function is deprecated;
+it is equivalent to @Lid{lua_closethread} with
+@id{from} being @id{NULL}.
 
 }
 
@@ -4406,7 +4416,7 @@ otherwise, returns @id{NULL}.
 }
 
 @APIEntry{void lua_toclose (lua_State *L, int index);|
-@apii{0,0,m}
+@apii{0,0,v}
 
 Marks the given index in the stack as a
 to-be-closed slot @see{to-be-closed}.
@@ -4422,6 +4432,9 @@ or there is a call to @Lid{lua_closeslot}.
 A slot marked as to-be-closed should not be removed from the stack
 by any other function in the API except @Lid{lua_settop} or @Lid{lua_pop},
 unless previously deactivated by @Lid{lua_closeslot}.
+
+This function raises an error if the value at the given slot
+neither has a @idx{__close} metamethod nor is a false value.
 
 This function should not be called for an index
 that is equal to or below an active to-be-closed slot.
@@ -4475,6 +4488,10 @@ to a string inside the Lua state @see{constchar}.
 This string always has a zero (@Char{\0})
 after its last character (as @N{in C}),
 but can contain other zeros in its body.
+
+This function can raise memory errors only
+when converting a number to a string
+(as then it may create a new string).
 
 }
 
@@ -5780,7 +5797,7 @@ with @id{tname} in the registry.
 
 Creates a new Lua state.
 It calls @Lid{lua_newstate} with an
-allocator based on the @N{standard C} allocation functions
+allocator based on the @N{ISO C} allocation functions
 and then sets a warning function and a panic function @see{C-error}
 that print messages to the standard error output.
 
@@ -6898,7 +6915,7 @@ including if necessary a path and an extension.
 @id{funcname} must be the exact name exported by the @N{C library}
 (which may depend on the @N{C compiler} and linker used).
 
-This function is not supported by @N{Standard C}.
+This functionality is not supported by @N{ISO C}.
 As such, it is only available on some platforms
 (Windows, Linux, Mac OS X, Solaris, BSD,
 plus other Unix systems that support the @id{dlfcn} standard).
@@ -8759,13 +8776,13 @@ The returned table can contain all the fields returned by @Lid{lua_getinfo},
 with the string @id{what} describing which fields to fill in.
 The default for @id{what} is to get all information available,
 except the table of valid lines.
-If present,
-the option @Char{f}
+The option @Char{f}
 adds a field named @id{func} with the function itself.
-If present,
-the option @Char{L}
-adds a field named @id{activelines} with the table of
-valid lines.
+The option @Char{L} adds a field named @id{activelines}
+with the table of valid lines,
+provided the function is a Lua function.
+If the function has no debug information,
+the table is empty.
 
 For instance, the expression @T{debug.getinfo(1,"n").name} returns
 a name for the current function,
@@ -9016,6 +9033,10 @@ Lua does not consult any environment variables.
 In particular,
 the values of @Lid{package.path} and @Lid{package.cpath}
 are set with the default paths defined in @id{luaconf.h}.
+To signal to the libraries that this option is on,
+the stand-alone interpreter sets the field
+@idx{"LUA_NOENV"} in the registry to a true value.
+Other libraries may consult this field for the same purpose.
 
 The options @T{-e}, @T{-l}, and @T{-W} are handled in
 the order they appear.

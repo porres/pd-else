@@ -1,12 +1,21 @@
 local hello = pd.Class:new():register("hello-gui")
 
+-- rendering speed (slows down rendering by the given factor)
+-- In most cases it should be fine to just set this to 1 to run at full speed,
+-- if you have a modern high-speed CPU and GPU. But we use a larger value as
+-- default here to deal with low frame rates on some systems (Purr Data on Mac
+-- being the main culprit). You may have to increase the value even further
+-- when running on low-spec systems like the Raspberry Pi.
+local R = 3
+
 function hello:initialize(sel, atoms)
     self.inlets = 1
 
-    self.circle_x = 480
+    self.circle_x = 485
     self.circle_y = 15
     self.circle_radius = 15
-    self.animation_speed = 2
+    self.animation_speed = 2*R
+    self.delay_time = 16*R
 
     self.draggable_rect_x = 550
     self.draggable_rect_y = 130
@@ -15,7 +24,6 @@ function hello:initialize(sel, atoms)
     self.mouse_down_pos = {0, 0}
     self.rect_down_pos = {0, 0}
 
-    self.gui = 1
     self:set_size(630, 230)
     return true
 end
@@ -27,7 +35,7 @@ end
 
 function hello:postinitialize()
     self.clock = pd.Clock:new():register(self, "tick")
-    self.clock:delay(16)
+    self.clock:delay(self.delay_time)
 end
 
 function hello:finalize()
@@ -57,24 +65,24 @@ function hello:mouse_drag(x, y)
 end
 
 function hello:paint(g)
-    g.set_color(250, 200, 240)
-    g.fill_all()
+    g:set_color(50, 50, 50)
+    g:fill_all()
 
     -- Filled examples
-    g.set_color(66, 207, 201, 0.3)
-    g.fill_ellipse(30, 50, 30, 30)
-    g.set_color(0, 159, 147, 1)
-    g.fill_rect(120, 50, 30, 30)
-    g.set_color(250, 84, 108, 1)
-    g.fill_rounded_rect(210, 50, 30, 30, 5)
+    g:set_color(66, 207, 201, 0.3)
+    g:fill_ellipse(30, 50, 30, 30)
+    g:set_color(0, 159, 147, 1)
+    g:fill_rect(120, 50, 30, 30)
+    g:set_color(250, 84, 108, 1)
+    g:fill_rounded_rect(210, 50, 30, 30, 5)
 
-    g.set_color(252, 118, 81, 1)
+    g:set_color(252, 118, 81, 1)
 
     -- Star using line_to paths
     local starX1, starY1 = 310, 45
     local starSize = 15
 
-    local star = path.start(starX1, starY1)
+    local star = Path(starX1, starY1)
 
     -- Star using line_to paths
     star:line_to(starX1 + 5, starY1 + 14)
@@ -88,33 +96,33 @@ function hello:paint(g)
     star:line_to(starX1 - 3, starY1 + 14)
     star:close()
 
-    g.fill_path(star)
+    g:fill_path(star)
 
-    g.set_color(255, 219, 96, 1)
+    g:set_color(255, 219, 96, 1)
     -- Bezier curve example
-    g.translate(140, 20)
-    g.scale(0.5, 1.0)
-    local curve = path.start(450, 50)
+    g:translate(140, 20)
+    g:scale(0.5, 1.0)
+    local curve = Path(450, 50)
     curve:cubic_to(500, 30, 550, 70, 600, 50)
     curve:close()
-    g.stroke_path(curve, 2)
-    g.reset_transform()
+    g:stroke_path(curve, 2)
+    g:reset_transform()
 
     -- Stroked examples
-    g.set_color(66, 207, 201, 1)
-    g.stroke_ellipse(30, 150, 30, 30, 2)
-    g.set_color(0, 159, 147, 1)
-    g.stroke_rect(120, 150, 30, 30, 2)
-    g.set_color(250, 84, 108, 1)
-    g.stroke_rounded_rect(210, 150, 30, 30, 5, 2)
+    g:set_color(66, 207, 201, 1)
+    g:stroke_ellipse(30, 150, 30, 30, 2)
+    g:set_color(0, 159, 147, 1)
+    g:stroke_rect(120, 150, 30, 30, 2)
+    g:set_color(250, 84, 108, 1)
+    g:stroke_rounded_rect(210, 150, 30, 30, 5, 2)
 
-    g.set_color(252, 118, 81, 1)
+    g:set_color(252, 118, 81, 1)
 
     local starX2, starY2 = 310, 145
     local starSize = 15
 
     -- Star using line_to paths
-    local star2 = path.start(starX2, starY2)
+    local star2 = Path(starX2, starY2)
     star2:line_to(starX2 + 5, starY2 + 14)
     star2:line_to(starX2 + 20, starY2 + 14)
     star2:line_to(starX2 + 8, starY2 + 22)
@@ -125,35 +133,35 @@ function hello:paint(g)
     star2:line_to(starX2 - 18, starY2 + 14)
     star2:line_to(starX2 - 3, starY2 + 14)
     star2:close()
-    g.stroke_path(star2, 2)
+    g:stroke_path(star2, 2)
 
-    g.set_color(255, 219, 96, 1)
+    g:set_color(255, 219, 96, 1)
     -- Bezier curve example
-    g.translate(140, 20)
-    g.scale(0.5, 1.0)
-    local curve2 = path.start(450, 150)
+    g:translate(140, 20)
+    g:scale(0.5, 1.0)
+    local curve2 = Path(450, 150)
     curve2:cubic_to(500, 130, 550, 170, 600, 150)
-    g.fill_path(curve2)
-    g.reset_transform()
+    g:fill_path(curve2)
+    g:reset_transform()
 
     -- Draggable rectangle
-    g.set_color(66, 207, 201, 1)
-    g.fill_rounded_rect(self.draggable_rect_x, self.draggable_rect_y, self.draggable_rect_size, self.draggable_rect_size, 5)
-    g.set_color(0, 0, 0, 1)
-    g.draw_text("Drag me!", self.draggable_rect_x + 8, self.draggable_rect_y + 20, self.draggable_rect_size, 10)
+    g:set_color(66, 207, 201, 1)
+    g:fill_rounded_rect(self.draggable_rect_x, self.draggable_rect_y, self.draggable_rect_size, self.draggable_rect_size, 5)
+    g:set_color(0, 0, 0, 1)
+    g:draw_text("Drag\n me!", self.draggable_rect_x + 8, self.draggable_rect_y + 10, self.draggable_rect_size, 12)
 
     -- Titles
-    g.set_color(252, 118, 81, 1)
-    g.draw_text("Ellipse", 32, 190, 120, 10)
-    g.draw_text("Rectangle", 116, 190, 120, 10)
-    g.draw_text("Rounded Rectangle", 188, 190, 120, 10)
-    g.draw_text("Paths", 300, 190, 120, 10)
-    g.draw_text("Bezier Paths", 380, 190, 120, 10)
-    g.draw_text("Animation", 470, 190, 120, 10)
-    g.draw_text("Mouse Interaction", 540, 190, 120, 10)
+    g:set_color(252, 118, 81, 1)
+    g:draw_text("Ellipse", 25, 190, 120, 12)
+    g:draw_text("Rectangle", 100, 190, 120, 12)
+    g:draw_text("Rounded Rect", 188, 190, 120, 12)
+    g:draw_text("Paths", 295, 190, 120, 12)
+    g:draw_text("Bezier Paths", 360, 190, 120, 12)
+    g:draw_text("Animation", 460, 190, 120, 12)
+    g:draw_text("   Mouse\nInteraction", 540, 190, 120, 12)
 
-    g.set_color(250, 84, 108, 1)
-    g.fill_ellipse(self.circle_x, self.circle_y, self.circle_radius, self.circle_radius)
+    g:set_color(250, 84, 108, 1)
+    g:fill_ellipse(self.circle_x, self.circle_y, self.circle_radius, self.circle_radius)
 end
 
 function hello:tick()
@@ -162,7 +170,7 @@ function hello:tick()
         self.circle_y = -self.circle_radius
     end
     self:repaint()
-    self.clock:delay(16)
+    self.clock:delay(self.delay_time)
 end
 
 

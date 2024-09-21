@@ -42,6 +42,7 @@ int xxsys_hostfontsize(int fontsize, int zoom)
 
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 
+static void mylua_error (lua_State *L, t_pdlua *o, const char *descr);
 
 // Functions that need to be implemented separately for each Pd flavour
 static int gfx_initialize(t_pdlua *obj);
@@ -94,8 +95,7 @@ void pdlua_gfx_repaint(t_pdlua *o, int firsttime) {
 
     if (lua_pcall(__L(), 1, 0, 0))
     {
-        pd_error(o, "lua: error in repaint:\n%s", lua_tostring(__L(), -1));
-        lua_pop(__L(), 1); /* pop the error string */
+        mylua_error(__L(), o, "repaint");
     }
 
     lua_pop(__L(), 1); /* pop the global "pd" */
@@ -116,8 +116,7 @@ void pdlua_gfx_mouse_event(t_pdlua *o, int x, int y, int type) {
 
     if (lua_pcall(__L(), 4, 0, 0))
     {
-        pd_error(o, "lua: error in mouseevent:\n%s", lua_tostring(__L(), -1));
-        lua_pop(__L(), 1); /* pop the error string */
+        mylua_error(__L(), o, "mouseevent");
     }
 
     lua_pop(__L(), 1); /* pop the global "pd" */
@@ -316,7 +315,7 @@ static int set_color(lua_State* L) {
     SETFLOAT(args + 1, luaL_checknumber(L, 2)); // g
     SETFLOAT(args + 2, luaL_checknumber(L, 3)); // b
 
-    if (lua_gettop(L) > 4) { // object and table are already on stack, hence 5
+    if (lua_gettop(L) >= 4) { // object and table are already on stack, hence 5
         // alpha (optional, default to 1.0)
         SETFLOAT(args + 3, luaL_checknumber(L, 4));
     }
@@ -894,7 +893,7 @@ static int end_paint(lua_State* L) {
 static int set_color(lua_State* L) {
     t_pdlua_gfx *gfx = pop_graphics_context(L);
 
-    int r, g, b;
+    int r, g, b, a;
     if (lua_gettop(L) == 1) { // Single argument: parse as color ID instead of RGB
         int color_id = luaL_checknumber(L, 1);
         if(color_id != 1)
@@ -915,9 +914,19 @@ static int set_color(lua_State* L) {
         b = luaL_checknumber(L, 3);
     }
 
+#ifndef PURR_DATA
     // AFAIK, alpha is not supported in tcl/tk
     snprintf(gfx->current_color, 8, "#%02X%02X%02X", r, g, b);
     gfx->current_color[7] = '\0';
+#else
+    // ... but it is in Purr Data (nw.js gui)
+    a = 255;
+    if (lua_gettop(L) >= 4) {
+        a = luaL_checknumber(L, 4)*255;
+    }
+    snprintf(gfx->current_color, 10, "#%02X%02X%02X%02X", r, g, b, a);
+    gfx->current_color[9] = '\0';
+#endif
 
     return 0;
 }

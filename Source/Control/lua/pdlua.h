@@ -37,7 +37,7 @@ typedef struct _pdlua_gfx
     char current_item_tag[64]; // Tcl/tk tag that is only attached to the current drawing in progress
     gfx_transform* transforms;
     int num_transforms;
-    char current_color[8]; // Keep track of current color
+    char current_color[10]; // Keep track of current color
     
     // Variables to keep track of mouse button state and drag position
     int mouse_drag_x, mouse_drag_y, mouse_down;
@@ -51,17 +51,20 @@ typedef struct _pdlua_gfx
 /** Pd object data. */
 typedef struct pdlua 
 {
-    t_object                pd; /**< We are a Pd object. */
-    int                     inlets; /**< Number of inlets. */
-    struct pdlua_proxyinlet *proxy_in; /**< The inlets themselves. */
+    t_object                pd;         // We are a Pd object.
+    int                     inlets;     // Number of inlets.
+    struct pdlua_proxyinlet *proxy_in;  // The inlets themselves.
     t_inlet                 **in;
-    int                     outlets; /**< Number of outlets. */
-    t_outlet                **out; /**< The outlets themselves. */
-    int                     siginlets; /**< Number of signal inlets. */
-    int                     sigoutlets; /**< Number of signal outlets. */
-    t_canvas                *canvas; /**< The canvas that the object was created on. */
-    int                     has_gui; /**< True if graphics are enabled. */
-    t_pdlua_gfx             gfx; /**< Holds state for graphics. */
+    int                     outlets;    // Number of outlets.
+    t_outlet                **out;      // The outlets themselves.
+    int                     siginlets;  // Number of signal inlets.
+    int                     sigoutlets; // Number of signal outlets.
+    int                     sig_warned; // Flag for perform signal errors.
+    t_canvas                *canvas;    // The canvas that the object was created on.
+    int                     has_gui;    // True if graphics are enabled.
+    t_pdlua_gfx             gfx;        // Holds state for graphics.
+    t_class                 *class;     // Holds our class pointer.
+    t_class                 *class_gfx; // Holds our gfx class pointer.
 } t_pdlua;
 
 lua_State* __L();

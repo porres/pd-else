@@ -1,0 +1,8 @@
+#N canvas 2 51 320 90 10;
+#N canvas 2 51 382 154 META 0;
+#X text 10 10 NAME pdlua-tutorial;
+#X text 10 30 LICENSE CC BY-SA 4.0;
+#X text 10 50 DESCRIPTION The pdlua tutorial \, with examples;
+#X text 10 70 AUTHOR Albert Gräf;
+#X restore 43 36 pd META;
+#X text 39 15 The pdlua tutorial \, with examples;

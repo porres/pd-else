@@ -1,6 +1,9 @@
 -- $Id: testes/strings.lua $
 -- See Copyright Notice in file all.lua
 
+-- ISO Latin encoding
+
+
 print('testing strings and string library')
 
 local maxi <const> = math.maxinteger
@@ -52,7 +55,7 @@ assert(("\000123456789"):sub(8) == "789")
 
 -- testing string.find
 assert(string.find("123456789", "345") == 3)
-a,b = string.find("123456789", "345")
+local a,b = string.find("123456789", "345")
 assert(string.sub("123456789", a, b) == "345")
 assert(string.find("1234567890123456789", "345", 3) == 3)
 assert(string.find("1234567890123456789", "345", 4) == 13)
@@ -192,7 +195,7 @@ do  -- tests for '%p' format
   end
 end
 
-x = '"ílo"\n\\'
+local x = '"ílo"\n\\'
 assert(string.format('%q%s', x, x) == '"\\"ílo\\"\\\n\\\\""ílo"\n\\')
 assert(string.format('%q', "\0") == [["\0"]])
 assert(load(string.format('return %q', x))() == x)
@@ -452,7 +455,7 @@ end
 do
   local f = string.gmatch("1 2 3 4 5", "%d+")
   assert(f() == "1")
-  co = coroutine.wrap(f)
+  local co = coroutine.wrap(f)
   assert(co() == "2")
 end
 

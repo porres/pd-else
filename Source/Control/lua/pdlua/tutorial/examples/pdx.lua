@@ -3,12 +3,6 @@
 pdx.lua: useful extensions to pd.lua
 Copyright (C) 2020 Albert Gräf <aggraef@gmail.com>
 
-To use this in your pd-lua scripts: local pdx = require 'pdx'
-
-Currently there's only the pdx.reload() function, which implements a kind of
-remote reload functionality based on dofile and receivers, as explained in the
-pd-lua tutorial. More may be added in the future.
-
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation; either version 2
@@ -27,12 +21,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 local pdx = {}
 
 --[[
-Reload functionality. Call pdx.reload() on your object to enable, and
-pdx.unreload() to disable this functionality again.
+Reload functionality. pdx.reload() enables, and pdx.unreload() disables it.
+
+NOTE: As of pd-lua 0.12.8, this module is now pre-loaded, and pdx.reload()
+gets called automatically before running the initialize method of any object,
+so calling pdx.reload() explicitly is no longer needed. (Old code importing
+the module and doing the call will continue to work, though.) Instead, you
+will now have to call pdx.unreload() in your initialize method if you want to
+*disable* this feature for some reason.
 
 pdx.reload installs a "pdluax" receiver which reloads the object's script file
 when it receives the "reload" message without any arguments, or a "reload
 class" message with a matching class name.
+
+Before reloading the script, we also execute the object's prereload() method if
+it exists, and the postreload() method after reloading, so that the user can
+customize object reinitialization as needed (e.g., to call initialize() after
+reloading, or to perform some other custom reinitialization). This was
+suggested by @ben-wes (thanks Ben!).
 
 We have to go to some lengths here since we only want the script to be
 reloaded *once* for each class, not for every object in the class. This
@@ -59,21 +65,97 @@ local function finalize(self)
    end
 end
 
--- Our receiver. In the future, more functionality may be added here, but at
--- present this only recognizes the "reload" message and checks the class
--- name, if given.
+-- pre-reload actions
+local function do_prereload(self, data)
+   -- save the current state
+   data.state = {
+      self.inlets,
+      self.outlets,
+      type(self.paint) == "function"
+   }
+   -- invoke the prereload method if it exists
+   if self.prereload and type(self.prereload) == "function" then
+      self:prereload()
+   end
+end
+
+-- post-reload actions
+local function do_postreload(self, data)
+   -- update the object's finalizer and restore our own, in case
+   -- anything has changed there
+   if self.finalize ~= finalize then
+      data.finalize = self.finalize
+      self.finalize = finalize
+   end
+   -- invoke the postreload method if it exists
+   if self.postreload and type(self.postreload) == "function" then
+      self:postreload()
+   end
+   -- retrieve the prereload state
+   local inlets, outlets, has_gui = table.unpack(data.state)
+   data.state = nil
+   -- recreate inlets and outlets as needed
+   local function iolets_eq(a, b)
+      -- compare two iolet signatures a and b
+      if type(a) ~= type(b) then
+         return false
+      elseif type(a) == "table" then
+         if #a ~= #b then
+            return false
+         else
+            for i = 1, #a do
+               if a[i] ~= b[i] then
+                  return false
+               end
+            end
+            return true
+         end
+      else
+         return a == b
+      end
+   end
+   if not iolets_eq(self.inlets, inlets) then
+      pd._createinlets(self._object, self.inlets)
+   end
+   if not iolets_eq(self.outlets, outlets) then
+      pd._createoutlets(self._object, self.outlets)
+   end
+   -- also create the gui if a paint method was added during reload
+   if not has_gui and type(self.paint) == "function" then
+      -- NOTE: At present, you can only switch from non-gui to gui, but that
+      -- will be the most common use case anyway. The extra 1 flag in the call
+      -- informs the gui that redrawing the object may be in order.
+      pd._creategui(self._object, 1)
+   end
+end
+
+-- Our receiver. This is the centerpiece of the extension. In the future, more
+-- functionality may be added here. At present this catches the "reload"
+-- message, checking the class name if given, doing the actual reloading of
+-- the script, as well as invoking some callbacks before and afterwards which
+-- provide hooks for user customizations.
 local function pdluax(self, sel, atoms)
    if sel == "reload" then
       -- reload message, check that any extra argument matches the class name
       if atoms[1] == nil or atoms[1] == self._name then
-	 pd.post(string.format("pdx: reloading %s", self._name))
-	 self:dofilex(self._scriptname)
-	 -- update the object's finalizer and restore our own, in case
-	 -- anything has changed there
-	 if self.finalize ~= finalize then
-	    reloadables[self._name][self].finalize = self.finalize
-	    self.finalize = finalize
-	 end
+         -- iterate over *all* objects in this class and invoke their
+         -- prereload methods
+         for obj, data in pairs(reloadables[self._name]) do
+            if type(obj) == "table" then
+               do_prereload(obj, data)
+            end
+         end
+         -- only one instance (the one with the receiver) does the actual
+         -- loading of the script file (no need to load it more than once)
+         pd.post(string.format("pdx: reloading %s", self._name))
+         self:dofilex(self._scriptname)
+         -- iterate over *all* objects in this class, invoke their postreload
+         -- methods, and update the objects themselves as needed (iolets, gui)
+         for obj, data in pairs(reloadables[self._name]) do
+            if type(obj) == "table" then
+               do_postreload(obj, data)
+            end
+         end
       end
    end
 end
@@ -123,8 +205,10 @@ function pdx.reload(self)
 	 reloadables[self._name][self] = { finalize = self.finalize }
 	 self.finalize = finalize
       end
-   else
-      -- New class, make this the default receiver.
+   elseif self._name ~= "pdlua" and self._name ~= "pdluax" then
+      -- New class, make this the default receiver. Note that since dofilex()
+      -- is designed for regular (.pd_lua) objects only, we explicitly exclude
+      -- the built-in pdlua and pdluax classes here, to prevent crashes.
       reloadables[self._name] = { current = self }
       reloadables[self._name][self] = { finalize = self.finalize }
       -- install our finalizer

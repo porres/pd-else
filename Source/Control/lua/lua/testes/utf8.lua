@@ -1,6 +1,8 @@
 -- $Id: testes/utf8.lua $
 -- See Copyright Notice in file all.lua
 
+-- UTF-8 file
+
 print "testing UTF-8 library"
 
 local utf8 = require'utf8'
@@ -230,7 +232,7 @@ do
   check(s, {0x10000, 0x1FFFFF}, true)
 end
 
-x = "日本語a-4\0éó"
+local x = "日本語a-4\0éó"
 check(x, {26085, 26412, 35486, 97, 45, 52, 0, 233, 243})
 
 

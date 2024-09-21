@@ -1,0 +1,35 @@
+#N canvas 563 353 516 321 12;
+#X declare -lib pdlua;
+#X obj 30 140 luaxfade~;
+#X floatatom 110 51 5 0 1 0 - - -, f 5;
+#N canvas 0 50 450 250 (subpatch) 0;
+#X array scope 4800 float 0 black black;
+#X coords 0 1 4799 -1 200 140 1;
+#X restore 240 130 graph;
+#X obj 160 180 tgl 20 0 empty empty empty 0 -10 0 12 #fcfcfc #000000
+#000000 0 1;
+#X obj 160 205 metro 100;
+#X floatatom 30 20 5 0 0 0 - - -, f 5;
+#X obj 30 250 tabwrite~ scope;
+#X obj 30 50 osc~ 110;
+#X obj 110 20 tgl 20 0 empty empty empty 0 -10 0 12 #fcfcfc #000000
+#000000 0 1;
+#X obj 30 180 output~;
+#X obj 110 110 noise~;
+#X msg 110 80 fade \$1 500 200;
+#X text 240 15 fade x time delay, f 18;
+#X text 240 34 x: 0-1 (0 = left \, 1 = right channel);
+#X text 240 53 time: ramp time (msec), f 36;
+#X text 240 72 delay: initial delay (msec), f 36;
+#X obj 310 290 declare -lib pdlua;
+#X connect 0 0 6 0;
+#X connect 0 0 9 0;
+#X connect 0 0 9 1;
+#X connect 1 0 11 0;
+#X connect 3 0 4 0;
+#X connect 4 0 6 0;
+#X connect 5 0 7 0;
+#X connect 7 0 0 0;
+#X connect 8 0 1 0;
+#X connect 10 0 0 1;
+#X connect 11 0 0 0;

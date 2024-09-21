@@ -1,0 +1,21 @@
+#N canvas 780 326 844 320 12;
+#X msg 124 23 bgcolor 40 40 40;
+#X msg 269 23 fgcolor 0 200 50;
+#X msg 32 23 size 100;
+#X obj 86 80 circle-gui 127 -1 1 0.759843 0.751969 0 -1 -1 1 -1 -1
+;
+#X obj 86 280 print;
+#X text 462 22 Simple circle gui slider \; \; This uses pdlua's graphics
+capabilities to draw a circular slider and respond to mouse events.
+\; \; It will also remember the slider position all of the properties
+you set when you reload the patch \, or copy/paste the object. It does
+so by calling the self:set_args function in the pd_lua script. \; \;
+The list you passed to self:set_args will be the constructor arguments
+next time the object is initialised \, so you can parse them and make
+sure the object initialises to its last known state. \; \; To test
+the state saving \, drag the slider \, set some properties and then
+duplicate the object, f 53;
+#X connect 0 0 3 0;
+#X connect 1 0 3 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
