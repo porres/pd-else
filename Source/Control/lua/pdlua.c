@@ -2843,9 +2843,9 @@ void lua_setup(void)
 /* post version and other information
     post(pdluaver);
  #ifdef ELSE */
-    post("ALSO ALSO ALSO NOTE: A modification of [pdlua] version 0.12.17 was", pdlua_version);
-    post("loaded as part of the ELSE binary (see the help of the [lua]");
-    post("for details)");
+    post("ALSO ALSO ALSO NOTE: A modification of [pdlua] version 0.12.17", pdlua_version);
+    post("was loaded as part of the ELSE binary, so it can load externals");
+    post("coded in lua the same way ([circle] and [scope3d~] are examples)");
 /* #else
 // post(compiled);
 #endif */
