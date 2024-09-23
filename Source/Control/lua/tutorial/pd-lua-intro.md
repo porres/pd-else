@@ -718,7 +718,7 @@ Sending messages to a receiver is straightforward:
 
 This works pretty much like the `outlet` method, but outputs messages to the given receiver instead. For instance, let's say you have a toggle with receiver symbol `onoff` in your patch, then you can turn on that toggle with a call like `pd.send("onoff", "float", {1})`. (Recall that the `atoms` argument always needs to be a table, even if it is a singleton, lest you'll get that "invalid atoms table" error that we discussed earlier).
 
-One complication are receiver symbols using a `$0-` patch id prefix, which are commonly used to differentiate receiver symbols in different toplevel patches or abstractions, in order to prevent name clashes. A Pd-Lua object doesn't have any idea of what toplevel patch it is located in, and what the numeric id of that patch is, so you'll have to expand the `$0-` prefix on the Pd side and pass it, e.g., as a creation argument. For instance, suppose that the toggle receiver is in fact named `$0-onoff`, then something like the following Pd-Lua object will do the trick, if you invoke it as `luasend $0-onoff`:
+One complication are receiver symbols using a `$0-` patch id prefix, which are commonly used to differentiate receiver symbols in different toplevel patches or abstractions, in order to prevent name clashes. For instance, suppose that the toggle receiver is in fact named `$0-onoff`, then something like the following Pd-Lua object will do the trick, if you invoke it as `luasend $0-onoff` (you'll also find an explanation further below on how to manage this expansion for symbols from incoming messages):
 
 ~~~lua
 local luasend = pd.Class:new():register("luasend")
@@ -1230,6 +1230,40 @@ I'm sure you can imagine many more creative uses for this simple but surprisingl
 ![Extended dial example](18-graphics6.png)
 
 The extended example adds messages for resizing the object and setting colors, and also shows how to save and restore object state in the creation arguments using the `set_args()` method mentioned at the beginning of this section. The accompanying patch covers all the examples we discussed here, and adds a third example showing how to utilize our dial object as a dB meter.
+
+### Expanding dollar symbols
+
+As mentioned above, the patch id `$0` is widely used in Pd for send and receive names to avoid conflicts with other receivers and senders of similar names. Pd expands `$0` to its local id, which differs for every open patch (similarly, it expands `$1`, `$2` etc. if the corresponding creation arguments are set in the context of an abstraction or clone instance).
+
+If you set these sender or receiver names for your Pd-Lua object as creation arguments, they will automatically get expanded as demonstrated before. If you want to set them through messages in Lua however (which is common for Pd's GUI objects like sliders, radio buttons, etc.), it becomes slightly more complicated since you will need to expand them yourself.
+
+Luckily, Pd's `canvas_realizedollar()` method does exactly this and is also available on the Lua side. Combined with the `set_args()` method, you can create objects that allow managing sender and receiver names, applying the expanded version immediately and also storing the original names in the arguments. Here's a simple example illustrating this:
+
+~~~lua
+local localsend = pd.Class:new():register("localsend")
+
+function localsend:initialize(sel, atoms)
+   self.inlets = 1
+   -- pass the symbol from the creation argument,
+   -- which gets automatically expanded here
+   self.sender = tostring(atoms[1])
+   return true
+end
+
+function localsend:in_1_sender(x)
+   local sendername = tostring(x[1])
+
+   -- store the original name as argument (like "\$0-foo")
+   self:set_args(sendername)
+
+   -- apply the expanded name with the local id
+   self.sender = self:canvas_realizedollar(sendername)
+end
+
+function localsend:in_1_bang()
+   pd.send(self.sender, "float", {1})
+end
+~~~
 
 ## Live coding
 

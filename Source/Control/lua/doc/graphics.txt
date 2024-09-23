@@ -28,47 +28,53 @@ end
 
 API overview
 --------------
--- Callback functions you can define
 
-pd:Class:mouse_down(x, y)                                           -- Mouse down callback, called when the mouse is clicked
-pd:Class:mouse_up(x, y)                                             -- Mouse up callback, called when the mouse button is released
-pd:Class:mouse_move(x, y)                                           -- Mouse move callback, called when the mouse is moved while not being down
-pd:Class:mouse_drag(x, y)                                           -- Mouse drag callback, called when the mouse is moved while also being down
+-- Callback functions you can define
+pd:Class:mouse_down(x, y)                                      -- Mouse down callback, called when the mouse is clicked
+pd:Class:mouse_up(x, y)                                        -- Mouse up callback, called when the mouse button is released
+pd:Class:mouse_move(x, y)                                      -- Mouse move callback, called when the mouse is moved while not being down
+pd:Class:mouse_drag(x, y)                                      -- Mouse drag callback, called when the mouse is moved while also being down
 
 -- Functions you can call
-pd:Class:repaint()                                                -- Request a repaint, after this the "paint" callback will occur
-pd:Class:paint(g)                                                 -- Paint callback, returns a graphics_context object (commonly called g) that you can call these drawing functions on:
-g:set_size(w, h)                                                  -- Sets the size of the object.
-width, height = g:get_size(w, h)                                  -- Gets the size of the object.
+pd:Class:repaint()                                             -- Request a repaint, after this the "paint" callback will occur
+pd:Class:paint(g)                                              -- Paint callback, returns a graphics_context object (commonly called g) that you can call these drawing functions on:
 
-g:set_color(r, g, b, a=1.0)                                       -- Sets the color for the next drawing operation.
+g:set_size(w, h)                                               -- Sets the size of the object
+width, height = g:get_size(w, h)                               -- Gets the size of the object
 
-g:fill_ellipse(x, y, w, h)                                        -- Draws a filled ellipse at the specified position and size.
-g:stroke_ellipse(x, y, w, h, line_width)                          -- Draws the outline of an ellipse at the specified position and size.
+g:set_color(r, g, b, a=1.0)                                    -- Sets the color for the next drawing operation
 
-g:fill_rect(x, y, w, h)                                           -- Draws a filled rectangle at the specified position and size.
-g:stroke_rect(x, y, w, h, line_width)                             -- Draws the outline of a rectangle at the specified position and size.
+g:fill_ellipse(x, y, w, h)                                     -- Draws a filled ellipse at the specified position and size
+g:stroke_ellipse(x, y, w, h, line_width)                       -- Draws the outline of an ellipse at the specified position and size
 
-g:fill_rounded_rect(x, y, w, h, corner_radius)                    -- Draws a filled rounded rectangle at the specified position and size.
-g:stroke_rounded_rect(x, y, w, h, corner_radius, line_width)      -- Draws the outline of a rounded rectangle at the specified position and size.
+g:fill_rect(x, y, w, h)                                        -- Draws a filled rectangle at the specified position and size
+g:stroke_rect(x, y, w, h, line_width)                          -- Draws the outline of a rectangle at the specified position and size
 
-g:draw_line(x1, y1, x2, y2)                                       -- Draws a line between two points.
-g:draw_text(text, x, y, w, fontsize)                              -- Draws text at the specified position and size.
+g:fill_rounded_rect(x, y, w, h, corner_radius)                 -- Draws a filled rounded rectangle at the specified position and size
+g:stroke_rounded_rect(x, y, w, h, corner_radius, line_width)   -- Draws the outline of a rounded rectangle at the specified position and size
 
-g:fill_all()                                                      -- Fills the entire drawing area with the current color. Also will draw an object outline in the style of the host (ie. pure-data or plugdata)
+g:draw_line(x1, y1, x2, y2)                                    -- Draws a line between two points
+g:draw_text(text, x, y, w, fontsize)                           -- Draws text at the specified position and size
 
-g:translate(tx, ty)                                               -- Translates the coordinate system by the specified amounts.
-g:scale(sx, sy)                                                   -- Scales the coordinate system by the specified factors. This will always happen after the translation
-g:reset_transform()                                               -- Resets current scale and translation
+g:fill_all()                                                   -- Fills the entire drawing area with the current color. Also will draw an object outline in the style of the host (ie. pure-data or plugdata)
 
-p = Path(x, y)                                                    -- Initiates a new path at the specified point
-p:line_to(x, y)                                                   -- Adds a line segment to the path.
-p:quad_to(x1, y1, x2, y2)                                         -- Adds a quadratic Bezier curve to the path.
-p:cubic_to(x1, y1, x2, y2, x3, y)                                 -- Adds a cubic Bezier curve to the path.
-p:close_path()                                                    -- Closes the path.
+g:translate(tx, ty)                                            -- Translates the coordinate system by the specified amounts
+g:scale(sx, sy)                                                -- Scales the coordinate system by the specified factors. This will always happen after the translation
+g:reset_transform()                                            -- Resets current scale and translation
 
-g:stroke_path(p, line_width)                                      -- Draws the outline of the path with the specified line width.
-g:fill_path(p)                                                    -- Fills the current path.
+p = Path(x, y)                                                 -- Initiates a new path at the specified point
+p:line_to(x, y)                                                -- Adds a line segment to the path
+p:quad_to(x1, y1, x2, y2)                                      -- Adds a quadratic Bezier curve to the path
+p:cubic_to(x1, y1, x2, y2, x3, y)                              -- Adds a cubic Bezier curve to the path
+p:close_path()                                                 -- Closes the path
+
+g:stroke_path(p, line_width)                                   -- Draws the outline of the path with the specified line width
+g:fill_path(p)                                                 -- Fills the current path
+
+-- Additional functions
+expandedsymbol = pd:Class:canvas_realizedollar(s)              -- Expand dollar symbols in patch canvas context
+pd:Class:set_args(args)                                        -- Set the object arguments to be saved in the patch file
+
 
 Basic example
 ---------------------
