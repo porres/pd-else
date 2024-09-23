@@ -83,7 +83,6 @@ file(GLOB extra_files
 )
 
 set(lua_resources
-    ${CMAKE_CURRENT_SOURCE_DIR}/Source/Audio/scope3d~.pd_lua
     ${CMAKE_CURRENT_SOURCE_DIR}/Source/Control/lua/pd.lua
     ${CMAKE_CURRENT_SOURCE_DIR}/Source/Control/lua/pdx.lua
     ${CMAKE_CURRENT_SOURCE_DIR}/Source/Control/lua/luadoc/hello.lua

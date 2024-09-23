@@ -15,7 +15,6 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 
 **LIBRARY:**
 
-
 Breaking changes:
 - [oscope~] renamed to [scope~]
 - [plaits~] changed inlet order of modulation inputs and some method/flags name. If a MIDI pitch of 0 or less input is given, it becomes a '0hz'.
@@ -48,11 +47,11 @@ Enhancements/fixes/other changes:
 - added multichannel features to [cosine~] and [pimp~].
 - [plaits~] added a new 'transp' message and a functionality to allow MIDI input to supersede signal connections (needed for the 'merda' version [see below]), fixed MIDI velocity.
 - [pluck~] added a new functionality to allow MIDI input to supersede signal connections (needed for the 'merda' version [see below]).
-- 27 new objects, [velvet~], [vcf2~], [damp.osc~], [scope3d~], [sfload], [pdlink] and [pdlink~], plus abstractions from a newly included submodule called "Modular Euro Racks Dancing Along" (M.E.R.D.A)! Warning, this is all just very very experimental still, the object are: [adsr.m~], [brane.m~], [chorus.m~], [delay.m~], [drive.m~], [flanger.m~], [gendyn.m~], [lfo.m~], [phaser.m~], [plaits.m~], [plate.rev.m~], [pluck.m~], [pm6.m~], [presets.m], [rm.m~], [seq8.m~], [sig.m~], [vca.m~], [vcf.m~] and [vco.m~] (6 of these are multichannel aware).
+- 26 new objects, [velvet~], [vcf2~], [damp.osc~], [sfload], [pdlink] and [pdlink~], plus abstractions from a newly included submodule called "Modular Euro Racks Dancing Along" (M.E.R.D.A)! Warning, this is all just very very experimental still, the object are: [adsr.m~], [brane.m~], [chorus.m~], [delay.m~], [drive.m~], [flanger.m~], [gendyn.m~], [lfo.m~], [phaser.m~], [plaits.m~], [plate.rev.m~], [pluck.m~], [pm6.m~], [presets.m], [rm.m~], [seq8.m~], [sig.m~], [vca.m~], [vcf.m~] and [vco.m~] (6 of these are multichannel aware).
 
-Objects count: total of 552 (308 signal objects [92 of which are MC aware] and 244 control objects)! 
+Objects count: total of 551 (307 signal objects [92 of which are MC aware] and 244 control objects)! 
 
-- 312 coded objects (204 signal objects  / 108 control objects
+- 311 coded objects (203 signal objects  / 108 control objects
 - 240 abstractions (104 signal objects / 136 control objects)
 
 --------------------------------------

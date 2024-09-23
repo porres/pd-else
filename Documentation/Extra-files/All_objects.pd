@@ -71,10 +71,8 @@
 #X obj 615 866 else/knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0;
 #X text 561 874 [knob];
 #X obj 65 1091 else/out.mc~;
-#X text 572 1675 [scope3d~];
 #X obj 498 1490 else/scope~ 200 100 256 3 128 -1 1 0 0 0 0 30 30 30 190 190 190 160 160 160 0 empty;
 #X text 537 1462 [scope~];
-#X obj 669 1633 scope3d~;
 #X restore 150 222 pd GUI;
 #X obj 385 121 switch~;
 #X obj 18 34 cnv 30 279 30 empty empty ALL\ OBJECTS\ IN\ THE\ ELSE\ LIBRARY: 12 15 0 14 #e0e0e0 #404040 0;
