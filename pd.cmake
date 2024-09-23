@@ -34,11 +34,11 @@ function(add_pd_external PROJECT_NAME EXTERNAL_NAME EXTERNAL_SOURCES)
 	# Includes the path to Pure Data sources.
 	target_include_directories(${PROJECT_NAME} PRIVATE ${PD_SOURCES_PATH})
 
-	# Defines plateform specifix suffix and the linking necessities.
+	# Defines platform specific suffix and the linking necessities.
 	set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 	if(APPLE)
 		set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
-		set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".d_fat")
+		set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".darwin-fat-32.so")
 	elseif(UNIX)
 	   if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64")
 		  set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".l_amd64")

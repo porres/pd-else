@@ -29,7 +29,7 @@ Breaking changes:
 - [sfont~] uses now a simpler build system and this might not load very very rare and unusual sound formats. 
 
 Enhancements/fixes/other changes:
-- builds for double precision is now supported and provided, by the way, the build system was changed from pd-lib-builder to pd.build by Pierre Guillot.
+- builds for double precision is now supposedly supported, by the way, the build system was changed from pd-lib-builder to pd.build by Pierre Guillot.
 - [play.file~] is now a compiled object instead of an abstraction thanks to Tim Schoen, and it supports MP3, FLAC, WAV, AIF, AAC, OGG & OPUS file extensions.
 - Support for double precision compilation was improved and should be working for all objects (not yet providing binaries and fully tested yet by the way).
 - The ELSE binary now loads a modified version of [pdlua], but no [pdlua] and [pdluax] objects are provided. 
