@@ -1232,7 +1232,6 @@ static int pdlua_class_new(lua_State *L)
         // pdlua and pdluax built-ins don't have this.
         c_gfx = class_new(gensym((char *) name_gfx), (t_newmethod) pdlua_new,
                           (t_method) pdlua_free, sizeof(t_pdlua), CLASS_NOINLET, A_GIMME, 0);
-        class_sethelpsymbol(c_gfx, gensym((char *) name));
     }
     
     // Let plugdata know this class is a lua object
@@ -2820,7 +2819,7 @@ void lua_setup(void)
 #endif
     if (strlen(pdlua_version) == 0) {
       // NOTE: This should be set from the Makefile, otherwise we fall back to:
-      pdlua_version = "0.12.18";
+      pdlua_version = "0.12.17";
     }
     snprintf(pdluaver, MAXPDSTRING-1, "pdlua %s (GPL) 2008 Claude Heiland-Allen, 2014 Martin Peach et al.", pdlua_version);
     snprintf(compiled, MAXPDSTRING-1, "pdlua: compiled for pd-%d.%d on %s",
@@ -2844,9 +2843,9 @@ void lua_setup(void)
 /* post version and other information
     post(pdluaver);
  #ifdef ELSE */
-    post("ALSO ALSO ALSO NOTE: A modification of [pdlua] version 0.12.18", pdlua_version);
-    post("was loaded as part of the ELSE binary, so it can load externals");
-    post("coded in lua the same way ([circle] and [scope3d~] are examples)");
+    post("ALSO ALSO ALSO NOTE: A modification of [pdlua] version 0.12.17", pdlua_version);
+    post("loaded as part of the ELSE binary, so it can load externals");
+    post("coded in lua the same way ([else/circle] is an example)");
 /* #else
 // post(compiled);
 #endif */
