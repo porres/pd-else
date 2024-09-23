@@ -15,6 +15,7 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 
 **LIBRARY:**
 
+
 Breaking changes:
 - [oscope~] renamed to [scope~]
 - [plaits~] changed inlet order of modulation inputs and some method/flags name. If a MIDI pitch of 0 or less input is given, it becomes a '0hz'.
@@ -26,8 +27,10 @@ Breaking changes:
 - [voices~] was also affected by changes in [voices] of course, such as 'voices' message being renamed to 'n'.
 - [sr~]/[nyquist] changed output loading time to 'init' bang
 - [sample~] object was significantly redesigned and lots of stuff changed, new messages and flags, added support for 64-bit audio files (Pd 0.55 in double precision and ELSE compiled for 64 bits is required for this). Info outlet now also outputs values for lenght in ms and bit depth.
+- [sfont~] uses now a simpler build system and this might not load very very rare and unusual sound formats. 
 
 Enhancements/fixes/other changes:
+- builds for double precision is now supported and provided, by the way, the build system was changed from pd-lib-builder to pd.build by Pierre Guillot.
 - [play.file~] is now a compiled object instead of an abstraction thanks to Tim Schoen, and it supports MP3, FLAC, WAV, AIF, AAC, OGG & OPUS file extensions.
 - Support for double precision compilation was improved and should be working for all objects (not yet providing binaries and fully tested yet by the way).
 - The ELSE binary now loads a modified version of [pdlua], but no [pdlua] and [pdluax] objects are provided. 
@@ -45,19 +48,20 @@ Enhancements/fixes/other changes:
 - added multichannel features to [cosine~] and [pimp~].
 - [plaits~] added a new 'transp' message and a functionality to allow MIDI input to supersede signal connections (needed for the 'merda' version [see below]), fixed MIDI velocity.
 - [pluck~] added a new functionality to allow MIDI input to supersede signal connections (needed for the 'merda' version [see below]).
-- 26 new objects, [velvet~], [vcf2~], [damp.osc~], [scope3d~] [sfload] and [lua] (this one very very experimental still and not really functional yet), plus abstractions from a newly included submodule called "Modular Euro Racks Dancing Along" (M.E.R.D.A)! Warning, this is all just very very experimental still, the object are: [adsr.m~], [brane.m~], [chorus.m~], [delay.m~], [drive.m~], [flanger.m~], [gendyn.m~], [lfo.m~], [phaser.m~], [plaits.m~], [plate.rev.m~], [pluck.m~], [pm6.m~], [presets.m], [rm.m~], [seq8.m~], [sig.m~], [vca.m~], [vcf.m~] and [vco.m~] (6 of these are multichannel aware).
+- 27 new objects, [velvet~], [vcf2~], [damp.osc~], [scope3d~], [sfload], [pdlink] and [pdlink~], plus abstractions from a newly included submodule called "Modular Euro Racks Dancing Along" (M.E.R.D.A)! Warning, this is all just very very experimental still, the object are: [adsr.m~], [brane.m~], [chorus.m~], [delay.m~], [drive.m~], [flanger.m~], [gendyn.m~], [lfo.m~], [phaser.m~], [plaits.m~], [plate.rev.m~], [pluck.m~], [pm6.m~], [presets.m], [rm.m~], [seq8.m~], [sig.m~], [vca.m~], [vcf.m~] and [vco.m~] (6 of these are multichannel aware).
 
-Objects count: total of 551 (306 signal objects [91 of which are MC aware] and 243 control objects)! 
+Objects count: total of 552 (308 signal objects [92 of which are MC aware] and 244 control objects)! 
 
-- 310 coded objects (202 signal objects  / 107 control objects and 1 for both? (lua))
-- 241 abstractions (105 signal objects / 135 control objects)
+- 312 coded objects (204 signal objects  / 108 control objects
+- 240 abstractions (104 signal objects / 136 control objects)
 
 --------------------------------------
 
 **TUTORIAL:**
 - New examples and revisions to add the new objects, features and breaking changes in ELSE. 
+- Added a couple of examples for network communication via FUDI and [pdlink]/[pdlink~]
 - Section 36-Filters(Advanced) revised, added more examples and details on how [slop~] works.
-- Total number of examples is now 526!
+- Total number of examples is now 528!
 
 --------------------------------------
 

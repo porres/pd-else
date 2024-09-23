@@ -14,7 +14,7 @@ t_class *else_obj_class;
 
 static int min_major = 0;
 static int min_minor = 55;
-static int min_bugfix = 0;
+static int min_bugfix = 1;
 
 static int else_major = 1;
 static int else_minor = 0;
@@ -62,7 +62,7 @@ void else_obj_about(t_else_obj *x){
     post("-------------------------------------------------------------------");
     post("  -----> ELSE - EL Locus Solus' Externals for Pure Data <-----");
     post("-------------------------------------------------------------------");
-    post("- Version: %d.%d-%d %s-%d; Released August 6th 2024", else_major, else_minor, else_bugfix, STATUS, status_number);
+    post("- Version: %d.%d-%d %s-%d; Released September 23rd 2024", else_major, else_minor, else_bugfix, STATUS, status_number);
     post("- Author: Alexandre Torres Porres & others");
     post("- Repository: https://github.com/porres/pd-else");
     post("- License: Do What The Fuck You Want To Public License");
@@ -76,12 +76,10 @@ void else_obj_about(t_else_obj *x){
         post("(you have %d.%d-%d, you're good!)", major, minor, bugfix);
     }
     else{
-#ifndef PDL2ORK
         pd_error(x, "- ELSE %d.%d-%d %s-%d needs at least Pd %d.%d-%d",
             else_major, else_minor, else_bugfix, STATUS, status_number,
             min_major, min_minor, min_bugfix);
         pd_error(x, "(you have %d.%d-%d, please upgrade)", major, minor, bugfix);
-#endif
     }
     post("-------------------------------------------------------------------");
     post("- NOTE: There's an accompanying tutorial by Alexandre Torres Porres.");
