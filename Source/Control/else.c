@@ -21,7 +21,7 @@ static int else_minor = 0;
 static int else_bugfix = 0;
 
 #define STATUS "rc"
-static int status_number = 12;
+static int status_number = 13;
 
 extern void lua_setup();
 
@@ -62,7 +62,7 @@ void else_obj_about(t_else_obj *x){
     post("-------------------------------------------------------------------");
     post("  -----> ELSE - EL Locus Solus' Externals for Pure Data <-----");
     post("-------------------------------------------------------------------");
-    post("- Version: %d.%d-%d %s-%d; Released September 23rd 2024", else_major, else_minor, else_bugfix, STATUS, status_number);
+    post("- Version: %d.%d-%d %s-%d; Unreleased", else_major, else_minor, else_bugfix, STATUS, status_number);
     post("- Author: Alexandre Torres Porres & others");
     post("- Repository: https://github.com/porres/pd-else");
     post("- License: Do What The Fuck You Want To Public License");
