@@ -1,12 +1,7 @@
-
 // based on iemguts/properties
 
-#ifdef CAMOMILE
-#undef PD
-#endif
-
-#include <m_pd.h>
-#include <g_canvas.h>
+#include "m_pd.h"
+#include "g_canvas.h"
 
 typedef struct _cnv_objlist{
     const t_pd *obj;
@@ -147,7 +142,6 @@ static void click_click(t_gobj *z, t_canvas *x){
 
 static void *click_new(t_floatarg f){
     t_click *x = (t_click *)pd_new(click_class);
-    #ifdef PD
     t_int subpatch_mode = f != 0;;
     t_glist *glist = (t_glist *)canvas_getcurrent();
     t_canvas *canvas = (t_canvas*)glist_getcanvas(glist);
@@ -158,7 +152,6 @@ static void *click_new(t_floatarg f){
     }
     class_addmethod(class, (t_method)click_click, gensym("click"), 0);
     addObjectToCanvas((t_pd*)canvas, (t_pd*)x);
-    #endif
     x->x_click_bangout = outlet_new((t_object *)x, &s_bang);
     return(x);
 }

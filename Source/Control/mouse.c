@@ -12,7 +12,7 @@ typedef struct _mouse_gui{
     t_symbol  *g_psfocus;
     t_symbol  *g_psvised;
     int        g_isup;
-} t_mouse_gui;
+}t_mouse_gui;
 
 void mouse_gui_getscreen(void);
 void mouse_gui_getscreenfocused(void);
@@ -584,8 +584,8 @@ static void *mouse_new(void){
     
     // The system mouse uses for binding doesn't work for multi-instance Pd
     // Ideally we would solve this, but that's kind of complicated
-    // This at least makes sure there is no crash, and since many multi-instance applications of Pd
-    // (plugdata, camomile) don't use tcl/tk anyway, it won't matter
+    // This at least makes sure there is no crash, and since many multi-instance 
+    // applications of Pd (plugdata) don't use tcl/tk anyway, it won't matter
 #ifndef PDINSTANCE
     mouse_gui_bindmouse((t_pd *)x);
     mouse_gui_willpoll();
@@ -596,7 +596,6 @@ static void *mouse_new(void){
     x->x_hzero = x->x_vzero = 0;
     mouse_updatepos(x);
 #endif
-    
     return(x);
 }
 
