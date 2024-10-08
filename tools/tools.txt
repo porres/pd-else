@@ -77,7 +77,10 @@ Revert commits
 
 https://github.com/pure-data/pure-data/pull/1917#issuecomment-1470404530
 
-For git reset --hard HEAD~1 
+git reset --hard HEAD~1
+git push -f
+
+Use Token password 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
 
 --------------------------------------------------------------------------------------
 
