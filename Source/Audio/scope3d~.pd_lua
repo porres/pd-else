@@ -1,16 +1,25 @@
-local pdlua_flames = {}
 local scope3d = pd.Class:new():register("scope3d~")
 
-function scope3d:initialize(name, args)
-  self.inlets = {SIGNAL, SIGNAL, SIGNAL}
-  local methods =
-  {
+function scope3d:initialize(name, atoms)
+  self.inlets = {SIGNAL}
+  self.pd_env = { ignorewarnings = true, name = name }
+  self.initialized = false
+  return true
+end
+
+function scope3d:postinitialize()
+  self.postinit = pd.Clock:new():register(self, "postpostinit_task")
+  self.postinit:delay(0)
+end
+
+function scope3d:postpostinit_task()
+  local args = self:get_args()
+  
+  self.methods = {
     { name = "rotate",      defaults = { 0, 0 } },
     { name = "rotatex" },
     { name = "rotatey" },
-
     { name = "dim",         defaults = { 140.0, 140.0 } },
-
     { name = "width",       defaults = { 1 } },
     { name = "clip",        defaults = { 0 } },
     { name = "grid",        defaults = { 1 } },
@@ -18,25 +27,27 @@ function scope3d:initialize(name, args)
     { name = "zoom",        defaults = { 1 } },
     { name = "perspective", defaults = { 1 } },
     { name = "rate",        defaults = { 20 } },
-
     { name = "list",        defaults = { 8, 256 } },
     { name = "nsamples" },
     { name = "nlines" },
-
     { name = "fgcolor",     defaults = { 30, 30, 30 } },
     { name = "bgcolor",     defaults = { 190, 190, 190 } },
     { name = "gridcolor",   defaults = { 160, 160, 160 } },
-    { name = "receive",     defaults = { nil } },
+    { name = "receive",     defaults = { "empty" } },
   }
+  
   self.cameraDistance = 6
   self.rotationAngleX, self.rotationAngleY = 0, 0
   self.rotationStartAngleX, self.rotationStartAngleY = 0, 0
   self.gridLines = self:create_grid(-1, 1, 0.25)
 
-  self.pd_env = { ignorewarnings = true }
-  pdlua_flames:init_pd_methods(self, name, methods, args)
+  self:init_pd_methods(args)
   self:reset_buffer()
-  return true
+  
+  self.initialized = true
+
+  self.clock = pd.Clock:new():register(self, "tick")
+  self.clock:delay(self.frameDelay)
 end
 
 function scope3d:create_grid(minVal, maxVal, step)
@@ -61,11 +72,6 @@ function scope3d:reset_buffer()
     self.rotatedX[i], self.rotatedY[i], self.rotatedZ[i] = 0, 0, 0
   end
   self:update_lines()
-end
-
-function scope3d:postinitialize()
-  self.clock = pd.Clock:new():register(self, "tick")
-  self.clock:delay(self.frameDelay)
 end
 
 function scope3d:tick()
@@ -200,8 +206,9 @@ function scope3d:pd_dim(x)
   end
 end
 
-function scope3d:dsp(sr, bs)
+function scope3d:dsp(sr, bs, nchans)
     self.blocksize = bs
+    self.nchans = nchans[1]
 end
 
 function scope3d:mouse_down(x, y)
@@ -222,90 +229,20 @@ function scope3d:mouse_drag(x, y)
   end
 end
 
-function scope3d:perform(in1, in2, in3)
+function scope3d:perform(in1)
   while self.sampleIndex <= self.blocksize do
     -- ring buffer
     self.signalX[self.bufferIndex] = in1[self.sampleIndex]
-    self.signalY[self.bufferIndex] = in2[self.sampleIndex]
-    self.signalZ[self.bufferIndex] = in3[self.sampleIndex]
+    self.signalY[self.bufferIndex] = in1[self.sampleIndex + self.blocksize] or 0
+    self.signalZ[self.bufferIndex] = in1[self.sampleIndex + self.blocksize*2] or 0
     self.bufferIndex = (self.bufferIndex % self.nlines) + 1
     self.sampleIndex = self.sampleIndex + self.nsamples
   end
   self.sampleIndex = self.sampleIndex - self.blocksize
 end
 
--- function scope3d:clipLine(x1, y1, x2, y2)
---   local function isInside(x, y)
---     return x >= 1 and x <= self.widthMinusOne and y >= 1 and y <= self.heightMinusOne
---   end
-
---   local function computeOutCode(x, y)
---     local code = 0
---     if x < 1 then -- to the left of clip window
---       code = code | 1
---     elseif x > self.widthMinusOne then -- to the right of clip window
---       code = code | 2
---     end
---     if y < 1 then -- below the clip window
---       code = code | 4
---     elseif y > self.heightMinusOne then -- above the clip window
---       code = code | 8
---     end
---     return code
---   end
-
---   local function clipPoint(x, y, outcode)
---     local dx = x2 - x1
---     local dy = y2 - y1
-
---     if outcode & 8 ~= 0 then -- point is above the clip window
---       x = x1 + dx * (self.heightMinusOne - y) / dy
---       y = self.heightMinusOne
---     elseif outcode & 4 ~= 0 then -- point is below the clip window
---       x = x1 + dx * (1 - y) / dy
---       y = 1
---     elseif outcode & 2 ~= 0 then -- point is to the right of clip window
---       y = y1 + dy * (self.widthMinusOne - x) / dx
---       x = self.widthMinusOne
---     elseif outcode & 1 ~= 0 then -- point is to the left of clip window
---       y = y1 + dy * (1 - x) / dx
---       x = 1
---     end
---     return x, y
---   end
-
---   local outcode1 = computeOutCode(x1, y1)
---   local outcode2 = computeOutCode(x2, y2)
---   local accept = false
-
---   while true do
---     if outcode1 == 0 and outcode2 == 0 then -- both points inside
---       accept = true
---       break
---     elseif (outcode1 & outcode2) ~= 0 then -- both points share an outside zone
---       break
---     else
---       local x, y
---       local outcodeOut = (outcode1 ~= 0) and outcode1 or outcode2
-
---       x, y = clipPoint(x1, y1, outcodeOut)
-
---       if outcodeOut == outcode1 then
---         x1, y1 = x, y
---         outcode1 = computeOutCode(x1, y1)
---       else
---         x2, y2 = x, y
---         outcode2 = computeOutCode(x2, y2)
---       end
---     end
---   end
-
---   if accept then
---     return x1, y1, x2, y2
---   end
--- end
-
 function scope3d:paint(g)
+  if not self.initialized then return end
   g:set_color(self.bgColorR, self.bgColorG, self.bgColorB)
   g:fill_all()
 
@@ -323,12 +260,7 @@ function scope3d:paint(g)
 
       local startX, startY = self:projectVertex(lineFromX, lineFromY, lineFromZ, self.zoom)
       local endX, endY = self:projectVertex(lineToX, lineToY, lineToZ, self.zoom)
-      -- if self.clip == 1 then 
-      --   startX, startY, endX, endY = self:clipLine(startX, startY, endX, endY)
-      --   if startX then g:draw_line(startX, startY, endX, endY, self.strokeWidth) end
-      -- else
       g:draw_line(startX, startY, endX, endY, 1)
-      -- end
     end
   end
 
@@ -339,22 +271,11 @@ function scope3d:paint(g)
   end
 
   g:set_color(self.fgColorR, self.fgColorG, self.fgColorB)
-  if self.clip == 1 then 
-    local startX, startY = self:projectVertex(self.rotatedX[1], self.rotatedY[1], self.rotatedZ[1], self.pd_methods.zoom.val[1])
-    for i = 2, self.nlines do
-      local endX, endY = self:projectVertex(self.rotatedX[i], self.rotatedY[i], self.rotatedZ[i], self.pd_methods.zoom.val[1])
-      local prevX, prevY = endX, endY
-      startX, startY, endX, endY = self:clipLine(startX, startY, endX, endY)
-      if startX then g:draw_line(startX, startY, endX, endY, self.strokeWidth) end
-      startX, startY = prevX, prevY
-    end
-  else
-    local p = Path(self:projectVertex(self.rotatedX[1], self.rotatedY[1], self.rotatedZ[1], self.zoom))
-    for i = 2, self.nlines do
-      p:line_to(self:projectVertex(self.rotatedX[i], self.rotatedY[i], self.rotatedZ[i], self.zoom))
-    end
-    g:stroke_path(p, self.strokeWidth)
+  local p = Path(self:projectVertex(self.rotatedX[1], self.rotatedY[1], self.rotatedZ[1], self.zoom))
+  for i = 2, self.nlines do
+    p:line_to(self:projectVertex(self.rotatedX[i], self.rotatedY[i], self.rotatedZ[i], self.zoom))
   end
+  g:stroke_path(p, self.strokeWidth)
 end
 
 function scope3d:update_lines()
@@ -409,49 +330,41 @@ function scope3d:pd_receive(x)
   end
 end
 
----------------------------------------------------------------------------------------------
+function scope3d:init_pd_methods(args)
+  self.pd_methods = {}
+  self.pd_args = {}
 
-function pdlua_flames:init_pd_methods(pdclass, name, methods, atoms)
-  pdclass.handle_pd_message = pdlua_flames.handle_pd_message
-  pdclass.pd_env = pdclass.pd_env or {}
-  pdclass.pd_env.name = name
-  pdclass.pd_methods = {}
-  pdclass.pd_args = {}
-
-  local kwargs, args = self:parse_atoms(atoms)
+  local kwargs, positional_args = self:parse_atoms(args)
   local argIndex = 1
-  for _, method in ipairs(methods) do
-    pdclass.pd_methods[method.name] = {}
-    -- add method if a corresponding method exists
+  for _, method in ipairs(self.methods) do
+    self.pd_methods[method.name] = {}
     local pd_method_name = 'pd_' .. method.name
-    if pdclass[pd_method_name] and type(pdclass[pd_method_name]) == 'function' then
-      pdclass.pd_methods[method.name].func = pdclass[pd_method_name]
-    elseif not pdclass.pd_env.ignorewarnings then
-      pdclass:error(name..': no function \'' .. pd_method_name .. '\' defined')
+    if self[pd_method_name] and type(self[pd_method_name]) == 'function' then
+      self.pd_methods[method.name].func = self[pd_method_name]
+    elseif not self.pd_env.ignorewarnings then
+      self:error(self.pd_env.name..': no function \'' .. pd_method_name .. '\' defined')
     end
-    -- process initial defaults
+    
     if method.defaults then
-      -- initialize entry for storing index and arg count and values
-      pdclass.pd_methods[method.name].index = argIndex
-      pdclass.pd_methods[method.name].arg_count = #method.defaults
-      pdclass.pd_methods[method.name].val = method.defaults
-      -- populate pd_args with defaults or preset values
+      self.pd_methods[method.name].index = argIndex
+      self.pd_methods[method.name].arg_count = #method.defaults
+      self.pd_methods[method.name].val = method.defaults
       local argValues = {}
       for _, value in ipairs(method.defaults) do
-        local addArg = args[argIndex] or value
-        pdclass.pd_args[argIndex] = addArg
+        local addArg = positional_args[argIndex] or value
+        self.pd_args[argIndex] = addArg
         table.insert(argValues, addArg)
         argIndex = argIndex + 1
       end
-      pdclass:handle_pd_message(method.name, argValues)
+      self:handle_pd_message(method.name, argValues)
     end
   end
   for sel, atoms in pairs(kwargs) do
-    pdclass:handle_pd_message(sel, atoms)
+    self:handle_pd_message(sel, atoms)
   end
 end
 
-function pdlua_flames:parse_atoms(atoms)
+function scope3d:parse_atoms(atoms)
   local kwargs = {}
   local args = {}
   local collectKey = nil
@@ -468,7 +381,7 @@ function pdlua_flames:parse_atoms(atoms)
   return kwargs, args
 end
 
-function pdlua_flames:handle_pd_message(sel, atoms, n)
+function scope3d:handle_pd_message(sel, atoms, n)
   if self.pd_methods[sel] then
     local startIndex = self.pd_methods[sel].index
     local valueCount = self.pd_methods[sel].arg_count
