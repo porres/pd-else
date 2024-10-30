@@ -1,10 +1,10 @@
-#N canvas 346 23 630 651 12;
+#N canvas 346 38 630 651 12;
 #X declare -path else;
 #X obj 68 462 *~;
 #X obj 68 571 out~;
 #X obj 535 297 adsr~, f 7;
 #X obj 169 332 adsr.m~;
-#A saved 51.2001 352.8 0.5 50 0 -0.77 0 0 0;
+#A saved 51.2001 352.8 0.5 50 0 -0.77 0.714287 0.57143 -0.4;
 #X text 446 26 see -->;
 #X obj 458 195 declare -path else;
 #X obj 506 26 about.MERDA;

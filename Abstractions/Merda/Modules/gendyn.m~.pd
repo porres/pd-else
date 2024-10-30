@@ -44,12 +44,12 @@
 #X obj 76 62 note 117 24 Inter empty 5 54 54 54 0 187 187 187 1 1 GENDYN;
 #X text 82 191 BW;
 #X obj 137 154 vradio 16 1 0 3 \$0-interp \$0-set-interp empty 0 -8 0 10 #dfdfdf #000000 #000000 0;
-#X floatatom 137 108 4 1 128 0 - \$0-set-n \$0-n 0;
+#X floatatom 137 108 4 1 128 0 - \$0-set-n \$0-n 12;
 #X text 171 108 n;
-#X floatatom 82 280 6 0 100 0 - \$0-fstep-nbx-set \$0-fstep-nbx 0;
+#X floatatom 82 280 6 0 100 0 - \$0-fstep-nbx-set \$0-fstep-nbx 12;
 #X obj 78 221 else/knob 50 0 100 2 0 \$0-fstep-nbx-set \$0-set-fstep #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0;
 #X text 79 298 f-step;
-#X floatatom 142 280 6 0 100 0 - \$0-astep-nbx-set \$0-astep-nbx 0;
+#X floatatom 142 280 6 0 100 0 - \$0-astep-nbx-set \$0-astep-nbx 12;
 #X obj 138 221 else/knob 50 0 100 2 0 \$0-astep-nbx-set \$0-set-astep #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0;
 #X text 139 298 a-step;
 #X text 157 154 none;

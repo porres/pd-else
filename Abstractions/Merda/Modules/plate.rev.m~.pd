@@ -7,7 +7,7 @@
 #X obj 161 326 bng 23 250 50 0 \$0-clear \$0-set-clear empty 0 -10 0 12 #dfdfdf #000000 #000000;
 #X obj 130 272 else/knob 41 0 1 0 0 \$0-damp \$0-set-damp #dfdfdf #bbbbbb #000000 0 0 0 0 1 320 0 0 0;
 #X text 196 224 Cutoff;
-#X floatatom 119 230 6 100 5000 0 - \$0-pre \$0-pre-number 0;
+#X floatatom 119 230 6 100 5000 0 - \$0-pre \$0-pre-number 12;
 #X obj 129 179 else/knob 41 10 200 4 10 \$0-pre \$0-set-pre #dfdfdf #bbbbbb #000000 0 0 0 0 1 320 0 0 10;
 #X obj 196 179 else/knob 41 0 1 0 0 \$0-size \$0-set-size #dfdfdf #afafaf black 0 0 0 0 1 320 0 0 0;
 #X obj 199 308 else/knob 41 0 1 0 0.5 \$0-wet \$0-set-wet #9f9f9f #afafaf black 0 0 0 0 1 320 0 0 0.5;

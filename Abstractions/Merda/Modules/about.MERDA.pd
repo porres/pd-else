@@ -3,7 +3,7 @@
 #X text 42 433 This is still exerimental and some modules aren't really ready \, don't have CV input and still work linda like pedals., f 72;
 #X text 40 189 This is a collection of Pure Data Abstractions that are inspired by Eurorack Modules. This is a submodule of the ELSE library for Pure Data \, so it requires ELSE. ELSE is by Porres. MERDA is also by Porres., f 71;
 #N canvas 615 547 265 214 all 0;
-#N canvas 406 119 897 673 classic 0;
+#N canvas 270 125 897 673 classic 0;
 #X obj 607 174 else/adsr.m~;
 #A saved 10 20 0.5 50 0 0 0 0 0;
 #X obj 182 35 else/vco.m~;

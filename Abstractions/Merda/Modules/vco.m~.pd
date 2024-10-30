@@ -42,7 +42,7 @@
 #X text 289 104 pitch;
 #N canvas 107 107 307 420 (subpatch) 0;
 #X obj 51 51 cnv 19 159 305 empty empty empty 20 12 0 12 #e0e0e0 #404040 0;
-#X floatatom 142 177 7 -36 36 0 - \$0-pitch-set \$0-pitch 0;
+#X floatatom 142 177 7 -36 36 0 - \$0-pitch-set \$0-pitch 12;
 #X obj 74 327 tgl 22 0 \$0-lin \$0-lin-set empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X text 144 99 transp;
 #X obj 142 123 else/knob 50 -36 36 0 0 \$0-knobpitch \$0-knobpitch-set #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0;

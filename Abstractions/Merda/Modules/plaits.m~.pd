@@ -35,7 +35,7 @@
 #X text 303 250 Trigger;
 #X text 390 250 Level;
 #X text 397 219 Voices;
-#X floatatom 209 78 3 0 0 0 - \$0-set-model-n \$0-model-n 0;
+#X floatatom 209 78 3 0 0 0 - \$0-set-model-n \$0-model-n 12;
 #X text 202 60 Mode:;
 #X text 79 104 Freq;
 #X text 267 127 ---- Attenuverters ----;

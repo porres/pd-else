@@ -16,7 +16,7 @@
 #X text 207 50 SYNC;
 #N canvas 286 77 427 473 (subpatch) 0;
 #X obj 51 51 cnv 19 170 265 empty empty empty 20 12 0 12 #e0e0e0 #404040 0;
-#X floatatom 66 162 7 -36 36 0 - \$0-set-hz-number \$0-hz-number 0;
+#X floatatom 66 162 7 -36 36 0 - \$0-set-hz-number \$0-hz-number 12;
 #X obj 66 114 else/knob 45 0.1 20 1 0.1 \$0-hz \$0-hz-set #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0.1;
 #X obj 284 253 tgl 22 0 \$0-soft \$0-soft-set empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X obj 79 59 note 101 24 Inter empty 5 54 54 54 0 187 187 187 1 1 LFO;

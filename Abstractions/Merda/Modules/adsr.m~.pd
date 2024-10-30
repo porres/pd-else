@@ -1,4 +1,4 @@
-#N canvas 290 135 553 456 12;
+#N canvas 550 78 553 456 12;
 #X declare -path else;
 #N canvas 565 98 772 384 (subpatch) 0;
 #X obj 176 112 cnv 15 235 190 empty empty empty 20 12 0 14 #dbdbdb #373737 0;
@@ -11,10 +11,10 @@
 #X obj 353 231 note 51 10 Inter empty 5 55 55 55 0 223 223 223 1 2 Release;
 #X obj 182 231 note 51 10 Inter empty 5 55 55 55 0 223 223 223 1 1 Attack;
 #X obj 239 231 note 50 10 Inter empty 5 55 55 55 0 223 223 223 1 1 Decay;
-#X floatatom 183 209 7 0 0 0 - \$0-attack \$0-attack-number 0;
-#X floatatom 240 209 7 0 0 0 - \$0-decay \$0-decay-number 0;
-#X floatatom 297 209 7 0 0 0 - \$0-sustain \$0-sustain-number 0;
-#X floatatom 354 209 7 0 0 0 - \$0-release \$0-release-number 0;
+#X floatatom 183 209 7 0 0 0 - \$0-attack \$0-attack-number 12;
+#X floatatom 240 209 7 0 0 0 - \$0-decay \$0-decay-number 12;
+#X floatatom 297 209 7 0 0 0 - \$0-sustain \$0-sustain-number 12;
+#X floatatom 354 209 7 0 0 0 - \$0-release \$0-release-number 12;
 #X obj 363 122 tgl 19 0 \$0-lin \$0-set-lin empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X text 383 123 lin;
 #X obj 91 81 r \$0-reset;
