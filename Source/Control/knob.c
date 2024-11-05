@@ -86,6 +86,8 @@ typedef struct _knob{
     t_symbol       *x_var;
     t_symbol       *x_var_raw;
     int            x_var_set;
+    int            x_savestate;
+    int            x_loadbang;
     t_symbol       *x_snd;
     t_symbol       *x_snd_raw;
     int             x_flag;
@@ -633,7 +635,9 @@ static void knob_save(t_gobj *z, t_binbuf *b){
     knob_get_snd(x);
     knob_get_var(x);
     knob_get_rcv(x);
-    binbuf_addv(b, "iffffsssssiiiiiiiifssiiii", // 25 args
+    if(x->x_savestate)
+        x->x_load = x->x_fval;
+    binbuf_addv(b, "iffffsssssiiiiiiiifssiiiiii", // 27 args
         x->x_size, // 01: i SIZE
         (float)x->x_lower, // 02: f lower
         (float)x->x_upper, // 03: f upper
@@ -658,7 +662,9 @@ static void knob_save(t_gobj *z, t_binbuf *b){
         x->x_number, // 22: i number
         x->x_fontsize, // 23: i number
         x->x_xpos, // 24: i number
-        x->x_ypos); // 25: i number
+        x->x_ypos, // 25: i number
+        x->x_savestate, // 26: i savestate
+        x->x_loadbang); // 27: i loadbang
     binbuf_addv(b, ";");
 }
 
@@ -987,6 +993,14 @@ static void knob_exp(t_knob *x, t_floatarg f){
         knob_update(x);
 }
 
+static void knob_savestate(t_knob *x, t_floatarg f){
+    x->x_savestate = f != 0;
+}
+
+static void knob_lb(t_knob *x, t_floatarg f){
+    x->x_loadbang = f != 0;
+}
+
 static void knob_number(t_knob *x, t_floatarg f){
     x->x_number = f < 0 ? 0 : f > 3 ? 3 : (int)f;
     show_number(x);
@@ -1019,18 +1033,19 @@ static void knob_properties(t_gobj *z, t_glist *owner){
     knob_get_var(x);
     knob_get_rcv(x);
     pdgui_stub_vnew(&x->x_obj.ob_pd, "knob_dialog",
-        owner, "ffffi ss ifi sss iiiiii fss",
+        owner, "ffffi ss ifi sss iiiiii fss ii",
         (float)(x->x_size / x->x_zoom), x->x_lower, x->x_upper, x->x_load, x->x_circular,
         x->x_snd_raw->s_name, x->x_rcv_raw->s_name,
         x->x_expmode, x->x_exp, x->x_jump,
         x->x_bg->s_name, x->x_fg->s_name, x->x_mg->s_name,
         x->x_discrete, x->x_ticks, x->x_arc, x->x_range, x->x_offset, x->x_outline,
-        x->x_start, x->x_param->s_name, x->x_var_raw->s_name);
+        x->x_start, x->x_param->s_name, x->x_var_raw->s_name,
+        x->x_savestate, x->x_loadbang);
 }
 
 static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
-    t_atom undo[22];
+    t_atom undo[24];
     SETFLOAT(undo+0, x->x_size);
     SETFLOAT(undo+1, x->x_lower);
     SETFLOAT(undo+2, x->x_upper);
@@ -1053,7 +1068,9 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     SETFLOAT(undo+19, x->x_start);
     SETSYMBOL(undo+20, x->x_param);
     SETSYMBOL(undo+21, x->x_var);
-    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 21, undo, ac, av);
+    SETFLOAT(undo+22, x->x_savestate);
+    SETFLOAT(undo+23, x->x_loadbang);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 24, undo, ac, av);
     int size = (int)atom_getintarg(0, ac, av);
     float min = atom_getfloatarg(1, ac, av);
     float max = atom_getfloatarg(2, ac, av);
@@ -1076,6 +1093,8 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     float start = atom_getfloatarg(19, ac, av);
     t_symbol *param = atom_getsymbolarg(20, ac, av);
     t_symbol *var = atom_getsymbolarg(21, ac, av);
+    x->x_savestate = atom_getintarg(22, ac, av);
+    x->x_loadbang = atom_getintarg(23, ac, av);
     knob_config_io(x); // for outline
     if(expmode == 0){
         knob_log(x, 0);
@@ -1382,6 +1401,11 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
 
 // ---------------------- new / free / setup ----------------------
 
+static void knob_loadbang(t_knob *x, t_float f){
+    if((int)f == LB_LOAD && x->x_loadbang)
+        knob_bang(x);
+}
+
 static void edit_proxy_free(t_edit_proxy *p){
     pd_unbind(&p->p_obj.ob_pd, p->p_sym);
     clock_free(p->p_clock);
@@ -1415,7 +1439,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     int size = 50, circular = 0, ticks = 0, discrete = 0;
     int arc = 1, angle = 320, offset = 0;
     x->x_bg = gensym("#dfdfdf"), x->x_mg = gensym("#7c7c7c"), x->x_fg = gensym("black");
-    x->x_clicked = x->x_log = x->x_jump = x->x_number = 0;
+    x->x_clicked = x->x_log = x->x_jump = x->x_number = x->x_savestate = 0;
     x->x_outline = 1;
     x->x_glist = (t_glist *)canvas_getcurrent();
     x->x_cv = glist_getcanvas(x->x_glist);
@@ -1451,6 +1475,8 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
             x->x_fontsize = atom_getintarg(22, ac, av); // 23: f number
             x->x_xpos = atom_getintarg(23, ac, av); // 24: f number xpos
             x->x_ypos = atom_getintarg(24, ac, av); // 25: f number ypos
+            x->x_savestate = atom_getintarg(25, ac, av); // 26: f savestate
+            x->x_loadbang = atom_getintarg(26, ac, av); // 27: f loadbang
         }
         else{
             while(ac){
@@ -1622,6 +1648,14 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
                 else if(sym == gensym("-jump")){
                     x->x_flag = 1, av++, ac--;
                     x->x_jump = 1;
+                }
+                else if(sym == gensym("-savestate")){
+                    x->x_flag = 1, av++, ac--;
+                    x->x_savestate = 1;
+                }
+                else if(sym == gensym("-lb")){
+                    x->x_flag = 1, av++, ac--;
+                    x->x_loadbang = 1;
                 }
                 else if(sym == gensym("-number")){
                     if(ac >= 2){
@@ -1804,6 +1838,9 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_motion, gensym("motion"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_outline, gensym("outline"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_number, gensym("number"), A_FLOAT, 0);
+    class_addmethod(knob_class, (t_method)knob_savestate, gensym("savestate"), A_FLOAT, 0);
+    class_addmethod(knob_class, (t_method)knob_lb, gensym("lb"), A_FLOAT, 0);
+    class_addmethod(knob_class, (t_method)knob_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_numbersize, gensym("numbersize"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_numberpos, gensym("numberpos"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_learn, gensym("learn"), 0);

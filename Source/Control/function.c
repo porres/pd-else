@@ -355,21 +355,15 @@ static void function_save(t_gobj *z, t_binbuf *b){
                 0, // placeholder
                 0  // placeholder
                 );
-    binbuf_addv(b, "f",
-                (float)x->x_points[x->x_state = 0]
-                );
+    binbuf_addv(b, "f", (float)x->x_points[x->x_state = 0]);
                 i = 1;
                 int ac = x->x_n_states * 2 + 1;
                 while(i < ac){
                     float dur = x->x_dur[x->x_state+1] - x->x_dur[x->x_state];
-                    binbuf_addv(b, "f",
-                                (float)dur
-                                );
+                    binbuf_addv(b, "f", (float)dur);
                     i++;
                     x->x_state++;
-                    binbuf_addv(b, "f",
-                                (float)x->x_points[x->x_state]
-                                );
+                    binbuf_addv(b, "f", (float)x->x_points[x->x_state]);
                     i++;
                 }
     binbuf_addv(b, ";");
