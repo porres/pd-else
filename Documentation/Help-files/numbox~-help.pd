@@ -1,4 +1,4 @@
-#N canvas 510 23 568 623 10;
+#N canvas 510 38 568 623 10;
 #X obj 2 4 cnv 15 301 42 empty empty numbox~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -59,7 +59,7 @@
 #X text 227 433 - input when monitoring or generated values instead;
 #X text 227 288 -;
 #X text 239 288 sets initialization and generating value with given float or sets current value if no float is given., f 51;
-#N canvas 648 73 464 571 basic 0;
+#N canvas 733 74 464 571 basic 0;
 #X obj 86 165 noise~;
 #X obj 86 238 else/out~;
 #X obj 86 204 else/numbox~ 6 12 500 #c0c0c4 #440008 10 0 0 0;
@@ -79,8 +79,8 @@
 #X msg 265 149 load;
 #X text 322 126 comment;
 #X msg 255 123 load 100;
-#X text 45 323 If no signal is connected \, [numbox~] generates signal values with a smoothening ramp in ms (or no ramp if ms is 0) set via the '-ramp' flag \, 'ramp' message or via properties. In this mode you can also set values with a float input. The 'load' message or '-load' flag sets generating value at load time (aka initialization value). If you only send 'load' \, then [numbox~] saves the current state by capturing the current value as the load value. You can also set the load value via properties. Double clicking on the object restores this initial load state., f 61;
 #X text 45 515 You can set a lower and upper range that limits values \, but only for dragging and using up/down arrows. This is set via the 'range' message \, -range flag or via properties., f 61;
+#X text 45 323 If no signal is connected \, [numbox~] generates signal values with a smoothening ramp in ms (or no ramp if ms is 0) set via the '-ramp' flag \, 'ramp' message or via properties. In this mode you can also set values with a float input. The 'load' message or '-load' flag sets generating value at load time (aka initialization value). If you only send 'load' \, then [numbox~] saves the current state by capturing the current value as the load value. You can also set the load value via properties. Alt+clicking on the object restores this initial load state., f 61;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 0;

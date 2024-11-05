@@ -66,7 +66,7 @@ char *set_x_buf(t_numbox *x){
             if(x->x_buf[e] == 'e' || x->x_buf[e] == 'E')
                 break;
         if(i >= real_numwidth || e < bufsize)
-            x->x_buf[real_numwidth-1] = '>';
+            x->x_buf[real_numwidth-1] = '|';
         x->x_buf[real_numwidth] = 0;
     }
     return(x->x_buf);

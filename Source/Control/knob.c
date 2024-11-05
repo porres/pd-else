@@ -64,13 +64,14 @@ typedef struct _knob{
     int             x_end_angle;
     int             x_range;
     int             x_offset;
-    int             x_ticks;
+    int             x_steps;
     int             x_outline;
     double          x_lower;
     double          x_upper;
     int             x_clicked;
     int             x_typing;
     int             x_shownumber;
+    int             x_showticks;
     int             x_fontsize;
     int             x_xpos;
     int             x_ypos;
@@ -127,8 +128,8 @@ static t_float knob_getfval(t_knob *x){
     double fval;
     double pos = x->x_pos;
     if(x->x_discrete){ // later just 1 tick case
-        t_float ticks = (x->x_ticks < 2 ? 2 : (float)x->x_ticks) - 1;
-        pos = rint(pos * ticks) / ticks;
+        t_float steps = (x->x_steps < 2 ? 2 : (float)x->x_steps) - 1;
+        pos = rint(pos * steps) / steps;
     }
     if(x->x_log == 1){ // log
         if((x->x_lower <= 0 && x->x_upper >= 0) || (x->x_lower >= 0 && x->x_upper <= 0)){
@@ -173,11 +174,11 @@ static t_float knob_getpos(t_knob *x, t_floatarg fval){
         }
     }
     if(x->x_discrete){
-        t_float ticks = (float)(x->x_ticks) -1;
-        if(ticks <= 0)
+        t_float steps = (float)(x->x_steps) -1;
+        if(steps <= 0)
             pos = (x->x_load - x->x_lower) / (x->x_upper - x->x_lower); // ?????
         else
-            pos = rint(pos * ticks) / ticks;
+            pos = rint(pos * steps) / steps;
     }
     return(pos);
 }
@@ -197,13 +198,13 @@ static t_float knob_clipfloat(t_knob *x, t_floatarg f){
 static void knob_config_fg(t_knob *x){
     pdgui_vmess(0, "crs rsrs", x->x_cv, "itemconfigure",  x->x_tag_arc,
         "-outline", x->x_fg->s_name, "-fill", x->x_fg->s_name);
-    pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure",  x->x_tag_number,
+    pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure", x->x_tag_number,
         "-fill", x->x_fg->s_name);
-    pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure",  x->x_tag_ticks,
+    pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure", x->x_tag_ticks,
         "-fill", x->x_fg->s_name);
     pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure", x->x_tag_wiper,
         "-fill", x->x_fg->s_name);
-    pdgui_vmess(0, "crs rsrs", x->x_cv, "itemconfigure",  x->x_tag_wpr_c,
+    pdgui_vmess(0, "crs rsrs", x->x_cv, "itemconfigure", x->x_tag_wpr_c,
         "-outline", x->x_fg->s_name, "-fill", x->x_fg->s_name);
 }
 
@@ -224,10 +225,10 @@ static void knob_config_number(t_knob *x){ // show or hide number value
 }
 
 static void show_number(t_knob *x){ // show or hide number value
-    if(x->x_number == 1 && x->x_clicked)
-        x->x_shownumber = 1; // mode 1 and clicked
-    else if((x->x_number == 2 && x->x_typing) || x->x_number == 3)
-        x->x_shownumber = 1; // mode 2 and typing or mode 3
+    if(x->x_number == 1 || (x->x_number == 2 && x->x_clicked))
+        x->x_shownumber = 1; // mode 1 or mode 2 and clicked
+    else if(x->x_number == 3 && x->x_typing)
+        x->x_shownumber = 1; // mode 3 and typing
     else
         x->x_shownumber = 0;
     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
@@ -316,8 +317,8 @@ static void knob_config_arc(t_knob *x){
 static void knob_update(t_knob *x){
     t_float pos = x->x_pos;
     if(x->x_discrete){ // later just 1 tick case
-        t_float ticks = (x->x_ticks < 2 ? 2 : (float)x->x_ticks) -1;
-        pos = rint(pos * ticks) / ticks;
+        t_float steps = (x->x_steps < 2 ? 2 : (float)x->x_steps) -1;
+        pos = rint(pos * steps) / steps;
     }
     float start = (x->x_start_angle / 90.0 - 1) * HALF_PI;
     float range = x->x_range / 180.0 * M_PI;
@@ -347,18 +348,18 @@ static void knob_update(t_knob *x){
 // redraw ticks
 static void knob_draw_ticks(t_knob *x){
     pdgui_vmess(0, "crs", x->x_cv, "delete", x->x_tag_ticks);
-    if(!x->x_ticks)
+    if(!x->x_steps || !x->x_showticks)
         return;
     int z = x->x_zoom;
     float r = (float)x->x_size*z / 2.0; // radius
-    int divs = x->x_ticks;
+    int divs = x->x_steps;
     if((divs > 1) && ((x->x_range + 360) % 360 != 0)) // ????
         divs = divs - 1;
     float delta_w = x->x_range / (float)divs;
     int x0 = text_xpix(&x->x_obj, x->x_glist), y0 = text_ypix(&x->x_obj, x->x_glist);
     int xc = x0 + r, yc = y0 + r; // center coords
     int start = x->x_start_angle - 90.0;
-    if(x->x_ticks == 1){
+    if(x->x_steps == 1){
         int width = (x->x_size / 40);
         if(width < 1)
             width = 1;
@@ -379,9 +380,9 @@ static void knob_draw_ticks(t_knob *x){
             "-fill", x->x_fg->s_name,
             "-tags", 2, tags_ticks);
     }
-    else for(int t = 1; t <= x->x_ticks; t++){
-//         int thicker = (t == 1 || t == x->x_ticks || (odd && t == mid));
-        int thicker = (t == 1 || t == x->x_ticks);
+    else for(int t = 1; t <= x->x_steps; t++){
+//         int thicker = (t == 1 || t == x->x_steps || (odd && t == mid));
+        int thicker = (t == 1 || t == x->x_steps);
         int width = (x->x_size / 40);
         if(width < 1)
             width = 1;
@@ -637,7 +638,7 @@ static void knob_save(t_gobj *z, t_binbuf *b){
     knob_get_rcv(x);
     if(x->x_savestate)
         x->x_load = x->x_fval;
-    binbuf_addv(b, "iffffsssssiiiiiiiifssiiiiii", // 27 args
+    binbuf_addv(b, "iffffsssssiiiiiiiifssiiiiiii", // 28 args
         x->x_size, // 01: i SIZE
         (float)x->x_lower, // 02: f lower
         (float)x->x_upper, // 03: f upper
@@ -650,7 +651,7 @@ static void knob_save(t_gobj *z, t_binbuf *b){
         x->x_fg, // 10: s fgcolor
         x->x_outline, // 11: i outline
         x->x_circular, // 12: i circular
-        x->x_ticks, // 13: i ticks
+        x->x_steps, // 13: i steps
         x->x_discrete, // 14: i discrete
         x->x_arc, // 15: i arc
         x->x_range, // 16: i range
@@ -664,7 +665,8 @@ static void knob_save(t_gobj *z, t_binbuf *b){
         x->x_xpos, // 24: i number
         x->x_ypos, // 25: i number
         x->x_savestate, // 26: i savestate
-        x->x_loadbang); // 27: i loadbang
+        x->x_loadbang, // 27: i loadbang
+        x->x_showticks); // 28: i show ticks
     binbuf_addv(b, ";");
 }
 
@@ -735,7 +737,7 @@ static void knob_load(t_knob *x, t_symbol *s, int ac, t_atom *av){
         return;
     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
         knob_update(x);
-        if(x->x_ticks == 1)
+        if(x->x_steps == 1)
             knob_draw_ticks(x);
     }
 }
@@ -752,7 +754,7 @@ static void knob_start(t_knob *x, t_symbol *s, int ac, t_atom *av){
         return;
     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
         knob_update(x);
-        if(x->x_ticks == 1)
+        if(x->x_steps == 1)
             knob_draw_ticks(x);
     }
 }
@@ -833,9 +835,18 @@ static void knob_discrete(t_knob *x, t_floatarg f){
 }
 
 static void knob_ticks(t_knob *x, t_floatarg f){
-    int ticks = f < 0 ? 0 : (int)f;
-    if(x->x_ticks != ticks){
-        x->x_ticks = ticks;
+    int showticks = f != 0;
+    if(showticks != x->x_showticks){
+        x->x_showticks = showticks;
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
+            knob_draw_ticks(x);
+    }
+}
+
+static void knob_steps(t_knob *x, t_floatarg f){
+    int steps = f < 0 ? 0 : (int)f;
+    if(x->x_steps != steps){
+        x->x_steps = steps;
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             knob_draw_ticks(x);
     }
@@ -1033,19 +1044,19 @@ static void knob_properties(t_gobj *z, t_glist *owner){
     knob_get_var(x);
     knob_get_rcv(x);
     pdgui_stub_vnew(&x->x_obj.ob_pd, "knob_dialog",
-        owner, "ffffi ss ifi sss iiiiii fss ii",
+        owner, "ffffi ss ifi sss iiiiii fss iii",
         (float)(x->x_size / x->x_zoom), x->x_lower, x->x_upper, x->x_load, x->x_circular,
         x->x_snd_raw->s_name, x->x_rcv_raw->s_name,
         x->x_expmode, x->x_exp, x->x_jump,
         x->x_bg->s_name, x->x_fg->s_name, x->x_mg->s_name,
-        x->x_discrete, x->x_ticks, x->x_arc, x->x_range, x->x_offset, x->x_outline,
+        x->x_discrete, x->x_steps, x->x_arc, x->x_range, x->x_offset, x->x_outline,
         x->x_start, x->x_param->s_name, x->x_var_raw->s_name,
-        x->x_savestate, x->x_loadbang);
+        x->x_savestate, x->x_loadbang, x->x_showticks);
 }
 
 static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
-    t_atom undo[24];
+    t_atom undo[25];
     SETFLOAT(undo+0, x->x_size);
     SETFLOAT(undo+1, x->x_lower);
     SETFLOAT(undo+2, x->x_upper);
@@ -1060,7 +1071,7 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     SETSYMBOL(undo+11, x->x_mg);
     SETSYMBOL(undo+12, x->x_fg);
     SETFLOAT(undo+13, x->x_circular);
-    SETFLOAT(undo+14, x->x_ticks);
+    SETFLOAT(undo+14, x->x_steps);
     SETFLOAT(undo+15, x->x_discrete);
     SETFLOAT(undo+16, x->x_arc);
     SETFLOAT(undo+17, x->x_range);
@@ -1070,7 +1081,8 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     SETSYMBOL(undo+21, x->x_var);
     SETFLOAT(undo+22, x->x_savestate);
     SETFLOAT(undo+23, x->x_loadbang);
-    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 24, undo, ac, av);
+    SETFLOAT(undo+24, x->x_showticks);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 25, undo, ac, av);
     int size = (int)atom_getintarg(0, ac, av);
     float min = atom_getfloatarg(1, ac, av);
     float max = atom_getfloatarg(2, ac, av);
@@ -1085,7 +1097,7 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     t_symbol *mg = atom_getsymbolarg(11, ac, av);
     t_symbol *fg = atom_getsymbolarg(12, ac, av);
     x->x_circular = atom_getintarg(13, ac, av);
-    int ticks = atom_getintarg(14, ac, av);
+    int steps = atom_getintarg(14, ac, av);
     x->x_discrete = atom_getintarg(15, ac, av);
     int arc = atom_getintarg(16, ac, av) != 0;
     int range = atom_getintarg(17, ac, av);
@@ -1095,6 +1107,7 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     t_symbol *var = atom_getsymbolarg(21, ac, av);
     x->x_savestate = atom_getintarg(22, ac, av);
     x->x_loadbang = atom_getintarg(23, ac, av);
+    int ticks = atom_getintarg(24, ac, av);
     knob_config_io(x); // for outline
     if(expmode == 0){
         knob_log(x, 0);
@@ -1107,6 +1120,7 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
         knob_exp(x, exp);
     }
     knob_range(x, min, max);
+    knob_steps(x, steps);
     knob_ticks(x, ticks);
     t_atom at[1];
     SETSYMBOL(at, bg);
@@ -1139,7 +1153,7 @@ static int xm, ym;
 static void knob_arrow_motion(t_knob *x, t_floatarg dir){
     float old = x->x_pos, pos;
     if(x->x_discrete){
-        t_float ticks = (x->x_ticks < 2 ? 2 : (float)x->x_ticks) - 1;
+        t_float ticks = (x->x_steps < 2 ? 2 : (float)x->x_steps) - 1;
         old = rint(old * ticks) / ticks;
         pos = old + dir/ticks;
     }
@@ -1436,7 +1450,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     x->x_fontsize = 12, x->x_xpos = 6, x->x_ypos = -15;
     t_symbol *snd = gensym("empty"), *rcv = gensym("empty");
     t_symbol *param = gensym("empty"), *var = gensym("empty");
-    int size = 50, circular = 0, ticks = 0, discrete = 0;
+    int size = 50, circular = 0, steps = 0, discrete = 0;
     int arc = 1, angle = 320, offset = 0;
     x->x_bg = gensym("#dfdfdf"), x->x_mg = gensym("#7c7c7c"), x->x_fg = gensym("black");
     x->x_clicked = x->x_log = x->x_jump = x->x_number = x->x_savestate = 0;
@@ -1462,7 +1476,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
             x->x_fg = atom_getsymbolarg(9, ac, av); // 10: s fgcolor
             x->x_outline = atom_getintarg(10, ac, av); // 11: i outline
             circular = atom_getintarg(11, ac, av); // 12: i circular
-            ticks = atom_getintarg(12, ac, av); // 13: i ticks
+            steps = atom_getintarg(12, ac, av); // 13: i steps
             discrete = atom_getintarg(13, ac, av); // 14: i discrete
             arc = atom_getintarg(14, ac, av); // 15: i arc
             angle = atom_getintarg(15, ac, av); // 16: i range
@@ -1477,6 +1491,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
             x->x_ypos = atom_getintarg(24, ac, av); // 25: f number ypos
             x->x_savestate = atom_getintarg(25, ac, av); // 26: f savestate
             x->x_loadbang = atom_getintarg(26, ac, av); // 27: f loadbang
+            x->x_showticks = atom_getintarg(27, ac, av); // 28: f show ticks
         }
         else{
             while(ac){
@@ -1657,6 +1672,10 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
                     x->x_flag = 1, av++, ac--;
                     x->x_loadbang = 1;
                 }
+                else if(sym == gensym("-lb")){
+                    x->x_flag = 1, av++, ac--;
+                    x->x_loadbang = 1;
+                }
                 else if(sym == gensym("-number")){
                     if(ac >= 2){
                         x->x_flag = 1, av++, ac--;
@@ -1696,11 +1715,11 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
                     else
                         goto errstate;
                 }
-                else if(sym == gensym("-ticks")){
+                else if(sym == gensym("-steps")){
                     if(ac >= 2){
                         x->x_flag = 1, av++, ac--;
                         if(av->a_type == A_FLOAT){
-                            ticks = atom_getint(av);
+                            steps = atom_getint(av);
                             av++, ac--;
                         }
                         else
@@ -1769,7 +1788,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
         knob_exp(x, exp);
     x->x_start = startvalue;
     x->x_circular = circular;
-    x->x_ticks = ticks < 0 ? 0 : ticks;
+    x->x_steps = steps < 0 ? 0 : steps;
     x->x_discrete = discrete;
     x->x_arc = arc;
     x->x_range = angle < 0 ? 0 : angle > 360 ? 360 : angle;
@@ -1832,6 +1851,7 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_arc, gensym("arc"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_angle, gensym("angle"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_offset, gensym("offset"), A_FLOAT, 0);
+    class_addmethod(knob_class, (t_method)knob_steps, gensym("steps"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_ticks, gensym("ticks"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_zoom, gensym("zoom"), A_CANT, 0);
     class_addmethod(knob_class, (t_method)knob_apply, gensym("dialog"), A_GIMME, 0);
