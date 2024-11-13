@@ -72,8 +72,7 @@ static void *slew_free(t_slew *x){
     return(void *)x;
 }
 
-static void *slew_new(t_symbol *s, t_floatarg f){
-    s = NULL;
+static void *slew_new(t_floatarg f){
     t_slew *x = (t_slew *)pd_new(slew_class);
     x->x_lastin = (t_float *)getbytes(sizeof(*x->x_lastin));
 	x->x_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
