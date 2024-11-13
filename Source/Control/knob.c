@@ -271,7 +271,7 @@ static void knob_config_size(t_knob *x){
     pdgui_vmess(0, "crs ri", x->x_cv, "itemconfigure", x->x_tag_outline,
         "-width", z);
 // wiper's width, wiper's center circle
-    int w_width = circle_width * z / 20;   // wiper width is 1/20 of circle size
+    int w_width = circle_width * z / 20; // wiper width is 1/20 of circle size
     pdgui_vmess(0, "crs ri", x->x_cv, "itemconfigure", x->x_tag_wiper,
         "-width", w_width < z ? z : w_width); // wiper width
     int half_size = x->x_size * z / 2; // half_size
@@ -283,12 +283,16 @@ static void knob_config_size(t_knob *x){
 // knob circle stuff
     // knob arc
     pdgui_vmess(0, "crs iiii", x->x_cv, "coords", x->x_tag_bg_arc,
-        x1 + offset, y1 + offset, x2 - offset, y2 - offset);
+        x1 + offset + z, y1 + offset + z,
+        x2 - offset - z, y2 - offset - z);
     pdgui_vmess(0, "crs iiii", x->x_cv, "coords", x->x_tag_arc,
-        x1 + offset, y1 + offset, x2 - offset, y2 - offset);
+        x1 + offset + z, y1 + offset + z,
+        x2 - offset - z, y2 - offset - z);
     // knob circle (base)
     pdgui_vmess(0, "crs iiii", x->x_cv, "coords", x->x_tag_base_circle,
         x1 + offset, y1 + offset, x2 - offset, y2 - offset);
+    pdgui_vmess(0, "crs ri", x->x_cv, "itemconfigure", x->x_tag_base_circle,
+        "-width", z);
     // knob center
     int arcwidth = circle_width * z * 0.1; // arc width is 1/10 of circle
     if(arcwidth < 1)
@@ -347,14 +351,15 @@ static void knob_update(t_knob *x){
         "-start", start * -180.0 / M_PI,
         "-extent", (angle - start) * -179.99 / M_PI);
 // set wiper
-    int half_size = (int)(x->x_size*x->x_zoom / 2.0);
+    int radius = (int)(x->x_size*x->x_zoom / 2.0);
     int x0 = text_xpix(&x->x_obj, x->x_glist);
     int y0 = text_ypix(&x->x_obj, x->x_glist);
-    int xc = x0 + half_size; // center x coordinate
-    int yc = y0 + half_size; // center y coordinate
-    int radius = half_size * (x->x_square ? x->x_radius : 1.0);
-    int xp = xc + rint(radius * cos(angle)) + x->x_zoom; // circle point x coordinate
-    int yp = yc + rint(radius * sin(angle)) + x->x_zoom; // circle point x coordinate
+    int xc = x0 + radius, yc = y0 + radius; // center coords
+    if(x->x_square)
+        radius = (radius * x->x_radius);
+    radius += x->x_zoom;
+    int xp = xc + rint(radius * cos(angle)); // circle point x coordinate
+    int yp = yc + rint(radius * sin(angle)); // circle point x coordinate
     pdgui_vmess(0, "crs iiii", x->x_cv, "coords", x->x_tag_wiper, xc, yc, xp, yp);
 }
 
@@ -366,14 +371,16 @@ static void knob_draw_ticks(t_knob *x){
     if(!x->x_steps || !x->x_showticks)
         return;
     int z = x->x_zoom;
-    float half_size = (float)x->x_size*z / 2.0; // half_size
     int divs = x->x_steps;
     if((divs > 1) && ((x->x_range + 360) % 360 != 0)) // ????
         divs = divs - 1;
     float delta_w = x->x_range / (float)divs;
     int x0 = text_xpix(&x->x_obj, x->x_glist), y0 = text_ypix(&x->x_obj, x->x_glist);
+    float half_size = (float)x->x_size*z / 2.0; // half_size
     int xc = x0 + half_size, yc = y0 + half_size; // center coords
     int start = x->x_start_angle - 90.0;
+    if(x->x_square)
+        half_size *= x->x_radius;
     if(x->x_steps == 1){
         int width = (x->x_size / 40);
         if(width < 1)
@@ -396,7 +403,6 @@ static void knob_draw_ticks(t_knob *x){
             "-tags", 2, tags_ticks);
     }
     else for(int t = 1; t <= x->x_steps; t++){
-//         int thicker = (t == 1 || t == x->x_steps || (odd && t == mid));
         int thicker = (t == 1 || t == x->x_steps);
         int width = (x->x_size / 40);
         if(width < 1)
@@ -1071,6 +1077,7 @@ static void knob_square(t_knob *x, t_floatarg f){
                 knob_update(x);
             }
             knob_config_bg(x);
+            knob_draw_ticks(x);
         }
     }
 }
