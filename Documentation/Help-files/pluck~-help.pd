@@ -138,7 +138,7 @@
 #X text 29 225 * output is muted if less than 1 hz, f 17;
 #X text 121 178 pitch *;
 #X text 127 360 midi <float>;
-#N canvas 204 187 1120 494 trigger 1;
+#N canvas 204 187 1120 494 trigger 0;
 #X obj 97 273 else/out~;
 #X obj 146 151 else/impseq~ 1 0.5 0.25 0.1;
 #X obj 174 177 else/trighold~;
@@ -169,7 +169,7 @@
 #X obj 914 245 else/tempo~ -on 120;
 #X obj 844 259 sig~ 50;
 #X obj 811 321 else/pluck~ -midi 50 2500 7500;
-#X text 717 58 You can enable 'midi mode' and force a list input \, even with signal inputs connected., f 44;
+#X text 718 32 A list input only works if there is no signal connected into the left inlet. Nonetheless \, you can enable 'midi mode' and force a list input even with signal inputs connected., f 55;
 #X connect 1 0 2 0;
 #X connect 1 0 3 1;
 #X connect 2 0 5 0;

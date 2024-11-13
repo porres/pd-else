@@ -2,6 +2,7 @@
 
 #include <m_pd.h>
 #include <random.h>
+#include <magic.h>
 #include <math.h>
 #include <stdlib.h>
 
@@ -14,6 +15,7 @@ static t_class *pluck_class;
 
 typedef struct _pluck{
     t_object        x_obj;
+    t_glist        *x_glist;
     t_random_state  x_rstate;
     t_inlet        *x_trig_let;
     t_inlet        *x_decay_inlet;
@@ -22,11 +24,13 @@ typedef struct _pluck{
     float           x_midi_pitch;
     float           x_sr;
     t_int           x_midi;
-    t_float           x_freq;
+    t_float         x_freq;
+    t_symbol       *x_ignore;
     float           x_hz;
     float           x_float_trig;
     int             x_control_trig;
     int             x_noise_input;
+    int             x_sig_in;
     // pointers to the delay buf
     double         *x_ybuf;
     double          x_fbstack[PLUCK_STACK];
@@ -92,7 +96,7 @@ static void pluck_midi(t_pluck *x, t_floatarg f){
 }
 
 static void pluck_list(t_pluck *x, t_symbol *s, int argc, t_atom *argv){
-    s = NULL;
+    x->x_ignore = s;
     if(argc == 0)
         return;
     if(argc == 1){
@@ -187,7 +191,7 @@ static t_int *pluck_perform_noise_input(t_int *w){
         t_float hz = hz_in[i];
         t_float trig = t_in[i];
         float a_in = ain[i];
-        if(x->x_midi_mode){
+        if(x->x_midi_mode || !x->x_sig_in){
             hz = x->x_midi_pitch;
             trig = 0;
         }
@@ -272,7 +276,7 @@ static t_int *pluck_perform(t_int *w){
         t_float hz = hz_in[i];
         t_float trig = t_in[i];
         float a_in = ain[i];
-        if(x->x_midi_mode){
+        if(x->x_midi_mode || !x->x_sig_in){
             hz = x->x_midi_pitch;
             trig = 0;
         }
@@ -334,6 +338,7 @@ static t_int *pluck_perform(t_int *w){
 }
 
 static void pluck_dsp(t_pluck *x, t_signal **sp){
+    x->x_sig_in = else_magic_inlet_connection((t_object *)x, x->x_glist, 0, &s_signal);
     int sr = sp[0]->s_sr;
     if(sr != x->x_sr){ // if new sample rate isn't old sample rate, need to realloc
         x->x_sr = sr;
@@ -348,9 +353,19 @@ static void pluck_dsp(t_pluck *x, t_signal **sp){
                 sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
 
+static void * pluck_free(t_pluck *x){
+    if(x->x_alloc)
+        free(x->x_ybuf);
+    inlet_free(x->x_trig_let);
+    inlet_free(x->x_decay_inlet);
+    inlet_free(x->x_cutoff_inlet);
+    return(void *)x;
+}
+
 static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
-    s = NULL;
     t_pluck *x = (t_pluck *)pd_new(pluck_class);
+    x->x_ignore = s;
+    x->x_glist = canvas_getcurrent();
     x->x_sr = sys_getsr();
     static int seed = 1;
     random_init(&x->x_rstate, seed++);
@@ -441,15 +456,6 @@ static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
 errstate:
     pd_error(x, "[pluck~]: improper args");
     return(NULL);
-}
-
-static void * pluck_free(t_pluck *x){
-    if(x->x_alloc)
-        free(x->x_ybuf);
-    inlet_free(x->x_trig_let);
-    inlet_free(x->x_decay_inlet);
-    inlet_free(x->x_cutoff_inlet);
-    return(void *)x;
 }
 
 void pluck_tilde_setup(void){
