@@ -17,7 +17,7 @@ typedef struct _limit{
     int          x_size;    // allocated size
     int          x_natoms;  // used size
     int          x_entered;
-    int          x_ignore;
+    int          x_ignore_mode;
     t_outlet    *x_out2;
     t_clock     *x_clock;
 }t_limit;
@@ -60,7 +60,7 @@ static void limit_dooutput(t_limit *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void limit_tick(t_limit *x){
-    if(x->x_selector && !x->x_ignore)
+    if(x->x_selector && !x->x_ignore_mode)
         limit_dooutput(x, x->x_selector, x->x_natoms, x->x_message);
     else
         x->x_open = 1;
@@ -78,10 +78,12 @@ static void limit_anything(t_limit *x, t_symbol *s, int ac, t_atom *av){
         x->x_natoms = ac;
         if(ac)
             memcpy(x->x_message, av, ac * sizeof(*x->x_message));
-        if(x->x_ignore){
+        if(x->x_ignore_mode > 0){
             limit_right_output(x, s, ac, av);
-            clock_unset(x->x_clock);
-            clock_delay(x->x_clock, x->x_delta);
+            if(x->x_ignore_mode == 1){
+                clock_unset(x->x_clock);
+                clock_delay(x->x_clock, x->x_delta);
+            }
         }
     }
 }
@@ -129,14 +131,14 @@ static void *limit_new(t_floatarg f1, t_floatarg f2){
     t_limit *x = (t_limit *)pd_new(limit_class);
     x->x_open = 1;
     x->x_delta = f1;
-    x->x_ignore = (int)(f2 != 0.);
+    x->x_ignore_mode = f2 < 0 ? 0 : f2 > 2 ? 2 : (int)(f2);
     x->x_selector = 0;
     x->x_entered = 0;
     x->x_size = INISIZE;
     x->x_message = (t_atom *)getbytes(x->x_size * sizeof(t_atom));
     floatinlet_new(&x->x_obj, &x->x_delta);
     outlet_new((t_object *)x, &s_anything);
-    if(x->x_ignore)
+    if(x->x_ignore_mode > 0)
         x->x_out2  = outlet_new(&x->x_obj, &s_anything);
     x->x_clock = clock_new(x, (t_method)limit_tick);
     return(x);
