@@ -2850,6 +2850,7 @@ void lua_setup(void)
 // post(compiled);
 #endif */
     post(luaversionStr);
+    post("");
 
     pdlua_proxyinlet_setup();
     PDLUA_DEBUG("pdlua pdlua_proxyinlet_setup done", 0);
