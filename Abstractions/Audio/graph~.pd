@@ -1,4 +1,4 @@
-#N canvas 394 143 679 330 10;
+#N canvas 657 133 679 330 10;
 #X declare -path else;
 #X obj 53 102 cnv 15 198 138 empty \$0-bgcnv empty 20 12 0 14 #dfdfdf #404040 0;
 #N canvas 576 38 518 259 guts 0;
@@ -36,7 +36,7 @@
 #X connect 4 0 2 0;
 #X connect 5 0 4 0;
 #X restore 140 133 pd metro;
-#N canvas 414 149 517 424 set-args 0;
+#N canvas 414 149 517 424 set-args 1;
 #N canvas 334 342 1032 360 flags 0;
 #X obj 45 54 inlet;
 #X obj 45 123 route float;
@@ -434,7 +434,8 @@
 #X restore 313 209 pd set-dim;
 #X obj 108 154 t b b;
 #X obj 141 208 else/args -;
-#X obj 108 61 else/lb;
+#X obj 108 101 else/lb;
+#X obj 108 122 del 0;
 #X connect 2 0 5 0;
 #X connect 4 0 13 0;
 #X connect 5 0 4 0;
@@ -449,7 +450,8 @@
 #X connect 12 0 13 0;
 #X connect 12 1 7 0;
 #X connect 13 0 10 0;
-#X connect 14 0 12 0;
+#X connect 14 0 15 0;
+#X connect 15 0 12 0;
 #X restore 126 70 pd set-args;
 #X obj 230 150 else/canvas.setname \$0-patch 1;
 #X obj 230 170 else/canvas.setname \$0-parent 2;
