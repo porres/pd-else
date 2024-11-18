@@ -155,7 +155,8 @@
 #X connect 8 2 7 0;
 #X restore 370 76 pd store;
 #X msg 133 136 0;
-#X obj 58 96 route dump bang clear show hide n goto float;
+#X obj 58 96 route dump bang clear show hide n goto float sort;
+#X msg 321 122 sort;
 #X connect 0 0 18 0;
 #X connect 1 0 2 0;
 #X connect 4 0 3 0;
@@ -176,6 +177,8 @@
 #X connect 18 5 6 0;
 #X connect 18 6 9 0;
 #X connect 18 7 10 0;
+#X connect 18 8 19 0;
+#X connect 19 0 3 0;
 #X restore 59 92 pd guts;
 #X obj 125 20 inlet;
 #X obj 59 190 outlet;

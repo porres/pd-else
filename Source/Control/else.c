@@ -8,6 +8,7 @@ typedef struct else_obj{
     t_object  x_obj;
     t_outlet *x_out2;
     t_outlet *x_out3;
+    t_outlet *x_out4;
 }t_else_obj;
 
 t_class *else_obj_class;
@@ -25,6 +26,10 @@ static int status_number = 13;
 
 extern void lua_setup();
 
+static void else_obj_dir(t_else_obj *x){
+    outlet_symbol(x->x_out4, else_obj_class->c_externdir);
+}
+    
 static void else_obj_version(t_else_obj *x){
     int ac = 5;
     t_atom at[5];
@@ -64,6 +69,7 @@ void else_obj_about(t_else_obj *x){
     post("-------------------------------------------------------------------");
     post("- Version: %d.%d-%d %s-%d; Unreleased", else_major, else_minor, else_bugfix, STATUS, status_number);
     post("- Author: Alexandre Torres Porres & others");
+    post("ELSE binary loaded from: %s", else_obj_class->c_externdir->s_name);
     post("- Repository: https://github.com/porres/pd-else");
     post("- License: Do What The Fuck You Want To Public License");
     post("(unless otherwise noted in particular objects, check 'license' folder)");
@@ -104,6 +110,7 @@ static void *else_obj_new(void){
     outlet_new((t_object *)x, 0);
     x->x_out2 = outlet_new((t_object *)x, &s_list);
     x->x_out3 = outlet_new((t_object *)x, &s_list);
+    x->x_out4 = outlet_new((t_object *)x, &s_symbol);
     return(x);
 }
 
@@ -112,6 +119,7 @@ void else_setup(void){
     t_else_obj *x = (t_else_obj *)pd_new(else_obj_class);
     class_addmethod(else_obj_class, (t_method)else_obj_about, gensym("about"), 0);
     class_addmethod(else_obj_class, (t_method)else_obj_version, gensym("version"), 0);
+    class_addmethod(else_obj_class, (t_method)else_obj_dir, gensym("dir"), 0);
     else_obj_about(x);
     char plugin[MAXPDSTRING];
     sprintf(plugin, "%s/browser-vanilla.tcl", else_obj_class->c_externdir->s_name);

@@ -3,12 +3,12 @@
 -------------------------------------------------------------------------
 
 
-cmake -BBuild -DPD_PATH="/Applications/Pd-0.55-1.app/Contents/Resources/"
+cmake -BBuild -DPD_PATH="/Applications/Pd-0.55-2.app/Contents/Resources/"
 cd Build
 make -j7
 
 
-cmake -BBuild -DPD_FLOATSIZE64=1 -DPD_PATH="/Applications/Pd-0.55-1.app/Contents/Resources/"
+cmake -BBuild -DPD_FLOATSIZE64=1 -DPD_PATH="/Applications/Pd-0.55-2.app/Contents/Resources/"
 cd Build
 make -j7
 
