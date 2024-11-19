@@ -126,6 +126,25 @@ typedef struct _knob{
 }t_knob;
 
 // ---------------------- Helper functions ----------------------
+
+static void knob_update_number(t_knob *x){
+/*    post("x->x_fval = %f", x->x_fval);
+    post("(int)x->x_fval = %d", (int)rint(x->x_fval));
+    int val = (int)x->x_fval;
+    post("val = %d", val);
+    float dif = x->x_fval - (float)val;
+    post("dif = %f", dif);*/
+    char nbuf[32];
+    if(x->x_fval > -1 && x->x_fval < 1)
+        sprintf(nbuf, "%.5f", x->x_fval);
+//    else if(x->x_fval == (int)x->x_fval)
+//        sprintf(nbuf, "%.d", (int)x->x_fval);
+    else
+        sprintf(nbuf, "%#.5g", x->x_fval);
+    pdgui_vmess(0, "crs rs", glist_getcanvas(x->x_glist),
+        "itemconfigure", x->x_tag_number, "-text", nbuf);
+}
+
 // get value from motion/position
 static t_float knob_getfval(t_knob *x){
     double fval;
@@ -227,17 +246,16 @@ static void knob_config_number(t_knob *x){ // show or hide number value
         (x->x_obj.te_ypix + x->x_ypos)*x->x_zoom);
 }
 
-static void show_number(t_knob *x){ // show or hide number value
+static void show_number(t_knob *x, int force){ // show or hide number value
     if(x->x_number == 1 || (x->x_number == 2 && x->x_clicked))
         x->x_shownumber = 1; // mode 1 or mode 2 and clicked
     else if(x->x_number == 3 && x->x_typing)
         x->x_shownumber = 1; // mode 3 and typing
     else
         x->x_shownumber = 0;
-    if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+    if((glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)) || force)
         pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure", x->x_tag_number,
-                    "-state", x->x_shownumber ? "normal" : "hidden");
-    }
+            "-state", x->x_shownumber ? "normal" : "hidden");
 }
 
 static void knob_config_bg(t_knob *x){
@@ -494,13 +512,8 @@ char *tags_center[] = {x->x_tag_center_circle, x->x_tag_obj};
     knob_config_wcenter(x);
     knob_config_number(x);
     knob_update(x);
-    if(x->x_shownumber){
-        char buf[32]; // number buffer
-        sprintf(buf, "%#.5g", x->x_fval);
-        pdgui_vmess(0, "crs rs", glist_getcanvas(x->x_glist),
-            "itemconfigure", x->x_tag_number, "-text", buf);
-    }
-    show_number(x);
+    knob_update_number(x);
+    show_number(x, 1);
     pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure", x->x_tag_sel,
         "-outline", x->x_sel ? "blue" : "black");       // ??????
     pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure", x->x_tag_number,
@@ -704,16 +717,7 @@ static void knob_set(t_knob *x, t_floatarg f){
     if(x->x_pos != old){
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             knob_update(x);
-    }
-}
-
-static void knob_update_number(t_knob *x){
-    if(x->x_shownumber){
-        char buf[32];
-        sprintf(buf, "%#.5g", x->x_fval);
-        pdgui_vmess(0, "crs rs", glist_getcanvas(x->x_glist),
-            "itemconfigure", x->x_tag_number, "-text", buf);
-        post(buf, "number: %f / %g", x->x_fval, x->x_fval);
+        knob_update_number(x);
     }
 }
 
@@ -737,7 +741,6 @@ static void knob_bang(t_knob *x){
 empty:
     if(x->x_var != gensym("empty"))
         value_setfloat(x->x_var, x->x_fval);
-    knob_update_number(x);
 }
 
 static void knob_float(t_knob *x, t_floatarg f){
@@ -1053,7 +1056,7 @@ static void knob_lb(t_knob *x, t_floatarg f){
 
 static void knob_number(t_knob *x, t_floatarg f){
     x->x_number = f < 0 ? 0 : f > 3 ? 3 : (int)f;
-    show_number(x);
+    show_number(x, 0);
 }
 
 static void knob_numbersize(t_knob *x, t_floatarg f){
@@ -1093,19 +1096,20 @@ static void knob_properties(t_gobj *z, t_glist *owner){
     knob_get_var(x);
     knob_get_rcv(x);
     pdgui_stub_vnew(&x->x_obj.ob_pd, "knob_dialog",
-        owner, "ffffi ss ifi sss iiiiii fss iii",
+        owner, "ffffi ss ifi sss iiiiii fss iii iiii",
         (float)(x->x_size / x->x_zoom), x->x_lower, x->x_upper, x->x_load, x->x_circular,
         x->x_snd_raw->s_name, x->x_rcv_raw->s_name,
         x->x_expmode, x->x_exp, x->x_jump,
         x->x_bg->s_name, x->x_fg->s_name, x->x_mg->s_name,
         x->x_discrete, x->x_steps, x->x_arc, x->x_range, x->x_offset, x->x_square,
         x->x_start, x->x_param->s_name, x->x_var_raw->s_name,
-        x->x_savestate, x->x_loadbang, x->x_showticks);
+        x->x_savestate, x->x_loadbang, x->x_showticks,
+        x->x_fontsize, x->x_xpos, x->x_ypos, x->x_shownumber);
 }
 
 static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
-    t_atom undo[25];
+    t_atom undo[29];
     SETFLOAT(undo+0, x->x_size);
     SETFLOAT(undo+1, x->x_lower);
     SETFLOAT(undo+2, x->x_upper);
@@ -1131,14 +1135,18 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     SETFLOAT(undo+22, x->x_savestate);
     SETFLOAT(undo+23, x->x_loadbang);
     SETFLOAT(undo+24, x->x_showticks);
-    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 25, undo, ac, av);
+    SETFLOAT(undo+25, x->x_fontsize);
+    SETFLOAT(undo+26, x->x_xpos);
+    SETFLOAT(undo+27, x->x_ypos);
+    SETFLOAT(undo+28, x->x_shownumber);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 29, undo, ac, av);
     int size = (int)atom_getintarg(0, ac, av);
     float min = atom_getfloatarg(1, ac, av);
     float max = atom_getfloatarg(2, ac, av);
     double load = atom_getfloatarg(3, ac, av);
     t_symbol* snd = atom_getsymbolarg(4, ac, av);
     t_symbol* rcv = atom_getsymbolarg(5, ac, av);
-    x->x_square = atom_getintarg(6, ac, av);
+    int square = atom_getintarg(6, ac, av);
     float exp = atom_getfloatarg(7, ac, av);
     int expmode = atom_getintarg(8, ac, av);
     x->x_jump = atom_getintarg(9, ac, av);
@@ -1157,6 +1165,10 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     x->x_savestate = atom_getintarg(22, ac, av);
     x->x_loadbang = atom_getintarg(23, ac, av);
     int ticks = atom_getintarg(24, ac, av);
+    int fontsize = atom_getintarg(25, ac, av);
+    int xpos = atom_getintarg(26, ac, av);
+    int ypos = atom_getintarg(27, ac, av);
+    int shownumber = atom_getintarg(28, ac, av);
     knob_config_io(x); // for outline/square
     if(expmode == 0){
         knob_log(x, 0);
@@ -1183,6 +1195,7 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     knob_size(x, (float)size);
     knob_send(x, snd);
     knob_receive(x, rcv);
+    knob_square(x, square);
     if(x->x_load != load){
         SETFLOAT(at, load);
         knob_load(x, NULL, 1, at);
@@ -1193,6 +1206,9 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     }
     knob_param(x, param);
     knob_var(x, var);
+    knob_numbersize(x, fontsize);
+    knob_numberpos(x, xpos, ypos);
+    knob_number(x, shownumber);
 }
 
 // --------------- click + motion stuff --------------------
@@ -1224,8 +1240,45 @@ static void knob_arrow_motion(t_knob *x, t_floatarg dir){
     x->x_pos = pos;
     t_float fval = x->x_fval;
     x->x_fval = knob_getfval(x);
-    if(fval != x->x_fval)
+    if(fval != x->x_fval){
         knob_bang(x);
+        knob_update_number(x);
+    }
+    if(old != x->x_pos){
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
+            knob_update(x);
+    }
+}
+
+static void knob_motion(t_knob *x, t_floatarg dx, t_floatarg dy){
+    if(dx == 0 && dy == 0)
+        return;
+    float old = x->x_pos, pos;
+    if(!x->x_circular){ // normal mode
+        float delta = -dy;
+        if(fabs(dx) > fabs(dy))
+            delta = dx;
+        delta /= (float)(x->x_size) * x->x_zoom * 2; // 2 is 'sensitivity'
+        if(x->x_shift)
+            delta *= 0.01;
+        pos = x->x_pos + delta;
+    }
+    else{ // circular mode
+        xm += dx, ym += dy;
+        int xc = text_xpix(&x->x_obj, x->x_glist) + x->x_size / 2;
+        int yc = text_ypix(&x->x_obj, x->x_glist) + x->x_size / 2;
+        float alphacenter = (x->x_end_angle + x->x_start_angle) / 2;
+        float alpha = atan2(xm - xc, -ym + yc) * 180.0 / M_PI;
+        pos = (((int)((alpha - alphacenter + 180.0 + 360.0) * 100.0) % 36000) * 0.01
+            + (alphacenter - x->x_start_angle - 180.0)) / x->x_range;
+    }
+    x->x_pos = pos > 1 ? 1 : pos < 0 ? 0 : pos; // should go up in non circular (to do)
+    t_float fval = x->x_fval;
+    x->x_fval = knob_getfval(x);
+    if(fval != x->x_fval){
+        knob_bang(x);
+        knob_update_number(x);
+    }
     if(old != x->x_pos){
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             knob_update(x);
@@ -1261,39 +1314,6 @@ static void knob_list(t_knob *x, t_symbol *sym, int ac, t_atom *av){ // get key 
     knob_arrow_motion(x, dir);
 }
 
-static void knob_motion(t_knob *x, t_floatarg dx, t_floatarg dy){
-    if(dx == 0 && dy == 0)
-        return;
-    float old = x->x_pos, pos;
-    if(!x->x_circular){ // normal mode
-        float delta = -dy;
-        if(fabs(dx) > fabs(dy))
-            delta = dx;
-        delta /= (float)(x->x_size) * x->x_zoom * 2; // 2 is 'sensitivity'
-        if(x->x_shift)
-            delta *= 0.01;
-        pos = x->x_pos + delta;
-    }
-    else{ // circular mode
-        xm += dx, ym += dy;
-        int xc = text_xpix(&x->x_obj, x->x_glist) + x->x_size / 2;
-        int yc = text_ypix(&x->x_obj, x->x_glist) + x->x_size / 2;
-        float alphacenter = (x->x_end_angle + x->x_start_angle) / 2;
-        float alpha = atan2(xm - xc, -ym + yc) * 180.0 / M_PI;
-        pos = (((int)((alpha - alphacenter + 180.0 + 360.0) * 100.0) % 36000) * 0.01
-            + (alphacenter - x->x_start_angle - 180.0)) / x->x_range;
-    }
-    x->x_pos = pos > 1 ? 1 : pos < 0 ? 0 : pos; // should go up in non circular (to do)
-    t_float fval = x->x_fval;
-    x->x_fval = knob_getfval(x);
-    if(fval != x->x_fval)
-        knob_bang(x);
-    if(old != x->x_pos){
-        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
-            knob_update(x);
-    }
-}
-
 static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
     t_knob *x = z;
     x->x_ignore = keysym;
@@ -1314,7 +1334,7 @@ static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
         knob_float(x, x->x_buf[0] == 0 ? x->x_fval : atof(x->x_buf));
         x->x_buf[0] = 0;
         x->x_typing = 0;
-        show_number(x);
+        show_number(x, 0);
         return;
     }
     else if(((c >= '0') && (c <= '9')) || (c == '.') || (c == '-') ||
@@ -1334,7 +1354,7 @@ static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
         goto update_number;
     }
 update_number:{
-        show_number(x);
+        show_number(x, 0);
         char *cp = x->x_buf;
         int sl = (int)strlen(x->x_buf);
         x->x_buf[sl] = '|';
@@ -1395,7 +1415,7 @@ static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int s
         x->x_buf[0] = 0;
 //        pd_bind(&x->x_obj.ob_pd, gensym("#keyname")); // listen to key events
         x->x_clicked = 1;
-        show_number(x);
+        show_number(x, 0);
         knob_config_wcenter(x);
         x->x_shift = shift;
         if(x->x_circular){

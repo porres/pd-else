@@ -1648,7 +1648,7 @@ void note_setup(void){
     "    label $id.justification.oll -text \"Outline:\"\n"
     "    tk_optionMenu $id.justification.just $var_just Left Center Right\n"
     "    label $id.justification.lbj -text \"Justification:\"\n"
-    "    pack $id.justification.oll $id.justification.ol $id.justification.lbj $id.justification.just $id.justification.lbj $id.justification.just -side left\n"
+    "    pack $id.justification.oll $id.justification.ol $id.justification.lbj $id.justification.just -side left\n"
     "\n"
     "    frame $id.ul_bg\n"
     "    pack $id.ul_bg -side top\n"
