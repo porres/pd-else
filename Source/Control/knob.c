@@ -179,10 +179,8 @@ static t_float knob_getfval(t_knob *x){
 static t_float knob_getpos(t_knob *x, t_floatarg fval){
     double pos;
     if(x->x_log == 1){ // log
-        if((x->x_lower <= 0 && x->x_upper >= 0) || (x->x_lower >= 0 && x->x_upper <= 0)){
-            pd_error(x, "[knob]: range cannot contain '0' in log mode");
+        if((x->x_lower <= 0 && x->x_upper >= 0) || (x->x_lower >= 0 && x->x_upper <= 0))
             pos = 0;
-        }
         else
             pos = (double)log(fval/x->x_lower) / (double)log(x->x_upper/x->x_lower);
     }
@@ -1005,6 +1003,10 @@ static void knob_range(t_knob *x, t_floatarg f1, t_floatarg f2){
     x->x_start = knob_clipfloat(x, x->x_start);
     if(x->x_lower == x->x_upper)
         x->x_fval = x->x_load = x->x_start = x->x_lower;
+    if(x->x_log){
+        if((x->x_lower <= 0 && x->x_upper >= 0) || (x->x_lower >= 0 && x->x_upper <= 0))
+            pd_error(x, "[knob]: range can't contain '0' in log mode");
+    }
     x->x_pos = knob_getpos(x, x->x_fval);
     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
         knob_update(x);
