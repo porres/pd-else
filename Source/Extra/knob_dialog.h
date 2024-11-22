@@ -1,91 +1,53 @@
 // Based on dialogs from iemguis in Pd Vanilla (by Tim Schoen & Porres)
 
 sys_gui("\n"
-"\n"
 "namespace eval ::dialog_elsegui:: {\n"
 "}\n"
-"\n"
 // arrays to store per-dialog values
 "array set ::dialog_elsegui::var_size {} ;\n"
+"array set ::dialog_elsegui::var_square {} ;\n"
 "\n"
-"array set ::dialog_elsegui::var_range_max {} ;\n"
-"array set ::dialog_elsegui::var_range_min {} ;\n"
-"\n"
-"array set ::dialog_elsegui::var_initial {} ;\n"
-"array set ::dialog_elsegui::var_circular {} ;\n"
-"\n"
-"array set ::dialog_elsegui::var_steps {} ;\n"
 "array set ::dialog_elsegui::var_arc_shown {} ;\n"
-"array set ::dialog_elsegui::var_outline_shown {} ;\n"
+"array set ::dialog_elsegui::var_arcstart {} ;\n"
+"\n"
+"array set ::dialog_elsegui::var_loadbang {} ;\n"
+"array set ::dialog_elsegui::var_savestate {} ;\n"
+"array set ::dialog_elsegui::var_load {} ;\n"
+"\n"
+"array set ::dialog_elsegui::var_discrete {} ;\n"
+"array set ::dialog_elsegui::var_showticks {} ;\n"
+"array set ::dialog_elsegui::var_steps {} ;\n"
+"\n"
 "array set ::dialog_elsegui::var_angle_width {} ;\n"
 "array set ::dialog_elsegui::var_angle_offset {} ;\n"
-"array set ::dialog_elsegui::var_discrete {} ;\n"
-        
-"array set ::dialog_elsegui::var_savestate {} ;\n"
-"array set ::dialog_elsegui::var_loadbang {} ;\n"
-"array set ::dialog_elsegui::var_showticks {} ;\n"
-                
+"\n"
+"array set ::dialog_elsegui::var_lower {} ;\n"
+"array set ::dialog_elsegui::var_upper {} ;\n"
+"\n"
+"array set ::dialog_elsegui::var_expmode {} ;\n"
+"array set ::dialog_elsegui::var_exp {} ;\n"
+"\n"
+"array set ::dialog_elsegui::var_jump {} ;\n"
+"array set ::dialog_elsegui::var_circular {} ;\n"
+"\n"
+"array set ::dialog_elsegui::var_n_mode {} ;\n"
 "array set ::dialog_elsegui::var_n_size {} ;\n"
 "array set ::dialog_elsegui::var_xpos {} ;\n"
 "array set ::dialog_elsegui::var_ypos {} ;\n"
-"array set ::dialog_elsegui::var_n_mode {} ;\n"
-
-"array set ::dialog_elsegui::var_exp {} ;\n"
-"array set ::dialog_elsegui::var_expmode {} ;\n"
-"array set ::dialog_elsegui::var_jump {} ;\n"
 "\n"
+"array set ::dialog_elsegui::var_rcv {} ;\n"
 "array set ::dialog_elsegui::var_snd {} ;\n"
 "array set ::dialog_elsegui::var_prm {} ;\n"
 "array set ::dialog_elsegui::var_var {} ;\n"
-"array set ::dialog_elsegui::var_rcv {} ;\n"
 "\n"
-"array set ::dialog_elsegui::var_color_background {} ;\n"
-"array set ::dialog_elsegui::var_color_foreground {} ;\n"
+"array set ::dialog_elsegui::var_color_bg {} ;\n"
+"array set ::dialog_elsegui::var_color_fg {} ;\n"
 "array set ::dialog_elsegui::var_color_arc {} ;\n"
-"array set ::dialog_elsegui::var_colortype {} ;\n"
-"array set ::dialog_elsegui::var_arcstart {} ;\n"
+"array set ::dialog_elsegui::var_colortype {} ;\n" // radio for what color type we're setting
 "\n"
-        
-// When we click one of the preset colors
-"proc ::dialog_elsegui::preset_col {id presetcol} {\n"
-"    set vid [string trimleft $id .]\n"
-"\n"
-"    switch -- $::dialog_elsegui::var_colortype($vid) {\n"
-"        0 { set ::dialog_elsegui::var_color_background($vid) $presetcol }\n"
-"        1 { set ::dialog_elsegui::var_color_arc($vid) $presetcol }\n"
-"        2 { set ::dialog_elsegui::var_color_foreground($vid) $presetcol }\n"
-"    }\n"
-"    if {$::windowingsystem eq \"aqua\"} {\n"
-"    ::dialog_elsegui::apply_and_rebind_return $id \n"
-"    }\n"
-"}\n"
-"\n"
-// When we click compose color:
-"proc ::dialog_elsegui::compose_color {id} {\n"
-"    set vid [string trimleft $id .]\n"
-"\n"
-// Check which color field is currently active
-"    switch -- $::dialog_elsegui::var_colortype($vid) {\n"
-"        0 {\n"
-"            set title [_ \"Background color\" ]\n"
-"            set color $::dialog_elsegui::var_color_background($vid)\n"
-"        }\n"
-"        1 {\n"
-"            set title [_ \"Foreground color\" ]\n"
-"            set color $::dialog_elsegui::var_color_foreground($vid)\n"
-"        }\n"
-"        2 {\n"
-"            set title [_ \"Arc color\" ]\n"
-"            set color $::dialog_elsegui::var_color_arc($vid)\n"
-"        }\n"
-"    }\n"
-"    set color [tk_chooseColor -title $title -initialcolor $color]\n"
-"\n"
-"    if { $color ne \"\" } {\n"
-"        ::dialog_elsegui::preset_col $id $color\n"
-"    }\n"
-"}\n"
-"\n"
+
+// HELPER FUNCTION:
+// Clip function
 "proc ::dialog_elsegui::clip {val min {max {}}} {\n"
 "    if {$min ne {} && $val < $min} {return $min}\n"
 "    if {$max ne {} && $val > $max} {return $max}\n"
@@ -93,91 +55,48 @@ sys_gui("\n"
 "}\n"
 "\n"
         
-// Send current values to Pd when "apply"
-"proc ::dialog_elsegui::apply {id} {\n"
-"    set vid [string trimleft $id .]\n"
-"\n"
-"    set sendname empty\n"
-"    set paramname empty\n"
-"    set varname empty\n"
-"    set receivename empty\n"
-"\n"
-//  Set send, param, var and receive if not empty
-"    if {$::dialog_elsegui::var_snd($vid) ne \"\"} {set sendname $::dialog_elsegui::var_snd($vid)}\n"
-"    if {$::dialog_elsegui::var_prm($vid) ne \"\"} {set paramname $::dialog_elsegui::var_prm($vid)}\n"
-"    if {$::dialog_elsegui::var_var($vid) ne \"\"} {set varname $::dialog_elsegui::var_var($vid)}\n"
-"    if {$::dialog_elsegui::var_rcv($vid) ne \"\"} {set receivename $::dialog_elsegui::var_rcv($vid)}\n"
-"\n"
-//  Clip number if steps
-"    set ::dialog_elsegui::var_steps($vid) [::dialog_elsegui::clip $::dialog_elsegui::var_steps($vid) 0 360]\n"
-"\n"
-//  Send to the object
-"    pdsend [concat $id dialog \\\n"
-"                $::dialog_elsegui::var_size($vid) \\\n"
-"                $::dialog_elsegui::var_range_min($vid) \\\n"
-"                $::dialog_elsegui::var_range_max($vid) \\\n"
-"                $::dialog_elsegui::var_initial($vid) \\\n"
-"                [string map {\"$\" {\\$}} [unspace_text $sendname]] \\\n"
-"                [string map {\"$\" {\\$}} [unspace_text $receivename]] \\\n"
-"                $::dialog_elsegui::var_outline_shown($vid) \\\n"
-"                $::dialog_elsegui::var_exp($vid) \\\n"
-"                $::dialog_elsegui::var_expmode($vid) \\\n"
-"                $::dialog_elsegui::var_jump($vid) \\\n"
-"                [string tolower $::dialog_elsegui::var_color_background($vid)] \\\n"
-"                [string tolower $::dialog_elsegui::var_color_arc($vid)] \\\n"
-"                [string tolower $::dialog_elsegui::var_color_foreground($vid)] \\\n"
-"                $::dialog_elsegui::var_circular($vid) \\\n"
-"                $::dialog_elsegui::var_steps($vid) \\\n"
-"                $::dialog_elsegui::var_discrete($vid) \\\n"
-"                $::dialog_elsegui::var_arc_shown($vid) \\\n"
-"                $::dialog_elsegui::var_angle_width($vid) \\\n"
-"                $::dialog_elsegui::var_angle_offset($vid) \\\n"
-"                $::dialog_elsegui::var_arcstart($vid) \\\n"
-"                [string map {\"$\" {\\$}} [unspace_text $paramname]] \\\n" // clean
-"                [string map {\"$\" {\\$}} [unspace_text $varname]] \\\n" // clean
-"                $::dialog_elsegui::var_savestate($vid) \\\n"
-"                $::dialog_elsegui::var_loadbang($vid) \\\n"
-"                $::dialog_elsegui::var_showticks($vid) \\\n"
-"                $::dialog_elsegui::var_n_size($vid) \\\n"
-"                $::dialog_elsegui::var_xpos($vid) \\\n"
-"                $::dialog_elsegui::var_ypos($vid) \\\n"
-"                $::dialog_elsegui::var_n_mode($vid) \\\n"
-"            ]\n"
-"}\n"
-// On cancel clicked
-"proc ::dialog_elsegui::cancel {id} {\n"
-"    pdsend \"$id cancel\"\n"
-"}\n"
-"\n"
-// On okay clicked
-"proc ::dialog_elsegui::ok {id} {\n"
-"    ::dialog_elsegui::apply $id\n"
-"    ::dialog_elsegui::cancel $id\n"
-"}\n"
-
-// tcl/tk entry function called from Pd when asking for properties!
+// Get parameters from Pd when asking for properties!
 "proc knob_dialog {id \\\n"
-"         wdt \\\n"
-"         min_rng max_rng \\\n"
-"         initial circular \\\n"
-"         snd rcv \\\n"
-"         expmode exp jump \\\n"
-"         bcol fcol acol \\\n"
-"         discrete steps \\\n"
-"         arc_width \\\n"
+"         size square \\\n"
+"         show_arc arcstart \\\n"
+"         loadbang savestate load \\\n"
+"         discrete showticks steps \\\n"
 "         angle_range angle_offset \\\n"
-"         outline arcstart prm var \\\n"
-"         savestate loadbang showticks \\\n"
-"         n_size xpos ypos n_mode} {\n"
+"         lower upper expmode exp \\\n"
+"         jump circular \\\n"
+"         n_mode n_size xpos ypos \\\n"
+"         rcv snd prm var \\\n"
+"         bcol acol fcol} {\n"
 // The vid indicates the instance ID of this dialog
 "    set vid [string trimleft $id .]\n"
+// initialize the array with received values for this dialog instance
+"    set ::dialog_elsegui::var_size($vid) $size \n"
+"    set ::dialog_elsegui::var_square($vid) $square \n"
+"    set ::dialog_elsegui::var_arc_shown($vid) $show_arc \n"
+"    set ::dialog_elsegui::var_arcstart($vid) $arcstart \n"
+"    set ::dialog_elsegui::var_loadbang($vid) $loadbang \n"
+"    set ::dialog_elsegui::var_savestate($vid) $savestate \n"
+"    set ::dialog_elsegui::var_load($vid) $load \n"
+"    set ::dialog_elsegui::var_discrete($vid) $discrete \n"
+"    set ::dialog_elsegui::var_showticks($vid) $showticks \n"
+"    set ::dialog_elsegui::var_steps($vid) $steps \n"
+"    set ::dialog_elsegui::var_angle_width($vid) $angle_range \n"
+"    set ::dialog_elsegui::var_angle_offset($vid) $angle_offset \n"
+"    set ::dialog_elsegui::var_lower($vid) $lower \n"
+"    set ::dialog_elsegui::var_upper($vid) $upper \n"
+"    set ::dialog_elsegui::var_expmode($vid) $expmode \n"
+"    set ::dialog_elsegui::var_exp($vid) $exp \n"
+"    set ::dialog_elsegui::var_jump($vid) $jump \n"
+"    set ::dialog_elsegui::var_circular($vid) $circular\n"
+"    set ::dialog_elsegui::var_n_mode($vid) $n_mode\n"
+"    set ::dialog_elsegui::var_n_size($vid) $n_size\n"
+"    set ::dialog_elsegui::var_xpos($vid) $xpos\n"
+"    set ::dialog_elsegui::var_ypos($vid) $ypos\n"
+"\n" // attached symbols
+"    set rcv [::pdtk_text::unescape $rcv]\n"
 "    set snd [::pdtk_text::unescape $snd]\n"
 "    set prm [::pdtk_text::unescape $prm]\n"
 "    set var [::pdtk_text::unescape $var]\n"
-"    set rcv [::pdtk_text::unescape $rcv]\n"
-// initialize the array with received values for this dialog instance
-"    set ::dialog_elsegui::var_size($vid) $wdt\n"
-"\n"
 "    if {$rcv==\"empty\"} {\n"
 "       set rcv \"\"\n"
 "    }\n"
@@ -190,161 +109,133 @@ sys_gui("\n"
 "    if {$var==\"empty\"} {\n"
 "       set var \"\"\n"
 "    }\n"
-"    set ::dialog_elsegui::var_range_max($vid) $max_rng\n"
-"    set ::dialog_elsegui::var_range_min($vid) $min_rng\n"
 "\n"
-"    set ::dialog_elsegui::var_initial($vid) $initial\n"
-"    set ::dialog_elsegui::var_circular($vid) $circular\n"
-"    set ::dialog_elsegui::var_expmode($vid) $expmode\n"
-"    set ::dialog_elsegui::var_exp($vid) $exp\n"
-"    set ::dialog_elsegui::var_jump($vid) $jump\n"
-"    set ::dialog_elsegui::var_outline_shown($vid) $outline\n"
-"\n"
+"    set ::dialog_elsegui::var_rcv($vid) [string map {{\\ } \" \"} $rcv]\n"
 "    set ::dialog_elsegui::var_snd($vid) [string map {{\\ } \" \"} $snd]\n"
 "    set ::dialog_elsegui::var_prm($vid) [string map {{\\ } \" \"} $prm]\n"
 "    set ::dialog_elsegui::var_var($vid) [string map {{\\ } \" \"} $var]\n"
-"    set ::dialog_elsegui::var_rcv($vid) [string map {{\\ } \" \"} $rcv]\n"
 "\n"
-"    set ::dialog_elsegui::var_color_background($vid) $bcol\n"
-"    set ::dialog_elsegui::var_color_foreground($vid) $fcol\n"
-"    set ::dialog_elsegui::var_color_arc($vid) $acol\n"
-"    set ::dialog_elsegui::var_colortype($vid) 0\n"
-"\n"
-"    set ::dialog_elsegui::var_discrete($vid) $discrete\n"
-"    set ::dialog_elsegui::var_steps($vid) $steps\n"
-"    set ::dialog_elsegui::var_arc_shown($vid) $arc_width\n"
-"    set ::dialog_elsegui::var_angle_width($vid) $angle_range\n"
-"    set ::dialog_elsegui::var_angle_offset($vid) $angle_offset\n"
-"    set ::dialog_elsegui::var_arcstart($vid) $arcstart\n"
-"\n"
-"    set ::dialog_elsegui::var_savestate($vid) $savestate\n"
-"    set ::dialog_elsegui::var_loadbang($vid) $loadbang\n"
-"    set ::dialog_elsegui::var_showticks($vid) $showticks\n"
-"\n"
-"    set ::dialog_elsegui::var_n_size($vid) $n_size\n"
-"    set ::dialog_elsegui::var_xpos($vid) $xpos\n"
-"    set ::dialog_elsegui::var_ypos($vid) $ypos\n"
-"    set ::dialog_elsegui::var_n_mode($vid) $n_mode\n"
 //        "    set ::dialog_elsegui::var_n_mode($vid) [lindex {Never Always Active Typing} $n_mode]\n"
 "\n"
+"    set ::dialog_elsegui::var_color_bg($vid) $bcol\n"
+"    set ::dialog_elsegui::var_color_fg($vid) $fcol\n"
+"    set ::dialog_elsegui::var_color_arc($vid) $acol\n"
+"    set ::dialog_elsegui::var_colortype($vid) 0\n" // init to 'bg'
+"\n"
+    
+        
+// ----------------------------------------------------------------------------------------------------
+
+// DRAW PROPERTIES' WINDOW:
         
 // Initialize creation/drawing of properties window
 "    toplevel $id -class DialogWindow\n"
 "    wm title $id \"knob properties\"\n"
 "    wm group $id .\n"
-"    wm resizable $id 0 0\n"
+"    wm resizable $id 0 0\n" // ???
 "    wm transient $id $::focused_window\n"
 "    $id configure -menu $::dialog_menubar\n"
 "    $id configure -padx 0 -pady 0\n"
 "    ::pd_bindings::dialog_bindings $id \"elsegui\"\n"
 "\n"
-        
-// Create frame for parameters
-"\n"
-"    set applycmd \"\"\n"
-"    if {$::windowingsystem eq \"aqua\"} {\n"
-"        set applycmd \"::dialog_elsegui::apply $id\"\n"
-"    }\n"
-"\n"
-        
-// PROPERTIES' WINDOW: frame for knobstyle, the first top entry
+
+// Draw frames: Start with 'knobstyle' (Size and Square)
 "    frame $id.knobstyle -padx 20 -pady 8\n"
-"\n"
-// Size
+        // Size
 "    frame $id.knobstyle.dim \n"
 "    label $id.knobstyle.dim.w_lab -text \"Size:\"\n"
 "    entry $id.knobstyle.dim.w_ent -textvariable ::dialog_elsegui::var_size($vid) -width 4\n"
 "    pack $id.knobstyle.dim.w_lab $id.knobstyle.dim.w_ent -side left\n"
-// Squared Outline (Checkbox)
-"    frame $id.knobstyle.outline\n"
-"    label $id.knobstyle.outline.lab -text [_ \"Squared Mode: \"]\n"
-"    checkbutton $id.knobstyle.outline.ent -variable ::dialog_elsegui::var_outline_shown($vid) -width 5\\\n"
+        // Squared Outline (Checkbox)
+"    frame $id.knobstyle.square\n"
+"    label $id.knobstyle.square.lab -text [_ \"Squared Mode: \"]\n"
+"    checkbutton $id.knobstyle.square.ent -variable ::dialog_elsegui::var_square($vid) -width 5\\\n"
 "        -command [concat ::dialog_elsegui::apply $id]\n"
-"    pack $id.knobstyle.outline.ent $id.knobstyle.outline.lab -side right -anchor e\n"
-        
-// Align items to grid
+"    pack $id.knobstyle.square.ent $id.knobstyle.square.lab -side right -anchor e\n"
+        // Align items to grid
 "    pack $id.knobstyle -side top -fill x\n"
-// column 0
+        // column 0
 "    grid $id.knobstyle.dim -row 0 -column 0 -sticky e -padx {60 0}\n"
-// column 1
-"    grid $id.knobstyle.outline -row 0 -column 1 -sticky e -padx {60 0}\n"
-
+        // column 1
+"    grid $id.knobstyle.square -row 0 -column 1 -sticky e -padx {60 0}\n"
+"\n"
 // Frame for Arc settings
 "    labelframe $id.arcsettings\n"
 "    pack $id.arcsettings -side top -fill x\n"
 "    $id.arcsettings config -borderwidth 1 -pady 4\n"
-// Checkbox for Arc
+        // Arc Checkbox
 "    frame $id.arcsettings.arc\n"
 "    label $id.arcsettings.arc.lab -text [_ \"Show Arc: \"]\n"
 "    checkbutton $id.arcsettings.arc.ent -variable ::dialog_elsegui::var_arc_shown($vid) -width 5\\\n"
 "        -command [concat ::dialog_elsegui::apply $id]\n"
 "    pack $id.arcsettings.arc.ent $id.arcsettings.arc.lab -side right -anchor e\n"
-// Entry for Arc initial value
+        // Entry for Arc start value
 "    frame $id.arcsettings.arcstart \n"
 "    label $id.arcsettings.arcstart.lab -text [_ \"Arc Start Value: \"]\n"
 "    entry $id.arcsettings.arcstart.ent -textvariable ::dialog_elsegui::var_arcstart($vid) -width 6\n"
 "    pack $id.arcsettings.arcstart.ent $id.arcsettings.arcstart.lab -side right -anchor e\n"
-// Position of items
+        // Position of items
 "    pack $id.arcsettings.arc $id.arcsettings.arcstart -side left -anchor center\n"
 "    $id.arcsettings config -padx 60\n"
-        
+"\n"
 // Frame for Load settings
 "    labelframe $id.load\n"
 "    pack $id.load -side top -fill x\n"
 "    $id.load config -borderwidth 1 -pady 5\n"
-// Checkbox for Loadbang
+        // Checkbox for Loadbang
 "    frame $id.load.loadbang\n"
 "    label $id.load.loadbang.lab -text [_ \"Loadbang: \"]\n"
 "    checkbutton $id.load.loadbang.ent -variable ::dialog_elsegui::var_loadbang($vid) -width 5\n"
 "    pack $id.load.loadbang.ent $id.load.loadbang.lab -side right -anchor e\n"
-// Checkbox for Savestate
+        // Checkbox for Savestate
 "    frame $id.load.savestate\n"
 "    label $id.load.savestate.lab -text [_ \"Savestate: \"]\n"
 "    checkbutton $id.load.savestate.ent -variable ::dialog_elsegui::var_savestate($vid) -width 5\n"
 "    pack $id.load.savestate.ent $id.load.savestate.lab -side right -anchor e\n"
-// Entry for initial value
-"    frame $id.load.initial \n"
-"    label $id.load.initial.lab -text [_ \"Load Value\"]\n"
-"    entry $id.load.initial.ent -textvariable ::dialog_elsegui::var_initial($vid) -width 7\n"
-"    pack $id.load.initial.ent $id.load.initial.lab -side right -anchor e\n"
-// Position of items
-"    pack $id.load.loadbang $id.load.savestate $id.load.initial -side left -anchor center\n"        
+        // Entry for load value
+"    frame $id.load.load \n"
+"    label $id.load.load.lab -text [_ \"Load Value\"]\n"
+"    entry $id.load.load.ent -textvariable ::dialog_elsegui::var_load($vid) -width 7\n"
+"    pack $id.load.load.ent $id.load.load.lab -side right -anchor e\n"
+        // Position of items
+"    pack $id.load.loadbang $id.load.savestate $id.load.load -side left -anchor center\n"        
 "    $id.load config -padx 20\n"
-        
+"\n"
 // Frame for discrete section
 "    labelframe $id.discrete\n"
 "    pack $id.discrete -side top -fill x\n"
 "    $id.discrete config -borderwidth 1 -pady 8\n"
-// Checkbox for discrete mode
+        // Checkbox for discrete mode
 "    frame $id.discrete.mode\n"
 "    label $id.discrete.mode.lab -text [_ \"Discrete mode: \"]\n"
 "    checkbutton $id.discrete.mode.ent -variable ::dialog_elsegui::var_discrete($vid) -width 5\n"
 "    pack $id.discrete.mode.ent $id.discrete.mode.lab -side right -anchor e\n"
-// Checkbox for show ticks
+        // Checkbox for show ticks
 "    frame $id.discrete.ticks\n"
 "    label $id.discrete.ticks.lab -text [_ \"Show ticks: \"]\n"
 "    checkbutton $id.discrete.ticks.ent -variable ::dialog_elsegui::var_showticks($vid) -width 5\\\n"
 "        -command [concat ::dialog_elsegui::apply $id]\n"
 "    pack $id.discrete.ticks.ent $id.discrete.ticks.lab -side right -anchor e\n"
-// Entry for number of steps
+        // Entry for number of steps
 "    frame $id.discrete.steps\n"
 "    label $id.discrete.steps.lab -text [_ \"Steps: \"]\n"
 "    entry $id.discrete.steps.ent -textvariable ::dialog_elsegui::var_steps($vid) -width 3\n"
 "    pack $id.discrete.steps.ent $id.discrete.steps.lab -side right -anchor e\n"
-// Position of items
+        // Position of items
 "    pack $id.discrete.mode $id.discrete.ticks $id.discrete.steps -side left -anchor center\n"
-"    $id.discrete config -padx 10\n"
-        
+"    $id.discrete config -padx 30\n"
+"\n"
 // Frame for Angle entry
 "    labelframe $id.angle\n"
 "    pack $id.angle -side top -fill x\n"
 "    $id.angle config -borderwidth 1 -pady 8\n"
-// Range entry
+        // Range entry
 "    frame $id.angle.range\n"
 "    label $id.angle.range.lab -text [_ \"Angular Range: \"]\n"
 "    entry $id.angle.range.ent -textvariable ::dialog_elsegui::var_angle_width($vid) -width 5\n"
-"    pack $id.angle.range.ent $id.angle.range.lab -side right -anchor e\n"
-// Offset entry
+"    label $id.angle.range.dummy -text \"\" -width 1\n"
+"    pack $id.angle.range.dummy $id.angle.range.ent $id.angle.range.lab -side right -anchor e\n"
+        // Offset entry
 "    frame $id.angle.offset\n"
 "    label $id.angle.offset.lab -text [_ \"Angular Offset: \"]\n"
 "    entry $id.angle.offset.ent -textvariable ::dialog_elsegui::var_angle_offset($vid) -width 5\n"
@@ -352,26 +243,26 @@ sys_gui("\n"
 //
 "    pack $id.angle.range $id.angle.offset -side left -anchor center\n"
 "    $id.angle config -padx 60\n"
-                
-// Frame for range section
+"\n"
+// Frame for output range section
 "    labelframe $id.rng\n"
 "    pack $id.rng -side top -fill x\n"
 "    $id.rng config -borderwidth 1 -pady 8 -text \"Range settings:\"\n"
-// Range minimum entry
+        // Range minimum entry
 "    frame $id.rng.range \n"
 "    frame $id.rng.range.min\n"
 "    label $id.rng.range.min.lab -text \"Lower:\"\n"
-"    entry $id.rng.range.min.ent -textvariable ::dialog_elsegui::var_range_min($vid) -width 7\n"
-"    label $id.rng.range.dummy1 -text \"\" -width 1\n"
-// Range maximum entry
+"    entry $id.rng.range.min.ent -textvariable ::dialog_elsegui::var_lower($vid) -width 7\n"
+"    label $id.rng.range.dummy -text \"\" -width 1\n"
+        // Range maximum entry
 "    label $id.rng.range.max_lab -text \"Upper:\"\n"
-"    entry $id.rng.range.max_ent -textvariable ::dialog_elsegui::var_range_max($vid) -width 7\n"
+"    entry $id.rng.range.max_ent -textvariable ::dialog_elsegui::var_upper($vid) -width 7\n"
 "    pack $id.rng.range.min\n"
 "    pack $id.rng.range.min.lab $id.rng.range.min.ent -side left \n"
 "    $id.rng config -padx 26\n"
 "    pack configure $id.rng.range.min -side left\n"
-"    pack $id.rng.range.dummy1 $id.rng.range.max_lab $id.rng.range.max_ent -side left\n"
-// Logmode radiobuttons
+"    pack $id.rng.range.dummy $id.rng.range.max_lab $id.rng.range.max_ent -side left\n"
+        // Logmode radiobuttons
 "    frame $id.rng.logmode\n"
 "    radiobutton $id.rng.logmode.radio0 -value 0 \\\n"
 "        -text [_ \"linear\" ] \\\n"
@@ -386,72 +277,66 @@ sys_gui("\n"
 "        -variable ::dialog_elsegui::var_expmode($vid) \\\n"
 "        -command \"$id.rng.logmode.expmode_entry configure -state normal\"\n"
 "    entry $id.rng.logmode.expmode_entry -width 3 -textvariable ::dialog_elsegui::var_exp($vid) \n"
-// When exp is selected, enable text box
+        // When exp is selected, enable text box
 "    if { $::dialog_elsegui::var_expmode($vid) != 2 } {\n"
 "       $id.rng.logmode.expmode_entry configure -state disabled\n"
 "    }\n"
 "    pack $id.rng.logmode.expmode_entry $id.rng.logmode.radio2 $id.rng.logmode.radio1 $id.rng.logmode.radio0 -side right \n"
 "    pack $id.rng.range $id.rng.logmode -side top\n"
-
+"\n"
 // Frame for Mouse behaviour (Jump on click / Circular motion)
 "    labelframe $id.mouse\n"
 "    pack $id.mouse -side top -fill x\n"
 "    $id.mouse config -borderwidth 1 -pady 8 -text \"Mouse behaviour:\"\n"
-// Checkbox for Jump on Click
+        // Checkbox for Jump on Click
 "    frame $id.mouse.jump\n"
 "    label $id.mouse.jump.lab -text [_ \"Jump on Click: \"]\n"
 "    checkbutton $id.mouse.jump.ent -variable ::dialog_elsegui::var_jump($vid) -width 5\n"
 "    pack $id.mouse.jump.ent $id.mouse.jump.lab -side right -anchor e\n"
-// Checkbox for Circular
+        // Checkbox for Circular
 "    frame $id.mouse.move\n"
 "    label $id.mouse.move.lab -text [_ \"Circular Drag: \"]\n"
 "    checkbutton $id.mouse.move.ent -variable ::dialog_elsegui::var_circular($vid) -width 5\n"
 "    pack $id.mouse.move.ent $id.mouse.move.lab -side right -anchor e\n"
-// Position of items
+        // Position of items
 "    pack $id.mouse.jump $id.mouse.move -side left -anchor center\n"
 "    $id.mouse config -padx 60\n"
-        
+"\n"
 // Frame for Number settings
 "    labelframe $id.num\n"
 "    pack $id.num -side top -fill x\n"
 "    $id.num config -borderwidth 1 -pady 8 -text \"Number settings:\"\n"
-// Number Mode:
+        // Number Mode:
 "    frame $id.num.shownum\n"
 "    label $id.num.shownum.lab -text [_ \"Mode: \"]\n"
 "    entry $id.num.shownum.ent -textvariable ::dialog_elsegui::var_n_mode($vid) -width 2\n"
 "    pack $id.num.shownum.ent $id.num.shownum.lab -side right -anchor e\n"
-//
-    
 /*    "    tk_optionMenu $id.num.shownum ::dialog_elsegui::var_n_mode($vid) Never Always Active Typing\n"
     "    label $id.num.shownum.lab -text [_ \"Mode: \"]\n"
     "    pack $id.num.shownum.lab $id.num.shownum -side left\n"*/
-        
-        
-// Number Size:
+        // Number Size:
 "    frame $id.num.size\n"
 "    label $id.num.size.lab -text [_ \"Size: \"]\n"
 "    entry $id.num.size.ent -textvariable ::dialog_elsegui::var_n_size($vid) -width 3\n"
 "    pack $id.num.size.ent $id.num.size.lab -side right -anchor w\n"
-// Number xpos:
+        // Number xpos:
 "    frame $id.num.xpos\n"
 "    label $id.num.xpos.lab -text [_ \"Xpos: \"]\n"
 "    entry $id.num.xpos.ent -textvariable ::dialog_elsegui::var_xpos($vid) -width 5\n"
 "    pack $id.num.xpos.ent $id.num.xpos.lab -side right -anchor e\n"
-// Number ypos:
+        // Number ypos:
 "    frame $id.num.ypos\n"
 "    label $id.num.ypos.lab -text [_ \"Ypos: \"]\n"
 "    entry $id.num.ypos.ent -textvariable ::dialog_elsegui::var_ypos($vid) -width 5\n"
 "    pack $id.num.ypos.ent $id.num.ypos.lab -side right -anchor w\n"
-//
 "    pack $id.num.shownum $id.num.size -side left -anchor center\n"
-//"    pack $id.num.size -side left -anchor center\n"
 "    pack $id.num.xpos $id.num.ypos -side left -anchor center\n"
-"    $id.num config -padx 25\n"
-        
-// Send/param/var/receive entry
+"    $id.num config -padx 35\n"
+"\n"
+// Receive/Send/Param/Var entry
 "    labelframe $id.syms -borderwidth 1 -padx 5 -pady 8 -text [_ \"Attached symbols: \"]\n"
 "    pack $id.syms -side top -fill x\n"
-// Receive
+        // Receive
 "    frame $id.syms.receive \n"
 "    label $id.syms.receive.w_lab -text \"Receive:\"\n"
 "    entry $id.syms.receive.w_ent -textvariable ::dialog_elsegui::var_rcv($vid) -width 15\n"
@@ -459,7 +344,7 @@ sys_gui("\n"
 "        pack $id.syms.receive.w_lab $id.syms.receive.w_ent -side left\\\n"
 "            -fill x -expand 1\n"
 "    }\n"
-// Send
+        // Send
 "    frame $id.syms.send \n"
 "    label $id.syms.send.w_lab -text \"Send:\"\n"
 "    entry $id.syms.send.w_ent -textvariable ::dialog_elsegui::var_snd($vid) -width 15\n"
@@ -467,7 +352,7 @@ sys_gui("\n"
 "        pack $id.syms.send.w_lab $id.syms.send.w_ent -side left\\\n"
 "            -fill x -expand 1\n"
 "    }\n"
-// Param
+        // Param
 "    frame $id.syms.param \n"
 "    label $id.syms.param.w_lab -text \"Param:\"\n"
 "    entry $id.syms.param.w_ent -textvariable ::dialog_elsegui::var_prm($vid) -width 15\n"
@@ -475,7 +360,7 @@ sys_gui("\n"
 "        pack $id.syms.param.w_lab $id.syms.param.w_ent -side left\\\n"
 "            -fill x -expand 1\n"
 "    }\n"
-// Var
+        // Var
 "    frame $id.syms.var \n"
 "    label $id.syms.var.w_lab -text \"Variable:\"\n"
 "    entry $id.syms.var.w_ent -textvariable ::dialog_elsegui::var_var($vid) -width 15\n"
@@ -483,19 +368,19 @@ sys_gui("\n"
 "        pack $id.syms.var.w_lab $id.syms.var.w_ent -side left\\\n"
 "            -fill x -expand 1\n"
 "    }\n"
-// Align items to grid
+        // Align items to grid
 "    pack $id.syms -side top -fill x\n"
-// column 0
+        // column 0
 "    grid $id.syms.receive -row 0 -column 0 -sticky e -padx {10 0}\n"
 "    grid $id.syms.send -row 1 -column 0 -sticky e -padx {10 0}\n"
-// column 1
+        // column 1
 "    grid $id.syms.param -row 0 -column 1 -sticky e -padx {5 0}\n"
 "    grid $id.syms.var -row 1 -column 1 -sticky e -padx {5 0}\n"
-        
+"\n"
 // Frame for colors section
 "    labelframe $id.colors -borderwidth 1 -text [_ \"Colors:\"] -padx 5 -pady 8\n"
 "    pack $id.colors -fill x\n"
-// Color Radiobuttons and "Compose" button
+        // Color Radiobuttons and "Compose" button
 "    frame $id.colors.radio\n"
 "    pack $id.colors.radio -side top\n"
 "    radiobutton $id.colors.radio.bg -value 0 -variable ::dialog_elsegui::var_colortype($vid)\\\n"
@@ -506,8 +391,8 @@ sys_gui("\n"
 "        -text [_ \"Front\"]\n"
 "    button $id.colors.radio.but -text [_ \"Compose\"] -command \"::dialog_elsegui::compose_color $id\"\n"
 "    pack $id.colors.radio.bg $id.colors.radio.arc $id.colors.radio.fg $id.colors.radio.but -side left\n"
-
-// Preset colors, color scheme by Mary Ann Benedetto http://piR2.org
+"\n"
+        // Preset colors, color scheme by Mary Ann Benedetto http://piR2.org
 "    frame $id.colors.presets -pady 8\n"
 "    pack $id.colors.presets -fill x\n"
 "    foreach r {r1 r2 r3} hexcols {\n"
@@ -526,7 +411,7 @@ sys_gui("\n"
 "           $id.colors.presets.$r.c4 $id.colors.presets.$r.c5 $id.colors.presets.$r.c6 $id.colors.presets.$r.c7 \\\n"
 "           $id.colors.presets.$r.c8 $id.colors.presets.$r.c9 -side left\n"
 "    }\n"
-        
+"\n"
 // Cancel and OK buttons
 "    frame $id.cao -pady 4\n"
 "    pack $id.cao -side top\n"
@@ -541,36 +426,147 @@ sys_gui("\n"
 "    button $id.cao.ok -text [_ \"OK\"] \\\n"
 "        -command \"::dialog_elsegui::ok $id\" -default active\n"
 "    pack $id.cao.ok -side left -expand 1 -fill x -padx 15 -ipadx 10\n"
+
+// ----------------------------------------------------------------------------------------------------
+
+// BUTTON FUNCTIONS
+        
+// Preset Colors
+"proc ::dialog_elsegui::preset_col {id presetcol} {\n"
+"    set vid [string trimleft $id .]\n"
+"\n"
+"    switch -- $::dialog_elsegui::var_colortype($vid) {\n"
+"        0 { set ::dialog_elsegui::var_color_bg($vid) $presetcol }\n"
+"        1 { set ::dialog_elsegui::var_color_arc($vid) $presetcol }\n"
+"        2 { set ::dialog_elsegui::var_color_fg($vid) $presetcol }\n"
+"    }\n"
+"    if {$::windowingsystem eq \"aqua\"} {\n"
+"    ::dialog_elsegui::bind_enter_to_apply $id \n"
+"    }\n"
+"}\n"
+"\n"
+        
+// COMPOSE Color:
+"proc ::dialog_elsegui::compose_color {id} {\n"
+"    set vid [string trimleft $id .]\n"
+"\n"
+// Check which color field is currently active
+"    switch -- $::dialog_elsegui::var_colortype($vid) {\n"
+"        0 {\n"
+"            set title [_ \"Background color\" ]\n"
+"            set color $::dialog_elsegui::var_color_bg($vid)\n"
+"        }\n"
+"        1 {\n"
+"            set title [_ \"Foreground color\" ]\n"
+"            set color $::dialog_elsegui::var_color_fg($vid)\n"
+"        }\n"
+"        2 {\n"
+"            set title [_ \"Arc color\" ]\n"
+"            set color $::dialog_elsegui::var_color_arc($vid)\n"
+"        }\n"
+"    }\n"
+"    set color [tk_chooseColor -title $title -initialcolor $color]\n"
+"\n"
+"    if { $color ne \"\" } {\n"
+"        ::dialog_elsegui::preset_col $id $color\n"
+"    }\n"
+"}\n"
+"\n"
+                
+//  CANCEL button
+"proc ::dialog_elsegui::cancel {id} {\n"
+"    pdsend \"$id cancel\"\n"
+"}\n"
+"\n"
+                
+// OK button
+"proc ::dialog_elsegui::ok {id} {\n"
+"    ::dialog_elsegui::apply $id\n"
+"    ::dialog_elsegui::cancel $id\n"
+"}\n"
+        
+// APPLY BUTTON: Send current values to Pd
+"proc ::dialog_elsegui::apply {id} {\n"
+"    set vid [string trimleft $id .]\n"
+"\n"
+//  Initialize receive, send, param and var as 'empty'
+"    set rcv_name empty\n"
+"    set snd_name empty\n"
+"    set prm_name empty\n"
+"    set var_name empty\n"
+"\n"
+//  Set receive, send, param and var if not empty
+"    if {$::dialog_elsegui::var_rcv($vid) ne \"\"} {set rcv_name $::dialog_elsegui::var_rcv($vid)}\n"
+"    if {$::dialog_elsegui::var_snd($vid) ne \"\"} {set snd_name $::dialog_elsegui::var_snd($vid)}\n"
+"    if {$::dialog_elsegui::var_prm($vid) ne \"\"} {set prm_name $::dialog_elsegui::var_prm($vid)}\n"
+"    if {$::dialog_elsegui::var_var($vid) ne \"\"} {set var_name $::dialog_elsegui::var_var($vid)}\n"
+"\n"
+//  Clip number of steps
+"    set ::dialog_elsegui::var_steps($vid) [::dialog_elsegui::clip $::dialog_elsegui::var_steps($vid) 0 360]\n"
+"\n"
+//  Send to the object
+"    pdsend [concat $id dialog \\\n"
+"                $::dialog_elsegui::var_size($vid) \\\n"
+"                $::dialog_elsegui::var_square($vid) \\\n"
+"                $::dialog_elsegui::var_arc_shown($vid) \\\n"
+"                $::dialog_elsegui::var_arcstart($vid) \\\n"
+"                $::dialog_elsegui::var_loadbang($vid) \\\n"
+"                $::dialog_elsegui::var_savestate($vid) \\\n"
+"                $::dialog_elsegui::var_load($vid) \\\n"
+"                $::dialog_elsegui::var_discrete($vid) \\\n"
+"                $::dialog_elsegui::var_showticks($vid) \\\n"
+"                $::dialog_elsegui::var_steps($vid) \\\n"
+"                $::dialog_elsegui::var_angle_width($vid) \\\n"
+"                $::dialog_elsegui::var_angle_offset($vid) \\\n"
+"                $::dialog_elsegui::var_lower($vid) \\\n"
+"                $::dialog_elsegui::var_upper($vid) \\\n"
+"                $::dialog_elsegui::var_expmode($vid) \\\n"
+"                $::dialog_elsegui::var_exp($vid) \\\n"
+"                $::dialog_elsegui::var_jump($vid) \\\n"
+"                $::dialog_elsegui::var_circular($vid) \\\n"
+"                $::dialog_elsegui::var_n_mode($vid) \\\n"
+"                $::dialog_elsegui::var_n_size($vid) \\\n"
+"                $::dialog_elsegui::var_xpos($vid) \\\n"
+"                $::dialog_elsegui::var_ypos($vid) \\\n"
+"                [string map {\"$\" {\\$}} [unspace_text $rcv_name]] \\\n"
+"                [string map {\"$\" {\\$}} [unspace_text $snd_name]] \\\n"
+"                [string map {\"$\" {\\$}} [unspace_text $prm_name]] \\\n" // clean?
+"                [string map {\"$\" {\\$}} [unspace_text $var_name]] \\\n" // clean?
+"                [string tolower $::dialog_elsegui::var_color_bg($vid)] \\\n"
+"                [string tolower $::dialog_elsegui::var_color_arc($vid)] \\\n"
+"                [string tolower $::dialog_elsegui::var_color_fg($vid)] \\\n"
+"            ]\n"
+"}\n"
         
 // live widget updates on OSX in lieu of Apply button
+// apply command ????????????
 "    set applycmd \"\"\n"
 "    if {$::windowingsystem eq \"aqua\"} {\n"
 "        set applycmd \"::dialog_elsegui::apply $id\"\n"
 "    }\n"
-        
-// Bind enter key to Apply button
+"\n"
+// Bind and unbind enter key to Apply button on macOS
 "    if {$::windowingsystem eq \"aqua\"} {\n"
 // call apply on Return in entry boxes that are in focus & rebind Return to ok button
-"        bind $id.load.initial.ent <KeyPress-Return> \"::dialog_elsegui::apply_and_rebind_return $id\"\n"
-"        bind $id.arcsettings.arcstart.ent <KeyPress-Return> \"::dialog_elsegui::apply_and_rebind_return $id\"\n"
-"        bind $id.num.shownum.ent <KeyPress-Return> \"::dialog_elsegui::apply_and_rebind_return $id\"\n"
-"        bind $id.num.size.ent <KeyPress-Return> \"::dialog_elsegui::apply_and_rebind_return $id\"\n"
-"        bind $id.num.xpos.ent <KeyPress-Return> \"::dialog_elsegui::apply_and_rebind_return $id\"\n"
-"        bind $id.num.ypos.ent <KeyPress-Return> \"::dialog_elsegui::apply_and_rebind_return $id\"\n"
-"        bind $id.discrete.steps.ent <KeyPress-Return> \"::dialog_elsegui::apply_and_rebind_return $id\"\n"
-"        bind $id.angle.range.ent <KeyPress-Return> \"::dialog_elsegui::apply_and_rebind_return $id\"\n"
-"        bind $id.angle.offset.ent <KeyPress-Return> \"::dialog_elsegui::apply_and_rebind_return $id\"\n"
-"        bind $id.knobstyle.dim.w_ent <KeyPress-Return> \"::dialog_elsegui::apply_and_rebind_return $id\"\n"
-"        bind $id.rng.logmode.expmode_entry <KeyPress-Return> \"::dialog_elsegui::apply_and_rebind_return $id\"\n"
-"        bind $id.rng.range.min.ent <KeyPress-Return> \"::dialog_elsegui::apply_and_rebind_return $id\"\n"
-"        bind $id.rng.range.max_ent <KeyPress-Return> \"::dialog_elsegui::apply_and_rebind_return $id\"\n"
-"        bind $id.syms.send.w_ent <KeyPress-Return> \"::dialog_elsegui::apply_and_rebind_return $id\"\n"
-"        bind $id.syms.param.w_ent <KeyPress-Return> \"::dialog_elsegui::apply_and_rebind_return $id\"\n"
-"        bind $id.syms.var.w_ent <KeyPress-Return> \"::dialog_elsegui::apply_and_rebind_return $id\"\n"
-"        bind $id.syms.receive.w_ent <KeyPress-Return> \"::dialog_elsegui::apply_and_rebind_return $id\"\n"
+"        bind $id.load.load.ent <KeyPress-Return> \"::dialog_elsegui::bind_enter_to_apply $id\"\n"
+"        bind $id.arcsettings.arcstart.ent <KeyPress-Return> \"::dialog_elsegui::bind_enter_to_apply $id\"\n"
+"        bind $id.num.shownum.ent <KeyPress-Return> \"::dialog_elsegui::bind_enter_to_apply $id\"\n"
+"        bind $id.num.size.ent <KeyPress-Return> \"::dialog_elsegui::bind_enter_to_apply $id\"\n"
+"        bind $id.num.xpos.ent <KeyPress-Return> \"::dialog_elsegui::bind_enter_to_apply $id\"\n"
+"        bind $id.num.ypos.ent <KeyPress-Return> \"::dialog_elsegui::bind_enter_to_apply $id\"\n"
+"        bind $id.discrete.steps.ent <KeyPress-Return> \"::dialog_elsegui::bind_enter_to_apply $id\"\n"
+"        bind $id.angle.range.ent <KeyPress-Return> \"::dialog_elsegui::bind_enter_to_apply $id\"\n"
+"        bind $id.angle.offset.ent <KeyPress-Return> \"::dialog_elsegui::bind_enter_to_apply $id\"\n"
+"        bind $id.knobstyle.dim.w_ent <KeyPress-Return> \"::dialog_elsegui::bind_enter_to_apply $id\"\n"
+"        bind $id.rng.logmode.expmode_entry <KeyPress-Return> \"::dialog_elsegui::bind_enter_to_apply $id\"\n"
+"        bind $id.rng.range.min.ent <KeyPress-Return> \"::dialog_elsegui::bind_enter_to_apply $id\"\n"
+"        bind $id.rng.range.max_ent <KeyPress-Return> \"::dialog_elsegui::bind_enter_to_apply $id\"\n"
+"        bind $id.syms.send.w_ent <KeyPress-Return> \"::dialog_elsegui::bind_enter_to_apply $id\"\n"
+"        bind $id.syms.param.w_ent <KeyPress-Return> \"::dialog_elsegui::bind_enter_to_apply $id\"\n"
+"        bind $id.syms.var.w_ent <KeyPress-Return> \"::dialog_elsegui::bind_enter_to_apply $id\"\n"
+"        bind $id.syms.receive.w_ent <KeyPress-Return> \"::dialog_elsegui::bind_enter_to_apply $id\"\n"
 // unbind Return from ok button when an entry takes focus
-        
-"        $id.load.initial.ent config -validate focusin -vcmd \"::dialog_elsegui::unbind_return $id\"\n"
+"        $id.load.load.ent config -validate focusin -vcmd \"::dialog_elsegui::unbind_return $id\"\n"
 "        $id.arcsettings.arcstart.ent config -validate focusin -vcmd \"::dialog_elsegui::unbind_return $id\"\n"
 "        $id.num.shownum.ent config -validate focusin -vcmd \"::dialog_elsegui::unbind_return $id\"\n"
 "        $id.num.size.ent config -validate focusin -vcmd \"::dialog_elsegui::unbind_return $id\"\n"
@@ -599,16 +595,17 @@ sys_gui("\n"
 "    }\n"
 "    position_over_window $id $::focused_window\n"
 "}\n"
-// for live widget updates on OSX
-"proc ::dialog_elsegui::apply_and_rebind_return {id} {\n"
+"\n"
+// bind proc
+"proc ::dialog_elsegui::bind_enter_to_apply {id} {\n"
 "    ::dialog_elsegui::apply $id\n"
 "    bind $id <KeyPress-Return> \"::dialog_elsegui::ok $id\"\n"
 "    focus $id.cao.ok\n"
 "    return 0\n"
 "}\n"
-// for live widget updates on OSX
+"\n"
+// unbind proc
 "proc ::dialog_elsegui::unbind_return {id} {\n"
 "    bind $id <KeyPress-Return> break\n"
 "    return 1\n"
-"}\n"
-);
+"}\n");
