@@ -46,12 +46,22 @@ sys_gui("\n"
 "array set ::dialog_elsegui::var_colortype {} ;\n" // radio for what color type we're setting
 "\n"
 
-// HELPER FUNCTION:
+// HELPER FUNCTIONS:
 // Clip function
 "proc ::dialog_elsegui::clip {val min {max {}}} {\n"
 "    if {$min ne {} && $val < $min} {return $min}\n"
 "    if {$max ne {} && $val > $max} {return $max}\n"
 "    return $val\n"
+"}\n"
+"\n"
+        
+"proc ::dialog_elsegui::savestate_check {id} {\n"
+"    set vid [string trimleft $id .]\n"
+"    if { $::dialog_elsegui::var_savestate($vid) == 1 } {\n"
+"       $id.load.load.ent configure -state disabled\n"
+"    } else {\n"
+"       $id.load.load.ent configure -state normal\n"
+"    }\n"
 "}\n"
 "\n"
         
@@ -109,7 +119,7 @@ sys_gui("\n"
 "    if {$var==\"empty\"} {\n"
 "       set var \"\"\n"
 "    }\n"
-"\n"
+"\n" // colors
 "    set ::dialog_elsegui::var_rcv($vid) [string map {{\\ } \" \"} $rcv]\n"
 "    set ::dialog_elsegui::var_snd($vid) [string map {{\\ } \" \"} $snd]\n"
 "    set ::dialog_elsegui::var_prm($vid) [string map {{\\ } \" \"} $prm]\n"
@@ -178,6 +188,7 @@ sys_gui("\n"
 "    pack $id.arcsettings.arc $id.arcsettings.arcstart -side left -anchor center\n"
 "    $id.arcsettings config -padx 60\n"
 "\n"
+        
 // Frame for Load settings
 "    labelframe $id.load\n"
 "    pack $id.load -side top -fill x\n"
@@ -190,13 +201,18 @@ sys_gui("\n"
         // Checkbox for Savestate
 "    frame $id.load.savestate\n"
 "    label $id.load.savestate.lab -text [_ \"Savestate: \"]\n"
-"    checkbutton $id.load.savestate.ent -variable ::dialog_elsegui::var_savestate($vid) -width 5\n"
+"    checkbutton $id.load.savestate.ent -variable ::dialog_elsegui::var_savestate($vid) -width 5\\\n"
+"        -command [concat ::dialog_elsegui::savestate_check $id]\n"
 "    pack $id.load.savestate.ent $id.load.savestate.lab -side right -anchor e\n"
         // Entry for load value
 "    frame $id.load.load \n"
 "    label $id.load.load.lab -text [_ \"Load Value\"]\n"
-"    entry $id.load.load.ent -textvariable ::dialog_elsegui::var_load($vid) -width 7\n"
+"    entry $id.load.load.ent -textvariable ::dialog_elsegui::var_load($vid) -width 7 -state normal\n"
 "    pack $id.load.load.ent $id.load.load.lab -side right -anchor e\n"
+        // When savestate is selected, disbale load box
+"    if { $::dialog_elsegui::var_savestate($vid) == 1 } {\n"
+"       $id.load.load.ent configure -state disabled\n"
+"    }\n"
         // Position of items
 "    pack $id.load.loadbang $id.load.savestate $id.load.load -side left -anchor center\n"        
 "    $id.load config -padx 20\n"
