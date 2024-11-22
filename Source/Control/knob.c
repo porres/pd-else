@@ -128,19 +128,22 @@ typedef struct _knob{
 // ---------------------- Helper functions ----------------------
 
 static void knob_update_number(t_knob *x){
-/*    post("x->x_fval = %f", x->x_fval);
-    post("(int)x->x_fval = %d", (int)rint(x->x_fval));
-    int val = (int)x->x_fval;
-    post("val = %d", val);
-    float dif = x->x_fval - (float)val;
-    post("dif = %f", dif);*/
     char nbuf[32];
-    if(x->x_fval > -1 && x->x_fval < 1)
-        sprintf(nbuf, "%.5f", x->x_fval);
-//    else if(x->x_fval == (int)x->x_fval)
-//        sprintf(nbuf, "%.d", (int)x->x_fval);
+    float absv = fabs(x->x_fval);
+    if(absv == 0)
+        sprintf(nbuf, "%g", x->x_fval);
+    else if(absv < 1){
+        sprintf(nbuf, "%.3f", x->x_fval);
+        int l = strlen(nbuf);
+        while(--l >= 0 && nbuf[l] == '0')
+            nbuf[l] = '\0';
+        if(nbuf[l] == '.')
+            nbuf[l] = '\0';
+    }
+    else if(absv < 100)
+        sprintf(nbuf, "%.4g", x->x_fval);
     else
-        sprintf(nbuf, "%#.5g", x->x_fval);
+        sprintf(nbuf, "%g", x->x_fval);
     pdgui_vmess(0, "crs rs", glist_getcanvas(x->x_glist),
         "itemconfigure", x->x_tag_number, "-text", nbuf);
 }
@@ -1097,8 +1100,15 @@ static void knob_properties(t_gobj *z, t_glist *owner){
     knob_get_rcv(x);
     knob_get_snd(x);
     knob_get_var(x);
+    t_symbol *mode = gensym("Never");
+    if(x->n_mode == 1)
+        mode = gensym("Always");
+    else if(x->n_mode == 2)
+        mode = gensym("Active");
+    else if(x->n_mode == 3)
+        mode = gensym("Typing");
     pdgui_stub_vnew(&x->x_obj.ob_pd, "knob_dialog", owner,
-        "fi if iif iii ii ffif ii iiii ssss sss",
+        "fi if iif iii ii ffif ii siii ss ss sss",
         (float)(x->x_size / x->x_zoom), x->x_square, // fi
         x->x_arc, x->x_arcstart, // if
         x->x_lb, x->x_savestate, x->x_load, // iif
@@ -1106,8 +1116,9 @@ static void knob_properties(t_gobj *z, t_glist *owner){
         x->x_angle_range, x->x_angle_offset, // ii
         x->x_lower, x->x_upper, x->x_expmode, x->x_exp, // ffif
         x->x_jump, x->x_circular, // ii
-        x->n_mode, x->n_size, x->x_xpos, x->x_ypos, // iiii
-        x->x_rcv_raw->s_name, x->x_snd_raw->s_name, x->x_param->s_name, x->x_var_raw->s_name, // sssss
+        mode->s_name, x->n_size, x->x_xpos, x->x_ypos, // siii
+        x->x_rcv_raw->s_name, x->x_snd_raw->s_name, // ss
+        x->x_param->s_name, x->x_var_raw->s_name, // sss
         x->x_bg->s_name, x->x_mg->s_name, x->x_fg->s_name); // sss
 }
 
@@ -1144,7 +1155,6 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     SETSYMBOL(undo+27, x->x_mg);
     SETSYMBOL(undo+28, x->x_fg);
     pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 29, undo, ac, av);
-    
     int size = (int)atom_getintarg(0, ac, av);
     int square = atom_getintarg(1, ac, av);
     int arc = atom_getintarg(2, ac, av) != 0;
@@ -1163,12 +1173,12 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     float exp = atom_getfloatarg(15, ac, av);
     x->x_jump = atom_getintarg(16, ac, av);
     x->x_circular = atom_getintarg(17, ac, av);
-    int n_mode = atom_getintarg(18, ac, av);
+    t_symbol *mode = atom_getsymbolarg(18, ac, av);
     int nsize = atom_getintarg(19, ac, av);
     int xpos = atom_getintarg(20, ac, av);
     int ypos = atom_getintarg(21, ac, av);
     t_symbol* rcv = atom_getsymbolarg(22, ac, av);
-    t_symbol* snd = atom_getsymbolarg(23, ac, av);
+    t_symbol *snd = atom_getsymbolarg(23, ac, av);
     t_symbol *param = atom_getsymbolarg(24, ac, av);
     t_symbol *var = atom_getsymbolarg(25, ac, av);
     t_symbol *bg = atom_getsymbolarg(26, ac, av);
@@ -1214,6 +1224,13 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     knob_var(x, var);
     knob_nsize(x, nsize);
     knob_numberpos(x, xpos, ypos);
+    int n_mode = 0;
+    if(mode == gensym("Always"))
+        n_mode = 1;
+    else if(mode == gensym("Active"))
+        n_mode = 2;
+    else if(mode == gensym("Typing"))
+        n_mode = 3;
     knob_number_mode(x, n_mode);
 }
 
