@@ -2,11 +2,17 @@
  * include the interface to Pd
  */
 
+#ifndef ENABLE_OPUS
+#define ENABLE_OPUS 1
+#endif
+
 #include "m_pd.h"
 #include "magic.h"
 #include "else_alloca.h"
 #include "link.h"
+#if ENABLE_OPUS
 #include "opus_compression.h"
+#endif
 #include <samplerate.h>
 #include <stdio.h>
 #include <string.h>
@@ -473,7 +479,11 @@ static void *pdlink_tilde_new(t_symbol *s, int argc, t_atom *argv)
             } else if (strcmp(sym->s_name, "-debug") == 0) {
                 x->x_debug = 1; // Enable debug logging
             }  else if (strcmp(sym->s_name, "-compress") == 0) {
+#if ENABLE_OPUS
                 x->x_compress = 1; // Enable opus compression
+#else
+                pd_error(x, "[pdlink~] opus compression was disabled for this build");
+#endif
             } else if(strcmp(sym->s_name, "-bufsize") == 0 && i < argc-1 && argv[i+1].a_type == A_FLOAT) {
                 i++;
                 x->x_delay = atom_getfloat(argv + i);
