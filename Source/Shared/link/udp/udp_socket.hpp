@@ -19,7 +19,7 @@ typedef SSIZE_T ssize_t;
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <fcntl.h>
-#ifdef BSD
+#if defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__BSD__)
 #include <netinet/in.h>
 #include <sys/socket.h>
 #endif
