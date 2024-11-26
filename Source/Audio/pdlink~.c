@@ -3,7 +3,7 @@
  */
 
 #ifndef ENABLE_OPUS
-#define ENABLE_OPUS 1
+#define ENABLE_OPUS 0
 #endif
 
 #include "m_pd.h"
@@ -30,7 +30,9 @@ typedef struct _pdlink_audio_stream {
     t_int buf_write_pos;
     t_int buf_read_pos;
     t_int buf_num_ready;
+#if ENABLE_OPUS
     t_udp_audio_decoder *audio_decoder;
+#endif
     SRC_STATE *samplerate_converter;
 } t_pdlink_audio_stream;
 
@@ -51,14 +53,18 @@ typedef struct _pdlink_tilde {
     t_inlet *x_set_inlet;
     t_outlet *x_outlet;
     t_int x_compress;
+#if ENABLE_OPUS
     t_udp_audio_encoder *x_audio_encoders;
+#endif
     t_pdlink_audio_stream *x_audio_streams;
     t_int x_num_streams;
 } t_pdlink_tilde;
 
 static void pdlink_audio_stream_init(t_pdlink_tilde *x, t_pdlink_audio_stream *stream, t_int stream_id)
 {
+#if ENABLE_OPUS
     stream->audio_decoder = udp_audio_decoder_init();
+#endif
     stream->buf_write_pos = x->x_delay;
     stream->buf_read_pos = 0;
     stream->buf_num_ready = x->x_delay;
@@ -77,7 +83,9 @@ static void pdlink_audio_stream_init(t_pdlink_tilde *x, t_pdlink_audio_stream *s
 static void pdlink_audio_stream_free(t_pdlink_audio_stream *stream)
 {
     free(stream->signal_buffer);
+#if ENABLE_OPUS
     udp_audio_decoder_destroy(stream->audio_decoder);
+#endif
     src_delete(stream->samplerate_converter);
 }
 
@@ -111,7 +119,9 @@ static t_pdlink_audio_stream* pdlink_tilde_get_audio_stream(t_pdlink_tilde *x, c
         if(x->x_audio_streams[i].stream_active == 0)
         {
             t_pdlink_audio_stream *stream = &x->x_audio_streams[i];
+#if ENABLE_OPUS
             udp_audio_decoder_destroy(stream->audio_decoder);
+#endif
             pdlink_audio_stream_init(x, stream, stream_id);
             return stream;
         }
@@ -189,6 +199,7 @@ void pdlink_tilde_receive(void *ptr, const size_t len, const char* message) {
 
     if(stream_compressed)
     {
+#if ENABLE_OPUS
         // Decode
         t_float output_buffer[120];
         int num_decoded = udp_audio_decoder_decode(stream->audio_decoder, (unsigned char*)message+16, len - 16, output_buffer, 120);
@@ -215,6 +226,9 @@ void pdlink_tilde_receive(void *ptr, const size_t len, const char* message) {
             stream->buf_num_ready++;
         }
         FREEA(converted_samples, t_float, max_buffer_size);
+#else
+        pd_error(NULL, "[pdlink~] receiving compressed stream, but was built without opus");
+#endif
     }
     else {
         int num_float = (len - 16) / sizeof(t_float);
@@ -279,9 +293,11 @@ static t_int *pdlink_tilde_perform(t_int *w){
         for(int ch = 0; ch < x->x_in_nchs; ch++) {
             if(x->x_compress)
             {
+#if ENABLE_OPUS
                 // Decode audio and send over udp
                 current_channel = ch;
                 udp_audio_encoder_encode(&x->x_audio_encoders[ch], in1 + (ch * nblock), nblock, sys_getsr(), x->x_link, pdlink_send_compressed);
+#endif
             }
             else {
                 pdlink_send_signal_message(x->x_link, ch, sys_getsr(), 0, nblock * sizeof(t_float), (const char*)(in1 + ch * nblock));
@@ -326,6 +342,7 @@ static void pdlink_tilde_dsp(t_pdlink_tilde *x, t_signal **sp) {
 
     if(x->x_compress && sp[0]->s_nchans != x->x_in_nchs)
     {
+#if ENABLE_OPUS
         if(x->x_audio_encoders) {
             for(int ch = 0; ch < x->x_in_nchs; ch++)
             {
@@ -338,6 +355,7 @@ static void pdlink_tilde_dsp(t_pdlink_tilde *x, t_signal **sp) {
         {
             x->x_audio_encoders[ch] = *udp_audio_encoder_init();
         }
+#endif
     }
     x->x_in_nchs = sp[0]->s_nchans;
     x->x_out_nchs = pdlink_tilde_get_num_stream_channels(x);
@@ -398,6 +416,7 @@ static void pdlink_tilde_free(t_pdlink_tilde *x)
         }
         free(x->x_audio_streams);
     }
+#if ENABLE_OPUS
     if(x->x_audio_encoders) {
         for(int i = 0; i < x->x_in_nchs; i++)
         {
@@ -405,6 +424,7 @@ static void pdlink_tilde_free(t_pdlink_tilde *x)
         }
         free(x->x_audio_encoders);
     }
+#endif
 }
 
 static void pdlink_tilde_update_dsp(t_pdlink_tilde *x)
@@ -468,7 +488,9 @@ static void *pdlink_tilde_new(t_symbol *s, int argc, t_atom *argv)
     x->x_overrun = 0;
     x->x_num_streams = 0;
     x->x_audio_streams = NULL;
+#if ENABLE_OPUS
     x->x_audio_encoders = NULL;
+#endif
     x->x_glist = canvas_getcurrent();
 
     for (int i = 0; i < argc; i++) {
@@ -482,7 +504,7 @@ static void *pdlink_tilde_new(t_symbol *s, int argc, t_atom *argv)
 #if ENABLE_OPUS
                 x->x_compress = 1; // Enable opus compression
 #else
-                pd_error(x, "[pdlink~] opus compression was disabled for this build");
+                pd_error(x, "[pdlink~] opus compression is disabled for this build");
 #endif
             } else if(strcmp(sym->s_name, "-bufsize") == 0 && i < argc-1 && argv[i+1].a_type == A_FLOAT) {
                 i++;
