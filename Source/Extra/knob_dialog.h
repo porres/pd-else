@@ -350,10 +350,28 @@ sys_gui("\n"
 "    labelframe $id.num\n"
 "    pack $id.num -side top -fill x\n"
 "    $id.num config -borderwidth 1 -pady 8 -text \"Number settings:\"\n"
+
+// iemguis
+//        if {$::dialog_iemgui::var_steady($vid) >= 0} {
+//            ::dialog_iemgui::popupmenu $mytoplevel.para.stdy_jmp \
+//                ::dialog_iemgui::var_steady($vid) [list [_ "Jump on click"] [_ "Steady on click"] ] \
+//                $applycmd
+//            pack $mytoplevel.para.stdy_jmp -side left -expand 1 -ipadx 10
+//        }
+        
+// this is an adaptation attempt from iemguis, but it doesn't seem to make sense in this scenario
+//        if {$::dialog_elsegui::var_n_mode_sym($vid) != "null"} {
+//            tk_optionMenu $id.num.shownum.ent \
+//            ::dialog_elsegui::var_n_mode_sym($vid) Never Always Active Typing \
+//            $applycmd
+//            pack $mytoplevel.para.stdy_jmp -side left -expand 1 -ipadx 10
+//        }
+        
         // Dropdown menu for show number mode:
 "    frame $id.num.shownum\n"
 "    label $id.num.shownum.lab -text [_ \"Mode: \"]\n"
 "    tk_optionMenu $id.num.shownum.ent ::dialog_elsegui::var_n_mode_sym($vid) Never Always Active Typing\n"
+//"        $applycmd\n"
 "    pack $id.num.shownum.lab $id.num.shownum.ent -side left\n"
         // Number Size:
 "    frame $id.num.size\n"
@@ -456,13 +474,13 @@ sys_gui("\n"
 "           $id.colors.presets.$r.c8 $id.colors.presets.$r.c9 -side left\n"
 "    }\n"
 "\n"
-// Cancel and OK buttons
+// Cancel, Apply and OK buttons
 "    frame $id.cao -pady 4\n"
 "    pack $id.cao -side top\n"
 "    button $id.cao.cancel -text [_ \"Cancel\"] \\\n"
 "        -command \"::dialog_elsegui::cancel $id\"\n"
 "    pack $id.cao.cancel -side left -expand 1 -fill x -padx 15 -ipadx 10\n"
-"    if {$::windowingsystem ne \"aqua\"} {\n"
+"    if {$::windowingsystem ne \"aqua\"} {\n" // APPLY ONLY IF NOT MACOS!
 "        button $id.cao.apply -text [_ \"Apply\"] \\\n"
 "            -command \"::dialog_elsegui::apply $id\"\n"
 "        pack $id.cao.apply -side left -expand 1 -fill x -padx 15 -ipadx 10\n"
@@ -582,13 +600,14 @@ sys_gui("\n"
 "            ]\n"
 "}\n"
         
-// live widget updates on OSX in lieu of Apply button
-// apply command ????????????
-"    set applycmd \"\"\n"
-"    if {$::windowingsystem eq \"aqua\"} {\n"
-"        set applycmd \"::dialog_elsegui::apply $id\"\n"
-"    }\n"
-"\n"
+// live widget updates on OSX in lieu of Apply button...
+// WE WERE NOT USING THIS... Should be used for the radio buttons and other settings.
+// Seems that Linux and Windows always need 'apply' to update anything.
+//"    set applycmd \"\"\n"
+//"    if {$::windowingsystem eq \"aqua\"} {\n"
+//"        set applycmd \"::dialog_elsegui::apply $id\"\n"
+//"    }\n"
+//"\n"
 // Bind and unbind enter key to Apply button on macOS
 "    if {$::windowingsystem eq \"aqua\"} {\n"
 // call apply on Return in entry boxes that are in focus & rebind Return to ok button
