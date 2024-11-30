@@ -132,6 +132,28 @@ sys_gui("\n"
 "    }\n"
 "\n"
         
+
+// make dropmenus apply in macOS
+"proc menucheck {name element op} {"
+"    set vid [string trimleft $id .]\n"
+"    if {$::windowingsystem eq \"aqua\"} {\n" // apply if in MACOS
+"        ::dialog_knob::apply $id\n"
+"    }\n"
+"}\n"
+        
+"proc ::dialog_knob::apply_check {id} {\n"
+"    set vid [string trimleft $id .]\n"
+"    if { $::dialog_knob::var_discrete($vid) == 0 && $::dialog_knob::var_showticks($vid) == 0 } {\n"
+"       $id.discrete.steps.ent configure -state disabled\n"
+"    } else {\n"
+"       $id.discrete.steps.ent configure -state normal\n"
+"    }\n"
+"    if {$::windowingsystem eq \"aqua\"} {\n" // apply if in MACOS
+"        ::dialog_knob::apply $id\n"
+"    }\n"
+"}\n"
+"\n"
+        
 "proc ::dialog_knob::savestate_check {id} {\n"
 "    set vid [string trimleft $id .]\n"
 "    if { $::dialog_knob::var_savestate($vid) == 1 } {\n"
@@ -358,28 +380,14 @@ sys_gui("\n"
 "    labelframe $id.num\n"
 "    pack $id.num -side top -fill x\n"
 "    $id.num config -borderwidth 1 -pady 8 -text \"Number settings:\"\n"
-
-// iemguis
-//        if {$::dialog_iemgui::var_steady($vid) >= 0} {
-//            ::dialog_iemgui::popupmenu $mytoplevel.para.stdy_jmp \
-//                ::dialog_iemgui::var_steady($vid) [list [_ "Jump on click"] [_ "Steady on click"] ] \
-//                $applymacos
-//            pack $mytoplevel.para.stdy_jmp -side left -expand 1 -ipadx 10
-//        }
-        
-// this is an adaptation attempt from iemguis, but it doesn't seem to make sense in this scenario
-//        if {$::dialog_knob::var_n_mode_sym($vid) != "null"} {
-//            tk_optionMenu $id.num.shownum.ent \
-//            ::dialog_knob::var_n_mode_sym($vid) Never Always Active Typing \
-//            $applymacos
-//            pack $mytoplevel.para.stdy_jmp -side left -expand 1 -ipadx 10
-//        }
-        
         // Dropdown menu for show number mode:
 "    frame $id.num.shownum\n"
 "    label $id.num.shownum.lab -text [_ \"Mode: \"]\n"
 "    tk_optionMenu $id.num.shownum.ent ::dialog_knob::var_n_mode_sym($vid) Never Always Active Typing\n"
-//"        $applymacos\n"
+"    trace add variable ::dialog_knob::var_n_mode_sym($vid) write {\n"
+"       puts \"n_mode was modified\"\n"
+"    }\n"
+//"    trace add variable ::dialog_knob::var_n_mode_sym($vid) write {menucheck}\n"
 "    pack $id.num.shownum.lab $id.num.shownum.ent -side left\n"
         // Number Size:
 "    frame $id.num.size\n"
@@ -511,7 +519,7 @@ sys_gui("\n"
 "        2 { set ::dialog_knob::var_color_fg($vid) $presetcol }\n"
 "    }\n"
 "    if {$::windowingsystem eq \"aqua\"} {\n" // Apply color change if in MACOS
-"    ::dialog_knob::bind_enter_to_apply $id \n"
+"       ::dialog_knob::bind_enter_to_apply $id \n"
 "    }\n"
 "}\n"
 "\n"
