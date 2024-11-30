@@ -1,76 +1,36 @@
-// License: BSD 2 Clause
-// Created by Timothy Schoen and Porres, based on LabSound polyBLEP oscillators
-
-// Adapted from "Phaseshaping Oscillator Algorithms for Musical Sound
-// Synthesis" by Jari Kleimola, Victor Lazzarini, Joseph Timoney, and Vesa
-// Valimaki. http://www.acoustics.hut.fi/publications/papers/smc2010-phaseshaping/
+// Created by Timothy Schoen and Porres
+// Based on Elliptic BLEP by signalsmith-audio: https://github.com/Signalsmith-Audio/elliptic-blep
 
 #include <m_pd.h>
-#include <math.h>
-#include <stdint.h>
-
-#define PI     3.1415926535897931
-#define TWO_PI 6.2831853071795862
-
-typedef struct _polyblep{
-    t_float pulse_width;    // Pulse width for square, morph-to-saw for triangle
-    t_float phase;          // The current phase of the oscillator.
-    t_float freq_in_seconds_per_sample;
-    t_int midi;
-    t_int soft;
-    t_float sr;
-    t_float last_phase_offset;
-}t_polyblep;
+#include <blep.h>
 
 typedef struct blsaw{
     t_object    x_obj;
     t_float     x_f;
-    t_polyblep  x_polyblep;
+    t_elliptic_blep x_elliptic_blep;
     t_inlet*    x_inlet_sync;
     t_inlet*    x_inlet_phase;
+    t_float     x_phase;
+    t_float     x_sr;
+    t_float     x_last_phase_offset;
+    t_int       x_midi;
+    t_int       x_soft;
 }t_blsaw;
 
-t_class *bl_saw;
+t_class *blsaw_class;
 
 static void blsaw_midi(t_blsaw *x, t_floatarg f){
-    x->x_polyblep.midi = (int)(f != 0);
+    x->x_midi = (int)(f != 0);
 }
 
 static void blsaw_soft(t_blsaw *x, t_floatarg f){
-    x->x_polyblep.soft = (int)(f != 0);
+    x->x_soft = (int)(f != 0);
 }
 
-static t_float phasewrap(t_float phase){
-    while(phase < 0.0)
-        phase += 1.0;
-    while(phase >= 1.0)
-        phase -= 1.0;
-    return(phase);
-}
-
-static t_float square(t_float x){
-    return(x * x);
-}
-
-static t_float blep(t_float phase, t_float dt){
-    if(phase < dt)
-        return(-square(phase / dt - 1));
-    else if(phase > 1 - dt)
-        return(square((phase - 1) / dt + 1));
-    else
-        return(0.0);
-}
-
-static t_float saw(const t_polyblep* x){
-    t_float _t = x->phase;
-    _t = phasewrap(_t);
-    t_float y = 1 - 2 * _t;
-    y += blep(_t, x->freq_in_seconds_per_sample);
-    return(y);
-}
 
 static t_int* blsaw_perform(t_int *w) {
-    t_polyblep* x      = (t_polyblep*)(w[1]);
+    t_blsaw* x =          (t_blsaw*)(w[1]);
+    t_elliptic_blep* blep = &x->x_elliptic_blep;
     t_int n            = (t_int)(w[2]);
     t_float* freq_vec  = (t_float *)(w[3]);
     t_float* sync_vec  = (t_float *)(w[4]);
@@ -80,37 +40,47 @@ static t_int* blsaw_perform(t_int *w) {
         t_float freq = *freq_vec++;
         t_float sync = *sync_vec++;
         t_float phase_offset = *phase_vec++;
-        if(x->midi)
+        if(x->x_midi && freq < 256)
             freq = pow(2, (freq - 69)/12) * 440;
-        x->freq_in_seconds_per_sample = freq / x->sr; // Update frequency
-        if(x->soft)
-            x->freq_in_seconds_per_sample *= x->soft;
+        
         if(sync > 0 && sync <= 1){ // Phase sync
-            if(x->soft)
-                x->soft = x->soft == 1 ? -1 : 1;
+            if(x->x_soft)
+                x->x_soft = x->x_soft == 1 ? -1 : 1;
             else{
-                x->phase = sync;
-                x->phase = phasewrap(x->phase);
+                x->x_phase = phasewrap(sync);
             }
         }
-        else{ // Phase modulation
-            double phase_dev = phase_offset - x->last_phase_offset;
-            if(phase_dev >= 1 || phase_dev <= -1)
-                phase_dev = fmod(phase_dev, 1);
-            x->phase = phasewrap(x->phase + phase_dev);
+        else { // Phase modulation
+            double phase_dev = phase_offset - x->x_last_phase_offset;
+            x->x_phase = phasewrap(x->x_phase + phase_dev);
         }
-        t_float y = saw(x);
-        x->phase += x->freq_in_seconds_per_sample;
-        x->phase = phasewrap(x->phase);
-        x->last_phase_offset = phase_offset;
-        *out++ = y;  // Send to output
+        
+        *out++ = (1.0f - 2.0f * x->x_phase) + elliptic_blep_get(blep);
+        
+        t_float phase_increment = freq / x->x_sr; // Update frequency
+        x->x_phase += phase_increment;
+        if(x->x_soft)
+            phase_increment *= x->x_soft;
+        
+        elliptic_blep_step(blep);
+        
+        if(x->x_phase >= 1 || x->x_phase < 0) {
+            x->x_phase = x->x_phase < 0 ? x->x_phase+1 : x->x_phase-1;
+            t_float samples_in_past = x->x_phase / phase_increment;
+            elliptic_blep_add_in_past(blep, 2.0f, 1, samples_in_past);
+        }
+        
+        x->x_last_phase_offset = phase_offset;
     }
     return(w+7);
 }
 
 static void blsaw_dsp(t_blsaw *x, t_signal **sp){
-    x->x_polyblep.sr = sp[0]->s_sr;
-    dsp_add(blsaw_perform, 6, &x->x_polyblep, sp[0]->s_n, sp[0]->s_vec,
+    x->x_sr = sp[0]->s_sr;
+    
+    elliptic_blep_create(&x->x_elliptic_blep, 0, sp[0]->s_sr);
+    
+    dsp_add(blsaw_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
             sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
  }
 
@@ -121,27 +91,22 @@ static void blsaw_free(t_blsaw *x){
 
 static void* blsaw_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    t_blsaw* x = (t_blsaw *)pd_new(bl_saw);
-    x->x_polyblep.pulse_width = 0;
-    x->x_polyblep.freq_in_seconds_per_sample = 0;
-    x->x_polyblep.phase = 0.0;
-    x->x_polyblep.soft = 0;
-    x->x_polyblep.midi = 0;
+    t_blsaw* x = (t_blsaw *)pd_new(blsaw_class);
+    x->x_phase = 0.0;
+    x->x_soft = 0;
+    x->x_midi = 0;
+    x->x_last_phase_offset = 0;
     t_float init_freq = 0, init_phase = 0;
     while(ac && av->a_type == A_SYMBOL){
         if(atom_getsymbol(av) == gensym("-midi"))
-            x->x_polyblep.midi = 1;
+            x->x_midi = 1;
         else if(atom_getsymbol(av) == gensym("-soft"))
-            x->x_polyblep.soft = 1;
+            x->x_soft = 1;
         ac--, av++;
     }
     if(ac && av->a_type == A_FLOAT){
         init_freq = av->a_w.w_float;
         ac--; av++;
-        if(ac && av->a_type == A_FLOAT){
-            x->x_polyblep.pulse_width = av->a_w.w_float;
-            ac--; av++;
-        }
         if(ac && av->a_type == A_FLOAT){
             init_phase = av->a_w.w_float;
             ac--; av++;
@@ -157,10 +122,10 @@ static void* blsaw_new(t_symbol *s, int ac, t_atom *av){
 }
 
 void setup_bl0x2esaw_tilde(void){
-    bl_saw = class_new(gensym("bl.saw~"), (t_newmethod)blsaw_new,
+    blsaw_class = class_new(gensym("bl.saw~"), (t_newmethod)blsaw_new,
         (t_method)blsaw_free, sizeof(t_blsaw), 0, A_GIMME, A_NULL);
-    CLASS_MAINSIGNALIN(bl_saw, t_blsaw, x_f);
-    class_addmethod(bl_saw, (t_method)blsaw_midi, gensym("midi"), A_DEFFLOAT, 0);
-    class_addmethod(bl_saw, (t_method)blsaw_soft, gensym("soft"), A_DEFFLOAT, 0);
-    class_addmethod(bl_saw, (t_method)blsaw_dsp, gensym("dsp"), A_NULL);
+    CLASS_MAINSIGNALIN(blsaw_class, t_blsaw, x_f);
+    class_addmethod(blsaw_class, (t_method)blsaw_midi, gensym("midi"), A_DEFFLOAT, 0);
+    class_addmethod(blsaw_class, (t_method)blsaw_soft, gensym("soft"), A_DEFFLOAT, 0);
+    class_addmethod(blsaw_class, (t_method)blsaw_dsp, gensym("dsp"), A_NULL);
 }
