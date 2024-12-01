@@ -3,7 +3,7 @@
  */
 
 #ifndef ENABLE_OPUS
-#define ENABLE_OPUS 0
+#define ENABLE_OPUS 1
 #endif
 
 #include "m_pd.h"
