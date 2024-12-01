@@ -6,6 +6,12 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_MACOSX_RPATH ON)
+
+option(ENABLE_OPUS "Enable opus for pdlink~ stream compression" ON)
+if(!ENABLE_OPUS)
+  add_compile_definitions(ENABLE_OPUS=0)
+endif()
+
 if(UNIX AND NOT APPLE)
     set(CMAKE_BUILD_RPATH "$ORIGIN")
     set(CMAKE_INSTALL_RPATH "$ORIGIN")
