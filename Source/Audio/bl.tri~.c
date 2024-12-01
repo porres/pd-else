@@ -72,11 +72,11 @@ static t_int* bltri_perform(t_int *w) {
         x->x_phase = phasewrap(x->x_phase);
         if(x->x_phase >= 0.25f && x->x_phase < 0.25f + phase_increment) {
             t_float samples_in_past = (x->x_phase - 0.25f) / phase_increment;
-            elliptic_blep_add_in_past(blep, phase_increment * -8.0f, 2, samples_in_past);
+            elliptic_blep_add_in_past(blep, phase_increment * -4.0f, 2, samples_in_past);
         }
         else if (x->x_phase >= 0.75f && x->x_phase < 0.75f + phase_increment) {
             t_float samples_in_past = (x->x_phase - 0.75f) / phase_increment;
-            elliptic_blep_add_in_past(blep, phase_increment * 8.0f, 2, samples_in_past);
+            elliptic_blep_add_in_past(blep, phase_increment * 4.0f, 2, samples_in_past);
         }
         
         

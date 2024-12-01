@@ -47,7 +47,8 @@ static t_int* blvsaw_perform(t_int *w) {
         if(x->x_midi && freq < 255)
             freq = pow(2, (freq - 69)/12) * 440;
         // Update pulse width, limit between 0 and 1
-        x->x_pulse_width = fmax(fmin(0.9999, pulse_width), 0.0001);
+        pulse_width = fmax(fmin(0.99f, pulse_width), 0.01f);
+        x->x_pulse_width = pulse_width;
         t_float phase_increment = freq / x->x_sr; // Update frequency
         if(x->x_soft)
             phase_increment *= x->x_soft;
@@ -67,9 +68,9 @@ static t_int* blvsaw_perform(t_int *w) {
         }
         
         t_float output;
-        if (pulse_width == 0)
+        if (pulse_width <= 0.01f)
             output = x->x_phase * -2 + 1;
-        else if (pulse_width == 1)
+        else if (pulse_width >= 0.99f)
             output = x->x_phase * 2 - 1;
         else {
             t_float inc = x->x_phase * pulse_width;                   // phase * 0.5
@@ -87,23 +88,33 @@ static t_int* blvsaw_perform(t_int *w) {
         
         elliptic_blep_step(blep);
         
-        if(pulse_width != 0.0f && pulse_width != 1.0f)
+        if(pulse_width > 0.01f && pulse_width < 0.99f)
         {
-            if(x->x_phase >= 1 || x->x_phase < 0) {
-                x->x_phase = x->x_phase < 0 ? x->x_phase+1 : x->x_phase-1;
-                t_float samples_in_past = x->x_phase / phase_increment;
-                elliptic_blep_add_in_past(blep, phase_increment * -8.0, 2, samples_in_past);
+            t_float gap = 1.f / (pulse_width * (1.0f / freq));
+            if(gap < x->x_sr) {
+                if(x->x_phase >= 1 || x->x_phase < 0) {
+                    x->x_phase = x->x_phase < 0 ? x->x_phase+1 : x->x_phase-1;
+                    t_float samples_in_past = x->x_phase / phase_increment;
+                    elliptic_blep_add_in_past(blep, phase_increment * -4.0, 2, samples_in_past);
+                }
+                else if (x->x_phase >= x->x_pulse_width && x->x_phase < x->x_pulse_width + phase_increment) {
+                    t_float samples_in_past = (x->x_phase - x->x_pulse_width) / phase_increment;
+                    elliptic_blep_add_in_past(blep, phase_increment * 4.0, 2, samples_in_past);
+                }
             }
-            else if (x->x_phase >= x->x_pulse_width && x->x_phase < x->x_pulse_width + phase_increment) {
-                t_float samples_in_past = (x->x_phase - x->x_pulse_width) / phase_increment;
-                elliptic_blep_add_in_past(blep, phase_increment * 8.0, 2, samples_in_past);
+            else {
+                if(x->x_phase >= 1 || x->x_phase < 0) {
+                    x->x_phase = x->x_phase < 0 ? x->x_phase+1 : x->x_phase-1;
+                    t_float samples_in_past = x->x_phase / phase_increment;
+                    elliptic_blep_add_in_past(blep, pulse_width <= 0.01f ? phase_increment * 4.0 : phase_increment * -4.0, 1, samples_in_past);
+                }
             }
         }
         else {
             if(x->x_phase >= 1 || x->x_phase < 0) {
                 x->x_phase = x->x_phase < 0 ? x->x_phase+1 : x->x_phase-1;
                 t_float samples_in_past = x->x_phase / phase_increment;
-                elliptic_blep_add_in_past(blep, pulse_width == 0.0f ? 2.0f : -2.0f, 1, samples_in_past);
+                elliptic_blep_add_in_past(blep, pulse_width <= 0.01f ? 2.0f : -2.0f, 1, samples_in_past);
             }
         }
        

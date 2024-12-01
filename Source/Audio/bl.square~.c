@@ -47,7 +47,8 @@ static t_int* blsquare_perform(t_int *w) {
             freq = pow(2, (freq - 69)/12) * 440;
         
         // Update pulse width, limit between 0 and 1
-        x->x_pulse_width = fmax(fmin(0.99, pulse_width), 0.01);
+        pulse_width = fmax(fmin(0.99, pulse_width), 0.01);
+        x->x_pulse_width = pulse_width;
         
         if(sync > 0 && sync <= 1){ // Phase sync
             if(x->x_soft)
