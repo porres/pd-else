@@ -12,6 +12,7 @@ typedef struct _unmerge{
 
 static void unmerge_float(t_unmerge *x, t_floatarg f){
     x->x_ch = f < 1 ? 1 : (int)f;
+    x->x_ch = x->x_ch > 8 ? 8 : (int)x->x_ch;
     canvas_update_dsp();
 }
 
@@ -23,11 +24,12 @@ static void unmerge_dsp(t_unmerge *x, t_signal **sp){
             dsp_add_zero(sp[i+1]->s_vec, n);
         }
         else{
-            if(i == x->x_n){
+            if(i == x->x_n || ch > chs) {
                 signal_setmultiout(&sp[i+1], chs);
                 dsp_add_copy(sp[0]->s_vec + i*ch*n, sp[i+1]->s_vec, chs*n);
+                break;
             }
-            else{
+            else {
                 signal_setmultiout(&sp[i+1], ch);
                 dsp_add_copy(sp[0]->s_vec + i*ch*n, sp[i+1]->s_vec, ch*n);
             }

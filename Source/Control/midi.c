@@ -961,6 +961,9 @@ static void *midi_new(t_symbol * s, int ac, t_atom *av){
                 ac--, av++;
             }
         }
+        else{
+            break;
+        }
     };
     x->x_clock = clock_new(x, (t_method)midi_clocktick);
     x->x_slaveclock = clock_new(x, (t_method)midi_slaveclocktick);

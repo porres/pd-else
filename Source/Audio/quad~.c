@@ -21,14 +21,15 @@ typedef struct _quad
 
 static void quad_list(t_quad *x, t_symbol *s, int argc, t_atom * argv)
 {
+    if(argc == 1){
+        if(s) obj_list(&x->x_obj, 0, argc, argv);
+        return;
+    }
+    
     s = NULL;
     int argnum = 0; // current argument
     while(argc)
     {
-        if(argc == 1){
-            obj_list(&x->x_obj, 0, argc, argv);
-            return;
-        }
         if(argv -> a_type != A_FLOAT)
         {
             pd_error(x, "latoocarfian~: list arguments needs to only contain floats");
@@ -120,17 +121,21 @@ static void *quad_new(t_symbol *s, int ac, t_atom *av){
     if(ac && av->a_type == A_FLOAT){
         hz = av->a_w.w_float;
         ac--; av++;
-        if (ac && av->a_type == A_FLOAT)
+        if (ac && av->a_type == A_FLOAT) {
             a = av->a_w.w_float;
             ac--; av++;
-            if (ac && av->a_type == A_FLOAT)
+            if (ac && av->a_type == A_FLOAT) {
                 b = av->a_w.w_float;
                 ac--; av++;
-                if (ac && av->a_type == A_FLOAT)
+                if (ac && av->a_type == A_FLOAT) {
                     c = av->a_w.w_float;
                     ac--; av++;
-                    if (ac && av->a_type == A_FLOAT)
+                    if (ac && av->a_type == A_FLOAT) {
                         yn = av->a_w.w_float;
+                    }
+                }
+            }
+        }
     }
     if(hz >= 0) x->x_phase = 1;
     x->x_freq  = hz;

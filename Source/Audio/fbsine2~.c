@@ -63,12 +63,13 @@ static void fbsine2_coeffs(t_fbsine2 *x, t_symbol *s, int argc, t_atom * argv){
 }
 
 static void fbsine2_list(t_fbsine2 *x, t_symbol *s, int argc, t_atom * argv){
+    if(argc == 1){
+        if(s) obj_list(&x->x_obj, 0, argc, argv);
+        return;
+    }
+    
     s = NULL;
     if(argc){
-        if(argc == 1){
-            obj_list(&x->x_obj, 0, argc, argv);
-            return;
-        }
         if(argc > 2){
             pd_error(x, "fbsine2~: list size needs to be = 2");
             return;

@@ -232,6 +232,8 @@ static void tabwriter_end(t_tabwriter *x, t_float end){
 }
 
 static void tabwriter_range(t_tabwriter *x, t_floatarg f1, t_floatarg f2){
+    if(!x->x_buffer) return;
+    
     f1 = f1 < 0 ? 0 : f1 > 1 ? 1 : f1;
     f2 = f2 < 0 ? 0 : f2 > 1 ? 1 : f2;
     x->x_startindex = (unsigned long long)(f1 * x->x_buffer->c_npts);

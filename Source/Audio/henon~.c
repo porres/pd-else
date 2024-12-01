@@ -30,11 +30,13 @@ static void henon_coeffs(t_henon *x, t_floatarg f1, t_floatarg f2)
 
 static void henon_list(t_henon *x, t_symbol *s, int argc, t_atom * argv)
 {
-    s = NULL;
     if(argc == 1){
-        obj_list(&x->x_obj, 0, argc, argv);
+        if(s) obj_list(&x->x_obj, 0, argc, argv);
         return;
     }
+    
+    s = NULL;
+
     if (argc != 2)
         {
         pd_error(x, "henon~: list size needs to be = 2");
@@ -144,17 +146,21 @@ static void *henon_new(t_symbol *s, int ac, t_atom *av)
     {
         hz = av->a_w.w_float;
         ac--; av++;
-        if (ac && av->a_type == A_FLOAT)
+        if (ac && av->a_type == A_FLOAT) {
             a = av->a_w.w_float;
             ac--; av++;
-            if (ac && av->a_type == A_FLOAT)
+            if (ac && av->a_type == A_FLOAT) {
                 b = av->a_w.w_float;
                 ac--; av++;
-                if (ac && av->a_type == A_FLOAT)
+                if (ac && av->a_type == A_FLOAT) {
                     y_nm1 = av->a_w.w_float;
                     ac--; av++;
-                    if (ac && av->a_type == A_FLOAT)
+                    if (ac && av->a_type == A_FLOAT) {
                         y_nm2 = av->a_w.w_float;
+                    }
+                }
+            }
+        }
     }
     if(hz >= 0) x->x_phase = 1;
     x->x_freq  = hz;

@@ -115,7 +115,7 @@ static void envgen_retarget(t_envgen *x, int skip){
         x->x_value = x->x_last_target = x->x_target;
         x->x_delta = x->x_inc = 0;
         x->x_power = x->x_at_exp[x->x_line_n].a_w.w_float;
-        while(x->x_n_lines && // others to be ignored
+        while(x->x_n_lines > 0 && // others to be ignored
               !(int)(x->x_curseg->ms * sys_getsr()*0.001 + 0.5)){
             x->x_value = x->x_target = x->x_curseg->target;
             x->x_n_lines--, x->x_curseg++, x->x_line_n++;

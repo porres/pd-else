@@ -99,10 +99,7 @@ static void pluck_list(t_pluck *x, t_symbol *s, int argc, t_atom *argv){
     x->x_ignore = s;
     if(argc == 0)
         return;
-    if(argc == 1){
-        obj_list(&x->x_obj, NULL, 1, argv);
-        return;
-    }
+
     if(atom_getfloat(argv+1) == 0)
         return;
     if(argc >= 2){
@@ -200,7 +197,7 @@ static t_int *pluck_perform_noise_input(t_int *w){
             xnm1 = ynm1 = 0;
         }
         else{
-            if(x->x_midi)
+            if(x->x_midi && hz < 256)
                 hz = pow(2, (hz - 69)/12) * 440;
             if(hz != x->x_hz){
                 update_time(x, x->x_hz = hz);
@@ -285,7 +282,7 @@ static t_int *pluck_perform(t_int *w){
             xnm1 = ynm1 = 0;
         }
         else{
-            if(x->x_midi)
+            if(x->x_midi && hz < 256)
                 hz = pow(2, (hz - 69)/12) * 440;
             if(hz != x->x_hz){
                 update_time(x, x->x_hz = hz);
@@ -427,7 +424,7 @@ static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
     pluck_clear(x);
     x->x_hz = x->x_freq = (double)freq;
 
-    if(x->x_midi)
+    if(x->x_midi && x->x_hz < 256)
         x->x_hz  = pow(2, (x->x_hz  - 69)/12) * 440;
 
     x->x_ain = decay;

@@ -67,11 +67,13 @@ static void latoocarfian_coeffs(t_latoocarfian *x, t_symbol *s, int argc, t_atom
 
 static void latoocarfian_list(t_latoocarfian *x, t_symbol *s, int argc, t_atom * argv)
 {
-    s = NULL;
     if(argc == 1){
-        obj_list(&x->x_obj, 0, argc, argv);
+        if(s) obj_list(&x->x_obj, 0, argc, argv);
         return;
     }
+    
+    s = NULL;
+
     if (argc != 2)
         pd_error(x, "latoocarfian~: list size needs to be = 2");
     else{

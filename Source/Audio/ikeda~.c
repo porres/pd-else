@@ -30,11 +30,12 @@ static void ikeda_clear(t_ikeda *x)
 
 static void ikeda_list(t_ikeda *x, t_symbol *s, int argc, t_atom * argv)
 {
-    s = NULL;
     if(argc == 1){
-        obj_list(&x->x_obj, 0, argc, argv);
+        if(s) obj_list(&x->x_obj, 0, argc, argv);
         return;
     }
+    s = NULL;
+
     if (argc != 2)
         {
         pd_error(x, "ikeda~: list size needs to be = 2");

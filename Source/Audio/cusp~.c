@@ -20,14 +20,15 @@ typedef struct _cusp
 
 
 static void cusp_list(t_cusp *x, t_symbol *s, int argc, t_atom * argv){
+    if(argc == 1){
+        if(s) obj_list(&x->x_obj, 0, argc, argv);
+        return;
+    }
+    
     s = NULL;
     int argnum = 0; // current argument
     while(argc)
     {
-        if(argc == 1){
-            obj_list(&x->x_obj, 0, argc, argv);
-            return;
-        }
         if(argv->a_type != A_FLOAT)
             pd_error(x, "cusp~: list needs to only contain floats");
         else{

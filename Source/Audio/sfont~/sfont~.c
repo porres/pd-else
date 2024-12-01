@@ -166,7 +166,7 @@ static void sfont_bank(t_sfont *x, t_symbol *s, int ac, t_atom *av){
             return;
         }
         int fail = fluid_synth_bank_select(x->x_synth, ch, bank);
-        if(!fail){
+        if(!fail && x->x_sfont){
             x->x_bank = bank;
             fluid_preset_t* preset = fluid_sfont_get_preset(x->x_sfont, x->x_bank, x->x_pgm);
             if(preset == NULL){

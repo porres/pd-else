@@ -66,7 +66,7 @@ static t_int *sine_perform(t_int *w){
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0, n = x->x_n; i < n; i++){
             double hz = x->x_sig1 ? in1[j*n + i] : x->x_freq_list[j];
-            if(x->x_midi)
+            if(x->x_midi && hz < 256)
                 hz = hz <= 0 ? 0 : pow(2, (hz - 69)/12) * 440;
             double step = hz * x->x_sr_rec; // phase step
             step = step > 0.5 ? 0.5 : step < -0.5 ? -0.5 : step;

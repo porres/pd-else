@@ -396,10 +396,10 @@ static void *voices_new(t_symbol *s, int ac, t_atom *av){
     x->x_release = release < 0 ? 0 : release;
     x->x_retrig = retrig < 0 ? 0 : retrig > 2 ? 2 : retrig;
     x->x_n = n < 1 ? 1 : n;
-    x->x_vec = (t_voice *)getbytes(n * sizeof(*x->x_vec));
+    x->x_vec = (t_voice *)getbytes(x->x_n * sizeof(*x->x_vec));
     int i;
     t_voice *v;
-    for(v = x->x_vec, i = n; i--; v++){ // initialize voices
+    for(v = x->x_vec, i = x->x_n; i--; v++){ // initialize voices
         v->v_pitch = v->v_used = v->v_count = 0;
         v->v_pitchsym = NULL;
         v->v_clock = clock_new(v, (t_method)voice_tick);

@@ -62,6 +62,7 @@ static void slew_dsp(t_slew *x, t_signal **sp){
 
 static void slew_set(t_slew *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
+    if(ac > x->x_nchans) ac = x->x_nchans;
     for(int i = 0; i < ac; i++)
         x->x_lastin[i] = atom_getfloat(av++);
 }
