@@ -416,7 +416,7 @@ static void function_float(t_function *x, t_floatarg f){
     if(f >= 1){
         val = x->x_points[x->x_n_states];
         outlet_float(x->x_obj.ob_outlet, val);
-        if(x->x_send != &s_)
+        if(x->x_send != &s_ && x->x_send->s_thing)
             pd_float(x->x_send->s_thing, f);
         return;
     }
@@ -430,7 +430,7 @@ static void function_float(t_function *x, t_floatarg f){
     val = x->x_points[x->x_state-1] + (f-x->x_dur[x->x_state-1]) * (x->x_points[x->x_state] - x->x_points[x->x_state-1])
         / (x->x_dur[x->x_state] - x->x_dur[x->x_state-1]);
     outlet_float(x->x_obj.ob_outlet,val);
-    if(x->x_send != &s_)
+    if(x->x_send != &s_ && x->x_send->s_thing)
         pd_float(x->x_send->s_thing, val);
 }
 

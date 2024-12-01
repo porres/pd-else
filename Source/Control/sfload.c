@@ -8,10 +8,6 @@
 
 #define FRAMES 4096
 
-typedef struct _avstream{
-
-}t_avstream;
-
 static t_class *sfload_class;
 
 typedef struct _sfload{

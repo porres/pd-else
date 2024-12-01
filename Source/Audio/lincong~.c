@@ -20,13 +20,15 @@ typedef struct _lincong{
 }t_lincong;
 
 static void lincong_list(t_lincong *x, t_symbol *s, int argc, t_atom * argv){
+    if(argc == 1){
+        if(s) obj_list(&x->x_obj, 0, argc, argv);
+        return;
+    }
+    
     s = NULL;
     int argnum = 0; // current argument
     while(argc){
-        if(argc == 1){
-            obj_list(&x->x_obj, 0, argc, argv);
-            return;
-        }
+
         if(argv -> a_type != A_FLOAT)
             pd_error(x, "lincong~: list needs to only contain floats");
         else{

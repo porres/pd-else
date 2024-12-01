@@ -24,7 +24,7 @@ static void canvas_name_depth(t_canvas_name *x, t_floatarg depth){
     }
     else{
         canvas = canvas_getcurrent();
-        while(depth-- && canvas->gl_owner)
+        while(depth-- && canvas && canvas->gl_owner)
             canvas = canvas->gl_owner;
     }
     char buf[MAXPDSTRING];

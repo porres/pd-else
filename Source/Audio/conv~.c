@@ -176,7 +176,12 @@ static void conv_set(t_conv *x, t_symbol *arrayName){
         // if we want to assume that a 2nd call to analyze() with the same array name is safe (and we don't have to reload x_vec or update x_array_size), we have to do some careful safety checks to make sure that the size of x_array_name hasn't changed since the last time this was called. If it has, we should just abort for now.
         this_array_size = 0;
         this_array_ptr = (t_garray *)pd_findbyclass(arrayName, garray_class);
-        garray_getfloatwords(this_array_ptr, &this_array_size, &this_vec);
+        if(this_array_ptr) {
+            garray_getfloatwords(this_array_ptr, &this_array_size, &this_vec);
+        }
+        else {
+            pd_error(x, "[conv~]: array %s doesn't exist", arrayName->s_name);
+        }
         if(this_array_size != x->x_array_size){
             pd_error(x, "[conv~]: size of array %s has changed since previous analysis...aborting. Reload %s with previous IR contents or analyze another array.", arrayName->s_name, arrayName->s_name);
             return;

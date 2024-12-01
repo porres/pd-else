@@ -66,6 +66,7 @@ static void slew2_dsp(t_slew2 *x, t_signal **sp){
 
 static void slew2_set(t_slew2 *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
+    if(ac > x->x_nchans) ac = x->x_nchans;
     for(int i = 0; i < ac; i++)
         x->x_last[i] = atom_getfloat(av++);
 }

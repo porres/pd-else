@@ -19,6 +19,10 @@ typedef SSIZE_T ssize_t;
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <fcntl.h>
+#if defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__BSD__)
+#include <netinet/in.h>
+#include <sys/socket.h>
+#endif
 static const int INVALID_SOCKET = -1;
 static const int SOCKET_ERROR   = -1;
 using SOCKET = int;

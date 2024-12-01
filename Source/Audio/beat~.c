@@ -36,7 +36,7 @@ static const char* modelLabels[9] ={
 };
 
 void beat_mode(t_beat *x, t_floatarg f){
-    x->x_mode = f < 0 ? 0 : f > 9 ? 9 : (int)f;
+    x->x_mode = f < 0 ? 0 : f > 8 ? 8 : (int)f;
     x->x_t = new_aubio_tempo(modelLabels[x->x_mode],
         x->x_wsize, x->x_hopsize, x->x_sr);
     post("[beat~] mode = %s", modelLabels[x->x_mode]);
@@ -59,12 +59,16 @@ void beat_hop(t_beat *x, t_floatarg f){
 }
 
 void beat_thresh(t_beat *x, t_floatarg f){
-    float thresh = (f < 0.01) ? 0.01 : (f > 1.) ? 1. : f;
-    aubio_tempo_set_threshold(x->x_t, thresh);
+    if(x->x_t) {
+        float thresh = (f < 0.01) ? 0.01 : (f > 1.) ? 1. : f;
+        aubio_tempo_set_threshold(x->x_t, thresh);
+    }
 }
 
 void beat_silence(t_beat *x, t_floatarg f){
-    aubio_tempo_set_silence(x->x_t, f);
+    if(x->x_t) {
+        aubio_tempo_set_silence(x->x_t, f);
+    }
 }
 
 static t_int *beat_perform(t_int *w){
@@ -91,7 +95,9 @@ static void beat_dsp(t_beat *x, t_signal **sp){
 }
 
 static void beat_free(t_beat *x){
-    del_aubio_tempo(x->x_t);
+    if(x->x_t) {
+        del_aubio_tempo(x->x_t);
+    }
     del_fvec(x->x_out);
     del_fvec(x->x_vec);
 }
