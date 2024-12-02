@@ -130,9 +130,16 @@ sys_gui("\n"
 "    }\n"
 "}\n"
 "\n"
+
+"proc ::dialog_knob::centerText {text} {\n" // center text by padding
+"    set pad [expr {(7 - [string length $text]) / 2}]\n"
+"    return [format \"%*s%s%*s\" $pad \"\" $text $pad \"\"]\n"
+"}\n"
         
 "proc ::dialog_knob::menucheck {option id} {\n"
-"    $id.num.show.mb configure -text $option\n"
+"    set centeredText [::dialog_knob::centerText $option]\n"
+"    $id.num.show.mb configure -text $centeredText\n"
+//"    $id.num.show.mb configure -text $option\n"
 "    ::dialog_knob::applymacos $id\n"
 "}\n"
 "\n"
@@ -369,7 +376,9 @@ sys_gui("\n"
     // Dropdown menu for show number mode:
 "    frame $id.num.show\n"
 "    label $id.num.show.lab -text [_ \"Mode: \"]\n"
-"   menubutton $id.num.show.mb -text $::dialog_knob::var_nmode($vid) -menu $id.num.show.mb.menu\n"
+//"    menubutton $id.num.show.mb -text $::dialog_knob::var_nmode($vid) -menu $id.num.show.mb.menu -width 7\n"
+"   menubutton $id.num.show.mb -text [::dialog_knob::centerText $::dialog_knob::var_nmode($vid)] \\\n"
+"       -menu $id.num.show.mb.menu -width 7\n"
 "   menu $id.num.show.mb.menu -tearoff 0\n"
 "   $id.num.show.mb configure -menu $id.num.show.mb.menu\n"
     // Add radiobuttons using foreach
