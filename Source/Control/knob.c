@@ -72,7 +72,8 @@ typedef struct _knob{
     double          x_upper;
     int             x_clicked;
     int             x_typing;
-    int             n_mode;
+    int             x_shownum;
+    int             x_number_mode;
     int             x_ticks;
     int             n_size;
     int             x_xpos;
@@ -103,7 +104,6 @@ typedef struct _knob{
     t_symbol       *x_rcv_raw;
     int             x_circular;
     int             x_arc;
-    int             x_number;
     int             x_zoom;
     int             x_discrete;
     char            x_tag_obj[32];
@@ -127,8 +127,9 @@ typedef struct _knob{
 
 // ---------------------- Helper functions ----------------------
 
-static void knob_update_number(t_knob *x){
-    char nbuf[32];
+
+static char* knob_get_number(t_knob *x) {
+    static char nbuf[16];  // Make nbuf static so it persists after the function returns
     float absv = fabs(x->x_fval);
     if(absv == 0)
         sprintf(nbuf, "%g", x->x_fval);
@@ -138,15 +139,21 @@ static void knob_update_number(t_knob *x){
         while(--l >= 0 && nbuf[l] == '0')
             nbuf[l] = '\0';
         if(nbuf[l] == '.')
-            nbuf[l] = '\0';
+            sprintf(nbuf, "%.3f", x->x_fval);
     }
     else if(absv < 100)
         sprintf(nbuf, "%.4g", x->x_fval);
+    else if(absv < 1000)
+        sprintf(nbuf, "%.5g", x->x_fval);
     else
         sprintf(nbuf, "%g", x->x_fval);
+    return(nbuf);  // Return the pointer to the string
+}
+
+static void knob_update_number(t_knob *x){
     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
         pdgui_vmess(0, "crs rs", glist_getcanvas(x->x_glist),
-            "itemconfigure", x->x_tag_number, "-text", nbuf);
+            "itemconfigure", x->x_tag_number, "-text", knob_get_number(x));
 }
 
 // get value from motion/position
@@ -249,15 +256,16 @@ static void knob_config_number(t_knob *x){ // show or hide number value
 }
 
 static void show_number(t_knob *x, int force){ // show or hide number value
-    if(x->x_number == 1 || (x->x_number == 2 && x->x_clicked))
-        x->n_mode = 1; // mode 1 or mode 2 and clicked
-    else if(x->x_number == 3 && x->x_typing)
-        x->n_mode = 1; // mode 3 and typing
+    if(x->x_number_mode == 1 || (x->x_number_mode == 2 && x->x_clicked))
+        x->x_shownum = 1; // mode 1 or mode 2 and clicked
+    else if(x->x_number_mode == 3 && x->x_typing)
+        x->x_shownum = 1; // mode 3 and typing
     else
-        x->n_mode = 0;
-    if((glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)) || force)
+        x->x_shownum = 0;
+    if((glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)) || force){
         pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure", x->x_tag_number,
-            "-state", x->n_mode ? "normal" : "hidden");
+                    "-state", x->x_shownum ? "normal" : "hidden");
+    }
 }
 
 static void knob_config_bg(t_knob *x){
@@ -487,8 +495,9 @@ char *tags_center[] = {x->x_tag_center_circle, x->x_tag_obj};
     
 // number
     char *tags_number[] = {x->x_tag_number, x->x_tag_obj};
-    pdgui_vmess(0, "crr ii rs rS", x->x_cv, "create", "text",
+    pdgui_vmess(0, "crr ii rs rs rS", x->x_cv, "create", "text",
         x1, y1,
+        "-text", knob_get_number(x),
         "-anchor", "w",
         "-tags", 2, tags_number);
 // inlet
@@ -514,7 +523,6 @@ char *tags_center[] = {x->x_tag_center_circle, x->x_tag_obj};
     knob_config_wcenter(x);
     knob_config_number(x);
     knob_update(x);
-    knob_update_number(x);
     show_number(x, 1);
     pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure", x->x_tag_sel,
         "-outline", x->x_sel ? "blue" : "black");       // ??????
@@ -697,7 +705,7 @@ static void knob_save(t_gobj *z, t_binbuf *b){
         x->x_arcstart, // 19: f start
         x->x_param, // 20: s param
         x->x_var_raw, // 21: s var
-        x->x_number, // 22: i number
+        x->x_number_mode, // 22: i number
         x->n_size, // 23: i number
         x->x_xpos, // 24: i number
         x->x_ypos, // 25: i number
@@ -1061,7 +1069,7 @@ static void knob_lb(t_knob *x, t_floatarg f){
 }
 
 static void knob_number_mode(t_knob *x, t_floatarg f){
-    x->x_number = f < 0 ? 0 : f > 3 ? 3 : (int)f;
+    x->x_number_mode = f < 0 ? 0 : f > 3 ? 3 : (int)f;
     show_number(x, 0);
 }
 
@@ -1102,11 +1110,11 @@ static void knob_properties(t_gobj *z, t_glist *owner){
     knob_get_snd(x);
     knob_get_var(x);
     t_symbol *mode = gensym("Never");
-    if(x->n_mode == 1)
+    if(x->x_number_mode == 1)
         mode = gensym("Always");
-    else if(x->n_mode == 2)
+    else if(x->x_number_mode == 2)
         mode = gensym("Active");
-    else if(x->n_mode == 3)
+    else if(x->x_number_mode == 3)
         mode = gensym("Typing");
     pdgui_stub_vnew(&x->x_obj.ob_pd, "knob_dialog", owner,
         "fi if iif iii ii ffif ii siii ss ss sss",
@@ -1144,7 +1152,7 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     SETFLOAT(undo+15, x->x_log ? 1 : x->x_exp);
     SETFLOAT(undo+16, x->x_jump);
     SETFLOAT(undo+17, x->x_circular);
-    SETFLOAT(undo+18, x->n_mode);
+    SETFLOAT(undo+18, x->x_number_mode);
     SETFLOAT(undo+19, x->n_size);
     SETFLOAT(undo+20, x->x_xpos);
     SETFLOAT(undo+21, x->x_ypos);
@@ -1225,14 +1233,14 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     knob_var(x, var);
     knob_nsize(x, nsize);
     knob_numberpos(x, xpos, ypos);
-    int n_mode = 0;
+    int nmode = 0;
     if(mode == gensym("Always"))
-        n_mode = 1;
+        nmode = 1;
     else if(mode == gensym("Active"))
-        n_mode = 2;
+        nmode = 2;
     else if(mode == gensym("Typing"))
-        n_mode = 3;
-    knob_number_mode(x, n_mode);
+        nmode = 3;
+    knob_number_mode(x, nmode);
 }
 
 // --------------- click + motion stuff --------------------
@@ -1344,7 +1352,8 @@ static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
     char c = fkey, buf[3];
     buf[1] = 0;
     if(c == 0){ // click out
-        x->x_clicked = 0;
+        x->x_clicked = x->x_typing = 0;
+        show_number(x, 0);
         knob_config_wcenter(x);
         char buff[512];
         sprintf(buff, "%s-active", x->x_snd->s_name);
@@ -1546,7 +1555,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     int size = 50, circular = 0, steps = 0, discrete = 0;
     int arc = 1, angle = 320, offset = 0;
     x->x_bg = gensym("#dfdfdf"), x->x_mg = gensym("#7c7c7c"), x->x_fg = gensym("black");
-    x->x_clicked = x->x_log = x->x_jump = x->x_number = x->x_savestate = 0;
+    x->x_clicked = x->x_log = x->x_jump = x->x_number_mode = x->x_savestate = 0;
     x->x_square = 1;
     x->x_glist = (t_glist *)canvas_getcurrent();
     x->x_cv = glist_getcanvas(x->x_glist);
@@ -1578,7 +1587,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
             arcstart = atom_getfloatarg(18, ac, av); // 19: f start value
             param = atom_getsymbolarg(19, ac, av); // 20: s param
             var = atom_getsymbolarg(20, ac, av); // 21: s var
-            x->x_number = atom_getintarg(21, ac, av); // 22: f number
+            x->x_number_mode = atom_getintarg(21, ac, av); // 22: f number
             x->n_size = atom_getintarg(22, ac, av); // 23: f number
             x->x_xpos = atom_getintarg(23, ac, av); // 24: f number xpos
             x->x_ypos = atom_getintarg(24, ac, av); // 25: f number ypos
@@ -1778,7 +1787,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
                         x->x_flag = 1, av++, ac--;
                         if(av->a_type == A_FLOAT){
                             int n = atom_getint(av);
-                            x->x_number = n < 0 ? 0 : n > 3 ? 3 : n;
+                            x->x_number_mode = n < 0 ? 0 : n > 3 ? 3 : n;
                             av++, ac--;
                         }
                         else
