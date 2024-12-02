@@ -144,8 +144,9 @@ static void knob_update_number(t_knob *x){
         sprintf(nbuf, "%.4g", x->x_fval);
     else
         sprintf(nbuf, "%g", x->x_fval);
-    pdgui_vmess(0, "crs rs", glist_getcanvas(x->x_glist),
-        "itemconfigure", x->x_tag_number, "-text", nbuf);
+    if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
+        pdgui_vmess(0, "crs rs", glist_getcanvas(x->x_glist),
+            "itemconfigure", x->x_tag_number, "-text", nbuf);
 }
 
 // get value from motion/position
