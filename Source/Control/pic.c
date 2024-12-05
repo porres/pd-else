@@ -463,7 +463,7 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
 
 static void pic_zoom(t_pic *x, t_floatarg zoom){
     x->x_zoom = (int)zoom;
-    canvas_fixlinesfor(x->x_glist, x);
+    canvas_fixlinesfor(x->x_glist, (t_text*)x);
 }
 
 //------------------- Properties --------------------------------------------------------
