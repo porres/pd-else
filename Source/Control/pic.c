@@ -226,13 +226,15 @@ static void pic_draw(t_pic* x, struct _glist *glist, t_floatarg vis){
             int clipped_h = fmax(x->x_height - fabs(x->x_offset_y), 0.0f);
             int source_offset_x = fmax(-x->x_offset_x, 0);
             int source_offset_y = fmax(-x->x_offset_y, 0);
+            int dest_offset_x = fmax(x->x_offset_x, 0);
+            int dest_offset_y = fmax(x->x_offset_y, 0);
 
             sys_vgui("if { [info exists %lx_picname] == 1 } {\n"
                      "    .x%lx.c delete %lx_picture\n"
                      "    image create photo %lx_piccopy\n" // Destination image
                      "    %lx_piccopy copy %lx_picname \\\n"
                      "        -shrink -from %d %d %d %d \\\n" // Source region with adjusted offsets
-                     "        -to 0 0 %d %d \\\n" // Destination region starts at adjusted offsets
+                     "        -to %d %d %d %d \\\n" // Destination region starts at adjusted offsets
                      "        -zoom %d %d\n" // Zoom factors for scaling
                      "    .x%lx.c create image %d %d -anchor nw -image %lx_piccopy -tags %lx_picture\n"
                      "} \n",
@@ -243,8 +245,9 @@ static void pic_draw(t_pic* x, struct _glist *glist, t_floatarg vis){
                      source_offset_x, source_offset_y, // Source region start
                      source_offset_x + clipped_w,      // Source region end X
                      source_offset_y + clipped_h,      // Source region end Y
-                     clipped_w * x->x_zoom,        // Destination end X
-                     clipped_h * x->x_zoom,        // Destination end Y
+                     dest_offset_x, dest_offset_y, // Source region start
+                     dest_offset_x + clipped_w * x->x_zoom,        // Destination end X
+                     dest_offset_y + clipped_h * x->x_zoom,        // Destination end Y
                      x->x_zoom, x->x_zoom,             // Zoom factors
                      cv,                               // Destination canvas
                      xpos, ypos,                       // Offset on canvas
