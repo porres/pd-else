@@ -1269,5 +1269,3 @@ void scope_tilde_setup(void){
     scope_widgetbehavior.w_clickfn    = (t_clickfn)scope_click;
     #include "../Extra/scope~_dialog.c"
 }
-
-
