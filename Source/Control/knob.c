@@ -1643,7 +1643,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
                 }
                 else if(sym == gensym("-nosquare")){
                     x->x_flag = 1, av++, ac--;
-                    x->x_square = 1;
+                    x->x_square = 0;
                 }
                 else if(sym == gensym("-param")){
                     if(ac >= 2){
@@ -1773,10 +1773,6 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
                 else if(sym == gensym("-savestate")){
                     x->x_flag = 1, av++, ac--;
                     x->x_savestate = 1;
-                }
-                else if(sym == gensym("-lb")){
-                    x->x_flag = 1, av++, ac--;
-                    x->x_lb = 1;
                 }
                 else if(sym == gensym("-lb")){
                     x->x_flag = 1, av++, ac--;
