@@ -1193,7 +1193,6 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     t_symbol *bg = atom_getsymbolarg(26, ac, av);
     t_symbol *mg = atom_getsymbolarg(27, ac, av);
     t_symbol *fg = atom_getsymbolarg(28, ac, av);
-    
     knob_config_io(x); // for outline/square
     if(expmode == 0){
         knob_log(x, 0);
@@ -1241,6 +1240,7 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     else if(mode == gensym("Typing"))
         nmode = 3;
     knob_number_mode(x, nmode);
+    canvas_dirty(x->x_glist, 1);
 }
 
 // --------------- click + motion stuff --------------------
