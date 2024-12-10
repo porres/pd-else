@@ -39,11 +39,14 @@ typedef struct _menu{
     t_symbol      **x_items;
     t_symbol       *x_sym;
     int             x_savestate;
+    int             x_keep;         // keep/save contents
     int             x_load;         // value when loading patch
     int             x_lb;
     int             x_outline;
     int             x_outmode;
     int             x_flag;
+    int             x_pos;
+    t_symbol       *x_dir;
     t_symbol       *x_rcv;
     t_symbol       *x_rcv_raw;
     int             x_rcv_set;
@@ -71,8 +74,7 @@ typedef struct _menu{
     int             x_itemcount;
 }t_menu;
 
-// ------------------------------------------------------------------------------------
-
+// Helper functions -----------------------------------------------------------------
 static int vis(t_menu *x){
     return(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist));
 }
@@ -88,7 +90,6 @@ static void menu_config_bg(t_menu *x){
     pdgui_vmess(0, "rr rs", x->x_tag_mb, "configure", "-bg", x->x_bg->s_name);
 }
 
-// configure inlet outlet and outline/square
 static void menu_config_io(t_menu *x){
     if(!vis(x))
         return;
@@ -231,16 +232,15 @@ static void create_menu(t_menu *x, t_glist *glist){
     t_atom at[2];
     SETSYMBOL(at, gensym(def_font));
     SETFLOAT(at+1, -x->x_fontsize*x->x_zoom);
-
-    
     // Create the menubutton
-    pdgui_vmess(0, "rs rs rA rsrs rs rrrs rr",
+    pdgui_vmess(0, "rs rs rA rsrs rs rs rs rr",
         "menubutton", x->x_tag_mb,
         "-text", temp_name->s_name,
         "-font", 2, at,
         "-bg", x->x_bg->s_name, "-fg", x->x_fg->s_name,
         "-activeforeground", x->x_fg->s_name,
-        "-direction", "below", "-menu", x->x_tag_menu,
+        "-direction", x->x_dir->s_name,
+        "-menu", x->x_tag_menu,
         "-cursor", "bottom_side");
     // Create the menu and attach it to the menubutton
     pdgui_vmess(0, "rsri", "menu", x->x_tag_menu, "-tearoff", 0);
@@ -329,12 +329,8 @@ static void menu_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 static void menu_select(t_gobj *z, t_glist *glist, int sel){
     t_menu *x = (t_menu *)z;
     t_canvas *cv = glist_getcanvas(glist);
-    if(sel)
-        pdgui_vmess(0, "crs rs", cv, "itemconfigure",
-            x->x_tag_sel, "-outline", "blue");
-    else
-        pdgui_vmess(0, "crs rs", cv, "itemconfigure",
-            x->x_tag_sel, "-outline", "black");
+    pdgui_vmess(0, "crs rs", cv, "itemconfigure",
+        x->x_tag_sel, "-outline", sel ? "blue" : "black");
 }
 
 static void menu_delete(t_gobj *z, t_glist *glist){
@@ -356,15 +352,18 @@ static void menu_save(t_gobj *z, t_binbuf *b){
         x->x_load = x->x_idx;
     menu_get_rcv(x);
     menu_get_snd(x);
-    binbuf_addv(b, "iiissssssiiiiiii",
+    binbuf_addv(b, "iiisssssssiiiiiiiiiii",
         x->x_width, x->x_height, x->x_fontsize,
         x->x_bg, x->x_fg,
-        x->x_label, x->x_rcv_raw, x->x_snd_raw, gensym("empty"), // label rcv snd prm
-        x->x_outline, x->x_outmode, // outline, output mode, justify
+        x->x_label, x->x_rcv_raw, x->x_snd_raw, // label rcv snd
+        gensym("empty"), gensym("empty"), // var
+        x->x_outline, x->x_outmode, // outline, output mode
         x->x_load, x->x_lb, x->x_savestate, // initial value, loadbang, savestate
-        0, 0);  // justify and save contents flag? OR flush / below?
-    for(int i = 0; i < x->x_n_items; i++) // Loop for menu items
-        binbuf_addv(b, "s", x->x_items[i]);
+        x->x_keep, x->x_pos, // save contents, position
+        0, 0, 0, 0); // placeholders, justify + ??????
+    if(x->x_keep)
+        for(int i = 0; i < x->x_n_items; i++) // Loop for menu items
+            binbuf_addv(b, "s", x->x_items[i]);
     binbuf_addv(b, ";");
 }
 
@@ -372,7 +371,7 @@ static void menu_save(t_gobj *z, t_binbuf *b){
 // callback comes here
 static void menu_output(t_menu* x, t_floatarg i){
     x->x_idx = i;
-//    if(x_outmode == 0){
+    if(x->x_outmode == 0){ // index + selection
         t_atom at[2];
         SETFLOAT(at, x->x_idx);
         if((x->x_options+x->x_idx)->a_type == A_SYMBOL)
@@ -382,13 +381,26 @@ static void menu_output(t_menu* x, t_floatarg i){
         outlet_list(x->x_obj.ob_outlet, &s_list, 2, at);
         if(x->x_snd->s_thing)
             pd_list(x->x_snd->s_thing, &s_list, 2, at);
-    /*    }
-    else if(x_outmode == 1){
-        // just index
     }
-    else if(x_outmode == 2){
-        // just selection
-    }*/
+    else if(x->x_outmode == 1){ // just index
+        outlet_float(x->x_obj.ob_outlet, x->x_idx);
+        if(x->x_snd->s_thing)
+            pd_float(x->x_snd->s_thing, x->x_idx);
+    }
+    else if(x->x_outmode == 2){ // just selection
+        if((x->x_options+x->x_idx)->a_type == A_SYMBOL){
+            t_symbol *out = atom_getsymbol(x->x_options+x->x_idx);
+            outlet_symbol(x->x_obj.ob_outlet, out);
+            if(x->x_snd->s_thing)
+                pd_symbol(x->x_snd->s_thing, out);
+        }
+        else{
+            float out = atom_getfloat(x->x_options+x->x_idx);
+            outlet_float(x->x_obj.ob_outlet, out);
+            if(x->x_snd->s_thing)
+                pd_float(x->x_snd->s_thing, out);
+        }
+    }
 }
 // ---------------------------------------------------------------------------
 
@@ -430,7 +442,7 @@ static void menu_add(t_menu* x, t_symbol *s, int ac, t_atom *av){
             x->x_items = dummy;
         }
         else{
-            pd_error(x, "menu: no memory for items");
+            pd_error(x, "[popmenu]: no memory for items");
             return;
         }
     }
@@ -537,9 +549,9 @@ static void menu_load(t_menu *x, t_symbol *s, int ac, t_atom *av){
     }
 }
 
-/*static void menu_mode(t_menu* x, t_floatarg f){
+static void menu_mode(t_menu* x, t_floatarg f){
     x->x_outmode = f < 0 ? 0 : f > 2 ? 2 : (int)f;
-}*/
+}
 
 static void menu_width(t_menu* x, t_floatarg f){
     x->x_width = f < 40 ? 40 : (int)f;
@@ -592,6 +604,36 @@ static void menu_outline(t_menu* x, t_floatarg f){
 
 static void menu_savestate(t_menu *x, t_floatarg f){
     x->x_savestate = (f != 0);
+}
+
+static void menu_keep(t_menu *x, t_floatarg f){
+    x->x_keep = (f != 0);
+}
+
+static void menu_pos(t_menu *x, t_floatarg f){
+    x->x_pos = f < 0 ? 0 : f > 4 ? 4 : (int)f;
+    switch(x->x_pos){
+        case 0:
+            x->x_dir = gensym("below");
+            break;
+        case 1:
+            x->x_dir = gensym("above");
+            break;
+        case 2:
+            x->x_dir = gensym("left");
+            break;
+        case 3:
+            x->x_dir = gensym("right");
+            break;
+        case 4:
+            x->x_dir = gensym("flush");
+            break;
+        default:
+            break;
+    };
+    if(vis(x))
+        pdgui_vmess(0, "rr rs", x->x_tag_mb, "configure",
+            "-direction", x->x_dir->s_name);
 }
 
 static void menu_lb(t_menu *x, t_floatarg f){
@@ -648,8 +690,8 @@ static void *menu_new(t_symbol *s, int ac, t_atom *av){
     x->x_fg = gensym("black"), x->x_bg = gensym("#dfdfdf");
     t_symbol *rcv = gensym("empty"), *snd = gensym("empty");
     x->x_label = gensym(" ");
-    x->x_n_items = x->x_itemcount = 0;
-    x->x_disabled = 1;
+    x->x_disabled = x->x_outline = x->x_keep = 1;
+    x->x_n_items = x->x_itemcount = x->x_pos = 0;
     x->x_rcv_set = x->x_r_flag = x->x_snd_set = x->x_s_flag = 0;
     if(ac){
         if(av->a_type == A_FLOAT){
@@ -661,14 +703,17 @@ static void *menu_new(t_symbol *s, int ac, t_atom *av){
             x->x_label = atom_getsymbolarg(5, ac, av); // label name
             rcv = atom_getsymbolarg(6, ac, av);
             snd = atom_getsymbolarg(7, ac, av);
-            //        int prm = atom_getsymbolarg(8, ac, av); // param name
-            x->x_outline = atom_getintarg(9, ac, av);
-            x->x_outmode = atom_getintarg(10, ac, av);
-            x->x_load = atom_getintarg(11, ac, av);
-            x->x_lb = atom_getintarg(12, ac, av);
-            x->x_savestate = atom_getintarg(13, ac, av);
-            // + a couple of placeholders
-            ac-=16, av+=16;
+            // prm = atom_getsymbolarg(8, ac, av); // param name
+            // var = atom_getsymbolarg(9, ac, av); // var name
+            x->x_outline = atom_getintarg(10, ac, av);
+            x->x_outmode = atom_getintarg(11, ac, av);
+            x->x_load = atom_getintarg(12, ac, av);
+            x->x_lb = atom_getintarg(13, ac, av);
+            x->x_savestate = atom_getintarg(14, ac, av);
+            x->x_keep = atom_getintarg(15, ac, av);
+            x->x_pos = atom_getintarg(16, ac, av);
+            // 4 placeholders
+            ac-=21, av+=21;
             if(ac){
                 x->x_n_items = ac;
                 x->x_disabled = 0;
@@ -751,6 +796,10 @@ static void *menu_new(t_symbol *s, int ac, t_atom *av){
                     x->x_flag = 1, av++, ac--;
                     x->x_outline = 0;
                 }
+                else if(sym == gensym("-nokeep")){
+                    x->x_flag = 1, av++, ac--;
+                    x->x_keep = 0;
+                }
                 else if(sym == gensym("-receive")){
                     if(ac >= 2){
                         x->x_flag = x->x_r_flag = 1, av++, ac--;
@@ -790,7 +839,7 @@ static void *menu_new(t_symbol *s, int ac, t_atom *av){
                     else
                         goto errstate;
                 }
-/*                else if(sym == gensym("-outmode")){
+                else if(sym == gensym("-outmode")){
                     if(ac >= 2){
                         x->x_flag = 1, av++, ac--;
                         if(av->a_type == A_FLOAT){
@@ -803,7 +852,21 @@ static void *menu_new(t_symbol *s, int ac, t_atom *av){
                     }
                     else
                         goto errstate;
-                }*/
+                }
+                else if(sym == gensym("-pos")){
+                    if(ac >= 2){
+                        x->x_flag = 1, av++, ac--;
+                        if(av->a_type == A_FLOAT){
+                            int pos = atom_getint(av);
+                            x->x_pos = pos < 0 ? 0 : pos > 4 ? 4 : pos;
+                            av++, ac--;
+                        }
+                        else
+                            goto errstate;
+                    }
+                    else
+                        goto errstate;
+                }
                 else if(sym == gensym("-savestate")){
                     x->x_flag = 1, av++, ac--;
                     x->x_savestate = 1;
@@ -822,6 +885,25 @@ static void *menu_new(t_symbol *s, int ac, t_atom *av){
     x->x_snd = canvas_realizedollar(x->x_glist, x->x_snd_raw = snd);
     x->x_rcv = canvas_realizedollar(x->x_glist, x->x_rcv_raw = rcv);
     x->x_idx = x->x_load;
+    switch(x->x_pos){
+        case 0:
+            x->x_dir = gensym("below");
+            break;
+        case 1:
+            x->x_dir = gensym("above");
+            break;
+        case 2:
+            x->x_dir = gensym("left");
+            break;
+        case 3:
+            x->x_dir = gensym("right");
+            break;
+        case 4:
+            x->x_dir = gensym("flush");
+            break;
+        default:
+            break;
+    };
     if(x->x_idx < -1)
         x->x_idx = x->x_load = -1;
     else if(x->x_idx >= x->x_n_items)
@@ -849,7 +931,7 @@ static void *menu_new(t_symbol *s, int ac, t_atom *av){
     outlet_new(&x->x_obj, &s_float);
     return(x);
 errstate:
-    pd_error(x, "[menu]: improper creation arguments");
+    pd_error(x, "[popmenu]: improper creation arguments");
     return(NULL);
 }
 
@@ -868,9 +950,11 @@ void popmenu_setup(void){
     class_addmethod(menu_class, (t_method)menu_fg, gensym("fg"), A_GIMME, 0);
     class_addmethod(menu_class, (t_method)menu_receive, gensym("receive"), A_DEFSYM, 0);
     class_addmethod(menu_class, (t_method)menu_send, gensym("send"), A_DEFSYM, 0);
-//    class_addmethod(menu_class, (t_method)menu_mode, gensym("mode"), A_FLOAT, 0);
+    class_addmethod(menu_class, (t_method)menu_mode, gensym("mode"), A_FLOAT, 0);
     class_addmethod(menu_class, (t_method)menu_label, gensym("label"), A_SYMBOL, 0);
     class_addmethod(menu_class, (t_method)menu_outline, gensym("outline"), A_FLOAT, 0);
+    class_addmethod(menu_class, (t_method)menu_keep, gensym("keep"), A_FLOAT, 0);
+    class_addmethod(menu_class, (t_method)menu_pos, gensym("pos"), A_FLOAT, 0);
     class_addmethod(menu_class, (t_method)menu_lb, gensym("lb"), A_FLOAT, 0);
     class_addmethod(menu_class, (t_method)menu_load, gensym("load"), A_GIMME, 0);
     class_addmethod(menu_class, (t_method)menu_savestate, gensym("savestate"), A_FLOAT, 0);
