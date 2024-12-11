@@ -1430,16 +1430,16 @@ static void knob_forget(t_knob *x){
 
 static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
     t_knob *x = (t_knob *)z;
-    x->x_ignore_int = dbl;
-    if(x->x_ctrl && shift && doit){
-        knob_forget(x);
+    x->x_shift = shift;
+    x->x_ignore_int = alt;
+    if(x->x_ctrl && doit){
+        if(x->x_shift)
+            knob_forget(x);
+        else
+            knob_learn(x);
         return(1);
     }
-    if(alt && shift && doit){
-        knob_learn(x);
-        return(1);
-    }
-    if(alt && !x->x_ctrl && doit){
+    else if(dbl){
         knob_set(x, x->x_arcstart);
         knob_bang(x);
         return(1);
@@ -1450,7 +1450,6 @@ static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int s
         x->x_clicked = 1;
         show_number(x, 0);
         knob_config_wcenter(x);
-        x->x_shift = shift;
         if(x->x_circular){
 //            if(x->x_jump){
                 xm = xpix;
