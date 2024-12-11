@@ -82,6 +82,7 @@ typedef struct _knob{
     int             x_shift;
     int             x_edit;
     int             x_jump;
+    int             x_readonly;
     double          x_fval;
     t_symbol       *x_fg;
     t_symbol       *x_mg;
@@ -683,7 +684,7 @@ static void knob_save(t_gobj *z, t_binbuf *b){
     knob_get_rcv(x);
     if(x->x_savestate)
         x->x_load = x->x_fval;
-    binbuf_addv(b, "iffffsssssiiiiiiiifssiiiiiii", // 28 args
+    binbuf_addv(b, "iffffsssssiiiiiiiifssiiiiiiii", // 29 args
         x->x_size, // 01: i SIZE
         (float)x->x_lower, // 02: f lower
         (float)x->x_upper, // 03: f upper
@@ -711,7 +712,8 @@ static void knob_save(t_gobj *z, t_binbuf *b){
         x->x_ypos, // 25: i number
         x->x_savestate, // 26: i savestate
         x->x_lb, // 27: i loadbang
-        x->x_ticks); // 28: i show ticks
+        x->x_ticks, // 28: i show ticks
+        x->x_readonly); // 29: i read only
     binbuf_addv(b, ";");
 }
 
@@ -1083,6 +1085,10 @@ static void knob_numberpos(t_knob *x, t_floatarg xpos, t_floatarg ypos){
     knob_config_number(x);
 }
 
+static void knob_readonly(t_knob *x, t_floatarg f){
+    x->x_readonly = (int)(f != 0);
+}
+
 static void knob_square(t_knob *x, t_floatarg f){
     int square = (int)f;
     if(x->x_square != square){
@@ -1117,14 +1123,14 @@ static void knob_properties(t_gobj *z, t_glist *owner){
     else if(x->x_number_mode == 3)
         mode = gensym("Typing");
     pdgui_stub_vnew(&x->x_obj.ob_pd, "knob_dialog", owner,
-        "fi if iif iii ii ffif ii siii ss ss sss",
+        "fi if iif iii ii ffif iii siii ss ss sss",
         (float)(x->x_size / x->x_zoom), x->x_square, // fi
         x->x_arc, x->x_arcstart, // if
         x->x_lb, x->x_savestate, x->x_load, // iif
         x->x_discrete, x->x_ticks, x->x_steps, // iii
         x->x_angle_range, x->x_angle_offset, // ii
         x->x_lower, x->x_upper, x->x_expmode, x->x_exp, // ffif
-        x->x_jump, x->x_circular, // ii
+        x->x_readonly, x->x_jump, x->x_circular, // iii
         mode->s_name, x->n_size, x->x_xpos, x->x_ypos, // siii
         x->x_rcv_raw->s_name, x->x_snd_raw->s_name, // ss
         x->x_param->s_name, x->x_var_raw->s_name, // sss
@@ -1133,7 +1139,7 @@ static void knob_properties(t_gobj *z, t_glist *owner){
 
 static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
-    t_atom undo[29];
+    t_atom undo[30];
     SETFLOAT(undo+0, x->x_size);
     SETFLOAT(undo+1, x->x_square);
     SETFLOAT(undo+2, x->x_arc);
@@ -1150,20 +1156,21 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     SETFLOAT(undo+13, x->x_upper);
     SETFLOAT(undo+14, x->x_expmode);
     SETFLOAT(undo+15, x->x_log ? 1 : x->x_exp);
-    SETFLOAT(undo+16, x->x_jump);
-    SETFLOAT(undo+17, x->x_circular);
-    SETFLOAT(undo+18, x->x_number_mode);
-    SETFLOAT(undo+19, x->n_size);
-    SETFLOAT(undo+20, x->x_xpos);
-    SETFLOAT(undo+21, x->x_ypos);
-    SETSYMBOL(undo+22, x->x_rcv);
-    SETSYMBOL(undo+23, x->x_snd);
-    SETSYMBOL(undo+24, x->x_param);
-    SETSYMBOL(undo+25, x->x_var);
-    SETSYMBOL(undo+26, x->x_bg);
-    SETSYMBOL(undo+27, x->x_mg);
-    SETSYMBOL(undo+28, x->x_fg);
-    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 29, undo, ac, av);
+    SETFLOAT(undo+16, x->x_readonly);
+    SETFLOAT(undo+17, x->x_jump);
+    SETFLOAT(undo+18, x->x_circular);
+    SETFLOAT(undo+19, x->x_number_mode);
+    SETFLOAT(undo+20, x->n_size);
+    SETFLOAT(undo+21, x->x_xpos);
+    SETFLOAT(undo+22, x->x_ypos);
+    SETSYMBOL(undo+23, x->x_rcv);
+    SETSYMBOL(undo+24, x->x_snd);
+    SETSYMBOL(undo+25, x->x_param);
+    SETSYMBOL(undo+26, x->x_var);
+    SETSYMBOL(undo+27, x->x_bg);
+    SETSYMBOL(undo+28, x->x_mg);
+    SETSYMBOL(undo+29, x->x_fg);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 30, undo, ac, av);
     int size = (int)atom_getintarg(0, ac, av);
     int square = atom_getintarg(1, ac, av);
     int arc = atom_getintarg(2, ac, av) != 0;
@@ -1180,19 +1187,20 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     float max = atom_getfloatarg(13, ac, av);
     int expmode = atom_getintarg(14, ac, av);
     float exp = atom_getfloatarg(15, ac, av);
-    x->x_jump = atom_getintarg(16, ac, av);
-    x->x_circular = atom_getintarg(17, ac, av);
-    t_symbol *mode = atom_getsymbolarg(18, ac, av);
-    int nsize = atom_getintarg(19, ac, av);
-    int xpos = atom_getintarg(20, ac, av);
-    int ypos = atom_getintarg(21, ac, av);
-    t_symbol* rcv = atom_getsymbolarg(22, ac, av);
-    t_symbol *snd = atom_getsymbolarg(23, ac, av);
-    t_symbol *param = atom_getsymbolarg(24, ac, av);
-    t_symbol *var = atom_getsymbolarg(25, ac, av);
-    t_symbol *bg = atom_getsymbolarg(26, ac, av);
-    t_symbol *mg = atom_getsymbolarg(27, ac, av);
-    t_symbol *fg = atom_getsymbolarg(28, ac, av);
+    x->x_readonly = atom_getintarg(16, ac, av);
+    x->x_jump = atom_getintarg(17, ac, av);
+    x->x_circular = atom_getintarg(18, ac, av);
+    t_symbol *mode = atom_getsymbolarg(19, ac, av);
+    int nsize = atom_getintarg(20, ac, av);
+    int xpos = atom_getintarg(21, ac, av);
+    int ypos = atom_getintarg(22, ac, av);
+    t_symbol* rcv = atom_getsymbolarg(23, ac, av);
+    t_symbol *snd = atom_getsymbolarg(24, ac, av);
+    t_symbol *param = atom_getsymbolarg(25, ac, av);
+    t_symbol *var = atom_getsymbolarg(26, ac, av);
+    t_symbol *bg = atom_getsymbolarg(27, ac, av);
+    t_symbol *mg = atom_getsymbolarg(28, ac, av);
+    t_symbol *fg = atom_getsymbolarg(29, ac, av);
     knob_config_io(x); // for outline/square
     if(expmode == 0){
         knob_log(x, 0);
@@ -1430,6 +1438,8 @@ static void knob_forget(t_knob *x){
 
 static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
     t_knob *x = (t_knob *)z;
+    if(x->x_readonly)
+        return(0);
     x->x_shift = shift;
     x->x_ignore_int = alt;
     if(x->x_ctrl && doit){
@@ -1559,7 +1569,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     x->x_glist = (t_glist *)canvas_getcurrent();
     x->x_cv = glist_getcanvas(x->x_glist);
     x->x_zoom = x->x_glist->gl_zoom;
-    x->x_flag = 0;
+    x->x_flag = x->x_readonly = 0;
     x->x_var_set = x->x_v_flag = 0;
     x->x_snd_set = x->x_s_flag = 0;
     x->x_rcv_set = x->x_r_flag = 0;
@@ -1593,6 +1603,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
             x->x_savestate = atom_getintarg(25, ac, av); // 26: f savestate
             x->x_lb = atom_getintarg(26, ac, av); // 27: f loadbang
             x->x_ticks = atom_getintarg(27, ac, av); // 28: f show ticks
+            x->x_readonly = atom_getintarg(28, ac, av); // 29: read only
         }
         else{
             while(ac){
@@ -1643,6 +1654,10 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
                 else if(sym == gensym("-nosquare")){
                     x->x_flag = 1, av++, ac--;
                     x->x_square = 0;
+                }
+                else if(sym == gensym("-readonly")){
+                    x->x_flag = 1, av++, ac--;
+                    x->x_readonly = 1;
                 }
                 else if(sym == gensym("-param")){
                     if(ac >= 2){
@@ -1961,6 +1976,7 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_ticks, gensym("ticks"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_motion, gensym("motion"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_square, gensym("square"), A_FLOAT, 0);
+    class_addmethod(knob_class, (t_method)knob_readonly, gensym("readonly"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_number_mode, gensym("number"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_savestate, gensym("savestate"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_lb, gensym("lb"), A_FLOAT, 0);
