@@ -334,7 +334,7 @@ static void knob_config_size(t_knob *x){
 // configure wiper center
 static void knob_config_wcenter(t_knob *x){
     pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure", x->x_tag_wpr_c,
-                "-state", x->x_clicked ? "normal" : "hidden");
+        "-state", x->x_clicked ? "normal" : "hidden");
 }
 
 // configure inlet outlet and outline/square
@@ -1253,6 +1253,18 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
 
 // --------------- click + motion stuff --------------------
 
+static void knob_activecheck(t_knob *x){
+    show_number(x, 0);
+    knob_config_wcenter(x);
+    if(x->x_snd == gensym("empty") || x->x_snd == &s_)
+        return;
+    char buff[512];
+    sprintf(buff, "%s-active", x->x_snd->s_name);
+    t_symbol *snd_active = gensym(buff);
+    if(snd_active->s_thing)
+        pd_float(snd_active->s_thing, x->x_clicked);
+}
+
 static int xm, ym;
 
 static void knob_arrow_motion(t_knob *x, t_floatarg dir){
@@ -1361,14 +1373,7 @@ static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
     buf[1] = 0;
     if(c == 0){ // click out
         x->x_clicked = x->x_typing = 0;
-        show_number(x, 0);
-        knob_config_wcenter(x);
-        char buff[512];
-        sprintf(buff, "%s-active", x->x_snd->s_name);
-        t_symbol *snd_active = gensym(buff);
-        if(snd_active->s_thing)
-            pd_float(snd_active->s_thing, x->x_clicked);
-        knob_update_number(x);
+        knob_activecheck(x);
         return;
     }
     else if(((c == '\n') || (c == 13))){ // enter
@@ -1406,7 +1411,6 @@ update_number:{
         pdgui_vmess(0, "crs rs", glist_getcanvas(x->x_glist),
             "itemconfigure", x->x_tag_number, "-text", cp);
         x->x_buf[sl] = 0;
-    
         char buff[512];
         sprintf(buff, "%s-typing", x->x_snd->s_name);
         t_symbol *snd_typing = gensym(buff);
@@ -1414,6 +1418,22 @@ update_number:{
             pd_symbol(snd_typing->s_thing, gensym(cp));
     
     }
+}
+    
+static void knob_active(t_knob *x, t_floatarg f){
+    x->x_clicked = (int)(f != 0);
+    knob_activecheck(x);
+    if(x->x_clicked){
+        knob_bang(x);
+        glist_grab(x->x_glist, &x->x_obj.te_g, 0, knob_key, 0, 0);
+    }
+    else
+        x->x_typing = 0;
+}
+
+static void knob_reset(t_knob *x){
+    knob_set(x, x->x_arcstart);
+    knob_bang(x);
 }
 
 static void knob_learn(t_knob *x){
@@ -1458,8 +1478,7 @@ static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int s
         x->x_buf[0] = 0;
 //        pd_bind(&x->x_obj.ob_pd, gensym("#keyname")); // listen to key events
         x->x_clicked = 1;
-        show_number(x, 0);
-        knob_config_wcenter(x);
+        knob_activecheck(x);
         if(x->x_circular){
 //            if(x->x_jump){
                 xm = xpix;
@@ -1492,13 +1511,7 @@ static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int s
         }
         knob_bang(x);
         glist_grab(glist, &x->x_obj.te_g, (t_glistmotionfn)(knob_motion), knob_key, xpix, ypix);
-        if(x->x_snd == gensym("empty") || x->x_snd == &s_)
-            return(1);
-        char buff[512];
-        sprintf(buff, "%s-active", x->x_snd->s_name);
-        t_symbol *snd_active = gensym(buff);
-        if(snd_active->s_thing)
-            pd_float(snd_active->s_thing, x->x_clicked);
+        return(1);
     }
     return(1);
 }
@@ -1982,6 +1995,8 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_lb, gensym("lb"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_nsize, gensym("numbersize"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_numberpos, gensym("numberpos"), A_FLOAT, A_FLOAT, 0);
+    class_addmethod(knob_class, (t_method)knob_active, gensym("active"), A_FLOAT, 0);
+    class_addmethod(knob_class, (t_method)knob_reset, gensym("reset"), 0);
     class_addmethod(knob_class, (t_method)knob_learn, gensym("learn"), 0);
     class_addmethod(knob_class, (t_method)knob_forget, gensym("forget"), 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
