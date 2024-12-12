@@ -1,14 +1,15 @@
 // porres 2020
 
 #include <m_pd.h>
-#include <magic.h>
-#include <buffer.h>
+#include "magic.h"
+#include "buffer.h"
 #include <stdlib.h>
 
 typedef struct _tabplayer{
     t_object    x_obj;
     t_buffer   *x_buffer;
     t_glist    *x_glist;
+    t_symbol   *x_bindname;
     int         x_hasfeeders;       // if there's a signal coming in the main inlet
     int         x_interp;
     int         x_trig_mode;
@@ -110,7 +111,10 @@ static void tabplayer_speed(t_play *x, t_floatarg f){
 }
 
 static void tabplayer_arraysr(t_play *x, t_floatarg f){
-    x->x_array_sr_khz = f * 0.001;
+    float srkhz = f * 0.001;
+    if(x->x_array_sr_khz == srkhz)
+        return;
+    x->x_array_sr_khz = srkhz;
     if(x->x_array_sr_khz < 8)
         x->x_array_sr_khz = 8;
     x->x_sr_ratio = x->x_array_sr_khz/x->x_sr_khz;
@@ -124,6 +128,17 @@ static void tabplayer_set(t_play *x, t_symbol *s){
     buffer_setarray(x->x_buffer, s);
     x->x_npts = x->x_buffer->c_npts;
     tabplayer_range(x, x->x_range_start, x->x_range_end);
+    char buf[MAXPDSTRING];
+    snprintf(buf, MAXPDSTRING-1, "%s-sr", s->s_name);
+    buf[MAXPDSTRING-1] = 0;
+    if(x->x_bindname)
+        pd_unbind((t_pd *)x, x->x_bindname);
+    pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
+    snprintf(buf, MAXPDSTRING-1, "%s-vsr", s->s_name);
+    buf[MAXPDSTRING-1] = 0;
+    t_float sr;
+    if(!value_getfloat(gensym(buf), &sr))
+        tabplayer_arraysr(x, sr);
 }
 
 static void tabplayer_pos(t_play *x, t_floatarg f){
@@ -467,6 +482,8 @@ static void tabplayer_dsp(t_play *x, t_signal **sp){
 }
 
 static void *tabplayer_free(t_play *x){
+    if(x->x_bindname)
+        pd_unbind((t_pd *)x, x->x_bindname);
     buffer_free(x->x_buffer);
     freebytes(x->x_ovecs, x->x_n_ch * sizeof(*x->x_ovecs));
     outlet_free(x->x_donelet);
@@ -475,7 +492,7 @@ static void *tabplayer_free(t_play *x){
 
 static void *tabplayer_new(t_symbol * s, int ac, t_atom *av){
     t_play *x = (t_play *)pd_new(tabplayer_class);
-    t_symbol *arrname = NULL;
+    t_symbol *arrname = x->x_bindname = NULL;
     t_float channels = 1;
     t_float fade = 0;
     x->x_interp = 0;
@@ -483,8 +500,9 @@ static void *tabplayer_new(t_symbol * s, int ac, t_atom *av){
     t_float range_end = 1;
     x->x_xfade = 0;
     x->x_lastin = 0;
-    x->x_sr_khz = (float)sys_getsr() * 0.001;
-    x->x_array_sr_khz = x->x_sr_khz; // pd's sample rate for now
+    float sr = (float)sys_getsr();
+    x->x_sr_khz = sr * 0.001;
+    x->x_array_sr_khz = 0;
     x->x_loop = 0;
     x->x_rate = 1.f;
     x->x_trig_mode = 0;
@@ -510,9 +528,7 @@ static void *tabplayer_new(t_symbol * s, int ac, t_atom *av){
                 ac-=2, av+=2;
             }
             else if(s == gensym("-sr") && ac >= 2 && !argn){
-                x->x_array_sr_khz = atom_getfloatarg(1, ac, av) * 0.001;
-                if(x->x_array_sr_khz < 8)
-                    x->x_array_sr_khz = 8;
+                sr = atom_getfloatarg(1, ac, av);
                 ac-=2, av+=2;
             }
             else if(s == gensym("-speed") && ac >= 2 && !argn){
@@ -543,7 +559,6 @@ static void *tabplayer_new(t_symbol * s, int ac, t_atom *av){
             ac--, av++;
         }
     };
-    x->x_sr_ratio = x->x_array_sr_khz/x->x_sr_khz;
     x->x_isneg = (int)(x->x_rate < 0);
     // one auxiliary signal:  position input
     int chn_n = (int)channels > 64 ? 64 : (int)channels;
@@ -563,6 +578,18 @@ static void *tabplayer_new(t_symbol * s, int ac, t_atom *av){
         tabplayer_range(x, range_start, range_end);
         tabplayer_fade(x, fade);
     }
+    if(arrname){
+        char buf[MAXPDSTRING];
+        snprintf(buf, MAXPDSTRING-1, "%s-sr", arrname->s_name);
+        buf[MAXPDSTRING-1] = 0;
+        pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
+        snprintf(buf, MAXPDSTRING-1, "%s-vsr", s->s_name);
+        buf[MAXPDSTRING-1] = 0;
+        t_float vsr;
+        if(!value_getfloat(gensym(buf), &vsr))
+            sr = vsr;
+    }
+    tabplayer_arraysr(x, sr);
     return(x);
     errstate:
         pd_error(x, "[tabplayer~]: improper args");
