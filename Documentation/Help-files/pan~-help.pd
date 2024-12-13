@@ -1,5 +1,4 @@
-#N struct 1084-point float x0 float y0 float size float fg float in float grid;
-#N canvas 285 23 564 708 10;
+#N canvas 474 28 564 708 10;
 #X obj 4 429 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 557 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 620 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -22,7 +21,7 @@
 #X floatatom 269 200 8 0 0 0 - - - 0;
 #X obj 215 204 noise~;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -91,7 +90,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -130,10 +129,10 @@
 #X text 240 533 - spread parameter, f 43;
 #X text 158 512 float/signal;
 #X text 158 533 float/signal;
-#X text 32 313 see also:;
-#X obj 28 365 else/xgate~;
+#X text 32 293 see also:;
+#X obj 28 364 else/xgate~;
 #X obj 28 339 else/xgate2.mc~;
-#X obj 28 391 else/xselect2~;
+#X obj 28 388 else/xselect2~;
 #X obj 2 3 cnv 15 301 42 empty empty pan~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -174,7 +173,7 @@
 #X obj 650 281 else/f2s~;
 #X obj 581 281 else/f2s~;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -243,7 +242,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -275,7 +274,7 @@
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 502 110 pd;
 #X text 20 17 The Sine/Cosine function is used for crossfading and the default spread value of 1 means the usual equal power crossfade between 2 adjacent channels \, where the mid point between the 2 channels means both have the same amplitude at square root of 0.5 (0.707107). The gain inlet sets an overall output gain and defaults to 1 if nothing is connected to it., f 71;
-#X obj 581 112 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255 0 0 0 1 0 0 0 1 empty empty 1;
+#X obj 581 112 else/circle 127 -1 1 -1 1 1 0 -1 -1 0 -1 -1 1 -1 -1 1 0 0 0 1 empty empty empty empty 1;
 #X obj 581 253 else/car2pol;
 #X obj 581 79 else/initmess 0 1;
 #X msg 424 245 offset 90;
@@ -317,6 +316,7 @@
 #X connect 26 7 16 7;
 #X restore 426 382 pd more details;
 #X text 240 512 - azimuth (normalized from 0-1 or radians), f 43;
+#X obj 28 316 else/pan.mc~;
 #X connect 16 0 17 0;
 #X connect 17 0 21 0;
 #X connect 18 0 34 0;

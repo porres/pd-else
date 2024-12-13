@@ -1,4 +1,4 @@
-// Porres 2016 - 2023
+// Porres 2016 - 2024
  
 #include <m_pd.h>
 #include <else_alloca.h>
@@ -12,6 +12,7 @@ typedef struct _rescale{
     t_outlet   *x_outlet;
     int         x_clip;
     int         x_log;
+    int         x_rlog;
     float       x_minin;
     float       x_maxin;
     float       x_minout;
@@ -25,6 +26,7 @@ static void rescale_clip(t_rescale *x, t_floatarg f){
 
 static float convert(t_rescale *x, float f){
     float minin = x->x_minin;
+    float maxin = x->x_maxin;
     float minout = x->x_minout;
     float maxout = x->x_maxout;
     float rangein = x->x_maxin - minin;
@@ -47,7 +49,16 @@ static float convert(t_rescale *x, float f){
                 return(maxout);
         }
     }
-    float p = (f-minin)/rangein; // position
+    float p; // position
+    if(x->x_rlog){ // 'reverse log'
+        if((minin <= 0 && maxin >= 0) || (minin >= 0 && maxin <= 0)){
+            pd_error(x, "[rescale]: intput range cannot contain '0' in reverse log mode");
+            return(0);
+        }
+        p = log(f / minin) / log(maxin / minin);
+        return(minout + rangeout * p);
+    }
+    p = (f-minin)/rangein;
     if(x->x_log){ // 'log'
         if((minout <= 0 && maxout >= 0) || (minout >= 0 && maxout <= 0)){
             pd_error(x, "[rescale]: output range cannot contain '0' in log mode");
@@ -91,6 +102,10 @@ static void rescale_log(t_rescale *x, t_floatarg f){
     x->x_log = (f != 0);
 }
 
+static void rescale_rlog(t_rescale *x, t_floatarg f){
+    x->x_rlog = (f != 0);
+}
+
 static void *rescale_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_rescale *x = (t_rescale *)pd_new(rescale_class);
@@ -99,7 +114,7 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
     x->x_minout = 0;
     x->x_maxout = 1;
     x->x_exp = 0.f;
-    x->x_log = 0;
+    x->x_log = x->x_rlog = 0;
     x->x_clip = 1;
     t_int numargs = 0;
     while(ac){
@@ -109,6 +124,8 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
                 x->x_clip = 0;
             else if(sym == gensym("-log") && !numargs)
                 x->x_log = 1;
+            else if(sym == gensym("-rlog") && !numargs)
+                x->x_rlog = 1;
             else if(ac >= 2 && sym == gensym("-exp") && !numargs){
                 ac--, av++;
                 x->x_exp = atom_getfloat(av);
@@ -157,5 +174,6 @@ void rescale_setup(void){
     class_addmethod(rescale_class, (t_method)rescale_in, gensym("in"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(rescale_class, (t_method)rescale_exp, gensym("exp"), A_FLOAT, 0);
     class_addmethod(rescale_class, (t_method)rescale_log, gensym("log"), A_FLOAT, 0);
+    class_addmethod(rescale_class, (t_method)rescale_rlog, gensym("rlog"), A_FLOAT, 0);
     class_addmethod(rescale_class, (t_method)rescale_clip, gensym("clip"), A_FLOAT, 0);
 }
