@@ -766,18 +766,8 @@ static void knob_load(t_knob *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(!ac)
         x->x_load = x->x_fval;
-    else if(ac == 1 && av->a_type == A_FLOAT){
-        float f = atom_getfloat(av);
-        x->x_load = knob_clipfloat(x, f);
-        x->x_pos = knob_getpos(x, x->x_fval = x->x_load);
-    }
-    else
-        return;
-    if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
-        knob_update(x);
-        if(x->x_steps == 1)
-            knob_draw_ticks(x);
-    }
+    else if(ac == 1 && av->a_type == A_FLOAT)
+        x->x_load = knob_clipfloat(x, atom_getfloat(av));
 }
 
 static void knob_arcstart(t_knob *x, t_symbol *s, int ac, t_atom *av){
@@ -968,7 +958,7 @@ static void knob_param(t_knob *x, t_symbol *s){
 static void knob_var(t_knob *x, t_symbol *s){
     if(s == gensym("") || s == &s_)
         s = gensym("empty");
-    t_symbol *var = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, s);
+    t_symbol *var = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, s); // ????
     if(var != x->x_var){
         x->x_var_set = 1;
         x->x_var_raw = s;
@@ -1578,7 +1568,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     int arc = 1, angle = 320, offset = 0;
     x->x_bg = gensym("#dfdfdf"), x->x_mg = gensym("#7c7c7c"), x->x_fg = gensym("black");
     x->x_clicked = x->x_log = x->x_jump = x->x_number_mode = x->x_savestate = 0;
-    x->x_square = 1;
+    x->x_square = x->x_lb = 1;
     x->x_glist = (t_glist *)canvas_getcurrent();
     x->x_cv = glist_getcanvas(x->x_glist);
     x->x_zoom = x->x_glist->gl_zoom;
@@ -1801,9 +1791,9 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
                     x->x_flag = 1, av++, ac--;
                     x->x_savestate = 1;
                 }
-                else if(sym == gensym("-lb")){
+                else if(sym == gensym("-noloadbang")){
                     x->x_flag = 1, av++, ac--;
-                    x->x_lb = 1;
+                    x->x_lb = 0;
                 }
                 else if(sym == gensym("-number")){
                     if(ac >= 2){
