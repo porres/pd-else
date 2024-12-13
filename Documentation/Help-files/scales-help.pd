@@ -1,4 +1,4 @@
-#N canvas 510 43 563 579 10;
+#N canvas 450 73 564 579 10;
 #X obj 173 301 display;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -89,7 +89,7 @@
 #X obj 173 275 else/scales 5;
 #X msg 173 170 C 1;
 #X msg 183 191 G3 2;
-#X text 214 190 start at G3 as the 2nd degree of the scale;
+#X text 218 185 start at G3 as the 2nd degree of the scale, f 23;
 #X msg 195 217 4 Eb4;
 #X text 234 216 start at 4th degree of Eb4;
 #X text 259 409 sets octave number if the note symbol doesn't have it, f 31;
@@ -97,6 +97,8 @@
 #X text 256 344 note name and its degree (optional \, default 1);
 #X text 64 185 (default);
 #X text 49 85 [scales] generates scales as note names (default) or MIDI pitches. The scale is set as a list of semitones that define each step of the scale (major by default). The note symbol can also contain the octave number \, otherwise you have to set the octave via the 2nd inlet ot argument. If you bang the object without setting anything \, the default is 'C 1'., f 66;
+#X msg 430 193 2 F3;
+#X text 356 193 -->same as:;
 #X connect 20 0 43 1;
 #X connect 22 0 43 0;
 #X connect 29 0 43 0;
