@@ -686,6 +686,7 @@ static void *menu_new(t_symbol *s, int ac, t_atom *av){
     x->x_items = (t_symbol**)getbytes(sizeof(t_symbol*)*x->x_maxitems);
     x->x_width = 128, x->x_height = 26;
     x->x_load = -1;
+    x->x_lb = 1;
     x->x_fontsize = 12;
     x->x_fg = gensym("black"), x->x_bg = gensym("#dfdfdf");
     t_symbol *rcv = gensym("empty"), *snd = gensym("empty");
@@ -795,6 +796,10 @@ static void *menu_new(t_symbol *s, int ac, t_atom *av){
                 else if(sym == gensym("-nooutline")){
                     x->x_flag = 1, av++, ac--;
                     x->x_outline = 0;
+                }
+                else if(sym == gensym("-noloadbang")){
+                    x->x_flag = 1, av++, ac--;
+                    x->x_lb = 0;
                 }
                 else if(sym == gensym("-nokeep")){
                     x->x_flag = 1, av++, ac--;
