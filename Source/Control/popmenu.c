@@ -346,66 +346,6 @@ static void menu_erase(t_menu* x,t_glist* glist){
     pdgui_vmess(0, "rr", "destroy", x->x_tag_mb);
     pdgui_vmess(0, "crs", cv, "delete", x->x_tag_obj);
 }
-	
-// ------------------------ widgetbehaviour-----------------------------
-static void menu_getrect(t_gobj *z, t_glist *gl, int *xp1, int *yp1, int *xp2, int *yp2){
-    t_menu* x = (t_menu*)z;
-    *xp1 = text_xpix(&x->x_obj, gl);
-    *yp1 = text_ypix(&x->x_obj, gl);
-    *xp2 = text_xpix(&x->x_obj, gl) + x->x_width*x->x_zoom;
-    *yp2 = text_ypix(&x->x_obj, gl) + x->x_height*x->x_zoom;
-}
-
-static void menu_displace(t_gobj *z, t_glist *glist, int dx, int dy){
-    t_menu *x = (t_menu *)z;
-    x->x_obj.te_xpix += dx, x->x_obj.te_ypix += dy;
-    dx *= x->x_zoom, dy *= x->x_zoom;
-    t_canvas *cv = glist_getcanvas(glist);
-    pdgui_vmess(0, "crs ii", cv, "move", x->x_tag_obj, dx, dy);
-    canvas_fixlinesfor(glist, (t_text*)x);
-}
-
-static void menu_select(t_gobj *z, t_glist *glist, int sel){
-    t_menu *x = (t_menu *)z;
-    t_canvas *cv = glist_getcanvas(glist);
-    pdgui_vmess(0, "crs rs", cv, "itemconfigure",
-        x->x_tag_sel, "-outline", sel ? "blue" : "black");
-}
-
-static void menu_delete(t_gobj *z, t_glist *glist){
-    canvas_deletelinesfor(glist, (t_text *)z);
-}
-
-static void menu_vis(t_gobj *z, t_glist *glist, int vis){
-    t_menu* x = (t_menu*)z;
-    x->x_cv = glist_getcanvas(x->x_glist = glist);
-    vis ? menu_draw(x, glist) : menu_erase(x, glist);
-}
-
-static void menu_save(t_gobj *z, t_binbuf *b){
-    t_menu *x = (t_menu *)z;
-    binbuf_addv(b, "ssiis", gensym("#X"), gensym("obj"),
-        (t_int)x->x_obj.te_xpix, (t_int)x->x_obj.te_ypix,
-        atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)));
-    if(x->x_savestate)
-        x->x_load = x->x_idx;
-    menu_get_rcv(x);
-    menu_get_snd(x);
-    menu_get_var(x);
-    binbuf_addv(b, "iiisssssssiiiiiiiiiii",
-        x->x_width, x->x_height, x->x_fontsize,
-        x->x_bg, x->x_fg,
-        x->x_label, x->x_rcv_raw, x->x_snd_raw, // label rcv snd
-        x->x_param, x->x_var_raw, // prm var
-        x->x_outline, x->x_outmode, // outline, output mode
-        x->x_load, x->x_lb, x->x_savestate, // initial value, loadbang, savestate
-        x->x_keep, x->x_pos, // save contents, position
-        0, 0, 0, 0); // placeholders, justify + ??????
-    if(x->x_keep)
-        for(int i = 0; i < x->x_n_items; i++) // Loop for menu items
-            binbuf_addv(b, "s", x->x_items[i]);
-    binbuf_addv(b, ";");
-}
 
 // ---------------------------------------------------------------------------
 // callback comes here
@@ -737,6 +677,168 @@ static void menu_lb(t_menu *x, t_floatarg f){
 
 static void menu_zoom(t_menu *x, t_floatarg f){
     x->x_zoom = (int)f;
+}
+
+// --------------- properties stuff --------------------
+static void menu_properties(t_gobj *z, t_glist *owner){
+    t_menu *x = (t_menu *)z;
+    menu_get_rcv(x);
+    menu_get_snd(x);
+    menu_get_var(x);
+    t_symbol *outmode = gensym("Index");
+    if(x->x_outmode == 1)
+        outmode = gensym("Item");
+    else if(x->x_outmode == 2)
+        outmode = gensym("Both");
+    t_symbol *position = gensym("Bottom");
+    if(x->x_outmode == 1)
+        position = gensym("Top");
+    else if(x->x_outmode == 2)
+        position = gensym("Left");
+    else if(x->x_outmode == 2)
+        position = gensym("Right");
+    else if(x->x_outmode == 2)
+        position = gensym("Over");
+    pdgui_stub_vnew(&x->x_obj.ob_pd, "menu_dialog", owner,
+        "ff iis iiiis sssssss",
+        (float)(x->x_width / x->x_zoom), // ??????
+        (float)(x->x_height / x->x_zoom), // ???????
+        x->x_fontsize, x->x_outline, outmode->s_name,
+        x->x_load, x->x_lb, x->x_savestate, x->x_keep, position->s_name,
+        x->x_label->s_name, x->x_rcv_raw->s_name, x->x_snd_raw->s_name,
+        x->x_param->s_name, x->x_var_raw->s_name,
+        x->x_bg->s_name, x->x_fg->s_name);
+}
+
+static void menu_apply(t_menu *x, t_symbol *s, int ac, t_atom *av){
+    x->x_ignore = s;
+    t_atom undo[17];
+    SETFLOAT(undo+0, x->x_width);
+    SETFLOAT(undo+1, x->x_height);
+    SETFLOAT(undo+2, x->x_fontsize);
+    SETFLOAT(undo+3, x->x_outline);
+    SETFLOAT(undo+4, x->x_outmode);
+    SETFLOAT(undo+5, x->x_load);
+    SETFLOAT(undo+6, x->x_lb);
+    SETFLOAT(undo+7, x->x_savestate);
+    SETFLOAT(undo+8, x->x_keep);
+    SETFLOAT(undo+9, x->x_pos);
+    SETSYMBOL(undo+10, x->x_label);
+    SETSYMBOL(undo+11, x->x_rcv);
+    SETSYMBOL(undo+12, x->x_snd);
+    SETSYMBOL(undo+13, x->x_param);
+    SETSYMBOL(undo+14, x->x_var);
+    SETSYMBOL(undo+15, x->x_bg);
+    SETSYMBOL(undo+16, x->x_fg);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 17, undo, ac, av);
+    int width = atom_getintarg(0, ac, av);
+    int height = atom_getintarg(1, ac, av);
+    int fontsize = atom_getintarg(2, ac, av);
+    x->x_outline = atom_getintarg(3, ac, av);
+    t_symbol *outmode = atom_getsymbolarg(4, ac, av);
+    x->x_load = atom_getfloatarg(5, ac, av);
+    x->x_lb = atom_getintarg(6, ac, av);
+    x->x_savestate = atom_getintarg(7, ac, av);
+    x->x_keep = atom_getintarg(8, ac, av);
+    t_symbol *position = atom_getsymbolarg(9, ac, av);
+    t_symbol *label = atom_getsymbolarg(10, ac, av);
+    t_symbol *rcv = atom_getsymbolarg(11, ac, av);
+    t_symbol *snd = atom_getsymbolarg(12, ac, av);
+    t_symbol *param = atom_getsymbolarg(13, ac, av);
+    t_symbol *var = atom_getsymbolarg(14, ac, av);
+    t_symbol *bg = atom_getsymbolarg(15, ac, av);
+    t_symbol *fg = atom_getsymbolarg(16, ac, av);
+    menu_config_io(x); // for outline
+    if(outmode == gensym("Index"))
+        x->x_outmode = 0;
+    else if(outmode == gensym("Item"))
+        x->x_outmode = 1;
+    else if(outmode == gensym("Both"))
+        x->x_outmode = 2;
+    int pos = 0;
+    if(position == gensym("Top"))
+        pos = 1;
+    else if(position == gensym("Left"))
+        pos = 2;
+    else if(position == gensym("Right"))
+        pos = 3;
+    else if(position == gensym("Ober"))
+        pos = 4;
+    menu_pos(x, pos);
+    menu_width(x, width);
+    menu_height(x, height);
+    menu_fontsize(x, fontsize);
+    menu_label(x, label);
+    menu_receive(x, rcv);
+    menu_send(x, snd);
+    menu_param(x, param);
+    menu_var(x, var);
+    t_atom at[1];
+    SETSYMBOL(at, bg);
+    menu_bg(x, NULL, 1, at);
+    SETSYMBOL(at, fg);
+    menu_fg(x, NULL, 1, at);
+    canvas_dirty(x->x_glist, 1);
+}
+
+// ------------------------ widgetbehaviour-----------------------------
+static void menu_getrect(t_gobj *z, t_glist *gl, int *xp1, int *yp1, int *xp2, int *yp2){
+    t_menu* x = (t_menu*)z;
+    *xp1 = text_xpix(&x->x_obj, gl);
+    *yp1 = text_ypix(&x->x_obj, gl);
+    *xp2 = text_xpix(&x->x_obj, gl) + x->x_width*x->x_zoom;
+    *yp2 = text_ypix(&x->x_obj, gl) + x->x_height*x->x_zoom;
+}
+
+static void menu_displace(t_gobj *z, t_glist *glist, int dx, int dy){
+    t_menu *x = (t_menu *)z;
+    x->x_obj.te_xpix += dx, x->x_obj.te_ypix += dy;
+    dx *= x->x_zoom, dy *= x->x_zoom;
+    t_canvas *cv = glist_getcanvas(glist);
+    pdgui_vmess(0, "crs ii", cv, "move", x->x_tag_obj, dx, dy);
+    canvas_fixlinesfor(glist, (t_text*)x);
+}
+
+static void menu_select(t_gobj *z, t_glist *glist, int sel){
+    t_menu *x = (t_menu *)z;
+    t_canvas *cv = glist_getcanvas(glist);
+    pdgui_vmess(0, "crs rs", cv, "itemconfigure",
+        x->x_tag_sel, "-outline", sel ? "blue" : "black");
+}
+
+static void menu_delete(t_gobj *z, t_glist *glist){
+    canvas_deletelinesfor(glist, (t_text *)z);
+}
+
+static void menu_vis(t_gobj *z, t_glist *glist, int vis){
+    t_menu* x = (t_menu*)z;
+    x->x_cv = glist_getcanvas(x->x_glist = glist);
+    vis ? menu_draw(x, glist) : menu_erase(x, glist);
+}
+
+static void menu_save(t_gobj *z, t_binbuf *b){
+    t_menu *x = (t_menu *)z;
+    binbuf_addv(b, "ssiis", gensym("#X"), gensym("obj"),
+        (t_int)x->x_obj.te_xpix, (t_int)x->x_obj.te_ypix,
+        atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)));
+    if(x->x_savestate)
+        x->x_load = x->x_idx;
+    menu_get_rcv(x);
+    menu_get_snd(x);
+    menu_get_var(x);
+    binbuf_addv(b, "iiisssssssiiiiiiiiiii",
+        x->x_width, x->x_height, x->x_fontsize,
+        x->x_bg, x->x_fg,
+        x->x_label, x->x_rcv_raw, x->x_snd_raw, // label rcv snd
+        x->x_param, x->x_var_raw, // prm var
+        x->x_outline, x->x_outmode, // outline, output mode
+        x->x_load, x->x_lb, x->x_savestate, // initial value, loadbang, savestate
+        x->x_keep, x->x_pos, // save contents, position
+        0, 0, 0, 0); // placeholders, justify + ??????
+    if(x->x_keep)
+        for(int i = 0; i < x->x_n_items; i++) // Loop for menu items
+            binbuf_addv(b, "s", x->x_items[i]);
+    binbuf_addv(b, ";");
 }
 
 // INIT STUFF --------------------------------------------------------------------
@@ -1094,6 +1196,8 @@ void popmenu_setup(void){
     class_addmethod(menu_class, (t_method)menu_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
     class_addmethod(menu_class, (t_method)menu_zoom, gensym("zoom"), A_CANT, 0);
     class_addmethod(menu_class, (t_method)menu_output, gensym("_callback"), A_DEFFLOAT, 0);
+    class_addmethod(menu_class, (t_method)menu_apply, gensym("dialog"), A_GIMME, 0);
+    class_setpropertiesfn(menu_class, menu_properties);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
     class_setwidget(menu_class, &menu_widgetbehavior);
@@ -1103,4 +1207,5 @@ void popmenu_setup(void){
     menu_widgetbehavior.w_deletefn   = menu_delete;
     menu_widgetbehavior.w_visfn      = menu_vis;
     class_setsavefn(menu_class, &menu_save);
+    #include "../Extra/menu_dialog.h"
 }
