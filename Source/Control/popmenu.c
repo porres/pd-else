@@ -38,6 +38,10 @@ typedef struct _menu{
     t_symbol       *x_label;
     t_symbol      **x_items;
     t_symbol       *x_sym;
+    t_symbol       *x_param;
+    t_symbol       *x_var;
+    t_symbol       *x_var_raw;
+    int            x_var_set;
     int             x_savestate;
     int             x_keep;         // keep/save contents
     int             x_load;         // value when loading patch
@@ -55,6 +59,7 @@ typedef struct _menu{
     t_symbol       *x_snd_raw;
     int             x_snd_set;
     int             x_s_flag;
+    int             x_v_flag;
     char            x_tag_obj[32];
     char            x_tag_outline[32];
     char            x_tag_in[32];
@@ -214,6 +219,38 @@ static void menu_get_snd(t_menu* x){
         x->x_snd_raw = gensym("empty");
 }
 
+static void menu_get_var(t_menu* x){
+    if(!x->x_var_set){ // no var set, search arguments
+        t_binbuf *bb = x->x_obj.te_binbuf;
+        int n_args = binbuf_getnatom(bb) - 1; // number of arguments
+        char buf[128];
+        if(n_args > 0){ // we have arguments, let's search them
+            if(x->x_flag){ // arguments are flags actually
+                if(x->x_v_flag){ // we got a var flag, let's get it
+                    for(int i = 0;  i <= n_args; i++){
+                        atom_string(binbuf_getvec(bb) + i, buf, 128);
+                        if(gensym(buf) == gensym("-var")){
+                            i++;
+                            atom_string(binbuf_getvec(bb) + i, buf, 128);
+                            x->x_var_raw = gensym(buf);
+                            break;
+                        }
+                    }
+                }
+            }
+            else{ // we got no flags, let's search for argument
+                int arg_n = 9; // var argument number
+                if(n_args >= arg_n){ // we have it, get it
+                    atom_string(binbuf_getvec(bb) + arg_n, buf, 128);
+                    x->x_var_raw = gensym(buf);
+                }
+            }
+        }
+    }
+    if(x->x_var_raw == &s_)
+        x->x_var_raw = gensym("empty");
+}
+
 // DRAW functions --------------------------------------------------------------
 static void create_menu(t_menu *x, t_glist *glist){
     char buf[MAXPDSTRING];
@@ -287,8 +324,10 @@ static void menu_draw(t_menu *x, t_glist *glist){
     menu_disablecheck(x);
  // Object Outline
     char *tags_outline[] = {x->x_tag_outline, x->x_tag_obj, x->x_tag_sel};
-    pdgui_vmess(0, "crr iiii rs rS", cv, "create", "rectangle",
-        x1, y1, x2, y2, "-fill", x->x_bg->s_name, "-tags", 3, tags_outline);
+    pdgui_vmess(0, "crr iiii rs rs rS", cv, "create", "rectangle",
+        x1, y1, x2, y2, "-fill", x->x_bg->s_name,
+        "-state", x->x_outline ? "normal" : "hidden",
+        "-tags", 3, tags_outline);
 // inlet
     char *tags_in[] = {x->x_tag_in, x->x_tag_obj};
     pdgui_vmess(0, "crr iiii rs rs rS", cv, "create", "rectangle",
@@ -352,11 +391,12 @@ static void menu_save(t_gobj *z, t_binbuf *b){
         x->x_load = x->x_idx;
     menu_get_rcv(x);
     menu_get_snd(x);
+    menu_get_var(x);
     binbuf_addv(b, "iiisssssssiiiiiiiiiii",
         x->x_width, x->x_height, x->x_fontsize,
         x->x_bg, x->x_fg,
         x->x_label, x->x_rcv_raw, x->x_snd_raw, // label rcv snd
-        gensym("empty"), gensym("empty"), // var
+        x->x_param, x->x_var_raw, // prm var
         x->x_outline, x->x_outmode, // outline, output mode
         x->x_load, x->x_lb, x->x_savestate, // initial value, loadbang, savestate
         x->x_keep, x->x_pos, // save contents, position
@@ -371,34 +411,70 @@ static void menu_save(t_gobj *z, t_binbuf *b){
 // callback comes here
 static void menu_output(t_menu* x, t_floatarg i){
     x->x_idx = i;
-    if(x->x_outmode == 0){ // index + selection
+    if(x->x_outmode == 0){ // just index
+        if(x->x_param != gensym("empty")){
+            t_atom at[1];
+            SETFLOAT(at, x->x_idx);
+            outlet_anything(x->x_obj.ob_outlet, x->x_param, 1, at);
+            if(x->x_snd->s_thing)
+                typedmess(x->x_snd->s_thing, x->x_param, 1, at);
+        }
+        else{
+            outlet_float(x->x_obj.ob_outlet, x->x_idx);
+            if(x->x_snd->s_thing)
+                pd_float(x->x_snd->s_thing, x->x_idx);
+        }
+        if(x->x_var != gensym("empty"))
+            value_setfloat(x->x_var, x->x_idx);
+    }
+    else if(x->x_outmode == 1){ // just selection
+        if((x->x_options+x->x_idx)->a_type == A_SYMBOL){
+            t_symbol *out = atom_getsymbol(x->x_options+x->x_idx);
+            if(x->x_param != gensym("empty")){
+                t_atom at[1];
+                SETSYMBOL(at, out);
+                outlet_anything(x->x_obj.ob_outlet, x->x_param, 1, at);
+                if(x->x_snd->s_thing)
+                    typedmess(x->x_snd->s_thing, x->x_param, 1, at);
+            }
+            else{
+                outlet_symbol(x->x_obj.ob_outlet, out);
+                if(x->x_snd->s_thing)
+                    pd_symbol(x->x_snd->s_thing, out);
+            }
+        }
+        else{
+            float out = atom_getfloat(x->x_options+x->x_idx);
+            if(x->x_param != gensym("empty")){
+                t_atom at[1];
+                SETFLOAT(at, out);
+                outlet_anything(x->x_obj.ob_outlet, x->x_param, 1, at);
+                if(x->x_snd->s_thing)
+                    typedmess(x->x_snd->s_thing, x->x_param, 1, at);
+            }
+            else{
+                outlet_float(x->x_obj.ob_outlet, out);
+                if(x->x_snd->s_thing)
+                    pd_float(x->x_snd->s_thing, out);
+            }
+        }
+    }
+    else if(x->x_outmode == 2){ // index + selection
         t_atom at[2];
         SETFLOAT(at, x->x_idx);
         if((x->x_options+x->x_idx)->a_type == A_SYMBOL)
             SETSYMBOL(at+1, atom_getsymbol(x->x_options+x->x_idx));
         else
             SETFLOAT(at+1, atom_getfloat(x->x_options+x->x_idx));
-        outlet_list(x->x_obj.ob_outlet, &s_list, 2, at);
-        if(x->x_snd->s_thing)
-            pd_list(x->x_snd->s_thing, &s_list, 2, at);
-    }
-    else if(x->x_outmode == 1){ // just index
-        outlet_float(x->x_obj.ob_outlet, x->x_idx);
-        if(x->x_snd->s_thing)
-            pd_float(x->x_snd->s_thing, x->x_idx);
-    }
-    else if(x->x_outmode == 2){ // just selection
-        if((x->x_options+x->x_idx)->a_type == A_SYMBOL){
-            t_symbol *out = atom_getsymbol(x->x_options+x->x_idx);
-            outlet_symbol(x->x_obj.ob_outlet, out);
+        if(x->x_param != gensym("empty")){
+            outlet_anything(x->x_obj.ob_outlet, x->x_param, 2, at);
             if(x->x_snd->s_thing)
-                pd_symbol(x->x_snd->s_thing, out);
+                typedmess(x->x_snd->s_thing, x->x_param, 2, at);
         }
         else{
-            float out = atom_getfloat(x->x_options+x->x_idx);
-            outlet_float(x->x_obj.ob_outlet, out);
+            outlet_list(x->x_obj.ob_outlet, &s_list, 2, at);
             if(x->x_snd->s_thing)
-                pd_float(x->x_snd->s_thing, out);
+                pd_list(x->x_snd->s_thing, &s_list, 2, at);
         }
     }
 }
@@ -409,17 +485,36 @@ static void menu_bang(t_menu* x){
         menu_output(x, x->x_idx);
 }
 
+static void menu_param(t_menu *x, t_symbol *s){
+    if(s == gensym("") || s == &s_)
+        x->x_param = gensym("empty");
+    else
+        x->x_param = s;
+}
+
+static void menu_var(t_menu *x, t_symbol *s){
+    if(s == gensym("") || s == &s_)
+        s = gensym("empty");
+    t_symbol *var = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, s);
+    if(var != x->x_var){
+        x->x_var_set = 1;
+        x->x_var_raw = s;
+        x->x_var = var;
+    }
+}
+
 static void menu_set(t_menu* x, t_floatarg f){
     x->x_idx = f < -1 ? -1 : f >= x->x_n_items ? x->x_n_items - 1 : (int)f;
+    if(!vis(x))
+        return;
     sys_vgui("set %s \"option_%d\" \n", x->x_tag_menu_sel, x->x_idx);
     // Reconfigure the selected entry to match the current index
-    if (x->x_idx >= 0) {
+    if(x->x_idx >= 0){
         sys_vgui("%s entryconfigure %d -variable %s -value \"option_%d\" \n",
             x->x_tag_menu, x->x_idx, x->x_tag_menu_sel, x->x_idx);
     }
-    if(vis(x))
-        pdgui_vmess(0, "rr rs", x->x_tag_mb, "configure",
-            "-text", x->x_idx == -1 ? x->x_label->s_name : x->x_items[x->x_idx]->s_name);
+    pdgui_vmess(0, "rr rs", x->x_tag_mb, "configure",
+        "-text", x->x_idx == -1 ? x->x_label->s_name : x->x_items[x->x_idx]->s_name);
 }
 
 static void menu_float(t_menu* x, t_floatarg f){
@@ -690,10 +785,13 @@ static void *menu_new(t_symbol *s, int ac, t_atom *av){
     x->x_fontsize = 12;
     x->x_fg = gensym("black"), x->x_bg = gensym("#dfdfdf");
     t_symbol *rcv = gensym("empty"), *snd = gensym("empty");
+    t_symbol *param = gensym("empty"), *var = gensym("empty");
     x->x_label = gensym(" ");
     x->x_disabled = x->x_outline = x->x_keep = 1;
     x->x_n_items = x->x_itemcount = x->x_pos = 0;
-    x->x_rcv_set = x->x_r_flag = x->x_snd_set = x->x_s_flag = 0;
+    x->x_rcv_set = x->x_r_flag = 0;
+    x->x_snd_set = x->x_s_flag = 0;
+    x->x_var_set = x->x_v_flag = 0;
     if(ac){
         if(av->a_type == A_FLOAT){
             x->x_width = atom_getintarg(0, ac, av);
@@ -704,8 +802,8 @@ static void *menu_new(t_symbol *s, int ac, t_atom *av){
             x->x_label = atom_getsymbolarg(5, ac, av); // label name
             rcv = atom_getsymbolarg(6, ac, av);
             snd = atom_getsymbolarg(7, ac, av);
-            // prm = atom_getsymbolarg(8, ac, av); // param name
-            // var = atom_getsymbolarg(9, ac, av); // var name
+            param = atom_getsymbolarg(8, ac, av); // param name
+            var = atom_getsymbolarg(9, ac, av); // var name
             x->x_outline = atom_getintarg(10, ac, av);
             x->x_outmode = atom_getintarg(11, ac, av);
             x->x_load = atom_getintarg(12, ac, av);
@@ -785,6 +883,32 @@ static void *menu_new(t_symbol *s, int ac, t_atom *av){
                         x->x_flag = 1, av++, ac--;
                         if(av->a_type == A_SYMBOL){
                             x->x_label = atom_getsymbol(av);
+                            av++, ac--;
+                        }
+                        else
+                            goto errstate;
+                    }
+                    else
+                        goto errstate;
+                }
+                else if(sym == gensym("-param")){
+                    if(ac >= 2){
+                        x->x_flag = 1, av++, ac--;
+                        if(av->a_type == A_SYMBOL){
+                            param = atom_getsymbol(av);
+                            av++, ac--;
+                        }
+                        else
+                            goto errstate;
+                    }
+                    else
+                        goto errstate;
+                }
+                else if(sym == gensym("-var")){
+                    if(ac >= 2){
+                        x->x_flag = x->x_v_flag = 1, av++, ac--;
+                        if(av->a_type == A_SYMBOL){
+                            var = atom_getsymbol(av);
                             av++, ac--;
                         }
                         else
@@ -887,8 +1011,10 @@ static void *menu_new(t_symbol *s, int ac, t_atom *av){
     }
     x->x_edit = x->x_glist->gl_edit;
     x->x_zoom = x->x_glist->gl_zoom;
-    x->x_snd = canvas_realizedollar(x->x_glist, x->x_snd_raw = snd);
+    menu_param(x, param);
     x->x_rcv = canvas_realizedollar(x->x_glist, x->x_rcv_raw = rcv);
+    x->x_snd = canvas_realizedollar(x->x_glist, x->x_snd_raw = snd);
+    x->x_var = canvas_realizedollar(x->x_glist, x->x_var_raw = var);
     x->x_idx = x->x_load;
     switch(x->x_pos){
         case 0:
@@ -955,6 +1081,8 @@ void popmenu_setup(void){
     class_addmethod(menu_class, (t_method)menu_fg, gensym("fg"), A_GIMME, 0);
     class_addmethod(menu_class, (t_method)menu_receive, gensym("receive"), A_DEFSYM, 0);
     class_addmethod(menu_class, (t_method)menu_send, gensym("send"), A_DEFSYM, 0);
+    class_addmethod(menu_class, (t_method)menu_var, gensym("var"), A_DEFSYM, 0);
+    class_addmethod(menu_class, (t_method)menu_param, gensym("param"), A_DEFSYM, 0);
     class_addmethod(menu_class, (t_method)menu_mode, gensym("mode"), A_FLOAT, 0);
     class_addmethod(menu_class, (t_method)menu_label, gensym("label"), A_SYMBOL, 0);
     class_addmethod(menu_class, (t_method)menu_outline, gensym("outline"), A_FLOAT, 0);
