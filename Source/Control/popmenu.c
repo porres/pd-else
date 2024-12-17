@@ -947,11 +947,35 @@ static void *menu_new(t_symbol *s, int ac, t_atom *av){
                     else
                         goto errstate;
                 }
-                else if(sym == gensym("-width")){
-                    x->x_width = 1, av++, ac--;
+                if(sym == gensym("-width")){
+                    if(ac >= 2){
+                        x->x_flag = 1, av++, ac--;
+                        if(av->a_type == A_FLOAT){
+                            x->x_width = atom_getint(av);
+                            if(x->x_width < 40)
+                                x->x_fontsize = 40;
+                            av++, ac--;
+                        }
+                        else
+                            goto errstate;
+                    }
+                    else
+                        goto errstate;
                 }
-                else if(sym == gensym("-height")){
-                    x->x_height = 1, av++, ac--;
+                if(sym == gensym("-height")){
+                    if(ac >= 2){
+                        x->x_flag = 1, av++, ac--;
+                        if(av->a_type == A_FLOAT){
+                            x->x_height = atom_getint(av);
+                            if(x->x_height < 25)
+                                x->x_height = 25;
+                            av++, ac--;
+                        }
+                        else
+                            goto errstate;
+                    }
+                    else
+                        goto errstate;
                 }
                 else if(sym == gensym("-bg")){
                     if(ac >= 2){
