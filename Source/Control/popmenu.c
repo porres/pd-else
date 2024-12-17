@@ -700,9 +700,8 @@ static void menu_properties(t_gobj *z, t_glist *owner){
     else if(x->x_outmode == 2)
         position = gensym("Over");
     pdgui_stub_vnew(&x->x_obj.ob_pd, "menu_dialog", owner,
-        "ff iis iiiis sssssss",
-        (float)(x->x_width / x->x_zoom), // ??????
-        (float)(x->x_height / x->x_zoom), // ???????
+        "ii iis iiiis sssssss",
+        x->x_width, x->x_height,
         x->x_fontsize, x->x_outline, outmode->s_name,
         x->x_load, x->x_lb, x->x_savestate, x->x_keep, position->s_name,
         x->x_label->s_name, x->x_rcv_raw->s_name, x->x_snd_raw->s_name,

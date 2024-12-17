@@ -1113,8 +1113,8 @@ static void knob_properties(t_gobj *z, t_glist *owner){
     else if(x->x_number_mode == 3)
         mode = gensym("Typing");
     pdgui_stub_vnew(&x->x_obj.ob_pd, "knob_dialog", owner,
-        "fi if iif iii ii ffif iii siii ss ss sss",
-        (float)(x->x_size / x->x_zoom), x->x_square, // fi
+        "ii if iif iii ii ffif iii siii ss ss sss",
+        x->x_size, x->x_square, // ii
         x->x_arc, x->x_arcstart, // if
         x->x_lb, x->x_savestate, x->x_load, // iif
         x->x_discrete, x->x_ticks, x->x_steps, // iii
