@@ -35,6 +35,9 @@ typedef struct _pdlua_gfx
     char object_tag[128]; // Tcl/tk tag that is attached to all drawings
     char order_tag[64]; // Tag for invisible line, used to preserve correct object ordering
     char current_item_tag[64]; // Tcl/tk tag that is only attached to the current drawing in progress
+    char** layer_tags;
+    int num_layers;
+    char* current_layer_tag;
     gfx_transform* transforms;
     int num_transforms;
     char current_color[10]; // Keep track of current color
@@ -44,27 +47,30 @@ typedef struct _pdlua_gfx
     int first_draw;
     
 #else
-    void(*plugdata_draw_callback)(void*, t_symbol*, int, t_atom*); // Callback to perform drawing in plugdata
+    int current_layer;
+    void(*plugdata_draw_callback)(void*, int, t_symbol*, int, t_atom*); // Callback to perform drawing in plugdata
 #endif
 } t_pdlua_gfx;
 
 /** Pd object data. */
 typedef struct pdlua 
 {
-    t_object                pd;         // We are a Pd object.
-    int                     inlets;     // Number of inlets.
-    struct pdlua_proxyinlet *proxy_in;  // The inlets themselves.
+    t_object                pd;               // We are a Pd object.
+    int                     inlets;           // Number of inlets.
+    struct pdlua_proxyinlet *proxy_in;        // The inlets themselves.
     t_inlet                 **in;
-    int                     outlets;    // Number of outlets.
-    t_outlet                **out;      // The outlets themselves.
-    int                     siginlets;  // Number of signal inlets.
-    int                     sigoutlets; // Number of signal outlets.
-    int                     sig_warned; // Flag for perform signal errors.
-    t_canvas                *canvas;    // The canvas that the object was created on.
-    int                     has_gui;    // True if graphics are enabled.
-    t_pdlua_gfx             gfx;        // Holds state for graphics.
-    t_class                 *class;     // Holds our class pointer.
-    t_class                 *class_gfx; // Holds our gfx class pointer.
+    int                     outlets;          // Number of outlets.
+    t_outlet                **out;            // The outlets themselves.
+    int                     siginlets;        // Number of signal inlets.
+    int                     sigoutlets;       // Number of signal outlets.
+    int                     sig_warned;       // Flag for perform signal errors.
+    int                     blocksize;        // Blocksize set in dsp method.
+    t_canvas                *canvas;          // The canvas that the object was created on.
+    int                     has_gui;          // True if graphics are enabled.
+    t_pdlua_gfx             gfx;              // Holds state for graphics.
+    t_class                 *pdlua_class;     // Holds our class pointer.
+    t_class                 *pdlua_class_gfx; // Holds our gfx class pointer.
+    t_signal                **sp;             // Array of signal pointers for multichannel audio.
 } t_pdlua;
 
 lua_State* __L();
