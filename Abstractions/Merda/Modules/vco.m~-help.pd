@@ -1,4 +1,4 @@
-#N canvas 509 34 706 685 12;
+#N canvas 486 30 706 685 12;
 #X declare -path else;
 #X obj 47 51 keyboard 17 80 3 3 0 127 empty empty;
 #X obj 243 593 out~;
@@ -60,15 +60,15 @@
 #X restore 179 145 pd messages;
 #X text 286 258 This VCO module has a polyphonic MIDI pitch input. Other inlets are CV signals to set FM (Frequency Modulation) \, PM (Phase Modulation) \, PWM (for square wave and variable saw) and a sync inlet that takes impulses., f 23;
 #X obj 47 211 vco.m~;
-#A saved 26 1 1 0 -0.0708662 -0.244094 -0.0708662 -0.0708662;
+#A saved 16 1 1 0 -0.11811 -0.244094 -0.0708662 -0.0708662;
 #A saved pitchlearn none;
 #A saved FM-att none;
 #A saved;
-#A saved;
+#A saved PWM-knob ctlin 3 7;
 #A saved;
 #X obj 527 316 vsl 19 162 0 127 0 0 empty empty empty 0 -9 0 12 #fcfcfc #000000 #000000 0 1;
-#X obj 527 497 ctlout 3 4;
 #X text 358 441 about.MERDA;
+#X obj 527 497 ctlout 3 7;
 #X connect 0 0 2 0;
 #X connect 2 0 10 0;
 #X connect 2 1 3 0;
@@ -77,4 +77,4 @@
 #X connect 5 0 0 0;
 #X connect 8 0 10 0;
 #X connect 10 0 4 0;
-#X connect 11 0 12 0;
+#X connect 11 0 13 0;

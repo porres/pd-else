@@ -74,7 +74,6 @@
 #X text 232 451 MIDI from learned input, f 47;
 #X obj 209 319 hsl 150 18 0 127 0 0 empty empty empty -2 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X text 100 211 click to learn =>;
-#X text 303 212 Whenever the abstraction learns something new \, you'll be prompted to save your patch when you close it \, so it'll remember when you reopen ir., f 38;
 #X msg 206 185 teach ctlin 19 3;
 #X text 313 185 teach a specific MIDI message;
 #X text 232 407 - teach a specific MIDI message, f 47;
@@ -101,9 +100,10 @@
 #X connect 6 0 3 1;
 #X connect 7 0 4 0;
 #X restore 415 299 pd abstraction-mode;
+#X text 303 212 Whenever the abstraction learns something new \, you'll be prompted to save your patch when you close it \, so it'll remember when you reopen it., f 38;
 #X connect 20 0 33 0;
 #X connect 23 0 33 0;
 #X connect 25 0 33 0;
 #X connect 33 0 41 0;
 #X connect 33 1 24 0;
-#X connect 44 0 33 0;
+#X connect 43 0 33 0;
