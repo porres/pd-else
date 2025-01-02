@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <locale.h>
 #include "m_pd.h"
 
 /* Pattern types.  These are the parsing routine's return values.
@@ -153,10 +154,6 @@ static void format_proxy_float(t_format_proxy *x, t_float f){
 
 static void format_proxy_symbol(t_format_proxy *x, t_symbol *s){
     char buf[FORMAT_MAXWIDTH + 1];
-/*    if(s && *s->s_name)
-        SETSYMBOL(&x->p_atom, s);
-    else
-        SETFLOAT(&x->p_atom, 0);*/
     SETSYMBOL(&x->p_atom, s);
     format_proxy_checkit(x, buf);
     if(x->p_id == 0 && x->p_valid)
@@ -225,7 +222,6 @@ static void format_anything(t_format *x, t_symbol *s, int ac, t_atom *av){
    If there is a "%%" pattern, then the buffer is shrunk in the second pass
    (LATER rethink). */
 static int format_parsepattern(t_format *x, char **patternp){
-    post("format_parsepattern patternp = %s", patternp);
     int type = FORMAT_UNSUPPORTED;
     char errstring[MAXPDSTRING];
     char *ptr;
@@ -298,6 +294,23 @@ static int format_parsepattern(t_format *x, char **patternp){
             }
             break;
         }
+        else if (*ptr == '\\') {
+            if (x) {  // buffer-shrinking hack
+                char *p1 = ptr;       // Points to the backslash
+                char *p2 = ptr + 1;   // Points to the next character (e.g., the space)
+                
+                if (*p2 != '\0') {    // Ensure there's a character after the backslash
+                    // Shift everything left, overwriting the backslash
+                    do {
+                        *p1++ = *p2++;
+                    } while (*p2);
+                    *p1 = '\0';  // Null-terminate the string
+                }
+
+                // Adjust the pointer so that the current position is correctly processed
+                ptr--;
+            }
+        }
         else if(strchr("CSnm", *ptr)){
             if(x) sprintf(errstring, "\'%c\' type not supported", *ptr);
                 break;
@@ -345,13 +358,13 @@ static int format_parsepattern(t_format *x, char **patternp){
             if(x) sprintf(errstring, "%s parameter not supported", (dotseen ? "precision" : "width"));
                 break;
         }
-        else if(!strchr("-+ #\'", *ptr)){
+        else if(!strchr("-+ #\'", *ptr)){ // accepted flags
             if(x) sprintf(errstring, "\'%c\' format character not supported", *ptr);
                 break;
         }
     }
     if(*ptr)
-        ptr++;  /* LATER rethink */
+        ptr++;  // LATER rethink
     else
         if(x) sprintf(errstring, "type not specified");
             if(x && type == FORMAT_UNSUPPORTED){
@@ -405,7 +418,7 @@ static char *format_gettext(int ac, t_atom *av, int *sizep){
 static void *format_new(t_symbol *s){
     t_format *x = (t_format *)pd_new(format_class);
     outlet_new((t_object *)x, &s_symbol);
-    
+    setlocale(LC_NUMERIC, "en_US.UTF-8");
     char *fstring, *p1, *p2;
     int i, nslots, nproxies = 0;
     t_pd **proxies;
