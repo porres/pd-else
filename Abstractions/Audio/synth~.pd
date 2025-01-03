@@ -98,7 +98,7 @@
 #X obj 213 50 inlet;
 #X obj 96 192 else/router;
 #X obj 96 233 else/mono;
-#X msg 213 136 voices \$1;
+#X msg 213 136 n \$1;
 #X obj 230 93 r \$0-n;
 #X obj 170 136 > 1;
 #X obj 96 267 pack;
