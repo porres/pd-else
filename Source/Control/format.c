@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <locale.h>
+//#include <locale.h>
 #include "m_pd.h"
 
 /* Pattern types.  These are the parsing routine's return values.
@@ -258,7 +258,7 @@ static int format_parsepattern(t_format *x, char **patternp){
             type = FORMAT_INT;
             break;
         }
-        else if(strchr("eEfFgG", *ptr)){
+        else if(strchr("eEfFgGaA", *ptr)){
 /*            if(modifier)
                 {
                 if(x) sprintf(errstring, "\'%c\' modifier not supported", modifier);
@@ -285,7 +285,7 @@ static int format_parsepattern(t_format *x, char **patternp){
             }
         else if(*ptr == '%'){
             type = FORMAT_LITERAL;
-            if(x){  // buffer-shrinking hack, LATER rethink
+            if(x){  // buffer-shrinking hack at the 2nd run
                 char *p1 = ptr, *p2 = ptr + 1;
                 do
                     *p1++ = *p2;
@@ -294,8 +294,8 @@ static int format_parsepattern(t_format *x, char **patternp){
             }
             break;
         }
-        else if (*ptr == '\\') {
-            if (x) {  // buffer-shrinking hack
+        else if (*ptr == '\\'){ // ignore escape character (needed for space flag)
+            if(x){  // buffer-shrinking hack at the 2nd run
                 char *p1 = ptr;       // Points to the backslash
                 char *p2 = ptr + 1;   // Points to the next character (e.g., the space)
                 
@@ -306,7 +306,6 @@ static int format_parsepattern(t_format *x, char **patternp){
                     } while (*p2);
                     *p1 = '\0';  // Null-terminate the string
                 }
-
                 // Adjust the pointer so that the current position is correctly processed
                 ptr--;
             }
@@ -338,7 +337,7 @@ static int format_parsepattern(t_format *x, char **patternp){
             }
             modifier = *ptr;
         }
-        else if(strchr("aAhjLqtzZ", *ptr)){
+        else if(strchr("hjLqtzZ", *ptr)){
             if(x) sprintf(errstring, "\'%c\' modifier not supported", *ptr);
                 break;
         }
@@ -418,18 +417,16 @@ static char *format_gettext(int ac, t_atom *av, int *sizep){
 static void *format_new(t_symbol *s){
     t_format *x = (t_format *)pd_new(format_class);
     outlet_new((t_object *)x, &s_symbol);
-    setlocale(LC_NUMERIC, "en_US.UTF-8");
+    
     char *fstring, *p1, *p2;
     int i, nslots, nproxies = 0;
     t_pd **proxies;
-    
     int fsize;
     t_atom at[1];
     SETSYMBOL(at, s);
     fstring = format_gettext(1, at, &fsize);
-    
     p1 = fstring;
-    
+    // check for number of slots
     while((p2 = strchr(p1, '%'))){
         int type;
         p1 = p2 + 1;
@@ -437,13 +434,14 @@ static void *format_new(t_symbol *s){
         if(type >= FORMAT_MINSLOTTYPE)
             nproxies++;
     }
-    if(!nproxies){
+    if(!nproxies){ // if no slots found
         x->x_nslots = 0;
         x->x_nproxies = 0;
         x->x_proxies = 0;
         x->x_fsize = fsize;
         x->x_fstring = fstring;
         p1 = fstring;
+        // rescan and print errors now
         while((p2 = strchr(p1, '%'))){
             p1 = p2 + 1;
             format_parsepattern(x, &p1);
@@ -512,4 +510,5 @@ void format_setup(void){
     class_addfloat(format_proxy_class, format_proxy_float);
     class_addsymbol(format_proxy_class, format_proxy_symbol);
     class_addanything(format_proxy_class, format_proxy_anything);
+//    setlocale(LC_NUMERIC, "en_US.UTF-8");
 }
