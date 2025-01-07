@@ -199,10 +199,12 @@ static void *square_new(t_symbol *s, int ac, t_atom *av)
         f1 = av->a_w.w_float;
         ac--; av++;
         if (ac && av->a_type == A_FLOAT)
+        {
             f2 = av->a_w.w_float;
             ac--; av++;
             if (ac && av->a_type == A_FLOAT)
                 f3 = av->a_w.w_float;
+        }
     }
     t_float init_freq = f1;
     t_float init_width = f2;
