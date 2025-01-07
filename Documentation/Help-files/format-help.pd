@@ -4,7 +4,7 @@
 #X obj 1 361 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
 #X obj 96 335 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 1 401 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
-#N canvas 433 97 840 568 examples 1;
+#N canvas 433 97 840 568 examples 0;
 #X text 52 149 float example;
 #X obj 55 171 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X msg 223 161 10.6;
@@ -81,7 +81,7 @@
 #X restore 2 4 graph;
 #X obj 200 244 else/display;
 #N canvas 328 190 521 598 variables 0;
-#N canvas 643 80 374 280 %% 1;
+#N canvas 643 80 374 280 %% 0;
 #X obj 127 215 else/display;
 #X obj 127 187 else/format %d%%;
 #X msg 127 156 100;
