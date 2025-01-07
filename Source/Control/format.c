@@ -142,7 +142,7 @@ static void format_dooutput(t_format *x){
             outsize += y->p_size;
         else{
             /* slot i has received an invalid input -- CHECKME if this
-	       condition blocks all subsequent output requests? */
+               condition blocks all subsequent output requests? */
             return;
         }
     }
@@ -161,8 +161,33 @@ static void format_dooutput(t_format *x){
             inp = y->p_pattend;
         }
         strcpy(outp, inp);
-        outp = outstring;
-        outlet_symbol(((t_object *) x)->ob_outlet, gensym(outstring));
+
+        // Remove backslashes and handle escape sequences
+        char *final_outp = outstring;
+        char *temp_outp = outstring;
+        while (*final_outp) {
+            if (*final_outp == '\\') {
+                // Count consecutive backslashes
+                int backslash_count = 0;
+                while (final_outp[backslash_count] == '\\') {
+                    backslash_count++;
+                }
+
+                // Copy half of the backslashes (integer division)
+                int to_copy = backslash_count / 2;
+                for (int j = 0; j < to_copy; j++) {
+                    *temp_outp++ = '\\';
+                }
+                // Skip all the backslashes we've already processed
+                final_outp += backslash_count;
+            } else {
+                *temp_outp++ = *final_outp++;
+            }
+        }
+        *temp_outp = '\0';  // Null-terminate the final string
+
+        // Output the modified string
+        outlet_symbol(((t_object *)x)->ob_outlet, gensym(outstring));
         freebytes(outstring, outsize);
     }
 }
