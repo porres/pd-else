@@ -37,7 +37,7 @@
 #define FORMAT_MAXWIDTH      256
 
 typedef struct _format{
-    t_object  x_ob;
+    t_object  x_obj;
     int       x_nslots;
     int       x_nproxies;  /* as requested (and allocated) */
     t_pd    **x_proxies;
@@ -47,7 +47,7 @@ typedef struct _format{
 }t_format;
 
 typedef struct _format_proxy{
-    t_object    p_ob;
+    t_object    p_obj;
     t_format  *p_master;
     int         p_id;
     int         p_type;  /* a value #defined above */
@@ -60,7 +60,6 @@ typedef struct _format_proxy{
 
 static t_class *format_class, *format_proxy_class;
 
-/* LATER use snprintf, if it is available on other systems (should be...) */
 static void format_proxy_checkit(t_format_proxy *x, char *buf){
     int result = 0, valid = 0;
     char *pattend = x->p_pattend;
@@ -131,9 +130,10 @@ static void format_proxy_checkit(t_format_proxy *x, char *buf){
         x->p_size = 0;
 }
 
-static void format_dooutput(t_format *x){
+static t_symbol* format_getsymbol(t_format *x){
     int i, outsize;
     char *outstring;
+    t_symbol *sym = NULL;
     outsize = x->x_fsize;  /* this is strlen() + 1 */
     /* LATER consider subtracting format pattern sizes */
     for(i = 0; i < x->x_nslots; i++){
@@ -143,7 +143,7 @@ static void format_dooutput(t_format *x){
         else{
             /* slot i has received an invalid input -- CHECKME if this
                condition blocks all subsequent output requests? */
-            return;
+            return(NULL);
         }
     }
     if(outsize > 0 && (outstring = getbytes(outsize))){
@@ -165,39 +165,45 @@ static void format_dooutput(t_format *x){
         // Remove backslashes and handle escape sequences
         char *final_outp = outstring;
         char *temp_outp = outstring;
-        while (*final_outp) {
-            if (*final_outp == '\\') {
+        while(*final_outp){
+            if(*final_outp == '\\'){
                 // Count consecutive backslashes
                 int backslash_count = 0;
-                while (final_outp[backslash_count] == '\\') {
+                while(final_outp[backslash_count] == '\\')
                     backslash_count++;
-                }
-
                 // Copy half of the backslashes (integer division)
                 int to_copy = backslash_count / 2;
-                for (int j = 0; j < to_copy; j++) {
+                for (int j = 0; j < to_copy; j++)
                     *temp_outp++ = '\\';
-                }
                 // Skip all the backslashes we've already processed
                 final_outp += backslash_count;
-            } else {
-                *temp_outp++ = *final_outp++;
             }
+            else
+                *temp_outp++ = *final_outp++;
         }
         *temp_outp = '\0';  // Null-terminate the final string
 
-        // Output the modified string
-        outlet_symbol(((t_object *)x)->ob_outlet, gensym(outstring));
+        // Get the modified string
+        sym = gensym(outstring);
         freebytes(outstring, outsize);
+        return(sym);
     }
+    else
+        return(NULL);
+}
+
+static void format_dooutput(t_format *x){
+    t_symbol *outsym = format_getsymbol(x);
+    if(outsym != NULL)
+        outlet_symbol(x->x_obj.ob_outlet, outsym);
 }
 
 static void format_proxy_float(t_format_proxy *x, t_float f){
-    char buf[FORMAT_MAXWIDTH + 1];  /* LATER rethink */
+    char buf[FORMAT_MAXWIDTH + 1];
     SETFLOAT(&x->p_atom, f);
     format_proxy_checkit(x, buf);
     if(x->p_id == 0 && x->p_valid)
-	format_dooutput(x->p_master);  /* CHECKED: only first inlet */
+        format_dooutput(x->p_master); // only first inlet
 }
 
 static void format_proxy_symbol(t_format_proxy *x, t_symbol *s){
@@ -205,7 +211,7 @@ static void format_proxy_symbol(t_format_proxy *x, t_symbol *s){
     SETSYMBOL(&x->p_atom, s);
     format_proxy_checkit(x, buf);
     if(x->p_id == 0 && x->p_valid)
-	format_dooutput(x->p_master);  /* CHECKED: only first inlet */
+        format_dooutput(x->p_master); // only first inlet
 }
 
 static void format_dolist(t_format *x, t_symbol *s, int ac, t_atom *av, int startid){
@@ -517,7 +523,7 @@ static char *format_gettext(int ac, t_atom *av, int *sizep){
             size--;
         atom_string(av, atomtext, MAXPDSTRING);
         newsize = size + strlen(atomtext) + 1;
-        if (!(newbuf = resizebytes(buf, size, newsize))){
+        if(!(newbuf = resizebytes(buf, size, newsize))){
             *sizep = 1;
             return (getbytes(1));
         }

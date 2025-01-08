@@ -23,7 +23,7 @@
 #X connect 7 3 2 0;
 #X connect 7 4 3 0;
 #X restore 225 486 pd accident;
-#N canvas 128 89 692 722 scale 1;
+#N canvas 128 89 692 722 scale 0;
 #X obj 118 54 inlet;
 #X obj 245 613 outlet;
 #X obj 192 99 list length;
@@ -461,7 +461,7 @@
 #X msg 229 173 2 2 1 2 2 2 1;
 #X obj 229 246 s \$0-scale;
 #X obj 376 248 array define -k \$0-scale 12;
-#A 0 0 2 1 2 2 2 2 1 1 2 0 0;
+#A 0 0 2 2 1 2 2 2 1 1 2 0 0;
 #X obj 376 224 array define -k \$0-major 12;
 #A 0 2 2 1 2 2 2 1 0 0 0 0 0;
 #X text 473 198 resize to 7?;

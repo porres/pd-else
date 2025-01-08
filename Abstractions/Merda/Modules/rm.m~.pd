@@ -15,7 +15,7 @@
 #X obj 141 51 else/loadbanger 2;
 #X obj 141 201 else/dollsym 1;
 #X obj 257 76 symbol rm-id_\\\$0;
-#X obj 141 166 else/format symbol \\\$0-rm-%d;
+#X obj 141 166 makefilename \\\$0-rm-%d;
 #X connect 0 0 2 0;
 #X connect 1 0 2 1;
 #X connect 2 0 0 0;
@@ -61,10 +61,10 @@
 #N canvas 227 82 394 451 (subpatch) 0;
 #X obj 112 112 cnv 15 82 225 empty empty empty 20 12 0 14 #dbdbdb #373737 0;
 #X obj 121 120 note 62 18 Inter empty 5 54 54 54 0 187 187 187 1 1 RING MOD;
-#X obj 129 177 else/knob 50 20 2000 1 20 \$0-hz \$0-set-hz #dfdfdf #bbbbbb #000000 0 0 0 0 1 320 0 0 20;
+#X obj 129 177 else/knob 50 20 2000 1 20 \$0-hz \$0-set-hz #dfdfdf #bbbbbb #000000 0 0 0 0 1 320 0 0 20 empty empty 0 0 0 0 0 0 0 0;
 #X text 145 231 Hz;
 #X floatatom 129 250 7 0 0 0 - \$0-hz \$0-hz-number 12;
-#X obj 136 278 knob 40 -1 1 0 0 \$0-att \$0-set-att #202020 #7c7c7c #ff0400 0 0 0 0 1 320 0 0 0;
+#X obj 136 278 knob 40 -1 1 0 0 \$0-att \$0-set-att #202020 #7c7c7c #ff0400 0 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0;
 #X text 142 318 Att.;
 #X coords 0 1 100 -1 84 227 1 111 111;
 #X restore 256 147 graph;

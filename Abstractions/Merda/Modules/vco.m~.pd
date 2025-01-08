@@ -1,4 +1,4 @@
-#N canvas 168 148 751 390 12;
+#N canvas 284 118 751 390 12;
 #X declare -path else;
 #X obj 286 127 inlet~;
 #X obj 286 292 outlet~;
@@ -78,7 +78,7 @@
 #X text 104 170 PWM;
 #X obj 56 121 else/popmenu 75 26 12 #dfdfdf black \  \$0-set-waveform \$0-waveform empty empty 0 0 -1 1 0 1 0 0 0 0 0 sine tri saw vsaw square;
 #X text 62 102 WAVEFORM:;
-#X obj 141 178 note 55 12 Menlo \$0-set-note-st 0 0 0 0 0 255 255 255 0 1 +02 st;
+#X obj 141 178 note 55 12 Menlo \$0-set-note-st 0 0 0 0 0 255 255 255 0 1 +00 st;
 #X text 97 205 Lin FM, f 3;
 #X coords 0 1 100 -1 161 277 1 50 50;
 #X restore 58 72 graph;
@@ -94,17 +94,17 @@
 #X obj 141 252 outlet;
 #X obj 141 51 else/loadbanger 2;
 #X obj 141 201 else/dollsym 1;
-#X obj 141 166 else/format symbol \\\$0-vco-%d;
 #X obj 257 76 symbol vco-id_\\\$0;
+#X obj 141 166 makefilename \\\$0-vco-%d;
 #X connect 0 0 2 0;
 #X connect 1 0 2 1;
 #X connect 2 0 0 0;
-#X connect 2 0 6 0;
+#X connect 2 0 7 0;
 #X connect 4 0 2 0;
-#X connect 4 1 7 0;
+#X connect 4 1 6 0;
 #X connect 5 0 3 0;
-#X connect 6 0 5 0;
-#X connect 7 0 1 0;
+#X connect 6 0 1 0;
+#X connect 7 0 5 0;
 #X restore 97 46 pd id-name-init;
 #X obj 98 331 else/var \$0-pitch \$0-lin \$0-soft \$0-waveform \$0-PWM \$0-att-fm \$0-att-pm \$0-att-pwm, f 45;
 #X obj 123 258 else/dispatch \$0-pitch-set \$0-lin-set \$0-soft-set \$0-set-waveform \$0-set-PWM \$0-att-fm-set \$0-att-pm-set \$0-att-pwm-set, f 65;

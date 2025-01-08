@@ -3,10 +3,10 @@
 #N canvas 227 82 394 451 (subpatch) 0;
 #X obj 112 112 cnv 15 142 185 empty empty empty 20 12 0 14 #dbdbdb #373737 0;
 #X obj 123 121 note 121 24 Inter empty 5 54 54 54 0 187 187 187 1 1 FLANGER;
-#X obj 126 244 else/knob 41 -1 1 0 0 \$0-coeff \$0-set-coeff #dfdfdf #bbbbbb #000000 0 0 0 0 1 320 0 0 0;
-#X obj 125 177 else/knob 41 0.1 5 4 0.1 \$0-rate \$0-set-rate #dfdfdf #bbbbbb #000000 0 0 0 0 1 320 0 0 0.1;
-#X obj 192 177 else/knob 41 0 25 2 0 \$0-depth \$0-set-depth #dfdfdf #afafaf black 0 0 0 0 1 320 0 0 0;
-#X obj 195 244 else/knob 41 -1 1 0 0 \$0-wet \$0-set-wet #9f9f9f #afafaf black 0 0 0 0 1 320 0 0 0;
+#X obj 126 244 else/knob 41 -1 1 0 0 \$0-coeff \$0-set-coeff #dfdfdf #bbbbbb #000000 0 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0;
+#X obj 125 177 else/knob 41 0.1 5 4 0.1 \$0-rate \$0-set-rate #dfdfdf #bbbbbb #000000 0 0 0 0 1 320 0 0 0.1 empty empty 0 0 0 0 0 0 0 0;
+#X obj 192 177 else/knob 41 0 25 2 0 \$0-depth \$0-set-depth #dfdfdf #afafaf black 0 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0;
+#X obj 195 244 else/knob 41 -1 1 0 0 \$0-wet \$0-set-wet #9f9f9f #afafaf black 0 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0;
 #X text 188 224 Dry/Wet;
 #X text 127 224 Coeff;
 #X text 130 158 Rate;
@@ -28,7 +28,7 @@
 #X obj 141 51 else/loadbanger 2;
 #X obj 141 201 else/dollsym 1;
 #X obj 257 76 symbol flanger-id_\\\$0;
-#X obj 141 166 else/format symbol \\\$0-flanger-%d;
+#X obj 141 166 makefilename \\\$0-flanger-%d;
 #X connect 0 0 2 0;
 #X connect 1 0 2 1;
 #X connect 2 0 0 0;

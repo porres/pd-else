@@ -106,14 +106,13 @@
 #X connect 21 0 1 0;
 #X restore 59 163 pd phase-accum;
 #X text 333 122 Part of ELSE \; https://github.com/porres/pd-else;
-#X text 335 169 This is an abstraction used on the [pvoc.player~] object
-, f 28;
+#X text 335 169 This is an abstraction used on the [pvoc.player~] object, f 28;
 #X obj 190 196 tabsend~ \$0-im;
 #X obj 190 221 tabsend~ \$0-re;
 #X obj 199 111 tabreceive~ \$0-im;
 #X obj 199 83 tabreceive~ \$0-re;
 #X obj 107 334 *~ 0;
-#N canvas 329 28 629 569 read-tables 0;
+#N canvas 329 38 629 569 read-tables 0;
 #X obj 275 244 + 1;
 #X obj 275 509 outlet~;
 #X obj 80 509 outlet~;
@@ -142,7 +141,8 @@
 #X obj 440 359 else/dollsym 1;
 #X obj 275 452 tabread4~;
 #X obj 80 452 tabread4~;
-#X obj 440 386 else/format set %s-\$1;
+#X msg 440 410 set \$1;
+#X obj 440 386 makefilename %s-\$1;
 #X connect 0 0 5 0;
 #X connect 0 0 7 0;
 #X connect 3 0 4 0;
@@ -172,11 +172,12 @@
 #X connect 22 0 6 1;
 #X connect 23 0 20 0;
 #X connect 24 0 25 0;
-#X connect 25 0 28 0;
+#X connect 25 0 29 0;
 #X connect 26 0 1 0;
 #X connect 27 0 2 0;
 #X connect 28 0 26 0;
 #X connect 28 0 27 0;
+#X connect 29 0 28 0;
 #X restore 32 28 pd read-tables;
 #X obj 113 66 else/hann~;
 #X obj 32 66 else/hann~;

@@ -17,7 +17,7 @@
 #N canvas 286 77 427 473 (subpatch) 0;
 #X obj 51 51 cnv 19 170 265 empty empty empty 20 12 0 12 #e0e0e0 #404040 0;
 #X floatatom 66 162 7 -36 36 0 - \$0-set-hz-number \$0-hz-number 12;
-#X obj 66 114 else/knob 45 0.1 20 1 0.1 \$0-hz \$0-hz-set #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0.1;
+#X obj 66 114 else/knob 45 0.1 20 1 0.1 \$0-hz \$0-hz-set #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0.1 empty empty 0 0 0 0 0 0 0 0;
 #X obj 284 253 tgl 22 0 \$0-soft \$0-soft-set empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X obj 79 59 note 101 24 Inter empty 5 54 54 54 0 187 187 187 1 1 LFO;
 #X obj 140 106 vradio 20 1 0 5 \$0-waveform \$0-set-waveform empty 0 -10 0 12 #dfdfdf #000000 #000000 0;
@@ -26,14 +26,14 @@
 #X text 166 147 saw;
 #X text 165 168 vsaw;
 #X text 163 188 square;
-#X obj 66 202 else/knob 45 -1 1 0 0 \$0-PWM \$0-set-PWM #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0;
+#X obj 66 202 else/knob 45 -1 1 0 0 \$0-PWM \$0-set-PWM #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0;
 #X text 75 184 PWM;
 #X text 82 96 Hz;
 #X obj 137 220 tgl 22 0 \$0-unipolar \$0-set-unipolar empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X text 162 221 Unipolar;
 #X text 329 274 Soft Sync;
-#X obj 82 273 else/knob 35 -1 1 0 0 \$0-att-fm \$0-att-fm-set #bbbbbb #7c7c7c black 0 0 0 0 1 320 0 0 0;
-#X obj 139 273 else/knob 35 -1 1 0 0 \$0-att-pwm \$0-att-pwm-set #bbbbbb #7c7c7c black 0 0 0 0 1 320 0 0 0;
+#X obj 82 273 else/knob 35 -1 1 0 0 \$0-att-fm \$0-att-fm-set #bbbbbb #7c7c7c black 0 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0;
+#X obj 139 273 else/knob 35 -1 1 0 0 \$0-att-pwm \$0-att-pwm-set #bbbbbb #7c7c7c black 0 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0;
 #X text 80 253 Attenuverters;
 #X text 58 282 FM;
 #X text 182 282 PWM;
@@ -52,7 +52,7 @@
 #X obj 141 51 else/loadbanger 2;
 #X obj 141 201 else/dollsym 1;
 #X obj 257 76 symbol lfo-id_\\\$0;
-#X obj 141 166 else/format symbol \\\$0-lfo-%d;
+#X obj 141 166 makefilename \\\$0-lfo-%d;
 #X connect 0 0 2 0;
 #X connect 1 0 2 1;
 #X connect 2 0 0 0;
