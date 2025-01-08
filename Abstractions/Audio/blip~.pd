@@ -1,5 +1,4 @@
-#N canvas 826 24 420 422 10;
-#X declare -path else;
+#N canvas 826 38 420 422 10;
 #X obj 37 375 outlet~;
 #X obj 37 282 /~;
 #X obj 269 251 table \$0-cos;
@@ -320,7 +319,6 @@
 #X obj 37 50 r \$0-init-hz;
 #X text 192 303 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 194 284 Matt Barber & Porres (2022);
-#X obj 218 345 declare -path else;
 #X obj 37 78 inlet~ fwd;
 #X obj 223 47 r \$0-init-mul;
 #X obj 223 78 inlet~;
@@ -352,13 +350,13 @@
 #X connect 6 0 5 0;
 #X connect 7 0 3 1;
 #X connect 7 0 4 1;
-#X connect 10 0 14 0;
-#X connect 14 0 17 0;
-#X connect 14 1 21 0;
-#X connect 15 0 16 0;
-#X connect 16 0 7 0;
-#X connect 17 0 4 0;
-#X connect 17 0 3 0;
-#X connect 18 0 17 1;
-#X connect 19 0 17 2;
-#X connect 20 0 17 0;
+#X connect 10 0 13 0;
+#X connect 13 0 16 0;
+#X connect 13 1 20 0;
+#X connect 14 0 15 0;
+#X connect 15 0 7 0;
+#X connect 16 0 4 0;
+#X connect 16 0 3 0;
+#X connect 17 0 16 1;
+#X connect 18 0 16 2;
+#X connect 19 0 16 0;

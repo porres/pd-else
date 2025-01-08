@@ -1,5 +1,4 @@
 #N canvas 457 94 534 530 12;
-#X declare -path else;
 #X obj 143 316 timer;
 #X obj 143 374 sel 1;
 #X obj 143 176 t b b b a, f 14;
@@ -23,7 +22,6 @@
 #X obj 44 176 else/router;
 #X obj 113 280 else/nmess 1;
 #X obj 369 158 else/lb;
-#X obj 383 90 declare -path else;
 #X obj 369 189 else/args;
 #X connect 0 0 17 0;
 #X connect 1 0 19 0;
@@ -51,5 +49,5 @@
 #X connect 20 1 2 0;
 #X connect 21 0 0 0;
 #X connect 21 1 0 1;
-#X connect 22 0 24 0;
-#X connect 24 0 15 0;
+#X connect 22 0 23 0;
+#X connect 23 0 15 0;

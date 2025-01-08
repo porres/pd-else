@@ -1,5 +1,4 @@
 #N canvas 454 156 623 357 12;
-#X declare -path else;
 #X obj 66 29 inlet;
 #N canvas 452 265 330 249 ctl 0;
 #X obj 96 55 r \$0-cooked;
@@ -67,7 +66,6 @@
 #X restore 194 269 pd sysrt;
 #X obj 64 306 outlet;
 #X text 337 231 Part of ELSE \; https://github.com/porres/pd-else;
-#X obj 379 164 declare -path else;
 #X text 339 212 Alexandre Torres Porres (2023);
 #X obj 66 116 s \$0-cooked;
 #X obj 64 204 r \$0-raw;
@@ -111,6 +109,6 @@
 #X restore 74 154 pd init;
 #X obj 341 29 inlet;
 #X obj 341 64 s \$0-ch;
-#X connect 0 0 11 0;
-#X connect 12 0 7 0;
-#X connect 16 0 17 0;
+#X connect 0 0 10 0;
+#X connect 11 0 7 0;
+#X connect 15 0 16 0;

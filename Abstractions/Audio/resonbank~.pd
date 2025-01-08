@@ -1,5 +1,4 @@
 #N canvas 274 43 618 354 10;
-#X declare -path else;
 #X obj 75 48 inlet~ fwd;
 #N canvas 669 117 652 571 route/init 0;
 #X obj 285 469 outlet;
@@ -187,7 +186,6 @@
 #X obj 75 175 clone -x -do else/resonbank.unit 1;
 #X text 328 179 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 330 160 Alexandre Torres Porres (2017);
-#X obj 395 126 declare -path else;
 #X connect 0 0 4 0;
 #X connect 0 1 1 0;
 #X connect 1 0 4 0;

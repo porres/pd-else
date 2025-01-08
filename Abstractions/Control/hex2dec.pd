@@ -1,5 +1,4 @@
 #N canvas 774 84 476 522 10;
-#X declare -path else;
 #X msg 191 314 0;
 #X obj 191 343 v i_\$0;
 #X obj 127 369 v sum_\$0;
@@ -21,9 +20,7 @@
 #X obj 124 45 inlet;
 #X obj 124 177 t l l;
 #X obj 188 309 expr $f1 == 48 && ($f2 == 88 || $f2 == 120);
-#X obj 124 525 expr i_\$0 = i_\$0 + 1 \; sum_\$0 = sum_\$0 + if($f1
-<= 57 \, $f1 -48 \, if($f1 > 57 && $f1 < 88 \, $f1 - 55 \, $f1 -87))
-* pow(16 \, i_\$0), f 52;
+#X obj 124 525 expr i_\$0 = i_\$0 + 1 \; sum_\$0 = sum_\$0 + if($f1 <= 57 \, $f1 -48 \, if($f1 > 57 && $f1 < 88 \, $f1 - 55 \, $f1 -87)) * pow(16 \, i_\$0), f 52;
 #X obj 124 205 else/router;
 #X connect 0 0 11 0;
 #X connect 1 0 13 0;
@@ -58,7 +55,6 @@
 #X text 233 229 Alexandre Torres Porres (2018-2021);
 #X obj 84 164 else/message 0;
 #X obj 219 104 else/args;
-#X obj 307 86 declare -path else;
 #X connect 0 0 1 0;
 #X connect 0 0 2 0;
 #X connect 2 0 14 0;

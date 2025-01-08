@@ -1,11 +1,9 @@
-#N canvas 395 23 739 711 12;
-#X declare -path else;
+#N canvas 395 38 739 711 12;
 #X obj 282 304 array set s_\$0;
 #X obj 206 335 array set t_\$0;
 #X obj 131 401 line;
 #X obj 131 469 t b b f;
-#X obj 154 536 expr s_\$0[$f1] + (t_\$0[$f1]-s_\$0[$f1]) * $f2, f
-27;
+#X obj 154 536 expr s_\$0[$f1] + (t_\$0[$f1]-s_\$0[$f1]) * $f2, f 27;
 #X obj 282 277 list;
 #X obj 395 356 array define s_\$0;
 #X obj 395 386 array define t_\$0;
@@ -86,7 +84,6 @@
 #X connect 2 0 1 0;
 #X restore 343 101 pd exp;
 #X obj 220 64 route float list set exp;
-#X obj 516 134 declare -path else;
 #X connect 2 0 36 0;
 #X connect 3 0 9 0;
 #X connect 3 1 8 0;

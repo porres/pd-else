@@ -1,7 +1,5 @@
 #N canvas 478 75 528 428 10;
-#X declare -path else;
-#X obj 35 194 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 35 194 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 67 322 metro;
 #X obj 35 33 inlet;
 #X text 39 10 gate;
@@ -95,10 +93,8 @@
 #X obj 203 91 f;
 #X obj 395 95 v beat_\$0;
 #X obj 69 129 trigger float bang;
-#X obj 203 118 expr beat_\$0 = if($f1 \, tempo_\$0 / div_\$0 \, tempo_\$0
-* div_\$0), f 41;
-#X obj 69 162 expr beat_\$0 * exp(log((swing_\$0 / 100) + 1) * $f1)
-;
+#X obj 203 118 expr beat_\$0 = if($f1 \, tempo_\$0 / div_\$0 \, tempo_\$0 * div_\$0), f 41;
+#X obj 69 162 expr beat_\$0 * exp(log((swing_\$0 / 100) + 1) * $f1);
 #X obj 275 218 select 1 0 2;
 #X obj 170 289 * 1;
 #X msg 185 256 1;
@@ -156,14 +152,13 @@
 #X obj 354 166 v tempo_\$0;
 #X obj 156 160 s \$0-unit;
 #X obj 247 128 max 1e-38;
-#X obj 300 262 declare -path else;
 #X obj 35 75 route float bang start stop hz ms bpm mul seed;
 #X obj 261 101 s \$0-seed;
 #X obj 85 47 r \$0-sync;
 #X connect 0 0 15 0;
 #X connect 1 0 11 0;
 #X connect 1 0 21 0;
-#X connect 2 0 31 0;
+#X connect 2 0 30 0;
 #X connect 5 0 4 0;
 #X connect 6 0 26 0;
 #X connect 9 0 6 0;
@@ -183,13 +178,13 @@
 #X connect 26 0 21 0;
 #X connect 26 1 27 0;
 #X connect 29 0 24 0;
-#X connect 31 0 14 0;
-#X connect 31 1 16 0;
-#X connect 31 2 18 0;
-#X connect 31 3 19 0;
-#X connect 31 4 25 0;
-#X connect 31 5 22 0;
-#X connect 31 6 23 0;
-#X connect 31 7 29 0;
-#X connect 31 8 32 0;
-#X connect 33 0 31 0;
+#X connect 30 0 14 0;
+#X connect 30 1 16 0;
+#X connect 30 2 18 0;
+#X connect 30 3 19 0;
+#X connect 30 4 25 0;
+#X connect 30 5 22 0;
+#X connect 30 6 23 0;
+#X connect 30 7 29 0;
+#X connect 30 8 31 0;
+#X connect 32 0 30 0;

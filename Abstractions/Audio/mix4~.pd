@@ -1,5 +1,4 @@
 #N canvas 332 139 967 384 10;
-#X declare -path else;
 #X obj 570 297 outlet~;
 #N canvas 341 432 316 326 gain~ 0;
 #N canvas 251 205 450 331 quartic 0;
@@ -563,7 +562,6 @@
 #X obj 239 101 cnv 2 22 2 empty empty empty 20 12 0 14 #e0e0e0 #404040 0;
 #X obj 270 101 cnv 2 10 2 empty empty empty 20 12 0 14 #e0e0e0 #404040 0;
 #X obj 283 101 cnv 1 35 2 empty empty empty 20 12 0 14 #e0e0e0 #404040 0;
-#X obj 749 151 declare -path else;
 #X obj 486 41 inlet~;
 #X obj 384 113 snake~ out 4;
 #X connect 1 0 6 0;
@@ -577,11 +575,11 @@
 #X connect 10 0 11 1;
 #X connect 11 0 0 0;
 #X connect 11 1 3 0;
+#X connect 45 0 1 0;
+#X connect 45 0 46 0;
+#X connect 45 1 5 0;
 #X connect 46 0 1 0;
-#X connect 46 0 47 0;
-#X connect 46 1 5 0;
-#X connect 47 0 1 0;
-#X connect 47 1 4 0;
-#X connect 47 2 8 0;
-#X connect 47 3 10 0;
+#X connect 46 1 4 0;
+#X connect 46 2 8 0;
+#X connect 46 3 10 0;
 #X coords 0 0 1 1 176 175 2 150 100;

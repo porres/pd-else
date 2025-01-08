@@ -1,5 +1,4 @@
 #N canvas 635 233 505 289 12;
-#X declare -path else;
 #X obj 50 36 inlet;
 #X obj 49 214 outlet~;
 #X obj 291 209 outlet~;
@@ -144,11 +143,10 @@
 #X restore 456 105 graph;
 #X restore 369 166 pd env-tables;
 #X obj 103 39 inlet;
-#X obj 236 48 declare -path else;
 #X obj 49 167 clone else/grain.synth.grain 256 \$0;
 #X connect 0 0 5 0;
-#X connect 5 0 10 0;
-#X connect 6 0 10 0;
+#X connect 5 0 9 0;
+#X connect 6 0 9 0;
 #X connect 8 0 5 1;
-#X connect 10 0 1 0;
-#X connect 10 1 2 0;
+#X connect 9 0 1 0;
+#X connect 9 1 2 0;

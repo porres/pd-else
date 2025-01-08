@@ -1,5 +1,4 @@
 #N canvas 522 51 524 513 12;
-#X declare -path else;
 #X obj 250 425 table tab_\$0 \$1;
 #X obj 111 364 s tab_\$0;
 #X msg 111 339 const 0;
@@ -10,8 +9,7 @@
 #X obj 192 32 inlet;
 #X obj 192 185 max 1;
 #X obj 192 249 v s_\$0;
-#X obj 53 395 expr avg("tab_\$0") \; i_\$0 = (i_\$0 + 1) % s_\$0 \;
-tab_\$0[i_\$0] = $f1;
+#X obj 53 395 expr avg("tab_\$0") \; i_\$0 = (i_\$0 + 1) % s_\$0 \; tab_\$0[i_\$0] = $f1;
 #X obj 192 72 route float;
 #X obj 192 217 t b f;
 #X obj 192 281 change;
@@ -21,7 +19,6 @@ tab_\$0[i_\$0] = $f1;
 #X text 269 203 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 271 184 Alexandre Torres Porres (2019);
 #X obj 209 113 else/lb;
-#X obj 323 118 declare -path else;
 #X connect 2 0 1 0;
 #X connect 3 0 10 0;
 #X connect 3 1 2 0;

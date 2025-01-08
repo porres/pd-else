@@ -1,5 +1,4 @@
-#N canvas 105 23 961 695 12;
-#X declare -path else;
+#N canvas 105 38 961 695 12;
 #X obj 128 507 -;
 #X obj 96 476 t f f;
 #X obj 96 447 * 60000;
@@ -17,8 +16,7 @@
 #X obj 790 423 v N_\$0;
 #X obj 728 423 v S2_\$0;
 #X obj 667 423 v S1_\$0;
-#X obj 96 391 expr T_\$0 / ln_Q_\$0 * ln(($f1 * ln_Q_\$0 / (T_\$0 *
-S1_\$0 ))+1), f 21;
+#X obj 96 391 expr T_\$0 / ln_Q_\$0 * ln(($f1 * ln_Q_\$0 / (T_\$0 * S1_\$0 ))+1), f 21;
 #X obj 811 394 s N_\$0;
 #X obj 128 237 r N_\$0;
 #X obj 75 213 r \$0-init;
@@ -50,8 +48,7 @@ S1_\$0 ))+1), f 21;
 #X obj 818 470 v delta_\$0;
 #X obj 598 496 != 0;
 #X obj 598 520 sel 1;
-#X obj 672 505 expr N_\$0 * ln_Q_\$0 / delta_\$0 \; ln(Q_\$0) \; S2_\$0/S1_\$0
-;
+#X obj 672 505 expr N_\$0 * ln_Q_\$0 / delta_\$0 \; ln(Q_\$0) \; S2_\$0/S1_\$0;
 #X obj 598 546 t b b b;
 #X obj 598 443 t b l;
 #X obj 513 401 list;
@@ -62,14 +59,11 @@ S1_\$0 ))+1), f 21;
 #X obj 277 70 t b l;
 #X obj 230 40 route bang set;
 #X msg 655 290 120;
-#X text 388 53 The speed change formula is taken from "On Musiquantics"
-by Clarence Barlow \, see: http://clarlow.org/wp-content/uploads/2016/10/On-MusiquanticsA4.pdf
-(figure 4)., f 76;
+#X text 388 53 The speed change formula is taken from "On Musiquantics" by Clarence Barlow \, see: http://clarlow.org/wp-content/uploads/2016/10/On-MusiquanticsA4.pdf (figure 4)., f 76;
 #X text 586 129 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 588 110 Alexandre Torres Porres (2022);
 #X obj 672 657 outlet;
 #X obj 672 627 * 60000;
-#X obj 764 188 declare -path else;
 #X connect 0 0 28 0;
 #X connect 0 0 32 0;
 #X connect 1 0 0 1;

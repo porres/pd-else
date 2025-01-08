@@ -1,7 +1,7 @@
-#N canvas 149 51 753 568 12;
+#N canvas 371 51 753 568 12;
 #X declare -lib else;
 #X obj 175 100 circle-gui;
-#N canvas 374 35 906 670 patch 1;
+#N canvas 374 38 906 670 patch 0;
 #X obj 33 19 inlet;
 #X obj 721 82 declare -lib else;
 #X obj 268 257 route size;

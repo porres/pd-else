@@ -1,5 +1,4 @@
-#N canvas 479 29 525 280 12;
-#X declare -path else;
+#N canvas 479 38 525 280 12;
 #N canvas 670 355 421 483 lcm 0;
 #X obj 140 58 t b l;
 #X obj 190 238 max;
@@ -9,8 +8,7 @@
 #X obj 222 237 v n2_\$0;
 #X obj 172 286 v n1_\$0;
 #X obj 257 408 v max_\$0;
-#X obj 92 326 expr max_\$0 = max_\$0+1 \; max_\$0 % n1_\$0 == 0 &&
-max_\$0 % n2_\$0 == 0, f 24;
+#X obj 92 326 expr max_\$0 = max_\$0+1 \; max_\$0 % n1_\$0 == 0 && max_\$0 % n2_\$0 == 0, f 24;
 #X obj 257 432 outlet;
 #X obj 140 25 inlet;
 #X obj 233 62 loadbang;
@@ -74,8 +72,7 @@ max_\$0 % n2_\$0 == 0, f 24;
 #X obj 321 233 v n2_\$0;
 #X obj 262 300 v n1_\$0;
 #X obj 347 431 v max_\$0;
-#X obj 182 340 expr max_\$0 = max_\$0+1 \; max_\$0 % n1_\$0 == 0 &&
-max_\$0 % n2_\$0 == 0, f 24;
+#X obj 182 340 expr max_\$0 = max_\$0+1 \; max_\$0 % n1_\$0 == 0 && max_\$0 % n2_\$0 == 0, f 24;
 #X obj 321 207 max 1;
 #X obj 262 216 max 1;
 #X obj 142 188 else/iterate;
@@ -115,7 +112,6 @@ max_\$0 % n2_\$0 == 0, f 24;
 #X restore 97 140 pd list;
 #X text 232 125 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 234 106 Alexandre Torres Porres (2021);
-#X obj 286 82 declare -path else;
 #X connect 0 0 1 0;
 #X connect 2 0 4 0;
 #X connect 3 0 0 1;

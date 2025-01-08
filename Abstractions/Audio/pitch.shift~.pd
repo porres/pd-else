@@ -1,5 +1,4 @@
 #N canvas 477 180 864 551 12;
-#X declare -path else;
 #X obj 172 381 *~;
 #X obj 239 427 +~;
 #X obj 284 421 *~;
@@ -30,7 +29,6 @@
 #X obj 274 119 else/cents2ratio;
 #X obj 298 88 else/initmess \$1;
 #X obj 590 75 else/lb;
-#X obj 607 218 declare -path else;
 #X connect 0 0 1 0;
 #X connect 1 0 14 0;
 #X connect 2 0 1 1;

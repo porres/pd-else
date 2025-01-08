@@ -1,5 +1,4 @@
-#N canvas 414 80 485 347 10;
-#X declare -path else;
+#N canvas 523 131 485 347 10;
 #N canvas 706 129 465 617 \$0-Allpass-stages 0;
 #X obj 60 19 inlet~;
 #X obj 60 864 outlet~;
@@ -29,7 +28,7 @@
 #X obj 120 90 r \$0-hz;
 #X obj 175 90 r \$0-q;
 #X obj 175 121 inlet~;
-#N canvas 723 101 551 466 init 0;
+#N canvas 723 101 584 507 init 0;
 #X obj 149 215 t f f;
 #X obj 176 262 sel 0;
 #X obj 176 333 f \$0;
@@ -79,7 +78,6 @@
 #X connect 20 0 13 0;
 #X connect 21 0 16 0;
 #X restore 239 121 pd init;
-#X obj 276 86 declare -path else;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;

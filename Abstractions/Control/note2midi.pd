@@ -1,5 +1,4 @@
-#N canvas 550 23 654 714 10;
-#X declare -path else;
+#N canvas 550 38 654 714 10;
 #X obj 246 197 list fromsymbol;
 #X obj 274 423 list tosymbol;
 #X obj 274 448 f;
@@ -44,7 +43,6 @@
 #X restore 436 131 pd init;
 #X obj 281 618 else/group;
 #X obj 132 339 unpack s f, f 17;
-#X obj 416 75 declare -path else;
 #X obj 246 228 else/slice -1;
 #X obj 414 447 text define -k \$0-accidents;
 #A set bb -2 \; b- -1.5 \; ♭- -1.5 \; b -1 \; ♭ -1 \; - -0.5 \; + 0.5 \; # 1 \; ♯ 1 \; ♯+ 1.5 \; #+ 1.5 \; x 2 \;;
@@ -80,10 +78,10 @@
 #X connect 13 0 14 0;
 #X restore 132 487 pd note;
 #X text 373 511 Alexandre Torres Porres (2021-2023);
-#X connect 0 0 29 0;
+#X connect 0 0 28 0;
 #X connect 1 0 2 0;
 #X connect 2 0 5 0;
-#X connect 3 0 31 0;
+#X connect 3 0 30 0;
 #X connect 5 0 6 0;
 #X connect 6 0 7 1;
 #X connect 7 0 26 0;
@@ -111,8 +109,8 @@
 #X connect 23 1 24 0;
 #X connect 24 0 0 0;
 #X connect 26 0 8 0;
-#X connect 27 0 31 0;
+#X connect 27 0 30 0;
 #X connect 27 1 5 0;
-#X connect 29 0 16 0;
-#X connect 29 1 15 0;
-#X connect 31 0 7 0;
+#X connect 28 0 16 0;
+#X connect 28 1 15 0;
+#X connect 30 0 7 0;

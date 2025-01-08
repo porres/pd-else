@@ -1,5 +1,4 @@
 #N canvas 393 39 572 675 12;
-#X declare -path else;
 #X obj 96 291 - 60;
 #X obj 64 45 inlet;
 #X obj 130 45 inlet;
@@ -61,7 +60,6 @@
 #X obj 160 197 s \$0-base;
 #X obj 96 365 else/wrap2 0 12;
 #X obj 96 251 else/rint;
-#X obj 311 96 declare -path else;
 #X obj 145 302 int;
 #X obj 64 197 t b l;
 #X obj 64 571 else/group;
@@ -69,7 +67,7 @@
 #X connect 0 0 14 0;
 #X connect 1 0 20 0;
 #X connect 2 0 15 0;
-#X connect 3 0 25 0;
+#X connect 3 0 24 0;
 #X connect 6 0 13 0;
 #X connect 7 0 9 0;
 #X connect 8 0 10 0;
@@ -83,14 +81,14 @@
 #X connect 14 1 8 0;
 #X connect 16 0 15 0;
 #X connect 18 0 19 1;
-#X connect 19 0 27 0;
-#X connect 20 0 26 0;
-#X connect 20 1 26 0;
+#X connect 19 0 26 0;
+#X connect 20 0 25 0;
+#X connect 20 1 25 0;
 #X connect 20 2 21 0;
 #X connect 22 0 7 0;
 #X connect 23 0 0 0;
-#X connect 25 0 0 1;
-#X connect 26 0 27 0;
-#X connect 26 1 28 0;
-#X connect 27 0 17 0;
-#X connect 28 0 23 0;
+#X connect 24 0 0 1;
+#X connect 25 0 26 0;
+#X connect 25 1 27 0;
+#X connect 26 0 17 0;
+#X connect 27 0 23 0;

@@ -1,5 +1,4 @@
-#N canvas 414 177 490 434 10;
-#X declare -path else;
+#N canvas 524 122 490 434 10;
 #X text 226 125 Alexandre Torres Porres (2016);
 #X text 224 144 Part of ELSE \; https://github.com/porres/pd-else;
 #X obj 33 321 outlet~;
@@ -388,11 +387,11 @@
 #X connect 8 7 9 0;
 #X restore 120 73 pd set_GUI;
 #X obj 231 289 r \$0-slider-init;
-#X obj 291 45 declare -path else;
 #N canvas 294 100 534 401 learn/forget 0;
 #X obj 91 29 inlet;
 #X obj 91 303 s \$0-slider;
 #X obj 180 209 else/midi.learn;
+#A saved;
 #A saved;
 #X obj 358 219 r \$0-slider;
 #X obj 180 173 t b b;
@@ -462,7 +461,7 @@
 #X connect 17 1 5 0;
 #X connect 18 0 16 1;
 #X restore 150 225 pd learn/forget;
-#X connect 3 0 21 0;
+#X connect 3 0 20 0;
 #X connect 6 0 5 0;
 #X connect 10 0 2 0;
 #X connect 10 1 13 0;

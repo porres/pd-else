@@ -1,5 +1,4 @@
 #N canvas 651 163 523 375 10;
-#X declare -path else;
 #X obj 101 43 inlet;
 #X obj 101 307 outlet;
 #X obj 101 135 v phase_\$0;
@@ -51,7 +50,6 @@
 #X connect 18 1 13 0;
 #X restore 101 75 pd init;
 #X obj 101 254 else/rand.f 0 127;
-#X obj 283 104 declare -path else;
 #N canvas 250 48 312 259 rand 0;
 #X obj 130 151 r \$0-rand;
 #X obj 68 44 r \$0-seed;
@@ -76,4 +74,4 @@
 #X connect 9 0 7 0;
 #X connect 10 0 6 0;
 #X connect 11 0 1 0;
-#X connect 13 0 11 0;
+#X connect 12 0 11 0;

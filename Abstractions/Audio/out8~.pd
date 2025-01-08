@@ -1,5 +1,4 @@
 #N canvas 614 278 694 296 10;
-#X declare -path else;
 #X obj 31 190 *~;
 #X obj 84 33 inlet~;
 #X obj 84 190 *~;
@@ -48,20 +47,15 @@
 #X connect 20 0 16 0;
 #X restore 400 76 pd set_GUI;
 #N canvas 965 168 332 251 GUI 0;
-#X obj 103 116 hsl 89 20 0 1 0 0 \$0-slider \$0-set-slider volume 17
-9 0 14 #dcdcdc #000000 #000000 0 1;
+#X obj 103 116 hsl 89 20 0 1 0 0 \$0-slider \$0-set-slider volume 17 9 0 14 #dcdcdc #000000 #000000 0 1;
 #N canvas 565 338 514 332 DSP 0;
-#X obj 100 100 tgl 16 0 \$0-dsp-toggle \$0-dsp-toggle-set empty 19
-8 0 12 #dcdcdc #7c7c7c #fcfcfc 0 1;
-#X obj 117 101 cnv 5 24 14 empty \$0-cnv_dsp dsp 2 6 0 12 #dcdcdc #585854
-0;
+#X obj 100 100 tgl 16 0 \$0-dsp-toggle \$0-dsp-toggle-set empty 19 8 0 12 #dcdcdc #7c7c7c #fcfcfc 0 1;
+#X obj 117 101 cnv 5 24 14 empty \$0-cnv_dsp dsp 2 6 0 12 #dcdcdc #585854 0;
 #X coords 0 -1 1 1 42 16 2 100 100;
 #X restore 100 100 pd DSP;
 #N canvas 335 32 409 332 mute 0;
-#X obj 101 101 cnv 5 34 14 empty \$0-cnv_mute mute 4 6 0 12 #dcdcdc
-#585854 0;
-#X obj 64 133 tgl 16 0 \$0-mute \$0-mute-set empty 19 7 0 12 #dcdcdc
-#7c7c7c #fcfcfc 0 1;
+#X obj 101 101 cnv 5 34 14 empty \$0-cnv_mute mute 4 6 0 12 #dcdcdc #585854 0;
+#X obj 64 133 tgl 16 0 \$0-mute \$0-mute-set empty 19 7 0 12 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 130 162 select 0 1;
 #N canvas 612 446 324 271 set_tgl_color 0;
 #X obj 47 30 inlet;
@@ -216,8 +210,7 @@
 #X connect 28 2 25 0;
 #X restore 310 198 pd on;
 #X obj 267 233 s \$0-set-slider;
-#X obj 136 100 bng 16 500 250 0 \$0-mute-bng \$0-mute-bng-set empty
-17 7 0 10 #dcdcdc #000000 #000000;
+#X obj 136 100 bng 16 500 250 0 \$0-mute-bng \$0-mute-bng-set empty 17 7 0 10 #dcdcdc #000000 #000000;
 #X obj 64 48 else/lb;
 #X connect 1 0 2 0;
 #X connect 1 0 3 0;
@@ -609,7 +602,6 @@
 #X obj 303 85 hip~ 3;
 #X obj 346 85 hip~ 3;
 #X obj 31 33 inlet~ fwd, f 6;
-#X obj 495 59 declare -path else;
 #X connect 0 0 17 0;
 #X connect 1 0 4 0;
 #X connect 2 0 17 1;

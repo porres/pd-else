@@ -1,5 +1,4 @@
 #N canvas 688 129 354 334 10;
-#X declare -path else;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #N canvas 121 446 450 300 (subpatch) 0;
 #X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
@@ -12,7 +11,7 @@
 #X obj 51 102 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040 0;
 #X obj 51 169 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040 0;
 #X obj 44 203 r \$0-tgl-s;
-#N canvas 248 225 538 450 guts 1;
+#N canvas 248 225 538 450 guts 0;
 #X obj 210 372 outlet;
 #X obj 210 177 != 0;
 #X obj 210 147 route float;
@@ -68,7 +67,6 @@
 #X connect 15 0 4 0;
 #X restore 51 67 pd guts;
 #X msg 59 230 \; pd dsp \$1;
-#X obj 153 76 declare -path else;
 #X connect 2 0 9 0;
 #X connect 8 0 5 0;
 #X connect 8 0 10 0;

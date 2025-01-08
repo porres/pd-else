@@ -1,5 +1,4 @@
 #N canvas 452 67 431 413 12;
-#X declare -path else;
 #X obj 59 271 *~;
 #X obj 41 305 -~;
 #X obj 101 273 *~;
@@ -74,7 +73,6 @@
 #X restore 119 195 pd smootherstep;
 #X text 160 271 Part of ELSE \; https://github.com/porres/pd-else;
 #X obj 119 114 else/fold~ 0 1;
-#X obj 262 39 declare -path else;
 #X obj 119 76 inlet~ fwd;
 #X obj 248 113 route seed;
 #X obj 248 148 s \$0-seed;
@@ -113,10 +111,10 @@
 #X connect 6 0 0 1;
 #X connect 6 0 2 1;
 #X connect 8 0 4 0;
-#X connect 10 0 8 0;
-#X connect 10 1 11 0;
-#X connect 11 0 12 0;
-#X connect 11 0 13 0;
-#X connect 13 0 4 1;
-#X connect 15 0 10 0;
-#X connect 16 0 8 2;
+#X connect 9 0 8 0;
+#X connect 9 1 10 0;
+#X connect 10 0 11 0;
+#X connect 10 0 12 0;
+#X connect 12 0 4 1;
+#X connect 14 0 9 0;
+#X connect 15 0 8 2;

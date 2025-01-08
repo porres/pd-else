@@ -1,5 +1,4 @@
 #N canvas 290 93 667 549 12;
-#X declare -path else;
 #X obj 105 364 tabread4~ \$0-noise;
 #X obj 105 325 *~;
 #X obj 382 300 array define \$0-noise 44100;
@@ -20,7 +19,6 @@
 #X obj 189 285 abs~;
 #X obj 296 380 else/tabgen \$0-noise;
 #X text 366 180 Part of ELSE \; https://github.com/porres/pd-else;
-#X obj 414 102 declare -path else;
 #X text 368 161 Alexandre Torres Porres (2023);
 #X connect 0 0 5 0;
 #X connect 1 0 0 0;

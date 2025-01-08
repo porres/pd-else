@@ -1,7 +1,7 @@
 #N canvas 453 47 913 499 10;
 #X declare -path else;
 #X obj 190 63 r \$0-pad;
-#N canvas 367 163 534 322 init 0;
+#N canvas 367 163 534 322 init 1;
 #X obj 301 224 else/canvas.setname \$0-this-patch 1, f 19;
 #X text 288 55 clear (for recreating abstraction in parent), f 22;
 #X obj 264 61 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
@@ -386,7 +386,7 @@
 #X connect 15 3 1 0;
 #X restore 78 270 pd color;
 #X obj 82 45 inlet;
-#N canvas 666 152 325 294 set 1;
+#N canvas 666 152 325 294 set 0;
 #X obj 72 46 inlet;
 #X obj 72 100 else/router;
 #X obj 135 76 v init_\$0;

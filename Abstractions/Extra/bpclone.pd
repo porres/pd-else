@@ -1,5 +1,4 @@
-#N canvas 114 346 591 297 10;
-#X declare -path else;
+#N canvas 497 209 591 297 10;
 #X obj 165 226 outlet~;
 #X obj 165 174 *~;
 #X text 379 106 Part of ELSE \; https://github.com/porres/pd-else;
@@ -8,7 +7,6 @@
 #X obj 49 129 else/bandpass~;
 #X obj 49 35 inlet~ fwd;
 #X obj 131 57 route freq q amp ramp;
-#X obj 427 60 declare -path else;
 #X obj 68 94 else/f2s~ 10;
 #X obj 161 94 else/f2s~ 10;
 #X obj 249 94 else/f2s~ 10 1;
@@ -16,12 +14,12 @@
 #X connect 5 0 1 0;
 #X connect 6 0 5 0;
 #X connect 6 1 7 0;
-#X connect 7 0 9 0;
-#X connect 7 1 10 0;
-#X connect 7 2 11 0;
+#X connect 7 0 8 0;
+#X connect 7 1 9 0;
+#X connect 7 2 10 0;
+#X connect 7 3 8 1;
 #X connect 7 3 9 1;
 #X connect 7 3 10 1;
-#X connect 7 3 11 1;
-#X connect 9 0 5 1;
-#X connect 10 0 5 2;
-#X connect 11 0 1 1;
+#X connect 8 0 5 1;
+#X connect 9 0 5 2;
+#X connect 10 0 1 1;

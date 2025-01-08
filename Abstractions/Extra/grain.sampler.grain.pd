@@ -1,5 +1,4 @@
-#N canvas 450 31 729 715 12;
-#X declare -path else;
+#N canvas 450 38 729 715 12;
 #X obj 455 428 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 455 455 switch~;
 #X obj 188 595 *~;
@@ -330,7 +329,6 @@
 #X connect 13 4 12 0;
 #X connect 15 0 6 0;
 #X restore 350 487 pd env;
-#X obj 389 89 declare -path else;
 #X connect 0 0 1 0;
 #X connect 2 0 23 0;
 #X connect 3 0 9 0;

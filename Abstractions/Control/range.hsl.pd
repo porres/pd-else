@@ -1,5 +1,4 @@
 #N canvas 480 72 454 585 10;
-#X declare -path else;
 #X obj 129 201 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #ffffff #ffffff #ffffff 0 0;
 #X obj 34 35 inlet;
 #N canvas 270 52 460 647 guts 0;
@@ -966,12 +965,11 @@
 #X obj 209 345 else/canvas.setname \$0-this-patch 1;
 #X obj 209 364 else/canvas.setname \$0-parent 2;
 #X obj 75 285 else/sort;
-#X obj 215 293 declare -path else;
 #X obj 38 461 else/rescale -in 0 1 0 127;
 #X connect 0 0 15 0;
 #X connect 3 0 4 0;
-#X connect 5 0 28 2;
-#X connect 6 0 28 1;
+#X connect 5 0 27 2;
+#X connect 6 0 27 1;
 #X connect 7 0 26 0;
 #X connect 8 0 18 1;
 #X connect 9 0 12 0;
@@ -990,11 +988,11 @@
 #X connect 18 0 9 0;
 #X connect 19 0 18 0;
 #X connect 20 0 2 0;
-#X connect 20 0 28 0;
+#X connect 20 0 27 0;
 #X connect 23 0 15 0;
 #X connect 26 0 20 0;
-#X connect 28 0 1 0;
-#X connect 28 0 22 0;
+#X connect 27 0 1 0;
+#X connect 27 0 22 0;
 #X restore 34 263 pd guts;
 #X obj 34 523 outlet;
 #X text 86 101 Part of ELSE \; https://github.com/porres/pd-else;

@@ -1,5 +1,4 @@
 #N canvas 588 157 587 286 10;
-#X declare -path else;
 #X obj 165 226 outlet~;
 #X obj 165 174 *~;
 #X text 343 105 Part of ELSE \; https://github.com/porres/pd-else;
@@ -7,7 +6,6 @@
 #X obj 49 35 inlet~ fwd;
 #X obj 49 129 else/resonant~;
 #X obj 131 57 route freq decay amp ramp;
-#X obj 343 54 declare -path else;
 #X text 347 150 This is an abstraction used on the [resonbank~] object, f 27;
 #X obj 75 94 else/f2s~ 10;
 #X obj 161 94 else/f2s~ 10;
@@ -16,12 +14,12 @@
 #X connect 4 0 5 0;
 #X connect 4 1 6 0;
 #X connect 5 0 1 0;
-#X connect 6 0 9 0;
-#X connect 6 1 10 0;
-#X connect 6 2 11 0;
+#X connect 6 0 8 0;
+#X connect 6 1 9 0;
+#X connect 6 2 10 0;
+#X connect 6 3 8 1;
 #X connect 6 3 9 1;
 #X connect 6 3 10 1;
-#X connect 6 3 11 1;
-#X connect 9 0 5 1;
-#X connect 10 0 5 2;
-#X connect 11 0 1 1;
+#X connect 8 0 5 1;
+#X connect 9 0 5 2;
+#X connect 10 0 1 1;

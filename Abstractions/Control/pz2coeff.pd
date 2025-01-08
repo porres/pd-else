@@ -1,14 +1,9 @@
-#N canvas 415 23 951 423 12;
-#X declare -path else;
+#N canvas 415 38 951 423 12;
 #X obj 583 318 v sign_\$0;
 #X obj 117 332 pack float float float float float, f 56;
 #X obj 73 32 inlet;
 #X obj 117 381 outlet;
-#X obj 117 197 expr $f1 + $f3 \; -sqrt($f1*$f1 + $f2*$f2) * sqrt($f3*$f3
-+ $f4*$f4) * sign_\$0 \; if($f1 > 0 != $f3 > 0 \, -1 \, 1) \; $f9 \;
--$f9 * ($f5 + $f7) \; $f9 * sqrt($f5*$f5 + $f6*$f6) * sqrt($f7*$f7
-+ $f8*$f8) * sign_\$0 \; if($f5 > 0 != $f7 > 0 \, -1 \, 1) \;, f 67
-;
+#X obj 117 197 expr $f1 + $f3 \; -sqrt($f1*$f1 + $f2*$f2) * sqrt($f3*$f3 + $f4*$f4) * sign_\$0 \; if($f1 > 0 != $f3 > 0 \, -1 \, 1) \; $f9 \; -$f9 * ($f5 + $f7) \; $f9 * sqrt($f5*$f5 + $f6*$f6) * sqrt($f7*$f7 + $f8*$f8) * sign_\$0 \; if($f5 > 0 != $f7 > 0 \, -1 \, 1) \;, f 67;
 #X obj 157 140 unpack f f f f;
 #X obj 350 158 unpack f f f f;
 #X obj 117 140 f;
@@ -20,7 +15,6 @@
 #X text 613 234 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 615 215 Alexandre Torres Porres (2021);
 #X obj 73 108 t l f;
-#X obj 654 89 declare -path else;
 #X connect 1 0 3 0;
 #X connect 2 0 8 0;
 #X connect 4 0 1 0;
