@@ -93,9 +93,9 @@
 #X obj 124 171 hradio 21 1 0 4 \$0-radio1 \$0-set-radio1 empty 0 -10 0 12 #fcfcfc #404040 #404040 0;
 #X obj 213 167 bng 23 250 50 0 \$0-save \$0-set-save empty 0 -10 0 12 #dfdfdf #000000 #000000;
 #X obj 124 192 hradio 21 1 0 4 \$0-radio2 \$0-set-radio2 empty 0 -10 0 12 #fcfcfc #fcfcfc #404040 0;
-#X obj 128 121 note 101 18 Inter empty 5 54 54 54 0 187 187 187 1 1 PRESETS;
 #X floatatom 213 192 2 1 8 0 - \$0-set-n \$0-n 16;
 #X text 211 150 save;
+#X obj 128 121 else/note 101 18 Inter empty 5 54 54 54 0 187 187 187 1 1 PRESETS;
 #X coords 0 1 100 -1 148 118 1 110 110;
 #X restore 306 107 graph;
 #X msg 111 196 clear;

@@ -4,7 +4,6 @@
 #X obj 555 554 bng 25 250 50 0 empty empty empty 17 7 0 10 #b8b8b8 #000000 #000000;
 #X text 45 516 mix output;
 #X obj 40 132 adc~ 1;
-#X obj 40 549 out~;
 #N canvas 110 62 1237 560 messages 0;
 #N canvas 659 51 569 303 fft 0;
 #X msg 37 36 lock \$1;
@@ -420,7 +419,7 @@
 #X text 879 352 <-- Real Time (min:sec / ms);
 #X text 879 379 <-- Player time (min:sec / ms);
 #X text 879 330 <-- Target buffer in min.sec (relates to speed);
-#X obj 352 190 brane.m~;
+#X obj 352 190 else/brane.m~;
 #X connect 0 0 7 0;
 #X connect 1 0 7 0;
 #X connect 2 0 7 0;
@@ -431,7 +430,6 @@
 #X restore 58 168 pd messages and manual;
 #X f 11;
 #X text 96 132 Record audio input;
-#X obj 211 549 out~;
 #X text 453 552 When reaching loop bounds, f 13;
 #X text 145 177 <--;
 #X text 172 170 details on controls and manual of operation, f 23;
@@ -439,10 +437,12 @@
 #X text 386 116 Being an extra M.E.R.D.A module \, it doesn't have state saving and has its own preset system management., f 24;
 #X text 305 118 Important:;
 #X obj 500 186 about.MERDA;
-#X obj 40 223 brane.m~ 1 sax.wav;
+#X obj 40 549 else/out~;
+#X obj 211 549 else/out~;
+#X obj 40 223 else/brane.m~ 1 sax.wav;
 #X connect 4 0 16 0;
-#X connect 6 0 16 0;
-#X connect 16 0 5 0;
-#X connect 16 1 8 0;
-#X connect 16 2 8 1;
+#X connect 5 0 16 0;
+#X connect 16 0 14 0;
+#X connect 16 1 15 0;
+#X connect 16 2 15 1;
 #X connect 16 3 2 0;

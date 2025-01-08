@@ -1,5 +1,4 @@
 #N canvas 557 228 596 436 12;
-#X declare -path else;
 #X obj 274 84 inlet~;
 #X obj 274 279 outlet~;
 #N canvas 658 205 612 315 GUI 0;
@@ -41,7 +40,6 @@
 #X obj 51 51 cnv 19 168 278 empty empty empty 20 12 0 12 #e0e0e0 #404040 0;
 #X floatatom 73 173 6 -36 36 0 - \$0-bw-nbx-set \$0-bw-nbx 0;
 #X obj 69 114 else/knob 50 0 2400 0 0 \$0-bw-nbx-set \$0-set-bw #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0;
-#X obj 76 62 note 117 24 Inter empty 5 54 54 54 0 187 187 187 1 1 GENDYN;
 #X text 82 191 BW;
 #X obj 137 154 vradio 16 1 0 3 \$0-interp \$0-set-interp empty 0 -8 0 10 #dfdfdf #000000 #000000 0;
 #X floatatom 137 108 4 1 128 0 - \$0-set-n \$0-n 12;
@@ -56,6 +54,7 @@
 #X text 157 171 linear;
 #X text 157 188 cosine;
 #X text 136 130 (interp);
+#X obj 76 62 else/note 117 24 Inter empty 5 54 54 54 0 187 187 187 1 1 GENDYN;
 #X coords 0 1 100 -1 170 280 1 50 50;
 #X restore 56 75 graph;
 #N canvas 193 269 539 463 preset 0;
@@ -93,18 +92,17 @@
 #X restore 469 158 pd preset;
 #N canvas 99 315 613 345 init-savestate 0;
 #X obj 110 106 savestate;
-#X obj 300 195 declare -path else;
 #X obj 85 67 loadbang;
 #X obj 85 165 list;
 #X obj 85 249 else/dispatch \$0-set-bw \$0-set-n \$0-set-interp \$0-set-fstep \$0-set-astep, f 46;
 #X obj 170 142 else/var \$0-bw \$0-n \$0-interp \$0-fstep \$0-astep;
 #X obj 85 205 else/default 50 8 1 10 10;
-#X connect 0 0 3 1;
-#X connect 0 1 5 0;
-#X connect 2 0 3 0;
-#X connect 3 0 6 0;
-#X connect 5 0 0 0;
-#X connect 6 0 4 0;
+#X connect 0 0 2 1;
+#X connect 0 1 4 0;
+#X connect 1 0 2 0;
+#X connect 2 0 5 0;
+#X connect 4 0 0 0;
+#X connect 5 0 3 0;
 #X restore 412 120 pd init-savestate;
 #X text 273 63 HZ;
 #N canvas 132 191 851 514 set 0;
