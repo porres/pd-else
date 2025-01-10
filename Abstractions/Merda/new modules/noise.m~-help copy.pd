@@ -1,0 +1,8 @@
+#N canvas 353 71 759 590 12;
+#X text 384 234 see -->;
+#X obj 444 234 about.MERDA;
+#X obj 82 436 else/out~;
+#X obj 82 206 noise.m~;
+#A saved 0.383334 2;
+#A saved;
+#X connect 3 0 2 0;

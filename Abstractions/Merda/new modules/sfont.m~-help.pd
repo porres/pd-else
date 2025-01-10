@@ -1,0 +1,13 @@
+#N canvas 353 71 799 742 12;
+#X obj 94 86 else/keyboard 17 80 5 2 0 0 empty empty;
+#X obj 94 428 else/out~;
+#X obj 315 424 else/meter~;
+#X text 382 323 output is very low;
+#X text 381 367 popup should show selected option highligthed;
+#X obj 94 190 sfont.m~;
+#A saved 255;
+#A saved;
+#X connect 0 0 5 0;
+#X connect 5 0 1 0;
+#X connect 5 0 2 0;
+#X connect 5 1 1 1;
