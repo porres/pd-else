@@ -669,9 +669,8 @@ static void *sfont_new(t_symbol *s, int ac, t_atom *av){
     fluid_settings_setint(x->x_settings, "synth.midi-channels", x->x_ch);
     fluid_settings_setnum(x->x_settings, "synth.gain", g);
     fluid_settings_setnum(x->x_settings, "synth.sample-rate", sys_getsr());
-    fluid_settings_setnum(x->x_settings, "synth.sample-rate", sys_getsr());
-//  fluid_settings_setint(x->x_settings, "synth.polyphony", 256);
-//    fluid_settings_setstr(x->x_settings, "synth.midi-bank-select", "gs");
+    fluid_settings_setstr(x->x_settings, "synth.midi-bank-select", "mma");
+    //  fluid_settings_setint(x->x_settings, "synth.polyphony", 256);
     x->x_synth = new_fluid_synth(x->x_settings); // Create fluidsynth instance:
     if(x->x_synth == NULL){
         pd_error(x, "[sfont~]: bug couldn't create fluidsynth instance");
