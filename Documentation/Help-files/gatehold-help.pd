@@ -65,6 +65,7 @@
 #X obj 205 241 else/display;
 #X text 42 199 see also;
 #X obj 44 224 else/gatehold~;
+#X obj 44 249 else/gaterelease;
 #X connect 24 0 33 1;
 #X connect 31 0 32 0;
 #X connect 32 0 33 0;
