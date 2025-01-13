@@ -1,18 +1,11 @@
 // porres 2018-2022
 
 #include <m_pd.h>
-#include <else_alloca.h>
+#include "else_alloca.h"
 #include <stdlib.h>
 #include <math.h>
 
-#define MAX_SEGS  64 // maximum line segments
-
-static t_class *envgen_proxy;
-
-typedef struct _envgen_proxy{
-    t_pd             p_pd;
-    struct _envgen  *p_owner;
-}t_proxy;
+#define MAX_SEGS  256 // maximum line segments
 
 typedef struct _envgenseg{
     float  target;  // line target
@@ -21,7 +14,6 @@ typedef struct _envgenseg{
 
 typedef struct _envgen{
     t_object        x_obj;
-    t_proxy         x_proxy;
     int             x_ac;
     int             x_ac_rel;
     int             x_nleft;
@@ -41,9 +33,9 @@ typedef struct _envgen{
     float           x_inc;
     float           x_delta;
     float           x_lastin;
-    float           x_maxsustain;
     float           x_retrigger;
     float           x_gain;
+    t_symbol       *x_ignore;
     t_atom         *x_av;
     t_atom         *x_av_rel;
     t_atom          x_at_exp[MAX_SEGS];
@@ -51,7 +43,6 @@ typedef struct _envgen{
     t_envgen_line  *x_lines;
     t_envgen_line   x_n_lineini[MAX_SEGS];
     t_clock        *x_clock;
-    t_clock        *x_sus_clock;
     t_outlet       *x_out2;
 }t_envgen;
 
@@ -60,11 +51,6 @@ static t_class *envgen_class;
 static void copy_atoms(t_atom *src, t_atom *dst, int n){
     while(n--)
         *dst++ = *src++;
-}
-
-static void envgen_proxy_init(t_proxy * p, t_envgen *x){
-    p->p_pd = envgen_proxy;
-    p->p_owner = x;
 }
 
 static float envgen_get_step(t_envgen *x){
@@ -84,21 +70,6 @@ static float envgen_get_step(t_envgen *x){
         }
     }
     return(step);
-}
-
-static void envgen_proxy_list(t_proxy *p, t_symbol *s, int ac, t_atom *av){
-    if(!ac)
-        return;
-    s = NULL;
-    t_envgen *x = p->p_owner;
-    for(int n = 0; n < ac; n++)
-        if((av+n)->a_type != A_FLOAT){
-            pd_error(x, "[envgen~]: needs to only contain floats");
-            return;
-        }
-    x->x_ac = ac;
-//    x->x_av = getbytes(x->x_ac*sizeof(*(x->x_av)));
-    copy_atoms(av, x->x_av, x->x_ac);
 }
 
 static void envgen_retarget(t_envgen *x, int skip){
@@ -153,8 +124,6 @@ static void envgen_attack(t_envgen *x, int ac, t_atom *av){
             x->x_ac_rel = (ac -= n); // release n
             x->x_av_rel = getbytes(x->x_ac_rel*sizeof(*(x->x_av_rel)));
             copy_atoms(av+n, x->x_av_rel, x->x_ac_rel); // copy release ramp
-            if(x->x_maxsustain > 0)
-                clock_delay(x->x_sus_clock, x->x_maxsustain);
         }
         else // no release
             x->x_release = 0;
@@ -211,24 +180,6 @@ static void envgen_tick(t_envgen *x){
         outlet_float(x->x_out2, x->x_status = 0);
 }
 
-static void envgen_sus_tick(t_envgen *x){
-    if(x->x_release)
-        envgen_release(x, x->x_ac_rel, x->x_av_rel);
-}
-
-static void envgen_set(t_envgen *x, t_symbol *s, int ac, t_atom *av){
-    if(!ac)
-        return;
-    s = NULL;
-    for(int n = 0; n < ac; n++)
-        if((av+n)->a_type != A_FLOAT){
-            pd_error(x, "[envgen~]: set needs to only contain floats");
-            return;
-        }
-//    x->x_av = getbytes(x->x_ac * sizeof(*(x->x_av)));
-    copy_atoms(av, x->x_av, x->x_ac = ac);
-}
-
 static void envgen_init(t_envgen *x, int ac, t_atom *av){
     int i;
     for(i = 0; i < ac; i++)
@@ -236,11 +187,8 @@ static void envgen_init(t_envgen *x, int ac, t_atom *av){
             pd_error(x, "[envgen~]: list needs to only contain floats");
             return;
         }
-    if(!x->x_exp){
-//        x->x_av = getbytes(x->x_ac * sizeof(*(x->x_av)));
+    if(!x->x_exp)
         copy_atoms(av, x->x_av, x->x_ac = ac);
-        envgen_attack(x, x->x_ac, x->x_av);
-    }
     else{
         if((ac % 3) == 2){
             pd_error(x, "[envgen~]: wrong number of elements for 'exp' message");
@@ -261,9 +209,7 @@ static void envgen_init(t_envgen *x, int ac, t_atom *av){
             }
         }
         x->x_ac = k;
-//        x->x_av = getbytes(x->x_ac * sizeof(*(x->x_av)));
         copy_atoms(temp_at, x->x_av, x->x_ac);
-        envgen_attack(x, x->x_ac, x->x_av);
         FREEA(temp_at, t_atom, (ac-nlines));
     }
 }
@@ -276,7 +222,7 @@ static void envgen_expi(t_envgen *x, t_floatarg f1, t_floatarg f2){
 static void envgen_expl(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     if(!ac)
         return;
-    s = NULL;
+    x->x_ignore = s;
     for(int i = 0; i < ac; i++)
         SETFLOAT(x->x_at_exp+i, (av+i)->a_w.w_float);
 }
@@ -284,7 +230,7 @@ static void envgen_expl(t_envgen *x, t_symbol *s, int ac, t_atom *av){
 static void envgen_exp(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     if(ac < 3)
         return;
-    s = NULL;
+    x->x_ignore = s;
     x->x_exp = 1;
     envgen_init(x, ac, av);
 }
@@ -305,7 +251,7 @@ static void envgen_float(t_envgen *x, t_floatarg f){
 }
 
 static void envgen_list(t_envgen *x,t_symbol* s, int ac, t_atom* av){
-    s = NULL;
+    x->x_ignore = s;
     if(!ac){
         envgen_bang(x);
         return;
@@ -335,10 +281,6 @@ static void envgen_retrigger(t_envgen *x, t_floatarg f){
 
 static void envgen_legato(t_envgen *x, t_floatarg f){
     x->x_legato = f != 0;
-}
-
-static void envgen_maxsustain(t_envgen *x, t_floatarg f){
-    x->x_maxsustain = f;
 }
 
 static void envgen_suspoint(t_envgen *x, t_floatarg f){
@@ -399,8 +341,6 @@ static void envgen_free(t_envgen *x){
         freebytes(x->x_lines, MAX_SEGS*sizeof(*x->x_lines));
     if(x->x_clock)
         clock_free(x->x_clock);
-    if(x->x_sus_clock)
-        clock_free(x->x_sus_clock);
 }
 
 static void envgen_pause(t_envgen *x){
@@ -415,7 +355,7 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     t_symbol *cursym = s; // avoid warning
     t_envgen *x = (t_envgen *)pd_new(envgen_class);
     x->x_gain = x->x_power = 1;
-    x->x_lastin = x->x_maxsustain = x->x_retrigger = x->x_value = x->x_last_target = 0;
+    x->x_lastin = x->x_retrigger = x->x_value = x->x_last_target = 0;
     x->x_nleft = x->x_n_lines = x->x_line_n = x->x_pause = x->x_release = 0;
     x->x_suspoint = x->x_legato = 0;
     x->x_lines = x->x_n_lineini;
@@ -427,7 +367,6 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     t_atom at[2];
     SETFLOAT(at, 0);
     SETFLOAT(at+1, 0);
-//    x->x_av = getbytes(2*sizeof(*(x->x_av)));
     x->x_av = getbytes(MAX_SEGS*sizeof(*(x->x_av)));
     copy_atoms(at, x->x_av, x->x_ac = 2);
     while(ac > 0){
@@ -474,7 +413,6 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
                         }
                     }
                     x->x_exp = 1;
-//                    x->x_av = getbytes(k*sizeof(*(x->x_av)));
                     copy_atoms(temp_at, x->x_av, x->x_ac = k);
                     FREEA(temp_at, t_atom, (z-nlines));
                     ac-=z, av+=z;
@@ -491,14 +429,6 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
                 else
                     goto errstate;
             }
-            else if(cursym == gensym("-maxsustain")){
-                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
-                    x->x_maxsustain = (int)atom_getfloatarg(1, ac, av);
-                    ac-=2, av+=2;
-                }
-                else
-                    goto errstate;
-            }
             else if(cursym == gensym("-legato"))
                 x->x_legato = 1, ac--, av++;
             else
@@ -509,22 +439,17 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
         if(ac == 1)
             x->x_value = atom_getfloatarg(0, 1, av);
         else{
-            if(!x->x_exp){
-//                x->x_av = getbytes(ac*sizeof(*(x->x_av)));
+            if(!x->x_exp)
                 copy_atoms(av, x->x_av, x->x_ac = ac);
-            }
             else
                 goto errstate;
         }
     }
     x->x_last_target = x->x_value;
     inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    envgen_proxy_init(&x->x_proxy, x);
-    inlet_new(&x->x_obj, &x->x_proxy.p_pd, 0, 0);
     outlet_new((t_object *)x, &s_signal);
     x->x_out2 = outlet_new((t_object *)x, &s_float);
     x->x_clock = clock_new(x, (t_method)envgen_tick);
-    x->x_sus_clock = clock_new(x, (t_method)envgen_sus_tick);
     return(x);
 errstate:
     pd_error(x, "[envgen~]: improper args");
@@ -538,7 +463,6 @@ void envgen_tilde_setup(void){
     class_addmethod(envgen_class, (t_method)envgen_dsp, gensym("dsp"), A_CANT, 0);
     class_addlist(envgen_class, envgen_list);
     class_addmethod(envgen_class, (t_method)envgen_setgain, gensym("setgain"), A_FLOAT, 0);
-    class_addmethod(envgen_class, (t_method)envgen_set, gensym("set"), A_GIMME, 0);
     class_addmethod(envgen_class, (t_method)envgen_exp, gensym("exp"), A_GIMME, 0);
     class_addmethod(envgen_class, (t_method)envgen_expl, gensym("expl"), A_GIMME, 0);
     class_addmethod(envgen_class, (t_method)envgen_expi, gensym("expi"), A_DEFFLOAT, A_DEFFLOAT, 0);
@@ -548,8 +472,5 @@ void envgen_tilde_setup(void){
     class_addmethod(envgen_class, (t_method)envgen_resume, gensym("resume"), 0);
     class_addmethod(envgen_class, (t_method)envgen_legato, gensym("legato"), A_FLOAT, 0);
     class_addmethod(envgen_class, (t_method)envgen_suspoint, gensym("suspoint"), A_FLOAT, 0);
-    class_addmethod(envgen_class, (t_method)envgen_maxsustain, gensym("maxsustain"), A_FLOAT, 0);
     class_addmethod(envgen_class, (t_method)envgen_retrigger, gensym("retrigger"), A_FLOAT, 0);
-    envgen_proxy = (t_class *)class_new(gensym("envgen proxy"), 0, 0, sizeof(t_proxy), 0, 0);
-    class_addanything(envgen_proxy, envgen_proxy_list);
 }

@@ -1,4 +1,4 @@
-#N canvas 302 179 585 528 12;
+#N canvas 302 179 713 516 12;
 #X msg 252 334 0;
 #X obj 131 193 expr ($f1 != 0) && ($f2 == 0), f 15;
 #X obj 99 148 t f f;
@@ -10,6 +10,8 @@
 #X obj 99 63 inlet;
 #X obj 305 396 outlet;
 #X obj 252 310 del \$1;
+#X text 376 220 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 378 201 Alexandre Torres Porres (2025);
 #X connect 0 0 9 0;
 #X connect 1 0 3 0;
 #X connect 2 0 1 1;
