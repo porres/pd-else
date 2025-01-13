@@ -44,8 +44,11 @@ static t_int* blvsaw_perform(t_int *w) {
         t_float sync = *sync_vec++;
         t_float phase_offset = *phase_vec++;
         t_float pulse_width = *width_vec++;
-        if(x->x_midi && freq < 255)
-            freq = pow(2, (freq - 69)/12) * 440;
+        if(x->x_midi){
+            if(freq > 127)
+                freq = 127;
+            freq = freq <= 0 ? 0 : pow(2, (freq - 69)/12) * 440;
+        }
         // Update pulse width, limit between 0 and 1
         pulse_width = fmax(fmin(0.99f, pulse_width), 0.01f);
         x->x_pulse_width = pulse_width;

@@ -1,4 +1,4 @@
-#N canvas 440 23 560 625 10;
+#N canvas 440 38 560 625 10;
 #X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
@@ -22,7 +22,7 @@
 #X obj 3 545 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
 #X obj 3 262 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 3 454 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
-#X text 135 269 float/signal - frequency in hz, f 60;
+#X text 135 269 float/signal - frequency in hz, f 61;
 #X obj 121 41 cnv 4 4 4 empty empty wavetable 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 43 220 else/wavetable~;
 #X text 148 551 1) symbol;
@@ -54,7 +54,6 @@
 #X text 208 580 - sets phase offset (default 0), f 43;
 #X text 154 565 2) float;
 #X obj 200 175 else/bl.wavetable~ \$0-table 400;
-#X text 135 284 set <symbol> - sets an entire array to be used as a waveform, f 62;
 #X obj 103 269 cnv 17 3 134 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 183 328 none - sets to no interpolation mode, f 54;
 #X text 189 343 lin - sets to linear interpolation mode, f 53;
@@ -299,5 +298,6 @@
 #X text 208 551 - array name (optional \, default none), f 43;
 #X text 103 510 -midi: sets frequency input in MIDI pitch (default hertz), f 64;
 #X text 48 89 [bl.wavetable~] is a bandlimited wavetable oscillator abstraction that uses the upsampling/filtering techniquelike \, which makes the object quite inefficient CPU wise. This object also minimizes aliasing caused by hard sync and phase modulation. No wavetable scanning here though..., f 71;
+#X text 123 284 table <symbol> - sets an entire array to be used as a waveform, f 63;
 #X connect 10 0 36 0;
 #X connect 36 0 15 0;

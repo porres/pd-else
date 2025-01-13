@@ -66,8 +66,11 @@ static t_int *cosine_perform(t_int *w){
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0, n = x->x_n; i < n; i++){
             double hz = x->x_sig1 ? in1[j*n + i] : x->x_freq_list[j];
-            if(x->x_midi && hz < 256)
+            if(x->x_midi){
+                if(hz > 127)
+                    hz = 127;
                 hz = hz <= 0 ? 0 : pow(2, (hz - 69)/12) * 440;
+            }
             double step = hz * x->x_sr_rec; // phase step
             step = step > 0.5 ? 0.5 : step < -0.5 ? -0.5 : step;
             if(x->x_sig2){
@@ -104,7 +107,7 @@ static void cosine_dsp(t_cosine *x, t_signal **sp){
         x->x_phase = (double *)resizebytes(x->x_phase,
             x->x_nchans * sizeof(double), chs * sizeof(double));
         x->x_dir = (t_int *)resizebytes(x->x_dir,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
+            x->x_nchans * sizeof(t_int), chs * sizeof(t_int));
         x->x_nchans = chs;
     }
     signal_setmultiout(&sp[3], x->x_nchans);

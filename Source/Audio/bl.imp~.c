@@ -22,8 +22,11 @@ static t_int *blimp_perform(t_int *w){
     t_float* out       = (t_float *)(w[4]);
     while(n--){
         t_float freq = *freq_vec++;
-        if(x->x_midi && freq < 256)
-            freq = pow(2, (freq - 69)/12) * 440;
+        if(x->x_midi){
+            if(freq > 127)
+                freq = 127;
+            freq = freq <= 0 ? 0 : pow(2, (freq - 69)/12) * 440;
+        }
         
         *out++ = elliptic_blep_get(blep);
         

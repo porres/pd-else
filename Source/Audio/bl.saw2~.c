@@ -40,9 +40,11 @@ static t_int* blsaw2_perform(t_int *w) {
         t_float freq = *freq_vec++;
         t_float sync = *sync_vec++;
         t_float phase_offset = *phase_vec++;
-        if(x->x_midi && freq < 256)
-            freq = pow(2, (freq - 69)/12) * 440;
-        
+        if(x->x_midi){
+            if(freq > 127)
+                freq = 127;
+            freq = freq <= 0 ? 0 : pow(2, (freq - 69)/12) * 440;
+        }
         if(sync > 0 && sync <= 1){ // Phase sync
             if(x->x_soft)
                 x->x_soft = x->x_soft == 1 ? -1 : 1;

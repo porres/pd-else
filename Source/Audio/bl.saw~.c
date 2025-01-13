@@ -2,7 +2,7 @@
 // Based on Elliptic BLEP by signalsmith-audio: https://github.com/Signalsmith-Audio/elliptic-blep
 
 #include <m_pd.h>
-#include <blep.h>
+#include "blep.h"
 
 typedef struct blsaw{
     t_object    x_obj;
@@ -40,8 +40,11 @@ static t_int* blsaw_perform(t_int *w) {
         t_float freq = *freq_vec++;
         t_float sync = *sync_vec++;
         t_float phase_offset = *phase_vec++;
-        if(x->x_midi && freq < 256)
-            freq = pow(2, (freq - 69)/12) * 440;
+        if(x->x_midi){
+            if(freq > 127)
+                freq = 127;
+            freq = freq <= 0 ? 0 : pow(2, (freq - 69)/12) * 440;
+        }
         
         if(sync > 0 && sync <= 1){ // Phase sync
             if(x->x_soft)
@@ -69,8 +72,6 @@ static t_int* blsaw_perform(t_int *w) {
             t_float samples_in_past = x->x_phase / phase_increment;
             elliptic_blep_add_in_past(blep, 2.0f, 1, samples_in_past);
         }
-        
-        x->x_last_phase_offset = phase_offset;
     }
     return(w+7);
 }

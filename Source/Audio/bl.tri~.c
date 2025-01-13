@@ -43,10 +43,11 @@ static t_int* bltri_perform(t_int *w) {
         t_float freq = *freq_vec++;
         t_float sync = *sync_vec++;
         t_float phase_offset = *phase_vec++;
-
-        if(x->x_midi && freq < 256)
-            freq = pow(2, (freq - 69)/12) * 440;
-
+        if(x->x_midi){
+            if(freq > 127)
+            freq = 127;
+            freq = freq <= 0 ? 0 : pow(2, (freq - 69)/12) * 440;
+        }
         t_float triangle = 2.0f * fabs(2.0f * ((x->x_phase + 0.25f) - floor(x->x_phase + 0.75f))) - 1.0f;
         *out++ = triangle + elliptic_blep_get(blep);
         

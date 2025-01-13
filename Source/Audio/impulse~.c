@@ -60,8 +60,11 @@ static t_int *impulse_perform(t_int *w){
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0, n = x->x_n; i < n; i++){
             double hz = x->x_sig1 ? in1[j*n + i] : x->x_freq_list[j];
-            if(x->x_midi && hz < 256)
+            if(x->x_midi){
+                if(hz > 127)
+                    hz = 127;
                 hz = hz <= 0 ? 0 : pow(2, (hz - 69)/12) * 440;
+            }
             double step = hz * x->x_sr_rec; // phase step
             step = step > 1 ? 1 : step < -1 ? -1 : step; // clipped phase_step
             double phase_offset = x->x_ch3 == 1 ? in3[i] : in3[j*n + i];
@@ -126,7 +129,7 @@ static void impulse_dsp(t_impulse *x, t_signal **sp){
         x->x_lastoffset = (double *)resizebytes(x->x_lastoffset,
             x->x_nchans * sizeof(double), chs * sizeof(double));
         x->x_dir = (t_int *)resizebytes(x->x_dir,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
+            x->x_nchans * sizeof(t_int), chs * sizeof(t_int));
         x->x_nchans = chs;
     }
     signal_setmultiout(&sp[3], x->x_nchans);

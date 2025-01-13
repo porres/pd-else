@@ -1,6 +1,6 @@
 
 #include <m_pd.h>
-#include <buffer.h>
+#include "buffer.h"
 #include <string.h>
 #include <stdarg.h>
 
@@ -73,7 +73,7 @@ double bias, double tension){
 
 ////////////////////////////////   INIT TABLES!!!! They stays allocated as long as Pd is running
 
-static double *sintable;
+static double *sintable, *partable;
 static int fadetables = 0;
 
 static double *tab_fade_sin;
@@ -96,6 +96,16 @@ void init_sine_table(void){
         *tp++ = sintable[i]; // mirror inverted
     for(int i = ELSE_SIN_TABSIZE/2 - 1; i >= 0; i--)
         *tp++ = -sintable[i]; // mirror back
+}
+
+void init_parabolic_table(void){
+    if(partable)
+        return;
+    partable = getbytes((ELSE_SIN_TABSIZE + 1) * sizeof(*partable));
+    double *tp = partable;
+    double inc = 1.0f / ELSE_SIN_TABSIZE, phase = 0;
+    for(int i = 0; i < ELSE_SIN_TABSIZE; i++, phase += inc)
+        *tp++ = (1 - pow(fmod(phase * 2, 1) * 2 - 1, 2)) * (phase <= 0.5 ? 1 : -1);
 }
 
 void init_fade_tables(void){
@@ -172,6 +182,14 @@ double read_sintab(double phase){
     double frac = tabphase - i, p1 = sintable[i], p2 = sintable[i+1];
     return(interp_lin(frac, p1, p2));
 }
+
+double read_partab(double phase){
+    double tabphase = phase * ELSE_SIN_TABSIZE;
+    int i = (int)tabphase;
+    double frac = tabphase - i, p1 = partable[i], p2 = partable[i+1];
+    return(interp_lin(frac, p1, p2));
+}
+
 
 // on failure *bufsize is not modified
 t_word *buffer_get(t_buffer *c, t_symbol * name, int *bufsize, int indsp, int complain){

@@ -1,132 +1,48 @@
-#N canvas 625 66 559 514 10;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#N canvas 510 57 562 613 10;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 25 40 cnv 4 4 4 empty empty Two-sided 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 113 40 cnv 4 4 4 empty empty impulse 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 3 380 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 3 416 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 122 389 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 3 487 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X text 200 389 signal -;
-#X obj 125 157 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
-#X text 185 156 <= hz;
-#N canvas 601 243 421 313 pulse 0;
-#X obj 161 226 else/out~;
-#X obj 195 102 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
-#000000 #000000 0 1;
-#X obj 192 127 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
-#X obj 127 124 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
-#X text 32 21 A pulse width of 0 has the smallest size (the first sample
-is equal to 1 \, the second is equal to -1 and the rest is 0) \, while
-a pulse width of 1 has the largest (the first sample is 1 \, the last
-sample is -1 and the others are 0).;
-#X obj 161 183 else/impulse2~ 1;
-#X obj 192 152 else/float2sig~ 10;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 25 40 cnv 4 4 4 empty empty Two-sided 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 113 40 cnv 4 4 4 empty empty impulse 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 160 156 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X text 220 155 <= hz;
+#N canvas 755 239 449 405 pulse 0;
+#X obj 161 218 else/out~;
+#X obj 167 101 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 164 126 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 99 123 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X text 32 21 A pulse width of 0 has the smallest size (the first sample is equal to 1 \, the second is equal to -1 and the rest is 0) \, while a pulse width of 1 has the largest (the first sample is 1 \, the last sample is -1 and the others are 0).;
+#X obj 133 182 else/impulse2~ 1;
+#X obj 164 151 else/float2sig~ 10;
+#X obj 133 342 bng 19 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
+#X obj 133 316 else/trig2bang~;
+#X obj 239 317 else/trig2bang~;
+#X obj 239 342 bng 19 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
+#X obj 133 288 else/match~ 1 -1, f 36;
 #X connect 1 0 2 0;
 #X connect 2 0 6 0;
 #X connect 3 0 5 0;
 #X connect 5 0 0 0;
+#X connect 5 0 11 0;
 #X connect 6 0 5 1;
-#X restore 456 209 pd pulse width;
-#X obj 3 3 cnv 15 301 42 empty empty impulse2~ 20 20 2 37 #e0e0e0 #000000
-0;
+#X connect 8 0 7 0;
+#X connect 9 0 10 0;
+#X connect 11 0 8 0;
+#X connect 11 1 9 0;
+#X restore 456 179 pd pulse width;
+#X obj 3 3 cnv 15 301 42 empty empty impulse2~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X text 184 428 1) float;
-#X text 184 447 2) float;
-#X text 184 465 3) float;
-#X text 243 465 - initial phase offset (default 0);
-#X text 243 447 - initial width (default 0.5);
-#X text 243 428 - frequency in hertz (default 0);
-#X obj 183 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 125 219 else/out~;
-#X text 261 389 two sided impulse signal;
-#N canvas 492 97 859 458 sync 0;
-#X msg 50 134 0;
-#X msg 81 133 0.25;
-#X msg 153 133 0.75;
-#X msg 193 133 1;
-#X msg 121 133 0.5;
-#X text 224 132 <= reset =>;
-#X text 513 24 Syncing the phase with control messages is useful for
-LFOs and control with MIDI. A sync with audio is useful for the "hard
-sync" technique \, where an oscillator is synced according to the frequency
-of a master frequency., f 44;
-#X obj 553 232 else/out~;
-#X obj 607 133 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 #dcdcdc
-#000000 #000000 0 256;
-#X text 706 160 Master oscillator;
-#X text 661 193 Slave oscillator;
-#X obj 607 159 else/imp~ 110;
-#X text 491 336 NOTE:;
-#X text 510 363 The "phase sync" inlet is quite different from the
-"phase offset" inlet. This means that the are completely independent.
-, f 43;
-#X text 36 317 Additionally \, you can reset the oscillator with an
-impulse signal. Inputs that are > 0 and <= 1 reset the phase Pdexpects
-an impulse signal for syncing. The impulse values need to be > 0 and
-<= 1 (otherwise ignored). Because phase is cyclical \, the value of
-1 represents the "phase 0" of the cycle \, where the impulse occurs.
-Send it impulses above and check the result. Use a multiplier to reset
-to another phase value.;
-#X obj 268 228 else/out~;
-#X obj 70 211 else/out~;
-#X obj 70 181 else/imp2~ 1;
-#X text 34 15 The third inlet resets the phase ands behaves in the
-same way for control data as objects like [osc~] and [phasor~] in Pd.
-A number input resets the oscillator and restarts the cycle with an
-initial phase that corresponds to the input number \, so the internal
-phase is synced to the given value. The phase values are from 0 to
-1 and values beyond that are wrapped within this range.;
-#X obj 268 198 else/imp2~ 1;
-#X obj 553 192 else/imp2~ 200;
-#X msg 420 130 0.25;
-#X msg 346 130 0.75;
-#X msg 314 130 1;
-#X msg 386 130 0.5;
-#X obj 314 162 else/impseq~;
-#X connect 0 0 17 2;
-#X connect 1 0 17 2;
-#X connect 2 0 17 2;
-#X connect 3 0 17 2;
-#X connect 4 0 17 2;
-#X connect 8 0 11 0;
-#X connect 11 0 20 2;
-#X connect 17 0 16 0;
-#X connect 19 0 15 0;
-#X connect 20 0 7 0;
-#X connect 21 0 25 0;
-#X connect 22 0 25 0;
-#X connect 23 0 25 0;
-#X connect 24 0 25 0;
-#X connect 25 0 19 2;
-#X restore 498 231 pd sync;
+#X obj 183 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 160 218 else/out~;
 #N canvas 430 175 847 332 phase 0;
 #X obj 505 174 else/out~;
 #X text 629 131 Phase Modulation:;
@@ -134,18 +50,12 @@ phase is synced to the given value. The phase values are from 0 to
 #X obj 126 255 else/out~;
 #X obj 126 219 +~;
 #X text 369 118 1;
-#X obj 237 118 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
-#000000 #000000 0 1;
+#X obj 237 118 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X floatatom 234 142 4 0 0 0 - - - 0;
 #X text 217 118 0;
 #X obj 234 166 else/float2sig~ 10;
-#X text 420 41 The phase values are wrapped into the 0-1 range \, since
-the phase cycle is from 0 to 1 (where 1 is also the start of another
-cycle).;
-#X text 28 31 The third argument sets an initial phase (or "phase offset").
-This is also settable with the fourth inlet. This allows you to control
-two oscillators with the same frequency falling in and out of phase.
-Another feature is phase modulation., f 53;
+#X text 420 41 The phase values are wrapped into the 0-1 range \, since the phase cycle is from 0 to 1 (where 1 is also the start of another cycle).;
+#X text 28 31 The third argument sets an initial phase (or "phase offset"). This is also settable with the fourth inlet. This allows you to control two oscillators with the same frequency falling in and out of phase. Another feature is phase modulation., f 53;
 #X obj 76 155 else/imp2~ 1 0.5 0.5;
 #X obj 141 193 else/imp2~ 1 0.5;
 #X obj 505 131 else/impulse2~ 200;
@@ -157,32 +67,244 @@ Another feature is phase modulation., f 53;
 #X connect 12 0 4 0;
 #X connect 13 0 4 1;
 #X connect 14 0 0 0;
-#X restore 450 253 pd phase offset;
-#X obj 125 185 else/impulse2~ 220;
-#X obj 288 215 else/out~;
-#X text 305 155 (alias);
-#X obj 288 174 else/imp2~ 1;
-#X obj 3 284 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 123 292 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 122 314 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 122 334 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 122 355 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X text 164 356 float/signal - phase offset (modulation input);
-#X text 165 314 float/signal - pulse width (from 0 to 1);
-#X text 164 293 float/signal - frequency in hz;
-#X text 164 336 float/signal - phase sync (resets internal phase)
-;
-#X text 60 87 A variant of [else/impulse~] \, [impulse2~] (or [imp2~]
-for short) is a two-sided impulse oscillator that accepts negative
-frequencies \, has inlets for pulse width \, phase sync and phase modulation.
-, f 67;
-#X text 393 183 see also:;
-#X obj 461 183 else/bl.imp2~;
-#X connect 15 0 31 0;
-#X connect 31 0 27 0;
-#X connect 34 0 32 0;
+#X restore 450 223 pd phase offset;
+#X obj 160 184 else/impulse2~ 220;
+#X obj 323 214 else/out~;
+#X text 340 154 (alias);
+#X obj 323 173 else/imp2~ 1;
+#X text 21 182 see also:;
+#X obj 20 202 else/bl.imp2~;
+#X obj 98 360 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 3 288 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 426 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 525 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 98 435 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 3 586 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 98 404 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 98 382 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X text 154 534 1) float;
+#X text 236 405 phase offset (modulation input), f 50;
+#X text 236 383 phase sync (resets internal phase), f 50;
+#X text 213 565 - initial phase offset (default 0);
+#X obj 98 297 cnv 17 3 58 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X text 146 312 midi <float> -;
+#X text 236 312 non zero sets to frequency input in MIDI pitch, f 50;
+#X obj 3 462 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
+#X text 213 534 - frequency in midi pitch or hertz (default 0);
+#X text 146 342 soft <float> -;
+#X text 236 342 non zero sets to soft sync mode, f 50;
+#X text 133 501 -soft: sets to soft sync mode (default hard), f 58;
+#X text 133 486 -midi: sets frequency input in MIDI pitch (default hertz), f 58;
+#X text 128 383 float/signal(s) -;
+#X text 128 405 float/signal(s) -;
+#X text 164 436 signal(s) -;
+#X text 134 297 list/signal(s) - frequency in hz or midi, f 67;
+#X text 103 471 -mc <list>: sets multichannel output with a list of frequencies, f 63;
+#X text 110 327 set <float \, float> -;
+#X text 236 327 <channel \, freq> set a single frequency channel, f 50;
+#X text 141 360 float/signal - width (from 0 to 1);
+#X text 154 549 2) float;
+#X text 154 565 3) float;
+#X text 213 549 - initial width (default 0);
+#X text 237 436 two sided impulse signal, f 50;
+#X obj 20 229 else/impulse~;
+#N canvas 493 183 838 490 sync 0;
+#X text 472 19 Syncing the phase with control messages is useful for LFOs and control with MIDI. A sync with audio is useful for the "hard sync" technique \, where an oscillator is synced according to the frequency of a master frequency., f 56;
+#X obj 517 263 else/out~;
+#X obj 587 160 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X text 678 186 Master oscillator;
+#X text 636 221 Slave oscillator;
+#X obj 587 186 else/imp~ 110;
+#X text 504 354 NOTE:;
+#X obj 42 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 42 211 else/sig2float~;
+#X obj 233 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 233 217 else/sig2float~;
+#X text 223 132 <= reset =>;
+#N canvas 207 34 366 264 (subpatch) 0;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
+#X obj 215 68 route dsp;
+#X obj 215 37 receive pd;
+#N canvas 977 77 379 291 set_color 0;
+#X obj 47 30 inlet;
+#X obj 147 200 s \$0-cnv;
+#X obj 47 83 select 0 1;
+#X obj 47 220 s \$0-tgl-r;
+#N canvas 0 22 712 637 off 0;
+#X obj 490 220 * -1;
+#X obj 424 300 +;
+#X obj 409 325 +;
+#X obj 347 219 * -65536;
+#X obj 424 220 * -256;
+#X obj 409 356 - 1;
+#X obj 390 189 unpack f f f;
+#X obj 225 295 +;
+#X obj 210 320 +;
+#X obj 148 214 * -65536;
+#X obj 225 215 * -256;
+#X obj 291 215 * -1;
+#X obj 210 351 - 1;
+#X obj 191 184 unpack f f f;
+#X obj 379 423 pack;
+#X msg 395 152 124 124 124;
+#X msg 203 154 220 220 220;
+#X obj 238 121 t b b;
+#X obj 238 81 inlet;
+#X obj 378 485 outlet;
+#X connect 0 0 1 1;
+#X connect 1 0 2 1;
+#X connect 2 0 5 0;
+#X connect 3 0 2 0;
+#X connect 4 0 1 0;
+#X connect 5 0 14 1;
+#X connect 6 0 3 0;
+#X connect 6 1 4 0;
+#X connect 6 2 0 0;
+#X connect 7 0 8 1;
+#X connect 8 0 12 0;
+#X connect 9 0 8 0;
+#X connect 10 0 7 0;
+#X connect 11 0 7 1;
+#X connect 12 0 14 0;
+#X connect 13 0 9 0;
+#X connect 13 1 10 0;
+#X connect 13 2 11 0;
+#X connect 14 0 19 0;
+#X connect 15 0 6 0;
+#X connect 16 0 13 0;
+#X connect 17 0 16 0;
+#X connect 17 1 15 0;
+#X connect 18 0 17 0;
+#X restore 47 113 pd off;
+#X msg 47 180 color \$1 \$2 0;
+#X msg 147 131 -4.86997e+06 -1.34937e+07;
+#X msg 147 171 color \$1 0 \$2;
+#X connect 0 0 2 0;
+#X connect 2 0 4 0;
+#X connect 2 1 6 0;
+#X connect 4 0 5 0;
+#X connect 4 0 7 0;
+#X connect 5 0 3 0;
+#X connect 6 0 7 0;
+#X connect 6 0 5 0;
+#X connect 7 0 1 0;
+#X restore 215 165 pd set_color;
+#X obj 135 122 r \$0-tgl-s;
+#N canvas 121 482 450 300 (subpatch) 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
+#X coords 0 -1 1 1 42 27 1 100 100;
+#X restore 51 144 pd;
+#X obj 226 139 s \$0-tgl-r;
+#X msg 226 115 set \$1;
+#X msg 135 177 \; pd dsp \$1;
+#N canvas 256 32 278 194 load_check 0;
+#X obj 136 53 sig~ 1;
+#X obj 74 24 loadbang;
+#X obj 136 86 snapshot~;
+#X obj 91 52 del 5;
+#X obj 136 151 outlet;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
+#X obj 74 126 switch~;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 1 0 5 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 3 0 5 0;
+#X connect 5 0 6 0;
+#X restore 51 72 pd load_check;
+#X connect 1 0 3 0;
+#X connect 1 0 7 0;
+#X connect 2 0 1 0;
+#X connect 4 0 8 0;
+#X connect 4 0 3 0;
+#X connect 7 0 6 0;
+#X connect 9 0 0 0;
+#X coords 0 -1 1 1 44 72 2 50 100;
+#X restore 145 265 pd;
+#X msg 413 133 0.25;
+#X msg 339 132 0.75;
+#X msg 307 132 1;
+#X msg 379 132 0.5;
+#X obj 307 164 else/impseq~;
+#X text 509 382 The "phase sync" inlet is quite different from the "phase offset" inlet. They are completely independent!, f 43;
+#X msg 513 176 soft \$1;
+#X obj 513 151 tgl 16 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
+#X text 472 72 Soft sync is also possible with the '-soft' flag or the "soft" message \, where it alternates between positive and negative frequencies and sounds less harsh.;
+#X text 40 370 Additionally \, you can reset the oscillator with an impulse signal. Inputs that are > 0 and <= 1 reset the phase Pd expects an impulse signal for syncing. The impulse values need to be > 0 and <= 1 (otherwise ignored). Because phase is cyclical \, the value of 1 represents the "phase 0" of the cycle \, where the impulse occurs. Send it impulses above and check the result. Use a multiplier to reset to another phase value.;
+#X text 38 15 The third inlet resets the phase ands behaves in the same way for control data as objects like [osc~] and [phasor~] in Pd. A number input resets the oscillator and restarts the cycle with an initial phase that corresponds to the input number \, so the internal phase is synced to the given value. The phase values are from 0 to 1 and values beyond that are wrapped within this range. The control message reset is meaningful for LFOs.;
+#X msg 48 134 0;
+#X msg 79 134 0.25;
+#X msg 149 133 0.75;
+#X msg 192 133 1;
+#X msg 116 133 0.5;
+#X obj 42 181 else/impulse2~ 0.25;
+#X obj 233 193 else/impulse2~ 0.25;
+#X obj 517 220 else/impulse2~ 200;
+#X connect 2 0 5 0;
+#X connect 5 0 31 2;
+#X connect 8 0 7 0;
+#X connect 10 0 9 0;
+#X connect 13 0 17 0;
+#X connect 14 0 17 0;
+#X connect 15 0 17 0;
+#X connect 16 0 17 0;
+#X connect 17 0 30 2;
+#X connect 19 0 31 0;
+#X connect 20 0 19 0;
+#X connect 24 0 29 2;
+#X connect 25 0 29 2;
+#X connect 26 0 29 2;
+#X connect 27 0 29 2;
+#X connect 28 0 29 2;
+#X connect 29 0 8 0;
+#X connect 30 0 10 0;
+#X connect 31 0 1 0;
+#X restore 498 200 pd sync;
+#N canvas 742 148 449 354 midi 0;
+#X msg 150 150 midi \$1;
+#X obj 150 121 tgl 19 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
+#X floatatom 174 186 7 0 0 0 - - - 0;
+#X obj 150 250 else/out~;
+#X text 40 27 By default \, frequency input is in hertz \, but if you use the 'midi' message or '-midi' flag you can change it to MIDI pitch input \, where it is bound to the 0 to 127 range (but they don't have to be integers) - this is kinda like using [mtof~]...;
+#X obj 150 219 else/impulse2~ -midi 69;
+#X connect 0 0 5 0;
+#X connect 1 0 0 0;
+#X connect 2 0 5 0;
+#X connect 5 0 3 0;
+#X restore 448 200 pd midi;
+#N canvas 628 213 555 483 multichannel 0;
+#X obj 51 354 else/out.mc~;
+#X obj 132 254 *~ 0.75;
+#X obj 123 180 *~ 2;
+#X obj 236 368 else/out~;
+#X floatatom 236 186 5 0 0 0 - - - 12;
+#X msg 249 217 400 600;
+#X msg 262 247 400 600 700;
+#X text 33 14 If the oscillator has a multichannel left input \, it outputs the same number of channels. If the secondary inlets have a signal with a single channel for sync and phase modulation \, the single value is applied to all channels. If a secondary inlet is also a multichhanel signal \, then each channel gets its sync or phase deviation value. Note \, however \, that the number of multichannels in secondary inlets need to match the same number of channels from the left input., f 76;
+#X obj 51 145 else/sigs~ 333 444;
+#X obj 123 204 else/impulse~;
+#X text 195 109 You can initialize the object with multichannel if you give it a list of frequencies with the -mc flag (you can't set phases though). A list input also works if no signal is connected to set it to multichannel with a list of frequency input., f 49;
+#X msg 279 290 set 1 555;
+#X text 349 283 the set message sets a single frequency channel, f 24;
+#X obj 132 276 else/sine~;
+#X obj 51 303 else/impulse2~;
+#X obj 236 337 else/impulse2~ -mc 440 660;
+#X connect 1 0 13 0;
+#X connect 2 0 9 0;
+#X connect 4 0 15 0;
+#X connect 5 0 15 0;
+#X connect 6 0 15 0;
+#X connect 8 0 1 0;
+#X connect 8 0 2 0;
+#X connect 8 0 14 0;
+#X connect 9 0 14 2;
+#X connect 11 0 15 0;
+#X connect 13 0 14 3;
+#X connect 14 0 0 0;
+#X connect 15 0 3 0;
+#X restore 450 245 pd multichannel;
+#X text 60 87 A variant of [else/impulse~] \, [impulse2~] (or [imp2~] for short) is a two-sided impulse oscillator that accepts negative frequencies \, has inlets for pulse width \, phase sync and phase modulation. It also has support for multichannels., f 67;
+#X connect 10 0 18 0;
+#X connect 18 0 16 0;
+#X connect 21 0 19 0;

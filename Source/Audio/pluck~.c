@@ -197,8 +197,11 @@ static t_int *pluck_perform_noise_input(t_int *w){
             xnm1 = ynm1 = 0;
         }
         else{
-            if(x->x_midi && hz < 256)
-                hz = pow(2, (hz - 69)/12) * 440;
+            if(x->x_midi){
+                if(hz > 127)
+                    hz = 127;
+                hz = hz <= 0 ? 0 : pow(2, (hz - 69)/12) * 440;
+            }
             if(hz != x->x_hz){
                 update_time(x, x->x_hz = hz);
                 goto update_fb;
