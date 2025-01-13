@@ -1,50 +1,31 @@
-#N canvas 471 61 563 432 10;
-#X obj 6 277 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 6 335 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 6 367 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 118 343 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 6 403 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X obj 118 285 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 118 311 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
-;
+#N canvas 471 61 567 431 10;
+#X obj 6 277 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 6 335 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 6 367 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 118 343 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 6 403 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 118 285 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 118 311 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 176 344 signal;
-#X obj 25 40 cnv 4 4 4 empty empty Hold 0 28 2 18 #e0e0e0 #000000 0
-;
-#X obj 70 40 cnv 4 4 4 empty empty gate 0 28 2 18 #e0e0e0 #000000 0
-;
-#X obj 117 40 cnv 4 4 4 empty empty values 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 5 3 cnv 15 301 42 empty empty gatehold~ 20 20 2 37 #e0e0e0 #000000
-0;
+#X obj 25 40 cnv 4 4 4 empty empty Hold 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 70 40 cnv 4 4 4 empty empty gate 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 117 40 cnv 4 4 4 empty empty values 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 5 3 cnv 15 301 42 empty empty gatehold~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 4 3 graph;
-#X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 306 3 pd;
-#X obj 347 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 460 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 480 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 517 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 466 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 504 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
+#X obj 347 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 460 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 480 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 517 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 466 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 504 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
-#fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -113,8 +94,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
-0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -126,8 +106,7 @@
 #X obj 136 86 snapshot~;
 #X obj 91 52 del 5;
 #X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 74 126 switch~;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -156,44 +135,38 @@
 #X obj 177 201 else/adsr~ 400 200 0.5 1000, f 14;
 #X obj 293 198 else/gatehold~ 500;
 #X obj 293 225 else/adsr~ 100 100 0.5 750;
-#X text 76 21 [gatehold~] allows the one gate to have a different duration
-to control a separate parameter.;
-#X text 77 56 In this example we have a gate controlling two independent
-envelopes (one that controls the phase modulation index and another
-that controls the amplitude). The envelope that controls the amplitude
-has its sustain period enlarged by 500 ms because of the [gatehold~]
-object.;
+#X text 77 56 In this example we have a gate controlling two independent envelopes (one that controls the phase modulation index and another that controls the amplitude). The envelope that controls the amplitude has its sustain period enlarged by 500 ms because of the [gatehold~] object.;
 #X obj 293 153 else/pulse~ 0.2 0.25;
 #X obj 278 375 else/out~;
+#X text 76 21 [gatehold~] allows one gate to have a different duration to control a separate parameter.;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
 #X connect 2 0 1 2;
-#X connect 3 0 10 0;
+#X connect 3 0 9 0;
 #X connect 4 0 2 1;
 #X connect 5 0 6 0;
 #X connect 6 0 3 1;
-#X connect 9 0 4 0;
-#X connect 9 0 5 0;
+#X connect 8 0 4 0;
+#X connect 8 0 5 0;
 #X restore 476 243 pd example;
 #X text 224 312 - hold time in ms;
 #X text 224 344 - held gate;
 #X text 139 376 1) float - hold time in ms (default 0 \, no hold);
-#X obj 246 207 else/gatehold~ 500;
-#X obj 351 183 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
+#X obj 306 207 else/gatehold~ 500;
+#X obj 411 183 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 184 312 float;
-#X text 408 183 hold time;
-#X obj 246 146 else/randpulse~ 0.5 0.25;
-#X text 70 88 [gatehold~] holds a gate value for a certain amount of
-time (specified in ms) after the gate has closed. If a new gate starts
-before the hold time is finished \, the object is retriggered.;
-#X obj 88 212 else/gatehold~ 500;
-#X obj 88 164 else/imp~ 1;
-#X obj 88 188 *~;
-#X obj 123 188 noise~;
-#X obj 246 239 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
-#X obj 88 239 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
-#X obj 246 173 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X text 468 183 hold time;
+#X obj 306 146 else/randpulse~ 0.5 0.25;
+#X text 70 88 [gatehold~] holds a gate value for a certain amount of time (specified in ms) after the gate has closed. If a new gate starts before the hold time is finished \, the object is retriggered.;
+#X obj 148 212 else/gatehold~ 500;
+#X obj 148 164 else/imp~ 1;
+#X obj 148 188 *~;
+#X obj 183 188 noise~;
+#X obj 306 239 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 148 239 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 306 173 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X text 23 204 see also;
+#X obj 23 228 else/gatehold;
 #X connect 28 0 38 0;
 #X connect 29 0 28 1;
 #X connect 32 0 40 0;
