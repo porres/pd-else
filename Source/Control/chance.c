@@ -47,7 +47,7 @@ static void chance_list(t_chance *x, t_symbol *s, int argc, t_atom *argv){
         chance_bang(x);
     else if(!x->x_coin){
         x->x_range = 0;
-        for(int i = 0; i < x->x_ac; i++){
+        for(int i = 0; i < (x->x_ac < argc ? x->x_ac : argc); i++){
             if(argv->a_type == A_FLOAT){
                 t_float argval = atom_getfloatarg(0, argc, argv);
                 SETFLOAT(x->x_av+i, x->x_range += argval);
