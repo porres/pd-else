@@ -84,8 +84,8 @@
 #X connect 10 0 6 0;
 #X restore 430 277 pd multichannel;
 #X text 145 360 ch <float>;
-#X text 53 87 [dust~] is based on SuperCollider's "Dust2" UGEN and outputs random impulse values (from -1 to 1) at random times according to a density parameter. At high frequencies there's a good chance of consecutive non zero values. To the extreme \, it becomes white noiset., f 68;
 #X obj 38 290 else/velvet~;
+#X text 53 87 [dust~] is based on SuperCollider's "Dust2" UGEN and outputs random impulse values (from -1 to 1) at random times according to a density parameter. At high frequencies there's a good chance of consecutive non zero values. To the extreme \, it becomes white noiset. It has support for multichannels., f 68;
 #X connect 10 0 12 0;
 #X connect 12 0 14 0;
 #X connect 14 0 11 0;

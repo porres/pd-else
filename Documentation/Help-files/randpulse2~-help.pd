@@ -1,41 +1,25 @@
-#N canvas 458 65 564 428 10;
-#X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#N canvas 546 89 568 483 10;
+#X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 2 pd;
-#X obj 345 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 145 39 cnv 4 4 4 empty empty train 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 95 39 cnv 4 4 4 empty empty pulse 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 458 10 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 478 10 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 515 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 464 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 193 39 cnv 4 4 4 empty empty oscillator 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 3 286 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 3 353 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 102 293 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 3 396 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X text 150 360 1) float;
-#X obj 219 139 nbx 5 14 -50 50 0 0 empty empty empty 0 -8 0 10 #dcdcdc
-#000000 #000000 0 256;
+#X obj 345 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 145 39 cnv 4 4 4 empty empty train 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 95 39 cnv 4 4 4 empty empty pulse 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 458 10 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 478 10 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 515 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 464 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 193 39 cnv 4 4 4 empty empty oscillator 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 3 309 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 408 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 82 318 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 3 451 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X text 150 415 1) float;
+#X obj 219 139 nbx 5 14 -50 50 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
-#fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -104,8 +88,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
-0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -117,8 +100,7 @@
 #X obj 136 86 snapshot~;
 #X obj 91 52 del 5;
 #X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 74 126 switch~;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -137,72 +119,45 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 70 pd;
-#X obj 3 2 cnv 15 301 42 empty empty randpulse2~ 20 20 2 37 #e0e0e0
-#000000 0;
+#X obj 3 2 cnv 15 301 42 empty empty randpulse2~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 2 graph;
-#X obj 3 226 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 103 234 cnv 17 3 45 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 24 39 cnv 4 4 4 empty empty Random 0 28 2 18 #e0e0e0 #000000
-0;
-#X text 128 267 seed <float>;
-#X text 131 233 float/signal - density;
-#X text 209 359 - density (default 0);
-#X text 150 376 2) float;
+#X obj 3 226 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 83 234 cnv 17 3 65 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 24 39 cnv 4 4 4 empty empty Random 0 28 2 18 #e0e0e0 #000000 0;
+#X text 143 249 seed <float>;
+#X text 209 414 - density (default 0);
+#X text 150 431 2) float;
 #X obj 219 164 else/randpulse2~ 50;
-#X text 209 292 - random pulse signal;
-#X text 164 293 signal;
-#X text 128 249 rand <float>;
-#X text 209 248 - non zero sets to random gate value mode;
-#X text 209 375 - non zero sets to random gate value mode (default
-0);
+#X text 143 264 rand <float>;
+#X text 224 263 - non zero sets to random gate value mode;
+#X text 209 430 - non zero sets to random gate value mode (default 0);
 #N canvas 622 221 467 476 rand 0;
 #X obj 130 268 else/graph~ 441 3;
 #X msg 69 132 rand \$1;
-#X obj 69 107 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
-#000000 0 1;
+#X obj 69 107 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 147 205 else/out~;
-#X obj 129 132 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
+#X obj 129 132 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 129 168 else/randpulse2~ 1500 1;
-#X obj 132 105 hsl 128 15 100 44100 1 0 empty empty empty -2 -8 0 10
-#dcdcdc #000000 #000000 0 1;
-#X text 47 23 By default \, gate values in [randopulse2~] are "1" \,
-but you can set it to random mode with the second argument (non zero
-value) \, where it gives you random positive and negative values (in
-the range from -1 to 1). You can also use the "rand" message to change
-this.;
+#X obj 132 105 hsl 128 15 100 44100 1 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X text 47 23 By default \, gate values in [randopulse2~] are "1" \, but you can set it to random mode with the second argument (non zero value) \, where it gives you random positive and negative values (in the range from -1 to 1). You can also use the "rand" message to change this.;
 #X connect 1 0 5 0;
 #X connect 2 0 1 0;
 #X connect 4 0 5 0;
 #X connect 5 0 0 0;
 #X connect 5 0 3 0;
 #X connect 6 0 4 0;
-#X restore 487 173 pd rand;
-#X text 60 86 [randpulse2~] is a random pulse train oscillator. It
-alternates at random intervals according to a "density" parameter \,
-which controls the average frequency.;
+#X restore 434 166 pd rand;
 #X text 35 150 see also:;
 #X obj 31 174 else/randpulse~;
 #X obj 219 190 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
-#X obj 6 319 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
-0;
-#X text 135 328 -seed <float>: seed value (default: unique internal)
-;
-#X text 209 266 - a float sets seed \, no float sets a unique internal
-;
-#N canvas 777 84 466 374 seed 0;
-#X text 64 15 Pseudo random number generators aren't true random number
-generators. Instead \, an algorithm is used to provide a sequence of
-numbers that seems random. The same sequence can be reproduced if you
-set a "seed" value \, which can be any integer number., f 57;
-#X text 64 139 You can set a seed with the '-seed' flag. If you don't
-supply it \, each object gets its own seed internal seed. If you send
-a 'seed' message without float \, the object also gets a unique seed
-value., f 57;
+#X obj 6 342 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
+#X text 135 351 -seed <float>: seed value (default: unique internal);
+#X text 224 248 - a float sets seed \, no float sets a unique internal;
+#N canvas 877 139 466 374 seed 0;
+#X text 64 15 Pseudo random number generators aren't true random number generators. Instead \, an algorithm is used to provide a sequence of numbers that seems random. The same sequence can be reproduced if you set a "seed" value \, which can be any integer number., f 57;
+#X text 64 139 You can set a seed with the '-seed' flag. If you don't supply it \, each object gets its own seed internal seed. If you send a 'seed' message without float \, the object also gets a unique seed value., f 57;
 #X msg 339 264 seed;
 #X msg 329 235 seed 123;
 #X obj 60 311 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
@@ -210,10 +165,7 @@ value., f 57;
 #X obj 329 297 s \$0-randpulse2~;
 #X obj 190 223 r \$0-randpulse2~;
 #X obj 60 223 r \$0-randpulse2~;
-#X text 64 78 Seeds are kept locally \, which means that if two [randpulse2~]
-objects are seeded the same they will have the same output. Conversely
-\, you can seed the same [randpulse2~] object twice with the same seed
-to repeat the output., f 57;
+#X text 64 78 Seeds are kept locally \, which means that if two [randpulse2~] objects are seeded the same they will have the same output. Conversely \, you can seed the same [randpulse2~] object twice with the same seed to repeat the output., f 57;
 #X obj 60 253 else/randpulse2~ -seed 123 2 1, f 16;
 #X obj 190 253 else/randpulse2~ -seed 123 2 1, f 16;
 #X connect 2 0 6 0;
@@ -222,8 +174,50 @@ to repeat the output., f 57;
 #X connect 8 0 10 0;
 #X connect 10 0 4 0;
 #X connect 11 0 5 0;
-#X restore 487 195 pd seed;
+#X restore 485 166 pd seed;
 #X obj 32 197 else/randpulse2;
 #X text 279 137 <-- density;
-#X connect 16 0 27 0;
-#X connect 27 0 37 0;
+#N canvas 683 110 622 689 multichannel 0;
+#X obj 100 87 hsl 128 15 1 5000 1 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 97 116 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X text 181 117 density;
+#X obj 97 241 else/out.mc~;
+#X msg 161 161 ch 2;
+#X msg 116 160 ch 1;
+#X obj 405 217 else/out.mc~;
+#X text 29 25 The -ch flag or message sets the number of output channels. This is only meaningful if you have a single channel input., f 42;
+#X obj 235 599 else/out~;
+#X floatatom 235 417 5 0 0 0 - - - 12;
+#X msg 248 448 400 600;
+#X text 126 330 You can initialize the object with multichannel if you give it a list of frequencies with the -mc flag (you can't set phases though). A list input also works if no signal is connected to set it to multichannel with a list of frequency input., f 62;
+#X text 348 509 the set message sets a single frequency channel, f 17;
+#X obj 97 207 else/randpulse2~ -ch 2 50;
+#X obj 405 179 else/randpulse2~;
+#X obj 405 134 else/sigs~ 30 50;
+#X text 316 28 If you have a multichannel connection in the frequency input \, [randpulse2~] generates a signal with the same number of channels and the 'ch' message or flag is meaningless. The multichannel input is the density for each output., f 44;
+#X obj 235 568 else/randpulse2~ -mc 440 660;
+#X msg 278 521 set 1 1555;
+#X msg 261 478 100 600 1700;
+#X connect 0 0 1 0;
+#X connect 1 0 13 0;
+#X connect 4 0 13 0;
+#X connect 5 0 13 0;
+#X connect 9 0 17 0;
+#X connect 10 0 17 0;
+#X connect 13 0 3 0;
+#X connect 14 0 6 0;
+#X connect 15 0 14 0;
+#X connect 17 0 8 0;
+#X connect 18 0 17 0;
+#X connect 19 0 17 0;
+#X restore 437 187 pd multichannel;
+#X text 60 86 [randpulse2~] is a random pulse train oscillator. It alternates at random intervals according to a "density" parameter \, which controls the average frequency. It has support for multichannels., f 65;
+#X text 121 371 -ch <float>: number of output channels (default 1);
+#X text 127 386 -mc <list>: sets multichannel output with a list of frequencies, f 63;
+#X text 134 233 list/signal(s) - density value(s);
+#X text 95 281 set <float \, float> -;
+#X text 221 281 <channel \, freq> set a single density channel, f 50;
+#X text 224 317 - random pulse signal(s);
+#X text 161 318 signal(s);
+#X connect 16 0 26 0;
+#X connect 26 0 33 0;
