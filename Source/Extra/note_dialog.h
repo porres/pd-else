@@ -1,30 +1,37 @@
+// note_bbox proc: send bounding box coordinates to C
+/* target: Name of the receiving Pd object (x->x_bindsym in C, composed of "note%lx").
+cvname: The canvas widget where the text is drawn.
+tag: The tag identifying the text item in the canvas*/
 sys_gui("proc note_bbox {target cvname tag} {\n\
-            pdsend \"$target _bbox $target [$cvname bbox $tag]\"}\n"
+            pdsend \"$target _bbox $target [$cvname bbox $tag]\"\n"
+        "}\n");
 // LATER think about window vs canvas coords
-            "proc note_click {target cvname x y tag} {\n\
+sys_gui("proc note_click {target cvname x y tag} {\n\
             pdsend \"$target _click $target [$cvname canvasx $x] [$cvname canvasy $y]\
-            [$cvname index $tag @$x,$y] [$cvname bbox $tag]\"}\n"
-    
-            "proc note_update {cv tag tt wd} {\n\
+            [$cvname index $tag @$x,$y] [$cvname bbox $tag]\"}\n");
+//
+sys_gui("proc note_update {cv tag tt wd} {\n\
             if {$wd > 0} {$cv itemconfig $tag -text $tt -width $wd} else {\n\
-            $cv itemconfig $tag -text $tt}}\n"
-            "proc note_draw {tgt cv tag1 tag2 x y fnm fsz clr tt wd wt sl just} {\n\
+            $cv itemconfig $tag -text $tt}}\n");
+
+
+sys_gui("proc note_draw {tgt cv tag1 tag2 x y fnm fsz clr tt wd wt sl just ul} {\n\
+            set font_opts [list $fnm $fsz $wt $sl]\n\
+            if {$ul} {\n\
+                lappend font_opts underline\n\
+            }\n\
             if {$wd > 0} {\n\
-            $cv create text $x $y -text $tt -tags [list $tag1 $tag2] \
-            -font [list $fnm $fsz $wt $sl] -justify $just -fill $clr -width $wd -anchor nw} else {\n\
-            $cv create text $x $y -text $tt -tags [list $tag1 $tag2] \
-            -font [list $fnm $fsz $wt $sl] -justify $just -fill $clr -anchor nw}\n\
-            note_bbox $tgt $cv $tag1\n\
-            $cv bind $tag1 <Button> [list note_click $tgt %W %x %y $tag1]}\n"
-// later rethink how to make both into a single section:
-            "proc note_draw_ul {tgt cv tag1 tag2 x y fnm fsz clr tt wd wt sl just} {\n\
-            if {$wd > 0} {\n\
-            $cv create text $x $y -text $tt -tags [list $tag1 $tag2] \
-            -font [list $fnm $fsz $wt $sl underline] -justify $just -fill $clr -width $wd -anchor nw} else {\n\
-            $cv create text $x $y -text $tt -tags [list $tag1 $tag2] \
-            -font [list $fnm $fsz $wt $sl underline] -justify $just -fill $clr -anchor nw}\n\
+                $cv create text $x $y -text $tt -tags [list $tag1 $tag2] \\\n\
+                -font $font_opts -justify $just -fill $clr \\\n\
+                -width $wd -anchor nw\n\
+            } else {\n\
+                $cv create text $x $y -text $tt -tags [list $tag1 $tag2] \\\n\
+                -font $font_opts -justify $just -fill $clr -anchor nw\n\
+            }\n\
             note_bbox $tgt $cv $tag1\n\
             $cv bind $tag1 <Button> [list note_click $tgt %W %x %y $tag1]}\n");
+
+
 //
 sys_vgui("if {[catch {pd}]} {\n"
 "    proc pd {args} {pdsend [join $args \" \"]}\n"

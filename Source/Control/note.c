@@ -7,10 +7,8 @@
 #include <g_canvas.h>
 //#include "shared/s_elseutf8.h"
 //#include "shared/else_alloca.h"
-#include <s_elseutf8.h>
-#include <else_alloca.h>
-
-// #include "../extra_source/compat.h"
+#include "s_elseutf8.h"
+#include "else_alloca.h"
 
 #define NOTE_MINSIZE       8
 #define NOTE_HANDLE_WIDTH  8
@@ -213,42 +211,62 @@ static void note_adjust_justification(t_note *x){
     }
 }
 
-static void note_draw(t_note *x){
-//    post("NOTE DRAW");
+static void note_draw(t_note *x) {
+    // post("NOTE DRAW");
     x->x_cv = glist_getcanvas(x->x_glist);
+    // Remove backslashes followed by spaces
+    int i, j;
+    for (i = 0, j = 0; x->x_buf[i] != '\0'; i++) {
+        if (x->x_buf[i] == '\\' && x->x_buf[i + 1] == ' ') {
+            i++;  // Skip the backslash and space
+        }
+        x->x_buf[j++] = x->x_buf[i];
+    }
+    x->x_buf[j] = '\0';  // Null-terminate the string
+/*
+    // Print the length of x->x_buf
+    post("Length of x->x_buf = %d", (int)strlen(x->x_buf));
+
+    // Iterate through each character and print its ASCII value
+    for (int i = 0; i < strlen(x->x_buf); i++) {
+        post("Character %d: %c (ASCII: %d)", i, x->x_buf[i], (unsigned char)x->x_buf[i]);
+    }
+    post("x->x_buf = %s", x->x_buf);*/
+    
     if(x->x_bg_flag && x->x_bbset){ // draw bg only if initialized
         int x1, y1, x2, y2;
         note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
         sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags [list bg%lx all%lx] -outline %s -fill %s\n",
-            (unsigned long)x->x_cv,
-            text_xpix((t_text *)x, x->x_glist),
-            text_ypix((t_text *)x, x->x_glist),
-            x2 + 2*x->x_zoom,
-            y2 + 2*x->x_zoom,
-            (unsigned long)x,
-            (unsigned long)x,
-            x->x_outline ? "black" : x->x_bgcolor,
-            x->x_bgcolor);
+                 (unsigned long)x->x_cv,
+                 text_xpix((t_text *)x, x->x_glist),
+                 text_ypix((t_text *)x, x->x_glist),
+                 x2 + 2 * x->x_zoom,
+                 y2 + 2 * x->x_zoom,
+                 (unsigned long)x,
+                 (unsigned long)x,
+                 x->x_outline ? "black" : x->x_bgcolor,
+                 x->x_bgcolor);
     }
     char buf[NOTE_OUTBUFSIZE], *outbuf, *outp;
     outp = outbuf = buf;
-    sprintf(outp, "%s %s .x%lx.c txt%lx all%lx %d %d {%s} -%d %s {%.*s} %d %s %s %s\n",
-        x->x_underline ? "note_draw_ul" : "note_draw",
-        x->x_bindsym->s_name, // %s
-        (unsigned long)x->x_cv, // .x%lx.c
-        (unsigned long)x, // txt%lx
-        (unsigned long)x, // all%lx
-        text_xpix((t_text *)x, x->x_glist) + x->x_zoom, // %d
-        text_ypix((t_text *)x, x->x_glist) + x->x_zoom, // %d
-        x->x_fontname->s_name, // {%s}
-        x->x_fontsize * x->x_zoom, // -%d
-        x->x_select ? "blue" : x->x_color, // %s
-        x->x_bufsize, // %.
-        x->x_buf, // *s
-        x->x_max_pixwidth * x->x_zoom, // %d
-        x->x_bold ? "bold" : "normal",
-        x->x_italic ? "italic" : "roman", //
-        x->x_textjust == 0 ? "left" : x->x_textjust == 1 ? "center" : "right");
+    // Use the refactored Tcl/Tk "note_draw" procedure with the new "ul" parameter
+    sprintf(outp, "note_draw %s .x%lx.c txt%lx all%lx %d %d {%s} %d %s {%.*s} %d %s %s %s %d\n",
+            x->x_bindsym->s_name,       // %s
+            (unsigned long)x->x_cv,     // .x%lx.c
+            (unsigned long)x,           // txt%lx
+            (unsigned long)x,           // all%lx
+            text_xpix((t_text *)x, x->x_glist) + x->x_zoom, // %d
+            text_ypix((t_text *)x, x->x_glist) + x->x_zoom, // %d
+            x->x_fontname->s_name,      // {%s}
+            x->x_fontsize * x->x_zoom,  // %d
+            x->x_select ? "blue" : x->x_color, // %s
+            x->x_bufsize,               // %.
+            x->x_buf,                   // *s
+            x->x_max_pixwidth * x->x_zoom, // %d
+            x->x_bold ? "bold" : "normal",   // %s
+            x->x_italic ? "italic" : "roman", // %s
+            x->x_textjust == 0 ? "left" : x->x_textjust == 1 ? "center" : "right", // %s
+            x->x_underline ? 1 : 0);    // %d (ul parameter)
     x->x_bbpending = 1; // bbox pending
     sys_gui(outbuf);
     if(outbuf != buf)
@@ -811,9 +829,9 @@ static void note_receive(t_note *x, t_symbol *s){
     }
 }
 
-static void note_set(t_note *x, t_symbol *s, int ac, t_atom * av){
+static void note_set(t_note *x, t_symbol *s, int ac, t_atom * av) {
     s = NULL;
-    if(!x->x_init) // hack???
+    if (!x->x_init)  // hack???
         note_initialize(x);
     binbuf_clear(x->x_binbuf);
     binbuf_restore(x->x_binbuf, ac, av);
@@ -821,6 +839,7 @@ static void note_set(t_note *x, t_symbol *s, int ac, t_atom * av){
     x->x_bbset = 0;
     note_redraw(x);
 }
+
 
 static void note_append(t_note *x, t_symbol *s, int ac, t_atom * av){
     s = NULL;
