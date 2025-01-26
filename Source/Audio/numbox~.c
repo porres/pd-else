@@ -1,8 +1,8 @@
 // By Porres and Tim Schoen
 
 #include <m_pd.h>
+#include "magic.h"
 #include <g_canvas.h>
-#include <magic.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -55,7 +55,7 @@ t_widgetbehavior numbox_widgetbehavior;
 
 //////////////////////////////////////////////////////// Helper and Drawing functions /////////////////////////////////////////////////////////////////
 char *set_x_buf(t_numbox *x){
-    sprintf(x->x_buf, "~%g", x->x_display = x->x_outmode ? x->x_out_val : x->x_in_val);
+    sprintf(x->x_buf, "%g", x->x_display = x->x_outmode ? x->x_out_val : x->x_in_val);
     int bufsize = (int)strlen(x->x_buf), i, e;
     int real_numwidth = x->x_numwidth + 1;
     if(bufsize > real_numwidth){ // reduce
