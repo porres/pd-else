@@ -334,6 +334,7 @@
 #X connect 3 0 9 0;
 #X connect 6 0 18 0;
 #X connect 6 0 25 0;
+#X connect 6 0 26 0;
 #X connect 6 1 7 0;
 #X connect 6 1 21 1;
 #X connect 6 2 24 0;

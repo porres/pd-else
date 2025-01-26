@@ -285,6 +285,7 @@
 #X connect 4 0 10 0;
 #X connect 7 0 24 0;
 #X connect 7 0 29 0;
+#X connect 7 0 30 0;
 #X connect 7 1 8 0;
 #X connect 7 1 31 1;
 #X connect 7 2 27 0;
