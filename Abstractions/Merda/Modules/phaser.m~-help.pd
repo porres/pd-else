@@ -1,4 +1,4 @@
-#N canvas 484 38 548 430 12;
+#N canvas 605 50 548 430 12;
 #X text 301 358 see -->;
 #X text 308 107 This is just a wrapper around [phaser~] from ELSE \, check it out., f 22;
 #X obj 361 358 about.MERDA;
@@ -26,15 +26,12 @@
 #X restore 89 74 pd messages;
 #X obj 60 35 else/bl.saw~ 55;
 #X obj 60 106 else/phaser.m~;
-#A saved 0.298829 1.23044 0.448819;
+#A saved 0.164395 1.30578 0.354331;
 #A saved rate-learn none;
 #A saved wet-learn none;
 #A saved bw-learn none;
 #X obj 60 315 else/out~;
 #X obj 363 186 else/phaser~;
-#X obj 298 11 knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0 empty empty 0 12 6 -15 0 1 0 0;
-#X obj 298 66 ctlout 7 3;
 #X connect 4 0 6 0;
 #X connect 5 0 6 0;
 #X connect 6 0 7 0;
-#X connect 9 0 10 0;

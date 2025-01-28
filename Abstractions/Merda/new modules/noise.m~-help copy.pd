@@ -1,7 +1,7 @@
 #N canvas 372 183 1055 704 12;
 #X obj 180 279 else/out~;
 #X obj 180 49 noise.m~;
-#A saved 0 0;
+#A saved 0.583333 0;
 #A saved;
 #X obj 21 357 else/rampnoise~;
 #X obj 22 327 else/stepnoise~;
