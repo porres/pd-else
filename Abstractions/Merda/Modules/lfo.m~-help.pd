@@ -1,4 +1,4 @@
-#N canvas 385 62 509 631 12;
+#N canvas 637 51 509 631 12;
 #X obj 129 421 *~;
 #X obj 129 375 noise~;
 #X text 290 288 see -->;
@@ -49,7 +49,11 @@
 #X obj 43 446 vsl 23 132 -1 1 0 0 empty empty empty 0 -9 0 12 #dfdfdf #000000 #000000 0 1;
 #X text 268 181 This LFO module has singal inlets for FM and PWM (for square and vsaw wave) with attenuverters plus a sync inlet that takes impulses., f 29;
 #X obj 43 54 else/lfo.m~;
-#A saved 0.1 0 0 0 0 0;
+#A saved 0.772323 0 -0.212598 0 -0.228346 -0.212598;
+#A saved hz-learn none;
+#A saved PWM-learn none;
+#A saved att-fm-learn none;
+#A saved att-pwm-learn none;
 #X obj 129 461 else/out~;
 #X obj 43 416 else/s2f~;
 #X connect 0 0 8 0;

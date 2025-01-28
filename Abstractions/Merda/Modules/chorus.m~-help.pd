@@ -1,4 +1,4 @@
-#N canvas 428 80 526 429 12;
+#N canvas 607 99 561 435 12;
 #X text 305 126 This is just a wrapper around [chorus~] from ELSE \, check it out., f 22;
 #X text 299 329 see -->;
 #X obj 360 328 about.MERDA;
@@ -25,10 +25,13 @@
 #X connect 9 0 0 0;
 #X restore 80 84 pd messages;
 #X obj 361 185 else/chorus~;
-#X obj 52 38 else/bl.saw~ 110;
 #X obj 52 131 else/chorus.m~;
-#A saved 0.1 0 0;
+#A saved 0.113869 23.7438 0.768293;
+#A saved ratelearn none;
+#A saved depthlearn none;
+#A saved wetlearn none;
 #X obj 52 327 else/out~;
-#X connect 4 0 7 0;
+#X obj 52 38 else/play.file~ guitar.wav 1 1;
+#X connect 4 0 6 0;
 #X connect 6 0 7 0;
-#X connect 7 0 8 0;
+#X connect 8 0 6 0;

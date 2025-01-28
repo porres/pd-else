@@ -1,4 +1,4 @@
-#N canvas 431 38 510 467 12;
+#N canvas 579 42 512 481 12;
 #X text 263 364 see -->;
 #X text 271 141 This is just a wrapper around [flanger~] from ELSE \, check it out., f 22;
 #X obj 323 364 about.MERDA;
@@ -32,7 +32,11 @@
 #X restore 72 82 pd messages;
 #X obj 42 37 else/bl.saw~ 110;
 #X obj 42 120 else/flanger.m~;
-#A saved 0.1 0 0 0;
+#A saved 0.157595 8.92697 0.609756 0.682927;
+#A saved ratelearn ctlin 4 5;
+#A saved depthlearn ctlin 4 5;
+#A saved wetlearn ctlin 4 5;
+#A saved coefflearn ctlin 4 5;
 #X obj 326 220 else/flanger~;
 #X obj 42 359 else/out~;
 #X connect 4 0 6 0;

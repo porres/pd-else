@@ -1,4 +1,4 @@
-#N canvas 384 38 618 621 12;
+#N canvas 615 58 618 621 12;
 #X text 392 516 harmony-voice;
 #X text 216 516 root-voice;
 #X obj 555 554 bng 25 250 50 0 empty empty empty 17 7 0 10 #b8b8b8 #000000 #000000;
