@@ -13,7 +13,9 @@
 #X obj 91 41 osc~ 440;
 #X obj 91 209 else/rm.m~;
 #A saved 20 0;
-#X obj 91 483 else/out~;
+#A saved;
+#A saved;
+#X obj 91 471 else/out~;
 #X obj 313 261 else/rm~;
 #X connect 4 0 5 0;
 #X connect 5 0 6 0;

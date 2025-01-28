@@ -64,7 +64,7 @@
 #X text 174 168 Depth;
 #X obj 136 121 else/note 118 24 Inter empty 5 54 54 54 0 187 187 187 1 1 CHORUS;
 #X coords 0 1 100 -1 177 137 1 111 111;
-#X restore 208 154 graph;
+#X restore 207 149 graph;
 #N canvas 210 278 359 294 route 0;
 #X obj 112 41 inlet;
 #X obj 112 199 s \$0-set-rate;

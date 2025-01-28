@@ -41,7 +41,12 @@
 #X obj 81 410 else/out~;
 #X obj 300 214 else/plate.rev~;
 #X obj 50 97 else/plate.rev.m~;
-#A saved 50 0.5 0.25 0.75 0.5;
+#A saved 15 0.25 0.75 0.5 0.25;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
 #X obj 50 34 else/player~ bubul.wav 1 1;
 #X connect 4 0 7 0;
 #X connect 7 0 5 0;
