@@ -221,7 +221,7 @@ static void *sfload_new(t_symbol *s, int ac, t_atom *av){
     x->x_result_ready = 0;
     x->x_thread_created = 0;
     x->x_result_clock = clock_new(x, (t_method)sfload_check_done);
-    x->x_info_outlet = outlet_new(x, &s_list);
+    x->x_info_outlet = outlet_new(&x->x_obj, &s_list);
     return(x);
 }
 
