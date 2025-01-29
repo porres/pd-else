@@ -118,14 +118,12 @@ void* sfload_read_audio(void *arg){ // read audio into array
         }
         av_packet_unref(x->x_pkt);
     }
-
-    SETFLOAT(x->x_sfinfo, x->x_stream_ctx->sample_rate);
-    SETFLOAT(x->x_sfinfo + 1, nch);
-    SETFLOAT(x->x_sfinfo + 2, av_get_bytes_per_sample(x->x_stream_ctx->sample_fmt) * 8);
-    SETFLOAT(x->x_sfinfo + 3, output_index);
+    SETFLOAT(x->x_sfinfo + 0, output_index);
+    SETFLOAT(x->x_sfinfo + 1, x->x_stream_ctx->sample_rate);
+    SETFLOAT(x->x_sfinfo + 2, nch);
+    SETFLOAT(x->x_sfinfo + 3, av_get_bytes_per_sample(x->x_stream_ctx->sample_fmt) * 8);
     SETFLOAT(x->x_sfinfo + 4, loop_start_entry ? atoi(loop_start_entry->value) : 0);
-    SETFLOAT(x->x_sfinfo + 5, loop_end_entry ? atoi(loop_end_entry->value) : 0);
-
+    SETFLOAT(x->x_sfinfo + 5, loop_end_entry ? atoi(loop_end_entry->value) : output_index);
     x->x_result_ready = output_index;
     av_free(x_out);
     return (NULL);
