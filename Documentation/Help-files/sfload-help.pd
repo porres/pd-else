@@ -37,6 +37,8 @@
 #X text 59 281 * <nsamples \, sample rate \, nchannels \, bits \, loop start/end>;
 #X text 148 380 list - size \, sample rate \, channels \, bits \, loop start \, loop end, f 62;
 #X text 23 256 info;
+#X msg 125 161 load stereo.wav 1;
 #X connect 16 0 17 0;
 #X connect 17 0 24 0;
 #X connect 18 0 16 0;
+#X connect 31 0 17 0;

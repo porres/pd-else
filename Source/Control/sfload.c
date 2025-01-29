@@ -10,7 +10,7 @@
 
 static t_class *sfload_class;
 
-typedef struct _sfload {
+typedef struct _sfload{
     t_object        x_obj;
     t_outlet       *x_info_outlet;
     AVCodecContext *x_stream_ctx;
@@ -105,7 +105,8 @@ void* sfload_read_audio(void *arg){ // read audio into array
                 pd_error(x, "[sfload]: Error converting samples\n");
                 continue;
             }
-            x->x_all_out = realloc(x->x_all_out, (output_index + (samples_converted / nch)) * sizeof(t_sample));
+            x->x_all_out = realloc(x->x_all_out,
+                (output_index + (samples_converted / nch)) * sizeof(t_sample));
             int n = 0;
             while(n < samples_converted){
                 for(unsigned int ch = 0; ch < nch; ch++){
@@ -174,16 +175,16 @@ void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av){
         return;
     }
     t_symbol* path = NULL;
-    if(ac == 1 && av[0].a_type == A_SYMBOL)
+    if(av[0].a_type == A_SYMBOL)
         path = atom_getsymbol(av);
+    else{
+        pd_error(x, "[sfload]: Invalid arguments for 'load' message\n");
+        return;
+    }
     if(ac >= 2 && av[1].a_type == A_FLOAT)
         x->x_channel = atom_getfloat(av + 1);
     else
         x->x_channel = 0;
-    if(!path){
-        pd_error(x, "[sfload]: Invalid arguments for 'load' message\n");
-        return;
-    }
     sfload_find_file(x, path, x->x_path);
     if(pthread_create(&x->x_process_thread, NULL, sfload_read_audio, x) != 0){
         pd_error(x, "[sfload]: Error creating thread\n");
