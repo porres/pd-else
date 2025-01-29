@@ -65,7 +65,7 @@
 #X obj 78 383 *~, f 4;
 #X obj 103 308 r \$0-master;
 #N canvas 275 222 423 453 vu 0;
-#X obj 84 57 inlet~;
+#X obj 85 33 inlet~;
 #X obj 84 202 env~ 1024;
 #X obj 176 171 abs~;
 #X obj 176 236 snapshot~;
@@ -78,8 +78,11 @@
 #X obj 84 347 pack;
 #X obj 84 371 s \$0-vu;
 #X obj 242 132 else/initmess 150;
-#X connect 0 0 2 0;
-#X connect 0 0 1 0;
+#X obj 86 83 else/sum~;
+#X obj 182 84 else/nchs~;
+#X obj 160 120 /~ 1;
+#X connect 0 0 13 0;
+#X connect 0 0 14 0;
 #X connect 1 0 6 0;
 #X connect 2 0 5 0;
 #X connect 3 0 4 0;
@@ -92,6 +95,10 @@
 #X connect 9 0 5 3;
 #X connect 10 0 11 0;
 #X connect 12 0 9 0;
+#X connect 13 0 15 0;
+#X connect 14 0 15 1;
+#X connect 15 0 2 0;
+#X connect 15 0 1 0;
 #X restore 100 422 pd vu;
 #N canvas 165 143 367 250 route 0;
 #X obj 136 57 inlet;
