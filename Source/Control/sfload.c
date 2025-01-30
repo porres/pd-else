@@ -98,7 +98,7 @@ void* sfload_read_audio(void *arg){ // read audio into array
     for (unsigned int ch = 0; ch < nch; ch++) {
         x_out[ch] = (t_sample *)av_mallocz(FRAMES * sizeof(t_sample));
     }
-    
+
     int output_index = 0;
     while(av_read_frame(x->x_ic, x->x_pkt) >= 0) {
         if(x->x_pkt->stream_index == x->x_stream_idx) {
@@ -111,7 +111,7 @@ void* sfload_read_audio(void *arg){ // read audio into array
                 pd_error(x, "[sfload]: Error converting samples\n");
                 continue;
             }
-            
+
             for (unsigned int ch = 0; ch < nch; ch++) {
                 x->x_all_out[ch] = realloc(x->x_all_out[ch],
                                            (output_index + samples_converted) * sizeof(t_sample));
@@ -132,7 +132,7 @@ void* sfload_read_audio(void *arg){ // read audio into array
     SETFLOAT(x->x_sfinfo + 3, av_get_bytes_per_sample(x->x_stream_ctx->sample_fmt) * 8);
     SETFLOAT(x->x_sfinfo + 4, loop_start_entry ? atoi(loop_start_entry->value) : 0);
     SETFLOAT(x->x_sfinfo + 5, loop_end_entry ? atoi(loop_end_entry->value) : output_index);
-    
+
     x->x_num_channels = nch;
     x->x_result_ready = output_index;
     for (unsigned int ch = 0; ch < nch; ch++) {
@@ -151,8 +151,15 @@ void sfload_check_done(t_sfload* x){ // result clock
             char channel_name[MAXPDSTRING];
             snprintf(channel_name, MAXPDSTRING, "%i-%s", ch, x->x_arr_name->s_name);
             t_garray* garray = (t_garray*)pd_findbyclass(gensym(channel_name), garray_class);
-
             if(garray) {
+                garray_resize_long(garray, x->x_result_ready);
+                t_word* vec = ((t_word*)garray_vec(garray));
+                for(int i = 0; i < x->x_result_ready; i++)
+                    vec[i].w_float = x->x_all_out[ch][i];
+                garray_redraw(garray);
+            }
+            else if(ch == 0) {
+                garray = (t_garray*)pd_findbyclass(x->x_arr_name, garray_class);
                 garray_resize_long(garray, x->x_result_ready);
                 t_word* vec = ((t_word*)garray_vec(garray));
                 for(int i = 0; i < x->x_result_ready; i++)
@@ -189,7 +196,7 @@ void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av){
     }
     char channel_zero_name[MAXPDSTRING];
     snprintf(channel_zero_name, MAXPDSTRING, "0-%s", x->x_arr_name->s_name);
-    if(!pd_findbyclass(gensym(channel_zero_name), garray_class)){
+    if(!pd_findbyclass(x->x_arr_name, garray_class) && !pd_findbyclass(gensym(channel_zero_name), garray_class)){
         pd_error(x, "[sfload]: Array not found\n");
         return;
     }
