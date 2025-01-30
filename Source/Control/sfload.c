@@ -98,7 +98,7 @@ void* sfload_read_audio(void *arg){ // read audio into array
     for (unsigned int ch = 0; ch < nch; ch++) {
         x_out[ch] = (t_sample *)av_mallocz(FRAMES * sizeof(t_sample));
     }
-    
+
     int output_index = 0;
     while(av_read_frame(x->x_ic, x->x_pkt) >= 0) {
         if(x->x_pkt->stream_index == x->x_stream_idx) {
@@ -111,7 +111,7 @@ void* sfload_read_audio(void *arg){ // read audio into array
                 pd_error(x, "[sfload]: Error converting samples\n");
                 continue;
             }
-            
+
             for (unsigned int ch = 0; ch < nch; ch++) {
                 x->x_all_out[ch] = realloc(x->x_all_out[ch],
                                            (output_index + samples_converted) * sizeof(t_sample));
@@ -132,7 +132,7 @@ void* sfload_read_audio(void *arg){ // read audio into array
     SETFLOAT(x->x_sfinfo + 3, av_get_bytes_per_sample(x->x_stream_ctx->sample_fmt) * 8);
     SETFLOAT(x->x_sfinfo + 4, loop_start_entry ? atoi(loop_start_entry->value) : 0);
     SETFLOAT(x->x_sfinfo + 5, loop_end_entry ? atoi(loop_end_entry->value) : output_index);
-    
+
     x->x_num_channels = nch;
     x->x_result_ready = output_index;
     for (unsigned int ch = 0; ch < nch; ch++) {
