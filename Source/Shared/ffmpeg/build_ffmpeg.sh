@@ -13,10 +13,7 @@ elif [[ "$OS" == "Linux" ]]; then
     ffmpeg_config="--enable-openssl --enable-pic"
     ffmpeg_cc="${CC:-gcc}"
 elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-    ffmpeg_config="--toolchain=msvc --arch=$3 --target-os=win64 --extra-cflags=-MT"
-    ffmpeg_cc="cl.exe"
-    sed -i.bak '5021c\
-            _DEPCMD='\''$(DEP$(1)) $(DEP$(1)FLAGS) $($(1)DEP_FLAGS) $< 2>&1 | grep "^Note:.*file:" | sed -e "s^.*file: *^$@: ^" | tr \\\\\\\\/ \/ > $(@:.o=.d)'\'' '$'\n' "$FFMPEG_DIR/configure"
+    ffmpeg_cc="${CC:-gcc}"
 else
     echo "Unsupported OS: $OS"
     exit 1
