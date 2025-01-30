@@ -38,7 +38,7 @@ target_include_directories(ffmpeg INTERFACE ${FFMPEG_OUT_DIR})
 add_dependencies(ffmpeg ffmpeg_deps)
 
 if(WIN32)
-    target_link_libraries(ffmpeg INTERFACE ws2_32 secur32)
+    target_link_libraries(ffmpeg INTERFACE bcrypt ws2_32 secur32)
 endif()
 
 # Clean up
