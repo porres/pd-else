@@ -158,7 +158,7 @@ void sfload_check_done(t_sfload* x){ // result clock
                     vec[i].w_float = x->x_all_out[ch][i];
                 garray_redraw(garray);
             }
-            else if(ch == 0) {
+            else if(ch == x->x_channel) {
                 garray = (t_garray*)pd_findbyclass(x->x_arr_name, garray_class);
                 garray_resize_long(garray, x->x_result_ready);
                 t_word* vec = ((t_word*)garray_vec(garray));
@@ -212,13 +212,7 @@ void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av){
         pd_error(x, "[sfload]: No array set\n");
         return;
     }
-    char channel_zero_name[MAXPDSTRING];
-    snprintf(channel_zero_name, MAXPDSTRING, "0-%s", x->x_arr_name->s_name);
-    if(!pd_findbyclass(x->x_arr_name, garray_class) && !pd_findbyclass(gensym(channel_zero_name), garray_class)){
-        pd_error(x, "[sfload]: Array not found\n");
-        return;
-    }
-    
+
     if(!ac){
         pd_error(x, "[sfload]: no filename given\n");
         return;
@@ -234,6 +228,14 @@ void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av){
         x->x_channel = atom_getfloat(av + 1);
     else
         x->x_channel = -1; // -1 means all channels
+
+    char channel_zero_name[MAXPDSTRING];
+    snprintf(channel_zero_name, MAXPDSTRING, "%i-%s", x->x_channel, x->x_arr_name->s_name);
+    if(!pd_findbyclass(x->x_arr_name, garray_class) && !pd_findbyclass(gensym(channel_zero_name), garray_class)){
+        pd_error(x, "[sfload]: Array not found\n");
+        return;
+    }
+
     sfload_find_file(x, path, x->x_path);
     if(pthread_create(&x->x_process_thread, NULL, sfload_read_audio, x) != 0){
         pd_error(x, "[sfload]: Error creating thread\n");
