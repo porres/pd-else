@@ -20,8 +20,9 @@ typedef struct _sfload{
     SwrContext     *x_swr;
     AVFormatContext *x_ic;
     AVChannelLayout x_layout;
+    unsigned int    x_num_channels;
     unsigned int    x_channel;
-    t_sample       *x_all_out;
+    t_sample       *x_all_out[64];
     t_canvas       *x_canvas;
     t_symbol       *x_arr_name;
     pthread_t       x_process_thread;
@@ -82,8 +83,9 @@ void* sfload_read_audio(void *arg){ // read audio into array
     else
         av_channel_layout_default(&layout, x->x_stream_ctx->ch_layout.nb_channels);
     unsigned int nch = layout.nb_channels;
-    swr_alloc_set_opts2(&x->x_swr, &layout, AV_SAMPLE_FMT_FLT, x->x_stream_ctx->sample_rate,
+    swr_alloc_set_opts2(&x->x_swr, &layout, AV_SAMPLE_FMT_FLTP, x->x_stream_ctx->sample_rate,
         &layout, x->x_stream_ctx->sample_fmt, x->x_stream_ctx->sample_rate, 0, NULL);
+
     if(!x->x_swr || swr_init(x->x_swr) < 0){
         pd_error(x, "[sfload]: Could not initialize the resampling context\n");
         return (NULL);
@@ -92,30 +94,35 @@ void* sfload_read_audio(void *arg){ // read audio into array
     AVDictionaryEntry *loop_start_entry = av_dict_get(x->x_ic->metadata, "loop_start", NULL, 0);
     AVDictionaryEntry *loop_end_entry = av_dict_get(x->x_ic->metadata, "loop_end", NULL, 0);
 
-    t_sample* x_out = (t_sample*)av_mallocz(nch * FRAMES * sizeof(t_sample));
+    t_sample **x_out = (t_sample **)av_mallocz(nch * sizeof(t_sample *));
+    for (unsigned int ch = 0; ch < nch; ch++) {
+        x_out[ch] = (t_sample *)av_mallocz(FRAMES * sizeof(t_sample));
+    }
+    
     int output_index = 0;
     while(av_read_frame(x->x_ic, x->x_pkt) >= 0) {
         if(x->x_pkt->stream_index == x->x_stream_idx) {
             if(avcodec_send_packet(x->x_stream_ctx, x->x_pkt) < 0
             || avcodec_receive_frame(x->x_stream_ctx, x->x_frm) < 0)
                 continue;
-            int samples_converted = swr_convert(x->x_swr, (uint8_t **)&x_out, FRAMES,
+            int samples_converted = swr_convert(x->x_swr, (uint8_t **)x_out, FRAMES,
                 (const uint8_t **)x->x_frm->extended_data, x->x_frm->nb_samples);
-            if(samples_converted < 0){
+            if(samples_converted < 0) {
                 pd_error(x, "[sfload]: Error converting samples\n");
                 continue;
             }
-            x->x_all_out = realloc(x->x_all_out,
-                (output_index + (samples_converted / nch)) * sizeof(t_sample));
-            int n = 0;
-            while(n < samples_converted){
-                for(unsigned int ch = 0; ch < nch; ch++){
-                    if(ch == x->x_channel)
-                        x->x_all_out[output_index] = x_out[n];
-                    n++;
-                }
-                output_index++;
+            
+            for (unsigned int ch = 0; ch < nch; ch++) {
+                x->x_all_out[ch] = realloc(x->x_all_out[ch],
+                                           (output_index + samples_converted) * sizeof(t_sample));
+
+                memcpy(x->x_all_out[ch] + output_index,
+                       x_out[ch],
+                       samples_converted * sizeof(t_sample));
             }
+
+
+           output_index += samples_converted;
         }
         av_packet_unref(x->x_pkt);
     }
@@ -125,22 +132,36 @@ void* sfload_read_audio(void *arg){ // read audio into array
     SETFLOAT(x->x_sfinfo + 3, av_get_bytes_per_sample(x->x_stream_ctx->sample_fmt) * 8);
     SETFLOAT(x->x_sfinfo + 4, loop_start_entry ? atoi(loop_start_entry->value) : 0);
     SETFLOAT(x->x_sfinfo + 5, loop_end_entry ? atoi(loop_end_entry->value) : output_index);
+    
+    x->x_num_channels = nch;
     x->x_result_ready = output_index;
+    for (unsigned int ch = 0; ch < nch; ch++) {
+        av_free(x_out[ch]);
+    }
     av_free(x_out);
     return (NULL);
 }
 
 void sfload_check_done(t_sfload* x){ // result clock
     if(x->x_result_ready){
-        t_garray* garray = (t_garray*)pd_findbyclass(x->x_arr_name, garray_class);
-        garray_resize_long(garray, x->x_result_ready);
-        t_word* vec = ((t_word*)garray_vec(garray));
-        for(int i = 0; i < x->x_result_ready; i++)
-            vec[i].w_float = x->x_all_out[i];
-        garray_redraw(garray);
+        for(int ch = 0; ch < x->x_num_channels; ch++)
+        {
+            if(x->x_channel != -1 && ch != x->x_channel) continue;
+
+            char channel_name[MAXPDSTRING];
+            snprintf(channel_name, MAXPDSTRING, "%i-%s", ch, x->x_arr_name->s_name);
+            t_garray* garray = (t_garray*)pd_findbyclass(gensym(channel_name), garray_class);
+
+            if(garray) {
+                garray_resize_long(garray, x->x_result_ready);
+                t_word* vec = ((t_word*)garray_vec(garray));
+                for(int i = 0; i < x->x_result_ready; i++)
+                    vec[i].w_float = x->x_all_out[ch][i];
+                garray_redraw(garray);
+            }
+        }
+
         x->x_result_ready = 0;
-        free(x->x_all_out);
-        x->x_all_out = NULL;
         outlet_list(x->x_info_outlet, &s_, 6, x->x_sfinfo);
     }
     else
@@ -166,7 +187,9 @@ void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av){
         pd_error(x, "[sfload]: No array set\n");
         return;
     }
-    if(!pd_findbyclass(x->x_arr_name, garray_class)){
+    char channel_zero_name[MAXPDSTRING];
+    snprintf(channel_zero_name, MAXPDSTRING, "0-%s", x->x_arr_name->s_name);
+    if(!pd_findbyclass(gensym(channel_zero_name), garray_class)){
         pd_error(x, "[sfload]: Array not found\n");
         return;
     }
@@ -184,7 +207,7 @@ void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av){
     if(ac >= 2 && av[1].a_type == A_FLOAT)
         x->x_channel = atom_getfloat(av + 1);
     else
-        x->x_channel = 0;
+        x->x_channel = -1; // -1 means all channels
     sfload_find_file(x, path, x->x_path);
     if(pthread_create(&x->x_process_thread, NULL, sfload_read_audio, x) != 0){
         pd_error(x, "[sfload]: Error creating thread\n");
@@ -207,6 +230,10 @@ static void sfload_free(t_sfload *x){
     av_packet_free(&x->x_pkt);
     av_frame_free(&x->x_frm);
     swr_free(&x->x_swr);
+    for(int ch = 0; ch < 64; ch++)
+    {
+        free(x->x_all_out[ch]);
+    }
 }
 
 static void *sfload_new(t_symbol *s, int ac, t_atom *av){
@@ -217,7 +244,10 @@ static void *sfload_new(t_symbol *s, int ac, t_atom *av){
     x->x_pkt = av_packet_alloc();
     x->x_frm = av_frame_alloc();
     x->x_ic = NULL;
-    x->x_all_out = NULL;
+    for(int ch = 0; ch < 64; ch++)
+    {
+        x->x_all_out[ch] = malloc(sizeof(t_sample));
+    }
     x->x_canvas = canvas_getcurrent();
     x->x_result_ready = 0;
     x->x_thread_created = 0;
