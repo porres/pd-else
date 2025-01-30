@@ -151,8 +151,15 @@ void sfload_check_done(t_sfload* x){ // result clock
             char channel_name[MAXPDSTRING];
             snprintf(channel_name, MAXPDSTRING, "%i-%s", ch, x->x_arr_name->s_name);
             t_garray* garray = (t_garray*)pd_findbyclass(gensym(channel_name), garray_class);
-
             if(garray) {
+                garray_resize_long(garray, x->x_result_ready);
+                t_word* vec = ((t_word*)garray_vec(garray));
+                for(int i = 0; i < x->x_result_ready; i++)
+                    vec[i].w_float = x->x_all_out[ch][i];
+                garray_redraw(garray);
+            }
+            else if(ch == 0) {
+                garray = (t_garray*)pd_findbyclass(x->x_arr_name, garray_class);
                 garray_resize_long(garray, x->x_result_ready);
                 t_word* vec = ((t_word*)garray_vec(garray));
                 for(int i = 0; i < x->x_result_ready; i++)
@@ -168,8 +175,26 @@ void sfload_check_done(t_sfload* x){ // result clock
         clock_delay(x->x_result_clock, 20);
 }
 
+static int sfload_is_network_protocol(const char *filename) {
+    const char *protocols[] = { "http://", "https://", "tcp://", "ftp://", "sftp://", "rtsp://", "rtmp://", "udp://", "data://", "gopher://", "ws://", "wss://" };
+    size_t num_protocols = sizeof(protocols) / sizeof(protocols[0]);
+
+    for (size_t i = 0; i < num_protocols; i++) {
+        if (strncmp(filename, protocols[i], strlen(protocols[i])) == 0) {
+            return 1; // Match found, it's a network protocol
+        }
+    }
+    return 0; // Not a network protocol
+}
+
 static void sfload_find_file(t_sfload *x, t_symbol* file, char* dir_out){
+    if(sfload_is_network_protocol(file->s_name))
+    {
+        strcpy(dir_out, file->s_name);
+        return;
+    }
     static char fname[MAXPDSTRING];
+
     char *bufptr;
     int fd = canvas_open(x->x_canvas, file->s_name, "", fname, &bufptr, MAXPDSTRING, 1);
     if(fd < 0){
@@ -189,10 +214,11 @@ void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av){
     }
     char channel_zero_name[MAXPDSTRING];
     snprintf(channel_zero_name, MAXPDSTRING, "0-%s", x->x_arr_name->s_name);
-    if(!pd_findbyclass(gensym(channel_zero_name), garray_class)){
+    if(!pd_findbyclass(x->x_arr_name, garray_class) && !pd_findbyclass(gensym(channel_zero_name), garray_class)){
         pd_error(x, "[sfload]: Array not found\n");
         return;
     }
+    
     if(!ac){
         pd_error(x, "[sfload]: no filename given\n");
         return;
