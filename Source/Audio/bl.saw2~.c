@@ -54,6 +54,8 @@ static t_int* blsaw2_perform(t_int *w) {
         }
         else { // Phase modulation
             double phase_dev = phase_offset - x->x_last_phase_offset;
+            if(phase_dev >= 1 || phase_dev <= -1)
+                phase_dev = fmod(phase_dev, 1);
             x->x_phase = phasewrap(x->x_phase + phase_dev);
         }
         
