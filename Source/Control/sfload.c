@@ -158,7 +158,7 @@ void sfload_check_done(t_sfload* x){ // result clock
                     vec[i].w_float = x->x_all_out[ch][i];
                 garray_redraw(garray);
             }
-            else if(ch == x->x_channel) {
+            else {
                 garray = (t_garray*)pd_findbyclass(x->x_arr_name, garray_class);
                 garray_resize_long(garray, x->x_result_ready);
                 t_word* vec = ((t_word*)garray_vec(garray));
