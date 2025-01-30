@@ -248,7 +248,7 @@ static void playfile_find_file(t_playfile *x, t_symbol* file, char* dir_out, cha
         *filename_out = NULL;
         return;
     }
-    
+
     char *bufptr;
     int fd = canvas_open(x->x_canvas, file->s_name, "", dir_out, filename_out, MAXPDSTRING, 1);
     if(fd < 0){
@@ -332,7 +332,7 @@ static void playfile_open(t_playfile *x, t_symbol *s, int ac, t_atom *av){
         }
         else{
             char dirname[MAXPDSTRING];
-            char* filename;
+            char* filename = NULL;
             playfile_find_file(x, av->a_w.w_symbol, dirname, &filename);
             t_playlist *pl = &x->x_plist;
             pl->dir = gensym(dirname);
@@ -452,7 +452,7 @@ static t_int *playfile_perform(t_int *w){
             samples_filled++;
         }
     }
-    
+
     FREEA(outs, t_sample*, nch);
     return(w+4);
 }
@@ -547,8 +547,9 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
         av_channel_layout_from_mask(&layout, mask);
     }
     else if(ac && av[0].a_type == A_SYMBOL){ // Num channels from file
-        char dir[MAXPDSTRING], file[MAXPDSTRING];
-        playfile_find_file(x, atom_getsymbol(av), dir, file);
+        char dir[MAXPDSTRING];
+        char* file = NULL;
+        playfile_find_file(x, atom_getsymbol(av), dir, &file);
         layout = playfile_get_channel_layout_for_file(x, dir, file);
         nch = layout.nb_channels;
     }
