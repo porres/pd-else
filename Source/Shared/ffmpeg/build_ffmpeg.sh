@@ -30,7 +30,7 @@ cd "$FFMPEG_DIR"
             --enable-demuxer=flv --enable-demuxer=asf --enable-muxer=avi --enable-muxer=mov --enable-muxer=mp4 \
             --enable-muxer=flv --enable-muxer=asf --enable-decoder=mp3 --enable-decoder=aac --enable-decoder=h264 \
             --enable-decoder=mpeg4 --enable-decoder=mpeg1video --enable-decoder=mpeg2video --enable-decoder=mjpeg --enable-encoder=aac --enable-encoder=mpeg4 \
-            --enable-encoder=mpeg1video --enable-parser=mpeg4video --enable-network --enable-protocol=http --enable-protocol=https --enable-protocol=rtmp --enable-protocol=rtmpt --enable-protocol=rtmps --enable-protocol=rtsp --enable-protocol=hls --enable-protocol=tcp --enable-protocol=udp \
+            --enable-encoder=mpeg1video --enable-parser=mpeg4video --enable-network --enable-protocol=http --enable-protocol=https --enable-protocol=rtmp --enable-protocol=rtmpt --enable-protocol=rtmps --enable-protocol=hls --enable-protocol=tcp --enable-protocol=udp \
             $ffmpeg_config
 
 make CC="$2 $ffmpeg_cc"
