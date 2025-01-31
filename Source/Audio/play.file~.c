@@ -174,6 +174,7 @@ static err_t playfile_load(t_playfile *x, int index) {
         strcpy(url, fname);
     else{
         strcpy(url, x->x_plist.dir->s_name);
+        strcat(url, "/");
         strcat(url, fname);
     }
     if(!x->x_ic || !x->x_ic->url || strncmp(x->x_ic->url, url, MAXPDSTRING) != 0) {
