@@ -1,9 +1,8 @@
 #!/bin/bash
 
 # Variables
-FFMPEG_DIR="ffmpeg-7.0.1"
+FFMPEG_DIR=${FFMPEG_DIR:-"ffmpeg-7.0.1"}
 OS=$(uname)
-
 
 # Define platform-specific configurations
 if [[ "$OS" == "Darwin" ]]; then
@@ -19,18 +18,57 @@ else
     exit 1
 fi
 
+# Optional: Clean build directory
+if [[ "$1" == "clean" ]]; then
+    make clean
+    exit 0
+fi
+
+# Validate compiler argument
+if [[ -z "$2" ]]; then
+    echo "Usage: $0 <compiler>"
+    exit 1
+fi
+
+# Change to FFmpeg directory
+cd "$FFMPEG_DIR" || { echo "Error: Directory $FFMPEG_DIR not found"; exit 1; }
+
 # Configure and compile FFmpeg
-cd "$FFMPEG_DIR"
-./configure --disable-asm --disable-libxcb --disable-bzlib --disable-lzma --disable-sdl2 --disable-libdrm --disable-vaapi --enable-static --disable-shared --enable-optimizations --disable-debug --disable-doc \
-            --disable-programs --disable-iconv --disable-avdevice --disable-postproc --disable-network \
-            --disable-everything --enable-avcodec --enable-avformat --enable-avutil --enable-swscale \
-            --enable-swresample --enable-decoder=mp3*,pcm*,aac*,flac,vorbis,opus --enable-parser=mpegaudio,aac \
-            --enable-demuxer=mp3,wav,aiff,flac,aac,ogg,pcm* --enable-filter=aresample --enable-protocol=file \
-            --enable-demuxer=avi --enable-demuxer=mov --enable-demuxer=mp3 \
-            --enable-demuxer=flv --enable-demuxer=asf --enable-muxer=avi --enable-muxer=mov --enable-muxer=mp4 \
-            --enable-muxer=flv --enable-muxer=asf --enable-decoder=mp3 --enable-decoder=aac --enable-decoder=h264 \
-            --enable-decoder=mpeg4 --enable-decoder=mpeg1video --enable-decoder=mpeg2video --enable-decoder=mjpeg --enable-encoder=aac --enable-encoder=mpeg4 \
-            --enable-encoder=mpeg1video --enable-parser=mpeg4video --enable-network --enable-protocol=http --enable-protocol=https --enable-protocol=rtmp --enable-protocol=rtmpt --enable-protocol=rtmps --enable-protocol=hls --enable-protocol=tcp --enable-protocol=udp \
-            $ffmpeg_config
+./configure \
+    --disable-asm \
+    --disable-libxcb \
+    --disable-bzlib \
+    --disable-lzma \
+    --disable-sdl2 \
+    --disable-libdrm \
+    --disable-vaapi \
+    --enable-static \
+    --disable-shared \
+    --enable-optimizations \
+    --disable-debug \
+    --disable-doc \
+    --disable-programs \
+    --disable-iconv \
+    --disable-avdevice \
+    --disable-postproc \
+    --disable-network \
+    --disable-everything \
+    --enable-avcodec \
+    --enable-avformat \
+    --enable-avutil \
+    --enable-swscale \
+    --enable-swresample \
+    --enable-decoder=mp3*,pcm*,aac*,flac,vorbis,opus,alac \
+    --enable-parser=mpegaudio,aac \
+    --enable-demuxer=mp3,wav,aiff,flac,aac,ogg,pcm*,caf \
+    --enable-muxer=avi,mov,mp4,flv,asf,caf \
+    --enable-filter=aresample \
+    --enable-protocol=file \
+    --enable-decoder=h264,mpeg4,mpeg1video,mpeg2video,mjpeg \
+    --enable-encoder=aac,mpeg4,mpeg1video,alac \
+    --enable-parser=mpeg4video \
+    --enable-network \
+    --enable-protocol=http,https,rtmp,rtmpt,rtmps,hls,tcp,udp \
+    $ffmpeg_config
 
 make CC="$2 $ffmpeg_cc"
