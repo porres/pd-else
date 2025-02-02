@@ -58,14 +58,14 @@ cd "$FFMPEG_DIR" || { echo "Error: Directory $FFMPEG_DIR not found"; exit 1; }
     --enable-avutil \
     --enable-swscale \
     --enable-swresample \
-    --enable-decoder=mp3*,pcm*,aac*,flac,vorbis,opus,alac \
+    --enable-decoder=mp3*,pcm*,aac*,flac,vorbis,opus,alac,mulaw,alaw \
     --enable-parser=mpegaudio,aac \
-    --enable-demuxer=mp3,wav,aiff,flac,aac,ogg,pcm*,caf \
-    --enable-muxer=avi,mov,mp4,flv,asf,caf \
+    --enable-demuxer=mp3,wav,aiff,flac,aac,ogg,pcm*,caf,au \
+    --enable-muxer=avi,mov,mp4,flv,asf,caf,au \
     --enable-filter=aresample \
     --enable-protocol=file \
     --enable-decoder=h264,mpeg4,mpeg1video,mpeg2video,mjpeg \
-    --enable-encoder=aac,mpeg4,mpeg1video,alac \
+    --enable-encoder=aac,mpeg4,mpeg1video,alac,mulaw,alaw \
     --enable-parser=mpeg4video \
     --enable-network \
     --enable-protocol=http,https,rtmp,rtmpt,rtmps,hls,tcp,udp \
