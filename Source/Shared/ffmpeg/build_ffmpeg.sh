@@ -24,13 +24,14 @@ cd "$FFMPEG_DIR"
 ./configure --disable-asm --disable-libxcb --disable-bzlib --disable-lzma --disable-sdl2 --disable-libdrm --disable-vaapi --enable-static --disable-shared --enable-optimizations --disable-debug --disable-doc \
             --disable-programs --disable-iconv --disable-avdevice --disable-postproc --disable-network \
             --disable-everything --enable-avcodec --enable-avformat --enable-avutil --enable-swscale \
-            --enable-swresample --enable-decoder=mp3*,pcm*,aac*,flac,vorbis,opus --enable-parser=mpegaudio,aac \
-            --enable-demuxer=mp3,wav,aiff,flac,aac,ogg,pcm* --enable-filter=aresample --enable-protocol=file \
+            --enable-swresample --enable-decoder=mp3*,pcm*,aac*,flac,vorbis,opus,alac,mulaw,alaw --enable-parser=mpegaudio,aac \
+            --enable-demuxer=mp3,wav,aiff,flac,aac,ogg,pcm*,caf,au --enable-filter=aresample --enable-protocol=file \
             --enable-demuxer=avi --enable-demuxer=mov --enable-demuxer=mp3 \
             --enable-demuxer=flv --enable-demuxer=asf --enable-muxer=avi --enable-muxer=mov --enable-muxer=mp4 \
-            --enable-muxer=flv --enable-muxer=asf --enable-decoder=mp3 --enable-decoder=aac --enable-decoder=h264 \
+            --enable-muxer=flv --enable-muxer=asf --enable-muxer=caf --enable-muxer=au --enable-decoder=mp3 --enable-decoder=aac --enable-decoder=h264 \
             --enable-decoder=mpeg4 --enable-decoder=mpeg1video --enable-decoder=mpeg2video --enable-decoder=mjpeg --enable-encoder=aac --enable-encoder=mpeg4 \
-            --enable-encoder=mpeg1video --enable-parser=mpeg4video --enable-network --enable-protocol=http --enable-protocol=https --enable-protocol=rtmp --enable-protocol=rtmpt --enable-protocol=rtmps --enable-protocol=hls --enable-protocol=tcp --enable-protocol=udp \
+            --enable-encoder=mpeg1video --enable-encoder=alac --enable-encoder=pcm_mulaw --enable-encoder=pcm_alaw --enable-parser=mpeg4video --enable-network --enable-protocol=http --enable-protocol=https --enable-protocol=rtmp --enable-protocol=rtmpt --enable-protocol=rtmps --enable-protocol=hls --enable-protocol=tcp --enable-protocol=udp \
             $ffmpeg_config
 
 make CC="$2 $ffmpeg_cc"
+
