@@ -27,13 +27,15 @@ typedef struct _sfload{
     t_symbol       *x_arr_name;
     pthread_t       x_process_thread;
     int             x_thread_created;
+    int             x_threaded;
+    unsigned long   x_nsamps;
     _Atomic int     x_result_ready;
     t_clock        *x_result_clock;
     char            x_path[MAXPDSTRING];
     t_atom          x_sfinfo[4];
 }t_sfload;
 
-void* sfload_read_audio(void *arg){ // read audio into array
+void* sfload_read_audio_threaded(void *arg){ // read audio into array
     t_sfload *x = (t_sfload*)arg;
     x->x_ic = avformat_alloc_context();
     x->x_ic->probesize = 128;
@@ -89,8 +91,6 @@ void* sfload_read_audio(void *arg){ // read audio into array
         pd_error(x, "[sfload]: Could not initialize the resampling context");
         return(NULL);
     }
-    AVDictionaryEntry *loop_start_entry = av_dict_get(x->x_ic->metadata, "loop_start", NULL, 0);
-    AVDictionaryEntry *loop_end_entry = av_dict_get(x->x_ic->metadata, "loop_end", NULL, 0);
     t_sample **x_out = (t_sample **)av_mallocz(nch * sizeof(t_sample *));
     for(unsigned int ch = 0; ch < nch; ch++)
         x_out[ch] = (t_sample *)av_mallocz(FRAMES * sizeof(t_sample));
@@ -122,6 +122,123 @@ void* sfload_read_audio(void *arg){ // read audio into array
     SETFLOAT(x->x_sfinfo + 3, av_get_bytes_per_sample(x->x_stream_ctx->sample_fmt) * 8);
     x->x_num_channels = nch;
     x->x_result_ready = output_index;
+    for(unsigned int ch = 0; ch < nch; ch++)
+        av_free(x_out[ch]);
+    av_free(x_out);
+    return(NULL);
+}
+
+void sfload_update_arrays(t_sfload* x){
+    for(int ch = 0; ch < x->x_num_channels; ch++){
+        if(x->x_channel != -1 && ch != x->x_channel)
+            continue;
+        char channel_name[MAXPDSTRING];
+        snprintf(channel_name, MAXPDSTRING, "%i-%s", ch, x->x_arr_name->s_name);
+        t_garray* garray = (t_garray*)pd_findbyclass(gensym(channel_name), garray_class);
+        if(garray){
+            garray_resize_long(garray, x->x_nsamps);
+            t_word* vec = ((t_word*)garray_vec(garray));
+            for(int i = 0; i < x->x_nsamps; i++)
+                vec[i].w_float = x->x_all_out[ch][i];
+            garray_redraw(garray);
+        }
+        else{
+            garray = (t_garray*)pd_findbyclass(x->x_arr_name, garray_class);
+            garray_resize_long(garray, x->x_nsamps);
+            t_word* vec = ((t_word*)garray_vec(garray));
+            for(int i = 0; i < x->x_nsamps; i++)
+                vec[i].w_float = x->x_all_out[ch][i];
+            garray_redraw(garray);
+        }
+    }
+}
+
+void* sfload_read_audio(t_sfload *x){
+    x->x_ic = avformat_alloc_context();
+    x->x_ic->probesize = 128;
+    x->x_ic->max_probe_packets = 1;
+    if(avformat_open_input(&x->x_ic, x->x_path, NULL, NULL) != 0){
+        pd_error(x, "[sfload]: Could not open file '%s'", x->x_path);
+        return(NULL);
+    }
+    if(avformat_find_stream_info(x->x_ic, NULL) < 0){
+        pd_error(x, "[sfload]: Could not find stream information");
+        return(NULL);
+    }
+    int audio_stream_index = -1;
+    for(unsigned int i = 0; i < x->x_ic->nb_streams; i++){
+        if(x->x_ic->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO){
+            audio_stream_index = i;
+            break;
+        }
+    }
+    if(audio_stream_index == -1){
+        pd_error(x, "[sfload]: Could not find any audio stream in the file");
+        return(NULL);
+    }
+    x->x_stream_idx = audio_stream_index;
+    AVCodecParameters *codec_parameters = x->x_ic->streams[audio_stream_index]->codecpar;
+    const AVCodec *codec = avcodec_find_decoder(codec_parameters->codec_id);
+    if(!codec){
+        pd_error(x, "[sfload]: Codec not found");
+        return(NULL);
+    }
+    x->x_stream_ctx = avcodec_alloc_context3(codec);
+    if(!x->x_stream_ctx){
+        pd_error(x, "[sfload]: Could not allocate audio codec context");
+        return(NULL);
+    }
+    if(avcodec_parameters_to_context(x->x_stream_ctx, codec_parameters) < 0){
+        pd_error(x, "[sfload]: Could not copy codec parameters to context");
+        return(NULL);
+    }
+    if(avcodec_open2(x->x_stream_ctx, codec, NULL) < 0){
+        pd_error(x, "[sfload]: Could not open codec");
+        return(NULL);
+    }
+    AVChannelLayout layout;
+    if(x->x_stream_ctx->ch_layout.u.mask)
+        av_channel_layout_from_mask(&layout, x->x_stream_ctx->ch_layout.u.mask);
+    else
+        av_channel_layout_default(&layout, x->x_stream_ctx->ch_layout.nb_channels);
+    unsigned int nch = layout.nb_channels;
+    swr_alloc_set_opts2(&x->x_swr, &layout, AV_SAMPLE_FMT_FLTP, x->x_stream_ctx->sample_rate,
+        &layout, x->x_stream_ctx->sample_fmt, x->x_stream_ctx->sample_rate, 0, NULL);
+    if(!x->x_swr || swr_init(x->x_swr) < 0){
+        pd_error(x, "[sfload]: Could not initialize the resampling context");
+        return(NULL);
+    }
+    t_sample **x_out = (t_sample **)av_mallocz(nch * sizeof(t_sample *));
+    for(unsigned int ch = 0; ch < nch; ch++)
+        x_out[ch] = (t_sample *)av_mallocz(FRAMES * sizeof(t_sample));
+    unsigned long output_index = 0;
+    while(av_read_frame(x->x_ic, x->x_pkt) >= 0){
+        if(x->x_pkt->stream_index == x->x_stream_idx){
+            if(avcodec_send_packet(x->x_stream_ctx, x->x_pkt) < 0
+            || avcodec_receive_frame(x->x_stream_ctx, x->x_frm) < 0)
+                continue;
+            int samples_converted = swr_convert(x->x_swr, (uint8_t **)x_out, FRAMES,
+                (const uint8_t **)x->x_frm->extended_data, x->x_frm->nb_samples);
+            if(samples_converted < 0){
+                pd_error(x, "[sfload]: Error converting samples");
+                continue;
+            }
+            for(unsigned int ch = 0; ch < nch; ch++){
+                x->x_all_out[ch] = realloc(x->x_all_out[ch],
+                    (output_index + samples_converted) * sizeof(t_sample));
+                memcpy(x->x_all_out[ch] + output_index,
+                    x_out[ch], samples_converted * sizeof(t_sample));
+            }
+           output_index += samples_converted;
+        }
+        av_packet_unref(x->x_pkt);
+    }
+    SETFLOAT(x->x_sfinfo + 0, output_index);
+    SETFLOAT(x->x_sfinfo + 1, x->x_stream_ctx->sample_rate);
+    SETFLOAT(x->x_sfinfo + 2, nch);
+    SETFLOAT(x->x_sfinfo + 3, av_get_bytes_per_sample(x->x_stream_ctx->sample_fmt) * 8);
+    x->x_num_channels = nch;
+    x->x_nsamps = output_index;
     for(unsigned int ch = 0; ch < nch; ch++)
         av_free(x_out[ch]);
     av_free(x_out);
@@ -218,12 +335,23 @@ void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av){
     }
     if(!sfload_find_file(x, path, x->x_path))
         return;
-    if(pthread_create(&x->x_process_thread, NULL, sfload_read_audio, x) != 0){
-        pd_error(x, "[sfload]: Error creating thread");
-        return;
+    if(x->x_threaded){
+        if(pthread_create(&x->x_process_thread, NULL, sfload_read_audio_threaded, x) != 0){
+            pd_error(x, "[sfload]: Error creating thread");
+            return;
+        }
+        x->x_thread_created = 1;
+        clock_delay(x->x_result_clock, 20);
     }
-    x->x_thread_created = 1;
-    clock_delay(x->x_result_clock, 20);
+    else{
+        sfload_read_audio(x);
+        sfload_update_arrays(x);
+        outlet_list(x->x_info_outlet, &s_, 4, x->x_sfinfo);
+    }
+}
+
+void sfload_threaded(t_sfload* x, t_floatarg f){
+    x->x_threaded = (f != 0);
 }
 
 void sfload_set(t_sfload* x, t_symbol* s){
@@ -246,7 +374,12 @@ static void sfload_free(t_sfload *x){
 static void *sfload_new(t_symbol *s, int ac, t_atom *av){
     t_sfload *x = (t_sfload *)pd_new(sfload_class);
     x->x_arr_name = NULL;
-    if(ac >= 1 && av[0].a_type == A_SYMBOL)
+    x->x_threaded = 0;
+    if(ac && atom_getsymbol(av) == gensym("-t")){
+        x->x_threaded = 1;
+        av++, ac--;
+    }
+    if(ac && av->a_type == A_SYMBOL)
         x->x_arr_name = atom_getsymbol(av);
     x->x_pkt = av_packet_alloc();
     x->x_frm = av_frame_alloc();
@@ -266,4 +399,5 @@ void sfload_setup(void){
         (t_method)sfload_free, sizeof(t_sfload), 0, A_GIMME, 0);
     class_addmethod(sfload_class, (t_method)sfload_load, gensym("load"), A_GIMME, 0);
     class_addmethod(sfload_class, (t_method)sfload_set, gensym("set"), A_SYMBOL, 0);
+    class_addmethod(sfload_class, (t_method)sfload_threaded, gensym("threaded"), A_FLOAT, 0);
 }
