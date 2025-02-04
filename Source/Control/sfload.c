@@ -122,6 +122,7 @@ void* sfload_read_audio_threaded(void *arg){ // read audio into array
     SETFLOAT(x->x_sfinfo + 3, av_get_bytes_per_sample(x->x_stream_ctx->sample_fmt) * 8);
     x->x_num_channels = nch;
     x->x_result_ready = output_index;
+    x->x_nsamps = output_index;
     for(unsigned int ch = 0; ch < nch; ch++)
         av_free(x_out[ch]);
     av_free(x_out);
@@ -129,13 +130,17 @@ void* sfload_read_audio_threaded(void *arg){ // read audio into array
 }
 
 void sfload_update_arrays(t_sfload* x){
+//    post("x_channel = %d / x->x_num_channels = %d", x->x_channel, x->x_num_channels);
     for(int ch = 0; ch < x->x_num_channels; ch++){
+//        post("ch = %d", ch);
         if(x->x_channel != -1 && ch != x->x_channel)
             continue;
+//        post("continue");
         char channel_name[MAXPDSTRING];
         snprintf(channel_name, MAXPDSTRING, "%i-%s", ch, x->x_arr_name->s_name);
         t_garray* garray = (t_garray*)pd_findbyclass(gensym(channel_name), garray_class);
         if(garray){
+//            post("if(garray)");
             garray_resize_long(garray, x->x_nsamps);
             t_word* vec = ((t_word*)garray_vec(garray));
             for(int i = 0; i < x->x_nsamps; i++)
@@ -143,12 +148,15 @@ void sfload_update_arrays(t_sfload* x){
             garray_redraw(garray);
         }
         else{
+//            post("else");
             garray = (t_garray*)pd_findbyclass(x->x_arr_name, garray_class);
-            garray_resize_long(garray, x->x_nsamps);
-            t_word* vec = ((t_word*)garray_vec(garray));
-            for(int i = 0; i < x->x_nsamps; i++)
-                vec[i].w_float = x->x_all_out[ch][i];
-            garray_redraw(garray);
+            if(garray){
+                garray_resize_long(garray, x->x_nsamps);
+                t_word* vec = ((t_word*)garray_vec(garray));
+                for(int i = 0; i < x->x_nsamps; i++)
+                    vec[i].w_float = x->x_all_out[ch][i];
+                garray_redraw(garray);
+            }
         }
     }
 }
@@ -247,28 +255,7 @@ void* sfload_read_audio(t_sfload *x){
 
 void sfload_check_done(t_sfload* x){ // result clock
     if(x->x_result_ready){
-        for(int ch = 0; ch < x->x_num_channels; ch++){
-            if(x->x_channel != -1 && ch != x->x_channel)
-                continue;
-            char channel_name[MAXPDSTRING];
-            snprintf(channel_name, MAXPDSTRING, "%i-%s", ch, x->x_arr_name->s_name);
-            t_garray* garray = (t_garray*)pd_findbyclass(gensym(channel_name), garray_class);
-            if(garray){
-                garray_resize_long(garray, x->x_result_ready);
-                t_word* vec = ((t_word*)garray_vec(garray));
-                for(int i = 0; i < x->x_result_ready; i++)
-                    vec[i].w_float = x->x_all_out[ch][i];
-                garray_redraw(garray);
-            }
-            else{
-                garray = (t_garray*)pd_findbyclass(x->x_arr_name, garray_class);
-                garray_resize_long(garray, x->x_result_ready);
-                t_word* vec = ((t_word*)garray_vec(garray));
-                for(int i = 0; i < x->x_result_ready; i++)
-                    vec[i].w_float = x->x_all_out[ch][i];
-                garray_redraw(garray);
-            }
-        }
+        sfload_update_arrays(x);
         x->x_result_ready = 0;
         outlet_list(x->x_info_outlet, &s_, 4, x->x_sfinfo);
     }
