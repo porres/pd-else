@@ -14,9 +14,7 @@
 #X restore 305 3 graph;
 #X obj 22 39 cnv 4 4 4 empty empty Receive\ drag-and-drop\ events 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 42 119 else/dropzone 80 80;
-#X text 48 82 [dropzone] is a file drag-and-drop receiver. If you drag a file onto it \, it will output the file path., f 69;
 #X obj 3 4 cnv 15 301 42 empty empty dropzone 20 20 2 37 #e0e0e0 #000000 0;
-#X obj 41 215 else/display;
 #X obj -1 266 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 2 362 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 2 445 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
@@ -42,4 +40,13 @@
 #X text 173 400 pos <f \, f>;
 #X text 158 418 over <float>;
 #X text 240 343 - set show hover state when dragging over (default 1);
-#X connect 10 0 13 0;
+#X obj 42 159 route file text pos over;
+#X obj 46 238 else/display;
+#X listbox 102 214 9 0 0 0 - - - 0;
+#X floatatom 129 188 5 0 0 0 - - - 12;
+#X text 48 82 [dropzone] is a drag-and-drop target. If you drag a file or some text onto it \, it will output the file path or text content., f 69;
+#X connect 10 0 37 0;
+#X connect 37 0 38 0;
+#X connect 37 1 38 0;
+#X connect 37 2 39 0;
+#X connect 37 3 40 0;
