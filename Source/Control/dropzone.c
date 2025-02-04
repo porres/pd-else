@@ -194,8 +194,7 @@ void dropzone_setup(void) {
     #if defined(__x86_64__) // Detect Linux x86_64 and ARM
     "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5-x64.so tkdnd\"\n"
     #elif defined(__aarch64__)
-#error "Unsupported architecture (for now)"
-//    "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5-arm.so tkdnd\"\n"
+    "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5-arm.so tkdnd\"\n"
     #endif
 #else
     #error "Unsupported operating system"
