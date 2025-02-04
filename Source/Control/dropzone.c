@@ -40,13 +40,15 @@ static void dropzone_draw_hover(t_dropzone *x)
     int z = x->x_zoom;
     int x1 = text_xpix(&x->x_obj, x->x_glist), y1 = text_ypix(&x->x_obj, x->x_glist);
     int x2 = x1 + x->x_width*z, y2 = y1 + x->x_height*z;
-    int xb = 2; // horizontal border
-    int yb = 4; // vertical border
-
     if(x->x_drag_over && x->x_hover) {
-        int drag_box_width = 4 * x->x_zoom;
-        int drag_box_margin = 2 * x->x_zoom;
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -outline grey -width %d -tags {%s %s}\n", x->x_cv, x1 + drag_box_margin, y1 + drag_box_margin, x2 - drag_box_margin, y2 - drag_box_margin, drag_box_width, x->x_tag_obj, x->x_tag_hover);
+        int drag_box_width = 4 * z;
+        int drag_box_margin = 2 * z;
+        char *tags_hover[] = {x->x_tag_obj, x->x_tag_hover};
+        pdgui_vmess(0, "crr iiii ri rs rS", x->x_cv, "create", "rectangle",
+                    x1 + drag_box_margin, y1 + drag_box_margin, x2 - drag_box_margin, y2 - drag_box_margin,
+                    "-width", drag_box_width,
+                    "-outline", "grey",
+                    "-tags", 2, tags_hover);
     }
     else {
         t_canvas *cv = glist_getcanvas(x->x_glist);
@@ -59,17 +61,29 @@ static void dropzone_draw(t_dropzone *x, t_glist *glist){
     int z = x->x_zoom;
     int x1 = text_xpix(&x->x_obj, glist), y1 = text_ypix(&x->x_obj, glist);
     int x2 = x1 + x->x_width*z, y2 = y1 + x->x_height*z;
-    int xb = 2;
-    int yb = 4;
-    int w = x->x_width*z, h = x->x_height*z;
 
-   dropzone_draw_hover(x);
-   sys_vgui(".x%lx.c create rectangle %d %d %d %d -outline black -width %d -tags {%s %s %s}\n", x->x_cv, x1, y1, x2, y2, x->x_zoom, x->x_tag_outline, x->x_tag_obj, x->x_tag_sel);
+    dropzone_draw_hover(x);
 
-   if(x->x_edit) {
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags {%s %s}\n", x->x_cv, x1, y2-OHEIGHT*z, x1+IOWIDTH*z, y2, x->x_tag_in, x->x_tag_obj);
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags {%s %s}\n", x->x_cv, x1, y1, x1+IOWIDTH*z, y1 +OHEIGHT*z, x->x_tag_out, x->x_tag_obj);
-   }
+    char *tags_base[] = {x->x_tag_outline, x->x_tag_obj, x->x_tag_sel};
+    pdgui_vmess(0, "crr iiii ri rs rS", x->x_cv, "create", "rectangle",
+                x1, y1, x2, y2,
+                "-width", x->x_zoom,
+                "-outline", "black",
+                "-tags", 3, tags_base);
+
+    if(x->x_edit) {
+        int iow = IOWIDTH*x->x_zoom, ioh = OHEIGHT*x->x_zoom;
+        char *tags_in[] = {x->x_tag_in, x->x_tag_obj};
+        pdgui_vmess(0, "crr iiii rs rS", x->x_cv, "create", "rectangle",
+                    x1, y1, x1+iow, y1+ioh-x->x_zoom,
+                    "-fill", "black",
+                    "-tags", 2, tags_in);
+        char *tags_out[] = {x->x_tag_out, x->x_tag_obj};
+        pdgui_vmess(0, "crr iiii rs rS", x->x_cv, "create", "rectangle",
+                    x1, y2-ioh+x->x_zoom, x1+iow, y2,
+                    "-fill", "black",
+                    "-tags", 2, tags_out);
+    }
 }
 
 static void dropzone_erase(t_dropzone *x, t_glist* glist){
@@ -99,7 +113,7 @@ static void dropzone_select(t_gobj *z, t_glist *glist, int sel){
     t_dropzone *x = (t_dropzone *)z;
     t_canvas *cv = glist_getcanvas(glist);
     pdgui_vmess(0, "crs rs", cv, "itemconfigure",
-        x->x_tag_sel, "-outline", sel ? "blue" : "black");
+                x->x_tag_sel, "-outline", sel ? "blue" : "black");
 }
 
 static void dropzone_delete(t_gobj *z, t_glist *glist){
@@ -113,7 +127,6 @@ static void dropzone_vis(t_gobj *z, t_glist *glist, int vis){
         char buf[MAXPDSTRING];
         snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)x->x_cv);
         x->x_proxy->p_parent_sym = gensym(buf);
-
         sys_vgui("::else_dnd::bind_dnd_canvas .x%lx\n", x->x_cv);
         dropzone_draw(x, glist);
     }
@@ -178,10 +191,10 @@ static void dnd_proxy_any(t_dnd_proxy *p, t_symbol *s, int ac, t_atom *av){
         if(s == gensym("editmode"))
             edit = (int)(av->a_w.w_float);
         else if(s == gensym("obj") || s == gensym("msg") || s == gensym("floatatom")
-        || s == gensym("symbolatom") || s == gensym("text") || s == gensym("bng")
-        || s == gensym("toggle") || s == gensym("numbox") || s == gensym("vslider")
-        || s == gensym("hslider") || s == gensym("vradio") || s == gensym("hradio")
-        || s == gensym("vumeter") || s == gensym("mycnv") || s == gensym("selectall")){
+                || s == gensym("symbolatom") || s == gensym("text") || s == gensym("bng")
+                || s == gensym("toggle") || s == gensym("numbox") || s == gensym("vslider")
+                || s == gensym("hslider") || s == gensym("vradio") || s == gensym("hradio")
+                || s == gensym("vumeter") || s == gensym("mycnv") || s == gensym("selectall")){
             edit = 1;
         }
         else
@@ -250,8 +263,8 @@ static void dnd_proxy_drag_leave(t_dnd_proxy *p) {
 }
 
 static void dnd_proxy_drag_drop(t_dnd_proxy *p,  t_symbol *s, int argc, t_atom *argv) {
-     t_dropzone* dropzone = p->p_dropzone;
-     t_symbol* bindsym = atom_getsymbol(argv);
+    t_dropzone* dropzone = p->p_dropzone;
+    t_symbol* bindsym = atom_getsymbol(argv);
     if (dropzone && bindsym == p->p_parent_sym && dropzone->x_drag_over) {
         if(atom_getfloat(argv + 1) == 0) {
             outlet_anything(dropzone->x_outlet, gensym("file"), argc - 2, argv + 2);
@@ -352,48 +365,48 @@ void dropzone_setup(void) {
     class_addmethod(dnd_proxy_class, (t_method)dnd_proxy_drag_drop, gensym("_drag_drop"), A_GIMME, 0);
 
     sys_vgui("set dir [file join %s tkdnd]\n"
-    "package ifneeded tkdnd 2.9.5 \\\n"
-    "  \"source \\{$dir/tkdnd.tcl\\} ; \\\n"
+             "package ifneeded tkdnd 2.9.5 \\\n"
+             "  \"source \\{$dir/tkdnd.tcl\\} ; \\\n"
 #if __APPLE__
-    "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5.dylib tkdnd\"\n"
+             "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5.dylib tkdnd\"\n"
 #elif defined(_WIN64)
-    "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5.dll tkdnd\"\n"
+             "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5.dll tkdnd\"\n"
 #elif defined(__linux__)
-    #if defined(__x86_64__) // Detect Linux x86_64 and ARM
-    "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5-x64.so tkdnd\"\n"
-    #elif defined(__aarch64__)
-    "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5-arm.so tkdnd\"\n"
-    #endif
-#else
-    #error "Unsupported operating system"
+#if defined(__x86_64__) // Detect Linux x86_64 and ARM
+             "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5-x64.so tkdnd\"\n"
+#elif defined(__aarch64__)
+             "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5-arm.so tkdnd\"\n"
 #endif
-    "package require tkdnd\n"
-    "namespace eval ::else_dnd {} \n"
-    "proc ::else_dnd::correct_spaces {string_value} {\n"
-    "    return [regsub -all {\\s+} $string_value \"\\\\ \"]\n"
-    "}\n"
-    "proc ::else_dnd::send_dnd_coordinates {mytoplevel x y} {\n"
-    "    set tkcanvas [tkcanvas_name $mytoplevel]\n"
-    "    set scrollregion [$tkcanvas cget -scrollregion]\n"
-    "    set left_xview_pix [expr {([lindex [$tkcanvas xview] 0] * ([lindex $scrollregion 2] - [lindex $scrollregion 0])) + [lindex $scrollregion 0]}]\n"
-    "    set top_yview_pix [expr {([lindex [$tkcanvas yview] 0] * ([lindex $scrollregion 3] - [lindex $scrollregion 1])) + [lindex $scrollregion 1]}]\n"
-    "    set xrel [expr int($x - [winfo rootx $mytoplevel] + $left_xview_pix)]\n"
-    "    set yrel [expr int($y - [winfo rooty $mytoplevel] + $top_yview_pix)]\n"
-    "    pdsend \"__else_dnd_rcv _drag_over $mytoplevel $xrel $yrel \"\n"
-    "}\n"
-    "proc ::else_dnd::send_dnd_files {mytoplevel files} {\n"
-    "    foreach file $files {\n"
-    "        pdsend \"__else_dnd_rcv _drag_drop $mytoplevel 0 [::else_dnd::correct_spaces [file normalize $file]] \"\n"
-    "    }\n"
-    "}\n"
-    "proc ::else_dnd::send_dnd_text {mytoplevel text} {\n"
-    "        pdsend \"__else_dnd_rcv _drag_drop $mytoplevel 1 [::else_dnd::correct_spaces $text] \"\n"
-    "}\n"
-    "proc ::else_dnd::bind_dnd_canvas {mytoplevel} {\n"
-    "    ::tkdnd::drop_target register $mytoplevel *\n"
-    "    bind $mytoplevel <<DropPosition>> { ::else_dnd::send_dnd_coordinates %%W %%X %%Y}\n"
-    "    bind $mytoplevel <<Drop:DND_Files>> { ::else_dnd::send_dnd_files %%W %%D }\n"
-    "    bind $mytoplevel <<Drop:DND_Text>> { ::else_dnd::send_dnd_text %%W %%D }\n"
-    "    bind $mytoplevel <<DropLeave>> { pdsend \"__else_dnd_rcv _drag_leave\"}\n"
-    "}\n", dropzone_class->c_externdir->s_name);
+#else
+#error "Unsupported operating system"
+#endif
+             "package require tkdnd\n"
+             "namespace eval ::else_dnd {} \n"
+             "proc ::else_dnd::correct_spaces {string_value} {\n"
+             "    return [regsub -all {\\s+} $string_value \"\\\\ \"]\n"
+             "}\n"
+             "proc ::else_dnd::send_dnd_coordinates {mytoplevel x y} {\n"
+             "    set tkcanvas [tkcanvas_name $mytoplevel]\n"
+             "    set scrollregion [$tkcanvas cget -scrollregion]\n"
+             "    set left_xview_pix [expr {([lindex [$tkcanvas xview] 0] * ([lindex $scrollregion 2] - [lindex $scrollregion 0])) + [lindex $scrollregion 0]}]\n"
+             "    set top_yview_pix [expr {([lindex [$tkcanvas yview] 0] * ([lindex $scrollregion 3] - [lindex $scrollregion 1])) + [lindex $scrollregion 1]}]\n"
+             "    set xrel [expr int($x - [winfo rootx $mytoplevel] + $left_xview_pix)]\n"
+             "    set yrel [expr int($y - [winfo rooty $mytoplevel] + $top_yview_pix)]\n"
+             "    pdsend \"__else_dnd_rcv _drag_over $mytoplevel $xrel $yrel \"\n"
+             "}\n"
+             "proc ::else_dnd::send_dnd_files {mytoplevel files} {\n"
+             "    foreach file $files {\n"
+             "        pdsend \"__else_dnd_rcv _drag_drop $mytoplevel 0 [::else_dnd::correct_spaces [file normalize $file]] \"\n"
+             "    }\n"
+             "}\n"
+             "proc ::else_dnd::send_dnd_text {mytoplevel text} {\n"
+             "        pdsend \"__else_dnd_rcv _drag_drop $mytoplevel 1 [::else_dnd::correct_spaces $text] \"\n"
+             "}\n"
+             "proc ::else_dnd::bind_dnd_canvas {mytoplevel} {\n"
+             "    ::tkdnd::drop_target register $mytoplevel *\n"
+             "    bind $mytoplevel <<DropPosition>> { ::else_dnd::send_dnd_coordinates %%W %%X %%Y}\n"
+             "    bind $mytoplevel <<Drop:DND_Files>> { ::else_dnd::send_dnd_files %%W %%D }\n"
+             "    bind $mytoplevel <<Drop:DND_Text>> { ::else_dnd::send_dnd_text %%W %%D }\n"
+             "    bind $mytoplevel <<DropLeave>> { pdsend \"__else_dnd_rcv _drag_leave\"}\n"
+             "}\n", dropzone_class->c_externdir->s_name);
 }
