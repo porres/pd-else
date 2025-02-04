@@ -1,4 +1,4 @@
-#N canvas 452 23 561 517 10;
+#N canvas 452 38 561 517 10;
 #X floatatom 237 209 8 0 0 0 - - - 12;
 #X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -28,9 +28,9 @@
 #X text 235 251 input to analyze;
 #X obj 488 94 else/setdsp~;
 #X obj 237 125 else/tempo~ -on 120;
-#N canvas 422 134 629 514 example 0;
-#X obj 65 100 tgl 25 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 1;
-#X obj 65 258 else/out~;
+#N canvas 607 149 629 514 example 0;
+#X obj 59 100 tgl 25 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 59 258 else/out~;
 #X msg 312 94 mode \$1;
 #X obj 312 67 hradio 19 1 0 9 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0;
 #X msg 328 132 window 512 \, hop 128, f 11;
@@ -60,8 +60,8 @@
 #X obj 272 366 else/impseq~;
 #X obj 272 418 else/out~;
 #X obj 272 387 else/resonant~ 950 1000;
-#X floatatom 203 100 5 0 0 0 speed(%) - - 16;
-#X obj 65 138 else/gran.player~ drum-loop.wav 1 1;
+#X floatatom 201 100 5 0 0 0 speed(%) - - 16;
+#X obj 59 138 else/gran.player~ drum-loop.flac 1 1;
 #X connect 0 0 21 0;
 #X connect 2 0 14 0;
 #X connect 3 0 2 0;

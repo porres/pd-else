@@ -1,4 +1,4 @@
-#N canvas 533 38 565 562 10;
+#N canvas 495 38 565 562 10;
 #X obj 7 536 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
 #X obj 7 265 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 7 385 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
@@ -48,7 +48,7 @@
 #X text 38 98 You can also set a maximum recording time. In this case \, the object automatically stops recording at that given time. Note \, however \, that the fade out will happen first. Say \, for instance \, you have a 1000 ms maximum recording time and a fade time of 50 ms \, at 950 ms the fade out starts and the recording finishes at 1000 ms indeed.;
 #X text 38 178 By default \, [rec.file~] performs a fade in and fade out of 10 ms. This means that when you stop recording \, it takes an extra 10 ms to finish recording the file. The outlet only outputs a bang after this fade out. You can change and set the fade to 0 ms (no fading) with the -fade flag or fade message., f 60;
 #X obj 134 339 else/brown~;
-#X obj 56 435 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
+#X obj 56 435 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #X msg 56 347 start;
 #X obj 183 491 else/play.file~ 2;
 #X msg 183 465 open test.wav;
