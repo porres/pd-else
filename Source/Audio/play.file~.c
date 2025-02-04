@@ -233,29 +233,26 @@ static void playfile_start(t_playfile *x, t_float f, t_float ms){
 static int playfile_is_network_protocol(const char *filename) {
     const char *protocols[] = { "http://", "https://", "tcp://", "ftp://", "sftp://", "rtsp://", "rtmp://", "udp://", "data://", "gopher://", "ws://", "wss://" };
     size_t num_protocols = sizeof(protocols) / sizeof(protocols[0]);
-
-    for (size_t i = 0; i < num_protocols; i++) {
-        if (strncmp(filename, protocols[i], strlen(protocols[i])) == 0) {
-            return 1; // Match found, it's a network protocol
-        }
+    for(size_t i = 0; i < num_protocols; i++){
+        if(strncmp(filename, protocols[i], strlen(protocols[i])) == 0)
+            return(1); // Match found, it's a network protocol
     }
-    return 0; // Not a network protocol
+    return(0); // Not a network protocol
 }
 
-static void playfile_find_file(t_playfile *x, t_symbol* file, char* dir_out, char** filename_out){
-    if(playfile_is_network_protocol(file->s_name))
-    {
+static int playfile_find_file(t_playfile *x, t_symbol* file, char* dir_out, char** filename_out){
+    if(playfile_is_network_protocol(file->s_name)){
         strcpy(dir_out, file->s_name);
         *filename_out = NULL;
-        return;
+        return(2);
     }
-
     char *bufptr;
     int fd = canvas_open(x->x_canvas, file->s_name, "", dir_out, filename_out, MAXPDSTRING, 1);
     if(fd < 0){
-        post("[play.file~] file '%s' not found", file->s_name);
-        return;
+        pd_error(x, "[play.file~] file '%s' not found", file->s_name);
+        return(0);
     }
+    return(1);
 }
 
 static void playfile_openpanel_callback(t_playfile *x, t_symbol *s, int argc, t_atom *argv){
@@ -286,7 +283,6 @@ static void playfile_openpanel_callback(t_playfile *x, t_symbol *s, int argc, t_
         if(err_msg || (err_msg = playfile_load(x, 0)))
             pd_error(x, "[play.file~]: open: %li", (long)err_msg);
         x->x_open = !err_msg;
-        playfile_start(x, 1.0f, 0.0f);
     }
 }
 
@@ -294,16 +290,18 @@ static void playfile_open(t_playfile *x, t_symbol *s, int ac, t_atom *av){
     x->x_play = 0;
     err_t err_msg = 0;
     if(ac == 0){
-        pdgui_vmess("pdtk_openpanel", "ssic", x->x_openpanel_sym->s_name, canvas_getdir(x->x_canvas)->s_name, 0, glist_getcanvas(x->x_canvas));
+        pdgui_vmess("pdtk_openpanel", "ssic", x->x_openpanel_sym->s_name,
+            canvas_getdir(x->x_canvas)->s_name, 0, glist_getcanvas(x->x_canvas));
     }
-    else if(ac == 1 && av->a_type == A_SYMBOL) {
+    else if(av->a_type == A_SYMBOL) {
         const char *sym = av->a_w.w_symbol->s_name;
         if(strlen(sym) >= MAXPDSTRING)
             err_msg = "File path is too long";
         else if(strncmp(av->a_w.w_symbol->s_name, "http:", strlen("http:")) == 0 ||
-                strncmp(av->a_w.w_symbol->s_name, "https:", strlen("https:")) == 0 ||
-                strncmp(av->a_w.w_symbol->s_name, "ftp:", strlen("ftp:")) == 0)
+        strncmp(av->a_w.w_symbol->s_name, "https:", strlen("https:")) == 0 ||
+        strncmp(av->a_w.w_symbol->s_name, "ftp:", strlen("ftp:")) == 0)
         {
+//            post("if");
             t_symbol* path = atom_getsymbol(av);
             const char *path_str = path->s_name;
             t_playlist *pl = &x->x_plist;
@@ -329,12 +327,12 @@ static void playfile_open(t_playfile *x, t_symbol *s, int ac, t_atom *av){
             if(err_msg || (err_msg = playfile_load(x, 0)))
                 pd_error(x, "[play.file~]: open: %s.", err_msg);
             x->x_open = !err_msg;
-            playfile_start(x, 1.0f, 0.0f);
         }
         else{
             char dirname[MAXPDSTRING];
             char* filename = NULL;
-            playfile_find_file(x, av->a_w.w_symbol, dirname, &filename);
+            if(!playfile_find_file(x, av->a_w.w_symbol, dirname, &filename))
+                return;
             t_playlist *pl = &x->x_plist;
             pl->dir = gensym(dirname);
             const char *ext = strrchr(filename, '.');
@@ -347,7 +345,6 @@ static void playfile_open(t_playfile *x, t_symbol *s, int ac, t_atom *av){
             if(err_msg || (err_msg = playfile_load(x, 0)))
                 pd_error(x, "[play.file~]: open: %s.", err_msg);
             x->x_open = !err_msg;
-            playfile_start(x, 1.0f, 0.0f);
         }
     }
 }
