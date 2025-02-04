@@ -135,14 +135,14 @@ static void dropzone_drag_drop(t_dropzone *x,  t_symbol *s, int argc, t_atom *ar
     }
 }
 
-void *dropzone_new(void) {
+void *dropzone_new(t_symbol *s, int ac, t_atom *av) {
     t_dropzone *x = (t_dropzone *)pd_new(dropzone_class);
     x->x_outlet = outlet_new(&x->x_obj, &s_symbol);
     x->x_glist = (t_glist *)canvas_getcurrent();
     x->x_cv = canvas_getcurrent();
     x->x_zoom = x->x_cv->gl_zoom;
-    x->x_width = 100;
-    x->x_height = 100;
+    x->x_width = ac >= 1 ? atom_getfloat(av) : 100;
+    x->x_height = ac >= 2 ? atom_getfloat(av + 1) : 100;
     x->x_drag_over = 0;
 
     sprintf(x->x_tag_obj, "%pOBJ", x);
@@ -166,8 +166,7 @@ void dropzone_setup(void) {
                                (t_newmethod)dropzone_new,
                                (t_method)dropzone_free,
                                sizeof(t_dropzone),
-                               CLASS_DEFAULT,
-                               0);
+                               0, A_GIMME, 0);
 
     class_addmethod(dropzone_class, (t_method)dropzone_drag_over, gensym("_drag_over"), A_GIMME, 0);
     class_addmethod(dropzone_class, (t_method)dropzone_drag_leave, gensym("_drag_leave"), 0);
@@ -189,7 +188,7 @@ void dropzone_setup(void) {
 #if __APPLE__
     "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5.dylib tkdnd\"\n"
 #elif defined(_WIN64)
-    "   tkdnd::initialise \\{$dir\\} tkdnd2.9.5.dll tkdnd\"\n"
+    "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5.dll tkdnd\"\n"
 #elif defined(__linux__)
     #if defined(__x86_64__) // Detect Linux x86_64 and ARM
     "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5-x64.so tkdnd\"\n"
