@@ -76,6 +76,7 @@ endif()
 
 target_link_libraries(play.file_tilde PRIVATE ffmpeg)
 target_link_libraries(sfload PRIVATE ffmpeg)
+target_link_libraries(sfinfo PRIVATE ffmpeg)
 
 target_link_libraries(pdlink PUBLIC link)
 target_link_libraries(pdlink_tilde PUBLIC link opus)
