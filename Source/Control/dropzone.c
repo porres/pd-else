@@ -370,7 +370,9 @@ void dropzone_setup(void) {
 #if __APPLE__
              "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5.dylib tkdnd\"\n"
 #elif defined(_WIN64)
-             "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5.dll tkdnd\"\n"
+             "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5-x64.dll tkdnd\"\n"
+#elif defined(_WIN32)
+            "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5-x86.dll tkdnd\"\n"
 #elif defined(__linux__)
 #if defined(__x86_64__) // Detect Linux x86_64 and ARM
              "   tkdnd::initialise \\{$dir\\} libtkdnd2.9.5-x64.so tkdnd\"\n"
