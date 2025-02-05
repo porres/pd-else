@@ -4,7 +4,7 @@
 #include <m_pd.h>
 #include <blep.h>
 
-typedef struct blsaw{
+typedef struct blsaw2{
     t_object    x_obj;
     t_float     x_f;
     t_elliptic_blep x_elliptic_blep;
@@ -15,21 +15,21 @@ typedef struct blsaw{
     t_float     x_last_phase_offset;
     t_int       x_midi;
     t_int       x_soft;
-}t_blsaw;
+}t_blsaw2;
 
 t_class *blsaw2_class;
 
-static void blsaw2_midi(t_blsaw *x, t_floatarg f){
+static void blsaw2_midi(t_blsaw2 *x, t_floatarg f){
     x->x_midi = (int)(f != 0);
 }
 
-static void blsaw2_soft(t_blsaw *x, t_floatarg f){
+static void blsaw2_soft(t_blsaw2 *x, t_floatarg f){
     x->x_soft = (int)(f != 0);
 }
 
 
 static t_int* blsaw2_perform(t_int *w) {
-    t_blsaw* x =          (t_blsaw*)(w[1]);
+    t_blsaw2* x =          (t_blsaw2*)(w[1]);
     t_elliptic_blep* blep = &x->x_elliptic_blep;
     t_int n            = (t_int)(w[2]);
     t_float* freq_vec  = (t_float *)(w[3]);
@@ -79,7 +79,7 @@ static t_int* blsaw2_perform(t_int *w) {
     return(w+7);
 }
 
-static void blsaw2_dsp(t_blsaw *x, t_signal **sp){
+static void blsaw2_dsp(t_blsaw2 *x, t_signal **sp){
     x->x_sr = sp[0]->s_sr;
     
     elliptic_blep_create(&x->x_elliptic_blep, 0, sp[0]->s_sr);
@@ -88,14 +88,14 @@ static void blsaw2_dsp(t_blsaw *x, t_signal **sp){
             sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
  }
 
-static void blsaw2_free(t_blsaw *x){
+static void blsaw2_free(t_blsaw2 *x){
     inlet_free(x->x_inlet_sync);
     inlet_free(x->x_inlet_phase);
 }
 
 static void* blsaw2_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    t_blsaw* x = (t_blsaw *)pd_new(blsaw2_class);
+    t_blsaw2* x = (t_blsaw2 *)pd_new(blsaw2_class);
     x->x_phase = 0.0;
     x->x_soft = 0;
     x->x_midi = 0;
@@ -127,8 +127,8 @@ static void* blsaw2_new(t_symbol *s, int ac, t_atom *av){
 
 void setup_bl0x2esaw2_tilde(void){
     blsaw2_class = class_new(gensym("bl.saw2~"), (t_newmethod)blsaw2_new,
-        (t_method)blsaw2_free, sizeof(t_blsaw), 0, A_GIMME, A_NULL);
-    CLASS_MAINSIGNALIN(blsaw2_class, t_blsaw, x_f);
+        (t_method)blsaw2_free, sizeof(t_blsaw2), 0, A_GIMME, A_NULL);
+    CLASS_MAINSIGNALIN(blsaw2_class, t_blsaw2, x_f);
     class_addmethod(blsaw2_class, (t_method)blsaw2_midi, gensym("midi"), A_DEFFLOAT, 0);
     class_addmethod(blsaw2_class, (t_method)blsaw2_soft, gensym("soft"), A_DEFFLOAT, 0);
     class_addmethod(blsaw2_class, (t_method)blsaw2_dsp, gensym("dsp"), A_NULL);

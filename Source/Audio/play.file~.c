@@ -299,9 +299,7 @@ static void playfile_open(t_playfile *x, t_symbol *s, int ac, t_atom *av){
             err_msg = "File path is too long";
         else if(strncmp(av->a_w.w_symbol->s_name, "http:", strlen("http:")) == 0 ||
         strncmp(av->a_w.w_symbol->s_name, "https:", strlen("https:")) == 0 ||
-        strncmp(av->a_w.w_symbol->s_name, "ftp:", strlen("ftp:")) == 0)
-        {
-//            post("if");
+        strncmp(av->a_w.w_symbol->s_name, "ftp:", strlen("ftp:")) == 0){
             t_symbol* path = atom_getsymbol(av);
             const char *path_str = path->s_name;
             t_playlist *pl = &x->x_plist;
@@ -416,7 +414,8 @@ static t_int *playfile_perform(t_int *w){
                     }
                     if(x->x_loop){
                         if(x->x_play_next){
-                            playfile_open(x, gensym("open"), 1, &(t_atom){.a_type = A_SYMBOL, .a_w = { .w_symbol = x->x_play_next }});
+                            playfile_open(x, gensym("open"), 1,
+                                &(t_atom){.a_type = A_SYMBOL, .a_w = { .w_symbol = x->x_play_next }});
                             x->x_play_next = NULL;
                         }
                         playfile_seek(x, 0.0f);
@@ -519,13 +518,11 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
             s = atom_getsymbolarg(i, ac, av);
             if(s == gensym("-loop")){
                 loop = 1;
-                for(int j = i; j < ac; j++) {
-                    if(j < ac-1) {
+                for(int j = i; j < ac; j++){
+                    if(j < ac-1)
                         av[j] = av[j + 1];
-                    }
-                    else {
+                    else
                         ac--;
-                    }
                 }
             }
         }
@@ -541,6 +538,7 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
     pl->max = 1;
     pl->arr = (t_symbol **)getbytes(pl->max * sizeof(t_symbol *));
     int nch = 1;
+    int filefound = 0;
     AVChannelLayout layout;
     if(ac && av[0].a_type == A_FLOAT){ // Num channels from float arg
         nch = atom_getfloat(av) > nch ? atom_getfloat(av) : nch;
@@ -552,9 +550,14 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
     else if(ac && av[0].a_type == A_SYMBOL){ // Num channels from file
         char dir[MAXPDSTRING];
         char* file = NULL;
-        playfile_find_file(x, atom_getsymbol(av), dir, &file);
-        layout = playfile_get_channel_layout_for_file(x, dir, file);
-        nch = layout.nb_channels;
+        if(playfile_find_file(x, atom_getsymbol(av), dir, &file))
+            filefound = 1;
+        if(filefound){
+            layout = playfile_get_channel_layout_for_file(x, dir, file);
+            nch = layout.nb_channels;
+        }
+        else
+            nch = 1;
     }
     else{
         uint64_t mask = 0;
@@ -570,10 +573,8 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
         outlet_new(&x->x_obj, &s_signal);
     x->x_o_meta = outlet_new(&x->x_obj, 0);
     int shift = ac > 0 && av[0].a_type == A_SYMBOL;
-    if(ac > 1 - shift && av[1 - shift].a_type == A_SYMBOL){
+    if(filefound && ac > 1 - shift && av[1 - shift].a_type == A_SYMBOL)
         playfile_open(x, gensym("open"), 1, av + 1 - shift);
-        playfile_stop(x); // open normally also starts playback
-    }
     // Autostart argument
     if(ac > 2 - shift && av[2 - shift].a_type == A_FLOAT)
         playfile_start(x, atom_getfloat(av + 2 - shift), 0.0f);
