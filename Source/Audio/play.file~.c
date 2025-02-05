@@ -519,8 +519,13 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
             s = atom_getsymbolarg(i, ac, av);
             if(s == gensym("-loop")){
                 loop = 1;
-                for(int j = i; j < ac - 1; j++) {
-                    av[j] = av[j + 1];
+                for(int j = i; j < ac; j++) {
+                    if(j < ac-1) {
+                        av[j] = av[j + 1];
+                    }
+                    else {
+                        ac--;
+                    }
                 }
             }
         }
@@ -538,7 +543,7 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
     int nch = 1;
     AVChannelLayout layout;
     if(ac && av[0].a_type == A_FLOAT){ // Num channels from float arg
-        nch = atom_getfloat(av);
+        nch = atom_getfloat(av) > nch ? atom_getfloat(av) : nch;
         uint64_t mask = 0;
         for(int ch = 0; ch < nch; ch++)
             mask |= (ch + 1);
