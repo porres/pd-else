@@ -57,42 +57,40 @@ static void *white_new(t_symbol *s, int ac, t_atom *av){
     white_seed(x, s, 0, NULL);
     x->x_clip = 0;
     if(ac){
-        while(av->a_type == A_SYMBOL){
-            if(atom_getsymbol(av) == gensym("-seed")){
+        while(ac && av->a_type == A_SYMBOL){
+            t_symbol *sym = atom_getsymbol(av);
+            if(sym == gensym("-seed")){
                 if(ac >= 2){
                     t_atom at[1];
                     SETFLOAT(at, atom_getfloat(av+1));
                     ac-=2, av+=2;
                     white_seed(x, s, 1, at);
                 }
-                else{
-                    pd_error(x, "[white~]: -seed needs a seed value");
-                    return(NULL);
-                }
+                else
+                    goto errstate;
             }
-            else if(atom_getsymbol(av) == gensym("-clip")){
+            else if(sym == gensym("-clip")){
                 x->x_clip = 1;
                 ac--, av++;
             }
-            else if(atom_getsymbol(av) == gensym("-ch")){
+            else if(sym == gensym("-ch")){
                 if(ac >= 2){
                     int n = atom_getint(av+1);
                     x->x_ch = n < 1 ? 1 : n;
                     ac-=2, av+=2;
                 }
-                else{
-                    pd_error(x, "[white~]: -ch needs a channel number value");
-                    return(NULL);
-                }
+                else
+                    goto errstate;
             }
-            else{
-                pd_error(x, "[white~]: improper flag (%s)", atom_getsymbol(av)->s_name);
-                return(NULL);
-            }
+            else
+                goto errstate;
         }
     }
     outlet_new(&x->x_obj, &s_signal);
     return(x);
+errstate:
+    pd_error(x, "[white~]: improper args");
+    return(NULL);
 }
 
 void white_tilde_setup(void){
