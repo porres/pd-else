@@ -216,13 +216,12 @@ static void note_draw(t_note *x) {
     x->x_cv = glist_getcanvas(x->x_glist);
     // Remove backslashes followed by spaces
     int i, j;
-    for (i = 0, j = 0; x->x_buf[i] != '\0'; i++) {
+    for (i = 0, j = 0; i < x->x_bufsize; i++) {
         if (x->x_buf[i] == '\\' && x->x_buf[i + 1] == ' ') {
             i++;  // Skip the backslash and space
         }
         x->x_buf[j++] = x->x_buf[i];
     }
-    x->x_buf[j] = '\0';  // Null-terminate the string
 /*
     // Print the length of x->x_buf
     post("Length of x->x_buf = %d", (int)strlen(x->x_buf));
