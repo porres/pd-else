@@ -56,8 +56,8 @@ static void *white_new(t_symbol *s, int ac, t_atom *av){
     x->x_ch = 1;
     white_seed(x, s, 0, NULL);
     x->x_clip = 0;
-    if(ac){
-        while(ac && av->a_type == A_SYMBOL){
+    while(ac){
+        if(av->a_type == A_SYMBOL){
             t_symbol *sym = atom_getsymbol(av);
             if(sym == gensym("-seed")){
                 if(ac >= 2){
@@ -85,6 +85,8 @@ static void *white_new(t_symbol *s, int ac, t_atom *av){
             else
                 goto errstate;
         }
+        else
+            goto errstate;
     }
     outlet_new(&x->x_obj, &s_signal);
     return(x);
