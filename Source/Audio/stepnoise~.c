@@ -178,7 +178,7 @@ static void *stepnoise_new(t_symbol *s, int ac, t_atom *av){
             else if(atom_getsymbol(av) == gensym("-ch")){
                 if(ac >= 2){
                     int n = atom_getint(av+1);
-                    x->x_ch = n < 1 ? 1 : n;
+                    stepnoise_ch(x, n < 1 ? 1 : n);
                     ac-=2, av+=2;
                 }
                 else{

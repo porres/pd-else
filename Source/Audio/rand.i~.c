@@ -123,7 +123,7 @@ static void *randi_new(t_symbol *s, int ac, t_atom *av){
             }
             else if(ac >= 2 && atom_getsymbol(av) == gensym("-ch")){
                 int n = atom_getint(av+1);
-                x->x_ch = n < 1 ? 1 : n;
+                randi_ch(x, n < 1 ? 1 : n);
                 ac-=2, av+=2;
             }
             else
