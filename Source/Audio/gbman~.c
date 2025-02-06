@@ -191,16 +191,8 @@ static void *gbman_new(t_symbol *s, int ac, t_atom *av){
     x->x_list_size = 1;
     x->x_nchans = 1;
     x->x_ch = 1;
-    x->x_phase = (double *)getbytes(sizeof(*x->x_phase));
-    x->x_y_nm1 = (double *)getbytes(sizeof(*x->x_y_nm1));
-    x->x_y_nm2 = (double *)getbytes(sizeof(*x->x_y_nm2));
-    x->x_x1 = (double *)getbytes(sizeof(*x->x_x1));
-    x->x_y1 = (double *)getbytes(sizeof(*x->x_y1));
     x->x_freq_list = (float*)malloc(MAXLEN * sizeof(float));
-    x->x_freq_list[0] = sys_getsr() * 0.5;
-    x->x_phase[0] = x->x_y_nm1[0] = 0;
-    x->x_y_nm2[0] = x->x_x1[0] = x->x_y1[0] = 0;
-    t_float y1 = 1.2, y2 = 2.1; // default parameters
+    
     while(ac && av->a_type == A_SYMBOL){
         if(atom_getsymbol(av) == gensym("-mc")){
             ac--, av++;
@@ -216,6 +208,7 @@ static void *gbman_new(t_symbol *s, int ac, t_atom *av){
         else
             goto errstate;
     }
+    t_float y1 = 1.2, y2 = 2.1; // default parameters
     if(ac && av->a_type == A_FLOAT){
         x->x_freq_list[0] = av->a_w.w_float;
         ac--; av++;
@@ -225,6 +218,17 @@ static void *gbman_new(t_symbol *s, int ac, t_atom *av){
             if(ac && av->a_type == A_FLOAT)
                 y2 = av->a_w.w_float;
     }
+    
+    x->x_phase = (double *)getbytes(sizeof(*x->x_phase) * x->x_list_size);
+    x->x_y_nm1 = (double *)getbytes(sizeof(*x->x_y_nm1));
+    x->x_y_nm2 = (double *)getbytes(sizeof(*x->x_y_nm2));
+    x->x_x1 = (double *)getbytes(sizeof(*x->x_x1));
+    x->x_y1 = (double *)getbytes(sizeof(*x->x_y1));
+    x->x_freq_list[0] = sys_getsr() * 0.5;
+    x->x_phase[0] = x->x_y_nm1[0] = 0;
+    x->x_y_nm2[0] = x->x_x1[0] = x->x_y1[0] = 0;
+
+    
     x->x_coeff1 = y1;
     x->x_coeff2 = y2;
     for(int i = 0; i < x->x_list_size; i++){
