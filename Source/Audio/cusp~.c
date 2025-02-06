@@ -164,11 +164,8 @@ static void *cusp_new(t_symbol *s, int ac, t_atom *av){
     x->x_list_size = 1;
     x->x_nchans = 1;
     x->x_ch = 1;
-    x->x_phase = (double *)getbytes(sizeof(*x->x_phase));
-    x->x_yn = (double *)getbytes(sizeof(*x->x_yn));
     x->x_freq_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_freq_list[0] = sys_getsr() * 0.5;
-    x->x_phase[0] = x->x_yn[0] = 0;
     double a = 1, b = 1.9;
     x->x_init_yn = 0; // default parameters
     while(ac && av->a_type == A_SYMBOL){
@@ -186,6 +183,11 @@ static void *cusp_new(t_symbol *s, int ac, t_atom *av){
         else
             goto errstate;
     }
+    
+    x->x_phase = (double *)getbytes(x->x_list_size * sizeof(*x->x_phase));
+    x->x_yn = (double *)getbytes(x->x_list_size * sizeof(*x->x_yn));
+    x->x_phase[0] = x->x_yn[0] = 0;
+    
     if(ac && av->a_type == A_FLOAT){
         x->x_freq_list[0] = av->a_w.w_float;
         ac--; av++;
