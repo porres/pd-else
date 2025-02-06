@@ -11,11 +11,10 @@
 typedef struct _blsaw{
     t_object    x_obj;
     t_elliptic_blep *x_elliptic_blep;
-    t_float     *x_phase;
+    double     *x_phase;
     int         x_nchans;
     t_int       x_n;
     t_int       x_sig1;
-    t_int       x_sig2;
     t_int       x_ch2;
     t_int       x_ch3;
     t_int       x_midi;
@@ -30,8 +29,6 @@ typedef struct _blsaw{
     double      x_sr_rec;
 // MAGIC:
     t_glist    *x_glist; // object list
-    t_float    *x_signalscalar; // right inlet's float field
-    t_float     x_phase_sync_float; // float from magic
 }t_blsaw;
 
 static t_class *blsaw_class;
@@ -52,20 +49,7 @@ static t_int *blsaw_perform(t_int *w){
     t_float *out = (t_float *)(w[5]);
     t_elliptic_blep *blep = x->x_elliptic_blep; // Now an array
     t_int *dir = x->x_dir;
-    t_float *phase = x->x_phase;
-// Magic Start
-    if(!x->x_sig2){
-        t_float *scalar = x->x_signalscalar;
-        if(!else_magic_isnan(*scalar)){
-            t_float input_phase = fmod(*scalar, 1);
-            if(input_phase < 0)
-                input_phase += 1;
-            for(int j = 0; j < x->x_nchans; j++)
-                phase[j] = input_phase;
-            else_magic_setnan(scalar);
-        }
-    }
-// Magic End
+    double *phase = x->x_phase;
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0, n = x->x_n; i < n; i++){
             double hz = x->x_sig1 ? in1[j*n + i] : x->x_freq_list[j];
@@ -75,19 +59,16 @@ static t_int *blsaw_perform(t_int *w){
             }
             double step = hz * x->x_sr_rec;
             step = step > 0.5 ? 0.5 : step < -0.5 ? -0.5 : step;
-
-            if(x->x_sig2){
-                if(x->x_soft && dir[j] == 0) dir[j] = 1;
-                step *= dir[j];
-
-                t_float trig = x->x_ch2 == 1 ? in2[i] : in2[j*n + i];
-                if(trig > 0 && trig <= 1){
-                    if(x->x_soft)
-                        dir[j] = dir[j] == 1 ? -1 : 1;
-                    else
-                        phase[j] = trig;
-                }
+            t_float trig = x->x_ch2 == 1 ? in2[i] : in2[j*n + i];
+            if(dir[j] == 0) // initialize this just once
+               dir[j] = 1;
+            if(trig > 0 && trig <= 1){
+                if(x->x_soft)
+                    dir[j] = dir[j] == 1 ? -1 : 1;
+                else
+                    phase[j] = trig;
             }
+            step *= dir[j];
             double phase_offset = x->x_ch3 == 1 ? in3[i] : in3[j*n + i];
             t_float wrap = blsaw_wrap_phase(phase[j] + phase_offset);
             out[j*n + i] = (wrap * -2.0f + 1.0f) + elliptic_blep_get(&blep[j]);
@@ -107,11 +88,10 @@ static void blsaw_dsp(t_blsaw *x, t_signal **sp){
     x->x_n = sp[0]->s_n, x->x_sr_rec = 1.0 / (double)sp[0]->s_sr;
     x->x_ch2 = sp[1]->s_nchans, x->x_ch3 = sp[2]->s_nchans;
     x->x_sig1 = else_magic_inlet_connection((t_object *)x, x->x_glist, 0, &s_signal);
-    x->x_sig2 = else_magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal);
     int chs = x->x_sig1 ? sp[0]->s_nchans : x->x_list_size;
     if(x->x_nchans != chs){
         x->x_phase = (double *)resizebytes(x->x_phase,
-            x->x_nchans * sizeof(t_float), chs * sizeof(t_float));
+            x->x_nchans * sizeof(double), chs * sizeof(double));
         x->x_dir = (t_int *)resizebytes(x->x_dir,
             x->x_nchans * sizeof(t_int), chs * sizeof(t_int));
         x->x_elliptic_blep = (t_elliptic_blep *)resizebytes(x->x_elliptic_blep,
@@ -179,10 +159,11 @@ static void *blsaw_new(t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     x->x_midi = x->x_soft = 0;
     x->x_dir = (t_int *)getbytes(sizeof(*x->x_dir));
-    x->x_phase = (t_float *)getbytes(sizeof(*x->x_phase));
+    x->x_phase = (double *)getbytes(sizeof(*x->x_phase));
     x->x_elliptic_blep = (t_elliptic_blep *)getbytes(sizeof(*x->x_elliptic_blep));
     x->x_freq_list = (float*)malloc(MAXLEN * sizeof(float));
-    x->x_freq_list[0] = x->x_phase[0] = 0;
+    x->x_freq_list[0] = 0;
+    x->x_phase[0] = 0;
     x->x_list_size = 1;
     while(ac && av->a_type == A_SYMBOL){
         if(atom_getsymbol(av) == gensym("-midi")){
@@ -220,9 +201,7 @@ static void *blsaw_new(t_symbol *s, int ac, t_atom *av){
     x->x_inlet_phase = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_phase, x->x_phase[0]);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
-// Magic
     x->x_glist = canvas_getcurrent();
-    x->x_signalscalar = obj_findsignalscalar((t_object *)x, 1);
     return(x);
 errstate:
     post("[blsaw~]: improper args");
