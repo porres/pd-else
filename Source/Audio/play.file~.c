@@ -195,13 +195,10 @@ static err_t playfile_load(t_playfile *x, int index) {
             }
         }
         x->x_stream_idx = i;
-
         if(i < 0)
             return("No audio stream found");
     }
-
     err_t err_msg = playfile_context(x);
-
     if(err_msg)
         return(err_msg);
     x->x_frm->pts = 0;
@@ -230,7 +227,7 @@ static void playfile_start(t_playfile *x, t_float f, t_float ms){
     x->x_play = !err_msg;
 }
 
-static int playfile_is_network_protocol(const char *filename) {
+/*static int playfile_is_network_protocol(const char *filename) {
     const char *protocols[] = { "http://", "https://", "tcp://", "ftp://", "sftp://", "rtsp://", "rtmp://", "udp://", "data://", "gopher://", "ws://", "wss://" };
     size_t num_protocols = sizeof(protocols) / sizeof(protocols[0]);
     for(size_t i = 0; i < num_protocols; i++){
@@ -238,14 +235,14 @@ static int playfile_is_network_protocol(const char *filename) {
             return(1); // Match found, it's a network protocol
     }
     return(0); // Not a network protocol
-}
+}*/
 
 static int playfile_find_file(t_playfile *x, t_symbol* file, char* dir_out, char** filename_out){
-    if(playfile_is_network_protocol(file->s_name)){
+/*    if(playfile_is_network_protocol(file->s_name)){
         strcpy(dir_out, file->s_name);
         *filename_out = NULL;
         return(2);
-    }
+    }*/
     char *bufptr;
     int fd = canvas_open(x->x_canvas, file->s_name, "", dir_out, filename_out, MAXPDSTRING, 1);
     if(fd < 0){
@@ -286,6 +283,43 @@ static void playfile_openpanel_callback(t_playfile *x, t_symbol *s, int argc, t_
     }
 }
 
+static void playfile_browse(t_playfile *x, t_symbol *s){
+    x->x_play = 0;
+    err_t err_msg = 0;
+    const char *url = s->s_name;
+    if(strlen(url) >= MAXPDSTRING){
+        err_msg = "URL is too long";
+        pd_error(x, "[play.file~]: %s.", err_msg);
+    }
+    else if(!strncmp(url, "http:", 5) ||
+    !strncmp(url, "https:", 6) ||
+    !strncmp(url, "ftp:", 4)){
+        t_playlist *pl = &x->x_plist;
+        char dir[MAXPDSTRING];
+        const char *fname = strrchr(url, '/');
+        if(fname){
+            int len = ++fname - url;
+            strncpy(dir, url, len);
+            dir[len] = '\0';
+        }
+        else{
+            fname = url;
+            strcpy(dir, "./");
+        }
+        pl->dir = gensym(dir);
+        const char *ext = strrchr(url, '.');
+        if(ext && !strcmp(ext + 1, "m3u"))
+            err_msg = playlist_m3u(pl, s);
+        else{
+            pl->size = 1;
+            pl->arr[0] = gensym(fname);
+        }
+        if(err_msg || (err_msg = playfile_load(x, 0)))
+            pd_error(x, "[play.file~]: open: %s.", err_msg);
+        x->x_open = !err_msg;
+    }
+}
+
 static void playfile_open(t_playfile *x, t_symbol *s, int ac, t_atom *av){
     x->x_play = 0;
     err_t err_msg = 0;
@@ -293,40 +327,11 @@ static void playfile_open(t_playfile *x, t_symbol *s, int ac, t_atom *av){
         pdgui_vmess("pdtk_openpanel", "ssic", x->x_openpanel_sym->s_name,
             canvas_getdir(x->x_canvas)->s_name, 0, glist_getcanvas(x->x_canvas));
     }
-    else if(av->a_type == A_SYMBOL) {
+    else if(av->a_type == A_SYMBOL){
         const char *sym = av->a_w.w_symbol->s_name;
-        if(strlen(sym) >= MAXPDSTRING)
+        if(strlen(sym) >= MAXPDSTRING){
             err_msg = "File path is too long";
-        else if(strncmp(av->a_w.w_symbol->s_name, "http:", strlen("http:")) == 0 ||
-        strncmp(av->a_w.w_symbol->s_name, "https:", strlen("https:")) == 0 ||
-        strncmp(av->a_w.w_symbol->s_name, "ftp:", strlen("ftp:")) == 0)
-        {
-//            post("if");
-            t_symbol* path = atom_getsymbol(av);
-            const char *path_str = path->s_name;
-            t_playlist *pl = &x->x_plist;
-            char dir[MAXPDSTRING];
-            const char *fname = strrchr(path_str, '/');
-            if(fname){
-                int len = ++fname - path_str;
-                strncpy(dir, path_str, len);
-                dir[len] = '\0';
-            }
-            else{
-                fname = path_str;
-                strcpy(dir, "./");
-            }
-            pl->dir = gensym(dir);
-            const char *ext = strrchr(path_str, '.');
-            if (ext && !strcmp(ext + 1, "m3u"))
-                err_msg = playlist_m3u(pl, s);
-            else{
-                pl->size = 1;
-                pl->arr[0] = gensym(fname);
-            }
-            if(err_msg || (err_msg = playfile_load(x, 0)))
-                pd_error(x, "[play.file~]: open: %s.", err_msg);
-            x->x_open = !err_msg;
+            pd_error(x, "[play.file~]: %s.", err_msg);
         }
         else{
             char dirname[MAXPDSTRING];
@@ -608,6 +613,7 @@ void setup_play0x2efile_tilde(void) {
     class_addmethod(playfile_class, (t_method)playfile_bang, gensym("start"), A_NULL);
     class_addmethod(playfile_class, (t_method)playfile_stop, gensym("stop"), A_NULL);
     class_addmethod(playfile_class, (t_method)playfile_open, gensym("open"), A_GIMME, 0);
+    class_addmethod(playfile_class, (t_method)playfile_browse, gensym("browse"), A_SYMBOL, 0);
     class_addmethod(playfile_class, (t_method)playfile_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(playfile_class, (t_method)playfile_seek, gensym("seek"), A_FLOAT, 0);
     class_addmethod(playfile_class, (t_method)playfile_loop, gensym("loop"), A_FLOAT, 0);
