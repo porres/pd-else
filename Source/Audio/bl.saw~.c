@@ -11,7 +11,7 @@
 typedef struct _blsaw{
     t_object    x_obj;
     t_elliptic_blep *x_elliptic_blep;
-    double     *x_phase;
+    t_float     *x_phase;
     int         x_nchans;
     t_int       x_n;
     t_int       x_sig1;
@@ -49,7 +49,7 @@ static t_int *blsaw_perform(t_int *w){
     t_float *out = (t_float *)(w[5]);
     t_elliptic_blep *blep = x->x_elliptic_blep; // Now an array
     t_int *dir = x->x_dir;
-    double *phase = x->x_phase;
+    t_float *phase = x->x_phase;
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0, n = x->x_n; i < n; i++){
             double hz = x->x_sig1 ? in1[j*n + i] : x->x_freq_list[j];
@@ -71,13 +71,14 @@ static t_int *blsaw_perform(t_int *w){
             step *= dir[j];
             double phase_offset = x->x_ch3 == 1 ? in3[i] : in3[j*n + i];
             t_float wrap = blsaw_wrap_phase(phase[j] + phase_offset);
+            t_float next = wrap + step;
             out[j*n + i] = (wrap * -2.0f + 1.0f) + elliptic_blep_get(&blep[j]);
             phase[j] += step;
             elliptic_blep_step(&blep[j]);
-            if(phase[j] >= 1 || phase[j] < 0){
-                phase[j] = blsaw_wrap_phase(phase[j]);
-                t_float samples_in_past = phase[j] / (hz / sys_getsr());
+            if(next >= 1 || next < 0){
+                t_float samples_in_past = blsaw_wrap_phase(next) / step;
                 elliptic_blep_add_in_past(&blep[j], 2.0f, 1, samples_in_past);
+                phase[j] = blsaw_wrap_phase(phase[j]);
             }
         }
     }
@@ -90,8 +91,8 @@ static void blsaw_dsp(t_blsaw *x, t_signal **sp){
     x->x_sig1 = else_magic_inlet_connection((t_object *)x, x->x_glist, 0, &s_signal);
     int chs = x->x_sig1 ? sp[0]->s_nchans : x->x_list_size;
     if(x->x_nchans != chs){
-        x->x_phase = (double *)resizebytes(x->x_phase,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
+        x->x_phase = (t_float *)resizebytes(x->x_phase,
+            x->x_nchans * sizeof(t_float), chs * sizeof(t_float));
         x->x_dir = (t_int *)resizebytes(x->x_dir,
             x->x_nchans * sizeof(t_int), chs * sizeof(t_int));
         x->x_elliptic_blep = (t_elliptic_blep *)resizebytes(x->x_elliptic_blep,
@@ -159,7 +160,7 @@ static void *blsaw_new(t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     x->x_midi = x->x_soft = 0;
     x->x_dir = (t_int *)getbytes(sizeof(*x->x_dir));
-    x->x_phase = (double *)getbytes(sizeof(*x->x_phase));
+    x->x_phase = (t_float *)getbytes(sizeof(*x->x_phase));
     x->x_elliptic_blep = (t_elliptic_blep *)getbytes(sizeof(*x->x_elliptic_blep));
     x->x_freq_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_freq_list[0] = 0;
