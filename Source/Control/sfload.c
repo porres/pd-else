@@ -273,11 +273,16 @@ static int sfload_is_network_protocol(const char *filename){
     return(0); // Not a network protocol
 }
 
-static int sfload_find_file(t_sfload *x, t_symbol* file, char* dir_out){
+static int sfload_find_url(t_sfload *x, t_symbol* file, char* dir_out){
     if(sfload_is_network_protocol(file->s_name)){
         strcpy(dir_out, file->s_name);
         return(1);
     }
+    else
+        return(0);
+}
+
+static int sfload_find_file(t_sfload *x, t_symbol* file, char* dir_out){
     static char fname[MAXPDSTRING];
     char *bufptr;
     int fd = canvas_open(x->x_canvas, file->s_name, "", fname, &bufptr, MAXPDSTRING, 1);
@@ -291,6 +296,50 @@ static int sfload_find_file(t_sfload *x, t_symbol* file, char* dir_out){
         strcpy(dir_out, fname);
     }
     return(1);
+}
+
+void sfload_download(t_sfload* x, t_symbol* s, int ac, t_atom* av){
+    if(x->x_arr_name == NULL){
+        pd_error(x, "[sfload]: No array set");
+        return;
+    }
+    if(!ac){
+        pd_error(x, "[sfload]: no filename given to download");
+        return;
+    }
+    t_symbol* path = NULL;
+    if(av[0].a_type == A_SYMBOL)
+        path = atom_getsymbol(av);
+    else{
+        pd_error(x, "[sfload]: Invalid arguments for 'load' message");
+        return;
+    }
+    if(ac >= 2 && av[1].a_type == A_FLOAT)
+        x->x_channel = atom_getfloat(av + 1);
+    else
+        x->x_channel = -1; // -1 means all channels
+    int ch = x->x_channel == -1 ? 0 : x->x_channel;
+    char channel_zero_name[MAXPDSTRING];
+    snprintf(channel_zero_name, MAXPDSTRING, "%i-%s", ch, x->x_arr_name->s_name);
+    if(!pd_findbyclass(x->x_arr_name, garray_class) && !pd_findbyclass(gensym(channel_zero_name), garray_class)){
+        pd_error(x, "[sfload]: Array %s not found", x->x_arr_name->s_name);
+        return;
+    }
+    if(!sfload_find_url(x, path, x->x_path))
+        return;
+    if(x->x_threaded){
+        if(pthread_create(&x->x_process_thread, NULL, sfload_read_audio_threaded, x) != 0){
+            pd_error(x, "[sfload]: Error creating thread");
+            return;
+        }
+        x->x_thread_created = 1;
+        clock_delay(x->x_result_clock, 20);
+    }
+    else{
+        sfload_read_audio(x);
+        sfload_update_arrays(x);
+        outlet_list(x->x_info_outlet, &s_, 4, x->x_sfinfo);
+    }
 }
 
 void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av){
@@ -385,6 +434,7 @@ void sfload_setup(void){
     sfload_class = class_new(gensym("sfload"), (t_newmethod)sfload_new,
         (t_method)sfload_free, sizeof(t_sfload), 0, A_GIMME, 0);
     class_addmethod(sfload_class, (t_method)sfload_load, gensym("load"), A_GIMME, 0);
+    class_addmethod(sfload_class, (t_method)sfload_download, gensym("download"), A_GIMME, 0);
     class_addmethod(sfload_class, (t_method)sfload_set, gensym("set"), A_SYMBOL, 0);
     class_addmethod(sfload_class, (t_method)sfload_threaded, gensym("threaded"), A_FLOAT, 0);
 }
