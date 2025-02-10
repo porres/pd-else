@@ -12,14 +12,12 @@
 #X obj 88 94 *~;
 #X obj 181 39 route ratio decay amp ramp;
 #X obj 121 74 else/f2s~ 10;
-#X obj 75 198 numbox~ 6 10 100 #C0C0C4 #440008 10 0 0 0;
 #X connect 1 0 0 0;
 #X connect 3 0 4 0;
 #X connect 4 0 1 0;
 #X connect 6 0 4 2;
 #X connect 7 0 1 1;
 #X connect 8 0 10 0;
-#X connect 8 0 13 0;
 #X connect 8 1 11 0;
 #X connect 10 0 4 1;
 #X connect 11 0 12 0;
