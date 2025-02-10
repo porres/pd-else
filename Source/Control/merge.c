@@ -1,7 +1,7 @@
 
 
-#include <m_pd.h>
-#include <else_alloca.h>
+#include "m_pd.h"
+#include "else_alloca.h"
 #include <stdlib.h>
 
 static t_class *merge_class;
@@ -15,6 +15,7 @@ typedef struct _merge{
     int                   x_length;     // total length of all atoms from merge_inlet
     int                   x_trim;
     struct _merge_inlet*  x_ins;
+    t_symbol *x_ignore;
 }t_merge;
 
 typedef struct _merge_inlet{
@@ -24,6 +25,7 @@ typedef struct _merge_inlet{
     int         x_trig;
     int         x_id;
     t_merge*    x_owner;
+    t_symbol *x_ignore;
 }t_merge_inlet;
 
 static void atoms_copy(int ac, t_atom *from, t_atom *to){
@@ -37,15 +39,21 @@ static void merge_output(t_merge *x){
     int offset = 0;
     for(int i = 0; i < x->x_numinlets; i++){
         int curnum = x->x_ins[i].x_numatoms; // number of atoms for current inlet
-        atoms_copy(curnum, x->x_ins[i].x_atoms, outatom + offset); // copy them over to outatom
-        offset += curnum;
+        if(curnum > 0){
+            atoms_copy(curnum, x->x_ins[i].x_atoms, outatom + offset); // copy them over to outatom
+            offset += curnum;
+        }
     };
-    if(x->x_trim && outatom->a_type == A_SYMBOL){
-        t_symbol *selector = atom_getsymbolarg(0, x->x_length, outatom);
-        outlet_anything(x->x_obj.ob_outlet, selector, x->x_length-1, outatom+1);
+    if(x->x_length == 0)
+        outlet_bang(x->x_obj.ob_outlet);
+    else{
+        if(x->x_trim && outatom->a_type == A_SYMBOL){
+            t_symbol *sym = atom_getsymbol(outatom);
+            outlet_anything(x->x_obj.ob_outlet, sym, x->x_length-1, outatom+1);
+        }
+        else
+            outlet_list(x->x_obj.ob_outlet, &s_list, x->x_length, outatom);
     }
-    else
-        outlet_list(x->x_obj.ob_outlet, &s_list, x->x_length, outatom);
     freebytes(outatom, x->x_length * sizeof(t_atom));
 }
 
@@ -60,11 +68,7 @@ static void merge_inlet_atoms(t_merge_inlet *x, int ac, t_atom * av ){
 }
 
 static void merge_inlet_list(t_merge_inlet *x, t_symbol* s, int ac, t_atom* av){
-    s = NULL;
-    if(!ac){
-        merge_output(x->x_owner);
-        return;
-    }
+    x->x_ignore = s;
     merge_inlet_atoms(x, ac, av);
     if(x->x_trig == 1)
         merge_output(x->x_owner);
@@ -87,8 +91,7 @@ static void* merge_free(t_merge *x){
 
 static void *merge_new(t_symbol *s, int ac, t_atom* av){
     t_merge *x = (t_merge *)pd_new(merge_class);
-    t_symbol *dummy = s;
-    dummy = NULL;
+    x->x_ignore = s;
     t_float numinlets = 2;
     int hot = 0;
     x->x_trim = 0;
@@ -135,12 +138,12 @@ static void *merge_new(t_symbol *s, int ac, t_atom* av){
             triggervals[i] = 1;
     };
     x->x_ins = (t_merge_inlet *)getbytes(x->x_numinlets * sizeof(t_merge_inlet));
-    x->x_length = x->x_numinlets;
+    x->x_length = 0;
     for(i = 0; i < x->x_numinlets; ++i){
         x->x_ins[i].x_pd    = merge_inlet_class;
         x->x_ins[i].x_atoms = (t_atom *)getbytes(1 * sizeof(t_atom));
         SETFLOAT(x->x_ins[i].x_atoms, 0);
-        x->x_ins[i].x_numatoms = 1;
+        x->x_ins[i].x_numatoms = 0;
         x->x_ins[i].x_owner = x;
         x->x_ins[i].x_trig = triggervals[i];
         x->x_ins[i].x_id = i;
