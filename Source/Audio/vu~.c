@@ -82,6 +82,7 @@ static void *vu_tilde_new(t_floatarg fnpoints, t_floatarg fperiod){
     x->x_npoints = npoints;
     x->x_phase = 0;
     x->x_period = period;
+    x->x_block = 64;
     for(i = 0; i < MAXOVERLAP; i++)
         x->x_sumbuf[i] = 0;
     for(i = 0; i < npoints; i++)
