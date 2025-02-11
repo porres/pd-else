@@ -189,6 +189,7 @@ static void *rms_tilde_new(t_symbol *s, int argc, t_atom *argv){
     x->x_phase = 0;
     x->x_db = dbstate;
     x->x_period = period;
+    x->x_block = 64;
     for(i = 0; i < MAXOVERLAP; i++) x->x_sumbuf[i] = 0;
     for(i = 0; i < npoints; i++)
         buf[i] = (1. - cos((2 * 3.14159 * i) / npoints))/npoints; // HANNING / npoints

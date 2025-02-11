@@ -148,6 +148,7 @@ static void *peak_tilde_new(t_symbol *s, int argc, t_atom *argv){
     x->x_phase = 0;
     x->x_value = 0.;
     x->x_period = period;
+    x->x_block = 64;
     x->x_clock = clock_new(x, (t_method)peak_tilde_tick);
     x->x_outlet = outlet_new(&x->x_obj, gensym("float"));
     x->x_allocforvs = INITVSTAKEN;

@@ -112,7 +112,7 @@ static t_int *wt2d_perform(t_int *w){
         }
     }
 // Magic End
-    int npts_frame = (t_int)(x->x_buffer->c_npts) / x->x_nframes;
+    int npts_frame = (t_int)(x->x_buffer->c_npts) / (x->x_nframes >= 1 ? x->x_nframes : 1);
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0, n = x->x_n; i < n; i++){
             double hz = x->x_sig1 ? in1[j*n + i] : x->x_freq_list[j];

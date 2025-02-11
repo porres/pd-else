@@ -361,7 +361,7 @@ static void menu_output(t_menu* x, t_floatarg i){
         }
         else{
             outlet_float(x->x_obj.ob_outlet, x->x_idx);
-            if(x->x_snd->s_thing)
+            if (x->x_snd->s_thing && x->x_snd_raw != gensym("empty"))
                 pd_float(x->x_snd->s_thing, x->x_idx);
         }
         if(x->x_var != gensym("empty"))
@@ -379,7 +379,7 @@ static void menu_output(t_menu* x, t_floatarg i){
             }
             else{
                 outlet_symbol(x->x_obj.ob_outlet, out);
-                if(x->x_snd->s_thing)
+                if (x->x_snd->s_thing && x->x_snd_raw != gensym("empty"))
                     pd_symbol(x->x_snd->s_thing, out);
             }
         }
@@ -394,7 +394,7 @@ static void menu_output(t_menu* x, t_floatarg i){
             }
             else{
                 outlet_float(x->x_obj.ob_outlet, out);
-                if(x->x_snd->s_thing)
+                if (x->x_snd->s_thing && x->x_snd_raw != gensym("empty"))
                     pd_float(x->x_snd->s_thing, out);
             }
         }
@@ -413,7 +413,7 @@ static void menu_output(t_menu* x, t_floatarg i){
         }
         else{
             outlet_list(x->x_obj.ob_outlet, &s_list, 2, at);
-            if(x->x_snd->s_thing)
+            if (x->x_snd->s_thing && x->x_snd_raw != gensym("empty"))
                 pd_list(x->x_snd->s_thing, &s_list, 2, at);
         }
     }
