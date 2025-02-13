@@ -13,7 +13,6 @@ typedef struct _merge{
     t_object              x_obj;
     int                   x_numinlets;
     int                   x_length;     // total length of all atoms from merge_inlet
-    int                   x_trim;
     struct _merge_inlet*  x_ins;
     t_symbol *x_ignore;
 }t_merge;
@@ -46,14 +45,8 @@ static void merge_output(t_merge *x){
     };
     if(x->x_length == 0)
         outlet_bang(x->x_obj.ob_outlet);
-    else{
-        if(x->x_trim && outatom->a_type == A_SYMBOL){
-            t_symbol *sym = atom_getsymbol(outatom);
-            outlet_anything(x->x_obj.ob_outlet, sym, x->x_length-1, outatom+1);
-        }
-        else
-            outlet_list(x->x_obj.ob_outlet, &s_list, x->x_length, outatom);
-    }
+    else
+        outlet_list(x->x_obj.ob_outlet, &s_list, x->x_length, outatom);
     freebytes(outatom, x->x_length * sizeof(t_atom));
 }
 
@@ -93,53 +86,16 @@ static void *merge_new(t_symbol *s, int ac, t_atom* av){
     t_merge *x = (t_merge *)pd_new(merge_class);
     x->x_ignore = s;
     t_float numinlets = 2;
-    int hot = 0;
-    x->x_trim = 0;
-/////////////////////////////////////////////////////////////////////////////////////
-    if(ac <= 3){
-        int argnum = 0;
-        while(ac > 0){
-            if(av->a_type == A_FLOAT){
-                t_float aval = atom_getfloatarg(0, ac, av);
-                switch(argnum){
-                    case 0:
-                        numinlets = aval;
-                        break;
-                    case 1:
-                        hot = (int)(aval != 0);
-                        break;
-                    default:
-                        break;
-                };
-                ac--, av++;
-                argnum++;
-            }
-            else if(av->a_type == A_SYMBOL && !argnum){
-                if(atom_getsymbolarg(0, ac, av) == gensym("-trim")){
-                    x->x_trim = 1;
-                    ac--, av++;
-                }
-                else
-                    goto errstate;
-            }
-            else
-                goto errstate;
-        };
-    }
-/////////////////////////////////////////////////////////////////////////////////////
-    int i;
+    if(ac && av->a_type == A_FLOAT)
+        numinlets = atom_getint(av);
     int n = (int)numinlets;
     x->x_numinlets = n < 2 ? 2 : n > 512 ? 512 : n;
     int * triggervals;
     triggervals = ALLOCA(int, x->x_numinlets);
     triggervals[0] = 1;
-    if(hot){
-        for(i = 0; i < x->x_numinlets; i++)
-            triggervals[i] = 1;
-    };
     x->x_ins = (t_merge_inlet *)getbytes(x->x_numinlets * sizeof(t_merge_inlet));
     x->x_length = 0;
-    for(i = 0; i < x->x_numinlets; ++i){
+    for(int i = 0; i < x->x_numinlets; ++i){
         x->x_ins[i].x_pd    = merge_inlet_class;
         x->x_ins[i].x_atoms = (t_atom *)getbytes(1 * sizeof(t_atom));
         SETFLOAT(x->x_ins[i].x_atoms, 0);
@@ -152,9 +108,6 @@ static void *merge_new(t_symbol *s, int ac, t_atom* av){
     outlet_new(&x->x_obj, &s_list);
     FREEA(triggervals, int, x->x_numinlets);
     return(x);
-errstate:
-    pd_error(x, "[merge]: improper args");
-    return(NULL);
 }
 
 extern void merge_setup(void){

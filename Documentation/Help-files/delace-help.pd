@@ -45,9 +45,9 @@
 #X connect 8 0 4 0;
 #X connect 8 0 3 0;
 #X restore 495 206 pd -z;
-#X text 34 148 see also:;
-#X obj 34 172 else/lace;
-#X obj 34 198 else/unmerge;
+#X text 33 146 see also:;
+#X obj 35 190 else/lace;
+#X obj 34 214 else/unmerge;
 #X obj 192 191 else/delace 3, f 22;
 #X listbox 256 218 7 0 0 0 - - - 0;
 #X listbox 321 218 7 0 0 0 - - - 0;
@@ -57,6 +57,7 @@
 #X text 208 297 the delaced/deinterleaved lists, f 36;
 #X text 171 360 - 'n' number of outlets (default 2 \, min 2 / max 255);
 #X text 83 87 [delace] deinterleaves a list according to the number of outlets., f 53;
+#X obj 35 167 else/delace~;
 #X connect 27 0 20 0;
 #X connect 27 1 28 0;
 #X connect 27 2 29 0;

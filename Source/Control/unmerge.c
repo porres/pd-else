@@ -6,13 +6,14 @@ typedef struct _unmerge{
     t_object    x_obj;
     int         x_nouts; //number of outlets not including extra outlet
     float       x_size;
-    int         x_trim;
+    t_symbol   *x_ignore;
     t_outlet  **x_outlets; //nouts + 1 for extra outlet
 }t_unmerge;
 
 static t_class *unmerge_class;
 
 static void unmerge_list(t_unmerge *x, t_symbol *s, int ac, t_atom *av){
+    x->x_ignore = s;
     if(ac == 1){
         if(av->a_type == A_FLOAT)
             outlet_float(x->x_outlets[0], atom_getfloat(av));
@@ -29,14 +30,8 @@ static void unmerge_list(t_unmerge *x, t_symbol *s, int ac, t_atom *av){
             outlet_float(x->x_outlets[nouts], (av+length)->a_w.w_float);
         else if(av->a_type == A_FLOAT) // if first is float... out list
             outlet_list(x->x_outlets[nouts],  &s_list, extra, av+length);
-        else{
-            if(!x->x_trim)
-                outlet_anything(x->x_outlets[nouts], &s_list, extra, av+length);
-            else{
-                s = atom_getsymbolarg(0, length, av+length);
-                outlet_anything(x->x_outlets[nouts], s, extra-1, av+length+1);
-            }
-        }
+        else
+            outlet_anything(x->x_outlets[nouts], &s_list, extra, av+length);
         ac -= extra;
     };
     for(int i = (nouts - 1); i >= 0; i--){
@@ -49,14 +44,8 @@ static void unmerge_list(t_unmerge *x, t_symbol *s, int ac, t_atom *av){
                 else
                     outlet_list(x->x_outlets[i],  &s_list, n, av+j);
             }
-            else if((av+j)->a_type == A_SYMBOL){
-                if(!x->x_trim)
-                    outlet_anything(x->x_outlets[i],  &s_list, n, av+j);
-                else{
-                    s = atom_getsymbolarg(0, n, av+j);
-                    outlet_anything(x->x_outlets[i], s, n-1, av+j+1);
-                }
-            }
+            else if((av+j)->a_type == A_SYMBOL)
+                outlet_anything(x->x_outlets[i],  &s_list, n, av+j);
         }
         else
             n = 0;
@@ -80,19 +69,18 @@ static void unmerge_free(t_unmerge *x){
 
 static void *unmerge_new(t_symbol *s, int ac, t_atom* av){
     t_unmerge *x = (t_unmerge *)pd_new(unmerge_class);
-    t_symbol *dummy = s;
-    dummy = NULL;
+    x->x_ignore = s;
     int n = 0;
     x->x_size = 0;
 /////////////////////////////////////////////////////////////////////////////////////
-    if(ac <= 3){
+    if(ac <= 2){
         int argnum = 0;
         while(ac > 0){
             if(av->a_type == A_FLOAT){
-                t_float aval = atom_getfloatarg(0, ac, av);
+                int aval = atom_getint(av);
                 switch(argnum){
                     case 0:
-                        n = (int)aval;
+                        n = aval;
                         break;
                     case 1:
                         x->x_size = aval;
@@ -102,14 +90,6 @@ static void *unmerge_new(t_symbol *s, int ac, t_atom* av){
                 };
                 ac--, av++;
                 argnum++;
-            }
-            else if(av->a_type == A_SYMBOL && !argnum){
-                if(atom_getsymbolarg(0, ac, av) == gensym("-trim")){
-                    x->x_trim = 1;
-                    ac--, av++;
-                }
-                else
-                    goto errstate;
             }
             else
                 goto errstate;
