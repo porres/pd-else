@@ -1,4 +1,4 @@
-#N canvas 493 23 560 531 10;
+#N canvas 493 38 560 531 10;
 #X obj 4 291 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 405 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 438 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -87,6 +87,9 @@
 #X restore 464 258 pd details;
 #X obj 195 161 else/impseq~;
 #X text 217 133 <-- excite the resonator;
+#X text 23 198 see also:;
+#X obj 22 222 else/resonant~;
+#X obj 22 247 else/resonbank2~;
 #X connect 26 0 43 0;
 #X connect 29 0 40 0;
 #X connect 40 0 8 0;

@@ -1,4 +1,4 @@
-#N canvas 564 50 568 771 10;
+#N canvas 564 50 565 693 10;
 #X obj 3 420 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 3 538 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 86 547 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
@@ -20,7 +20,7 @@
 #X text 137 473 amp <list>;
 #X text 131 487 ramp <list>;
 #X text 209 487 - list of ramp time for all filters in the bank;
-#N canvas 719 70 460 538 example 0;
+#N canvas 833 77 460 538 example 0;
 #X obj 107 188 loadbang;
 #X text 188 175 click on the messages below to alter between them, f 27;
 #X msg 107 211 freq 100 250 300 370 420 510 590 650 \, decay 2000 900 1500 900 2000 800 1500 900 \, amp 0.9 1 0.9 1 0.8 0.9 0.7 1, f 42;
@@ -41,7 +41,7 @@
 #X connect 7 0 11 0;
 #X connect 11 0 4 0;
 #X restore 452 356 pd example;
-#X text 37 320 see also:;
+#X text 31 272 see also:;
 #X obj 5 667 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
 #X obj 5 573 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
 #X text 113 502 rampall float>;
@@ -78,8 +78,8 @@
 #X text 182 650 -mc: sets to multichannel output, f 48;
 #X text 143 517 mc float>;
 #X text 208 517 - non zero sets to multichannel output;
-#X obj 36 370 else/resonbank~;
-#X obj 36 347 else/oscbank~;
+#X obj 30 342 else/resonbank~;
+#X obj 30 319 else/oscbank~;
 #X obj 181 167 keyboard 13 50 2 3 0 0 empty empty;
 #X obj 181 226 stripnote;
 #X obj 181 250 mtof;
@@ -97,6 +97,8 @@
 #X text 143 547 signal(s);
 #X text 210 547 - the resonator output signal(s);
 #X text 122 579 -ratio <list>: sets list of ratios for the resonators' frequencies, f 66;
+#X obj 30 296 else/resonators2~;
+#X obj 30 366 else/resonant~;
 #X connect 36 0 37 0;
 #X connect 37 0 38 0;
 #X connect 37 1 41 0;
