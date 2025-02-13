@@ -6,7 +6,6 @@
 typedef struct _delace{
     t_object    x_obj;
     int         x_nouts; //number of outlets
-    int         x_trim;
     int         x_zero;
     t_symbol   *x_ignore;
     t_outlet  **x_outlets;

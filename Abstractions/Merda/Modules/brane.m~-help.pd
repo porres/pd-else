@@ -414,12 +414,12 @@
 #X obj 119 469 outlet;
 #X obj 302 56 cnv 15 45 18 empty empty (extra) 2 9 2 15 #9c9c9c #580000 0;
 #X text 45 21 Messages can change every single GUI control of the abstraction. Some extra features are only possible via messages and are marked here as:, f 51;
-#X text 44 83 Check bellow all message groups. The contrls will become clearer then..., f 51;
 #X text 879 293 <-- Buffer time (min:sec | ms);
 #X text 879 352 <-- Real Time (min:sec / ms);
 #X text 879 379 <-- Player time (min:sec / ms);
 #X text 879 330 <-- Target buffer in min.sec (relates to speed);
 #X obj 352 190 else/brane.m~;
+#X text 44 83 Check bellow all message groups. The controls will become clearer then..., f 51;
 #X connect 0 0 7 0;
 #X connect 1 0 7 0;
 #X connect 2 0 7 0;

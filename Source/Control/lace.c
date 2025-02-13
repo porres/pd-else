@@ -12,7 +12,6 @@ typedef struct _lace{
     t_object             x_obj;
     int                  x_numinlets;
     int                  x_length;     // total length of all atoms from lace_inlet
-    int                  x_trim;
     int                  x_zero;
     struct _lace_inlet  *x_ins;
     t_symbol            *x_ignore;
@@ -59,11 +58,6 @@ static void lace_output(t_lace *x){
         }
         n++;
     }
-    if(x->x_trim && outatom->a_type == A_SYMBOL){
-        t_symbol *sym = atom_getsymbol(outatom);
-        outlet_anything(x->x_obj.ob_outlet, sym, totaln-1, outatom+1);
-    }
-    else
         outlet_list(x->x_obj.ob_outlet, &s_list, totaln, outatom);
     freebytes(outatom, totaln * sizeof(t_atom));
 }
@@ -104,7 +98,6 @@ static void *lace_new(t_symbol *s, int ac, t_atom* av){
     t_lace *x = (t_lace *)pd_new(lace_class);
     x->x_ignore = s;
     int n = 2;
-    x->x_trim = 0;
     x->x_zero = 0;
 /////////////////////////////////////////////////////////////////////////////////////
     int argnum = 0;
