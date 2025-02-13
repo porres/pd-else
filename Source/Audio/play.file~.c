@@ -283,7 +283,7 @@ static void playfile_openpanel_callback(t_playfile *x, t_symbol *s, int argc, t_
     }
 }
 
-static void playfile_browse(t_playfile *x, t_symbol *s){
+static void playfile_stream(t_playfile *x, t_symbol *s){
     x->x_play = 0;
     err_t err_msg = 0;
     const char *url = s->s_name;
@@ -613,7 +613,7 @@ void setup_play0x2efile_tilde(void) {
     class_addmethod(playfile_class, (t_method)playfile_bang, gensym("start"), A_NULL);
     class_addmethod(playfile_class, (t_method)playfile_stop, gensym("stop"), A_NULL);
     class_addmethod(playfile_class, (t_method)playfile_open, gensym("open"), A_GIMME, 0);
-    class_addmethod(playfile_class, (t_method)playfile_browse, gensym("browse"), A_SYMBOL, 0);
+    class_addmethod(playfile_class, (t_method)playfile_stream, gensym("stream"), A_SYMBOL, 0);
     class_addmethod(playfile_class, (t_method)playfile_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(playfile_class, (t_method)playfile_seek, gensym("seek"), A_FLOAT, 0);
     class_addmethod(playfile_class, (t_method)playfile_loop, gensym("loop"), A_FLOAT, 0);
