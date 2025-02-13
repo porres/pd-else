@@ -174,8 +174,8 @@
 #X msg 148 264 dur \$1;
 #X obj 195 131 r \$0-mode;
 #X obj 110 56 inlet;
-#X obj 128 200 *;
-#X obj 128 170 pack2 f 4, f 10;
+#X obj 128 200 * 4;
+#X obj 128 170 else/hot;
 #X connect 0 0 5 0;
 #X connect 0 0 6 0;
 #X connect 1 0 10 0;
@@ -186,6 +186,7 @@
 #X connect 8 0 0 0;
 #X connect 9 0 0 1;
 #X connect 10 0 9 0;
+#X connect 10 1 9 1;
 #X restore 228 379 pd ms;
 #X obj 196 346 t f f;
 #X obj 91 277 s \$0-data;
