@@ -1,3 +1,4 @@
+// porres 2025
 
 #include <m_pd.h>
 #include <libavcodec/avcodec.h>
@@ -6,19 +7,19 @@
 
 static t_class *sfinfo_class;
 
-typedef struct _aiff_marker {
+typedef struct _aiff_marker{
     uint16_t id;           // Marker ID
     uint32_t position;     // Position in sample frames
     char     name[256];    // Marker name (Pascal string)
-} t_aiff_marker;
+}t_aiff_marker;
 
-typedef struct _aiff_loops {
+typedef struct _aiff_loops{
     uint16_t playMode;     // 0=no loop, 1=forward, 2=forward/backward
     uint16_t beginLoop;    // Marker ID for loop start
     uint16_t endLoop;      // Marker ID for loop end
-} t_aiff_loops;
+}t_aiff_loops;
 
-typedef struct _aiff_INST {
+typedef struct _aiff_INST{
     int8_t   baseNote;     // MIDI note number 0-127
     int8_t   detune;       // Detune in cents (-50 to +50)
     int8_t   lowNote;      // MIDI note number 0-127
@@ -28,10 +29,9 @@ typedef struct _aiff_INST {
     int16_t  gain;         // Gain in dB
     t_aiff_loops sustainLoop;
     t_aiff_loops releaseLoop;
-} t_aiff_INST;
+}t_aiff_INST;
 
-
-typedef struct _sfinfo {
+typedef struct _sfinfo{
     t_object        x_obj;
     t_outlet       *x_info_outlet;
     AVFormatContext *x_ic;
@@ -39,30 +39,30 @@ typedef struct _sfinfo {
     char            x_path[MAXPDSTRING];
     t_atom          x_info[1];
     int             x_opened;
-///
+// AIFF Metadata
     t_aiff_marker  *x_markers;
     uint16_t        x_nummarkers;
     t_aiff_INST     x_instrument;
-    int             x_nchans;
+/*    int             x_nchans;
     int             x_nsamps;
     int             x_bitsize;
-    t_float         x_sample_rate;
+    t_float         x_sample_rate;*/
 }t_sfinfo;
 
 
-static uint16_t swap16(uint16_t x) {
+static uint16_t swap16(uint16_t x){
     return ((x & 0xff) << 8) | ((x & 0xff00) >> 8);
 }
 
-static uint32_t swap32(uint32_t x) {
+static uint32_t swap32(uint32_t x){
     return ((x & 0xff) << 24) | ((x & 0xff00) << 8) |
            ((x & 0xff0000) >> 8) | ((x & 0xff000000) >> 24);
 }
 
-static int read_markers(t_sfinfo *x, FILE *fp, uint32_t chunk_size) {
+static int read_markers(t_sfinfo *x, FILE *fp, uint32_t chunk_size){
     uint16_t num_markers;
-    if(fread(&num_markers, 2, 1, fp) != 1) {
-        pd_error(x, "[aiffinfo~]: error reading number of markers");
+    if(fread(&num_markers, 2, 1, fp) != 1){
+        pd_error(x, "[sfinfo]: error reading number of markers");
         return(0);
     }
     num_markers = swap16(num_markers);
@@ -70,8 +70,8 @@ static int read_markers(t_sfinfo *x, FILE *fp, uint32_t chunk_size) {
 //    post("file contains %d markers", num_markers);
     size_t expected_size = 2 + (num_markers * (2 + 4 + 1)); // Base size without names
     if (chunk_size < expected_size) {
-        pd_error(x, "[aiffinfo~]: invalid MARK chunk size (%u)", chunk_size);
-        return 0;
+        pd_error(x, "[sfinfo]: invalid MARK chunk size (%u)", chunk_size);
+        return(0);
     }
     x->x_markers = getbytes(num_markers * sizeof(t_aiff_marker));
     x->x_nummarkers = num_markers;
@@ -80,15 +80,15 @@ static int read_markers(t_sfinfo *x, FILE *fp, uint32_t chunk_size) {
         unsigned char id_bytes[2];
         unsigned char pos_bytes[4];
         // Read marker ID (2 bytes)
-        if(fread(id_bytes, 2, 1, fp) != 1) {
-            pd_error(x, "[aiffinfo~]: error reading marker id");
-            return 0;
+        if(fread(id_bytes, 2, 1, fp) != 1){
+            pd_error(x, "[sfinfo]: error reading marker id");
+            return(0);
         }
 //        post("marker %d - ID: %02x %02x", i, id_bytes[0], id_bytes[1]);
         // Read position (4 bytes)
-        if(fread(pos_bytes, 4, 1, fp) != 1) {
-            pd_error(x, "[aiffinfo~]: error reading marker position");
-            return 0;
+        if(fread(pos_bytes, 4, 1, fp) != 1){
+            pd_error(x, "[sfinfo]: error reading marker position");
+            return(0);
         }
 //        post("marker %d - position bytes: %02x %02x %02x %02x",
 //             i, pos_bytes[0], pos_bytes[1], pos_bytes[2], pos_bytes[3]);
@@ -102,7 +102,7 @@ static int read_markers(t_sfinfo *x, FILE *fp, uint32_t chunk_size) {
         // First byte is the length count
         uint8_t namelen;
         if(fread(&namelen, 1, 1, fp) != 1){
-            pd_error(x, "[aiffinfo~]: error reading marker name length");
+            pd_error(x, "[sfinfo]: error reading marker name length");
             return(0);
         }
         // Safety check on name length
@@ -110,7 +110,7 @@ static int read_markers(t_sfinfo *x, FILE *fp, uint32_t chunk_size) {
             namelen = 100;
         // Read the text bytes
         if(fread(m->name, namelen, 1, fp) != 1){
-            pd_error(x, "[aiffinfo~]: error reading marker name");
+            pd_error(x, "[sfinfo]: error reading marker name");
             return(0);
         }
         m->name[namelen] = '\0';  // Null-terminate the string
@@ -129,8 +129,8 @@ static int read_markers(t_sfinfo *x, FILE *fp, uint32_t chunk_size) {
 }
 
 // Helper function to convert loop mode to a human-readable string
-const char *loop_mode_to_string(int mode) {
-    switch (mode) {
+const char *loop_mode_to_string(int mode){
+    switch (mode){
         case 0: return "No Loop";
         case 1: return "Forward Loop";
         case 2: return "Alternating Loop";
@@ -139,17 +139,15 @@ const char *loop_mode_to_string(int mode) {
 }
 
 // Function to find the index of a marker by its ID
-int find_index(t_sfinfo *x, int marker) {
-    for (uint16_t i = 0; i < x->x_nummarkers; i++) {
-        if (marker == x->x_markers[i].id) {
-            return i; // Return the index if the ID matches
-        }
+int find_index(t_sfinfo *x, int marker){
+    for(uint16_t i = 0; i < x->x_nummarkers; i++){
+        if(marker == x->x_markers[i].id)
+            return(i); // Return the index if the ID matches
     }
-    return -1; // Return -1 if no match is found
+    return(-1); // no match is found
 }
 
 static void read_output(t_sfinfo *x){
-    
     int susloop = x->x_instrument.sustainLoop.playMode > 0;
     int idx1 = 0, idx2 = 0, idx3 = 0, idx4 = 0;
     if(susloop){
@@ -161,7 +159,6 @@ static void read_output(t_sfinfo *x){
         idx3 = x->x_instrument.sustainLoop.beginLoop;
         idx4 = x->x_instrument.sustainLoop.endLoop;
     }
-    
 /*    post("----------------------------------");
     post("Sample Size: %d", x->x_nsamps);
     post("Sample Rate: %.1f", x->x_sample_rate);
@@ -215,23 +212,23 @@ static void read_output(t_sfinfo *x){
     outlet_anything(x->x_obj.ob_outlet, gensym("inst"), 13, inst);
 }
 
-static int read_instrument(t_sfinfo *x, FILE *fp) {
+static int read_instrument(t_sfinfo *x, FILE *fp){
     t_aiff_INST *inst = &x->x_instrument;
     // Parse basic parameters
-    if (fread(&inst->baseNote, 1, 1, fp) != 1 ||
+    if(fread(&inst->baseNote, 1, 1, fp) != 1 ||
         fread(&inst->detune, 1, 1, fp) != 1 ||
         fread(&inst->lowNote, 1, 1, fp) != 1 ||
         fread(&inst->highNote, 1, 1, fp) != 1 ||
         fread(&inst->lowVelocity, 1, 1, fp) != 1 ||
         fread(&inst->highVelocity, 1, 1, fp) != 1 ||
         fread(&inst->gain, 2, 1, fp) != 1) {
-        pd_error(x, "[aiffinfo~]: error reading INST chunk basic parameters");
-        return 0;
+        pd_error(x, "[sfinfo]: error reading INST chunk basic parameters");
+        return(0);
     }
     unsigned char raw_data[12]; // Adjusted to 12 bytes
     if (fread(raw_data, 12, 1, fp) != 1) { // Read 12 bytes
-        pd_error(x, "[aiffinfo~]: error reading sustain loop data");
-        return 0;
+        pd_error(x, "[sfinfo]: error reading sustain loop data");
+        return(0);
     }
     // Sustain Loop
     inst->sustainLoop.playMode = (raw_data[0] << 8) | raw_data[1];
@@ -241,11 +238,11 @@ static int read_instrument(t_sfinfo *x, FILE *fp) {
     inst->releaseLoop.playMode = (raw_data[6] << 8) | raw_data[7];
     inst->releaseLoop.beginLoop = (raw_data[8] << 8) | raw_data[9];
     inst->releaseLoop.endLoop = (raw_data[10] << 8) | raw_data[11];
-    return 1;
+    return(1);
 }
 
 // Helper function to convert 80-bit extended float to double
-static double extended_to_double(const uint8_t *bytes) {
+/*static double extended_to_double(const uint8_t *bytes) {
     // Log raw bytes of the 80-bit extended float
     // Extract exponent (first 2 bytes, big-endian)
     uint16_t exponent = (bytes[0] << 8) | bytes[1];
@@ -273,11 +270,10 @@ static double extended_to_double(const uint8_t *bytes) {
 
 // Function to parse the COMM chunk
 static void read_comm_chunk(t_sfinfo *x, FILE *fp, uint32_t chunk_size){
-//            post("found COMM chunk");
     // Validate the chunk size
     size_t expected_data_size = 18; // Fixed size of the COMM data portion
     if (chunk_size != expected_data_size) {
-        pd_error(x, "[aiffinfo~]: invalid COMM chunk size (%u)", chunk_size);
+        pd_error(x, "[sfinfo]: invalid COMM chunk size (%u)", chunk_size);
         return;
     }
     uint16_t num_channels;
@@ -286,40 +282,40 @@ static void read_comm_chunk(t_sfinfo *x, FILE *fp, uint32_t chunk_size){
     uint8_t sample_rate_bytes[10];
     // Read Num Channels (2 bytes)
     if (fread(&num_channels, 2, 1, fp) != 1) {
-        pd_error(x, "[aiffinfo~]: error reading COMM chunk (num channels)");
+        pd_error(x, "[sfinfo]: error reading COMM chunk (num channels)");
         return;
     }
     num_channels = swap16(num_channels);
 //    post("Num channels: %u", num_channels);
     // Read Num Sample Frames (4 bytes)
     if (fread(&num_sample_frames, 4, 1, fp) != 1) {
-        pd_error(x, "[aiffinfo~]: error reading COMM chunk (num sample frames)");
+        pd_error(x, "[sfinfo]: error reading COMM chunk (num sample frames)");
         return;
     }
     num_sample_frames = swap32(num_sample_frames);
 //    post("Num sample frames: %u", num_sample_frames);
     // Read Sample Size (2 bytes)
     if (fread(&sample_size, 2, 1, fp) != 1) {
-        pd_error(x, "[aiffinfo~]: error reading COMM chunk (sample size)");
+        pd_error(x, "[sfinfo]: error reading COMM chunk (sample size)");
         return;
     }
     sample_size = swap16(sample_size);
 //    post("Sample size (bits): %u", sample_size);
     // Read Sample Rate (10 bytes)
     if (fread(sample_rate_bytes, 10, 1, fp) != 1) {
-        pd_error(x, "[aiffinfo~]: error reading COMM chunk (sample rate)");
+        pd_error(x, "[sfinfo]: error reading COMM chunk (sample rate)");
         return;
     }
     // Convert sample rate from 80-bit extended float to double
     double sample_rate = extended_to_double(sample_rate_bytes);
     // Output the metadata to Pd outlets
-/*    post("COMM chunk:  nsamples = %u / sample rate = %.1f / channels = %d / bits = %d",
-         num_sample_frames, sample_rate, num_channels, sample_size);*/
+//    post("COMM chunk:  nsamples = %u / sample rate = %.1f / channels = %d / bits = %d",
+//         num_sample_frames, sample_rate, num_channels, sample_size);
     x->x_nchans = num_channels;
     x->x_nsamps = num_sample_frames;
     x->x_bitsize = sample_size;
     x->x_sample_rate = sample_rate;
-}
+}*/
 
 void* sfinfo_nchs(t_sfinfo *x){
     if(!x->x_opened){
@@ -372,7 +368,7 @@ static void sfinfo_inst(t_sfinfo *x){
     }
     FILE *fp = fopen(x->x_path, "rb");
     if(!fp){
-        pd_error(x, "[aiffinfo~]: error opening '%s'", x->x_path);
+        pd_error(x, "[sfinfo]: error opening '%s'", x->x_path);
         return;
     }
     char id[4];
@@ -380,19 +376,19 @@ static void sfinfo_inst(t_sfinfo *x){
     char formtype[4];
     // Read FORM chunk
     if(fread(id, 4, 1, fp) != 1 || strncmp(id, "FORM", 4)){
-        pd_error(x, "[aiffinfo~]: %s: not an AIFF file (no FORM chunk)", x->x_path);
+        pd_error(x, "[sfinfo]: %s: not an AIFF file (no FORM chunk)", x->x_path);
         fclose(fp);
         return;
     }
     if(fread(&size, 4, 1, fp) != 1){
-        pd_error(x, "[aiffinfo~]: %s: corrupt AIFF file (no chunk size)", x->x_path);
+        pd_error(x, "[sfinfo]: %s: corrupt AIFF file (no chunk size)", x->x_path);
         fclose(fp);
         return;
     }
     size = swap32(size);
     if(fread(formtype, 4, 1, fp) != 1 || (strncmp(formtype, "AIFF", 4)
     && strncmp(formtype, "AIFC", 4))){
-        pd_error(x, "[aiffinfo~]: %s: not an AIFF/AIFC file", x->x_path);
+        pd_error(x, "[sfinfo]: %s: not an AIFF/AIFC file", x->x_path);
         fclose(fp);
         return;
     }
@@ -407,11 +403,10 @@ static void sfinfo_inst(t_sfinfo *x){
             break;
         chunk_size = swap32(chunk_size);
         // Handle known chunks
-        if(!strncmp(chunk_id, "COMM", 4)){
-            read_comm_chunk(x, fp, chunk_size);
-        }
-        else if(!strncmp(chunk_id, "MARK", 4)){
-//            post("found MARK chunk");
+//        if(!strncmp(chunk_id, "COMM", 4))
+//            read_comm_chunk(x, fp, chunk_size);
+//        else if(!strncmp(chunk_id, "MARK", 4)){
+        if(!strncmp(chunk_id, "MARK", 4)){
             if(x->x_markers){
                 freebytes(x->x_markers, x->x_nummarkers * sizeof(t_aiff_marker));
                 x->x_markers = NULL;
@@ -421,9 +416,8 @@ static void sfinfo_inst(t_sfinfo *x){
                 break;
         }
         else if(!strncmp(chunk_id, "INST", 4)){
-//            post("found INST chunk");
             if(!read_instrument(x, fp)){
-                pd_error(x, "[aiffinfo~]: error reading instrument chunk");
+                pd_error(x, "[sfinfo]: error reading instrument chunk");
                 break;
             }
         }
@@ -434,7 +428,7 @@ static void sfinfo_inst(t_sfinfo *x){
     fclose(fp);
 }
 
-static int sfinfo_find_file(t_sfinfo *x, t_symbol *file, char *dir_out) {
+static int sfinfo_find_file(t_sfinfo *x, t_symbol *file, char *dir_out){
     static char fname[MAXPDSTRING];
     char *bufptr;
     int fd = canvas_open(x->x_canvas, file->s_name, "", fname, &bufptr, MAXPDSTRING, 1);
