@@ -26,7 +26,7 @@
 #X text 200 226 <- right click for help or open, f 32;
 #X obj 160 227 hello;
 #X obj 133 283 circle;
-#X obj 363 283 scope3d~;
+#X obj 363 283 scope3d~ 0 0 140 140 1 0 1 1 1 1 20 8 256 30 30 30 190 190 190 160 160 160 empty;
 #X text 64 296 [circle];
 #X text 289 296 [scope3d~];
 #X text 66 18 ELSE distributes a modified version of "pdlua" - by Claude Heiland-Allen (2008) \, Martin Peach et al (2014) - which is distributed under the GNU License. This simplified/streamlined version discards the actual [pdlua] and [pdluax] objects. You can then consult the original documentation of [pdlua] for details on how to code objects in lua \, which should be the same \, but discard the information on how to use [pdlua] and [pdluax]., f 76;
@@ -35,6 +35,6 @@
 #X restore 393 293 pd +info;
 #X text 32 100 When you load 'ELSE' via startup or [declare] \, it registers a loader that allows Pd externals written in Lua (with the "*.pd_lua" extension) to be loaded. One such object provided in ELSE is the lua object that allows you to load scripts into an object., f 80;
 #X text 303 154 see also:;
-#X obj 367 155 else;
+#X obj 367 155 else, f 6;
 #X obj 361 248 lua;
 #X text 34 202 The [lua] object allows inline scripting in Lua and is one example of an object that is coded in lua. It is still an experimental object though that is not really functional and ready yet. So stay tuned!, f 80;
