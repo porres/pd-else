@@ -58,7 +58,6 @@ static t_int *blsaw_perform(t_int *w){
                 if(hz > 127) hz = 127;
                 hz = hz <= 0 ? 0 : pow(2, (hz - 69)/12) * 440;
             }
-
             t_float trig = x->x_ch2 == 1 ? in2[i] : in2[j*n + i];
             double phase_offset = x->x_ch3 == 1 ? in3[i] : in3[j*n + i];
             double phase_dev = phase_offset - x->x_last_phase_offset[j];
@@ -66,33 +65,26 @@ static t_int *blsaw_perform(t_int *w){
             double last_phase = phase[j];
             double step = hz * x->x_sr_rec;
             step = step > 0.5 ? 0.5 : step < -0.5 ? -0.5 : step;
-            
             if(dir[j] == 0) // initialize this just once
                 dir[j] = 1;
-            if(trig > 0 && trig <= 1 && x->x_soft){
+            if(trig > 0 && trig <= 1 && x->x_soft)
                 dir[j] = dir[j] == 1 ? -1 : 1;
-            }
             step *= dir[j];
-            
             out[j*n + i] = (blsaw_wrap_phase(phase[j]) * -2.0f + 1.0f) + elliptic_blep_get(&blep[j]);
-            
             phase[j] += (step + phase_dev);
             elliptic_blep_step(&blep[j]);
-                        
-            if(trig > 0 && trig <= 1 && !x->x_soft){
+            if(trig > 0 && trig <= 1 && !x->x_soft)
                 phase[j] = trig;
-            }
-            
             if(phase[j] >= 1 || phase[j] < 0){
-                t_float phase_step = blsaw_wrap_phase(x->x_phase[j] - last_phase);
+                t_float phase_step = blsaw_wrap_phase(phase[j] - last_phase);
                 t_float amp_step = (blsaw_wrap_phase(phase[j]) * -2.0f + 1.0f) - (blsaw_wrap_phase(last_phase) * -2.0f + 1.0f);
                 phase[j] = blsaw_wrap_phase(phase[j]);
-                t_float samples_in_past = x->x_phase[j] / phase_step;
+                t_float samples_in_past = phase[j] / phase_step;
                 elliptic_blep_add_in_past(&blep[j], amp_step, 1, samples_in_past < 1.0 ? samples_in_past : 0.999999);
             }
         }
     }
-    return (w+6);
+    return(w+6);
 }
 
 static void blsaw_dsp(t_blsaw *x, t_signal **sp){
@@ -223,7 +215,7 @@ static void *blsaw_new(t_symbol *s, int ac, t_atom *av){
     x->x_glist = canvas_getcurrent();
     return(x);
 errstate:
-    post("[blsaw~]: improper args");
+    post("[bl.saw~]: improper args");
     return(NULL);
 }
 
