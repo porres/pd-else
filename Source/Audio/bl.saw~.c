@@ -88,7 +88,7 @@ static t_int *blsaw_perform(t_int *w){
                 t_float amp_step = (blsaw_wrap_phase(phase[j]) * -2.0f + 1.0f) - (blsaw_wrap_phase(last_phase) * -2.0f + 1.0f);
                 phase[j] = blsaw_wrap_phase(phase[j]);
                 t_float samples_in_past = x->x_phase[j] / phase_step;
-                elliptic_blep_add_in_past(blep, amp_step, 1, samples_in_past < 1.0 ? samples_in_past : 0.999999);
+                elliptic_blep_add_in_past(&blep[j], amp_step, 1, samples_in_past < 1.0 ? samples_in_past : 0.999999);
             }
         }
     }
