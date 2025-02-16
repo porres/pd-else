@@ -2,6 +2,7 @@
 
 #include <m_pd.h>
 #include <math.h>
+#include <else_alloca.h>
 
 typedef struct _delace{
     t_object    x_obj;
@@ -22,7 +23,7 @@ static void delace_list(t_delace *x, t_symbol *s, int ac, t_atom *av){
     int i, j, k;
     int size = (int)ceil((float)ac / (float)x->x_nouts);
     int step = (int)ceil((float)ac / (float)size);
-    t_atom at[size];
+    t_atom* at = ALLOCA(t_atom, size);
     for(i = 0; i < size; i++)
         SETFLOAT(at+i, 0);
     for(i = (x->x_nouts - 1); i >= 0; i--){
@@ -37,6 +38,7 @@ static void delace_list(t_delace *x, t_symbol *s, int ac, t_atom *av){
         else if(j > 0)
             outlet_list(x->x_outlets[i],  &s_list, j, at);
     }
+    FREEA(at, t_atom, size);
 }
 
 /*static void delace_anything(t_delace * x, t_symbol *s, int ac, t_atom * av){
