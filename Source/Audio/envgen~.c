@@ -376,6 +376,8 @@ static void envgen_dsp(t_envgen *x, t_signal **sp){
             x->x_nchans * sizeof(int), chs * sizeof(int));
         x->x_running = (int *)resizebytes(x->x_running,
             x->x_nchans * sizeof(int), chs * sizeof(int));
+        x->x_release = (int *)resizebytes(x->x_release,
+            x->x_nchans * sizeof(int), chs * sizeof(int));
         x->x_nchans = chs;
     }
     signal_setmultiout(&sp[2], chs);
