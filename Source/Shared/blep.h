@@ -131,6 +131,8 @@ static void elliptic_blep_add(t_elliptic_blep *blep, t_float amount, size_t blep
 static void elliptic_blep_add_in_past(t_elliptic_blep *blep, t_float amount, size_t blep_order, t_float samplesInPast) {
     if (blep_order > max_blep_order) return;
 
+    samplesInPast = samplesInPast < 1.0 ? samplesInPast : 0.999999;
+
     t_complex *bc = blep->blep_coeffs[blep_order];
 
     t_float table_index = samplesInPast*partial_step_count;
