@@ -59,9 +59,8 @@ static void *spread_new(t_symbol *s, int ac, t_atom *av){
     t_spread *x = (t_spread *)pd_new(spread_class);
     x->x_mode = 0;
     if(ac >= 2 && av->a_type == A_SYMBOL){
-        t_symbol *sym = atom_getsymbolarg(0, ac, av);
-        if(sym == gensym("-mode")){
-            x->x_mode = (int)(atom_getfloatarg(1, ac, av) != 0);
+        if(atom_getsymbol(av) == gensym("-mode")){
+            x->x_mode = atom_getint(av+1) != 0;
             ac-=2, av+=2;
         }
         else
