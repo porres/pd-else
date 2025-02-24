@@ -6,9 +6,9 @@
 #include <m_pd.h>
 #include <math.h>
 
-static t_class *vcf2_class;
+static t_class *resonator2_class;
 
-typedef struct _vcf2{
+typedef struct _resonator2{
     t_object    x_obj;
     t_int       x_n;
     t_inlet    *x_inlet_hz;
@@ -17,10 +17,10 @@ typedef struct _vcf2{
     double      x_srkhz;
     double      x_y1;
     double      x_y2;
-}t_vcf2;
+}t_resonator2;
 
-static t_int *vcf2_perform(t_int *w){
-    t_vcf2 *x = (t_vcf2 *)(w[1]);
+static t_int *resonator2_perform(t_int *w){
+    t_resonator2 *x = (t_resonator2 *)(w[1]);
     t_float *in1 = (t_float *)(w[2]);       // in
     t_float *in2 = (t_float *)(w[3]);       // hz
     t_float *in3 = (t_float *)(w[4]);       // t60
@@ -47,28 +47,28 @@ static t_int *vcf2_perform(t_int *w){
     return(w+7);
 }
 
-static void vcf2_dsp(t_vcf2 *x, t_signal **sp){
+static void resonator2_dsp(t_resonator2 *x, t_signal **sp){
     x->x_n = sp[0]->s_n;
     double sr = (double)sp[0]->s_sr;
     x->x_srkhz = sr * 0.001;
     x->x_convert = TWO_PI / sr;
-    dsp_add(vcf2_perform, 6, x, sp[0]->s_vec, sp[1]->s_vec,
+    dsp_add(resonator2_perform, 6, x, sp[0]->s_vec, sp[1]->s_vec,
         sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
 
-void vcf2_clear(t_vcf2 *x){
+void resonator2_clear(t_resonator2 *x){
     x->x_y1 = x->x_y2 = 0;
 }
 
-static void *vcf2_free(t_vcf2 *x){
+static void *resonator2_free(t_resonator2 *x){
     inlet_free(x->x_inlet_hz);
     inlet_free(x->x_inlet_t60);
     return(void *)x;
 }
 
-static void *vcf2_new(t_symbol *s, int ac, t_atom *av){
+static void *resonator2_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    t_vcf2 *x = (t_vcf2 *)pd_new(vcf2_class);
+    t_resonator2 *x = (t_resonator2 *)pd_new(resonator2_class);
     float hz = 1;
     float t60 = 0;
     if(ac){
@@ -88,10 +88,10 @@ static void *vcf2_new(t_symbol *s, int ac, t_atom *av){
     return(x);
 }
 
-void vcf2_tilde_setup(void){
-    vcf2_class = class_new(gensym("vcf2~"), (t_newmethod)vcf2_new,
-        (t_method)vcf2_free, sizeof(t_vcf2), CLASS_DEFAULT, A_GIMME, 0);
-    class_addmethod(vcf2_class, nullfn, gensym("signal"), 0);
-    class_addmethod(vcf2_class, (t_method)vcf2_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(vcf2_class, (t_method)vcf2_clear, gensym("clear"), A_NULL);
+void resonator2_tilde_setup(void){
+    resonator2_class = class_new(gensym("resonator2~"), (t_newmethod)resonator2_new,
+        (t_method)resonator2_free, sizeof(t_resonator2), CLASS_DEFAULT, A_GIMME, 0);
+    class_addmethod(resonator2_class, nullfn, gensym("signal"), 0);
+    class_addmethod(resonator2_class, (t_method)resonator2_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(resonator2_class, (t_method)resonator2_clear, gensym("clear"), A_NULL);
 }

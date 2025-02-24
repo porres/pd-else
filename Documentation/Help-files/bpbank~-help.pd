@@ -1,4 +1,4 @@
-#N canvas 453 23 564 544 10;
+#N canvas 453 38 564 544 10;
 #X obj 4 276 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 378 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 80 387 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
@@ -56,8 +56,7 @@
 #X text 104 465 -ramp <list>: sets list of ramp time for all filters, f 61;
 #X text 93 359 rampall float>;
 #X text 188 359 - sets ramp time for all filters in the bank;
-#X text 28 219 see also:;
-#X obj 30 241 else/resonbank~;
+#X text 28 209 see also:;
 #X text 189 284 - signal to be filtered via a bank of bandpass filters;
 #X text 189 387 - the signal filtered by the bank of filters;
 #N canvas 818 93 361 460 multichannel 0;
@@ -85,5 +84,6 @@
 #X text 104 481 -rampall <float>: sets ramp time for all filters (default 10), f 61;
 #X obj 203 176 else/bpbank~ -freq 200 500 900 1700 -q 1.5 5 20 9 -amp 2 1.5 2 1, f 36;
 #X text 44 91 [bpbank~] is a bank made of [bandpass~] objects. The number of filters is set via the parameter list size (such as the frequency list). There's also support for multichannel output., f 72;
-#X connect 12 0 46 0;
-#X connect 46 0 43 0;
+#X obj 30 231 else/bandpass~;
+#X connect 12 0 45 0;
+#X connect 45 0 42 0;

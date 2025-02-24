@@ -5,7 +5,7 @@
 
 #define PI 3.14159265358979323846
 
-typedef struct _resonant{
+typedef struct _resonator{
     t_object    x_obj;
     t_int       x_n;
     t_inlet    *x_inlet_freq;
@@ -22,27 +22,29 @@ typedef struct _resonant{
     double      x_a2;
     double      x_b1;
     double      x_b2;
-}t_resonant;
+}t_resonator;
 
-static t_class *resonant_class;
+static t_class *resonator_class;
 
-static void update_coeffs(t_resonant *x, double f, double reson){
+static void update_coeffs(t_resonator *x, double f, double reson){
     x->x_f = f;
     x->x_reson = reson;
     double omega = f * PI/x->x_nyq;
-    double q = reson;
-    if(q < 0.000001)
-        q = 0.000001;
-    double alphaQ = sin(omega) / (2*q);
-    double b0 = alphaQ + 1;
-    x->x_a0 = alphaQ*q / b0;
-    x->x_a2 = -x->x_a0;
-    x->x_b1 = 2*cos(omega) / b0;
-    x->x_b2 = (alphaQ - 1) / b0;
+    double q = f * (PI * reson/1000) / log(1000);
+    if(q < 0.000001) // force bypass
+        x->x_a0 = 1, x->x_a2 = x->x_b1 = x->x_b2 = 0;
+    else{
+        double alphaQ = sin(omega) / (2*q);
+        double b0 = alphaQ + 1;
+        x->x_a0 = alphaQ*q / b0;
+        x->x_a2 = -x->x_a0;
+        x->x_b1 = 2*cos(omega) / b0;
+        x->x_b2 = (alphaQ - 1) / b0;
+    }
 }
 
-static t_int *resonant_perform(t_int *w){
-    t_resonant *x = (t_resonant *)(w[1]);
+static t_int *resonator_perform(t_int *w){
+    t_resonator *x = (t_resonator *)(w[1]);
     int nblock = (int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
@@ -75,25 +77,25 @@ static t_int *resonant_perform(t_int *w){
     return(w+7);
 }
 
-static void resonant_dsp(t_resonant *x, t_signal **sp){
+static void resonator_dsp(t_resonator *x, t_signal **sp){
     t_float nyq = sp[0]->s_sr / 2;
     if(nyq != x->x_nyq){
         x->x_nyq = nyq;
         update_coeffs(x, x->x_f, x->x_reson);
     }
-    dsp_add(resonant_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,sp[1]->s_vec,
-        sp[2]->s_vec, sp[3]->s_vec);
+    dsp_add(resonator_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,sp[1]->s_vec, sp[2]->s_vec,
+            sp[3]->s_vec);
 }
 
-static void resonant_clear(t_resonant *x){
+static void resonator_clear(t_resonator *x){
     x->x_xnm1 = x->x_xnm2 = x->x_ynm1 = x->x_ynm2 = 0.;
 }
 
-static void *resonant_new(t_symbol *s, int argc, t_atom *argv){
+static void *resonator_new(t_symbol *s, int argc, t_atom *argv){
     s = NULL;
-    t_resonant *x = (t_resonant *)pd_new(resonant_class);
+    t_resonator *x = (t_resonator *)pd_new(resonator_class);
     float freq = 0.000001;
-    float reson = 1;
+    float reson = 0;
     int argnum = 0;
     while(argc > 0){
         if(argv->a_type == A_FLOAT){ //if current argument is a float
@@ -111,7 +113,10 @@ static void *resonant_new(t_symbol *s, int argc, t_atom *argv){
             argnum++;
             argc--, argv++;
         }
-        else if(argv->a_type == A_SYMBOL)
+        else if(argv->a_type == A_SYMBOL && !argnum){
+            goto errstate;
+        }
+        else
             goto errstate;
     };
     x->x_nyq = sys_getsr()/2;
@@ -123,14 +128,14 @@ static void *resonant_new(t_symbol *s, int argc, t_atom *argv){
     x->x_out = outlet_new((t_object *)x, &s_signal);
     return(x);
 errstate:
-    pd_error(x, "[resonant~]: improper args");
+    pd_error(x, "[resonator~]: improper args");
     return(NULL);
 }
 
-void resonant_tilde_setup(void){
-    resonant_class = class_new(gensym("resonant~"), (t_newmethod)resonant_new, 0,
-        sizeof(t_resonant), CLASS_DEFAULT, A_GIMME, 0);
-    class_addmethod(resonant_class, (t_method)resonant_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(resonant_class, nullfn, gensym("signal"), 0);
-    class_addmethod(resonant_class, (t_method)resonant_clear, gensym("clear"), 0);
+void resonator_tilde_setup(void){
+    resonator_class = class_new(gensym("resonator~"), (t_newmethod)resonator_new, 0,
+        sizeof(t_resonator), CLASS_DEFAULT, A_GIMME, 0);
+    class_addmethod(resonator_class, (t_method)resonator_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(resonator_class, nullfn, gensym("signal"), 0);
+    class_addmethod(resonator_class, (t_method)resonator_clear, gensym("clear"), 0);
 }

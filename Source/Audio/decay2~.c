@@ -35,11 +35,11 @@ static t_int *decay2_perform(t_int *w){
     t_float *in2 = (t_float *)(w[4]);
     t_float *in3 = (t_float *)(w[5]);
     t_float *out = (t_float *)(w[6]);
-    double last1 = x->x_last1;
-    double last2 = x->x_last2;
+    double last1 = x->x_last1, last2 = x->x_last2;
     t_float sr_khz = x->x_sr_khz;
     while(nblock--){
-        double a1, a2, yn1, yn2, a, b, n, t, xn = *in1++, attack = *in2++, decay = *in3++;
+        double a1, a2, yn1, yn2, a, b, n, t;
+        double xn = (double)*in1++, attack = (double)*in2++, decay = (double)*in3++;
         if(x->x_flag){
             xn = x->x_f;
             x->x_flag = 0;
@@ -52,7 +52,7 @@ static t_int *decay2_perform(t_int *w){
             last1 = yn1;
             a = 1000 * log(1000) / attack;
         }
-        if (decay <= 0)
+        if(decay <= 0)
             yn2 = xn;
         else{
             a2 = exp(LOG001 / (decay * sr_khz));
@@ -70,20 +70,17 @@ static t_int *decay2_perform(t_int *w){
     }
     x->x_last1 = last1;
     x->x_last2 = last2;
-    return (w + 7);
+    return(w+7);
 }
 
-static void decay2_dsp(t_decay2 *x, t_signal **sp)
-{
+static void decay2_dsp(t_decay2 *x, t_signal **sp){
     x->x_sr_khz = sp[0]->s_sr * 0.001;
     dsp_add(decay2_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
             sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
-static void decay2_clear(t_decay2 *x)
-{
-    x->x_last1 = 0.;
-    x->x_last2 = 0.;
+static void decay2_clear(t_decay2 *x){
+    x->x_last1 = x->x_last2 = 0.;
 }
 
 static void *decay2_new(t_symbol *s, int argc, t_atom *argv){
@@ -95,28 +92,23 @@ static void *decay2_new(t_symbol *s, int argc, t_atom *argv){
     x->x_f = 1.;
 /////////////////////////////////////////////////////////////////////////////////////
     int argnum = 0;
-    while(argc > 0)
-    {
-        if(argv -> a_type == A_FLOAT)
-        { //if current argument is a float
+    while(argc > 0){
+        if(argv->a_type == A_FLOAT){ //if current argument is a float
             t_float argval = atom_getfloatarg(0, argc, argv);
-            switch(argnum)
-                {
+            switch(argnum){
                 case 0:
                     attack = argval;
                 case 1:
                     decay = argval;
                 default:
                     break;
-                };
+            };
             argnum++;
             argc--;
             argv++;
         }
         else
-            {
-                goto errstate;
-            };
+            goto errstate;
     };
 /////////////////////////////////////////////////////////////////////////////////////
     x->x_inlet_attack = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
@@ -124,15 +116,13 @@ static void *decay2_new(t_symbol *s, int argc, t_atom *argv){
     x->x_inlet_decay = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_decay, decay);
     x->x_out = outlet_new((t_object *)x, &s_signal);
-
-    return (x);
+    return(x);
     errstate:
         pd_error(x, "decay2~: improper args");
         return NULL;
 }
 
-void decay2_tilde_setup(void)
-{
+void decay2_tilde_setup(void){
     decay2_class = class_new(gensym("decay2~"), (t_newmethod)decay2_new, 0,
         sizeof(t_decay2), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(decay2_class, (t_method)decay2_dsp, gensym("dsp"), A_CANT, 0);

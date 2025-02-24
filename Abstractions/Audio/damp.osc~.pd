@@ -71,7 +71,7 @@
 #X obj 49 37 r \$0-pitch;
 #X text 274 146 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 276 127 Alexandre Torres Porres (2024);
-#X obj 71 221 else/vcf2~, f 18;
+#X obj 71 221 else/resonator2~, f 18;
 #X connect 2 0 4 2;
 #X connect 4 0 14 0;
 #X connect 4 1 14 1;

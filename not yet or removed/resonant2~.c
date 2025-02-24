@@ -4,7 +4,6 @@
 #include <math.h>
 
 #define PI 3.14159265358979323846
-#define LOG001 log(0.001)
 
 typedef struct _resonant2{
     t_object    x_obj;
@@ -93,7 +92,6 @@ static t_int *resonant2_perform(t_int *w){
         }
         else
             *out++ = y2n - y1n;
-    
         x1nm2 = x1nm1;
         x1nm1 = xn;
         y1nm2 = y1nm1;
