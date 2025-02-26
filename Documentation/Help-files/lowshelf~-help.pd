@@ -1,4 +1,4 @@
-#N canvas 511 34 560 557 10;
+#N canvas 511 38 560 557 10;
 #X obj 4 285 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 425 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 458 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -69,7 +69,6 @@
 #X restore 429 244 pd filter formula \; and response;
 #X msg 230 127 clear;
 #X text 230 311 - clears filter's memory if you blow it up;
-#X text 61 86 [highshelf~] is a 2nd order highshelf filter.;
 #X obj 109 399 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 145 399 float/signal;
 #X text 230 399 - gain in dB;
@@ -89,8 +88,9 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 304 3 graph;
-#X connect 13 0 37 0;
-#X connect 21 0 37 0;
+#X text 61 86 [lowshelf~] is a 2nd order lowshelf filter.;
+#X connect 13 0 36 0;
+#X connect 21 0 36 0;
 #X connect 22 0 21 0;
-#X connect 26 0 37 0;
-#X connect 37 0 8 0;
+#X connect 26 0 36 0;
+#X connect 36 0 8 0;
