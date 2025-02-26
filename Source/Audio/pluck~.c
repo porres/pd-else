@@ -338,7 +338,9 @@ static t_int *pluck_perform(t_int *w){
 }
 
 static void pluck_dsp(t_pluck *x, t_signal **sp){
-    x->x_sig_in = else_magic_inlet_connection((t_object *)x, x->x_glist, 0, &s_signal);
+    int sig1 = else_magic_inlet_connection((t_object *)x, x->x_glist, 0, &s_signal);
+    int sig2 = else_magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal);
+    x->x_sig_in = sig1 || sig2;
     int sr = sp[0]->s_sr;
     if(sr != x->x_sr){ // if new sample rate isn't old sample rate, need to realloc
         x->x_sr = sr;
@@ -466,5 +468,5 @@ void pluck_tilde_setup(void){
     class_addlist(pluck_class, pluck_list);
     class_addmethod(pluck_class, (t_method)pluck_midi, gensym("midi"), A_DEFFLOAT, 0);
     class_addmethod(pluck_class, (t_method)pluck_midi_active, gensym("midi_active"), A_FLOAT, 0);
-    class_addmethod(pluck_class, (t_method)pluck_clear, gensym("clear"), 0);
+    class_addmethod(pluck_class, (t_method)pluck_clear, gensym("clear"), 0);\
 }

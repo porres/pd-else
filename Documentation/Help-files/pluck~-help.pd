@@ -59,7 +59,7 @@
 #X obj 77 463 cnv 17 3 17 empty empty 4 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 127 465 float/signal;
 #X text 209 465 - optional noise input (with the -in flag);
-#N canvas 466 127 637 455 examples 0;
+#N canvas 717 185 637 455 examples 0;
 #X text 188 38 And now for some computer music cliché with random generators..., f 32;
 #X obj 369 251 else/pluck~;
 #X obj 84 248 else/pluck~ -in;
@@ -100,10 +100,10 @@
 #X restore 465 288 pd examples;
 #N canvas 753 120 447 443 -in 0;
 #X obj 118 291 else/out~;
-#X obj 159 144 else/dust~ 4;
-#X obj 283 206 else/impseq~;
+#X obj 160 144 else/dust~ 4;
+#X obj 289 206 else/impseq~;
 #X text 51 47 The [pluck~] object uses an internal white noise generator as the excitation signal. But if a "-in" flag is given \, [pluck~] creates an extra right outlet for the excitation signal. Here we use an impulse instead of the white noise.;
-#X obj 118 237 else/pluck~ -in 50 2500 5000;
+#X obj 118 237 else/pluck~ -in 440 5000 7500;
 #X connect 1 0 2 0;
 #X connect 1 0 4 1;
 #X connect 2 0 4 4;
@@ -138,7 +138,7 @@
 #X text 29 225 * output is muted if less than 1 hz, f 17;
 #X text 121 178 pitch *;
 #X text 127 360 midi <float>;
-#N canvas 204 187 1120 494 trigger 0;
+#N canvas 255 156 1120 494 trigger 0;
 #X obj 97 273 else/out~;
 #X obj 146 151 else/impseq~ 1 0.5 0.25 0.1;
 #X obj 174 177 else/trighold~;
@@ -169,7 +169,7 @@
 #X obj 914 245 else/tempo~ -on 120;
 #X obj 844 259 sig~ 50;
 #X obj 811 321 else/pluck~ -midi 50 2500 7500;
-#X text 718 32 A list input only works if there is no signal connected into the left inlet. Nonetheless \, you can enable 'midi mode' and force a list input even with signal inputs connected., f 55;
+#X text 718 32 A list input only works properly if there is no signal connected into the 1st and 2nd inlets. Nonetheless \, you can enable 'midi mode' and force a list input even with signal inputs connected in the 1st and 2nd inlets., f 55;
 #X connect 1 0 2 0;
 #X connect 1 0 3 1;
 #X connect 2 0 5 0;
@@ -200,6 +200,7 @@
 #X text 85 376 midi_active <float>;
 #X text 210 376 - non zero forces MIDI input over signal, f 49;
 #X text 210 361 - non zero sets to MIDI pitch input instead of hz;
+#X text 175 158 Hz;
 #X connect 14 0 35 2;
 #X connect 19 0 35 3;
 #X connect 35 0 30 0;

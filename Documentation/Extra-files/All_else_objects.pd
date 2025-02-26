@@ -1,7 +1,7 @@
 #N struct 1004-cell float x float y float cellsize float color;
 #N struct 1006-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
-#N struct 1059-slot float x float y float slotsize float color float width float bordercolor;
-#N canvas 487 38 541 693 10;
+#N struct 1062-slot float x float y float slotsize float color float width float bordercolor;
+#N canvas 666 38 541 693 10;
 #N canvas 240 37 974 682 GUI 0;
 #X text 40 146 [biplot];
 #X text 196 83 [pic] =>;
@@ -250,11 +250,11 @@
 #X obj 42 507 else/resonbank~;
 #X obj 42 533 else/resonbank2~;
 #X obj 42 560 else/resonant~;
-#X obj 42 587 else/resonant2~;
-#X obj 42 614 else/svfilter~;
+#X obj 42 644 else/svfilter~;
 #X obj 42 88 else/lop2~;
 #X obj 42 40 else/bitnormal~;
-#X obj 41 641 else/vcf2~;
+#X obj 42 587 else/resonator~;
+#X obj 42 612 else/resonator2~;
 #X restore 46 406 pd DSP(filters);
 #N canvas 709 140 229 422 Buffer/Sampling/Playing/Granulation 0;
 #X obj 58 54 else/sample~;
