@@ -73,8 +73,8 @@
 #X text 276 127 Alexandre Torres Porres (2024);
 #X obj 71 221 else/resonator2~, f 18;
 #X connect 2 0 4 2;
-#X connect 4 0 14 0;
-#X connect 4 1 14 1;
+#X connect 4 0 14 1;
+#X connect 4 1 14 0;
 #X connect 8 0 9 0;
 #X connect 9 0 14 2;
 #X connect 10 0 4 0;

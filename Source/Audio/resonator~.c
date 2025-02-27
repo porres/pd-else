@@ -8,10 +8,11 @@
 typedef struct _resonator{
     t_object    x_obj;
     t_int       x_n;
-    t_inlet    *x_inlet_freq;
-    t_inlet    *x_inlet_q;
+    t_inlet    *x_inlet_excitation;
+    t_inlet    *x_inlet_t60;
     t_outlet   *x_out;
     t_float     x_nyq;
+    t_float     x_freq;
     double      x_xnm1;
     double      x_xnm2;
     double      x_ynm1;
@@ -56,7 +57,7 @@ static t_int *resonator_perform(t_int *w){
     double ynm2 = x->x_ynm2;
     t_float nyq = x->x_nyq;
     while(nblock--){
-        double xn = *in1++, f = *in2++, reson = *in3++, yn;
+        double f = *in1++, xn = *in2++, reson = *in3++, yn;
         if(f < 0.000001)
             f = 0.000001;
         if(f > nyq - 0.000001)
@@ -94,7 +95,7 @@ static void resonator_clear(t_resonator *x){
 static void *resonator_new(t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     t_resonator *x = (t_resonator *)pd_new(resonator_class);
-    float freq = 0.000001;
+    x->x_freq = 0.000001;
     float reson = 0;
     int argnum = 0;
     while(argc > 0){
@@ -102,7 +103,7 @@ static void *resonator_new(t_symbol *s, int argc, t_atom *argv){
             t_float argval = atom_getfloat(argv);
             switch(argnum){
                 case 0:
-                    freq = argval;
+                    x->x_freq = argval;
                     break;
                 case 1:
                     reson = argval;
@@ -120,11 +121,10 @@ static void *resonator_new(t_symbol *s, int argc, t_atom *argv){
             goto errstate;
     };
     x->x_nyq = sys_getsr()/2;
-    update_coeffs(x, (double)freq, (double)reson);
-    x->x_inlet_freq = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_inlet_freq, freq);
-    x->x_inlet_q = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_inlet_q, reson);
+    update_coeffs(x, (double)x->x_freq, (double)reson);
+    x->x_inlet_excitation = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+    x->x_inlet_t60 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+    pd_float((t_pd *)x->x_inlet_t60, reson);
     x->x_out = outlet_new((t_object *)x, &s_signal);
     return(x);
 errstate:
@@ -136,6 +136,6 @@ void resonator_tilde_setup(void){
     resonator_class = class_new(gensym("resonator~"), (t_newmethod)resonator_new, 0,
         sizeof(t_resonator), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(resonator_class, (t_method)resonator_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(resonator_class, nullfn, gensym("signal"), 0);
+    CLASS_MAINSIGNALIN(resonator_class, t_resonator, x_freq);
     class_addmethod(resonator_class, (t_method)resonator_clear, gensym("clear"), 0);
 }

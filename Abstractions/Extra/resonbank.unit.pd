@@ -5,7 +5,7 @@
 #X text 315 281 This is an abstraction used on the [resonbank~] object, f 12;
 #X obj 262 237 else/f2s~ 10 1;
 #X text 215 80 Alexandre Torres Porres (2025);
-#X obj 89 274 *~;
+#X obj 46 274 *~;
 #X obj 46 302 else/resonator~;
 #X obj 180 156 route partial decay amp ramp;
 #X obj 40 35 inlet~;
@@ -16,7 +16,7 @@
 #X obj 197 237 else/f2s~;
 #X connect 1 0 0 0;
 #X connect 4 0 1 1;
-#X connect 6 0 7 1;
+#X connect 6 0 7 0;
 #X connect 7 0 1 0;
 #X connect 8 0 13 0;
 #X connect 8 1 14 0;
@@ -26,7 +26,7 @@
 #X connect 8 3 14 1;
 #X connect 9 0 6 0;
 #X connect 9 1 8 0;
-#X connect 10 0 7 0;
+#X connect 10 0 7 1;
 #X connect 11 0 12 0;
 #X connect 12 0 7 2;
 #X connect 13 0 6 1;
