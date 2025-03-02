@@ -114,7 +114,9 @@
 #X msg 71 166 sum \$1;
 #X obj 84 108 r \$0-mc;
 #X obj 71 40 inlet;
+#X obj 149 104 outlet;
 #X connect 0 0 1 0;
+#X connect 0 1 6 0;
 #X connect 1 0 3 0;
 #X connect 3 0 2 0;
 #X connect 4 0 1 0;
@@ -151,6 +153,7 @@
 #X obj 151 168 t l l;
 #X obj 233 104 route partial decay amp ramp rampall;
 #X obj 75 302 else/insert 1 partial;
+#X obj 502 321 else/insert all, f 11;
 #X connect 1 0 16 0;
 #X connect 2 0 8 0;
 #X connect 3 0 5 0;
@@ -159,6 +162,7 @@
 #X connect 6 0 0 0;
 #X connect 7 0 16 0;
 #X connect 8 0 0 0;
+#X connect 9 0 18 0;
 #X connect 10 0 0 0;
 #X connect 11 0 4 0;
 #X connect 11 1 10 0;
@@ -176,6 +180,7 @@
 #X connect 16 4 10 1;
 #X connect 16 5 9 0;
 #X connect 17 0 0 0;
+#X connect 18 0 0 0;
 #X restore 149 114 pd route \; init;
 #X obj 324 55 r \$0-time;
 #X obj 116 216 clone -x -do else/resonbank.unit 1;

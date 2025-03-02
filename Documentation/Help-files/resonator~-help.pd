@@ -137,8 +137,14 @@
 #X obj 30 254 else/resonbank~;
 #X text 221 365 - excitation signal;
 #X text 44 93 [resonator~] is just like [resonant~] \, but the resonance parameter is defined as resonance time in 't60'. Note that a t60 value of 0 bypasses the input! For a bank of [resonator~] objects \, see [resonbank~]. For another similar filter \, see [resonator2~]., f 78;
+#X msg 360 231 lop;
+#X msg 362 259 hip;
+#X msg 364 280 bp;
 #X connect 20 0 34 0;
 #X connect 31 0 34 0;
 #X connect 32 0 34 2;
 #X connect 34 0 8 0;
 #X connect 36 0 34 1;
+#X connect 45 0 34 0;
+#X connect 46 0 34 0;
+#X connect 47 0 34 0;
