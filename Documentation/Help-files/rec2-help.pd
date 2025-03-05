@@ -1,4 +1,4 @@
-#N canvas 499 37 563 350 10;
+#N canvas 499 38 563 350 10;
 #X obj 4 185 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 254 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 285 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -8,7 +8,7 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 2 graph;
-#X obj 23 39 cnv 4 4 4 empty empty Record\ note\ massages\ into\ text 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 23 39 cnv 4 4 4 empty empty Record\ MIDI\ Note\ messages\ into\ text 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
