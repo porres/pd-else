@@ -231,17 +231,17 @@ static void pic_draw(t_pic* x, struct _glist *glist, t_floatarg vis){
 
             sys_vgui("if { [info exists %lx_picname] == 1 } {\n"
                      "    .x%lx.c delete %lx_picture\n"
-                     "    image create photo %lx_piccopy\n" // Destination image
-                     "    %lx_piccopy copy %lx_picname \\\n"
+                     "    image create photo p%lx_piccopy\n" // Destination image
+                     "    p%lx_piccopy copy %lx_picname \\\n"
                      "        -shrink -from %d %d %d %d \\\n" // Source region with adjusted offsets
                      "        -to %d %d %d %d \\\n" // Destination region starts at adjusted offsets
                      "        -zoom %d %d\n" // Zoom factors for scaling
-                     "    .x%lx.c create image %d %d -anchor nw -image %lx_piccopy -tags %lx_picture\n"
+                     "    .x%lx.c create image %d %d -anchor nw -image p%lx_piccopy -tags %lx_picture\n"
                      "} \n",
                      x->x_fullname,
                      cv, x,
-                     x->x_fullname,
-                     x->x_fullname, x->x_fullname,
+                     x,
+                     x, x->x_fullname,
                      source_offset_x, source_offset_y, // Source region start
                      source_offset_x + clipped_w,      // Source region end X
                      source_offset_y + clipped_h,      // Source region end Y
@@ -251,7 +251,7 @@ static void pic_draw(t_pic* x, struct _glist *glist, t_floatarg vis){
                      x->x_zoom, x->x_zoom,             // Zoom factors
                      cv,                               // Destination canvas
                      xpos, ypos,                       // Offset on canvas
-                     x->x_fullname,                    // Image name
+                     x,                    // Image name
                      x);                   // Tags
         }
         if(!x->x_init)
@@ -337,7 +337,7 @@ void pic_open(t_pic* x, t_symbol *filename){
                     x->x_def_img = 0;
                 if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
                     pic_erase(x, x->x_glist);
-                    sys_vgui("if {[info exists %lx_picname] == 0} {image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n %lx_picname}\n",
+                    sys_vgui("if {[info exists %lx_picname] == 0} {image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n}\n",
                         x->x_fullname, x->x_fullname, file_name_open->s_name, x->x_fullname);
                     x->x_width = 0;
                     x->x_height = 0;
