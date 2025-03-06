@@ -7,7 +7,7 @@
 #define HALF_LOG2 log(2)/2
 #define T60_COEFF PI / (log(1000) * 1000)
 
-typedef struct _lowpass{
+typedef struct _highpass{
     t_object    x_obj;
     t_int       x_n;
     t_inlet    *x_inlet_freq;
@@ -28,11 +28,11 @@ typedef struct _lowpass{
     double      x_a2;
     double      x_b1;
     double      x_b2;
-}t_lowpass;
+}t_highpass;
 
-static t_class *lowpass_class;
+static t_class *highpass_class;
 
-static void update_coeffs(t_lowpass *x, double f, double reson){
+static void update_coeffs(t_highpass *x, double f, double reson){
     x->x_reson = reson;
     x->x_f = f;
     double omega = x->x_f * x->x_radcoeff;
@@ -66,8 +66,8 @@ static void update_coeffs(t_lowpass *x, double f, double reson){
     }
 }
 
-static t_int *lowpass_perform(t_int *w){
-    t_lowpass *x = (t_lowpass *)(w[1]);
+static t_int *highpass_perform(t_int *w){
+    t_highpass *x = (t_highpass *)(w[1]);
     int nblock = (int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
@@ -100,43 +100,43 @@ static t_int *lowpass_perform(t_int *w){
     return(w+7);
 }
 
-static void lowpass_dsp(t_lowpass *x, t_signal **sp){
+static void highpass_dsp(t_highpass *x, t_signal **sp){
     t_float nyq = sp[0]->s_sr * 0.5;
     if(nyq != x->x_nyq){
         x->x_nyq = nyq;
         x->x_radcoeff = PI / x->x_nyq;
         update_coeffs(x, x->x_f, x->x_reson);
     }
-    dsp_add(lowpass_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,sp[1]->s_vec, sp[2]->s_vec,
+    dsp_add(highpass_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,sp[1]->s_vec, sp[2]->s_vec,
             sp[3]->s_vec);
 }
 
-static void lowpass_clear(t_lowpass *x){
+static void highpass_clear(t_highpass *x){
     x->x_xnm1 = x->x_xnm2 = x->x_ynm1 = x->x_ynm2 = 0.;
 }
 
-static void lowpass_bypass(t_lowpass *x, t_floatarg f){
+static void highpass_bypass(t_highpass *x, t_floatarg f){
     x->x_bypass = (int)(f != 0);
 }
 
-static void lowpass_bw(t_lowpass *x){
+static void highpass_bw(t_highpass *x){
     x->x_resmode = 1;
     update_coeffs(x, x->x_f, x->x_reson);
 }
 
-static void lowpass_q(t_lowpass *x){
+static void highpass_q(t_highpass *x){
     x->x_resmode = 0;
     update_coeffs(x, x->x_f, x->x_reson);
 }
 
-static void lowpass_t60(t_lowpass *x){
+static void highpass_t60(t_highpass *x){
     x->x_resmode = 2;
     update_coeffs(x, x->x_f, x->x_reson);
 }
 
-static void *lowpass_new(t_symbol *s, int ac, t_atom *av){
+static void *highpass_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    t_lowpass *x = (t_lowpass *)pd_new(lowpass_class);
+    t_highpass *x = (t_highpass *)pd_new(highpass_class);
     float freq = 0.000001;
     float reson = 0;
     int resmode = 0;
@@ -183,18 +183,18 @@ static void *lowpass_new(t_symbol *s, int ac, t_atom *av){
     x->x_out = outlet_new((t_object *)x, &s_signal);
     return(x);
 errstate:
-    pd_error(x, "[lowpass~]: improper args");
+    pd_error(x, "[highpass~]: improper args");
     return(NULL);
 }
 
-void lowpass_tilde_setup(void){
-    lowpass_class = class_new(gensym("lowpass~"), (t_newmethod)lowpass_new, 0,
-        sizeof(t_lowpass), CLASS_DEFAULT, A_GIMME, 0);
-    class_addmethod(lowpass_class, (t_method)lowpass_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(lowpass_class, nullfn, gensym("signal"), 0);
-    class_addmethod(lowpass_class, (t_method)lowpass_clear, gensym("clear"), 0);
-    class_addmethod(lowpass_class, (t_method)lowpass_bypass, gensym("bypass"), A_DEFFLOAT, 0);
-    class_addmethod(lowpass_class, (t_method)lowpass_q, gensym("q"), 0);
-    class_addmethod(lowpass_class, (t_method)lowpass_bw, gensym("bw"), 0);
-    class_addmethod(lowpass_class, (t_method)lowpass_t60, gensym("t60"), 0);
+void highpass_tilde_setup(void){
+    highpass_class = class_new(gensym("highpass~"), (t_newmethod)highpass_new, 0,
+        sizeof(t_highpass), CLASS_DEFAULT, A_GIMME, 0);
+    class_addmethod(highpass_class, (t_method)highpass_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(highpass_class, nullfn, gensym("signal"), 0);
+    class_addmethod(highpass_class, (t_method)highpass_clear, gensym("clear"), 0);
+    class_addmethod(highpass_class, (t_method)highpass_bypass, gensym("bypass"), A_DEFFLOAT, 0);
+    class_addmethod(highpass_class, (t_method)highpass_q, gensym("q"), 0);
+    class_addmethod(highpass_class, (t_method)highpass_bw, gensym("bw"), 0);
+    class_addmethod(highpass_class, (t_method)highpass_t60, gensym("t60"), 0);
 }
