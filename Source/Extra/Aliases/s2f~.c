@@ -22,7 +22,10 @@ typedef struct _s2f{
 static t_class *s2f_class;
 
 static void s2f_tick(t_s2f *x){
-    outlet_list(x->x_obj.ob_outlet, &s_list, x->x_nchs, x->x_vec);
+    if(x->x_nchs == 1)
+        outlet_float(x->x_obj.ob_outlet, atom_getfloat(x->x_vec));
+    else
+        outlet_list(x->x_obj.ob_outlet, &s_list, x->x_nchs, x->x_vec);
 }
 
 static void s2f_bang(t_s2f *x){

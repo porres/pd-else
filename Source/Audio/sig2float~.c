@@ -22,7 +22,10 @@ typedef struct _sig2float{
 static t_class *sig2float_class;
 
 static void sig2float_tick(t_sig2float *x){
-    outlet_list(x->x_obj.ob_outlet, &s_list, x->x_nchs, x->x_vec);
+    if(x->x_nchs == 1)
+        outlet_float(x->x_obj.ob_outlet, atom_getfloat(x->x_vec));
+    else
+        outlet_list(x->x_obj.ob_outlet, &s_list, x->x_nchs, x->x_vec);
 }
 
 static void sig2float_bang(t_sig2float *x){

@@ -66,12 +66,12 @@ static void pack2_inlet_list(t_pack2_inlet *x, t_symbol* s, int ac, t_atom* av){
         pd_error(x, "pack2: secondary inlet doesn't expect bang");
         return;
     }
-    else if(x->x_idx != 0){
-        pd_error(x, "pack2: secondary inlet doesn't expect list");
+    if(!ac){
+        pack2_out(x->x_owner);
         return;
     }
-    else if(!ac){
-        pack2_out(x->x_owner);
+    if(x->x_idx != 0 && ac > 1){
+        pd_error(x, "pack2: secondary inlet doesn't expect list");
         return;
     }
     if(ac == 1){
