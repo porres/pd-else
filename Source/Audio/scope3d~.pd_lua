@@ -1,9 +1,10 @@
 local scope3d = pd.Class:new():register("scope3d~")
 
 function scope3d:initialize(name, atoms)
-  self.inlets = {SIGNAL}
+  self.inlets = {SIGNAL, SIGNAL, SIGNAL}
   self.pd_env = { ignorewarnings = true, name = name }
   self.initialized = false
+  self.multichannel = true
   return true
 end
 
@@ -209,6 +210,7 @@ end
 function scope3d:dsp(sr, bs, nchans)
     self.blocksize = bs
     self.nchans = nchans[1]
+    self.multichannel = self.nchans > 1
 end
 
 function scope3d:mouse_down(x, y)
@@ -229,12 +231,18 @@ function scope3d:mouse_drag(x, y)
   end
 end
 
-function scope3d:perform(in1)
+function scope3d:perform(in1, in2, in3)
   while self.sampleIndex <= self.blocksize do
     -- ring buffer
-    self.signalX[self.bufferIndex] = in1[self.sampleIndex]
-    self.signalY[self.bufferIndex] = in1[self.sampleIndex + self.blocksize] or 0
-    self.signalZ[self.bufferIndex] = in1[self.sampleIndex + self.blocksize*2] or 0
+    if self.multichannel then
+      self.signalX[self.bufferIndex] = in1[self.sampleIndex]
+      self.signalY[self.bufferIndex] = in1[self.sampleIndex + self.blocksize] or 0
+      self.signalZ[self.bufferIndex] = in1[self.sampleIndex + self.blocksize*2] or 0
+    else
+      self.signalX[self.bufferIndex] = in1[self.sampleIndex]
+      self.signalY[self.bufferIndex] = in2[self.sampleIndex]
+      self.signalZ[self.bufferIndex] = in3[self.sampleIndex]
+    end
     self.bufferIndex = (self.bufferIndex % self.nlines) + 1
     self.sampleIndex = self.sampleIndex + self.nsamples
   end
@@ -382,23 +390,25 @@ function scope3d:parse_atoms(atoms)
 end
 
 function scope3d:handle_pd_message(sel, atoms, n)
-  if self.pd_methods[sel] then
-    local startIndex = self.pd_methods[sel].index
-    local valueCount = self.pd_methods[sel].arg_count
-    local returnValues = self.pd_methods[sel].func and self.pd_methods[sel].func(self, atoms)
-    local values = {}
-    if startIndex and valueCount then
-      for i, atom in ipairs(returnValues or atoms) do
-        if i > valueCount then break end
-        table.insert(values, atom)
-        self.pd_args[startIndex + i-1] = atom
+  if self.pd_methods then -- FIXME: this is not good since messages will be ignored. they should be clock scheduled instead
+    if self.pd_methods[sel] then
+      local startIndex = self.pd_methods[sel].index
+      local valueCount = self.pd_methods[sel].arg_count
+      local returnValues = self.pd_methods[sel].func and self.pd_methods[sel].func(self, atoms)
+      local values = {}
+      if startIndex and valueCount then
+        for i, atom in ipairs(returnValues or atoms) do
+          if i > valueCount then break end
+          table.insert(values, atom)
+          self.pd_args[startIndex + i-1] = atom
+        end
       end
+      self.pd_methods[sel].val = values
+      self:set_args(self.pd_args)
+    else
+      local baseMessage = self.pd_env.name .. ': no method for \'' .. sel .. '\''
+      local inletMessage = n and ' on inlet ' .. string.format('%d', n) or ''
+      self:error(baseMessage .. inletMessage)
     end
-    self.pd_methods[sel].val = values
-    self:set_args(self.pd_args)
-  else
-    local baseMessage = self.pd_env.name .. ': no method for \'' .. sel .. '\''
-    local inletMessage = n and ' on inlet ' .. string.format('%d', n) or ''
-    self:error(baseMessage .. inletMessage)
   end
 end
