@@ -1868,10 +1868,10 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
                     else
                         goto errstate;
                 }
-                else if(sym == gensym("-arc")){
+                else if(sym == gensym("-noarc")){
                     if(ac >= 1){
                         x->x_flag = 1, av++, ac--;
-                        arc = 1;
+                        arc = 0;
                     }
                     else
                         goto errstate;
