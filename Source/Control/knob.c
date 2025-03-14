@@ -1381,7 +1381,14 @@ static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
         return;
     }
     else if(((c == '\n') || (c == 13))){ // enter
-        knob_float(x, x->x_buf[0] == 0 ? x->x_fval : atof(x->x_buf));
+        float value = x->x_buf[0] == 0 ? x->x_fval : atof(x->x_buf);
+        char buff[512];
+        sprintf(buff, "%s-enter", x->x_snd->s_name);
+        t_symbol *snd_enter = gensym(buff);
+        if(snd_enter->s_thing)
+            pd_float(snd_enter->s_thing, value);
+        else
+            knob_float(x, value);
         x->x_buf[0] = 0;
         x->x_typing = 0;
         show_number(x, 0);
@@ -1868,10 +1875,10 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
                     else
                         goto errstate;
                 }
-                else if(sym == gensym("-noarc")){
+                else if(sym == gensym("-arc")){
                     if(ac >= 1){
                         x->x_flag = 1, av++, ac--;
-                        arc = 0;
+                        arc = 1;
                     }
                     else
                         goto errstate;

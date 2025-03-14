@@ -154,8 +154,8 @@
 #X text 118 430 1) float - initial drive value (default 1 \, minimum 0);
 #X text 70 87 [drive~] simulates an analog "soft clipping" distortion by applying non-linear transfer functions.;
 #X obj 268 175 else/float2sig~ 50;
-#X text 44 227 see also:;
-#X obj 41 251 else/power~;
+#X text 62 199 see also:;
+#X obj 58 243 else/power~;
 #X text 122 401 -mode <float>: sets distorion (0 - default \, 1 or 2);
 #X text 272 315 - sets modes <0 \, 1 or 2>;
 #N canvas 676 118 662 445 examples 0;
@@ -295,6 +295,7 @@
 #X connect 15 0 14 0;
 #X restore 470 255 pd examples;
 #X obj 30 40 cnv 4 4 4 empty empty Soft-clip 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 58 220 else/tanh~;
 #X connect 21 0 25 0;
 #X connect 25 0 20 0;
 #X connect 26 0 35 0;
