@@ -1,4 +1,4 @@
-#N canvas 127 276 699 377 12;
+#N canvas 334 272 699 377 12;
 #X obj 158 158 else/store;
 #A saved;
 #X obj 278 158 route n;
@@ -14,7 +14,7 @@
 #X obj 140 113 r \$0-store;
 #N canvas 676 314 689 470 init 0;
 #X obj 186 250 + 1;
-#X obj 186 274 s \$0-level;
+#X obj 186 309 s \$0-level;
 #X obj 141 56 else/args -;
 #X obj 277 194 unpack f s;
 #X obj 274 273 s \$0-open;
@@ -28,12 +28,12 @@
 #X obj 463 335 route bang;
 #X obj 141 130 route bang float symbol list -ext;
 #X obj 257 81 s \$0-level;
-#X msg 257 54 0;
 #X obj 83 24 else/loadbanger 3;
 #X obj 83 210 s \$0-load;
-#X connect 0 0 1 0;
+#X msg 257 54 1;
+#X obj 185 277 max 1;
+#X connect 0 0 18 0;
 #X connect 2 0 13 0;
-#X connect 3 0 0 0;
 #X connect 3 1 4 0;
 #X connect 5 0 9 0;
 #X connect 6 0 7 0;
@@ -48,10 +48,11 @@
 #X connect 13 2 4 0;
 #X connect 13 3 3 0;
 #X connect 13 4 5 0;
-#X connect 15 0 14 0;
-#X connect 16 0 17 0;
-#X connect 16 1 2 0;
-#X connect 16 2 15 0;
+#X connect 15 0 16 0;
+#X connect 15 1 2 0;
+#X connect 15 2 17 0;
+#X connect 17 0 14 0;
+#X connect 18 0 1 0;
 #X restore 467 98 pd init;
 #N canvas 508 305 955 573 route 0;
 #X obj 308 317 pdcontrol;
@@ -98,9 +99,9 @@
 #X msg 774 171 goto \$1 \, bang;
 #X obj 774 210 s \$0-store;
 #X obj 774 135 expr random(0 \, n_\$0);
-#X obj 471 273 expr $i1 % 4;
 #X obj 471 246 max 0;
 #X obj 471 220 - 1;
+#X obj 471 273 expr $i1 % n_\$0;
 #X connect 0 0 37 0;
 #X connect 1 0 34 0;
 #X connect 2 0 1 0;
@@ -113,7 +114,7 @@
 #X connect 7 0 6 0;
 #X connect 8 0 12 0;
 #X connect 9 0 10 0;
-#X connect 11 0 46 0;
+#X connect 11 0 45 0;
 #X connect 13 0 14 0;
 #X connect 14 0 12 0;
 #X connect 15 0 30 0;
@@ -156,9 +157,9 @@
 #X connect 40 0 43 0;
 #X connect 41 0 42 0;
 #X connect 43 0 41 0;
-#X connect 44 0 8 0;
+#X connect 44 0 46 0;
 #X connect 45 0 44 0;
-#X connect 46 0 45 0;
+#X connect 46 0 8 0;
 #X restore 225 81 pd route;
 #N canvas 206 345 470 554 files 0;
 #X obj 235 381 file splitname;
@@ -215,12 +216,9 @@
 #X text 391 169 Alexandre Torres Porres (2017-2024);
 #X obj 278 229 v n_\$0;
 #X obj 294 196 r \$0-getn;
-#X obj 350 231 display;
-#X obj 349 144 display;
 #X connect 0 0 7 0;
 #X connect 0 1 1 0;
 #X connect 1 0 19 0;
-#X connect 1 0 22 0;
 #X connect 2 0 4 0;
 #X connect 3 0 16 1;
 #X connect 9 0 8 0;
@@ -232,4 +230,3 @@
 #X connect 17 0 16 0;
 #X connect 19 0 6 0;
 #X connect 20 0 19 0;
-#X connect 20 0 21 0;
