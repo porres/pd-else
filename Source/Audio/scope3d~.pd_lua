@@ -5,6 +5,7 @@ function scope3d:initialize(name, atoms)
   self.pd_env = { ignorewarnings = true, name = name }
   self.initialized = false
   self.multichannel = true
+  self.pendingMessages = {}
   return true
 end
 
@@ -46,6 +47,14 @@ function scope3d:postpostinit_task()
   self:reset_buffer()
   
   self.initialized = true
+  
+  -- Process any pending messages if we have any
+  if #self.pendingMessages > 0 then
+    for _, msg in ipairs(self.pendingMessages) do
+      self:handle_pd_message(msg.sel, msg.atoms, msg.inlet)
+    end
+    self.pendingMessages = {}
+  end
 
   self.clock = pd.Clock:new():register(self, "tick")
   self.clock:delay(self.frameDelay)
@@ -390,7 +399,15 @@ function scope3d:parse_atoms(atoms)
 end
 
 function scope3d:handle_pd_message(sel, atoms, n)
-  if self.pd_methods then -- FIXME: this is not good since messages will be ignored. they should be clock scheduled instead
+  -- Allow initialization messages to pass through
+  local isInitializing = not self.initialized and self.pd_methods
+
+  if not self.initialized and not isInitializing then
+    table.insert(self.pendingMessages, {sel = sel, atoms = atoms, inlet = n})
+    return
+  end
+
+  if self.pd_methods then
     if self.pd_methods[sel] then
       local startIndex = self.pd_methods[sel].index
       local valueCount = self.pd_methods[sel].arg_count
