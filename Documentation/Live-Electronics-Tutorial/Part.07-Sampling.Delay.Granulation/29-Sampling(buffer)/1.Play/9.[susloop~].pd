@@ -1,4 +1,4 @@
-#N canvas 568 26 440 559 12;
+#N canvas 568 38 440 559 12;
 #X declare -path else;
 #X floatatom 101 224 7 0 0 0 - - - 0;
 #X text 157 225 sample size;
@@ -9,13 +9,13 @@
 #X text 287 334 <= loop points;
 #X obj 119 334 susloop~ 1 10000 50000;
 #X obj 119 408 out~;
-#X obj 101 196 sample~ \$0-sample vacuous.wav;
 #X obj 215 32 declare -path else;
 #X text 88 496 Please check the help file for more info.;
 #X text 54 77 Please also check out the [susloop~] object \, which is useful for playing sound files stored in arrays and can sustain a loop within a given range in the sample. The looping points are defined in samples., f 43;
 #X obj 119 367 tabread~ \$0-sample;
+#X obj 101 196 sample~ \$0-sample vacuous.flac;
 #X connect 2 0 7 0;
 #X connect 3 0 7 0;
-#X connect 7 0 13 0;
-#X connect 9 0 0 0;
-#X connect 13 0 8 0;
+#X connect 7 0 12 0;
+#X connect 12 0 8 0;
+#X connect 13 0 0 0;

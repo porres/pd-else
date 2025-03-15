@@ -1,4 +1,4 @@
-#N canvas 325 28 959 688 12;
+#N canvas 392 46 960 711 12;
 #X declare -path else;
 #X obj 723 328 phasor~;
 #X obj 723 387 tabread4~ \$0-buffer;
@@ -12,7 +12,7 @@
 #X text 794 217 Cents;
 #X obj 723 246 cents2ratio;
 #X obj 723 422 out~;
-#X text 245 491 <= Reading frequency;
+#X text 255 491 <= Reading frequency;
 #X text 569 217 Speed (%);
 #X text 784 276 Ratio;
 #X obj 547 404 initmess \; tempo 100;
@@ -31,7 +31,6 @@
 #X floatatom 205 405 6 0 0 0 - - - 0;
 #X obj 180 435 swap;
 #X text 46 435 size =>;
-#X text 30 218 In this example we use [phasor~] to read from [tabread4~]. The [phasor~] object is used to play the sample in a loop \, and we need to find the frequency corresponding to the sound file's period. We do that by dividing the sample rate of the file (even if it's different than Pd's) by the number of samples - both information are given by [sample~] (one could use [soundfiler] instead \, in which [sample~] is based on)., f 64;
 #X obj 755 28 declare -path else;
 #X obj 166 343 sample~ \$0-buffer sax.wav;
 #X text 510 57 We use a ratio value to set the speed \, this can also be calculated from cents or a percentage value. Then \, all you need is to multiply the ratio by the frequency in hertz. Note that negative percentage/ratio values are possible and that they play the file backwards., f 57;
@@ -42,6 +41,7 @@
 #X coords 0 1 100 -1 385 141 1;
 #X restore 351 533 graph;
 #X text 254 405 <-- sample rate;
+#X text 30 218 In this example we use [phasor~] to read from [tabread4~]. The [phasor~] object is used to play the sample in a loop \, and we need to find the frequency corresponding to the sound file's period. We do that by dividing the sample rate of the file (even if it's different than Pd's) by the number of samples - both information are given by [sample~] - one could use [soundfiler] or [sfload] instead (the latter in which [sample~] is based on)., f 64;
 #X connect 0 0 16 0;
 #X connect 1 0 11 0;
 #X connect 2 0 6 0;
@@ -62,4 +62,4 @@
 #X connect 28 0 29 1;
 #X connect 29 0 21 0;
 #X connect 29 1 21 1;
-#X connect 33 0 27 0;
+#X connect 32 0 27 0;

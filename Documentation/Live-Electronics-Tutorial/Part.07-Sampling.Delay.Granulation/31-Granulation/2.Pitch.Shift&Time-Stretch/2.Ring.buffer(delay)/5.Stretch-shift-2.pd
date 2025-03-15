@@ -1,4 +1,4 @@
-#N canvas 699 72 586 517 12;
+#N canvas 461 96 586 517 12;
 #X declare -path else;
 #X text 291 305 cents;
 #X obj 273 327 nbx 5 16 -1e+37 1e+37 0 0 empty \$0-cents empty 0 -8 0 13 #dcdcdc #000000 #000000 0 256;

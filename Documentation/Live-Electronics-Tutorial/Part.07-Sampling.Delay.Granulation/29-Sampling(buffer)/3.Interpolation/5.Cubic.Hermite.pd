@@ -1,4 +1,4 @@
-#N canvas 479 54 769 646 12;
+#N canvas 479 54 769 661 12;
 #X declare -path else;
 #N canvas 305 82 952 596 cubic_interpolators 0;
 #X text 45 422 This type addresses the first derivative problem by deliberately making it continuous at breakpoints. It finds a cubic polynomial curve that passes through b and c but it does not usually pass through a and d. Instead \, it uses the pairs (a \, c) and (b \, d) to set the curve slope at points b and c \, respectively., f 52;
@@ -31,13 +31,13 @@
 #X obj 670 300 nbx 3 18 4 48 0 0 \$0-draw-samps-snd \$0-draw-samps-rcv empty -10 -8 0 15 #dfdfdf #000000 #000000 0 256;
 #X text 667 279 Samples;
 #X obj 36 345 hsl 170 19 0 1 0 0 empty empty empty -2 -8 0 10 #dfdfdf #000000 #000000 0 1;
-#X obj 119 601 nbx 7 19 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15 #dcdcdc #000000 #000000 0 256;
+#X obj 119 621 nbx 7 19 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15 #dcdcdc #000000 #000000 0 256;
 #X obj 200 460 bng 20 250 50 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000;
 #X floatatom 286 426 5 -1 1 0 - - - 16;
 #X text 299 370 Usual range for both: -1 to +1, f 15;
 #X text 284 405 Tension;
 #X text 382 405 Bias;
-#X obj 119 536 else/display;
+#X obj 119 556 else/display;
 #X msg 85 409 lin;
 #X msg 127 438 lagrange;
 #X msg 136 465 spline;
@@ -414,7 +414,8 @@
 #X obj 297 463 s \$0-t;
 #X obj 383 463 s \$0-b;
 #X text 41 58 The lagrange interpolator is a cubic interpolator. Another cubic interpolator is provided in [tabreader]/[tabreader~] \, the 'hermite' interpolator \, where two special cases are provided \, called 'cubic' and 'spline' (the default method) \, but a general case with setable parameters (bias and tension) is also given. More details about cubic interpolators is found in this subpatch:, f 99;
-#X obj 119 572 tabreader -loop -lin \$0-source;
+#X obj 119 592 tabreader -loop -lin \$0-source;
+#X obj 164 525 list trim;
 #X connect 9 0 26 0;
 #X connect 11 0 22 0;
 #X connect 12 0 22 1;
@@ -426,8 +427,9 @@
 #X connect 20 0 16 0;
 #X connect 21 0 22 2;
 #X connect 21 0 40 0;
-#X connect 22 0 16 0;
+#X connect 22 0 43 0;
 #X connect 26 0 42 0;
 #X connect 33 0 9 0;
 #X connect 38 0 16 0;
 #X connect 42 0 10 0;
+#X connect 43 0 16 0;

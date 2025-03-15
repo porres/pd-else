@@ -1,4 +1,4 @@
-#N canvas 319 23 926 640 12;
+#N canvas 319 38 926 640 12;
 #X declare -path else;
 #X obj 245 223 *~;
 #X obj 245 355 delwrite~ \$0-tap-delay 3000;
@@ -36,7 +36,7 @@
 #X obj 654 79 declare -path else;
 #X obj 291 284 out~;
 #X obj 166 180 bl.saw~;
-#X obj 166 91 rand.i 30 60;
+#X obj 166 85 rand.i 30 60;
 #X connect 0 0 1 0;
 #X connect 0 0 34 0;
 #X connect 2 0 4 0;

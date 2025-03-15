@@ -1,4 +1,4 @@
-#N canvas 312 23 939 723 12;
+#N canvas 349 56 939 723 12;
 #X declare -path else;
 #X obj 439 76 vsl 22 157 0 1.1 0 0 \$0-gain-send \$0-gain empty 0 -9 0 10 #404040 #fc0400 #000000 0 1;
 #X obj 446 124 cnv 5 5 5 empty empty G 0 0 0 14 #404040 #fcfcfc 0;
@@ -55,7 +55,7 @@
 #X restore 32 316 pd menu;
 #X obj 168 400 nbx 5 14 0 100 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 777 32 declare -path else;
-#N canvas 345 23 1021 510 vanilla 1;
+#N canvas 345 38 1021 510 vanilla 0;
 #N canvas 114 184 549 267 lowpass 0;
 #X obj 39 165 pack f f f f f;
 #X obj 164 165 v b0;

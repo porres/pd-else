@@ -25,8 +25,8 @@
 #X obj 616 414 nbx 4 17 -100 0 0 0 empty empty empty 0 -8 0 13 #dcdcdc #000000 #000000 0 256;
 #X obj 597 356 noisegate~ -30 -size 1024;
 #X text 462 262 the patch to the left is the basis of the implementation of the [noisgate~] abstraction from ELSE \, check it below \, open its help file.;
-#X obj 79 34 play.file~ 1 MouthBow.flac 1 1;
-#X obj 597 328 play.file~ 1 MouthBow.flac 1 1;
+#X obj 79 34 play.file~ MouthBow.flac 1 1;
+#X obj 597 328 play.file~ MouthBow.flac 1 1;
 #X connect 0 0 16 1;
 #X connect 2 0 4 0;
 #X connect 3 0 5 0;

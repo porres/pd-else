@@ -38,7 +38,7 @@
 #X text 241 220 The [glide2~] object is used here to generate two separate ramps. When the volume decreases \, it's because the compressor starts acting. A ramp value here represents an attack time \, which is the time the compressor takes to perform the gain adjustment. Conversely \, we have a release time for when the gain adjustment goes up again.;
 #X obj 145 436 f2s~ 10 1;
 #X obj 84 80 mov.rms~ 512;
-#X obj 48 28 play.file~ 1 kantele.flac 1 1;
+#X obj 48 28 play.file~ kantele.flac 1 1;
 #X connect 0 0 34 1;
 #X connect 1 0 13 0;
 #X connect 2 0 34 2;

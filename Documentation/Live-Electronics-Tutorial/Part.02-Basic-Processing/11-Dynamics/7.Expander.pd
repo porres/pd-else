@@ -31,7 +31,7 @@
 #X obj 68 352 glide2~;
 #X text 254 72 The expander is similar to a compressor but it's opposed as it decreases the volume under a threshold. The patch is quite similar \, we just get the difference between the amplitude analysis and the threshold instead of the other way around., f 45;
 #X obj 68 80 mov.rms~ 512;
-#X obj 50 28 play.file~ 1 kantele.flac 1 1;
+#X obj 50 28 play.file~ kantele.flac 1 1;
 #X connect 0 0 28 1;
 #X connect 1 0 14 0;
 #X connect 2 0 28 2;

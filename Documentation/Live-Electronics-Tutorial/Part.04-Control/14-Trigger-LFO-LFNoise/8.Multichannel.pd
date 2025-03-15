@@ -1,11 +1,11 @@
-#N canvas 343 38 729 502 12;
+#N canvas 343 38 805 541 12;
 #X declare -path else;
 #X obj 97 168 out~;
-#X obj 476 29 declare -path else;
-#X obj 496 241 else/out.mc~;
-#X obj 496 207 else/dust~ -ch 2 50;
-#X obj 494 364 else/out.mc~;
-#X obj 494 330 else/dust2~ -ch 2 50;
+#X obj 541 29 declare -path else;
+#X obj 561 241 else/out.mc~;
+#X obj 561 207 else/dust~ -ch 2 50;
+#X obj 559 364 else/out.mc~;
+#X obj 559 330 else/dust2~ -ch 2 50;
 #X listbox 57 449 19 0 0 0 - - - 12;
 #X obj 57 380 else/rand.i~ 0 1000;
 #X obj 57 415 else/s2f~;
@@ -13,7 +13,7 @@
 #X obj 215 415 else/s2f~;
 #X obj 215 380 else/rand.f~ 0 1000;
 #X text 52 261 Here it is used to control a [rand.i~] and [rand.f~] object \, which also have support for multichannels. Check the help files., f 40;
-#X text 437 77 The [dust~] and [dust2~] objects are capable of multichannel output with the -ch flag \, for instance. Similarly \, they can be used to trigger and control objects that are multichannel aware.Check the help files., f 34;
+#X text 502 77 The [dust~] and [dust2~] objects are capable of multichannel output with the -ch flag \, for instance. Similarly \, they can be used to trigger and control objects that are multichannel aware.Check the help files., f 34;
 #X text 43 43 The [imp~] object also generates a multichannel signal \, mostly useful for control purposes (that is \, as a bank of LFOs)., f 49;
 #X obj 215 336 imp~ -mc 0.25 0.5 1 2;
 #X obj 97 128 impulse~ -mc 1 1.7 2.1 3.9;

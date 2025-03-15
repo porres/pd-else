@@ -20,8 +20,8 @@
 #X text 436 492 B (phase);
 #X obj 392 22 declare -path else;
 #X text 68 58 The [morph~] object \, an abstraction from ELSE \, is yet another variant. It does a crossdade of both the spectral amplitudes and phases. This means you can perform cross synthesis in both ways and a full morph between the two sound sources. By default \, it performs a cross synthesis with amplitudes from "B" and initial phases from "A"., f 61;
-#X obj 113 183 play.file~ 1 kantele.flac 1 1;
 #X obj 113 242 play.file~ numbers.mp3 1 1;
+#X obj 113 183 play.file~ kantele.flac 1 1;
 #X connect 3 0 0 0;
 #X connect 4 0 1 0;
 #X connect 5 0 12 0;
@@ -31,5 +31,5 @@
 #X connect 12 0 2 0;
 #X connect 13 0 14 0;
 #X connect 14 0 12 3;
-#X connect 20 0 7 0;
-#X connect 21 0 8 0;
+#X connect 20 0 8 0;
+#X connect 21 0 7 0;

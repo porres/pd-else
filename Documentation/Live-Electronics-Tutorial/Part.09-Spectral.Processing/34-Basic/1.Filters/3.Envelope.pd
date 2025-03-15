@@ -85,14 +85,14 @@
 #X text 125 78 Here we have a very similar example \, but we use an envelope generator to generate the filter table. We can also say we're applying a "Spectral Envelope" into a FFT analysis. Open subpatches below to see the implementation.;
 #X obj 418 29 declare -path else;
 #X obj 85 196 function 200 100 empty empty 0 1 220 220 220 50 50 50 1 0 0 0 1 1 1;
-#X text 304 238 <= Click and drag;
 #X obj 85 165 initmess 1 1 1;
 #X obj 238 322 play.file~ 1 didge.flac 1 1;
+#X text 304 238 <-- Click and drag;
 #X connect 0 0 3 0;
 #X connect 1 0 2 0;
 #X connect 2 0 0 0;
 #X connect 4 0 3 1;
 #X connect 8 0 6 0;
 #X connect 12 0 7 0;
-#X connect 14 0 12 0;
-#X connect 15 0 8 0;
+#X connect 13 0 12 0;
+#X connect 14 0 8 0;

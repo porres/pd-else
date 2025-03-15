@@ -1,48 +1,36 @@
-#N canvas 250 23 1085 678 12;
+#N canvas 250 38 1085 678 12;
 #X declare -path else;
-#X obj 310 212 bng 30 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
-#000000 #000000;
+#X obj 310 212 bng 30 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #X obj 292 291 *~;
 #X obj 233 214 osc~ 440;
 #X text 19 636 0;
 #X text 21 439 1;
-#X obj 35 447 cnv 15 298 198 empty empty empty 20 12 0 14 #dcdcdc #404040
-0;
+#X obj 35 447 cnv 15 298 198 empty empty empty 20 12 0 14 #dcdcdc #404040 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-hann 22050 float 0;
 #X coords 0 1 22049 0 300 200 1 0 0;
 #X restore 34 446 graph;
 #X text 151 250 ms;
-#X obj 75 252 nbx 5 16 -1e+37 1e+37 0 0 empty \$0-ms empty 0 -8 0 13
-#dcdcdc #000000 #000000 0 256;
+#X obj 75 252 nbx 5 16 -1e+37 1e+37 0 0 empty \$0-ms empty 0 -8 0 13 #dcdcdc #000000 #000000 0 256;
 #X text 343 636 0;
 #X text 345 439 1;
-#X obj 359 447 cnv 15 298 198 empty empty empty 20 12 0 14 #dcdcdc
-#404040 0;
+#X obj 359 447 cnv 15 298 198 empty empty empty 20 12 0 14 #dcdcdc #404040 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-sine 22050 float 0;
 #X coords 0 1 22049 0 300 200 1 0 0;
 #X restore 358 446 graph;
-#X text 58 22 In this section we generate functions in tables and use
-them as envelopes. The first is called "hann" \, which is nothing but
-an inverted cosine adjusted to the range from 0 to 1 (this is also
-one of the functions used in the [fader~] object)., f 80;
+#X text 58 22 In this section we generate functions in tables and use them as envelopes. The first is called "hann" \, which is nothing but an inverted cosine adjusted to the range from 0 to 1 (this is also one of the functions used in the [fader~] object)., f 80;
 #X obj 292 325 out~;
 #X obj 310 259 tabplay~ \$0-hann;
-#X obj 518 212 bng 30 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
-#000000 #000000;
+#X obj 518 212 bng 30 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #X obj 500 291 *~;
 #X obj 441 214 osc~ 440;
 #X obj 500 325 out~;
 #X obj 518 259 tabplay~ \$0-sine;
-#X text 58 135 The native [tabplay~] object is used to load the table
-and trigger the envelope. Click on the bangs below., f 80;
+#X text 58 135 The native [tabplay~] object is used to load the table and trigger the envelope. Click on the bangs below., f 80;
 #X text 73 229 duration;
 #X obj 71 334 declare -path else;
-#X text 58 85 The next is here called "sine" \, but it's actually just
-the first half the sine function (this is also used in [fader~]). Open
-the [pd tables] subpatch so see how to create these functions., f
-80;
+#X text 58 85 The next is here called "sine" \, but it's actually just the first half the sine function (this is also used in [fader~]). Open the [pd tables] subpatch so see how to create these functions., f 80;
 #N canvas 455 273 787 473 tables 0;
 #X obj 195 27 inlet;
 #X obj 95 360 osc~;
@@ -61,13 +49,7 @@ the [pd tables] subpatch so see how to create these functions., f
 #X obj 195 308 / 2;
 #X obj 217 338 sine~;
 #X obj 304 325 send \$0-hann;
-#X text 447 124 The table size is given in ms and we calculate the
-number of samples (that depends on the sample rate) to resize the table
-\, then we also get the frequency of this period in samples and feed
-it into oscillators that we use to generate the waveform and record
-it into tables with the native [tabwrite~] object. Note we use half
-the frequency for the sine function because we just need the first
-half of its cycle., f 36;
+#X text 447 124 The table size is given in ms and we calculate the number of samples (that depends on the sample rate) to resize the table \, then we also get the frequency of this period in samples and feed it into oscillators that we use to generate the waveform and record it into tables with the native [tabwrite~] object. Note we use half the frequency for the sine function because we just need the first half of its cycle., f 36;
 #X obj 256 179 v sr_khz;
 #X obj 224 148 t b f;
 #X obj 224 96 samplerate~;
@@ -102,14 +84,12 @@ half of its cycle., f 36;
 #X connect 22 0 19 0;
 #X connect 23 0 8 0;
 #X restore 75 283 pd tables;
-#X obj 906 176 bng 30 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
-#000000 #000000;
+#X obj 906 176 bng 30 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #X obj 888 255 *~;
 #X obj 829 178 osc~ 440;
 #X text 681 584 0;
 #X text 683 387 1;
-#X obj 697 395 cnv 15 298 198 empty empty empty 20 12 0 14 #dcdcdc
-#404040 0;
+#X obj 697 395 cnv 15 298 198 empty empty empty 20 12 0 14 #dcdcdc #404040 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-table 22050 float 0;
 #X coords 0 1 22049 0 300 200 1 0 0;
@@ -119,13 +99,10 @@ half of its cycle., f 36;
 #X msg 735 287 hanning;
 #X obj 711 318 tabgen -ms \$0-table;
 #X msg 711 216 size \$1;
-#X obj 711 183 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dfdfdf #000000 #000000 0 256;
+#X obj 711 183 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 256;
 #X obj 735 258 loadbang;
-#X text 681 33 The [tabgen] object can generate several table functions
-that can be used as envelopes. Check its help file. Below we have basically
-the same example but with the table generated by [tabgen]. Note it
-can also apply envelopes to existing values in arrays., f 46;
+#X text 681 33 The [tabgen] object can generate several table functions that can be used as envelopes. Check its help file. Below we have basically the same example but with the table generated by [tabgen]. Note it can also apply envelopes to existing values in arrays., f 46;
+#X obj 375 294 noise~;
 #X connect 0 0 15 0;
 #X connect 1 0 14 0;
 #X connect 2 0 1 0;

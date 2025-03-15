@@ -1,6 +1,6 @@
 #N canvas 506 43 608 453 12;
 #X declare -path else;
-#X obj 167 316 *~;
+#X obj 167 336 *~;
 #X obj 62 196 mtof;
 #X obj 62 233 trigger float bang;
 #X obj 62 164 nbx 3 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 13 #dcdcdc #000000 #000000 0 256;
@@ -161,19 +161,20 @@
 #X connect 1 0 2 0;
 #X connect 3 0 4 0;
 #X restore 62 272 pd additive;
-#X obj 167 352 out~;
+#X obj 167 372 out~;
 #X obj 62 100 tempo 15 50;
 #X text 175 176 Open the [pd additive] subpatch for more details.;
-#X text 209 247 ADSR envelope;
-#X obj 185 272 envgen~ 400 1 100 0.7 2000 0.7 500 0;
+#X text 260 261 ADSR envelope;
+#X obj 185 292 envgen~ 400 1 100 0.7 2000 0.7 500 0;
 #X obj 62 133 rand.i 36 73;
 #X obj 403 42 declare -path else;
 #X text 175 84 Here's another additive synthesis example. This patch receives a fundamental frequency \, from which an inharmonic series of 8 partials is generated. For each partial \, we have a pair of oscillators \, both of which are closely tuned but with random vibratos/pitch deviations., f 56;
-#X text 295 325 As an exercise you can adapt this to use [clone]! For each copy to have different parameters \, use a random generator at load time (with loadbang)., f 39;
+#X text 295 345 As an exercise you can adapt this to use [clone]! For each copy to have different parameters \, use a random generator at load time (with loadbang)., f 39;
+#X obj 185 262 bng 19 250 50 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000;
 #X connect 0 0 7 0;
 #X connect 1 0 2 0;
 #X connect 2 0 6 0;
-#X connect 2 1 11 0;
+#X connect 2 1 16 0;
 #X connect 3 0 1 0;
 #X connect 4 0 8 0;
 #X connect 5 0 4 0;
@@ -181,3 +182,4 @@
 #X connect 8 0 12 0;
 #X connect 11 0 0 1;
 #X connect 12 0 3 0;
+#X connect 16 0 11 0;

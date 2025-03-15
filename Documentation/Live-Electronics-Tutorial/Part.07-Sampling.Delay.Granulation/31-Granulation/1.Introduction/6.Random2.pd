@@ -1,45 +1,27 @@
 #N canvas 296 95 924 555 12;
 #X declare -path else;
-#X floatatom 430 206 5 0 0 0 - - -;
-#X obj 433 181 hsl 128 15 1 100 1 0 empty freq-amp empty -2 -8 0 10
--228856 -1 -1 3823 1;
-#X floatatom 381 173 5 0 0 0 - - -;
-#X floatatom 332 148 5 0 0 0 - - -;
-#X obj 335 123 hsl 128 15 0.01 10 1 0 empty lfo-freq empty -2 -8 0
-10 -228856 -1 -1 7192 1;
-#X obj 384 151 hsl 128 15 1 100 1 0 empty freq-offset empty -2 -8 0
-10 -228856 -1 -1 1912 1;
+#X floatatom 430 206 5 0 0 0 - - - 0;
+#X obj 433 181 hsl 128 15 1 100 1 0 empty freq-amp empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X floatatom 381 173 5 0 0 0 - - - 0;
+#X floatatom 332 148 5 0 0 0 - - - 0;
+#X obj 335 123 hsl 128 15 0.01 10 1 0 empty lfo-freq empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 384 151 hsl 128 15 1 100 1 0 empty freq-offset empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 72 128 noise~;
-#X obj 252 177 nbx 5 14 -1e+37 1e+37 0 0 empty grao-amp empty 0 -8
-0 10 -228856 -1 -1 500 256;
-#X obj 225 152 nbx 5 14 -1e+37 1e+37 0 0 empty grao-offset empty 0
--8 0 10 -228856 -1 -1 100 256;
-#X obj 125 184 nbx 5 14 -1e+37 1e+37 0 0 empty pos-amp empty 0 -8 0
-10 -228856 -1 -1 10000 256;
-#X obj 98 160 nbx 5 14 -1e+37 1e+37 0 0 empty pos-offset empty 0 -8
-0 10 -228856 -1 -1 0 256;
+#X obj 252 177 nbx 5 14 -1e+37 1e+37 0 0 empty grao-amp empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 225 152 nbx 5 14 -1e+37 1e+37 0 0 empty grao-offset empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 125 184 nbx 5 14 -1e+37 1e+37 0 0 empty pos-amp empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 98 160 nbx 5 14 -1e+37 1e+37 0 0 empty pos-offset empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 332 182 osc~;
-#X obj 428 391 hsl 128 15 1 100 1 0 empty freq-amp empty -2 -8 0 10
--228856 -1 -1 3823 1;
-#X obj 330 331 hsl 128 15 0.01 10 1 0 empty lfo-freq empty -2 -8 0
-10 -228856 -1 -1 7192 1;
-#X obj 379 359 hsl 128 15 1 100 1 0 empty freq-offset empty -2 -8 0
-10 -228856 -1 -1 1912 1;
-#X obj 248 384 nbx 5 14 -1e+37 1e+37 0 0 empty grao-amp empty 0 -8
-0 10 -228856 -1 -1 500 256;
-#X obj 221 360 nbx 5 14 -1e+37 1e+37 0 0 empty grao-offset empty 0
--8 0 10 -228856 -1 -1 100 256;
-#X obj 122 384 nbx 5 14 -1e+37 1e+37 0 0 empty pos-amp empty 0 -8 0
-10 -228856 -1 -1 10000 256;
-#X obj 95 361 nbx 5 14 -1e+37 1e+37 0 0 empty pos-offset empty 0 -8
-0 10 -228856 -1 -1 0 256;
+#X obj 428 391 hsl 128 15 1 100 1 0 empty freq-amp empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 330 331 hsl 128 15 0.01 10 1 0 empty lfo-freq empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 379 359 hsl 128 15 1 100 1 0 empty freq-offset empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 248 384 nbx 5 14 -1e+37 1e+37 0 0 empty grao-amp empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 221 360 nbx 5 14 -1e+37 1e+37 0 0 empty grao-offset empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 122 384 nbx 5 14 -1e+37 1e+37 0 0 empty pos-amp empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 95 361 nbx 5 14 -1e+37 1e+37 0 0 empty pos-offset empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 72 281 s~ \$0-pos_L;
-#X obj 604 93 initmess \; lfo-freq 0.5 \; freq-amp 4 \; freq-offset
-2 \; grao-amp 500 \; grao-offset 100 \; pos-amp 10000 \; pos-offset
-0;
-#X text 87 25 Yet again we expand the last example. We have now a stereo
-output \, LFOs control the frequency of the grains and we have envelopes
-controlling the amplitude output.;
+#X obj 604 93 initmess \; lfo-freq 0.5 \; freq-amp 4 \; freq-offset 2 \; grao-amp 500 \; grao-offset 100 \; pos-amp 10000 \; pos-offset 0;
+#X text 87 25 Yet again we expand the last example. We have now a stereo output \, LFOs control the frequency of the grains and we have envelopes controlling the amplitude output.;
 #X obj 72 242 ms2samps~;
 #X obj 72 208 rescale~;
 #X obj 199 126 noise~;
@@ -55,16 +37,15 @@ controlling the amplitude output.;
 #X obj 195 447 ms2samps~;
 #X obj 195 413 rescale~;
 #X obj 195 486 s~ \$0-grain_R;
-#X floatatom 425 418 5 0 0 0 - - -;
-#X floatatom 376 385 5 0 0 0 - - -;
-#X floatatom 327 360 5 0 0 0 - - -;
+#X floatatom 425 418 5 0 0 0 - - - 0;
+#X floatatom 376 385 5 0 0 0 - - - 0;
+#X floatatom 327 360 5 0 0 0 - - - 0;
 #X obj 327 394 osc~;
 #X obj 350 444 rescale~;
 #X obj 350 487 s~ \$0-freq_R;
 #X obj 355 265 s~ \$0-freq_L;
 #X obj 610 347 *~;
-#X obj 779 215 tgl 30 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
-1;
+#X obj 779 215 tgl 30 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 779 189 loadbang;
 #X obj 698 347 *~;
 #N canvas 57 23 452 348 right 0;
@@ -203,16 +184,15 @@ controlling the amplitude output.;
 #X obj 779 262 tempo 180 200;
 #X obj 715 29 declare -path else;
 #X obj 610 393 out~;
-#X obj 787 95 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
-#N canvas 790 23 285 190 buffer 0;
+#X obj 787 95 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
+#N canvas 790 38 285 190 buffer 0;
 #X obj 41 60 openpanel;
 #X obj 41 29 inlet;
-#X obj 41 125 sample~ \$0-buffer bubul.wav;
 #X msg 41 89 load \$1;
-#X connect 0 0 3 0;
+#X obj 41 125 sample~ \$0-buffer bubul.mp3;
+#X connect 0 0 2 0;
 #X connect 1 0 0 0;
-#X connect 3 0 2 0;
+#X connect 2 0 3 0;
 #X restore 787 124 pd buffer;
 #X connect 0 0 28 2;
 #X connect 1 0 0 0;

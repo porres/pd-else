@@ -1,4 +1,4 @@
-#N canvas 427 29 939 547 12;
+#N canvas 427 38 939 547 12;
 #X declare -path else;
 #X obj 703 32 declare -path else;
 #X obj 180 370 setdsp~;
@@ -28,7 +28,7 @@
 #X connect 5 0 8 0;
 #X connect 6 0 4 0;
 #X connect 7 0 5 0;
-#X connect 8 0 6 2;
+#X connect 8 0 6 0;
 #X connect 9 0 7 0;
 #X connect 12 0 22 1;
 #X connect 13 0 22 0;

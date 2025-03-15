@@ -1,16 +1,13 @@
-#N canvas 416 87 857 635 12;
+#N canvas 366 83 857 635 12;
 #X declare -path else;
-#X obj 101 246 nbx 5 19 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 14
--228856 -1 -1 0 256;
-#X obj 104 220 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 101 246 nbx 5 19 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 14 #dcdcdc #000000 #000000 0 256;
+#X obj 104 220 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X text 136 219 Clipping;
 #X msg 101 195 1;
-#N canvas 192 26 409 508 input 0;
+#N canvas 1041 83 409 508 input 0;
 #X obj 107 404 outlet~;
 #X obj 107 200 + 1;
-#X obj 107 121 vradio 20 1 0 3 empty empty empty 0 -8 0 10 -228856
--1 -1 0;
+#X obj 107 121 vradio 20 1 0 3 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0;
 #X text 132 164 [adc~];
 #X obj 107 48 loadbang;
 #X msg 107 75 0;
@@ -20,7 +17,7 @@
 #X obj 107 353 xselect~ 3 100;
 #X text 130 123 Sine;
 #X obj 154 255 sel 2;
-#X obj 154 284 player~ guitar.wav 1 1;
+#X obj 154 284 player~ guitar.mp3 1 1;
 #X connect 1 0 9 0;
 #X connect 1 0 11 0;
 #X connect 2 0 1 0;
@@ -49,8 +46,7 @@
 #X obj 87 168 vsaw~ 100 1;
 #X obj 45 49 loadbanger 2;
 #X obj 185 20 inlet;
-#X obj 301 118 cnv 15 198 138 empty empty empty 20 12 0 14 -228856
--66577 0;
+#X obj 301 118 cnv 15 198 138 empty empty empty 20 12 0 14 #dcdcdc #404040 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-shape 441 float 0;
 #X coords 0 1.1 440 -1.1 200 140 1 0 0;
@@ -89,34 +85,18 @@
 #X text 73 368 u;
 #X text 73 378 t;
 #X text 128 195 Reset;
-#X text 18 92 Here we use Waveshaping for a simple clipping distortion
-for didactical purposes \, as it makes it easy to visualize how it
-works. First we have a linear function that does not alter the input.
-But by moving the slider and setting a maximum amplitude value we can
-generate a clipping function.;
+#X text 18 92 Here we use Waveshaping for a simple clipping distortion for didactical purposes \, as it makes it easy to visualize how it works. First we have a linear function that does not alter the input. But by moving the slider and setting a maximum amplitude value we can generate a clipping function.;
 #X text 442 159 transfer function, f 9;
 #X obj 509 164 tabread4~ \$0-shape;
 #X obj 645 530 shaper~ \$0-shape;
-#X text 29 499 Above to the right we have an input signal going through
-the transfer function. First we use [rescale~] to adjust the audio
-range from (-1 to 1) to the table indices (0 to 440) \, then use it
-to read the table with [tabread4~].;
-#X text 657 73 Like Ring Modulation \, Waveshaping can be used outside
-the context of synthesis as an effects processor. It's widely used
-as a distortion unit \, for example., f 23;
+#X text 29 499 Above to the right we have an input signal going through the transfer function. First we use [rescale~] to adjust the audio range from (-1 to 1) to the table indices (0 to 440) \, then use it to read the table with [tabread4~].;
+#X text 657 73 Like Ring Modulation \, Waveshaping can be used outside the context of synthesis as an effects processor. It's widely used as a distortion unit \, for example., f 23;
 #X obj 688 31 declare -path else;
-#X text 18 12 The Waveshaping technique is needs a transfer function
-for a signal to go through. We can use a table in Pd for that (see
-below). This way \, the audio input represents the indices and (horizontal
-axis) \, and the output are the values from the vertical axis.;
-#X text 29 571 You can also draw on the transfer function table and
-see the result. To reset \, just click the "1" message.;
+#X text 18 12 The Waveshaping technique is needs a transfer function for a signal to go through. We can use a table in Pd for that (see below). This way \, the audio input represents the indices and (horizontal axis) \, and the output are the values from the vertical axis.;
+#X text 29 571 You can also draw on the transfer function table and see the result. To reset \, just click the "1" message.;
 #X text 332 342 TRANSFER FUNCTION, f 8;
 #X text 307 348 <==;
-#X text 487 419 The [shaper~] object \, from ELSE \, is optimized for
-waveshaping and automatically rescales audio input signals (between
--1 and 1) to the indices of a given table. Here it uses the same transfer
-function., f 48;
+#X text 487 419 The [shaper~] object \, from ELSE \, is optimized for waveshaping and automatically rescales audio input signals (between -1 and 1) to the indices of a given table. Here it uses the same transfer function., f 48;
 #X connect 0 0 11 0;
 #X connect 1 0 0 0;
 #X connect 3 0 1 0;

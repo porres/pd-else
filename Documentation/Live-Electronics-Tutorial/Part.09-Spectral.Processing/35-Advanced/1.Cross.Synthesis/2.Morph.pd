@@ -77,7 +77,7 @@
 #X obj 385 23 declare -path else;
 #X text 74 64 In this variation we "morph" from one amplitude to another \, but it's just a simple crossfade. This goes from a original sound to a cross synthesis. Open the [pd Morph] subpatch for more details.;
 #X obj 125 203 play.file~ numbers.mp3 1 1;
-#X obj 125 145 play.file~ 1 kantele.flac 1 1;
+#X obj 125 145 play.file~ kantele.flac 1 1;
 #X connect 0 0 3 0;
 #X connect 1 0 2 0;
 #X connect 3 0 1 0;

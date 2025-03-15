@@ -142,7 +142,7 @@
 #X obj 211 608 pvoc.freeze~;
 #X text 66 552 The [pvoc.freeze~] object \, from the ELSE librayry \, is based on this patch. Check its help file, f 55;
 #X obj 318 22 declare -path else;
-#X obj 94 338 play.file~ 1 violin.flac 1 1;
+#X obj 94 338 play.file~ violin.flac 1 1;
 #X connect 0 0 4 1;
 #X connect 2 0 9 0;
 #X connect 4 0 3 0;

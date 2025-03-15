@@ -9,8 +9,8 @@
 #X obj 189 325 imp~ 1;
 #X obj 128 381 damp.osc~ 440 1500;
 #X obj 145 426 out~;
-#X text 240 324 signal trigger;
-#X text 112 320 frequency;
+#X text 166 297 signal trigger;
+#X text 55 343 frequency;
 #X obj 563 277 else/out~;
 #X obj 545 110 else/keyboard 17 80 2 4 0 0 empty empty;
 #X listbox 545 206 11 0 0 0 - - - 0;

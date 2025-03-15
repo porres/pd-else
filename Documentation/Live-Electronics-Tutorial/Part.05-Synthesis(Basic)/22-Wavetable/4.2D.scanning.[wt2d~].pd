@@ -1,4 +1,4 @@
-#N struct 1092-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
+#N struct 1004-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
 #N canvas 368 66 884 690 12;
 #X declare -path else;
 #X text 23 18 You may have realized that the last example about Vector Synthesis is a bit like the previous one on wavetable scanning. The difference is that you have 2 dimensions to scan/crossfade \, so we can call it '2D scanning'., f 51;
@@ -8,8 +8,6 @@
 #X array \$0-2d-wave 16384 float 0;
 #X coords 0 1 16383 -1 1024 140 1 0 0;
 #X restore 26 205 graph;
-#X obj 630 129 soundfiler;
-#X obj 630 104 initmess read -resize PLAITS03.wav \$0-2d-wave;
 #X obj 219 139 plaits~, f 9;
 #X text 54 30 In this example we're loading a wav file downloaded from https://waveeditonline.com/ that is used in the PLAITS module from mutable instruments. By the way \, ELSE has a port of [plaits~] as well \, which has been previously presented briefly. So we're talking about synth engine mode #5 and you can check it out too in the help file of the object., f 57;
 #X floatatom 630 154 6 0 0 0 - - - 0;
@@ -23,9 +21,11 @@
 #X text 932 356 row 7 ----------|;
 #X text 494 27 The file is 16384 samples long and is considered to be split in a 8x8 grid. We first split into 8 rows of 2048 points each. You could imagine the rows stacked vertically in your mind. Then each row is split into 8 frames (or columns) of 256 points. We then have 64 frames that can be crossfaded in two dimensions., f 76;
 #X text 508 156 number of points;
-#X text 731 131 Here we also use [soundfiler] to load a file into the array, f 29;
-#X connect 2 0 6 0;
-#X connect 3 0 2 0;
+#X obj 630 129 sfload \$0-2d-wave;
+#X obj 630 104 initmess load PLAITS03.wav;
+#X text 766 125 Here we also use [sfload] to load a file into the array, f 29;
+#X connect 15 0 4 0;
+#X connect 16 0 15 0;
 #X restore 717 321 pd 2D-table;
 #X obj 698 33 declare -path else;
 #X obj 414 140 slider2d 166 166 0 1 1 0 1 211 211 211 0 0 0 1 0 0 0 0 empty empty;
@@ -67,9 +67,9 @@
 #X obj 519 193 f2s~ 20;
 #X obj 238 193 f2s~ 20;
 #X obj 278 674 outlet~;
-#X obj 238 112 knob 50 0 7 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0;
+#X obj 238 112 knob 50 0 7 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0;
 #X floatatom 519 168 7 0 0 0 - - - 0;
-#X obj 519 112 knob 50 0 7 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0;
+#X obj 519 112 knob 50 0 7 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0;
 #X text 362 330 n rows ->;
 #X text 348 307 next row ->;
 #X text 183 272 <- next column, f 7;

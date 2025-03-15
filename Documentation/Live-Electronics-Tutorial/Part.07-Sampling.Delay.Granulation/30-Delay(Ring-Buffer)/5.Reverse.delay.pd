@@ -17,8 +17,8 @@
 #X text 490 193 It's also important to note that since we're basically reading from the delay line at a rate that is twice the period \, in practice we're only reading half of the delay length. I mean \, it only takes one second to read from a 2 second delay line backwards \, so we just have a 1 second delay. So set the delay line to twice as much as you want your playing backwards period to be., f 54;
 #X text 306 586 The [rdelay~] (reverse delay) object from ELSE is based on this princple. Check it out \, read its help file ===>, f 46;
 #X obj 473 627 revdelay~;
-#X obj 146 342 play.file~ 1 violin.flac 1 1;
-#X obj 600 345 play.file~ 1 violin.flac 1 1;
+#X obj 146 342 play.file~ violin.flac 1 1;
+#X obj 600 345 play.file~ violin.flac 1 1;
 #X connect 1 0 4 0;
 #X connect 4 0 5 1;
 #X connect 5 0 2 0;

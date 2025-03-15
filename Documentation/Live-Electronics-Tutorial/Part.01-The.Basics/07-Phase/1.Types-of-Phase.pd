@@ -66,6 +66,9 @@
 #X obj 833 17 declare -path else;
 #X text 27 20 The term "phase" can be used in different contexts \, being ambiguous and confusing. One way to avoid is to use more specific terminology instead of just abbreviating as "phase". On its own \, "phase" indicates a stage within a cycle \, such as the four different phases of the moon. Sound waveforms are also cyclical and we can have \, for instance \, the positive and negative phase (check below). But this original concept is rarely used in music theory and we'll present here other more important applications and concepts regarding phase., f 62;
 #X text 493 117 Now \, since an instant phase refers to a single position within a given cycle \, this can also be represented as an angle. This may promote a synonymic relationship between phase and angle \, but it is important to emphasize that both implicate on and relate to a position in the cycle., f 68;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 300 100 1;
+#X restore 84 187 graph;
 #X connect 7 0 8 0;
 #X connect 19 0 25 0;
 #X connect 19 1 20 1;

@@ -1,4 +1,4 @@
-#N canvas 574 64 661 528 12;
+#N canvas 574 64 661 555 12;
 #X declare -path else;
 #X text 497 213 Hz;
 #X obj 438 190 hsl 128 15 -5 5 0 0 empty hz empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
@@ -80,7 +80,7 @@
 #X obj 137 51 initmess \; hz 1 \; grain 500;
 #X obj 41 195 s \$0-size;
 #X msg 41 161 \$1;
-#X obj 41 125 sample~ \$0-buffer bubul.wav;
+#X obj 41 125 sample~ \$0-buffer bubul.mp3;
 #X connect 0 0 2 0;
 #X connect 1 0 0 0;
 #X connect 2 0 6 0;

@@ -39,12 +39,15 @@ static void *delace_new(t_symbol *s, int ac, t_atom* av){
     int n = 2;
     x->x_zero = 0;
     if(av->a_type == A_SYMBOL){
+        post("if delace");
         if(atom_getsymbol(av) == gensym("-z")){
             x->x_zero = 1;
             ac--, av++;
         }
-        else
+        else{
+            post("else delace");
             goto errstate;
+        }
     }
     if(ac)
         n = atom_getint(av);
