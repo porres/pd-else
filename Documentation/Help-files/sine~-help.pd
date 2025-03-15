@@ -268,10 +268,10 @@
 #X text 164 390 signal(s) -;
 #X text 239 390 sine wave signal(s);
 #X text 58 87 [sine~] is a sinusoidal oscillator that accepts negative frequencies \, has inlets for phase sync and phase modulation. It also has support for multichannels., f 69;
-#X obj 31 215 else/oscbank2~;
 #X text 134 270 list/signal(s) - frequency in hz or midi, f 67;
 #X text 103 425 -mc <list>: sets multichannel output with a list of frequencies, f 63;
 #X text 110 300 set <float \, float> -;
 #X text 236 300 <channel \, freq> set a single frequency channel, f 50;
+#X obj 31 215 else/oscbank~;
 #X connect 20 0 28 0;
 #X connect 28 0 26 0;

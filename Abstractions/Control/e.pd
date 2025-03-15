@@ -16,7 +16,7 @@
 #X text 315 101 Alexandre Torres Porres (2024);
 #X obj 355 403 v;
 #X obj 248 402 t f f;
-#X obj 298 223 unpack;
+#X obj 298 223 unpack f s;
 #X connect 0 0 11 0;
 #X connect 1 0 8 0;
 #X connect 2 0 7 0;

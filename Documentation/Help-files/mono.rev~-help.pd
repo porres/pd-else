@@ -43,8 +43,8 @@
 #X text 697 82 audio input;
 #X text 112 113 tone;
 #X text 103 264 noise burst;
-#X obj 409 77 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
-#X text 434 79 play/stop;
+#X obj 410 77 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
+#X text 435 79 play/stop;
 #X obj 321 272 catch~ \$0-input;
 #N canvas 311 360 450 300 init 0;
 #X obj 112 43 inlet;
@@ -82,7 +82,7 @@
 #X obj 89 113 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #X obj 719 195 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #X obj 301 168 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
-#X obj 410 113 else/play.file~ 1 didge.flac -loop;
+#X obj 410 113 else/play.file~ -loop 1 didge.flac;
 #X connect 1 0 8 0;
 #X connect 2 0 3 0;
 #X connect 4 0 5 0;

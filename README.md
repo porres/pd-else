@@ -6,9 +6,9 @@
 
 ### Version: 1.0-0 RC-13 (release candidate #13) With Live Electronics Tutorial.
 
-### Unreleased
+### Released March 26th 2025
 
-Copyright © 2017-2024 Alexandre Torres Porres and others
+Copyright © 2017-2025 Alexandre Torres Porres and others
 
 
 This work is free. You can redistribute it and/or modify it under the terms of the Do What The Fuck You Want To Public License, Version 2, as published by Sam Hocevar. See License.txt <https://github.com/porres/pd-else/blob/master/License.txt> and <http://www.wtfpl.net/> for more details
@@ -97,19 +97,19 @@ Flávio Luis Schiavoni helped me out in a few things when I first started coding
 
 I'd also like to thank my Cyclone buddies Derek Kwan and Matt Barber, cause I started learning how to code externals with them as part of the cyclone team. Other developers of cyclone need to be praised, like Czaja, the original author, as I did steal quite a bit from cyclone into ELSE. I'd like to give a special thanks for Matt Barber for developing the "magic" in cyclone that I'm using here and also collaborating to ELSE with the objects: [float2bits], [brown~], [gray~], [perlin~], [pink~] and [blip~].
 
-Lucarda is an active tester and has helped countless times with compilation issues for windows and more. Seb shader is a tcl/tk master that helped me a lot with this (which I know next to nothing) and is responsible for the [keycode] object. 
+Lucarda helped countless times with testing and compilation issues for windows and more. Seb shader is a tcl/tk master that helped me a lot with this (which I know next to nothing) and is responsible for the [keycode] object. I stole scope3d~ from Ben Wesh. AI is also heloing me to code, but fuck them.
 
 Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of ELSE for other systems as well as ELSE for Camomile and libpd projects, which opened the way for PlugData by Timothy Schoen, who's doing an amazing jaw dropping job with this project based on camomile that includes ELSE. Timothy has also helped me fix many ELSE related issues and has made incredible and countless contributions to ELSE with fixes, improvements and new objects. Other folks from the PlugData gang are being very helpful like Alex Mitchell and Amy. PlugData is a fork of Pd with a revamped GUI and comes with the ELSE library. See: <https://github.com/timothyschoen/PlugData>.
 
 --------------------------------------------------------------------------
 
-## Current Object list (551 objects):
+## Current Object list (566 objects):
 
 #assorted
     else
 
 #gui
-    knob numbox~ drum.seq bicoeff pad messbox mtx.ctl biplot zbiplot pic colors function circle slider2d display out.mc~ out~ out4~ out8~ gain~ gain2~ button keyboard graph~ range.hsl multi.vsl spectrograph~ meter~ meter2~ meter4~ meter8~ note mix2~ mix4~ setdsp~ openfile scope~
+    knob numbox~ drum.seq bicoeff pad messbox mtx.ctl biplot zbiplot pic colors function circle slider2d display popmenu out.mc~ out~ out4~ out8~ gain~ gain2~ level~ button keyboard graph~ range.hsl multi.vsl spectrograph~ meter~ meter2~ meter4~ meter8~ note mix2~ mix4~ setdsp~ openfile scope~ scope3d~
 
 #time
     chrono datetime
@@ -142,7 +142,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     osc.route osc.format osc.parse osc.send osc.receive pd.link pd.link~
 
 #math functions
-    add add~ median avg mov.avg count gcd lcm frac.add frac.mul ceil ceil~ factor floor floor~ trunc trunc~ rint rint~ quantizer quantizer~ fold fold~ lastvalue mag mag~ sin~ wrap2 wrap2~ op op~
+    add add~ median avg mov.avg count gcd lcm frac.add frac.mul ceil ceil~ factor floor floor~ trunc trunc~ rint rint~ quantizer quantizer~ fold fold~ lastvalue mag mag~ sin~ tanh~ wrap2 wrap2~ op op~
 
 #math conversion
     hex2dec dec2hex bpm car2pol car2pol~ cents2ratio cents2ratio~ ms2samps ms2samps~ db2lin db2lin~ float2bits hz2rad lin2db lin2db~ deg2rad rad2deg pz2coeff coeff2pz rad2hz ratio2cents ratio2cents~ samps2ms samps2ms~ pol2car pol2car~ rescale recale~
@@ -154,7 +154,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     loop
 
 #audio multichannel tools
-    nchs~ sigs~ repeat~ select~ pick~ get~ sum~ merge~ unmerge~ slice~
+    nchs~ sigs~ repeat~ select~ pick~ get~ sum~ merge~ unmerge~ slice~ lace~ delace~
 
 #analog circuitry emulation
     circuit~
@@ -172,10 +172,10 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     allpass.rev~ comb.rev~ echo.rev~ mono.rev~ stereo.rev~ free.rev~ giga.rev~ plate.rev~ fdn.rev~
 
 #fx: filters
-    allpass.2nd~ allpass.filt~ bitnormal~ comb.filt~ lop.bw~ hip.bw~ biquads~ bandpass~ bandstop~ crossover~ bpbank~ bicoeff2 brickwall~ eq~ highpass~ highshelf~ lop2~ lowpass~ lowshelf~ mov.avg~ resonbank~ resonbank2~ vcf2~ resonant~ resonant2~ svfilter~
+    allpass.2nd~ allpass.filt~ bitnormal~ comb.filt~ lop.bw~ hip.bw~ biquads~ bandpass~ bandstop~ crossover~ bpbank~ bicoeff2 brickwall~ eq~ highpass~ highshelf~ lop2~ lowpass~ lowshelf~ mov.avg~ resonbank~ resonbank2~ resonant~ resonator~ resonator2~ svfilter~
 
 #sampling, playing, granulation
-    player~ gran.player~ pvoc.player~ pvoc.live~ batch.rec~ bach.write~ rec.file~ play.file~ tabplayer~ tabwriter~ sample~ sfload
+    player~ gran.player~ pvoc.player~ pvoc.live~ batch.rec~ bach.write~ rec.file~ play.file~ tabplayer~ tabwriter~ sample~ sfload sfinfo
 
 #synthesis: synthesizers
     pm2~ pm4~ pm6~ sfont~ sfz~ plaits~ synth~
@@ -187,7 +187,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     pluck~
 
 #synthesis: oscillators
-    cosine~ impulse~ impulse2~ parabolic~ pulse~ saw~ saw2~ oscbank~ oscbank2~ oscnoise~ sine~ square~ tri~ gaussian~ vsaw~ fm~ pm~ wavetable~ wt2d~ blip~ bl.osc~ bl.imp~ bl.imp2~ bl.saw~ bl.saw2~ bl.square~ bl.tri~ bl.vsaw~ bl.wavetable~ damp.osc~
+    cosine~ impulse~ impulse2~ parabolic~ pulse~ saw~ saw2~ oscbank~ oscnoise~ sine~ square~ tri~ gaussian~ vsaw~ fm~ pm~ wavetable~ wt2d~ blip~ bl.osc~ bl.imp~ bl.imp2~ bl.saw~ bl.saw2~ bl.square~ bl.tri~ bl.vsaw~ bl.wavetable~ damp.osc~
 
 #synthesis: chaotic, stochastic, noise
     white~ brown~ perlin~ crackle~ cusp~ fbsine~ fbsine2~ gbman~ gray~ henon~ ikeda~ latoocarfian~ lorenz~ lfnoise~ lincong~ logistic~ quad~ stepnoise~ rampnoise~ randpulse~ randpulse2~ standard~ pink~ xmod~ xmod2~ gendyn~ velvet~
@@ -199,7 +199,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     euclid fader~ autofade~ autofade.mc~ autofade2~ autofade2.mc~ balance~ pan~ pan.mc~ pan2~ pan4~ spread~ spread.mc~ rotate~ rotate.mc~ xfade~  xfade.mc~ xgate~ xgate.mc~ xgate2~ xgate2.mc~ xselect~ xselect.mc~ xselect2~ xselect2.mc~ mtx~ mtx.mc~
 
 #control: sequencers
-    score score2 pattern list.seq sequencer sequencer~ phaseseq~ impseq~ rec rec2
+    score score2 pattern list.seq sequencer sequencer~ phaseseq~ impseq~ rec rec2 lace delace
 
 #control: envelopes
     adsr~ asr~ decay~ decay2~ envelope~ envgen~
@@ -214,7 +214,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     lfo phasor pimp impulse pulse
 
 #control: triggers
-    above above~ bangdiv chance chance~ dust~ dust2~ gatehold~ gate2imp~ pimp~ pimpmul~ pulsecount~ pulsediv~ sh~ schmitt schmitt~ status status~ trig.delay~ trig.delay2~ toggleff~ timed.gate timed.gate~ match~ trig2bang trig2bang~ trighold~
+    above above~ bangdiv chance chance~ dust~ dust2~ gatehold gatehold~ gaterelease gaterelease~ bang2imp~ gate2imp~ pimp~ pimpmul~ pulsecount~ pulsediv~ sh~ schmitt schmitt~ status status~ trig.delay~ trig.delay2~ toggleff~ timed.gate timed.gate~ match~ trig2bang trig2bang~ trighold~
 
 #control: triggers, clock
     clock metronome metronome~ polymetro polymetro~ speed tempo tempo~
@@ -235,13 +235,13 @@ A submodule of ELSE by Porres (this is also by Porres).
     adsr.m~ lfo.m~ seq8.m~ vca.m~ vcf.m~ vco.m~
 
 #FX
-    chorus.m~ delay.m~ drive.m~ flanger.m~ phaser.m~ plate.rev.m~ rm.m~
+    chorus.m~ crusher.m~ delay.m~ drive.m~ flanger.m~ phaser.m~ plate.rev.m~ rm.m~
 
 #oscillators
     gendyn.m~ plaits.m~ pluck.m~ pm6.m~
 
 #tools
-    presets.m sig.m~
+    presets.m sig.m~ level.m~
 
 #extra
     brane.m~

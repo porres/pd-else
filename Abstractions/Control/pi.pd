@@ -18,7 +18,7 @@
 #X obj 115 140 route bang float symbol list;
 #X obj 103 95 else/lb 3;
 #X obj 159 446 t f f;
-#X obj 238 170 unpack;
+#X obj 238 170 unpack f s;
 #X connect 0 0 12 0;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;

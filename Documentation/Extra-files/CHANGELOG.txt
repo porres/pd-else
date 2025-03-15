@@ -13,6 +13,92 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 1.0-0 Release Candidate 12:
 ----------------------------------------------------------------------------
 
+
+**LIBRARY:**
+
+Breaking changes:
+- [format] outputs are now always symbols, before you could get float outputs. Also, we just have a simplified symbol output, no more lists or anythings. Hopefully I'll be able to get the 'list' output back, but it involved some bugs that I couldn't fix so I just removed it. You cannot use bangs and lists in secondary inlets no more (this is cylone/max bullshit we don't want here). Bang method was actually removed as well.
+- [mono] 1st argument is now 'glide' in ms. 
+- [sfont~] now uses 'mma' for bank selection (this alters how CC messages set the bank number)
+- [player~]/[play.file~] 'open' message does not play files right away anymore.
+- [envgen~] removed the 'maxsustain' parameter, use new [gaterelease~] or [gaterelease] objects. Removed the rightmost inlet, now a list input only sets the envelope and doesn't trigger it. Removed set message.
+- [dir] open without a symbol now opens a dialog instead of loading the else directory.
+- [knob] 'ticks' message is renamed to 'steps' and there is a new 'ticks' message that toggles showing ticks on and off. The 'start' message has been renamed to 'arcstart'. The 'outline' message has been renamed to 'square' for better clarity. Design changed a bit to make it like it is in PlugData (they won), so we now fill the whole background color when in 'square mode' and the knob circle has an 85% proportion when in this case. Now, by default, the GUI is in a new 'loadbang' mode but I don't think this will influence old patches, but I'm afraid that some old patches might behave weird since I added a lot of new stuff. I changed the 'load' message behaviour to not update the object (this can arguably be considered a bug fix).
+- [wavetable~], [bl.wavetable~] and [wt2d~]: set message now sets frequencies because of the MC support in [wt~] and [wt2d~], while there's a new 'table' method to set the table name
+- [gbman~]/[cusp~] list method is now for MC, old list method is now renamed back to an old 'coeffs' method.
+- [f2s~]/[float2sig~] default value is now 10 ms.
+- [op] now behvaes like [*~] where the smaller list wraps til reaching the size of the longer one
+- [merge]/[unmerge]/[group]: no more '-trim' flag, in [merge] now there's no more 'hot' argument and a bang now represents an empty list and inlets initialized with empty lists 
+- [list.seq] does not loop anymore by default
+- [pack2] no more support for anythings, also no more support for lists in secondary inlets and output has a list selector (I wanna make this more Pd like and not a silly clone from MAX's pak, cause fuck MAX).
+- [resonant~] now has 'q' as the default.
+- [resonant2~] has been removed
+- [vcf2~] has been renamed to [resonator2~]
+- [resonbank~]/[resonbank2~] have basically been deleted and replaced by new objects with the same name - they're now based on [resonator~] and [resonator2~], with a different design.
+- [oscbank~] now uses a 'partial' list and not a frequency list, so names/method changed. The freq input now defaults to '1' and this makes [oscbank2~] completely obsolete.
+- [oscbank2~] has been deleted.
+
+Enhancements/fixes/other changes:
+- [play.file~] added support for more file formats and even weblinks.
+- [sfload] added an outlet to output information, added threaded mode, added support for more file formats and even weblinks.
+- [sample~], [player~], [gran.player~] and [pvoc.player~] are now also based on [sfload], so they support more file formats.
+- [sample~] improve extension management with [file splitext]
+- [sample~] and [tabplayer~] now are automatically integrated in a way that [tabplayer~] is always aware of the sample rate of the file loaded in [sample~], so it automatically adjusts the reading speed if it is different that the one Pd is running. 
+- [numbox~]'s number display is not preceded by "~" anymore (that was kinda stupid)
+- [format] fixed issues where empty symbols and symbols with escaped spaces didn't work. Added support '%a' and '%A' type. Added support for an escaped space flag as well as the apostrophe (') flag. Improved and added support for length modifiers. Improved syntax check which prevents a crash. Improved documentation. 
+- [knob] added new 'param', 'var', 'savestate', 'read only', 'loadbang', "active", "reset" and 'ticks' methods. Added the possibility to type in number values and also modes on how to display number values, plus new send symbols for 'activity', 'typing' and 'enter'. New design more like plugdata. Changed some shortcuts to make it simpler and use 'double clicking' (this requires Pd 0.56-0 so it works in GOP).  Yup, a lot of shit here... properties were also significantly improved (I'm finally starting to learn how to deal with tcl/tk).
+- [synth~] fixed polyphony bug.
+- [metronome~] fixed bug with 'set' message.
+- [dir] is now an abstraction based on [file], which gets this out of my back and makes it more portable I hope :) there were some bugs that get fixed with this! Added a mechanism to show just files or just folders. Added new 'show' / 'hide' methods to show you the files/folders from the directory in a 'text' window. A click opens the dialog window to choose the directory. Added a new 'random' message to pick a random possibility from the directory.
+- [click] fixed regression bug where it stopped working.
+- [else] new 'dir' method to output ELSE's binary directory in a new rightmost outlet (since this functionality was removed from [dir]). The print information also includes the directory.
+- [pic] added zoom capability finally (thanks to tim schoen) and added offset message (also thanks to tim).
+- [store] added 'sort' functionality.
+- [scales] fixed octave number argument. Added functionality to allow octave number as part of the note symbol.
+- [mono] added 'glide' parameter, as in [mono~]. 
+- [pluck~] fixed list input. 
+- [rescale]/[rescale~] added a "reverse log" mode.
+- [limit] added a new second ignore mode. 
+- [graph~] added an external source input for plotting the graph and a 'clear' message. 
+- [canvas.setname], added a new argument for "abstraction mode" and methods to set name, depth (and mode). 
+- [midi.learn]  added a new argument for "abstraction mode", fixed 'dirty' message sent to parent. 
+- [brickwall~] fixed initialization.
+- [list.seq] added a loop mode and a 2nd outlet to send a bang when the sequence is done
+- [delete] fixed index for positive numbers
+- [dust~] added 'list', 'set' and '-mc' flag for managing Multichannel.
+- Tim made improvements to build on rpi/BSD and fixed lots of minor issues.
+- Thanks to Tim we have a whole new technique for band limited oscillators; [bl.saw~], [bl.saw2~], [bl.vsaw~], [bl.square~], [bl.tri~], [bl.imp~] and [bl.imp2~] have been redesigned to implement [elliptic blep](https://github.com/Signalsmith-Audio/elliptic-blep), which should provide better anti-aliasing.
+- updated to latest [plua].
+- [parabolic~] now uses and internal wavetable for more efficiency
+- [resonant~] added 'bw' resonance mode.
+- [lowpass~]/[highpass~] added 't60' resonance mode.
+- [envgen~] fixed a bug (actually a misconception) where ramps started one sample earlier. Added a possibility to set time in samples instead of ms. Maximum number of lines is now 1024
+- Added MC support to [gatehold~], [vca.m~], [gain2~], [asr~], [envgen~], [bl.saw~], [bl.saw2~], [bl.vsaw~], [bl.square~], [bl.tri~], [bl.imp~], [bl.imp2~], [imp2~], [tri~], [saw~], [saw2~], [vsaw~], [square~], [pulse~], [parabolic~], [gaussian~], [wavetable~], [wt2d~], [randpulse~], [randpulse2~], [stepnoise~], [rampnoise~] [pink~], [gbamn~], [cusp~], [gray~] and [white~].
+- Also added midi input and soft sync to [imp2~], [tri~], [saw~], [saw2~], [vsaw~], [square~], [pulse~], [gaussian~] and [parabolic~].
+- [wavetable~ and [wt2d~] gained args to set xfading
+- M.E.R.D.A: Added MIDI-LEARN for all modules (this is only for the knobs). Replaced some number boxes that were attached to knobs by an internal number display mechanism (new feature from knob). Improved interface of [gendyn.m~], preset/symbol name fixes to [flanger.m~]. Added MC support to [vca.m~]. Changed some objects to include the new [popmenu] GUI. Added some new modules (see below).
+- 16 new objects: [bang2imp~], [lace], [delace], [lace~], [delace~], [gatehold], [gaterelease~], [gaterelease], [popmenu], [scope3d~], [tanh~], [resonator~], [sfinfo], [level~] plus [crusher.m~], and [level.m~] MERDA Modules.
+
+Objects count: total of 566 (315 signal objects [130 of which are MC aware] and 251 control objects)! 
+
+- 319 coded objects (207 signal objects  / 112 control objects)
+- 225 abstractions objects (87 signal objects / 138 control objects)
+- 22 MERDA modular abstractions (21 audio / 1 control)
+
+--------------------------------------
+
+**TUTORIAL:**
+- New examples and revisions to add the new objects, features and breaking changes in ELSE. 
+- New chapter on Modal Synthesis
+- Total number of examples is now 533!
+
+--------------------------------------
+
+
+----------------------------------------------------------------------------
+1.0-0 Release Candidate 12:
+----------------------------------------------------------------------------
+
 **LIBRARY:**
 
 Breaking changes:
