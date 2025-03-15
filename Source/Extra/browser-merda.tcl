@@ -22,7 +22,7 @@ proc category_merda_menu::load_menutree {} {
             {oscillators
                 {gendyn.m~ plaits.m~ pluck.m~ pm6.m~}}
             {tools
-                {presets.m sig.m~}}
+                {presets.m sig.m~ level.m~}}
             {extra
                 {brane.m~}}
         }
