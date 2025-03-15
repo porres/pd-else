@@ -22,7 +22,7 @@
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -91,7 +91,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -142,8 +142,6 @@
 #X obj 339 242 else/float2sig~ 10;
 #X text 29 240 see also:;
 #X obj 25 266 else/xfade~;
-#X obj 178 137 else/oscbank2~ -mc -freq 440 880;
-#X obj 233 170 else/oscbank2~ -mc -freq 660 1320;
 #X text 75 87 [xfade.mc~] crossfades between two multichannel sources. By default \, it performs equal power crossfade \, but can also do linear.;
 #N canvas 736 171 446 278 lin 0;
 #X floatatom 245 143 9 0 0 0 - - - 0;
@@ -154,7 +152,7 @@
 #X msg 78 132 lin \$1;
 #X obj 78 103 tgl 19 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X text 43 41 The '-lin' flag or 'lin' message sets to linear crossfade.;
-#X obj 245 81 else/knob 50 -1 1 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0;
+#X obj 245 81 else/knob 50 -1 1 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0;
 #X obj 134 175 else/xfade.mc~ -lin;
 #X connect 0 0 9 2;
 #X connect 1 0 9 0;
@@ -168,9 +166,11 @@
 #X text 210 339 - non zero sets to linear crossfade;
 #X obj 3 448 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
 #X text 189 459 -lin: sets crossfade to linear;
+#X obj 178 137 else/sine~ -mc 440 880;
+#X obj 233 170 else/sine~ -mc 660 1320;
 #X connect 22 0 23 0;
 #X connect 23 0 36 0;
 #X connect 28 0 27 0;
 #X connect 36 0 28 2;
-#X connect 39 0 28 0;
-#X connect 40 0 28 1;
+#X connect 45 0 28 0;
+#X connect 46 0 28 1;

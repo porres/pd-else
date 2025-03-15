@@ -1,4 +1,4 @@
-#N canvas 391 23 559 597 10;
+#N canvas 391 38 559 597 10;
 #X obj 197 160 else/meter4~;
 #X obj 2 566 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0 14 #dcdcdc #404040 0;
 #X obj 2 364 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13 #dcdcdc #000000 0;
@@ -248,7 +248,7 @@
 #X restore 314 142 pd;
 #X obj 138 277 else/out.mc~;
 #X text 77 21 The first inlet takes and outputs multichannel signals.;
-#X obj 138 70 else/oscbank2~ -mc -freq 200 300 400 500;
+#X obj 138 70 else/sine~ -mc 200 300 400 500;
 #X connect 0 0 2 0;
 #X connect 4 0 0 0;
 #X restore 427 301 pd multichannel;

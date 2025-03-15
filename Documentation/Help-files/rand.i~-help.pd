@@ -1,4 +1,4 @@
-#N canvas 370 57 561 561 10;
+#N canvas 486 66 561 561 10;
 #X obj 2 3 cnv 15 301 42 empty empty rand.i~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -412,8 +412,8 @@
 #X floatatom 176 122 5 0 4 0 - - - 0;
 #X text 29 25 The -ch flag or message sets the number of output channels. This is only meaningful if you have a single channel input., f 43;
 #X text 316 28 If you have a multichannel connection in the trigger inlet \, [rand.i~] generates a signal with the same number of channels and the 'ch' message or flag is meaningless., f 44;
-#X obj 397 119 else/oscbank2~ -mc -freq 0.25 0.5 1 2;
 #X obj 397 150 else/op~ >;
+#X obj 397 119 else/sine~ -mc 0.25 0.5 1 2;
 #X connect 1 0 2 0;
 #X connect 2 0 0 0;
 #X connect 4 0 8 0;
@@ -422,8 +422,8 @@
 #X connect 8 0 7 0;
 #X connect 9 0 8 0;
 #X connect 10 0 9 0;
-#X connect 13 0 14 0;
-#X connect 14 0 1 0;
+#X connect 13 0 1 0;
+#X connect 14 0 13 0;
 #X restore 435 245 pd multichannel;
 #X text 51 87 [rand.i~] generates random integer values for a given range when triggered. A trigger happens at positive to negative or negative to positive transitions. Use the seed message if you want a reproducible output. There's support for multichannels., f 70;
 #X text 147 280 signal(s);
