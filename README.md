@@ -214,7 +214,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     lfo phasor pimp impulse pulse
 
 #control: triggers
-    above above~ bangdiv chance chance~ dust~ dust2~ gatehold gatehold~ gaterelease gaterelease~ bang2imp~ gate2imp~ pimp~ pimpmul~ pulsecount~ pulsediv~ sh~ schmitt schmitt~ status status~ trig.delay~ trig.delay2~ toggleff~ timed.gate timed.gate~ match~ trig2bang trig2bang~ trighold~
+    above above~ bangdiv chance chance~ dust~ dust2~ gatehold gatehold~ gaterelease gaterelease~ float2imp~ gate2imp~ pimp~ pimpmul~ pulsecount~ pulsediv~ sh~ schmitt schmitt~ status status~ trig.delay~ trig.delay2~ toggleff~ timed.gate timed.gate~ match~ trig2bang trig2bang~ trighold~
 
 #control: triggers, clock
     clock metronome metronome~ polymetro polymetro~ speed tempo tempo~

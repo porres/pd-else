@@ -161,14 +161,14 @@
 #X obj 67 211 nbx 8 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 67 249 vsl 18 128 -1 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 178 75 bng 16 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
-#X obj 178 107 else/impseq~;
 #X obj 67 144 else/randpulse~ 0.5;
 #X text 38 17 An impulse into its right inlet forces [randpulse~] to generate a new random value and restart the cycle., f 38;
+#X obj 178 107 else/float2imp~;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
-#X connect 3 0 4 0;
-#X connect 4 0 5 2;
-#X connect 5 0 0 0;
+#X connect 3 0 6 0;
+#X connect 4 0 0 0;
+#X connect 6 0 4 2;
 #X restore 488 201 pd sync;
 #X text 147 287 seed <float>;
 #X text 32 154 see also:;

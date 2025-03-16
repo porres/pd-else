@@ -28,9 +28,8 @@
 #X obj 50 43 inlet;
 #X obj 76 363 tabwrite re2_\$0;
 #X obj 43 335 tabwrite im1_\$0;
-#X obj 50 182 expr cos($f1) \; sin($f1) \; cos($f1 * 2) \; sin($f1
-* 2) \; $f2;
-#N canvas 11 46 935 668 loop 0;
+#X obj 50 182 expr cos($f1) \; sin($f1) \; cos($f1 * 2) \; sin($f1 * 2) \; $f2;
+#N canvas 64 46 935 668 loop 0;
 #X obj 106 192 until;
 #X obj 144 241 + 1;
 #X msg 124 216 0;
@@ -49,7 +48,6 @@
 #X obj 259 583 outlet;
 #X obj 483 144 expr table_size_\$0 - $f1;
 #X obj 483 265 f;
-#X obj 483 379 expr pow($f1 \, 0.4);
 #X obj 106 241 f;
 #X obj 483 296 trigger f f;
 #X obj 106 63 expr rint(table_size_\$0 * 0.98);
@@ -57,44 +55,44 @@
 #X text 556 407 MIDI 16;
 #X obj 483 498 expr $f1 * (2 * -pi_\$0) / 44100;
 #X obj 106 465 expr $f1 * (2 * -pi_\$0) / 44100;
-#X obj 86 33 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 86 33 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 106 298 expr (($f1 + 1) * (midi_range_\$0 / $f2)) + 16;
-#X connect 0 0 19 0;
-#X connect 1 0 19 1;
-#X connect 2 0 19 1;
+#X obj 483 379 pow 0.4;
+#X connect 0 0 18 0;
+#X connect 1 0 18 1;
+#X connect 2 0 18 1;
 #X connect 3 0 10 0;
 #X connect 3 1 16 0;
 #X connect 4 0 17 0;
 #X connect 5 0 17 1;
 #X connect 6 0 17 1;
-#X connect 7 0 27 0;
+#X connect 7 0 26 0;
 #X connect 7 1 8 0;
 #X connect 8 0 15 0;
-#X connect 9 0 25 0;
+#X connect 9 0 24 0;
 #X connect 10 0 0 0;
 #X connect 10 1 2 0;
-#X connect 10 2 27 1;
+#X connect 10 2 26 1;
 #X connect 11 0 4 0;
 #X connect 11 1 6 0;
 #X connect 11 2 12 1;
-#X connect 12 0 18 0;
-#X connect 13 0 21 0;
+#X connect 12 0 27 0;
+#X connect 13 0 20 0;
 #X connect 16 0 8 1;
 #X connect 16 0 11 0;
 #X connect 17 0 5 0;
-#X connect 17 0 20 0;
-#X connect 18 0 22 0;
-#X connect 19 0 1 0;
-#X connect 19 0 7 0;
-#X connect 20 0 12 0;
-#X connect 20 1 15 0;
-#X connect 21 0 3 0;
-#X connect 22 0 24 0;
+#X connect 17 0 19 0;
+#X connect 18 0 1 0;
+#X connect 18 0 7 0;
+#X connect 19 0 12 0;
+#X connect 19 1 15 0;
+#X connect 20 0 3 0;
+#X connect 21 0 23 0;
+#X connect 23 0 14 0;
 #X connect 24 0 14 0;
-#X connect 25 0 14 0;
-#X connect 26 0 21 0;
-#X connect 27 0 9 0;
+#X connect 25 0 20 0;
+#X connect 26 0 9 0;
+#X connect 27 0 21 0;
 #X restore 50 143 pd loop;
 #X connect 0 0 1 0;
 #X connect 0 0 2 0;
@@ -154,13 +152,9 @@
 #N canvas 67 23 1040 236 Z-Transform 0;
 #X obj 45 19 inlet;
 #X obj 45 200 outlet;
-#X obj 45 164 expr sqrt($f1*$f1 + $f2*$f2) / sqrt($f3*$f3 + $f4*$f4)
-;
+#X obj 45 164 expr sqrt($f1*$f1 + $f2*$f2) / sqrt($f3*$f3 + $f4*$f4);
 #X text 340 44 (a1) a2 (b1) b2 b3;
-#X obj 45 74 expr $f4 + ($f5 * re1_\$0[$f1]) + ($f6 * re2_\$0[$f1])
-\; ($f5 * im1_\$0[$f1]) + ($f6 * im2_\$0[$f1]) \; 1 - ($f2 * re1_\$0[$f1])
-- ($f3 * re2_\$0[$f1]) \; 0 - ($f2 * im1_\$0[$f1]) - ($f3 * im2_\$0[$f1])
-;
+#X obj 45 74 expr $f4 + ($f5 * re1_\$0[$f1]) + ($f6 * re2_\$0[$f1]) \; ($f5 * im1_\$0[$f1]) + ($f6 * im2_\$0[$f1]) \; 1 - ($f2 * re1_\$0[$f1]) - ($f3 * re2_\$0[$f1]) \; 0 - ($f2 * im1_\$0[$f1]) - ($f3 * im2_\$0[$f1]);
 #X text 428 75 b1 + (b2 * re1) + (b3 * re2) = reI;
 #X text 463 90 (b2 * im1) + (b3 * im2) = imI;
 #X text 435 105 1 - (a1 * re1) + (a2 * re2) = reII;
@@ -174,8 +168,7 @@
 #X obj 211 18 inlet;
 #X text 92 20 index;
 #X text 260 18 coefficientes;
-#X obj 698 68 cnv 15 320 90 empty empty empty 20 12 0 14 -233017 -66577
-0;
+#X obj 698 68 cnv 15 320 90 empty empty empty 20 12 0 14 #e0e0e0 #404040 0;
 #X text 728 97 H(z) = b1 + (b2 * z^-1) + (b3 * z^-2);
 #X text 768 103 _________________________________;
 #X text 785 119 1 + (a1 * z^-1) + (a2 * z^-2);
@@ -237,7 +230,7 @@
 #X obj 93 30 r \$0-Q;
 #X obj 27 29 r \$0-freq;
 #X obj 27 77 changed;
-#X obj 27 56 bicoeff2 highpass 500 5;
+#X obj 27 56 bicoeff2 lowpass 500 5;
 #X connect 1 0 5 0;
 #X connect 2 0 1 0;
 #X connect 2 1 6 1;
@@ -250,18 +243,12 @@
 #X connect 9 0 3 0;
 #X connect 10 0 9 0;
 #X restore 114 66 pd freq-response;
-#X obj 101 100 cnv 15 848 400 empty empty empty 18 9 1 16 -262144 -1
-0;
-#X obj 434 109 cnv 15 15 15 empty empty Kilohertz 18 9 1 16 -262144
--1 0;
-#X obj 108 148 cnv 15 798 85 empty empty empty 20 12 0 14 -257983 -66577
-0;
-#X obj 108 232 cnv 15 798 85 empty empty empty 20 12 0 14 -241340 -66577
-0;
-#X obj 108 318 cnv 15 798 85 empty empty empty 20 12 0 14 -257983 -66577
-0;
-#X obj 108 403 cnv 15 798 85 empty empty empty 20 12 0 14 -241340 -66577
-0;
+#X obj 101 100 cnv 15 848 400 empty empty empty 18 9 1 16 #fcfcfc #000000 0;
+#X obj 434 109 cnv 15 15 15 empty empty Kilohertz 18 9 1 16 #fcfcfc #000000 0;
+#X obj 108 148 cnv 15 798 85 empty empty empty 20 12 0 14 #f8f8f8 #404040 0;
+#X obj 108 232 cnv 15 798 85 empty empty empty 20 12 0 14 #e8e8ec #404040 0;
+#X obj 108 318 cnv 15 798 85 empty empty empty 20 12 0 14 #f8f8f8 #404040 0;
+#X obj 108 403 cnv 15 798 85 empty empty empty 20 12 0 14 #e8e8ec #404040 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 77 170 1;
 #X restore 226 148 graph;
@@ -336,10 +323,9 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 800 170 1;
 #X restore 107 318 graph;
-#X obj 103 132 cnv 15 810 15 empty empty empty 18 9 1 16 -262144 -1
-0;
+#X obj 103 132 cnv 15 810 15 empty empty empty 18 9 1 16 #fcfcfc #000000 0;
 #X text 911 478 -24;
-#X obj 907 309 cnv 15 15 15 empty empty dB 18 9 1 17 -262144 -1 0;
+#X obj 907 309 cnv 15 15 15 empty empty dB 18 9 1 17 #fcfcfc #000000 0;
 #X text 911 393 -12;
 #X text 911 223 12;
 #X text 910 140 24;
@@ -361,24 +347,19 @@
 #X text 215 129 0.05;
 #X text 115 129 0.02;
 #X coords 0 -1 1 1 850 402 1 100 100;
-#X restore 21 198 pd;
-#X obj 506 31 hsl 140 17 20 20000 1 0 empty \$0-freq-set empty 5 9
-0 10 -228856 -1 -1 6477 0;
-#X obj 568 61 hsl 128 17 0.1 10 1 0 empty \$0-Q-set empty 5 9 0 10
--228856 -1 -1 10788 0;
-#X obj 565 83 nbx 8 14 -1e+37 1e+37 0 0 \$0-Q empty empty 0 -8 0 10
--228856 -1 -1 5 256;
-#X obj 503 64 nbx 5 14 -1e+37 1e+37 0 0 \$0-freq empty empty 0 -8 0
-10 -228856 -1 -1 500 256;
-#X obj 437 44 noise~;
-#X text 514 31 Resonant Frequency;
-#X text 594 62 Q/Resonance;
-#X obj 473 88 highpass~;
-#X text 67 79 This is the [highpass~] object from ELSE \, it is a highpass
-resonant filter and much like [lowpass~] \, but it's a highpass instead.
-Check its help file for more details., f 50;
-#X obj 737 19 declare -path else;
-#X obj 473 122 out~;
+#X restore 20 219 pd;
+#X obj 552 41 hsl 140 17 20 20000 1 0 empty \$0-freq-set empty 5 9 0 10 #dcdcdc #000000 #000000 0 0;
+#X obj 615 71 hsl 128 17 0.1 10 1 0 empty \$0-Q-set empty 5 9 0 10 #dcdcdc #000000 #000000 0 0;
+#X obj 612 93 nbx 8 14 -1e+37 1e+37 0 0 \$0-Q empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 549 74 nbx 5 14 -1e+37 1e+37 0 0 \$0-freq empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 487 54 noise~;
+#X text 560 41 Resonant Frequency;
+#X text 641 72 Q/Resonance;
+#X obj 523 98 lowpass~;
+#X text 54 99 Lowpass resonant filters are widely used in electronic music. Most of the time when it's not specified what type of resonant filter it is \, we're talking about a lowpass resonant filter. This is the [lowpass~] object from the ELSE library \, check its help file for more details., f 56;
+#X obj 748 16 declare -path else;
+#X obj 523 132 out~;
+#X text 54 23 A lowpass resonant filter has a boost at the cuttof frequency. And here's how it compares to the [bp~] and [vcf~] objects \, since it's as if it is a constant skirt filter and the others are constant gain. This filter can also be set with bandwith and 't60' for the resonance.;
 #X connect 1 0 4 0;
 #X connect 2 0 3 0;
 #X connect 3 0 8 2;

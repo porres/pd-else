@@ -90,7 +90,7 @@
 #X obj 267 217 else/sig2float~;
 #X text 221 132 <= reset =>;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -159,7 +159,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -194,7 +194,6 @@
 #X msg 339 132 0.75;
 #X msg 307 132 1;
 #X msg 379 132 0.5;
-#X obj 307 164 else/impseq~;
 #X obj 267 193 else/tri~ 0.25;
 #X text 509 382 The "phase sync" inlet is quite different from the "phase offset" inlet. They are completely independent!, f 43;
 #X msg 513 176 soft \$1;
@@ -202,6 +201,7 @@
 #X text 472 72 Soft sync is also possible with the '-soft' flag or the "soft" message \, where it alternates between positive and negative frequencies and sounds less harsh.;
 #X text 38 15 The second inlet resets the phase ands behaves in the same way for control data as objects like [osc~] and [phasor~] in Pd. A number input resets the oscillator and restarts the cycle with an initial phase that corresponds to the input number \, so the internal phase is synced to the given value. The phase values are from 0 to 1 and values beyond that are wrapped within this range. The control message reset is meaningful for LFOs.;
 #X text 40 370 Additionally \, you can reset the oscillator with an impulse signal. Inputs that are > 0 and <= 1 reset the phase Pd expects an impulse signal for syncing. The impulse values need to be > 0 and <= 1 (otherwise ignored). Because phase is cyclical \, the value of 1 represents the "phase 0" of the cycle \, where the impulse occurs. Send it impulses above and check the result. Use a multiplier to reset to another phase value.;
+#X obj 307 164 else/float2imp~;
 #X connect 2 0 6 0;
 #X connect 5 0 1 0;
 #X connect 6 0 5 1;
@@ -213,14 +213,14 @@
 #X connect 14 0 11 1;
 #X connect 15 0 11 1;
 #X connect 17 0 16 0;
-#X connect 20 0 24 0;
-#X connect 21 0 24 0;
-#X connect 22 0 24 0;
-#X connect 23 0 24 0;
-#X connect 24 0 25 1;
-#X connect 25 0 17 0;
-#X connect 27 0 5 0;
-#X connect 28 0 27 0;
+#X connect 20 0 31 0;
+#X connect 21 0 31 0;
+#X connect 22 0 31 0;
+#X connect 23 0 31 0;
+#X connect 24 0 17 0;
+#X connect 26 0 5 0;
+#X connect 27 0 26 0;
+#X connect 31 0 24 1;
 #X restore 493 186 pd sync;
 #N canvas 488 174 713 332 phase 0;
 #X obj 438 189 else/out~;

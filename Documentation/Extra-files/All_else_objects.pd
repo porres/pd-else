@@ -1,6 +1,6 @@
-#N struct 1004-cell float x float y float cellsize float color;
-#N struct 1006-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
-#N struct 1062-slot float x float y float slotsize float color float width float bordercolor;
+#N struct 1008-cell float x float y float cellsize float color;
+#N struct 1010-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
+#N struct 1066-slot float x float y float slotsize float color float width float bordercolor;
 #N canvas 549 38 541 693 10;
 #N canvas 240 38 975 767 GUI 0;
 #X text 48 -899 [biplot];
@@ -423,10 +423,10 @@
 #X obj 61 769 else/trig2bang;
 #X obj 61 819 else/trighold~;
 #X obj 61 354 else/pimpmul~;
-#X obj 61 793 else/bang2imp~;
 #X obj 61 230 else/gatehold;
 #X obj 61 253 else/gaterelease~;
 #X obj 61 278 else/gaterelease;
+#X obj 61 793 else/float2imp~;
 #X restore 295 570 pd Control(Triggers);
 #N canvas 744 219 235 261 Control(Triggers/Clocks) 0;
 #X obj 67 86 else/tempo;

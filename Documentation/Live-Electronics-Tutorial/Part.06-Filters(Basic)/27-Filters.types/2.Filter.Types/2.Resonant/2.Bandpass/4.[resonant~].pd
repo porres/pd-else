@@ -357,12 +357,12 @@
 #X text 733 95 Q/Resonance;
 #X obj 754 14 declare -path else;
 #X obj 599 156 out~;
-#X text 93 23 This is a distinct type of bandpass filter. We've seen "constant gain" filters \, where the maximum amplitude is always at 0 dB. But the [resonant~] object from ELSE \, on the other hand \, is a "constant skirt" filter \, which means it'll have a gain boost at the resonant frequency depending on the resonance parameter., f 56;
 #X obj 599 122 resonant~, f 12;
-#X text 93 121 It's common to distinguish "constant gain" as "bandpass" and "constant skirt" as "resonant" \, even though both are bandpass and resonant by definition. This is because this filter can actually resonate to an impulse in the reverberation/resonating sense \, as we'll see later., f 56;
+#X text 73 20 This is a distinct type of bandpass filter. We've seen "constant gain" filters \, where the maximum amplitude is always at 0 dB. But the [resonant~] object from ELSE \, on the other hand \, is a "constant skirt" filter \, which means it'll have a gain boost at the resonant frequency depending on the resonance parameter. Besides Q \, you can also set the resonance parameter from a bandwidth value., f 64;
+#X text 73 128 It's common to distinguish "constant gain" as "bandpass" and "constant skirt" as "resonant" \, even though both are bandpass and resonant by definition. This is because this filter can actually resonate to an impulse in the reverberation/resonating sense \, as we'll see later. It also has a 't60' parameter for the decay/resonating time instead of Q (more details about this also later)., f 64;
 #X connect 1 0 4 0;
 #X connect 2 0 3 0;
-#X connect 3 0 11 2;
-#X connect 4 0 11 1;
-#X connect 5 0 11 0;
-#X connect 11 0 9 0;
+#X connect 3 0 10 2;
+#X connect 4 0 10 1;
+#X connect 5 0 10 0;
+#X connect 10 0 9 0;

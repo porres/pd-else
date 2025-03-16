@@ -1,14 +1,11 @@
-#N canvas 331 25 903 548 12;
+#N canvas 331 38 903 548 12;
 #X declare -path else;
-#X obj 659 175 impseq~;
-#X obj 33 358 cnv 15 798 148 empty empty empty 20 12 0 14 #dcdcdc #404040
-0;
+#X obj 33 358 cnv 15 798 148 empty empty empty 20 12 0 14 #dcdcdc #404040 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-Amp 2048 float 0;
 #X coords 0 1 2048 0 800 150 1 0 0;
 #X restore 32 357 graph;
-#X obj 659 143 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
-#000000 #000000;
+#X obj 659 143 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #N canvas 363 130 687 574 IR 0;
 #X msg 279 185 stop;
 #X msg 219 187 start;
@@ -24,8 +21,7 @@
 #X obj 158 101 > 0;
 #X obj 159 308 log 2;
 #X obj 159 337 expr pow(2 \, $i1 + 1);
-#X text 355 56 Records IR \, find power of two larger than its length
-to resize the table., f 36;
+#X text 355 56 Records IR \, find power of two larger than its length to resize the table., f 36;
 #X obj 159 253 ms2samps;
 #N canvas 81 160 548 498 FFT 0;
 #X obj 269 118 bang~;
@@ -135,34 +131,18 @@ to resize the table., f 36;
 #X obj 659 203 mov.avg~ -size 24;
 #X text 682 142 <= Record/Analyze;
 #X text 801 178 <= number of samples, f 10;
-#X text 64 16 Now we'll use the same technique of prforming a FFT of
-the Impulse Response to get the frequency response of the filer. We're
-now using the [mov \, avg~] object that we've also already used before
-to average up to 24 samples., f 76;
+#X text 64 16 Now we'll use the same technique of prforming a FFT of the Impulse Response to get the frequency response of the filer. We're now using the [mov \, avg~] object that we've also already used before to average up to 24 samples., f 76;
 #X text 656 86 Set the number of samples and analyze:, f 20;
 #X text 29 511 0 hz;
 #X text 822 510 Nyquist;
 #X text 426 511 1/2 Nyquist;
-#X text 64 167 So you hopefully see the pattern now. The number of
-zeros for an average of even samples are half that number \, whereas
-for an odd average of 'n' samples it's "n-1 / 2"!, f 76;
-#X text 64 64 See that for an average of two we get the same as before
-\, a dip at Nyquist. An average of three has a zero at 2/3 of Nyquist
-as we've also seen in the last example. An average of four samples
-has a Zero at half the Nyquist and another zero at Nyquist. Hence \,
-an even number of samples always have a zero at Nyquist. An average
-of five samples has a Zero at 2/5 of Nyquist and another at 4/5. An
-average of six have Zeros at 2/6 (or 1/3) \, 4/6 (or 2/3) and 6/6 (or
-1) times Nyquist., f 76;
-#X text 64 214 Zeros are placed at Nyquist and even divisions of Nyquist
-for averages of even numbers. For an 'n' odd number average \, Zeros
-are at fractions that go from 2/n \, 4/n \, 6/n and so on until reaching
-n-1/n., f 76;
-#X text 64 265 Try it on the right and see how the frequency response
-looks below. Note that the frequency response now is linearly rather
-than logarithmic., f 76;
-#X connect 0 0 8 0;
-#X connect 3 0 0 0;
-#X connect 6 0 8 1;
-#X connect 8 0 4 0;
-#X connect 8 0 5 0;
+#X text 64 167 So you hopefully see the pattern now. The number of zeros for an average of even samples are half that number \, whereas for an odd average of 'n' samples it's "n-1 / 2"!, f 76;
+#X text 64 64 See that for an average of two we get the same as before \, a dip at Nyquist. An average of three has a zero at 2/3 of Nyquist as we've also seen in the last example. An average of four samples has a Zero at half the Nyquist and another zero at Nyquist. Hence \, an even number of samples always have a zero at Nyquist. An average of five samples has a Zero at 2/5 of Nyquist and another at 4/5. An average of six have Zeros at 2/6 (or 1/3) \, 4/6 (or 2/3) and 6/6 (or 1) times Nyquist., f 76;
+#X text 64 214 Zeros are placed at Nyquist and even divisions of Nyquist for averages of even numbers. For an 'n' odd number average \, Zeros are at fractions that go from 2/n \, 4/n \, 6/n and so on until reaching n-1/n., f 76;
+#X text 64 265 Try it on the right and see how the frequency response looks below. Note that the frequency response now is linearly rather than logarithmic., f 76;
+#X obj 659 175 float2imp~;
+#X connect 2 0 19 0;
+#X connect 5 0 7 1;
+#X connect 7 0 3 0;
+#X connect 7 0 4 0;
+#X connect 19 0 7 0;

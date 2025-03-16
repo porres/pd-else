@@ -39,14 +39,14 @@
 #X obj 753 68 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 753 40 loadbang;
 #X obj 753 95 metro 500;
-#X obj 753 123 bang2imp~;
 #X text 730 181 ms;
 #X obj 753 149 detect~ ms;
 #X obj 753 180 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
-#X text 447 136 The [bang2imp~] object from ELSE is based on [vline~] so it can generate impulses with sample accuracy., f 36;
 #X text 48 64 And here we have yet another example about Pd's inherent control rate restriction., f 45;
 #X text 448 225 The issue comes when we use an object like [trig2bang~] (from ELSE) \, which does an opposite conversion and generates a bang when it receives an impulse. There's a time precision loss because the bang is always in sync with audio block transitions! So note how [timer] does not measure a perfect 500 ms then., f 55;
 #X text 435 536 The same unperfect result is given by Pd's native [threshold~] \, which reports bangs when the signal exceeds a threshold value \, and another when it falls back below., f 63;
+#X obj 753 123 float2imp~;
+#X text 447 136 The [float2imp~] object from ELSE is based on [vline~] so it can generate impulses with sample accuracy., f 36;
 #X connect 0 0 16 0;
 #X connect 1 0 0 0;
 #X connect 2 0 33 0;
@@ -77,6 +77,6 @@
 #X connect 35 0 6 0;
 #X connect 36 0 38 0;
 #X connect 37 0 36 0;
-#X connect 38 0 39 0;
-#X connect 39 0 41 0;
-#X connect 41 0 42 0;
+#X connect 38 0 45 0;
+#X connect 40 0 41 0;
+#X connect 45 0 40 0;

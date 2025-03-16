@@ -9,7 +9,7 @@
 #X text 360 376 see also [resonbank2~] for a bank of [resonator2~] filters., f 35;
 #X text 58 86 The ELSE library has a few filterbank objects. These are banks of filters in parallel. For instance \, we have [bpbank~] is a bank made of [bandpass~] objects in parallel., f 41;
 #X obj 496 272 out~;
-#X obj 710 142 brown~;
+#X obj 603 146 brown~;
 #X obj 496 143 sig~ 400;
 #X obj 496 184 resonbank~ -ratio 1 2.1 2.7 3.8 -decay 1000 205 1000 196 -amp 1 0.1 0.9 0.1, f 31;
 #X text 397 44 Other examples include [resonbank~] and [resonbank2~] \, which are composed \, rspectively \, of [resonator~] and [resonator2~] objects in parallel. The purpose is different than [bpbank~] as these are more suited for sound synthesis as we'll see later.;

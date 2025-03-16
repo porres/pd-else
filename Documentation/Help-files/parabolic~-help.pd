@@ -130,7 +130,7 @@
 #X msg 338 133 0.75;
 #X msg 306 133 1;
 #X msg 378 133 0.5;
-#X obj 306 165 else/impseq~;
+#X obj 306 165 else/float2imp~;
 #X connect 0 0 21 1;
 #X connect 2 0 1 0;
 #X connect 3 0 21 1;
