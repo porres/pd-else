@@ -16,19 +16,7 @@ typedef struct _impseq{
     int         x_bang;
 }t_impseq;
 
-static void impseq_list(t_impseq *x, t_symbol *s, int ac, t_atom * av){
-    s = NULL;
-    if(ac == 0){
-        x->x_bang = 1;
-        return;
-    }
-    if(x->x_length != ac){
-        x->x_impseq = (float*)malloc(MAXLEN * sizeof(float));
-        x->x_length = ac;
-    }
-    for(int i = 0; i < ac; i++)
-        x->x_impseq[i] = atom_getfloatarg(i, ac, av);
-    x->x_index = 0;
+static void impseq_bang(t_impseq *x){
     x->x_bang = 1;
 }
 
@@ -114,7 +102,7 @@ void impseq_tilde_setup(void){
     impseq_class = class_new(gensym("impseq~"), (t_newmethod)impseq_new,
         (t_method)impseq_free, sizeof(t_impseq), 0, A_GIMME, 0);
     class_addmethod(impseq_class, nullfn, gensym("signal"), 0);
-    class_addlist(impseq_class, (t_method)impseq_list);
+    class_addbang(impseq_class, (t_method)impseq_bang);
     class_addmethod(impseq_class,(t_method)impseq_dsp,gensym("dsp"), A_CANT, 0);
     class_addmethod(impseq_class,(t_method)impseq_goto,gensym("goto"),A_FLOAT,0);
     class_addmethod(impseq_class,(t_method)impseq_set, gensym("set"),A_GIMME,0);
