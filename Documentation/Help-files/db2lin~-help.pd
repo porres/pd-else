@@ -1,4 +1,4 @@
-#N canvas 385 27 565 431 10;
+#N canvas 385 38 565 431 10;
 #X obj 4 296 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 330 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 367 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -23,7 +23,7 @@
 #X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -92,7 +92,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -150,11 +150,11 @@
 #X connect 6 0 4 0;
 #X connect 7 0 1 0;
 #X restore 451 257 pd multichannel;
-#X text 52 94 [db2lin~] converts amplitude values from deciBel Full Scale (dBFS) to linear. By default \, a minimum value of -100 becomes zero - in theory \, sero is minus infinity and an argument sets another minimum dB value to correspond to minus ininity. Conversion expression is: amp = pow(10 \, dBFS / 20). It has support for multichannel signals., f 67;
 #X text 136 306 signal(s);
 #X text 138 339 signal(s);
 #X text 207 306 - dBFS amplitude value(s);
 #X text 203 339 - converted linear amplitude value(s);
+#X text 52 94 [db2lin~] converts amplitude values from deciBel Full Scale (dBFS) to linear. By default \, a minimum value of -100 becomes zero - in theory \, zero is minus infinity and an argument sets another minimum dB value to correspond to minus infinity. Conversion expression is: amp = pow(10 \, dBFS / 20). It has support for multichannel signals., f 67;
 #X connect 7 0 27 0;
 #X connect 20 0 26 0;
 #X connect 27 0 20 0;

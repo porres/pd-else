@@ -13,7 +13,7 @@
 #X floatatom 317 369 7 0 0 0 - - - 0;
 #X text 65 22 In this example we smoothen (or remove the jitter from) a noisy signal. The cutoff is set to zero so now for the slew limits to count we need the upward/downward cutoff frequencies to be high.;
 #X text 65 86 In this case \, if the delta exceeds the limit \, the filter takes action \, but if it is set to zero \, the the original signal comes out., f 59;
-#X text 65 138 The action is to remove the limit/jitter ammount from the delta to smoothen the signal.;
+#X text 65 138 The action is to remove the limit/jitter amount from the delta to smoothen the signal.;
 #X connect 1 0 2 0;
 #X connect 2 0 5 0;
 #X connect 3 0 4 0;

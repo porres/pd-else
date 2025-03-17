@@ -75,7 +75,7 @@
 #X obj 243 206 else/resonant~ -bw 500 0.25;
 #X obj 36 206 else/resonant~ -t60 500 500;
 #X text 28 24 By default \, the resonance parameter is 'q' \, but you can also set to 't60' or 'bw'. In 'bw' the resonance is bandwidth in octaves. In 't60' \, it's the time in ms for an excitation signal (such as an impulse) to decay 60dB. Use the -t60/-bw flags to change from the default or the messages.;
-#X text 307 168 bandwitdh in octaves, f 10;
+#X text 307 168 bandwidth in octaves, f 10;
 #X connect 2 0 10 0;
 #X connect 3 0 10 0;
 #X connect 4 0 10 0;

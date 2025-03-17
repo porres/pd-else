@@ -399,7 +399,7 @@
 #X text 49 401 When given an impulse \, the filter resonates at an oscillation with the same frequency as the filter input. Note that the real output of the complex filer starts the oscillation at the cosine initial phase \, while the imaginary part starts at the sine initial phase. This is rather intuitive as the real part is also the cosine component of the cartesian form \, while the imaginary part is the sine component., f 61;
 #X text 25 26 The [resonator2~] object is a variant of [vcf~] and also based on a one complex pole filter. It can easily be implemented with [cpole~] as we'll see here., f 69;
 #X obj 69 591 resonator2~ 500 1;
-#X text 306 533 Check the help file of [resonator2~] for more detials and compare to the [fexpr~] and [cpole~] versions above to the right. We'll see more about resonator filters soon in this chapter!, f 25;
+#X text 306 533 Check the help file of [resonator2~] for more details and compare to the [fexpr~] and [cpole~] versions above to the right. We'll see more about resonator filters soon in this chapter!, f 25;
 #X text 25 79 The difference to [vcf~] is that [resonator2~] is a resonant filter. This means there's no gain compensation to have a maximum 0dB value at the center frequency. By the way \, you can refer back to Part 6 (Filters \, Basic) for frequency response plots for both [vcf~] and [resonator2~]., f 69;
 #X connect 1 0 19 1;
 #X connect 2 0 4 0;

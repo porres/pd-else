@@ -49,7 +49,7 @@
 #X text 53 88 [replace] replaces an element from an input message according
 to an element number defined by the 1st argument or mid inlet. Elements
 are indexed from 1 \, a 0 value means no element is replaced and negative
-values count from last to the first element. Element numbers get cliped
+values count from last to the first element. Element numbers get clipped
 to the first and last items of the input message. The right inlet or
 2nd argument sets the new element., f 77;
 #X listbox 340 197 8 0 0 0 - - - 0;

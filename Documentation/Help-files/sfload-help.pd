@@ -76,7 +76,7 @@
 #X obj 448 270 else/player~;
 #X obj 345 270 else/tabplayer~;
 #X obj 262 270 else/sample~;
-#N canvas 713 164 434 564 threaded 0;
+#N canvas 713 164 434 564 threaded 1;
 #X msg 174 193 load bubul.mp3;
 #X obj 101 424 cnv 16 245 90 empty empty empty 20 12 0 10 #e0e0e0 #404040 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -95,7 +95,7 @@
 #X obj 220 244 tgl 16 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X msg 189 220 0;
 #X msg 220 220 1;
-#X text 75 23 By default [sfload] works in threaded mode \, which guarantees order of execution. If you wanna load larg files and would like to not choke Pd's audio you can try loadubg files in threaded mode \, but this ruins order of execution (and you can use the output of [sfload] to know when it is done loading)., f 49;
+#X text 75 23 By default [sfload] works in threaded mode \, which guarantees order of execution. If you wanna load large files and would like to not choke Pd's audio you can try loading files in threaded mode \, but this ruins order of execution (and you can use the output of [sfload] to know when it is done loading)., f 50;
 #X connect 0 0 5 0;
 #X connect 3 0 9 0;
 #X connect 5 0 3 0;
@@ -114,8 +114,8 @@
 #X text 164 356 threaded <float> - non zero sets to threaded mode, f 63;
 #X obj 87 270 soundfiler;
 #X text 140 311 load <symbol \, float> - file to load and optional channel number, f 67;
-#X text 74 87 [sfload] is similar to [soundfiler] supports more file formats (officialy AAC \, AIF \, CAF \, FLAC \, MP3 \, OGG \, OPUS & WAV). It can also load into multichannel arrays and download files from web links!, f 65;
 #X text 116 326 download <symbol \, float> - link to download and optional channel number, f 71;
+#X text 74 87 [sfload] is similar to [soundfiler] supports more file formats (officially AAC \, AIF \, CAF \, FLAC \, MP3 \, OGG \, OPUS & WAV). It can also load into multichannel arrays and download files from web links!, f 62;
 #X connect 16 0 35 0;
 #X connect 17 0 16 0;
 #X connect 35 0 22 0;

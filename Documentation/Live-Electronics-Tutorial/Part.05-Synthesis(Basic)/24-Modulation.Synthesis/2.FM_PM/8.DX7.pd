@@ -43,7 +43,7 @@
 #X obj 307 343 out~;
 #X obj 789 249 pic 0 ./files/ex6.gif empty empty 0 0;
 #X obj 748 529 pm6~, f 11;
-#X text 610 96 The DX7 was the first digital synth of great comercial success. Famous for being a FM synth \, it's actually implemented as phase modulation. It has 6 sine wave oscillators/operators! Each has a frequency and amplitude (index) parameter. The oscillators are organized in 32 patches (or presets) with particular diagrams for each that combine the operators in a certain way amognst the possibilities of the modulation matrix. This example recreates patch number 6 \, from the diagram below., f 55;
+#X text 610 96 The DX7 was the first digital synth of great commercial success. Famous for being a FM synth \, it's actually implemented as phase modulation. It has 6 sine wave oscillators/operators! Each has a frequency and amplitude (index) parameter. The oscillators are organized in 32 patches (or presets) with particular diagrams for each that combine the operators in a certain way amongst the possibilities of the modulation matrix. This example recreates patch number 6 \, from the diagram below., f 55;
 #X obj 98 112 sine~;
 #X obj 66 194 sine~;
 #X obj 98 162 *~;

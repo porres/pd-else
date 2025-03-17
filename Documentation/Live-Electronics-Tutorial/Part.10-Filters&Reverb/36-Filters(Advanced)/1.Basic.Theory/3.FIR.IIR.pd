@@ -11,7 +11,7 @@
 #X obj 142 411 out~;
 #X text 319 402 coefficient;
 #X obj 332 24 declare -path else;
-#X text 41 66 A filter with only feedforward lines is called "non recursive" and/or "Finite Impulse Response" ("FIR" for short). On the other hand \, a filter with feedback is known as "recursive" or "Ininite Impulse Response" (IIR). This is because a feedback can lead to infinite repetitions., f 64;
+#X text 41 66 A filter with only feedforward lines is called "non recursive" and/or "Finite Impulse Response" ("FIR" for short). On the other hand \, a filter with feedback is known as "recursive" or "Infinite Impulse Response" (IIR). This is because a feedback can lead to infinite repetitions., f 64;
 #X text 51 157 An example of FIR filter is the average filter we've seen:;
 #X text 44 264 And now \, as an example of IIR \, the one sample feedback filter from the last example - the difference is that we're abreviatting the sample variables and using a value object to insert the 'a' variable in the equation as the coefficient:, f 65;
 #X text 52 496 Note that if the coefficient is equal to 1 \, then the filter becomes indeed infinite. Values over 1 explode the filter pretty quickly (this is why we have a limit of 0.999)!;

@@ -38,7 +38,7 @@
 #X text 230 345 Y(z) - b1*Y(z)z^-1 - b2*Y(z)z^-2;
 #X text 183 449 (Y(z) - b1*Y(z)z^-1 - b2*Y(z)z^-2 / a0 + a1*z^-1 + a2*z^-2);
 #X text 265 530 Y(z) - b1*Y(z)z^-1 - b2*Y(z)z^-2;
-#X text 182 576 Tansfer Function:;
+#X text 182 576 Transfer Function:;
 #X text 150 25 Difference equation:;
 #X text 162 126 In the transfer function notation;
 #X text 58 225 Isolate X(z):;

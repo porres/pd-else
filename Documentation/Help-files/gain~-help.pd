@@ -293,7 +293,7 @@
 #X restore 448 281 pd multichannel;
 #X text 197 424 - learns a MIDI controller, f 58;
 #N canvas 721 242 484 354 learn/forget 0;
-#X text 82 95 The controller settings get saved with the pacth.;
+#X text 82 95 The controller settings get saved with the patch.;
 #X obj 197 202 else/gain~ 1 0 20 0 0.491444;
 #A saved;
 #X msg 197 135 learn;

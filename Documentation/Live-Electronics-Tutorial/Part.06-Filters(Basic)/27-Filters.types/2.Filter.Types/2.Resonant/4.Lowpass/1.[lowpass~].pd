@@ -359,7 +359,7 @@
 #X text 54 99 Lowpass resonant filters are widely used in electronic music. Most of the time when it's not specified what type of resonant filter it is \, we're talking about a lowpass resonant filter. This is the [lowpass~] object from the ELSE library \, check its help file for more details., f 56;
 #X obj 748 16 declare -path else;
 #X obj 523 132 out~;
-#X text 54 23 A lowpass resonant filter has a boost at the cuttof frequency. And here's how it compares to the [bp~] and [vcf~] objects \, since it's as if it is a constant skirt filter and the others are constant gain. This filter can also be set with bandwith and 't60' for the resonance.;
+#X text 54 23 A lowpass resonant filter has a boost at the cuttof frequency. And here's how it compares to the [bp~] and [vcf~] objects \, since it's as if it is a constant skirt filter and the others are constant gain. This filter can also be set with bandwidth and 't60' for the resonance.;
 #X connect 1 0 4 0;
 #X connect 2 0 3 0;
 #X connect 3 0 8 2;

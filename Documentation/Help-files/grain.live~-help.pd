@@ -45,7 +45,7 @@
 #X restore 108 198 pd presets;
 #X obj 100 442 else/out~;
 #X obj 146 225 route dur;
-#X text 48 22 Try some of the presets and also try dfferent parameters from the settings here \, where we can change to synchronous mode and also the density (number of grains).;
+#X text 48 22 Try some of the presets and also try different parameters from the settings here \, where we can change to synchronous mode and also the density (number of grains).;
 #X text 48 63 By default \, we have an asynchronous mode \, and that means that the interval between grains are random. On the other hand \, synchronous mode spaces the grains equally within a cloud event. This is more noticeable if you have less density. You can set the object to sync mode at creation with the -sync flag., f 58;
 #X obj 190 377 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 232 373 density (number of grains), f 15;

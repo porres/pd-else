@@ -26,7 +26,7 @@
 #X obj 161 305 unpack f f;
 #X obj 77 214 tgl 25 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X floatatom 77 248 3 0 0 0 - - - 0;
-#X text 44 95 The algorithm is that if delta (input value minus last output) is higher than the limit \, then we sum the output to the limit value. For the downward slew \, it needs to be smaller than the negative slew limit and the same idea applies. We keep doing that until the difference between the input and output is smaller than the limit \, in which case we just sum to the diference and reach the target value., f 69;
+#X text 44 95 The algorithm is that if delta (input value minus last output) is higher than the limit \, then we sum the output to the limit value. For the downward slew \, it needs to be smaller than the negative slew limit and the same idea applies. We keep doing that until the difference between the input and output is smaller than the limit \, in which case we just sum to the difference and reach the target value., f 69;
 #X obj 77 552 fexpr~ delta = $x - $y2 \; $y2 + if(delta > slewup \, slewup \, if(delta < -slewdown \, -slewdown \, 0)), f 40;
 #X connect 0 0 7 0;
 #X connect 0 0 27 0;

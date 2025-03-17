@@ -11,7 +11,7 @@
 #X obj 61 394 bl.saw~;
 #X floatatom 61 487 7 0 0 0 - - - 0;
 #X text 119 487 Pitch Analysis in MIDI;
-#X text 47 150 Like [env~] \, [sigmund~] needs an analysis window size and step between analysis windows and the default values is the same as in [env~]. The envelope analysis output is at the right outlet and is in the same range as in [env~]. The pitch output a the left outlet is reported in MIDI. You can use this object to analyize an audio input and use the frequency to control something \, like an oscillator., f 63;
+#X text 47 150 Like [env~] \, [sigmund~] needs an analysis window size and step between analysis windows and the default values is the same as in [env~]. The envelope analysis output is at the right outlet and is in the same range as in [env~]. The pitch output a the left outlet is reported in MIDI. You can use this object to analyze an audio input and use the frequency to control something \, like an oscillator., f 63;
 #X obj 304 258 adc~ 1;
 #X obj 355 15 declare -path else;
 #X obj 336 379 mtof;

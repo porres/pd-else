@@ -30,7 +30,7 @@
 #X obj 111 377 else/oscbank~ -rampall 2000;
 #X msg 111 212 partial 100 250 300 370 420 510 590 600 \, phase 0 0.5 0.25 0 0.1 0.9 0.75 0.25 \, amp 0.9 0.5 0.9 1 0.8 0.9 0.7 1, f 40;
 #X msg 125 269 partial 50 140 290 310 330 490 580 690 \, phase 0.5 0 0.75 0.4 0.7 0 0.25 0.5 \, amp 0.8 1 0.7 1 0.9 0.8 0.9 1, f 39;
-#X text 83 37 Another way to deal with the partial list is to make it a frequency list in hertz and then treat the input as a ratio mulitiplier. By default \, this multiplier is '1' \, by the way., f 53;
+#X text 83 37 Another way to deal with the partial list is to make it a frequency list in hertz and then treat the input as a ratio multiplier. By default \, this multiplier is '1' \, by the way., f 53;
 #X text 83 89 The lists can be updated via the inlet and there is a ramp time in ms to transition between the changes of partial \, decay and amplitude lists. By default \, this ramp is set to 10 ms., f 53;
 #X msg 147 346 rampall \$1;
 #X floatatom 147 323 5 0 0 0 - - - 0;

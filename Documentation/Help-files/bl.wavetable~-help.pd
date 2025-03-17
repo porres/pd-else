@@ -244,7 +244,7 @@
 #X text 408 126 default;
 #X text 330 17 set different interpolation methods, f 36;
 #X obj 332 152 else/bl.wavetable~ -none \$0-interp 50;
-#X text 61 36 By default \, [bl.wavetebale~] uses the spline interpolation method but you can set it to linear \, cosine \, lagrange or no interpolation at all. For more details \, check the subsection 'interpolation' of chapter 28 (buffer) in the live elctronics tutorial., f 35;
+#X text 61 36 By default \, [bl.wavetebale~] uses the spline interpolation method but you can set it to linear \, cosine \, lagrange or no interpolation at all. For more details \, check the subsection 'interpolation' of chapter 28 (buffer) in the live electronics tutorial., f 35;
 #X obj 332 206 else/scope~ 200 100 10 3 128 -1 1 10 0 0 0 30 30 30 190 190 190 160 160 160 0 empty;
 #X connect 2 0 9 0;
 #X connect 3 0 9 0;
@@ -280,7 +280,7 @@
 #X text 48 89 [bl.wavetable~] is a bandlimited wavetable oscillator abstraction that uses the upsampling/filtering techniquelike \, which makes the object quite inefficient CPU wise. This object also minimizes aliasing caused by hard sync and phase modulation. No wavetable scanning here though..., f 71;
 #X text 123 284 table <symbol> - sets an entire array to be used as a waveform, f 63;
 #X obj 200 175 else/bl.wavetable~ \$0-table 400;
-#N canvas 750 137 490 555 table 1;
+#N canvas 750 137 490 555 table 0;
 #X obj 124 250 nbx 6 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 143 314 else/out~;
 #X obj 125 381 else/graph~ 441 11;

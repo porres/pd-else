@@ -49,7 +49,7 @@
 #X text 55 34 One can use [resonator~] for a damped oscillator. A more proper alternative is to use [resonator2~] - or even [damp.osc~] \, which is based on [resonator2~].;
 #X text 55 87 The [resonator2~] object also takes a t60 resonant time and we can also put it to test!, f 56;
 #X text 492 31 As already mentioned \, the left output starts an oscilation at a cosine initial phase \, and while the right outlet has a sine initial phase., f 47;
-#X text 492 91 The [damp.osc~] object is virtually the same thing as [resonator2~] but with a sligth different design to act and behave more like an oscillator. Check its help file as well, f 47;
+#X text 492 91 The [damp.osc~] object is virtually the same thing as [resonator2~] but with a slight different design to act and behave more like an oscillator. Check its help file as well, f 47;
 #X obj 201 185 float2imp~;
 #X obj 634 206 float2imp~;
 #X connect 0 0 14 0;

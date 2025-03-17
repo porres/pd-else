@@ -21,7 +21,7 @@
 #X obj 234 154 nbx 5 14 -50 50 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 294 152 <= hz;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -90,7 +90,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -125,7 +125,6 @@
 #X obj 97 330 else/out~;
 #X obj 155 208 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 152 233 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
-#X text 85 18 The pulse width parameter controls how much of the cycle is "on" or "off". A pulse width of 0.5 means the first half is "on" and the lasr half is "off".;
 #X text 92 67 A pulse width of 0 has the smallest "on" pulse size: a single sample - thus \, just like an impulse oscillator!;
 #X text 92 103 Conversely \, a pulse width of 1 has the largest (the entire period except the last sample).;
 #X obj 152 256 else/float2sig~ 10;
@@ -136,13 +135,14 @@
 #X text 320 197 regular random impulses;
 #X obj 333 343 else/trighold~;
 #X obj 333 372 else/numbox~ 6 10 100 #C0C0C4 #440008 10 0 0 0;
+#X text 85 18 The pulse width parameter controls how much of the cycle is "on" or "off". A pulse width of 0.5 means the first half is "on" and the last half is "off".;
 #X connect 1 0 2 0;
-#X connect 2 0 6 0;
-#X connect 6 0 8 1;
-#X connect 8 0 0 0;
-#X connect 10 0 9 0;
-#X connect 10 0 12 0;
-#X connect 12 0 13 0;
+#X connect 2 0 5 0;
+#X connect 5 0 7 1;
+#X connect 7 0 0 0;
+#X connect 9 0 8 0;
+#X connect 9 0 11 0;
+#X connect 11 0 12 0;
 #X restore 446 179 pd pulse width;
 #X obj 3 3 cnv 15 301 42 empty empty randpulse~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -232,7 +232,7 @@
 #X msg 378 598 set 1 555;
 #X text 448 586 the set message sets a single frequency channel, f 17;
 #X obj 335 645 else/randpulse~ -mc 440 660;
-#X text 82 339 If the secondary inlets have a signal with a single channel for width ans sync \, the single value is applied to all channels. If a secondary inlet is also a multichhanel signal \, then each channel gets its width or sync value. Note \, however \, that the number of multichannels in secondary inlets need to match the same number of channels from the left input., f 76;
+#X text 82 339 If the secondary inlets have a signal with a single channel for width and sync \, the single value is applied to all channels. If a secondary inlet is also a multichhanel signal \, then each channel gets its width or sync value. Note \, however \, that the number of multichannels in secondary inlets need to match the same number of channels from the left input., f 76;
 #X obj 88 621 else/randpulse~;
 #X obj 133 520 sigs~ 0.1 0.8;
 #X obj 175 587 else/imp~ -mc 100 300;

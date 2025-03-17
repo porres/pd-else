@@ -57,7 +57,7 @@
 #X msg 183 260 cubic;
 #X msg 194 281 spline;
 #X msg 205 303 hermite 0.3 0.9;
-#X text 35 36 By default \, [tabreader] uses the 'spline' interpolation \, but you can set it to other interpolation types and even none. For more details on the available interpolation methods \, check the subsection 'interpolation' of chapter 28 (buffer) in the "Live Elctronics Tutorial" that comes with ELSE.;
+#X text 35 36 By default \, [tabreader] uses the 'spline' interpolation \, but you can set it to other interpolation types and even none. For more details on the available interpolation methods \, check the subsection 'interpolation' of chapter 28 (buffer) in the "Live Electronics Tutorial" that comes with ELSE.;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
 #X connect 3 0 2 0;

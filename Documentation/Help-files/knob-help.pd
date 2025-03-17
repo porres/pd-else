@@ -198,7 +198,7 @@
 #X text 29 423 The 'load' message sets the initial value for when the object is loaded. A 'load' message without float saves the current value as the load value. In 'savestate' mode \, when you save the patch \, the current knob's value becomes the 'load' value. Note that the [savestate] object is needed if you use [knob] in an abstraction. In 'loadbang' mode (default) \, the load value is output at load time., f 65;
 #X msg 342 249 lb 0;
 #X text 380 249 no loadbang;
-#X text 435 93 by default \, the knob has an outter square area \, with the same background color. There's a second mode without the square or any outline \, in which the knob circle increases in size. Use the "square 0" message or the '-nosquare' flag to change the display mode. You can also set it via properties. When you don't have the square \, note that when you are in edit mode the [knob] shows just a square outline around as to indicate you're in edit mode and where you can connect the object. Inlets and outlets are hidden in run mode but also appear in edit mode., f 55;
+#X text 435 93 by default \, the knob has an outer square area \, with the same background color. There's a second mode without the square or any outline \, in which the knob circle increases in size. Use the "square 0" message or the '-nosquare' flag to change the display mode. You can also set it via properties. When you don't have the square \, note that when you are in edit mode the [knob] shows just a square outline around as to indicate you're in edit mode and where you can connect the object. Inlets and outlets are hidden in run mode but also appear in edit mode., f 55;
 #X text 336 281 double click or alt+click (or option+click on mac) to restore to arc start state (same as 'reset'), f 25;
 #X text 29 373 The 'arcstart' value is where the arc starts \, just 'arcstart' sets the current value as the start value. double clicking or alt+clicking (or option+clicking on mac) on the object restores to the 'arcstart' value \, so does the 'reset' message., f 65;
 #X connect 1 0 18 0;
@@ -415,7 +415,7 @@
 #X obj 143 383 s \$0-set-number;
 #X obj 175 425 else/knob 60 0 127 0 0 \$0-number \$0-set-number #000000 #afafaf #ff0400 0 0 0 0 1 320 0 0 0 empty empty 3 12 7 -15 0 1 0 0;
 #X obj 48 417 r \$0-number;
-#X text 11 7 When you can click on the [knob] it gets activated by showing a tiny center circle. Clicking outside the object deactivates it. When active \, you can use the up/down or left/right arrow keys to increment and decrement values. Note you can press shift before activating the object \, in which case the arrow keys will also increase or decrease in hundreths like if you'd just drag the mouse while clicking., f 66;
+#X text 11 7 When you can click on the [knob] it gets activated by showing a tiny center circle. Clicking outside the object deactivates it. When active \, you can use the up/down or left/right arrow keys to increment and decrement values. Note you can press shift before activating the object \, in which case the arrow keys will also increase or decrease in hundredths like if you'd just drag the mouse while clicking., f 66;
 #X msg 27 263 numbersize \$1 \, numberpos \$2 \$3, f 15;
 #X text 11 91 When active \, hitting enter outputs the current value. You can also type a number value and hit enter to set it. When the number is displayed \, you can see the number you're typing followed by '|'. The activity status and numbers you type are sent to receive names that match the send name followed by "-active" and "-typing". Check in the example below \, which has the "\$0-number" send name. The usefulness of this is discussed on the right., f 66;
 #X msg 40 236 18 0 64;
@@ -515,7 +515,7 @@
 #X obj 467 392 loadbang;
 #X text 400 306 Use "var' to set a variable and send values to variables in [value] or [var] objects. Note that you also can do that if you have a send name that matches a variable name \, but with the 'var' symbol you bypass sending to a [receive] object and just set the variable directly. Like send/receive \, you need to escape dollar signs in messages.;
 #X floatatom 467 528 7 0 0 0 - - - 0;
-#X text 620 495 [reveive] objects don't get the values., f 17;
+#X text 620 495 [receive] objects don't get the values., f 17;
 #X text 643 398 query for the value, f 9;
 #X obj 623 434 else/var \$0-x;
 #X floatatom 623 462 7 0 0 0 - - - 0;

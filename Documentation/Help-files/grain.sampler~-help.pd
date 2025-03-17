@@ -84,7 +84,7 @@
 #X floatatom 153 275 5 0 0 0 - - - 0;
 #X obj 99 472 else/out~;
 #X text 193 207 Here's some presets for you to have fun with, f 23;
-#X text 71 31 Try some of the presets and also try dfferent parameters from the settings here \, where we can change to synchronous mode and also the density (number of grains).;
+#X text 71 31 Try some of the presets and also try different parameters from the settings here \, where we can change to synchronous mode and also the density (number of grains).;
 #X text 71 72 By default \, we have an asynchronous mode \, and that means that the interval between grains are random. On the other hand \, synchronous mode spaces the grains equally within a cloud event. This is more noticeable if you have less density. You can set the object to sync mode at creation with the -sync flag., f 58;
 #X text 163 212 <==;
 #X text 125 176 <= about tuning;
@@ -99,7 +99,7 @@
 #X text 327 457 sample rate;
 #X obj 136 393 r \$0-set;
 #X obj 290 500 s \$0-set;
-#X text 439 462 If a sample has a dfferent sample rate than Pd's \, you can set it with the 'sr' message so the player adjusts the reading speed., f 49;
+#X text 439 462 If a sample has a different sample rate than Pd's \, you can set it with the 'sr' message so the player adjusts the reading speed., f 49;
 #X obj 550 198 else/function 200 100 empty empty 0 1 220 220 220 50 50 50 0 0 0 0 0 0.05 1 0.95 0;
 #X obj 550 314 else/display;
 #X obj 550 386 else/insert env;

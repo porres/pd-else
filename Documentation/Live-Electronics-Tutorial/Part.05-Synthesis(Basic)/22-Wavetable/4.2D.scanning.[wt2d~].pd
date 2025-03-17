@@ -185,7 +185,7 @@
 #X text 610 212 The used wavetable is an 8x8 grid loaded in the [pd 2D-table] subpatch., f 32;
 #X text 613 368 The patch implementation is in [pd 2D-wt-scanning]. Open it for details., f 32;
 #X text 613 428 You should also open the help file of [wt2d~] for more details and note how it quite similar to [wavetable~]/[wt~] and it just has an extra inlet for crossfading vertically., f 32;
-#X text 613 528 The '-n' flag in [wt2d~] defines how it must split the loades wavetable in number of columns and rows (8 8 in this case)., f 32;
+#X text 613 528 The '-n' flag in [wt2d~] defines how it must split the wavetable in number of columns and rows (8 8 in this case)., f 32;
 #X text 29 293 set frequency in hz --->;
 #X text 429 372 <------------------------;
 #X text 431 63 Use the 2D slider below to crossfade between frames in two dimensions., f 18;

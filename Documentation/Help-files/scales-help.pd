@@ -96,7 +96,7 @@
 #X text 284 242 octave (from -1 to 8 \, default 4);
 #X text 256 344 note name and its degree (optional \, default 1);
 #X text 64 185 (default);
-#X text 49 85 [scales] generates scales as note names (default) or MIDI pitches. The scale is set as a list of semitones that define each step of the scale (major by default). The note symbol can also contain the octave number \, otherwise you have to set the octave via the 2nd inlet ot argument. If you bang the object without setting anything \, the default is 'C 1'., f 66;
+#X text 49 85 [scales] generates scales as note names (default) or MIDI pitches. The scale is set as a list of semitones that define each step of the scale (major by default). The note symbol can also contain the octave number \, otherwise you have to set the octave via the 2nd inlet of argument. If you bang the object without setting anything \, the default is 'C 1'., f 66;
 #X msg 430 193 2 F3;
 #X text 356 193 -->same as:;
 #X connect 20 0 43 1;

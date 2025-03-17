@@ -50,7 +50,7 @@ special variable names for the horizontal and vertical coordinates
 #X floatatom 132 423 5 0 0 0 - - - 0;
 #X text 43 18 In this example we're able to set the values of both
 'x' and 'y' elements in an array. You can now click and drag each point
-in the array both vertically and horizontaly., f 66;
+in the array both vertically and horizontally., f 66;
 #X connect 0 0 6 2;
 #X connect 2 0 8 0;
 #X connect 6 0 7 1;

@@ -40,8 +40,8 @@
 #X obj 911 591 v delta;
 #X text 274 746 Try changing 'f' when slew parameters are at highest \, and change 'f_down' and 'f_up' when slew parameters are at the lowest. You'll hear the main ways this filter can be used as a one pole filter. More details in the next examples., f 80;
 #X text 67 117 This object was used in this tutorial to implement slew limiting \, lag portamentos as well as non linear envelopes. The 3rd and 5th inlet were used to set the slew limiting \, while the 4th and 6th controlled filtering., f 61;
-#X text 67 180 In this subsection we'll check it out throughly \, here's the full filter's formula (in a similar way that you'd write into an [fexpr~] object as shown below):, f 61;
-#X text 550 128 In short \, if delta is greater than up/down slew limits \, we have a formula that involes f_up/f_down and slew_up/down parameters. If not \, then we just have 'f'. Similar to [lop~] \, these frequencies are in radians per sample but clipped to one \, so maximum cutoff is about 7.02 Khz in a 44.1 Khz sample rate.;
+#X text 67 180 In this subsection we'll check it out thoroughly \, here's the full filter's formula (in a similar way that you'd write into an [fexpr~] object as shown below):, f 61;
+#X text 550 128 In short \, if delta is greater than up/down slew limits \, we have a formula that involves f_up/f_down and slew_up/down parameters. If not \, then we just have 'f'. Similar to [lop~] \, these frequencies are in radians per sample but clipped to one \, so maximum cutoff is about 7.02 Khz in a 44.1 Khz sample rate.;
 #X connect 0 0 7 0;
 #X connect 1 0 5 0;
 #X connect 2 0 3 0;

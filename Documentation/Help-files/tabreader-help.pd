@@ -1,4 +1,4 @@
-#N canvas 533 23 562 624 10;
+#N canvas 533 38 562 624 10;
 #X obj 4 598 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
 #X obj 5 256 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 5 438 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
@@ -50,7 +50,7 @@
 #X msg 190 303 hermite 0.3 0.9;
 #X obj 111 337 else/tabreader -none \$0-table;
 #X floatatom 111 372 11 0 0 0 - - - 12;
-#X text 36 21 By default \, [tabreader] uses the 'spline' interpolation \, but you can set it to other interpolation types and even none. For more details on the available interpolation methods \, check the subsection 'interpolation' of chapter 28 (buffer) in the "Live Elctronics Tutorial" that comes with ELSE., f 56;
+#X text 36 21 By default \, [tabreader] uses the 'spline' interpolation \, but you can set it to other interpolation types and even none. For more details on the available interpolation methods \, check the subsection 'interpolation' of chapter 28 (buffer) in the "Live Electronics Tutorial" that comes with ELSE., f 57;
 #X connect 0 0 9 0;
 #X connect 1 0 0 0;
 #X connect 2 0 9 0;

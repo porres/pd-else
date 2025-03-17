@@ -11,7 +11,7 @@
 #X msg 363 332 log \$1;
 #X obj 363 305 tgl 19 0 empty empty empty 17 7 0 10 #dfdfdf #000000 #000000 0 1;
 #X obj 133 295 perlin~;
-#X text 56 135 Basically \, at periodic intervals a new random slope is chosen for zero crossing. Hence \, this is a low frequency noise generator \, and it grants more periodic zero crossings \, unlike other low frequency noise gererators that can have many random values without crossing the positive/negative line. The [perlin~] object takes frequencies up to Nyquist. Check its help file., f 85;
+#X text 56 135 Basically \, at periodic intervals a new random slope is chosen for zero crossing. Hence \, this is a low frequency noise generator \, and it grants more periodic zero crossings \, unlike other low frequency noise generators that can have many random values without crossing the positive/negative line. The [perlin~] object takes frequencies up to Nyquist. Check its help file., f 85;
 #X text 56 52 "Perlin noise" is a 1-dimensional perlin noise generator. Perlin noise is usually used in multiple dimensions with digital visual applications to generate interesting landscape. Even though the primary application is not generating audio \, like [gray~] \, why not use it \, right? But audio is one dimensional \, so we need to simplify this algorithm to a single dimension in order to generate audioble results., f 85;
 #X connect 4 0 10 0;
 #X connect 5 0 4 0;

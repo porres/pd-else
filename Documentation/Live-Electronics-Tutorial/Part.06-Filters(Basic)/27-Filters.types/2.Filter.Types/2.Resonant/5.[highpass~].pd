@@ -358,7 +358,7 @@
 #X obj 473 88 highpass~;
 #X obj 737 19 declare -path else;
 #X obj 473 122 out~;
-#X text 67 77 This is the [highpass~] object from ELSE \, it is a highpass resonant filter and much like [lowpass~] \, but it's a highpass instead. This filter can also be set with bandwith and 't60' for the resonance. Check its help file for more details., f 50;
+#X text 67 77 This is the [highpass~] object from ELSE \, it is a highpass resonant filter and much like [lowpass~] \, but it's a highpass instead. This filter can also be set with bandwidth and 't60' for the resonance. Check its help file for more details., f 50;
 #X connect 1 0 4 0;
 #X connect 2 0 3 0;
 #X connect 3 0 8 2;

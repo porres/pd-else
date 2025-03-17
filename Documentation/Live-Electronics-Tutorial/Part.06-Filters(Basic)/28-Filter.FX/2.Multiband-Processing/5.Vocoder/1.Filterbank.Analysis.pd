@@ -67,7 +67,6 @@
 #X obj 476 246 setdsp~ 1;
 #X text 72 46 This example is just a basis for the Vocoder example next. Here we have a bank with 24 bandpass filters and analyse the amplitude of each output - the dB values are shown in the sliders below. This is not far from a spectral analyser \, in which the energy of each frequency band is given., f 65;
 #X text 72 126 The central frequencies are spaced by intervals of minor thirds \, which divide the octave in 3 \, hence \, we have 3 filters by octave. The lowest frequency is MIDI pitch 20 (about 26Hz)., f 65;
-#X text 73 180 This example uses [clone] to load 24 instances of a filter analisys. Click on the [clone] object to open it and check it out. You can select different audio inputs for the analysis., f 65;
 #X text 189 249 MIDI pitch (for oscillators);
 #X obj 146 372 clone -s 1 24 filter \$0;
 #N canvas 235 38 646 272 set-central-frequencies 0;
@@ -89,7 +88,8 @@
 #X connect 7 0 2 0;
 #X restore 304 343 pd set-central-frequencies;
 #X obj 407 8 declare -path else;
+#X text 73 180 This example uses [clone] to load 24 instances of a filter analysis. Click on the [clone] object to open it and check it out. You can select different audio inputs for the analysis., f 65;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
-#X connect 2 0 9 0;
-#X connect 10 0 9 1;
+#X connect 2 0 8 0;
+#X connect 9 0 8 1;

@@ -38,7 +38,7 @@
 #X text 55 336 Note: if the attack time is equal to the decay time \, then the signal cancels out. Moreover \, if the attack time is greater than the decay time \, then the polarity is inverted., f 61;
 #X text 55 376 Note also that \, unlike in the patch above \, the output is normalized according to the impulse. Therefore \, if you feed it an impulse of "1" \, as above \, the maximum amplitude will be 1 as well!, f 61;
 #X text 55 427 For last \, the overall duration still depends on the decay time. The attack time doesn't really correspond to the time it takes to reach the maximum value (which is always shorter \, so it's just an alternative to minimize the harsh attack of [decay~])., f 61;
-#X text 44 26 [decay2~] is based on the difference of two [decay~] objects \, like the pacth below \, but with a normalized output., f 62;
+#X text 44 26 [decay2~] is based on the difference of two [decay~] objects \, like the patch below \, but with a normalized output., f 62;
 #X connect 0 0 6 0;
 #X connect 1 0 0 0;
 #X connect 2 0 5 1;

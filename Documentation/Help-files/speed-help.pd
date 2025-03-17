@@ -74,7 +74,7 @@
 #X obj 78 427 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 132 428 float -;
 #X text 180 428 total time in ms.;
-#X text 42 85 [speed] is somewhat related to [line]. You give it a target bpm value and an amount of time in beats to reach it (speeding up or down). Then \, the overall tempo in ms is outpu (via the right outlet) and bpm values are given for each beat until it reaches the target (left outlet) \, which correctly emulates an accelerando or ritardando., f 77;
+#X text 42 85 [speed] is somewhat related to [line]. You give it a target bpm value and an amount of time in beats to reach it (speeding up or down). Then \, the overall tempo in ms is output (via the right outlet) and bpm values are given for each beat until it reaches the target (left outlet) \, which correctly emulates an accelerando or ritardando., f 77;
 #X connect 20 0 17 0;
 #X connect 20 1 41 0;
 #X connect 23 0 20 0;

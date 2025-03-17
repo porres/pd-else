@@ -1,4 +1,4 @@
-#N canvas 617 247 565 429 10;
+#N canvas 482 69 565 429 10;
 #X obj 7 403 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
 #X obj 7 240 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 7 300 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
@@ -30,17 +30,17 @@
 #X floatatom 221 247 7 0 0 0 - - - 12;
 #X obj 221 219 else/rms~;
 #X obj 139 222 meter~;
-#X text 50 22 In clipped mode \, the output is cliped to values that are either -1 or 1 (aka "clip noise"). This produces the maximum energy and peak to peak amplitude. Set it to clip mode with the '-clip' flag or "clip" message., f 53;
 #X obj 313 213 print~;
 #X obj 313 167 bng 19 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000 #000000;
+#X text 58 17 In clipped mode \, the output is clipped to values that are either -1 or 1 (aka "clip noise"). This produces the maximum energy and peak to peak amplitude. Set it to clip mode with the '-clip' flag or "clip" message., f 53;
 #X connect 0 0 5 0;
 #X connect 0 0 6 0;
-#X connect 0 0 8 0;
+#X connect 0 0 7 0;
 #X connect 1 0 0 0;
 #X connect 3 0 1 0;
 #X connect 5 0 4 0;
 #X connect 6 0 2 0;
-#X connect 9 0 8 0;
+#X connect 8 0 7 0;
 #X restore 473 176 pd clip;
 #X obj 7 336 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
 #X text 161 346 '-clip': sets to clipped output mode, f 45;

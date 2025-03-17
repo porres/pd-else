@@ -294,7 +294,7 @@
 #X text 152 435 learn;
 #X text 189 435 - learns a MIDI controller, f 58;
 #N canvas 721 242 484 354 learn/forget 0;
-#X text 82 95 The controller settings get saved with the pacth.;
+#X text 82 95 The controller settings get saved with the patch.;
 #X msg 197 135 learn;
 #X msg 217 165 forget;
 #X text 82 36 If you send the 'learn' message or "alt+click" the object \, it learns a MIDI controller so you can control the gain. You can also forget it with the 'forget' message or "alt+shift+click".;

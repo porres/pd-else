@@ -694,7 +694,7 @@ parameters. The pan range is from -1 (left) to 1 (right)., f 37;
 #X obj 265 392 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X text 307 388 density (number of grains), f 15;
-#X text 54 33 Try some of the presets and also try dfferent parameters
+#X text 54 33 Try some of the presets and also try different parameters
 from the settings here \, where we can change to synchronous mode and
 also the density (number of grains).;
 #X text 159 166 <= about tuning;

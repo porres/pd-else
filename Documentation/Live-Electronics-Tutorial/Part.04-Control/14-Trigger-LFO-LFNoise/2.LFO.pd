@@ -27,7 +27,7 @@
 #X text 16 415 -------------------------------------------------------------------------------------------------------------------------------, f 127;
 #X obj 511 493 out~;
 #X obj 451 456 pimp~ 0.5;
-#X text 635 452 [pimp~] from ELSE combines [phasor~] and [imp~] (a trigger). The impulse is given at period trasitions. This is useful at low frequencies and we'll see applications for it in this tutorial. Check its help file., f 36;
+#X text 635 452 [pimp~] from ELSE combines [phasor~] and [imp~] (a trigger). The impulse is given at period transitions. This is useful at low frequencies and we'll see applications for it in this tutorial. Check its help file., f 36;
 #X obj 412 508 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
 #X obj 558 238 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;
 #X obj 101 209 numbox~ 6 12 100 #C0C0C4 #440008 10 0 0 0;

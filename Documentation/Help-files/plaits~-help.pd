@@ -1616,7 +1616,7 @@
 #X connect 6 0 0 0;
 #X coords 0 -1 1 1 80 80 2 100 100;
 #X restore 152 398 pd messages;
-#X text 178 240 This mode does not have the internal LPG enabled. In trigger mode \, the two voices are alternatively triggered and a gate signal in the trigger input controlls the attack and release envelopes (with a sustained sound when the gate is on). If the level mode is also enabled it controls loudness or timbre depending on how each preset is programmed (and if it's disabled it's like this parameter is set to "0.5")., f 74;
+#X text 178 240 This mode does not have the internal LPG enabled. In trigger mode \, the two voices are alternatively triggered and a gate signal in the trigger input controls the attack and release envelopes (with a sustained sound when the gate is on). If the level mode is also enabled it controls loudness or timbre depending on how each preset is programmed (and if it's disabled it's like this parameter is set to "0.5")., f 74;
 #X text 178 313 If not in trigger mode \, a single voice plays as a drone and the MORPH knob allows time-travel along the envelopes and modulations. The level mode can also act in this case., f 74;
 #X connect 8 0 15 0;
 #X connect 9 0 15 0;
@@ -1681,7 +1681,7 @@
 #X connect 6 0 0 0;
 #X coords 0 -1 1 1 80 80 2 100 100;
 #X restore 121 395 pd messages;
-#X text 144 241 This mode does not have the internal LPG enabled. In trigger mode \, the two voices are alternatively triggered and a gate signal in the trigger input controlls the attack and release envelopes (with a sustained sound when the gate is on). If the level mode is also enabled it controls loudness or timbre depending on how each preset is programmed (and if it's disabled it's like this parameter is set to "0.5")., f 74;
+#X text 144 241 This mode does not have the internal LPG enabled. In trigger mode \, the two voices are alternatively triggered and a gate signal in the trigger input controls the attack and release envelopes (with a sustained sound when the gate is on). If the level mode is also enabled it controls loudness or timbre depending on how each preset is programmed (and if it's disabled it's like this parameter is set to "0.5")., f 74;
 #X text 143 314 If not in trigger mode \, a single voice plays as a drone and the MORPH knob allows time-travel along the envelopes and modulations. The level mode can also act in this case., f 74;
 #X connect 10 0 17 0;
 #X connect 11 0 17 0;
@@ -1746,7 +1746,7 @@
 #X connect 6 0 0 0;
 #X coords 0 -1 1 1 80 80 2 100 100;
 #X restore 124 403 pd messages;
-#X text 140 249 This mode does not have the internal LPG enabled. In trigger mode \, the two voices are alternatively triggered and a gate signal in the trigger input controlls the attack and release envelopes (with a sustained sound when the gate is on). If the level mode is also enabled it controls loudness or timbre depending on how each preset is programmed (and if it's disabled it's like this parameter is set to "0.5")., f 74;
+#X text 140 249 This mode does not have the internal LPG enabled. In trigger mode \, the two voices are alternatively triggered and a gate signal in the trigger input controls the attack and release envelopes (with a sustained sound when the gate is on). If the level mode is also enabled it controls loudness or timbre depending on how each preset is programmed (and if it's disabled it's like this parameter is set to "0.5")., f 74;
 #X text 139 322 If not in trigger mode \, a single voice plays as a drone and the MORPH knob allows time-travel along the envelopes and modulations. The level mode can also act in this case., f 74;
 #X connect 10 0 17 0;
 #X connect 11 0 17 0;
@@ -1848,7 +1848,7 @@
 #X obj 264 386 else/plaits~ 220, f 30;
 #X obj 352 292 osc~ 0.5;
 #X text 30 376 The frequency modulation is on top of the set frequency. It is exponential FM and goes up or down 5 ocatves in the signal range from -1 to 1 when the attenuverter goes up to the maximum., f 30;
-#X text 538 398 Note you can just use the frequency input to set linear FM instad or perform exponential FM with more accurate controls., f 47;
+#X text 538 398 Note you can just use the frequency input to set linear FM instead or perform exponential FM with more accurate controls., f 47;
 #X text 409 291 fm;
 #X obj 382 317 osc~ 0.25;
 #X text 444 316 timbre;
@@ -1991,7 +1991,7 @@
 #X obj 892 63 else/canvas.active;
 #X obj 892 86 tgl 19 0 sljfljsg sdsdddsss empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X obj 892 113 switch~;
-#X text 34 437 The object has 24 synthesis techniques (or 'models'/'engines'). It also contains a built-in LPG (Low-Pass Gate) with cutoff and decay settings (this is explained in the next subpatch). The most basic controls (besides pitch input of course) for all modes are: 'Harmonics' \, 'Timbre' and 'Morph' and the way they act depends on the chosen engine. Later in this documentation \, there are details and examples for every and each mode. Here's just a general operation for fun. Note that whn you choose a mode \, the mode name is outut via the rightmost outlet., f 82;
+#X text 34 437 The object has 24 synthesis techniques (or 'models'/'engines'). It also contains a built-in LPG (Low-Pass Gate) with cutoff and decay settings (this is explained in the next subpatch). The most basic controls (besides pitch input of course) for all modes are: 'Harmonics' \, 'Timbre' and 'Morph' and the way they act depends on the chosen engine. Later in this documentation \, there are details and examples for every and each mode. Here's just a general operation for fun. Note that when you choose a mode \, the mode name is output via the rightmost outlet., f 82;
 #X text 34 382 [plaits~] takes signal input for frequency in each mode and you can use it to perform FM. If you have a 'midi' input as above to the right \, you get 'exponential FM'. Alternatively \, you can have linear FM. Note \, however \, that [plaits~] has a FM signal inlet input that is explained later in 'modulations'., f 82;
 #X obj 141 266 else/plaits~ -cv 0.1;
 #X text 34 20 The [plaits~] object is not a 100% faithful port of PLAITS to Pure Data \, some changes and adaptations were made. One first and basic changes is that it doesn't just have V/octave input and has 3 distinct frequency input modes instead. By default \, the pitch input is in Hertz \, but you can change to "midi" \, "cv" (control voltage). In '-cv' the incoming signal is treated as "volts" and the reference value of 0 volts is "middle C" ("60" in MIDI pitch). The signal is then normalized as if the input from -1 to 1 corresponds to the standard of -5V to +5V and we also consider the "Volts per octave" standard \, so you can go down and up 5 octaves with a signal from -1 to +1 (every change of 0.2 is an octave). In MIDI mode \, a value input of 0 or less becomes a frequency of 0hz. Use flags to set to a different mode at load time or the messages to change between settings., f 82;
@@ -2097,7 +2097,7 @@
 #X text 532 501 In modes 11 to 15 \, the level sets velocity as usual but if the trigger mode is also enabled the level works as an "accent" parameter that shapes the timbre while the trigger triggers a percussive decay envelope., f 62;
 #X text 532 560 In FM modes 18 to 20 you have attack and release envelopes that are controlled by trigger input with a gate on and off \, this means that in this case the trigger input can hold a sustained sound when the gate is on. The level input controls loudness or timbre depending on how each preset is programmed., f 62;
 #X obj 802 278 else/randpulse~ 0.5;
-#X text 55 491 The level mode supersedes trigger mode but there are some execptions and in some cases both work together. See the next subpatch for details on each mode and particular examples for each and every one of them. Here's a summary of the exceptions \; In mode 23 (Chiptune) \, only the level input controls the LPG and the trigger mode triggers an arppegiator and supersedes the level mode \; In mode 7 (vowel and speech synthesis) \, The level input controls the LPG and velocity while the trigger mode can work toghether to trigger the utterance of a word \; In other modes where trigger and level work together \, the LPG is actually disabled (so decay and cutoff settings are ignored). These modes are: 11 (inharmonic string modeling) \, 12 (modal resonator) \, 13 (bass drum) \, 14 (snare drum) \, 15 (hi hat) and the '6 Op FM' modes (18 \, 19 and 20)., f 73;
+#X text 55 491 The level mode supersedes trigger mode but there are some exceptions and in some cases both work together. See the next subpatch for details on each mode and particular examples for each and every one of them. Here's a summary of the exceptions \; In mode 23 (Chiptune) \, only the level input controls the LPG and the trigger mode triggers an arppegiator and supersedes the level mode \; In mode 7 (vowel and speech synthesis) \, The level input controls the LPG and velocity while the trigger mode can work together to trigger the utterance of a word \; In other modes where trigger and level work together \, the LPG is actually disabled (so decay and cutoff settings are ignored). These modes are: 11 (inharmonic string modeling) \, 12 (modal resonator) \, 13 (bass drum) \, 14 (snare drum) \, 15 (hi hat) and the '6 Op FM' modes (18 \, 19 and 20)., f 73;
 #X connect 0 0 8 0;
 #X connect 1 0 0 0;
 #X connect 2 0 8 0;

@@ -16,7 +16,7 @@
 #X listbox 545 206 11 0 0 0 - - - 0;
 #X obj 545 235 damp.osc~ -midi 0 2500;
 #X text 522 28 A list input also triggers the object at control rate \, such as from the output of [keyboard], f 40;
-#X text 495 431 More technical details about this object later on in this tutorial when requisits are met., f 46;
+#X text 495 431 More technical details about this object later on in this tutorial when requisites are met., f 46;
 #X text 495 361 The left output of [damp.osc~] has a cosine initial phase \, while the right one has a sine initial phase. Hence \, the left output has harsh clicks., f 46;
 #X connect 1 0 7 2;
 #X connect 3 0 7 0;

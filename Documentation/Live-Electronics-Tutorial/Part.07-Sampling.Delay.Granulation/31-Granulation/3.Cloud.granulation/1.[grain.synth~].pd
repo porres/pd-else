@@ -590,7 +590,7 @@ from ELSE \, check its help file., f 33;
 #X text 215 291 on/off;
 #X text 42 53 In this section we use [clone] to generate clouds of
 grains \, which is just a bunch of grains fired within a time frame.
-They can be trggered at random intervals (asynchronous) or equally
+They can be triggered at random intervals (asynchronous) or equally
 spaced (synchronous). Here we have a window of one second and 16 grains
 triggered by a bang. This example is a synthesizer based on a wavetable.
 , f 62;

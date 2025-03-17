@@ -55,7 +55,7 @@
 #X obj 810 704 gatehold~ 500;
 #X obj 810 639 randpulse~ 0.5 0.25;
 #X text 909 703 hold time, f 4;
-#X text 582 550 For managing gates \, [gaterelease~] releases a gate value after a given amount of time (specified in ms) after the gate has opened \, while [gatehold~] holds it a bit longer. Ther are control versions as well., f 53;
+#X text 582 550 For managing gates \, [gaterelease~] releases a gate value after a given amount of time (specified in ms) after the gate has opened \, while [gatehold~] holds it a bit longer. There are control versions as well., f 53;
 #X obj 775 793 gaterelease 250;
 #X obj 676 794 gatehold 500;
 #X connect 0 0 12 0;

@@ -28,7 +28,7 @@
 #X obj 312 577 expr a = exp(log(0.001) / ($f1 * sr_khz));
 #X floatatom 721 326 5 10 125 0 - - - 0;
 #X text 763 326 ms;
-#X text 30 13 A 'lag filter' is a non linear ramp to smoothen signal changes and is implemented with a one pole filter \, wich is what's inside the [lag~] object from ELSE (and also in other ELSE objects like [decay~] and [adsr~]). But first let's use [lop~]! We want a lag time in ms \, so convert it to cutoff frequency. Below we have [pulse~] at 4 hz \, which alternates between 0 and 1 at double the rate (so 8 hz). The period of 8 hz is 125 ms \, so we use it as the lag time. The [lop~] filter was explained in detail and it was also shown how to implement it with [rpole~] and [fexpr~]. Below we also present the [fexpr~] version \, whose coefficient is the cutoff frequency in radians per sample., f 83;
+#X text 30 13 A 'lag filter' is a non linear ramp to smoothen signal changes and is implemented with a one pole filter \, which is what's inside the [lag~] object from ELSE (and also in other ELSE objects like [decay~] and [adsr~]). But first let's use [lop~]! We want a lag time in ms \, so convert it to cutoff frequency. Below we have [pulse~] at 4 hz \, which alternates between 0 and 1 at double the rate (so 8 hz). The period of 8 hz is 125 ms \, so we use it as the lag time. The [lop~] filter was explained in detail and it was also shown how to implement it with [rpole~] and [fexpr~]. Below we also present the [fexpr~] version \, whose coefficient is the cutoff frequency in radians per sample., f 83;
 #X obj 524 167 initmess \; \$0-ms 125;
 #X obj 689 612 lag2~;
 #X obj 689 659 graph~ 10000 3 -0.025 1.025 200 140;

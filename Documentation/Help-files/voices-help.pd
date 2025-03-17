@@ -1,4 +1,4 @@
-#N canvas 356 24 564 677 10;
+#N canvas 356 38 564 677 10;
 #X obj 2 3 cnv 15 301 42 empty empty voices 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -219,7 +219,7 @@
 #X obj 285 390 else/display;
 #X obj 108 291 else/voices -n 4 -rel 1000, f 40;
 #X obj 108 322 else/display;
-#X text 82 444 Checl the retruggering examples for more details.;
+#X text 82 444 Check the retriggering examples for more details.;
 #X connect 0 0 15 0;
 #X connect 2 0 3 0;
 #X connect 3 0 4 0;

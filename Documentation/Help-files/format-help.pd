@@ -670,7 +670,6 @@
 #X connect 42 0 33 0;
 #X connect 43 0 7 0;
 #X restore 238 533 pd + & space;
-#X text 64 482 The types can be preceded by optional fields. The sequence syntac is <flags><width><precision><type>. See details below:;
 #X text 304 564 (and '-'/'0' flags);
 #X text 177 532 flags*:;
 #N canvas 756 38 539 610 modifiers 0;
@@ -750,6 +749,7 @@
 #X connect 13 0 0 0;
 #X restore 94 256 pd %f/%F;
 #X text 158 141 - hexadecimal floating-point;
+#X text 64 482 The types can be preceded by optional fields. The sequence syntax is <flags><width><precision><type>. See details below:;
 #X restore 462 216 pd variables;
 #X msg 212 187 file;
 #X obj 323 189 nbx 4 14 0 100 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;

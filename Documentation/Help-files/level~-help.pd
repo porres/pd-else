@@ -42,8 +42,8 @@
 #X obj 233 203 else/level~ 1;
 #A saved 0.333333;
 #X obj 233 284 else/out~;
-#X text 220 387 - non zero sets to sate saving mode, f 51;
-#X text 164 455 -savestate: sets to sate saving mode;
+#X text 220 387 - non zero sets to state saving mode, f 51;
+#X text 164 455 -savestate: sets to state saving mode;
 #X msg 303 173 savestate 1;
 #X text 88 179 see also:;
 #X obj 95 206 else/knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0 empty empty 0 12 6 -15 0 1 0 0;

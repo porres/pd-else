@@ -40,7 +40,7 @@
 #X text 465 239 Many objects in ELSE support multichannals. Here is some of them that are multi channel tools:, f 54;
 #X text 459 57 The [sine~] object is an oscillators that can also generate a multichannel signal output and is the same to the right., f 50;
 #X obj 218 592 out~;
-#X text 386 579 note \, however \, thar a multichannel signal input into [out~] gets summed up automatically. This is because this abstraction has a [sum~] object internally \, which sums all multichannel signals into a single channel., f 57;
+#X text 386 579 note \, however \, that a multichannel signal input into [out~] gets summed up automatically. This is because this abstraction has a [sum~] object internally \, which sums all multichannel signals into a single channel., f 57;
 #X obj 218 562 sine~ -mc 440 880;
 #X obj 476 141 sine~ -mc 440 880;
 #X text 560 409 lace multichabbel signals;

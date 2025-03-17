@@ -14,7 +14,7 @@
 #X restore 268 305 graph;
 #X text 64 58 We've seen that FFT expects periodic signals that match
 its harmonic series \, but that's not what happens in practice. For
-spectral processing we use STFTs and the analisys is done in a sound
+spectral processing we use STFTs and the analysis is done in a sound
 grain \, with the size of the audio block., f 60;
 #X text 292 428 ---- window size ----;
 #X obj 161 337 block~ 2048;
@@ -31,7 +31,7 @@ with [osc~]. We need to find a frequency that matches the block size
 #X text 453 429 2048;
 #X text 138 426 rescale (0 to 1), f 8;
 #X text 45 586 The ELSE library provides the [hann~] object \, which
-is an abstraction that already appllies a hann window into its input.
+is an abstraction that already applies a hann window into its input.
 It calculates the hann function in a different way. Check its help
 file.;
 #X obj 350 511 tabreceive~ \$0-hann;

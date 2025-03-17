@@ -32,7 +32,7 @@
 #X obj 1026 32 declare -path else;
 #X obj 479 377 out~;
 #X obj 109 339 clip 0 2;
-#X text 28 27 The [lop2~] object is a one pole and one zero filter. Let's see how to implement it. First we convert the frequency from hertz to radians per sample \, which is cliped at '2' \, so the maximum input freq is about 15 Khz., f 53;
+#X text 28 27 The [lop2~] object is a one pole and one zero filter. Let's see how to implement it. First we convert the frequency from hertz to radians per sample \, which is clipped at '2' \, so the maximum input freq is about 15 Khz., f 53;
 #X obj 460 140 lop2~;
 #X obj 609 96 / 2;
 #X obj 1003 257 pack float 0 float float 0;
@@ -53,7 +53,7 @@
 #X text 850 488 a - a * z^-1;
 #X text 850 511 1 - b * z^-1;
 #X text 837 494 ________________;
-#X text 304 488 The filter forumla then is: y[n] = a*x[n] + a*x[n-1] + b*y[-1], f 62;
+#X text 304 488 The filter formula then is: y[n] = a*x[n] + a*x[n-1] + b*y[-1], f 62;
 #X text 338 509 where 'a' is radians per sample / 2 \, and b is "1 - a";
 #X connect 0 0 3 0;
 #X connect 2 0 33 1;

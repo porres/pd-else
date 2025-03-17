@@ -100,7 +100,6 @@
 #X text 56 37 Using [pic] to create toggle on/off buttons. See subpatch below:, f 35;
 #X text 373 31 NOTE: you can also connect the bang output into a counter and make it go through a sequence of images and emulate an animated gif for instance., f 37;
 #X text 373 86 I was just too lazy to give you an example for that., f 37;
-#X text 72 276 Another idea is that you can also adapat the patch above to behave like a bang with a flash time. See below., f 41;
 #N canvas 457 127 474 484 (subpatch) 0;
 #X msg 214 283 open else/green.gif;
 #X msg 121 283 open else/red.gif;
@@ -124,9 +123,10 @@
 #X text 541 371 <= open;
 #X text 387 178 The examples to the left are using pic in the default "bang mode"., f 36;
 #X text 387 213 Below we have the [pic] object into the 'latch' mode \, where it sends 1 when clicking into the object and a 0 when you release the mouse button. This way you can program it to load different images for each state., f 36;
+#X text 72 276 Another idea is that you can also adapt the patch above to behave like a bang with a flash time. See below., f 41;
 #X connect 0 0 1 0;
 #X connect 3 0 4 0;
-#X connect 10 0 11 0;
+#X connect 9 0 10 0;
 #X restore 463 307 pd examples;
 #N canvas 616 241 776 349 more 0;
 #X text 67 109 default image =>;

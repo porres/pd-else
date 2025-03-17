@@ -49,7 +49,7 @@
 #X text 207 373 sets load value \, no float sets current (default: -1), f 56;
 #X text 88 416 fontsize <float>;
 #X text 106 431 width <float>;
-#X text 100 446 heigth <float>;
+#X text 100 446 height <float>;
 #X text 94 461 outline <float>;
 #X text 130 475 bg <list>;
 #X text 130 497 fg <list>;
@@ -101,7 +101,7 @@
 #X text 15 16 By default \, the loaded elements are saved with the patch. A float sets and outputs values \, which get clipped to the index range. A "-1" index means no selection and loads a label that you can set (default " "). A 'set' message only sets the value (no output)., f 60;
 #X msg 268 307 lb 0;
 #X text 304 307 no loadbang;
-#X text 15 77 A 'load' message sets the initial index value (default -1). A load message without a float saves the current index as the load value. In 'savestate' mode \, when you save the patch \, the current index value becomes the 'load' value. Note that the [savestate] object is needed if you're using [popmenu] in an abstraction for proper state saving in multiple intances. In 'loadbang' mode (default) \, the "load value" is output at load time.;
+#X text 15 77 A 'load' message sets the initial index value (default -1). A load message without a float saves the current index as the load value. In 'savestate' mode \, when you save the patch \, the current index value becomes the 'load' value. Note that the [savestate] object is needed if you're using [popmenu] in an abstraction for proper state saving in multiple instances. In 'loadbang' mode (default) \, the "load value" is output at load time.;
 #X text 23 422 by default \, [popmenu] has an outline with the same background color. Use "outline 0" message or the '-nooutline' flag to change the display mode. Note that when you are in edit mode the [popmenu] always shows the outline. Inlets and outlets are hidden in run mode but also appear in edit mode. In edit mode the [popmenu] is disabled. It is also disabled if the patch window is out of focus by the way (this is a tcl/tk thing I can't seem to control)., f 62;
 #X text 430 19 The 'fontsize' message sets the font size of the item. The 'bg' and 'fg' parameters set background and foreground color with a hex symbol or a list of RGB values (3 values from 0 to 255). Symbols like "green" \, "white" and "gray70" is also accepted., f 49;
 #X text 433 330 Note the clicking on the object and dragging can be problematic. I may change this object just so it uses a different strategy. Now it relies on this canvas for the menubutton which is always up front and \, if you click on it in edit mode \, you can't move like you regularly can while the mouse is held down. Instead it follows the mouse cursor after you release the button and you need to use 'esc' key to get rid of it., f 50;
@@ -189,7 +189,7 @@
 #X floatatom 538 327 5 0 0 0 - - - 0;
 #X obj 436 215 loadbang;
 #X floatatom 436 331 7 0 0 0 - - - 0;
-#X text 589 308 [reveive] objects don't get the values., f 17;
+#X text 589 308 [receive] objects don't get the values., f 17;
 #X text 612 211 query for the value, f 9;
 #X obj 592 247 else/var \$0-x;
 #X floatatom 592 275 7 0 0 0 - - - 0;

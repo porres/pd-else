@@ -50,7 +50,7 @@
 #X obj 125 235 else/display;
 #X floatatom 125 175 5 0 0 0 - - - 0;
 #X text 43 21 With the -list flag the fraction is output as a list
-of numberator and denominator., f 42;
+of numerator and denominator., f 42;
 #X msg 125 84 498;
 #X obj 125 202 else/cents2frac -list;
 #X msg 140 109 702;
@@ -68,7 +68,7 @@ of numberator and denominator., f 42;
 #X floatatom 125 175 5 0 0 0 - - - 0;
 #X msg 151 203 res 1000;
 #X msg 161 226 res 100;
-#X text 22 26 The resolution parameter sets the maximum numberator.
+#X text 22 26 The resolution parameter sets the maximum numerator.
 It then approximates to a simpler ratio/fraction. You can change the
 resolution with an argument (1000 by default) or the 'res' message.
 10 is the minimum allowed value., f 52;
