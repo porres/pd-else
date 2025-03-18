@@ -28,7 +28,9 @@ typedef struct _sfload{
     pthread_t       x_process_thread;
     int             x_thread_created;
     int             x_threaded;
-    unsigned long   x_nsamps;
+    long            x_nsamps; // number of samples in the file
+    long            x_arr_size; // number of samples in the array
+    long            x_onset;
     _Atomic int     x_result_ready;
     t_clock        *x_result_clock;
     char            x_path[MAXPDSTRING];
@@ -130,31 +132,37 @@ void* sfload_read_audio_threaded(void *arg){ // read audio into array
 }
 
 void sfload_update_arrays(t_sfload* x){
-//    post("x_channel = %d / x->x_num_channels = %d", x->x_channel, x->x_num_channels);
+    float srkhz = sys_getsr() * 0.001;
+    long start = x->x_onset * srkhz; // start point in samples
+    long npoints = x->x_arr_size;
+    if(npoints < 0)
+        npoints = x->x_nsamps - start;
+    else if(npoints > 0)
+        npoints *= srkhz;
     for(int ch = 0; ch < x->x_num_channels; ch++){
-//        post("ch = %d", ch);
         if(x->x_channel != -1 && ch != x->x_channel)
             continue;
-//        post("continue");
         char channel_name[MAXPDSTRING];
         snprintf(channel_name, MAXPDSTRING, "%i-%s", ch, x->x_arr_name->s_name);
         t_garray* garray = (t_garray*)pd_findbyclass(gensym(channel_name), garray_class);
         if(garray){
-//            post("if(garray)");
-            garray_resize_long(garray, x->x_nsamps);
+            if(npoints != 0)
+                garray_resize_long(garray, npoints-start);
             t_word* vec = ((t_word*)garray_vec(garray));
             for(int i = 0; i < x->x_nsamps; i++)
-                vec[i].w_float = x->x_all_out[ch][i];
+                vec[i].w_float = x->x_all_out[ch][i+start];
             garray_redraw(garray);
         }
         else{
-//            post("else");
+            if(ch > 0)
+                return;
             garray = (t_garray*)pd_findbyclass(x->x_arr_name, garray_class);
             if(garray){
-                garray_resize_long(garray, x->x_nsamps);
+                if(npoints != 0)
+                    garray_resize_long(garray, npoints-start);
                 t_word* vec = ((t_word*)garray_vec(garray));
                 for(int i = 0; i < x->x_nsamps; i++)
-                    vec[i].w_float = x->x_all_out[ch][i];
+                    vec[i].w_float = x->x_all_out[ch][i+start];
                 garray_redraw(garray);
             }
         }
@@ -314,10 +322,18 @@ void sfload_download(t_sfload* x, t_symbol* s, int ac, t_atom* av){
         pd_error(x, "[sfload]: Invalid arguments for 'load' message");
         return;
     }
-    if(ac >= 2 && av[1].a_type == A_FLOAT)
-        x->x_channel = atom_getfloat(av + 1);
-    else
-        x->x_channel = -1; // -1 means all channels
+    x->x_channel = -1, x->x_arr_size = -1, x->x_onset = 0;
+    if(ac >= 2 && av[1].a_type == A_FLOAT){
+        x->x_channel = atom_getint(av+1);
+        if(x->x_channel < 0)
+            x->x_channel = -1;
+    }
+    if(ac >= 3 && av[2].a_type == A_FLOAT)
+        x->x_arr_size = atom_getint(av+2);
+    if(ac >= 4 && av[3].a_type == A_FLOAT)
+        x->x_onset = atom_getint(av+3);
+    if(x->x_onset < 0)
+        x->x_onset = 0;
     int ch = x->x_channel == -1 ? 0 : x->x_channel;
     char channel_zero_name[MAXPDSTRING];
     snprintf(channel_zero_name, MAXPDSTRING, "%i-%s", ch, x->x_arr_name->s_name);
@@ -358,10 +374,18 @@ void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av){
         pd_error(x, "[sfload]: Invalid arguments for 'load' message");
         return;
     }
-    if(ac >= 2 && av[1].a_type == A_FLOAT)
-        x->x_channel = atom_getfloat(av + 1);
-    else
-        x->x_channel = -1; // -1 means all channels
+    x->x_channel = -1, x->x_arr_size = -1, x->x_onset = 0;
+    if(ac >= 2 && av[1].a_type == A_FLOAT){
+        x->x_channel = atom_getint(av+1);
+        if(x->x_channel < 0)
+            x->x_channel = -1;
+    }
+    if(ac >= 3 && av[2].a_type == A_FLOAT)
+        x->x_arr_size = atom_getint(av+2);
+    if(ac >= 4 && av[3].a_type == A_FLOAT)
+        x->x_onset = atom_getint(av+3);
+    if(x->x_onset < 0)
+        x->x_onset = 0;
     int ch = x->x_channel == -1 ? 0 : x->x_channel;
     char channel_zero_name[MAXPDSTRING];
     snprintf(channel_zero_name, MAXPDSTRING, "%i-%s", ch, x->x_arr_name->s_name);
