@@ -190,7 +190,7 @@
 #X connect 5 0 2 1;
 #X connect 5 0 7 0;
 #X connect 6 0 4 0;
-#X restore 368 451 pd octave;
+#X restore 406 441 pd octave;
 #X obj 233 500 else/format %s%d;
 #X connect 0 0 19 0;
 #X connect 1 0 0 0;
@@ -229,6 +229,7 @@
 #X connect 30 2 31 0;
 #X connect 30 3 4 0;
 #X connect 32 0 17 1;
+#X connect 32 0 33 1;
 #X connect 33 0 18 0;
 #X restore 57 132 pd convert;
 #X connect 1 0 5 0;
