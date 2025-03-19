@@ -49,7 +49,7 @@
 #X obj 47 429 vsl 23 132 -1 1 0 0 empty empty empty 0 -9 0 12 #dfdfdf #000000 #000000 0 1;
 #X text 272 194 This LFO module has singal inlets for FM and PWM (for square and vsaw wave) with attenuverters plus a sync inlet that takes impulses., f 29;
 #X obj 47 67 else/lfo.m~;
-#A saved 10.4663 0 -0.212598 0 -0.228346 -0.212598;
+#A saved 0.784955 0 -0.212598 0 -0.228346 -0.212598;
 #A saved hz-learn none;
 #A saved PWM-learn none;
 #A saved att-fm-learn none;
