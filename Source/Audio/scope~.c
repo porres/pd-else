@@ -972,7 +972,7 @@ static void *scope_new(t_symbol *s, int ac, t_atom *av){
     x->x_flag = x->x_r_flag = x->x_rcv_set = x->x_select = 0;
     x->x_phase = x->x_bufphase = x->x_precount = 0;
     // def values
-    float width = 200, height = 100, period = 256, bufsize = x->x_lastbufsize = 8;
+    float width = 200, height = 100, period = 8, bufsize = x->x_lastbufsize = 64;
     float minval = -1, maxval = 1, delay = 0, trigger = 0, triglevel = 0;
     unsigned char bgred = 190, bggreen = 190, bgblue = 190;
     unsigned char fgred = 30, fggreen = 30, fgblue = 30;

@@ -286,7 +286,6 @@
 #X listbox 166 135 10 0 0 0 - - - 12;
 #X obj 166 108 else/initmess 256 128;
 #X text 164 363 list;
-#X text 196 335 - sets number of samples per line (2-8192 \, default 256), f 58;
 #X text 196 364 - one float sets 'nsamples' \, optional second sets 'nlines';
 #X floatatom 168 162 5 0 0 0 - - - 12;
 #X text 211 162 samples per line;
@@ -300,9 +299,10 @@
 #X text 110 485 rate <float>;
 #X text 196 485 - onset time delay between displays (default 0), f 58;
 #X text 196 349 - sets number of lines in buffer (8-256 \, default 8), f 58;
+#X text 196 335 - sets number of samples per line (2-8192 \, default 8), f 58;
 #X connect 17 0 18 0;
 #X connect 18 0 34 0;
 #X connect 34 0 57 0;
 #X connect 61 0 57 0;
 #X connect 62 0 61 0;
-#X connect 66 0 57 0;
+#X connect 65 0 57 0;
