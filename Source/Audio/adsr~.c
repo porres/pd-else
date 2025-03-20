@@ -9,6 +9,7 @@ typedef struct _adsr{
     t_object x_obj;
     int         x_retrigger;
     int         x_log;
+    int         x_rel;
     int         x_nchans;
     int         x_n;
     t_inlet    *x_inlet_attack;
@@ -23,6 +24,7 @@ typedef struct _adsr{
     double     *x_incr;
     int        *x_nleft;
     int        *x_gate_status;
+    int        *x_attacked;
     int        *x_status;
     t_float    *x_last;
     t_float    *x_target;
@@ -34,12 +36,15 @@ static void adsr_lin(t_adsr *x, t_floatarg f){
     x->x_log = (int)(f == 0);
 }
 
+static void adsr_rel(t_adsr *x, t_floatarg f){
+    x->x_rel = (int)(f != 0);
+}
+
 static void adsr_bang(t_adsr *x){
-    x->x_f_gate = x->x_last_gate;
-    if(!x->x_status[0]) // trigger it on
-        outlet_float(x->x_out2, x->x_status[0] = 1);
-    else
+    if(x->x_gate_status[0]){
+        x->x_f_gate = x->x_last_gate;
         x->x_retrigger = 1;
+    }
 }
 
 static void adsr_gate(t_adsr *x, t_floatarg f){
@@ -82,6 +87,7 @@ static t_int *adsr_perform(t_int *w){
     t_float *last = x->x_last;
     t_float *target = x->x_target;
     int *gate_status = x->x_gate_status;
+    int *attacked = x->x_attacked;
     int *status = x->x_status;
     int *nleft = x->x_nleft;
     double *incr = x->x_incr;
@@ -96,7 +102,7 @@ static t_int *adsr_perform(t_int *w){
 // get & clip 'n'; set a/d/r coefs
             t_float n_attack = roundf(attack * x->x_sr_khz);
             if(n_attack < 1)
-            n_attack = 1;
+                n_attack = 1;
             double coef_a = 1. / n_attack;
             t_float n_decay = roundf(decay * x->x_sr_khz);
             if(n_decay < 1)
@@ -116,20 +122,24 @@ static t_int *adsr_perform(t_int *w){
                 incr[j] = (target[j] - last[j]) * coef_a;
                 nleft[j] = n_attack + n_decay;
                 x->x_retrigger = 0;
-                gate_status[j] = 1;
+//                gate_status[j] = 1;
             }
             else if((audio_gate || control_gate) != gate_status[j]){ // status changed
                 gate_status[j] = audio_gate || x->x_f_gate;
-                target[j] = x->x_f_gate != 0 ? x->x_f_gate : input_gate;
                 if(gate_status[j]){ // if gate opened
+                    target[j] = x->x_f_gate != 0 ? x->x_f_gate : input_gate;
+                    attacked[j] = 1;
                     if(!status[j])
                         outlet_float(x->x_out2, status[j] = 1);
                     incr[j] = (target[j] - last[j]) * coef_a;
                     nleft[j] = n_attack + n_decay;
                 }
-                else{ // gate closed, set release incr
-                    incr[j] =  -(last[j] * coef_r);
-                    nleft[j] = n_release;
+                else{ // gate closed
+                    if(x->x_rel){ // if immediate release mode
+                        incr[j] =  -(last[j] * coef_r);
+                        nleft[j] = n_release;
+                        attacked[j] = 0;
+                    }
                 }
             }
             else if(gate_status[j] && retrig != 0){ // sig changed, retrigger
@@ -138,30 +148,39 @@ static t_int *adsr_perform(t_int *w){
                 nleft[j] = n_attack + n_decay;
             }
 // "attack + decay + sustain" phase
-            if(gate_status[j]){
+            if(attacked[j]){
                 if(nleft[j] > 0){ // "attack + decay" not over
                     if(!x->x_log){ // linear
                         if(nleft[j] <= n_decay) // attack is over, update incr
                             incr[j] = ((target[j] * sustain_point) - target[j]) / n_decay;
                         out[j*n + i] = last[j] += incr[j];
                     }
-                    else{
+                    else{ // log
                         if(nleft[j] <= n_decay) // decay
                             out[j*n + i] = last[j] = (target[j] * sustain_point) +
-                                d_coef*(last[j] - (target[j] * sustain_point));
+                            d_coef*(last[j] - (target[j] * sustain_point));
                         else
                             out[j*n + i] = last[j] = target[j] + a_coef*(last[j] - target[j]);
                     }
                     nleft[j]--;
                 }
-                else // "sustain" phase
-                    out[j*n + i] = last[j] = target[j] * sustain_point;
+                else{ // "sustain" phase
+                    if(gate_status[j]) // gate is still on, sustain
+                        out[j*n + i] = last[j] = target[j] * sustain_point;
+                    else{ // go to release
+                        incr[j] =  -(last[j] * coef_r);
+                        nleft[j] = n_release;
+                        attacked[j] = 0;
+                        goto release;
+                    }
+                }
             }
 // "release" phase
             else{
+            release:
                 if(nleft[j] > 0){ // "release" not over
                     if(x->x_log)
-                        out[j*n + i] = last[j] = target[j] + r_coef*(last[j] - target[j]);
+                        out[j*n + i] = last[j] *= r_coef;
                     else
                         out[j*n + i] = last[j] += incr[j];
                     nleft[j]--;
@@ -181,6 +200,7 @@ static t_int *adsr_perform(t_int *w){
     x->x_incr = incr;
     x->x_nleft = nleft;
     x->x_gate_status = gate_status;
+    x->x_attacked = attacked;
     x->x_status = status;
     return(w+14);
 }
@@ -196,6 +216,8 @@ static void adsr_dsp(t_adsr *x, t_signal **sp){
         x->x_nleft = (int *)resizebytes(x->x_nleft,
             x->x_nchans * sizeof(int), chs * sizeof(int));
         x->x_gate_status = (int *)resizebytes(x->x_gate_status,
+            x->x_nchans * sizeof(int), chs * sizeof(int));
+        x->x_attacked = (int *)resizebytes(x->x_attacked,
             x->x_nchans * sizeof(int), chs * sizeof(int));
         x->x_status = (int *)resizebytes(x->x_status,
             x->x_nchans * sizeof(int), chs * sizeof(int));
@@ -222,6 +244,7 @@ static void *adsr_free(t_adsr *x){
     freebytes(x->x_nleft, x->x_nchans * sizeof(*x->x_nleft));
     freebytes(x->x_status, x->x_nchans * sizeof(*x->x_status));
     freebytes(x->x_gate_status, x->x_nchans * sizeof(*x->x_gate_status));
+    freebytes(x->x_attacked, x->x_nchans * sizeof(*x->x_attacked));
     freebytes(x->x_last, x->x_nchans * sizeof(*x->x_last));
     freebytes(x->x_target, x->x_nchans * sizeof(*x->x_target));
     return(void *)x;
@@ -235,14 +258,16 @@ static void *adsr_new(t_symbol *sym, int ac, t_atom *av){
     x->x_incr = (double *)getbytes(sizeof(*x->x_incr));
     x->x_nleft = (int *)getbytes(sizeof(*x->x_nleft));
     x->x_gate_status = (int *)getbytes(sizeof(*x->x_gate_status));
+    x->x_attacked = (int *)getbytes(sizeof(*x->x_attacked));
     x->x_status = (int *)getbytes(sizeof(*x->x_status));
     x->x_last = (t_float *)getbytes(sizeof(*x->x_last));
     x->x_target = (t_float *)getbytes(sizeof(*x->x_target));
     x->x_incr[0] = 0.;
-    x->x_nleft[0] = x->x_gate_status[0] = x->x_status[0] = 0;
+    x->x_nleft[0] = x->x_gate_status[0] = x->x_attacked[0] = x->x_status[0] = 0;
     x->x_last[0] = x->x_target[0] = 0.;
     x->x_last_gate = 1;
     x->x_log = 1;
+    x->x_rel = 0; // release mode
     int symarg = 0;
     int argnum = 0;
     while(ac > 0){
@@ -274,6 +299,10 @@ static void *adsr_new(t_symbol *sym, int ac, t_atom *av){
             if(cursym == gensym("-lin")){
                 ac--, av++;
                 x->x_log = 0;
+            }
+            else if(cursym == gensym("-rel")){
+                ac--, av++;
+                x->x_rel = 1;
             }
             else
                 goto errstate;
@@ -307,4 +336,5 @@ void adsr_tilde_setup(void){
     class_addfloat(adsr_class, (t_method)adsr_float);
     class_addmethod(adsr_class, (t_method)adsr_gate, gensym("gate"), A_DEFFLOAT, 0);
     class_addmethod(adsr_class, (t_method)adsr_lin, gensym("lin"), A_DEFFLOAT, 0);
+    class_addmethod(adsr_class, (t_method)adsr_rel, gensym("rel"), A_DEFFLOAT, 0);
 }
