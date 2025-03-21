@@ -8,6 +8,7 @@ static t_class *pulsecount_class;
 typedef struct _pulsecount{
     t_object  x_obj;
     t_float   x_count;
+    t_float   x_output;
     t_int     x_mod;
     t_float   x_lastin;
     t_inlet  *x_triglet;
@@ -21,7 +22,7 @@ static t_int *pulsecount_perform(t_int *w){
     t_float *in2 = (t_float *)(w[4]);
     t_float *out = (t_float *)(w[5]);
     t_float lastin = x->x_lastin;
-    t_float count = x->x_count;
+    t_float output = x->x_output, count = x->x_count;
     while(n--){
         t_float in = *in1++;
         t_float trig = *in2++;
@@ -32,10 +33,12 @@ static t_int *pulsecount_perform(t_int *w){
             count++;
             if(x->x_mod > 0 && count >= (x->x_mod + 1))
                 count = fmod(count, (x->x_mod + 1)) + 1;
+            output = count;
         }
-        *out++ = count;
+        *out++ = output;
         lastin = in;
     }
+    x->x_output = output;
     x->x_lastin = lastin;
     x->x_count = count;
     return(w+6);
@@ -61,7 +64,7 @@ static void *pulsecount_free(t_pulsecount *x){
 static void *pulsecount_new(t_floatarg f){
     t_pulsecount *x = (t_pulsecount *)pd_new(pulsecount_class);
     x->x_lastin = 1;
-    x->x_count = 0;
+    x->x_count = x->x_output = 0;
     x->x_mod = (int)f;
     if(x->x_mod < 1)
        x->x_mod = -1;
