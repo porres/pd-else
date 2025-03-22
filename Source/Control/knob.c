@@ -1373,7 +1373,7 @@ static void knob_list(t_knob *x, t_symbol *sym, int ac, t_atom *av){ // get key 
 static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
     t_knob *x = z;
     x->x_ignore = keysym;
-    char c = fkey, buf[3];
+    char c = fkey, buf[3], namebuf[512];
     buf[1] = 0;
     if(c == 0){ // click out
         x->x_clicked = x->x_typing = 0;
@@ -1382,9 +1382,8 @@ static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
     }
     else if(((c == '\n') || (c == 13))){ // enter
         float value = x->x_buf[0] == 0 ? x->x_fval : atof(x->x_buf);
-        char buff[512];
-        sprintf(buff, "%s-enter", x->x_snd->s_name);
-        t_symbol *snd_enter = gensym(buff);
+        sprintf(namebuf, "%s-enter", x->x_snd->s_name);
+        t_symbol *snd_enter = gensym(namebuf);
         if(snd_enter->s_thing)
             pd_float(snd_enter->s_thing, value);
         else
@@ -1393,6 +1392,12 @@ static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
         x->x_typing = 0;
         show_number(x, 0);
         return;
+    }
+    else if(c == '\t'){ // tab
+        sprintf(namebuf, "%s-tab", x->x_snd->s_name);
+        t_symbol *snd_tab = gensym(namebuf);
+        if(snd_tab->s_thing)
+            pd_bang(snd_tab->s_thing);
     }
     else if(((c >= '0') && (c <= '9')) || (c == '.') || (c == '-') ||
     (c == 'e') || (c == '+') || (c == 'E')){ // number characters
@@ -1422,9 +1427,8 @@ update_number:{
         pdgui_vmess(0, "crs rs",glist_getcanvas(x->x_glist),
             "itemconfigure", x->x_tag_number, "-text", cp);
         x->x_buf[sl] = 0;
-        char buff[512];
-        sprintf(buff, "%s-typing", x->x_snd->s_name);
-        t_symbol *snd_typing = gensym(buff);
+        sprintf(namebuf, "%s-typing", x->x_snd->s_name);
+        t_symbol *snd_typing = gensym(namebuf);
         if(snd_typing->s_thing)
             pd_symbol(snd_typing->s_thing, gensym(cp));
     
