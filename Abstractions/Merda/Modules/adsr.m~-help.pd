@@ -1,4 +1,4 @@
-#N canvas 484 55 635 649 12;
+#N canvas 484 55 635 658 12;
 #X obj 49 462 *~;
 #X text 446 26 see -->;
 #X obj 506 26 about.MERDA;
@@ -68,7 +68,7 @@
 #X obj 70 485 else/out~;
 #X obj 70 319 else/bl.saw~ -midi, f 12;
 #X obj 173 232 else/adsr.m~;
-#A saved 10 20 0.5 50 0 0 0 0 0;
+#A saved 0 500 0 0 0 0 7 5 0;
 #A saved;
 #A saved;
 #A saved;
@@ -93,7 +93,7 @@
 #X obj 54 25 else/note 375 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [adsr.m~] - Polyphonic ADSR envelope;
 #X obj 49 415 else/sine~ -midi, f 10;
 #X obj 169 332 ./adsr.m~;
-#A saved 100 50 0.5 250 0 0 0 0 0;
+#A saved 0 500 0 0 0 0 7 5 0;
 #A saved attacklearn none;
 #A saved decaylearn none;
 #A saved sustainlearn none;

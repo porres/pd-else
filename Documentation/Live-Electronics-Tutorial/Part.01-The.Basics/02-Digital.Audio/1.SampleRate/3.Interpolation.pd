@@ -21,14 +21,14 @@
 #X obj 110 294 vline~;
 #X obj 151 341 graph~ 441 20;
 #X obj 138 200 metro 1;
-#X obj 138 180 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
+#X obj 138 169 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 110 270 pack f 1;
 #X obj 61 193 osc~ 200;
 #X floatatom 207 198 5 0 0 0 - - - 0;
 #X obj 207 248 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0 256;
 #X obj 207 224 expr 1000 / $f1;
-#X obj 138 130 loadbang;
-#X msg 207 176 1000;
+#X obj 138 126 loadbang;
+#X msg 207 172 1000;
 #X obj 112 501 out~;
 #X text 248 197 sample rate;
 #X text 267 248 period in ms;

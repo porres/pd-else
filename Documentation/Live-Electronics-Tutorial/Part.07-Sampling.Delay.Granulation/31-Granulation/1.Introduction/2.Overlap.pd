@@ -57,7 +57,7 @@
 #X obj 576 119 s~ \$0-size;
 #X obj 593 197 r~ \$0-size;
 #X obj 485 88 ms2samps;
-#X obj 576 93 ms2samps;
+#X obj 576 88 ms2samps;
 #X text 559 35 size (ms);
 #X text 446 36 position (ms), f 8;
 #X text 831 197 out of phase, f 6;
@@ -68,12 +68,12 @@
 #N canvas 790 38 285 190 buffer 0;
 #X obj 41 60 openpanel;
 #X obj 41 29 inlet;
-#X msg 41 89 load \$1;
 #X obj 137 51 initmess \; hz 1 \; grain 500;
 #X obj 41 125 sample~ \$0-buffer bubul.mp3;
-#X connect 0 0 2 0;
+#X msg 41 89 open \$1;
+#X connect 0 0 4 0;
 #X connect 1 0 0 0;
-#X connect 2 0 4 0;
+#X connect 4 0 3 0;
 #X restore 784 112 pd buffer;
 #X obj 445 342 tabread4~ \$0-buffer, f 9;
 #X obj 648 370 tabread4~ \$0-buffer, f 9;

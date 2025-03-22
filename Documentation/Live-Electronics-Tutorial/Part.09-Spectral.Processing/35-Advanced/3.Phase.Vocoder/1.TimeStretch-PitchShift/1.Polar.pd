@@ -202,9 +202,9 @@
 #X text 40 326 But when we have different grain and step sizes \, we also have phase discontinuities as the grains do not match anymore. No problem as the phase accumulation process removes these discontinuities. For that \, it needs two windows for each grain \, called "back" and "front" \, where the front window gets resynthesized in the output with a different phase information. Open the subpatch below for more info on how it works., f 70;
 #X text 40 246 This example is on a fixed buffer. For keeping the patch simple \, we have a fixed window of 2048 and 4 overlaps. As before \, a parameter for transposition defines a grain size and you control a step size with a speed parameter. The original grain size is the FFT window size (2048) and the step is the hop size (512)., f 70;
 #X text 40 165 We'll see later about 'Phase Vocoder Analysis' \, which is a type of analysis based on FFT that gives you more precise information for partial that you can use to feed a bank of oscillators. Here we do not have a bank of oscillators but a simple FFT/iFFT patch with a process known as "Phase accumulation"., f 70;
-#X obj 318 500 initmess \; \$0-speed 100 \; \$0-transpo 0;
+#X obj 313 500 initmess \; \$0-speed 100 \; \$0-transpo 0;
 #X obj 433 558 s \$0-size;
-#X msg 433 531 \$1;
+#X msg 433 528 \$1;
 #X obj 433 470 sample~ \$0-sample bubul.mp3, f 9;
 #X connect 0 0 7 1;
 #X connect 1 0 7 2;

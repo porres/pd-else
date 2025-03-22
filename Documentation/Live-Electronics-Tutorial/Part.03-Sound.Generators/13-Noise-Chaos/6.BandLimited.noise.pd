@@ -15,7 +15,7 @@
 #X obj 67 415 downsample~;
 #X msg 673 197 interp \$1;
 #X obj 673 170 tgl 16 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
-#X obj 600 417 out~;
+#X obj 600 423 out~;
 #X obj 600 266 graph~ 1500 10;
 #X obj 600 192 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 579 190 hz;
