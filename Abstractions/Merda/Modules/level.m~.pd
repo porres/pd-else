@@ -5,7 +5,6 @@
 #X obj 125 121 else/sender 1 \\\$0-presets;
 #X msg 125 86 name \$1;
 #X obj 90 171 else/receiver;
-#X obj 123 220 route list;
 #N canvas 468 182 491 352 id-name-init 0;
 #X obj 165 113 + 1;
 #X obj 257 100 else/dollsym 1;
@@ -25,14 +24,15 @@
 #X connect 6 0 1 0;
 #X connect 7 0 5 0;
 #X restore 90 39 pd id-name-init;
-#X obj 123 257 else/dispatch \$0-set-db;
-#X obj 90 311 else/var \$0-db;
+#X obj 90 311 else/var \$0-knob;
+#X obj 123 257 else/dispatch \$0-set-knob;
+#X obj 123 220 route float;
 #X connect 1 0 0 0;
-#X connect 2 0 3 0;
+#X connect 2 0 4 0;
 #X connect 2 0 6 0;
-#X connect 3 0 5 0;
-#X connect 4 0 1 0;
-#X connect 4 0 2 0;
+#X connect 3 0 1 0;
+#X connect 3 0 2 0;
+#X connect 6 0 5 0;
 #X restore 252 422 pd preset;
 #N canvas 171 120 601 317 init-savestate 0;
 #X obj 106 75 savestate;
@@ -55,7 +55,7 @@
 #X obj 112 112 cnv 15 95 146 empty empty empty 20 12 0 14 #dbdbdb #373737 0;
 #X obj 126 158 else/knob 60 -1 1 0 0 \$0-knob \$0-set-knob #000000 #404040 #ffffff 0 0 0 0 1 320 0 0 0 empty empty 0 8 0 0 0 0 0 0;
 #X obj 125 121 else/note 62 18 Inter empty 5 54 54 54 0 187 187 187 1 1 LEVEL;
-#X obj 122 232 else/note 72 14 Menlo \$0-db-label 0 0 0 0 0 255 255 255 0 1 +12.00 dB;
+#X obj 122 232 else/note 72 14 Menlo \$0-db-label 0 0 0 0 0 255 255 255 0 1 +0.20 dB;
 #X coords 0 1 100 -1 97 148 1 111 111;
 #X restore 208 147 graph;
 #X obj 57 340 *~, f 4;
@@ -146,7 +146,7 @@
 #X connect 6 0 0 0;
 #X connect 8 0 4 0;
 #X restore 82 306 pd set-level;
-#N canvas 237 217 449 378 set 1;
+#N canvas 237 217 449 378 set 0;
 #X obj 113 47 inlet;
 #X obj 118 85 route db;
 #X obj 115 144 clip -100 12;
