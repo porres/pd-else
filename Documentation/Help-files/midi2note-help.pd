@@ -1,4 +1,4 @@
-#N canvas 408 34 563 458 10;
+#N canvas 527 38 563 458 10;
 #X obj 4 253 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 354 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 385 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
@@ -156,7 +156,7 @@
 #X connect 10 0 9 0;
 #X restore 427 221 pd quarter-tones;
 #X msg 221 157 65.5;
-#X text 62 89 [midi2note] converts a MIDI pitch value to note names (such as Eb3). The names end with an octave number \, in a way that middle C (MIDI pitch = 60) represents C4 represents. Float inputs are rounded to quarter tones (yes \, there's support for quarter tones)., f 68;
+#X text 62 89 [midi2note] converts a MIDI pitch value to note names (such as Eb3). The names end with an octave number \, in a way that middle C (MIDI pitch = 60) represents C4 represents. Float inputs are rounded to quarter tones (yes \, there's support for quarter tones \, and the range is from octave 0 to 8)., f 75;
 #X connect 24 0 43 0;
 #X connect 38 0 43 0;
 #X connect 43 0 18 0;
