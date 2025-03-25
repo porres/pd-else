@@ -40,6 +40,8 @@ typedef struct _tabplayer{
     int         x_playing;          // if playing
     int         x_playnew;          // if started playing this particular block
     int         x_n_ch;
+    // new var to store namemode: 0 = <ch>-<arrayname>, 1 = <arrayname>-<ch> 
+    int         x_namemode;         // 0 is <ch>-<arrayname>, 1 is <arrayname>-<ch>
     t_float    *x_ivec;             // input vector
     t_float   **x_ovecs;            // output vectors
     t_outlet   *x_donelet;
@@ -506,12 +508,19 @@ static void *tabplayer_new(t_symbol * s, int ac, t_atom *av){
     x->x_loop = 0;
     x->x_rate = 1.f;
     x->x_trig_mode = 0;
+    // new var to store namemode: 0 = <ch>-<arrayname>, 1 = <arrayname>-<ch>
+    x->x_namemode = 0;
     int nameset = 0;
     int argn = 0;
     while(ac){
         if(av->a_type == A_SYMBOL){ // if name not passed so far, count arg as array name
             s = atom_getsymbolarg(0, ac, av);
-            if(s == gensym("-loop") && !argn){
+            // added flag to set namemode
+            if(s == gensym("-chafter") && !argn){
+                x->x_namemode = 1; 
+                ac--, av++;
+            } 
+            else if(s == gensym("-loop") && !argn){
                 x->x_loop = 1;
                 ac--, av++;
             }
@@ -564,7 +573,13 @@ static void *tabplayer_new(t_symbol * s, int ac, t_atom *av){
     int chn_n = (int)channels > 64 ? 64 : (int)channels;
     x->x_glist = canvas_getcurrent();
     x->x_hasfeeders = 0;
-    x->x_buffer = buffer_init((t_class *)x, arrname, chn_n, 0);
+    // init buffer according to namemode: 0 = <ch>-<arrayname>, 1 = <arrayname>-<ch>
+    if(x->x_namemode == 0) {
+        x->x_buffer = buffer_init((t_class *)x, arrname, chn_n, 0, 0); 
+    }
+    else if(x->x_namemode == 1){
+        x->x_buffer = buffer_init((t_class *)x, arrname, chn_n, 0, 1); 
+    }        
     if(x->x_buffer){
         int ch = x->x_buffer->c_numchans;
         x->x_npts = x->x_buffer->c_npts;
