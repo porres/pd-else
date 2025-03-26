@@ -152,7 +152,6 @@ void plaits_dump(t_plaits *x){
 }
 
 void plaits_list(t_plaits *x, t_symbol *s, int ac, t_atom *av){
-    
     if(ac == 0)
         return;
     if(ac == 1 && s)
@@ -171,7 +170,6 @@ void plaits_list(t_plaits *x, t_symbol *s, int ac, t_atom *av){
         SETFLOAT(at+2, atom_getfloat(av+2) / 127.);
         obj_list(&x->x_obj, NULL, 3, at);
     }
-    
     s = NULL;
     x->x_midi_tr = x->x_midi_lvl = 0;
     x->x_midi_pitch = atom_getfloat(av);
