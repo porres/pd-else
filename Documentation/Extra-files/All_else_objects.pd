@@ -1,6 +1,6 @@
-#N struct 1008-cell float x float y float cellsize float color;
-#N struct 1010-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
-#N struct 1066-slot float x float y float slotsize float color float width float bordercolor;
+#N struct 1004-cell float x float y float cellsize float color;
+#N struct 1006-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
+#N struct 1062-slot float x float y float slotsize float color float width float bordercolor;
 #N canvas 549 38 541 693 10;
 #N canvas 240 38 975 767 GUI 0;
 #X text 48 -899 [biplot];
@@ -367,11 +367,10 @@
 #X restore 236 500 pd Control(Sequencers);
 #N canvas 653 78 261 244 Control(Envelopes) 0;
 #X obj 78 40 else/adsr~;
-#X obj 78 62 else/asr~;
-#X obj 78 86 else/decay~;
-#X obj 78 109 else/decay2~;
-#X obj 78 133 else/envelope~;
-#X obj 78 157 else/envgen~;
+#X obj 78 64 else/decay~;
+#X obj 78 87 else/decay2~;
+#X obj 78 111 else/envelope~;
+#X obj 78 135 else/envgen~;
 #X restore 383 500 pd Control(Envelopes);
 #N canvas 522 164 270 363 Control(Ramp/Line_Generators/Smoothening 0;
 #X obj 86 28 else/function~;

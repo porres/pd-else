@@ -91,7 +91,7 @@ proc category_else_menu::load_menutree {} {
             {control:\ sequencers
                 {euclid score score2 pattern list.seq sequencer sequencer~ phaseseq~ impseq~ rec rec2}}
             {control:\ envelopes
-                {adsr~ asr~ decay~ decay2~ envelope~ envgen~}}
+                {adsr~ decay~ decay2~ envelope~ envgen~}}
             {control:\ ramp\ line/curve\ generators
                 {ramp~ susloop~ function~ slew slew~ slew2 slew2~ lag~ lag2~ glide glide~ glide2 glide2~}}
             {control:\ random/stochastic

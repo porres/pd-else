@@ -6,7 +6,7 @@
 
 ### Version: 1.0-0 RC-13 (release candidate #13) With Live Electronics Tutorial.
 
-### Released March 26th 2025
+### Released April 2nd 2025
 
 Copyright © 2017-2025 Alexandre Torres Porres and others
 
@@ -29,7 +29,7 @@ For copies of the licenses and the terms, please check the 'license' subfolder.
 
 ###   About ELSE
 
-This version of ELSE needs **Pd 0.55-1** or above.
+This version of ELSE needs **Pd 0.55-2** or above.
 
 ELSE is a big library of externals that extends the performance Pure Data (Pd) - Miller S. Puckette's realtime computer music environment (download Pd from: http://msp.ucsd.edu/software.html).
 
@@ -103,7 +103,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 --------------------------------------------------------------------------
 
-## Current Object list (566 objects):
+## Current Object list (565 objects):
 
 #assorted
     else
@@ -202,7 +202,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     score score2 pattern list.seq sequencer sequencer~ phaseseq~ impseq~ rec rec2 lace delace
 
 #control: envelopes
-    adsr~ asr~ decay~ decay2~ envelope~ envgen~
+    adsr~ decay~ decay2~ envelope~ envgen~
 
 #control: ramp/line/curve generators
     {amp~ susloop~ function~ slew slew~ slew2 slew2~ lag~ lag2~ glide glide~ glide2 glide2~
