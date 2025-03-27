@@ -1,4 +1,4 @@
-#N canvas 567 66 564 615 10;
+#N canvas 539 66 564 615 10;
 #X obj 213 202 hsl 128 15 44.1 44100 1 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 23 40 cnv 4 4 4 empty empty Gingerbread 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 123 40 cnv 4 4 4 empty empty man 0 28 2 18 #e0e0e0 #000000 0;
@@ -19,12 +19,9 @@
 #X text 141 224 rate in Hz;
 #X text 145 537 2) float;
 #X text 145 555 3) float;
-#X msg 287 247 1.2 2.1;
-#X obj 210 273 else/gbman~;
 #X obj 210 298 else/out~;
-#X msg 280 226 0.3 -0.2;
-#X text 338 247 (default);
-#X text 339 226 initial feedback values;
+#X text 378 247 (default);
+#X text 379 226 initial feedback values;
 #X text 205 555 - initial feedback value of y[n-2] (default 2.1);
 #X text 205 537 - sets initial feedback value of y[n-1] (default 1.2);
 #X text 205 519 - sets frequency in hertz (default nyquist frequency);
@@ -70,8 +67,11 @@
 #X text 214 374 - frequency in hertz (negative values accepted) or MIDI;
 #X text 99 407 set <float \, float> -;
 #X text 226 407 <channel \, freq> set a single frequency channel, f 53;
+#X msg 280 226 coeffs 0.3 -0.2;
+#X obj 210 273 else/gbman~;
+#X msg 287 247 coeffs 1.2 2.1;
 #X connect 0 0 11 0;
-#X connect 11 0 19 0;
-#X connect 18 0 19 0;
-#X connect 19 0 20 0;
-#X connect 21 0 19 0;
+#X connect 11 0 46 0;
+#X connect 45 0 46 0;
+#X connect 46 0 18 0;
+#X connect 47 0 46 0;
