@@ -20,10 +20,12 @@
 #X obj 208 473 vline~;
 #X msg 208 441 1 50 \, 0 450 500;
 #X text 43 391 The same thing \, now implemented with [vline~]., f 47;
+#X obj 385 254 tgl 19 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
 #X connect 6 0 1 1;
 #X connect 6 0 8 0;
+#X connect 6 1 20 0;
 #X connect 7 0 6 0;
 #X connect 8 0 0 0;
 #X connect 12 0 14 0;
