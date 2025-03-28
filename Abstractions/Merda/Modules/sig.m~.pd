@@ -4,7 +4,6 @@
 #X obj 125 121 else/sender 1 \\\$0-presets;
 #X msg 125 86 name \$1;
 #X obj 90 171 else/receiver;
-#X obj 123 220 route list;
 #N canvas 468 182 491 352 id-name-init 0;
 #X obj 165 113 + 1;
 #X obj 257 100 else/dollsym 1;
@@ -26,12 +25,13 @@
 #X restore 90 39 pd id-name-init;
 #X obj 123 257 else/dispatch \$0-set-sig;
 #X obj 90 311 else/var \$0-sig;
+#X obj 123 220 route float;
 #X connect 1 0 0 0;
-#X connect 2 0 3 0;
+#X connect 2 0 5 0;
 #X connect 2 0 6 0;
-#X connect 3 0 5 0;
-#X connect 4 0 1 0;
-#X connect 4 0 2 0;
+#X connect 3 0 1 0;
+#X connect 3 0 2 0;
+#X connect 6 0 4 0;
 #X restore 95 187 pd preset;
 #N canvas 243 174 409 398 init-savestate 0;
 #X obj 74 88 savestate;
@@ -53,7 +53,7 @@
 #X obj 112 112 cnv 15 90 135 empty empty empty 20 12 0 14 #dbdbdb #373737 0;
 #X obj 126 155 else/knob 60 -1 1 0 0 \$0-sig \$0-set-sig #000000 #404040 #ffffff 0 0 0 0 1 320 0 0 0 empty empty 0 14 0 50 0 0 0 0;
 #X obj 125 121 else/note 62 18 Inter empty 5 54 54 54 0 187 187 187 1 1 SIG;
-#X obj 124 224 else/note 62 14 Menlo \$0-sig-label 0 0 0 0 0 255 255 255 0 1 -1;
+#X obj 124 224 else/note 62 14 Menlo \$0-sig-label 0 0 0 0 0 255 255 255 0 1 0;
 #X coords 0 1 100 -1 92 137 1 111 111;
 #X restore 209 134 graph;
 #X obj 65 264 r \$0-sig;
