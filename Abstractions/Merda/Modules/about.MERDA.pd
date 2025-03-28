@@ -98,7 +98,7 @@
 #A saved;
 #A saved;
 #X obj 43 40 else/plaits.m~;
-#A saved 0 0.5 0.5 0.5 0 0.5 0.5 0 0 0 0 0 4 0 0;
+#A saved 0 0.5 0.5 0.5 0 0.5 0.5 0 0 0 0 0 4 0;
 #A saved;
 #A saved;
 #A saved;
@@ -110,13 +110,13 @@
 #A saved;
 #A saved;
 #X obj 516 338 else/pluck.m~;
-#A saved 100 500 0 0 0 0;
+#A saved 100 500 0 0 0;
 #A saved;
 #A saved;
 #A saved;
 #A saved;
 #X obj 43 324 else/pm6.m~;
-#A saved idx 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \; vol 100 0 0 0 0 0 \; ratio 1 1 1 1 1 1 \; detune 0 0 0 0 0 0 \; pan 0 0 0 0 0 0 \; transp 0 \;;
+#A saved idx 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \; vol 100 0 0 0 0 0 \; ratio 1 1 1 1 1 1 \;;
 #A saved;
 #A saved;
 #A saved;
