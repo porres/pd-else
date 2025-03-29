@@ -401,7 +401,7 @@ static void *wavetable_new(t_symbol *s, int ac, t_atom *av){
             ac--, av++;
         }
     }
-    x->x_buffer = buffer_init((t_class *)x, name, 1, 0);
+    x->x_buffer = buffer_init((t_class *)x, name, 1, 0, 0); // just added fifth argument: see buffer.c / buffer.h 
     x->x_phase[0] = phaseoff < 0 || phaseoff > 1 ? 0 : phaseoff;
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
 //        pd_float((t_pd *)x->x_inlet_sync, 0);
