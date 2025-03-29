@@ -1,4 +1,4 @@
-#N canvas 330 44 782 569 12;
+#N canvas 335 238 782 569 12;
 #X obj 80 100 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
 #X msg 141 245 goto 1;
 #X obj 449 29 inlet;
@@ -164,7 +164,7 @@
 #X connect 31 0 32 1;
 #X connect 32 0 6 1;
 #X restore 310 317 pd bar;
-#N canvas 554 471 327 395 ms 0;
+#N canvas 1034 448 327 395 ms 0;
 #X obj 110 228 *;
 #X obj 128 131 else/bpm;
 #X obj 128 97 r \$0-tempo;
@@ -175,14 +175,14 @@
 #X obj 195 131 r \$0-mode;
 #X obj 110 56 inlet;
 #X obj 128 200 * 4;
-#X obj 128 170 else/hot;
+#X obj 145 168 t b f;
 #X connect 0 0 5 0;
 #X connect 0 0 6 0;
-#X connect 1 0 10 0;
+#X connect 1 0 9 0;
 #X connect 2 0 1 0;
 #X connect 5 0 3 0;
 #X connect 6 0 4 0;
-#X connect 7 0 10 1;
+#X connect 7 0 10 0;
 #X connect 8 0 0 0;
 #X connect 9 0 0 1;
 #X connect 10 0 9 0;
@@ -192,7 +192,7 @@
 #X obj 91 277 s \$0-data;
 #X msg 91 246 stop;
 #X obj 310 345 s \$0-data;
-#N canvas 653 23 527 422 init 0;
+#N canvas 653 38 527 422 init 0;
 #X obj 55 365 outlet;
 #X obj 189 260 else/slice 1;
 #X obj 305 317 s \$0-tempo;
