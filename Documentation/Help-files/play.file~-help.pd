@@ -97,13 +97,13 @@
 #X msg 290 198 set MouthBow.flac;
 #X msg 286 174 open violin.flac;
 #X text 59 90 [play.file~] reads/plays files from your computer similarly to Vanilla's [readsf~] \, but it supports more file formats (officialy AAC \, AIF \, CAF \, FLAC \, MP3 \, OGG \, OPUS & WAV). It can also browse and play files from web links! Note that the file sample needs to be at the same sample rate as Pd's., f 72;
-#N canvas 760 138 604 414 browse 0;
+#N canvas 760 138 604 414 stream 0;
 #X obj 81 130 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 162 254 bng 19 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #X obj 63 309 else/out~;
-#X msg 63 102 browse https://upload.wikimedia.org/wikipedia/en/1/10/Michael_Jackson_Thriller.ogg, f 83;
+#X msg 63 102 stream https://upload.wikimedia.org/wikipedia/en/1/10/Michael_Jackson_Thriller.ogg, f 83;
 #X obj 63 225 else/play.file~ 2;
-#X text 150 41 The browse message loads files from an internet link \, this one takes a little while of course..., f 35;
+#X text 150 41 The stream message loads files from an internet link \, this one takes a little while of course..., f 35;
 #X text 313 162 live stream from a link;
 #X msg 99 162 stream https://radio.plaza.one/ogg;
 #X msg 109 192 stream http://netpd.org:8010/netpd.mp3;
@@ -114,7 +114,7 @@
 #X connect 4 2 1 0;
 #X connect 7 0 4 0;
 #X connect 8 0 4 0;
-#X restore 487 330 pd browse;
+#X restore 487 330 pd stream;
 #X text 208 482 stops if it's playing and opens a file with the symbol name (no symbol opens dialog window), f 54;
 #X text 100 509 stream <symbol> -;
 #X text 208 508 streams a file from a link on the web (works for uploaded files as well as live streaming radios and stuff).;
