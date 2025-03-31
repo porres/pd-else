@@ -8,7 +8,7 @@ static t_class *quantizer_class;
 typedef struct _quantizer{
 	t_object    x_obj;
     t_inlet    *x_inlet_f;
-	t_float     x_mode;
+	int         x_mode;
     int         x_nchans;
     t_int       x_n;
     t_int       x_ch2;
@@ -18,8 +18,8 @@ static void quantizer_mode(t_quantizer *x, t_float f){
     x->x_mode = (int)f;
     if(x->x_mode < 0)
         x->x_mode = 0;
-    if(x->x_mode > 3)
-        x->x_mode = 3;
+    if(x->x_mode > 4)
+        x->x_mode = 4;
 }
 
 static t_int *quantizer_perform(t_int *w){
@@ -41,8 +41,14 @@ static t_int *quantizer_perform(t_int *w){
                     output = step * trunc(div);
                 else if(x->x_mode == 2) // floor
                     output = step * floor(div);
-                else // ceil (mode == 3)
+                else if(x->x_mode == 3) // ceil
                     output = step * ceil(div);
+                else{ // floor & ceil (mode == 4)
+                    if(in > 0)
+                        output = step * ceil(div);
+                    else
+                        output = step * floor(div);
+                }
             }
             else // step is <= 0, do nothing
                 output = in;
@@ -74,7 +80,7 @@ static void *quantizer_new(t_symbol *s, int ac, t_atom *av){
     float f = 0;
     int numargs = 0;
     x->x_mode = 0;
-    while(ac > 0 ){
+    while(ac > 0){
         if(av->a_type == A_FLOAT){
             switch(numargs){
                 case 0:
@@ -91,7 +97,7 @@ static void *quantizer_new(t_symbol *s, int ac, t_atom *av){
             };
             numargs++;
         }
-        else if(av -> a_type == A_SYMBOL && !numargs){
+        else if(av->a_type == A_SYMBOL && !numargs){
             if(atom_getsymbolarg(0, ac, av) == gensym("-mode") && ac >= 2){
                 if((av+1)->a_type == A_FLOAT){
                     x->x_mode = (int)atom_getfloatarg(1, ac, av);
@@ -108,8 +114,8 @@ static void *quantizer_new(t_symbol *s, int ac, t_atom *av){
     };
     if(x->x_mode < 0)
         x->x_mode = 0;
-    if(x->x_mode > 3)
-        x->x_mode = 3;
+    if(x->x_mode > 4)
+        x->x_mode = 4;
     x->x_inlet_f = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_f, f);
     outlet_new(&x->x_obj, gensym("signal"));

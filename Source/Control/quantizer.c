@@ -17,8 +17,8 @@ static void quantizer_mode(t_quantizer *x, t_float f){
     x->x_mode = (int)f;
     if(x->x_mode < 0)
         x->x_mode = 0;
-    if(x->x_mode > 3)
-        x->x_mode = 3;
+    if(x->x_mode > 4)
+        x->x_mode = 4;
 }
 
 static float get_qtz(t_quantizer *x, t_float f){
@@ -31,8 +31,14 @@ static float get_qtz(t_quantizer *x, t_float f){
 				qtz = x->x_step * trunc(div);
             else if(x->x_mode == 2) // floor
                 qtz = x->x_step * floor(div);
-            else //ceil
+            else  if(x->x_mode == 3)//ceil
                 qtz = x->x_step * ceil(div);
+            else{
+                if(f > 0)
+                    qtz = x->x_step * ceil(div);
+                else
+                    qtz = x->x_step * floor(div);
+            }
 		}
 		else // quantizer is <= 0, do nothing
 			qtz = f;
@@ -89,8 +95,8 @@ static void *quantizer_new(t_symbol *s, int argc, t_atom *argv){
     };
     if(x->x_mode < 0)
         x->x_mode = 0;
-    if(x->x_mode > 3)
-        x->x_mode = 3;
+    if(x->x_mode > 4)
+        x->x_mode = 4;
     floatinlet_new(&x->x_obj, &x->x_step);
     outlet_new(&x->x_obj, 0);
     return(x);
