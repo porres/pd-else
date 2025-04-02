@@ -476,7 +476,7 @@
 #X obj 127 163 else/rand.u;
 #X obj 127 187 else/rand.dist;
 #X restore 318 535 pd Control(Random/Stochastic);
-#N canvas 683 140 279 464 Math(conversion) 0;
+#N canvas 683 140 279 418 Math(conversion) 0;
 #X obj 60 17 else/hex2dec;
 #X obj 60 43 else/dec2hex;
 #X obj 60 69 else/bpm;
@@ -499,12 +499,13 @@
 #X obj 60 598 else/rad2hz;
 #X obj 60 626 else/lin2db;
 #X obj 60 652 else/lin2db~;
-#X obj 60 678 else/rescale;
-#X obj 60 704 else/rescale~;
+#X obj 60 701 else/rescale;
+#X obj 60 727 else/rescale~;
 #X obj 60 444 else/deg2rad;
 #X obj 60 467 else/rad2deg;
 #X obj 60 195 else/pz2coeff;
 #X obj 60 216 else/coeff2pz;
+#X obj 60 675 else/dbgain~;
 #X restore 387 284 pd Math(conversion);
 #N canvas 1012 129 205 207 Math(constant) 0;
 #X obj 72 50 else/sr~;
