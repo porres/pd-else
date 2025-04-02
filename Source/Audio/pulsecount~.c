@@ -50,6 +50,10 @@ static void pulsecount_div(t_pulsecount *x, t_floatarg f){
         x->x_mod = -1;
 }
 
+static void pulsecount_reset(t_pulsecount *x){
+    x->x_count = 0;
+}
+
 static void pulsecount_dsp(t_pulsecount *x, t_signal **sp){
     dsp_add(pulsecount_perform, 5, x, sp[0]->s_n,
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
@@ -79,5 +83,6 @@ void pulsecount_tilde_setup(void){
         sizeof(t_pulsecount), CLASS_DEFAULT, A_DEFFLOAT, 0);
     class_addmethod(pulsecount_class, nullfn, gensym("signal"), 0);
     class_addmethod(pulsecount_class, (t_method) pulsecount_dsp, gensym("dsp"), A_CANT, 0);
+    class_addbang(pulsecount_class, pulsecount_reset);
     class_addmethod(pulsecount_class, (t_method)pulsecount_div, gensym("max"), A_DEFFLOAT, 0);
 }
