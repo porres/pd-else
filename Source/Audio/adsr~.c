@@ -19,6 +19,7 @@ typedef struct _adsr{
     t_inlet    *x_inlet_release;
     t_outlet   *x_out2;
     t_float     x_f_gate;
+    t_float     x_last_kgate;
     t_float     x_last_gate;
     t_float     x_sustain_target;
     t_float     x_sr_khz;
@@ -47,14 +48,14 @@ static void adsr_rel(t_adsr *x, t_floatarg f){
 
 static void adsr_bang(t_adsr *x){ // control impulse
     if(!x->x_gate_status[0]){
-        x->x_f_gate = x->x_last_gate;
+        x->x_f_gate = x->x_last_kgate;
         x->x_bang = 1;
     }
 }
 
 static void adsr_retrigger(t_adsr *x){
     if(x->x_attacked[0]){ // needs to be attacked
-        x->x_f_gate = x->x_last_gate;
+        x->x_f_gate = x->x_last_kgate;
         x->x_kretrig = 1;
     }
 }
@@ -62,7 +63,7 @@ static void adsr_retrigger(t_adsr *x){
 static void adsr_gate(t_adsr *x, t_floatarg f){
     x->x_f_gate = f;
     if(x->x_f_gate != 0){
-        x->x_last_gate = x->x_f_gate;
+        x->x_last_kgate = x->x_f_gate;
         if(!x->x_status) // it's off, so trigger it on
             outlet_float(x->x_out2, x->x_status = 1);
         else // retrigger
@@ -141,7 +142,8 @@ static t_int *adsr_perform(t_int *w){
                 gate_status[j] = audio_gate || x->x_f_gate; // update status
                 if(gate_status[j]){ // if gate opened
                     // get target, control or audio
-                    target[j] = x->x_f_gate != 0 ? x->x_f_gate : input_gate;
+                    x->x_last_gate = x->x_f_gate != 0 ? x->x_f_gate : input_gate;
+                    target[j] = x->x_last_gate;
                     attacked[j] = 1; // tag enveloped as "attacked"
                     decayed[j] = sustained[j] = 0;
                     if(!x->x_status)
@@ -162,7 +164,7 @@ static t_int *adsr_perform(t_int *w){
                 }
             }
             else if(attacked[j] && retrig != 0){ // signal retrigger
-                target[j] = phase[j] > 0 ? retrig : -retrig;
+                target[j] = x->x_last_gate > 0 ? retrig : -retrig;
                 phase[j] = last[j];
                 delta[j] = target[j] - last[j];
                 decayed[j] = sustained[j] = 0;
@@ -366,7 +368,8 @@ static void *adsr_new(t_symbol *sym, int ac, t_atom *av){
     x->x_attacked[0] = x->x_decayed[0] = 0;
     x->x_sustained[0] = x->x_released[0] = 0;
     x->x_last[0] = x->x_target[0] = 0.;
-    x->x_last_gate = 1;
+    x->x_last_kgate = 1;
+    x->x_last_gate = 0;
     x->x_status = 0;
     x->x_kretrig = 0;
     x->x_bang = 0;
