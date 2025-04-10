@@ -67,7 +67,7 @@ void else_obj_about(t_else_obj *x){
     post("-------------------------------------------------------------------");
     post("  -----> ELSE - EL Locus Solus' Externals for Pure Data <-----");
     post("-------------------------------------------------------------------");
-    post("- Version: %d.%d-%d %s-%d; Released April 2nd 2025", else_major, else_minor, else_bugfix, STATUS, status_number);
+    post("- Version: %d.%d-%d %s-%d; Released April 17th 2025", else_major, else_minor, else_bugfix, STATUS, status_number);
     post("- Author: Alexandre Torres Porres & others");
     post("ELSE binary loaded from: %s", else_obj_class->c_externdir->s_name);
     post("- Repository: https://github.com/porres/pd-else");
@@ -99,6 +99,10 @@ void else_obj_about(t_else_obj *x){
     post("-------------------------------------------------------------------");
     post("- ALSO ALSO NOTE: Loading this binary did install an object browser");
     post("plugin for Vanilla and ELSE objects when right clicking on a canvas.");
+    post("-------------------------------------------------------------------");
+    post("-------------------------------------------------------------------");
+    post("- ALSO ALSO ALSO NOTE: ELSE has a sublibrary called MERDA, for");
+    post("eurorack inspired modular synthesis, still very very experimental.");
     post("-------------------------------------------------------------------");
     post("  -----> ELSE - EL Locus Solus' Externals for Pure Data <-----");
     post("-------------------------------------------------------------------");

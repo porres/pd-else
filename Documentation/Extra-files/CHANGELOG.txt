@@ -39,7 +39,7 @@ Breaking changes:
 - [resonbank~]/[resonbank2~] have basically been deleted and replaced by new objects with the same name - they're now based on [resonator~] and [resonator2~], with a different design.
 - [oscbank~] now uses a 'partial' list and not a frequency list, so names/method changed. The freq input now defaults to '1' and this makes [oscbank2~] completely obsolete.
 - [oscbank2~] has been deleted.
-- [asr] has been deleted (one can just use [adsr~], [lag2~], [glide2~], there are many options).
+- [asr~] has been deleted (one can just use [adsr~], [lag2~], [glide2~], there are many options).
 
 Enhancements/fixes/other changes:
 - [adsr~] A bang now is not "retrigger", but an impulse at control rate, there's a new 'retrigger' message for control rate retriggering (and now it only retriggers if the gate is on). We have now a new mode for immediate release (see breaking changes above, I'm not repeating it). Fixed ADSR signal inputs (it was simply not really working, specially for linear). Fixed status output for MC signals. 
@@ -55,7 +55,7 @@ Enhancements/fixes/other changes:
 - [metronome~] fixed bug with 'set' message.
 - [midi2note] fixed range (octave 0-8)
 - [dir] is now an abstraction based on [file], which gets this out of my back and makes it more portable I hope :) there were some bugs that get fixed with this! Added a mechanism to show just files or just folders. Added new 'show' / 'hide' methods to show you the files/folders from the directory in a 'text' window. A click opens the dialog window to choose the directory. Added a new 'random' message to pick a random possibility from the directory.
-- [pulsecount~] fixed reset count to not output immediately
+- [pulsecount~] fixed reset count to not output immediately, added bang to reset counter at control rate
 - [click] fixed regression bug where it stopped working.
 - [else] new 'dir' method to output ELSE's binary directory in a new rightmost outlet (since this functionality was removed from [dir]). The print information also includes the directory.
 - [pic] added zoom capability finally (thanks to tim schoen) and added offset message (also thanks to tim).
@@ -78,16 +78,18 @@ Enhancements/fixes/other changes:
 - [parabolic~] now uses and internal wavetable for more efficiency
 - [resonant~] added 'bw' resonance mode.
 - [lowpass~]/[highpass~] added 't60' resonance mode.
+- [quantizer~]/[quantizer] added a new mode, which combines floor (for negative) and ceil (for positive) values.
+- [crusher~] now uses the new quantizer~ mode from above (arguably a breaking change)
 - [envgen~] fixed a bug (actually a misconception) where ramps started one sample earlier. Added a possibility to set time in samples instead of ms. Maximum number of lines is now 1024
 - Added MC support to [gatehold~], [vca.m~], [gain2~], [asr~], [envgen~], [bl.osc~], [bl.saw~], [bl.saw2~], [bl.vsaw~], [bl.square~], [bl.tri~], [bl.imp~], [bl.imp2~], [imp2~], [tri~], [saw~], [saw2~], [vsaw~], [square~], [pulse~], [parabolic~], [gaussian~], [wavetable~], [wt2d~], [randpulse~], [randpulse2~], [stepnoise~], [rampnoise~] [pink~], [gbamn~], [cusp~], [gray~] and [white~].
 - Also added midi input and soft sync to [imp2~], [tri~], [saw~], [saw2~], [vsaw~], [square~], [pulse~], [gaussian~] and [parabolic~].
 - [wavetable~ and [wt2d~] gained args to set xfading
 - M.E.R.D.A: Added MIDI-LEARN for all modules (this is only for the knobs). Replaced some number boxes that were attached to knobs by an internal number display mechanism (new feature from knob). Improved interface of [gendyn.m~], preset/symbol name fixes to [flanger.m~]. Now we have automatic midi mode detection for [plaits.m~] and [pluck.m~] when no signals are connected (still trying to get plaits right, huh? Yup, and MIDI input with monophony and trigger mode has been fixed). Added MC support to [vca.m~]. Increased range of [drive.m~] down to 0.1. Changed some objects to include the new [popmenu] GUI. [vco.m~] now uses the new MC functionalities of oscillators and doesn't need to load abstractions into [clone]. The [seq8.m~] module was worthless and got a decent upgrade, it's practically a new module. Added a couple of new modules (see below). Note that MERDA is still at alpha development phase, much experimental. Expect changes as it evolves.
-- 16 new objects: [float2imp~], [lace], [delace], [lace~], [delace~], [gatehold], [gaterelease~], [gaterelease], [popmenu], [scope3d~], [tanh~], [resonator~], [sfinfo], [level~] plus [crusher.m~], and [level.m~] MERDA Modules.
+- 17 new objects: [float2imp~], [lace], [delace], [lace~], [delace~], [gatehold], [gaterelease~], [gaterelease], [popmenu], [scope3d~], [tanh~], [resonator~], [sfinfo], [dbgain~], [level~] plus [crusher.m~], and [level.m~] MERDA Modules.
 
-Objects count: total of 565 (314 signal objects [130 of which are MC aware] and 251 control objects)! 
+Objects count: total of 566 (315 signal objects [131 of which are MC aware] and 251 control objects)! 
 
-- 318 coded objects (206 signal objects  / 112 control objects)
+- 319 coded objects (207 signal objects  / 112 control objects)
 - 225 abstractions objects (87 signal objects / 138 control objects)
 - 22 MERDA modular abstractions (21 audio / 1 control)
 
@@ -95,8 +97,11 @@ Objects count: total of 565 (314 signal objects [130 of which are MC aware] and 
 
 **TUTORIAL:**
 - New examples and revisions to add the new objects, features and breaking changes in ELSE. 
+- Added the MERDA modules into the examples for reference
+- Revised section on envelopes
+- New subtractive synthesis example 
 - New chapter on Modal Synthesis
-- Total number of examples is now 534!
+- Total number of examples is now 549!
 
 --------------------------------------
 

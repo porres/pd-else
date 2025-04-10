@@ -4,7 +4,7 @@
 #X obj 3 458 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
 #X obj 142 430 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 3 491 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
-#X obj 3 3 cnv 15 301 42 empty empty db2gain 20 20 2 37 #e0e0e0 #000000 0;
+#X obj 3 3 cnv 15 301 42 empty empty dbgain~ 20 20 2 37 #e0e0e0 #000000 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -20,14 +20,14 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 23 40 cnv 4 4 4 empty empty Adjust\ gain\ to\ a\ dB\ level 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 143 371 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
-#X text 32 187 see also:;
-#X obj 33 212 else/db2lin~;
+#X text 49 189 see also:;
+#X obj 46 214 else/db2lin~;
 #X obj 243 148 noise~;
 #X obj 243 178 else/dbgain~ -12;
 #X obj 243 209 meter~;
-#X obj 39 244 else/level~;
+#X obj 52 246 else/level~;
 #A saved 0;
-#X text 112 278 [level~];
+#X text 51 323 [level~];
 #X text 65 90 The [dbgain~] object is basically like [level~] \, but without the GUI. One difference is that it allows multichannels on the right inlet to set different dB levels.;
 #X text 148 467 1) float - dB level adjustment (default 0), f 45;
 #X text 241 433 - gain adjusted input;
@@ -48,6 +48,6 @@
 #X connect 1 0 2 1;
 #X connect 2 0 3 0;
 #X connect 4 0 2 0;
-#X restore 418 282 pd multichannel;
+#X restore 429 309 pd multichannel;
 #X connect 19 0 20 0;
 #X connect 20 0 21 0;
