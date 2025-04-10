@@ -1,6 +1,6 @@
-#N canvas 482 28 677 670 12;
+#N canvas 482 38 677 670 12;
 #X declare -path else;
-#X obj 60 177 declare -path else;
+#X obj 60 186 declare -path else;
 #X obj 397 477 setdsp~;
 #X obj 58 390 +~;
 #X obj 58 610 v base_\$0;
@@ -44,7 +44,10 @@
 #X obj 518 281 osc~ 0.2;
 #X text 500 181 For a simple control message \, a simpler conversion can be made asuch as below., f 18;
 #X obj 518 579 ctlout 1 1;
-#X text 25 20 We now reconstruct the last example and expand it a bit for a proper note out message. Now we have a toggle for setting it to a unipolar signal \, which we could do by simpling adding "1" \, but in this case we also have an attenuator potentiometer that adjusts the level of the CV. In the maximum range (without attenuation) \, it is either -5v to +5v or 0 to +10v. The base value (the reference for 0 volts) is set by a 'base_\$0' variable. We now also need a gate signal that we'll use as note on and note off triggers. We have a random pulse generator with irregular tempo and the values for the velocity and pitch are also random. We convert the signal to MIDI with a simple [snapshot~] object. Note that these CV values could come into Pd via [adc~]., f 89;
+#X text 25 20 We now reconstruct the last example and expand it a bit for a proper note out message. Now we have a toggle for setting it to a unipolar signal \, which we could do by simpling adding "1" \, but in this case we also have an attenuator potentiometer that adjusts the level of the CV. In the maximum range (without attenuation) \, it is either -5v to +5v or 0 to +10v. The base value (the reference for 0 volts) is set by a 'base_\$0' variable. We now also need a gate signal that we'll use as note on and note off triggers. We have a random pulse generator with irregular tempo and the values for the velocity and pitch are also random. We convert the signal to MIDI with a simple [snapshot~] object. Note that these CV values could come into Pd via [adc~] \, so this patch is like a CV to MIDI converter., f 89;
+#X text 375 173 random gate;
+#X text 353 236 random velocity;
+#X text 55 228 random CV;
 #X connect 2 0 6 0;
 #X connect 4 0 3 0;
 #X connect 5 0 4 0;

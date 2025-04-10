@@ -1,0 +1,14 @@
+#N canvas 740 39 435 636 12;
+#X declare -path else;
+#X obj 120 195 noise~;
+#X obj 231 30 declare -path else;
+#X obj 120 507 out~;
+#X obj 120 239 vcf.m~;
+#A saved 282.927 20.5588 0 0;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#X text 92 98 The [vcf.m~] object is a MERDA module based on [lowpass~] \, so it's just a wrapper around it., f 37;
+#X connect 0 0 3 0;
+#X connect 3 0 2 0;

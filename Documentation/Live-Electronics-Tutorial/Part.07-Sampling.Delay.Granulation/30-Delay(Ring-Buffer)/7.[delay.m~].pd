@@ -1,0 +1,15 @@
+#N canvas 621 55 514 630 12;
+#X declare -path else;
+#X obj 214 45 declare -path else;
+#X obj 106 502 out~;
+#X obj 106 191 player~ bubul.mp3 1 1;
+#X obj 106 228 delay.m~;
+#A saved 112.591 0.536585 671.327 0.47561 0.536585;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#X text 57 108 The [delay.m~] object is a MERDA module based on [filterdelay~] \, so it's just a wrapper around it.;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;

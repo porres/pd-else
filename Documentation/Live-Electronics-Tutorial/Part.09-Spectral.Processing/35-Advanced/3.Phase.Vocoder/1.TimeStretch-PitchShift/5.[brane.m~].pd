@@ -1,0 +1,7 @@
+#N canvas 471 38 647 591 12;
+#X declare -path else;
+#X obj 378 20 declare -path else;
+#X obj 74 501 out~;
+#X obj 74 182 brane.m~ 1 sax.wav;
+#X text 107 63 The [brane.m~] object is a complex and high level sampler with two independent phase vocoder players (like [pvoc.player~]). But the speed is the same for both so you have a harmonizer (two pitch shifting voices). You just have to check the help file with all the countless details and information. This comes as an extra module in MERDA., f 62;
+#X connect 2 0 1 0;
