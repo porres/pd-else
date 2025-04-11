@@ -718,7 +718,7 @@ Sending messages to a receiver is straightforward:
 
 This works pretty much like the `outlet` method, but outputs messages to the given receiver instead. For instance, let's say you have a toggle with receiver symbol `onoff` in your patch, then you can turn on that toggle with a call like `pd.send("onoff", "float", {1})`. (Recall that the `atoms` argument always needs to be a table, even if it is a singleton, lest you'll get that "invalid atoms table" error that we discussed earlier).
 
-One complication are receiver symbols using a `$0-` patch id prefix, which are commonly used to differentiate receiver symbols in different toplevel patches or abstractions, in order to prevent name clashes. For instance, suppose that the toggle receiver is in fact named `$0-onoff`, then something like the following Pd-Lua object will do the trick, if you invoke it as `luasend $0-onoff` (you'll also find an explanation further below on how to manage this expansion for symbols from incoming messages):
+One complication are receiver symbols using a `$0-` patch id prefix, which are commonly used to differentiate receiver symbols in different toplevel patches or abstractions, in order to prevent name clashes. For instance, suppose that the toggle receiver is in fact named `$0-onoff`, then something like the following Pd-Lua object will do the trick, if you invoke it as `luasend $0-onoff`:
 
 ~~~lua
 local luasend = pd.Class:new():register("luasend")
@@ -738,7 +738,11 @@ Of course, this also handles ordinary receive symbols just fine if you pass them
 
 ![Send example](09-send.png)
 
-It is worth noting here that the same technique applies whenever you need to pass on "$" arguments to a Pd-Lua object in a Pd abstraction.
+---
+
+**NOTE:** The same technique applies whenever you need to pass on "$" arguments to a Pd-Lua object in a Pd abstraction. This also works in older Pd-Lua versions. However, since Pd-Lua 0.12.17 there's also the possibility to expand such "$" symbols directly in Lua, see [Expanding dollar symbols](#expanding-dollar-symbols) below.
+
+---
 
 So let's have a look at receivers now. These work pretty much like clocks in that you create them registering a method, and destroy them when they are no longer needed:
 
@@ -785,6 +789,54 @@ The obligatory test patch:
 
 ![Receive example](10-receive.png)
 
+### Expanding dollar symbols
+
+Some more in-depth information about dollar symbols and their use in Lua is in order. Specifically, we will discuss two new Pd-Lua object methods, `canvas_realizedollar()` (available since Pd-Lua 0.12.17) and  `set_args()` (available since 0.12.0) which help you manage your receiver and sender symbols. A third related method is `get_args()`, available since 0.12.18, which we also mention in passing for the sake of the completeness, but will not use in our example. These helper methods are technically part of Pd-Lua's graphics API (see [Graphics](#graphics) below) since they are often used in conjunction with graphical objects. But they work just as well with ordinary (non-graphical) Lua objects and come in handy here, that's why we introduce them now:
+
+- `self:canvas_realizedollar(symbol)`: Expands "$" symbols in the `symbol` string argument and returns the resulting string.
+- `self:set_args(atoms)`: Sets the given list `atoms` of numbers and strings as the object's creation arguments, and updates the display of the object on the canvas accordingly.
+- `self:get_args()`: Returns the object's current creation arguments as a list of numbers and strings in the same format as the argument of `set_args()`. This means that `self:set_args(self:get_args())` will just re-create the existing list of creation arguments, which by itself isn't all that useful. But you can manipulate the table returned by `get_args()` using Lua's table functions before passing the resulting table to `set_args()`. In particular, this allows you to replace certain arguments while keeping others.
+
+In case you're not familiar with "$" symbols in Pd, let's first discuss the basics; more information can be found in the Pd manual. The patch id `$0` is widely used in Pd for send and receive names to avoid conflicts with other receivers and senders of similar names. Pd expands `$0` to the canvas id, which differs for every open patch, and it expands `$1`, `$2` etc. if the corresponding creation arguments are set in the context of an abstraction or clone instance. (Also note that in Purr Data there is another `$@` symbol which expands to the list of all creation arguments.)
+
+If you set the sender or receiver names for your Pd-Lua object as *creation arguments* of the object, Pd automatically expands them for you as discussed above. But if you want to set them through *messages* to the object, you will often use a quoted symbol like `\$0-foo`, so that your object receives the symbol unexpanded. You've probably seen this before, as it is also common practice, e.g., with Pd's GUI objects like sliders, radio buttons, etc. (e.g., see escaping-characters in the message help patch for an example).
+
+Quoting dollar symbols in this way offers the advantage that you can record the "$" symbol itself (rather than its expansion) in the object's properties (in the case of Pd GUI objects) or in its creation arguments (as can be done with Pd-Lua's `set_args()` method). But of course this means that if you want to use the actual receiver symbol in your Lua object then you need to expand the symbol in Lua (which is what the `canvas_realizedollar()` method is for).
+
+Here's a simple example illustrating this:
+
+~~~lua
+local localsend = pd.Class:new():register("localsend")
+
+function localsend:initialize(sel, atoms)
+   self.inlets = 1
+   -- pass the symbol from the creation argument,
+   -- which gets automatically expanded here
+   self.sender = tostring(atoms[1])
+   return true
+end
+
+function localsend:in_1_sender(x)
+   local sendername = tostring(x[1])
+
+   -- store the original name as argument (like "\$0-foo")
+   self:set_args({sendername})
+
+   -- apply the expanded name with the local id
+   self.sender = self:canvas_realizedollar(sendername)
+end
+
+function localsend:in_1_bang()
+   pd.send(self.sender, "bang", {})
+end
+~~~
+
+And here's a test patch from the tutorial examples which shows this object in action:
+
+![Dollar symbol example](19-dollar-symbols.png)
+
+Try clicking on the `sender` messages in the patch and watch the symbol argument of the object change accordingly. Clicking the bang object labeled "click me" will then send the bang message to one of the two toggles on the right, depending on the `sender` message you clicked.
+
 ## Signals and graphics
 
 So far all of our examples only did control processing, which is what Pd-Lua was originally designed for. But thanks to the work of Timothy Schoen (the creator and main developer of [plugdata](https://plugdata.org/)), as of version 0.12.0 Pd-Lua also provides facilities for audio signal processing and graphics. It goes without saying that these capabilities vastly extend the scope of Pd-Lua applications, as you can now program pretty much any kind of Pd object in Lua, covering both signal and control processing, as well as custom GUI objects. We'll first discuss how to write a signal processing (a.k.a. dsp) object in Pd-Lua, and then go on to show the implementation of a simple GUI object using the graphics API.
@@ -800,8 +852,16 @@ So far all of our examples only did control processing, which is what Pd-Lua was
 Enabling signal processing in a Pd-Lua object involves three ingredients:
 
 1. **Adding signal inlets and outlets:** As before, this is done by setting the `inlets` and `outlets` member variables in the `initialize` method. But instead of setting each variable to just a number, you specify a *signature*, which is a table indicating the signal and control in- and outlets with the special `SIGNAL` and `DATA` values. The number of in- and outlets is then given by the size of these tables. Thus, e.g., you'd use `self.inlets = { SIGNAL, SIGNAL, DATA }` if you need two signal and one control data inlet, in that order. Note that a number as the value of `inlets` or `outlets` corresponds to a signature with just `DATA` values in it.
-2. **Adding a dsp method:** This step is optional. The `dsp` method gets invoked whenever signal processing is turned on in Pd, passing two parameters: `samplerate` and `blocksize`. The former tells you about the sample rate (number of audio samples per second) Pd runs at, which will be useful if your object needs to translate time and frequency values from physical units (i.e., seconds, milliseconds, and Hz) to sample-based time and frequency values, so usually you want to store the given value in a member variable of your object. The latter specifies the block size, i.e., the number of samples Pd expects to be processed during each call of the `perform` method (see below). You only need to store that number if your object doesn't have any signal inlets, so that you know how many samples need to be generated. Otherwise the block size can also be inferred from the size of the `in` tables passed to the `perform` method. Adding the `dsp` method is optional. You only have to define it if the signal and control data processing in your object requires the `samplerate` and `blocksize` values, or if you need to be notified when dsp processing gets turned on for some other reason.
+2. **Adding a dsp method:** This step is optional. The `dsp` method gets invoked whenever signal processing is turned on in Pd, passing two parameters: `samplerate` and `blocksize` (but see the note on multi-channel signals below for a third `nchannels` argument in Pd-Lua 0.12.20 and later). The former tells you about the sample rate (number of audio samples per second) Pd runs at, which will be useful if your object needs to translate time and frequency values from physical units (i.e., seconds, milliseconds, and Hz) to sample-based time and frequency values, so usually you want to store the given value in a member variable of your object. The latter specifies the block size, i.e., the number of samples Pd expects to be processed during each call of the `perform` method (see below). You only need to store that number if your object doesn't have any signal inlets, so that you know how many samples need to be generated. Otherwise the block size can also be inferred from the size of the `in` tables passed to the `perform` method. Adding the `dsp` method is optional. You only have to define it if the signal and control data processing in your object requires the `samplerate` and `blocksize` values, or if you need to be notified when dsp processing gets turned on or the signal processing chain changes for some other reason.
 3. **Adding a perform method:** This method is where the actual signal processing happens. It receives blocks of signal data from the inlets through its arguments, where each block is represented as a Lua table containing floating point sample values. The method then needs to return a tuple of similar Lua tables with the blocks of signal data for each outlet. Note that the number of *arguments* of the method matches the number of signal *inlets*, while the number of *return values* corresponds to the number of signal *outlets*. The `perform` method is *not* optional; if your object outputs any signal data, the method needs to be implemented, otherwise you'll get a `perform: function should return a table` or similar error in the Pd console as soon as you turn on dsp processing.
+
+---
+
+**NOTE:** As of Pd-Lua 0.12.20, thanks to the work of Ben Wesch, Pd-Lua has support for Pd's multi-channel signals. This requires Pd 0.54 or later (all signals are single-channel in earlier Pd versions). Therefore, in Pd-Lua 0.12.20 and later, the `dsp` method receives a *third* argument, let's call it `nchannels`. This is a Lua table which tells you about the number of channels in the signal data for each inlet. This will be 1 for normal Pd signals, but if `nchannels[i] > 1`, then your `perform` method should be prepared to process that many channels worth of sample data (i.e., the `i`th table argument of `perform` will actually contain `nchannels[i] * blocksize` samples -- a block of `blocksize` samples for the first channel, followed by another block of `blocksize` samples for the second channel, etc.).
+
+For the *output* signals, you can set up the desired number of channels per outlet in the `dsp` method, using the `signal_setmultiout` method which is also new in Pd-Lua 0.12.20. In that case your Lua table with the output samples should contain the `blocksize` samples for channel 1 followed by the `blocksize` samples for channel 2, etc., using the same layout as the tables for multi-channel input signals. We won't go into this here any further, but you can find a simple example for your perusal in the examples/multichannel folder.
+
+---
 
 In addition to the `dsp` and `perform` methods, your object may contain any number of methods doing the usual control data processing on the `DATA` inlets. It is also possible to receive control data on the `SIGNAL` inlets; however, you won't be able to receive `float` messages, because they will be interpreted as constant signals which get passed as blocks of signal data to the `perform` method instead.
 
@@ -1012,7 +1072,7 @@ Timothy Schoen's Pd-Lua graphics API provides you with a way to equip an object 
 
 In order to enable graphics in a Pd-Lua object, you have to provide a `paint` method. This receives a graphics context `g` as its argument, which lets you set the current color, and draw text and the various different geometric shapes using that color. In addition, you can provide methods to be called in response to mouse down, up, move, and drag actions on the object, which is useful to equip your custom GUI objects with mouse-based interaction.
 
-Last but not least, the `set_args` method lets you store internal object state in the object's creation arguments, which is useful if you need to keep track of persistent state when storing an object on disk (via saving the patch) or when duplicating or copying objects. This can also be used with ordinary Pd-Lua objects which don't utilize the graphics API, but it is most useful in the context of custom GUI objects.
+Last but not least, the `set_args` method lets you store internal object state in the object's creation arguments, while `get_args` lets you retrieve those arguments. This is useful if you need to keep track of persistent state when storing an object on disk (via saving the patch) or when duplicating or copying objects. Also, their companion `canvas_realizedollar` method allows you to expand symbols containing "$" patch arguments like `$0`, `$1`, etc. These three are often combined, but they can also be used separately, and they work just as well with ordinary Pd-Lua objects which don't utilize the graphics API. In fact we've already introduced them while discussing receivers, see [Expanding dollar symbols](#expanding-dollar-symbols) above, so we won't go into them again; however, check the circle-gui example included in the distribution to see how to store Lua object configuration data persistently in the creation arguments of a custom GUI object.
 
 We use a custom GUI object, a simple kind of dial, as a running example to illustrate most of these elements in the following subsections. To keep things simple, we will not discuss the graphics API in much detail here, so you may want to check the graphics subpatch in the main pdlua-help patch, which contains a detailed listing of all available methods for reference.
 
@@ -1044,6 +1104,12 @@ end
 ~~~
 
 The `self:set_size()` call in the `initialize` method sets the pixel size of the object rectangle on the canvas (in this case it's a square with a width and height of 127 pixels). Also note the call to `self:repaint()` in the float handler for the inlet, which will redraw the graphical representation after updating the phase value.
+
+---
+
+**NOTE:** We mention in passing that `self:repaint()` always redraws everything, in this example the face, border, center point, and hand, even though only the hand will change with the phase angle. As of Pd-Lua 0.12.19, it is also possible to partition your graphics into *layers*, each with their own paint method, so that you only need to repaint layers that actually changed, which will improve rendering performance for complex drawings. This is beyond the scope of this introduction, however, so you may want to check the graphics subpatch in the main pdlua-help patch for details and an example.
+
+---
 
 We still have to add the `dial:paint()` method to do all the actual drawing:
 
@@ -1230,40 +1296,6 @@ I'm sure you can imagine many more creative uses for this simple but surprisingl
 ![Extended dial example](18-graphics6.png)
 
 The extended example adds messages for resizing the object and setting colors, and also shows how to save and restore object state in the creation arguments using the `set_args()` method mentioned at the beginning of this section. The accompanying patch covers all the examples we discussed here, and adds a third example showing how to utilize our dial object as a dB meter.
-
-### Expanding dollar symbols
-
-As mentioned above, the patch id `$0` is widely used in Pd for send and receive names to avoid conflicts with other receivers and senders of similar names. Pd expands `$0` to its local id, which differs for every open patch (similarly, it expands `$1`, `$2` etc. if the corresponding creation arguments are set in the context of an abstraction or clone instance).
-
-If you set these sender or receiver names for your Pd-Lua object as creation arguments, they will automatically get expanded as demonstrated before. If you want to set them through messages in Lua however (which is common for Pd's GUI objects like sliders, radio buttons, etc.), it becomes slightly more complicated since you will need to expand them yourself.
-
-Luckily, Pd's `canvas_realizedollar()` method does exactly this and is also available on the Lua side. Combined with the `set_args()` method, you can create objects that allow managing sender and receiver names, applying the expanded version immediately and also storing the original names in the arguments. Here's a simple example illustrating this:
-
-~~~lua
-local localsend = pd.Class:new():register("localsend")
-
-function localsend:initialize(sel, atoms)
-   self.inlets = 1
-   -- pass the symbol from the creation argument,
-   -- which gets automatically expanded here
-   self.sender = tostring(atoms[1])
-   return true
-end
-
-function localsend:in_1_sender(x)
-   local sendername = tostring(x[1])
-
-   -- store the original name as argument (like "\$0-foo")
-   self:set_args(sendername)
-
-   -- apply the expanded name with the local id
-   self.sender = self:canvas_realizedollar(sendername)
-end
-
-function localsend:in_1_bang()
-   pd.send(self.sender, "float", {1})
-end
-~~~
 
 ## Live coding
 

@@ -1,6 +1,6 @@
 /* This is a version hacked by Martin Peach 20110120 martin.peach@sympatico.ca */
 /* Reformmatted the code and added some debug messages. Changed the name of the class to pdlua */
-/** @file lua.c
+/** @file lua.c 
  *  @brief pdlua -- a Lua embedding for Pd.
  *  @author Claude Heiland-Allen <claude@mathr.co.uk>
  *  @date 2008
@@ -22,7 +22,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- */
+ */ 
 
 /* various C stuff, mainly for reading files */
 #include <stdio.h>
@@ -59,7 +59,7 @@
 
 #include "pdlua_gfx.h"
 
-typedef void (*t_signal_setmultiout)(t_signal **, int);
+typedef void (*t_signal_setmultiout)(t_signal **, int); 
 static t_signal_setmultiout g_signal_setmultiout;
 
 // This used to be in s_stuff.h, but not anymore since 0.55.1test1.
@@ -105,13 +105,13 @@ void initialise_lua_state()
         lua_threads->next = NULL;
         return;
     }
-
+    
     lua_Instance* iter = lua_threads;
     while(iter->next)
     {
         iter = iter->next;
     }
-
+    
     iter->next = t_getbytes(sizeof(lua_Instance));
     iter->next->pd_instance = pd_this;
     iter->next->state = lua_newthread(lua_threads->state);
@@ -334,7 +334,7 @@ static int pdlua_loader_legacy (t_canvas *canvas, char *name);
 /** Start the Lua runtime and register our loader hook. */
 #ifdef _WIN32
 __declspec(dllexport)
-#endif
+#endif 
 #ifdef PLUGDATA
 void lua_setup(const char *datadir, char *versbuf, int versbuf_length, void(*register_class_callback)(const char*));
 #else
@@ -621,7 +621,7 @@ static t_pdlua *pdlua_new
             return NULL;
         }
     }
-
+        
     PDLUA_DEBUG("pdlua_new: start with stack top %d", lua_gettop(__L()));
     lua_getglobal(__L(), "pd");
     lua_getfield(__L(), -1, "_checkbase");
@@ -640,7 +640,7 @@ static t_pdlua *pdlua_new
         {
             PDLUA_DEBUG("basename open: stack top %d", lua_gettop(__L()));
             /* save old loadname, restore later in case of
-             * nested loading */
+             * nested loading */ 
             int n, load_name_save, load_path_save;
             lua_getfield(__L(), -1, "_loadname");
             load_name_save = luaL_ref(__L(), LUA_REGISTRYINDEX);
@@ -652,7 +652,7 @@ static t_pdlua *pdlua_new
             lua_setfield(__L(), -2, "_loadpath");
 
             PDLUA_DEBUG("pdlua_new (basename load) path is %s", buf);
-            //pdlua_setpathname(o, buf);/* change the scriptname to include its path
+            //pdlua_setpathname(o, buf);/* change the scriptname to include its path 
             pdlua_setrequirepath(__L(), buf);
             class_set_extern_dir(gensym(buf));
             strncpy(buf, s->s_name, MAXPDSTRING - 8);
@@ -695,7 +695,7 @@ static t_pdlua *pdlua_new
         }
         else pd_error(NULL, "lua: constructor: couldn't locate `%s'", buf);
     }
-
+    
     PDLUA_DEBUG("pdlua_new: after load script. stack top %d", lua_gettop(__L()));
     lua_getfield(__L(), -1, "_constructor");
     lua_pushstring(__L(), s->s_name);
@@ -740,16 +740,16 @@ static void pdlua_free( t_pdlua *o /**< The object to destruct. */)
     }
     lua_pop(__L(), 1); /* pop the global "pd" */
     PDLUA_DEBUG("pdlua_free: end. stack top %d", lua_gettop(__L()));
-
+    
     // Collect garbage
     // If we don't do this here, it could potentially leak if no other pdlua objects are used afterwards
     lua_gc(__L(), LUA_GCCOLLECT);
-
+    
     return;
 }
 
 void pdlua_vis(t_gobj *z, t_glist *glist, int vis){
-
+    
     t_pdlua* x = (t_pdlua *)z;
     // If there's no gui, use default text vis behavior
     if(!x->has_gui)
@@ -777,7 +777,7 @@ static void pdlua_delete(t_gobj *z, t_glist *glist){
     if(glist_isvisible(glist) && gobj_shouldvis(z, glist)) {
         pdlua_vis(z, glist, 0);
     }
-
+    
     canvas_deletelinesfor(glist, (t_text *)z);
 }
 
@@ -810,9 +810,9 @@ static int pdlua_click(t_gobj *z, t_glist *gl, int xpos, int ypos, int shift, in
     if(x->has_gui)
     {
         int zoom = glist_getzoom(gl);
-        int xpix = (xpos - text_xpix(&x->pd, gl)) / zoom;
+        int xpix = (xpos - text_xpix(&x->pd, gl)) / zoom; 
         int ypix = (ypos - text_ypix(&x->pd, gl)) / zoom;
-
+                
         if(doit){
             if(!x->gfx.mouse_down)
             {
@@ -820,18 +820,18 @@ static int pdlua_click(t_gobj *z, t_glist *gl, int xpos, int ypos, int shift, in
                 x->gfx.mouse_drag_x = xpos;
                 x->gfx.mouse_drag_y = ypos;
             }
-
+            
             glist_grab(x->canvas, &x->pd.te_g, (t_glistmotionfn)pdlua_motion, NULL, xpos, ypos);
         }
         else {
             pdlua_gfx_mouse_move(x, xpix, ypix);
-
+            
             if(x->gfx.mouse_down)
             {
                 pdlua_gfx_mouse_up(x, xpix, ypix);
             }
         }
-
+        
         x->gfx.mouse_down = doit;
         return 1;
     } else
@@ -842,7 +842,7 @@ static int pdlua_click(t_gobj *z, t_glist *gl, int xpos, int ypos, int shift, in
 
 static void pdlua_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     t_pdlua *x = (t_pdlua *)z;
-
+    
 
     if(x->has_gui)
     {
@@ -856,7 +856,7 @@ static void pdlua_displace(t_gobj *z, t_glist *glist, int dx, int dy){
         text_widgetbehavior.w_displacefn(z, glist, dx, dy);
     }
 
-
+    
     canvas_fixlinesfor(glist, (t_text*)x);
 }
 
@@ -1037,7 +1037,7 @@ static void pdlua_menu_open(t_pdlua *o)
         }
         //post("path = %s, name = %s, pathname = %s", path, name, pathname);
         lua_pop(__L(), 2); /* pop name, global "pd"*/
-
+        
 #if PD_MAJOR_VERSION==0 && PD_MINOR_VERSION<43
         post("Opening %s for editing", pathname);
 #else
@@ -1061,24 +1061,21 @@ static void pdlua_menu_open(t_pdlua *o)
 
 static t_int *pdlua_perform(t_int *w){
     t_pdlua *o = (t_pdlua *)(w[1]);
-    int nblock = o->blocksize;
+    int blocksize = (int)(w[2]);
+    t_float **sig_vecs = (t_float **)(w + 3);
 
     PDLUA_DEBUG("pdlua_perform: stack top %d", lua_gettop(__L()));
     lua_getglobal(__L(), "pd");
     lua_getfield (__L(), -1, "_perform_dsp");
     lua_pushlightuserdata(__L(), o);
-
+    
     for (int i = 0; i < o->siginlets; i++)
     {
         lua_newtable(__L());
-        t_signal *sig = (t_signal *)(w[2 + i]);
-        t_float *in = sig->s_vec;
-#if PD_MULTICHANNEL
-        int nchans = sig->s_nchans ? sig->s_nchans : 1;
-#else
-        int nchans = 1;
-#endif
-        int s_n_allchans = nblock * nchans; // sum of all inlet samples
+        t_float *in = sig_vecs[i];
+        int nchans = o->sig_nchans[i];
+        int s_n_allchans = blocksize * nchans;
+        
         for (int j = 0; j < s_n_allchans; j++)
         {
             lua_pushinteger(__L(), j + 1);
@@ -1086,14 +1083,14 @@ static t_int *pdlua_perform(t_int *w){
             lua_settable(__L(), -3);
         }
     }
-
+    
     if (lua_pcall(__L(), 1 + o->siginlets, o->sigoutlets, 0))
     {
         mylua_error(__L(), o, "perform");
         lua_pop(__L(), 1); /* pop the global pd */
-        return w + o->siginlets + o->sigoutlets + 2;
+        return w + o->siginlets + o->sigoutlets + 3;
     }
-
+    
     if (!lua_istable(__L(), -1))
     {
         const char *s = "lua: perform: function should return";
@@ -1109,21 +1106,16 @@ static t_int *pdlua_perform(t_int *w){
             }
         }
         lua_pop(__L(), 1 + o->sigoutlets);
-        return w + o->siginlets + o->sigoutlets + 2;
+        return w + o->siginlets + o->sigoutlets + 3;
     }
-
+    
     for (int i = o->sigoutlets - 1; i >= 0; i--)
     {
-        t_signal *sig = (t_signal *)(w[2 + o->siginlets + i]);
-        t_float *out = sig->s_vec;
-#if PD_MULTICHANNEL
-        int nchans = sig->s_nchans ? sig->s_nchans : 1;
-#else
-        int nchans = 1;
-#endif
-        int s_n_allchans = nblock * nchans; // sum of all outlet samples
-        for (int j = 0; j < s_n_allchans; j++)
-        {
+        t_float *out = sig_vecs[o->siginlets + i];
+        int nchans = o->sig_nchans[o->siginlets + i];
+        int s_n_allchans = blocksize * nchans;
+        
+        for (int j = 0; j < s_n_allchans; j++) {
             lua_pushinteger(__L(), (lua_Integer)(j + 1));
             lua_gettable(__L(), -2);
             if (lua_isnumber(__L(), -1))
@@ -1138,17 +1130,17 @@ static t_int *pdlua_perform(t_int *w){
     }
 
     lua_pop(__L(), 1); /* pop the global "pd" */
-
+    
     PDLUA_DEBUG("pdlua_perform: end. stack top %d", lua_gettop(__L()));
-
-    return w + o->siginlets + o->sigoutlets + 2;
+    
+    return w + o->siginlets + o->sigoutlets + 3;
 }
 
 static void pdlua_dsp(t_pdlua *x, t_signal **sp){
     int sum = x->siginlets + x->sigoutlets;
     if(sum == 0) return;
     x->sig_warned = 0;
-    x->blocksize = (int)sp[0]->s_n; // local block size instead of sys_getblksize();
+    int blocksize = (int)sp[0]->s_n;
     x->sp = sp; // prepare for Lua signal_setmultiout
 
     PDLUA_DEBUG("pdlua_dsp: stack top %d", lua_gettop(__L()));
@@ -1164,39 +1156,47 @@ static void pdlua_dsp(t_pdlua *x, t_signal **sp){
     lua_getfield (__L(), -1, "_dsp");
     lua_pushlightuserdata(__L(), x);
     lua_pushnumber(__L(), sys_getsr());
-    lua_pushnumber(__L(), x->blocksize);
+    lua_pushnumber(__L(), blocksize);
 
     // Pass input channel counts as a table
     lua_newtable(__L());
     for (int i = 0; i < x->siginlets; i++) {
         lua_pushinteger(__L(), i + 1);
 #if PD_MULTICHANNEL
-        if (g_signal_setmultiout) {
-            lua_pushinteger(__L(), sp[i]->s_nchans);
-        } else
-            lua_pushinteger(__L(), 1); // Pd version without multichannel support
+        lua_pushinteger(__L(), sp[i]->s_nchans ? sp[i]->s_nchans : 1);
 #else
         lua_pushinteger(__L(), 1); // pdlua built without multichannel support
 #endif
         lua_settable(__L(), -3);
     }
-
+    
     if (lua_pcall(__L(), 4, 0, 0))
-    {
         mylua_error(__L(), x, "dsp");
-    }
+
     lua_pop(__L(), 1); /* pop the global "pd" */
-
+    
     PDLUA_DEBUG("pdlua_dsp: end. stack top %d", lua_gettop(__L()));
-
-    int sigvecsize = sum + 1;
+    
+    // Allocate memory for sigvec and sig_nchans
+    int sigvecsize = sum + 2;  // +1 for x, +1 for blocksize
     t_int* sigvec = getbytes(sigvecsize * sizeof(t_int));
-
+    x->sig_nchans = (t_int *)resizebytes(x->sig_nchans, 
+                                         x->sig_count * sizeof(t_int),
+                                         sum * sizeof(t_int));
+    x->sig_count = sum;
+    
     sigvec[0] = (t_int)x;
+    sigvec[1] = (t_int)blocksize;
 
-    for (int i = 0; i < sum; i++)
-        sigvec[i + 1] = (t_int)sp[i];
-
+    for (int i = 0; i < sum; i++) {
+        sigvec[i + 2] = (t_int)sp[i]->s_vec;
+#if PD_MULTICHANNEL
+        x->sig_nchans[i] = sp[i]->s_nchans ? sp[i]->s_nchans : 1;
+#else
+        x->sig_nchans[i] = 1;
+#endif
+    }
+    
     dsp_addv(pdlua_perform, sigvecsize, sigvec);
     freebytes(sigvec, sigvecsize * sizeof(t_int));
 }
@@ -1367,7 +1367,7 @@ static int pdlua_class_new(lua_State *L)
                 (t_method) pdlua_free, sizeof(t_pdlua), CLASS_NOINLET | CLASS_MULTICHANNEL, A_GIMME, 0);
         class_sethelpsymbol(c_gfx, gensym((char *) name));
     }
-
+    
     // Let plugdata know this class is a lua object
 #if PLUGDATA
     plugdata_register_class(name);
@@ -1439,7 +1439,8 @@ static int pdlua_object_new(lua_State *L)
                 o->siginlets = 0;
                 o->sigoutlets = 0;
                 o->sig_warned = 0;
-                o->blocksize = 0;
+                o->sig_count = 0;
+                o->sig_nchans = NULL;
                 o->canvas = canvas_getcurrent();
                 o->pdlua_class = c;
                 o->pdlua_class_gfx = c_gfx;
@@ -1447,7 +1448,7 @@ static int pdlua_object_new(lua_State *L)
 
                 o->gfx.width = 80;
                 o->gfx.height = 80;
-
+               
 #if !PLUGDATA
                 // Init graphics state for pd
                 o->gfx.mouse_drag_x = 0;
@@ -1457,7 +1458,7 @@ static int pdlua_object_new(lua_State *L)
                 // NULL until plugdata overrides them with something useful
                 o->gfx.plugdata_draw_callback = NULL;
 #endif
-
+                
                 lua_pushlightuserdata(L, o);
                 PDLUA_DEBUG("pdlua_object_new: success end. stack top is %d", lua_gettop(L));
                 return 1;
@@ -1632,7 +1633,7 @@ static int pdlua_object_createinlets(lua_State *L)
             }
             canvas_resume_dsp(dspstate);
         }
-
+        
     }
     PDLUA_DEBUG("pdlua_object_createinlets: end. stack top is %d", lua_gettop(L));
     return 0;
@@ -1698,7 +1699,7 @@ static int pdlua_object_createoutlets(lua_State *L)
                 canvas_fixlinesfor(o->canvas, (t_text*)o);
             }
             canvas_resume_dsp(dspstate);
-
+            
         }
     }
     PDLUA_DEBUG("pdlua_object_createoutlets: end stack top is %d", lua_gettop(L));
@@ -1909,25 +1910,31 @@ static int pdlua_object_free(lua_State *L)
     if (lua_islightuserdata(L, 1))
     {
         t_pdlua *o = lua_touserdata(L, 1);
-
+ 
         if (o)
         {
             pdlua_gfx_free(&o->gfx);
-
+            
             if(o->in)
             {
                 for (i = 0; i < o->inlets; ++i) inlet_free(o->in[i]);
                 free(o->in);
                 o->in = NULL;
             }
-
+            
             if (o->proxy_in) free(o->proxy_in);
-
+            
             if(o->out)
             {
                 for (i = 0; i < o->outlets; ++i) outlet_free(o->out[i]);
                 free(o->out);
                 o->out = NULL;
+            }
+
+            if (o->sig_nchans)
+            {
+                freebytes(o->sig_nchans, o->sig_count * sizeof(t_int));
+                o->sig_nchans = NULL;
             }
         }
     }
@@ -1952,17 +1959,17 @@ static void pdlua_dispatch
     lua_pushnumber(__L(), inlet + 1); /* C has 0.., Lua has 1.. */
     lua_pushstring(__L(), s->s_name);
     pdlua_pushatomtable(argc, argv);
-
+    
     if (lua_pcall(__L(), 4, 0, 0))
     {
         mylua_error(__L(), o, "dispatcher");
     }
     lua_pop(__L(), 1); /* pop the global "pd" */
-
-
-
+    
+    
+    
     PDLUA_DEBUG("pdlua_dispatch: end. stack top %d", lua_gettop(__L()));
-    return;
+    return;  
 }
 
 /** Dispatch Pd receive messages to Lua objects. */
@@ -1980,14 +1987,14 @@ static void pdlua_receivedispatch
     lua_pushlightuserdata(__L(), r);
     lua_pushstring(__L(), s->s_name);
     pdlua_pushatomtable(argc, argv);
-
+        
     if (lua_pcall(__L(), 3, 0, 0))
     {
         mylua_error(__L(), r->owner, "receive dispatcher");
     }
     lua_pop(__L(), 1); /* pop the global "pd" */
     PDLUA_DEBUG("pdlua_receivedispatch: end. stack top %d", lua_gettop(__L()));
-    return;
+    return;  
 }
 
 /** Dispatch Pd clock messages to Lua objects. */
@@ -2005,7 +2012,7 @@ static void pdlua_clockdispatch( t_pdlua_proxyclock *clock)
     }
     lua_pop(__L(), 1); /* pop the global "pd" */
     PDLUA_DEBUG("pdlua_clockdispatch: end. stack top %d", lua_gettop(__L()));
-    return;
+    return;  
 }
 
 /** Convert a Lua table into a Pd atom array. */
@@ -2083,7 +2090,7 @@ static t_atom *pdlua_popatomtable
             ok = 0;
         }
     }
-    else
+    else 
     {
         /* ag 20240907: We must not leave *count uninitialized here, and we
            must actually set it to a nonzero value which indicates an error
@@ -2124,7 +2131,7 @@ static int pdlua_outlet(lua_State *L)
     if (lua_islightuserdata(L, 1))
     {
         o = lua_touserdata(L, 1);
-        if (o)
+        if (o) 
         {
             if (lua_isnumber(L, 2)) out = lua_tonumber(L, 2) - 1; /* C has 0.., Lua has 1.. */
             else
@@ -2133,9 +2140,9 @@ static int pdlua_outlet(lua_State *L)
                 lua_pop(L, 4); /* pop all the arguments */
                 return 0;
             }
-            if (0 <= out && out < o->outlets)
+            if (0 <= out && out < o->outlets) 
             {
-                if (lua_isstring(L, 3))
+                if (lua_isstring(L, 3)) 
                 {
                     s = lua_tolstring(L, 3, &sl);
                     sym = gensym((char *) s); /* const cast */
@@ -2146,7 +2153,7 @@ static int pdlua_outlet(lua_State *L)
                         atoms = pdlua_popatomtable(L, &count, o);
                         if (count == 0 || atoms) outlet_anything(o->out[out], sym, count, atoms);
                         else pd_error(o, "%s: error: %s atoms table [outlet %d]", src_info(L, msg), lua_isnoneornil(L, 4)?"missing":"invalid", out+1);
-                        if (atoms)
+                        if (atoms) 
                         {
                             free(atoms);
                             lua_pop(L, 4); /* pop all the arguments */
@@ -2188,14 +2195,14 @@ static int pdlua_send(lua_State *L)
 
     char msg[MAXPDSTRING];
     PDLUA_DEBUG("pdlua_send: stack top is %d", lua_gettop(L));
-    if (lua_isstring(L, 1))
+    if (lua_isstring(L, 1)) 
     {
         receivename = lua_tolstring(L, 1, &receivenamel);
         receivesym = gensym((char *) receivename); /* const cast */
-        if (receivesym)
+        if (receivesym) 
         {
             if (strlen(receivename) != receivenamel) pd_error(NULL, "%s: warning: receive symbol munged (contains \\0 in body) [send %s]", src_info(L, msg), receivename);
-            if (lua_isstring(L, 2))
+            if (lua_isstring(L, 2)) 
             {
                 selname = lua_tolstring(L, 2, &selnamel);
                 selsym = gensym((char *) selname); /* const cast */
@@ -2206,7 +2213,7 @@ static int pdlua_send(lua_State *L)
                     atoms = pdlua_popatomtable(L, &count, NULL);
                     if ((count == 0 || atoms) && (receivesym->s_thing)) typedmess(receivesym->s_thing, selsym, count, atoms);
                     else pd_error(NULL, "%s: error: %s atoms table [send %s]", src_info(L, msg), lua_isnoneornil(L, 3)?"missing":"invalid", receivename);
-                    if (atoms)
+                    if (atoms) 
                     {
                         free(atoms);
                         PDLUA_DEBUG("pdlua_send: success end. stack top is %d", lua_gettop(L));
@@ -2280,19 +2287,19 @@ static int pdlua_getarray(lua_State *L)
     const char      *str = luaL_checkstring(L, 1);
 
     PDLUA_DEBUG("pdlua_getarray: stack top is %d", lua_gettop(L));
-    if (!(a = (t_garray *) pd_findbyclass(gensym(str), garray_class)))
+    if (!(a = (t_garray *) pd_findbyclass(gensym(str), garray_class))) 
     {
         lua_pushnumber(L, -1);
         PDLUA_DEBUG("pdlua_getarray: end 1. stack top is %d", lua_gettop(L));
         return 1;
     }
-    else if (!PDLUA_ARRAYGRAB(a, &n, &v))
+    else if (!PDLUA_ARRAYGRAB(a, &n, &v)) 
     {
         lua_pushnumber(L, -2);
         PDLUA_DEBUG("pdlua_getarray: end 2. stack top is %d", lua_gettop(L));
         return 1;
     }
-    else
+    else 
     {
         lua_pushnumber(L, n);
         lua_pushlightuserdata(L, v);
@@ -2317,7 +2324,7 @@ static int pdlua_readarray(lua_State *L)
     int             i = luaL_checknumber(L, 3);
 
     PDLUA_DEBUG("pdlua_readarray: stack top is %d", lua_gettop(L));
-    if (0 <= i && i < n && v)
+    if (0 <= i && i < n && v) 
     {
         lua_pushnumber(L, PDLUA_ARRAYELEM(v, i));
         PDLUA_DEBUG("pdlua_readarray: end 1. stack top is %d", lua_gettop(L));
@@ -2553,7 +2560,7 @@ static int pdlua_dofilex(lua_State *L)
     else pd_error(NULL, "lua: dofilex: wrong type of object");
     lua_pushstring(L, buf); /* return the path as well so we can open it later with pdlua_menu_open() */
     PDLUA_DEBUG("pdlua_dofilex end. stack top is %d", lua_gettop(L));
-
+ 
     return lua_gettop(L) - n;
 }
 
@@ -2624,7 +2631,7 @@ static int pdlua_dofile(lua_State *L)
     else pd_error(NULL, "lua: dofile: wrong type of object");
     lua_pushstring(L, buf); /* return the path as well so we can open it later with pdlua_menu_open() */
     PDLUA_DEBUG("pdlua_dofile end. stack top is %d", lua_gettop(L));
-
+    
     return lua_gettop(L) - n;
 }
 
@@ -3005,7 +3012,7 @@ void lua_setup(void)
 #endif
     if (strlen(pdlua_version) == 0) {
       // NOTE: This should be set from the Makefile, otherwise we fall back to:
-      pdlua_version = "0.12.22";
+      pdlua_version = "0.12.23";
     }
     snprintf(pdluaver, MAXPDSTRING-1, "pdlua %s (GPL) 2008 Claude Heiland-Allen, 2014 Martin Peach et al.", pdlua_version);
     snprintf(compiled, MAXPDSTRING-1, "pdlua: compiled for pd-%d.%d on %s",
@@ -3017,7 +3024,7 @@ void lua_setup(void)
 
 #if PLUGDATA
     plugdata_register_class = register_class_callback;
-
+    
     snprintf(versbuf, versbuf_length-1,
 #ifdef ELSE
              "pdlua %s ELSE (lua %d.%d)",
@@ -3027,13 +3034,13 @@ void lua_setup(void)
              pdlua_version, lvm, lvl);
 #endif
 // post version and other information
-    post(pdluaver);
-#ifdef ELSE
-    post("Distributed as part of ELSE");
-#else
+//    post(pdluaver);
+//#ifdef ELSE
+    post("pdlua 0.12.23 is Distributed as part of ELSE. Using lua version 5.4\n");
+/*#else
     post(compiled);
 #endif
-    post(luaversionStr);
+    post(luaversionStr);*/
 
 // multichannel handling copied from https://github.com/Spacechild1/vstplugin/blob/3f0ed8a800ea238bf204a2ead940b2d1324ac909/pd/src/vstplugin~.cpp#L4122-L4136
 #ifdef _WIN32
@@ -3065,9 +3072,9 @@ void lua_setup(void)
         pd_error(NULL, "lua: (is Pd using a different float size?)");
         return;
     }
-
+    
     initialise_lua_state();
-
+    
     PDLUA_DEBUG("pdlua lua_open done L = %p", __L());
     luaL_openlibs(__L());
     PDLUA_DEBUG("pdlua luaL_openlibs done", 0);
@@ -3100,7 +3107,7 @@ void lua_setup(void)
 /*    fd = canvas_open(canvas_getcurrent(), "pd", ".lua", buf, &ptr, MAXPDSTRING, 1);  looks all over and rarely succeeds */
     PDLUA_DEBUG ("pd.lua loaded from %s", pd_lua_path);
     PDLUA_DEBUG("pdlua canvas_open done fd = %d", fd);
-    PDLUA_DEBUG("pdlua_setup: stack top %d", lua_gettop(__L()));
+    PDLUA_DEBUG("lua_setup: stack top %d", lua_gettop(__L()));
     if (fd >= 0)
     { /* pd.lua was opened */
         reader.fd = fd;
@@ -3121,7 +3128,7 @@ void lua_setup(void)
             result = lua_pcall(__L(), 0, 0, 0);
             PDLUA_DEBUG ("pdlua lua_pcall returned %d", result);
         }
-
+      
         if (0 != result)
         {
             mylua_error(__L(), NULL, NULL);
@@ -3148,8 +3155,8 @@ void lua_setup(void)
     }
 
     pdlua_gfx_setup(__L());
-
-    PDLUA_DEBUG("pdlua_setup: end. stack top %d", lua_gettop(__L()));
+    
+    PDLUA_DEBUG("lua_setup: end. stack top %d", lua_gettop(__L()));
 #ifndef PLUGDATA
     /* nw.js support. */
 #ifdef WIN32

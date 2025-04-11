@@ -3,9 +3,9 @@ local hello = pd.Class:new():register("hello-gui")
 -- rendering speed (slows down rendering by the given factor)
 -- In most cases it should be fine to just set this to 1 to run at full speed,
 -- if you have a modern high-speed CPU and GPU. But we use a larger value as
--- default here to deal with low frame rates on some systems (Purr Data on Mac
--- being the main culprit). You may have to increase the value even further
--- when running on low-spec systems like the Raspberry Pi.
+-- default here to deal with low frame rates on some systems. You may have to
+-- increase the value even further when running on low-spec systems like the
+-- Raspberry Pi.
 local R = 3
 
 function hello:initialize(sel, atoms)
@@ -60,7 +60,7 @@ function hello:mouse_drag(x, y)
         self.draggable_rect_y = self.rect_down_pos[1] + (y - self.mouse_down_pos[1])
         self.draggable_rect_x = math.clamp(self.draggable_rect_x, 0, 620 - self.draggable_rect_size)
         self.draggable_rect_y = math.clamp(self.draggable_rect_y, 0, 230 - self.draggable_rect_size)
-        self:repaint()
+        self:repaint(3)
     end
 end
 
@@ -144,12 +144,6 @@ function hello:paint(g)
     g:fill_path(curve2)
     g:reset_transform()
 
-    -- Draggable rectangle
-    g:set_color(66, 207, 201, 1)
-    g:fill_rounded_rect(self.draggable_rect_x, self.draggable_rect_y, self.draggable_rect_size, self.draggable_rect_size, 5)
-    g:set_color(0, 0, 0, 1)
-    g:draw_text("Drag\n me!", self.draggable_rect_x + 8, self.draggable_rect_y + 10, self.draggable_rect_size, 12)
-
     -- Titles
     g:set_color(252, 118, 81, 1)
     g:draw_text("Ellipse", 25, 190, 120, 12)
@@ -159,9 +153,19 @@ function hello:paint(g)
     g:draw_text("Bezier Paths", 360, 190, 120, 12)
     g:draw_text("Animation", 460, 190, 120, 12)
     g:draw_text("   Mouse\nInteraction", 540, 190, 120, 12)
+end
 
+function hello:paint_layer_2(g)
     g:set_color(250, 84, 108, 1)
     g:fill_ellipse(self.circle_x, self.circle_y, self.circle_radius, self.circle_radius)
+end
+
+function hello:paint_layer_3(g)
+    -- Draggable rectangle
+    g:set_color(66, 207, 201, 1)
+    g:fill_rounded_rect(self.draggable_rect_x, self.draggable_rect_y, self.draggable_rect_size, self.draggable_rect_size, 5)
+    g:set_color(0, 0, 0, 1)
+    g:draw_text("Drag\n me!", self.draggable_rect_x + 8, self.draggable_rect_y + 10, self.draggable_rect_size, 12)
 end
 
 function hello:tick()
@@ -169,7 +173,7 @@ function hello:tick()
     if self.circle_y > 160 + self.circle_radius then
         self.circle_y = -self.circle_radius
     end
-    self:repaint()
+    self:repaint(2)
     self.clock:delay(self.delay_time)
 end
 

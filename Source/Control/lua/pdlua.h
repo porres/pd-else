@@ -52,6 +52,7 @@ typedef struct _pdlua_gfx
 #endif
 } t_pdlua_gfx;
 
+
 /** Pd object data. */
 typedef struct pdlua 
 {
@@ -64,7 +65,8 @@ typedef struct pdlua
     int                     siginlets;        // Number of signal inlets.
     int                     sigoutlets;       // Number of signal outlets.
     int                     sig_warned;       // Flag for perform signal errors.
-    int                     blocksize;        // Blocksize set in dsp method.
+    int                     sig_count;        // Count of signal iolets for sig_nchans memory management.
+    t_int*                  sig_nchans;       // Array of channel counts
     t_canvas                *canvas;          // The canvas that the object was created on.
     int                     has_gui;          // True if graphics are enabled.
     t_pdlua_gfx             gfx;              // Holds state for graphics.

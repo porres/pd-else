@@ -99,6 +99,7 @@ void else_obj_about(t_else_obj *x){
     post("-------------------------------------------------------------------");
     post("- ALSO ALSO NOTE: Loading this binary did install an object browser");
     post("plugin for Vanilla and ELSE objects when right clicking on a canvas.");
+    post("This binary also loads a simplified version of pdlua.");
     post("-------------------------------------------------------------------");
     post("-------------------------------------------------------------------");
     post("- ALSO ALSO ALSO NOTE: ELSE has a sublibrary called MERDA, for");
