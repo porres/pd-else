@@ -155,34 +155,34 @@ static void tabplayer_bang(t_play *x){
 
 static void tabplayer_play(t_play *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    if(ac){ // args: start (ms) / end (ms), rate
-        float stms = 0;
-        float endms =  1E+36; // stupidly high number
-        int argnum = 0;
-        while(ac){
-            if(av->a_type == A_FLOAT){
-                switch(argnum){
-                    case 0:
-                        stms = atom_getfloatarg(0, ac, av);
-                        break;
-                    case 1:
-                        endms = atom_getfloatarg(0, ac, av);
-                        break;
-                    case 2:
-                        x->x_rate = (double)atom_getfloatarg(0, ac, av) * 0.01;
-                        x->x_isneg = (int)(x->x_rate < 0);
-                        break;
-                    default:
-                        break;
-                };
-                argnum++;
+    float stms = 0;
+    float endms =  1E+36; // stupidly high number
+    x->x_rate = 1;
+    x->x_isneg = 0;
+    int argnum = 0;
+    while(ac){
+        if(av->a_type == A_FLOAT){
+            switch(argnum){
+                case 0:
+                    stms = atom_getfloatarg(0, ac, av);
+                    break;
+                case 1:
+                    endms = atom_getfloatarg(0, ac, av);
+                    break;
+                case 2:
+                    x->x_rate = (double)atom_getfloatarg(0, ac, av) * 0.01;
+                    x->x_isneg = (int)(x->x_rate < 0);
+                    break;
+                default:
+                    break;
             };
-            ac--, av++;
+            argnum++;
         };
-        x->x_start = tabplayer_ms2samp(x, stms);
-        x->x_end = tabplayer_ms2samp(x, endms);
-        tabplayer_range_check(x);
-    }
+        ac--, av++;
+    };
+    x->x_start = tabplayer_ms2samp(x, stms);
+    x->x_end = tabplayer_ms2samp(x, endms);
+    tabplayer_range_check(x);
     tabplayer_bang(x);
 }
 
