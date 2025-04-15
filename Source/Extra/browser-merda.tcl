@@ -19,8 +19,8 @@ proc category_merda_menu::load_menutree {} {
                 {adsr.m~ lfo.m~ seq8.m~ vca.m~ vcf.m~ vco.m~}}
             {fx
                 {chorus.m~ delay.m~ drive.m~ flanger.m~ phaser.m~ crusher.m~ plate.rev.m~ rm.m~}}
-            {oscillators
-                {gendyn.m~ plaits.m~ pluck.m~ pm6.m~}}
+            {generators
+                {gendyn.m~ plaits.m~ pluck.m~ pm6.m~ sfont.m~}}
             {tools
                 {presets.m sig.m~ level.m~}}
             {extra

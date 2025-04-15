@@ -103,7 +103,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 --------------------------------------------------------------------------
 
-## Current Object list (566 objects):
+## Current Object list (567 objects):
 
 #assorted
     else
@@ -237,8 +237,8 @@ A submodule of ELSE by Porres (this is also by Porres).
 #FX
     chorus.m~ crusher.m~ delay.m~ drive.m~ flanger.m~ phaser.m~ plate.rev.m~ rm.m~
 
-#oscillators
-    gendyn.m~ plaits.m~ pluck.m~ pm6.m~
+#generators
+    gendyn.m~ plaits.m~ pluck.m~ pm6.m~ sfont.m~
 
 #tools
     presets.m sig.m~ level.m~
