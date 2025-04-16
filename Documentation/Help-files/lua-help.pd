@@ -1,4 +1,4 @@
-#N canvas 405 47 572 488 10;
+#N canvas 34 78 574 458 10;
 #X obj 6 346 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 6 381 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 6 416 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -8,7 +8,7 @@
 #X obj 4 5 cnv 15 301 42 empty empty lua 20 20 2 37 #e0e0e0 #000000 0;
 #X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1;
+#X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 5 graph;
 #X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
 #X obj 24 42 cnv 4 4 4 empty empty Load\ lua\ scripts 0 28 2 18 #e0e0e0 #000000 0;
@@ -22,7 +22,7 @@
 #X restore 306 5 graph;
 #X text 245 361 NONE;
 #X text 80 292 About loading objects in lua and other details -->;
-#N canvas 488 144 585 465 +info 0;
+#N canvas 34 78 858 585 +info 0;
 #X text 200 226 <- right click for help or open, f 32;
 #X obj 160 227 hello;
 #X obj 133 283 circle;
@@ -36,5 +36,19 @@
 #X text 32 100 When you load 'ELSE' via startup or [declare] \, it registers a loader that allows Pd externals written in Lua (with the "*.pd_lua" extension) to be loaded. One such object provided in ELSE is the lua object that allows you to load scripts into an object., f 80;
 #X text 303 154 see also:;
 #X obj 367 155 else, f 6;
-#X obj 361 248 lua;
 #X text 34 202 The [lua] object allows inline scripting in Lua and is one example of an object that is coded in lua. It is still an experimental object though that is not really functional and ready yet. So stay tuned!, f 80;
+#X obj 597 29 bng 16 250 50 0 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000;
+#X text 764 67 <- print to console on bang;
+#X floatatom 597 127 5 0 0 0 - - - 0;
+#X obj 597 51 lua -in 1 -out 1 \; function in_1_bang(self) \; pd.post("test") \; end;
+#X obj 596 235 osc~ 100;
+#X obj 596 348 numbox~ 6 10 100 #C0C0C4 #440008 10 0 0 0;
+#X obj 596 261 lua -sigin 1 -sigout 1 \; function dsp(sr) \; end \; \; function perform(self \, in) \; return in \; end \;;
+#X obj 598 148 lua -in 1 -out 1 \; function in_1_float(self \, f) \; self:outlet(1 \, "float" \, {f}) \; end \;;
+#X floatatom 597 203 5 0 0 0 - - - 0;
+#X text 792 156 <- pass a float;
+#X connect 24 0 27 0;
+#X connect 26 0 31 0;
+#X connect 28 0 30 0;
+#X connect 30 0 29 0;
+#X connect 31 0 32 0;
