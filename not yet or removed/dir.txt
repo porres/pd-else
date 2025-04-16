@@ -1,0 +1,2 @@
+- [dir] open without a symbol now opens a dialog instead of loading the else directory.
+- [dir] is now an abstraction based on [file], which gets this out of my back and makes it more portable I hope :) there were some bugs that get fixed with this! Added a mechanism to show just files or just folders. Added new 'show' / 'hide' methods to show you the files/folders from the directory in a 'text' window. A click opens the dialog window to choose the directory. Added a new 'random' message to pick a random possibility from the directory.

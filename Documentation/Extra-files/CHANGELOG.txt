@@ -24,7 +24,6 @@ Breaking changes:
 - [player~]/[play.file~] 'open' message does not play files right away anymore. 
 - [tabplayer~]/[player~] play message without args now play at default settings (whole file at trgular speed)
 - [envgen~] removed the 'maxsustain' parameter, use new [gaterelease~] or [gaterelease] objects. Removed the rightmost inlet, now a list input only sets the envelope and doesn't trigger it. Removed set message.
-- [dir] open without a symbol now opens a dialog instead of loading the else directory.
 - [knob]: 'esc' key now deactivates the object. The 'ticks' message is renamed to 'steps' and there is a new 'ticks' message that toggles showing ticks on and off. The 'start' message has been renamed to 'arcstart'. The 'outline' message has been renamed to 'square' for better clarity. Design changed a bit to make it like it is in PlugData (they won), so we now fill the whole background color when in 'square mode' and the knob circle has an 85% proportion when in this case. Now, by default, the GUI is in a new 'loadbang' mode but I don't think this will influence old patches, but I'm afraid that some old patches might behave weird since I added a lot of new stuff. I changed the 'load' message behaviour to not update the object (this can arguably be considered a bug fix).
 - [wavetable~], [bl.wavetable~] and [wt2d~]: set message now sets frequencies because of the MC support in [wt~] and [wt2d~], while there's a new 'table' method to set the table name
 - [gbman~]/[cusp~] list method is now for MC, old list method is now renamed back to an old 'coeffs' method.
@@ -55,7 +54,6 @@ Enhancements/fixes/other changes:
 - [synth~] fixed polyphony bug.
 - [metronome~] fixed bug with 'set' message.
 - [midi2note] fixed range (octave 0-8)
-- [dir] is now an abstraction based on [file], which gets this out of my back and makes it more portable I hope :) there were some bugs that get fixed with this! Added a mechanism to show just files or just folders. Added new 'show' / 'hide' methods to show you the files/folders from the directory in a 'text' window. A click opens the dialog window to choose the directory. Added a new 'random' message to pick a random possibility from the directory.
 - [pulsecount~] fixed reset count to not output immediately, added bang to reset counter at control rate
 - [click] fixed regression bug where it stopped working.
 - [else] new 'dir' method to output ELSE's binary directory in a new rightmost outlet (since this functionality was removed from [dir]). The print information also includes the directory.
@@ -91,8 +89,8 @@ Enhancements/fixes/other changes:
 
 Objects count: total of 567 (316 signal objects [131 of which are MC aware] and 251 control objects)! 
 
-- 319 coded objects (207 signal objects  / 112 control objects)
-- 225 abstractions objects (87 signal objects / 138 control objects)
+- 320 coded objects (207 signal objects  / 113 control objects)
+- 224 abstractions objects (87 signal objects / 137 control objects)
 - 23 MERDA modular abstractions (22 audio / 1 control)
 
 --------------------------------------

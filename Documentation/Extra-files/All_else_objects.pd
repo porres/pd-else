@@ -1,6 +1,6 @@
 #N struct 1004-cell float x float y float cellsize float color;
 #N struct 1006-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
-#N struct 1062-slot float x float y float slotsize float color float width float bordercolor;
+#N struct 1061-slot float x float y float slotsize float color float width float bordercolor;
 #N canvas 549 38 541 693 10;
 #N canvas 240 38 975 767 GUI 0;
 #X text 48 -899 [biplot];
@@ -696,12 +696,15 @@
 #X text 334 36 TEST DSP STUFF;
 #N canvas 622 222 370 199 analog 0;
 #X obj 148 91 else/circuit~;
-#X restore 176 346 pd analog circuitry emulation;
+#X restore 136 346 pd analog circuitry emulation;
 #X obj 133 151 All_about_else;
 #X text 143 131 see also:;
 #X text 7 628 =====================================================================================, f 85;
 #X obj 328 655 about.MERDA;
 #X text 89 655 ELSE includes M.E.R.D.A \, check it out:;
+#N canvas 886 296 324 169 scripting 0;
+#X obj 136 60 else/lua;
+#X restore 329 346 pd scripting;
 #X connect 45 0 1 0;
 #X connect 46 0 47 0;
 #X connect 48 0 1 0;
