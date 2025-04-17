@@ -239,7 +239,13 @@ void buffer_getchannel(t_buffer *c, int chan_num, int complain){
                 return;
             };
         };
-        sprintf(buf, "%d-%s", chan_idx, c->c_bufname->s_name);
+        // Now setting buffername according to bufnamemode: 0 - <ch>-<bufname> [default/legacy], 1 - <bufname>-<ch> 
+        if(c->c_bufnamemode == 0){
+            sprintf(buf, "%d-%s", chan_idx, c->c_bufname->s_name);
+        }
+        else if(c->c_bufnamemode == 1){
+            sprintf(buf, "%s-%d", c->c_bufname->s_name, chan_idx);
+        };
         curname =  gensym(buf);
         retvec = buffer_get(c, curname, &vsz, 1, complain);
         //if channel found and less than c_npts, reset c_npts
@@ -302,7 +308,13 @@ void buffer_redraw(t_buffer *c){
                     return;
                 };
             };
-            sprintf(buf, "%d-%s", chan_idx, c->c_bufname->s_name);
+            // Now setting buffername according to bufnamemode: 0 - <ch>-<bufname> [default/legacy], 1 - <bufname>-<ch>
+            if(c->c_bufnamemode == 0){
+                sprintf(buf, "%d-%s", chan_idx, c->c_bufname->s_name);
+            }
+            else if(c->c_bufnamemode == 1){
+                sprintf(buf, "%s-%d", c->c_bufname->s_name, chan_idx);
+            };
             curname =  gensym(buf);
             t_garray *ap = (t_garray *)pd_findbyclass(curname, garray_class);
             if (ap)
@@ -357,7 +369,13 @@ void buffer_initarray(t_buffer *c, t_symbol *name, int complain){
             char buf[MAXPDSTRING];
             int ch;
             for(ch = 0; ch < c->c_numchans; ch++){
-                sprintf(buf, "%d-%s", ch, c->c_bufname->s_name);
+                // Now setting buffername according to bufnamemode: 0 - <ch>-<bufname> [default/legacy], 1 - <bufname>-<ch>
+                if(c->c_bufnamemode == 0){
+                    sprintf(buf, "%d-%s", ch, c->c_bufname->s_name);
+                }
+                else if(c->c_bufnamemode == 1){
+                    sprintf(buf, "%s-%d", c->c_bufname->s_name, ch);
+                };
                 c->c_channames[ch] = gensym(buf);
             };
         };
@@ -394,8 +412,9 @@ void buffer_free(t_buffer *c){
    nsigs -- provided that nsigs is positive -- or, if it is not, then an buffer
    is not used in dsp (peek~). */
 
-void *buffer_init(t_class *owner, t_symbol *bufname, int numchans, int singlemode){
-// name of buffer (multichan usu, or not) and the number of channels associated with buffer
+// Added the fifth argument to set namemode: 0 = <ch>-<arrayname> [default/legacy], 1 = <arrayname>-<ch>
+void *buffer_init(t_class *owner, t_symbol *bufname, int numchans, int singlemode, int bufnamemode){
+// name of buffer (multichan usu, or not) and the number of channels associated with buffer 
     t_buffer *c = (t_buffer *)getbytes(sizeof(t_buffer));
     t_word **vectors;
     t_symbol **channames = 0;
@@ -403,6 +422,11 @@ void *buffer_init(t_class *owner, t_symbol *bufname, int numchans, int singlemod
         bufname = &s_;
     c->c_bufname = bufname;
     singlemode = singlemode > 0 ? 1 : 0; // single mode forces numchans = 1
+    // default namemode is 0 <ch>-<arrayname>
+    if(!bufnamemode)
+        bufnamemode = 0; // default: <ch>-<arrayname>
+    // setting namemode
+    c->c_bufnamemode = bufnamemode;
     numchans = (numchans < 1 || singlemode) ? 1 : (numchans > buffer_MAXCHANS ? buffer_MAXCHANS : numchans);
     if(!(vectors = (t_word **)getbytes(numchans* sizeof(*vectors))))
 		return(0);
