@@ -145,7 +145,7 @@
 #X connect 36 0 35 0;
 #X connect 36 1 34 0;
 #X restore 484 324 pd example;
-#X text 32 317 see also:;
+#X text 32 287 see also:;
 #X obj 95 545 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 131 546 float/signal;
 #X obj 95 567 cnv 17 3 17 empty empty 4 5 9 0 16 #dcdcdc #9c9c9c 0;
@@ -431,6 +431,7 @@
 #X text 217 439 - trigger at control rate (like an impulse), f 51;
 #X text 149 453 retrigger;
 #X text 217 453 - retrigger at control rate, f 51;
+#X obj 32 310 else/asr~;
 #X connect 11 0 10 0;
 #X connect 20 0 47 0;
 #X connect 20 0 86 0;
