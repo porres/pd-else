@@ -1,4 +1,4 @@
-// porres 2017-2025
+ // porres 2017-2025
 
 #include <m_pd.h>
 #include <math.h>
@@ -232,12 +232,10 @@ static t_int *adsr_perform(t_int *w){
                         delta[j] =  -last[j];
                         target[j] = 0;
                         attacked[j] = decayed[j] = sustained[j] = 0;
-//                        released[j] = 1;
                     }
                 }
             }
 // "release" phase
-//            else if(released[j]){
             else{
                 incr[j] = delta[j] / n_release;
                 phase[j] += incr[j];
@@ -270,16 +268,11 @@ static t_int *adsr_perform(t_int *w){
                         if(done) // turn off global status
                             outlet_float(x->x_out2, x->x_status = 0);
                     }
-//                        outlet_float(x->x_out2, x->x_status = 0);
-//                    released = 0;
                 }
                 out[j*n + i] = last[j] = output;
             }
-//            else if(!released[j])
-//                out[j*n + i] = last[j] = phase[j] = 0;
         }
         last[j] = (PD_BIGORSMALL(last[j]) ? 0. : last[j]);
-//        target[j] = (PD_BIGORSMALL(target[j]) ? 0. : target[j]);
     };
     x->x_last = last;
     x->x_target = target;
