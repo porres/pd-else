@@ -59,11 +59,12 @@ static t_int *smooth_perform(t_int *w){
                 }
                 else if(in != last_in[j]){ // input change, update
                     x->x_delta[j] = (in - last_out[j]);
-                    x->x_nleft[j] = x->x_n[j] - 2;
+                    x->x_nleft[j] = x->x_n[j] - 1;
                     x->x_b[j] = x->x_delta[j] / (1 - exp(x->x_curve));
                     x->x_a[j] = last_out[j] + x->x_b[j];
                     output = last_out[j];
                     last_in[j] = in;
+                    x->x_nleft[j]--;
                 }
                 else{
                     if(x->x_nleft[j] > 0){
