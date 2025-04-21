@@ -47,14 +47,14 @@
 #X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 304 219 else/s2f~;
 #X text 286 390 - resets the filter;
-#X text 31 257 see also:;
-#X obj 32 303 else/glide~;
+#X text 31 230 see also:;
+#X obj 32 276 else/glide~;
 #X obj 242 192 else/lag~ 1000;
-#X obj 33 281 else/lag2~;
+#X obj 33 254 else/lag2~;
 #X text 168 486 1) float - lag time in ms (default 0);
 #X text 285 414 - lag time in ms;
 #X text 250 451 - lagged signal;
-#X obj 32 323 else/slew~;
+#X obj 32 296 else/slew~;
 #N canvas 590 164 498 502 multichannel 0;
 #X obj 75 271 else/s2f~;
 #X obj 75 125 bng 25 250 50 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000;
@@ -90,6 +90,7 @@
 #X text 183 451 signal(s);
 #X text 183 372 float/signal(s);
 #X text 52 87 [lag~] is a one pole filter that creates an exponential glide/portamento for its signal input changes. The lag time in ms is how long it takes for the signal to converge to within 0.01% of the target value. Note that the rising ramp is different than the descending ramp \, unlike [glide~]. the same kind of filter is used in other objects from the ELSE library (decay~/adsr~)., f 73;
+#X obj 32 316 else/smooth~;
 #X connect 10 0 9 0;
 #X connect 11 0 10 0;
 #X connect 17 0 33 0;

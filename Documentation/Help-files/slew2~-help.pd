@@ -17,7 +17,7 @@
 #X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 193 309 else/s2f~;
-#X text 19 246 see also:;
+#X text 19 216 see also:;
 #X obj 503 94 else/setdsp~ 1;
 #X obj 196 337 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X msg 203 255 set 0;
@@ -47,10 +47,10 @@
 #X msg 260 208 0;
 #X msg 268 230 -1;
 #X msg 223 180 0.1;
-#X obj 23 269 else/slew~;
-#X obj 24 290 else/slew2;
-#X obj 25 311 else/glide2~;
-#X obj 25 332 else/lag2~;
+#X obj 23 239 else/slew~;
+#X obj 24 260 else/slew2;
+#X obj 24 281 else/glide2~;
+#X obj 24 302 else/lag2~;
 #X text 32 87 [slew2~] is like [slew~] but has independent values for upwards & downwards ramps. It takes an amplitude limit per second and generates a line towards the incoming value. The difference between [slew~] and [glide~] is that [slew~] has a fixed speed \, not a fixed period. A limit of zero stops the line generation and a negative value turns the limiter off (but again \, up and down limits are independent)., f 75;
 #N canvas 843 76 503 490 example 0;
 #X text 73 16 When new values come in \, the object limits the change to a maximum step until it reaches the new value. A speed of "1" means that it takes one second to move to a difference of 1 in amplitue. The actual step between subsequent changes depend on this speed and the sample rate., f 61;
@@ -128,6 +128,7 @@
 #X text 153 434 signal(s);
 #X text 153 470 signal(s);
 #X text 117 369 float/signal(s);
+#X obj 24 324 else/smooth2~;
 #X connect 13 0 16 0;
 #X connect 17 0 29 0;
 #X connect 18 0 29 0;

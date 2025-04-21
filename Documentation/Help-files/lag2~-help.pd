@@ -32,8 +32,8 @@
 #X obj 304 219 else/s2f~;
 #X text 266 390 - resets the filter;
 #X obj 129 437 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0;
-#X text 25 257 see also:;
-#X obj 26 303 else/glide2~;
+#X text 25 237 see also:;
+#X obj 26 283 else/glide2~;
 #X obj 23 40 cnv 4 4 4 empty empty non-linear 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 107 40 cnv 4 4 4 empty empty lag 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 1 3 cnv 15 301 42 empty empty lag2~ 20 20 2 37 #e0e0e0 #000000 0;
@@ -52,12 +52,12 @@
 #X restore 2 3 graph;
 #X text 52 87 [lag2~] is like [lag~] but has a different time for ramp up and ramp down. The lag time in ms is how long it takes for the signal to converge to within 0.01% of the target value. Note that the rising ramp is different than the descending ramp \, unlike [glide2~]., f 73;
 #X obj 242 188 else/lag2~ 1000 500;
-#X obj 27 281 else/lag~;
+#X obj 27 261 else/lag~;
 #X text 165 499 1) float - lag uptime in ms (default 0);
 #X text 265 414 - lag uptime in ms;
 #X text 265 436 - lag downtime in ms;
 #X text 266 469 - lagged signal;
-#X obj 26 325 else/slew2~;
+#X obj 26 305 else/slew2~;
 #N canvas 565 104 507 509 multichannel 0;
 #X obj 116 286 else/s2f~;
 #X obj 116 119 bng 25 250 50 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000;
@@ -96,6 +96,7 @@
 #X text 199 469 signal(s);
 #X text 163 372 float/signal(s);
 #X text 165 514 2) float - lag downtime in ms (default 0);
+#X obj 26 327 else/smooth2~;
 #X connect 8 0 7 0;
 #X connect 9 0 8 0;
 #X connect 13 0 35 0;

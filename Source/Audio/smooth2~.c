@@ -54,8 +54,8 @@ static t_int *smooth2_perform(t_int *w){
                 ms_up  = 0;
             if(ms_down <= 0)
                 ms_down  = 0;
-            x->x_n_up[j] = (int)roundf(ms_up * x->x_sr_khz) + 1; // n samples
-            x->x_n_down[j] = (int)roundf(ms_down * x->x_sr_khz) + 1; // n samples
+            x->x_n_up[j] = (int)roundf(ms_up * x->x_sr_khz); // n samples
+            x->x_n_down[j] = (int)roundf(ms_down * x->x_sr_khz); // n samples
             if(x->x_reset){ // reset
                 x->x_nleft_up[j] = x->x_nleft_down[j] = 0;
                 out[j*n + i] = last_out[j] = last_in[j] = in;
@@ -64,23 +64,27 @@ static t_int *smooth2_perform(t_int *w){
             }
             else if(in != last_in[j]){ // input change, update
                 x->x_delta[j] = (in - last_out[j]);
-                if(x->x_delta[j] > 0){
-                    x->x_nleft_up[j] = x->x_n_up[j] - 1;
-                    x->x_delta[j] = (in - last_out[j]);
-                    x->x_b[j] = x->x_delta[j] / (1 - exp(x->x_curve));
-                    x->x_a[j] = last_out[j] + x->x_b[j];
-                    out[j*n + i] = last_out[j];
-                    last_in[j] = in;
-                    x->x_nleft_up[j]--;
+                x->x_b[j] = x->x_delta[j] / (1 - exp(x->x_curve));
+                x->x_a[j] = last_out[j] + x->x_b[j];
+                if(x->x_delta[j] > 0){ // ramp up
+                    x->x_nleft_up[j] = x->x_n_up[j];
+                    if(x->x_n_up[j] == 0)
+                        out[j*n + i] = last_out[j] = last_in[j] = in;
+                    else{
+                        out[j*n + i] = last_out[j];
+                        last_in[j] = in;
+                        x->x_nleft_up[j]--;
+                    }
                 }
-                else{
-                    x->x_nleft_down[j] = x->x_n_down[j] - 1;
-                    x->x_delta[j] = (in - last_out[j]);
-                    x->x_b[j] = x->x_delta[j] / (1 - exp(x->x_curve));
-                    x->x_a[j] = last_out[j] + x->x_b[j];
-                    out[j*n + i] = last_out[j];
-                    last_in[j] = in;
-                    x->x_nleft_down[j]--;
+                else{ // ramp down
+                    x->x_nleft_down[j] = x->x_n_down[j];
+                    if(x->x_n_down[j] == 0)
+                        out[j*n + i] = last_out[j] = last_in[j] = in;
+                    else{
+                        out[j*n + i] = last_out[j];
+                        last_in[j] = in;
+                        x->x_nleft_down[j]--;
+                    }
                 }
             }
             else{
@@ -94,8 +98,9 @@ static t_int *smooth2_perform(t_int *w){
                         else
                             out[j*n + i] = last_out[j] += (x->x_delta[j] / x->x_n_up[j]);
                     }
-                    else
+                    else{
                         out[j*n + i] = last_out[j] = last_in[j] = in;
+                    }
                 }
                 else{
                     if(x->x_nleft_down[j] > 0){
@@ -201,7 +206,7 @@ static void *smooth2_new(t_symbol *s, int ac, t_atom *av){
             ac--, av++;
         }
         else if(av->a_type == A_SYMBOL && !argnum){
-            if(atom_getsymbolarg(0, ac, av) == gensym("-curve")){
+            if(atom_getsymbol(av) == gensym("-curve")){
                 if(ac >= 2){
                     ac--, av++;
                     x->x_curve = atom_getfloat(av);
