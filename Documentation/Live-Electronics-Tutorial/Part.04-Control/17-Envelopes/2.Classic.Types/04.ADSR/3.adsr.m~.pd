@@ -2,7 +2,7 @@
 #X declare -path else;
 #X obj 190 43 declare -path else;
 #X obj 96 176 adsr.m~ 150 100 0.75 250;
-#A saved 150 100 0.75 250 0 0 0 0 0;
+#A saved 150 100 0.75 250 1 0 0 0 0;
 #A saved;
 #A saved;
 #A saved;
