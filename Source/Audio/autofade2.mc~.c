@@ -92,14 +92,14 @@ static t_int *autofade2mc_perform(t_int *w){
             }
         }
         lastgate = gate[n];
-        float fadeval = read_fadetab(phase, x->x_table);
-        lastfade = fadeval;
         if(x->x_nleft > 0){
             phase += x->x_inc;
             x->x_nleft--;
         }
         else
             phase = x->x_gate_on;
+        float fadeval = read_fadetab(phase, x->x_table);
+        lastfade = fadeval;
         float finalfade;
         if(x->x_gate_on)
             finalfade = x->x_start + (fadeval * x->x_delta);

@@ -81,26 +81,25 @@ static t_int *autofade2_perform(t_int *w){
             x->x_gate_on = gate[n] > 0;
             if(x->x_gate_on){ // gate on
                 x->x_nleft = x->x_fadein;
-                float inc = x->x_nleft > 0 ? 1./x->x_fadein : 0;
+                float inc = x->x_nleft > 0 ? 1./x->x_fadein : 1;
                 phase = 0.;
                 x->x_inc = inc;
             }
             else{ // gate off
                 x->x_nleft = x->x_fadeout;
-                float inc = x->x_nleft > 0 ? 1./x->x_fadeout : 0;
+                float inc = x->x_nleft > 0 ? 1./x->x_fadeout : 1;
                 phase = 1.;
                 x->x_inc = -inc;
             }
         }
         lastgate = gate[n];
-        float fadeval = read_fadetab(phase, x->x_table);
-        lastfade = fadeval;
         if(x->x_nleft > 0){
             phase += x->x_inc;
             x->x_nleft--;
         }
         else
             phase = x->x_gate_on;
+        float fadeval = read_fadetab(phase, x->x_table);
         float finalfade;
         if(x->x_gate_on)
             finalfade = x->x_start + (fadeval * x->x_delta);
@@ -108,6 +107,7 @@ static t_int *autofade2_perform(t_int *w){
             finalfade = fadeval * x->x_start;
         for(i = 0; i < x->x_n_chans; i++)
             x->x_outs[i][n] = ins[i*x->x_n + n] * finalfade;
+        lastfade = fadeval;
     }
     x->x_lastgate = lastgate;
     x->x_lastfade = lastfade;
