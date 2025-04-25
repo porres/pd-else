@@ -35,7 +35,7 @@
 #N canvas 965 168 332 251 GUI 0;
 #X obj 103 116 hsl 89 20 0 1 0 0 \$0-slider \$0-set-slider volume 17 9 0 14 #dcdcdc #000000 #000000 0 1;
 #N canvas 565 338 514 332 DSP 0;
-#X obj 100 100 tgl 16 0 \$0-dsp-toggle \$0-dsp-toggle-set empty 19 8 0 12 #dcdcdc #7c7c7c #fcfcfc 0 1;
+#X obj 100 100 tgl 16 0 \$0-dsp-toggle \$0-dsp-toggle-set empty 19 8 0 12 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 117 101 cnv 5 24 14 empty \$0-cnv_dsp dsp 2 6 0 12 #dcdcdc #585854 0;
 #X coords 0 -1 1 1 42 16 2 100 100;
 #X restore 100 100 pd DSP;
@@ -593,11 +593,12 @@
 #X connect 6 1 2 0;
 #X connect 7 0 2 0;
 #X connect 9 0 8 0;
-#X restore 93 420 pd init;
+#X restore 93 431 pd init;
 #X floatatom 97 294 5 0 0 0 - - - 0;
 #X obj 97 269 change;
 #X obj 97 236 else/nchs~;
 #X obj 53 380 clone -d else/out.mc.hip~ 1;
+#X obj 51 404 else/bitnormal~;
 #X connect 0 0 14 0;
 #X connect 3 0 4 0;
 #X connect 4 0 0 1;
@@ -609,5 +610,6 @@
 #X connect 11 0 8 0;
 #X connect 12 0 11 0;
 #X connect 13 0 12 0;
-#X connect 14 0 6 0;
+#X connect 14 0 15 0;
+#X connect 15 0 6 0;
 #X coords 0 0 1 1 94 51 1 260 90;
