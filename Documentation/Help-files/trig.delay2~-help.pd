@@ -23,7 +23,7 @@
 #X obj 185 242 else/out~;
 #X obj 185 180 else/float2imp~;
 #X text 94 88 After receiving an impulse \, after a given delayed time the [trig.delay~] objects sends the impulse value. Following triggers received before the delayed output are ignored. The object has support for multichannels., f 58;
-#X text 24 230 see also:;
+#X text 24 226 see also:;
 #N canvas 764 207 577 530 multichannel 0;
 #X obj 152 152 bng 21 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #X obj 152 216 snake~;
@@ -67,7 +67,8 @@
 #X text 205 318 - impulse trigger signal(s);
 #X text 141 372 signal(s);
 #X text 205 372 - delayed trigger impulse(s);
-#X obj 21 252 else/trig.delay~;
+#X obj 21 248 else/trig.delay~;
+#X obj 21 271 else/gatedelay~;
 #X connect 0 0 16 1;
 #X connect 14 0 18 0;
 #X connect 16 0 17 1;

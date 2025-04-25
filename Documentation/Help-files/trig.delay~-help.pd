@@ -1,4 +1,4 @@
-#N canvas 425 57 559 484 10;
+#N canvas 553 98 559 484 10;
 #X obj 4 333 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 388 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 422 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -128,9 +128,9 @@
 #X obj 196 173 bng 21 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #X text 356 187 delay time;
 #X text 121 431 1) float - delay time in ms (default 0);
-#X text 23 260 see also:;
+#X text 33 238 see also:;
 #X obj 239 233 else/trig.delay~ 500;
-#X obj 20 283 else/trig.delay2~;
+#X obj 30 261 else/trig.delay2~;
 #X obj 196 264 else/out~;
 #X obj 196 202 else/float2imp~;
 #X text 50 91 After receiving an impulse \, after a given delayed time the [trig.delay~] objects sends the impulse value. Any triggers which arrive before the delayed output resets and reschedules the delay \, in the same way as the [delay] object. The object has support for multichannels., f 64;
@@ -169,6 +169,7 @@
 #X text 205 341 - impulse trigger signal(s);
 #X text 141 395 signal(s);
 #X text 205 395 - delayed trigger impulse(s);
+#X obj 30 284 else/gatedelay~;
 #X connect 5 0 26 1;
 #X connect 22 0 29 0;
 #X connect 26 0 28 1;

@@ -24,15 +24,15 @@
 #X text 224 338 - hold time in ms;
 #X obj 310 221 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 184 338 float;
-#X text 42 219 see also;
+#X text 42 199 see also;
 #X text 139 402 1) float - release time in ms (default 0 \, no release time);
 #X text 306 200 release time;
 #X obj 187 245 else/gaterelease~ 250;
 #X obj 187 180 else/randpulse~ 0.5;
 #X obj 187 216 else/numbox~ 6 10 100 #C0C0C4 #440008 10 0 0 0;
 #X obj 187 275 else/numbox~ 6 10 100 #C0C0C4 #440008 10 0 0 0;
-#X obj 44 240 else/gaterelease;
-#X obj 44 264 else/gatehold~;
+#X obj 44 220 else/gaterelease;
+#X obj 44 244 else/gatehold~;
 #N canvas 781 160 456 392 multichannel 0;
 #X obj 245 224 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 241 203 release time;
@@ -55,6 +55,7 @@
 #X text 160 370 signal(s);
 #X text 224 370 - released gate(s);
 #X text 224 311 - gate value(s);
+#X obj 44 266 else/gatedelay~;
 #X connect 19 0 24 1;
 #X connect 24 0 27 0;
 #X connect 25 0 26 0;
