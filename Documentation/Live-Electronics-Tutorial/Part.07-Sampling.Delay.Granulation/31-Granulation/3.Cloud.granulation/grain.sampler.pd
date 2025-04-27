@@ -1,8 +1,8 @@
-#N canvas 577 75 789 667 12;
+#N canvas 440 88 789 667 12;
 #X declare -path else;
 #X obj 294 410 envelope~;
 #X obj 294 378 envgen~;
-#X obj 406 360 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
+#X obj 406 360 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000 #000000 0 1;
 #X obj 406 387 switch~;
 #X obj 136 517 *~;
 #X obj 236 276 limit;

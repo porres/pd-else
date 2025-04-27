@@ -16,7 +16,7 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 **LIBRARY:**
 
 Breaking changes:
-- [adsr~] now a gate off before reaching the sustain point does not start the release right away (this allows you to trigger it with impulses). There's a new mode just for immediate release. 
+- [adsr~]/[asr~] now a gate off before reaching the sustain point does not start the release right away (this allows you to trigger it with impulses). There's a new mode just for immediate release. There's a new exponential setting for curve factors, the old 'log' mode is renamed to 'lag' as it's the same of the [lag~] filter
 - [sample~] no more 'load' message, args to open message change, size is now only in 'ms'
 - [format] outputs are now always symbols, before you could get float outputs. Also, we just have a simplified symbol output, no more lists or anythings. Hopefully I'll be able to get the 'list' output back, but it involved some bugs that I couldn't fix so I just removed it. You cannot use bangs and lists in secondary inlets no more (this is cylone/max bullshit we don't want here). Bang method was actually removed as well.
 - [mono] 1st argument is now 'glide' in ms. 
@@ -39,10 +39,11 @@ Breaking changes:
 - [resonbank~]/[resonbank2~] have basically been deleted and replaced by new objects with the same name - they're now based on [resonator~] and [resonator2~], with a different design.
 - [oscbank~] now uses a 'partial' list and not a frequency list, so names/method changed. The freq input now defaults to '1' and this makes [oscbank2~] completely obsolete.
 - [oscbank2~] has been deleted.
-- [asr~] has been deleted (one can just use [adsr~], [lag2~], [glide2~], there are many options).
+- [envgen~] / [function~], simplified and got rid of '-exp' flag and message, also deleted 'expl' and 'expi' messages. A new curve message sets exponential factors for all or individual segments.
 
 Enhancements/fixes/other changes:
 - [adsr~] A bang now is not "retrigger", but an impulse at control rate, there's a new 'retrigger' message for control rate retriggering (and now it only retriggers if the gate is on). We have now a new mode for immediate release (see breaking changes above, I'm not repeating it). Fixed ADSR signal inputs (it was simply not really working, specially for linear). Fixed status output for MC signals. 
+- [asr~], a bang now also works like an impulse (I'm repeating things). I actually just made the new [adsr~] code into a new [asr~] code... as a simplified version.
 - [play.file~] added support for more file formats and even weblinks.
 - [sfload] added an outlet to output information, added threaded mode, added support for more file formats and even weblinks.
 - [sample~], [player~], [gran.player~] and [pvoc.player~] are now also based on [sfload], so they support more file formats.
@@ -51,6 +52,7 @@ Enhancements/fixes/other changes:
 - [numbox~]'s number display is not preceded by "~" anymore (that was kinda stupid)
 - [format] fixed issues where empty symbols and symbols with escaped spaces didn't work. Added support '%a' and '%A' type. Added support for an escaped space flag as well as the apostrophe (') flag. Improved and added support for length modifiers. Improved syntax check which prevents a crash. Improved documentation. 
 - [knob] added new 'param', 'var', 'savestate', 'read only', 'loadbang', "active", "reset" and 'ticks' methods. Added the possibility to type in number values and also modes on how to display number values, plus new send symbols for 'activity', 'typing', 'tab' and 'enter'. New design more like plugdata. Changed some shortcuts to make it simpler and use 'double clicking' (this requires Pd 0.56-0 so it works in GOP).  Yup, a lot of shit here... properties were also significantly improved (I'm finally starting to learn how to deal with tcl/tk).
+- [autofade2~]/[autofade2.mc~] fixed immediate jump up for 0 ramp up.
 - [synth~] fixed polyphony bug.
 - [metronome~] fixed bug with 'set' message.
 - [midi2note] fixed range (octave 0-8)
@@ -79,18 +81,21 @@ Enhancements/fixes/other changes:
 - [lowpass~]/[highpass~] added 't60' resonance mode.
 - [quantizer~]/[quantizer] added a new mode, which combines floor (for negative) and ceil (for positive) values.
 - [crusher~] now uses the new quantizer~ mode from above (arguably a breaking change)
-- [envgen~] fixed a bug (actually a misconception) where ramps started one sample earlier. Added a possibility to set time in samples instead of ms. Maximum number of lines is now 1024
-- Added MC support to [gatehold~], [vca.m~], [gain2~], [asr~], [envgen~], [bl.osc~], [bl.saw~], [bl.saw2~], [bl.vsaw~], [bl.square~], [bl.tri~], [bl.imp~], [bl.imp2~], [imp2~], [tri~], [saw~], [saw2~], [vsaw~], [square~], [pulse~], [parabolic~], [gaussian~], [wavetable~], [wt2d~], [randpulse~], [randpulse2~], [stepnoise~], [rampnoise~] [pink~], [gbamn~], [cusp~], [gray~] and [white~].
+- [envgen~] fixed a bug (actually a misconception) where ramps started one sample earlier. Fixed 0-length lines. Added a possibility to set time in samples instead of ms. Maximum number of lines is now 1024. Added many curve options (sin/hann/log curve/lag).
+- [function~]: Added many curve options (sin/hann/log curve/lag).
+- [out~] family of abstractions now use [bitnormal~] so you won't blow your speakers beyond repair in edge cases.
+- [trig.delay~], [trig.delay2~]:  fixed bug where values different than '1' didn't work
+- Added MC support to [trig.delay~], [trig.delay2~], [gatehold~], [vca.m~], [gain2~], [asr~], [envgen~], [function~], [bl.osc~], [bl.saw~], [bl.saw2~], [bl.vsaw~], [bl.square~], [bl.tri~], [bl.imp~], [bl.imp2~], [imp2~], [tri~], [saw~], [saw2~], [vsaw~], [square~], [pulse~], [parabolic~], [gaussian~], [wavetable~], [wt2d~], [randpulse~], [randpulse2~], [stepnoise~], [rampnoise~] [pink~], [gbamn~], [cusp~], [gray~] and [white~].
 - Also added midi input and soft sync to [imp2~], [tri~], [saw~], [saw2~], [vsaw~], [square~], [pulse~], [gaussian~] and [parabolic~].
 - [wavetable~ and [wt2d~] gained args to set xfading
 - Updated pdlua to 0.12.23 
 - M.E.R.D.A: Added MIDI-LEARN for all modules (this is only for the knobs). Replaced some number boxes that were attached to knobs by an internal number display mechanism (new feature from knob). Improved interface of [gendyn.m~], preset/symbol name fixes to [flanger.m~]. Now we have automatic midi mode detection for [plaits.m~] and [pluck.m~] when no signals are connected (still trying to get plaits right, huh? Yup, and MIDI input with monophony and trigger mode has been fixed). Added MC support to [vca.m~]. Increased range of [drive.m~] down to 0.1. Changed some objects to include the new [popmenu] GUI. [vco.m~] now uses the new MC functionalities of oscillators and doesn't need to load abstractions into [clone]. The [seq8.m~] module was worthless and got a decent upgrade, it's practically a new module. Added new modules (see below). Note that MERDA is still at alpha development phase, much experimental. Expect changes as it evolves.
-- 18 new objects: [float2imp~], [lace], [delace], [lace~], [delace~], [gatehold], [gaterelease~], [gaterelease], [popmenu], [scope3d~], [tanh~], [resonator~], [sfinfo], [dbgain~], [level~] plus [crusher.m~], [sfont.m~] and [level.m~] MERDA Modules.
+- 22 new objects: [float2imp~], [lace], [delace], [lace~], [delace~], [gatehold], [gatedelay],[gatedelay~], [gaterelease~], [gaterelease], [popmenu], [scope3d~], [tanh~], [resonator~], [sfinfo], [smooth~], [smooth2~], [dbgain~], [level~] plus [crusher.m~], [sfont.m~] and [level.m~] MERDA Modules.
 
-Objects count: total of 567 (316 signal objects [131 of which are MC aware] and 251 control objects)! 
+Objects count: total of 572 (320 signal objects [138 of which are MC aware] and 252 control objects)! 
 
-- 320 coded objects (207 signal objects  / 113 control objects)
-- 224 abstractions objects (87 signal objects / 137 control objects)
+- 324 coded objects (211 signal objects  / 113 control objects)
+- 225 abstractions objects (87 signal objects / 138 control objects)
 - 23 MERDA modular abstractions (22 audio / 1 control)
 
 --------------------------------------
@@ -99,9 +104,9 @@ Objects count: total of 567 (316 signal objects [131 of which are MC aware] and 
 - New examples and revisions to add the new objects, features and breaking changes in ELSE. 
 - Added the MERDA modules into the examples for reference
 - Revised section on envelopes
-- New subtractive synthesis example 
+- New subtractive synthesis examples 
 - New chapter on Modal Synthesis
-- Total number of examples is now 549!
+- Total number of examples is now 554! (26 new ones)
 
 
 --------------------------------------

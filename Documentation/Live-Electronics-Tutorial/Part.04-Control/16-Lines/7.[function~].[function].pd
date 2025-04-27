@@ -1,4 +1,4 @@
-#N canvas 493 107 558 515 12;
+#N canvas 499 94 587 517 12;
 #X declare -path else;
 #X obj 65 307 envgen~;
 #X obj 104 210 nbx 5 17 0 2000 0 0 empty empty empty 0 -8 0 12 #dcdcdc #000000 #000000 0 256;
@@ -15,7 +15,8 @@
 #X obj 327 12 declare -path else;
 #X obj 65 416 s2f~;
 #X obj 68 454 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
-#X obj 329 363 setdsp~;
+#X obj 227 353 setdsp~;
+#X text 334 361 Check the help file of [function~] and note you can also draw curved line shapes in the same way as [envgen~] as it has the exact same features and syntax., f 26;
 #X connect 0 0 5 0;
 #X connect 1 0 8 1;
 #X connect 2 0 8 0;

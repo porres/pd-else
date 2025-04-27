@@ -1,13 +1,13 @@
-#N canvas 414 42 567 612 12;
+#N canvas 460 46 567 612 12;
 #X declare -path else;
 #X obj 183 454 nbx 5 19 -1e+37 1e+37 0 0 empty \$0-speed empty 0 -8 0 15 #dcdcdc #000000 #000000 0 256;
 #X obj 276 454 nbx 5 17 -1e+37 1e+37 0 0 empty \$0-transpo empty 0 -8 0 15 #dcdcdc #000000 #000000 0 256;
-#X obj 90 454 tgl 19 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 90 454 tgl 21 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
 #X text 85 432 Play;
 #X text 292 432 Cents;
 #X obj 90 534 out~;
 #X text 186 432 Speed (%);
-#N canvas 249 38 1013 716 Pitch.Shift-Time.Stretch 0;
+#N canvas 290 163 1013 716 Pitch.Shift-Time.Stretch 0;
 #X obj 183 208 +;
 #X obj 267 108 * 2048;
 #X obj 118 31 inlet;

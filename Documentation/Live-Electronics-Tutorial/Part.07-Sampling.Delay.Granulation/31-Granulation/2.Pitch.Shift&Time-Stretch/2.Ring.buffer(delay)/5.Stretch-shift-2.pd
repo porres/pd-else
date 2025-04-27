@@ -12,7 +12,7 @@
 #X obj 149 406 out~;
 #X text 369 307 size;
 #X text 218 306 speed;
-#N canvas 251 23 1115 723 pitch-shift/time-stretch 0;
+#N canvas 251 38 1115 752 pitch-shift/time-stretch 1;
 #X obj 266 262 bang~;
 #X obj 338 251 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #c4fcfc #000000 #000000 0 256;
 #X obj 367 700 outlet~;
@@ -29,7 +29,7 @@
 #X obj 588 323 block~;
 #X obj 320 280 +;
 #X obj 367 638 *~;
-#X floatatom 569 575 4 0 0 0 - - - 0;
+#X floatatom 569 575 5 0 0 0 - - - 0;
 #X obj 569 514 / 2;
 #X floatatom 454 168 0 0 0 0 - - - 0;
 #X obj 782 99 loadbang;

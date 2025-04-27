@@ -27,8 +27,10 @@
 #X obj 171 249 * 0.75;
 #X obj 139 97 != 0;
 #X obj 139 125 select 1 0;
-#X obj 456 239 adsr~ 150 100 0.75 250;
 #X text 390 94 Here's how to implement an ADSR exponential envelope with vanilla. We use again the [slop~] object for that. We need to calculate the sustain point from the gate input value and also take care to set different downward periods for the decay and release part. The patch to the left relates to the [adsr~] object with the parameters below., f 43;
+#X obj 499 250 adsr~ -lag 150 100 0.75 250;
+#X text 502 282 One can also use [envgen~] \, which also has a 'lag' mode., f 29;
+#X obj 498 327 envgen~ -curve lag -suspoint 2 150 1 100 0.75 250 0, f 30;
 #X connect 0 0 5 0;
 #X connect 1 0 15 0;
 #X connect 2 0 3 0;

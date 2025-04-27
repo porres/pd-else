@@ -1,4 +1,4 @@
-#N canvas 684 241 746 603 12;
+#N canvas 425 112 746 603 12;
 #X declare -path else;
 #X obj 249 339 envelope~;
 #X obj 249 307 envgen~;

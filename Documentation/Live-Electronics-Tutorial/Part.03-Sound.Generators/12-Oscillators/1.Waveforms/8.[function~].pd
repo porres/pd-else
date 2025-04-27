@@ -1,39 +1,24 @@
-#N canvas 511 125 941 657 12;
+#N canvas 297 46 1061 787 12;
 #X declare -path else;
-#X floatatom 55 267 5 0 0 0 - - -;
-#X obj 55 217 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X obj 201 394 out~;
-#X obj 182 462 graph~ 800 10 -1.1 1.1;
-#X obj 55 292 phasor~ 100;
-#X obj 181 357 function~;
-#X obj 181 187 initmess 0 0.25 1 0.15 1 0.35 0 0.05 -1 0.1 -1 0.1 0
-, f 31;
-#X text 396 270 <= [function];
-#X obj 316 46 declare -path else;
-#X obj 181 232 function 200 100 empty empty -1 1 220 220 220 50 50
-50 0 0 0 0 0 0.25 1 0.15 1 0.35 0 0.05 -1 0.1 -1 0.1 0;
-#X obj 572 201 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 572 482 graph~ 441 8 -1.05 1.05 200 140;
-#X text 839 371 parabolic waveform, f 9;
-#X obj 674 196 expr -$f1 \; -$f1 \; $f1 \; $f1;
-#X obj 668 266 pack f f f f;
-#X obj 677 147 hsl 128 15 1 10 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 674 171 5 0 0 0 - - -;
-#X obj 572 223 phasor~ 100;
-#X obj 572 372 function~ 0 0.5 1 0.5 0 0.5 -1 0.5 0 -exp -2 -2 2 2
-, f 36;
-#X obj 587 417 out~;
-#X obj 601 332 display;
-#X text 56 86 The [function~] object from ELSE can be used to generate
-crazy and different waveforms. Check its help file. Here we also use
-the [function] object from ELSE that allows you to draw waveform functions
-on the fly.;
+#X floatatom 55 190 5 0 0 0 - - - 0;
+#X obj 55 134 tgl 21 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 64 360 out~;
+#X obj 182 338 graph~ 800 10 -1.1 1.1;
+#X obj 55 218 phasor~ 100;
+#X obj 181 300 function~;
+#X obj 181 130 initmess 0 0.25 1 0.15 1 0.35 0 0.05 -1 0.1 -1 0.1 0, f 31;
+#X text 396 213 <= [function];
+#X obj 812 36 declare -path else;
+#X obj 181 175 function 200 100 empty empty -1 1 220 220 220 50 50 50 0 0 0 0 0 0.25 1 0.15 1 0.35 0 0.05 -1 0.1 -1 0.1 0;
+#X obj 567 287 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 567 538 graph~ 441 8 -1.05 1.05 200 140;
+#X text 837 438 parabolic waveform, f 20;
+#X obj 567 309 phasor~ 100;
+#X obj 582 473 out~;
+#X obj 667 393 display;
+#X text 48 29 The [function~] object from ELSE can be used to generate crazy and different waveforms. Check its help file. Here we also use the [function] object from ELSE that allows you to draw waveform functions on the fly., f 63;
 #N canvas 212 77 267 219 sequencer 0;
-#X obj 44 94 sequencer 42 40 40 45 40 49 52 52 45 43 43 47 50 54 55
-55, f 29;
+#X obj 44 94 sequencer 42 40 40 45 40 49 52 52 45 43 43 47 50 54 55 55, f 29;
 #X obj 44 70 tempo 240;
 #X obj 44 47 inlet;
 #X obj 44 147 outlet;
@@ -42,30 +27,46 @@ on the fly.;
 #X connect 1 0 0 0;
 #X connect 2 0 1 0;
 #X connect 4 0 3 0;
-#X restore 55 240 pd sequencer;
-#X text 541 38 The [function~] object also allows to draw exponential
-curves. Check its help file for more details. Below \, we set an exponential
-value to all segments. A parameter of "2" is exactly the same waveform
-as the [parabolic~] object., f 49;
-#X obj 668 293 insert exp;
+#X restore 55 163 pd sequencer;
+#X obj 567 438 function~ 0 0.5 1 0.5 0 0.5 -1 0.5 0;
+#X obj 680 222 hsl 128 15 2 25 1 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X floatatom 677 246 6 0 0 0 - - - 0;
+#X text 676 178 Here's how to create parabolic waveforms:, f 20;
+#X obj 667 366 else/insert curve;
+#X obj 677 270 expr strcat("^" \, sym(-$f1)) \; strcat("^" \, sym(-$f1)) \; strcat("^" \, sym($f1)) \; strcat("^" \, sym($f1));
+#X obj 667 339 pack symbol symbol symbol symbol;
+#X obj 89 620 graph~ 441 8 -1.05 1.05 200 140;
+#X obj 88 504 phasor~ 200;
+#X msg 186 508 curve hann;
+#X text 526 77 You can also draw exponential curves. Power factors like used in [rescale~]/glide~] are possible if you have a symbol that is a float preceded by "^". Check its help file for more details and other options. Below \, we set an exponential value to all segments. A parameter of "2" is exactly the same waveform as the [parabolic~] object., f 69;
+#X obj 88 590 function~ -curve hann -1 1 1 1 -1;
+#X msg 192 532 curve sin;
+#X msg 198 556 curve lin;
+#X text 347 509 You can also set curve types. A 'hann' curve has the same shape as an inverted cosine if you have a symmetric shape \, while 'sin' is half of a cosine. By default we have a 'linear' setting., f 24;
+#X text 350 642 A single curve value sets the curve of all segments \, but you can give it a list and set for each one., f 23;
 #X connect 0 0 4 0;
-#X connect 1 0 22 0;
+#X connect 1 0 17 0;
 #X connect 4 0 5 0;
 #X connect 5 0 2 0;
 #X connect 5 0 3 0;
 #X connect 6 0 9 0;
 #X connect 9 0 5 0;
-#X connect 10 0 17 0;
-#X connect 13 0 14 0;
-#X connect 13 1 14 1;
-#X connect 13 2 14 2;
-#X connect 13 3 14 3;
-#X connect 14 0 24 0;
-#X connect 15 0 16 0;
-#X connect 16 0 13 0;
-#X connect 17 0 18 0;
+#X connect 10 0 13 0;
+#X connect 13 0 18 0;
+#X connect 15 0 18 0;
+#X connect 17 0 0 0;
 #X connect 18 0 11 0;
-#X connect 18 0 19 0;
-#X connect 20 0 18 0;
-#X connect 22 0 0 0;
-#X connect 24 0 20 0;
+#X connect 18 0 14 0;
+#X connect 19 0 20 0;
+#X connect 20 0 23 0;
+#X connect 22 0 15 0;
+#X connect 23 0 24 0;
+#X connect 23 1 24 1;
+#X connect 23 2 24 2;
+#X connect 23 3 24 3;
+#X connect 24 0 22 0;
+#X connect 26 0 29 0;
+#X connect 27 0 29 0;
+#X connect 29 0 25 0;
+#X connect 30 0 29 0;
+#X connect 31 0 29 0;
