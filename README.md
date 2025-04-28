@@ -103,7 +103,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 --------------------------------------------------------------------------
 
-## Current Object list (567 objects):
+## Current Object list (572 objects):
 
 #assorted
     else
@@ -205,7 +205,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     adsr~ decay~ decay2~ envelope~ envgen~
 
 #control: ramp/line/curve generators
-    {amp~ susloop~ function~ slew slew~ slew2 slew2~ lag~ lag2~ glide glide~ glide2 glide2~
+    ramp~ susloop~ function~ slew slew~ slew2 slew2~ lag~ lag2~ glide glide~ glide2 glide2~ smooth~ smooth2~
 
 #control: random/stochastic
     rand.f rand.f~ rand.i rand.i~ rand.list rand.u rand.dist rand.hist histogram markov drunkard drunkard~ brown randpulse randpulse2 lfnoise stepnoise rampnoise
@@ -214,7 +214,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     lfo phasor pimp impulse pulse
 
 #control: triggers
-    above above~ bangdiv chance chance~ dust~ dust2~ gatehold gatehold~ gaterelease gaterelease~ float2imp~ gate2imp~ pimp~ pimpmul~ pulsecount~ pulsediv~ sh~ schmitt schmitt~ status status~ trig.delay~ trig.delay2~ toggleff~ timed.gate timed.gate~ match~ trig2bang trig2bang~ trighold~
+    above above~ bangdiv chance chance~ dust~ dust2~ gatehold gatehold~ gaterelease gaterelease~ gatedelay gatedelay~ float2imp~ gate2imp~ pimp~ pimpmul~ pulsecount~ pulsediv~ sh~ schmitt schmitt~ status status~ trig.delay~ trig.delay2~ toggleff~ timed.gate timed.gate~ match~ trig2bang trig2bang~ trighold~
 
 #control: triggers, clock
     clock metronome metronome~ polymetro polymetro~ speed tempo tempo~

@@ -22,10 +22,10 @@
 #X obj 466 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 504 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 305 184 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
-#X text 29 171 see also;
+#X text 29 149 see also;
 #X obj 194 179 else/numbox~ 6 10 100 #C0C0C4 #440008 10 0 0 0;
 #X obj 194 238 else/numbox~ 6 10 100 #C0C0C4 #440008 10 0 0 0;
-#X obj 31 196 else/gatehold~;
+#X obj 31 194 else/gatehold~;
 #N canvas 781 160 456 460 multichannel 0;
 #X obj 117 348 else/s2f~;
 #X listbox 117 379 20 0 0 0 - - - 12;
@@ -49,12 +49,14 @@
 #X obj 465 83 else/setdsp~;
 #X obj 194 208 else/gatedelay~ 500;
 #X text 362 178 delay time, f 5;
-#X obj 31 220 else/trig.delay~;
+#X obj 31 240 else/trig.delay~;
 #X text 190 308 signal(s);
 #X text 254 308 - delay time in ms;
 #X text 254 340 - delayed gate(s);
 #X text 115 372 1) float - delay time in ms (default 0 \, no delay time);
 #X text 154 281 float/signal(s);
+#X obj 31 170 else/gatedelay;
+#X obj 31 217 else/gaterelease~;
 #X connect 18 0 29 1;
 #X connect 20 0 29 0;
 #X connect 27 0 20 0;
