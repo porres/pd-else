@@ -1,160 +1,229 @@
-// porres 2018
+// porres 2018-2025
 
 #include <m_pd.h>
-#include <buffer.h>
+#include "buffer.h"
+#include <stdlib.h>
+#include <math.h>
 
 #define MAX_SIZE  4096
+#define LOG001 log(0.001)
+
+enum { LINEAR, CURVE, POWER, LAG, SINE, DUMMY, HANN };
 
 typedef struct _function{
     t_object    x_obj;
-    t_float       x_f;
+    t_float     x_f;
+    int         x_nchans;
+    int         x_nblock;
     float      *x_points;
-    float      *x_durations;
-    float       x_power;
+    float      *x_dur;
     t_atom      x_at_exp[MAX_SIZE];
     t_atom      x_at_av[MAX_SIZE];
-    int         x_point;
-    int         x_last_point;
-    int         x_exp;
+    int         x_single_exp;
+    float       x_curve;
+    int         x_lintype;
+    int         x_last_n;
+    int        *x_n;
+    t_symbol   *x_ignore;
 }t_function;
 
 static t_class *function_class;
+
+static void function_set_curve(t_function *x, int n){
+    if(x->x_single_exp)
+        n = 0;
+    if(x->x_at_exp[n].a_type == A_FLOAT){
+        x->x_curve = x->x_at_exp[n].a_w.w_float * -4;
+        x->x_lintype = fabs(x->x_curve) > 0.001 ? CURVE : LINEAR;
+    }
+    else{
+        char p[MAXPDSTRING];
+        t_symbol *sym = x->x_at_exp[n].a_w.w_symbol;
+        if(sym == gensym("lin")){
+            x->x_lintype = LINEAR;
+            return;
+        }
+        else if(sym == gensym("lag")){
+            x->x_lintype = LAG;
+            return;
+        }
+        else if(sym == gensym("sin")){
+            x->x_lintype = SINE;
+            return;
+        }
+        else if(sym == gensym("hann")){
+            x->x_lintype = HANN;
+            return;
+        }
+        sprintf(p, "%s", sym->s_name);
+        if(p[0] == '^'){
+            x->x_curve = atof(p + 1); // convert after '^'
+            if(x->x_curve == 0 || fabs(x->x_curve) == 1)
+                x->x_lintype = LINEAR;
+            else
+                x->x_lintype = POWER;
+        }
+        else{
+            post("[function~]: unknown curve type, setting to linear");
+            x->x_lintype = LINEAR;
+            return;
+        }
+    }
+}
+
+static float function_getval(t_function *x, float phase, int n){
+    function_set_curve(x, n-1);
+    float b = x->x_points[n-1], c = x->x_points[n];
+    float dur_m1 = x->x_dur[n-1], dur = x->x_dur[n];
+    float frac = (phase-dur_m1)/(dur-dur_m1);
+    if(x->x_lintype == SINE || x->x_lintype == HANN){
+        float d = c-b, i = d > 0 ? frac : 1.0 - frac;
+        float sin = read_fadetab(i, x->x_lintype);
+        float step = d > 0 ? sin * d : (1 - sin) * d;
+        return(b + step);
+    }
+    else if(x->x_lintype == CURVE){
+        float d = c - b;
+        float b0 = d / (1.0f - expf(x->x_curve));
+        float a = b + b0;
+        float b_phase = b0 * expf(x->x_curve * frac);
+        return(a - b_phase);
+    }
+    else if (x->x_lintype == LAG) {
+        float d = b - c; 
+        return(c + d * expf(LOG001 * frac));
+    }
+    else if(x->x_lintype == POWER){
+        return(interp_pow(frac, b, c, x->x_curve));
+    }
+    else // if(x->x_lintype == LINEAR){
+        return(interp_lin(frac, b, c));
+}
     
-static t_int *functionsig_perform(t_int *w){
+static t_int *function_perform(t_int *w){
     t_function *x = (t_function *)(w[1]);
     t_sample *in = (t_float *)(w[2]);
     t_sample *out = (t_float *)(w[3]);
-    int n = (int)(w[4]);
-    if(x->x_point > x->x_last_point)
-        x->x_point = x->x_last_point;
-    while(n--){
-        t_sample f = *in++;
-        t_sample val;
-        while((x->x_point > 0) && (f < x->x_durations[x->x_point-1]))
-            x->x_point--;
-        while((x->x_point <  x->x_last_point) && (x->x_durations[x->x_point] < f))
-            x->x_point++;
-        if(x->x_point == 0 || f >= x->x_durations[x->x_last_point])
-            val = x->x_points[x->x_point];
-        else{
-            float b = x->x_points[x->x_point-1], c = x->x_points[x->x_point];
-            float dur_m1 = x->x_durations[x->x_point-1], dur = x->x_durations[x->x_point];
-            float frac = (f-dur_m1)/(dur-dur_m1);
-            float power = x->x_at_exp[x->x_point-1].a_w.w_float;
-            val = interp_pow(frac, b, c, power);
+    for(int j = 0; j < x->x_nchans; j++){
+        for(int i = 0; i < x->x_nblock; i++){
+            t_float phase = in[j*x->x_nblock + i], val;
+            int n = x->x_n[j], last = x->x_last_n;
+            if(n > last)
+               n = last;
+            while((n > 0) && (phase < x->x_dur[n-1]))
+                n--;
+            while((n < last) && (x->x_dur[n] < phase))
+                n++;
+            if(n == 0 || phase >= x->x_dur[last])
+                val = x->x_points[n];
+            else
+                val = function_getval(x, phase, n);
+            out[j*x->x_nblock + i] = val;
         }
-        *out++ = val;
     }
-    return(w+5);
+    return(w+4);
 }
 
-static void functionsig_dsp(t_function *x, t_signal **sp){
-    dsp_add(functionsig_perform, 4, x,sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
+static void function_dsp(t_function *x, t_signal **sp){
+    x->x_nblock = sp[0]->s_n;
+    int chs = sp[0]->s_nchans;
+    if(x->x_nchans != chs){
+       x->x_n = (int *)resizebytes(x->x_n,
+            x->x_nchans * sizeof(int), chs * sizeof(int));
+        x->x_nchans = chs;
+    }
+    signal_setmultiout(&sp[1], chs);
+    dsp_add(function_perform, 3, x,sp[0]->s_vec, sp[1]->s_vec);
 }
 
-static void function_init(t_function *x, int ac, t_atom* av){ // ???
+static void function_init(t_function *x, int ac, t_atom* av){
     if(ac < 3)
         return;
     float *dur, *val, tdur = 0;
-    x->x_durations[0] = 0;
-    x->x_last_point = x->x_exp ? (int)ac/3 : (int)ac/2;
-    if(x->x_last_point > MAX_SIZE){
+    x->x_dur[0] = 0;
+    x->x_last_n = (int)ac/2;
+    if(x->x_last_n > MAX_SIZE){
         post("[function~]: too many lines, maximum is %d", MAX_SIZE);
         return;
     }
-    dur = x->x_durations;
+    dur = x->x_dur;
     val = x->x_points;
     *val = atom_getfloat(av++);
     *dur = 0.0;
     ac--;
     dur++;
-    if(x->x_exp){
-        int i = 0;
-        while(ac > 0){
-            *dur++ = (tdur += atom_getfloat(av++));
-            ac--;
-            SETFLOAT(x->x_at_exp+i, (av++)->a_w.w_float);
-            i++;
-            ac--;
-            *++val = ac > 0 ? atom_getfloat(av++): 0;
-            ac--;
-        }
+    while(ac > 0){
+        *dur++ = (tdur += atom_getfloat(av++));
+        ac--;
+        *++val = ac > 0 ? atom_getfloat(av++): 0;
+        ac--;
     }
-    else{
-        while(ac > 0){
-            *dur++ = (tdur += atom_getfloat(av++));
-            ac--;
-            *++val = ac > 0 ? atom_getfloat(av++): 0;
-            ac--;
-        }
-    }
-}
-
-static void function_expi(t_function *x, t_floatarg f1, t_floatarg f2){
-    int i = f1 < 0 ? 0 : (int)f1;
-    SETFLOAT(x->x_at_exp+i, f2);
-}
-
-static void function_expl(t_function *x, t_symbol *s, int ac, t_atom *av){
-    if(!ac)
-        return;
-    s = NULL;
-    for(int i = 0; i < ac; i++)
-        SETFLOAT(x->x_at_exp+i, (av+i)->a_w.w_float);
 }
 
 static void function_norm_dur(t_function* x){ // normalize duration
-    for(int i = 1; i <= x->x_last_point; i++)
-        x->x_durations[i] /= x->x_durations[x->x_last_point];
+    for(int i = 1; i <= x->x_last_n; i++)
+        x->x_dur[i] /= x->x_dur[x->x_last_n];
 }
 
-static void function_exp(t_function *x, t_symbol *s, int ac, t_atom *av){
+static void function_curve(t_function *x, t_symbol *s, int ac, t_atom *av){
+    x->x_ignore = s;
     if(!ac)
         return;
-    s = NULL;
-    x->x_exp = 1;
-    function_init(x, ac, av);
-    function_norm_dur(x);
+    x->x_single_exp = (ac == 1);
+    for(int i = 0; i < ac; i++){
+        if((av+i)->a_type == A_FLOAT)
+            SETFLOAT(x->x_at_exp+i, (av+i)->a_w.w_float);
+        else
+            SETSYMBOL(x->x_at_exp+i, (av+i)->a_w.w_symbol);
+    }
 }
 
 static void function_list(t_function *x,t_symbol* s, int ac,t_atom* av){
-    s = NULL;
-    x->x_exp = 0;
+    x->x_ignore = s;
     function_init(x, ac, av);
     function_norm_dur(x);
 }
 
+static void function_free(t_function *x){
+    freebytes(x->x_n, x->x_nchans * sizeof(*x->x_n));
+}
+
 static void *function_new(t_symbol *s,int ac,t_atom* av){
-    s = NULL; // avoid warning
     t_function *x = (t_function *)pd_new(function_class);
+    x->x_ignore = s;
+    init_fade_tables();
     for(int i = 0; i < MAX_SIZE; i++) // set exponential list to linear
-        SETFLOAT(x->x_at_exp+i, 1);
+        SETFLOAT(x->x_at_exp+i, 0);
+    x->x_single_exp = 1;
     x->x_f = 0;
-    x->x_exp = 0;
     x->x_points = getbytes(MAX_SIZE*sizeof(float));
-    x->x_durations = getbytes(MAX_SIZE*sizeof(float));
-    if(ac){
+    x->x_dur = getbytes(MAX_SIZE*sizeof(float));
+    x->x_n = (int *)getbytes(sizeof(*x->x_n));
+    x->x_nchans = 1;
+    while(ac > 0){
         if(av->a_type == A_SYMBOL){
-            if(atom_getsymbolarg(0, ac, av) == gensym("-exp")){
-                ac--, av++;
-                if(ac < 4)
-                    pd_error(x, "[function~]: -exp needs at least 4 float arguments");
-                else{
-                    x->x_exp = 1;
-                    function_init(x, ac, av);
+            if(atom_getsymbol(av) == gensym("-curve")){
+                if(ac >= 2){
+                    ac--, av++;
+                    function_curve(x, NULL, 1, av);
+                    ac--, av++;
                 }
+                else
+                    goto errstate;
             }
             else
                 goto errstate;
         }
-        else if(av->a_type == A_FLOAT){
-            if(ac < 3)
+        if(av->a_type == A_FLOAT){
+            if(ac < 3){
                 pd_error(x, "[function~]: needs at least 3 float arguments");
-            else
+                goto errstate;
+            }
+            else{
                 function_init(x, ac, av);
+                break;
+            }
         }
-        else
-            goto errstate;
     }
     function_norm_dur(x);
     outlet_new(&x->x_obj, gensym("signal"));
@@ -165,12 +234,10 @@ errstate:
 }
 
 void function_tilde_setup(void){
-    function_class = class_new(gensym("function~"), (t_newmethod)function_new, 0,
-        sizeof(t_function), 0, A_GIMME, 0);
+    function_class = class_new(gensym("function~"), (t_newmethod)function_new,
+        (t_method)function_free, sizeof(t_function), CLASS_MULTICHANNEL, A_GIMME, 0);
     CLASS_MAINSIGNALIN(function_class, t_function, x_f);
-    class_addmethod(function_class, (t_method)functionsig_dsp, gensym("dsp"), 0);
-    class_addmethod(function_class, (t_method)function_exp, gensym("exp"), A_GIMME, 0);
-    class_addmethod(function_class, (t_method)function_expl, gensym("expl"), A_GIMME, 0);
-    class_addmethod(function_class, (t_method)function_expi, gensym("expi"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addlist(function_class, function_list);
+    class_addmethod(function_class, (t_method)function_dsp, gensym("dsp"), 0);
+    class_addmethod(function_class, (t_method)function_curve, gensym("curve"), A_GIMME, 0);
 }
