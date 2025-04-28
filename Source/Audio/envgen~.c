@@ -2,12 +2,14 @@
 
 #include <m_pd.h>
 #include "else_alloca.h"
+#include "buffer.h"
 #include <stdlib.h>
 #include <math.h>
 
 #define MAX_SEGS  1024 // maximum line segments
+#define LOG001 log(0.001)
 
-enum { LINEAR, CURVE, POWER, LAG, SINE, HANN };
+enum { LINEAR, CURVE, POWER, LAG, SINE, DUMMY, HANN };
 
 typedef struct _envgen{
     t_object        x_obj;
@@ -27,6 +29,7 @@ typedef struct _envgen{
     t_float        *x_inc;
     t_float        *x_a;
     t_float        *x_b;
+    t_float        *x_phase;
     t_float        *x_delta;
     t_float        *x_target;
     t_float        *x_last_target;
@@ -96,6 +99,18 @@ static void envgen_set_line_type(t_envgen *x, int j){
             x->x_lintype = LINEAR;
             return;
         }
+        else if(sym == gensym("lag")){
+            x->x_lintype = LAG;
+            return;
+        }
+        else if(sym == gensym("sin")){
+            x->x_lintype = SINE;
+            return;
+        }
+        else if(sym == gensym("hann")){
+            x->x_lintype = HANN;
+            return;
+        }
         sprintf(p, "%s", sym->s_name);
         if(p[0] == '^'){
             x->x_curve = atof(p + 1); // convert after '^'
@@ -152,14 +167,20 @@ static void envgen_retarget(t_envgen *x, int j){
     if(x->x_delta[j] == 0)
         x->x_inc[j] = 0;
     else if(x->x_lintype == LINEAR)
-        x->x_inc[j] = x->x_delta[j] / x->x_n[j];
+        x->x_inc[j] = x->x_delta[j] / (float)x->x_n[j];
     else if(x->x_lintype == CURVE){ // CURVE
         x->x_b[j] = x->x_delta[j] / (1 - exp(x->x_curve));
         x->x_a[j] = x->x_value[j] + x->x_b[j];
-        x->x_inc[j] = exp(x->x_curve / x->x_n[j]);
+        x->x_inc[j] = exp(x->x_curve / (float)x->x_n[j]);
     }
-    else // POWER
+    else if(x->x_lintype == POWER)
         x->x_inc[j] = 1; // sample count
+    else if(x->x_lintype == LAG)
+        x->x_inc[j] = exp(LOG001 / (float)x->x_n[j]);
+    else if(x->x_lintype == SINE || x->x_lintype == HANN){
+        x->x_phase[j] = 0.0;
+        x->x_inc[j] = 1.0 / (float)x->x_n[j];
+    }
 }
 
 static void envgen_attack(t_envgen *x, int ac, t_atom *av, int j){
@@ -365,6 +386,18 @@ static t_int *envgen_perform(t_int *w){
                         output = x->x_value[j];
                         x->x_value[j] = x->x_last_target[j] + envgen_get_step(x, j);
                     }
+                    else if(x->x_lintype == LAG){
+                        output = x->x_value[j];
+                        x->x_value[j] = x->x_target[j] + (x->x_value[j] - x->x_target[j])*x->x_inc[j];
+                    }
+                    else if(x->x_lintype == SINE || x->x_lintype == HANN){
+                        output = x->x_value[j];
+                        x->x_phase[j] += x->x_inc[j];
+                        float phase = x->x_delta[j] > 0 ? x->x_phase[j] : 1.0 - x->x_phase[j];
+                        float sin = read_fadetab(phase, x->x_lintype);
+                        float step = x->x_delta[j] > 0 ? sin * x->x_delta[j] : (1 - sin) * x->x_delta[j];
+                        x->x_value[j] = x->x_last_target[j] + step;
+                    }
                     else{ // if linear
                         output = x->x_value[j];
                         x->x_value[j] += x->x_inc[j];
@@ -382,10 +415,19 @@ static t_int *envgen_perform(t_int *w){
                             x->x_value[j] = x->x_a[j] - x->x_b[j];
                         }
                         else if(x->x_lintype == POWER){
-                            x->x_inc[j] = 1; // sample count
                             x->x_value[j] = x->x_last_target[j] + envgen_get_step(x, j);
                         }
-                        else
+                        else if(x->x_lintype == LAG){
+                            x->x_value[j] = x->x_target[j] + (x->x_value[j] - x->x_target[j])*x->x_inc[j];
+                        }
+                        else if(x->x_lintype == SINE || x->x_lintype == HANN){
+                            x->x_phase[j] += x->x_inc[j];
+                            float phase = x->x_delta[j] > 0 ? x->x_phase[j] : 1.0 - x->x_phase[j];
+                            float sin = read_fadetab(phase, x->x_lintype);
+                            float step = x->x_delta[j] > 0 ? sin * x->x_delta[j] : (1 - sin) * x->x_delta[j];
+                            x->x_value[j] = x->x_last_target[j] + step;
+                        }
+                        else // linear
                             x->x_value[j] += x->x_inc[j];
                     }
                     else if(!x->x_release[j]){ // there's no release, we're done.
@@ -409,6 +451,8 @@ static void envgen_dsp(t_envgen *x, t_signal **sp){
         x->x_lastin = (t_float *)resizebytes(x->x_lastin,
             x->x_nchans * sizeof(t_float), chs * sizeof(t_float));
         x->x_gain = (t_float *)resizebytes(x->x_gain,
+            x->x_nchans * sizeof(t_float), chs * sizeof(t_float));
+        x->x_phase = (t_float *)resizebytes(x->x_phase,
             x->x_nchans * sizeof(t_float), chs * sizeof(t_float));
         x->x_value = (t_float *)resizebytes(x->x_value,
             x->x_nchans * sizeof(t_float), chs * sizeof(t_float));
@@ -454,6 +498,7 @@ static void envgen_free(t_envgen *x){
         clock_free(x->x_clock);
     freebytes(x->x_lastin, x->x_nchans * sizeof(*x->x_lastin));
     freebytes(x->x_gain, x->x_nchans * sizeof(*x->x_gain));
+    freebytes(x->x_phase, x->x_nchans * sizeof(*x->x_phase));
     freebytes(x->x_value, x->x_nchans * sizeof(*x->x_value));
     freebytes(x->x_delta, x->x_nchans * sizeof(*x->x_delta));
     freebytes(x->x_target, x->x_nchans * sizeof(*x->x_target));
@@ -480,8 +525,10 @@ static void envgen_resume(t_envgen *x){
 static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     t_symbol *cursym = s; // avoid warning
     t_envgen *x = (t_envgen *)pd_new(envgen_class);
+    init_fade_tables();
     x->x_nchans = 1;
     x->x_gain = (t_float *)getbytes(sizeof(*x->x_gain));
+    x->x_phase = (t_float *)getbytes(sizeof(*x->x_phase));
     x->x_lastin = (t_float *)getbytes(sizeof(*x->x_lastin));
     x->x_value = (t_float *)getbytes(sizeof(*x->x_value));
     x->x_delta = (t_float *)getbytes(sizeof(*x->x_delta));
@@ -499,6 +546,7 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     x->x_release = (int *)getbytes(sizeof(*x->x_release));
     x->x_lastin[0] = x->x_value[0] = x->x_delta[0] = 0.;
     x->x_gain[0] = 1;
+    x->x_phase[0] = 0;
     x->x_target[0] = x->x_last_target[0] = x->x_inc[0] = 0.;
     x->x_a[0] = x->x_b[0] = 0.;
     x->x_n[0] = x->x_exp_idx[0] = x->x_nleft[0] = x->x_release[0] = 0;
