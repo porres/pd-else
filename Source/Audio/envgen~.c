@@ -18,6 +18,7 @@ typedef struct _envgen{
     int             x_pause;
     int             x_status;
     int             x_legato;
+    int             x_loop;
     int             x_suspoint;
     int             x_nchans;
     int             x_nblock;
@@ -160,13 +161,12 @@ static void envgen_retarget(t_envgen *x, int j){
     x->x_n_lines[j]--;
     x->x_line_idx[j]++;
     idx = x->x_line_idx[j];
-
+    
     x->x_delta[j] = x->x_target[j] - (x->x_last_target[j] = x->x_value[j]);
+    
     x->x_n[j] = x->x_nleft[j];
     
-    if(x->x_delta[j] == 0)
-        x->x_inc[j] = 0;
-    else if(x->x_lintype == LINEAR)
+    if(x->x_lintype == LINEAR)
         x->x_inc[j] = x->x_delta[j] / (float)x->x_n[j];
     else if(x->x_lintype == CURVE){ // CURVE
         x->x_b[j] = x->x_delta[j] / (1 - exp(x->x_curve));
@@ -339,6 +339,10 @@ static void envgen_legato(t_envgen *x, t_floatarg f){
     x->x_legato = f != 0;
 }
 
+static void envgen_loop(t_envgen *x, t_floatarg f){
+    x->x_loop = f != 0;
+}
+
 static void envgen_samps(t_envgen *x, t_floatarg f){
     x->x_samps = f != 0;
 }
@@ -431,8 +435,12 @@ static t_int *envgen_perform(t_int *w){
                             x->x_value[j] += x->x_inc[j];
                     }
                     else if(!x->x_release[j]){ // there's no release, we're done.
-                        x->x_running[j] = 0;
-                        clock_delay(x->x_clock, 0);
+                        if(x->x_loop)
+                            envgen_attack(x, x->x_ac, x->x_av, j);
+                        else{
+                            x->x_running[j] = 0;
+                            clock_delay(x->x_clock, 0);
+                        }
                     }
                 }
             }
@@ -556,7 +564,7 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     x->x_suspoint = x->x_legato = 0;
     int i = 0;
     for(i = 0; i < MAX_SEGS; i++) // set exponential list to linear
-        SETFLOAT(x->x_at_exp+i, 1);
+        SETFLOAT(x->x_at_exp+i, 0);
     t_atom at[2];
     SETFLOAT(at, 0);
     SETFLOAT(at+1, 0);
@@ -582,6 +590,10 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
                 }
                 else
                     goto errstate;
+            }
+            else if(cursym == gensym("-loop")){
+                x->x_loop = 1;
+                ac--, av++;
             }
             else if(cursym == gensym("-curve")){
                 if(ac >= 2){
@@ -639,6 +651,7 @@ void envgen_tilde_setup(void){
     class_addmethod(envgen_class, (t_method)envgen_pause, gensym("pause"), 0);
     class_addmethod(envgen_class, (t_method)envgen_resume, gensym("resume"), 0);
     class_addmethod(envgen_class, (t_method)envgen_legato, gensym("legato"), A_FLOAT, 0);
+    class_addmethod(envgen_class, (t_method)envgen_loop, gensym("loop"), A_FLOAT, 0);
     class_addmethod(envgen_class, (t_method)envgen_samps, gensym("samps"), A_FLOAT, 0);
     class_addmethod(envgen_class, (t_method)envgen_suspoint, gensym("suspoint"), A_FLOAT, 0);
     class_addmethod(envgen_class, (t_method)envgen_retrigger, gensym("retrigger"), A_FLOAT, 0);

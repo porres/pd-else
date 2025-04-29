@@ -24,6 +24,7 @@ Breaking changes:
 - [player~]/[play.file~] 'open' message does not play files right away anymore. 
 - [tabplayer~]/[player~] play message without args now play at default settings (whole file at trgular speed)
 - [envgen~] removed the 'maxsustain' parameter, use new [gaterelease~] or [gaterelease] objects. Removed the rightmost inlet, now a list input only sets the envelope and doesn't trigger it. Removed set message.
+- [envgen~] / [function~], simplified and got rid of '-exp' flag and message, also deleted 'expl' and 'expi' messages. A new curve message sets exponential factors for all or individual segments.
 - [knob]: 'esc' key now deactivates the object. The 'ticks' message is renamed to 'steps' and there is a new 'ticks' message that toggles showing ticks on and off. The 'start' message has been renamed to 'arcstart'. The 'outline' message has been renamed to 'square' for better clarity. Design changed a bit to make it like it is in PlugData (they won), so we now fill the whole background color when in 'square mode' and the knob circle has an 85% proportion when in this case. Now, by default, the GUI is in a new 'loadbang' mode but I don't think this will influence old patches, but I'm afraid that some old patches might behave weird since I added a lot of new stuff. I changed the 'load' message behaviour to not update the object (this can arguably be considered a bug fix).
 - [wavetable~], [bl.wavetable~] and [wt2d~]: set message now sets frequencies because of the MC support in [wt~] and [wt2d~], while there's a new 'table' method to set the table name
 - [gbman~]/[cusp~] list method is now for MC, old list method is now renamed back to an old 'coeffs' method.
@@ -39,7 +40,7 @@ Breaking changes:
 - [resonbank~]/[resonbank2~] have basically been deleted and replaced by new objects with the same name - they're now based on [resonator~] and [resonator2~], with a different design.
 - [oscbank~] now uses a 'partial' list and not a frequency list, so names/method changed. The freq input now defaults to '1' and this makes [oscbank2~] completely obsolete.
 - [oscbank2~] has been deleted.
-- [envgen~] / [function~], simplified and got rid of '-exp' flag and message, also deleted 'expl' and 'expi' messages. A new curve message sets exponential factors for all or individual segments.
+
 
 Enhancements/fixes/other changes:
 - [adsr~] A bang now is not "retrigger", but an impulse at control rate, there's a new 'retrigger' message for control rate retriggering (and now it only retriggers if the gate is on). We have now a new mode for immediate release (see breaking changes above, I'm not repeating it). Fixed ADSR signal inputs (it was simply not really working, specially for linear). Fixed status output for MC signals. 
@@ -81,7 +82,7 @@ Enhancements/fixes/other changes:
 - [lowpass~]/[highpass~] added 't60' resonance mode.
 - [quantizer~]/[quantizer] added a new mode, which combines floor (for negative) and ceil (for positive) values.
 - [crusher~] now uses the new quantizer~ mode from above (arguably a breaking change)
-- [envgen~] fixed a bug (actually a misconception) where ramps started one sample earlier. Fixed 0-length lines. Added a possibility to set time in samples instead of ms. Maximum number of lines is now 1024. Added many curve options (sin/hann/log curve/lag).
+- [envgen~] fixed a bug (actually a misconception) where ramps started one sample earlier. Fixed 0-length lines. Added a possibility to set time in samples instead of ms. Maximum number of lines is now 1024. Added loop mode. Added many curve options (sin/hann/log curve/lag). 
 - [function~]: Added many curve options (sin/hann/log curve/lag).
 - [out~] family of abstractions now use [bitnormal~] so you won't blow your speakers beyond repair in edge cases.
 - [trig.delay~], [trig.delay2~]:  fixed bug where values different than '1' didn't work
