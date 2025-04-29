@@ -20,7 +20,7 @@
 #X text 169 559 2) float;
 #X obj 97 408 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 97 432 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0;
-#X text 23 181 see also:;
+#X text 23 161 see also:;
 #X obj 491 69 else/setdsp~;
 #X text 236 407 - ramp-up time in ms;
 #X text 237 431 - ramp-down time in ms;
@@ -56,8 +56,8 @@
 #X connect 6 0 0 0;
 #X restore 473 261 pd example;
 #X obj 223 160 else/glide2~ 1000 500;
-#X obj 25 248 else/lag2~;
-#X obj 25 268 else/slew2~;
+#X obj 25 228 else/lag2~;
+#X obj 25 248 else/slew2~;
 #N canvas 700 139 507 509 multichannel 0;
 #X obj 81 289 else/s2f~;
 #X obj 81 122 bng 25 250 50 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000;
@@ -135,9 +135,10 @@
 #X connect 12 0 4 0;
 #X connect 13 0 4 0;
 #X restore 485 284 pd curve;
-#X obj 25 204 else/smooth~;
-#X obj 25 290 else/asr~;
-#X obj 25 226 else/glide2~;
+#X obj 25 184 else/smooth~;
+#X obj 25 269 else/asr~;
+#X obj 25 206 else/glide2~;
+#X obj 25 291 else/smooth2;
 #X connect 26 0 25 0;
 #X connect 27 0 26 0;
 #X connect 29 0 28 0;

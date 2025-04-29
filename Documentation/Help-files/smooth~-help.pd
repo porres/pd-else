@@ -46,10 +46,10 @@
 #X obj 514 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 463 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 501 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
-#X text 28 185 see also:;
+#X text 28 165 see also:;
 #X obj 6 476 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
-#X obj 32 257 else/lag~;
-#X obj 32 280 else/slew~;
+#X obj 32 237 else/lag~;
+#X obj 32 260 else/slew~;
 #N canvas 612 147 498 502 multichannel 0;
 #X obj 75 271 else/s2f~;
 #X obj 75 125 bng 25 250 50 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000;
@@ -87,7 +87,7 @@
 #X text 157 357 float/signal(s);
 #X text 61 90 [smooth~] smoothens a signal transition with linear interpolation by default \, at a given time in ms. You can also have exponential curves and there's support for multichannel signals., f 65;
 #X obj 242 170 else/smooth~ 1000;
-#X obj 32 233 else/glide~;
+#X obj 32 213 else/glide~;
 #X text 175 391 curve<float>;
 #X text 260 391 - sets curve factor;
 #X text 130 483 -curve <float>: sets curve factor (default '0' \, linear);
@@ -125,8 +125,9 @@
 #X restore 483 289 pd curve;
 #X text 259 413 - smooth time in ms;
 #X text 260 450 - smoothned signal(s);
-#X obj 31 209 else/smooth2~;
-#X obj 32 303 else/asr~;
+#X obj 31 189 else/smooth2~;
+#X obj 32 283 else/asr~;
+#X obj 32 305 else/smooth;
 #X connect 9 0 8 0;
 #X connect 10 0 9 0;
 #X connect 12 0 11 0;
