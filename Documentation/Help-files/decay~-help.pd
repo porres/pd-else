@@ -106,6 +106,10 @@
 #X connect 7 0 5 0;
 #X restore 484 304 pd shape;
 #X text 64 86 [decay~] is based on SuperCollider's "Decay" UGEN. It is a one pole filter that creates an exponential decay from impulses. The decay time (in ms) is how long it takes for the signal to decay 60dB. The same filter is also used in other objects from the ELSE library (adsr~/lag~/lag2~)., f 63;
+#X text 37 252 see also:;
+#X obj 38 274 else/asr~;
+#X obj 38 296 else/adsr~;
+#X obj 40 320 else/envgen~;
 #X connect 16 0 15 0;
 #X connect 17 0 16 0;
 #X connect 20 0 19 0;

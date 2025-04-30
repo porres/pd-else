@@ -1,4 +1,4 @@
-#N canvas 601 23 512 665 12;
+#N canvas 601 38 512 665 12;
 #X declare -path else;
 #X obj 122 412 +~;
 #X obj 297 439 +~;
@@ -15,17 +15,13 @@
 #X obj 196 377 r~ \$0-fb;
 #X obj 122 342 *~;
 #X obj 296 361 *~;
-#X obj 312 151 hsl 128 15 -0.99 0.99 0 0 empty empty empty -2 -8 0
-10 -228856 -1 -1 0 1;
-#X floatatom 309 175 5 -0.99 0.99 0 - - -;
-#X obj 184 145 nbx 5 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
--228856 -1 -1 0 256;
+#X obj 312 151 hsl 128 15 -0.99 0.99 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X floatatom 309 175 5 -0.99 0.99 0 - - - 0;
+#X obj 184 145 nbx 5 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12 #dcdcdc #000000 #000000 0 256;
 #X text 162 145 ms;
 #X text 349 150 Feedback;
 #X obj 63 300 bl.saw~;
-#X obj 140 314 decay2~ 50 150;
-#X obj 140 238 bng 30 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 140 238 bng 30 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
 #X obj 315 522 delread4~ \$0-R;
 #X obj 140 502 delread4~ \$0-L;
 #X obj 139 439 delwrite~ \$0-L 1000;
@@ -34,22 +30,20 @@
 #X obj 140 479 r~ \$0-time;
 #X obj 315 500 r~ \$0-time;
 #X obj 184 171 f2s~ 500 500;
-#X obj 314 325 decay2~ 50 150;
 #X obj 63 277 sig~ 100;
 #X obj 296 285 osc~ 670;
-#X text 65 56 This other implementation takes a stereo input and alternates
-the channels. At each iteration \, the delay output is fed into another
-channel and vice versa. Headphones might be better to notice the ping
-pong effects., f 53;
+#X text 65 56 This other implementation takes a stereo input and alternates the channels. At each iteration \, the delay output is fed into another channel and vice versa. Headphones might be better to notice the ping pong effects., f 53;
 #X obj 309 205 f2s~ 10 0.85;
 #X obj 312 13 declare -path else;
 #X obj 184 589 out~;
+#X obj 140 314 asr~ 50 150;
+#X obj 314 325 asr~ 50 150;
 #X connect 0 0 2 0;
-#X connect 0 0 25 0;
+#X connect 0 0 24 0;
 #X connect 1 0 3 0;
-#X connect 1 0 26 0;
-#X connect 2 0 37 0;
-#X connect 3 0 37 1;
+#X connect 1 0 25 0;
+#X connect 2 0 35 0;
+#X connect 3 0 35 1;
 #X connect 5 0 8 0;
 #X connect 7 0 9 0;
 #X connect 8 0 1 1;
@@ -59,20 +53,20 @@ pong effects., f 53;
 #X connect 13 0 0 0;
 #X connect 14 0 1 0;
 #X connect 15 0 16 0;
-#X connect 16 0 35 0;
-#X connect 17 0 30 0;
+#X connect 16 0 33 0;
+#X connect 17 0 29 0;
 #X connect 20 0 13 0;
-#X connect 21 0 13 1;
-#X connect 22 0 21 0;
-#X connect 22 0 31 0;
-#X connect 23 0 3 1;
-#X connect 23 0 6 0;
-#X connect 24 0 2 1;
-#X connect 24 0 4 0;
-#X connect 28 0 24 0;
-#X connect 29 0 23 0;
-#X connect 30 0 27 0;
-#X connect 31 0 14 1;
-#X connect 32 0 20 0;
-#X connect 33 0 14 0;
-#X connect 35 0 10 0;
+#X connect 21 0 36 0;
+#X connect 21 0 37 0;
+#X connect 22 0 3 1;
+#X connect 22 0 6 0;
+#X connect 23 0 2 1;
+#X connect 23 0 4 0;
+#X connect 27 0 23 0;
+#X connect 28 0 22 0;
+#X connect 29 0 26 0;
+#X connect 30 0 20 0;
+#X connect 31 0 14 0;
+#X connect 33 0 10 0;
+#X connect 36 0 13 1;
+#X connect 37 0 14 1;

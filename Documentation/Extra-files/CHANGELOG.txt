@@ -36,6 +36,7 @@ Breaking changes:
 - [impseq~] list input removed, use the new [float2imp~] object to convert floats to impulses
 - [resonant~] now has 'q' as the default.
 - [resonant2~] has been removed
+- [decay~] has also been removed ([asr~] much better)
 - [vcf2~] has been renamed to [resonator2~]
 - [resonbank~]/[resonbank2~] have basically been deleted and replaced by new objects with the same name - they're now based on [resonator~] and [resonator2~], with a different design.
 - [oscbank~] now uses a 'partial' list and not a frequency list, so names/method changed. The freq input now defaults to '1' and this makes [oscbank2~] completely obsolete.
@@ -93,9 +94,9 @@ Enhancements/fixes/other changes:
 - M.E.R.D.A: Added MIDI-LEARN for all modules (this is only for the knobs). Replaced some number boxes that were attached to knobs by an internal number display mechanism (new feature from knob). Improved interface of [gendyn.m~], preset/symbol name fixes to [flanger.m~]. Now we have automatic midi mode detection for [plaits.m~] and [pluck.m~] when no signals are connected (still trying to get plaits right, huh? Yup, and MIDI input with monophony and trigger mode has been fixed). Added MC support to [vca.m~]. Increased range of [drive.m~] down to 0.1. Changed some objects to include the new [popmenu] GUI. [vco.m~] now uses the new MC functionalities of oscillators and doesn't need to load abstractions into [clone]. The [seq8.m~] module was worthless and got a decent upgrade, it's practically a new module. Added new modules (see below). Note that MERDA is still at alpha development phase, much experimental. Expect changes as it evolves.
 - 22 new objects: [float2imp~], [lace], [delace], [lace~], [delace~], [gatehold], [gatedelay],[gatedelay~], [gaterelease~], [gaterelease], [popmenu], [scope3d~], [tanh~], [resonator~], [sfinfo], [smooth], [smooth2], [smooth~], [smooth2~], [dbgain~], [level~] plus [crusher.m~], [sfont.m~] and [level.m~] MERDA Modules.
 
-Objects count: total of 574 (320 signal objects [138 of which are MC aware] and 254 control objects)! 
+Objects count: total of 573 (319 signal objects [138 of which are MC aware] and 254 control objects)! 
 
-- 324 coded objects (211 signal objects  / 113 control objects)
+- 323 coded objects (210 signal objects  / 113 control objects)
 - 227 abstractions objects (87 signal objects / 140 control objects)
 - 23 MERDA modular abstractions (22 audio / 1 control)
 

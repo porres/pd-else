@@ -103,7 +103,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
 
 --------------------------------------------------------------------------
 
-## Current Object list (574 objects):
+## Current Object list (573 objects):
 
 #assorted
     else
@@ -202,7 +202,7 @@ Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of
     score score2 pattern list.seq sequencer sequencer~ phaseseq~ impseq~ rec rec2 lace delace
 
 #control: envelopes
-    adsr~ decay~ decay2~ envelope~ envgen~
+    asr~ adsr~ decay~ envelope~ envgen~
 
 #control: ramp/line/curve generators
     ramp~ susloop~ function~ slew slew~ slew2 slew2~ lag~ lag2~ glide glide~ glide2 glide2~ smooth smooth~ smooth2 smooth2~

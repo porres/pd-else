@@ -12,7 +12,7 @@
 #X obj 236 237 loadbang;
 #X text 51 62 For better onset/attack detection you can use [bonk~] \, which is a quite powerful and complex object that deserves more attention in this tutorial sometime soon. For now \, here's a simple example using it to send bangs when detecting attacks from a rhythmic loop. For now \, check its help file more more details., f 46;
 #X obj 146 412 drive~ 5;
-#X obj 235 374 decay2~ 10 100;
+#X obj 235 374 asr~ 10 100;
 #X connect 2 0 11 0;
 #X connect 4 0 12 0;
 #X connect 5 0 3 0;

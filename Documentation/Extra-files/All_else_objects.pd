@@ -366,11 +366,11 @@
 #X obj 92 320 else/list.seq;
 #X restore 236 500 pd Control(Sequencers);
 #N canvas 653 78 261 244 Control(Envelopes) 0;
-#X obj 78 40 else/adsr~;
-#X obj 78 64 else/decay~;
-#X obj 78 87 else/decay2~;
+#X obj 78 80 else/adsr~;
+#X obj 78 24 else/decay~;
 #X obj 78 111 else/envelope~;
 #X obj 78 135 else/envgen~;
+#X obj 78 53 else/asr~;
 #X restore 383 500 pd Control(Envelopes);
 #N canvas 522 164 279 453 Control(Ramp/Line_Generators/Smoothening 0;
 #X obj 86 28 else/function~;

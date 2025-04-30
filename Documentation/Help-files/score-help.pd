@@ -192,16 +192,16 @@
 #X obj 123 120 mtof;
 #X obj 170 70 inlet;
 #X obj 155 273 outlet~;
-#X obj 170 183 decay2~ 200 900;
 #X msg 170 160 0.15;
+#X obj 170 183 else/asr~ 200 900;
 #X connect 0 0 5 0;
-#X connect 1 0 7 0;
+#X connect 1 0 6 0;
 #X connect 2 0 0 0;
 #X connect 3 0 2 0;
 #X connect 4 0 3 0;
 #X connect 4 0 1 0;
-#X connect 6 0 0 1;
-#X connect 7 0 6 0;
+#X connect 6 0 7 0;
+#X connect 7 0 0 1;
 #X restore 93 349 pd voice;
 #X msg 93 178 start;
 #X msg 108 202 stop;
@@ -217,7 +217,7 @@
 #X obj 170 70 inlet;
 #X obj 155 273 outlet~;
 #X msg 170 160 0.2;
-#X obj 170 183 decay2~ 200 900;
+#X obj 170 183 else/asr~ 200 900;
 #X connect 0 0 5 0;
 #X connect 1 0 6 0;
 #X connect 2 0 0 0;
@@ -235,7 +235,7 @@
 #X obj 170 70 inlet;
 #X obj 155 273 outlet~;
 #X msg 170 160 0.2;
-#X obj 170 183 decay2~ 200 900;
+#X obj 170 183 else/asr~ 200 900;
 #X connect 0 0 5 0;
 #X connect 1 0 6 0;
 #X connect 2 0 0 0;
