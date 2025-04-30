@@ -19,15 +19,15 @@ typedef struct _sfload{
     AVFrame        *x_frm;
     AVFormatContext *x_ic;
     AVChannelLayout x_layout;
-    unsigned int    x_num_channels;
-    unsigned int    x_channel;
+    unsigned int    x_nchans;
+    int             x_ch;
     t_sample       *x_all_out[64];
     t_canvas       *x_canvas;
     t_symbol       *x_arr_name;
     pthread_t       x_process_thread;
     int             x_thread_created;
     int             x_threaded;
-    long            x_nsamps; // number of samples in the file
+    long            x_nsamps;   // number of samples in the file
     long            x_arr_size; // number of samples in the array
     long            x_onset;
     _Atomic int     x_result_ready;
@@ -97,7 +97,7 @@ void* sfload_read_audio_threaded(void *arg){ // read audio into array
     t_sample **x_out = (t_sample **)av_mallocz(nch * sizeof(t_sample *));
     for(unsigned int ch = 0; ch < nch; ch++)
         x_out[ch] = (t_sample *)av_mallocz(FRAMES * sizeof(t_sample));
-    int output_index = 0;
+    long output_index = 0;
     while(av_read_frame(x->x_ic, x->x_pkt) >= 0){
         if(x->x_pkt->stream_index == x->x_stream_idx){
             if(avcodec_send_packet(x->x_stream_ctx, x->x_pkt) < 0
@@ -123,7 +123,7 @@ void* sfload_read_audio_threaded(void *arg){ // read audio into array
     SETFLOAT(x->x_sfinfo + 1, x->x_stream_ctx->sample_rate);
     SETFLOAT(x->x_sfinfo + 2, nch);
     SETFLOAT(x->x_sfinfo + 3, av_get_bytes_per_sample(x->x_stream_ctx->sample_fmt) * 8);
-    x->x_num_channels = nch;
+    x->x_nchans = nch;
     x->x_result_ready = output_index;
     x->x_nsamps = output_index;
     for(unsigned int ch = 0; ch < nch; ch++)
@@ -139,23 +139,31 @@ void* sfload_read_audio_threaded(void *arg){ // read audio into array
 void sfload_update_arrays(t_sfload* x){
     float srkhz = sys_getsr() * 0.001;
     long start = x->x_onset * srkhz; // start point in samples
-    long npoints = x->x_arr_size;
-    if(npoints < 0)
-        npoints = x->x_nsamps - start;
-    else if(npoints > 0)
-        npoints *= srkhz;
-    for(int ch = 0; ch < x->x_num_channels; ch++){
-        if(x->x_channel != -1 && ch != x->x_channel)
+    long arraysize = x->x_arr_size;
+    long filesize = x->x_nsamps - start;
+    long readsize;
+     if(arraysize > 0){ // arraysize is given
+        arraysize *= srkhz;
+        if(filesize <= arraysize)
+            readsize = filesize <= arraysize ? filesize : arraysize;
+    }
+    else // not given, set to filesize
+        readsize = arraysize = filesize;
+    for(int ch = 0; ch < x->x_nchans; ch++){
+        if(x->x_ch != -1 && ch != x->x_ch)
             continue;
         char channel_name[MAXPDSTRING];
         snprintf(channel_name, MAXPDSTRING, "%i-%s", ch, x->x_arr_name->s_name);
         t_garray* garray = (t_garray*)pd_findbyclass(gensym(channel_name), garray_class);
         if(garray){
-            if(npoints != 0)
-                garray_resize_long(garray, npoints-start);
+            garray_resize_long(garray, arraysize);
             t_word* vec = ((t_word*)garray_vec(garray));
-            for(int i = 0; i < npoints-start; i++)
-                vec[i].w_float = x->x_all_out[ch][i+start];
+            for(int i = 0; i < arraysize; i++){
+                if(i < readsize)
+                    vec[i].w_float = x->x_all_out[ch][i+start];
+                else
+                    vec[i].w_float = 0;
+            }
             garray_redraw(garray);
         }
         else{
@@ -163,11 +171,14 @@ void sfload_update_arrays(t_sfload* x){
                 return;
             garray = (t_garray*)pd_findbyclass(x->x_arr_name, garray_class);
             if(garray){
-                if(npoints != 0)
-                    garray_resize_long(garray, npoints-start);
+                garray_resize_long(garray, arraysize);
                 t_word* vec = ((t_word*)garray_vec(garray));
-                for(int i = 0; i < npoints-start; i++)
-                    vec[i].w_float = x->x_all_out[ch][i+start];
+                for(int i = 0; i < arraysize; i++){
+                    if(i < readsize)
+                        vec[i].w_float = x->x_all_out[ch][i+start];
+                    else
+                        vec[i].w_float = 0;
+                }
                 garray_redraw(garray);
             }
         }
@@ -223,6 +234,11 @@ void* sfload_read_audio(t_sfload *x){
     else
         av_channel_layout_default(&layout, x->x_stream_ctx->ch_layout.nb_channels);
     unsigned int nch = layout.nb_channels;
+    if(x->x_ch > 0 && x->x_ch > (nch - 1)){
+        pd_error(x, "[sfload]: channel (%d) is out of range (from 0 to %d)",
+            x->x_ch, nch - 1);
+        return(NULL);
+    }
     SwrContext *swr = NULL;
     swr_alloc_set_opts2(&swr, &layout, AV_SAMPLE_FMT_FLTP, x->x_stream_ctx->sample_rate,
         &layout, x->x_stream_ctx->sample_fmt, x->x_stream_ctx->sample_rate, 0, NULL);
@@ -233,7 +249,7 @@ void* sfload_read_audio(t_sfload *x){
     t_sample **x_out = (t_sample **)av_mallocz(nch * sizeof(t_sample *));
     for(unsigned int ch = 0; ch < nch; ch++)
         x_out[ch] = (t_sample *)av_mallocz(FRAMES * sizeof(t_sample));
-    unsigned long output_index = 0;
+    long output_index = 0;
     while(av_read_frame(x->x_ic, x->x_pkt) >= 0){
         if(x->x_pkt->stream_index == x->x_stream_idx){
             if(avcodec_send_packet(x->x_stream_ctx, x->x_pkt) < 0
@@ -259,7 +275,7 @@ void* sfload_read_audio(t_sfload *x){
     SETFLOAT(x->x_sfinfo + 1, x->x_stream_ctx->sample_rate);
     SETFLOAT(x->x_sfinfo + 2, nch);
     SETFLOAT(x->x_sfinfo + 3, av_get_bytes_per_sample(x->x_stream_ctx->sample_fmt) * 8);
-    x->x_num_channels = nch;
+    x->x_nchans = nch;
     x->x_nsamps = output_index;
     for(unsigned int ch = 0; ch < nch; ch++)
         av_free(x_out[ch]);
@@ -325,30 +341,31 @@ void sfload_download(t_sfload* x, t_symbol* s, int ac, t_atom* av){
         pd_error(x, "[sfload]: no filename given to download");
         return;
     }
-    t_symbol* path = NULL;
+    t_symbol *path = NULL;
     if(av[0].a_type == A_SYMBOL)
         path = atom_getsymbol(av);
     else{
-        pd_error(x, "[sfload]: Invalid arguments for 'load' message");
+        pd_error(x, "[sfload]: 1st argument of 'load' must be a symbol");
         return;
     }
-    x->x_channel = -1, x->x_arr_size = -1, x->x_onset = 0;
+    x->x_ch = -1, x->x_arr_size = -1, x->x_onset = 0;
     if(ac >= 2 && av[1].a_type == A_FLOAT){
-        x->x_channel = atom_getint(av+1);
-        if(x->x_channel < 0)
-            x->x_channel = -1;
+        x->x_ch = atom_getint(av+1);
+        if(x->x_ch < 0)
+            x->x_ch = -1;
     }
     if(ac >= 3 && av[2].a_type == A_FLOAT)
-        x->x_arr_size = atom_getint(av+2);
+        x->x_arr_size = (long)atom_getint(av+2);
     if(ac >= 4 && av[3].a_type == A_FLOAT)
         x->x_onset = atom_getint(av+3);
     if(x->x_onset < 0)
         x->x_onset = 0;
-    int ch = x->x_channel == -1 ? 0 : x->x_channel;
+    int ch = x->x_ch == -1 ? 0 : x->x_ch;
     char channel_zero_name[MAXPDSTRING];
     snprintf(channel_zero_name, MAXPDSTRING, "%i-%s", ch, x->x_arr_name->s_name);
     if(!pd_findbyclass(x->x_arr_name, garray_class) && !pd_findbyclass(gensym(channel_zero_name), garray_class)){
-        pd_error(x, "[sfload]: Array %s not found", x->x_arr_name->s_name);
+        pd_error(x, "[sfload]: Array \"%s\" or \"%i-%s\" not found",
+            x->x_arr_name->s_name, ch, x->x_arr_name->s_name);
         return;
     }
     if(!sfload_find_url(x, path, x->x_path))
@@ -377,30 +394,31 @@ void sfload_load(t_sfload* x, t_symbol* s, int ac, t_atom* av){
         pd_error(x, "[sfload]: no filename given");
         return;
     }
-    t_symbol* path = NULL;
+    t_symbol *path = NULL;
     if(av[0].a_type == A_SYMBOL)
         path = atom_getsymbol(av);
     else{
-        pd_error(x, "[sfload]: Invalid arguments for 'load' message");
+        pd_error(x, "[sfload]: 1st argument of 'load' must be a symbol");
         return;
     }
-    x->x_channel = -1, x->x_arr_size = -1, x->x_onset = 0;
+    x->x_ch = -1, x->x_arr_size = -1, x->x_onset = 0;
     if(ac >= 2 && av[1].a_type == A_FLOAT){
-        x->x_channel = atom_getint(av+1);
-        if(x->x_channel < 0)
-            x->x_channel = -1;
+        x->x_ch = atom_getint(av+1);
+        if(x->x_ch < 0)
+            x->x_ch = -1;
     }
     if(ac >= 3 && av[2].a_type == A_FLOAT)
-        x->x_arr_size = atom_getint(av+2);
+        x->x_arr_size = (long)atom_getint(av+2);
     if(ac >= 4 && av[3].a_type == A_FLOAT)
         x->x_onset = atom_getint(av+3);
     if(x->x_onset < 0)
         x->x_onset = 0;
-    int ch = x->x_channel == -1 ? 0 : x->x_channel;
+    int ch = x->x_ch == -1 ? 0 : x->x_ch;
     char channel_zero_name[MAXPDSTRING];
     snprintf(channel_zero_name, MAXPDSTRING, "%i-%s", ch, x->x_arr_name->s_name);
     if(!pd_findbyclass(x->x_arr_name, garray_class) && !pd_findbyclass(gensym(channel_zero_name), garray_class)){
-        pd_error(x, "[sfload]: Array %s not found", x->x_arr_name->s_name);
+        pd_error(x, "[sfload]: Array \"%s\" or \"%i-%s\" not found",
+            x->x_arr_name->s_name, ch, x->x_arr_name->s_name);
         return;
     }
     if(!sfload_find_file(x, path, x->x_path))
