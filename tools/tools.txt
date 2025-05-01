@@ -75,7 +75,7 @@ make install objectsdir=../ floatsize=64 extension=darwin-amd64-64.so
 
 --------------------------------------------------------------------------------------
 
-./deken upload -v 1.0-0_rc11-with_live_electronics_tutorial else --no-source-error
+./deken upload -v 1.0-0_rc13-with_live_electronics_tutorial else --no-source-error
 
 --------------------------------------------------------------------------------------
 

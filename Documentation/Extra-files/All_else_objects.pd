@@ -1,6 +1,6 @@
-#N struct 1004-cell float x float y float cellsize float color;
-#N struct 1006-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
-#N struct 1061-slot float x float y float slotsize float color float width float bordercolor;
+#N struct 1245-cell float x float y float cellsize float color;
+#N struct 1403-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
+#N struct 1116-slot float x float y float slotsize float color float width float bordercolor;
 #N canvas 549 38 541 693 10;
 #N canvas 240 38 975 767 GUI 0;
 #X text 48 -899 [biplot];
@@ -149,8 +149,6 @@
 #X obj 72 621 else/voices;
 #X obj 72 672 else/suspedal;
 #X obj 72 99 else/midi.learn;
-#A saved;
-#A saved;
 #X obj 72 495 else/midi.clock;
 #X obj 72 520 else/noteinfo;
 #X obj 73 21 else/midi;
@@ -478,7 +476,6 @@
 #X obj 126 263 else/brown;
 #X obj 126 238 else/rand.hist;
 #X obj 128 212 else/histogram;
-#A saved;
 #X obj 127 163 else/rand.u;
 #X obj 127 187 else/rand.dist;
 #X restore 318 535 pd Control(Random/Stochastic);
@@ -549,7 +546,6 @@
 #X obj 70 312 else/default;
 #X obj 70 45 else/nmess;
 #X obj 70 557 else/store;
-#A saved;
 #X obj 70 21 else/swap2;
 #X obj 71 141 else/route2;
 #X restore 229 255 pd Message_management;

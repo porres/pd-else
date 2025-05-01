@@ -37,6 +37,8 @@ ELSE provides a cohesive system for computer music, it also serves as a basis fo
 
 ELSE is also part of PlugData by Timothy Schoen, which is a fork of Pd that loads as a standalone or VST with a revamped GUI. ELSE has received collaboration from Tim and others involved with PlugData and many objects have been included in ELSE just so they are supported in PlugData. ​See: <https://github.com/timothyschoen/PlugData>
 
+ELSE also ships a modifiction of [pdlua] <https://github.com/agraef/pd-lua> which is needed for a couple of GUI objects.
+
 This project is still in an experimental phase (currently at a 'release candidate' phase), where  changes may occur and backwards compatibility is not guaranteed until a final and more stable release is available.
 
 --------------------------------------------------------------------------
@@ -49,7 +51,7 @@ You can get ELSE from https://github.com/porres/pd-else/releases - where all rel
 
 ### Installing ELSE:
 
-This library runs in Pd Vanilla and do I still need to say it doesn't run in the long dead "Pd Extended"? Neither its new (and unfortunately forever outdated) reincarnations "Pd-L2ork/Purr Data". Nevertheless, it can run in other forks that are actually compatible to Vanilla and up to date, most notably, ELSE is included in the PlugData fork --> <https://github.com/timothyschoen/PlugData> and you don't need to install it there.
+This library runs in Pd Vanilla and do I still need to say it doesn't run in the long dead for over a decade "Pd Extended"? Neither its new (and unfortunately incompatible) reincarnations "Pd-L2ork/Purr Data". Nevertheless, it can run in other forks that are actually compatible to Vanilla and up to date, most notably, ELSE is included in the PlugData fork --> <https://github.com/timothyschoen/PlugData> and you don't need to install it there.
 
 ELSE comes mostly as a set of separate binaries and abstractions, which work if you just add the '**else**' folder to the path via "**Preferences --> Path**" or via **[declare -path else]**. Nonetheless, you must also load ELSE as a library via "**Preferences --> Startup**" or with **[declare -lib else]**.
 
@@ -83,7 +85,9 @@ cp -r ./Build/else ~/Documents/Pd/externals/
 
 The examples from the first incarnation of this tutorial were first developed for the now abandoned Pd Extended, making extensive use of the existing objects available in Pd Extended's libraries. Even though Pd Extended had many externals, there was the need at some point for something "else" - thus, this library emerged with the goal of providing more objects to include missing functionalities in the Pd Ecosystem.
 
-But the library grew to encompass functionalities found in other Pd objects/libraries from old Pd Extended as well, with a different design and more functionalities. This was done in order to remove ALL the dependencies of the didactic material from these other libraries - with the goal to rely on just a single library that's alive (in active development) instead of many projects that are now long gone abandoned or not receiving much attention. I'm also involved in maintaining Cyclone, a legacy library for Pd (see: <https://github.com/porres/pd-cyclone>). But ELSE also superseeds cyclone for the purposes of this didactic material. See below in this document a list of alternatives to Cyclone provided by ELSE.
+But the library grew to encompass functionalities found in other Pd objects/libraries from old Pd Extended as well, with a different design and more functionalities. This was done in order to remove ALL the dependencies of the didactic material from these other libraries - with the goal to rely on just a single library that's alive (in active development) instead of many projects that are now long gone abandoned or not receiving much attention. I'm also involved in maintaining Cyclone, a legacy library for Pd (see: <https://github.com/porres/pd-cyclone>). But ELSE also superseeds cyclone for the purposes of this didactic material. See below in this document a list of alternatives to Cyclone provided by ELSE. 
+
+Cyclone is also part of plugdata and there's been some kind of integration between ELSE and Cyclone. Some objects in Cyclone are actually borrowed from ELSE and backwards compatible to the ones in Cyclone, like [pink~] and [tanh~].
 
 The goal of ELSE also outgrew the didactic material as it now includes objects not necessarily depicted in the computer music examples. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects. So that's it, ELSE is becoming a quite big library and keeps growing and growing. A recent addition to it is 'M.E.R.D.A' a set of abstractions inspired by EuroRack modules.
 
@@ -97,7 +101,7 @@ Flávio Luis Schiavoni helped me out in a few things when I first started coding
 
 I'd also like to thank my Cyclone buddies Derek Kwan and Matt Barber, cause I started learning how to code externals with them as part of the cyclone team. Other developers of cyclone need to be praised, like Czaja, the original author, as I did steal quite a bit from cyclone into ELSE. I'd like to give a special thanks for Matt Barber for developing the "magic" in cyclone that I'm using here and also collaborating to ELSE with the objects: [float2bits], [brown~], [gray~], [perlin~], [pink~] and [blip~].
 
-Lucarda helped countless times with testing and compilation issues for windows and more. Seb shader is a tcl/tk master that helped me a lot with this (which I know next to nothing) and is responsible for the [keycode] object. I stole scope3d~ from Ben Wesh. AI is also heloing me to code, but fuck them.
+Lucarda helped countless times with testing and compilation issues for windows and more. Seb shader is a tcl/tk master that helped me a lot with this (which I know next to nothing) and is responsible for the [keycode] object. I stole [scope3d~] from Ben Wesh. AI is also helping me to code, but fuck them.
 
 Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of ELSE for other systems as well as ELSE for Camomile and libpd projects, which opened the way for PlugData by Timothy Schoen, who's doing an amazing jaw dropping job with this project based on camomile that includes ELSE. Timothy has also helped me fix many ELSE related issues and has made incredible and countless contributions to ELSE with fixes, improvements and new objects. Other folks from the PlugData gang are being very helpful like Alex Mitchell and Amy. PlugData is a fork of Pd with a revamped GUI and comes with the ELSE library. See: <https://github.com/timothyschoen/PlugData>.
 
@@ -353,7 +357,7 @@ Alternatives:
 - snapshot~ => else/s2f~ => snapshot~
 - svf~ => else/svfilter~
 - table => array
-- tanh~ (again) => else/drive~
+- tanh~ (again) => else/drive~ or else/tanh~
 - thresh~ => else/schmitt~
 - train~ => else/pulse~
 - trapezoid~ => else/envelope~
