@@ -5,8 +5,10 @@
 #include <ctype.h>
 #include <m_pd.h>
 #include <g_canvas.h>
-#include "s_elseutf8.h"
-#include "else_alloca.h"
+#include <s_elseutf8.h>
+#include <else_alloca.h>
+
+// #include "../extra_source/compat.h"
 
 #define NOTE_MINSIZE       8
 #define NOTE_HANDLE_WIDTH  8
@@ -79,6 +81,7 @@ typedef struct _note{
     int             x_rcv_set;
     int             x_flag;
     int             x_r_flag;
+//    int             x_old;
     int             x_text_flag;
     int             x_text_n;
     int             x_text_size;
@@ -119,7 +122,7 @@ static void note_initialize(t_note *x){
         FREEA(av, t_atom, ac);
     }
     else{
-        int n = 14;
+        int n = 14; // = x->x_old ? 8 : 14;
         if(n_args > n){
             int ac = n_args - n;
             t_atom* av = ALLOCA(t_atom, ac);
@@ -208,61 +211,42 @@ static void note_adjust_justification(t_note *x){
     }
 }
 
-static void note_draw(t_note *x) {
-    // post("NOTE DRAW");
+static void note_draw(t_note *x){
+//    post("NOTE DRAW");
     x->x_cv = glist_getcanvas(x->x_glist);
-    // Remove backslashes followed by spaces
-    int i, j;
-    for (i = 0, j = 0; i < x->x_bufsize; i++) {
-        if (x->x_buf[i] == '\\' && x->x_buf[i + 1] == ' ') {
-            i++;  // Skip the backslash and space
-        }
-        x->x_buf[j++] = x->x_buf[i];
-    }
-/*
-    // Print the length of x->x_buf
-    post("Length of x->x_buf = %d", (int)strlen(x->x_buf));
-
-    // Iterate through each character and print its ASCII value
-    for (int i = 0; i < strlen(x->x_buf); i++) {
-        post("Character %d: %c (ASCII: %d)", i, x->x_buf[i], (unsigned char)x->x_buf[i]);
-    }
-    post("x->x_buf = %s", x->x_buf);*/
-    
     if(x->x_bg_flag && x->x_bbset){ // draw bg only if initialized
         int x1, y1, x2, y2;
         note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
         sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags [list bg%lx all%lx] -outline %s -fill %s\n",
-                 (unsigned long)x->x_cv,
-                 text_xpix((t_text *)x, x->x_glist),
-                 text_ypix((t_text *)x, x->x_glist),
-                 x2 + 2 * x->x_zoom,
-                 y2 + 2 * x->x_zoom,
-                 (unsigned long)x,
-                 (unsigned long)x,
-                 x->x_outline ? "black" : x->x_bgcolor,
-                 x->x_bgcolor);
+            (unsigned long)x->x_cv,
+            text_xpix((t_text *)x, x->x_glist),
+            text_ypix((t_text *)x, x->x_glist),
+            x2 + 2*x->x_zoom,
+            y2 + 2*x->x_zoom,
+            (unsigned long)x,
+            (unsigned long)x,
+            x->x_outline ? "black" : x->x_bgcolor,
+            x->x_bgcolor);
     }
     char buf[NOTE_OUTBUFSIZE], *outbuf, *outp;
     outp = outbuf = buf;
-    // Use the refactored Tcl/Tk "note_draw" procedure with the new "ul" parameter
-    sprintf(outp, "note_draw %s .x%lx.c txt%lx all%lx %d %d {%s} %d %s {%.*s} %d %s %s %s %d\n",
-            x->x_bindsym->s_name,       // %s
-            (unsigned long)x->x_cv,     // .x%lx.c
-            (unsigned long)x,           // txt%lx
-            (unsigned long)x,           // all%lx
-            text_xpix((t_text *)x, x->x_glist) + x->x_zoom, // %d
-            text_ypix((t_text *)x, x->x_glist) + x->x_zoom, // %d
-            x->x_fontname->s_name,      // {%s}
-            x->x_fontsize * x->x_zoom,  // %d
-            x->x_select ? "blue" : x->x_color, // %s
-            x->x_bufsize,               // %.
-            x->x_buf,                   // *s
-            x->x_max_pixwidth * x->x_zoom, // %d
-            x->x_bold ? "bold" : "normal",   // %s
-            x->x_italic ? "italic" : "roman", // %s
-            x->x_textjust == 0 ? "left" : x->x_textjust == 1 ? "center" : "right", // %s
-            x->x_underline ? 1 : 0);    // %d (ul parameter)
+    sprintf(outp, "%s %s .x%lx.c txt%lx all%lx %d %d {%s} -%d %s {%.*s} %d %s %s %s\n",
+        x->x_underline ? "note_draw_ul" : "note_draw",
+        x->x_bindsym->s_name, // %s
+        (unsigned long)x->x_cv, // .x%lx.c
+        (unsigned long)x, // txt%lx
+        (unsigned long)x, // all%lx
+        text_xpix((t_text *)x, x->x_glist) + x->x_zoom, // %d
+        text_ypix((t_text *)x, x->x_glist) + x->x_zoom, // %d
+        x->x_fontname->s_name, // {%s}
+        x->x_fontsize * x->x_zoom, // -%d
+        x->x_select ? "blue" : x->x_color, // %s
+        x->x_bufsize, // %.
+        x->x_buf, // *s
+        x->x_max_pixwidth * x->x_zoom, // %d
+        x->x_bold ? "bold" : "normal",
+        x->x_italic ? "italic" : "roman", //
+        x->x_textjust == 0 ? "left" : x->x_textjust == 1 ? "center" : "right");
     x->x_bbpending = 1; // bbox pending
     sys_gui(outbuf);
     if(outbuf != buf)
@@ -825,9 +809,9 @@ static void note_receive(t_note *x, t_symbol *s){
     }
 }
 
-static void note_set(t_note *x, t_symbol *s, int ac, t_atom * av) {
+static void note_set(t_note *x, t_symbol *s, int ac, t_atom * av){
     s = NULL;
-    if (!x->x_init)  // hack???
+    if(!x->x_init) // hack???
         note_initialize(x);
     binbuf_clear(x->x_binbuf);
     binbuf_restore(x->x_binbuf, ac, av);
@@ -835,7 +819,6 @@ static void note_set(t_note *x, t_symbol *s, int ac, t_atom * av) {
     x->x_bbset = 0;
     note_redraw(x);
 }
-
 
 static void note_append(t_note *x, t_symbol *s, int ac, t_atom * av){
     s = NULL;
@@ -1241,7 +1224,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     x->x_buf = 0;
     x->x_keynum = 0;
     x->x_keysym = NULL;
-    x->x_rcv_set = x->x_flag = x->x_r_flag = 0;
+    x->x_rcv_set = x->x_flag = x->x_r_flag = 0; // x->x_old = 0;
     x->x_text_n = x->x_text_size = x->x_text_width = 0;
     x->x_max_pixwidth = 0;
     x->x_width = x->x_height = 0;
@@ -1278,7 +1261,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
             x->x_max_pixwidth = (int)av->a_w.w_float;
             ac--, av++;
             if(ac && av->a_type == A_FLOAT){ // 2ND Size
-                x->x_fontsize = (int)av->a_w.w_float;
+                x->x_fontsize = (int)av->a_w.w_float * x->x_zoom;
                 ac--, av++;
                 if(ac && av->a_type == A_SYMBOL){ // 3RD type
                     x->x_fontname = av->a_w.w_symbol;
@@ -1451,7 +1434,6 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     }
     if(x->x_fontsize < 1)
         x->x_fontsize = glist_getfont(x->x_glist);
-//    post("font size = %d", x->x_fontsize);
     if(x->x_max_pixwidth != 0)
         x->x_resized = 1;
     else
@@ -1521,5 +1503,299 @@ void note_setup(void){
     handle_class = class_new(gensym("_handle"), 0, 0, sizeof(t_handle), CLASS_PD, 0);
     class_addmethod(handle_class, (t_method)handle__click_callback, gensym("_click"), A_FLOAT, 0);
     class_addmethod(handle_class, (t_method)handle__motion_callback, gensym("_motion"), A_FLOAT, A_FLOAT, 0);
-    #include "../Extra/note_dialog.h"
+
+  sys_gui("proc note_bbox {target cvname tag} {\n\
+            pdsend \"$target _bbox $target [$cvname bbox $tag]\"}\n"
+// LATER think about window vs canvas coords
+            "proc note_click {target cvname x y tag} {\n\
+            pdsend \"$target _click $target [$cvname canvasx $x] [$cvname canvasy $y]\
+            [$cvname index $tag @$x,$y] [$cvname bbox $tag]\"}\n"
+    
+            "proc note_update {cv tag tt wd} {\n\
+            if {$wd > 0} {$cv itemconfig $tag -text $tt -width $wd} else {\n\
+            $cv itemconfig $tag -text $tt}}\n"
+            "proc note_draw {tgt cv tag1 tag2 x y fnm fsz clr tt wd wt sl just} {\n\
+            if {$wd > 0} {\n\
+            $cv create text $x $y -text $tt -tags [list $tag1 $tag2] \
+            -font [list $fnm $fsz $wt $sl] -justify $just -fill $clr -width $wd -anchor nw} else {\n\
+            $cv create text $x $y -text $tt -tags [list $tag1 $tag2] \
+            -font [list $fnm $fsz $wt $sl] -justify $just -fill $clr -anchor nw}\n\
+            note_bbox $tgt $cv $tag1\n\
+            $cv bind $tag1 <Button> [list note_click $tgt %W %x %y $tag1]}\n"
+// later rethink how to make both into a single section:
+            "proc note_draw_ul {tgt cv tag1 tag2 x y fnm fsz clr tt wd wt sl just} {\n\
+            if {$wd > 0} {\n\
+            $cv create text $x $y -text $tt -tags [list $tag1 $tag2] \
+            -font [list $fnm $fsz $wt $sl underline] -justify $just -fill $clr -width $wd -anchor nw} else {\n\
+            $cv create text $x $y -text $tt -tags [list $tag1 $tag2] \
+            -font [list $fnm $fsz $wt $sl underline] -justify $just -fill $clr -anchor nw}\n\
+            note_bbox $tgt $cv $tag1\n\
+            $cv bind $tag1 <Button> [list note_click $tgt %W %x %y $tag1]}\n");
+// properties
+    sys_vgui("if {[catch {pd}]} {\n"
+    "    proc pd {args} {pdsend [join $args \" \"]}\n"
+    "}\n"
+    "proc note_ok {id} {\n"
+    "    note_apply $id\n"
+    "    note_cancel $id\n"
+    "}\n"
+    "proc note_apply {id} {\n"
+             "    set vid [string trimleft $id .]\n"
+             "    set var_name [concat var_name_$vid]\n"
+             "    set var_size [concat var_size_$vid]\n"
+             "    set var_bold [concat var_bold_$vid]\n"
+             "    set var_italic [concat var_italic_$vid]\n"
+             "    set var_just [concat var_just_$vid]\n"
+             "    set var_underline [concat var_underline_$vid]\n"
+             "    set var_bg_flag [concat var_bg_flag_$vid]\n"
+             "    set var_bg [concat var_bg_$vid]\n"
+             "    set var_fg [concat var_fg_$vid]\n"
+             "    set var_outline [concat var_outline_$vid]\n"
+             "    set var_rcv [concat var_rcv_$vid]\n"
+             "    set var_wdt [concat var_wdt_$vid]\n"
+             "\n"
+             "    global $var_name\n"
+             "    global $var_size\n"
+             "    global $var_just\n"
+             "    global $var_underline\n"
+             "    global $var_bold\n"
+             "    global $var_italic\n"
+             "    global $var_bg_flag\n"
+             "    global $var_bg\n"
+             "    global $var_fg\n"
+             "    global $var_outline\n"
+             "    global $var_rcv\n"
+             "    global $var_wdt\n"
+             "\n"
+             "    set cmd [concat $id ok \\\n"
+             "        [string map {\" \" {\\ } \";\" \"\" \",\" \"\" \"\\\\\" \"\" \"\\{\" \"\" \"\\}\" \"\"} [eval concat $$var_name]] \\\n"
+             "        [eval concat $$var_size] \\\n"
+             "        [eval concat $$var_wdt] \\\n"
+             "        [eval concat $$var_bold] \\\n"
+             "        [eval concat $$var_italic] \\\n"
+             "        [eval concat $$var_just] \\\n"
+             "        [eval concat $$var_underline] \\\n"
+             "        [eval concat $$var_bg_flag] \\\n"
+             "        [eval concat $$var_bg] \\\n"
+             "        [eval concat $$var_fg] \\\n"
+             "        [eval concat $$var_outline] \\\n"
+             "        [string map {\"$\" {\\$} \" \" {\\ } \";\" \"\" \",\" \"\" \"\\\\\" \"\" \"\\{\" \"\" \"\\}\" \"\"} [eval concat $$var_rcv]]\\;]\n"
+             "    pd $cmd\n"
+    "}\n"
+    "proc note_cancel {id} {\n"
+    "    set cmd [concat $id cancel \\;]\n"
+    "    pd $cmd\n"
+    "}\n"
+    "proc note_properties {id name size width bold italic just underline bg_flag rcv bg fg ol} {\n"
+    "    set vid [string trimleft $id .]\n"
+    "    set var_name [concat var_name_$vid]\n"
+    "    set var_size [concat var_size_$vid]\n"
+    "    set var_just [concat var_just_$vid]\n"
+    "    set var_underline [concat var_underline_$vid]\n"
+    "    set var_bold [concat var_bold_$vid]\n"
+    "    set var_italic [concat var_italic_$vid]\n"
+    "    set var_bg_flag [concat var_bg_flag_$vid]\n"
+    "    set var_bg [concat var_bg_$vid]\n"
+    "    set var_fg [concat var_fg_$vid]\n"
+    "    set var_outline [concat var_outline_$vid]\n"
+    "    set var_rcv [concat var_rcv_$vid]\n"
+    "    set var_wdt [concat var_wdt_$vid]\n"
+    "    set var_col_field [concat var_col_field_$vid]\n"
+    "\n"
+    "    global $var_name\n"
+    "    global $var_size\n"
+    "    global $var_bold\n"
+    "    global $var_italic\n"
+    "    global $var_underline\n"
+    "    global $var_just\n"
+    "    global $var_bg_flag\n"
+    "    global $var_rcv\n"
+    "    global $var_bg\n"
+    "    global $var_fg\n"
+    "    global $var_outline\n"
+    "    global $var_wdt\n"
+    "    global $var_col_field\n"
+    "\n"
+    "    set $var_name [string map {{\\ } \" \"} $name]\n" // remove escape from space
+    "    set $var_size $size\n"
+    "    set $var_bold $bold\n"
+    "    set $var_italic $italic\n"
+    "    set $var_underline $underline\n"
+    "    set $var_just [lindex {Left Center Right} $just]\n"
+    "    set $var_bg_flag $bg_flag\n"
+    "    set $var_bg $bg\n"
+    "    set $var_fg $fg\n"
+    "    set $var_outline $ol\n"
+    "    set $var_wdt $width\n"
+    "    set $var_col_field 0\n"
+    "    if {$rcv == \"empty\"} {set $var_rcv [format \"\"]} else {set $var_rcv [string map {{\\ } \" \"} $rcv]}\n"
+    "\n"
+    "    toplevel $id\n"
+    "    wm title $id {[note] Properties}\n"
+    "    wm protocol $id WM_DELETE_WINDOW [concat note_cancel $id]\n"
+    "\n"
+    "    frame $id.name_size\n"
+    "    pack $id.name_size -side top\n"
+    "    label $id.name_size.lname -text \"Font Name:\"\n"
+    "    entry $id.name_size.name -textvariable $var_name -width 30\n"
+    "    label $id.name_size.lsize -text \"Font Size:\"\n"
+    "    entry $id.name_size.size -textvariable $var_size -width 3\n"
+    "    pack $id.name_size.lname $id.name_size.name $id.name_size.lsize $id.name_size.size -side left\n"
+    "\n"
+    "    frame $id.justification\n"
+    "    pack $id.justification -side top\n"
+    "    checkbutton $id.justification.ol -variable $var_outline \n"
+    "    label $id.justification.oll -text \"Outline:\"\n"
+    "    tk_optionMenu $id.justification.just $var_just Left Center Right\n"
+    "    label $id.justification.lbj -text \"Justification:\"\n"
+    "    pack $id.justification.oll $id.justification.ol $id.justification.lbj $id.justification.just $id.justification.lbj $id.justification.just -side left\n"
+    "\n"
+    "    frame $id.ul_bg\n"
+    "    pack $id.ul_bg -side top\n"
+    "    label $id.ul_bg.lul -text \"Underline:\"\n"
+    "    checkbutton $id.ul_bg.ul -variable $var_underline \n"
+    "    label $id.ul_bg.lbd -text \"Bold:\"\n"
+    "    checkbutton $id.ul_bg.bd -variable $var_bold \n"
+    "    label $id.ul_bg.lit -text \"Italic:\"\n"
+    "    checkbutton $id.ul_bg.it -variable $var_italic \n"
+    "    pack $id.ul_bg.lul $id.ul_bg.ul $id.ul_bg.lbd $id.ul_bg.bd $id.ul_bg.lit $id.ul_bg.it -side left\n"
+    "\n"
+    "    frame $id.rcv_sym\n"
+    "    pack $id.rcv_sym -side top\n"
+    "    label $id.rcv_sym.lrcv -text \"Receive symbol:\"\n"
+    "    entry $id.rcv_sym.rcv -textvariable $var_rcv -width 12\n"
+    "    label $id.rcv_sym.lwdt -text \"Width:\"\n"
+    "    entry $id.rcv_sym.wdt -textvariable $var_wdt -width 12\n"
+    "    pack $id.rcv_sym.lwdt $id.rcv_sym.wdt $id.rcv_sym.lrcv $id.rcv_sym.rcv -side left\n"
+    "\n"
+// colours
+     "    labelframe $id.colors -borderwidth 1 -text [_ \"Colors\"] -padx 5 -pady 5\n"
+     "    pack $id.colors -fill x\n"
+     "\n"
+     "    frame $id.colors.showbg\n"
+     "    pack $id.colors.showbg -side top\n"
+     "    label $id.colors.showbg.lbg -text \"Fill background:\"\n"
+     "    checkbutton $id.colors.showbg.bg -variable $var_bg_flag \n"
+     "    pack $id.colors.showbg.lbg $id.colors.showbg.bg -side left\n"
+     "    frame $id.colors.select\n"
+     "    pack $id.colors.select -side top\n"
+     "    radiobutton $id.colors.select.radio0 -value 0 -variable \\\n"
+     "        $var_col_field -text [_ \"Background\"] -justify left\n"
+     "    radiobutton $id.colors.select.radio1 -value 1 -variable \\\n"
+     "        $var_col_field -text [_ \"Text\"] -justify left\n"
+     "        pack $id.colors.select.radio0 $id.colors.select.radio1 -side left\n"
+     "    frame $id.colors.sections\n"
+     "    pack $id.colors.sections -side top\n"
+     "    button $id.colors.sections.but -text [_ \"Compose color\"] \\\n"
+     "        -command \"choose_col_bkfrlb $id\"\n"
+     "    pack $id.colors.sections.but -side left -anchor w -pady 5 \\\n"
+     "        -expand yes -fill x\n"
+     "    frame $id.colors.sections.exp\n"
+     "    pack $id.colors.sections.exp -side right -padx 5\n"
+     "    if { [eval concat $$var_fg] ne \"none\" } {\n"
+     "        label $id.colors.sections.exp.fr_bk -text \"o=||=o\" -width 6 \\\n"
+     "            -background [eval concat $$var_bg] \\\n"
+     "            -activebackground [eval concat $$var_bg] \\\n"
+     "            -foreground [eval concat $$var_fg] \\\n"
+     "            -activeforeground [eval concat $$var_fg] \\\n"
+     "            -font [list $var_name 14 $::font_weight] -padx 2 -pady 2 -relief ridge\n"
+     "    } else {\n"
+     "        label $id.colors.sections.exp.fr_bk -text \"o=||=o\" -width 6 \\\n"
+     "            -background [eval concat $$var_bg] \\\n"
+     "            -activebackground [eval concat $$var_bg] \\\n"
+     "            -foreground [eval concat $$var_bg] \\\n"
+     "            -activeforeground [eval concat $$var_bg] \\\n"
+     "            -font [list $var_name 14 $::font_weight] -padx 2 -pady 2 -relief ridge\n"
+     "    }\n"
+     "\n"
+     "    # color scheme by Mary Ann Benedetto http://piR2.org\n"
+     "    foreach r {r1 r2 r3} hexcols {\n"
+     "       { \"#FFFFFF\" \"#DFDFDF\" \"#BBBBBB\" \"#FFC7C6\" \"#FFE3C6\" \"#FEFFC6\" \"#C6FFC7\" \"#C6FEFF\" \"#C7C6FF\" \"#E3C6FF\" }\n"
+     "       { \"#9F9F9F\" \"#7C7C7C\" \"#606060\" \"#FF0400\" \"#FF8300\" \"#FAFF00\" \"#00FF04\" \"#00FAFF\" \"#0400FF\" \"#9C00FF\" }\n"
+     "       { \"#404040\" \"#202020\" \"#000000\" \"#551312\" \"#553512\" \"#535512\" \"#0F4710\" \"#0E4345\" \"#131255\" \"#2F004D\" } } \\\n"
+     "    {\n"
+     "       frame $id.colors.$r\n"
+     "       pack $id.colors.$r -side top\n"
+     "       foreach i { 0 1 2 3 4 5 6 7 8 9} hexcol $hexcols \\\n"
+     "           {\n"
+     "               label $id.colors.$r.c$i -background $hexcol -activebackground $hexcol -relief ridge -padx 7 -pady 0 -width 1\n"
+     "               bind $id.colors.$r.c$i <Button> \"preset_col $id $hexcol\"\n"
+     "           }\n"
+     "       pack $id.colors.$r.c0 $id.colors.$r.c1 $id.colors.$r.c2 $id.colors.$r.c3 \\\n"
+     "           $id.colors.$r.c4 $id.colors.$r.c5 $id.colors.$r.c6 $id.colors.$r.c7 \\\n"
+     "           $id.colors.$r.c8 $id.colors.$r.c9 -side left\n"
+     "    }\n"
+     "\n"
+    "    frame $id.buttonframe\n"
+    "    pack $id.buttonframe -side bottom -fill x -pady 2m\n"
+    "    button $id.buttonframe.cancel -text {Cancel} -command \"note_cancel $id\"\n"
+    "    button $id.buttonframe.ok -text {OK} -command \"note_ok $id\"\n"
+    "    pack $id.buttonframe.cancel -side left -expand 1\n"
+    "    pack $id.buttonframe.ok -side left -expand 1\n"
+             "}\n"
+
+     "proc set_col_example {id} {\n"
+     "    set vid [string trimleft $id .]\n"
+     "\n"
+     "    set var_col_field [concat var_col_field_$vid]\n"
+     "    global $var_col_field\n"
+     "    set var_var_bg [concat var_bg_$vid]\n"
+     "    global $var_var_bg\n"
+     "    set var_var_fg [concat var_fg_$vid]\n"
+     "    global $var_var_fg\n"
+     "\n"
+     "    if { [eval concat $$var_var_fg] ne \"none\" } {\n"
+     "        $id.colors.sections.exp.fr_bk configure \\\n"
+     "            -background [eval concat $$var_var_bg] \\\n"
+     "            -activebackground [eval concat $$var_var_bg] \\\n"
+     "            -foreground [eval concat $$var_var_fg] \\\n"
+     "            -activeforeground [eval concat $$var_var_fg]\n"
+     "    } else {\n"
+     "        $id.colors.sections.exp.fr_bk configure \\\n"
+     "            -background [eval concat $$var_var_bg] \\\n"
+     "            -activebackground [eval concat $$var_var_bg] \\\n"
+     "            -foreground [eval concat $$var_var_bg] \\\n"
+     "            -activeforeground [eval concat $$var_var_bg]}\n"
+     "     note_apply $id\n"
+     "}\n"
+     "\n"
+     "proc preset_col {id presetcol} {\n"
+     "    set vid [string trimleft $id .]\n"
+     "    set var_col_field [concat var_col_field_$vid]\n"
+     "    global $var_col_field\n"
+     "\n"
+     "    set var_var_bg [concat var_bg_$vid]\n"
+     "    global $var_var_bg\n"
+     "    set var_var_fg [concat var_fg_$vid]\n"
+     "    global $var_var_fg\n"
+     "\n"
+     "    if { [eval concat $$var_col_field] == 0 } { set $var_var_bg $presetcol }\n"
+     "    if { [eval concat $$var_col_field] == 1 } { set $var_var_fg $presetcol }\n"
+     "    set_col_example $id\n"
+     "}\n"
+     "\n"
+     "proc choose_col_bkfrlb {id} {\n"
+     "    set vid [string trimleft $id .]\n"
+     "\n"
+     "    set var_col_field [concat var_col_field_$vid]\n"
+     "    global $var_col_field\n"
+     "    set var_var_bg [concat var_bg_$vid]\n"
+     "    global $var_var_bg\n"
+     "    set var_var_fg [concat var_fg_$vid]\n"
+     "    global $var_var_fg\n"
+     "\n"
+     "    if {[eval concat $$var_col_field] == 0} {\n"
+     "        set $var_var_bg [eval concat $$var_var_bg]\n"
+     "        set helpstring [tk_chooseColor -title [_ \"Background color\"] -initialcolor [eval concat $$var_var_bg]]\n"
+     "        if { $helpstring ne \"\" } {\n"
+     "            set $var_var_bg $helpstring }\n"
+     "    }\n"
+     "    if {[eval concat $$var_col_field] == 1} {\n"
+     "        set $var_var_fg [eval concat $$var_var_fg]\n"
+     "        set helpstring [tk_chooseColor -title [_ \"Foreground color\"] -initialcolor [eval concat $$var_var_fg]]\n"
+     "        if { $helpstring ne \"\" } {\n"
+     "            set $var_var_fg $helpstring }\n"
+     "    }\n"
+     "    set_col_example $id\n"
+     "}\n");
 }
