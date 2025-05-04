@@ -282,7 +282,7 @@ static void create_menu(t_menu *x, t_glist *glist){
     // Create the menu and attach it to the menubutton
     pdgui_vmess(0, "rsri", "menu", x->x_tag_menu, "-tearoff", 0);
     // Loop through menu items to add radiobuttons
-    for (int i = 0; i < x->x_n_items; i++) {
+    for(int i = 0; i < x->x_n_items; i++) {
         sprintf(buf, "%s", x->x_items[i]->s_name);
         sys_vgui("%s add radiobutton -label \"%s\" -variable %s -value \"option_%d\" \
             -command {%s configure -text \"%s\" \; %s \"%d\"} \n",
@@ -297,7 +297,7 @@ static void create_menu(t_menu *x, t_glist *glist){
             x->x_tag_menu, x->x_idx, x->x_tag_menu_sel, x->x_idx);
     }
     // set tk widget ids
-    sprintf(buf, ".x%lx.c", (long unsigned int)cv);
+    sprintf(buf, ".x%lx.c", (unsigned long)cv);
     x->x_cvId = getbytes(strlen(buf) + 1); // Tk ID for current canvas this object is drawn in
     strcpy(x->x_cvId, buf);
     sys_vgui("bind %s.s%lx <Button> {pdtk_canvas_mouse %s [expr %%X - [winfo rootx %s]] \
@@ -490,11 +490,12 @@ static void menu_add(t_menu* x, t_symbol *s, int ac, t_atom *av){
         else
             x->x_items[i] = atom_getsymbol(av+i-x->x_n_items);
         sprintf(buf, "%s", x->x_items[i]->s_name);
-        if(vis(x))
+        if(vis(x)){
             sys_vgui("%s add radiobutton -label \"%s\" -variable %s -value \"%s\" \
                 -command {%s configure -text \"%s\" \; %s \"%d\"} \n",
-                x->x_tag_menu, buf, x->x_tag_menu_sel, buf,
-                x->x_tag_mb, buf, x->x_callback_proc, i);
+                     x->x_tag_menu, buf, x->x_tag_menu_sel, buf,
+                     x->x_tag_mb, buf, x->x_callback_proc, i);
+        }
     }
     x->x_n_items = new_limit;
     x->x_disabled = 0;
@@ -1165,23 +1166,23 @@ static void *menu_new(t_symbol *s, int ac, t_atom *av){
     else if(x->x_idx >= x->x_n_items)
         x->x_idx = x->x_load = (x->x_n_items - 1);
     // callback function
-    sprintf(buf,"menu%lx", (long unsigned int)x);
+    sprintf(buf,"menu%p", (void *)x);
     x->x_sym = gensym(buf);
     pd_bind(&x->x_obj.ob_pd, x->x_sym); // bind receiver to the object
-    sprintf(x->x_callback_proc, "%menu_callback%lx", (unsigned long)x);
+    sprintf(x->x_callback_proc, "menu_callback%p", (void *)x);
     sys_vgui("proc %s {index} {\n pdsend \"%s _callback $index \"\n }\n",
         x->x_callback_proc, buf);
     char buff[MAXPDSTRING];
     snprintf(buff, MAXPDSTRING-1, ".x%lx", (unsigned long)x->x_glist);
     buff[MAXPDSTRING-1] = 0;
     x->x_proxy = edit_proxy_new(x, gensym(buff));
-    sprintf(x->x_tag_obj, "%pOBJ", x);
-    sprintf(x->x_tag_outline, "%pOUTLINE", x);
     sprintf(x->x_tag_mb, ".x%lx.c.s%lx", (unsigned long)cv, (unsigned long)x);
-    sprintf(x->x_tag_popmenu, "%pMENU", x);
-    sprintf(x->x_tag_in, "%pIN", x);
-    sprintf(x->x_tag_out, "%pOUT", x);
-    sprintf(x->x_tag_sel, "%pSEL", x);
+    sprintf(x->x_tag_obj, "%pOBJ", (void *)x);
+    sprintf(x->x_tag_outline, "%pOUTLINE", (void *)x);
+    sprintf(x->x_tag_popmenu, "%pMENU", (void *)x);
+    sprintf(x->x_tag_in, "%pIN", (void *)x);
+    sprintf(x->x_tag_out, "%pOUT", (void *)x);
+    sprintf(x->x_tag_sel, "%pSEL", (void *)x);
     if(x->x_rcv != gensym("empty"))
         pd_bind(&x->x_obj.ob_pd, x->x_rcv);
     outlet_new(&x->x_obj, &s_float);

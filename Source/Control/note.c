@@ -5,8 +5,6 @@
 #include <ctype.h>
 #include <m_pd.h>
 #include <g_canvas.h>
-//#include "shared/s_elseutf8.h"
-//#include "shared/else_alloca.h"
 #include "s_elseutf8.h"
 #include "else_alloca.h"
 
@@ -81,7 +79,6 @@ typedef struct _note{
     int             x_rcv_set;
     int             x_flag;
     int             x_r_flag;
-//    int             x_old;
     int             x_text_flag;
     int             x_text_n;
     int             x_text_size;
@@ -122,7 +119,7 @@ static void note_initialize(t_note *x){
         FREEA(av, t_atom, ac);
     }
     else{
-        int n = 14; // = x->x_old ? 8 : 14;
+        int n = 14;
         if(n_args > n){
             int ac = n_args - n;
             t_atom* av = ALLOCA(t_atom, ac);
@@ -1244,7 +1241,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     x->x_buf = 0;
     x->x_keynum = 0;
     x->x_keysym = NULL;
-    x->x_rcv_set = x->x_flag = x->x_r_flag = 0; // x->x_old = 0;
+    x->x_rcv_set = x->x_flag = x->x_r_flag = 0;
     x->x_text_n = x->x_text_size = x->x_text_width = 0;
     x->x_max_pixwidth = 0;
     x->x_width = x->x_height = 0;
@@ -1454,6 +1451,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     }
     if(x->x_fontsize < 1)
         x->x_fontsize = glist_getfont(x->x_glist);
+//    post("font size = %d", x->x_fontsize);
     if(x->x_max_pixwidth != 0)
         x->x_resized = 1;
     else
