@@ -761,8 +761,12 @@ static void knob_bang(t_knob *x){
         outlet_float(x->x_obj.ob_outlet, x->x_fval);
         if(x->x_snd == gensym("empty") || x->x_snd == &s_)
             goto empty;
-        if(x->x_snd->s_thing)
-            pd_float(x->x_snd->s_thing, x->x_fval);
+        if(x->x_snd->s_thing){
+            if(x->x_snd == x->x_rcv)
+                pd_error(x, "[knob]: same send/receive names (infinite loop)");
+            else
+                pd_float(x->x_snd->s_thing, x->x_fval);
+        }
     }
 empty:
     if(x->x_var != gensym("empty"))
