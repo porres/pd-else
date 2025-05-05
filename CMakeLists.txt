@@ -7,6 +7,11 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_MACOSX_RPATH ON)
 
+# Add static linking on Windows
+if(WIN32)
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static-libgcc -static-libstdc++")
+endif()
+
 option(ENABLE_OPUS "Enable opus for pdlink~ stream compression" ON)
 if(!ENABLE_OPUS)
   add_compile_definitions(ENABLE_OPUS=0)
