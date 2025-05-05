@@ -270,7 +270,7 @@ static void create_menu(t_menu *x, t_glist *glist){
     SETSYMBOL(at, gensym(def_font));
     SETFLOAT(at+1, -x->x_fontsize*x->x_zoom);
     // Create the menubutton
-    pdgui_vmess(0, "rs rs rA rsrs rs rs rs rr",
+    pdgui_vmess(0, "rs rs rA rsrs rs rs rs rr rs rs rs",
         "menubutton", x->x_tag_mb,
         "-text", temp_name->s_name,
         "-font", 2, at,
@@ -278,7 +278,10 @@ static void create_menu(t_menu *x, t_glist *glist){
         "-activeforeground", x->x_fg->s_name,
         "-direction", x->x_dir->s_name,
         "-menu", x->x_tag_menu,
-        "-cursor", "bottom_side");
+        "-cursor", "bottom_side",
+        "-relief", "raised",
+        "-indicatoron", "1",
+        "-compound", "right");
     // Create the menu and attach it to the menubutton
     pdgui_vmess(0, "rsri", "menu", x->x_tag_menu, "-tearoff", 0);
     // Loop through menu items to add radiobuttons
