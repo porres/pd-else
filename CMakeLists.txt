@@ -1,5 +1,16 @@
 cmake_minimum_required(VERSION 3.15)
 
+# Add Linux-specific configurations
+if(UNIX AND NOT APPLE)
+    # Set maximum GLIBC version to 2.31 (compatible with most recent Linux distributions)
+    add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_FORTIFY_SOURCE=2 -O2")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_FORTIFY_SOURCE=2 -O2")
+
+    # Add OpenSSL finding
+    find_package(OpenSSL REQUIRED)
+endif()
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -82,6 +93,13 @@ endif()
 target_link_libraries(play.file_tilde PRIVATE ffmpeg)
 target_link_libraries(sfload PRIVATE ffmpeg)
 target_link_libraries(sfinfo PRIVATE ffmpeg)
+
+# Add OpenSSL linking for Linux builds
+if(UNIX AND NOT APPLE)
+    target_link_libraries(play.file_tilde PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+    target_link_libraries(sfload PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+    target_link_libraries(sfinfo PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+endif()
 
 target_link_libraries(pdlink PUBLIC link)
 target_link_libraries(pdlink_tilde PUBLIC link opus)
