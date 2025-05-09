@@ -26,12 +26,19 @@ static void unmerge_list(t_unmerge *x, t_symbol *s, int ac, t_atom *av){
     int length = size * nouts;
     int extra = (ac - length);
     if(extra > 0){ // extra outlet
-        if(extra == 1 && av->a_type == A_FLOAT)
-            outlet_float(x->x_outlets[nouts], (av+length)->a_w.w_float);
-        else if(av->a_type == A_FLOAT) // if first is float... out list
-            outlet_list(x->x_outlets[nouts],  &s_list, extra, av+length);
-        else
-            outlet_anything(x->x_outlets[nouts], &s_list, extra, av+length);
+        if(extra == 1){
+            if((av+length)->a_type == A_FLOAT)
+                outlet_float(x->x_outlets[nouts], (av+length)->a_w.w_float);
+            
+            else
+                outlet_symbol(x->x_outlets[nouts], (av+length)->a_w.w_symbol);
+        }
+        else{
+            if((av+length)->a_type == A_FLOAT) // if first is float... out list
+                outlet_list(x->x_outlets[nouts],  &s_list, extra, av+length);
+            else
+                outlet_anything(x->x_outlets[nouts], &s_list, extra, av+length);
+        }
         ac -= extra;
     };
     for(int i = (nouts - 1); i >= 0; i--){
