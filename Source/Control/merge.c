@@ -90,9 +90,6 @@ static void *merge_new(t_symbol *s, int ac, t_atom* av){
         numinlets = atom_getint(av);
     int n = (int)numinlets;
     x->x_numinlets = n < 2 ? 2 : n > 512 ? 512 : n;
-    int * triggervals;
-    triggervals = ALLOCA(int, x->x_numinlets);
-    triggervals[0] = 1;
     x->x_ins = (t_merge_inlet *)getbytes(x->x_numinlets * sizeof(t_merge_inlet));
     x->x_length = 0;
     for(int i = 0; i < x->x_numinlets; ++i){
@@ -101,12 +98,11 @@ static void *merge_new(t_symbol *s, int ac, t_atom* av){
         SETFLOAT(x->x_ins[i].x_atoms, 0);
         x->x_ins[i].x_numatoms = 0;
         x->x_ins[i].x_owner = x;
-        x->x_ins[i].x_trig = triggervals[i];
+        x->x_ins[i].x_trig = i == 0;
         x->x_ins[i].x_id = i;
         inlet_new((t_object *)x, &(x->x_ins[i].x_pd), 0, 0);
     };
     outlet_new(&x->x_obj, &s_list);
-    FREEA(triggervals, int, x->x_numinlets);
     return(x);
 }
 
