@@ -87,7 +87,7 @@ static t_int *lowpass_perform(t_int *w){
         else{
             if(f != x->x_f || reson != x->x_reson)
                 update_coeffs(x, (double)f, (double)reson);
-            yn = x->x_a0 * xn + x->x_a2 * xnm2 + x->x_b1 * ynm1 + x->x_b2 * ynm2;
+            yn = x->x_a0 * xn + x->x_a1 * xnm1 + x->x_a2 * xnm2 + x->x_b1 * ynm1 + x->x_b2 * ynm2;
             *out++ = yn;
             xnm2 = xnm1;
             xnm1 = xn;
