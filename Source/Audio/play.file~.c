@@ -5,6 +5,7 @@
 #include <libswresample/swresample.h>
 #include <else_alloca.h>
 #include <m_pd.h>
+#include <libavutil/error.h>  // for av_strerror()
 
 #define FRAMES 4096
 
@@ -170,40 +171,62 @@ static err_t playfile_reset(void *y){
 static err_t playfile_load(t_playfile *x, int index) {
     char url[MAXPDSTRING];
     const char *fname = x->x_plist.arr[index]->s_name;
-    if (fname[0] == '/') // absolute path
+
+    if (fname[0] == '/') { // absolute path
         strcpy(url, fname);
-    else{
+    } else {
+        size_t dir_len = strlen(x->x_plist.dir->s_name);
+        // Copy directory name
         strcpy(url, x->x_plist.dir->s_name);
-        strcat(url, "/");
+        // If directory does NOT end with '/', append one
+        if (dir_len > 0 && x->x_plist.dir->s_name[dir_len - 1] != '/') {
+            strcat(url, "/");
+        }
+        // Append the file name
         strcat(url, fname);
     }
-    if(!x->x_ic || !x->x_ic->url || strncmp(x->x_ic->url, url, MAXPDSTRING) != 0) {
+
+    if (!x->x_ic || !x->x_ic->url || strncmp(x->x_ic->url, url, MAXPDSTRING) != 0) {
         avformat_close_input(&x->x_ic);
         x->x_ic = avformat_alloc_context();
         x->x_ic->probesize = 128;
         x->x_ic->max_probe_packets = 1;
-        if(avformat_open_input(&x->x_ic, url, NULL, NULL))
-            return("Failed to open input stream");
-        if(avformat_find_stream_info(x->x_ic, NULL) < 0)
-            return("Failed to find stream information");
+
+        int ret = avformat_open_input(&x->x_ic, url, NULL, NULL);
+        if (ret < 0) {
+            char errbuf[256];
+            av_strerror(ret, errbuf, sizeof(errbuf));
+            post("play.file~: Failed to open input stream '%s': %s", url, errbuf);
+            return "Failed to open input stream";
+        }
+
+        if (avformat_find_stream_info(x->x_ic, NULL) < 0) {
+            post("play.file~: Failed to find stream information for '%s'", url);
+            return "Failed to find stream information";
+        }
         x->x_ic->seek2any = 1;
         int i = -1;
-        for(unsigned j = x->x_ic->nb_streams; j--;){
-            if(x->x_ic->streams[j]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO){
+        for (unsigned j = x->x_ic->nb_streams; j--;) {
+            if (x->x_ic->streams[j]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
                 i = j;
                 break;
             }
         }
         x->x_stream_idx = i;
-        if(i < 0)
-            return("No audio stream found");
+        if (i < 0) {
+            post("play.file~: No audio stream found in '%s'", url);
+            return "No audio stream found";
+        }
     }
+
     err_t err_msg = playfile_context(x);
-    if(err_msg)
-        return(err_msg);
+    if (err_msg)
+        return err_msg;
+
     x->x_frm->pts = 0;
-    return (playfile_reset(x));
+    return playfile_reset(x);
 }
+
 
 static void playfile_pause(t_playfile *x){
     x->x_play = 0;
