@@ -91,12 +91,14 @@ if(WIN32)
 endif()
 
 target_link_libraries(play.file_tilde PRIVATE ffmpeg)
+target_link_libraries(streamin_tilde PRIVATE ffmpeg)
 target_link_libraries(sfload PRIVATE ffmpeg)
 target_link_libraries(sfinfo PRIVATE ffmpeg)
 
 # Add OpenSSL linking for Linux builds
 if(UNIX AND NOT APPLE)
     target_link_libraries(play.file_tilde PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+    target_link_libraries(streamin_tilde PRIVATE OpenSSL::SSL OpenSSL::Crypto)
     target_link_libraries(sfload PRIVATE OpenSSL::SSL OpenSSL::Crypto)
     target_link_libraries(sfinfo PRIVATE OpenSSL::SSL OpenSSL::Crypto)
 endif()
