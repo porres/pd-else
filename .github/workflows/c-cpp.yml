@@ -57,7 +57,7 @@ jobs:
           name: else-linux
           path: ./Build/else
           
-# ===============================================================
+ # ===============================================================
   RaspberryPi-Build:
     runs-on: ubuntu-22.04
     steps:
@@ -73,10 +73,13 @@ jobs:
 
       - name: Install dependencies
         run: |
+          sudo dpkg --add-architecture arm64
           sudo apt-get update
           sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-          sudo apt-get install -y libssl-dev:arm64
           sudo apt-get install -y crossbuild-essential-arm64
+          sudo apt-get install -y libssl-dev:arm64
+          sudo apt-get install -y cmake pkg-config
+          sudo apt-get install -y curl libcurl4-openssl-dev:arm64
 
       - name: Downloads pd-Sources
         shell: bash
@@ -88,13 +91,23 @@ jobs:
 
       - name: Configure pd-else for ARM64
         run: |
-          cmake -BBuild -DPD_PATH=${{github.workspace}}/pure-data \
+          cmake -BBuild \
               -DCMAKE_SYSTEM_NAME=Linux \
               -DCMAKE_SYSTEM_PROCESSOR=aarch64 \
+              -DCMAKE_SYSTEM_VERSION=1 \
               -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc \
               -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ \
+              -DCMAKE_FIND_ROOT_PATH=/usr/aarch64-linux-gnu \
+              -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
+              -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+              -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
+              -DPD_PATH=${{github.workspace}}/pure-data \
+              -DCURL_LIBRARY=/usr/lib/aarch64-linux-gnu/libcurl.so \
+              -DCURL_INCLUDE_DIR=/usr/include/aarch64-linux-gnu \
               -DOPENSSL_ROOT_DIR=/usr/lib/aarch64-linux-gnu \
-              -DOPENSSL_LIBRARIES=/usr/lib/aarch64-linux-gnu
+              -DOPENSSL_INCLUDE_DIR=/usr/include/aarch64-linux-gnu \
+              -DOPENSSL_CRYPTO_LIBRARY=/usr/lib/aarch64-linux-gnu/libcrypto.so \
+              -DOPENSSL_SSL_LIBRARY=/usr/lib/aarch64-linux-gnu/libssl.so
 
       - name: Build pd-else
         run: cmake --build Build
