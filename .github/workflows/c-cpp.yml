@@ -26,6 +26,11 @@ jobs:
         with:
           key: ccache-linux
 
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libssl-dev
+
       - name: Downloads pd-Sources
         shell: bash
         run: |
@@ -37,6 +42,14 @@ jobs:
       - name: Configure pd-else
         run: |
           cmake -BBuild -DPD_PATH=${{github.workspace}}/pure-data -DCMAKE_C_COMPILER_LAUNCHER="ccache" -DCMAKE_CXX_COMPILER_LAUNCHER="ccache"
+
+      - name: Configure pd-else
+        run: |
+          cmake -BBuild -DPD_PATH=${{github.workspace}}/pure-data \
+              -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
+              -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
+              -DOPENSSL_ROOT_DIR=/usr/lib/ssl \
+              -DOPENSSL_LIBRARIES=/usr/lib/x86_64-linux-gnu
 
       - name: Build pd-else
         run: |
