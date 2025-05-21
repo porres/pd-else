@@ -75,6 +75,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+          sudo apt-get install -y libssl-dev:arm64
+          sudo apt-get install -y crossbuild-essential-arm64
 
       - name: Downloads pd-Sources
         shell: bash
@@ -90,7 +92,9 @@ jobs:
               -DCMAKE_SYSTEM_NAME=Linux \
               -DCMAKE_SYSTEM_PROCESSOR=aarch64 \
               -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc \
-              -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++
+              -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ \
+              -DOPENSSL_ROOT_DIR=/usr/lib/aarch64-linux-gnu \
+              -DOPENSSL_LIBRARIES=/usr/lib/aarch64-linux-gnu
 
       - name: Build pd-else
         run: cmake --build Build
@@ -98,7 +102,7 @@ jobs:
       - name: Upload Zip
         uses: actions/upload-artifact@v4
         with:
-          name: else-raspberrypi
+          name: else-linux-arm64
           path: ./Build/else
 
   # ===============================================================
