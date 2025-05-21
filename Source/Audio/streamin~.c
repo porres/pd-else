@@ -37,7 +37,6 @@ typedef struct _streamin{
     t_sample       *x_out;
     int             x_out_buffer_index;
     int             x_out_buffer_size;
-    t_float         x_speed;
     int             x_loop;
     t_symbol       *x_play_next;
     t_symbol       *x_openpanel_sym;
@@ -377,12 +376,6 @@ static void streamin_open(t_streamin *x, t_symbol *s, int ac, t_atom *av){
     }
 }
 
-static void streamin_click(t_streamin *x, t_floatarg xpos,
-t_floatarg ypos, t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
-    xpos = ypos = shift = ctrl = alt = 0;
-    streamin_open(x, NULL, 0, NULL);
-}
-
 static void streamin_float(t_streamin *x, t_float f){
     streamin_start(x, f, 0);
 }
@@ -489,43 +482,6 @@ static void streamin_dsp(t_streamin *x, t_signal **sp){
     dsp_add(streamin_perform, 3, x, sp[0]->s_n, sp[0]->s_vec);
 }
 
-AVChannelLayout streamin_get_channel_layout_for_file(t_streamin* x, const char *dirname, const char *filename) {
-    char input_path[MAXPDSTRING];
-    snprintf(input_path, MAXPDSTRING, "%s/%s", dirname, filename);
-    x->x_ic = avformat_alloc_context();
-    x->x_ic->probesize = 128;
-    x->x_ic->max_probe_packets = 1;
-    if(avformat_open_input(&x->x_ic, input_path, NULL, NULL) != 0){
-        fprintf(stderr, "Could not open input file '%s'\n", input_path);
-        goto error;
-    }
-    // Retrieve stream information
-    if(avformat_find_stream_info(x->x_ic, NULL) < 0){
-        fprintf(stderr, "Could not find stream information\n");
-        goto error;
-    }
-    int audio_stream_index = -1;
-    for(unsigned int i = 0; i < x->x_ic->nb_streams; i++){
-        if(x->x_ic->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO){
-            audio_stream_index = i;
-            break;
-        }
-    }
-    if(audio_stream_index == -1){
-        fprintf(stderr, "Could not find any audio stream in the file\n");
-        goto error;
-    }
-    x->x_stream_idx = audio_stream_index;
-    AVCodecParameters *codec_parameters = x->x_ic->streams[audio_stream_index]->codecpar;
-    return(codec_parameters->ch_layout);
-error:
-    if(x->x_ic)
-        avformat_close_input(&x->x_ic);
-    AVChannelLayout l;
-    av_channel_layout_default(&l, 1);
-    return(l);
-}
-
 static void streamin_free(t_streamin *x){
     av_channel_layout_uninit(&x->x_layout);
     avcodec_free_context(&x->x_stream_ctx);
@@ -552,7 +508,6 @@ static void *streamin_new(t_symbol *s, int ac, t_atom *av){
     pl->max = 1;
     pl->arr = (t_symbol **)getbytes(pl->max * sizeof(t_symbol *));
     int nch = 1;
-    int filefound = 0;
     AVChannelLayout layout;
     int loop = 0;
     int ncharg = 0;
@@ -579,20 +534,6 @@ static void *streamin_new(t_symbol *s, int ac, t_atom *av){
             av_channel_layout_from_mask(&layout, mask);
             ac--, av++;
         }
-        if(ac && av->a_type == A_SYMBOL){
-            char dir[MAXPDSTRING];
-            char* file = NULL;
-            t_symbol *sym =  atom_getsymbol(av);
-            filefound = streamin_find_file(x, sym, dir, &file);
-            if(filefound){
-                SETSYMBOL(at, sym);
-                if(!ncharg){ // Num channels from file
-                    layout = streamin_get_channel_layout_for_file(x, dir, file);
-                    nch = layout.nb_channels;
-                }
-            }
-            ac--, av++;
-        }
     }
     // channel layout masking details: libavutil/channel_layout.h
     x->x_layout = layout;
@@ -601,23 +542,6 @@ static void *streamin_new(t_symbol *s, int ac, t_atom *av){
     while(nch--)
         outlet_new(&x->x_obj, &s_signal);
     x->x_o_meta = outlet_new(&x->x_obj, 0);
-    if(filefound)
-        streamin_open(x, gensym("open"), 1, at);
-    if(ac){  // Autostart/Loops args
-        if(av->a_type != A_FLOAT)
-            goto errstate;
-        streamin_start(x, atom_getfloat(av) != 0, 0.0f);
-        ac--, av++;
-        if(ac){ // Loop argument
-            if(av->a_type != A_FLOAT){
-            errstate:
-                pd_error(x, "[play.file~] improper args");
-                return(NULL);
-            }
-            loop = atom_getfloat(av) != 0;
-        }
-    }
-    x->x_speed = 1;
     x->x_loop = loop;
     x->x_out = (t_sample *)getbytes(x->x_nch * FRAMES * sizeof(t_sample));
     char buf[50];
@@ -637,12 +561,9 @@ void streamin_tilde_setup(void) {
 //    class_addmethod(streamin_class, (t_method)streamin_open, gensym("open"), A_GIMME, 0);
     class_addmethod(streamin_class, (t_method)streamin_stream, gensym("stream"), A_SYMBOL, 0);
     class_addmethod(streamin_class, (t_method)streamin_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(streamin_class, (t_method)streamin_seek, gensym("seek"), A_FLOAT, 0);
+//    class_addmethod(streamin_class, (t_method)streamin_seek, gensym("seek"), A_FLOAT, 0);
     class_addmethod(streamin_class, (t_method)streamin_loop, gensym("loop"), A_FLOAT, 0);
     class_addmethod(streamin_class, (t_method)streamin_continue, gensym("continue"), A_NULL);
     class_addmethod(streamin_class, (t_method)streamin_pause, gensym("pause"), A_NULL);
     class_addmethod(streamin_class, (t_method)streamin_set, gensym("set"), A_SYMBOL, 0);
-    class_addmethod(streamin_class, (t_method)streamin_click, gensym("click"),
-        A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT,0);
-    class_addmethod(streamin_class, (t_method)streamin_openpanel_callback, gensym("callback"), A_GIMME, 0);
 }
