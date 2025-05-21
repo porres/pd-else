@@ -103,11 +103,12 @@ static t_int *vsaw_perform(t_int *w){
             else if(width == 1)
                 output = wraped_phase * 2 - 1;
             else{
-                t_float inc = wraped_phase * width;
-                t_float dec = (wraped_phase - 1) * (width - 1);
-                t_float gain = pow(width * (width - 1), -1);
-                t_float min = (inc < dec ? inc : dec);
-                output = (min * gain) * 2 + 1;
+                float value;
+                if(wraped_phase <= width)
+                    value = wraped_phase / width;
+                else
+                    value = 1 - ((wraped_phase - width) / (1 - width));
+                output = value * 2 - 1;
             }
             out[j*n + i] = output;
             phase[j] = vsaw_wrap_phase(phase[j] + step);
