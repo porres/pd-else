@@ -103,16 +103,20 @@ target_link_libraries(sfinfo PRIVATE ffmpeg)
 
 # Add OpenSSL linking for Linux builds
 if(UNIX AND NOT APPLE)
-    foreach(target streamin_tilde sfload)
+    foreach(target streamin_tilde sfload play.file_tilde sfinfo)
         target_link_libraries(${target} PRIVATE
+            "-Wl,--whole-archive"
             OpenSSL::SSL
             OpenSSL::Crypto
+            "-Wl,--no-whole-archive"
+            pthread
+            dl
         )
         target_compile_definitions(${target} PRIVATE
             OPENSSL_NO_KRB5
             OPENSSL_NO_ENGINE
+            OPENSSL_API_3_0
         )
-        target_compile_definitions(${target} PRIVATE OPENSSL_API_3_0)
     endforeach()
 endif()
 
