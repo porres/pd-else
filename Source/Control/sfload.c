@@ -150,7 +150,7 @@ void sfload_update_arrays(t_sfload* x){
     else // not given, set to filesize
         readsize = arraysize = filesize;
     for(int ch = 0; ch < x->x_nchans; ch++){
-        if(x->x_ch != -1 && ch != x->x_ch)
+        if(x->x_ch != -1 && ch != x->x_ch) // given channel doesn't match, skip
             continue;
         char channel_name[MAXPDSTRING];
         snprintf(channel_name, MAXPDSTRING, "%i-%s", ch, x->x_arr_name->s_name);
@@ -167,7 +167,7 @@ void sfload_update_arrays(t_sfload* x){
             garray_redraw(garray);
         }
         else{
-            if(ch > 0)
+            if(x->x_ch == -1 && ch > 0) // only load 1st channel
                 return;
             garray = (t_garray*)pd_findbyclass(x->x_arr_name, garray_class);
             if(garray){
