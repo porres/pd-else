@@ -2,20 +2,19 @@ cmake_minimum_required(VERSION 3.15)
 
 # Add Linux-specific configurations
 if(UNIX AND NOT APPLE)
-    # Set maximum GLIBC version to 2.31 (compatible with most recent Linux distributions)
+    # Set proper flags for forward compatibility
     add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_FORTIFY_SOURCE=2 -O2")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_FORTIFY_SOURCE=2 -O2")
 
-    # Add OpenSSL finding with version compatibility
+    # OpenSSL 3.x configuration
     set(OPENSSL_USE_STATIC_LIBS TRUE)
-    find_package(OpenSSL REQUIRED)
-    if(OPENSSL_FOUND)
-        message(STATUS "Found OpenSSL ${OPENSSL_VERSION}")
-        if(${OPENSSL_VERSION} VERSION_GREATER_EQUAL "1.1.0")
-            add_definitions(-DHAVE_OPENSSL_1_1)
-        endif()
+    find_package(OpenSSL 3.0.0 REQUIRED)
+    if(NOT OPENSSL_FOUND)
+        message(FATAL_ERROR "OpenSSL 3.0.0 or higher is required")
     endif()
+    message(STATUS "Found OpenSSL ${OPENSSL_VERSION}")
+    add_definitions(-DHAVE_OPENSSL_3_0)
 endif()
 
 set(CMAKE_CXX_STANDARD 20)
@@ -104,12 +103,7 @@ target_link_libraries(sfinfo PRIVATE ffmpeg)
 
 # Add OpenSSL linking for Linux builds
 if(UNIX AND NOT APPLE)
-    # Ensure backward compatibility with older OpenSSL versions
-    if(HAVE_OPENSSL_1_1)
-        add_definitions(-DOPENSSL_API_1_1)
-    endif()
-    
-    foreach(target play.file_tilde streamin_tilde sfload sfinfo)
+    foreach(target streamin_tilde sfload)
         target_link_libraries(${target} PRIVATE
             OpenSSL::SSL
             OpenSSL::Crypto
@@ -118,6 +112,7 @@ if(UNIX AND NOT APPLE)
             OPENSSL_NO_KRB5
             OPENSSL_NO_ENGINE
         )
+        target_compile_definitions(${target} PRIVATE OPENSSL_API_3_0)
     endforeach()
 endif()
 

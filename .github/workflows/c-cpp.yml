@@ -44,9 +44,15 @@ jobs:
           cmake -BBuild -DPD_PATH=${{github.workspace}}/pure-data \
               -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
               -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
-              -DOPENSSL_ROOT_DIR=/usr/lib/ssl \
-              -DOPENSSL_LIBRARIES=/usr/lib/x86_64-linux-gnu
+              -DOPENSSL_USE_STATIC_LIBS=TRUE \
+              -DCMAKE_SHARED_LINKER_FLAGS="-static-libgcc -static-libstdc++" \
+              -DCMAKE_POSITION_INDEPENDENT_CODE=ON
 
+      - name: Verify Binary Compatibility
+        run: |
+          echo "Checking OpenSSL version:"
+          openssl version
+          
       - name: Build pd-else
         run: |
           cmake --build Build

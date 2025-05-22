@@ -195,12 +195,12 @@ static err_t streamin_load(t_streamin *x, int index) {
         if (ret < 0) {
             char errbuf[256];
             av_strerror(ret, errbuf, sizeof(errbuf));
-            post("play.file~: Failed to open input stream '%s': %s", url, errbuf);
+            post("streamin~: Failed to open input stream '%s': %s", url, errbuf);
             return "Failed to open input stream";
         }
 
         if (avformat_find_stream_info(x->x_ic, NULL) < 0) {
-            post("play.file~: Failed to find stream information for '%s'", url);
+            post("streamin~: Failed to find stream information for '%s'", url);
             return "Failed to find stream information";
         }
         x->x_ic->seek2any = 1;
@@ -213,7 +213,7 @@ static err_t streamin_load(t_streamin *x, int index) {
         }
         x->x_stream_idx = i;
         if (i < 0) {
-            post("play.file~: No audio stream found in '%s'", url);
+            post("streamin~: No audio stream found in '%s'", url);
             return "No audio stream found";
         }
     }
@@ -240,7 +240,7 @@ static void streamin_start(t_streamin *x, t_float f, t_float ms){
     err_t err_msg = "";
     if(0 < track && track <= x->x_plist.size){
         if((err_msg = streamin_load(x, track - 1)))
-            pd_error(x, "[play.file~] 'base start': %s.", err_msg);
+            pd_error(x, "[streamin~] 'base start': %s.", err_msg);
         streamin_seek(x, ms);
         x->x_open = !err_msg;
     }
@@ -268,7 +268,7 @@ static int streamin_find_file(t_streamin *x, t_symbol* file, char* dir_out, char
     char *bufptr;
     int fd = canvas_open(x->x_canvas, file->s_name, "", dir_out, filename_out, MAXPDSTRING, 1);
     if(fd < 0){
-        pd_error(x, "[play.file~] file '%s' not found", file->s_name);
+        pd_error(x, "[streamin~] file '%s' not found", file->s_name);
         return(0);
     }
     return(1);
@@ -300,7 +300,7 @@ static void streamin_openpanel_callback(t_streamin *x, t_symbol *s, int argc, t_
             pl->arr[0] = gensym(fname);
         }
         if(err_msg || (err_msg = streamin_load(x, 0)))
-            pd_error(x, "[play.file~]: open: %li", (long)err_msg);
+            pd_error(x, "[streamin~]: open: %li", (long)err_msg);
         x->x_open = !err_msg;
     }
 }
@@ -311,7 +311,7 @@ static void streamin_stream(t_streamin *x, t_symbol *s){
     const char *url = s->s_name;
     if(strlen(url) >= MAXPDSTRING){
         err_msg = "URL is too long";
-        pd_error(x, "[play.file~]: %s.", err_msg);
+        pd_error(x, "[streamin~]: %s.", err_msg);
     }
     else if(!strncmp(url, "http:", 5) ||
     !strncmp(url, "https:", 6) ||
@@ -337,7 +337,7 @@ static void streamin_stream(t_streamin *x, t_symbol *s){
             pl->arr[0] = gensym(fname);
         }
         if(err_msg || (err_msg = streamin_load(x, 0)))
-            pd_error(x, "[play.file~]: open: %s.", err_msg);
+            pd_error(x, "[streamin~]: open: %s.", err_msg);
         x->x_open = !err_msg;
     }
 }
@@ -353,7 +353,7 @@ static void streamin_open(t_streamin *x, t_symbol *s, int ac, t_atom *av){
         const char *sym = av->a_w.w_symbol->s_name;
         if(strlen(sym) >= MAXPDSTRING){
             err_msg = "File path is too long";
-            pd_error(x, "[play.file~]: %s.", err_msg);
+            pd_error(x, "[streamin~]: %s.", err_msg);
         }
         else{
             char dirname[MAXPDSTRING];
@@ -370,7 +370,7 @@ static void streamin_open(t_streamin *x, t_symbol *s, int ac, t_atom *av){
                 pl->arr[0] = gensym(filename);
             }
             if(err_msg || (err_msg = streamin_load(x, 0)))
-                pd_error(x, "[play.file~]: open: %s.", err_msg);
+                pd_error(x, "[streamin~]: open: %s.", err_msg);
             x->x_open = !err_msg;
         }
     }
