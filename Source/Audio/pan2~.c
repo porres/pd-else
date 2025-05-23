@@ -2,73 +2,76 @@
 
 #include <m_pd.h>
 #include <buffer.h>
+#include <magic.h>
+
+#include <stdlib.h>
+
+#define MAXLEN 1024
 
 static t_class *pan2_class;
 
 typedef struct _pan2{
     t_object    x_obj;
-    t_int       x_n;
-    t_int       x_mc;
+    int         x_nblock;
+    int         x_nchans;
+    t_int       x_sig2;
+    float      *x_pan_list;
     t_inlet    *x_panlet;
+    t_int       x_list_size;
+    t_symbol   *x_ignore;
+    t_glist    *x_glist;
 }t_pan2;
+
+static void pan2_pan(t_pan2 *x, t_symbol *s, int ac, t_atom *av){
+    x->x_ignore = s;
+    if(ac == 0)
+        return;
+    if(x->x_list_size != ac){
+        x->x_list_size = ac;
+        canvas_update_dsp();
+    }
+    for(int i = 0; i < ac; i++)
+        x->x_pan_list[i] = atom_getfloat(av+i);
+}
 
 static t_int *pan2_perform(t_int *w){
     t_pan2 *x = (t_pan2 *)(w[1]);
-    t_float *in1 = (t_float *)(w[2]);   // in
-    t_float *in2 = (t_float *)(w[3]);   // pan
-    t_float *out1 = (t_float *)(w[4]);  // L
-    t_float *out2 = (t_float *)(w[5]);  // R
-    int n = x->x_n;
-    while(n--){
-        float in = *in1++;
-        float pan = (*in2++ + 1) * 0.125;
-        if(pan < 0)
-            pan = 0;
-        if(pan > 0.25)
-            pan = 0.25;
-        *out1++ = in * read_sintab(pan + 0.25);
-        *out2++ = in * read_sintab(pan);
-    }
-    return(w+6);
-}
-
-static t_int *pan2_perform_mc(t_int *w){
-    t_pan2 *x = (t_pan2 *)(w[1]);
-    t_float *in1 = (t_float *)(w[2]);   // in
-    t_float *in2 = (t_float *)(w[3]);   // pan
-    t_float *out = (t_float *)(w[4]);
-    for(int i = 0; i < x->x_n; i++){
-        float in = in1[i];
-        float pan = (in2[i] + 1) * 0.125;
-        if(pan < 0)
-            pan = 0;
-        if(pan > 1)
-            pan = 1;
-        for(int j = 0; j < 2; j++){
-            float output;
-            if(j == 0)
-                output = in * read_sintab(pan + 0.25);
-            else
-                output = in * read_sintab(pan);
-            out[j*x->x_n + i] = output;
+    int ch2 = (int)(w[2]);
+    t_float *in1 = (t_float *)(w[3]);   // in
+    t_float *in2 = (t_float *)(w[4]);   // pan
+    t_float *out1 = (t_float *)(w[5]);  // L
+    t_float *out2 = (t_float *)(w[6]);  // R
+    for(int j = 0; j < x->x_nchans; j++){
+        for(int i = 0; i < x->x_nblock; i++){
+            float in = in1[j*x->x_nblock + i];
+            float pan = x->x_sig2 ? ch2 == 1 ? in2[i] : in2[j*x->x_nblock + i] : x->x_pan_list[j];
+            pan = (pan < -1 ? -1 : (pan > 1 ? 1 : ((pan + 1) * 0.125)));
+            out1[j*x->x_nblock + i] = in * read_sintab(pan + 0.25);
+            out2[j*x->x_nblock + i] = in * read_sintab(pan);
         }
     }
-    return(w+5);
+    return(w+7);
 }
 
 static void pan2_dsp(t_pan2 *x, t_signal **sp){
-    x->x_n = sp[0]->s_n;
-    if(!x->x_mc){
-        signal_setmultiout(&sp[2], 1);
-        signal_setmultiout(&sp[3], 1);
-        dsp_add(pan2_perform, 5, x, sp[0]->s_vec,
-            sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+    x->x_nblock = sp[0]->s_n;
+    int chs = sp[0]->s_nchans;
+    x->x_sig2 = else_magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal);
+    int ch2 = x->x_sig2 ? sp[1]->s_nchans : x->x_list_size;
+    if(x->x_nchans != chs){
+//       x->x_ynm1 = (double *)resizebytes(x->x_ynm1,
+//            x->x_nchans * sizeof(double), chs * sizeof(double));
+        x->x_nchans = chs;
     }
-    else{
-        signal_setmultiout(&sp[2], 2);
-        dsp_add(pan2_perform_mc, 4, x, sp[0]->s_vec,
-            sp[1]->s_vec, sp[2]->s_vec);
+    signal_setmultiout(&sp[2], chs);
+    signal_setmultiout(&sp[3], chs);
+    if((ch2 > 1 && ch2 != x->x_nchans)){
+        dsp_add_zero(sp[2]->s_vec, chs*x->x_nblock);
+        dsp_add_zero(sp[3]->s_vec, chs*x->x_nblock);
+        pd_error(x, "[pan2~]: channel sizes mismatch");
     }
+    dsp_add(pan2_perform, 6, x, ch2, sp[0]->s_vec,
+        sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
 static void *pan2_free(t_pan2 *x){
@@ -77,24 +80,20 @@ static void *pan2_free(t_pan2 *x){
 }
 
 static void *pan2_new(t_symbol *s, int ac, t_atom *av){
-    s = NULL;
     t_pan2 *x = (t_pan2 *)pd_new(pan2_class);
+    x->x_ignore = s;
+    x->x_glist = canvas_getcurrent();
     init_sine_table();
+    x->x_pan_list = (float*)malloc(MAXLEN * sizeof(float));
+    x->x_pan_list[0] = 0;
+    x->x_list_size = 1;
     float f = 0;
-    x->x_mc = 0;
-    while(ac && av->a_type == A_SYMBOL){
-        if(atom_getsymbol(av) == gensym("-mc")){
-            x->x_mc = 1;
-            ac--, av++;
-        }
-    }
     if(ac && av->a_type == A_FLOAT)
-        f = atom_getfloat(av);
+        f = x->x_pan_list[0] = atom_getfloat(av);
     x->x_panlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_panlet, f);
     outlet_new((t_object *)x, &s_signal);
-    if(!x->x_mc)
-        outlet_new((t_object *)x, &s_signal);
+    outlet_new((t_object *)x, &s_signal);
     return(x);
 }
 
@@ -103,4 +102,5 @@ void pan2_tilde_setup(void){
         (t_method)pan2_free, sizeof(t_pan2), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(pan2_class, nullfn, gensym("signal"), 0);
     class_addmethod(pan2_class, (t_method)pan2_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(pan2_class, (t_method)pan2_pan, gensym("pan"), A_GIMME, 0);
 }
