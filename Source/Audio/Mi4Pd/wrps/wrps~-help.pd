@@ -1,0 +1,53 @@
+#N canvas 161 539 972 626 10;
+#X obj 104 87 adc~ 1 2;
+#X obj 86 430 *~;
+#X obj 131 431 *~;
+#X obj 286 364 vsl 15 128 0 1 0 1 empty empty volume 0 -9 0 10 -262144
+-1 -1 3700 1;
+#X floatatom 292 549 5 0 0 0 - - -, f 5;
+#X obj 85 504 dac~ 1 2;
+#X obj 304 72 vsl 15 128 0 1 0 1 empty empty shape 0 -9 0 10 -262144
+-1 -1 4600 1;
+#X obj 362 71 vsl 15 128 0 1 0 1 empty empty algo 0 -9 0 10 -262144
+-1 -1 5400 1;
+#X obj 432 73 vsl 15 128 0 1 0 1 empty empty timbre 0 -9 0 10 -262144
+-1 -1 11700 1;
+#X obj 568 74 vsl 15 128 0 1 0 1 empty empty drive1 0 -9 0 10 -262144
+-1 -1 12700 1;
+#X obj 114 189 wrps~;
+#X msg 285 269 shape \$1;
+#X msg 354 268 algo \$1;
+#X msg 563 268 drive1 \$1;
+#X obj 653 75 vsl 15 128 0 1 0 1 empty empty drive2 0 -9 0 10 -262144
+-1 -1 3300 1;
+#X msg 648 269 drive2 \$1;
+#X msg 418 269 timbre \$1;
+#X obj 500 74 vsl 15 128 0 127 0 1 empty empty note 0 -9 0 10 -262144
+-1 -1 6400 1;
+#X msg 495 271 note \$1;
+#X text 522 15 external R input;
+#X text 628 17 external L input;
+#X text 292 20 0 = external (R);
+#X text 288 36 other (0-3) internal osc;
+#X text 461 34 pitch of internal osc;
+#X connect 0 0 10 0;
+#X connect 0 1 10 1;
+#X connect 1 0 5 0;
+#X connect 2 0 5 1;
+#X connect 3 0 2 1;
+#X connect 3 0 1 1;
+#X connect 3 0 4 0;
+#X connect 6 0 11 0;
+#X connect 7 0 12 0;
+#X connect 8 0 16 0;
+#X connect 9 0 13 0;
+#X connect 10 0 1 0;
+#X connect 10 1 2 0;
+#X connect 11 0 10 0;
+#X connect 12 0 10 0;
+#X connect 13 0 10 0;
+#X connect 14 0 15 0;
+#X connect 15 0 10 0;
+#X connect 16 0 10 0;
+#X connect 17 0 18 0;
+#X connect 18 0 10 0;

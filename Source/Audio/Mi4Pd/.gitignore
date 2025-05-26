@@ -1,0 +1,15 @@
+*.pd_linux
+*.pd_darwin
+*.dll
+*.o
+*.so
+*.dylib
+
+
+build
+
+**/*.sublime-workspace
+cmake-build*/
+
+.idea/workspace.xml
+.idea/tasks.xml
