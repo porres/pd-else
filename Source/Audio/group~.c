@@ -5,9 +5,9 @@
 
 #define MAX_INOUT 4096
 
-static t_class *mixdown_class;
+static t_class *group_class;
 
-typedef struct _mixdown{
+typedef struct _group{
     t_object    x_obj;
     int         x_n;
     int         x_n_ins;
@@ -16,9 +16,9 @@ typedef struct _mixdown{
     t_float     x_gain;
     t_float    *x_input;  // inputs copy
     t_symbol   *x_ignore;
-}t_mixdown;
+}t_group;
 
-static void mixdown_n(t_mixdown *x, t_floatarg f){
+static void group_n(t_group *x, t_floatarg f){
     int n = f < 1 ? 1 : f > MAX_INOUT ? MAX_INOUT : (int)f;
     if(x->x_nchans != n){
         x->x_nchans = n;
@@ -27,7 +27,7 @@ static void mixdown_n(t_mixdown *x, t_floatarg f){
     }
 }
 
-static void mixdown_norm(t_mixdown *x, t_floatarg f){
+static void group_norm(t_group *x, t_floatarg f){
     int norm = f != 0;
     if(x->x_norm != norm){
         x->x_norm = norm;
@@ -36,8 +36,8 @@ static void mixdown_norm(t_mixdown *x, t_floatarg f){
     }
 }
 
-t_int *mixdown_perform(t_int *w){
-    t_mixdown *x = (t_mixdown*) w[1];
+t_int *group_perform(t_int *w){
+    t_group *x = (t_group*) w[1];
     t_float *input = (t_float *)(w[2]);
     t_float *out = (t_float *)(w[3]);
     t_float *in = x->x_input;
@@ -53,7 +53,7 @@ t_int *mixdown_perform(t_int *w){
     return(w+4);
 }
 
-void mixdown_dsp(t_mixdown *x, t_signal **sp){
+void group_dsp(t_group *x, t_signal **sp){
     x->x_n = sp[0]->s_n;
     int ins = sp[0]->s_nchans;
     if(x->x_n_ins != ins){ // check if only one and add zero, check right inlet too
@@ -64,15 +64,15 @@ void mixdown_dsp(t_mixdown *x, t_signal **sp){
         x->x_gain = x->x_norm ? 1./ratio : 1;
     }
     signal_setmultiout(&sp[1], x->x_nchans);
-    dsp_add(mixdown_perform, 3, x, sp[0]->s_vec, sp[1]->s_vec);
+    dsp_add(group_perform, 3, x, sp[0]->s_vec, sp[1]->s_vec);
 }
 
-void mixdown_free(t_mixdown *x){
+void group_free(t_group *x){
     freebytes(x->x_input, x->x_n_ins * sizeof(*x->x_input));
 }
 
-void *mixdown_new(t_symbol *s, int ac, t_atom *av){
-    t_mixdown *x = (t_mixdown *)pd_new(mixdown_class);
+void *group_new(t_symbol *s, int ac, t_atom *av){
+    t_group *x = (t_group *)pd_new(group_class);
     x->x_ignore = s;
     x->x_n = sys_getblksize();
     x->x_n_ins = 1;
@@ -91,11 +91,11 @@ void *mixdown_new(t_symbol *s, int ac, t_atom *av){
     return(x);
 }
 
-void mixdown_tilde_setup(void){
-    mixdown_class = class_new(gensym("mixdown~"), (t_newmethod)mixdown_new,
-        (t_method)mixdown_free, sizeof(t_mixdown), CLASS_MULTICHANNEL, A_GIMME, 0);
-    class_addmethod(mixdown_class, nullfn, gensym("signal"), 0);
-    class_addmethod(mixdown_class, (t_method)mixdown_dsp, gensym("dsp"),0);
-    class_addmethod(mixdown_class, (t_method)mixdown_n, gensym("n"), A_FLOAT, 0);
-    class_addmethod(mixdown_class, (t_method)mixdown_norm, gensym("gain"), A_FLOAT, 0);
+void group_tilde_setup(void){
+    group_class = class_new(gensym("group~"), (t_newmethod)group_new,
+        (t_method)group_free, sizeof(t_group), CLASS_MULTICHANNEL, A_GIMME, 0);
+    class_addmethod(group_class, nullfn, gensym("signal"), 0);
+    class_addmethod(group_class, (t_method)group_dsp, gensym("dsp"),0);
+    class_addmethod(group_class, (t_method)group_n, gensym("n"), A_FLOAT, 0);
+    class_addmethod(group_class, (t_method)group_norm, gensym("gain"), A_FLOAT, 0);
 }
