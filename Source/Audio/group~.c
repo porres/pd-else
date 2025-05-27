@@ -22,7 +22,8 @@ static void group_n(t_group *x, t_floatarg f){
     int n = f < 1 ? 1 : f > MAX_INOUT ? MAX_INOUT : (int)f;
     if(x->x_nchans != n){
         x->x_nchans = n;
-        x->x_gain = x->x_norm ? 1./(float)x->x_nchans : 1;
+        float ratio = ceil((float)x->x_n_ins/(float)x->x_nchans);
+        x->x_gain = x->x_norm ? 1./ratio : 1;
         canvas_update_dsp();
     }
 }
