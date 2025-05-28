@@ -1,4 +1,4 @@
-// porres
+// porres 2023-2025
 
 #include <m_pd.h>
 #include "buffer.h"
@@ -6,14 +6,15 @@
 
 #include <stdlib.h>
 
-#define MAXLEN 4096 // Max input
-#define MAXOUTPUT 4096
+#define MAXLEN      4096 // Max input
+#define MAXOUTPUT   4096
 
 typedef struct _pan{
     t_object    x_obj;
     t_float   **x_ins;          // inputs
     t_float   **x_outs;         // outputs
     t_inlet    *x_inlet_spread;
+    t_inlet    *x_inlet_pan;
     t_inlet    *x_inlet_gain;
     t_int       x_ch2, x_ch3, x_ch4;
     t_int       x_sig2, x_sig3, x_sig4;
@@ -29,12 +30,42 @@ typedef struct _pan{
     t_float     x_offset;
     t_symbol   *x_ignore;
     t_glist    *x_glist;
+    t_float    *x_signalscalar1;
+    t_float    *x_signalscalar2;
+    t_float    *x_signalscalar3;
 }t_pan;
 
 static t_class *pan_class;
 
 static t_int *pan_perform(t_int *w){
     t_pan *x = (t_pan *)(w[1]);
+    if(!x->x_sig2){
+        t_float *scalar = x->x_signalscalar1;
+        if(!else_magic_isnan(*x->x_signalscalar1)){
+            t_float gain = *scalar;
+            for(int j = 0; j < x->x_nchans; j++)
+                x->x_gain_list[j] = gain;
+            else_magic_setnan(x->x_signalscalar1);
+        }
+    }
+    if(!x->x_sig3){
+        t_float *scalar = x->x_signalscalar2;
+        if(!else_magic_isnan(*x->x_signalscalar2)){
+            t_float pan = *scalar;
+            for(int j = 0; j < x->x_nchans; j++)
+                x->x_pan_list[j] = pan;
+            else_magic_setnan(x->x_signalscalar2);
+        }
+    }
+    if(!x->x_sig4){
+        t_float *scalar = x->x_signalscalar3;
+        if(!else_magic_isnan(*x->x_signalscalar3)){
+            t_float spread = *scalar;
+            for(int j = 0; j < x->x_nchans; j++)
+                x->x_spread_list[j] = spread;
+            else_magic_setnan(x->x_signalscalar3);
+        }
+    }
     for(int i = 0; i < x->x_n; i++){
         for(int n = 0; n < x->x_nchans; n++){
             int ch = n * x->x_n;;
@@ -159,7 +190,11 @@ static void pan_open(t_pan *x, t_floatarg f){
 void *pan_free(t_pan *x){
     freebytes(x->x_ins, 4 * x->x_nchans * sizeof(*x->x_ins));
     freebytes(x->x_outs, x->x_n_outlets * x->x_nchans * sizeof(*x->x_outs));
+    free(x->x_pan_list);
+    free(x->x_gain_list);
+    free(x->x_spread_list);
     inlet_free(x->x_inlet_spread);
+    inlet_free(x->x_inlet_pan);
     inlet_free(x->x_inlet_gain);
     return(void *)x;
 }
@@ -172,10 +207,10 @@ static void *pan_new(t_symbol *s, int ac, t_atom *av){
     x->x_pan_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_gain_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_spread_list = (float*)malloc(MAXLEN * sizeof(float));
-    x->x_pan_list[0] = x->x_gain_list[0] = x->x_spread_list[0] = 0;
+    x->x_pan_list[0] = 0.5;
+    x->x_gain_list[0] = x->x_spread_list[0] = 1;
     x->x_panlist_size = x->x_gainlist_size = x->x_spreadlist_size = 1;
     t_float n_outlets = 2;
-    float spread = 1, gain = 1;
     x->x_open = x->x_rad = 0;
     x->x_offset = 0;
     int argnum = 0;
@@ -187,7 +222,7 @@ static void *pan_new(t_symbol *s, int ac, t_atom *av){
                     n_outlets = aval;
                     break;
                 case 1:
-                    spread = aval;
+                    x->x_spread_list[0] = aval;
                     break;
                 case 2:
                     x->x_offset = aval / 360.;
@@ -221,12 +256,16 @@ static void *pan_new(t_symbol *s, int ac, t_atom *av){
     x->x_ins = getbytes(4 * sizeof(*x->x_ins));
     x->x_outs = getbytes(n_outlets * sizeof(*x->x_outs));
     x->x_inlet_gain = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_inlet_gain, gain);
-    inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal); // position
+        pd_float((t_pd *)x->x_inlet_gain, x->x_gain_list[0]);
+    x->x_inlet_pan = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_inlet_pan, x->x_pan_list[0]);
     x->x_inlet_spread = inlet_new(&x->x_obj, &x->x_obj.ob_pd,  &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_inlet_spread, spread);
+        pd_float((t_pd *)x->x_inlet_spread, x->x_spread_list[0]);
     for(int i = 0; i < n_outlets; i++)
         outlet_new((t_object *)x, &s_signal);
+    x->x_signalscalar1 = obj_findsignalscalar((t_object *)x, 1);
+    x->x_signalscalar2 = obj_findsignalscalar((t_object *)x, 2);
+    x->x_signalscalar3 = obj_findsignalscalar((t_object *)x, 3);
     return(x);
 errstate:
     pd_error(x, "[pan~]: improper args");
