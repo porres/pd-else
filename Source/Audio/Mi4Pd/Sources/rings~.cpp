@@ -1,26 +1,19 @@
 #include "m_pd.h"
 
-//IMPROVE - 
-//IMPROVE - 
-//TODO - hep file
-
 #include "rings/dsp/part.h"
 #include "rings/dsp/patch.h"
 #include "rings/dsp/strummer.h"
 #include "rings/dsp/string_synth_part.h"
 
-
-inline float constrain(float v, float vMin, float vMax) {
-    return std::max<float>(vMin, std::min<float>(vMax, v));
+inline float constrain(float v, float vMin, float vMax){
+    return(std::max<float>(vMin, std::min<float>(vMax, v)));
 }
 
-static t_class *rings_tilde_class;
+static t_class *rings_class;
 
-typedef struct _rings_tilde {
+typedef struct _rings{
     t_object x_obj;
-
     t_float f_dummy;
-
     t_float f_pitch;
     t_float f_transpose;
     t_float f_structure;
@@ -48,40 +41,29 @@ typedef struct _rings_tilde {
     rings::Strummer strummer;
     rings::Patch patch;
 
-
     float kNoiseGateThreshold;
     float in_level;
     float *in;
     int iobufsz;
-    float pitch_offset=0.0f;
-
+    float pitch_offset = 0.0f;
     static const int REVERB_SZ = 32768;
     uint16_t buffer[REVERB_SZ];
+}t_rings;
 
-
-} t_rings_tilde;
-
-
-// puredata methods implementation -start
-t_int *rings_tilde_render(t_int *w) {
-    t_rings_tilde *x = (t_rings_tilde *) (w[1]);
-    t_sample *in = (t_sample *) (w[2]);
-    t_sample *out = (t_sample *) (w[3]);
-    t_sample *aux = (t_sample *) (w[4]);
-    int n = (int) (w[5]);
+t_int *rings_tperform(t_int *w){
+    t_rings *x = (t_rings *)(w[1]);
+    t_sample *in = (t_sample *)(w[2]);
+    t_sample *out = (t_sample *)(w[3]);
+    t_sample *aux = (t_sample *)(w[4]);
+    int n = (int)(w[5]);
     size_t size = n;
-
-    for (int i = 0; i < n; i++) {
+    for(int i = 0; i < n; i++)
         out[i] = in[i];
-    }
-
-    if (n > x->iobufsz) {
+    if(n > x->iobufsz){
         delete[] x->in;
         x->iobufsz = n;
         x->in = new float[x->iobufsz];
     }
-
-
     x->patch.brightness = constrain(x->f_brightness, 0.0f, 1.0f);
     x->patch.damping = constrain(x->f_damping, 0.0f, 1.0f);
     x->patch.position = constrain(x->f_position, 0.0f, 1.0f);
@@ -93,70 +75,119 @@ t_int *rings_tilde_render(t_int *w) {
     x->performance_state.internal_strum =  x->f_internal_strum > 0.5;
     x->performance_state.internal_note =  x->f_internal_note > 0.5;
     x->performance_state.chord = x->patch.structure * constrain(x->f_chord, 0, rings::kNumChords - 1);
-
     x->performance_state.strum = x->f_trig > 0.5;
-    x->f_trig=0.0f;
-
-
+    x->f_trig = 0.0f;
     x->f_polyphony = constrain(1 << int(x->f_polyphony) , 1, rings::kMaxPolyphony);
-
-    if(x->f_polyphony != x->part.polyphony()) {
+    if(x->f_polyphony != x->part.polyphony()){
         x->part.set_polyphony(x->f_polyphony);
         x->string_synth.set_polyphony(x->f_polyphony);
     }
-
     rings::ResonatorModel model = static_cast<rings::ResonatorModel>((int) x->f_model);
-    x->f_model=constrain(x->f_model,0,rings::ResonatorModel::RESONATOR_MODEL_LAST - 1);
-    if(model != x->part.model()) {
+    x->f_model = constrain(x->f_model, 0, rings::ResonatorModel::RESONATOR_MODEL_LAST - 1);
+    if(model != x->part.model()){
         x->part.set_model(model);
         x->string_synth.set_fx(static_cast<rings::FxType>(model));
     }
-
-
     x->part.set_bypass(x->f_bypass > 0.5);
-
-    if (x->f_easter_egg > 0.5) {
-        for (size_t i = 0; i < size; ++i) {
+    if(x->f_easter_egg > 0.5){
+        for(size_t i = 0; i < size; ++i)
             x->in[i] = in[i];
-        }
         x->strummer.Process(NULL, size, &(x->performance_state));
         x->string_synth.Process(x->performance_state, x->patch, in, out, aux, size);
-    } else {
-        // Apply noise gate.
-        for (size_t i = 0; i < size; ++i) {
+    }
+    else{ // Apply noise gate.
+        for(size_t i = 0; i < size; ++i){
             float in_sample = in[i];
             float error, gain;
             error = in_sample * in_sample - x->in_level;
             x->in_level += error * (error > 0.0f ? 0.1f : 0.0001f);
-            gain = x->in_level <= x->kNoiseGateThreshold
-                   ? (1.0f / x->kNoiseGateThreshold) * x->in_level : 1.0f;
+            gain = x->in_level <= x->kNoiseGateThreshold ?
+                (1.0f / x->kNoiseGateThreshold) * x->in_level : 1.0f;
             x->in[i] = gain * in_sample;
         }
         x->strummer.Process(x->in, size, &(x->performance_state));
         x->part.Process(x->performance_state, x->patch, x->in, out, aux, size);
     }
-
-    return (w + 6); // # args + 1
+    return(w+6);
 }
 
-
-void rings_tilde_dsp(t_rings_tilde *x, t_signal **sp) {
-    // add the perform method, with all signal i/o
-    dsp_add(rings_tilde_render, 5,
-            x,
-            sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, // signal i/o (clockwise)
-            sp[0]->s_n);
+void rings_dsp(t_rings *x, t_signal **sp) {
+    dsp_add(rings_tperform, 5, x, sp[0]->s_vec, sp[1]->s_vec,
+        sp[2]->s_vec, sp[0]->s_n);
 }
 
-void rings_tilde_free(t_rings_tilde *x) {
+void rings_pitch(t_rings *x, t_floatarg f){
+    x->f_pitch = f;
+}
+
+void rings_transpose(t_rings *x, t_floatarg f){
+    x->f_transpose = f;
+}
+
+void rings_structure(t_rings *x, t_floatarg f){
+    x->f_structure = f;
+}
+
+void rings_brightness(t_rings *x, t_floatarg f){
+    x->f_brightness = f;
+}
+
+void rings_damping(t_rings *x, t_floatarg f){
+    x->f_damping = f;
+}
+
+void rings_position(t_rings *x, t_floatarg f){
+    x->f_position = f;
+}
+
+void rings_bypass(t_rings *x, t_floatarg f){
+    x->f_bypass = f;
+}
+
+void rings_easter_egg(t_rings *x, t_floatarg f){
+    x->f_easter_egg = f;
+}
+
+void rings_poly(t_rings *x, t_floatarg f){
+    x->f_polyphony = f;
+}
+
+void rings_model(t_rings *x, t_floatarg f){
+    x->f_model = f;
+}
+
+void rings_fm(t_rings *x, t_floatarg f){
+    x->f_fm = f;
+}
+
+void rings_trig(t_rings *x){
+    x->f_trig = 1.0f;
+}
+
+void rings_chord(t_rings *x, t_floatarg f){
+    x->f_chord = f;
+}
+
+void rings_gen_strum(t_rings *x, t_floatarg f){
+    x->f_internal_strum = f;
+}
+
+void rings_gen_exciter(t_rings *x, t_floatarg f){
+    x->f_internal_exciter = f;
+}
+
+void rings_gen_note(t_rings *x, t_floatarg f){
+    x->f_internal_note = f;
+}
+
+void rings_free(t_rings *x) {
     delete[] x->in;
     outlet_free(x->x_out_odd);
     outlet_free(x->x_out_even);
 }
 
-void *rings_tilde_new(t_floatarg) {
-    t_rings_tilde *x = (t_rings_tilde *) pd_new(rings_tilde_class);
-
+void *rings_new(t_floatarg){
+    t_rings *x = (t_rings *) pd_new(rings_class);
     x->f_polyphony = 0.0f;
     x->f_model = 0.0f;
     x->f_pitch = 60.0f;
@@ -173,18 +204,14 @@ void *rings_tilde_new(t_floatarg) {
     x->f_transpose = 0;
     x->f_fm = 0;
     x->f_trig = 0;
-
     x->in_level = 0.0f;
-
     x->kNoiseGateThreshold = 0.00003f;
-
-    if(sys_getsr()!=48000.0f) {
-        post("rings~.pd is designed for 48k, not %f, approximating pitch", sys_getsr());
-        if(sys_getsr()==44100) {
-            x->pitch_offset=1.46f;
+    if(sys_getsr() != 48000.0f){
+//        post("rings~.pd is designed for 48k, not %f, approximating pitch", sys_getsr());
+        if(sys_getsr() == 44100){
+            x->pitch_offset = 1.46f;
         }
     }
-
     x->strummer.Init(0.01f, sys_getsr() / sys_getblksize());
     x->string_synth.Init(x->buffer);
     x->part.Init(x->buffer);
@@ -196,151 +223,50 @@ void *rings_tilde_new(t_floatarg) {
     x->x_out_odd = outlet_new(&x->x_obj, &s_signal);
     x->x_out_even = outlet_new(&x->x_obj, &s_signal);
 
-
     x->part.set_polyphony(x->f_polyphony);
     x->string_synth.set_polyphony(x->f_polyphony);
-    rings::ResonatorModel model = static_cast<rings::ResonatorModel>((int) x->f_model);
+    rings::ResonatorModel model = static_cast<rings::ResonatorModel > ((int)x->f_model);
     x->part.set_model(model);
     x->string_synth.set_fx(static_cast<rings::FxType>(model));
-
-    return (void *) x;
-}
-
-
-
-void rings_tilde_pitch(t_rings_tilde *x, t_floatarg f) {
-    x->f_pitch = f;
-}
-
-void rings_tilde_transpose(t_rings_tilde *x, t_floatarg f) {
-    x->f_transpose = f;
-}
-
-void rings_tilde_structure(t_rings_tilde *x, t_floatarg f) {
-    x->f_structure = f;
-}
-
-void rings_tilde_brightness(t_rings_tilde *x, t_floatarg f) {
-    x->f_brightness = f;
-}
-
-void rings_tilde_damping(t_rings_tilde *x, t_floatarg f) {
-    x->f_damping = f;
-}
-
-void rings_tilde_position(t_rings_tilde *x, t_floatarg f) {
-    x->f_position = f;
-}
-
-
-void rings_tilde_bypass(t_rings_tilde *x, t_floatarg f) {
-    x->f_bypass = f;
-}
-
-void rings_tilde_easter_egg(t_rings_tilde *x, t_floatarg f) {
-    x->f_easter_egg = f;
-
-}
-
-void rings_tilde_poly(t_rings_tilde *x, t_floatarg f) {
-    x->f_polyphony = f;
-}
-
-void rings_tilde_model(t_rings_tilde *x, t_floatarg f) {
-    x->f_model= f;
-}
-
-void rings_tilde_fm(t_rings_tilde *x, t_floatarg f) {
-    x->f_fm= f;
-}
-
-void rings_tilde_trig(t_rings_tilde *x) {
-    x->f_trig = 1.0f;
-}
-
-void rings_tilde_chord(t_rings_tilde *x, t_floatarg f) {
-    x->f_chord = f;
-}
-
-void rings_tilde_gen_strum(t_rings_tilde *x, t_floatarg f) {
-    x->f_internal_strum = f;
-}
-
-void rings_tilde_gen_exciter(t_rings_tilde *x, t_floatarg f) {
-    x->f_internal_exciter = f;
-}
-
-void rings_tilde_gen_note(t_rings_tilde *x, t_floatarg f) {
-    x->f_internal_note = f;
+    return(void *)x;
 }
 
 extern "C" void rings_tilde_setup(void) {
-    rings_tilde_class = class_new(gensym("rings~"),
-                                 (t_newmethod) rings_tilde_new,
-                                 (t_method) rings_tilde_free,
-                                 sizeof(t_rings_tilde),
-                                 CLASS_DEFAULT,
-                                 A_DEFFLOAT, A_NULL);
-
-    class_addmethod(rings_tilde_class,
-                    (t_method) rings_tilde_dsp,
-                    gensym("dsp"), A_NULL);
-
-    // represents strike input
-    CLASS_MAINSIGNALIN(rings_tilde_class, t_rings_tilde, f_dummy);
-
-    class_addmethod(rings_tilde_class,
-                    (t_method) rings_tilde_poly, gensym("poly"),
-                    A_DEFFLOAT, A_NULL);
-    class_addmethod(rings_tilde_class,
-                    (t_method) rings_tilde_model, gensym("model"),
-                    A_DEFFLOAT, A_NULL);
-
-
-    class_addmethod(rings_tilde_class,
-                    (t_method) rings_tilde_pitch, gensym("pitch"),
-                    A_DEFFLOAT, A_NULL);
-
-    class_addmethod(rings_tilde_class,
-                    (t_method) rings_tilde_transpose, gensym("transpose"),
-                    A_DEFFLOAT, A_NULL);
-
-    class_addmethod(rings_tilde_class,
-                    (t_method) rings_tilde_structure, gensym("structure"),
-                    A_DEFFLOAT, A_NULL);
-    class_addmethod(rings_tilde_class,
-                    (t_method) rings_tilde_brightness, gensym("brightness"),
-                    A_DEFFLOAT, A_NULL);
-    class_addmethod(rings_tilde_class,
-                    (t_method) rings_tilde_damping, gensym("damping"),
-                    A_DEFFLOAT, A_NULL);
-    class_addmethod(rings_tilde_class,
-                    (t_method) rings_tilde_position, gensym("position"),
-                    A_DEFFLOAT, A_NULL);
-    class_addmethod(rings_tilde_class,
-                    (t_method) rings_tilde_bypass, gensym("bypass"),
-                    A_DEFFLOAT, A_NULL);
-    class_addmethod(rings_tilde_class,
-                    (t_method) rings_tilde_easter_egg, gensym("easter_egg"),
-                    A_DEFFLOAT, A_NULL);
-
-    class_addmethod(rings_tilde_class,
-                    (t_method) rings_tilde_gen_strum, gensym("gen_strum"),
-                    A_DEFFLOAT, A_NULL);
-    class_addmethod(rings_tilde_class,
-                    (t_method) rings_tilde_gen_exciter, gensym("gen_exciter"),
-                    A_DEFFLOAT, A_NULL);
-    class_addmethod(rings_tilde_class,
-                    (t_method) rings_tilde_gen_note, gensym("gen_note"),
-                    A_DEFFLOAT, A_NULL);
-    class_addmethod(rings_tilde_class,
-                    (t_method) rings_tilde_chord, gensym("chord"),
-                    A_DEFFLOAT, A_NULL);
-    class_addmethod(rings_tilde_class,
-                    (t_method) rings_tilde_trig, gensym("trig"),
-                     A_NULL);
-    class_addmethod(rings_tilde_class,
-                    (t_method) rings_tilde_fm, gensym("fm"),
-                    A_DEFFLOAT, A_NULL);
+    rings_class = class_new(gensym("rings~"), (t_newmethod) rings_new,
+        (t_method)rings_free, sizeof(t_rings), CLASS_DEFAULT, A_DEFFLOAT, A_NULL);
+    class_addmethod(rings_class,(t_method)rings_dsp, gensym("dsp"), A_NULL);
+    CLASS_MAINSIGNALIN(rings_class, t_rings, f_dummy);
+    class_addmethod(rings_class,(t_method)rings_brightness, gensym("brightness"),
+        A_FLOAT, A_NULL);
+    class_addmethod(rings_class,(t_method)rings_damping, gensym("damping"),
+        A_FLOAT, A_NULL);
+    class_addmethod(rings_class,(t_method)rings_structure, gensym("structure"),
+        A_FLOAT, A_NULL);
+    class_addmethod(rings_class,(t_method)rings_position, gensym("position"),
+        A_FLOAT, A_NULL);
+    
+    class_addmethod(rings_class,(t_method)rings_transpose, gensym("transp"),
+        A_FLOAT, A_NULL);
+    class_addmethod(rings_class,(t_method)rings_fm, gensym("fm"),
+        A_FLOAT, A_NULL);
+    
+    class_addmethod(rings_class,(t_method)rings_poly, gensym("poly"),
+        A_FLOAT, A_NULL);
+    class_addmethod(rings_class,(t_method)rings_model, gensym("model"),
+        A_FLOAT, A_NULL);
+    class_addmethod(rings_class,(t_method)rings_pitch, gensym("pitch"),
+        A_FLOAT, A_NULL);
+    class_addmethod(rings_class,(t_method)rings_bypass, gensym("bypass"),
+        A_FLOAT, A_NULL);
+    class_addmethod(rings_class,(t_method)rings_easter_egg, gensym("easter_egg"),
+        A_FLOAT, A_NULL);
+    class_addmethod(rings_class,(t_method)rings_gen_strum, gensym("gen_strum"),
+        A_FLOAT, A_NULL);
+    class_addmethod(rings_class,(t_method)rings_gen_exciter, gensym("gen_exciter"),
+        A_FLOAT, A_NULL);
+    class_addmethod(rings_class,(t_method)rings_gen_note, gensym("gen_note"),
+        A_FLOAT, A_NULL);
+    class_addmethod(rings_class,(t_method)rings_chord, gensym("chord"),
+        A_FLOAT, A_NULL);
+    class_addmethod(rings_class,(t_method)rings_trig, gensym("trig"), A_NULL);
 }
-// puredata methods implementation - end
