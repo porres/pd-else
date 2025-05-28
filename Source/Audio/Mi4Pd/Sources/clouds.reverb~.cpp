@@ -32,20 +32,6 @@ typedef struct _clouds_reverb_tilde {
     int iobufsz;
 } t_clouds_reverb_tilde;
 
-// define pure data methods
-extern "C" {
-t_int *clouds_reverb_tilde_render(t_int *w);
-void clouds_reverb_tilde_dsp(t_clouds_reverb_tilde *x, t_signal **sp);
-void clouds_reverb_tilde_free(t_clouds_reverb_tilde *x);
-void *clouds_reverb_tilde_new(t_floatarg f);
-void clouds_reverb_tilde_setup(void);
-void clouds_reverb_tilde_amount(t_clouds_reverb_tilde *x, t_floatarg f);
-void clouds_reverb_tilde_gain(t_clouds_reverb_tilde *x, t_floatarg f);
-void clouds_reverb_tilde_diffusion(t_clouds_reverb_tilde *x, t_floatarg f);
-void clouds_reverb_tilde_time(t_clouds_reverb_tilde *x, t_floatarg f);
-void clouds_reverb_tilde_lp(t_clouds_reverb_tilde *x, t_floatarg f);
-}
-
 // puredata methods implementation -start
 t_int *clouds_reverb_tilde_render(t_int *w) {
     t_clouds_reverb_tilde *x = (t_clouds_reverb_tilde *)(w[1]);
@@ -134,7 +120,7 @@ void clouds_reverb_tilde_lp(t_clouds_reverb_tilde *x, t_floatarg f) {
     x->f_lp = f;
 }
 
-void setup_clouds0x2ereverb_tilde(void) {
+extern "C" void setup_clouds0x2ereverb_tilde(void) {
     clouds_reverb_tilde_class =
         class_new(gensym("clouds.reverb~"), (t_newmethod)clouds_reverb_tilde_new, 0,
                   sizeof(t_clouds_reverb_tilde), CLASS_DEFAULT, A_DEFFLOAT, A_NULL);
