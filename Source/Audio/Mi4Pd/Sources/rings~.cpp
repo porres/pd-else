@@ -62,36 +62,6 @@ typedef struct _rings_tilde {
 } t_rings_tilde;
 
 
-//define pure data methods
-extern "C" {
-t_int *rings_tilde_render(t_int *w);
-void rings_tilde_dsp(t_rings_tilde *x, t_signal **sp);
-void rings_tilde_free(t_rings_tilde *x);
-void *rings_tilde_new(t_floatarg f);
-
-void rings_tilde_setup(void);
-
-
-void rings_tilde_pitch(t_rings_tilde *x, t_floatarg f);
-void rings_tilde_transpose(t_rings_tilde *x, t_floatarg f);
-void rings_tilde_fm(t_rings_tilde *x, t_floatarg f);
-void rings_tilde_trig(t_rings_tilde *x);
-void rings_tilde_model(t_rings_tilde *x, t_floatarg f);
-
-void rings_tilde_chord(t_rings_tilde *x, t_floatarg f);
-void rings_tilde_poly(t_rings_tilde *x, t_floatarg f);
-void rings_tilde_structure(t_rings_tilde *x, t_floatarg f);
-void rings_tilde_brightness(t_rings_tilde *x, t_floatarg f);
-void rings_tilde_damping(t_rings_tilde *x, t_floatarg f);
-void rings_tilde_position(t_rings_tilde *x, t_floatarg f);
-void rings_tilde_bypass(t_rings_tilde *x, t_floatarg f);
-void rings_tilde_easter_egg(t_rings_tilde *x, t_floatarg f);
-
-void rings_tilde_gen_strum(t_rings_tilde *x, t_floatarg f);
-void rings_tilde_gen_exciter(t_rings_tilde *x, t_floatarg f);
-void rings_tilde_gen_note(t_rings_tilde *x, t_floatarg f);
-}
-
 // puredata methods implementation -start
 t_int *rings_tilde_render(t_int *w) {
     t_rings_tilde *x = (t_rings_tilde *) (w[1]);
@@ -237,7 +207,7 @@ void *rings_tilde_new(t_floatarg) {
 }
 
 
-void rings_tilde_setup(void) {
+extern "C" void rings_tilde_setup(void) {
     rings_tilde_class = class_new(gensym("rings~"),
                                  (t_newmethod) rings_tilde_new,
                                  (t_method) rings_tilde_free,

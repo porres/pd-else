@@ -50,21 +50,6 @@ typedef struct _warps_tilde {
     int iobufsz;
 } t_warps_tilde;
 
-// define pure data methods
-extern "C" {
-t_int *warps_tilde_render(t_int *w);
-void warps_tilde_dsp(t_warps_tilde *x, t_signal **sp);
-void warps_tilde_free(t_warps_tilde *x);
-void *warps_tilde_new(t_floatarg f);
-void warps_tilde_setup(void);
-void warps_tilde_shape(t_warps_tilde *x, t_floatarg f);
-void warps_tilde_drive1(t_warps_tilde *x, t_floatarg f);
-void warps_tilde_drive2(t_warps_tilde *x, t_floatarg f);
-void warps_tilde_algo(t_warps_tilde *x, t_floatarg f);
-void warps_tilde_timbre(t_warps_tilde *x, t_floatarg f);
-void warps_tilde_note(t_warps_tilde *x, t_floatarg f);
-}
-
 // puredata methods implementation -start
 t_int *warps_tilde_render(t_int *w) {
     t_warps_tilde *x = (t_warps_tilde *)(w[1]);
@@ -178,7 +163,7 @@ void warps_tilde_shape(t_warps_tilde *x, t_floatarg f) {
 void warps_tilde_note(t_warps_tilde *x, t_floatarg f) {
     x->f_note = f;
 }
-void warps_tilde_setup(void) {
+extern "C" void warps_tilde_setup(void) {
     warps_tilde_class =
         class_new(gensym("warps~"), (t_newmethod)warps_tilde_new, (t_method)warps_tilde_free,
                   sizeof(t_warps_tilde), CLASS_DEFAULT, A_DEFFLOAT, A_NULL);

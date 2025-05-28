@@ -134,7 +134,7 @@ void clouds_reverb_tilde_lp(t_clouds_reverb_tilde *x, t_floatarg f) {
     x->f_lp = f;
 }
 
-void clouds0x2ereverb_tilde_setup(void) {
+void setup_clouds0x2ereverb_tilde(void) {
     clouds_reverb_tilde_class =
         class_new(gensym("clouds.reverb~"), (t_newmethod)clouds_reverb_tilde_new, 0,
                   sizeof(t_clouds_reverb_tilde), CLASS_DEFAULT, A_DEFFLOAT, A_NULL);

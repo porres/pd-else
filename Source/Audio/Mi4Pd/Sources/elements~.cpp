@@ -12,9 +12,9 @@ inline float constrain(float v, float vMin, float vMax) {
   return std::max<float>(vMin,std::min<float>(vMax, v));
 }
 
-static t_class *lmnts_tilde_class;
+static t_class *elements_tilde_class;
 
-typedef struct _lmnts_tilde {
+typedef struct _elements_tilde {
   t_object  x_obj;
 
   t_float  f_dummy;
@@ -65,46 +65,46 @@ typedef struct _lmnts_tilde {
   float* strike;
   int iobufsz;
 
-} t_lmnts_tilde;
+} t_elements_tilde;
 
 
 //define pure data methods
 extern "C"  {
-  t_int*  lmnts_tilde_render(t_int *w);
-  void    lmnts_tilde_dsp(t_lmnts_tilde *x, t_signal **sp);
-  void    lmnts_tilde_free(t_lmnts_tilde *x);
-  void*   lmnts_tilde_new(t_floatarg f);
-  void    lmnts_tilde_setup(void);
+  t_int*  elements_tilde_render(t_int *w);
+  void    elements_tilde_dsp(t_elements_tilde *x, t_signal **sp);
+  void    elements_tilde_free(t_elements_tilde *x);
+  void*   elements_tilde_new(t_floatarg f);
+  void    elements_tilde_setup(void);
 
-  void lmnts_tilde_gate(t_lmnts_tilde *x, t_floatarg f);
+  void elements_tilde_gate(t_elements_tilde *x, t_floatarg f);
 
-  void lmnts_tilde_pitch(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_contour(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_bow_level(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_bow_timbre(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_blow_level(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_blow_flow(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_blow_timbre(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_strike_level(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_strike_mallet(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_strike_timbre(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_resonator(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_geometry(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_brightness(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_damping(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_position(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_space(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_mod_pitch(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_mod_depth(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_seed(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_bypass(t_lmnts_tilde *x, t_floatarg f);
-  void lmnts_tilde_easter_egg(t_lmnts_tilde *x, t_floatarg f);
+  void elements_tilde_pitch(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_contour(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_bow_level(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_bow_timbre(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_blow_level(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_blow_flow(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_blow_timbre(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_strike_level(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_strike_mallet(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_strike_timbre(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_resonator(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_geometry(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_brightness(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_damping(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_position(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_space(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_mod_pitch(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_mod_depth(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_seed(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_bypass(t_elements_tilde *x, t_floatarg f);
+  void elements_tilde_easter_egg(t_elements_tilde *x, t_floatarg f);
 }
 
 // puredata methods implementation -start
-t_int *lmnts_tilde_render(t_int *w)
+t_int *elements_tilde_render(t_int *w)
 {
-  t_lmnts_tilde *x   = (t_lmnts_tilde *)(w[1]);
+  t_elements_tilde *x   = (t_elements_tilde *)(w[1]);
   t_sample  *in_strike   = (t_sample *)(w[2]);
   t_sample  *in_blow  = (t_sample *)(w[3]);
   t_sample  *out_left  = (t_sample *)(w[4]);
@@ -186,16 +186,16 @@ t_int *lmnts_tilde_render(t_int *w)
 }
 
 
-void lmnts_tilde_dsp(t_lmnts_tilde *x, t_signal **sp)
+void elements_tilde_dsp(t_elements_tilde *x, t_signal **sp)
 {
   // add the perform method, with all signal i/o
-  dsp_add(lmnts_tilde_render, 6,
+  dsp_add(elements_tilde_render, 6,
           x,
           sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, // signal i/o (clockwise)
           sp[0]->s_n);
 }
 
-void lmnts_tilde_free(t_lmnts_tilde *x)
+void elements_tilde_free(t_elements_tilde *x)
 {
   delete [] x->strike;
   delete [] x->blow;
@@ -205,9 +205,9 @@ void lmnts_tilde_free(t_lmnts_tilde *x)
   outlet_free(x->x_out_right);
 }
 
-void *lmnts_tilde_new(t_floatarg)
+void *elements_tilde_new(t_floatarg)
 {
-  t_lmnts_tilde *x = (t_lmnts_tilde *) pd_new(lmnts_tilde_class);
+  t_elements_tilde *x = (t_elements_tilde *) pd_new(elements_tilde_class);
 
   x->f_gate = 0.0;
   x->f_pitch = 0.0;
@@ -257,197 +257,197 @@ void *lmnts_tilde_new(t_floatarg)
 }
 
 
-void lmnts_tilde_setup(void) {
-  lmnts_tilde_class = class_new(  gensym("lmnts~"),
-                                  (t_newmethod)lmnts_tilde_new,
-                                  (t_method) lmnts_tilde_free,
-                                  sizeof(t_lmnts_tilde),
+void elements_tilde_setup(void) {
+  elements_tilde_class = class_new(  gensym("elements~"),
+                                  (t_newmethod)elements_tilde_new,
+                                  (t_method) elements_tilde_free,
+                                  sizeof(t_elements_tilde),
                                   CLASS_DEFAULT,
                                   A_DEFFLOAT, A_NULL);
 
-  class_addmethod(  lmnts_tilde_class,
-                    (t_method)lmnts_tilde_dsp,
+  class_addmethod(  elements_tilde_class,
+                    (t_method)elements_tilde_dsp,
                     gensym("dsp"), A_NULL);
 
   // represents strike input
-  CLASS_MAINSIGNALIN(lmnts_tilde_class, t_lmnts_tilde, f_dummy);
+  CLASS_MAINSIGNALIN(elements_tilde_class, t_elements_tilde, f_dummy);
 
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_gate, gensym("gate"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_gate, gensym("gate"),
     A_DEFFLOAT,A_NULL);
 
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_pitch, gensym("pitch"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_pitch, gensym("pitch"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_contour, gensym("contour"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_contour, gensym("contour"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_bow_level, gensym("bow_level"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_bow_level, gensym("bow_level"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_bow_timbre, gensym("bow_timbre"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_bow_timbre, gensym("bow_timbre"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_blow_level, gensym("blow_level"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_blow_level, gensym("blow_level"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_blow_flow, gensym("blow_flow"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_blow_flow, gensym("blow_flow"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_blow_timbre, gensym("blow_timbre"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_blow_timbre, gensym("blow_timbre"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_strike_level, gensym("strike_level"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_strike_level, gensym("strike_level"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_strike_mallet, gensym("strike_mallet"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_strike_mallet, gensym("strike_mallet"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_strike_timbre, gensym("strike_timbre"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_strike_timbre, gensym("strike_timbre"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_resonator, gensym("resonator"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_resonator, gensym("resonator"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_geometry, gensym("geometry"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_geometry, gensym("geometry"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_brightness, gensym("brightness"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_brightness, gensym("brightness"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_damping, gensym("damping"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_damping, gensym("damping"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_position, gensym("position"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_position, gensym("position"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_space, gensym("space"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_space, gensym("space"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_mod_pitch, gensym("mod_pitch"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_mod_pitch, gensym("mod_pitch"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_mod_depth, gensym("mod_depth"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_mod_depth, gensym("mod_depth"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_seed, gensym("seed"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_seed, gensym("seed"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_bypass, gensym("bypass"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_bypass, gensym("bypass"),
     A_DEFFLOAT,A_NULL);
-  class_addmethod(lmnts_tilde_class,
-    (t_method) lmnts_tilde_easter_egg, gensym("easter_egg"),
+  class_addmethod(elements_tilde_class,
+    (t_method) elements_tilde_easter_egg, gensym("easter_egg"),
     A_DEFFLOAT,A_NULL);
 
 }
 
-void lmnts_tilde_gate(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_gate(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_gate = f;
 }
 
-void lmnts_tilde_pitch(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_pitch(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_pitch = f;
 }
 
-void lmnts_tilde_contour(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_contour(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_contour = f;
 }
 
-void lmnts_tilde_bow_level(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_bow_level(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_bow_level = f;
 }
 
-void lmnts_tilde_bow_timbre(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_bow_timbre(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_bow_timbre = f;
 }
 
-void lmnts_tilde_blow_level(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_blow_level(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_blow_level = f;
 }
 
-void lmnts_tilde_blow_flow(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_blow_flow(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_blow_flow = f;
 }
 
-void lmnts_tilde_blow_timbre(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_blow_timbre(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_blow_timbre = f;
 }
 
-void lmnts_tilde_strike_level(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_strike_level(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_strike_level = f;
 }
 
-void lmnts_tilde_strike_mallet(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_strike_mallet(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_strike_mallet = f;
 }
 
-void lmnts_tilde_strike_timbre(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_strike_timbre(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_strike_timbre = f;
 }
 
-void lmnts_tilde_resonator(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_resonator(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_resonator = f;
 }
 
-void lmnts_tilde_geometry(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_geometry(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_geometry = f;
 }
 
-void lmnts_tilde_brightness(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_brightness(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_brightness = f;
 }
 
-void lmnts_tilde_damping(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_damping(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_damping = f;
 }
 
-void lmnts_tilde_position(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_position(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_position = f;
 }
 
-void lmnts_tilde_space(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_space(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_space = f;
 }
 
-void lmnts_tilde_mod_pitch(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_mod_pitch(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_mod_pitch = f;
 }
 
-void lmnts_tilde_mod_depth(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_mod_depth(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_mod_depth = f;
 }
 
-void lmnts_tilde_seed(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_seed(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_seed = f;
 }
 
-void lmnts_tilde_bypass(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_bypass(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_bypass = f;
 }
 
-void lmnts_tilde_easter_egg(t_lmnts_tilde *x, t_floatarg f) 
+void elements_tilde_easter_egg(t_elements_tilde *x, t_floatarg f) 
 {
   x->f_easter_egg = f;
 

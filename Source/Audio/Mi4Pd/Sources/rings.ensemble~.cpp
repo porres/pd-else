@@ -26,19 +26,6 @@ typedef struct _rings_ensemble_tilde {
   t_outlet* x_out_right;
 } t_rings_ensemble_tilde;
 
-
-//define pure data methods
-extern "C"  {
-  t_int*  rings_ensemble_tilde_render(t_int *w);
-  void    rings_ensemble_tilde_dsp(t_rings_ensemble_tilde *x, t_signal **sp);
-  void    rings_ensemble_tilde_free(t_rings_ensemble_tilde *x);
-  void*   rings_ensemble_tilde_new(t_floatarg f);
-  void    rings_ensemble_tilde_setup(void);
-
-  void rings_ensemble_tilde_amount(t_rings_ensemble_tilde *x, t_floatarg f);
-  void rings_ensemble_tilde_depth(t_rings_ensemble_tilde *x, t_floatarg f);
-}
-
 // puredata methods implementation -start
 t_int* rings_ensemble_tilde_render(t_int *w)
 {
@@ -106,7 +93,7 @@ void rings_ensemble_tilde_depth(t_rings_ensemble_tilde *x, t_floatarg f)
   x->f_depth = f;
 }
 
-void rings0x2eensemble_tilde_setup(void) {
+extern "C" void setup_rings0x2echorus_tilde(void) {
   rings_ensemble_tilde_class = class_new(gensym("rings.ensemble~"),
                                          (t_newmethod)rings_ensemble_tilde_new,
                                          (t_method) rings_ensemble_tilde_free,

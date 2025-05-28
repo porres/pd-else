@@ -29,21 +29,6 @@ typedef struct _rings_reverb_tilde {
 } t_rings_reverb_tilde;
 
 
-//define pure data methods
-extern "C"  {
-  t_int*  rings_reverb_tilde_render(t_int *w);
-  void    rings_reverb_tilde_dsp(t_rings_reverb_tilde *x, t_signal **sp);
-  void    rings_reverb_tilde_free(t_rings_reverb_tilde *x);
-  void*   rings_reverb_tilde_new(t_floatarg f);
-  void    rings_reverb_tilde_setup(void);
-
-  void rings_reverb_tilde_amount(t_rings_reverb_tilde *x, t_floatarg f);
-  void rings_reverb_tilde_gain(t_rings_reverb_tilde *x, t_floatarg f);
-  void rings_reverb_tilde_diffusion(t_rings_reverb_tilde *x, t_floatarg f);
-  void rings_reverb_tilde_time(t_rings_reverb_tilde *x, t_floatarg f);
-  void rings_reverb_tilde_lp(t_rings_reverb_tilde *x, t_floatarg f);
-}
-
 // puredata methods implementation -start
 t_int* rings_reverb_tilde_render(t_int *w)
 {
@@ -127,7 +112,7 @@ void rings_reverb_tilde_lp(t_rings_reverb_tilde *x, t_floatarg f)
   x->f_lp = f;
 }
 
-void rings0x2ereverb_tilde_setup(void) {
+extern "C" void rings0x2ereverb_tilde_setup(void) {
   rings_reverb_tilde_class = class_new(gensym("rings.reverb~"),
                                          (t_newmethod)rings_reverb_tilde_new,
                                          (t_method)rings_reverb_tilde_free,
