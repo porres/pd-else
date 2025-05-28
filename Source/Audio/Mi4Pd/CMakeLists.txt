@@ -20,23 +20,31 @@ include_directories(mi)
 # add_pd_external(grds~ grds~ "${CMAKE_CURRENT_SOURCE_DIR}/grds/grids.cpp" LINK_LIBRARIES MILib)
 # target_compile_definitions(grds~ PRIVATE _USE_MATH_DEFINES) # if you enable it later
 
-add_pd_external(brds_tilde brds~ "${CMAKE_CURRENT_SOURCE_DIR}/brds/brds~.cpp")
+add_pd_external(brds_tilde birds~ "${CMAKE_CURRENT_SOURCE_DIR}/Sources/birds~.cpp")
 target_link_libraries(brds_tilde PRIVATE MILib)
-add_pd_external(clds_tilde clds~ "${CMAKE_CURRENT_SOURCE_DIR}/clds/clds~.cpp")
+
+add_pd_external(clds_tilde clouds~ "${CMAKE_CURRENT_SOURCE_DIR}/Sources/clouds~.cpp")
 target_link_libraries(clds_tilde PRIVATE MILib)
-add_pd_external(clds_reverb_tilde clds_reverb~ "${CMAKE_CURRENT_SOURCE_DIR}/clds_reverb/clds_reverb~.cpp")
+
+add_pd_external(clds_reverb_tilde clouds.reverb~ "${CMAKE_CURRENT_SOURCE_DIR}/Sources/clouds.reverb~.cpp")
 target_link_libraries(clds_reverb_tilde PRIVATE MILib)
-add_pd_external(lmnts_tilde lmnts~ "${CMAKE_CURRENT_SOURCE_DIR}/lmnts/lmnts~.cpp")
+
+add_pd_external(lmnts_tilde elements~ "${CMAKE_CURRENT_SOURCE_DIR}/Sources/elements~.cpp")
 target_link_libraries(lmnts_tilde PRIVATE MILib)
-add_pd_external(rngs_tilde rngs~ "${CMAKE_CURRENT_SOURCE_DIR}/rngs/rngs~.cpp")
+
+add_pd_external(rngs_tilde rings~ "${CMAKE_CURRENT_SOURCE_DIR}/Sources/rings~.cpp")
 target_link_libraries(rngs_tilde PRIVATE MILib)
-add_pd_external(rngs_chorus_tilde rngs_chorus~ "${CMAKE_CURRENT_SOURCE_DIR}/rngs_chorus/rngs_chorus~.cpp")
+
+add_pd_external(rngs_chorus_tilde rings.chorus~ "${CMAKE_CURRENT_SOURCE_DIR}/Sources/rings.chorus~.cpp")
 target_link_libraries(rngs_chorus_tilde PRIVATE MILib)
-add_pd_external(rngs_ensemble_tilde rngs_ensemble~ "${CMAKE_CURRENT_SOURCE_DIR}/rngs_ensemble/rngs_ensemble~.cpp")
+
+add_pd_external(rngs_ensemble_tilde rings.ensemble~ "${CMAKE_CURRENT_SOURCE_DIR}/Sources/rings.ensemble~.cpp")
 target_link_libraries(rngs_ensemble_tilde PRIVATE MILib)
-add_pd_external(rngs_reverb_tilde rngs_reverb~ "${CMAKE_CURRENT_SOURCE_DIR}/rngs_reverb/rngs_reverb~.cpp")
+
+add_pd_external(rngs_reverb_tilde rings.reverb~ "${CMAKE_CURRENT_SOURCE_DIR}/Sources/rings.reverb~.cpp")
 target_link_libraries(rngs_reverb_tilde PRIVATE MILib)
-add_pd_external(wrps_tilde wrps~ "${CMAKE_CURRENT_SOURCE_DIR}/wrps/wrps~.cpp")
+
+add_pd_external(wrps_tilde warps~ "${CMAKE_CURRENT_SOURCE_DIR}/Sources/warps~.cpp")
 target_link_libraries(wrps_tilde PRIVATE MILib)
 
 add_compile_definitions(_USE_MATH_DEFINES)

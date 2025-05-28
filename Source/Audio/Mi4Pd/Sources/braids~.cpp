@@ -19,7 +19,7 @@
 inline int16_t abs(int16_t x) { return x <0.0f ? -x : x;}
 #include "braids/signature_waveshaper.h"
 
-static t_class *brds_tilde_class;
+static t_class *braids_tilde_class;
 
 inline float constrain(float v, float vMin, float vMax) {
   return std::max<float>(vMin,std::min<float>(vMax, v));
@@ -29,7 +29,7 @@ inline int constrain(int v, int vMin, int vMax) {
   return std::max<int>(vMin,std::min<int>(vMax, v));
 }
 
-typedef struct _brds_tilde {
+typedef struct _braids_tilde {
   t_object  x_obj;
 
   t_float f_dummy;
@@ -86,22 +86,22 @@ typedef struct _brds_tilde {
   t_int buf_size;
   uint8_t* sync_buf; 
   int16_t* outint_buf;
-} t_brds_tilde;
+} t_braids_tilde;
 
 
 //define pure data methods
 extern "C"  {
-  t_int*  brds_tilde_render(t_int *w);
-  void    brds_tilde_dsp(t_brds_tilde *x, t_signal **sp);
-  void    brds_tilde_free(t_brds_tilde *x);
-  void*   brds_tilde_new(t_floatarg f);
-  void    brds_tilde_setup(void);
+  t_int*  braids_tilde_render(t_int *w);
+  void    braids_tilde_dsp(t_braids_tilde *x, t_signal **sp);
+  void    braids_tilde_free(t_braids_tilde *x);
+  void*   braids_tilde_new(t_floatarg f);
+  void    braids_tilde_setup(void);
 
-  void brds_tilde_pitch(t_brds_tilde *x, t_floatarg f);
-  void brds_tilde_shape(t_brds_tilde *x, t_floatarg f);
-  void brds_tilde_colour(t_brds_tilde *x, t_floatarg f);
-  void brds_tilde_timbre(t_brds_tilde *x, t_floatarg f);
-  void brds_tilde_trigger(t_brds_tilde *x, t_floatarg f);
+  void braids_tilde_pitch(t_braids_tilde *x, t_floatarg f);
+  void braids_tilde_shape(t_braids_tilde *x, t_floatarg f);
+  void braids_tilde_colour(t_braids_tilde *x, t_floatarg f);
+  void braids_tilde_timbre(t_braids_tilde *x, t_floatarg f);
+  void braids_tilde_trigger(t_braids_tilde *x, t_floatarg f);
 }
 
 static const char *algo_values[] = {
@@ -164,9 +164,9 @@ int getShape( float v) {
 
 
 // puredata methods implementation -start
-t_int* brds_tilde_render(t_int *w)
+t_int* braids_tilde_render(t_int *w)
 {
-  t_brds_tilde *x = (t_brds_tilde *)(w[1]);
+  t_braids_tilde *x = (t_braids_tilde *)(w[1]);
   t_sample  *in_sync  =    (t_sample *)(w[2]);
   t_sample  *out =    (t_sample *)(w[3]);
   int n =  (int)(w[4]);
@@ -315,16 +315,16 @@ t_int* brds_tilde_render(t_int *w)
   return (w + 5); // # args + 1
 }
 
-void brds_tilde_dsp(t_brds_tilde *x, t_signal **sp)
+void braids_tilde_dsp(t_braids_tilde *x, t_signal **sp)
 {
   // add the perform method, with all signal i/o
-  dsp_add(brds_tilde_render, 4,
+  dsp_add(braids_tilde_render, 4,
           x,
           sp[0]->s_vec, sp[1]->s_vec, // signal i/o (clockwise)
           sp[0]->s_n);
 }
 
-void brds_tilde_free(t_brds_tilde *x)
+void braids_tilde_free(t_braids_tilde *x)
 {
   delete [] x->sync_buf;
   delete [] x->outint_buf;
@@ -334,9 +334,9 @@ void brds_tilde_free(t_brds_tilde *x)
   outlet_free(x->x_out_shape);
 }
 
-void *brds_tilde_new(t_floatarg f)
+void *braids_tilde_new(t_floatarg f)
 {
-  t_brds_tilde *x = (t_brds_tilde *) pd_new(brds_tilde_class);
+  t_braids_tilde *x = (t_braids_tilde *) pd_new(braids_tilde_class);
 
   x->previous_pitch = 0;
   x->previous_shape = 0;
@@ -380,7 +380,7 @@ void *brds_tilde_new(t_floatarg f)
   x->outint_buf= new int16_t[x->buf_size];
 
   if(sys_getsr()!=48000.0f) {
-      post("brds~.pd is designed for 96k, not %f, approximating pitch", sys_getsr());
+      post("braids~.pd is designed for 96k, not %f, approximating pitch", sys_getsr());
       if(sys_getsr()==44100) {
           x->pitch_offset=193.0f;
       }
@@ -396,57 +396,57 @@ void *brds_tilde_new(t_floatarg f)
   return (void *)x;
 }
 
-void brds_tilde_pitch(t_brds_tilde *x, t_floatarg f)
+void braids_tilde_pitch(t_braids_tilde *x, t_floatarg f)
 {
   x->f_pitch = f;
 }
-void brds_tilde_shape(t_brds_tilde *x, t_floatarg f)
+void braids_tilde_shape(t_braids_tilde *x, t_floatarg f)
 {
   x->f_shape = f;
   int shape = getShape(x->f_shape);
   outlet_symbol(x->x_out_shape, gensym(algo_values[shape]));
 }
-void brds_tilde_colour(t_brds_tilde *x, t_floatarg f)
+void braids_tilde_colour(t_braids_tilde *x, t_floatarg f)
 {
   x->f_colour = f;
 }
-void brds_tilde_timbre(t_brds_tilde *x, t_floatarg f)
+void braids_tilde_timbre(t_braids_tilde *x, t_floatarg f)
 {
   x->f_timbre = f;
 }
-void brds_tilde_trigger(t_brds_tilde *x, t_floatarg f)
+void braids_tilde_trigger(t_braids_tilde *x, t_floatarg f)
 {
   x->trigger_flag = f >= 1;
 }
 
-void brds_tilde_setup(void) {
-  brds_tilde_class = class_new(gensym("brds~"),
-                                         (t_newmethod) brds_tilde_new,
-                                         (t_method) brds_tilde_free,
-                                         sizeof(t_brds_tilde),
+void braids_tilde_setup(void) {
+  braids_tilde_class = class_new(gensym("braids~"),
+                                         (t_newmethod) braids_tilde_new,
+                                         (t_method) braids_tilde_free,
+                                         sizeof(t_braids_tilde),
                                          CLASS_DEFAULT,
                                          A_DEFFLOAT, A_NULL);
 
-  class_addmethod(  brds_tilde_class,
-                    (t_method)brds_tilde_dsp,
+  class_addmethod(  braids_tilde_class,
+                    (t_method)braids_tilde_dsp,
                     gensym("dsp"), A_NULL);
-  CLASS_MAINSIGNALIN(brds_tilde_class, t_brds_tilde, f_dummy);
+  CLASS_MAINSIGNALIN(braids_tilde_class, t_braids_tilde, f_dummy);
 
 
-  class_addmethod(brds_tilde_class,
-                  (t_method) brds_tilde_pitch, gensym("pitch"),
+  class_addmethod(braids_tilde_class,
+                  (t_method) braids_tilde_pitch, gensym("pitch"),
                   A_DEFFLOAT, A_NULL);
-  class_addmethod(brds_tilde_class,
-                  (t_method) brds_tilde_shape, gensym("shape"),
+  class_addmethod(braids_tilde_class,
+                  (t_method) braids_tilde_shape, gensym("shape"),
                   A_DEFFLOAT, A_NULL);
-  class_addmethod(brds_tilde_class,
-                  (t_method) brds_tilde_colour, gensym("colour"),
+  class_addmethod(braids_tilde_class,
+                  (t_method) braids_tilde_colour, gensym("colour"),
                   A_DEFFLOAT, A_NULL);
-  class_addmethod(brds_tilde_class,
-                  (t_method) brds_tilde_timbre, gensym("timbre"),
+  class_addmethod(braids_tilde_class,
+                  (t_method) braids_tilde_timbre, gensym("timbre"),
                   A_DEFFLOAT, A_NULL);
-  class_addmethod(brds_tilde_class,
-                  (t_method) brds_tilde_trigger, gensym("trigger"),
+  class_addmethod(braids_tilde_class,
+                  (t_method) braids_tilde_trigger, gensym("trigger"),
                   A_DEFFLOAT, A_NULL);
 }
 // puredata methods implementation - end
