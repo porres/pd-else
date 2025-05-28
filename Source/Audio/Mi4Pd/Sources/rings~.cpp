@@ -207,6 +207,73 @@ void *rings_tilde_new(t_floatarg) {
 }
 
 
+
+void rings_tilde_pitch(t_rings_tilde *x, t_floatarg f) {
+    x->f_pitch = f;
+}
+
+void rings_tilde_transpose(t_rings_tilde *x, t_floatarg f) {
+    x->f_transpose = f;
+}
+
+void rings_tilde_structure(t_rings_tilde *x, t_floatarg f) {
+    x->f_structure = f;
+}
+
+void rings_tilde_brightness(t_rings_tilde *x, t_floatarg f) {
+    x->f_brightness = f;
+}
+
+void rings_tilde_damping(t_rings_tilde *x, t_floatarg f) {
+    x->f_damping = f;
+}
+
+void rings_tilde_position(t_rings_tilde *x, t_floatarg f) {
+    x->f_position = f;
+}
+
+
+void rings_tilde_bypass(t_rings_tilde *x, t_floatarg f) {
+    x->f_bypass = f;
+}
+
+void rings_tilde_easter_egg(t_rings_tilde *x, t_floatarg f) {
+    x->f_easter_egg = f;
+
+}
+
+void rings_tilde_poly(t_rings_tilde *x, t_floatarg f) {
+    x->f_polyphony = f;
+}
+
+void rings_tilde_model(t_rings_tilde *x, t_floatarg f) {
+    x->f_model= f;
+}
+
+void rings_tilde_fm(t_rings_tilde *x, t_floatarg f) {
+    x->f_fm= f;
+}
+
+void rings_tilde_trig(t_rings_tilde *x) {
+    x->f_trig = 1.0f;
+}
+
+void rings_tilde_chord(t_rings_tilde *x, t_floatarg f) {
+    x->f_chord = f;
+}
+
+void rings_tilde_gen_strum(t_rings_tilde *x, t_floatarg f) {
+    x->f_internal_strum = f;
+}
+
+void rings_tilde_gen_exciter(t_rings_tilde *x, t_floatarg f) {
+    x->f_internal_exciter = f;
+}
+
+void rings_tilde_gen_note(t_rings_tilde *x, t_floatarg f) {
+    x->f_internal_note = f;
+}
+
 extern "C" void rings_tilde_setup(void) {
     rings_tilde_class = class_new(gensym("rings~"),
                                  (t_newmethod) rings_tilde_new,
@@ -276,73 +343,4 @@ extern "C" void rings_tilde_setup(void) {
                     (t_method) rings_tilde_fm, gensym("fm"),
                     A_DEFFLOAT, A_NULL);
 }
-
-void rings_tilde_pitch(t_rings_tilde *x, t_floatarg f) {
-    x->f_pitch = f;
-}
-
-void rings_tilde_transpose(t_rings_tilde *x, t_floatarg f) {
-    x->f_transpose = f;
-}
-
-void rings_tilde_structure(t_rings_tilde *x, t_floatarg f) {
-    x->f_structure = f;
-}
-
-void rings_tilde_brightness(t_rings_tilde *x, t_floatarg f) {
-    x->f_brightness = f;
-}
-
-void rings_tilde_damping(t_rings_tilde *x, t_floatarg f) {
-    x->f_damping = f;
-}
-
-void rings_tilde_position(t_rings_tilde *x, t_floatarg f) {
-    x->f_position = f;
-}
-
-
-void rings_tilde_bypass(t_rings_tilde *x, t_floatarg f) {
-    x->f_bypass = f;
-}
-
-void rings_tilde_easter_egg(t_rings_tilde *x, t_floatarg f) {
-    x->f_easter_egg = f;
-
-}
-
-void rings_tilde_poly(t_rings_tilde *x, t_floatarg f) {
-    x->f_polyphony = f;
-}
-
-void rings_tilde_model(t_rings_tilde *x, t_floatarg f) {
-    x->f_model= f;
-}
-
-void rings_tilde_fm(t_rings_tilde *x, t_floatarg f) {
-    x->f_fm= f;
-}
-
-void rings_tilde_trig(t_rings_tilde *x) {
-    x->f_trig = 1.0f;
-}
-
-void rings_tilde_chord(t_rings_tilde *x, t_floatarg f) {
-    x->f_chord = f;
-}
-
-void rings_tilde_gen_strum(t_rings_tilde *x, t_floatarg f) {
-    x->f_internal_strum = f;
-}
-
-void rings_tilde_gen_exciter(t_rings_tilde *x, t_floatarg f) {
-    x->f_internal_exciter = f;
-}
-
-void rings_tilde_gen_note(t_rings_tilde *x, t_floatarg f) {
-    x->f_internal_note = f;
-}
-
-
-
 // puredata methods implementation - end
