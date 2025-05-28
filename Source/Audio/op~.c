@@ -69,6 +69,18 @@ static t_int *op_perform(t_int *w){
                 *out++ = f2 == 0 ? 0. : fmod(f1, f2);
             }
             break;
+/*        case 16: // multiply
+            while(n--) *out++ = in1++ * in2++;
+            break;
+        case 17: // division
+            while(n--) *out++ = in1++ / in2++;
+            break;
+        case 18: // plus
+            while(n--) *out++ = in1++ + in2++;
+            break;
+        case 19: // minus
+            while(n--) *out++ = in1++ - in2++;
+            break;*/
     }
     return(w+6);
 }
@@ -137,6 +149,25 @@ static void op_bitshift_r(t_op *x){
 static void op_mod(t_op *x){
     x->x_op = 15;
 }
+
+/*static void op_mul(t_op *x){
+    x->x_op = 16;
+}
+
+
+static void op_div(t_op *x){
+    x->x_op = 17;
+}
+
+
+static void op_plus(t_op *x){
+    x->x_op = 18;
+}
+
+
+static void op_minus(t_op *x){
+    x->x_op = 19;
+}*/
 
 static void op_dsp(t_op *x, t_signal **sp){
     int n1 = sp[0]->s_length * sp[0]->s_nchans,
@@ -235,4 +266,8 @@ void op_tilde_setup(void){
     class_addmethod(op_class, (t_method)op_bitshift_l, gensym("<<"), 0);
     class_addmethod(op_class, (t_method)op_bitshift_r, gensym(">>"), 0);
     class_addmethod(op_class, (t_method)op_mod, gensym("%"), 0);
+/*    class_addmethod(op_class, (t_method)op_mul, gensym("*"), 0);
+    class_addmethod(op_class, (t_method)op_div, gensym("/"), 0);
+    class_addmethod(op_class, (t_method)op_plus, gensym("+"), 0);
+    class_addmethod(op_class, (t_method)op_minus, gensym("-"), 0);*/
 }

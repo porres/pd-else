@@ -1,8 +1,8 @@
 // Porres 2016
 
 #include <m_pd.h>
-#include <buffer.h>
-#include <magic.h>
+#include "buffer.h"
+#include "magic.h"
 
 #include <stdlib.h>
 
@@ -20,6 +20,7 @@ typedef struct _pan2{
     t_int       x_list_size;
     t_symbol   *x_ignore;
     t_glist    *x_glist;
+    t_float    *x_signalscalar;
 }t_pan2;
 
 static void pan2_pan(t_pan2 *x, t_symbol *s, int ac, t_atom *av){
@@ -41,6 +42,15 @@ static t_int *pan2_perform(t_int *w){
     t_float *in2 = (t_float *)(w[4]);   // pan
     t_float *out1 = (t_float *)(w[5]);  // L
     t_float *out2 = (t_float *)(w[6]);  // R
+    if(!x->x_sig2){
+        t_float *scalar = x->x_signalscalar;
+        if(!else_magic_isnan(*x->x_signalscalar)){
+            t_float pan = *scalar;
+            for(int j = 0; j < x->x_nchans; j++)
+                x->x_pan_list[j] = pan;
+            else_magic_setnan(x->x_signalscalar);
+        }
+    }
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0; i < x->x_nblock; i++){
             float in = in1[j*x->x_nblock + i];
@@ -55,19 +65,14 @@ static t_int *pan2_perform(t_int *w){
 
 static void pan2_dsp(t_pan2 *x, t_signal **sp){
     x->x_nblock = sp[0]->s_n;
-    int chs = sp[0]->s_nchans;
+    x->x_nchans = sp[0]->s_nchans;
     x->x_sig2 = else_magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal);
     int ch2 = x->x_sig2 ? sp[1]->s_nchans : x->x_list_size;
-    if(x->x_nchans != chs){
-//       x->x_ynm1 = (double *)resizebytes(x->x_ynm1,
-//            x->x_nchans * sizeof(double), chs * sizeof(double));
-        x->x_nchans = chs;
-    }
-    signal_setmultiout(&sp[2], chs);
-    signal_setmultiout(&sp[3], chs);
+    signal_setmultiout(&sp[2], x->x_nchans);
+    signal_setmultiout(&sp[3], x->x_nchans);
     if((ch2 > 1 && ch2 != x->x_nchans)){
-        dsp_add_zero(sp[2]->s_vec, chs*x->x_nblock);
-        dsp_add_zero(sp[3]->s_vec, chs*x->x_nblock);
+        dsp_add_zero(sp[2]->s_vec, x->x_nchans*x->x_nblock);
+        dsp_add_zero(sp[3]->s_vec, x->x_nchans*x->x_nblock);
         pd_error(x, "[pan2~]: channel sizes mismatch");
     }
     dsp_add(pan2_perform, 6, x, ch2, sp[0]->s_vec,
@@ -76,13 +81,13 @@ static void pan2_dsp(t_pan2 *x, t_signal **sp){
 
 static void *pan2_free(t_pan2 *x){
     inlet_free(x->x_panlet);
+    free(x->x_pan_list);
     return(void *)x;
 }
 
 static void *pan2_new(t_symbol *s, int ac, t_atom *av){
     t_pan2 *x = (t_pan2 *)pd_new(pan2_class);
     x->x_ignore = s;
-    x->x_glist = canvas_getcurrent();
     init_sine_table();
     x->x_pan_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_pan_list[0] = 0;
@@ -94,6 +99,8 @@ static void *pan2_new(t_symbol *s, int ac, t_atom *av){
         pd_float((t_pd *)x->x_panlet, f);
     outlet_new((t_object *)x, &s_signal);
     outlet_new((t_object *)x, &s_signal);
+    x->x_glist = canvas_getcurrent();
+    x->x_signalscalar = obj_findsignalscalar((t_object *)x, 1);
     return(x);
 }
 
