@@ -20,7 +20,7 @@ include_directories(mi)
 # add_pd_external(grds~ grds~ "${CMAKE_CURRENT_SOURCE_DIR}/grds/grids.cpp" LINK_LIBRARIES MILib)
 # target_compile_definitions(grds~ PRIVATE _USE_MATH_DEFINES) # if you enable it later
 
-add_pd_external(brds_tilde birds~ "${CMAKE_CURRENT_SOURCE_DIR}/Sources/birds~.cpp")
+add_pd_external(brds_tilde braids~ "${CMAKE_CURRENT_SOURCE_DIR}/Sources/braids~.cpp")
 target_link_libraries(brds_tilde PRIVATE MILib)
 
 add_pd_external(clds_tilde clouds~ "${CMAKE_CURRENT_SOURCE_DIR}/Sources/clouds~.cpp")
