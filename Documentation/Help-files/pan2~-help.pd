@@ -18,7 +18,7 @@
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -87,7 +87,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -133,7 +133,6 @@
 #X text 75 91 [pan2~] performs an equal power (sin/cos) panning.;
 #X text 251 331 - pan value: from -1 (L) to 1 (R);
 #X obj 133 384 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
-#X text 199 384 signal;
 #X text 154 421 1) float - initial pan value (default 0);
 #X obj 168 213 else/out~;
 #X text 181 362 signal(s);
@@ -188,9 +187,10 @@
 #X text 251 305 - pan value(s) from -1 (L) to 1 (R);
 #X text 251 362 - left channel(s);
 #X text 251 384 - right channel(s);
+#X text 181 384 signal(s);
 #X connect 19 0 20 0;
-#X connect 20 0 34 0;
+#X connect 20 0 33 0;
 #X connect 21 0 24 0;
-#X connect 24 0 32 0;
-#X connect 24 1 32 1;
-#X connect 34 0 24 1;
+#X connect 24 0 31 0;
+#X connect 24 1 31 1;
+#X connect 33 0 24 1;

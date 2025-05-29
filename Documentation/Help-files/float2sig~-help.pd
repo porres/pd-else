@@ -108,7 +108,6 @@
 #X obj 126 333 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 344 197 nbx 5 14 0 1000 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 403 196 ramp time;
-#X text 172 425 1) float - ramp time in ms (default 0);
 #X obj 126 355 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 175 355 float;
 #X listbox 191 192 15 0 0 0 - - - 12;
@@ -143,11 +142,12 @@
 #X obj 191 259 else/sig2float~;
 #X text 292 258 <-- see also;
 #X text 61 91 [float2sig~] (or [f2s~] for short) is an abstraction based on [vline~] that converts floats to signals or lists to multichannel signals. The conversion is smoothened by a ramp time in ms. It has support for multichannel connections., f 67;
-#X connect 7 0 36 1;
-#X connect 12 0 36 0;
-#X connect 17 0 12 0;
-#X connect 18 0 12 0;
-#X connect 32 0 34 0;
-#X connect 34 0 33 0;
-#X connect 36 0 37 0;
-#X connect 37 0 13 0;
+#X text 172 425 1) float - ramp time in ms (default 10);
+#X connect 7 0 35 1;
+#X connect 11 0 35 0;
+#X connect 16 0 11 0;
+#X connect 17 0 11 0;
+#X connect 31 0 33 0;
+#X connect 33 0 32 0;
+#X connect 35 0 36 0;
+#X connect 36 0 12 0;
