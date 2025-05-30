@@ -21,7 +21,7 @@ typedef struct _pan{
     int         x_nchans;
     int         x_n;            // block size
     int         x_n_outlets;    // outlets
-    int         x_rad;
+    int         x_cartesian;
     int         x_open; // non circular
     t_int       x_panlist_size, x_gainlist_size, x_spreadlist_size;
     float      *x_pan_list;
@@ -73,13 +73,17 @@ static t_int *pan_perform(t_int *w){
             t_float g = x->x_sig2 ? x->x_ins[1][i+ch*(x->x_ch2>1)] : x->x_gain_list[n];
             t_float pos = x->x_sig3 ? x->x_ins[2][i+ch*(x->x_ch3>1)] : x->x_pan_list[n];
             t_float spread = x->x_sig4 ? x->x_ins[3][i + ch * (x->x_ch4 > 1)] : x->x_spread_list[n];
-            if(x->x_rad)
-                pos /= TWO_PI;
-            pos -= x->x_offset;
+            if(x->x_cartesian){
+                float amp = sqrt(g*g + pos*pos);
+                float angle = atan2(pos, g);
+                pos = angle/TWO_PI;
+                g = amp;
+            }
             while(pos < 0)
                 pos += 1;
             while(pos > 1)
                 pos -= 1;
+            pos -= x->x_offset;
             if(spread < 0.1)
                 spread = 0.1;
             pos = pos * (x->x_n_outlets-x->x_open) + spread;
@@ -176,11 +180,11 @@ static void pan_spread(t_pan *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void pan_offset(t_pan *x, t_floatarg f){
-    x->x_offset = (f < 0 ? 0 : f) / 360;
+    x->x_offset = (f < 0 ? 0 : f);
 }
 
-static void pan_radians(t_pan *x, t_floatarg f){
-    x->x_rad = (f != 0);
+static void pan_cartesian(t_pan *x, t_floatarg f){
+    x->x_cartesian = (f != 0);
 }
 
 static void pan_open(t_pan *x, t_floatarg f){
@@ -211,7 +215,7 @@ static void *pan_new(t_symbol *s, int ac, t_atom *av){
     x->x_gain_list[0] = x->x_spread_list[0] = 1;
     x->x_panlist_size = x->x_gainlist_size = x->x_spreadlist_size = 1;
     t_float n_outlets = 2;
-    x->x_open = x->x_rad = 0;
+    x->x_open = x->x_cartesian = 0;
     x->x_offset = 0;
     int argnum = 0;
     while(ac > 0){
@@ -225,7 +229,7 @@ static void *pan_new(t_symbol *s, int ac, t_atom *av){
                     x->x_spread_list[0] = aval;
                     break;
                 case 2:
-                    x->x_offset = aval / 360.;
+                    x->x_offset = aval;
                     break;
                 default:
                     break;
@@ -234,8 +238,8 @@ static void *pan_new(t_symbol *s, int ac, t_atom *av){
         }
         else if(av->a_type == A_SYMBOL && !argnum){
             t_symbol *curarg = atom_getsymbolarg(0, ac, av);
-            if(curarg == gensym("-radians")){
-                x->x_rad = 1;
+            if(curarg == gensym("-cartesian")){
+                x->x_cartesian = 1;
                 ac--, av++;
             }
             else if(curarg == gensym("-open")){
@@ -278,7 +282,7 @@ void pan_tilde_setup(void){
     class_addmethod(pan_class, nullfn, gensym("signal"), 0);
     class_addmethod(pan_class, (t_method)pan_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(pan_class, (t_method)pan_offset, gensym("offset"), A_FLOAT, 0);
-    class_addmethod(pan_class, (t_method)pan_radians, gensym("radians"), A_FLOAT, 0);
+    class_addmethod(pan_class, (t_method)pan_cartesian, gensym("cartesian"), A_FLOAT, 0);
     class_addmethod(pan_class, (t_method)pan_open, gensym("open"), A_FLOAT, 0);
     class_addmethod(pan_class, (t_method)pan_pan, gensym("pan"), A_GIMME, 0);
     class_addmethod(pan_class, (t_method)pan_spread, gensym("spread"), A_GIMME, 0);
