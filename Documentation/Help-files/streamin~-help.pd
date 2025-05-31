@@ -1,7 +1,7 @@
 #N canvas 513 38 564 686 10;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
-#X obj 23 41 cnv 4 4 4 empty empty Stream\ and\ play\ sound\ files 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 23 41 cnv 4 4 4 empty empty Stream\ and\ play\ sound\ files\ from\ network 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;

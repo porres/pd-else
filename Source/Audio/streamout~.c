@@ -5,12 +5,12 @@
 #include "m_pd.h"
 #include "g_canvas.h"
 
+/*
 #include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libavutil/avutil.h>
 
-/*
 #include <libswresample/swresample.h>
 #include <libavutil/opt.h>
 #include <libavutil/time.h>
@@ -325,7 +325,7 @@ static int streamout_close_chunked_stream(t_int fd){
 // initialize ogg/vorbis ecoding
 
 static int streamout_start_ogg_encoding(t_streamout *x){
-    // create an "output format context" in ogg
+/*    // create an "output format context" in ogg
     AVFormatContext *fmt_ctx = NULL; // fmt_ctx will hold the whole output stream setup
     const char *oggfilename = "pd.ogg";
     // use the Ogg container
@@ -334,7 +334,7 @@ static int streamout_start_ogg_encoding(t_streamout *x){
         post(" created an output format context in ogg successfully");
     else{
         // handle error
-    }
+    }*/
     
     x->x_eos = 0;
     x->x_skip = 1;  // assume no resampling

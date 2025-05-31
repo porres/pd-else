@@ -29,8 +29,8 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libssl-dev
-
+          sudo apt-get install -y libogg-dev libvorbis-dev libssl-dev
+          
       - name: Downloads pd-Sources
         shell: bash
         run: |
@@ -73,6 +73,10 @@ jobs:
         uses: hendrikmuhs/ccache-action@v1.2
         with:
           key: ccache-macos
+          
+      - name: Install libogg and libvorbis
+        run: |
+          brew install libogg libvorbis
 
       - name: Downloads pd sources
         shell: bash
@@ -107,6 +111,11 @@ jobs:
         with:
           install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-cmake mingw64/mingw-w64-x86_64-ccache
           cache: true
+          
+      - name: Install Vorbis/Ogg dependencies
+        shell: msys2 {0}
+        run: |
+          pacman -S --noconfirm mingw-w64-x86_64-libogg mingw-w64-x86_64-libvorbis
 
       - name: Restore build cache
         uses: actions/cache/restore@v4
@@ -125,6 +134,11 @@ jobs:
           rm pure-data.zip
           mv pd-0.55-2 pd
 
+      - name: Install Vorbis/Ogg dependencies
+        shell: msys2 {0}
+        run: |
+          pacman -S --noconfirm mingw-w64-x86_64-libogg mingw-w64-x86_64-libvorbis
+     
       - name: Configure pd-else
         shell: msys2 {0}
         run: |
