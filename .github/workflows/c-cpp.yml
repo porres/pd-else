@@ -73,6 +73,10 @@ jobs:
         uses: hendrikmuhs/ccache-action@v1.2
         with:
           key: ccache-macos
+          
+      - name: Install libogg and libvorbis
+        run: |
+          brew install libogg libvorbis
 
       - name: Downloads pd sources
         shell: bash
