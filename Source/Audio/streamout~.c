@@ -325,16 +325,37 @@ static int streamout_close_chunked_stream(t_int fd){
 // initialize ogg/vorbis ecoding
 
 static int streamout_start_ogg_encoding(t_streamout *x){
-    // create an "output format context" in ogg
-    AVFormatContext *fmt_ctx = NULL; // fmt_ctx will hold the whole output stream setup
+// create an "output format context" in ogg
+    AVFormatContext *fmt_ctx = NULL; // fmt_ctx holds the output stream setup
     const char *oggfilename = "pd.ogg";
-    // use the Ogg container
+//    init output context with Ogg container format
     int err = avformat_alloc_output_context2(&fmt_ctx, NULL, "ogg", oggfilename);
-    if((0) && (fmt_ctx && err >= 0)) // verbose
-        post(" created an output format context in ogg successfully");
-    else{
-        // handle error
-    }
+    if((!fmt_ctx && err < 0))
+        pd_error(x, "[streamout~]: couldn't create ogg format structure");
+    else if(1) // verbose
+        post("[streamout~]: created an output format context in ogg successfully");
+// Add an audio stream to the container
+    AVStream *audio_stream = avformat_new_stream(fmt_ctx, NULL);
+    if(!audio_stream)
+        pd_error(x, "[streamout~]: failed to create new audio stream");
+    else if(1) // verbose
+        post("[streamout~]: created new audio stream");
+
+    // get a handle on the codec contex to set things
+    //AVCodecContext *codec_ctx = audio_stream->codec;
+    
+// allocate  codec and create context
+    const AVCodec *codec = avcodec_find_encoder(AV_CODEC_ID_VORBIS);
+    if(!codec)
+        pd_error(x, "[streamout~]: Vorbis codec not found");
+    else if(1) // verbose
+        post("[streamout~]: Vorbis codec not found");
+    AVCodecContext *codec_ctx = avcodec_alloc_context3(codec);
+    if(!codec_ctx)
+        pd_error(x, "[streamout~]: could not allocate codec context");
+    else if(1) // verbose
+        post("[streamout~]: could not allocate codec context");
+
     
     x->x_eos = 0;
     x->x_skip = 1;  // assume no resampling

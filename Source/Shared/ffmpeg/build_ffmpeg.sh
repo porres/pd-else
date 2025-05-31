@@ -44,8 +44,9 @@ make distclean || true
             --enable-parser=mpegaudio,aac,mpeg4video \
             --enable-network --enable-protocol=http,https \
             --enable-swresample \
+            --enable-libvorbis \
 #            --enable-swscale \
-#            --enable-libvorbis --enable-libopus
+#             --enable-libopus
             $ffmpeg_config
 
 
