@@ -111,6 +111,11 @@ jobs:
         with:
           install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-cmake mingw64/mingw-w64-x86_64-ccache
           cache: true
+          
+      - name: Install Vorbis/Ogg dependencies
+        shell: msys2 {0}
+        run: |
+          pacman -S --noconfirm mingw-w64-x86_64-libogg mingw-w64-x86_64-libvorbis
 
       - name: Restore build cache
         uses: actions/cache/restore@v4
