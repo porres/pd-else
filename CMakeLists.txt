@@ -137,6 +137,8 @@ add_subdirectory(Source/Audio/circuit~)
 add_subdirectory(Source/Audio/plaits~)
 add_subdirectory(Source/Audio/sfont~)
 add_subdirectory(Source/Audio/sfz~)
+add_subdirectory(Source/Audio/Mi4Pd)
+
 add_subdirectory(Source/Control/lua)
 
 add_subdirectory(Source/Shared/link)

@@ -1,0 +1,43 @@
+#N canvas 290 23 696 610 10;
+#X obj 85 59 adc~ 1 2;
+#X obj 86 433 *~;
+#X obj 132 433 *~;
+#X obj 222 368 vsl 15 128 0 1 0 1 empty empty volume 0 -9 0 10 -262144
+-1 -1 9000 1;
+#X obj 87 464 dac~ 1 2;
+#X obj 246 63 vsl 15 128 0 1 0 1 empty empty amount 0 -9 0 10 -262144
+-1 -1 12700 1;
+#X obj 315 64 vsl 15 128 0 1 0 1 empty empty gain 0 -9 0 10 -262144
+-1 -1 1900 1;
+#X obj 379 65 vsl 15 128 0 1 0 1 empty empty time 0 -9 0 10 -262144
+-1 -1 3700 1;
+#X obj 553 64 vsl 15 128 0 1 0 1 empty empty lp 0 -9 0 10 -262144 -1
+-1 10100 1;
+#X obj 456 65 vsl 15 128 0 1 0 1 empty empty diffusion 0 -9 0 10 -262144
+-1 -1 2900 1;
+#X msg 246 207 amount \$1;
+#X msg 315 206 gain \$1;
+#X msg 379 207 time \$1;
+#X msg 456 209 diffusion \$1;
+#X msg 553 209 lp \$1;
+#X obj 86 393 rngs_reverb~;
+#X floatatom 198 57 5 0 1 0 amount - -;
+#X connect 0 0 15 0;
+#X connect 0 1 15 1;
+#X connect 1 0 4 0;
+#X connect 2 0 4 1;
+#X connect 3 0 2 1;
+#X connect 3 0 1 1;
+#X connect 5 0 10 0;
+#X connect 6 0 11 0;
+#X connect 7 0 12 0;
+#X connect 8 0 14 0;
+#X connect 9 0 13 0;
+#X connect 10 0 15 0;
+#X connect 11 0 15 0;
+#X connect 12 0 15 0;
+#X connect 13 0 15 0;
+#X connect 14 0 15 0;
+#X connect 15 0 1 0;
+#X connect 15 1 2 0;
+#X connect 16 0 15 2;
