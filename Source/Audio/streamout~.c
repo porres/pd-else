@@ -9,10 +9,10 @@
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libavutil/avutil.h>
+#include <libavutil/opt.h>
 
 /*
 #include <libswresample/swresample.h>
-#include <libavutil/opt.h>
 #include <libavutil/time.h>
 #include <libavutil/channel_layout.h>
 #include <libavutil/mem.h>
@@ -324,6 +324,7 @@ static int streamout_close_chunked_stream(t_int fd){
 
 // initialize ogg/vorbis ecoding
 
+
 static int streamout_start_ogg_encoding(t_streamout *x){
 // create an "output format context" in ogg
     AVFormatContext *fmt_ctx = NULL; // fmt_ctx holds the output stream setup
@@ -340,22 +341,39 @@ static int streamout_start_ogg_encoding(t_streamout *x){
         pd_error(x, "[streamout~]: failed to create new audio stream");
     else if(1) // verbose
         post("[streamout~]: created new audio stream");
-
-    // get a handle on the codec contex to set things
-    //AVCodecContext *codec_ctx = audio_stream->codec;
-    
 // allocate  codec and create context
     const AVCodec *codec = avcodec_find_encoder(AV_CODEC_ID_VORBIS);
     if(!codec)
         pd_error(x, "[streamout~]: Vorbis codec not found");
     else if(1) // verbose
-        post("[streamout~]: Vorbis codec not found");
+        post("[streamout~]: Vorbis codec found");
     AVCodecContext *codec_ctx = avcodec_alloc_context3(codec);
     if(!codec_ctx)
         pd_error(x, "[streamout~]: could not allocate codec context");
     else if(1) // verbose
-        post("[streamout~]: could not allocate codec context");
-
+        post("[streamout~]: could allocate codec context");
+// set SR and stuff
+    codec_ctx->sample_fmt = AV_SAMPLE_FMT_FLT; // 32-bit float, packed, later rethink, offer more options
+    post("[streamout~]: chosen sample format is %s", av_get_sample_fmt_name(codec_ctx->sample_fmt));
+    // later be a little smarter and pick a preffered one
+    codec_ctx->sample_rate = sys_getsr(); // maybe allow others and resampling
+    codec_ctx->ch_layout.nb_channels = 2;  // maybe allow others in the future
+    codec_ctx->ch_layout.u.mask = AV_CH_LAYOUT_STEREO;
+    // hardcode for now
+    av_opt_set(codec_ctx->priv_data, "quality", "4", 0); // Vorbis quality scale ~0-10
+    if(1){ // check some stuff
+        post("[streamout~]: channels=%d", codec_ctx->ch_layout.nb_channels);
+        post("[streamout~]: channel_layout=0x%llx", (unsigned long long)codec_ctx->ch_layout.u.mask);
+        post("[streamout~]: bit_rate=%lld", codec_ctx->bit_rate);
+    }
+    err = avcodec_open2(codec_ctx, codec, NULL);
+    if(err < 0){
+        char errbuf[128];
+        av_strerror(err, errbuf, sizeof(errbuf));
+        pd_error(x, "[streamout~]: failed to open codec: %s", errbuf);
+    }
+    else if(1)
+        post("[streamout~]: codec opened");
     
     x->x_eos = 0;
     x->x_skip = 1;  // assume no resampling
@@ -1386,28 +1404,23 @@ static void streamout_free(t_streamout *x){
 	free(x->x_bcdate);
 }
 
-static void *streamout_new(t_floatarg fnchannels, t_floatarg fbufsize){
-    t_streamout *x;
-    int nchannels = fnchannels, bufsize = fbufsize * 1024, i;
-    float *buf;
-    if(nchannels < 1)
-        nchannels = 2;        /* two channels as default */
-    else if(nchannels > MAXSTREAMCHANS)
-        nchannels = MAXSTREAMCHANS;
-        /* check / set buffer size */
-    if(bufsize <= 0)
-        bufsize = DEFBUFPERCHAN * nchannels;
-    else if(bufsize < MINBUFSIZE)
+static void *streamout_new(t_symbol *s, int ac, t_atom *av){
+    t_streamout *x = (t_streamout *)pd_new(streamout_class);
+    x->x_ignore = s;
+    int nchannels = 2;
+/*    if(nchannels <= 0)
+        nchannels = 1;
+    if(nchannels > MAXSTREAMCHANS)
+        nchannels = MAXSTREAMCHANS;*/
+    int bufsize = DEFBUFPERCHAN * nchannels;
+    /*if(bufsize < MINBUFSIZE)
         bufsize = MINBUFSIZE;
     else if(bufsize > MAXBUFSIZE)
-        bufsize = MAXBUFSIZE;
-    buf = getbytes(bufsize*sizeof(t_float));
-    if(!buf)
-        return(0);
-    x = (t_streamout *)pd_new(streamout_class);
+        bufsize = MAXBUFSIZE;*/
+    float *buf = getbytes(bufsize*sizeof(t_float));
     x->x_hostname = "localhost";
     x->x_port = 8000;
-    for(i = 1; i < nchannels; i++)
+    for(int i = 1; i < nchannels; i++)
         inlet_new (&x->x_obj, &x->x_obj.ob_pd, gensym ("signal"), gensym ("signal"));
     x->x_connection = outlet_new(&x->x_obj, gensym("float"));
     x->x_info = outlet_new(&x->x_obj, &s_symbol);
@@ -1431,9 +1444,9 @@ static void *streamout_new(t_floatarg fnchannels, t_floatarg fbufsize){
     x->x_resample.upsample = x->x_resample.downsample = 1;   // don't resample
     x->x_fd = -1;
     x->x_eos = 0;
-    x->x_vbr = 1;                   // use the vbr setting by default
-    x->x_skip = 1;                  // no resampling supported
+    x->x_vbr = 1;                   // use the vbr/quality setting by default
     x->x_quality = 0.4;             // quality 0.4 gives roughly 128kbps VBR stream
+    x->x_skip = 1;                  // no resampling supported ????????
     x->x_channels = nchannels;
     x->x_br_min = 96;
     x->x_br_nom = 128;
@@ -1452,39 +1465,70 @@ static void *streamout_new(t_floatarg fnchannels, t_floatarg fbufsize){
     x->x_bcdate = pdogg_strdup("");
     x->x_bcpublic = 1;
     x->x_mountpoint = "pd.ogg";
-    if(0){ // verbose
-        post("[streamout~]: set buffer to %dk bytes", bufsize / 1024);
-        post("[streamout~]: encoding %d chans / %d Hz", x->x_channels, x->x_samplerate);
-    }
     clock_delay(x->x_clock_pages, 0);
     pthread_create(&x->x_childthread, 0, streamout_child_main, x);
-    
-/*    post("[streamout~] FFmpeg version: %s", av_version_info());
-    post("FFmpeg configured with: %s", avcodec_configuration());
-    post("libavcodec version: %u", avcodec_version());
-    post("libavformat version: %u", avformat_version());
-    post("libavutil version: %u", avutil_version());
-    void *opaque = NULL;
-    const AVInputFormat *ifmt = NULL;
 
-    post("Demuxers:");
-    while ((ifmt = av_demuxer_iterate(&opaque))) {
-        post("  %s", ifmt->name);
+    if(1){ // verbose
+        post("[streamout~]: set buffer to %dk bytes", bufsize / 1024);
+        post("[streamout~]: encoding %d chans / %d Hz", x->x_channels, x->x_samplerate);
+        
+        post("[streamout~] FFmpeg version: %s", av_version_info());
+        post("FFmpeg configured with: %s", avcodec_configuration());
+        post("libavcodec version: %u", avcodec_version());
+        post("libavformat version: %u", avformat_version());
+        post("libavutil version: %u", avutil_version());
+        
+        
+        const AVCodec *codec = NULL;
+        void *codec_opaque = NULL;
+
+        void *iter = NULL;
+
+        post("[streamout~]: listing available encoders:");
+        while ((codec = av_codec_iterate(&iter))) {
+            if (av_codec_is_encoder(codec)) {
+                post("  encoder: %s%s", codec->name,
+                     codec->id == AV_CODEC_ID_VORBIS ? " (Vorbis)" : "");
+            }
+        }
+        
+        post("Available codecs:");
+        while ((codec = av_codec_iterate(&codec_opaque))) {
+            post("  %s (%s) %s", codec->name,
+                av_codec_is_encoder(codec) ? "encoder" : "decoder",
+                av_codec_is_encoder(codec) ? "(enc)" : "(dec)");
+        }
+
+        post("Available encoders:");
+        codec_opaque = NULL;
+        while ((codec = av_codec_iterate(&codec_opaque))) {
+            if (av_codec_is_encoder(codec)) {
+                post("  %s", codec->name);
+            }
+        }
+        
+        void *opaque = NULL;
+        const AVInputFormat *ifmt = NULL;
+
+        post("Demuxers:");
+        while ((ifmt = av_demuxer_iterate(&opaque))) {
+            post("  %s", ifmt->name);
+        }
+        opaque = NULL;
+        const AVOutputFormat *ofmt = NULL;
+
+        post("Muxers:");
+        while ((ofmt = av_muxer_iterate(&opaque))) {
+            post("  %s", ofmt->name);
+        }
     }
-    opaque = NULL;
-    const AVOutputFormat *ofmt = NULL;
-
-    post("Muxers:");
-    while ((ofmt = av_muxer_iterate(&opaque))) {
-        post("  %s", ofmt->name);
-    }*/
 
     return(x);
 }
 
 void streamout_tilde_setup(void){
     streamout_class = class_new(gensym("streamout~"), (t_newmethod)streamout_new, 
-    	(t_method)streamout_free, sizeof(t_streamout), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
+    	(t_method)streamout_free, sizeof(t_streamout), 0, A_GIMME, 0);
     CLASS_MAINSIGNALIN(streamout_class, t_streamout, x_f); // ????????????????????/
     class_addmethod(streamout_class, (t_method)streamout_dsp, gensym("dsp"), 0);
     class_addfloat(streamout_class, (t_method)streamout_float);

@@ -6,6 +6,7 @@ OS=$(uname)
 
 # Define platform-specific configurations
 if [[ "$OS" == "Darwin" ]]; then
+    export PKG_CONFIG_PATH="/opt/homebrew/lib/pkgconfig:$PKG_CONFIG_PATH"
     ffmpeg_config="--enable-securetransport --extra-cflags=-mmacosx-version-min=10.9 --extra-ldflags=-mmacosx-version-min=10.9"
     ffmpeg_cc="clang -arch x86_64 -arch arm64"
 elif [[ "$OS" == "Linux" ]]; then
@@ -44,9 +45,8 @@ make distclean || true
             --enable-parser=mpegaudio,aac,mpeg4video \
             --enable-network --enable-protocol=http,https \
             --enable-swresample \
-            --enable-libvorbis \
+            --enable-libvorbis enable-libogg \
 #            --enable-swscale \
-#             --enable-libopus
             $ffmpeg_config
 
 
