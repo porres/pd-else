@@ -129,6 +129,11 @@ jobs:
           rm pure-data.zip
           mv pd-0.55-2 pd
 
+      - name: Install Vorbis/Ogg dependencies
+        shell: msys2 {0}
+        run: |
+          pacman -S --noconfirm mingw-w64-x86_64-libogg mingw-w64-x86_64-libvorbis
+     
       - name: Configure pd-else
         shell: msys2 {0}
         run: |
