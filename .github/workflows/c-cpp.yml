@@ -29,8 +29,8 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libssl-dev
-
+          sudo apt-get install -y libogg-dev libvorbis-dev libssl-dev
+          
       - name: Downloads pd-Sources
         shell: bash
         run: |
