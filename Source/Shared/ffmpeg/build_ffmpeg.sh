@@ -32,15 +32,22 @@ make distclean || true
 # Configure and compile FFmpeg
 ./configure --disable-asm --disable-libxcb --disable-bzlib --disable-lzma --disable-sdl2 --disable-libdrm --disable-vaapi --enable-static --disable-shared --enable-optimizations --disable-debug \
             --disable-programs --disable-iconv --disable-avdevice --disable-postproc \
-            --disable-everything --enable-avcodec --enable-avformat --enable-avutil --enable-swscale \
-            --enable-swresample --enable-decoder=mp3*,pcm*,aac*,flac,vorbis,opus,alac,mulaw,alaw --enable-parser=mpegaudio,aac \
-            --enable-demuxer=mp3,wav,aiff,flac,aac,ogg,pcm*,caf,au --enable-filter=aresample --enable-protocol=file \
-            --enable-demuxer=avi --enable-demuxer=mov --enable-demuxer=mp3 \
-            --enable-demuxer=flv --enable-demuxer=asf --enable-muxer=avi --enable-muxer=mov --enable-muxer=mp4 \
-            --enable-muxer=flv --enable-muxer=asf --enable-muxer=caf --enable-muxer=au --enable-decoder=mp3 --enable-decoder=aac --enable-decoder=h264 \
-            --enable-decoder=mpeg4 --enable-decoder=mpeg1video --enable-decoder=mpeg2video --enable-decoder=mjpeg --enable-encoder=aac --enable-encoder=mpeg4 \
-            --enable-encoder=mpeg1video --enable-encoder=alac --enable-encoder=pcm_mulaw --enable-encoder=pcm_alaw --enable-parser=mpeg4video --enable-network --enable-protocol=http --enable-protocol=https \
+            --disable-everything --enable-avcodec --enable-avformat --enable-avutil \
+            --enable-encoder=vorbis,flac,mp3,mpeg4,aac,alac,pcm_mulaw,pcm_alaw \
+            --enable-decoder=mp3*,pcm*,aac*,flac,vorbis,opus,alac,mulaw,alaw,aac,h264 \
+            --enable-decoder=mpeg4,mpeg1video,mpeg2video \
+            --enable-decoder=mjpeg  \
+            --enable-muxer=ogg,flac,mp3,mp4,avi,mov,flv,asf,caf,au \
+            --enable-demuxer=mp3,wav,aiff,flac,aac,ogg,pcm*,caf,au \
+            --enable-demuxer=avi,mov,mp3,flv,asf \
+            --enable-filter=aresample --enable-protocol=file \
+            --enable-parser=mpegaudio,aac,mpeg4video \
+            --enable-network --enable-protocol=http,https \
+            --enable-swresample \
+#            --enable-swscale \
+#            --enable-libvorbis --enable-libopus
             $ffmpeg_config
+
 
 if [[ "${CC:-}" == *"aarch64"* ]]; then
     make V=1 CC="$ffmpeg_cc" AR="aarch64-linux-gnu-ar" RANLIB="aarch64-linux-gnu-ranlib" LD="aarch64-linux-gnu-ld"
