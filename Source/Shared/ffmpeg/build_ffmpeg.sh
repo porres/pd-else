@@ -1,13 +1,16 @@
 #!/bin/bash
+set -e  # stop on errors
 
 # Variables
 FFMPEG_DIR="ffmpeg-7.0.1"
 OS=$(uname)
 
+echo "Detected OS: $OS"
+
 # Define platform-specific configurations
 if [[ "$OS" == "Darwin" ]]; then
     export PKG_CONFIG_PATH="/opt/homebrew/lib/pkgconfig:$PKG_CONFIG_PATH"
-    ffmpeg_config="--enable-securetransport --extra-cflags=-mmacosx-version-min=10.9 --extra-ldflags=-mmacosx-version-min=10.9"
+    ffmpeg_config="--enable-securetransport --extra-cflags=-mmacosx-version-min=11.0 --extra-ldflags=-mmacosx-version-min=11.0"
     ffmpeg_cc="clang -arch x86_64 -arch arm64"
 elif [[ "$OS" == "Linux" ]]; then
     if [[ "${CC:-}" == *"aarch64"* ]]; then
@@ -25,12 +28,14 @@ else
     exit 1
 fi
 
-# Clean any previous build
+echo "Changing directory to $FFMPEG_DIR"
 cd "$FFMPEG_DIR"
+
+echo "Cleaning previous build"
 make clean || true
 make distclean || true
 
-# Configure and compile FFmpeg
+echo "Running configure..."
 ./configure --disable-asm --disable-libxcb --disable-bzlib --disable-lzma --disable-sdl2 --disable-libdrm --disable-vaapi --enable-static --disable-shared --enable-optimizations --disable-debug \
             --disable-programs --disable-iconv --disable-avdevice --disable-postproc \
             --disable-everything --enable-avcodec --enable-avformat --enable-avutil \
@@ -46,12 +51,13 @@ make distclean || true
             --enable-network --enable-protocol=http,https \
             --enable-swresample \
             --enable-libvorbis \
-            $ffmpeg_config
+            $ffmpeg_config || { echo "Configure failed"; exit 1; }
 
-#            --enable-libogg             --enable-swscale \
-
+echo "Starting compilation..."
 if [[ "${CC:-}" == *"aarch64"* ]]; then
-    make V=1 CC="$ffmpeg_cc" AR="aarch64-linux-gnu-ar" RANLIB="aarch64-linux-gnu-ranlib" LD="aarch64-linux-gnu-ld"
+    make V=1 CC="$ffmpeg_cc" AR="aarch64-linux-gnu-ar" RANLIB="aarch64-linux-gnu-ranlib" LD="aarch64-linux-gnu-ld" || { echo "Make failed"; exit 1; }
 else
-    make CC="$2 $ffmpeg_cc"
+    make CC="$2 $ffmpeg_cc" || { echo "Make failed"; exit 1; }
 fi
+
+echo "Build finished successfully."
