@@ -1500,14 +1500,6 @@ static void *streamout_new(t_symbol *s, int ac, t_atom *av){
             }
         }
         
-        const AVCodec *codec = NULL;
-        void *i = 0;
-        while ((codec = av_codec_iterate(&i))) {
-            if (av_codec_is_encoder(codec)) {
-                printf("encoder: %s (long name: %s)\n", codec->name, codec->long_name);
-            }
-        }
-        
         post("Available codecs:");
         while ((codec = av_codec_iterate(&codec_opaque))) {
             post("  %s (%s) %s", codec->name,
