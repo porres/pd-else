@@ -1471,15 +1471,23 @@ static void *streamout_new(t_symbol *s, int ac, t_atom *av){
     if(1){ // verbose
         post("[streamout~]: set buffer to %dk bytes", bufsize / 1024);
         post("[streamout~]: encoding %d chans / %d Hz", x->x_channels, x->x_samplerate);
-        
         post("[streamout~] FFmpeg version: %s", av_version_info());
         post("FFmpeg configured with: %s", avcodec_configuration());
         post("libavcodec version: %u", avcodec_version());
         post("libavformat version: %u", avformat_version());
         post("libavutil version: %u", avutil_version());
+        post("-----------");
+        
+        const AVCodec *codec = avcodec_find_encoder_by_name("vorbis");
+        if (codec) {
+            post("Vorbis encoder name: %s", codec->name);
+            post("Long name: %s", codec->long_name ? codec->long_name : "(none)");
+            post("Is experimental? %s", (codec->capabilities & AV_CODEC_CAP_EXPERIMENTAL) ? "yes" : "no");
+        } else {
+            post("Vorbis encoder not found.");
+        }
         
         
-        const AVCodec *codec = NULL;
         void *codec_opaque = NULL;
 
         void *iter = NULL;
@@ -1489,6 +1497,14 @@ static void *streamout_new(t_symbol *s, int ac, t_atom *av){
             if (av_codec_is_encoder(codec)) {
                 post("  encoder: %s%s", codec->name,
                      codec->id == AV_CODEC_ID_VORBIS ? " (Vorbis)" : "");
+            }
+        }
+        
+        const AVCodec *codec = NULL;
+        void *i = 0;
+        while ((codec = av_codec_iterate(&i))) {
+            if (av_codec_is_encoder(codec)) {
+                printf("encoder: %s (long name: %s)\n", codec->name, codec->long_name);
             }
         }
         

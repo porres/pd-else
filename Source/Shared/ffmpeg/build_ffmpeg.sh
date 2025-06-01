@@ -46,10 +46,9 @@ make distclean || true
             --enable-network --enable-protocol=http,https \
             --enable-swresample \
             --enable-libvorbis \
-#            --enable-libogg \
-#            --enable-swscale \
             $ffmpeg_config
 
+#            --enable-libogg             --enable-swscale \
 
 if [[ "${CC:-}" == *"aarch64"* ]]; then
     make V=1 CC="$ffmpeg_cc" AR="aarch64-linux-gnu-ar" RANLIB="aarch64-linux-gnu-ranlib" LD="aarch64-linux-gnu-ld"
