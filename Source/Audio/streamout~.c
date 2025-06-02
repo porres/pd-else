@@ -100,6 +100,9 @@ typedef struct _streamout{
     t_float x_f;
     t_float x_unused;
     t_symbol *x_ignore;
+    
+//    AVStream *x_stream; // for ffmpeg
+    
     t_clock *x_clock_connect;
     t_clock *x_clock_pages;
     t_outlet *x_connection;    // outlet for connection state
@@ -323,7 +326,6 @@ static int streamout_close_chunked_stream(t_int fd){
 
 // initialize ogg/vorbis ecoding
 
-
 static int streamout_start_ogg_encoding(t_streamout *x){
 // create an "output format context" in ogg
     AVFormatContext *fmt_ctx = NULL; // fmt_ctx holds the output stream setup
@@ -352,19 +354,23 @@ static int streamout_start_ogg_encoding(t_streamout *x){
     else if(1) // verbose
         post("[streamout~]: could allocate codec context");
 // set SR and stuff
-    codec_ctx->sample_fmt = AV_SAMPLE_FMT_FLT; // 32-bit float, packed, later rethink, offer more options
+/*    const enum AVSampleFormat *p = codec->sample_fmts;
+    while (*p != AV_SAMPLE_FMT_NONE) {
+        post(" ----> supported sample format: %s", av_get_sample_fmt_name(*p));
+        p++;
+    }*/
+    codec_ctx->sample_fmt = AV_SAMPLE_FMT_FLTP; // 32-bit float, packed
     post("[streamout~]: chosen sample format is %s", av_get_sample_fmt_name(codec_ctx->sample_fmt));
     // later be a little smarter and pick a preffered one
     codec_ctx->sample_rate = sys_getsr(); // maybe allow others and resampling
-    codec_ctx->ch_layout.nb_channels = 2;  // maybe allow others in the future
-    codec_ctx->ch_layout.u.mask = AV_CH_LAYOUT_STEREO;
+//    codec_ctx->ch_layout.nb_channels = 2;  // maybe allow others in the future
+//    codec_ctx->ch_layout.u.mask = AV_CH_LAYOUT_STEREO;
+//    codec_ctx->channel_layout = AV_CH_LAYOUT_STEREO;
+//    codec_ctx->channels = 2;
+    // Set channel layout with helper
+    av_channel_layout_default(&codec_ctx->ch_layout, 2);
     // hardcode for now
     av_opt_set(codec_ctx->priv_data, "quality", "4", 0); // Vorbis quality scale ~0-10
-    if(1){ // check some stuff
-        post("[streamout~]: channels=%d", codec_ctx->ch_layout.nb_channels);
-        post("[streamout~]: channel_layout=0x%llx", (unsigned long long)codec_ctx->ch_layout.u.mask);
-        post("[streamout~]: bit_rate=%lld", codec_ctx->bit_rate);
-    }
     err = avcodec_open2(codec_ctx, codec, NULL);
     if(err < 0){
         char errbuf[128];
@@ -373,6 +379,21 @@ static int streamout_start_ogg_encoding(t_streamout *x){
     }
     else if(1)
         post("[streamout~]: codec opened");
+//    x->x_stream = avformat_new_stream(fmt_ctx, NULL);
+    AVStream *stream = avformat_new_stream(fmt_ctx, NULL);
+    if(!stream)
+        pd_error(x, "[streamout~]: could not create new stream");
+    else if(1)
+        post("[streamout~]: stream created");
+    stream->time_base = (AVRational){1, codec_ctx->sample_rate};
+    if(avcodec_parameters_from_context(stream->codecpar, codec_ctx) < 0){
+        pd_error(x, "[streamout~]: failed to copy codec parameters");
+    }
+    else if(1)
+        post("[streamout~]: copied codec parameters");
+
+
+    
     
     x->x_eos = 0;
     x->x_skip = 1;  // assume no resampling
