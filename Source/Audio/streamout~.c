@@ -28,7 +28,7 @@
 #include <pthread.h>
 #include <stdlib.h>
 #ifdef WIN32
-# include <io.h>	// for 'write' in pute-function only
+# include <io.h>	     // for 'write' in pute-function only
 # include <winsock.h>
 # include <winbase.h>
 #else
@@ -100,8 +100,6 @@ typedef struct _streamout{
     t_float x_f;
     t_float x_unused;
     t_symbol *x_ignore;
-    
-//    AVStream *x_stream; // for ffmpeg
     
     t_clock *x_clock_connect;
     t_clock *x_clock_pages;
@@ -175,6 +173,13 @@ typedef struct _streamout{
     pthread_cond_t    x_requestcondition;
     pthread_cond_t    x_answercondition;
     pthread_t         x_childthread;
+//
+/*    AVFormatContext *x_fmt_ctx;
+    AVCodecContext *x_codec_ctx;
+    AVStream *x_audio_stream;
+    AVIOContext *x_avio_ctx;
+    AVFrame *x_frame;
+    AVPacket *x_packet;*/
 }t_streamout;
 
 static char base64table[65] = {
@@ -324,19 +329,34 @@ static int streamout_close_chunked_stream(t_int fd){
 
 // ENCODING /////////////////////////////////////////////////////////////////////////////////
 
-// initialize ogg/vorbis ecoding
+// Add before your main function
+/*static int streamout_write_packet(void *opaque, const uint8_t *buf, int buf_size) {
+    t_streamout *x = (t_streamout *)opaque;
+    ssize_t sent = safe_send(x->x_fd, (const char *)buf, buf_size, SEND_OPT);
+    if(sent < 0 || sent != buf_size) {
+        pd_error(x, "[streamout~]: failed to send data to server (%zd/%d)", sent, buf_size);
+        return(AVERROR(EIO));
+    }
+    return(buf_size);
+}*/
 
+// initialize ogg/vorbis ecoding
 static int streamout_start_ogg_encoding(t_streamout *x){
-// create an "output format context" in ogg
+/*
+// I'm're recreating the full Vorbis encoder setup using FFmpeg instead of libvorbis.
+// THIS IS THE START OF THE RECREATION WITH FFMPEG. IT'S NOT REALLY DOING ANYTHING YET
+// AND THE GOAL IS TO REPLACE THE OTHER OLD libvorbis SECTION BELOW
+    
+// create "output format context"
     AVFormatContext *fmt_ctx = NULL; // fmt_ctx holds the output stream setup
     const char *oggfilename = "pd.ogg";
-//    init output context with Ogg container format
+// init output context with Ogg container
     int err = avformat_alloc_output_context2(&fmt_ctx, NULL, "ogg", oggfilename);
     if((!fmt_ctx && err < 0))
         pd_error(x, "[streamout~]: couldn't create ogg format structure");
     else if(1) // verbose
         post("[streamout~]: created an output format context in ogg successfully");
-// Add an audio stream to the container
+// Add audio stream to container
     AVStream *audio_stream = avformat_new_stream(fmt_ctx, NULL);
     if(!audio_stream)
         pd_error(x, "[streamout~]: failed to create new audio stream");
@@ -354,23 +374,14 @@ static int streamout_start_ogg_encoding(t_streamout *x){
     else if(1) // verbose
         post("[streamout~]: could allocate codec context");
 // set SR and stuff
-/*    const enum AVSampleFormat *p = codec->sample_fmts;
-    while (*p != AV_SAMPLE_FMT_NONE) {
-        post(" ----> supported sample format: %s", av_get_sample_fmt_name(*p));
-        p++;
-    }*/
-    codec_ctx->sample_fmt = AV_SAMPLE_FMT_FLTP; // 32-bit float, packed
+    codec_ctx->sample_fmt = AV_SAMPLE_FMT_FLTP; // seems like the only option
     post("[streamout~]: chosen sample format is %s", av_get_sample_fmt_name(codec_ctx->sample_fmt));
-    // later be a little smarter and pick a preffered one
     codec_ctx->sample_rate = sys_getsr(); // maybe allow others and resampling
-//    codec_ctx->ch_layout.nb_channels = 2;  // maybe allow others in the future
-//    codec_ctx->ch_layout.u.mask = AV_CH_LAYOUT_STEREO;
-//    codec_ctx->channel_layout = AV_CH_LAYOUT_STEREO;
-//    codec_ctx->channels = 2;
     // Set channel layout with helper
     av_channel_layout_default(&codec_ctx->ch_layout, 2);
     // hardcode for now
     av_opt_set(codec_ctx->priv_data, "quality", "4", 0); // Vorbis quality scale ~0-10
+// Open codec
     err = avcodec_open2(codec_ctx, codec, NULL);
     if(err < 0){
         char errbuf[128];
@@ -379,21 +390,89 @@ static int streamout_start_ogg_encoding(t_streamout *x){
     }
     else if(1)
         post("[streamout~]: codec opened");
-//    x->x_stream = avformat_new_stream(fmt_ctx, NULL);
-    AVStream *stream = avformat_new_stream(fmt_ctx, NULL);
-    if(!stream)
-        pd_error(x, "[streamout~]: could not create new stream");
-    else if(1)
-        post("[streamout~]: stream created");
-    stream->time_base = (AVRational){1, codec_ctx->sample_rate};
-    if(avcodec_parameters_from_context(stream->codecpar, codec_ctx) < 0){
+// Copy codec parameters
+    audio_stream->time_base = (AVRational){1, codec_ctx->sample_rate};
+    if(avcodec_parameters_from_context(audio_stream->codecpar, codec_ctx) < 0){
         pd_error(x, "[streamout~]: failed to copy codec parameters");
     }
     else if(1)
         post("[streamout~]: copied codec parameters");
-
-
+// Create custom AVIO context for network streaming
+    const int avio_buffer_size = 4096;
+    uint8_t *avio_buffer = av_malloc(avio_buffer_size);
+    if(!avio_buffer) {
+        pd_error(x, "[streamout~]: failed to allocate AVIO buffer");
+        goto cleanup_ffmpeg;
+    }
+    AVIOContext *avio_ctx = avio_alloc_context(avio_buffer,
+        avio_buffer_size, 1, x, NULL, streamout_write_packet, NULL);
+    if(!avio_ctx){
+        pd_error(x, "[streamout~]: failed to allocate AVIO context");
+        av_freep(&avio_buffer);
+        goto cleanup_ffmpeg;
+    }
+    else if(1)
+        post("[streamout~]: Allocated AVIO context");
     
+    fmt_ctx->pb = avio_ctx;
+    fmt_ctx->flags |= AVFMT_FLAG_CUSTOM_IO;
+// Add metadata (replaces vorbis_comment)
+    AVDictionary *metadata = NULL;
+    if(x->x_bcname && strlen(x->x_bcname) > 0)
+        av_dict_set(&metadata, "title", x->x_bcname, 0);
+    if(x->x_bcartist && strlen(x->x_bcartist) > 0)
+        av_dict_set(&metadata, "artist", x->x_bcartist, 0);
+    if(x->x_bcgenre && strlen(x->x_bcgenre) > 0)
+        av_dict_set(&metadata, "genre", x->x_bcgenre, 0);
+    // ... add other metadata fields similarly
+    av_dict_set(&metadata, "encoder", "[streamout~]", 0);
+    fmt_ctx->metadata = metadata;
+    // Write format header (replaces the OGG header sending loop)
+    err = avformat_write_header(fmt_ctx, NULL);
+    if(err < 0) {
+        char errbuf[128];
+        av_strerror(err, errbuf, sizeof(errbuf));
+        pd_error(x, "[streamout~]: failed to write format header: %s", errbuf);
+        goto cleanup_ffmpeg;
+    }
+    else if(1)
+        post("[streamout~]: format header written to stream");
+// Store contexts for encoding
+    x->x_fmt_ctx = fmt_ctx;
+    x->x_codec_ctx = codec_ctx;
+    x->x_audio_stream = audio_stream;
+    x->x_avio_ctx = avio_ctx;
+//    x->x_avio_buffer = avio_buffer;
+    
+// Allocate frame for audio data
+    x->x_frame = av_frame_alloc();
+    if(!x->x_frame){
+        pd_error(x, "[streamout~]: failed to allocate frame");
+        goto cleanup_ffmpeg;
+    }
+    else if(1)
+        post("[streamout~]: allocated frame");
+    x->x_frame->format = codec_ctx->sample_fmt;
+    x->x_frame->ch_layout = codec_ctx->ch_layout;
+    x->x_frame->sample_rate = codec_ctx->sample_rate;
+    x->x_frame->nb_samples = codec_ctx->frame_size;
+// Allocate buffer
+    if(av_frame_get_buffer(x->x_frame, 0) < 0){
+          pd_error(x, "[streamout~]: failed to allocate frame buffer");
+//          goto cleanup_ffmpeg;
+    }
+    else if(1)
+        post("[streamout~]: allocated frame buffer");
+// Allocate packet for encoded data
+    x->x_packet = av_packet_alloc();
+    if(!x->x_packet){
+        pd_error(x, "[streamout~]: failed to allocate packet");
+    //    goto cleanup_ffmpeg;
+    }
+    else if(1)
+        post("[streamout~]: allocated packet");*/
+    
+// OLD libvorbis PART
     
     x->x_eos = 0;
     x->x_skip = 1;  // assume no resampling
@@ -401,28 +480,9 @@ static int streamout_start_ogg_encoding(t_streamout *x){
     // Initialize vorbis info
     vorbis_info_init(&(x->x_vi));
     
-    // Handle sample rate conversion
-    if(x->x_samplerate != sys_getsr()){
-        float sr_ratio = sys_getsr() / (float)x->x_samplerate;
-        // Check for supported downsampling ratios
-        if(sr_ratio == 2.0f) {
-            post("[streamout~]: downsampling from %.0f to %d Hz", sys_getsr(), x->x_samplerate);
-            x->x_skip = 2;
-        } else if(sr_ratio == 3.0f) {
-            post("[streamout~]: downsampling from %.0f to %d Hz", sys_getsr(), x->x_samplerate);
-            x->x_skip = 3;
-        } else if(sr_ratio == 4.0f) {
-            post("[streamout~]: downsampling from %.0f to %d Hz", sys_getsr(), x->x_samplerate);
-            x->x_skip = 4;
-        } else {
-            post("[streamout~]: warning: resampling from %.0f to %d not supported",
-                 sys_getsr(), x->x_samplerate);
-        }
-    }
     // Modern Vorbis encoder setup
     int ret;
-    if(x->x_vbr == 1){
-        // Quality-based VBR encoding (modern approach)
+    if(x->x_vbr == 1){ // Quality-based VBR encoding (modern approach)
         ret = vorbis_encode_setup_vbr(&(x->x_vi), x->x_channels, x->x_samplerate, x->x_quality);
         if(ret != 0){
             pd_error(x, "[streamout~]: vorbis VBR setup failed with code %d", ret);
@@ -493,18 +553,18 @@ static int streamout_start_ogg_encoding(t_streamout *x){
     ogg_stream_packetin(&(x->x_os), &header_code);
     
     // Flush headers to server
-    while (!x->x_eos) {
+    while (!x->x_eos){
         int result = ogg_stream_flush(&(x->x_os), &(x->x_og));
-        if(result == 0) break;
-        
+        if(result == 0)
+            break;
         ssize_t sent = safe_send(x->x_fd, (const char *)x->x_og.header, x->x_og.header_len, SEND_OPT);
-        if(sent < 0 || sent != (ssize_t)x->x_og.header_len) {
+        if(sent < 0 || sent != (ssize_t)x->x_og.header_len){
             pd_error(x, "[streamout~]: failed to send ogg header to server (%zd/%ld)",
-                    sent, x->x_og.header_len);
+                sent, x->x_og.header_len);
             goto cleanup_stream;
         }
         sent = safe_send(x->x_fd, (const char *)x->x_og.body, x->x_og.body_len, SEND_OPT);
-        if(sent < 0 || sent != (ssize_t)x->x_og.body_len) {
+        if(sent < 0 || sent != (ssize_t)x->x_og.body_len){
             pd_error(x, "[streamout~]: failed to send ogg body to server (%zd/%ld)",
                     sent, x->x_og.body_len);
             goto cleanup_stream;
@@ -523,12 +583,23 @@ cleanup_info:
     vorbis_info_clear(&(x->x_vi));
     x->x_eos = 1;
     return(-1);
+/*cleanup_ffmpeg:
+    if(x->x_packet) av_packet_free(&x->x_packet);
+    if(x->x_frame) av_frame_free(&x->x_frame);
+    if(avio_ctx) {
+        if(avio_ctx->buffer) av_freep(&avio_ctx->buffer);
+        avio_context_free(&avio_ctx);
+    }
+    if(codec_ctx) avcodec_free_context(&codec_ctx);
+    if(fmt_ctx) avformat_free_context(fmt_ctx);
+    x->x_eos = 1;
+    return(-1);*/
 }
 
 // finish encoding
 static void ifstreamout_finish_ogg_encoding(t_streamout *x){
 	vorbis_analysis_wrote(&(x->x_vd),0);
-		/* get rid of remaining data in encoder, if any */
+    // get rid of remaining data in encoder, if any
 	while(vorbis_analysis_blockout(&(x->x_vd),&(x->x_vb)) == 1){
 		vorbis_analysis(&(x->x_vb),NULL);
 		vorbis_bitrate_addblock(&(x->x_vb));
@@ -537,13 +608,45 @@ static void ifstreamout_finish_ogg_encoding(t_streamout *x){
 			streamout_stream(x, x->x_fd);
 		}
 	} 
-		/* clean up and exit.  vorbis_info_clear() must be called last */
+    // clean up and exit
 	ogg_stream_clear(&(x->x_os));
 	vorbis_block_clear(&(x->x_vb));
 	vorbis_dsp_clear(&(x->x_vd));
 	vorbis_comment_clear(&(x->x_vc));
 	vorbis_info_clear(&(x->x_vi));
 }
+
+/*static void streamout_finish_ogg_encoding(t_streamout *x){
+    // Flush the encoder by sending NULL frame
+    int ret = avcodec_send_frame(x->x_codec_ctx, NULL);
+    if(ret < 0)
+        pd_error(x, "[streamout~]: error flushing encoder");
+    while(ret >= 0){ // Get remaining packets from encoder
+        ret = avcodec_receive_packet(x->x_codec_ctx, x->x_packet);
+        if(ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
+            break;
+        if(ret < 0){
+            pd_error(x, "[streamout~]: error receiving packet during flush");
+            break;
+        }
+        // Write packet to stream
+        ret = av_interleaved_write_frame(x->x_fmt_ctx, x->x_packet);
+        if(ret < 0)
+            pd_error(x, "[streamout~]: error writing final packet");
+        av_packet_unref(x->x_packet);
+    }
+    // Write trailer
+    av_write_trailer(x->x_fmt_ctx);
+    // Clean up
+    av_packet_free(&x->x_packet);
+    av_frame_free(&x->x_frame);
+    if(x->x_avio_ctx){
+        if(x->x_avio_ctx->buffer) av_freep(&x->x_avio_ctx->buffer);
+        avio_context_free(&x->x_avio_ctx);
+    }
+    avcodec_free_context(&x->x_codec_ctx);
+    avformat_free_context(x->x_fmt_ctx);
+}*/
 
 // encode ogg/vorbis and stream new data
 static int streamout_encode(t_streamout *x, float *buf, int channels, int fifosize, int fd){
@@ -554,31 +657,74 @@ static int streamout_encode(t_streamout *x, float *buf, int channels, int fifosi
 		// expose the buffer to submit data
 	float **inbuffer=vorbis_analysis_buffer(&(x->x_vd),READ * channels);
 		// read from buffer
-    for(n = 0; n < READ; n++){		             /* fill encode buffer */
+    for(n = 0; n < READ; n++){		          // fill encode buffer
 		for(ch = 0; ch < channels; ch++)
 			inbuffer[ch][n] = *buf++;
 	}
-		/* tell the library how much we actually submitted */
+    // tell the library how much we actually submitted
 	vorbis_analysis_wrote(&(x->x_vd), n);
-		/* vorbis does some data preanalysis, then divvies up blocks for
-		   more involved (potentially parallel) processing.  Get a single
-		   block for encoding now */
 	while(vorbis_analysis_blockout(&(x->x_vd),&(x->x_vb)) == 1){
-			/* analysis, assume we want to use bitrate management */
-		vorbis_analysis(&(x->x_vb),NULL);
+        // analysis, assume we want to use bitrate management
+		vorbis_analysis(&(x->x_vb), NULL);
 		vorbis_bitrate_addblock(&(x->x_vb));
 		while(vorbis_bitrate_flushpacket(&(x->x_vd),&(x->x_op))){
-				/* weld the packet into the bitstream */
+            // weld the packet into the bitstream
 			ogg_stream_packetin(&(x->x_os),&(x->x_op));
-			err = streamout_stream(x, fd);	/* stream packet to server */
+			err = streamout_stream(x, fd);	// stream packet to server
 			if(err >= 0)
-				pages += err;       /* count pages */
+				pages += err; // count pages
 			else
                 return(err);
 		}
 	}
 	return(pages);
 }
+
+/*static int streamout_encode(t_streamout *x, float *buf, int channels, int fifosize, int fd){
+    x->x_unused = fifosize;
+    int err = 0;
+    int n;
+    // Make sure frame is writable
+    if(av_frame_make_writable(x->x_frame) < 0){
+        pd_error(x, "[streamout~]: frame not writable");
+        return -1;
+    }
+    // Fill the frame with audio data
+    float **frame_data = (float**)x->x_frame->data;
+    for(n = 0; n < READ; n++){
+        for(int ch = 0; ch < channels; ch++)
+            frame_data[ch][n] = *buf++;
+    }
+    x->x_frame->nb_samples = n;
+    // Send frame to encoder
+    err = avcodec_send_frame(x->x_codec_ctx, x->x_frame);
+    if(err < 0){
+        pd_error(x, "[streamout~]: error sending frame to encoder");
+        return(-1);
+    }
+    int pages = 0;
+    // Receive encoded packets
+    while(err >= 0) {
+        err = avcodec_receive_packet(x->x_codec_ctx, x->x_packet);
+        if(err == AVERROR(EAGAIN) || err == AVERROR_EOF) {
+            break;
+        }
+        if(err < 0){
+            pd_error(x, "[streamout~]: error receiving packet");
+            return(-1);
+        }
+        // Write packet to stream
+        err = av_interleaved_write_frame(x->x_fmt_ctx, x->x_packet);
+        if(err < 0){
+            pd_error(x, "[streamout~]: error writing packet");
+            av_packet_unref(x->x_packet);
+            return(-1);
+        }
+        av_packet_unref(x->x_packet);
+        pages++; // count packets (equivalent to pages)
+    }
+    return(pages);
+}*/
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
@@ -829,8 +975,8 @@ static void streamout_child_disconnect(t_int fd){
 }
 /************** the child thread which performs data I/O ***********/
 
-#if 0			/* set this to 1 to get debugging output */
-static void pute(char *s){   /* debug routine */
+#if 0			// set this to 1 to get debugging output
+static void pute(char *s){   // debug routine
     write(2, s, strlen(s));
 }
 #else
@@ -924,7 +1070,7 @@ static void *streamout_child_main(void *zz){
 					x->x_bcdate = pdogg_strdup(ctime(&now)); /*--moo*/
 					x->x_pages = 0;
 					clock_delay(x->x_clock_pages, 0);
-						/* initialise the encoder */
+						// initialise the encoder
 					if(streamout_start_ogg_encoding(x) == 0){
                         if(0) // verbose
                             post("[streamout~]: ogg/vorbis encoder initialised");
@@ -1549,6 +1695,11 @@ static void *streamout_new(t_symbol *s, int ac, t_atom *av){
         while ((ofmt = av_muxer_iterate(&opaque))) {
             post("  %s", ofmt->name);
         }
+        /*    const enum AVSampleFormat *p = codec->sample_fmts;
+            while (*p != AV_SAMPLE_FMT_NONE) {
+                post(" ----> supported sample format: %s", av_get_sample_fmt_name(*p));
+                p++;
+            }*/
     }
 
     return(x);
