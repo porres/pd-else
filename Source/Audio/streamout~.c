@@ -11,8 +11,7 @@
 #include <libavutil/avutil.h>
 #include <libavutil/opt.h>
 
-/*
-#include <libswresample/swresample.h>
+/*#include <libswresample/swresample.h>
 #include <libavutil/time.h>
 #include <libavutil/channel_layout.h>
 #include <libavutil/mem.h>
@@ -1468,7 +1467,7 @@ static void *streamout_new(t_symbol *s, int ac, t_atom *av){
     clock_delay(x->x_clock_pages, 0);
     pthread_create(&x->x_childthread, 0, streamout_child_main, x);
 
-    if(1){ // verbose
+    if(0){ // verbose
         post("[streamout~]: set buffer to %dk bytes", bufsize / 1024);
         post("[streamout~]: encoding %d chans / %d Hz", x->x_channels, x->x_samplerate);
         post("[streamout~] FFmpeg version: %s", av_version_info());
@@ -1478,7 +1477,7 @@ static void *streamout_new(t_symbol *s, int ac, t_atom *av){
         post("libavutil version: %u", avutil_version());
         post("-----------");
         
-        const AVCodec *codec = avcodec_find_encoder_by_name("vorbis");
+        const AVCodec *codec = avcodec_find_encoder_by_name("libvorbis");
         if (codec) {
             post("Vorbis encoder name: %s", codec->name);
             post("Long name: %s", codec->long_name ? codec->long_name : "(none)");

@@ -43,8 +43,8 @@ if(APPLE)
     set(CMAKE_INSTALL_RPATH "@loader_path")
 endif()
 
-set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment version")
-set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "" FORCE)
+set(CMAKE_OSX_DEPLOYMENT_TARGET "15.0" CACHE STRING "Minimum OS X deployment version")
+set(CMAKE_OSX_ARCHITECTURES "arm64" CACHE STRING "" FORCE)
 
 project(ELSE LANGUAGES C CXX)
 
@@ -81,7 +81,7 @@ foreach(file ${else_sources})
     target_link_libraries(${target_name} PRIVATE else_shared)
 
     # If target is streamout_tilde, add static libogg and libvorbis linking on macOS
-    if(${target_name} STREQUAL "streamout_tilde")
+    if(${target_name} STREQUAL "streamout_tilde" OR ${target_name} STREQUAL "streamin_tilde" OR ${target_name} STREQUAL "play.file_tilde" OR ${target_name} STREQUAL "sfload" OR ${target_name} STREQUAL "sfinfo")
         if(APPLE)
             set(OGG_STATIC_LIB "/opt/homebrew/lib/libogg.a")
             set(VORBIS_STATIC_LIB "/opt/homebrew/lib/libvorbis.a")

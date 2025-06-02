@@ -10,8 +10,8 @@ echo "Detected OS: $OS"
 # Define platform-specific configurations
 if [[ "$OS" == "Darwin" ]]; then
     export PKG_CONFIG_PATH="/opt/homebrew/lib/pkgconfig:$PKG_CONFIG_PATH"
-    ffmpeg_config="--enable-securetransport --extra-cflags=-mmacosx-version-min=11.0 --extra-ldflags=-mmacosx-version-min=11.0"
-    ffmpeg_cc="clang -arch x86_64 -arch arm64"
+    ffmpeg_config="--enable-securetransport --extra-cflags=-mmacosx-version-min=15.0 --extra-ldflags=-mmacosx-version-min=15.0"
+    ffmpeg_cc="clang -arch arm64"
 elif [[ "$OS" == "Linux" ]]; then
     if [[ "${CC:-}" == *"aarch64"* ]]; then
         ffmpeg_config="--enable-cross-compile --arch=arm64 --target-os=linux --cross-prefix=aarch64-linux-gnu- --pkg-config=pkg-config"
@@ -36,10 +36,12 @@ make clean || true
 make distclean || true
 
 echo "Running configure..."
+export MACOSX_DEPLOYMENT_TARGET=15.0
 ./configure --disable-asm --disable-libxcb --disable-bzlib --disable-lzma --disable-sdl2 --disable-libdrm --disable-vaapi --enable-static --disable-shared --enable-optimizations --disable-debug \
             --disable-programs --disable-iconv --disable-avdevice --disable-postproc \
             --disable-everything --enable-avcodec --enable-avformat --enable-avutil \
             --enable-encoder=vorbis,flac,mp3,mpeg4,aac,alac,pcm_mulaw,pcm_alaw \
+            --enable-encoder=libvorbis \
             --enable-decoder=mp3*,pcm*,aac*,flac,vorbis,opus,alac,mulaw,alaw,aac,h264 \
             --enable-decoder=mpeg4,mpeg1video,mpeg2video \
             --enable-decoder=mjpeg  \
@@ -51,7 +53,7 @@ echo "Running configure..."
             --enable-network --enable-protocol=http,https \
             --enable-swresample \
             --enable-libvorbis \
-            $ffmpeg_config || { echo "Configure failed"; exit 1; }
+            $ffmpeg_config > ../configure_output.log 2>&1 || { echo "Configure failed. See configure_output.log for details."; exit 1; }
 
 echo "Starting compilation..."
 if [[ "${CC:-}" == *"aarch64"* ]]; then
