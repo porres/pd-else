@@ -385,8 +385,6 @@ static int streamout_start_ogg_encoding(t_streamout *x){
     codec_ctx->flags |= AV_CODEC_FLAG_LOW_DELAY;  // Enable low delay mode
     codec_ctx->gop_size = 0;  // Disable GOP for streaming
     // Set small frame size for better streaming latency
-    if(codec_ctx->frame_size == 0)
-        codec_ctx->frame_size = 512;  // Small frame size for streaming
 // Open codec
     err = avcodec_open2(codec_ctx, codec, NULL);
     if(err < 0){
@@ -403,6 +401,7 @@ static int streamout_start_ogg_encoding(t_streamout *x){
     }
     else if(1)
         post("[streamout~]: copied codec parameters");
+    codec_ctx->frame_size = 512;  // force 512 frame size for streaming
 // Create custom AVIO context for network streaming
     const int avio_buffer_size = 4096;
     uint8_t *avio_buffer = av_malloc(avio_buffer_size);
@@ -490,12 +489,11 @@ static int streamout_start_ogg_encoding(t_streamout *x){
     if(1)
         post("[streamout~]: streamout_start_ogg_encoding OK!");
     
-// OLD libvorbis PART
-    
     x->x_eos = 0;
     x->x_skip = 1;  // assume no resampling
     x->x_encoder_initialized = 1;
 /*
+    OLD CODE NOT BASED ON FFMPEG
     // Initialize vorbis info
     vorbis_info_init(&(x->x_vi));
     
@@ -682,9 +680,10 @@ static int streamout_encode(t_streamout *x, float *buf, int channels, int fifosi
     if(err < 0){
         char errbuf[128];
         av_strerror(err, errbuf, sizeof(errbuf));
-        pd_error(x, "[streamout~]: avcodec_send_frame failed: %s", errbuf);
+        pd_error(x, "[streamout~]: avcodec_send_frame failed: %s (error code: %d)", errbuf, err);
         return(-1);
     }
+    
     else if(x->x_encoder_initialized)
         post("avcodec_send_frame didn't fail");
     int pages = 0;
@@ -698,6 +697,13 @@ static int streamout_encode(t_streamout *x, float *buf, int channels, int fifosi
             pd_error(x, "[streamout~]: error receiving packet");
             return(-1);
         }
+        
+        // Add this at the start of streamout_encode():
+        static int64_t last_pts = AV_NOPTS_VALUE;
+        if (last_pts != AV_NOPTS_VALUE && x->x_packet->pts != AV_NOPTS_VALUE) {
+            post("[streamout~] PTS delta: %lld", (long long)(x->x_packet->pts - last_pts));
+        }
+        last_pts = x->x_packet->pts;
         
         // Set proper stream index and timestamps
         x->x_packet->stream_index = x->x_audio_stream->index;
@@ -724,53 +730,7 @@ static int streamout_encode(t_streamout *x, float *buf, int channels, int fifosi
     return(pages);
 }
 
-/*static int streamout_encode(t_streamout *x, float *buf, int channels, int fifosize, int fd){
-    x->x_unused = fifosize;
-    int n;
-    // Make sure frame is writable
-    if(av_frame_make_writable(x->x_frame) < 0){
-        pd_error(x, "[streamout~]: frame not writable");
-        return -1;
-    }
-    // Fill the frame with audio data
-    float **frame_data = (float**)x->x_frame->data;
-    for(n = 0; n < READ; n++){
-        for(int ch = 0; ch < channels; ch++)
-            frame_data[ch][n] = *buf++;
-    }
-    x->x_frame->nb_samples = n;
-    // Send frame to encoder
-    int err = avcodec_send_frame(x->x_codec_ctx, x->x_frame);
-    if(err < 0){
-        char errbuf[128];
-        av_strerror(err, errbuf, sizeof(errbuf));
-        pd_error(x, "[streamout~]: avcodec_send_frame failed: %s", errbuf);
-        return(-1);
-    }
-    int pages = 0;
-    // Receive encoded packets
-    while(err >= 0) {
-        err = avcodec_receive_packet(x->x_codec_ctx, x->x_packet);
-        if(err == AVERROR(EAGAIN) || err == AVERROR_EOF){
-            break;
-        }
-        if(err < 0){
-            pd_error(x, "[streamout~]: error receiving packet");
-            return(-1);
-        }
-        // Write packet to stream
-        err = av_interleaved_write_frame(x->x_fmt_ctx, x->x_packet);
-        if(err < 0){
-            pd_error(x, "[streamout~]: error writing packet");
-            av_packet_unref(x->x_packet);
-            return(-1);
-        }
-        av_packet_unref(x->x_packet);
-        pages++; // count packets (equivalent to pages)
-    }
-    return(pages);
-}*/
-
+// OLD CODE NOT USING FFMPEG
 // finish encoding
 /*static void ifstreamout_finish_ogg_encoding(t_streamout *x){
     vorbis_analysis_wrote(&(x->x_vd),0);
