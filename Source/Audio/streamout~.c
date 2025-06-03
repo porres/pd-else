@@ -381,6 +381,12 @@ static int streamout_start_ogg_encoding(t_streamout *x){
     av_channel_layout_default(&codec_ctx->ch_layout, 2);
     // hardcode for now
     av_opt_set(codec_ctx->priv_data, "quality", "4", 0); // Vorbis quality scale ~0-10
+    // Add streaming optimizations
+    codec_ctx->flags |= AV_CODEC_FLAG_LOW_DELAY;  // Enable low delay mode
+    codec_ctx->gop_size = 0;  // Disable GOP for streaming
+    // Set small frame size for better streaming latency
+    if(codec_ctx->frame_size == 0)
+        codec_ctx->frame_size = 512;  // Small frame size for streaming
 // Open codec
     err = avcodec_open2(codec_ctx, codec, NULL);
     if(err < 0){
@@ -416,6 +422,8 @@ static int streamout_start_ogg_encoding(t_streamout *x){
     
     fmt_ctx->pb = avio_ctx;
     fmt_ctx->flags |= AVFMT_FLAG_CUSTOM_IO;
+    // CRITICAL: Force packet flushing
+    fmt_ctx->flags |= AVFMT_FLAG_FLUSH_PACKETS;
 // Add metadata (replaces vorbis_comment)
     AVDictionary *metadata = NULL;
     if(x->x_bcname && strlen(x->x_bcname) > 0)
@@ -427,6 +435,13 @@ static int streamout_start_ogg_encoding(t_streamout *x){
     // ... add other metadata fields similarly
     av_dict_set(&metadata, "encoder", "[streamout~]", 0);
     fmt_ctx->metadata = metadata;
+
+    
+    // Set small buffer sizes for streaming
+    fmt_ctx->pb->buffer_size = 4096;
+    fmt_ctx->pb->min_packet_size = 1;
+    
+    
     // Write format header (replaces the OGG header sending loop)
     err = avformat_write_header(fmt_ctx, NULL);
     if(err < 0) {
@@ -639,38 +654,29 @@ static int streamout_encode(t_streamout *x, float *buf, int channels, int fifosi
     // Make sure frame is writable
     if(av_frame_make_writable(x->x_frame) < 0){
         pd_error(x, "[streamout~]: frame not writable");
-        return -1;
+        return(-1);
     }
     else if(x->x_encoder_initialized)
         post("[streamout~]: frame is writable");
-    // Use the encoder's expected frame size - this is critical for Vorbis
+    // Use smaller, consistent frame sizes for streaming
     int samples_to_encode = x->x_codec_ctx->frame_size;
-    if(samples_to_encode <= 0) {
-        samples_to_encode = READ; // fallback if frame_size is 0
-        post("[streamout~]: warning - codec frame_size is 0, using READ=%d", READ);
-    }
-    else if(x->x_encoder_initialized)
-        post("[streamout~]: codec frame_size is not 0");
-    // Ensure we don't exceed available input data
-    if(samples_to_encode > READ)
-        samples_to_encode = READ;
+    if(samples_to_encode <= 0 || samples_to_encode > READ)
+        samples_to_encode = 512;  // Force small frame size for streaming
     // Fill the frame with audio data
     float **frame_data = (float**)x->x_frame->data;
     for(int n = 0; n < samples_to_encode; n++){
-        for(int ch = 0; ch < channels; ch++)
+        for(int ch = 0; ch < channels; ch++){
             frame_data[ch][n] = *buf++;
+        }
     }
     // Set the number of samples - MUST match what we actually filled
     x->x_frame->nb_samples = samples_to_encode;
     
-    // Validate frame before sending
-    if(x->x_frame->nb_samples <= 0) {
-        pd_error(x, "[streamout~]: invalid frame size: %d", x->x_frame->nb_samples);
-        return -1;
-    }
-    
-    else if(x->x_encoder_initialized)
-        post("[streamout~]: valid frame size: %d", x->x_frame->nb_samples);
+    // Set proper timestamp for streaming continuity
+    static int64_t pts = 0;
+    x->x_frame->pts = pts;
+    pts += samples_to_encode;
+
     // Send frame to encoder
     err = avcodec_send_frame(x->x_codec_ctx, x->x_frame);
     if(err < 0){
@@ -680,11 +686,10 @@ static int streamout_encode(t_streamout *x, float *buf, int channels, int fifosi
         return(-1);
     }
     else if(x->x_encoder_initialized)
-        post("[streamout~]: avcodec_send_frame succeeded");
-    
+        post("avcodec_send_frame didn't fail");
     int pages = 0;
     // Receive encoded packets
-    while(err >= 0) {
+    while(err >= 0){
         err = avcodec_receive_packet(x->x_codec_ctx, x->x_packet);
         if(err == AVERROR(EAGAIN) || err == AVERROR_EOF){
             break;
@@ -693,16 +698,26 @@ static int streamout_encode(t_streamout *x, float *buf, int channels, int fifosi
             pd_error(x, "[streamout~]: error receiving packet");
             return(-1);
         }
-        // Write packet to stream
+        
+        // Set proper stream index and timestamps
+        x->x_packet->stream_index = x->x_audio_stream->index;
+        av_packet_rescale_ts(x->x_packet, x->x_codec_ctx->time_base, x->x_audio_stream->time_base);
+        
+        // Write packet to stream with immediate flushing
         err = av_interleaved_write_frame(x->x_fmt_ctx, x->x_packet);
         if(err < 0){
             pd_error(x, "[streamout~]: error writing packet");
             av_packet_unref(x->x_packet);
             return(-1);
         }
+        
+        // CRITICAL: Force immediate flush for streaming
+        avio_flush(x->x_fmt_ctx->pb);
+        
         av_packet_unref(x->x_packet);
-        pages++; // count packets (equivalent to pages)
+        pages++;
     }
+    
     if(x->x_encoder_initialized)
         post("returning pages");
     x->x_encoder_initialized = 0;
