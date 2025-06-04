@@ -473,16 +473,42 @@ while (!x->x_eos){
 }*/
 
 
-// Add before your main function
 static int streamout_write_packet(void *opaque, const uint8_t *buf, int buf_size){
     t_streamout *x = (t_streamout *)opaque;
+    char chunk_header[32];
+    char chunk_footer[] = "\r\n";
+    int err;
+    
+    // Send chunk size in hexadecimal format for HTTP chunked encoding
+    if(sprintf(chunk_header, "%x\r\n", buf_size) == -1) {
+        pd_error(x, "[streamout~]: error formatting chunk header");
+        return AVERROR(EIO);
+    }
+    
+    // Send chunk size header
+    err = safe_send(x->x_fd, chunk_header, strlen(chunk_header), SEND_OPT);
+    if(err < 0) {
+        pd_error(x, "[streamout~]: failed to send chunk header (%d)", err);
+        return AVERROR(EIO);
+    }
+    
+    // Send actual data
     ssize_t sent = safe_send(x->x_fd, (const char *)buf, buf_size, SEND_OPT);
     if(sent < 0 || sent != buf_size) {
         pd_error(x, "[streamout~]: failed to send data to server (%zd/%d)", sent, buf_size);
-        return(AVERROR(EIO));
+        return AVERROR(EIO);
     }
-    return(buf_size);
+    
+    // Send chunk footer (CRLF)
+    err = safe_send(x->x_fd, chunk_footer, strlen(chunk_footer), SEND_OPT);
+    if(err < 0) {
+        pd_error(x, "[streamout~]: failed to send chunk footer (%d)", err);
+        return AVERROR(EIO);
+    }
+    
+    return buf_size;
 }
+
 
 // initialize ogg/vorbis ecoding
 static int streamout_start_encoding(t_streamout *x){
@@ -654,100 +680,91 @@ cleanup_ffmpeg:
 static int streamout_encode(t_streamout *x, float *buf, int channels, int fifosize, int fd){
     x->x_unused = fifosize;
     int err = 0;
-    int verbose = 1;
+    int verbose = 0; // Changed from 1 to reduce spam
+    
     // Make sure frame is writable
     if(av_frame_make_writable(x->x_frame) < 0){
         pd_error(x, "[streamout~]: frame not writable");
         return(-1);
     }
-    else if(x->x_encoder_initialized)
-        post("[streamout~]: frame is writable");
-    // Use smaller, consistent frame sizes for streaming
+    
+    // Use frame size from codec
     int samples_to_encode = x->x_codec_ctx->frame_size;
-    if(verbose) // verbose
-        post("samples_to_encode = %d", samples_to_encode);
+    
     // Fill the frame with audio data
     float **frame_data = (float**)x->x_frame->data;
     for(int n = 0; n < samples_to_encode; n++){
-        for(int ch = 0; ch < channels; ch++)
+        for(int ch = 0; ch < channels; ch++){
             frame_data[ch][n] = *buf++;
+        }
     }
-    // Set the number of samples - MUST match what we actually filled
+    
+    // Set the number of samples
     x->x_frame->nb_samples = samples_to_encode;
     
     // Set proper timestamp for streaming continuity
     static int64_t pts = 0;
     x->x_frame->pts = pts;
     pts += samples_to_encode;
+    
     if(verbose){
-        post("[streamout~]: set frame PTS to %lld", (long long)x->x_frame->pts);
-        post("[streamout~]: Frame: nb_samples=%d, format=%d, channels=%d, rate=%d",
-             x->x_frame->nb_samples, x->x_frame->format,
-             x->x_frame->ch_layout.nb_channels, x->x_frame->sample_rate);
-        post("[streamout~]: Codec: frame_size=%d, format=%d, channels=%d, rate=%d",
-             x->x_codec_ctx->frame_size, x->x_codec_ctx->sample_fmt,
-             x->x_codec_ctx->ch_layout.nb_channels, x->x_codec_ctx->sample_rate);
+        post("[streamout~]: Frame: nb_samples=%d, pts=%lld",
+             x->x_frame->nb_samples, (long long)x->x_frame->pts);
     }
-    // Check frame data
-    if(!x->x_frame->data[0] || !x->x_frame->data[1]){
-        pd_error(x, "[streamout~]: frame data pointers are NULL");
-        return(-1);
-    }
-    else if(verbose)
-        post("[streamout~]: frame data pointers aren't NULL");
-    float **frame_datum = (float**)x->x_frame->data;
-    if(verbose)
-        post("[streamout~] -----> first sample L=%f R=%f", frame_datum[0][0], frame_datum[1][0]);
+    
     // Send frame to encoder
     err = avcodec_send_frame(x->x_codec_ctx, x->x_frame);
     if(err < 0){
         char errbuf[128];
         av_strerror(err, errbuf, sizeof(errbuf));
-        pd_error(x, "[streamout~]: avcodec_send_frame failed: %s (error code: %d)", errbuf, err);
+        pd_error(x, "[streamout~]: avcodec_send_frame failed: %s", errbuf);
         return(-1);
     }
-    else if(x->x_encoder_initialized)
-        post("avcodec_send_frame didn't fail");
     
-    int pages = 0;
-    // Receive encoded packets
+    int packets_written = 0;
+    
+    // Receive and write encoded packets
     while(err >= 0){
         err = avcodec_receive_packet(x->x_codec_ctx, x->x_packet);
         if(err == AVERROR(EAGAIN) || err == AVERROR_EOF){
-            break;
+            break; // Need more input or end of stream
         }
         if(err < 0){
-            pd_error(x, "[streamout~]: error receiving packet");
+            char errbuf[128];
+            av_strerror(err, errbuf, sizeof(errbuf));
+            pd_error(x, "[streamout~]: error receiving packet: %s", errbuf);
             return(-1);
         }
-        
-        // Add this at the start of streamout_encode():
-        static int64_t last_pts = AV_NOPTS_VALUE;
-        if(last_pts != AV_NOPTS_VALUE && x->x_packet->pts != AV_NOPTS_VALUE)
-            post("[streamout~] PTS delta: %lld", (long long)(x->x_packet->pts - last_pts));
-        last_pts = x->x_packet->pts;
         
         // Set proper stream index and timestamps
         x->x_packet->stream_index = x->x_audio_stream->index;
         av_packet_rescale_ts(x->x_packet, x->x_codec_ctx->time_base, x->x_audio_stream->time_base);
         
-        // Write packet to stream with immediate flushing
+        if(verbose){
+            post("[streamout~]: Writing packet: size=%d, pts=%lld",
+                 x->x_packet->size, (long long)x->x_packet->pts);
+        }
+        
+        // Write packet to stream - this automatically calls your streamout_write_packet callback
         err = av_interleaved_write_frame(x->x_fmt_ctx, x->x_packet);
         if(err < 0){
-            pd_error(x, "[streamout~]: error writing packet");
+            char errbuf[128];
+            av_strerror(err, errbuf, sizeof(errbuf));
+            pd_error(x, "[streamout~]: error writing packet: %s", errbuf);
             av_packet_unref(x->x_packet);
             return(-1);
         }
-        // CRITICAL: Force immediate flush for streaming
+        
+        // Force immediate flush for low-latency streaming
         avio_flush(x->x_fmt_ctx->pb);
+        
         av_packet_unref(x->x_packet);
-        pages++;
+        packets_written++;
     }
-    if(x->x_encoder_initialized)
-        post("returning pages");
-    x->x_encoder_initialized = 0;
-    return(pages);
+    
+    return(packets_written);
 }
+
 
 static void streamout_finish_encoding(t_streamout *x){
     // Flush the encoder by sending NULL frame
