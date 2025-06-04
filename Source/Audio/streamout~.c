@@ -263,7 +263,7 @@ static int safe_send(int fd, const char *buf, size_t len, int flags) {
 }
 
 // stream ogg/vorbis to IceCast2 server using chunked encoding
-static int streamout_stream(t_streamout *x, t_int fd){
+/*static int streamout_stream(t_streamout *x, t_int fd){
     int err = -1;            // error return code
     int pages = 0;
     char chunk_header[32];   // buffer for chunk size header
@@ -316,7 +316,7 @@ static int streamout_stream(t_streamout *x, t_int fd){
             x->x_eos = 1;
     }
     return(pages);
-}
+}*/
 
 // Call this function when closing the stream to properly end chunked encoding
 static int streamout_close_chunked_stream(t_int fd){
