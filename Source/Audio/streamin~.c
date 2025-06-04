@@ -274,38 +274,7 @@ static int streamin_find_file(t_streamin *x, t_symbol* file, char* dir_out, char
     return(1);
 }
 
-static void streamin_openpanel_callback(t_streamin *x, t_symbol *s, int argc, t_atom *argv){
-    if(argc == 1 && argv->a_type == A_SYMBOL){
-        err_t err_msg = 0;
-        t_symbol* path = atom_getsymbol(argv);
-        const char *path_str = path->s_name;
-        t_playlist *pl = &x->x_plist;
-        char dir[MAXPDSTRING];
-        const char *fname = strrchr(path_str, '/');
-        if(fname){
-            int len = ++fname - path_str;
-            strncpy(dir, path_str, len);
-            dir[len] = '\0';
-        }
-        else{
-            fname = path_str;
-            strcpy(dir, "./");
-        }
-        pl->dir = gensym(dir);
-        const char *ext = strrchr(path_str, '.');
-        if(ext && !strcmp(ext + 1, "m3u"))
-            err_msg = playlist_m3u(pl, s);
-        else{
-            pl->size = 1;
-            pl->arr[0] = gensym(fname);
-        }
-        if(err_msg || (err_msg = streamin_load(x, 0)))
-            pd_error(x, "[streamin~]: open: %li", (long)err_msg);
-        x->x_open = !err_msg;
-    }
-}
-
-static void streamin_stream(t_streamin *x, t_symbol *s){
+static void streamin_openurl(t_streamin *x, t_symbol *s){
     x->x_play = 0;
     err_t err_msg = 0;
     const char *url = s->s_name;
@@ -559,7 +528,7 @@ void streamin_tilde_setup(void) {
     class_addmethod(streamin_class, (t_method)streamin_bang, gensym("start"), A_NULL);
     class_addmethod(streamin_class, (t_method)streamin_stop, gensym("stop"), A_NULL);
 //    class_addmethod(streamin_class, (t_method)streamin_open, gensym("open"), A_GIMME, 0);
-    class_addmethod(streamin_class, (t_method)streamin_stream, gensym("stream"), A_SYMBOL, 0);
+    class_addmethod(streamin_class, (t_method)streamin_openurl, gensym("open"), A_SYMBOL, 0);
     class_addmethod(streamin_class, (t_method)streamin_dsp, gensym("dsp"), A_CANT, 0);
 //    class_addmethod(streamin_class, (t_method)streamin_seek, gensym("seek"), A_FLOAT, 0);
     class_addmethod(streamin_class, (t_method)streamin_loop, gensym("loop"), A_FLOAT, 0);
