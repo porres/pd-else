@@ -472,130 +472,106 @@ while (!x->x_eos){
     return(pages);
 }*/
 
-
+// Simple write callback - NO chunked encoding for Icecast
 static int streamout_write_packet(void *opaque, const uint8_t *buf, int buf_size){
     t_streamout *x = (t_streamout *)opaque;
-    char chunk_header[32];
-    char chunk_footer[] = "\r\n";
-    int err;
     
-    // Send chunk size in hexadecimal format for HTTP chunked encoding
-    if(sprintf(chunk_header, "%x\r\n", buf_size) == -1) {
-        pd_error(x, "[streamout~]: error formatting chunk header");
-        return AVERROR(EIO);
-    }
-    
-    // Send chunk size header
-    err = safe_send(x->x_fd, chunk_header, strlen(chunk_header), SEND_OPT);
-    if(err < 0) {
-        pd_error(x, "[streamout~]: failed to send chunk header (%d)", err);
-        return AVERROR(EIO);
-    }
-    
-    // Send actual data
+    // Send raw data directly to Icecast (no chunking!)
     ssize_t sent = safe_send(x->x_fd, (const char *)buf, buf_size, SEND_OPT);
     if(sent < 0 || sent != buf_size) {
         pd_error(x, "[streamout~]: failed to send data to server (%zd/%d)", sent, buf_size);
-        return AVERROR(EIO);
-    }
-    
-    // Send chunk footer (CRLF)
-    err = safe_send(x->x_fd, chunk_footer, strlen(chunk_footer), SEND_OPT);
-    if(err < 0) {
-        pd_error(x, "[streamout~]: failed to send chunk footer (%d)", err);
+        x->x_eos = 1; // Mark as ended on error
         return AVERROR(EIO);
     }
     
     return buf_size;
 }
 
-
 // initialize ogg/vorbis ecoding
 static int streamout_start_encoding(t_streamout *x){
     x->x_encoder_initialized = 0;
-// I'm're recreating the full Vorbis encoder setup using FFmpeg instead of libvorbis.
-// THIS IS THE START OF THE RECREATION WITH FFMPEG.
-    
-// create "output format context"
-    AVFormatContext *fmt_ctx = NULL; // fmt_ctx holds the output stream setup
-    const char *oggfilename = "pd.ogg";
-// init output context with Ogg container
     int verbose = 0;
-    int err = avformat_alloc_output_context2(&fmt_ctx, NULL, "ogg", oggfilename);
-    if((!fmt_ctx && err < 0))
+    
+    // Create output format context
+    AVFormatContext *fmt_ctx = NULL;
+    int err = avformat_alloc_output_context2(&fmt_ctx, NULL, "ogg", NULL);
+    if(!fmt_ctx || err < 0) {
         pd_error(x, "[streamout~]: couldn't create ogg format structure");
-    else if(verbose) // verbose
-        post("[streamout~]: created an output format context in ogg successfully");
-// Add audio stream to container
+        return -1;
+    }
+    
+    // Add audio stream
     AVStream *audio_stream = avformat_new_stream(fmt_ctx, NULL);
-    if(!audio_stream)
+    if(!audio_stream) {
         pd_error(x, "[streamout~]: failed to create new audio stream");
-    else if(verbose) // verbose
-        post("[streamout~]: created new audio stream");
-// allocate  codec and create context
+        goto cleanup_ffmpeg;
+    }
+    
+    // Find and allocate Vorbis codec
     const AVCodec *codec = avcodec_find_encoder(AV_CODEC_ID_VORBIS);
-    if(!codec)
+    if(!codec) {
         pd_error(x, "[streamout~]: Vorbis codec not found");
-    else if(verbose) // verbose
-        post("[streamout~]: Vorbis codec found");
+        goto cleanup_ffmpeg;
+    }
+    
     AVCodecContext *codec_ctx = avcodec_alloc_context3(codec);
-    if(!codec_ctx)
+    if(!codec_ctx) {
         pd_error(x, "[streamout~]: could not allocate codec context");
-    else if(verbose) // verbose
-        post("[streamout~]: could allocate codec context");
-// set SR and stuff
-    codec_ctx->sample_fmt = AV_SAMPLE_FMT_FLTP; // seems like the only option
-    if(verbose) // verbose
-        post("[streamout~]: chosen sample format is %s", av_get_sample_fmt_name(codec_ctx->sample_fmt));
-    codec_ctx->sample_rate = sys_getsr(); // maybe allow others and resampling
-    // Set channel layout with helper
+        goto cleanup_ffmpeg;
+    }
+    
+    // Configure codec for streaming
+    codec_ctx->sample_fmt = AV_SAMPLE_FMT_FLTP;
+    codec_ctx->sample_rate = (int)sys_getsr();
     av_channel_layout_default(&codec_ctx->ch_layout, 2);
-    // hardcode for now
-    av_opt_set(codec_ctx->priv_data, "quality", "4", 0); // Vorbis quality scale ~0-10
-    // Add streaming optimizations
-    codec_ctx->flags |= AV_CODEC_FLAG_LOW_DELAY;  // Enable low delay mode
-    codec_ctx->gop_size = 0;  // Disable GOP for streaming
-    // Set small frame size for better streaming latency
-// Open codec
+    
+    // Set quality for Vorbis (equivalent to your old VBR setup)
+    av_opt_set(codec_ctx->priv_data, "quality", "4", 0);
+    
+    // CRITICAL: Configure for low-latency streaming
+    codec_ctx->flags |= AV_CODEC_FLAG_LOW_DELAY;
+    codec_ctx->gop_size = 0;
+    
+    // Open codec
     err = avcodec_open2(codec_ctx, codec, NULL);
-    if(err < 0){
+    if(err < 0) {
         char errbuf[128];
         av_strerror(err, errbuf, sizeof(errbuf));
         pd_error(x, "[streamout~]: failed to open codec: %s", errbuf);
+        goto cleanup_ffmpeg;
     }
-    else if(verbose) // verbose
-        post("[streamout~]: codec opened");
-    if(verbose)
-        post("[streamout~]: opening codec made frame_size = %d", codec_ctx->frame_size);
-// Copy codec parameters
+    
+    // Set up stream parameters
     audio_stream->time_base = (AVRational){1, codec_ctx->sample_rate};
-    if(avcodec_parameters_from_context(audio_stream->codecpar, codec_ctx) < 0){
+    if(avcodec_parameters_from_context(audio_stream->codecpar, codec_ctx) < 0) {
         pd_error(x, "[streamout~]: failed to copy codec parameters");
+        goto cleanup_ffmpeg;
     }
-    else if(verbose) // verbose
-        post("[streamout~]: copied codec parameters");
-// Create custom AVIO context for network streaming
+    
+    // Create AVIO context for direct streaming (no chunked encoding)
     const int avio_buffer_size = 4096;
     uint8_t *avio_buffer = av_malloc(avio_buffer_size);
     if(!avio_buffer) {
         pd_error(x, "[streamout~]: failed to allocate AVIO buffer");
         goto cleanup_ffmpeg;
     }
-    AVIOContext *avio_ctx = avio_alloc_context(avio_buffer,
-        avio_buffer_size, 1, x, NULL, streamout_write_packet, NULL);
-    if(!avio_ctx){
+    
+    AVIOContext *avio_ctx = avio_alloc_context(
+        avio_buffer, avio_buffer_size, 1, x,
+        NULL, streamout_write_packet, NULL);
+    if(!avio_ctx) {
         pd_error(x, "[streamout~]: failed to allocate AVIO context");
         av_freep(&avio_buffer);
         goto cleanup_ffmpeg;
     }
-    else if(verbose) // verbose
-        post("[streamout~]: Allocated AVIO context");
     
     fmt_ctx->pb = avio_ctx;
     fmt_ctx->flags |= AVFMT_FLAG_CUSTOM_IO;
-    // CRITICAL: Force packet flushing
+    
+    // CRITICAL: Set flags for immediate streaming
     fmt_ctx->flags |= AVFMT_FLAG_FLUSH_PACKETS;
-// Add metadata (replaces vorbis_comment)
+    
+    // Add metadata
     AVDictionary *metadata = NULL;
     if(x->x_bcname && strlen(x->x_bcname) > 0)
         av_dict_set(&metadata, "title", x->x_bcname, 0);
@@ -603,16 +579,13 @@ static int streamout_start_encoding(t_streamout *x){
         av_dict_set(&metadata, "artist", x->x_bcartist, 0);
     if(x->x_bcgenre && strlen(x->x_bcgenre) > 0)
         av_dict_set(&metadata, "genre", x->x_bcgenre, 0);
-    // ... add other metadata fields similarly
     av_dict_set(&metadata, "encoder", "[streamout~]", 0);
     fmt_ctx->metadata = metadata;
-
     
-    // Set small buffer sizes for streaming
-    fmt_ctx->pb->buffer_size = 4096;
-    fmt_ctx->pb->min_packet_size = 1;
+    // Configure for streaming
+    avio_ctx->seekable = 0; // Mark as non-seekable for live streaming
     
-    // Write format header (replaces the OGG header sending loop)
+    // Write format header (sends OGG headers to Icecast)
     err = avformat_write_header(fmt_ctx, NULL);
     if(err < 0) {
         char errbuf[128];
@@ -620,50 +593,44 @@ static int streamout_start_encoding(t_streamout *x){
         pd_error(x, "[streamout~]: failed to write format header: %s", errbuf);
         goto cleanup_ffmpeg;
     }
-    else if(verbose) // verbose
-        post("[streamout~]: format header written to stream");
-// Store contexts for encoding
+    
+    // Store contexts
     x->x_fmt_ctx = fmt_ctx;
     x->x_codec_ctx = codec_ctx;
     x->x_audio_stream = audio_stream;
     x->x_avio_ctx = avio_ctx;
-//    x->x_avio_buffer = avio_buffer;
     
-// Allocate frame for audio data
+    // Allocate frame
     x->x_frame = av_frame_alloc();
-    if(!x->x_frame){
+    if(!x->x_frame) {
         pd_error(x, "[streamout~]: failed to allocate frame");
         goto cleanup_ffmpeg;
     }
-    else if(verbose) // verbose
-        post("[streamout~]: allocated frame");
+    
     x->x_frame->format = codec_ctx->sample_fmt;
     x->x_frame->ch_layout = codec_ctx->ch_layout;
     x->x_frame->sample_rate = codec_ctx->sample_rate;
     x->x_frame->nb_samples = codec_ctx->frame_size;
-// Allocate buffer
-    if(av_frame_get_buffer(x->x_frame, 0) < 0){
-          pd_error(x, "[streamout~]: failed to allocate frame buffer");
-          goto cleanup_ffmpeg;
+    
+    if(av_frame_get_buffer(x->x_frame, 0) < 0) {
+        pd_error(x, "[streamout~]: failed to allocate frame buffer");
+        goto cleanup_ffmpeg;
     }
-    else if(verbose) // verbose
-        post("[streamout~]: allocated frame buffer");
-// Allocate packet for encoded data
+    
+    // Allocate packet
     x->x_packet = av_packet_alloc();
-    if(!x->x_packet){
+    if(!x->x_packet) {
         pd_error(x, "[streamout~]: failed to allocate packet");
         goto cleanup_ffmpeg;
     }
-    else if(verbose) // verbose
-        post("[streamout~]: allocated packet");
-    
-    if(verbose) // verbose
-        post("[streamout~]: streamout_start_encoding OK!");
     
     x->x_eos = 0;
-    x->x_skip = 1;  // assume no resampling
+    x->x_skip = 1;
     x->x_encoder_initialized = 1;
-    return(0);
+    
+    if(verbose) post("[streamout~]: FFmpeg encoding initialized successfully");
+    return 0;
+    
 cleanup_ffmpeg:
     if(x->x_packet) av_packet_free(&x->x_packet);
     if(x->x_frame) av_frame_free(&x->x_frame);
@@ -674,95 +641,82 @@ cleanup_ffmpeg:
     if(codec_ctx) avcodec_free_context(&codec_ctx);
     if(fmt_ctx) avformat_free_context(fmt_ctx);
     x->x_eos = 1;
-    return(-1);
+    return -1;
 }
 
 static int streamout_encode(t_streamout *x, float *buf, int channels, int fifosize, int fd){
     x->x_unused = fifosize;
     int err = 0;
-    int verbose = 0; // Changed from 1 to reduce spam
     
-    // Make sure frame is writable
-    if(av_frame_make_writable(x->x_frame) < 0){
+    if(av_frame_make_writable(x->x_frame) < 0) {
         pd_error(x, "[streamout~]: frame not writable");
-        return(-1);
+        return -1;
     }
     
-    // Use frame size from codec
     int samples_to_encode = x->x_codec_ctx->frame_size;
     
-    // Fill the frame with audio data
+    // Fill frame with audio data
     float **frame_data = (float**)x->x_frame->data;
-    for(int n = 0; n < samples_to_encode; n++){
-        for(int ch = 0; ch < channels; ch++){
+    for(int n = 0; n < samples_to_encode; n++) {
+        for(int ch = 0; ch < channels; ch++) {
             frame_data[ch][n] = *buf++;
         }
     }
     
-    // Set the number of samples
     x->x_frame->nb_samples = samples_to_encode;
     
-    // Set proper timestamp for streaming continuity
+    // Set timestamp
     static int64_t pts = 0;
     x->x_frame->pts = pts;
     pts += samples_to_encode;
     
-    if(verbose){
-        post("[streamout~]: Frame: nb_samples=%d, pts=%lld",
-             x->x_frame->nb_samples, (long long)x->x_frame->pts);
-    }
-    
     // Send frame to encoder
     err = avcodec_send_frame(x->x_codec_ctx, x->x_frame);
-    if(err < 0){
+    if(err < 0) {
         char errbuf[128];
         av_strerror(err, errbuf, sizeof(errbuf));
         pd_error(x, "[streamout~]: avcodec_send_frame failed: %s", errbuf);
-        return(-1);
+        return -1;
     }
     
     int packets_written = 0;
     
-    // Receive and write encoded packets
-    while(err >= 0){
+    // Receive and write packets
+    while(err >= 0) {
         err = avcodec_receive_packet(x->x_codec_ctx, x->x_packet);
-        if(err == AVERROR(EAGAIN) || err == AVERROR_EOF){
-            break; // Need more input or end of stream
+        if(err == AVERROR(EAGAIN) || err == AVERROR_EOF) {
+            break;
         }
-        if(err < 0){
+        if(err < 0) {
             char errbuf[128];
             av_strerror(err, errbuf, sizeof(errbuf));
             pd_error(x, "[streamout~]: error receiving packet: %s", errbuf);
-            return(-1);
+            return -1;
         }
         
-        // Set proper stream index and timestamps
+        // Set stream index and rescale timestamps
         x->x_packet->stream_index = x->x_audio_stream->index;
         av_packet_rescale_ts(x->x_packet, x->x_codec_ctx->time_base, x->x_audio_stream->time_base);
         
-        if(verbose){
-            post("[streamout~]: Writing packet: size=%d, pts=%lld",
-                 x->x_packet->size, (long long)x->x_packet->pts);
-        }
-        
-        // Write packet to stream - this automatically calls your streamout_write_packet callback
+        // Write packet - this calls streamout_write_packet with raw OGG data
         err = av_interleaved_write_frame(x->x_fmt_ctx, x->x_packet);
-        if(err < 0){
+        if(err < 0) {
             char errbuf[128];
             av_strerror(err, errbuf, sizeof(errbuf));
             pd_error(x, "[streamout~]: error writing packet: %s", errbuf);
             av_packet_unref(x->x_packet);
-            return(-1);
+            x->x_eos = 1;
+            return -1;
         }
         
-        // Force immediate flush for low-latency streaming
+        // Force flush for immediate streaming
         avio_flush(x->x_fmt_ctx->pb);
         
         av_packet_unref(x->x_packet);
         packets_written++;
     }
     
-    return(packets_written);
+    return packets_written;
 }
 
 
