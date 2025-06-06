@@ -10,7 +10,7 @@
 #define NINS        3    // Number of Inlets
 #define NOUTS       2    // stereo output
 
-typedef struct _stereomix{
+typedef struct _mix{
     t_object    x_obj;
     t_float   **x_ins;          // inputs
     t_float   **x_outs;         // outputs
@@ -27,11 +27,11 @@ typedef struct _stereomix{
     t_glist    *x_glist;
     t_float    *x_signalscalar1;
     t_float    *x_signalscalar2;
-}t_stereomix;
+}t_mix;
 
-static t_class *stereomix_class;
+static t_class *mix_class;
 
-static void stereomix_pan(t_stereomix *x, t_symbol *s, int ac, t_atom *av){
+static void mix_pan(t_mix *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(ac == 0)
         return;
@@ -43,7 +43,7 @@ static void stereomix_pan(t_stereomix *x, t_symbol *s, int ac, t_atom *av){
         x->x_pan_list[i] = atom_getfloat(av+i);
 }
 
-static void stereomix_gain(t_stereomix *x, t_symbol *s, int ac, t_atom *av){
+static void mix_gain(t_mix *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(ac == 0)
         return;
@@ -55,8 +55,8 @@ static void stereomix_gain(t_stereomix *x, t_symbol *s, int ac, t_atom *av){
         x->x_gain_list[i] = atom_getfloat(av+i);
 }
 
-static t_int *stereomix_perform(t_int *w){
-    t_stereomix *x = (t_stereomix *)(w[1]);
+static t_int *mix_perform(t_int *w){
+    t_mix *x = (t_mix *)(w[1]);
     if(!x->x_sig2){
         t_float *scalar = x->x_signalscalar1;
         if(!else_magic_isnan(*x->x_signalscalar1)){
@@ -98,7 +98,7 @@ static t_int *stereomix_perform(t_int *w){
     return(w+2);
 }
 
-static void stereomix_dsp(t_stereomix *x, t_signal **sp){
+static void mix_dsp(t_mix *x, t_signal **sp){
     x->x_n = sp[0]->s_n;
     int chs = sp[0]->s_nchans;
     x->x_ch2 = sp[1]->s_nchans, x->x_ch3 = sp[2]->s_nchans;
@@ -126,14 +126,14 @@ static void stereomix_dsp(t_stereomix *x, t_signal **sp){
     || (x->x_ch3 > 1 && x->x_ch3 != x->x_nchans)){
         for(i = 0; i < NOUTS; i++)
             dsp_add_zero(sp[NINS+i]->s_vec, x->x_n);
-        pd_error(x, "[stereomix~]: channel sizes mismatch");
+        pd_error(x, "[mix~]: channel sizes mismatch");
         return;
     }
     else
-        dsp_add(stereomix_perform, 1, x);
+        dsp_add(mix_perform, 1, x);
 }
 
-void *stereomix_free(t_stereomix *x){
+void *mix_free(t_mix *x){
     freebytes(x->x_ins, NINS * x->x_nchans * sizeof(*x->x_ins));
     freebytes(x->x_outs, NOUTS * x->x_nchans * sizeof(*x->x_outs));
     free(x->x_gain_list);
@@ -143,8 +143,8 @@ void *stereomix_free(t_stereomix *x){
     return(void *)x;
 }
 
-static void *stereomix_new(t_symbol *s, int ac, t_atom *av){
-    t_stereomix *x = (t_stereomix *)pd_new(stereomix_class);
+static void *mix_new(t_symbol *s, int ac, t_atom *av){
+    t_mix *x = (t_mix *)pd_new(mix_class);
     x->x_ignore = s;
     x->x_glist = canvas_getcurrent();
     init_sine_table();
@@ -201,15 +201,15 @@ static void *stereomix_new(t_symbol *s, int ac, t_atom *av){
     else_magic_setnan(x->x_signalscalar2);
     return(x);
 errstate:
-    pd_error(x, "[stereomix~]: improper args");
+    pd_error(x, "[mix~]: improper args");
     return(NULL);
 }
 
-void stereomix_tilde_setup(void){
-    stereomix_class = class_new(gensym("stereomix~"), (t_newmethod)stereomix_new,
-        (t_method)stereomix_free, sizeof(t_stereomix), CLASS_MULTICHANNEL, A_GIMME, 0);
-    class_addmethod(stereomix_class, nullfn, gensym("signal"), 0);
-    class_addmethod(stereomix_class, (t_method)stereomix_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(stereomix_class, (t_method)stereomix_pan, gensym("pan"), A_GIMME, 0);
-    class_addmethod(stereomix_class, (t_method)stereomix_gain, gensym("gain"), A_GIMME, 0);
+void mix_tilde_setup(void){
+    mix_class = class_new(gensym("mix~"), (t_newmethod)mix_new,
+        (t_method)mix_free, sizeof(t_mix), CLASS_MULTICHANNEL, A_GIMME, 0);
+    class_addmethod(mix_class, nullfn, gensym("signal"), 0);
+    class_addmethod(mix_class, (t_method)mix_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(mix_class, (t_method)mix_pan, gensym("pan"), A_GIMME, 0);
+    class_addmethod(mix_class, (t_method)mix_gain, gensym("gain"), A_GIMME, 0);
 }
