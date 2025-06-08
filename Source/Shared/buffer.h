@@ -47,6 +47,7 @@ double interp_hermite(double frac, double a, double b, double c, double d,
 double read_sintab(double phase);
 double read_partab(double phase);
 double read_fadetab(double phase, int tab);
+double read_pantab(double phase);
 
 void init_sine_table(void);
 void init_parabolic_table(void);

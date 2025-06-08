@@ -1,4 +1,4 @@
-// Porres 2016
+// Porres 2025
 
 #include <m_pd.h>
 #include <math.h>
@@ -67,12 +67,16 @@ static t_int *panstereo_perform(t_int *w){
                 LpanR = 0;
                 RpanR = pan+1;
                 RpanL = 1 - RpanR;
+                RpanL = read_pantab(RpanL);
+                RpanR = read_pantab(RpanR);
             }
             else{
                 gainR = 1./(pan + 1);
                 RpanL = 0;
                 LpanL = 1 - pan;
                 LpanR = 1 - LpanL;
+                LpanL = read_pantab(LpanL);
+                LpanR = read_pantab(LpanR);
             }
             out1[j*x->x_nblock + i] = (inL * LpanL + inR * RpanL) * gainL;
             out2[j*x->x_nblock + i] = (inL * LpanR + inR * RpanR) * gainR;
@@ -108,7 +112,7 @@ static void *panstereo_free(t_panstereo *x){
 static void *panstereo_new(t_symbol *s, int ac, t_atom *av){
     t_panstereo *x = (t_panstereo *)pd_new(panstereo_class);
     x->x_ignore = s;
-    init_sine_table();
+    init_fade_tables();
     x->x_pan_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_pan_list[0] = 0;
     x->x_panlist_size = 1;

@@ -176,6 +176,10 @@ double read_fadetab(double phase, int tab){
     return(interp_lin(frac, p1, p2));
 }
 
+double read_pantab(double phase){
+    return(read_fadetab(phase, 4));
+}
+
 double read_sintab(double phase){
     double tabphase = phase * ELSE_SIN_TABSIZE;
     int i = (int)tabphase;

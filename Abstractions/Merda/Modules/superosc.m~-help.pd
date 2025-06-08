@@ -50,7 +50,7 @@
 #X obj 164 27 else/keyboard 17 80 4 2 0 127 empty empty;
 #X obj 352 179 else/adsr~ 250 50 0.85 1000;
 #X obj 164 195 else/superosc.m~;
-#A saved 0 0 0 0.371429 1 10 -0.0285714 -0.0285716 0.171429;
+#A saved 0 0 0.0249996 -0.2 1 46.875 0 0 0;
 #A saved;
 #A saved;
 #A saved;

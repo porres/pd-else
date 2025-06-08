@@ -159,14 +159,14 @@
 #X obj 214 176 else/stereo.rev~;
 #X text 65 202 see also:;
 #X obj 62 221 else/mono.rev~;
-#X text 53 88 [mono.rev~] is a stereo input/output reverb abstraction \, a variant of [mono.rev~] with two independent reverb channels.;
 #X obj 126 382 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 197 384 signal;
 #X text 256 280 - left input signal;
 #X text 256 384 - right input signal;
 #X obj 217 207 else/out~;
 #X text 129 511 4) float - wet ratio - (default 0.5), f 57;
+#X text 53 87 [stereo.rev~] is a stereo input/output reverb abstraction \, a variant of [mono.rev~] with two independent reverb channels.;
 #X connect 34 0 39 0;
 #X connect 34 1 39 1;
-#X connect 39 0 47 0;
-#X connect 39 1 47 1;
+#X connect 39 0 46 0;
+#X connect 39 1 46 1;
