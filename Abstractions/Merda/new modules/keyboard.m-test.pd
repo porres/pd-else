@@ -1,0 +1,11 @@
+#N canvas 328 95 618 493 12;
+#X obj 81 39 keyboard.m;
+#X obj 81 278 else/bl.saw~ -midi, f 12;
+#X obj 194 288 else/adsr~ 20 10 0.5 250;
+#X obj 176 355 *~;
+#X obj 176 396 out~;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 3 1;
+#X connect 3 0 4 0;
