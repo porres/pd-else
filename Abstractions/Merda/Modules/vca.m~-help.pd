@@ -1,4 +1,4 @@
-#N canvas 484 38 494 634 12;
+#N canvas 301 39 669 650 12;
 #X text 243 431 see -->;
 #X obj 303 431 about.MERDA;
 #N canvas 843 193 257 249 messages 0;
@@ -24,6 +24,13 @@
 #X obj 75 41 else/sine~ -mc 220 470;
 #X text 229 187 This VCA module has a signal input and a CV control to set the VCA level., f 23;
 #X text 231 341 A sum toggle sums all channels into a single channel output (this is on by default)., f 24;
+#X text 481 118 see also:;
+#X obj 464 168 else/vca2.m~;
+#A saved 1 1;
+#A saved;
+#X text 481 138 [vca2.m~];
+#X text 251 483 This is a wrapper of;
+#X obj 290 515 else/vca~;
 #X connect 2 0 3 0;
 #X connect 3 0 7 0;
 #X connect 4 0 3 1;
