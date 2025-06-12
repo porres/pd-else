@@ -374,7 +374,7 @@ void numbox_vis(t_gobj *z, t_glist *glist, int vis){
 static void numbox_properties(t_gobj *z, t_glist *owner){
     t_numbox *x = (t_numbox *)z;
     pdgui_stub_vnew(&x->x_obj.ob_pd, "::dialog_numbox::pdtk_numbox_dialog",
-        owner, "iiiiii fssff", x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE,
+        x, "iiiiii fssff", x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE,
         x->x_ramp_ms, x->x_rate, x->x_set_val, x->x_bg->s_name, x->x_fg->s_name,
         x->x_lower, x->x_upper);
 }

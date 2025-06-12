@@ -1130,7 +1130,7 @@ static void knob_properties(t_gobj *z, t_glist *owner){
         mode = gensym("Active");
     else if(x->x_number_mode == 3)
         mode = gensym("Typing");
-    pdgui_stub_vnew(&x->x_obj.ob_pd, "knob_dialog", owner,
+    pdgui_stub_vnew(&x->x_obj.ob_pd, "knob_dialog", x,
         "ii if iif iii ii ffif iii siii ss ss sss",
         x->x_size, x->x_square, // ii
         x->x_arc, x->x_arcstart, // if
