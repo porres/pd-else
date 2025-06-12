@@ -143,7 +143,7 @@ static void pan_dsp(t_pan *x, t_signal **sp){
         dsp_add(pan_perform, 1, x);
 }
 
-static void pan_pan(t_pan *x, t_symbol *s, int ac, t_atom *av){
+static void pan_pos(t_pan *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(ac == 0)
         return;
@@ -211,7 +211,7 @@ static void *pan_new(t_symbol *s, int ac, t_atom *av){
     x->x_pan_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_gain_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_spread_list = (float*)malloc(MAXLEN * sizeof(float));
-    x->x_pan_list[0] = 0.5;
+    x->x_pan_list[0] = 0;
     x->x_gain_list[0] = x->x_spread_list[0] = 1;
     x->x_panlist_size = x->x_gainlist_size = x->x_spreadlist_size = 1;
     t_float n_outlets = 2;
@@ -284,7 +284,7 @@ void pan_tilde_setup(void){
     class_addmethod(pan_class, (t_method)pan_offset, gensym("offset"), A_FLOAT, 0);
     class_addmethod(pan_class, (t_method)pan_cartesian, gensym("cartesian"), A_FLOAT, 0);
     class_addmethod(pan_class, (t_method)pan_open, gensym("open"), A_FLOAT, 0);
-    class_addmethod(pan_class, (t_method)pan_pan, gensym("pan"), A_GIMME, 0);
+    class_addmethod(pan_class, (t_method)pan_pos, gensym("pos"), A_GIMME, 0);
     class_addmethod(pan_class, (t_method)pan_spread, gensym("spread"), A_GIMME, 0);
     class_addmethod(pan_class, (t_method)pan_gain, gensym("gain"), A_GIMME, 0);
 }

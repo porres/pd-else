@@ -1,7 +1,7 @@
 // porres
 
 #include <m_pd.h>
-#include <buffer.h>
+#include "buffer.h"
 
 #define MAXOUTPUT 4096
 
@@ -11,8 +11,10 @@ typedef struct _panmc{
     t_inlet    *x_inlet_gain;
     int         x_n;            // block size
     int         x_nchs;         // outlets
-    int         x_rad;
+    int         x_cartesian;
+    int         x_open; // non circular
     t_float     x_offset;
+    t_symbol   *x_ignore;
 }t_panmc;
 
 static t_class *panmc_class;
@@ -29,16 +31,20 @@ static t_int *panmc_perform(t_int *w){
         t_float g = gain[i];
         t_float pos = azimuth[i];
         t_float spread = spreadin[i];
-        if(x->x_rad)
-            pos /= TWO_PI;
-        pos -= x->x_offset;
+        if(x->x_cartesian){
+            float amp = sqrt(g*g + pos*pos);
+            float angle = atan2(pos, g);
+            pos = angle/TWO_PI;
+            g = amp;
+        }
         while(pos < 0)
             pos += 1;
         while(pos >= 1)
             pos -= 1;
+        pos -= x->x_offset;
         if(spread < 0.1)
             spread = 0.1;
-        pos = pos * x->x_nchs + spread;
+        pos = pos * (x->x_nchs-x->x_open) + spread;
         spread *= 2;
         float range = x->x_nchs / spread;
         for(int j = 0; j < x->x_nchs; j++){
@@ -69,12 +75,18 @@ static void panmc_n(t_panmc *x, t_floatarg f){
     canvas_update_dsp();
 }
 
-static void panmc_radians(t_panmc *x, t_floatarg f){
-    x->x_rad = (f != 0);
+static void panmc_cartesian(t_panmc *x, t_floatarg f){
+    x->x_cartesian = (f != 0);
 }
 
+
+static void panmc_open(t_panmc *x, t_floatarg f){
+    x->x_open = (f != 0);
+}
+
+
 static void panmc_offset(t_panmc *x, t_floatarg f){
-    x->x_offset = (f < 0 ? 0 : f) / 360;
+    x->x_offset = (f < 0 ? 0 : f > 1 ? 1 : f);
 }
 
 void *panmc_free(t_panmc *x){
@@ -84,28 +96,48 @@ void *panmc_free(t_panmc *x){
 }
 
 static void *panmc_new(t_symbol *s, int ac, t_atom *av){
-    s = NULL;
     t_panmc *x = (t_panmc *)pd_new(panmc_class);
+    x->x_ignore = s;
     init_sine_table();
     t_float n_outlets = 2;
     float spread = 1, gain = 1;
-//    x->x_offset = 90. / 360.;
     x->x_offset = 0;
-    if(atom_getsymbol(av) == gensym("-radians")){
-        x->x_rad = 1;
-        ac--, av++;
-    }
-    if(ac){
-        n_outlets = atom_getint(av);
-        ac--, av++;
-    }
-    if(ac){
-        spread = atom_getfloat(av);
-        ac--, av++;
-    }
-    if(ac){
-        x->x_offset = atom_getfloat(av) / 360.;
-        ac--, av++;
+    x->x_cartesian = 0;
+    x->x_open = 0;
+    int argnum = 0;
+    while(ac > 0){
+        if(av->a_type == A_FLOAT){
+            t_float aval = atom_getfloatarg(0, ac, av);
+            switch(argnum){
+                case 0:
+                    n_outlets = aval;
+                    break;
+                case 1:
+                    spread = aval;
+                    break;
+                case 2:
+                    x->x_offset = aval;
+                    break;
+                default:
+                    break;
+            };
+            argnum++, ac--, av++;
+        }
+        else if(av->a_type == A_SYMBOL && !argnum){
+            t_symbol *curarg = atom_getsymbolarg(0, ac, av);
+            if(curarg == gensym("-cartesian")){
+                x->x_cartesian = 1;
+                ac--, av++;
+            }
+            else if(curarg == gensym("-open")){
+                x->x_open = 1;
+                ac--, av++;
+            }
+            else
+                goto errstate;
+        }
+        else
+            goto errstate;
     }
     if(n_outlets < 2)
         n_outlets = 2;
@@ -119,6 +151,9 @@ static void *panmc_new(t_symbol *s, int ac, t_atom *av){
         pd_float((t_pd *)x->x_inlet_spread, spread);
     outlet_new((t_object *)x, &s_signal);
     return(x);
+errstate:
+    pd_error(x, "[pan.mc~]: improper args");
+    return(NULL);
 }
 
 void setup_pan0x2emc_tilde(void){
@@ -126,7 +161,8 @@ void setup_pan0x2emc_tilde(void){
         (t_method)panmc_free, sizeof(t_panmc), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(panmc_class, nullfn, gensym("signal"), 0);
     class_addmethod(panmc_class, (t_method)panmc_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(panmc_class, (t_method)panmc_open, gensym("open"), A_FLOAT, 0);
     class_addmethod(panmc_class, (t_method)panmc_offset, gensym("offset"), A_FLOAT, 0);
     class_addmethod(panmc_class, (t_method)panmc_n, gensym("n"), A_FLOAT, 0);
-    class_addmethod(panmc_class, (t_method)panmc_radians, gensym("radians"), A_FLOAT, 0);
+    class_addmethod(panmc_class, (t_method)panmc_cartesian, gensym("cartesian"), A_FLOAT, 0);
 }
