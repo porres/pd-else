@@ -1,4 +1,4 @@
-#N canvas 289 201 609 489 12;
+#N canvas 57 211 609 489 12;
 #X obj 86 95 inlet~;
 #X obj 109 372 outlet~;
 #X obj 223 95 inlet~;
@@ -23,8 +23,8 @@
 #X obj 395 212 != 0;
 #X obj 395 236 + 1;
 #X obj 395 266 s \$0-select;
-#X text 302 318 Part of ELSE \; https://github.com/porres/pd-else;
-#X text 304 299 Alexandre Torres Porres (2025);
+#X text 323 94 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 325 75 Alexandre Torres Porres (2025);
 #X obj 274 372 outlet~;
 #N canvas 312 100 405 357 select 0;
 #X obj 215 174 mtof~;
@@ -75,6 +75,8 @@
 #X restore 123 47 pd args-initialization;
 #X obj 109 311 clone -d superosc.unit 1;
 #X obj 274 257 else/insert all;
+#X obj 274 344 else/norm~ -size 10 0;
+#X obj 109 344 else/norm~ -size 10 0;
 #X connect 0 0 11 0;
 #X connect 0 1 12 0;
 #X connect 2 0 15 2;
@@ -93,6 +95,8 @@
 #X connect 14 1 13 0;
 #X connect 14 2 2 0;
 #X connect 14 3 12 0;
-#X connect 15 0 1 0;
-#X connect 15 1 10 0;
+#X connect 15 0 18 0;
+#X connect 15 1 17 0;
 #X connect 16 0 15 3;
+#X connect 17 0 10 0;
+#X connect 18 0 1 0;
