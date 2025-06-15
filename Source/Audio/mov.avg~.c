@@ -3,7 +3,7 @@
 #include <math.h>
 
 #define MAVG_MAXBUF         192000000   // max buffer size - undocumented
-#define MAVG_DEF_BUFSIZE        100         // default size
+#define MAVG_DEF_BUFSIZE          100   // default size
 
 typedef struct _mavg{
     t_object        x_obj;
@@ -14,7 +14,6 @@ typedef struct _mavg{
     double         *x_buf;                      // buffer pointer
     double          x_stack[MAVG_DEF_BUFSIZE];  // buffer
     int             x_alloc;                    // if x_buf is allocated or stack ?????
-    int             x_abs;
     unsigned int    x_size;                     // allocated size for x_buf
     unsigned int    x_bufrd;                    // buffer readhead
 }t_mavg;
@@ -26,10 +25,6 @@ static void mavg_clear(t_mavg * x){ // clear buffer and reset things to 0
     for(unsigned int i = 0; i < x->x_size; i++)
         x->x_buf[i] = 0.;
 };
-
-static void mavg_abs(t_mavg *x, t_float f){
-    x->x_abs = f != 0;
-}
 
 static void mavg_size(t_mavg *x, t_float f){ // deals with allocation issues if needed
     unsigned int cursz = x->x_size;                     // current size
@@ -62,8 +57,6 @@ static t_int *mavg_perform(t_int *w){
     for(int i = 0; i < nblock; i++){
         double result, input = (double)in1[i];
         float in_samples = in2[i];
-        if(x->x_abs)
-            input = fabs(input);
         if(in_samples < 1)
             in_samples = 1;
         unsigned int n = in_samples;
@@ -110,7 +103,6 @@ static void *mavg_new(t_symbol *s, int argc, t_atom * argv){
     x->x_size = MAVG_DEF_BUFSIZE;
     float n_arg = 1;
     x->x_alloc = 0.;
-    x->x_abs = 0.;
 /////////////////////////////////////////////////////////////////////////////////
     int argn = 0;
     while(argc > 0){
@@ -124,10 +116,6 @@ static void *mavg_new(t_symbol *s, int argc, t_atom * argv){
                 }
                 else
                     goto errstate;
-            }
-            else if(cursym == gensym("-abs") && !argn){
-                x->x_abs = 1;
-                argc--, argv++;
             }
             else
                 goto errstate;
@@ -160,5 +148,4 @@ void setup_mov0x2eavg_tilde(void){
     class_addmethod(mavg_class, nullfn, gensym("signal"), 0);
     class_addmethod(mavg_class, (t_method)mavg_clear, gensym("clear"), 0);
     class_addmethod(mavg_class, (t_method)mavg_size, gensym("size"), A_DEFFLOAT, 0);
-    class_addmethod(mavg_class, (t_method)mavg_abs, gensym("abs"), A_DEFFLOAT, 0);
 }
