@@ -167,15 +167,15 @@
 #X obj 296 180 else/out~;
 #X obj 61 217 else/out~;
 #X obj 61 141 else/sine~;
-#X obj 61 110 else/sigs~ 440 660;
+#X obj 61 110 sig~ 440 660;
 #X obj 148 182 else/sine~;
-#X obj 148 151 else/sigs~ 550 770;
+#X obj 148 151 sig~ 550 770;
 #X text 24 34 [out~] has a built in [sum~] object \, so it can take multichannel signals and sum them together for each input., f 37;
 #X text 304 19 If you have just one left input connection into [out~] \, it sends it to both outputs. This is true either for a single mono channel or a multichannel input., f 33;
 #X text 304 83 So you don't need to bother and connect the same source into the two inlets., f 33;
 #X obj 417 190 else/out~;
 #X obj 417 164 else/sine~;
-#X obj 417 133 else/sigs~ 440 660;
+#X obj 417 133 sig~ 440 660;
 #X connect 0 0 2 0;
 #X connect 4 0 3 0;
 #X connect 5 0 4 0;

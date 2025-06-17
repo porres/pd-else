@@ -131,7 +131,7 @@
 #X text 158 371 1) float;
 #X text 216 371 -;
 #X obj 172 198 else/delace~ 3, f 27;
-#X obj 172 169 else/sigs~ 1 2 3 4 5 6 7 8 9;
+#X obj 172 169 sig~ 1 2 3 4 5 6 7 8 9;
 #X text 106 91 [delace~] deinterleaves a multichannel signal according to the number of outlets., f 45;
 #X text 228 371 number of outlets., f 34;
 #X text 212 336 - the delaced/deinterleaved signals;
@@ -145,7 +145,7 @@
 #X listbox 68 269 6 0 0 0 - - - 0;
 #X obj 197 182 else/s2f~;
 #X listbox 197 208 6 0 0 0 - - - 0;
-#X obj 197 119 else/sigs~ 1 2 3;
+#X obj 197 119 sig~ 1 2 3;
 #X obj 68 217 else/delace~ -z 2;
 #X obj 197 156 else/delace~ 2;
 #X obj 167 243 else/s2f~;

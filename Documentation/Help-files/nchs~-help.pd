@@ -32,7 +32,7 @@
 #X text 63 84 [nchs~] gets the number of channels from a multi-channel connection \, as provided by [snake~ in] \, [clone] or other objects. The object outputs values whenever the DSP chain gets updated and you can also query for the number of channels with a bang message. It also works in subpatches or abstractions because [inlet~] is also multi-channel aware., f 59;
 #X text 152 283 signals;
 #X text 201 283 - input signal to query number of channels;
-#X obj 215 178 else/sigs~ 1 2 3 4 5;
+#X obj 215 178 sig~ 1 2 3 4 5;
 #X connect 6 0 21 0;
 #X connect 21 0 20 0;
 #X connect 29 0 21 0;

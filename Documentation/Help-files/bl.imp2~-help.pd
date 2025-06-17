@@ -43,7 +43,7 @@
 #X floatatom 250 114 5 0 0 0 - - - 12;
 #X msg 263 145 400 600;
 #X msg 276 175 400 600 700;
-#X obj 80 144 else/sigs~ 333 444;
+#X obj 80 144 sig~ 333 444;
 #X msg 292 211 set 1 555;
 #X text 364 198 the set message sets a single frequency channel, f 24;
 #X text 47 31 If the oscillator has a multichannel input \, it outputs the same number of channels. You can initialize the object with multichannel if you give it a list of frequencies with the -mc flag. A list input also works if no signal is connected to set it to multichannel with a list of frequency input., f 75;

@@ -43,7 +43,7 @@
 #X floatatom 230 106 5 0 0 0 - - - 12;
 #X msg 243 137 400 600;
 #X msg 256 167 400 600 700;
-#X obj 70 158 else/sigs~ 333 444;
+#X obj 70 158 sig~ 333 444;
 #X msg 273 210 set 1 555;
 #X text 343 203 the set message sets a single frequency channel, f 24;
 #X text 33 14 If there's a multichannel input \, the object outputs the same number of channels. You can initialize the object with multichannel if you give it a list of frequencies with the -mc flag (you can't set phases though). A list input also works if no signal is connected to set it to multichannel with a list of frequency input., f 76;

@@ -184,13 +184,13 @@
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 303 142 pd;
 #X obj 90 210 else/s2f~;
-#X obj 90 143 else/sigs~ 1.1 1.2 1.3 1.4;
+#X obj 90 143 sig~ 1.1 1.2 1.3 1.4;
 #X listbox 162 432 14 0 0 0 - - - 12;
 #X obj 162 401 else/s2f~;
 #X obj 162 369 else/quantizer~;
 #X obj 90 178 else/quantizer~ 0.25;
-#X obj 162 294 else/sigs~ 1.1 1.3 1.6 1.9;
-#X obj 249 329 else/sigs~ 0.25 0.5 1 2;
+#X obj 162 294 sig~ 1.1 1.3 1.6 1.9;
+#X obj 249 329 sig~ 0.25 0.5 1 2;
 #X text 42 27 If the object has a multichannel left input \, it outputs the same number of channels. If the secondary inlet has a signal with a single channel \, the single value is applied to all channels. If thr secondary inlet is also a multichhanel signal \, then each channel gets its quantizing value. Note \, however \, that the number of multichannels in the right inlet need to match the same number of channels from the left input., f 76;
 #X connect 2 0 0 0;
 #X connect 3 0 7 0;

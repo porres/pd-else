@@ -18,8 +18,8 @@
 #X obj 97 210 else/s2f~;
 #X listbox 97 236 13 0 0 0 - - - 0;
 #X obj 97 184 else/lace~ -z 2;
-#X obj 97 108 else/sigs~ 1 2;
-#X obj 184 136 else/sigs~ 3 4 5;
+#X obj 97 108 sig~ 1 2;
+#X obj 184 136 sig~ 3 4 5;
 #X obj 207 210 else/s2f~;
 #X obj 207 184 else/lace~ 2;
 #X text 47 24 The '-z' flag adds zeros for the case where multichannel signals are not of the same size in number of channels. This way \, zero are added in the place of missing channels to match the size of the multichannel signal with most channels., f 50;
@@ -34,12 +34,12 @@
 #X connect 6 0 5 0;
 #X restore 482 249 pd -z;
 #X text 39 171 see also:;
-#X obj 190 132 else/sigs~ 1 2 3;
+#X obj 190 132 sig~ 1 2 3;
 #X obj 190 208 else/lace~ 3, f 25;
 #X obj 190 234 else/s2f~;
 #X listbox 190 260 19 0 0 0 - - - 0;
-#X obj 263 157 else/sigs~ 4 5 6;
-#X obj 337 182 else/sigs~ 7 8 9;
+#X obj 263 157 sig~ 4 5 6;
+#X obj 337 182 sig~ 7 8 9;
 #X text 75 87 [lace~] interleaves two or more multichannel signals.;
 #X obj 476 78 else/setdsp~;
 #X obj 39 222 else/lace;

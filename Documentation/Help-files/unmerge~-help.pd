@@ -127,7 +127,7 @@
 #X text 153 360 signals - multichannel signal to slice;
 #X text 46 91 [unmerge~] separates the channels of a multichannel signal in groups of any size (default 1). Each group is sent out a separate outlet \, extra elements are sent to an extra rightmost outlet. If the number of channels is less than the number of outlets \, zeroes are output., f 71;
 #X obj 176 262 else/unmerge~ 2 2, f 27;
-#X obj 176 163 else/sigs~ 1 2 3 4 5 6 7;
+#X obj 176 163 sig~ 1 2 3 4 5 6 7;
 #X obj 203 188 tgl 18 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X obj 203 213 + 1;
 #X obj 335 288 else/s2f~;

@@ -33,7 +33,7 @@
 #X listbox 131 229 20 0 0 0 - - - 12;
 #X obj 118 164 else/randpulse~ -ch 2 0.5;
 #X obj 117 307 else/gatedelay~;
-#X obj 204 276 else/sigs~ 250 500;
+#X obj 204 276 sig~ 250 500;
 #X text 63 23 If the object has a multichannel left input \, it outputs the same number of channels. If the secondary inlet has a signal with a single channel for the delay time \, the single value is applied to all channels. If the secondary inlet is also a multichhanel signal \, then each channel gets its delay time value. Note \, however \, that the number of multichannels in the right inlet needs to match the same number of channels from the left input., f 51;
 #X connect 0 0 1 0;
 #X connect 2 0 3 0;

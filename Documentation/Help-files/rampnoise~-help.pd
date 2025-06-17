@@ -100,7 +100,7 @@
 #X msg 261 478 100 600 1700;
 #X obj 97 207 else/rampnoise~ -ch 2 500;
 #X obj 405 179 else/rampnoise~;
-#X obj 405 134 else/sigs~ 300 500;
+#X obj 405 134 sig~ 300 500;
 #X obj 235 568 else/rampnoise~ -mc 440 660;
 #X connect 0 0 1 0;
 #X connect 1 0 16 0;

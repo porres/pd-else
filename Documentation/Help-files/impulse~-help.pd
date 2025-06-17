@@ -158,7 +158,7 @@
 #X msg 233 216 400 600;
 #X msg 246 246 400 600 700;
 #X text 39 20 If the oscillator has a multichannel left input \, it outputs the same number of channels. If the secondary inlets have a signal with a single channel for sync and phase modulation \, the single value is applied to all channels. If a secondary inlet is also a multichhanel signal \, then each channel gets its sync or phase deviation value. Note \, however \, that the number of multichannels in secondary inlets need to match the same number of channels from the left input., f 78;
-#X obj 50 145 else/sigs~ 333 444;
+#X obj 50 145 sig~ 333 444;
 #X obj 78 213 else/impulse~;
 #X obj 78 187 *~ 0.75;
 #X obj 220 326 else/impulse~ -mc 440 660;

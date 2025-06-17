@@ -143,11 +143,11 @@
 #X text 352 187 index;
 #N canvas 628 213 479 379 multichannel 0;
 #X obj 191 284 else/out.mc~;
-#X obj 191 155 else/sigs~ 333 444;
+#X obj 191 155 sig~ 333 444;
 #X text 39 21 The object has multichannel support. If the left input has more than one channel \, it outputs the same number of channels in both outlets. If the secondary inlets have a signal with a single channel \, the single value is applied to all channels. If a secondary inlet is also a multichhanel signal \, then each channel gets its own value. Note \, however \, that the number of multichannels in secondary inlets need to match the same number of channels from the left input., f 70;
 #X obj 191 233 else/fm~;
-#X obj 213 180 else/sigs~ 0.75 1.501;
-#X obj 236 207 else/sigs~ 5 12;
+#X obj 213 180 sig~ 0.75 1.501;
+#X obj 236 207 sig~ 5 12;
 #X connect 1 0 3 0;
 #X connect 3 0 0 0;
 #X connect 4 0 3 1;

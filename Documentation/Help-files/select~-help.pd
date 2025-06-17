@@ -124,8 +124,8 @@
 #X obj 112 175 hradio 16 1 0 5 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0;
 #X floatatom 112 198 4 0 0 0 - - - 0;
 #X listbox 213 319 11 0 0 0 - - - 0;
-#X obj 259 191 else/sigs~ 3 2;
-#X obj 213 161 else/sigs~ 1 2 3 4 5;
+#X obj 259 191 sig~ 3 2;
+#X obj 213 161 sig~ 1 2 3 4 5;
 #X obj 306 224 sig~ 13;
 #X text 195 357 float - input to select;
 #X obj 134 380 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0;

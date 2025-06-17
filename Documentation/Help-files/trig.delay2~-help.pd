@@ -32,7 +32,7 @@
 #X obj 207 236 else/float2imp~ 0.75;
 #X obj 152 331 snake~ out;
 #X obj 150 449 else/out~;
-#X obj 251 269 else/sigs~ 500 1000;
+#X obj 251 269 sig~ 500 1000;
 #X obj 274 370 else/trig2bang~;
 #X obj 274 391 bng 19 250 50 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000;
 #X obj 275 435 else/trig2bang~;

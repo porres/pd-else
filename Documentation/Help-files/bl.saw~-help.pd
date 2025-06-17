@@ -156,7 +156,7 @@
 #X obj 39 354 else/out.mc~;
 #X obj 108 244 *~ 0.75;
 #X obj 101 179 *~ 2;
-#X obj 39 145 else/sigs~ 333 444;
+#X obj 39 145 sig~ 333 444;
 #X obj 101 205 else/impulse~;
 #X obj 108 273 else/sine~;
 #X obj 236 337 else/bl.saw~ -mc 440 660;

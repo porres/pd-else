@@ -251,7 +251,7 @@
 #X restore 456 254 pd example;
 #X obj 136 165 hradio 16 1 0 5 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0;
 #X obj 136 186 * -1;
-#X obj 234 161 else/sigs~ 1 2 3;
+#X obj 234 161 sig~ 1 2 3;
 #X obj 234 240 else/pick~ -1;
 #X text 25 171 see also;
 #X text 37 91 [pick~] picks a channel from a multichannel connection. The channel is specified via argument or float input and is indexed from 1 (0 gives "none"). Negative values count from last to the first element. If you ask for an element number out of the range \, you also get "none"., f 70;

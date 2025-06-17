@@ -67,7 +67,7 @@
 #X obj 238 312 unpack;
 #X obj 238 343 vsl 18 120 0 1 0 0 empty empty empty 0 -9 0 10 #dfdfdf #000000 #000000 0 1;
 #X obj 271 343 vsl 18 120 0 1 0 0 empty empty empty 0 -9 0 10 #dfdfdf #000000 #000000 0 1;
-#X obj 289 207 else/sigs~ 150 1500;
+#X obj 289 207 sig~ 150 1500;
 #X obj 238 238 else/lag~;
 #X obj 75 242 else/lag~ 500;
 #X text 47 22 If [lag~] has a multichannel input \, it outputs the same number of channels. If the right inlet has a single channel for the lag time in ms \, the value is applied to all channels. If the right inlet is also a multichhanel signal \, then each channel gets its own time value. Note \, however \, that the number of multichannels in the right inlet needs to match the same number of channels from the left input., f 64;

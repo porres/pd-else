@@ -70,7 +70,7 @@
 #X msg 161 161 ch 2;
 #X msg 116 160 ch 1;
 #X obj 405 217 else/out.mc~;
-#X obj 405 134 else/sigs~ 1 11;
+#X obj 405 134 sig~ 1 11;
 #X text 29 25 The -ch flag or message sets the number of output channels. This is only meaningful if you have a single channel input., f 42;
 #X obj 97 207 else/dust2~ -ch 2 50;
 #X obj 405 179 else/dust2~;
