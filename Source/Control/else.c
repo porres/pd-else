@@ -14,15 +14,15 @@ typedef struct else_obj{
 t_class *else_obj_class;
 
 static int min_major = 0;
-static int min_minor = 55;
-static int min_bugfix = 1;
+static int min_minor = 56;
+static int min_bugfix = 0;
 
 static int else_major = 1;
 static int else_minor = 0;
 static int else_bugfix = 0;
 
 #define STATUS "rc"
-static int status_number = 13;
+static int status_number = 14;
 
 extern void lua_setup();
 
@@ -67,7 +67,7 @@ void else_obj_about(t_else_obj *x){
     post("-------------------------------------------------------------------");
     post("  -----> ELSE - EL Locus Solus' Externals for Pure Data <-----");
     post("-------------------------------------------------------------------");
-    post("- Version: %d.%d-%d %s-%d (revision 2); Released May 5th 2025", else_major, else_minor, else_bugfix, STATUS, status_number);
+    post("- Version: %d.%d-%d %s-%d; Released July 14th 2025", else_major, else_minor, else_bugfix, STATUS, status_number);
     post("- Author: Alexandre Torres Porres & others");
     post("ELSE binary loaded from: %s", else_obj_class->c_externdir->s_name);
     post("- Repository: https://github.com/porres/pd-else");

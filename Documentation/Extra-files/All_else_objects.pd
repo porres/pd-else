@@ -655,13 +655,12 @@
 #X obj 86 98 else/get~;
 #X obj 86 125 else/sum~;
 #X obj 86 153 else/merge~;
-#X obj 86 211 else/sigs~;
-#X obj 86 237 else/select~;
+#X obj 86 207 else/select~;
 #X obj 86 180 else/unmerge~;
-#X obj 86 267 else/slice~;
-#X obj 86 298 else/repeat~;
-#X obj 88 326 else/lace~;
-#X obj 88 354 else/delace~;
+#X obj 86 237 else/slice~;
+#X obj 86 268 else/repeat~;
+#X obj 88 296 else/lace~;
+#X obj 88 324 else/delace~;
 #X restore 285 315 pd Audio Multichannel Tools;
 #N canvas 696 90 297 439 Noise/chaotic/stochastic 0;
 #X obj 85 85 else/brown~;
