@@ -1,4 +1,4 @@
-#N canvas 468 38 558 596 10;
+#N canvas 401 47 559 564 10;
 #X obj 1 310 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 1 424 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 1 451 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -34,16 +34,12 @@
 #X obj 129 129 r \$0-set;
 #X text 200 458 (none);
 #X text 183 362 db <float>;
-#X obj 1 565 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0 14 #dcdcdc #404040 0;
+#X obj 1 537 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0 14 #dcdcdc #404040 0;
 #X obj 1 475 cnv 3 550 3 empty \$0-pddp.cnv.argument flags 8 12 0 13 #dcdcdc #000000 0;
 #X text 106 481 -size <float>;
-#X text 70 526 -dim <float \, float>;
-#X text 118 496 -db <float>;
+#X text 70 498 -dim <float \, float>;
 #X text 177 377 log <float>;
-#X text 112 511 -log <float>;
-#X text 191 526 - set horizontal/vertical dimensions (default 300 140);
-#X text 191 496 - non zero sets to dB amp scale (default linear), f 51;
-#X text 191 511 - non zero sets to log freq scale (default linear), f 51;
+#X text 191 498 - set horizontal/vertical dimensions (default 300 140);
 #X text 191 481 - FFT size (default 1024 \, min 128), f 51;
 #X text 250 392 - set horizontal/vertical dimensions;
 #X text 255 377 - non zero sets to log freq scale;
@@ -80,9 +76,9 @@
 #X text 255 332 - graphs when rate is 0;
 #X text 171 407 rate <float>;
 #X text 250 407 - sets graph rate in ms;
-#X text 106 540 -rate <float>;
-#X text 191 540 - sets graph rate in ms (default 100), f 51;
-#X obj 60 158 else/spectrograph~ 1024 0 0 300 140 100;
+#X text 106 512 -rate <float>;
+#X text 191 512 - sets graph rate in ms (default 100), f 51;
+#X obj 60 158 else/spectrograph~ 1024 1 1 300 140 100;
 #X obj 497 66 else/setdsp~;
 #X connect 20 0 27 0;
 #X connect 21 0 22 0;
@@ -91,5 +87,5 @@
 #X connect 24 0 23 0;
 #X connect 25 0 20 0;
 #X connect 26 0 20 0;
-#X connect 28 0 58 0;
-#X connect 50 0 58 0;
+#X connect 28 0 54 0;
+#X connect 46 0 54 0;
