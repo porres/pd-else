@@ -129,7 +129,7 @@
 #X restore 2 3 graph;
 #X text 181 439 signal(s);
 #X obj 221 323 else/s2f~;
-#X obj 222 195 else/sigs~ 1 2 3 4 5 6;
+#X obj 222 195 sig~ 1 2 3 4 5 6;
 #X text 74 88 [group~] groups 'n' channels from a multichannel input and sums it. The argument sets the number of output channels. The input is then broken into groups of n channels and summed. For instance "1 \, 2 \, 3 \, 4 \, 5 \, 6" grouped in a 3 channel output gives us "1+4 \, 2+5 \, 3+6" (5 \, 7 \, 9). A gain compensation factor \, set via the 2nd argument or the 'gain' message \, divided by the number of summed channels. In the same example we divide the output by 2 (giving us "2.5 35 4.5")., f 65;
 #X text 251 439 - grouped MC signal;
 #X text 197 392 signal(s) - MC signal input, f 51;

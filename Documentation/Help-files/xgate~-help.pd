@@ -227,7 +227,7 @@
 #X obj 120 109 hradio 15 1 0 3 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0;
 #X floatatom 120 132 5 0 0 0 - - - 0;
 #X text 160 131 select output (0 = none);
-#X obj 100 74 else/sigs~ 1 2 3;
+#X obj 100 74 sig~ 1 2 3;
 #X obj 100 223 else/s2f~;
 #X listbox 100 249 27 0 0 0 - - - 0;
 #N canvas 207 34 366 264 (subpatch) 0;

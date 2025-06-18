@@ -201,7 +201,7 @@
 #X obj 204 172 else/bl.osc~ saw 10 260;
 #N canvas 611 58 445 387 multichannel 0;
 #X obj 158 188 else/bl.osc~ saw 10;
-#X obj 158 147 else/sigs~ 200 300;
+#X obj 158 147 sig~ 200 300;
 #X obj 158 227 else/out.mc~;
 #X text 74 52 The object has support for MC connections if you connect a MC connection into it. Sane is true for secondary inlets. This is because it's an abstraction based on [wavetable~] \, but more support is needed (hang in there)., f 46;
 #X connect 0 0 2 0;

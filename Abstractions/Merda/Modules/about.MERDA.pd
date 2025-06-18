@@ -42,7 +42,7 @@
 #A saved;
 #A saved;
 #X obj 44 35 else/vca.m~;
-#A saved 1;
+#A saved 1 1;
 #A saved;
 #X restore 69 41 pd classic;
 #N canvas 531 201 736 659 fx 0;
@@ -129,7 +129,7 @@
 #A saved;
 #A saved;
 #X obj 43 324 else/pm6.m~;
-#A saved idx 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \; vol 100 0 0 0 0 0 \; ratio 1 1 1 1 1 1 \; detune 0 0 0 0 0 0 \; pan 0 0 0 0 0 0 \; transp 0 \;;
+#A saved idx 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \; vol 100 0 0 0 0 0 \; ratio 1 1 1 1 1 1 \;;
 #A saved;
 #A saved;
 #A saved;

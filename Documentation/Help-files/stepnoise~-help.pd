@@ -84,7 +84,7 @@
 #X msg 248 448 400 600;
 #X text 126 330 You can initialize the object with multichannel if you give it a list of frequencies with the -mc flag (you can't set phases though). A list input also works if no signal is connected to set it to multichannel with a list of frequency input., f 62;
 #X text 348 509 the set message sets a single frequency channel, f 17;
-#X obj 405 134 else/sigs~ 30 50;
+#X obj 405 134 sig~ 30 50;
 #X text 316 28 If you have a multichannel connection in the frequency input \, [randpulse2~] generates a signal with the same number of channels and the 'ch' message or flag is meaningless. The multichannel input is the density for each output., f 44;
 #X msg 278 521 set 1 1555;
 #X msg 261 478 100 600 1700;

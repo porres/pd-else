@@ -24,7 +24,7 @@
 #X text 89 92 [send2~] is like send but automatically resizes according to the number of input channels., f 48;
 #X obj 306 145 r~ \$0-x;
 #X obj 150 201 else/send2~ \$0-x;
-#X obj 150 157 else/sigs~ 1 2 3;
+#X obj 150 157 sig~ 1 2 3;
 #X obj 306 176 else/s2f~;
 #X listbox 306 207 7 0 0 0 - - - 12;
 #X text 165 321 1) symbol - send symbol (default none);

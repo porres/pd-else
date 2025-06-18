@@ -74,8 +74,8 @@
 #X text 29 25 The -ch flag or message sets the number of output channels. This is only meaningful if you have a single channel input or a float input., f 42;
 #X text 316 28 If you have a multichannel connection in the frequency input \, [velvet~] generates a signal with the same number of channels and the 'ch' message or flag is meaningless. The multichannel input is the frequency for each output., f 48;
 #X text 109 351 For multichannel output \, if the secondary inlets have a signal with a single channel for bias and regularity \, the single value is applied to all channels. If a secondary inlet is also a multichhanel signal \, then each channel gets its sync or phase deviation value. Note \, however \, that the number of multichannels in secondary inlets need to match the same number of output channels., f 78;
-#X obj 377 116 else/sigs~ 3 2;
-#X obj 446 180 else/sigs~ 1 0;
+#X obj 377 116 sig~ 3 2;
+#X obj 446 180 sig~ 1 0;
 #X obj 527 152 tgl 16 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X obj 445 151 tgl 16 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X connect 0 0 1 0;

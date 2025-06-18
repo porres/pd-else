@@ -209,7 +209,7 @@
 #X text 116 363 float/signal(s) - phase sync (resets internal phase);
 #X text 152 397 signal(s) - random pulse signal(s);
 #X text 137 465 -mc <list>: sets multichannel output with a list of frequencies, f 63;
-#N canvas 683 110 618 767 multichannel 0;
+#N canvas 662 37 618 767 multichannel 0;
 #X obj 100 87 hsl 128 15 1 5000 1 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 97 116 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 181 117 density;
@@ -217,7 +217,7 @@
 #X msg 161 161 ch 2;
 #X msg 116 160 ch 1;
 #X obj 405 217 else/out.mc~;
-#X obj 405 134 else/sigs~ 1 11;
+#X obj 405 134 sig~ 1 11;
 #X text 29 25 The -ch flag or message sets the number of output channels. This is only meaningful if you have a single channel input., f 42;
 #X obj 97 207 else/randpulse~ -ch 2 50;
 #X obj 405 179 else/randpulse~;
@@ -227,15 +227,15 @@
 #X floatatom 335 494 5 0 0 0 - - - 12;
 #X msg 348 525 400 600;
 #X msg 361 555 400 600 700;
-#X obj 88 453 else/sigs~ 333 444;
+#X obj 88 453 sig~ 333 444;
 #X text 244 417 You can initialize the object with multichannel if you give it a list of frequencies with the -mc flag (you can't set phases though). A list input also works if no signal is connected to set it to multichannel with a list of frequency input., f 49;
 #X msg 378 598 set 1 555;
 #X text 448 586 the set message sets a single frequency channel, f 17;
 #X obj 335 645 else/randpulse~ -mc 440 660;
 #X text 82 339 If the secondary inlets have a signal with a single channel for width and sync \, the single value is applied to all channels. If a secondary inlet is also a multichhanel signal \, then each channel gets its width or sync value. Note \, however \, that the number of multichannels in secondary inlets need to match the same number of channels from the left input., f 76;
 #X obj 88 621 else/randpulse~;
-#X obj 133 520 sigs~ 0.1 0.8;
 #X obj 175 587 else/imp~ -mc 100 300;
+#X obj 133 520 sig~ 0.1 0.8;
 #X connect 0 0 1 0;
 #X connect 1 0 9 0;
 #X connect 4 0 9 0;
@@ -250,8 +250,8 @@
 #X connect 19 0 21 0;
 #X connect 21 0 13 0;
 #X connect 23 0 12 0;
-#X connect 24 0 23 1;
-#X connect 25 0 23 2;
+#X connect 24 0 23 2;
+#X connect 25 0 23 1;
 #X restore 440 223 pd multichannel;
 #X connect 17 0 29 0;
 #X connect 29 0 36 0;

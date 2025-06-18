@@ -65,7 +65,7 @@
 #X msg 130 164 saw;
 #X msg 160 164 square;
 #N canvas 678 71 474 478 multichannel 0;
-#X obj 145 145 else/sigs~ 333 444;
+#X obj 145 145 sig~ 333 444;
 #X obj 146 325 else/superosc~;
 #X obj 184 230 else/rescale~;
 #X obj 184 194 else/rampnoise~ -ch 2 1, f 15;

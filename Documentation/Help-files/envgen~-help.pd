@@ -384,7 +384,7 @@
 #X obj 355 468 tgl 19 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X text 262 509 When the gate is on \, you can also retrigger the envelope with impulses in the right inlet., f 29;
 #X obj 808 170 tgl 21 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
-#X obj 808 207 else/sigs~ 0 0;
+#X obj 808 207 sig~ 0 0;
 #X obj 889 170 tgl 21 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X obj 742 282 *~;
 #X obj 742 230 noise~;

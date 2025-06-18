@@ -1493,7 +1493,7 @@ static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int s
             knob_learn(x);
         return(1);
     }
-    else if((alt && doit) || dbl){
+    else if(dbl){
         knob_set(x, x->x_arcstart);
         knob_bang(x);
         return(1);

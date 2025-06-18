@@ -17,7 +17,7 @@
 #X listbox 215 352 13 0 0 0 - - - 0;
 #X obj 450 169 else/setdsp~ 1;
 #X text 37 91 [get~] gets one or more channels from a multichannel connection. The channels are indexed from 1 (0 or less gives "none" \, the max channel number value is clipped to the input's channel size). You can give it lists to build or remap the signal arbitrarily like you'd do with dollar signs in a message., f 77;
-#X obj 215 162 else/sigs~ 1 2 3;
+#X obj 215 162 sig~ 1 2 3;
 #X obj 215 324 else/s2f~;
 #X obj 4 386 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 3 447 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;

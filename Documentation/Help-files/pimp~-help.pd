@@ -317,7 +317,7 @@
 #X floatatom 236 186 5 0 0 0 - - - 12;
 #X msg 249 217 400 600;
 #X msg 262 247 400 600 700;
-#X obj 39 145 else/sigs~ 333 444;
+#X obj 39 145 sig~ 333 444;
 #X obj 110 205 else/impulse~;
 #X msg 279 290 set 1 555;
 #X text 349 283 the set message sets a single frequency channel, f 24;

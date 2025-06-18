@@ -40,7 +40,7 @@
 #X obj 484 77 else/setdsp~ 1;
 #N canvas 842 174 502 427 multichannel 0;
 #X obj 312 242 setdsp~ 0;
-#X obj 214 186 else/sigs~ -10 6;
+#X obj 214 186 sig~ -10 6;
 #X obj 145 223 else/dbgain~;
 #X obj 145 258 else/meter2~;
 #X obj 145 153 else/white~ -ch 2;

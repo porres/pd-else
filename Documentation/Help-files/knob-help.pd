@@ -1,4 +1,4 @@
-#N canvas 479 38 564 824 10;
+#N canvas 373 34 564 770 10;
 #X obj 2 4 cnv 15 301 42 empty empty knob 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -154,7 +154,7 @@
 #X text 200 535 - sets param symbol (default: empty), f 58;
 #X text 117 535 var <symbol>;
 #X text 105 322 number <float>;
-#N canvas 266 106 1052 525 basic 0;
+#N canvas 186 106 1052 525 basic 0;
 #X floatatom 124 341 8 0 0 0 - - - 12;
 #X msg 157 246 angle 360;
 #X msg 149 226 angle 320;
@@ -199,8 +199,8 @@
 #X msg 342 249 lb 0;
 #X text 380 249 no loadbang;
 #X text 435 93 by default \, the knob has an outer square area \, with the same background color. There's a second mode without the square or any outline \, in which the knob circle increases in size. Use the "square 0" message or the '-nosquare' flag to change the display mode. You can also set it via properties. When you don't have the square \, note that when you are in edit mode the [knob] shows just a square outline around as to indicate you're in edit mode and where you can connect the object. Inlets and outlets are hidden in run mode but also appear in edit mode., f 55;
-#X text 336 281 double click or alt+click (or option+click on mac) to restore to arc start state (same as 'reset'), f 25;
-#X text 29 373 The 'arcstart' value is where the arc starts \, just 'arcstart' sets the current value as the start value. double clicking or alt+clicking (or option+clicking on mac) on the object restores to the 'arcstart' value \, so does the 'reset' message., f 65;
+#X text 335 289 double click restores to arc start state (same as 'reset'), f 21;
+#X text 29 373 The 'arcstart' value is where the arc starts \, just 'arcstart' sets the current value as the start value. double clicking on the object restores to the 'arcstart' value \, so does the 'reset' message., f 65;
 #X connect 1 0 18 0;
 #X connect 2 0 18 0;
 #X connect 3 0 18 0;
