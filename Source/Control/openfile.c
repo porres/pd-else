@@ -18,16 +18,18 @@ typedef struct _openfile{
 static t_class *openfile_class;
 static t_class *openfilebox_class;
 
-// Code that might be merged back to g_text.c starts here:
+// Code from pd's core:
 static void openfile_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
     t_openfile *x = (t_openfile *)z;
     int width, height;
     float x1, y1, x2, y2;
     if(glist->gl_editor && glist->gl_editor->e_rtext){
         if(x->x_rtextactive){
-            t_rtext *y = glist_findrtext(glist, (t_text *)x);
-            width = rtext_width(y);
-            height = rtext_height(y) - 2;
+            t_rtext *y = glist_getrtext(glist, (t_text *)x);
+            int x1, y1, x2, y2;
+            rtext_getrect(y, &x1, &y1, &x2, &y2);
+            width = x2 - x1;
+            height = y2 - y1;
         }
         else{
             int font = glist_getfont(glist);
@@ -51,7 +53,7 @@ static void openfile_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     t->te_xpix += dx;
     t->te_ypix += dy;
     if(glist_isvisible(glist)){
-        t_rtext *y = glist_findrtext(glist, t);
+        t_rtext *y = glist_getrtext(glist, t);
         rtext_displace(y, dx, dy);
     }
 }
@@ -59,7 +61,7 @@ static void openfile_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 // does it make a difference?????
 static void openfile_select(t_gobj *z, t_glist *glist, int state){
     t_openfile *x = (t_openfile *)z;
-    t_rtext *y = glist_findrtext(glist, (t_text *)x);
+    t_rtext *y = glist_getrtext(glist, (t_text *)x);
     rtext_select(y, state);
     if(state)
         sys_vgui(".x%lx.c itemconfigure %s -fill blue\n", glist, rtext_gettag(y));
@@ -70,14 +72,14 @@ static void openfile_select(t_gobj *z, t_glist *glist, int state){
 
 static void openfile_activate(t_gobj *z, t_glist *glist, int state){
     t_openfile *x = (t_openfile *)z;
-    t_rtext *y = glist_findrtext(glist, (t_text *)x);
+    t_rtext *y = glist_getrtext(glist, (t_text *)x);
     rtext_activate(y, state);
     x->x_rtextactive = state;
 }
 
 static void openfile_vis(t_gobj *z, t_glist *glist, int vis){
     t_openfile *x = (t_openfile *)z;
-    t_rtext *y = glist_findrtext(glist, (t_text *)x);
+    t_rtext *y = glist_getrtext(glist, (t_text *)x);
     if(vis){
         rtext_draw(y);
         sys_vgui(".x%lx.c itemconfigure %s -text {%s} -fill #0000dd -activefill #e70000\n",

@@ -3,16 +3,16 @@
 -------------------------------------------------------------------------
 
 
-cmake -BBuild -DPD_PATH="/Applications/Pd-0.55-2.app/Contents/Resources/"
+cmake -BBuild -DPD_PATH="/Applications/Pd-0.56-0.app/Contents/Resources/"
 cd Build
 make -j7
 
 
-cmake -BBuild -DPD_FLOATSIZE64=1 -DPD_PATH="/Applications/Pd-0.55-2.app/Contents/Resources/"
+cmake -BBuild -DPD_FLOATSIZE64=1 -DPD_PATH="/Applications/Pd-0.56-0.app/Contents/Resources/"
 cd Build
 make -j7
 
-cmake -BBuild -DPD_PATH=/Applications/Pd-0.55-2.app/Contents/Resources -DPD_EXTENSION=".pd_darwin"
+cmake -BBuild -DPD_PATH=/Applications/Pd-0.56-0.app/Contents/Resources -DPD_EXTENSION=".pd_darwin"
 
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
