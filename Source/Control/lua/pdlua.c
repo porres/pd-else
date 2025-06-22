@@ -67,13 +67,9 @@ static t_signal_setmultiout_fn g_signal_setmultiout;
 typedef t_rtext *(*t_glist_rtext_fn)(t_glist *, t_text *);
 static t_glist_rtext_fn g_glist_getrtext = NULL;
 
-// This used to be in s_stuff.h, but not anymore since 0.55.1test1.
-int sys_trytoopenone(const char *dir, const char *name, const char* ext,
-    char *dirresult, char **nameresult, unsigned int size, int bin);
-
 // Check for absolute filenames in the second argument. Otherwise,
-// sys_trytoopenone will happily prepend the given path anyway.
-#define trytoopenone(dir, name, ...) sys_trytoopenone(sys_isabsolutepath(name) ? "" : dir, name, __VA_ARGS__)
+// open_via_path will happily prepend the given path anyway.
+#define trytoopenone(dir, name, ...) open_via_path(sys_isabsolutepath(name) ? "" : dir, name, __VA_ARGS__)
 
 #ifdef PDINSTANCE
 
