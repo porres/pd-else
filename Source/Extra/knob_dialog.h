@@ -44,6 +44,8 @@ sys_gui("\n"
 "array set ::dialog_knob::var_color_bg {} ;\n"
 "array set ::dialog_knob::var_color_fg {} ;\n"
 "array set ::dialog_knob::var_color_arc {} ;\n"
+"array set ::dialog_knob::var_theme {} ;\n"
+"array set ::dialog_knob::var_transp {} ;\n"
 "array set ::dialog_knob::var_colorradio {} ;\n" // radio for what color type we're setting
 "\n"
 
@@ -60,7 +62,7 @@ sys_gui("\n"
 "         readonly jump circular \\\n"
 "         n_mode n_size xpos ypos \\\n"
 "         rcv snd prm var \\\n"
-"         bcol acol fcol} {\n"
+"         bcol acol fcol theme transp} {\n"
 // The vid indicates the instance ID of this dialog
 "    set vid [string trimleft $id .]\n"
 // initialize the array with received values for this dialog instance
@@ -113,6 +115,8 @@ sys_gui("\n"
 "    set ::dialog_knob::var_color_bg($vid) $bcol\n"
 "    set ::dialog_knob::var_color_fg($vid) $fcol\n"
 "    set ::dialog_knob::var_color_arc($vid) $acol\n"
+"    set ::dialog_knob::var_theme($vid) $theme \n"
+"    set ::dialog_knob::var_transp($vid) $transp \n"
 "    set ::dialog_knob::var_colorradio($vid) 0\n" // init to 'bg'
 "\n"
 
@@ -275,6 +279,7 @@ sys_gui("\n"
 "    pack $id.load.loadbang $id.load.savestate $id.load.load -side left -anchor center\n"        
 "    $id.load config -padx 20\n"
 "\n"
+        
 // Frame for discrete section
 "    labelframe $id.discrete\n"
 "    pack $id.discrete -side top -fill x\n"
@@ -479,7 +484,25 @@ sys_gui("\n"
 // Frame for colors section
 "    labelframe $id.colors -borderwidth 1 -text [_ \"Colors:\"] -padx 5 -pady 8\n"
 "    pack $id.colors -fill x\n"
-        // Color Radiobuttons and "Compose" button
+// Container frame for checkboxes
+"    frame $id.colors.checkboxes\n"
+"    pack $id.colors.checkboxes -side top -fill x\n"
+        // Checkbox for Theme
+"    frame $id.colors.checkboxes.theme\n"
+"    label $id.colors.checkboxes.theme.lab -text [_ \"Use Theme: \"]\n"
+"    checkbutton $id.colors.checkboxes.theme.ent -variable ::dialog_knob::var_theme($vid) -width 5\\\n"
+"       -command \"::dialog_knob::applymacos $id\"\n"
+"    pack $id.colors.checkboxes.theme.ent $id.colors.checkboxes.theme.lab -side right -anchor e\n"
+        // Checkbox for Transparent
+"    frame $id.colors.checkboxes.transp\n"
+"    label $id.colors.checkboxes.transp.lab -text [_ \"Transparent Background: \"]\n"
+"    checkbutton $id.colors.checkboxes.transp.ent -variable ::dialog_knob::var_transp($vid) -width 5\\\n"
+"       -command \"::dialog_knob::applymacos $id\"\n"
+"    pack $id.colors.checkboxes.transp.ent $id.colors.checkboxes.transp.lab -side right -anchor e\n"
+        // Pack checkboxes horizontally within their container
+"    pack $id.colors.checkboxes.theme $id.colors.checkboxes.transp -side left -anchor center\n"
+"    $id.colors.checkboxes config -padx 80\n"
+// Color Radiobuttons and "Compose" button
 "    frame $id.colors.radio\n"
 "    pack $id.colors.radio -side top\n"
 "    radiobutton $id.colors.radio.bg -value 0 -variable ::dialog_knob::var_colorradio($vid)\\\n"
@@ -492,7 +515,7 @@ sys_gui("\n"
 "    button $id.colors.radio.but -text [_ \"Compose\"] -command \"::dialog_knob::compose_color $id\"\n"
 "    pack $id.colors.radio.bg $id.colors.radio.arc $id.colors.radio.fg $id.colors.radio.dummy $id.colors.radio.but -side left\n"
 "\n"
-        // Preset colors, color scheme by Mary Ann Benedetto http://piR2.org
+// Preset colors, color scheme by Mary Ann Benedetto http://piR2.org
 "    frame $id.colors.presets -pady 8\n"
 "    pack $id.colors.presets -fill x\n"
 "    foreach r {r1 r2 r3} hexcols {\n"
@@ -636,9 +659,10 @@ sys_gui("\n"
 "                [string tolower $::dialog_knob::var_color_bg($vid)] \\\n"
 "                [string tolower $::dialog_knob::var_color_arc($vid)] \\\n"
 "                [string tolower $::dialog_knob::var_color_fg($vid)] \\\n"
+"                $::dialog_knob::var_theme($vid) \\\n"
+"                $::dialog_knob::var_transp($vid) \\\n"
 "            ]\n"
 "}\n"
-        
 // Bind and unbind enter key to Apply button on macOS for entry widgets
 "    if {$::windowingsystem eq \"aqua\"} {\n"
 // call apply on Return in entry boxes that are in focus & rebind Return to ok button
