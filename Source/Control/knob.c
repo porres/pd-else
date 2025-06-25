@@ -59,7 +59,9 @@ typedef struct _knob{
     int             x_log;
     t_float         x_load;         // value when loading patch
     t_float         x_arcstart;     // arc start value
-    t_float         x_radius;   
+    t_float         x_radius;
+    float           x_start_angle;
+    float           x_drag_start_pos;
     int             x_arcstart_angle;
     int             x_end_angle;
     int             x_angle_range;
@@ -1324,9 +1326,9 @@ static void knob_arrow_motion(t_knob *x, t_floatarg dir){
     }
     if(x->x_circular){
         if(pos > 1)
-            pos = 0;
+            pos -= 1;
         if(pos < 0)
-            pos = 1;
+            pos += 1;
     }
     else
         pos = pos > 1 ? 1 : pos < 0 ? 0 : pos;
@@ -1347,25 +1349,51 @@ static void knob_motion(t_knob *x, t_floatarg dx, t_floatarg dy){
     if(dx == 0 && dy == 0)
         return;
     float old = x->x_pos, pos;
-    if(!x->x_circular){ // normal mode
+    if(x->x_circular){ // get pos based on mouse coords
+        if(x->x_jump){
+            xm += dx, ym += dy; // update coords
+            int xc = text_xpix(&x->x_obj, x->x_glist) + x->x_size / 2; // center x
+            int yc = text_ypix(&x->x_obj, x->x_glist) + x->x_size / 2; // center y
+            float alphacenter = (x->x_end_angle + x->x_arcstart_angle) / 2; // arc center angle
+            // should be stored
+            float alpha = atan2(xm - xc, -ym + yc) * 180.0 / M_PI; // angle of mouse position
+            float alphadif = alpha - alphacenter; // difference to arc center
+            alphadif = ((int)((alphadif + 180.0 + 360.0) * 100.0) % 36000) * 0.01; // wrap
+            pos = alphadif + (alphacenter - x->x_arcstart_angle - 180.0);
+            pos /= x->x_angle_range; // normalized 0-1
+        }
+        else{
+            int xc = text_xpix(&x->x_obj, x->x_glist) + x->x_size / 2; // center x
+            int yc = text_ypix(&x->x_obj, x->x_glist) + x->x_size / 2; // center y
+            // should be stored
+            float alphacenter = (x->x_end_angle + x->x_arcstart_angle) / 2; // arc center angle
+            // should also be stored
+            float lastalpha = atan2(xm - xc, -ym + yc) * 180.0 / M_PI; // last angle
+            xm += dx, ym += dy; // update coords
+            float alpha = atan2(xm - xc, -ym + yc) * 180.0 / M_PI; // current angle
+            float alphadif = alpha - lastalpha; // difference to arc center
+            x->x_start_angle += alphadif;
+            pos = x->x_start_angle / x->x_angle_range;
+            if(pos > 1)
+                pos -= 1;
+            if(pos < 0)
+                pos += 1;
+        }
+    }
+    else{ // normal/non circular mode
         float delta = -dy;
         if(fabs(dx) > fabs(dy))
             delta = dx;
-        delta /= (float)(x->x_size) * x->x_zoom * 2; // 2 is 'sensitivity'
+        delta /= (float)(x->x_size) * x->x_zoom * 2; // "2" is 'sensitivity'
         if(x->x_shift)
             delta *= 0.01;
         pos = x->x_pos + delta;
+        if(pos > 1)
+            pos = 1;
+        if(pos < 0)
+            pos = 0;
     }
-    else{ // circular mode
-        xm += dx, ym += dy;
-        int xc = text_xpix(&x->x_obj, x->x_glist) + x->x_size / 2;
-        int yc = text_ypix(&x->x_obj, x->x_glist) + x->x_size / 2;
-        float alphacenter = (x->x_end_angle + x->x_arcstart_angle) / 2;
-        float alpha = atan2(xm - xc, -ym + yc) * 180.0 / M_PI;
-        pos = (((int)((alpha - alphacenter + 180.0 + 360.0) * 100.0) % 36000) * 0.01
-            + (alphacenter - x->x_arcstart_angle - 180.0)) / x->x_angle_range;
-    }
-    x->x_pos = pos > 1 ? 1 : pos < 0 ? 0 : pos; // should go up in non circular (to do)
+    x->x_pos = pos;
     t_float fval = x->x_fval;
     x->x_fval = knob_getfval(x);
     if(fval != x->x_fval){
@@ -1534,38 +1562,27 @@ static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int s
     }
     if(doit){
         x->x_buf[0] = 0;
-//        pd_bind(&x->x_obj.ob_pd, gensym("#keyname")); // listen to key events
         x->x_clicked = 1;
         knob_activecheck(x);
-        if(x->x_circular){
-//            if(x->x_jump){
+        if(x->x_jump){
+            int xc = text_xpix(&x->x_obj, x->x_glist) + x->x_size / 2;
+            int yc = text_ypix(&x->x_obj, x->x_glist) + x->x_size / 2;
+            float alphacenter = (x->x_end_angle + x->x_arcstart_angle) / 2;
+            float alpha = atan2(xpix - xc, -ypix + yc) * 180.0 / M_PI;
+            float pos = (((int)((alpha - alphacenter + 180.0 + 360.0) * 100.0) % 36000) * 0.01
+                + (alphacenter - x->x_arcstart_angle - 180.0)) / x->x_angle_range;
+            x->x_pos = pos > 1 ? 1 : pos < 0 ? 0 : pos;
+            x->x_fval = knob_getfval(x);
+            knob_update(x);
+            if(x->x_circular){
                 xm = xpix;
                 ym = ypix;
-/*            }
-            else{ // did not work
-                float start = (x->x_arcstart_angle / 90.0 - 1) * HALF_PI;
-                float range = x->x_angle_range / 180.0 * M_PI;
-                float angle = start + x->x_pos * range; // pos angle
-                int radius = (int)(x->x_size*x->x_zoom / 2.0);
-                int x0 = text_xpix(&x->x_obj, x->x_glist), y0 = text_ypix(&x->x_obj, x->x_glist);
-                int xp = x0 + radius + rint(radius * cos(angle)); // circle point x coordinate
-                int yp = y0 + radius + rint(radius * sin(angle)); // circle point x coordinate
-                xm = xp;
-                ym = yp;
-            }*/
-        }
-        else{
-            if(x->x_jump){
-                int xc = text_xpix(&x->x_obj, x->x_glist) + x->x_size / 2;
-                int yc = text_ypix(&x->x_obj, x->x_glist) + x->x_size / 2;
-                float alphacenter = (x->x_end_angle + x->x_arcstart_angle) / 2;
-                float alpha = atan2(xpix - xc, -ypix + yc) * 180.0 / M_PI;
-                float pos = (((int)((alpha - alphacenter + 180.0 + 360.0) * 100.0) % 36000) * 0.01
-                    + (alphacenter - x->x_arcstart_angle - 180.0)) / x->x_angle_range;
-                x->x_pos = pos > 1 ? 1 : pos < 0 ? 0 : pos;
-                x->x_fval = knob_getfval(x);
-                knob_update(x);
             }
+        }
+        else if(x->x_circular){
+            x->x_start_angle = (x->x_drag_start_pos = x->x_pos) * x->x_angle_range;
+            xm = xpix;
+            ym = ypix;
         }
         knob_bang(x);
         glist_grab(glist, &x->x_obj.te_g, (t_glistmotionfn)(knob_motion), knob_key, xpix, ypix);

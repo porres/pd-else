@@ -17,8 +17,8 @@
 #X obj 6 201 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 6 288 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 6 408 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
-#X obj 140 211 cnv 17 3 70 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
-#X obj 140 297 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 130 211 cnv 17 3 70 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 130 297 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 209 210 float;
 #X obj 6 322 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
 #X text 173 224 set <float>;
@@ -482,7 +482,7 @@
 #X connect 46 0 23 0;
 #X restore 397 134 pd receive send param var learn forget;
 #X f 21;
-#N canvas 535 177 535 548 more-messages 0;
+#N canvas 499 164 535 548 more-messages 0;
 #X text 63 63 size <float>;
 #X text 146 21 -;
 #X text 69 78 arc <float>;
@@ -612,5 +612,4 @@
 #X connect 27 0 12 0;
 #X restore 439 96 pd size-colors;
 #X text 74 330 -size <float> | -range <float \, float> | -bgcolor <list> | -arccolor <list> | -fgcolor <list> | -arcstart <float> | -noarc | -nosquare | -angle <float> | -circular | -jump | -discrete | -number <float> | -numbersize <float> | -numberpos <f \, f> | -receive <symbol> | -send <symbol> | -param <symbol> | -var <symbol> | -log | -exp <f> | -ticks <float> | -offset <float> | -savestate | -noloadbang | -readonly | -notheme | -transparent, f 77;
-#X obj 306 118 knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0 empty empty 0 12 6 -15 0 1 0 0 1 0;
 #X connect 28 0 20 0;
