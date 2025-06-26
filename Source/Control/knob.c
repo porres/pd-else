@@ -86,6 +86,7 @@ typedef struct _knob{
     int             x_theme;
     int             x_transparent;
     double          x_fval;
+    double          x_lastval;
     t_symbol       *x_fg;
     t_symbol       *x_mg;
     t_symbol       *x_bg;
@@ -755,7 +756,7 @@ static void knob_set(t_knob *x, t_floatarg f){
     double old = x->x_pos;
     x->x_fval = knob_clipfloat(x, f);
     x->x_pos = knob_getpos(x, x->x_fval);
-    x->x_fval = knob_getfval(x);
+    x->x_fval = knob_getfval(x); // ??????
     if(x->x_pos != old){
         if(knob_vis_check(x))
             knob_update(x);
@@ -764,6 +765,18 @@ static void knob_set(t_knob *x, t_floatarg f){
 }
 
 static void knob_bang(t_knob *x){
+    if(x->x_circular == 2){ // infinite
+        double delta = x->x_fval - x->x_lastval;
+        double range = x->x_upper - x->x_lower;
+        double halfrange = range * 0.5;
+        if(fabs(delta) > halfrange){
+            delta = fmod(delta + halfrange, range);
+            if(delta < 0)
+                delta += range;
+            delta -= halfrange;
+        }
+        x->x_fval = x->x_lastval + delta;
+    }
     if(x->x_param != gensym("empty")){
         t_atom at[1];
         SETFLOAT(at, x->x_fval);
@@ -787,6 +800,7 @@ static void knob_bang(t_knob *x){
 empty:
     if(x->x_var != gensym("empty"))
         value_setfloat(x->x_var, x->x_fval);
+    x->x_lastval = x->x_fval;
 }
 
 static void knob_float(t_knob *x, t_floatarg f){
@@ -899,7 +913,7 @@ static void knob_arc(t_knob *x, t_floatarg f){
 }
 
 static void knob_circular(t_knob *x, t_floatarg f){
-    x->x_circular = (f != 0);
+    x->x_circular = f < 0 ? 0 : f > 2 ? 2 : (int)f;
 }
 
 static void knob_discrete(t_knob *x, t_floatarg f){
@@ -1333,9 +1347,8 @@ static void knob_arrow_motion(t_knob *x, t_floatarg dir){
     else
         pos = pos > 1 ? 1 : pos < 0 ? 0 : pos;
     x->x_pos = pos;
-    t_float fval = x->x_fval;
     x->x_fval = knob_getfval(x);
-    if(fval != x->x_fval){
+    if(x->x_lastval != x->x_fval){
         knob_bang(x);
         knob_update_number(x);
     }
@@ -1402,9 +1415,8 @@ static void knob_motion(t_knob *x, t_floatarg dx, t_floatarg dy){
             pos = 0;
     }
     x->x_pos = pos;
-    t_float fval = x->x_fval;
     x->x_fval = knob_getfval(x);
-    if(fval != x->x_fval){
+    if(x->x_lastval != x->x_fval){
         knob_bang(x);
         knob_update_number(x);
     }
@@ -1564,8 +1576,7 @@ static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int s
         return(1);
     }
     else if(dbl){
-        knob_set(x, x->x_arcstart);
-        knob_bang(x);
+        knob_reset(x);
         return(1);
     }
     if(doit){
@@ -1657,7 +1668,8 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     x->n_size = 12, x->x_xpos = 6, x->x_ypos = -15;
     t_symbol *snd = gensym("empty"), *rcv = gensym("empty");
     t_symbol *param = gensym("empty"), *var = gensym("empty");
-    int size = 50, circular = 0, steps = 0, discrete = 0;
+    int size = 50, steps = 0, discrete = 0;
+    x->x_circular = 0;
     int arc = 1, angle = 320, offset = 0;
     x->x_bg = gensym("#dfdfdf"), x->x_mg = gensym("#7c7c7c"), x->x_fg = gensym("black");
     x->x_clicked = x->x_log = x->x_jump = x->x_number_mode = x->x_savestate = 0;
@@ -1682,7 +1694,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
             x->x_mg = atom_getsymbolarg(8, ac, av); // 09: s arccolorlor
             x->x_fg = atom_getsymbolarg(9, ac, av); // 10: s fgcolor
             x->x_square = atom_getintarg(10, ac, av); // 11: i square
-            circular = atom_getintarg(11, ac, av); // 12: i circular
+            x->x_circular = atom_getintarg(11, ac, av); // 12: i circular
             steps = atom_getintarg(12, ac, av); // 13: i steps
             discrete = atom_getintarg(13, ac, av); // 14: i discrete
             arc = atom_getintarg(14, ac, av); // 15: i arc
@@ -1883,8 +1895,18 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
                         goto errstate;
                 }
                 else if(sym == gensym("-circular")){
-                    x->x_flag = 1, av++, ac--;
-                    circular = 1;
+                    if(ac >= 2){
+                        x->x_flag = 1, av++, ac--;
+                        if(av->a_type == A_FLOAT){
+                            float f = atom_getfloat(av);
+                            x->x_circular = f < 0 ? 0 : f > 2 ? 2 : (int)f;
+                            av++, ac--;
+                        }
+                        else
+                            goto errstate;
+                    }
+                    else
+                        goto errstate;
                 }
                 else if(sym == gensym("-jump")){
                     x->x_flag = 1, av++, ac--;
@@ -2009,7 +2031,6 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     else
         knob_exp(x, exp);
     x->x_arcstart = arcstart;
-    x->x_circular = circular;
     x->x_steps = steps < 0 ? 0 : steps;
     x->x_discrete = discrete;
     x->x_arc = arc;
