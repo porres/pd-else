@@ -22,7 +22,7 @@
 #X text 209 210 float;
 #X obj 6 322 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
 #X text 173 224 set <float>;
-#N canvas 438 109 772 634 +parameters 0;
+#N canvas 438 109 771 655 +parameters 0;
 #X obj 327 123 else/knob 90 0 1 4 0 empty empty #9a9f9c #feffc6 #402420 0 0 2 0 0 320 0 0 0 empty empty 0 0 0 0 0 0 1 0 0 0;
 #X obj 574 98 else/rescale;
 #X floatatom 327 232 11 0 0 0 - - - 12;
@@ -43,7 +43,7 @@
 #X text 255 237 8;
 #X text 245 266 9;
 #X text 217 284 10;
-#X obj 162 195 else/knob 90 0 10 0 0 \$0-discrete empty #000000 #afafaf #dfdfdf 0 0 11 1 0 320 0 0 0 empty empty 0 0 0 0 0 0 1 0 0 0;
+#X obj 162 195 else/knob 90 0 10 0 0 \$0-discrete empty #000000 #afafaf #dfdfdf 0 0 11 1 0 320 0 0 0 empty empty 0 8 0 0 0 0 1 0 0 0;
 #X obj 380 81 else/rescale -exp 4 0 1, f 12;
 #X msg 588 400 log \$1;
 #X obj 588 367 tgl 22 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
@@ -51,7 +51,7 @@
 #A saved;
 #A saved;
 #X text 656 97 <-- see also;
-#X obj 157 487 else/knob 125 1 10 0 1 empty empty #7c7c7c #000000 #b3dfde 1 1 11 1 1 320 90 0 1 empty empty 0 8 0 0 0 0 1 0 0 0;
+#X obj 157 487 else/knob 125 1 11 0 1 empty empty #7c7c7c #000000 #b3dfde 1 1 11 1 1 320 90 0 1 empty empty 0 8 0 0 0 0 1 0 0 0;
 #X msg 210 454 offset \$1;
 #X floatatom 210 428 5 0 0 0 - - - 0;
 #X text 488 21 [knob] has an exponential and log feature just like the [rescale] object. For more details \, check the help file of [rescale]. Note that sometimes you may need to use [rescale] as well \, like when knob receives data from MIDI controllers (see example to the left)., f 42;
@@ -77,6 +77,8 @@
 #X msg 167 449 dec;
 #X text 41 437 The 'inc'/'dec' messages are like using arrow keys, f 15;
 #X text 14 494 Also arrow keys here (it loops as well). Note that the inc/dec messages and arrow keys also work in non discrete mode! In this case \, if 'shift' was pressed before activating the knob \, you have fine tuning., f 21;
+#X floatatom 157 624 5 0 0 0 - - - 0;
+#X floatatom 196 301 3 0 0 0 - \$0-discrete \$0-discrete-set 0;
 #X connect 0 0 2 0;
 #X connect 3 0 0 0;
 #X connect 4 0 3 0;
@@ -87,6 +89,7 @@
 #X connect 22 0 6 0;
 #X connect 23 0 22 0;
 #X connect 24 0 21 0;
+#X connect 26 0 52 0;
 #X connect 27 0 26 0;
 #X connect 28 0 27 0;
 #X connect 31 0 23 0;

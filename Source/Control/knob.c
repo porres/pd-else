@@ -1330,6 +1330,14 @@ static void knob_arrow_motion(t_knob *x, t_floatarg dir){
         t_float ticks = (x->x_steps < 2 ? 2 : (float)x->x_steps) - 1;
         old = rint(old * ticks) / ticks;
         pos = old + dir/ticks;
+        if(x->x_circular){
+            if(pos > 1)
+                pos = 0;
+            if(pos < 0)
+                pos = 1;
+        }
+        else
+            pos = pos > 1 ? 1 : pos < 0 ? 0 : pos;
     }
     else{
         float delta = dir;
@@ -1337,15 +1345,15 @@ static void knob_arrow_motion(t_knob *x, t_floatarg dir){
         if(x->x_shift)
             delta *= 0.01;
         pos = x->x_pos + delta;
+        if(x->x_circular){
+            if(pos > 1)
+                pos -= 1;
+            if(pos < 0)
+                pos += 1;
+        }
+        else
+            pos = pos > 1 ? 1 : pos < 0 ? 0 : pos;
     }
-    if(x->x_circular){
-        if(pos > 1)
-            pos -= 1;
-        if(pos < 0)
-            pos += 1;
-    }
-    else
-        pos = pos > 1 ? 1 : pos < 0 ? 0 : pos;
     x->x_pos = pos;
     x->x_fval = knob_getfval(x);
     if(x->x_lastval != x->x_fval){
