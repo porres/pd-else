@@ -1324,7 +1324,7 @@ static void knob_activecheck(t_knob *x){
 
 static int xm, ym;
 
-static void knob_arrow_motion(t_knob *x, t_floatarg dir){
+static void knob_arrow_motion(t_knob *x, int dir){
     float old = x->x_pos, pos;
     if(x->x_discrete){
         t_float ticks = (x->x_steps < 2 ? 2 : (float)x->x_steps) - 1;
@@ -1372,6 +1372,10 @@ static void knob_up(t_knob *x){
 
 static void knob_down(t_knob *x){
     knob_arrow_motion(x, -1);
+}
+
+static void knob_shift(t_knob *x, t_floatarg f){
+    knob_arrow_motion(x, (int)f);
 }
 
 static void knob_motion(t_knob *x, t_floatarg dx, t_floatarg dy){
@@ -2091,6 +2095,7 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_circular, gensym("circular"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_up, gensym("inc"), 0);
     class_addmethod(knob_class, (t_method)knob_down, gensym("dec"), 0);
+    class_addmethod(knob_class, (t_method)knob_shift, gensym("shift"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_range, gensym("range"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_jump, gensym("jump"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_exp, gensym("exp"), A_FLOAT, 0);
