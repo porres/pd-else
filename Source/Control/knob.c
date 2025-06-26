@@ -1345,6 +1345,14 @@ static void knob_arrow_motion(t_knob *x, t_floatarg dir){
     }
 }
 
+static void knob_up(t_knob *x){
+    knob_arrow_motion(x, 1);
+}
+
+static void knob_down(t_knob *x){
+    knob_arrow_motion(x, -1);
+}
+
 static void knob_motion(t_knob *x, t_floatarg dx, t_floatarg dy){
     if(dx == 0 && dy == 0)
         return;
@@ -2052,6 +2060,8 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_set, gensym("set"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_size, gensym("size"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_circular, gensym("circular"), A_FLOAT, 0);
+    class_addmethod(knob_class, (t_method)knob_up, gensym("inc"), 0);
+    class_addmethod(knob_class, (t_method)knob_down, gensym("dec"), 0);
     class_addmethod(knob_class, (t_method)knob_range, gensym("range"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_jump, gensym("jump"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_exp, gensym("exp"), A_FLOAT, 0);
