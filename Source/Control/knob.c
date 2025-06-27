@@ -68,6 +68,7 @@ typedef struct _knob{
     int             x_angle_offset;
     int             x_steps;
     int             x_square;
+    int             x_setted;
     double          x_lower;
     double          x_upper;
     int             x_clicked;
@@ -130,6 +131,26 @@ typedef struct _knob{
 }t_knob;
 
 // ---------------------- Helper functions ----------------------
+
+static t_float knob_wrap(t_knob *x, t_float f){
+    float result;
+    float min = x->x_lower, max = x->x_upper;
+    if(min == max)
+        result = min;
+    else if(f < max && f >= min)
+        result = f; // if f range, = in
+    else{ // wrap
+        float range = max - min;
+        if(f < min){
+            result = f;
+            while(result < min)
+                result += range;
+        }
+        else
+            result = fmod(f - min, range) + min;
+    }
+    return(result);
+}
 
 static int knob_vis_check(t_knob *x){
     return(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist));
@@ -196,6 +217,8 @@ static t_float knob_getfval(t_knob *x){
 // get position from value
 static t_float knob_getpos(t_knob *x, t_floatarg fval){
     double pos;
+    if(x->x_circular == 2)
+        fval = knob_wrap(x, fval);
     if(x->x_log == 1){ // log
         if((x->x_lower <= 0 && x->x_upper >= 0) || (x->x_lower >= 0 && x->x_upper <= 0))
             pos = 0;
@@ -753,19 +776,20 @@ static void knob_save(t_gobj *z, t_binbuf *b){
 static void knob_set(t_knob *x, t_floatarg f){
     if(isnan(f) || isinf(f))
         return;
+    x->x_setted = 1;
     double old = x->x_pos;
-    x->x_fval = knob_clipfloat(x, f);
+    x->x_fval = x->x_circular == 2 ? f : knob_clipfloat(x, f);
     x->x_pos = knob_getpos(x, x->x_fval);
-    x->x_fval = knob_getfval(x); // ??????
     if(x->x_pos != old){
         if(knob_vis_check(x))
             knob_update(x);
         knob_update_number(x);
     }
+    
 }
 
 static void knob_bang(t_knob *x){
-    if(x->x_circular == 2){ // infinite
+    if(x->x_circular == 2 && !x->x_setted){ // infinite
         double delta = x->x_fval - x->x_lastval;
         double range = x->x_upper - x->x_lower;
         double halfrange = range * 0.5;
@@ -801,6 +825,7 @@ empty:
     if(x->x_var != gensym("empty"))
         value_setfloat(x->x_var, x->x_fval);
     x->x_lastval = x->x_fval;
+    x->x_setted = 0;
 }
 
 static void knob_float(t_knob *x, t_floatarg f){
@@ -814,8 +839,10 @@ static void knob_load(t_knob *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(!ac)
         x->x_load = x->x_fval;
-    else if(ac == 1 && av->a_type == A_FLOAT)
-        x->x_load = knob_clipfloat(x, atom_getfloat(av));
+    else if(ac == 1 && av->a_type == A_FLOAT){
+        float f = atom_getfloat(av);
+        x->x_load = x->x_circular == 2 ? f : knob_clipfloat(x, f);
+    }
 }
 
 static void knob_arcstart(t_knob *x, t_symbol *s, int ac, t_atom *av){
@@ -870,6 +897,7 @@ static void knob_start_end(t_knob *x, t_floatarg f1, t_floatarg f2){
         knob_draw_ticks(x);
         knob_update(x);
     }
+    x->x_setted = 0;
 }
 
 static void knob_angle(t_knob *x, t_floatarg f){
@@ -1044,8 +1072,10 @@ static void knob_range(t_knob *x, t_floatarg f1, t_floatarg f2){
     }
     x->x_lower = (double)f1;
     x->x_upper = (double)f2;
-    x->x_fval = knob_clipfloat(x, x->x_fval);
-    x->x_load = knob_clipfloat(x, x->x_load);
+    if(x->x_circular != 2){
+        x->x_fval = knob_clipfloat(x, x->x_fval);
+        x->x_load = knob_clipfloat(x, x->x_load);
+    }
     x->x_arcstart = knob_clipfloat(x, x->x_arcstart);
     if(x->x_lower == x->x_upper)
         x->x_fval = x->x_load = x->x_arcstart = x->x_lower;
@@ -2050,8 +2080,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     x->x_angle_offset = offset < 0 ? 0 : offset > 360 ? 360 : offset;
     x->x_arcstart_angle = -(x->x_angle_range/2) + x->x_angle_offset;
     x->x_end_angle = x->x_angle_range/2 + x->x_angle_offset;
-    x->x_fval = x->x_load = loadvalue;
-    x->x_pos = knob_getpos(x, x->x_fval);
+    knob_set(x, x->x_fval = x->x_load = loadvalue);
     x->x_edit = x->x_glist->gl_edit;
     x->x_radius = 0.85;
     char buf[MAXPDSTRING];

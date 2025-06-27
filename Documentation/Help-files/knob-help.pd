@@ -613,8 +613,8 @@
 #X restore 396 92 pd size-square-colors;
 #N canvas 584 128 500 514 circular 0;
 #X msg 227 217 circular \$1;
-#X obj 227 267 else/knob 75 0 127 0 0 empty empty #7c7c7c #afafaf #ff0400 1 0 0 0 1 360 0 0 0 empty empty 0 8 0 0 0 1 0 0 0 0;
-#X floatatom 227 353 8 0 0 0 - - - 12;
+#X obj 227 274 else/knob 75 0 127 0 550 empty empty #7c7c7c #afafaf #ff0400 1 2 0 0 1 360 0 0 0 empty empty 0 8 0 0 0 1 0 0 0 0;
+#X floatatom 227 359 8 0 0 0 - - - 12;
 #X msg 149 201 inc;
 #X msg 182 201 dec;
 #X text 36 197 The 'inc'/'dec' messages are like using arrow keys, f 17;
@@ -626,11 +626,12 @@
 #X text 170 168 infinite;
 #X msg 321 226 shift \$1;
 #X floatatom 321 202 5 0 0 0 - - - 0;
-#X text 47 394 You can also set the motion to 'circular' and in this case the [knob] follows the angular position of your mouse motion. The 'circular 1' message allows 'looping' and 'circular 2' is 'infinite mode' (where it loops but keeps incrementing). Both make more sense if the angular range is 360 degrees. Using arrow keys also make it loop around or peform infinite increment. The "shift" message is useful for MIDI input of infinite knob controllers \, that send the delta difference of the rotation., f 70;
 #X msg 321 176 -1;
 #X msg 352 176 1;
 #X msg 382 176 3;
 #X msg 291 176 -3;
+#X floatatom 239 240 5 0 0 0 - - - 0;
+#X text 47 394 You can also set the motion to 'circular' and in this case the [knob] follows the angular position of your mouse motion. The 'circular 1' message allows 'looping' and 'circular 2' is 'infinite mode' (where it loops but keeps incrementing). Both make more sense if the angular range is 360 degrees. Using arrow keys also make it loop around or peform infinite increment. The "shift" message is useful for MIDI input of infinite knob controllers \, that send the delta difference of the rotation. In infinite mode \, a float \, set or load message takes whatever input value., f 70;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 3 0 1 0;
@@ -639,9 +640,10 @@
 #X connect 8 0 0 0;
 #X connect 12 0 1 0;
 #X connect 13 0 12 0;
+#X connect 14 0 13 0;
 #X connect 15 0 13 0;
 #X connect 16 0 13 0;
 #X connect 17 0 13 0;
-#X connect 18 0 13 0;
+#X connect 18 0 1 0;
 #X restore 456 72 pd circular;
 #X connect 27 0 19 0;
