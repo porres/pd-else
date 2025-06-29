@@ -7,9 +7,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define NAN_V   0x7FFFFFFFul
-#define POS_INF 0x7F800000ul
-#define NEG_INF 0xFF800000ul
+#define NAN_V           0x7FFFFFFFul
+#define POS_INF         0x7F800000ul
+#define NEG_INF         0xFF800000ul
+#define HANDLE_SIZE     12
 
 #ifdef _MSC_VER
 #define snprintf _snprintf
@@ -38,7 +39,7 @@ char def_font[100] = "DejaVu Sans Mono";
 #endif
 
 t_widgetbehavior knob_widgetbehavior;
-static t_class *knob_class, *edit_proxy_class;
+static t_class *knob_class, *handle_class, *edit_proxy_class;
 
 typedef struct _edit_proxy{
     t_object      p_obj;
@@ -128,7 +129,17 @@ typedef struct _knob{
     char            x_buf[MAX_NUMBOX_LEN]; // number buffer
     t_symbol       *x_ignore;
     int             x_ignore_int;
+// handle
+    t_pd           *x_handle;
 }t_knob;
+
+typedef struct _handle{
+    t_pd            h_pd;
+    t_knob         *h_master;
+    t_symbol       *h_bindsym;
+    char            h_pathname[64], h_outlinetag[64];
+    int             h_dragon, h_dragx, h_dragy;
+}t_handle; // resizing handle
 
 // ---------------------- Helper functions ----------------------
 
@@ -434,7 +445,64 @@ static void knob_update(t_knob *x){
 
 //---------------------- DRAW STUFF ----------------------------//
 
-// redraw ticks
+static void knob_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
+    t_knob *x = (t_knob *)z;
+    *xp1 = text_xpix(&x->x_obj, glist);
+    *yp1 = text_ypix(&x->x_obj, glist);
+    *xp2 = text_xpix(&x->x_obj, glist) + x->x_size*x->x_zoom;
+    *yp2 = text_ypix(&x->x_obj, glist) + x->x_size*x->x_zoom;
+}
+
+static void knob_displace(t_gobj *z, t_glist *glist, int dx, int dy){
+    t_knob *x = (t_knob *)z;
+    x->x_obj.te_xpix += dx, x->x_obj.te_ypix += dy;
+    dx *= x->x_zoom, dy *= x->x_zoom;
+    pdgui_vmess(0, "crs ii", glist_getcanvas(glist), "move", x->x_tag_obj, dx, dy);
+    canvas_fixlinesfor(glist, (t_text*)x);
+}
+
+static void knob_select(t_gobj *z, t_glist *glist, int sel){
+    t_knob* x = (t_knob*)z;
+    t_canvas *cv = glist_getcanvas(glist);
+    if(sel){
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure",
+            x->x_tag_sel, "-outline", THISGUI->i_selectcolor->s_name);
+        pdgui_vmess(0, "crs rs",  cv, "itemconfigure",
+            x->x_tag_number, "-fill", THISGUI->i_selectcolor->s_name);
+    }
+    else{
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure",
+            x->x_tag_number, "-fill", x->x_fg->s_name);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure",
+            x->x_tag_sel, "-outline", THISGUI->i_foregroundcolor->s_name);
+    }
+}
+
+/*static void knob_draw_handle(t_knob *x, int state){
+    t_handle *sh = (t_handle *)x->x_handle;
+// always destroy
+    sys_vgui("destroy %s\n", sh->h_pathname);
+    if(state){
+        sys_vgui("canvas %s -width %d -height %d -bg blue -highlightthickness %d -cursor bottom_right_corner\n",
+            sh->h_pathname, HANDLE_SIZE, HANDLE_SIZE, 2*x->x_zoom);
+        int x1, y1, x2, y2;
+        knob_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+        sys_vgui(".x%lx.c create window %d %d -anchor nw -width %d -height %d -window %s -tags all%lx\n",
+            x->x_cv,
+            x2 - HANDLE_SIZE*x->x_zoom + 1,
+            y2 - HANDLE_SIZE*x->x_zoom + 1,
+            HANDLE_SIZE*x->x_zoom,
+            HANDLE_SIZE*x->x_zoom,
+            sh->h_pathname,
+            x);
+        sys_vgui("bind %s <Button> {pdsend [concat %s _click 1 \\;]}\n", sh->h_pathname, sh->h_bindsym->s_name);
+        sys_vgui("bind %s <ButtonRelease> {pdsend [concat %s _click 0 \\;]}\n", sh->h_pathname, sh->h_bindsym->s_name);
+        sys_vgui("bind %s <Motion> {pdsend [concat %s _motion %%x %%y \\;]}\n", sh->h_pathname, sh->h_bindsym->s_name);
+        sys_vgui("focus %s\n", sh->h_pathname); // because of a damn weird bug where it drew all over the canvas
+    }
+}*/
+
+// Draw ticks
 static void knob_draw_ticks(t_knob *x){
     t_canvas *cv = glist_getcanvas(x->x_glist);
     char fg[32];
@@ -503,6 +571,11 @@ static void knob_draw_new(t_knob *x, t_glist *glist){
     int x1 = text_xpix(&x->x_obj, glist);
     int y1 = text_ypix(&x->x_obj, glist);
     t_canvas *cv = glist_getcanvas(glist);
+
+// handle
+/*    t_handle *sh = (t_handle *)x->x_handle;
+    sprintf(sh->h_pathname, ".x%lx.h%lx", (unsigned long)cv, (unsigned long)sh);
+    sys_vgui(".x%lx.c bind %s <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_tag_obj);*/
 // square
     char *tags_square[] = {x->x_tag_square, x->x_tag_obj};
     pdgui_vmess(0, "crr iiii rS", cv, "create", "rectangle",
@@ -581,39 +654,6 @@ char *tags_center[] = {x->x_tag_center_circle, x->x_tag_obj};
         "-fill", x->x_sel ? THISGUI->i_selectcolor->s_name : fg);  // ??????
 }
 
-// ------------------------ knob widgetbehaviour-----------------------------
-static void knob_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
-    t_knob *x = (t_knob *)z;
-    *xp1 = text_xpix(&x->x_obj, glist);
-    *yp1 = text_ypix(&x->x_obj, glist);
-    *xp2 = text_xpix(&x->x_obj, glist) + x->x_size*x->x_zoom;
-    *yp2 = text_ypix(&x->x_obj, glist) + x->x_size*x->x_zoom;
-}
-
-static void knob_displace(t_gobj *z, t_glist *glist, int dx, int dy){
-    t_knob *x = (t_knob *)z;
-    x->x_obj.te_xpix += dx, x->x_obj.te_ypix += dy;
-    dx *= x->x_zoom, dy *= x->x_zoom;
-    pdgui_vmess(0, "crs ii", glist_getcanvas(glist), "move", x->x_tag_obj, dx, dy);
-    canvas_fixlinesfor(glist, (t_text*)x);
-}
-
-static void knob_select(t_gobj *z, t_glist *glist, int sel){
-    t_knob* x = (t_knob*)z;
-    t_canvas *cv = glist_getcanvas(glist);
-    if(sel){
-        pdgui_vmess(0, "crs rs", cv, "itemconfigure",
-            x->x_tag_sel, "-outline", THISGUI->i_selectcolor->s_name);
-        pdgui_vmess(0, "crs rs",  cv, "itemconfigure",
-            x->x_tag_number, "-fill", THISGUI->i_selectcolor->s_name);
-    }
-    else{
-        pdgui_vmess(0, "crs rs", cv, "itemconfigure",
-            x->x_tag_number, "-fill", x->x_fg->s_name);
-        pdgui_vmess(0, "crs rs", cv, "itemconfigure",
-            x->x_tag_sel, "-outline", THISGUI->i_foregroundcolor->s_name);
-    }
-}
 
 void knob_vis(t_gobj *z, t_glist *glist, int vis){
     t_knob* x = (t_knob*)z;
@@ -966,7 +1006,7 @@ static void knob_steps(t_knob *x, t_floatarg f){
     }
 }
 
-static t_symbol *getcolor(int ac, t_atom *av){
+static t_symbol *knob_getcolor(int ac, t_atom *av){
     if((av)->a_type == A_SYMBOL)
         return(atom_getsymbol(av));
     else{
@@ -977,7 +1017,7 @@ static t_symbol *getcolor(int ac, t_atom *av){
         g = g < 0 ? 0 : g > 255 ? 255 : g;
         b = b < 0 ? 0 : b > 255 ? 255 : b;
         char color[20];
-        sprintf(color, "#%2.2x%2.2x%2.2x", r, g, b);
+        sprintf(color, "#%.2x%.2x%.2x", r, g, b);
         return(gensym(color));
     }
 }
@@ -986,7 +1026,7 @@ static void knob_bgcolor(t_knob *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(!ac)
         return;
-    t_symbol *color = getcolor(ac, av);
+    t_symbol *color = knob_getcolor(ac, av);
     if(x->x_bg != color){
         x->x_bg = color;
         if(knob_vis_check(x))
@@ -998,7 +1038,7 @@ static void knob_arccolor(t_knob *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(!ac)
         return;
-    t_symbol *color = getcolor(ac, av);
+    t_symbol *color = knob_getcolor(ac, av);
     if(x->x_mg != color){
         x->x_mg = color;
         if(knob_vis_check(x))
@@ -1010,7 +1050,7 @@ static void knob_fgcolor(t_knob *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(!ac)
         return;
-    t_symbol *color = getcolor(ac, av);
+    t_symbol *color = knob_getcolor(ac, av);
     if(x->x_fg != color){
         x->x_fg = color;
         if(knob_vis_check(x))
@@ -1607,6 +1647,7 @@ static void knob_forget(t_knob *x){
 static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
     t_knob *x = (t_knob *)z;
     x->x_ignore_int = alt;
+    post("xpix = %d, ypix = %d", xpix, ypix);
     if(x->x_readonly)
         return(0);
     x->x_shift = shift;
@@ -1705,6 +1746,15 @@ static void knob_free(t_knob *x){
 static void *knob_new(t_symbol *s, int ac, t_atom *av){
     t_knob *x = (t_knob *)pd_new(knob_class);
     x->x_ignore = s;
+// handle
+/*    x->x_handle = pd_new(handle_class);
+    t_handle *sh = (t_handle *)x->x_handle;
+    sh->h_master = x;
+    char hbuf[64];
+    sprintf(hbuf, "_h%lx", (unsigned long)sh);
+    pd_bind(x->x_handle, sh->h_bindsym = gensym(hbuf));
+    sprintf(sh->h_outlinetag, "h%lx", (unsigned long)sh);*/
+//
     x->x_buf[0] = 0;
     float loadvalue = 0.0, arcstart = 0.0, exp = 0.0, min = 0.0, max = 127.0;
     x->n_size = 12, x->x_xpos = 6, x->x_ypos = -15;

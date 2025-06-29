@@ -38,16 +38,16 @@ static t_symbol *ps__vised;
 static void mouse_gui_anything(void){ // dummy
 }
 
-/* filtering out redundant "_up" messages */
+// filtering out redundant "_up" messages
 static void mouse_gui__up(t_mouse_gui *snk, t_floatarg f){
-    if (!snk->g_psmouse){
+    if(!snk->g_psmouse){
         bug("mouse_gui__up");
         return;
     }
-    if ((int)f){
-        if (!snk->g_isup){
+    if((int)f){
+        if(!snk->g_isup){
             snk->g_isup = 1;
-            if (snk->g_psmouse->s_thing){
+            if(snk->g_psmouse->s_thing){
                 t_atom at;
                 SETFLOAT(&at, 1);
                 pd_typedmess(snk->g_psmouse->s_thing, ps__up, 1, &at);
@@ -55,9 +55,9 @@ static void mouse_gui__up(t_mouse_gui *snk, t_floatarg f){
         }
     }
     else{
-        if (snk->g_isup)
+        if(snk->g_isup)
             snk->g_isup = 0;
-        if (snk->g_psmouse->s_thing){
+        if(snk->g_psmouse->s_thing){
             t_atom at;
             SETFLOAT(&at, 0);
             pd_typedmess(snk->g_psmouse->s_thing, ps__up, 1, &at);
@@ -66,11 +66,11 @@ static void mouse_gui__up(t_mouse_gui *snk, t_floatarg f){
 }
 
 static void mouse_gui__focus(t_mouse_gui *snk, t_symbol *s, t_floatarg f){
-    if (!snk->g_psfocus){
+    if(!snk->g_psfocus){
         bug("mouse_gui__focus");
         return;
     }
-    if (snk->g_psfocus->s_thing){
+    if(snk->g_psfocus->s_thing){
         t_atom at[2];
         SETSYMBOL(&at[0], s);
         SETFLOAT(&at[1], f);
@@ -79,11 +79,11 @@ static void mouse_gui__focus(t_mouse_gui *snk, t_symbol *s, t_floatarg f){
 }
 
 static void mouse_gui__vised(t_mouse_gui *snk, t_symbol *s, t_floatarg f){
-    if (!snk->g_psvised){
+    if(!snk->g_psvised){
         bug("mouse_gui__vised");
         return;
     }
-    if (snk->g_psvised->s_thing){
+    if(snk->g_psvised->s_thing){
         t_atom at[2];
         SETSYMBOL(&at[0], s);
         SETFLOAT(&at[1], f);
@@ -91,29 +91,23 @@ static void mouse_gui__vised(t_mouse_gui *snk, t_symbol *s, t_floatarg f){
     }
 }
 
-
-static void mouse_gui_dobindmouse(t_mouse_gui *snk)
-{
+static void mouse_gui_dobindmouse(t_mouse_gui *snk){
 #if 0
-    /* How to be notified about changes of button state, prior to gui objects
-     in a canvas?  LATER find a reliable way -- delete if failed */
-    sys_vgui("bind mouse_tag <<mouse_down>> {pdsend {%s _up 0}}\n",
-             snk->g_psgui->s_name);
-    sys_vgui("bind mouse_tag <<mouse_up>> {pdsend {%s _up 1}}\n",
-             snk->g_psgui->s_name);
+// How to be notified about changes of button state, prior to gui objects
+// in a canvas?  LATER find a reliable way -- delete if failed
+    sys_vgui("bind mouse_tag <<mouse_down>> {pdsend {%s _up 0}}\n", snk->g_psgui->s_name);
+    sys_vgui("bind mouse_tag <<mouse_up>> {pdsend {%s _up 1}}\n", snk->g_psgui->s_name);
 #endif
-    sys_vgui("bind all <<mouse_down>> {pdsend {%s _up 0}}\n",
-             snk->g_psgui->s_name);
-    sys_vgui("bind all <<mouse_up>> {pdsend {%s _up 1}}\n",
-             snk->g_psgui->s_name);
+    sys_vgui("bind all <<mouse_down>> {pdsend {%s _up 0}}\n", snk->g_psgui->s_name);
+    sys_vgui("bind all <<mouse_up>> {pdsend {%s _up 1}}\n", snk->g_psgui->s_name);
 }
 
 static void mouse_gui__remouse(t_mouse_gui *snk){
-    if (!snk->g_psmouse){
+    if(!snk->g_psmouse){
         bug("mouse_gui__remouse");
         return;
     }
-    if (snk->g_psmouse->s_thing){
+    if(snk->g_psmouse->s_thing){
         /* if a new master was bound in a gray period, we need to
          restore gui bindings */
 #if 0
@@ -133,13 +127,11 @@ static void mouse_gui_dobindfocus(t_mouse_gui *snk){
 }
 
 static void mouse_gui__refocus(t_mouse_gui *snk){
-    if (!snk->g_psfocus)
-    {
+    if(!snk->g_psfocus){
         bug("mouse_gui__refocus");
         return;
     }
-    if (snk->g_psfocus->s_thing)
-    {
+    if(snk->g_psfocus->s_thing){
         /* if a new master was bound in a gray period, we need to
          restore gui bindings */
 #if 0
@@ -159,11 +151,11 @@ static void mouse_gui_dobindvised(t_mouse_gui *snk){
 }
 
 static void mouse_gui__revised(t_mouse_gui *snk){
-    if (!snk->g_psvised){
+    if(!snk->g_psvised){
         bug("mouse_gui__revised");
         return;
     }
-    if (snk->g_psvised->s_thing){
+    if(snk->g_psvised->s_thing){
         /* if a new master was bound in a gray period, we need to
          restore gui bindings */
 #if 0
@@ -179,38 +171,27 @@ static int mouse_gui_setup(void){
     ps__up = gensym("_up");
     ps__focus = gensym("_focus");
     ps__vised = gensym("_vised");
-    if (ps_hashmouse_gui->s_thing)
-    {
-        if (strcmp(class_getname(*ps_hashmouse_gui->s_thing), ps__mouse_gui->s_name))
-        {
+    if(ps_hashmouse_gui->s_thing){
+        if(strcmp(class_getname(*ps_hashmouse_gui->s_thing), ps__mouse_gui->s_name)){
             /* FIXME protect against the danger of someone else
              (e.g. receive) binding to #mouse_gui */
             bug("mouse_gui_setup");
-            return (0);
+            return(0);
         }
-        else
-        {
-            /* FIXME compatibility test */
+        else{ // FIXME compatibility test
             mouse_gui_class = *ps_hashmouse_gui->s_thing;
-            return (1);
+            return(1);
         }
     }
-    mouse_gui_class = class_new(ps__mouse_gui, 0, 0,
-                                sizeof(t_mouse_gui),
-                                CLASS_PD | CLASS_NOINLET, 0);
+    mouse_gui_class = class_new(ps__mouse_gui, 0, 0, sizeof(t_mouse_gui),
+        CLASS_PD | CLASS_NOINLET, 0);
     class_addanything(mouse_gui_class, mouse_gui_anything);
-    class_addmethod(mouse_gui_class, (t_method)mouse_gui__remouse,
-                    gensym("_remouse"), 0);
-    class_addmethod(mouse_gui_class, (t_method)mouse_gui__refocus,
-                    gensym("_refocus"), 0);
-    class_addmethod(mouse_gui_class, (t_method)mouse_gui__revised,
-                    gensym("_revised"), 0);
-    class_addmethod(mouse_gui_class, (t_method)mouse_gui__up,
-                    ps__up, A_FLOAT, 0);
-    class_addmethod(mouse_gui_class, (t_method)mouse_gui__focus,
-                    ps__focus, A_SYMBOL, A_FLOAT, 0);
-    class_addmethod(mouse_gui_class, (t_method)mouse_gui__vised,
-                    ps__vised, A_SYMBOL, A_FLOAT, 0);
+    class_addmethod(mouse_gui_class, (t_method)mouse_gui__remouse, gensym("_remouse"), 0);
+    class_addmethod(mouse_gui_class, (t_method)mouse_gui__refocus, gensym("_refocus"), 0);
+    class_addmethod(mouse_gui_class, (t_method)mouse_gui__revised, gensym("_revised"), 0);
+    class_addmethod(mouse_gui_class, (t_method)mouse_gui__up, ps__up, A_FLOAT, 0);
+    class_addmethod(mouse_gui_class, (t_method)mouse_gui__focus, ps__focus, A_SYMBOL, A_FLOAT, 0);
+    class_addmethod(mouse_gui_class, (t_method)mouse_gui__vised, ps__vised, A_SYMBOL, A_FLOAT, 0);
     
     /* Protect against pdCmd being called (via "Canvas <Destroy>" binding)
      during Tcl_Finalize().  FIXME this should be a standard exit handler. */
@@ -245,7 +226,7 @@ static int mouse_gui_setup(void){
     sys_gui("$px $py $wx $wy\"\n");
     sys_gui("}\n");
     
-    /* visibility hack for msw, LATER rethink */
+    // visibility hack for msw, LATER rethink
     sys_gui("global mouse_gui_ispolling\n");
     sys_gui("global mouse_gui_px\n");
     sys_gui("global mouse_gui_py\n");
@@ -295,160 +276,133 @@ static int mouse_gui_setup(void){
     sys_gui(" bind Canvas <<mouse_focusout>> {}\n");
     sys_gui(" pdsend {#mouse_gui _refocus}\n");
     sys_gui("}\n");
-    
     sys_gui("proc mouse_gui_revised {} {\n");
     sys_gui(" bind Canvas <<mouse_vised>> {}\n");
     sys_gui(" bind Canvas <<mouse_unvised>> {}\n");
     sys_gui(" pdsend {#mouse_gui _revised}\n");
     sys_gui("}\n");
-    
-    return (1);
+    return(1);
 }
 
-static int mouse_gui_validate(int dosetup)
-{
-    if (dosetup && !mouse_gui_sink
-        && (mouse_gui_class || mouse_gui_setup()))
-    {
-        if (ps_hashmouse_gui->s_thing)
+static int mouse_gui_validate(int dosetup){
+    if(dosetup && !mouse_gui_sink
+    && (mouse_gui_class || mouse_gui_setup())){
+        if(ps_hashmouse_gui->s_thing)
             mouse_gui_sink = (t_mouse_gui *)ps_hashmouse_gui->s_thing;
-        else
-        {
+        else{
             mouse_gui_sink = (t_mouse_gui *)pd_new(mouse_gui_class);
             mouse_gui_sink->g_psgui = ps_hashmouse_gui;
             pd_bind((t_pd *)mouse_gui_sink,
                     ps_hashmouse_gui);  /* never unbound */
         }
     }
-    if (mouse_gui_class && mouse_gui_sink)
-        return (1);
-    else
-    {
+    if(mouse_gui_class && mouse_gui_sink)
+        return(1);
+    else{
         bug("mouse_gui_validate");
-        return (0);
+        return(0);
     }
 }
 
-static int mouse_gui_mousevalidate(int dosetup)
-{
-    if (dosetup && !mouse_gui_sink->g_psmouse)
-    {
+static int mouse_gui_mousevalidate(int dosetup){
+    if(dosetup && !mouse_gui_sink->g_psmouse){
         mouse_gui_sink->g_psmouse = gensym("#mouse_mouse");
         
         sys_gui("event add <<mouse_down>> <ButtonPress>\n");
         sys_gui("event add <<mouse_up>> <ButtonRelease>\n");
     }
-    if (mouse_gui_sink->g_psmouse)
-        return (1);
-    else
-    {
+    if(mouse_gui_sink->g_psmouse)
+        return(1);
+    else{
         bug("mouse_gui_mousevalidate");
-        return (0);
+        return(0);
     }
 }
 
-static int mouse_gui_pollvalidate(int dosetup)
-{
-    if (dosetup && !mouse_gui_sink->g_pspoll)
-    {
+static int mouse_gui_pollvalidate(int dosetup){
+    if(dosetup && !mouse_gui_sink->g_pspoll){
         mouse_gui_sink->g_pspoll = gensym("#mouse_poll");
         pd_bind((t_pd *)mouse_gui_sink,
                 mouse_gui_sink->g_pspoll);  /* never unbound */
     }
-    if (mouse_gui_sink->g_pspoll)
-        return (1);
-    else
-    {
+    if(mouse_gui_sink->g_pspoll)
+        return(1);
+    else{
         bug("mouse_gui_pollvalidate");
-        return (0);
+        return(0);
     }
 }
 
-static int mouse_gui_focusvalidate(int dosetup)
-{
-    if (dosetup && !mouse_gui_sink->g_psfocus)
-    {
+static int mouse_gui_focusvalidate(int dosetup){
+    if(dosetup && !mouse_gui_sink->g_psfocus){
         mouse_gui_sink->g_psfocus = gensym("#mouse_focus");
         sys_gui("event add <<mouse_focusin>> <FocusIn>\n");
         sys_gui("event add <<mouse_focusout>> <FocusOut>\n");
     }
-    if (mouse_gui_sink->g_psfocus)
-        return (1);
-    else
-    {
+    if(mouse_gui_sink->g_psfocus)
+        return(1);
+    else{
         bug("mouse_gui_focusvalidate");
-        return (0);
+        return(0);
     }
 }
 
-static int mouse_gui_visedvalidate(int dosetup)
-{
-    if (dosetup && !mouse_gui_sink->g_psvised)
-    {
+static int mouse_gui_visedvalidate(int dosetup){
+    if(dosetup && !mouse_gui_sink->g_psvised){
         mouse_gui_sink->g_psvised = gensym("#mouse_vised");
         /* subsequent map events have to be filtered out at the caller's side,
          LATER investigate */
         sys_gui("event add <<mouse_vised>> <Map>\n");
         sys_gui("event add <<mouse_unvised>> <Destroy>\n");
     }
-    if (mouse_gui_sink->g_psvised)
-        return (1);
-    else
-    {
+    if(mouse_gui_sink->g_psvised)
+        return(1);
+    else{
         bug("mouse_gui_visedvalidate");
-        return (0);
+        return(0);
     }
 }
 
-void mouse_gui_bindmouse(t_pd *master)
-{
+void mouse_gui_bindmouse(t_pd *master){
     mouse_gui_validate(1);
     mouse_gui_mousevalidate(1);
-    if (!mouse_gui_sink->g_psmouse->s_thing)
+    if(!mouse_gui_sink->g_psmouse->s_thing)
         mouse_gui_dobindmouse(mouse_gui_sink);
     pd_bind(master, mouse_gui_sink->g_psmouse);
 }
 
-void mouse_gui_unbindmouse(t_pd *master)
-{
-    if (mouse_gui_validate(0) && mouse_gui_mousevalidate(0)
-        && mouse_gui_sink->g_psmouse->s_thing)
-    {
+void mouse_gui_unbindmouse(t_pd *master){
+    if(mouse_gui_validate(0) && mouse_gui_mousevalidate(0)
+    && mouse_gui_sink->g_psmouse->s_thing){
         pd_unbind(master, mouse_gui_sink->g_psmouse);
-        if (!mouse_gui_sink->g_psmouse->s_thing)
+        if(!mouse_gui_sink->g_psmouse->s_thing)
             sys_gui("mouse_gui_remouse\n");
     }
-    else bug("mouse_gui_unbindmouse");
+    else
+        bug("mouse_gui_unbindmouse");
 }
 
-void mouse_gui_getscreenfocused(void)
-{
+void mouse_gui_getscreenfocused(void){
     if(mouse_gui_validate(0))
         sys_gui("mouse_gui_getscreenfocused\n");
 }
 
-void mouse_gui_getscreen(void)
-{
+void mouse_gui_getscreen(void){
     if(mouse_gui_validate(0))
         sys_gui("mouse_gui_getscreen\n");
 }
 
-void mouse_gui_willpoll(void)
-{
+void mouse_gui_willpoll(void){
     mouse_gui_validate(1);
     mouse_gui_pollvalidate(1);
 }
 
-void mouse_gui_startpolling(t_pd *master, int pollmode)
-{
-    if (mouse_gui_validate(0) && mouse_gui_pollvalidate(0))
-    {
+void mouse_gui_startpolling(t_pd *master, int pollmode){
+    if(mouse_gui_validate(0) && mouse_gui_pollvalidate(0)){
         int doinit =
         (mouse_gui_sink->g_pspoll->s_thing == (t_pd *)mouse_gui_sink);
         pd_bind(master, mouse_gui_sink->g_pspoll);
-        if (doinit)
-        {
-            /* visibility hack for msw, LATER rethink */
+        if(doinit){ // visibility hack for msw, LATER rethink
             sys_gui("global mouse_gui_ispolling\n");
             sys_vgui("set mouse_gui_ispolling %d\n", pollmode);
             sys_gui("mouse_gui_poll\n");
@@ -456,13 +410,10 @@ void mouse_gui_startpolling(t_pd *master, int pollmode)
     }
 }
 
-void mouse_gui_stoppolling(t_pd *master)
-{
-    if (mouse_gui_validate(0) && mouse_gui_pollvalidate(0))
-    {
+void mouse_gui_stoppolling(t_pd *master){
+    if(mouse_gui_validate(0) && mouse_gui_pollvalidate(0)){
         pd_unbind(master, mouse_gui_sink->g_pspoll);
-        if (mouse_gui_sink->g_pspoll->s_thing == (t_pd *)mouse_gui_sink)
-        {
+        if(mouse_gui_sink->g_pspoll->s_thing == (t_pd *)mouse_gui_sink){
             sys_gui("global mouse_gui_ispolling\n");
             sys_gui("set mouse_gui_ispolling 0\n");
             sys_vgui("after cancel [mouse_gui_poll]\n");
@@ -480,7 +431,7 @@ void mouse_gui_bindfocus(t_pd *master){
 }
 
 void mouse_gui_unbindfocus(t_pd *master){
-    if (mouse_gui_validate(0) && mouse_gui_focusvalidate(0) && mouse_gui_sink->g_psfocus->s_thing){
+    if(mouse_gui_validate(0) && mouse_gui_focusvalidate(0) && mouse_gui_sink->g_psfocus->s_thing){
         pd_unbind(master, mouse_gui_sink->g_psfocus);
         if(!mouse_gui_sink->g_psfocus->s_thing)
             sys_gui("mouse_gui_refocus\n");
@@ -489,29 +440,26 @@ void mouse_gui_unbindfocus(t_pd *master){
         bug("mouse_gui_unbindfocus");
 }
 
-void mouse_gui_bindvised(t_pd *master)
-{
+void mouse_gui_bindvised(t_pd *master){
     mouse_gui_validate(1);
     mouse_gui_visedvalidate(1);
-    if (!mouse_gui_sink->g_psvised->s_thing)
+    if(!mouse_gui_sink->g_psvised->s_thing)
         mouse_gui_dobindvised(mouse_gui_sink);
     pd_bind(master, mouse_gui_sink->g_psvised);
 }
 
-void mouse_gui_unbindvised(t_pd *master)
-{
-    if (mouse_gui_validate(0) && mouse_gui_visedvalidate(0)
-        && mouse_gui_sink->g_psvised->s_thing)
-    {
+void mouse_gui_unbindvised(t_pd *master){
+    if(mouse_gui_validate(0) && mouse_gui_visedvalidate(0)
+    && mouse_gui_sink->g_psvised->s_thing){
         pd_unbind(master, mouse_gui_sink->g_psvised);
-        if (!mouse_gui_sink->g_psvised->s_thing)
+        if(!mouse_gui_sink->g_psvised->s_thing)
             sys_gui("mouse_gui_revised\n");
     }
-    else bug("mouse_gui_unbindvised");
+    else
+        bug("mouse_gui_unbindvised"); // bug?????
 }
 
 ////////////////////// MOUSE /////////////////////////////
-
 typedef struct _mouse{
     t_object   x_obj;
     int        x_hzero;
@@ -600,14 +548,14 @@ static void *mouse_new(void){
 }
 
 void mouse_setup(void){
-    mouse_class = class_new(gensym("mouse"), (t_newmethod)mouse_new,
-            (t_method)mouse_free, sizeof(t_mouse), 0, 0);
+    mouse_class = class_new(gensym("mouse"), (t_newmethod)mouse_new, (t_method)mouse_free,
+        sizeof(t_mouse), 0, 0);
     class_addanything(mouse_class, mouse_anything);
-    class_addmethod(mouse_class, (t_method)mouse_doup, gensym("_up"), A_FLOAT, 0);
-    class_addmethod(mouse_class, (t_method)mouse__getscreen, gensym("_getscreen"),
-                    A_FLOAT, A_FLOAT, 0);
-    class_addmethod(mouse_class, (t_method)mouse_dobang, gensym("_bang"), A_FLOAT, A_FLOAT, 0);
-    class_addmethod(mouse_class, (t_method)mouse_dozero, gensym("_zero"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(mouse_class, (t_method)mouse_zero, gensym("zero"), 0);
     class_addmethod(mouse_class, (t_method)mouse_reset, gensym("reset"), 0);
+    class_addmethod(mouse_class, (t_method)mouse_doup, gensym("_up"), A_FLOAT, 0);
+    class_addmethod(mouse_class, (t_method)mouse__getscreen, gensym("_getscreen"),
+        A_FLOAT, A_FLOAT, 0);
+    class_addmethod(mouse_class, (t_method)mouse_dobang, gensym("_bang"), A_FLOAT, A_FLOAT, 0);
+    class_addmethod(mouse_class, (t_method)mouse_dozero, gensym("_zero"), A_FLOAT, A_FLOAT, 0);
 }

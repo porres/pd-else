@@ -1,4 +1,4 @@
-// porres 2020
+// porres 2020-2025
 
 #include <m_pd.h>
 #include <g_canvas.h>
@@ -20,6 +20,7 @@ typedef struct _button{
     t_edit_proxy   *x_proxy;
     t_symbol       *x_bindname;
     int             x_mode;
+    int             x_theme;
     int             x_x;
     int             x_y;
     int             x_w;
@@ -28,31 +29,62 @@ typedef struct _button{
     int             x_zoom;
     int             x_edit;
     int             x_state;
-    unsigned char   x_bgcolor[3];
-    unsigned char   x_fgcolor[3];
+    t_symbol       *x_bg;
+    t_symbol       *x_fg;
+    char            x_base_tag[32];
+    char            x_all_tag[32];
+    char            x_IO_tag[32];
 }t_button;
+
+static t_symbol *button_getcolor(int ac, t_atom *av){
+    if((av)->a_type == A_SYMBOL)
+        return(atom_getsymbol(av));
+    else{
+        int r = atom_getintarg(0, ac, av);
+        int g = atom_getintarg(1, ac, av);
+        int b = atom_getintarg(2, ac, av);
+        r = r < 0 ? 0 : r > 255 ? 255 : r;
+        g = g < 0 ? 0 : g > 255 ? 255 : g;
+        b = b < 0 ? 0 : b > 255 ? 255 : b;
+        char color[20];
+        sprintf(color, "#%.2x%.2x%.2x", r, g, b);
+        return(gensym(color));
+    }
+}
+
+static void button_setfg(t_button *x){
+    pdgui_vmess(0, "crs rs", glist_getcanvas(x->x_glist), "itemconfigure",
+        x->x_base_tag, "-fill", x->x_fg->s_name);
+}
+
+static void button_setbg(t_button *x){
+    pdgui_vmess(0, "crs rs", glist_getcanvas(x->x_glist), "itemconfigure",
+        x->x_base_tag, "-fill", x->x_bg->s_name);
+}
 
 static void button_draw_io_let(t_button *x){
     if(x->x_edit){
         t_canvas *cv = glist_getcanvas(x->x_glist);
         int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lx_io %lxALL]\n",
-            cv, xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom), x, x);
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lx_io %lxALL]\n",
-            cv, xpos, ypos+x->x_h*x->x_zoom, xpos+IOWIDTH*x->x_zoom, ypos+x->x_h*x->x_zoom-IHEIGHT*x->x_zoom, x, x);
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %s %s]\n", cv, xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom),
+            x->x_IO_tag, x->x_all_tag);
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %s %s]\n",
+            cv, xpos, ypos+x->x_h*x->x_zoom, xpos+IOWIDTH*x->x_zoom, ypos+x->x_h*x->x_zoom-IHEIGHT*x->x_zoom, x->x_IO_tag, x->x_all_tag);
     }
 }
 
 static void button_draw(t_button *x, t_glist *glist){
     int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
-    sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline %s -fill #%2.2x%2.2x%2.2x -tags [list %lxBASE %lxALL]\n",
-        glist_getcanvas(glist), xpos, ypos, xpos + x->x_w*x->x_zoom, ypos + x->x_h*x->x_zoom,
-        x->x_zoom, x->x_sel ? "blue" : "black", x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2], x, x);
+    sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline %s -fill %s -tags [list %s %s]\n",
+        glist_getcanvas(glist), xpos, ypos,
+            xpos + x->x_w*x->x_zoom, ypos + x->x_h*x->x_zoom, x->x_zoom,
+            x->x_sel ? THISGUI->i_selectcolor->s_name : THISGUI->i_foregroundcolor->s_name,
+            x->x_bg->s_name, x->x_base_tag, x->x_all_tag);
     button_draw_io_let(x);
 }
 
 static void button_erase(t_button* x, t_glist* glist){
-    sys_vgui(".x%lx.c delete %lxALL\n", glist_getcanvas(glist), x);
+    pdgui_vmess(0, "crs", glist_getcanvas(glist), "delete", x->x_all_tag);
 }
 
 static void button_vis(t_gobj *z, t_glist *glist, int vis){
@@ -60,7 +92,8 @@ static void button_vis(t_gobj *z, t_glist *glist, int vis){
     t_canvas *cv = glist_getcanvas(glist);
     if(vis){
         button_draw(x, glist);
-        sys_vgui(".x%lx.c bind %lxBASE <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);
+        sys_vgui(".x%lx.c bind %s <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n",
+            cv, x->x_base_tag, x->x_bindname->s_name);
     }
     else
         button_erase(x, glist);
@@ -73,17 +106,15 @@ static void button_delete(t_gobj *z, t_glist *glist){
 static void button_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     t_button *x = (t_button *)z;
     x->x_obj.te_xpix += dx, x->x_obj.te_ypix += dy;
-    sys_vgui(".x%lx.c move %lxALL %d %d\n", glist_getcanvas(glist), x, dx*x->x_zoom, dy*x->x_zoom);
+    dx *= x->x_zoom, dy *= x->x_zoom;
+    pdgui_vmess(0, "crs ii", glist_getcanvas(glist), "move", x->x_all_tag, dx, dy);
     canvas_fixlinesfor(glist, (t_text*)x);
 }
 
 static void button_select(t_gobj *z, t_glist *glist, int sel){
     t_button *x = (t_button *)z;
-    t_canvas *cv = glist_getcanvas(glist);
-    if((x->x_sel = sel))
-        sys_vgui(".x%lx.c itemconfigure %lxBASE -outline blue\n", cv, x);
-    else
-        sys_vgui(".x%lx.c itemconfigure %lxBASE -outline black\n", cv, x);
+    pdgui_vmess(0, "crs rs", glist_getcanvas(glist), "itemconfigure", x->x_base_tag,
+        "-outline", (x->x_sel = sel) ? THISGUI->i_selectcolor->s_name : THISGUI->i_foregroundcolor->s_name);
 }
 
 static void button_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
@@ -96,51 +127,43 @@ static void button_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *x
 
 static void button_save(t_gobj *z, t_binbuf *b){
   t_button *x = (t_button *)z;
-  binbuf_addv(b, "ssiisiiiiiiiii", gensym("#X"),gensym("obj"),
+  binbuf_addv(b, "ssiisiissii", gensym("#X"),gensym("obj"),
     (int)x->x_obj.te_xpix, (int)x->x_obj.te_ypix,
     atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)),
     x->x_w, x->x_h,
-    x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2],
-    x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2],
-    x->x_mode);
+    x->x_bg, x->x_fg,
+    x->x_mode, x->x_theme);
   binbuf_addv(b, ";");
 }
 
 static void button_mouserelease(t_button* x){
     if(!x->x_glist->gl_edit && x->x_mode == 0){
         outlet_float(x->x_obj.ob_outlet, x->x_state = 0);
-        sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n",
-            glist_getcanvas(x->x_glist), x, x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+        button_setbg(x);
     }
-}
-
-static void button_unflash(t_button *x){
-    sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n",
-        glist_getcanvas(x->x_glist), x, x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
 }
 
 static void button_flash(t_button *x){
     outlet_bang(x->x_obj.ob_outlet);
-    sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n",
-        glist_getcanvas(x->x_glist), x, x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
+    button_setfg(x);
     clock_delay(x->x_clock, 250);
 }
 
 static void button_toggle(t_button *x){
     outlet_float(x->x_obj.ob_outlet, x->x_state = !x->x_state);
-    if(x->x_state)
-        sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n",
-            glist_getcanvas(x->x_glist), x, x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
-    else
-        sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n",
-            glist_getcanvas(x->x_glist), x, x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+    x->x_state ? button_setfg(x) : button_setbg(x);
+}
+
+static void button_press(t_button *x){
+    if(x->x_mode == 1)
+        button_toggle(x);
 }
 
 static void button_bang(t_button *x){
-    if(x->x_mode == 1)
-        button_toggle(x);
-    else if(x->x_mode == 2)
+    if(x->x_mode == 2)
         button_flash(x);
+    else
+        outlet_float(x->x_obj.ob_outlet, x->x_state);
 }
 
 static void button_set(t_button *x, t_floatarg f){
@@ -148,12 +171,7 @@ static void button_set(t_button *x, t_floatarg f){
         int state = (int)(f != 0);
         if(x->x_state != state){
             x->x_state = state;
-            if(x->x_state)
-                sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n",
-                    glist_getcanvas(x->x_glist), x, x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
-            else
-                sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n",
-                    glist_getcanvas(x->x_glist), x, x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+            x->x_state ? button_setfg(x) : button_setbg(x);
         }
     }
 }
@@ -164,12 +182,7 @@ static void button_float(t_button *x, t_floatarg f){
         if(x->x_state != state){
             x->x_state = state;
             outlet_float(x->x_obj.ob_outlet, x->x_state);
-            if(x->x_state)
-                sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n",
-                    glist_getcanvas(x->x_glist), x, x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
-            else
-                sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n",
-                    glist_getcanvas(x->x_glist), x, x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+            x->x_state ? button_setfg(x) : button_setbg(x);
         }
     }
 }
@@ -184,11 +197,12 @@ int shift, int alt, int dbl, int doit){
     if(doit){
         if(x->x_mode == 0){ // latch
             outlet_float(x->x_obj.ob_outlet, x->x_state = 1);
-            sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n",
-                glist_getcanvas(x->x_glist), x, x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
+            button_setfg(x);
         }
-        else
-            button_bang(x);
+        else if(x->x_mode == 1)
+            button_toggle(x);
+        else if(x->x_mode == 2)
+            button_flash(x);
     }
     return(1);
 }
@@ -251,26 +265,22 @@ static void button_height(t_button *x, t_floatarg f){
     }
 }
 
-static void button_fgcolor(t_button *x, t_floatarg red, t_floatarg green, t_floatarg blue){
-    int r = red < 0 ? 0 : red > 255 ? 255 : (int)red;
-    int g = green < 0 ? 0 : green > 255 ? 255 : (int)green;
-    int b = blue < 0 ? 0 : blue > 255 ? 255 : (int)blue;
-    if(x->x_fgcolor[0] != r || x->x_fgcolor[1] != g || x->x_fgcolor[2] != b){
-        x->x_fgcolor[0] = r; x->x_fgcolor[1] = g; x->x_fgcolor[2] = b;
-        if(x->x_state && (glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)))
-            sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n", glist_getcanvas(x->x_glist), x, r, g, b);
-    }
+static void button_fgcolor(t_button *x, t_symbol *s, int ac, t_atom *av){
+    t_symbol *color = button_getcolor(ac, av);
+    if(color == x->x_fg)
+        return;
+    x->x_fg = color;
+    if(x->x_state && glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
+        button_setfg(x);
 }
 
-static void button_bgcolor(t_button *x, t_floatarg red, t_floatarg green, t_floatarg blue){
-    int r = red < 0 ? 0 : red > 255 ? 255 : (int)red;
-    int g = green < 0 ? 0 : green > 255 ? 255 : (int)green;
-    int b = blue < 0 ? 0 : blue > 255 ? 255 : (int)blue;
-    if(x->x_bgcolor[0] != r || x->x_bgcolor[1] != g || x->x_bgcolor[2] != b){
-        x->x_bgcolor[0] = r; x->x_bgcolor[1] = g; x->x_bgcolor[2] = b;
-        if(!x->x_state && glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
-            sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n", glist_getcanvas(x->x_glist), x, r, g, b);
-    }
+static void button_bgcolor(t_button *x, t_symbol *s, int ac, t_atom *av){
+    t_symbol *color = button_getcolor(ac, av);
+    if(color == x->x_bg)
+        return;
+    x->x_bg = color;
+    if(!x->x_state && glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
+        button_setbg(x);
 }
 
 static void button_zoom(t_button *x, t_floatarg zoom){
@@ -324,7 +334,7 @@ static t_edit_proxy * edit_proxy_new(t_button *x, t_symbol *s){
 
 static void *button_new(t_symbol *s, int ac, t_atom *av){
     t_button *x = (t_button *)pd_new(button_class);
-    x->x_clock = clock_new(x, (t_method)button_unflash);
+    x->x_clock = clock_new(x, (t_method)button_setbg);
     t_canvas *cv = canvas_getcurrent();
     x->x_glist = (t_glist*)cv;
     char buf[MAXPDSTRING];
@@ -335,11 +345,9 @@ static void *button_new(t_symbol *s, int ac, t_atom *av){
     pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
     x->x_edit = cv->gl_edit; x->x_zoom = x->x_glist->gl_zoom;
     x->x_x = x->x_y = 0;
-    x->x_fgcolor[0] = 128;
-    x->x_fgcolor[1] = 128;
-    x->x_fgcolor[2] = 159;
-    x->x_bgcolor[0] = x->x_bgcolor[1] = x->x_bgcolor[2] = 255;
+    x->x_fg = gensym("#808080"), x->x_bg = gensym("#FFFFFF");
     x->x_mode = 0;
+    x->x_theme = 1;
     int w = 20, h = 20;
     if(ac && av->a_type == A_FLOAT){ // 1st Width
         w = av->a_w.w_float;
@@ -347,35 +355,24 @@ static void *button_new(t_symbol *s, int ac, t_atom *av){
         if(ac && av->a_type == A_FLOAT){ // 2nd Height
             h = av->a_w.w_float;
             ac--, av++;
-            if(ac && av->a_type == A_FLOAT){ // Red
-                x->x_bgcolor[0] = (unsigned char)av->a_w.w_float;
+            if(ac && av->a_type == A_SYMBOL){ // bg
+                x->x_bg = av->a_w.w_symbol;
                 ac--, av++;
-                if(ac && av->a_type == A_FLOAT){ // Green
-                    x->x_bgcolor[1] = (unsigned char)av->a_w.w_float;
+                if(ac && av->a_type == A_SYMBOL){ // fg
                     ac--, av++;
-                    if(ac && av->a_type == A_FLOAT){ // Blue
-                        x->x_bgcolor[2] = (unsigned char)av->a_w.w_float;
+                    if(ac && av->a_type == A_FLOAT){ // MODE
+                        int mode = (int)av->a_w.w_float;
+                        x->x_mode = mode < 0 ? 0 : mode > 2 ? 2 : mode;
                         ac--, av++;
-                        if(ac && av->a_type == A_FLOAT){ // Red
-                            x->x_fgcolor[0] = (unsigned char)av->a_w.w_float;
+                        if(ac && av->a_type == A_FLOAT){ // THEME
+                            x->x_theme = (int)(av->a_w.w_float != 0);
                             ac--, av++;
-                            if(ac && av->a_type == A_FLOAT){ // Green
-                                x->x_fgcolor[1] = (unsigned char)av->a_w.w_float;
-                                ac--, av++;
-                                if(ac && av->a_type == A_FLOAT){ // Blue
-                                    x->x_fgcolor[2] = (unsigned char)av->a_w.w_float;
-                                    ac--, av++;
-                                    if(ac && av->a_type == A_FLOAT){ // MODE
-                                        x->x_mode = (unsigned char)av->a_w.w_float;
-                                        ac--, av++;
-                                    }
-                                }
-                            }
                         }
                     }
                 }
             }
         }
+        ac = 0;
     }
     while(ac > 0){
         if(av->a_type == A_SYMBOL){
@@ -388,46 +385,36 @@ static void *button_new(t_symbol *s, int ac, t_atom *av){
                 }
                 else goto errstate;
             }
-            else if(s == gensym("-toggle")){
+            else if(s == gensym("-tgl")){
                     x->x_mode = 1;
                     ac--, av++;
             }
-            else if(s == gensym("-bang")){
+            else if(s == gensym("-bng")){
                     x->x_mode = 2;
+                    ac--, av++;
+            }
+            else if(s == gensym("-notheme")){
+                    x->x_theme = 0;
                     ac--, av++;
             }
             else if(s == gensym("-size")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
-                    w = h = atom_getfloatarg(1, ac, av);
+                    w = h = atom_getfloat(av);
                     ac-=2, av+=2;
                 }
                 else goto errstate;
             }
             else if(s == gensym("-bgcolor")){
-                if(ac >= 4 && (av+1)->a_type == A_FLOAT
-                   && (av+2)->a_type == A_FLOAT
-                   && (av+3)->a_type == A_FLOAT){
-                    int r = (int)atom_getfloatarg(1, ac, av);
-                    int g = (int)atom_getfloatarg(2, ac, av);
-                    int b = (int)atom_getfloatarg(3, ac, av);
-                    x->x_bgcolor[0] = r < 0 ? 0 : r > 255 ? 255 : r;
-                    x->x_bgcolor[1] = g < 0 ? 0 : g > 255 ? 255 : g;
-                    x->x_bgcolor[2] = b < 0 ? 0 : b > 255 ? 255 : b;
-                    ac-=4, av+=4;
+                if(ac >= 2 && (av+1)->a_type == A_SYMBOL){
+                    x->x_bg = atom_getsymbol(av);
+                    ac-=2, av+=2;
                 }
                 else goto errstate;
             }
             else if(s == gensym("-fgcolor")){
-                if(ac >= 4 && (av+1)->a_type == A_FLOAT
-                   && (av+2)->a_type == A_FLOAT
-                   && (av+3)->a_type == A_FLOAT){
-                    int r = (int)atom_getfloatarg(1, ac, av);
-                    int g = (int)atom_getfloatarg(2, ac, av);
-                    int b = (int)atom_getfloatarg(3, ac, av);
-                    x->x_fgcolor[0] = r < 0 ? 0 : r > 255 ? 255 : r;
-                    x->x_fgcolor[1] = g < 0 ? 0 : g > 255 ? 255 : g;
-                    x->x_fgcolor[2] = b < 0 ? 0 : b > 255 ? 255 : b;
-                    ac-=4, av+=4;
+                if(ac >= 2 && (av+1)->a_type == A_SYMBOL){
+                    x->x_fg = atom_getsymbol(av);
+                    ac-=2, av+=2;
                 }
                 else goto errstate;
             }
@@ -437,6 +424,9 @@ static void *button_new(t_symbol *s, int ac, t_atom *av){
     }
     x->x_w = w, x->x_h = h;
     outlet_new(&x->x_obj, &s_anything);
+    sprintf(x->x_base_tag, "%pBASE", x);
+    sprintf(x->x_all_tag, "%pALL", x);
+    sprintf(x->x_IO_tag, "%pIO", x);
     return(x);
     errstate:
         pd_error(x, "[button]: improper args");
@@ -453,11 +443,12 @@ void button_setup(void){
     class_addmethod(button_class, (t_method)button_width, gensym("width"), A_FLOAT, 0);
     class_addmethod(button_class, (t_method)button_height, gensym("height"), A_FLOAT, 0);
     class_addmethod(button_class, (t_method)button_set, gensym("set"), A_FLOAT, 0);
-    class_addmethod(button_class, (t_method)button_bng, gensym("bang"), 0);
-    class_addmethod(button_class, (t_method)button_tgl, gensym("toggle"), 0);
+    class_addmethod(button_class, (t_method)button_bng, gensym("bng"), 0);
+    class_addmethod(button_class, (t_method)button_press, gensym("toggle"), 0);
+    class_addmethod(button_class, (t_method)button_tgl, gensym("tgl"), 0);
     class_addmethod(button_class, (t_method)button_latch, gensym("latch"), 0);
-    class_addmethod(button_class, (t_method)button_bgcolor, gensym("bgcolor"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    class_addmethod(button_class, (t_method)button_fgcolor, gensym("fgcolor"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(button_class, (t_method)button_bgcolor, gensym("bgcolor"), A_GIMME, 0);
+    class_addmethod(button_class, (t_method)button_fgcolor, gensym("fgcolor"), A_GIMME, 0);
     class_addmethod(button_class, (t_method)button_zoom, gensym("zoom"), A_CANT, 0);
     class_addmethod(button_class, (t_method)button_mouserelease, gensym("_mouserelease"), 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
