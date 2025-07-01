@@ -1,4 +1,4 @@
-// stolen from cyclone
+// based on cyclone's [mousestate]
 
 #include <m_pd.h>
 #include <g_canvas.h>
@@ -34,6 +34,7 @@ static t_symbol *ps__mouse_gui;
 static t_symbol *ps__up;
 static t_symbol *ps__focus;
 static t_symbol *ps__vised;
+static t_symbol *ps__wheel;
 
 static void mouse_gui_anything(void){ // dummy
 }
@@ -62,6 +63,19 @@ static void mouse_gui__up(t_mouse_gui *snk, t_floatarg f){
             SETFLOAT(&at, 0);
             pd_typedmess(snk->g_psmouse->s_thing, ps__up, 1, &at);
         }
+    }
+}
+
+static void mouse_gui__wheel(t_mouse_gui *snk, t_floatarg delta, t_floatarg h){
+    if(!snk->g_psmouse){
+        bug("mouse_gui__wheel");
+        return;
+    }
+    if(snk->g_psmouse->s_thing){
+        t_atom at[2];
+        SETFLOAT(&at[0], delta);
+        SETFLOAT(&at[1], h);
+        pd_typedmess(snk->g_psmouse->s_thing, ps__wheel, 2, at);
     }
 }
 
@@ -100,6 +114,9 @@ static void mouse_gui_dobindmouse(t_mouse_gui *snk){
 #endif
     sys_vgui("bind all <<mouse_down>> {pdsend {%s _up 0}}\n", snk->g_psgui->s_name);
     sys_vgui("bind all <<mouse_up>> {pdsend {%s _up 1}}\n", snk->g_psgui->s_name);
+    // bind mousewheel events
+    sys_vgui("bind all <<mouse_wheel_v>> {pdsend {%s _wheel %%D 0}}\n", snk->g_psgui->s_name);
+    sys_vgui("bind all <<mouse_wheel_h>> {pdsend {%s _wheel %%D 1}}\n", snk->g_psgui->s_name);
 }
 
 static void mouse_gui__remouse(t_mouse_gui *snk){
@@ -171,6 +188,7 @@ static int mouse_gui_setup(void){
     ps__up = gensym("_up");
     ps__focus = gensym("_focus");
     ps__vised = gensym("_vised");
+    ps__wheel = gensym("_wheel");
     if(ps_hashmouse_gui->s_thing){
         if(strcmp(class_getname(*ps_hashmouse_gui->s_thing), ps__mouse_gui->s_name)){
             /* FIXME protect against the danger of someone else
@@ -192,6 +210,7 @@ static int mouse_gui_setup(void){
     class_addmethod(mouse_gui_class, (t_method)mouse_gui__up, ps__up, A_FLOAT, 0);
     class_addmethod(mouse_gui_class, (t_method)mouse_gui__focus, ps__focus, A_SYMBOL, A_FLOAT, 0);
     class_addmethod(mouse_gui_class, (t_method)mouse_gui__vised, ps__vised, A_SYMBOL, A_FLOAT, 0);
+    class_addmethod(mouse_gui_class, (t_method)mouse_gui__wheel, ps__wheel, A_FLOAT, A_FLOAT, 0);
     
     /* Protect against pdCmd being called (via "Canvas <Destroy>" binding)
      during Tcl_Finalize().  FIXME this should be a standard exit handler. */
@@ -208,6 +227,8 @@ static int mouse_gui_setup(void){
     sys_gui("proc mouse_gui_remouse {} {\n");
     sys_gui(" bind all <<mouse_down>> {}\n");
     sys_gui(" bind all <<mouse_up>> {}\n");
+    sys_gui(" bind all <<mouse_wheel_v>> {}\n");
+    sys_gui(" bind all <<mouse_wheel_h>> {}\n");
     sys_gui(" pdsend {#mouse_gui _remouse}\n");
     sys_gui("}\n");
     
@@ -310,6 +331,15 @@ static int mouse_gui_mousevalidate(int dosetup){
         
         sys_gui("event add <<mouse_down>> <ButtonPress>\n");
         sys_gui("event add <<mouse_up>> <ButtonRelease>\n");
+    // Separate vertical and horizontal wheel events
+        sys_gui("event add <<mouse_wheel_v>> <MouseWheel>\n");
+        sys_gui("event add <<mouse_wheel_h>> <Shift-MouseWheel>\n");
+          
+    // For X11 systems
+        sys_gui("event add <<mouse_wheel_v>> <Button-4>\n");
+        sys_gui("event add <<mouse_wheel_v>> <Button-5>\n");
+        sys_gui("event add <<mouse_wheel_h>> <Shift-Button-4>\n");
+        sys_gui("event add <<mouse_wheel_h>> <Shift-Button-5>\n");
     }
     if(mouse_gui_sink->g_psmouse)
         return(1);
@@ -470,6 +500,8 @@ typedef struct _mouse{
     t_glist   *x_glist;
     t_outlet  *x_horizontal;
     t_outlet  *x_vertical;
+    t_outlet  *x_vwheel; // vertical scrolling
+    t_outlet  *x_hwheel; // horizontal scrolling
 }t_mouse;
 
 static t_class *mouse_class;
@@ -484,6 +516,13 @@ static void mouse_updatepos(t_mouse *x){ // update position
 
 static void mouse_doup(t_mouse *x, t_floatarg f){
     outlet_float(((t_object *)x)->ob_outlet, ((int)f ? 0 : 1));
+}
+
+static void mouse_dowheel(t_mouse *x, t_floatarg delta, t_floatarg h){
+    if(h > 0) // horizontal
+        outlet_float(x->x_hwheel, delta);
+    else // vertical
+        outlet_float(x->x_vwheel, delta);
 }
 
 static void mouse_dobang(t_mouse *x, t_floatarg h, t_floatarg v){
@@ -525,14 +564,17 @@ static void mouse_free(t_mouse *x){
 
 static void *mouse_new(void){
     t_mouse *x = (t_mouse *)pd_new(mouse_class);
-    x->x_zero = 0;    outlet_new((t_object *)x, &s_float);
+    x->x_zero = 0;
+    outlet_new((t_object *)x, &s_float);
     x->x_horizontal = outlet_new((t_object *)x, &s_float);
     x->x_vertical = outlet_new((t_object *)x, &s_float);
+    x->x_vwheel = outlet_new((t_object *)x, &s_float);
+    x->x_hwheel = outlet_new((t_object *)x, &s_float);
     x->x_glist = (t_glist *)canvas_getcurrent();
     
     // The system mouse uses for binding doesn't work for multi-instance Pd
     // Ideally we would solve this, but that's kind of complicated
-    // This at least makes sure there is no crash, and since many multi-instance 
+    // This at least makes sure there is no crash, and since many multi-instance
     // applications of Pd (plugdata) don't use tcl/tk anyway, it won't matter
 #ifndef PDINSTANCE
     mouse_gui_bindmouse((t_pd *)x);
@@ -558,4 +600,5 @@ void mouse_setup(void){
         A_FLOAT, A_FLOAT, 0);
     class_addmethod(mouse_class, (t_method)mouse_dobang, gensym("_bang"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(mouse_class, (t_method)mouse_dozero, gensym("_zero"), A_FLOAT, A_FLOAT, 0);
+    class_addmethod(mouse_class, (t_method)mouse_dowheel, gensym("_wheel"), A_FLOAT, A_FLOAT, 0);
 }
