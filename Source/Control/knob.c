@@ -6,6 +6,7 @@
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
+#include "mouse_gui.h"
 
 #define NAN_V           0x7FFFFFFFul
 #define POS_INF         0x7F800000ul
@@ -1448,6 +1449,29 @@ static void knob_shift(t_knob *x, t_floatarg f){
     knob_arrow_motion(x, (int)f);
 }
 
+static void knob_dowheel(t_knob *x, t_floatarg delta, t_floatarg h){
+    if(x->x_clicked && !x->x_edit){
+        #ifdef __APPLE__
+        if(!h)
+            delta = -delta;
+        #endif
+        knob_arrow_motion(x, delta);
+    }
+}
+
+static void knob_doup(t_knob *x, t_floatarg up){
+//
+}
+static void knob_getscreen(t_knob *x, t_floatarg f1,  t_floatarg f2){
+//
+}
+static void knob_dobang(t_knob *x, t_floatarg f1,  t_floatarg f2){
+//
+}
+static void knob_dozero(t_knob *x, t_floatarg f1,  t_floatarg f2){
+//
+}
+
 static void knob_motion(t_knob *x, t_floatarg dx, t_floatarg dy){
     if(dx == 0 && dy == 0)
         return;
@@ -1647,7 +1671,6 @@ static void knob_forget(t_knob *x){
 static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
     t_knob *x = (t_knob *)z;
     x->x_ignore_int = alt;
-    post("xpix = %d, ypix = %d", xpix, ypix);
     if(x->x_readonly)
         return(0);
     x->x_shift = shift;
@@ -1741,6 +1764,10 @@ static void knob_free(t_knob *x){
         pd_unbind(&x->x_obj.ob_pd, x->x_rcv);
     x->x_proxy->p_cnv = NULL;
     pdgui_stub_deleteforkey(x);
+#ifndef PDINSTANCE
+    mouse_gui_stoppolling((t_pd *)x);
+    mouse_gui_unbindmouse((t_pd *)x);
+#endif
 }
 
 static void *knob_new(t_symbol *s, int ac, t_atom *av){
@@ -2154,6 +2181,19 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     if(x->x_rcv != gensym("empty"))
         pd_bind(&x->x_obj.ob_pd, x->x_rcv);
     pd_bind(&x->x_obj.ob_pd, gensym("#keyname")); // listen to key events
+    
+#ifndef PDINSTANCE
+    mouse_gui_bindmouse((t_pd *)x);
+    mouse_gui_willpoll();
+//    mouse_reset(x);
+//    mouse_updatepos(x);
+    mouse_gui_startpolling((t_pd *)x, 1);
+/*#else
+    x->x_hzero = x->x_vzero = 0;
+    mouse_updatepos(x);*/
+#endif
+    
+//    pd_bind(&x->x_obj.ob_pd, gensym("#mouse_mouse")); // listen to mouse events
     outlet_new(&x->x_obj, &s_float);
     return(x);
 errstate:
@@ -2207,6 +2247,15 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_reset, gensym("reset"), 0);
     class_addmethod(knob_class, (t_method)knob_learn, gensym("learn"), 0);
     class_addmethod(knob_class, (t_method)knob_forget, gensym("forget"), 0);
+    class_addmethod(knob_class, (t_method)knob_dowheel, gensym("_wheel"), A_FLOAT, A_FLOAT, 0);
+    
+    class_addmethod(knob_class, (t_method)knob_doup, gensym("_up"), A_FLOAT, 0);
+    class_addmethod(knob_class, (t_method)knob_getscreen, gensym("_getscreen"),
+        A_FLOAT, A_FLOAT, 0);
+    class_addmethod(knob_class, (t_method)knob_dobang, gensym("_bang"), A_FLOAT, A_FLOAT, 0);
+    class_addmethod(knob_class, (t_method)knob_dozero, gensym("_zero"), A_FLOAT, A_FLOAT, 0);
+    class_addmethod(knob_class, (t_method)knob_dowheel, gensym("_wheel"), A_FLOAT, A_FLOAT, 0);
+    
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
     knob_widgetbehavior.w_getrectfn  = knob_getrect;
