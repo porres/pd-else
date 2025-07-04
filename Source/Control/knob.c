@@ -84,6 +84,7 @@ typedef struct _knob{
     int             x_sel;
     int             x_shift;
     int             x_edit;
+    int             x_hover;
     int             x_jump;
     int             x_readonly;
     int             x_theme;
@@ -123,6 +124,7 @@ typedef struct _knob{
     char            x_tag_ticks[32];
     char            x_tag_outline[32];
     char            x_tag_square[32];
+    char            x_tag_hover[32];
     char            x_tag_in[32];
     char            x_tag_out[32];
     char            x_tag_sel[32];
@@ -130,6 +132,7 @@ typedef struct _knob{
     char            x_buf[MAX_NUMBOX_LEN]; // number buffer
     t_symbol       *x_ignore;
     int             x_ignore_int;
+    t_symbol       *x_bindname;
 // handle
     t_pd           *x_handle;
 }t_knob;
@@ -318,6 +321,11 @@ static void show_number(t_knob *x, int force){ // show or hide number value
         x->x_shownum = 1; // mode 1 or mode 2 and clicked
     else if(x->x_number_mode == 3 && x->x_typing)
         x->x_shownum = 1; // mode 3 and typing
+    else if(x->x_number_mode == 4 // mode 4 (hovering)
+    && (x->x_hover || x->x_clicked)
+    && !x->x_edit){
+        x->x_shownum = 1;
+    }
     else
         x->x_shownum = 0;
     if((knob_vis_check(x)) || force){
@@ -344,6 +352,8 @@ static void knob_config_size(t_knob *x){
     pdgui_vmess(0, "crs iiii", cv, "coords", x->x_tag_square,
         x1, y1, x2, y2);
     pdgui_vmess(0, "crs iiii", cv, "coords", x->x_tag_outline,
+        x1, y1, x2, y2);
+    pdgui_vmess(0, "crs iiii", cv, "coords", x->x_tag_hover,
         x1, y1, x2, y2);
     pdgui_vmess(0, "crs ri", cv, "itemconfigure", x->x_tag_outline,
         "-width", z);
@@ -633,6 +643,12 @@ char *tags_center[] = {x->x_tag_center_circle, x->x_tag_obj};
         "-outline", THISGUI->i_foregroundcolor->s_name,
         "-fill", THISGUI->i_foregroundcolor->s_name,
         "-tags", 2, tags_out);
+// hover area
+    char *tags_hover[] = {x->x_tag_hover, x->x_tag_obj};
+    pdgui_vmess(0, "crr iiii rs rs rS", cv, "create", "rectangle",
+        x1, y1, 0, 0,
+        "-outline", "", "-fill", "",
+        "-tags", 2, tags_hover);
 // config and set
     knob_draw_ticks(x);
     knob_config_size(x);
@@ -658,10 +674,16 @@ char *tags_center[] = {x->x_tag_center_circle, x->x_tag_obj};
 
 void knob_vis(t_gobj *z, t_glist *glist, int vis){
     t_knob* x = (t_knob*)z;
-    if(vis)
+    t_canvas *cv = glist_getcanvas(glist);
+    if(vis){
         knob_draw_new(x, glist);
+        sys_vgui(".x%lx.c bind %s <Enter> {pdsend [concat %s _mouse_enter \\;]}\n",
+            cv, x->x_tag_hover, x->x_bindname->s_name);
+        sys_vgui(".x%lx.c bind %s <Leave> {pdsend [concat %s _mouse_leave \\;]}\n",
+            cv, x->x_tag_hover, x->x_bindname->s_name);
+    }
     else
-        pdgui_vmess(0, "crs", glist_getcanvas(glist), "delete", x->x_tag_obj);
+        pdgui_vmess(0, "crs", cv, "delete", x->x_tag_obj);
 }
 
 static void knob_delete(t_gobj *z, t_glist *glist){
@@ -1174,7 +1196,7 @@ static void knob_lb(t_knob *x, t_floatarg f){
 }
 
 static void knob_number_mode(t_knob *x, t_floatarg f){
-    x->x_number_mode = f < 0 ? 0 : f > 3 ? 3 : (int)f;
+    x->x_number_mode = f < 0 ? 0 : f > 4 ? 4 : (int)f;
     show_number(x, 0);
 }
 
@@ -1242,6 +1264,8 @@ static void knob_properties(t_gobj *z, t_glist *owner){
         mode = gensym("Active");
     else if(x->x_number_mode == 3)
         mode = gensym("Typing");
+    else if(x->x_number_mode == 4)
+        mode = gensym("Hovering");
     pdgui_stub_vnew(&x->x_obj.ob_pd, "knob_dialog", x,
         "ii if iif iii ii ffif iii siii ss ss sss ii",
         x->x_size, x->x_square, // ii
@@ -1372,6 +1396,8 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
         nmode = 2;
     else if(mode == gensym("Typing"))
         nmode = 3;
+    else if(mode == gensym("Hovering"))
+        nmode = 4;
     knob_number_mode(x, nmode);
     knob_config_fg(x); // rethink
     knob_config_bg_arc(x);
@@ -1457,6 +1483,23 @@ static void knob_dowheel(t_knob *x, t_floatarg delta, t_floatarg h){
         #endif
         knob_arrow_motion(x, delta);
     }
+}
+
+void knob_mouse_hover(t_knob *x, int h){
+    char namebuf[512];
+    sprintf(namebuf, "%s-hover", x->x_snd->s_name);
+    t_symbol *snd_hover = gensym(namebuf);
+    if(snd_hover->s_thing)
+        pd_float(snd_hover->s_thing, x->x_hover);
+    show_number(x, 0);
+}
+
+void knob_mouse_enter(t_knob *x){
+    knob_mouse_hover(x, x->x_hover = 1);
+}
+
+void knob_mouse_leave(t_knob *x){
+    knob_mouse_hover(x, x->x_hover = 0);
 }
 
 static void knob_doup(t_knob *x, t_floatarg up){
@@ -1669,6 +1712,7 @@ static void knob_forget(t_knob *x){
 }
 
 static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
+//    post("xpix = %d, ypix = %d", xpix, ypix);
     t_knob *x = (t_knob *)z;
     x->x_ignore_int = alt;
     if(x->x_readonly)
@@ -1733,6 +1777,7 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
         if(p->p_cnv->x_edit != edit){
             p->p_cnv->x_edit = edit;
             knob_config_io(p->p_cnv);
+            show_number(p->p_cnv, 0);
         }
     }
 }
@@ -1760,6 +1805,7 @@ static t_edit_proxy *edit_proxy_new(t_knob *x, t_symbol *s){
 
 static void knob_free(t_knob *x){
     pd_unbind((t_pd *)x, gensym("#keyname"));
+    pd_unbind(&x->x_obj.ob_pd, x->x_bindname);
     if(x->x_rcv != gensym("empty"))
         pd_unbind(&x->x_obj.ob_pd, x->x_rcv);
     x->x_proxy->p_cnv = NULL;
@@ -2044,7 +2090,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
                         x->x_flag = 1, av++, ac--;
                         if(av->a_type == A_FLOAT){
                             int n = atom_getint(av);
-                            x->x_number_mode = n < 0 ? 0 : n > 3 ? 3 : n;
+                            x->x_number_mode = n < 0 ? 0 : n > 4 ? 4 : n;
                             av++, ac--;
                         }
                         else
@@ -2164,6 +2210,8 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)x->x_glist);
     buf[MAXPDSTRING-1] = 0;
     x->x_proxy = edit_proxy_new(x, gensym(buf));
+    sprintf(buf, "#%lx", (long)x);
+    pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
     sprintf(x->x_tag_obj, "%pOBJ", x);
     sprintf(x->x_tag_base_circle, "%pBASE_CIRCLE", x);
     sprintf(x->x_tag_sel, "%pSEL", x);
@@ -2178,6 +2226,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     sprintf(x->x_tag_in, "%pIN", x);
     sprintf(x->x_tag_out, "%pOUT", x);
     sprintf(x->x_tag_number, "%pNUM", x);
+    sprintf(x->x_tag_hover, "%pHOVER", x);
     if(x->x_rcv != gensym("empty"))
         pd_bind(&x->x_obj.ob_pd, x->x_rcv);
     pd_bind(&x->x_obj.ob_pd, gensym("#keyname")); // listen to key events
@@ -2247,6 +2296,11 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_reset, gensym("reset"), 0);
     class_addmethod(knob_class, (t_method)knob_learn, gensym("learn"), 0);
     class_addmethod(knob_class, (t_method)knob_forget, gensym("forget"), 0);
+    
+    
+    class_addmethod(knob_class, (t_method)knob_mouse_enter, gensym("_mouse_enter"), 0);
+    class_addmethod(knob_class, (t_method)knob_mouse_leave, gensym("_mouse_leave"), 0);
+    
     class_addmethod(knob_class, (t_method)knob_dowheel, gensym("_wheel"), A_FLOAT, A_FLOAT, 0);
     
     class_addmethod(knob_class, (t_method)knob_doup, gensym("_up"), A_FLOAT, 0);

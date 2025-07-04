@@ -410,7 +410,7 @@ sys_gui("\n"
 "   menu $id.num.show.mb.menu -tearoff 0\n"
 "   $id.num.show.mb configure -menu $id.num.show.mb.menu\n"
     // Add radiobuttons using foreach
-"   set nmodes { Never Always Active Typing }\n"
+"   set nmodes { Never Always Active Typing Hovering }\n"
 "   foreach mode_selection $nmodes {\n"
 "       $id.num.show.mb.menu add radiobutton -label $mode_selection \\\n"
 "           -variable ::dialog_knob::var_nmode($vid) -value $mode_selection \\\n"

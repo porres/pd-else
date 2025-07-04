@@ -28,6 +28,7 @@ typedef struct _button{
     int             x_sel;
     int             x_zoom;
     int             x_edit;
+    int             x_hover;
     int             x_state;
     t_symbol       *x_bg;
     t_symbol       *x_fg;
@@ -94,6 +95,10 @@ static void button_vis(t_gobj *z, t_glist *glist, int vis){
         button_draw(x, glist);
         sys_vgui(".x%lx.c bind %s <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n",
             cv, x->x_base_tag, x->x_bindname->s_name);
+        sys_vgui(".x%lx.c bind %s <Enter> {pdsend [concat %s _mouse_enter \\;]}\n",
+            cv, x->x_base_tag, x->x_bindname->s_name);
+        sys_vgui(".x%lx.c bind %s <Leave> {pdsend [concat %s _mouse_leave \\;]}\n",
+            cv, x->x_base_tag, x->x_bindname->s_name);
     }
     else
         button_erase(x, glist);
@@ -141,6 +146,17 @@ static void button_mouserelease(t_button* x){
         outlet_float(x->x_obj.ob_outlet, x->x_state = 0);
         button_setbg(x);
     }
+}
+
+void button_mouse_enter(t_button *x){
+    x->x_hover = 1;
+    if(!x->x_edit){
+//        post("over");
+    }
+}
+
+void button_mouse_leave(t_button *x){
+    x->x_hover = 0;
 }
 
 static void button_flash(t_button *x){
@@ -306,7 +322,7 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
             if(edit)
                 button_draw_io_let(p->p_cnv);
             else
-                sys_vgui(".x%lx.c delete %lx_io\n", glist_getcanvas(p->p_cnv->x_glist), p->p_cnv);
+                sys_vgui(".x%lx.c delete %s\n", glist_getcanvas(p->p_cnv->x_glist), p->p_cnv->x_IO_tag);
         }
     }
 }
@@ -451,6 +467,8 @@ void button_setup(void){
     class_addmethod(button_class, (t_method)button_fgcolor, gensym("fgcolor"), A_GIMME, 0);
     class_addmethod(button_class, (t_method)button_zoom, gensym("zoom"), A_CANT, 0);
     class_addmethod(button_class, (t_method)button_mouserelease, gensym("_mouserelease"), 0);
+    class_addmethod(button_class, (t_method)button_mouse_enter, gensym("_mouse_enter"), 0);
+    class_addmethod(button_class, (t_method)button_mouse_leave, gensym("_mouse_leave"), 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
     button_widgetbehavior.w_getrectfn  = button_getrect;
