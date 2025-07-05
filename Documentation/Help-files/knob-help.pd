@@ -22,7 +22,6 @@
 #X text 209 210 float;
 #X obj 6 322 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
 #X text 173 224 set <float>;
-#X floatatom 241 159 7 0 0 0 - - - 12;
 #X text 209 298 float;
 #X text 250 209 - sets and outputs value, f 35;
 #X text 250 298 - knob's value;
@@ -30,7 +29,6 @@
 #X text 215 238 bang;
 #X text 250 238 - outputs value, f 35;
 #X text 250 223 - sets value (no output), f 35;
-#X obj 241 99 else/knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c #202020 1 0 0 0 1 320 0 0 0 empty empty 0 8 0 0 0 1 0 0 0 0;
 #N canvas 503 145 513 548 basic 0;
 #X floatatom 134 364 8 0 0 0 - - - 12;
 #X msg 167 269 angle 360;
@@ -87,11 +85,11 @@
 #X text 163 258 when typing;
 #X text 163 226 always, f 11;
 #X obj 470 162 knob 65 0 100 0 0 \$0-knob-% empty #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0 empty empty 0 8 0 0 0 1 0 0 0 0;
-#X obj 471 235 note 54 14 Menlo \$0-set-note-% 0 0 0 0 0 255 255 255 0 1 53.8 %;
+#X obj 471 235 note 54 14 Menlo \$0-set-note-% 0 0 0 0 0 255 255 255 0 1 0.00 %;
 #X obj 586 162 knob 65 -12 12 0 0 \$0-knob-st empty #000000 #7c7c7c #ffffff 0 0 25 1 0 320 0 0 0 empty empty 0 8 0 0 0 1 0 0 0 0;
 #X obj 567 235 note 117 13 Menlo \$0-set-note-st 0 0 0 0 0 255 255 255 0 1 0 semitones;
 #X obj 718 162 knob 65 -100 100 0 0 \$0-knob-pan empty #000000 #202020 #ff0400 0 0 0 0 1 320 0 0 0 empty empty 0 8 0 0 0 1 0 0 0 0;
-#X obj 718 235 note 64 14 Menlo \$0-set-note-pan 0 0 0 0 0 255 255 255 0 1 16.9 L;
+#X obj 718 235 note 64 14 Menlo \$0-set-note-pan 0 0 0 0 0 255 255 255 0 1 Center;
 #N canvas 684 392 668 447 guts 0;
 #X obj 269 139 makefilename %.3#g;
 #X obj 152 157 moses;
@@ -657,4 +655,6 @@
 #X restore 456 72 pd circular;
 #X text 195 114 ----->;
 #X text 49 103 Click and drag or click and use mouse wheel/touchpad scrolling. Right click for properties, f 27;
-#X connect 27 0 19 0;
+#X floatatom 241 159 7 0 0 0 - - - 12;
+#X obj 241 90 else/knob 56 0 127 0 0 empty empty #dfdfdf #7c7c7c #202020 1 0 0 0 1 320 0 0 0 empty empty 0 8 0 0 0 1 0 0 0 0;
+#X connect 38 0 37 0;

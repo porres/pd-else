@@ -12,6 +12,7 @@
 #define POS_INF         0x7F800000ul
 #define NEG_INF         0xFF800000ul
 #define HANDLE_SIZE     12
+#define KNOB_SELBDWIDTH 2
 
 #ifdef _MSC_VER
 #define snprintf _snprintf
@@ -39,9 +40,6 @@ char def_font[100] = "Menlo";
 char def_font[100] = "DejaVu Sans Mono";
 #endif
 
-t_widgetbehavior knob_widgetbehavior;
-static t_class *knob_class, *handle_class, *edit_proxy_class;
-
 typedef struct _edit_proxy{
     t_object      p_obj;
     t_symbol     *p_sym;
@@ -53,6 +51,7 @@ typedef struct _knob{
     t_object        x_obj;
     t_edit_proxy   *x_proxy;
     t_glist        *x_glist;
+    t_canvas       *x_cv;
     int             x_ctrl;
     int             x_size;
     double          x_pos;          // 0-1 normalized position
@@ -73,6 +72,7 @@ typedef struct _knob{
     int             x_setted;
     double          x_lower;
     double          x_upper;
+    int             x_select;
     int             x_clicked;
     int             x_typing;
     int             x_shownum;
@@ -142,8 +142,12 @@ typedef struct _handle{
     t_knob         *h_master;
     t_symbol       *h_bindsym;
     char            h_pathname[64], h_outlinetag[64];
-    int             h_dragon, h_dragx, h_dragy;
+    int             h_dragon, h_drag_delta;
+//    int             h_dragx, h_dragy;
 }t_handle; // resizing handle
+
+t_widgetbehavior knob_widgetbehavior;
+static t_class *knob_class, *handle_class, *edit_proxy_class;
 
 // ---------------------- Helper functions ----------------------
 
@@ -475,7 +479,8 @@ static void knob_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 static void knob_select(t_gobj *z, t_glist *glist, int sel){
     t_knob* x = (t_knob*)z;
     t_canvas *cv = glist_getcanvas(glist);
-    if(sel){
+    x->x_select = sel;
+    if(x->x_select){
         pdgui_vmess(0, "crs rs", cv, "itemconfigure",
             x->x_tag_sel, "-outline", THISGUI->i_selectcolor->s_name);
         pdgui_vmess(0, "crs rs",  cv, "itemconfigure",
@@ -489,29 +494,30 @@ static void knob_select(t_gobj *z, t_glist *glist, int sel){
     }
 }
 
-/*static void knob_draw_handle(t_knob *x, int state){
+static void knob_draw_handle(t_knob *x, int state){
     t_handle *sh = (t_handle *)x->x_handle;
 // always destroy
     sys_vgui("destroy %s\n", sh->h_pathname);
     if(state){
-        sys_vgui("canvas %s -width %d -height %d -bg blue -highlightthickness %d -cursor bottom_right_corner\n",
-            sh->h_pathname, HANDLE_SIZE, HANDLE_SIZE, 2*x->x_zoom);
+        sys_vgui("canvas %s -width %d -height %d -bg %s -highlightthickness %d -cursor bottom_right_corner\n",
+            sh->h_pathname, HANDLE_SIZE, HANDLE_SIZE,
+            THISGUI->i_selectcolor->s_name, 2*x->x_zoom);
         int x1, y1, x2, y2;
         knob_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
-        sys_vgui(".x%lx.c create window %d %d -anchor nw -width %d -height %d -window %s -tags all%lx\n",
+        sys_vgui(".x%lx.c create window %d %d -anchor nw -width %d -height %d -window %s -tags %s\n",
             x->x_cv,
             x2 - HANDLE_SIZE*x->x_zoom + 1,
             y2 - HANDLE_SIZE*x->x_zoom + 1,
             HANDLE_SIZE*x->x_zoom,
             HANDLE_SIZE*x->x_zoom,
             sh->h_pathname,
-            x);
+            x->x_tag_obj);
         sys_vgui("bind %s <Button> {pdsend [concat %s _click 1 \\;]}\n", sh->h_pathname, sh->h_bindsym->s_name);
         sys_vgui("bind %s <ButtonRelease> {pdsend [concat %s _click 0 \\;]}\n", sh->h_pathname, sh->h_bindsym->s_name);
         sys_vgui("bind %s <Motion> {pdsend [concat %s _motion %%x %%y \\;]}\n", sh->h_pathname, sh->h_bindsym->s_name);
         sys_vgui("focus %s\n", sh->h_pathname); // because of a damn weird bug where it drew all over the canvas
     }
-}*/
+}
 
 // Draw ticks
 static void knob_draw_ticks(t_knob *x){
@@ -582,11 +588,6 @@ static void knob_draw_new(t_knob *x, t_glist *glist){
     int x1 = text_xpix(&x->x_obj, glist);
     int y1 = text_ypix(&x->x_obj, glist);
     t_canvas *cv = glist_getcanvas(glist);
-
-// handle
-/*    t_handle *sh = (t_handle *)x->x_handle;
-    sprintf(sh->h_pathname, ".x%lx.h%lx", (unsigned long)cv, (unsigned long)sh);
-    sys_vgui(".x%lx.c bind %s <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_tag_obj);*/
 // square
     char *tags_square[] = {x->x_tag_square, x->x_tag_obj};
     pdgui_vmess(0, "crr iiii rS", cv, "create", "rectangle",
@@ -675,12 +676,22 @@ char *tags_center[] = {x->x_tag_center_circle, x->x_tag_obj};
 void knob_vis(t_gobj *z, t_glist *glist, int vis){
     t_knob* x = (t_knob*)z;
     t_canvas *cv = glist_getcanvas(glist);
+    x->x_cv = glist_getcanvas(glist); // stupid
+    t_handle *sh = (t_handle *)x->x_handle;
+    if(x->x_edit)// bug hack, destroying even though 'draw_handle' also destroys it
+    // maybe it just should be with the 'else' "delete all" message
+    // we can just destroy this even if it doesn;t exist anyway,
+    // this was needed to avooid some tcl erros
+        sys_vgui("destroy %s\n", sh->h_pathname);
     if(vis){
         knob_draw_new(x, glist);
         sys_vgui(".x%lx.c bind %s <Enter> {pdsend [concat %s _mouse_enter \\;]}\n",
             cv, x->x_tag_hover, x->x_bindname->s_name);
         sys_vgui(".x%lx.c bind %s <Leave> {pdsend [concat %s _mouse_leave \\;]}\n",
             cv, x->x_tag_hover, x->x_bindname->s_name);
+    // handle
+        sprintf(sh->h_pathname, ".x%lx.h%lx", (unsigned long)cv, (unsigned long)sh);
+        knob_draw_handle(x, x->x_edit);
     }
     else
         pdgui_vmess(0, "crs", cv, "delete", x->x_tag_obj);
@@ -980,6 +991,7 @@ static void knob_size(t_knob *x, t_floatarg f){
             knob_draw_ticks(x);
             knob_update(x);
             canvas_fixlinesfor(x->x_glist, (t_text *)x);
+            knob_draw_handle(x, x->x_edit);
         }
     }
 }
@@ -1760,6 +1772,58 @@ static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int s
     return(1);
 }
 
+// --------------------- handle ---------------------------------------------------
+static void handle__click_callback(t_handle *sh, t_floatarg f){
+    int click = (int)f;
+    t_knob *x = sh->h_master;
+    if(sh->h_dragon && click == 0){
+        sys_vgui(".x%lx.c delete %s\n", x->x_cv, sh->h_outlinetag);
+        t_atom undo[1];
+        SETFLOAT(undo, x->x_size);
+        t_atom redo[1];
+        int size = (int)((x->x_size+sh->h_drag_delta)/x->x_zoom);
+        SETFLOAT(redo, size);
+        pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("size"), 1, undo, 1, redo);
+        knob_size(x, size);
+        knob_draw_handle(x, 1);
+        knob_select((t_gobj *)x, x->x_glist, x->x_select);
+        canvas_dirty(x->x_cv, 1);
+    }
+    else if(!sh->h_dragon && click){
+        int x1, y1, x2, y2;
+        knob_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -outline %s -width %d -tags %s\n",
+            x->x_cv, x1, y1, x2, y2, THISGUI->i_selectcolor->s_name,
+            KNOB_SELBDWIDTH*x->x_zoom, sh->h_outlinetag);
+//        sh->h_dragx = sh->h_dragy = sh->h_drag_delta = 0;
+        sh->h_drag_delta = 0;
+    }
+    sh->h_dragon = click;
+}
+
+static void handle__motion_callback(t_handle *sh, t_floatarg f1, t_floatarg f2){
+    if(sh->h_dragon){
+        t_knob *x = sh->h_master;
+        int dx = (int)f1 - HANDLE_SIZE, dy = (int)f2 - HANDLE_SIZE;
+        int x1, y1, x2, y2;
+        knob_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+        
+        // Average both movements
+        int delta = (dx + dy) / 2;
+        int newx = x2 + delta;
+        int newy = y2 + delta;
+        if(newx < x1 + MIN_SIZE*x->x_zoom)
+            newx = x1 + MIN_SIZE*x->x_zoom;
+        if(newy < y1 + MIN_SIZE*x->x_zoom)
+            newy = y1 + MIN_SIZE*x->x_zoom;
+        sys_vgui(".x%lx.c coords %s %d %d %d %d\n", x->x_cv, sh->h_outlinetag, x1, y1, newx, newy);
+//        sh->h_dragx = dx, sh->h_dragy = dy;
+        sh->h_drag_delta = delta;
+    }
+}
+
+//-------------------- EDIT ---------------------------------
+
 static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
     int edit = ac = 0;
     if(p->p_cnv){
@@ -1776,6 +1840,7 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
             return;
         if(p->p_cnv->x_edit != edit){
             p->p_cnv->x_edit = edit;
+            knob_draw_handle(p->p_cnv, edit);
             knob_config_io(p->p_cnv);
             show_number(p->p_cnv, 0);
         }
@@ -1805,9 +1870,13 @@ static t_edit_proxy *edit_proxy_new(t_knob *x, t_symbol *s){
 
 static void knob_free(t_knob *x){
     pd_unbind((t_pd *)x, gensym("#keyname"));
-    pd_unbind(&x->x_obj.ob_pd, x->x_bindname);
     if(x->x_rcv != gensym("empty"))
         pd_unbind(&x->x_obj.ob_pd, x->x_rcv);
+    pd_unbind(&x->x_obj.ob_pd, x->x_bindname);
+    if(x->x_handle){
+        pd_unbind(x->x_handle, ((t_handle *)x->x_handle)->h_bindsym);
+        pd_free(x->x_handle);
+    }
     x->x_proxy->p_cnv = NULL;
     pdgui_stub_deleteforkey(x);
 #ifndef PDINSTANCE
@@ -1820,13 +1889,13 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     t_knob *x = (t_knob *)pd_new(knob_class);
     x->x_ignore = s;
 // handle
-/*    x->x_handle = pd_new(handle_class);
+   x->x_handle = pd_new(handle_class);
     t_handle *sh = (t_handle *)x->x_handle;
     sh->h_master = x;
     char hbuf[64];
     sprintf(hbuf, "_h%lx", (unsigned long)sh);
     pd_bind(x->x_handle, sh->h_bindsym = gensym(hbuf));
-    sprintf(sh->h_outlinetag, "h%lx", (unsigned long)sh);*/
+    sprintf(sh->h_outlinetag, "h%lx", (unsigned long)sh);
 //
     x->x_buf[0] = 0;
     float loadvalue = 0.0, arcstart = 0.0, exp = 0.0, min = 0.0, max = 127.0;
@@ -1840,6 +1909,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     x->x_clicked = x->x_log = x->x_jump = x->x_number_mode = x->x_savestate = 0;
     x->x_square = x->x_lb = 1;
     x->x_glist = (t_glist *)canvas_getcurrent();
+    x->x_cv = glist_getcanvas(x->x_glist);
     x->x_zoom = x->x_glist->gl_zoom;
     x->x_flag = x->x_readonly = x->x_transparent = 0;
     x->x_theme = 1;
@@ -2241,7 +2311,6 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     x->x_hzero = x->x_vzero = 0;
     mouse_updatepos(x);*/
 #endif
-    
 //    pd_bind(&x->x_obj.ob_pd, gensym("#mouse_mouse")); // listen to mouse events
     outlet_new(&x->x_obj, &s_float);
     return(x);
@@ -2297,7 +2366,6 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_learn, gensym("learn"), 0);
     class_addmethod(knob_class, (t_method)knob_forget, gensym("forget"), 0);
     
-    
     class_addmethod(knob_class, (t_method)knob_mouse_enter, gensym("_mouse_enter"), 0);
     class_addmethod(knob_class, (t_method)knob_mouse_leave, gensym("_mouse_leave"), 0);
     
@@ -2309,6 +2377,11 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_dobang, gensym("_bang"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_dozero, gensym("_zero"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_dowheel, gensym("_wheel"), A_FLOAT, A_FLOAT, 0);
+    
+    handle_class = class_new(gensym("_handle"), 0, 0, sizeof(t_handle), CLASS_PD, 0);
+    class_addmethod(handle_class, (t_method)handle__click_callback, gensym("_click"), A_FLOAT, 0);
+    class_addmethod(handle_class, (t_method)handle__motion_callback, gensym("_motion"),
+        A_FLOAT, A_FLOAT, 0);
     
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
