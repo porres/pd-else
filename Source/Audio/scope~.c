@@ -149,7 +149,7 @@ static void scope_drawfg(t_scope *x, t_canvas *cv, int x1, int y1, int x2, int y
         }
         sys_vgui("%d %d \\\n", (int)xx, (int)yy);
     }
-    sys_vgui("-fill #%2.2x%2.2x%2.2x -width %d -tags {fg%lx all%lx}\n",
+    sys_vgui("-fill #%.2x%.2x%.2x -width %d -tags {fg%lx all%lx}\n",
         x->x_fg[0], x->x_fg[1], x->x_fg[2], x->x_zoom, x, x);
 }
 
@@ -157,15 +157,15 @@ static void scope_draw_grid(t_scope *x, t_canvas *cv, int x1, int y1, int x2, in
     float dx = (x2-x1)*0.125, dy = (y2-y1)*0.25, xx, yy;
     int i;
     for(i = 0, xx = x1 + dx; i < 7; i++, xx += dx)
-        sys_vgui(".x%lx.c create line %f %d %f %d -width %d -tags {gr%lx all%lx} -fill #%2.2x%2.2x%2.2x\n",
+        sys_vgui(".x%lx.c create line %f %d %f %d -width %d -tags {gr%lx all%lx} -fill #%.2x%.2x%.2x\n",
             cv, xx, y1, xx, y2, x->x_zoom, x, x, x->x_gg[0], x->x_gg[1], x->x_gg[2]);
     for(i = 0, yy = y1 + dy; i < 3; i++, yy += dy)
-        sys_vgui(".x%lx.c create line %d %f %d %f -width %d -tags {gr%lx all%lx} -fill #%2.2x%2.2x%2.2x\n",
+        sys_vgui(".x%lx.c create line %d %f %d %f -width %d -tags {gr%lx all%lx} -fill #%.2x%.2x%.2x\n",
             cv, x1, yy, x2, yy, x->x_zoom, x, x, x->x_gg[0], x->x_gg[1], x->x_gg[2]);
 }
 
 static void scope_draw_bg(t_scope *x, t_canvas *cv, int x1, int y1, int x2, int y2){
-    sys_vgui(".x%lx.c create rectangle %d %d %d %d -outline black -fill #%2.2x%2.2x%2.2x -width %d -tags {bg%lx all%lx}\n",
+    sys_vgui(".x%lx.c create rectangle %d %d %d %d -outline black -fill #%.2x%.2x%.2x -width %d -tags {bg%lx all%lx}\n",
         cv, x1, y1, x2, y2, x->x_bg[0], x->x_bg[1], x->x_bg[2], x->x_zoom, x, x);
 }
 
@@ -313,7 +313,7 @@ static void scope_select(t_gobj *z, t_glist *glist, int state){
     t_scope *x = (t_scope *)z;
     t_canvas *cv = glist_getcanvas(glist);
     x->x_select = state;
-    sys_vgui(".x%lx.c itemconfigure bg%lx -outline %s -width %d -fill #%2.2x%2.2x%2.2x\n",
+    sys_vgui(".x%lx.c itemconfigure bg%lx -outline %s -width %d -fill #%.2x%.2x%.2x\n",
     cv, x, state ? "blue" : "black", x->x_zoom * state ? SCOPE_SELBDWIDTH : 1, x->x_bg[0], x->x_bg[1], x->x_bg[2]);
 }
 
@@ -447,7 +447,7 @@ static void scope_fgcolor(t_scope *x, t_float r, t_float g, t_float b){ // scale
     if(x->x_fg[0] != red || x->x_fg[1] != green || x->x_fg[2] != blue){
         x->x_fg[0] = red, x->x_fg[1] = green, x->x_fg[2] = blue;
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
-            sys_vgui(".x%lx.c itemconfigure fg%lx -fill #%2.2x%2.2x%2.2x\n",
+            sys_vgui(".x%lx.c itemconfigure fg%lx -fill #%.2x%.2x%.2x\n",
                 glist_getcanvas(x->x_glist), x, x->x_fg[0], x->x_fg[1], x->x_fg[2]);
     }
 }
@@ -459,7 +459,7 @@ static void scope_bgcolor(t_scope *x, t_float r, t_float g, t_float b){ // scale
     if(x->x_bg[0] != red || x->x_bg[1] != green || x->x_bg[2] != blue){
         x->x_bg[0] = red, x->x_bg[1] = green, x->x_bg[2] = blue;
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
-            sys_vgui(".x%lx.c itemconfigure bg%lx -fill #%2.2x%2.2x%2.2x\n",
+            sys_vgui(".x%lx.c itemconfigure bg%lx -fill #%.2x%.2x%.2x\n",
                 glist_getcanvas(x->x_glist), x, x->x_bg[0], x->x_bg[1], x->x_bg[2]);
     }
 }
@@ -471,7 +471,7 @@ static void scope_gridcolor(t_scope *x, t_float r, t_float g, t_float b){ // sca
     if(x->x_gg[0] != red || x->x_gg[1] != green || x->x_gg[2] != blue){
         x->x_gg[0] = red, x->x_gg[1] = green, x->x_gg[2] = blue;
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
-            sys_vgui(".x%lx.c itemconfigure gr%lx -fill #%2.2x%2.2x%2.2x\n",
+            sys_vgui(".x%lx.c itemconfigure gr%lx -fill #%.2x%.2x%.2x\n",
                 glist_getcanvas(x->x_glist), x, x->x_gg[0], x->x_gg[1], x->x_gg[2]);
     }
 }
@@ -581,9 +581,10 @@ static void handle__click_callback(t_handle *sh, t_floatarg f){
 static void handle__motion_callback(t_handle *sh, t_floatarg f1, t_floatarg f2){
     if(sh->h_dragon){
         t_scope *x = sh->h_master;
-        int dx = (int)f1, dy = (int)f2, x1, y1, x2, y2, newx, newy;
+        int dx = (int)f1 - HANDLE_SIZE, dy = (int)f2 - HANDLE_SIZE;
+        int x1, y1, x2, y2;
         scope_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
-        newx = x2 + dx, newy = y2 + dy;
+        int newx = x2 + dx, newy = y2 + dy;
         if(newx < x1 + SCOPE_MINSIZE*x->x_zoom)
             newx = x1 + SCOPE_MINSIZE*x->x_zoom;
         if(newy < y1 + SCOPE_MINSIZE*x->x_zoom)

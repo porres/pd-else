@@ -153,7 +153,7 @@ static void note_draw_outline(t_note *x){
             (unsigned long)x, // %lx_outline
             (unsigned long)x, // all%lx
             x->x_zoom,
-            x->x_select ? "blue" : "black");
+            x->x_select ? THISGUI->i_selectcolor->s_name : THISGUI->i_foregroundcolor->s_name);
     }
 }
 
@@ -166,7 +166,7 @@ static void note_draw_handle(t_note *x){
         if(x->x_resized)
             x2 = x1 + x->x_max_pixwidth * x->x_zoom;
         sys_vgui("canvas %s -width %d -height %d -bg %s -cursor sb_h_double_arrow\n",
-            ch->h_pathname, NOTE_HANDLE_WIDTH, x->x_height, "black");
+            ch->h_pathname, NOTE_HANDLE_WIDTH, x->x_height, THISGUI->i_selectcolor->s_name);
         sys_vgui("bind %s <Button> {pdsend [concat %s _click 1 \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
         sys_vgui("bind %s <ButtonRelease> {pdsend [concat %s _click 0 \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
         sys_vgui("bind %s <Motion> {pdsend [concat %s _motion %%x %%y \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
@@ -187,8 +187,9 @@ static void note_draw_inlet(t_note *x){
         if(x->x_edit &&  x->x_receive == &s_){
             t_canvas *cv = glist_getcanvas(x->x_glist);
             int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
-            sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lx_in all%lx]\n",
+            sys_vgui(".x%lx.c create rectangle %d %d %d %d -outline %s -fill %s -tags [list %lx_in all%lx]\n",
                 cv, xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom)-x->x_zoom,
+                THISGUI->i_foregroundcolor->s_name, THISGUI->i_foregroundcolor->s_name,
                 (unsigned long)x, (unsigned long)x);
         }
     }
@@ -225,7 +226,7 @@ static void note_draw(t_note *x){
             y2 + 2*x->x_zoom,
             (unsigned long)x,
             (unsigned long)x,
-            x->x_outline ? "black" : x->x_bgcolor,
+            x->x_outline ? THISGUI->i_foregroundcolor->s_name : x->x_bgcolor,
             x->x_bgcolor);
     }
     char buf[NOTE_OUTBUFSIZE], *outbuf, *outp;
@@ -240,7 +241,7 @@ static void note_draw(t_note *x){
         text_ypix((t_text *)x, x->x_glist) + x->x_zoom, // %d
         x->x_fontname->s_name, // {%s}
         x->x_fontsize * x->x_zoom, // -%d
-        x->x_select ? "blue" : x->x_color, // %s
+        x->x_select ? THISGUI->i_selectcolor->s_name : x->x_color, // %s
         x->x_bufsize, // %.
         x->x_buf, // *s
         x->x_max_pixwidth * x->x_zoom, // %d
@@ -384,9 +385,10 @@ static void note_select(t_gobj *z, t_glist *glist, int state){
     x->x_select = state;
     if(!state && x->x_active)
         note_activate(z, glist, 0);
-    sys_vgui(".x%lx.c itemconfigure txt%lx -fill %s\n", x->x_cv, (unsigned long)x, state ? "blue" : x->x_color);
+    sys_vgui(".x%lx.c itemconfigure txt%lx -fill %s\n", x->x_cv, (unsigned long)x, state ? THISGUI->i_selectcolor->s_name : x->x_color);
     sys_vgui(".x%lx.c itemconfigure %lx_outline -width %d -outline %s\n",
-        x->x_cv, (unsigned long)x, x->x_zoom, state ? "blue" : "black");
+        x->x_cv, (unsigned long)x, x->x_zoom,
+        state ? THISGUI->i_selectcolor->s_name : THISGUI->i_foregroundcolor->s_name);
 // A regular rtext should set 'canvas_editing' variable to its canvas, we don't do it coz
 // we get keys via global binding to "#key" (and coz 'canvas_editing' isn't exported).
 }
@@ -462,8 +464,8 @@ static void note__click_callback(t_note *x, t_symbol *s, int ac, t_atom *av){
             }
         }
         else if(xx > x->x_x2 - NOTE_HANDLE_WIDTH){ // start resizing
-            sprintf(outp, ".x%lx.c bind txt%lx <ButtonRelease> {pdsend {%s _release %s}}\n",
-                cv, (unsigned long)x, x->x_bindsym->s_name, x->x_bindsym->s_name);
+//            sprintf(outp, ".x%lx.c bind txt%lx <ButtonRelease> {pdsend {%s _release %s}}\n",
+//                cv, (unsigned long)x, x->x_bindsym->s_name, x->x_bindsym->s_name);
             outp += strlen(outp);
             sprintf(outp, ".x%lx.c bind txt%lx <Motion> {pdsend {%s _motion %s %%x %%y}}\n",
                 cv, (unsigned long)x, x->x_bindsym->s_name, x->x_bindsym->s_name);
@@ -874,7 +876,7 @@ static void note_textcolor(t_note *x, t_floatarg r, t_floatarg g, t_floatarg b){
     unsigned char green = g < 0 ? 0 : g > 255 ? 255 : (unsigned char)g;
     unsigned char blue = b < 0 ? 0 : b > 255 ? 255 : (unsigned char)b;
     if(x->x_red != red || x->x_green != green || x->x_blue != blue){
-        sprintf(x->x_color, "#%2.2x%2.2x%2.2x", x->x_red = red, x->x_green = green, x->x_blue = blue);
+        sprintf(x->x_color, "#%.2x%.2x%.2x", x->x_red = red, x->x_green = green, x->x_blue = blue);
         if(gobj_shouldvis((t_gobj *)x, x->x_glist) && glist_isvisible(x->x_glist))
             sys_vgui(".x%lx.c itemconfigure txt%lx -fill %s\n", x->x_cv, (unsigned long)x, x->x_color);
     }
@@ -886,17 +888,17 @@ static void note_bgcolor(t_note *x, t_float r, t_float g, t_float b){
     unsigned char blue = b < 0 ? 0 : b > 255 ? 255 : (unsigned char)b;
     if(!x->x_bg_flag){
         x->x_bg_flag = 1;
-        sprintf(x->x_bgcolor, "#%2.2x%2.2x%2.2x", x->x_bg[0] = red, x->x_bg[1] = green, x->x_bg[2] = blue);
+        sprintf(x->x_bgcolor, "#%.2x%.2x%.2x", x->x_bg[0] = red, x->x_bg[1] = green, x->x_bg[2] = blue);
         x->x_bbset = 0;
         note_redraw(x); // why redraw???
     }
     else if(x->x_bg[0] != red || x->x_bg[1] != green || x->x_bg[2] != blue){
-        sprintf(x->x_bgcolor, "#%2.2x%2.2x%2.2x", x->x_bg[0] = red, x->x_bg[1] = green, x->x_bg[2] = blue);
+        sprintf(x->x_bgcolor, "#%.2x%.2x%.2x", x->x_bg[0] = red, x->x_bg[1] = green, x->x_bg[2] = blue);
         if(gobj_shouldvis((t_gobj *)x, x->x_glist) && glist_isvisible(x->x_glist))
             sys_vgui(".x%lx.c itemconfigure bg%lx -outline %s -fill %s\n",
             x->x_cv,
             (unsigned long)x,
-            x->x_outline ? "black" : x->x_bgcolor,
+            x->x_outline ? THISGUI->i_foregroundcolor->s_name : x->x_bgcolor,
             x->x_bgcolor);
     }
 }
@@ -970,7 +972,8 @@ static void note_outline(t_note *x, t_floatarg outline){
             if(x->x_outline || x->x_edit){
                 note_draw_outline(x);
                 if(x->x_bg_flag)
-                    sys_vgui(".x%lx.c itemconfigure bg%lx -outline black\n", x->x_cv, (unsigned long)x);
+                    sys_vgui(".x%lx.c itemconfigure bg%lx -outline %s\n",
+                        x->x_cv, (unsigned long)x, THISGUI->i_foregroundcolor->s_name);
             }
             else{
                 sys_vgui(".x%lx.c delete %lx_outline\n", (unsigned long)x->x_cv, (unsigned long)x);
@@ -1234,7 +1237,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     x->x_red = x->x_green = x->x_blue = x->x_bufsize = 0;
     x->x_bg_flag = x->x_changed = x->x_init = x->x_resized = 0;
     x->x_bg[0] = x->x_bg[1] = x->x_bg[2] = 255;
-    sprintf(x->x_bgcolor, "#%2.2x%2.2x%2.2x", x->x_bg[0], x->x_bg[1], x->x_bg[2]);
+    sprintf(x->x_bgcolor, "#%.2x%.2x%.2x", x->x_bg[0], x->x_bg[1], x->x_bg[2]);
     x->x_bbset = x->x_select = x->x_dragon = x->x_shift = 0;
     t_symbol *rcv = x->x_receive = x->x_rcv_raw = &s_;
     char buf[MAXPDSTRING];
@@ -1447,11 +1450,11 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     x->x_red = x->x_red > 255 ? 255 : x->x_red < 0 ? 0 : x->x_red;
     x->x_green = x->x_green > 255 ? 255 : x->x_green < 0 ? 0 : x->x_green;
     x->x_blue = x->x_blue > 255 ? 255 : x->x_blue < 0 ? 0 : x->x_blue;
-    sprintf(x->x_color, "#%2.2x%2.2x%2.2x", x->x_red, x->x_green, x->x_blue);
+    sprintf(x->x_color, "#%.2x%.2x%.2x", x->x_red, x->x_green, x->x_blue);
     x->x_bg[0] = x->x_bg[0] > 255 ? 255 : x->x_bg[0] < 0 ? 0 : x->x_bg[0];
     x->x_bg[1] = x->x_bg[1] > 255 ? 255 : x->x_bg[1] < 0 ? 0 : x->x_bg[1];
     x->x_bg[2] = x->x_bg[2] > 255 ? 255 : x->x_bg[2] < 0 ? 0 : x->x_bg[2];
-    sprintf(x->x_bgcolor, "#%2.2x%2.2x%2.2x", x->x_bg[0], x->x_bg[1], x->x_bg[2]);
+    sprintf(x->x_bgcolor, "#%.2x%.2x%.2x", x->x_bg[0], x->x_bg[1], x->x_bg[2]);
     x->x_receive = canvas_realizedollar(x->x_glist, x->x_rcv_raw = rcv);
     if(x->x_receive != &s_)
         pd_bind(&x->x_obj.ob_pd, x->x_receive);
