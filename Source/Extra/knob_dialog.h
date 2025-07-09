@@ -84,8 +84,8 @@ sys_gui("\n"
 "    set ::dialog_knob::var_exp($vid) $exp \n"
 "    set ::dialog_knob::var_readonly($vid) $readonly \n"
 "    set ::dialog_knob::var_jump($vid) $jump \n"
-"    set ::dialog_knob::var_circular($vid) $circular\n"
-"    set ::dialog_knob::var_nmode($vid) [string map {{\\ } \" \"} $n_mode]\n"
+"    set ::dialog_knob::var_circular($vid) [string map {{\\ } \" \"} $circular]\n" // ?????
+"    set ::dialog_knob::var_nmode($vid) [string map {{\\ } \" \"} $n_mode]\n" // ?????
 "    set ::dialog_knob::var_n_size($vid) $n_size\n"
 "    set ::dialog_knob::var_xpos($vid) $xpos\n"
 "    set ::dialog_knob::var_ypos($vid) $ypos\n"
@@ -141,8 +141,15 @@ sys_gui("\n"
 "    set pad [expr {(7 - [string length $text]) / 2}]\n"
 "    return [format \"%*s%s%*s\" $pad \"\" $text $pad \"\"]\n"
 "}\n"
-        
-"proc ::dialog_knob::menucheck {option id} {\n"
+
+"proc ::dialog_knob::cmenucheck {option id} {\n"
+"    set centeredText [::dialog_knob::centerText $option]\n"
+"    $id.mouse.move.mb configure -text $centeredText\n"
+"    ::dialog_knob::applymacos $id\n"
+"}\n"
+"\n"
+
+"proc ::dialog_knob::nmenucheck {option id} {\n"
 "    set centeredText [::dialog_knob::centerText $option]\n"
 "    $id.num.show.mb configure -text $centeredText\n"
 "    ::dialog_knob::applymacos $id\n"
@@ -384,20 +391,33 @@ sys_gui("\n"
 "    label $id.mouse.jump.lab -text [_ \"Jump on Click: \"]\n"
 "    checkbutton $id.mouse.jump.ent -variable ::dialog_knob::var_jump($vid) -width 5\n"
 "    pack $id.mouse.jump.ent $id.mouse.jump.lab -side right -anchor e\n"
-        // Checkbox for Circular
-"    frame $id.mouse.move\n"
-"    label $id.mouse.move.lab -text [_ \"Circular Drag: \"]\n"
-"    checkbutton $id.mouse.move.ent -variable ::dialog_knob::var_circular($vid) -width 5\n"
-"    pack $id.mouse.move.ent $id.mouse.move.lab -side right -anchor e\n"
-// When read only is selected, disbale jump/circular
-"    if { $::dialog_knob::var_readonly($vid) == 1 } {\n"
+        // Dropdown menu for Circular Mode:
+"   frame $id.mouse.move\n"
+"   label $id.mouse.move.lab -text [_ \"Circular Drag: \"]\n"
+"   menubutton $id.mouse.move.mb -text [::dialog_knob::centerText $::dialog_knob::var_circular($vid)] \\\n"
+"       -menu $id.mouse.move.mb.menu -width 7\n"
+"   menu $id.mouse.move.mb.menu -tearoff 0\n"
+"   $id.mouse.move.mb configure -menu $id.mouse.move.mb.menu\n"
+        // Add radiobuttons using foreach
+"   set cmodes { No Loop Infinite }\n"
+"   foreach cmode_selection $cmodes {\n"
+"       $id.mouse.move.mb.menu add radiobutton -label $cmode_selection \\\n"
+"           -variable ::dialog_knob::var_circular($vid) -value $cmode_selection \\\n"
+"           -command \"::dialog_knob::cmenucheck $cmode_selection $id\"\n"
+"   }\n"
+"    pack $id.mouse.move.lab $id.mouse.move.mb -side left\n"
+        
+/* When read only is selected, disbale jump/circular
+"    if { $::dialog_knob::var_readonly($vid) >= 1 } {\n"
 "       $id.mouse.jump.ent configure -state disabled\n"
 "       $id.mouse.move.ent configure -state disabled\n"
-"    }\n"
+"    }\n"*/
         // Position of items
-"    pack $id.mouse.readonly $id.mouse.jump $id.mouse.move -side left -anchor center\n"
+"    pack $id.mouse.readonly $id.mouse.jump -side left\n"
+"    pack $id.mouse.move -side left\n"
 "    $id.mouse config -padx 30\n"
 "\n"
+        
 // Frame for Number settings
 "    labelframe $id.num\n"
 "    pack $id.num -side top -fill x\n"
@@ -411,10 +431,10 @@ sys_gui("\n"
 "   $id.num.show.mb configure -menu $id.num.show.mb.menu\n"
     // Add radiobuttons using foreach
 "   set nmodes { Never Always Active Typing Hovering }\n"
-"   foreach mode_selection $nmodes {\n"
-"       $id.num.show.mb.menu add radiobutton -label $mode_selection \\\n"
-"           -variable ::dialog_knob::var_nmode($vid) -value $mode_selection \\\n"
-"           -command \"::dialog_knob::menucheck $mode_selection $id\"\n"
+"   foreach nmode_selection $nmodes {\n"
+"       $id.num.show.mb.menu add radiobutton -label $nmode_selection \\\n"
+"           -variable ::dialog_knob::var_nmode($vid) -value $nmode_selection \\\n"
+"           -command \"::dialog_knob::nmenucheck $nmode_selection $id\"\n"
 "   }\n"
 "    pack $id.num.show.lab $id.num.show.mb -side left\n"
         // Number Size:
@@ -434,7 +454,6 @@ sys_gui("\n"
 "    pack $id.num.ypos.ent $id.num.ypos.lab -side right -anchor w\n"
 "    pack $id.num.show $id.num.size -side left -anchor center\n"
 "    pack $id.num.xpos $id.num.ypos -side left -anchor center\n"
-        
 "    $id.num config -padx 35\n"
 "\n"
 // Frame for attached symbols

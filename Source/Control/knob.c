@@ -115,6 +115,7 @@ typedef struct _knob{
     int             x_zoom;
     int             x_discrete;
     char            x_tag_obj[32];
+    char            x_tag_handle[32];
     char            x_tag_base_circle[32];
     char            x_tag_bg_arc[32];
     char            x_tag_arc[32];
@@ -478,6 +479,7 @@ static void knob_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 
 static void knob_select(t_gobj *z, t_glist *glist, int sel){
     t_knob* x = (t_knob*)z;
+    t_handle *sh = (t_handle *)x->x_handle;
     t_canvas *cv = glist_getcanvas(glist);
     x->x_select = sel;
     if(x->x_select){
@@ -485,12 +487,16 @@ static void knob_select(t_gobj *z, t_glist *glist, int sel){
             x->x_tag_sel, "-outline", THISGUI->i_selectcolor->s_name);
         pdgui_vmess(0, "crs rs",  cv, "itemconfigure",
             x->x_tag_number, "-fill", THISGUI->i_selectcolor->s_name);
+        sys_vgui("%s configure -highlightcolor %s\n",
+            sh->h_pathname, THISGUI->i_selectcolor->s_name);
     }
     else{
         pdgui_vmess(0, "crs rs", cv, "itemconfigure",
             x->x_tag_number, "-fill", x->x_fg->s_name);
         pdgui_vmess(0, "crs rs", cv, "itemconfigure",
             x->x_tag_sel, "-outline", THISGUI->i_foregroundcolor->s_name);
+        sys_vgui("%s configure -highlightcolor %s\n",
+            sh->h_pathname, THISGUI->i_foregroundcolor->s_name);
     }
 }
 
@@ -499,18 +505,22 @@ static void knob_draw_handle(t_knob *x, int state){
 // always destroy
     sys_vgui("destroy %s\n", sh->h_pathname);
     if(state){
-        sys_vgui("canvas %s -width %d -height %d -bg %s -highlightthickness %d -cursor bottom_right_corner\n",
+        sys_vgui("canvas %s -width %d -height %d -bg %s -highlightcolor %s -highlightbackground %s -highlightthickness %d -cursor bottom_right_corner\n",
             sh->h_pathname, HANDLE_SIZE, HANDLE_SIZE,
-            THISGUI->i_selectcolor->s_name, 2*x->x_zoom);
+            THISGUI->i_selectcolor->s_name, // bg
+            THISGUI->i_foregroundcolor->s_name, // highlightcolor
+            THISGUI->i_gopcolor->s_name, // highlightbackground
+            2*x->x_zoom);
         int x1, y1, x2, y2;
         knob_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
-        sys_vgui(".x%lx.c create window %d %d -anchor nw -width %d -height %d -window %s -tags %s\n",
+        sys_vgui(".x%lx.c create window %d %d -anchor nw -width %d -height %d -window %s -tags {%s %s}\n",
             x->x_cv,
             x2 - HANDLE_SIZE*x->x_zoom + 1,
             y2 - HANDLE_SIZE*x->x_zoom + 1,
             HANDLE_SIZE*x->x_zoom,
             HANDLE_SIZE*x->x_zoom,
             sh->h_pathname,
+            x->x_tag_handle,
             x->x_tag_obj);
         sys_vgui("bind %s <Button> {pdsend [concat %s _click 1 \\;]}\n", sh->h_pathname, sh->h_bindsym->s_name);
         sys_vgui("bind %s <ButtonRelease> {pdsend [concat %s _click 0 \\;]}\n", sh->h_pathname, sh->h_bindsym->s_name);
@@ -622,7 +632,6 @@ char *tags_center[] = {x->x_tag_center_circle, x->x_tag_obj};
         pdgui_vmess(0, "crr iiii rS", cv, "create", "line",
         x1, y1, 0, 0,
         "-tags", 2, tags_wiper);
-    
 // number
     char *tags_number[] = {x->x_tag_number, x->x_tag_obj};
     pdgui_vmess(0, "crr ii rs rs rS", cv, "create", "text",
@@ -672,7 +681,6 @@ char *tags_center[] = {x->x_tag_center_circle, x->x_tag_obj};
         "-fill", x->x_sel ? THISGUI->i_selectcolor->s_name : fg);  // ??????
 }
 
-
 void knob_vis(t_gobj *z, t_glist *glist, int vis){
     t_knob* x = (t_knob*)z;
     t_canvas *cv = glist_getcanvas(glist);
@@ -682,7 +690,7 @@ void knob_vis(t_gobj *z, t_glist *glist, int vis){
     // maybe it just should be with the 'else' "delete all" message
     // we can just destroy this even if it doesn;t exist anyway,
     // this was needed to avooid some tcl erros
-        sys_vgui("destroy %s\n", sh->h_pathname);
+    sys_vgui("destroy %s\n", sh->h_pathname);
     if(vis){
         knob_draw_new(x, glist);
         sys_vgui(".x%lx.c bind %s <Enter> {pdsend [concat %s _mouse_enter \\;]}\n",
@@ -1263,31 +1271,46 @@ static void knob_zoom(t_knob *x, t_floatarg f){
     x->x_zoom = (int)f;
 }
 
+static t_symbol *get_nmode(t_knob *x){
+    if(x->x_number_mode == 0)
+        return(gensym("Never"));
+    else if(x->x_number_mode == 1)
+        return(gensym("Always"));
+    else if(x->x_number_mode == 2)
+        return(gensym("Active"));
+    else if(x->x_number_mode == 3)
+        return(gensym("Typing"));
+    else if(x->x_number_mode == 4)
+        return(gensym("Hovering"));
+}
+
+static t_symbol * get_cmode(t_knob *x){
+    if(x->x_circular == 0)
+        return(gensym("No"));
+    else if(x->x_circular == 1)
+        return(gensym("Loop"));
+    else if(x->x_circular == 2)
+        return(gensym("Infinite"));
+}
+
 // --------------- properties stuff --------------------
 static void knob_properties(t_gobj *z, t_glist *owner){
     t_knob *x = (t_knob *)z;
     knob_get_rcv(x);
     knob_get_snd(x);
     knob_get_var(x);
-    t_symbol *mode = gensym("Never");
-    if(x->x_number_mode == 1)
-        mode = gensym("Always");
-    else if(x->x_number_mode == 2)
-        mode = gensym("Active");
-    else if(x->x_number_mode == 3)
-        mode = gensym("Typing");
-    else if(x->x_number_mode == 4)
-        mode = gensym("Hovering");
+    t_symbol *n_mode = get_nmode(x);
+    t_symbol *c_mode = get_cmode(x);
     pdgui_stub_vnew(&x->x_obj.ob_pd, "knob_dialog", x,
-        "ii if iif iii ii ffif iii siii ss ss sss ii",
+        "ii if iif iii ii ffif iis siii ss ss sss ii",
         x->x_size, x->x_square, // ii
         x->x_arc, x->x_arcstart, // if
         x->x_lb, x->x_savestate, x->x_load, // iif
         x->x_discrete, x->x_ticks, x->x_steps, // iii
         x->x_angle_range, x->x_angle_offset, // ii
         x->x_lower, x->x_upper, x->x_expmode, x->x_exp, // ffif
-        x->x_readonly, x->x_jump, x->x_circular, // iii
-        mode->s_name, x->n_size, x->x_xpos, x->x_ypos, // siii
+        x->x_readonly, x->x_jump, c_mode->s_name, // iis
+        n_mode->s_name, x->n_size, x->x_xpos, x->x_ypos, // siii
         x->x_rcv_raw->s_name, x->x_snd_raw->s_name, // ss
         x->x_param->s_name, x->x_var_raw->s_name, // ss
         x->x_bg->s_name, x->x_mg->s_name, x->x_fg->s_name, // sss
@@ -1315,8 +1338,8 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     SETFLOAT(undo+15, x->x_log ? 1 : x->x_exp);
     SETFLOAT(undo+16, x->x_readonly);
     SETFLOAT(undo+17, x->x_jump);
-    SETFLOAT(undo+18, x->x_circular);
-    SETFLOAT(undo+19, x->x_number_mode);
+    SETSYMBOL(undo+18, get_cmode(x));
+    SETSYMBOL(undo+19, get_nmode(x));
     SETFLOAT(undo+20, x->n_size);
     SETFLOAT(undo+21, x->x_xpos);
     SETFLOAT(undo+22, x->x_ypos);
@@ -1348,8 +1371,8 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     float exp = atom_getfloatarg(15, ac, av);
     x->x_readonly = atom_getintarg(16, ac, av);
     x->x_jump = atom_getintarg(17, ac, av);
-    x->x_circular = atom_getintarg(18, ac, av);
-    t_symbol *mode = atom_getsymbolarg(19, ac, av);
+    t_symbol *cmode = atom_getsymbolarg(18, ac, av);
+    t_symbol *nmode = atom_getsymbolarg(19, ac, av);
     int nsize = atom_getintarg(20, ac, av);
     int xpos = atom_getintarg(21, ac, av);
     int ypos = atom_getintarg(22, ac, av);
@@ -1401,16 +1424,21 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     knob_var(x, var);
     knob_nsize(x, nsize);
     knob_numberpos(x, xpos, ypos);
-    int nmode = 0;
-    if(mode == gensym("Always"))
-        nmode = 1;
-    else if(mode == gensym("Active"))
-        nmode = 2;
-    else if(mode == gensym("Typing"))
-        nmode = 3;
-    else if(mode == gensym("Hovering"))
-        nmode = 4;
-    knob_number_mode(x, nmode);
+    int n_mode = 0;
+    if(nmode == gensym("Always"))
+        n_mode = 1;
+    else if(nmode == gensym("Active"))
+        n_mode = 2;
+    else if(nmode == gensym("Typing"))
+        n_mode = 3;
+    else if(nmode == gensym("Hovering"))
+        n_mode = 4;
+    x->x_circular = 0;
+    if(cmode == gensym("Loop"))
+        x->x_circular = 1;
+    else if(cmode == gensym("Infinite"))
+        x->x_circular = 2;
+    knob_number_mode(x, n_mode);
     knob_config_fg(x); // rethink
     knob_config_bg_arc(x);
     knob_config_bg(x);
@@ -1795,6 +1823,7 @@ static void handle__click_callback(t_handle *sh, t_floatarg f){
         sys_vgui(".x%lx.c create rectangle %d %d %d %d -outline %s -width %d -tags %s\n",
             x->x_cv, x1, y1, x2, y2, THISGUI->i_selectcolor->s_name,
             KNOB_SELBDWIDTH*x->x_zoom, sh->h_outlinetag);
+        sys_vgui("%s configure -highlightcolor %s\n", sh->h_pathname, THISGUI->i_selectcolor->s_name);
 //        sh->h_dragx = sh->h_dragy = sh->h_drag_delta = 0;
         sh->h_drag_delta = 0;
     }
@@ -1807,8 +1836,7 @@ static void handle__motion_callback(t_handle *sh, t_floatarg f1, t_floatarg f2){
         int dx = (int)f1 - HANDLE_SIZE, dy = (int)f2 - HANDLE_SIZE;
         int x1, y1, x2, y2;
         knob_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
-        
-        // Average both movements
+    // Average both movements
         int delta = (dx + dy) / 2;
         int newx = x2 + delta;
         int newy = y2 + delta;
@@ -1817,6 +1845,8 @@ static void handle__motion_callback(t_handle *sh, t_floatarg f1, t_floatarg f2){
         if(newy < y1 + MIN_SIZE*x->x_zoom)
             newy = y1 + MIN_SIZE*x->x_zoom;
         sys_vgui(".x%lx.c coords %s %d %d %d %d\n", x->x_cv, sh->h_outlinetag, x1, y1, newx, newy);
+// this breaks... we need to change the strategy altogether...
+//        sys_vgui(".x%lx.c move %s %d %d\n", x->x_cv, x->x_tag_handle, dx, dy);
 //        sh->h_dragx = dx, sh->h_dragy = dy;
         sh->h_drag_delta = delta;
     }
@@ -2283,6 +2313,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     sprintf(buf, "#%lx", (long)x);
     pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
     sprintf(x->x_tag_obj, "%pOBJ", x);
+    sprintf(x->x_tag_handle, "%pHANDLE", x);
     sprintf(x->x_tag_base_circle, "%pBASE_CIRCLE", x);
     sprintf(x->x_tag_sel, "%pSEL", x);
     sprintf(x->x_tag_arc, "%pARC", x);

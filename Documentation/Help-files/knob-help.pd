@@ -653,8 +653,8 @@
 #X connect 16 0 12 0;
 #X connect 17 0 1 0;
 #X restore 456 72 pd circular;
-#X text 195 114 ----->;
-#X text 49 103 Click and drag or click and use mouse wheel/touchpad scrolling. Right click for properties, f 27;
-#X floatatom 241 159 7 0 0 0 - - - 12;
-#X obj 241 90 else/knob 56 0 127 0 0 empty empty #dfdfdf #7c7c7c #202020 1 0 0 0 1 320 0 0 0 empty empty 0 8 0 0 0 1 0 0 0 0;
+#X text 195 116 ----->;
+#X text 48 105 Click and drag or click and use mouse wheel/touchpad scrolling. Right click for properties, f 27;
+#X floatatom 241 161 7 0 0 0 - - - 12;
+#X obj 241 92 else/knob 56 0 127 0 0 empty empty #dfdfdf #7c7c7c #202020 1 0 0 0 1 320 0 0 0 empty empty 0 8 0 0 0 1 0 0 0 0;
 #X connect 38 0 37 0;
