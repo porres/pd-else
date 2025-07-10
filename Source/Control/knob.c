@@ -300,7 +300,9 @@ static void knob_config_bg_arc(t_knob *x){
 static void knob_config_bg(t_knob *x){
     t_canvas *cv = glist_getcanvas(x->x_glist);
     char bg[32];
-    snprintf(bg, sizeof(bg), "%s", x->x_theme ? THISGUI->i_backgroundcolor->s_name : x->x_bg->s_name);
+    snprintf(bg, sizeof(bg), "%s",
+        x->x_theme ? THISGUI->i_backgroundcolor->s_name : x->x_bg->s_name);
+//    post("bg = %s", bg);
     pdgui_vmess(0, "crs rsrsrs", cv, "itemconfigure", x->x_tag_center_circle,
         "-outline", bg, "-fill", bg, "-state", x->x_transparent ? "hidden" : "normal");
     pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_base_circle, "-fill",
@@ -1065,16 +1067,24 @@ static t_symbol *knob_getcolor(int ac, t_atom *av){
     }
 }
 
+static void knob_bgvalid(t_knob *x, t_floatarg v, t_symbol *c){
+    int valid = (int)v;
+    if(v){
+        x->x_bg = c;
+        knob_config_bg(x);
+    }
+    else
+        post("[knob] invalid color (%s)", c->s_name);
+}
+
 static void knob_bgcolor(t_knob *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(!ac)
         return;
-    t_symbol *color = knob_getcolor(ac, av);
-    if(x->x_bg != color){
-        x->x_bg = color;
-        if(knob_vis_check(x))
-            knob_config_bg(x);
-    }
+    sys_vgui("set color_name {%s}\n", knob_getcolor(ac, av)->s_name);
+    sys_vgui("set color_escaped [string map {{ } {\\ }} $color_name]\n");
+    sys_vgui("if {[catch {winfo rgb . $color_name}]} {pdsend \"%s _bgvalid 0 $color_escaped\"} else {pdsend \"%s _bgvalid 1 $color_escaped\"}\n",
+        x->x_bindname->s_name, x->x_bindname->s_name);
 }
 
 static void knob_arccolor(t_knob *x, t_symbol *s, int ac, t_atom *av){
@@ -2397,17 +2407,16 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_learn, gensym("learn"), 0);
     class_addmethod(knob_class, (t_method)knob_forget, gensym("forget"), 0);
     
+    class_addmethod(knob_class, (t_method)knob_bgvalid, gensym("_bgvalid"), A_FLOAT, A_SYMBOL, 0);
     class_addmethod(knob_class, (t_method)knob_mouse_enter, gensym("_mouse_enter"), 0);
     class_addmethod(knob_class, (t_method)knob_mouse_leave, gensym("_mouse_leave"), 0);
     
     class_addmethod(knob_class, (t_method)knob_dowheel, gensym("_wheel"), A_FLOAT, A_FLOAT, 0);
-    
     class_addmethod(knob_class, (t_method)knob_doup, gensym("_up"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_getscreen, gensym("_getscreen"),
         A_FLOAT, A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_dobang, gensym("_bang"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_dozero, gensym("_zero"), A_FLOAT, A_FLOAT, 0);
-    class_addmethod(knob_class, (t_method)knob_dowheel, gensym("_wheel"), A_FLOAT, A_FLOAT, 0);
     
     handle_class = class_new(gensym("_handle"), 0, 0, sizeof(t_handle), CLASS_PD, 0);
     class_addmethod(handle_class, (t_method)handle__click_callback, gensym("_click"), A_FLOAT, 0);
