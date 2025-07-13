@@ -1083,8 +1083,8 @@ static void knob_bgcolor(t_knob *x, t_symbol *s, int ac, t_atom *av){
         return;
     sys_vgui("set color_name {%s}\n", knob_getcolor(ac, av)->s_name);
     sys_vgui("set color_escaped [string map {{ } {\\ }} $color_name]\n");
-    sys_vgui("if {[catch {winfo rgb . $color_name}]} {pdsend \"%s _bgvalid 0 $color_escaped\"} else {pdsend \"%s _bgvalid 1 $color_escaped\"}\n",
-        x->x_bindname->s_name, x->x_bindname->s_name);
+    sys_vgui("set hex_color [color2hex $color_name]\n");
+    sys_vgui("if {$hex_color eq \"\"} {pdsend \"%s _bgvalid 0 $color_escaped\"} else {pdsend \"%s _bgvalid 1 $hex_color\"}\n", x->x_bindname->s_name, x->x_bindname->s_name);
 }
 
 static void knob_arccolor(t_knob *x, t_symbol *s, int ac, t_atom *av){

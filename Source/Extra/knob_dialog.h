@@ -1,6 +1,16 @@
 // Based on dialogs from iemguis in Pd Vanilla (by Tim Schoen & Porres)
 
 sys_gui("\n"
+"proc color2hex {name} {\n"
+"    if {[catch {winfo rgb . $name} rgb]} {\n"
+"        return \"\"\n"
+"    }\n"
+"    set r [format %02x [expr {[lindex $rgb 0] / 256}]]\n"
+"    set g [format %02x [expr {[lindex $rgb 1] / 256}]]\n"
+"    set b [format %02x [expr {[lindex $rgb 2] / 256}]]\n"
+"    return \"#$r$g$b\"\n"
+"}\n"
+"\n"
 "namespace eval ::dialog_knob:: {\n"
 "}\n"
 // arrays to store per-dialog values
@@ -123,6 +133,7 @@ sys_gui("\n"
 // ------------------------------------------------------------------------------------------------
         
 // HELPER PROCEDURES/FUNCTIONS:
+        
 "proc ::dialog_knob::clip {val min {max {}}} {\n"
 "    if {$min ne {} && $val < $min} {return $min}\n"
 "    if {$max ne {} && $val > $max} {return $max}\n"

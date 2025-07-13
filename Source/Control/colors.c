@@ -19,7 +19,8 @@ typedef struct _colors{
 }t_colors;
 
 static void colors_pick(t_colors *x){
-    sys_vgui("after idle [list after 10 else_colors_pick %s %s]\n", x->x_id->s_name, x->x_color);
+    sys_vgui("after idle [list after 10 else_colors_pick %s %s]\n",
+        x->x_id->s_name, x->x_color);
 }
 
 static void colors_bang(t_colors *x){
@@ -63,6 +64,24 @@ static void colors_bang(t_colors *x){
             strncpy(x->x_color, hex, 7);
         }
     }
+}
+
+static void colors_valid(t_colors *x, t_floatarg v, t_symbol *c){
+    int valid = (int)v;
+    if(v){
+        strncpy(x->x_color, c->s_name, MAXPDSTRING);
+        colors_bang(x);
+    }
+    else
+        post("[colors] invalid color (%s)", c->s_name);
+}
+
+static void colors_symbol(t_colors *x, t_symbol *sym){
+    sys_vgui("set color_name {%s}\n", sym->s_name);
+    sys_vgui("set color_escaped [string map {{ } {\\ }} $color_name]\n");
+    sys_vgui("set hex_color [color2hex $color_name]\n");
+    sys_vgui("if {$hex_color eq \"\"} {pdsend \"%s _valid 0 $color_escaped\"} else {pdsend \"%s _valid 1 $hex_color\"}\n",
+        x->x_id->s_name, x->x_id->s_name);
 }
 
 static void colors_convert_to(t_colors *x, t_symbol *s){
@@ -264,6 +283,7 @@ void colors_setup(void){
     colors_class = class_new(gensym("colors"), (t_newmethod)colors_new,
         (t_method)colors_free, sizeof(t_colors), 0, A_DEFSYMBOL, 0);
     class_addbang(colors_class, (t_method)colors_bang);
+    class_addsymbol(colors_class, (t_method)colors_symbol);
     class_addmethod(colors_class, (t_method)colors_hsl, gensym("hsl"), A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(colors_class, (t_method)colors_hsv, gensym("hsv"), A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(colors_class, (t_method)colors_rgb, gensym("rgb"), A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
@@ -275,9 +295,22 @@ void colors_setup(void){
     class_addmethod(colors_class, (t_method)colors_gui, gensym("iemgui"), A_DEFFLOAT, 0);
     class_addmethod(colors_class, (t_method)colors_ds, gensym("ds"), A_DEFFLOAT, 0);
     class_addmethod(colors_class, (t_method)colors_picked_color, gensym("picked_color"), A_DEFSYMBOL, 0);
+    class_addmethod(colors_class, (t_method)colors_valid, gensym("_valid"),
+        A_FLOAT, A_SYMBOL, 0);
     class_addmethod(colors_class, (t_method)colors_pick, gensym("click"), 0);
     sys_vgui("proc else_colors_pick {obj_id color} {\n");
     sys_vgui("set color [tk_chooseColor -initialcolor $color]\n");
     sys_vgui("  pdsend [concat $obj_id picked_color $color]\n");
     sys_vgui("}\n");
+    sys_gui("\n"
+    "proc color2hex {name} {\n"
+    "    if {[catch {winfo rgb . $name} rgb]} {\n"
+    "        return \"\"\n"
+    "    }\n"
+    "    set r [format %02x [expr {[lindex $rgb 0] / 256}]]\n"
+    "    set g [format %02x [expr {[lindex $rgb 1] / 256}]]\n"
+    "    set b [format %02x [expr {[lindex $rgb 2] / 256}]]\n"
+    "    return \"#$r$g$b\"\n"
+    "}\n"
+    "\n");
 }
