@@ -8,12 +8,6 @@
 #include <stdlib.h>
 #include "mouse_gui.h"
 
-#define NAN_V           0x7FFFFFFFul
-#define POS_INF         0x7F800000ul
-#define NEG_INF         0xFF800000ul
-#define HANDLE_SIZE     12
-#define KNOB_SELBDWIDTH 2
-
 #ifdef _MSC_VER
 #define snprintf _snprintf
 #endif
@@ -28,11 +22,14 @@
     #define M_PI 3.14159265358979323846
 #endif
 
-#define MAX_NUMBOX_LEN 32
-
 #define HALF_PI (M_PI / 2)
-
-#define MIN_SIZE 16
+#define MAX_NUMBOX_LEN  32
+#define MIN_SIZE        16
+#define HANDLE_SIZE     12
+#define KNOB_SELBDWIDTH 2
+#define NAN_V           0x7FFFFFFFul
+#define POS_INF         0x7F800000ul
+#define NEG_INF         0xFF800000ul
 
 #if __APPLE__
 char def_font[100] = "Menlo";
@@ -1067,14 +1064,37 @@ static t_symbol *knob_getcolor(int ac, t_atom *av){
     }
 }
 
-static void knob_bgvalid(t_knob *x, t_floatarg v, t_symbol *c){
+static void knob_validate(t_knob *x, t_floatarg v, t_symbol *color, t_floatarg t){
     int valid = (int)v;
-    if(v){
-        x->x_bg = c;
-        knob_config_bg(x);
+    int type = (int)t;
+    switch (type) {
+        case 0:
+            if (valid){
+                x->x_bg = color;
+                knob_config_bg(x);
+            }
+            else
+                pd_error(0, "[knob] invalid background color '%s'", color->s_name);
+            break;
+
+        case 1:
+            if (valid){
+                x->x_mg = color;
+                knob_config_bg_arc(x);
+            }
+            else
+                pd_error(0, "[knob] invalid arc color '%s'", color->s_name);
+            break;
+
+        case 2:
+            if (valid){
+                x->x_fg = color;
+                knob_config_fg(x);
+            }
+            else
+                pd_error(0, "[knob] invalid background color '%s'", color->s_name);
+            break;
     }
-    else
-        post("[knob] invalid color (%s)", c->s_name);
 }
 
 static void knob_bgcolor(t_knob *x, t_symbol *s, int ac, t_atom *av){
@@ -1084,31 +1104,37 @@ static void knob_bgcolor(t_knob *x, t_symbol *s, int ac, t_atom *av){
     sys_vgui("set color_name {%s}\n", knob_getcolor(ac, av)->s_name);
     sys_vgui("set color_escaped [string map {{ } {\\ }} $color_name]\n");
     sys_vgui("set hex_color [color2hex $color_name]\n");
-    sys_vgui("if {$hex_color eq \"\"} {pdsend \"%s _bgvalid 0 $color_escaped\"} else {pdsend \"%s _bgvalid 1 $hex_color\"}\n", x->x_bindname->s_name, x->x_bindname->s_name);
+    sys_vgui("if {$hex_color eq \"\"} {pdsend \"%s _validate 0 $color_escaped 0\"} else {pdsend \"%s _validate 1 $hex_color 0\"}\n", x->x_bindname->s_name, x->x_bindname->s_name);
 }
 
 static void knob_arccolor(t_knob *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(!ac)
         return;
-    t_symbol *color = knob_getcolor(ac, av);
-    if(x->x_mg != color){
-        x->x_mg = color;
-        if(knob_vis_check(x))
-            knob_config_bg_arc(x);
-    }
+    sys_vgui("set color_name {%s}\n", knob_getcolor(ac, av)->s_name);
+    sys_vgui("set color_escaped [string map {{ } {\\ }} $color_name]\n");
+    sys_vgui("set hex_color [color2hex $color_name]\n");
+    sys_vgui("if {$hex_color eq \"\"} {pdsend \"%s _validate 0 $color_escaped 1\"} else {pdsend \"%s _validate 1 $hex_color 1\"}\n", x->x_bindname->s_name, x->x_bindname->s_name);
 }
 
 static void knob_fgcolor(t_knob *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(!ac)
         return;
-    t_symbol *color = knob_getcolor(ac, av);
-    if(x->x_fg != color){
-        x->x_fg = color;
-        if(knob_vis_check(x))
-            knob_config_fg(x);
-    }
+    sys_vgui("set color_name {%s}\n", knob_getcolor(ac, av)->s_name);
+    sys_vgui("set color_escaped [string map {{ } {\\ }} $color_name]\n");
+    sys_vgui("set hex_color [color2hex $color_name]\n");
+    sys_vgui("if {$hex_color eq \"\"} {pdsend \"%s _validate 0 $color_escaped 2\"} else {pdsend \"%s _validate 1 $hex_color 2\"}\n", x->x_bindname->s_name, x->x_bindname->s_name);
+}
+
+static void knob_colors(t_knob *x, t_symbol *bg, t_symbol *mg, t_symbol *fg){
+    t_atom at[1];
+    SETSYMBOL(at, bg);
+    knob_bgcolor(x, NULL, 1, at);
+    SETSYMBOL(at, mg);
+    knob_arccolor(x, NULL, 1, at);
+    SETSYMBOL(at, fg);
+    knob_fgcolor(x, NULL, 1, at);
 }
 
 static void knob_param(t_knob *x, t_symbol *s){
@@ -2383,6 +2409,7 @@ void knob_setup(void){
 //    class_addmethod(knob_class, (t_method)knob_proportion, gensym("proportion"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_arccolor, gensym("arccolor"), A_GIMME, 0);
     class_addmethod(knob_class, (t_method)knob_fgcolor, gensym("fgcolor"), A_GIMME, 0);
+    class_addmethod(knob_class, (t_method)knob_colors, gensym("colors"), A_SYMBOL, A_SYMBOL, A_SYMBOL, 0);
     class_addmethod(knob_class, (t_method)knob_send, gensym("send"), A_DEFSYM, 0);
     class_addmethod(knob_class, (t_method)knob_param, gensym("param"), A_DEFSYM, 0);
     class_addmethod(knob_class, (t_method)knob_var, gensym("var"), A_DEFSYM, 0);
@@ -2407,7 +2434,7 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_learn, gensym("learn"), 0);
     class_addmethod(knob_class, (t_method)knob_forget, gensym("forget"), 0);
     
-    class_addmethod(knob_class, (t_method)knob_bgvalid, gensym("_bgvalid"), A_FLOAT, A_SYMBOL, 0);
+    class_addmethod(knob_class, (t_method)knob_validate, gensym("_validate"), A_FLOAT, A_SYMBOL, A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_mouse_enter, gensym("_mouse_enter"), 0);
     class_addmethod(knob_class, (t_method)knob_mouse_leave, gensym("_mouse_leave"), 0);
     
