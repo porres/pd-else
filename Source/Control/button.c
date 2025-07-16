@@ -76,10 +76,10 @@ static void button_draw_io_let(t_button *x){
 
 static void button_draw(t_button *x, t_glist *glist){
     int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
-    sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline %s -fill %s -tags [list %s %s]\n",
+    sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline #%06x -fill %s -tags [list %s %s]\n",
         glist_getcanvas(glist), xpos, ypos,
             xpos + x->x_w*x->x_zoom, ypos + x->x_h*x->x_zoom, x->x_zoom,
-            x->x_sel ? THISGUI->i_selectcolor->s_name : THISGUI->i_foregroundcolor->s_name,
+            x->x_sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor,
             x->x_bg->s_name, x->x_base_tag, x->x_all_tag);
     button_draw_io_let(x);
 }
@@ -118,8 +118,8 @@ static void button_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 
 static void button_select(t_gobj *z, t_glist *glist, int sel){
     t_button *x = (t_button *)z;
-    pdgui_vmess(0, "crs rs", glist_getcanvas(glist), "itemconfigure", x->x_base_tag,
-        "-outline", (x->x_sel = sel) ? THISGUI->i_selectcolor->s_name : THISGUI->i_foregroundcolor->s_name);
+    pdgui_vmess(0, "crs rk", glist_getcanvas(glist), "itemconfigure", x->x_base_tag,
+        "-outline", (x->x_sel = sel) ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor);
 }
 
 static void button_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){

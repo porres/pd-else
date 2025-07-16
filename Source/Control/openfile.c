@@ -25,7 +25,7 @@ static void openfile_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int 
     float x1, y1, x2, y2;
     if(glist->gl_editor && glist->gl_editor->e_rtext){
         if(x->x_rtextactive){
-            t_rtext *y = glist_getrtext(glist, (t_text *)x);
+            t_rtext *y = glist_getrtext(glist, (t_text *)x, 1);
             int x1, y1, x2, y2;
             rtext_getrect(y, &x1, &y1, &x2, &y2);
             width = x2 - x1;
@@ -53,7 +53,7 @@ static void openfile_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     t->te_xpix += dx;
     t->te_ypix += dy;
     if(glist_isvisible(glist)){
-        t_rtext *y = glist_getrtext(glist, t);
+        t_rtext *y = glist_getrtext(glist, t, 1);
         rtext_displace(y, dx, dy);
     }
 }
@@ -61,7 +61,7 @@ static void openfile_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 // does it make a difference?????
 static void openfile_select(t_gobj *z, t_glist *glist, int state){
     t_openfile *x = (t_openfile *)z;
-    t_rtext *y = glist_getrtext(glist, (t_text *)x);
+    t_rtext *y = glist_getrtext(glist, (t_text *)x, 1);
     rtext_select(y, state);
     if(state)
         sys_vgui(".x%lx.c itemconfigure %s -fill blue\n", glist, rtext_gettag(y));
@@ -72,14 +72,14 @@ static void openfile_select(t_gobj *z, t_glist *glist, int state){
 
 static void openfile_activate(t_gobj *z, t_glist *glist, int state){
     t_openfile *x = (t_openfile *)z;
-    t_rtext *y = glist_getrtext(glist, (t_text *)x);
+    t_rtext *y = glist_getrtext(glist, (t_text *)x, 1);
     rtext_activate(y, state);
     x->x_rtextactive = state;
 }
 
 static void openfile_vis(t_gobj *z, t_glist *glist, int vis){
     t_openfile *x = (t_openfile *)z;
-    t_rtext *y = glist_getrtext(glist, (t_text *)x);
+    t_rtext *y = glist_getrtext(glist, (t_text *)x, 1);
     if(vis){
         rtext_draw(y);
         sys_vgui(".x%lx.c itemconfigure %s -text {%s} -fill #0000dd -activefill #e70000\n",

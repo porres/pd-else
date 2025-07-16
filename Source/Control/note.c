@@ -144,7 +144,7 @@ static void note_draw_outline(t_note *x){
     if(x->x_bbset && (x->x_edit || x->x_outline)){
         int x1, y1, x2, y2;
         note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags [list %lx_outline all%lx] -width %d -outline %s\n",
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags [list %lx_outline all%lx] -width %d -outline #%06x\n",
             (unsigned long)x->x_cv,
             x1,
             y1,
@@ -153,7 +153,7 @@ static void note_draw_outline(t_note *x){
             (unsigned long)x, // %lx_outline
             (unsigned long)x, // all%lx
             x->x_zoom,
-            x->x_select ? THISGUI->i_selectcolor->s_name : THISGUI->i_foregroundcolor->s_name);
+            x->x_select ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor);
     }
 }
 
@@ -165,8 +165,8 @@ static void note_draw_handle(t_note *x){
         note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
         if(x->x_resized)
             x2 = x1 + x->x_max_pixwidth * x->x_zoom;
-        sys_vgui("canvas %s -width %d -height %d -bg %s -cursor sb_h_double_arrow\n",
-            ch->h_pathname, NOTE_HANDLE_WIDTH, x->x_height, THISGUI->i_selectcolor->s_name);
+        sys_vgui("canvas %s -width %d -height %d -bg #%06x -cursor sb_h_double_arrow\n",
+            ch->h_pathname, NOTE_HANDLE_WIDTH, x->x_height, THISGUI->i_selectcolor);
         sys_vgui("bind %s <Button> {pdsend [concat %s _click 1 \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
         sys_vgui("bind %s <ButtonRelease> {pdsend [concat %s _click 0 \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
         sys_vgui("bind %s <Motion> {pdsend [concat %s _motion %%x %%y \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
@@ -187,9 +187,9 @@ static void note_draw_inlet(t_note *x){
         if(x->x_edit &&  x->x_receive == &s_){
             t_canvas *cv = glist_getcanvas(x->x_glist);
             int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
-            sys_vgui(".x%lx.c create rectangle %d %d %d %d -outline %s -fill %s -tags [list %lx_in all%lx]\n",
+            sys_vgui(".x%lx.c create rectangle %d %d %d %d -outline #%06x -fill #%06x -tags [list %lx_in all%lx]\n",
                 cv, xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom)-x->x_zoom,
-                THISGUI->i_foregroundcolor->s_name, THISGUI->i_foregroundcolor->s_name,
+                THISGUI->i_foregroundcolor, THISGUI->i_foregroundcolor,
                 (unsigned long)x, (unsigned long)x);
         }
     }
@@ -218,6 +218,9 @@ static void note_draw(t_note *x){
     if(x->x_bg_flag && x->x_bbset){ // draw bg only if initialized
         int x1, y1, x2, y2;
         note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+        char bg[32];
+        if(x->x_outline)
+            snprintf(bg, sizeof(bg), "#%06x", THISGUI->i_backgroundcolor);
         sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags [list bg%lx all%lx] -outline %s -fill %s\n",
             (unsigned long)x->x_cv,
             text_xpix((t_text *)x, x->x_glist),
@@ -226,11 +229,14 @@ static void note_draw(t_note *x){
             y2 + 2*x->x_zoom,
             (unsigned long)x,
             (unsigned long)x,
-            x->x_outline ? THISGUI->i_foregroundcolor->s_name : x->x_bgcolor,
+            x->x_outline ? bg : x->x_bgcolor,
             x->x_bgcolor);
     }
     char buf[NOTE_OUTBUFSIZE], *outbuf, *outp;
     outp = outbuf = buf;
+    char sel[32];
+    if(x->x_select)
+        snprintf(sel, sizeof(sel), "#%06x", THISGUI->i_selectcolor);
     sprintf(outp, "%s %s .x%lx.c txt%lx all%lx %d %d {%s} -%d %s {%.*s} %d %s %s %s\n",
         x->x_underline ? "note_draw_ul" : "note_draw",
         x->x_bindsym->s_name, // %s
@@ -241,7 +247,7 @@ static void note_draw(t_note *x){
         text_ypix((t_text *)x, x->x_glist) + x->x_zoom, // %d
         x->x_fontname->s_name, // {%s}
         x->x_fontsize * x->x_zoom, // -%d
-        x->x_select ? THISGUI->i_selectcolor->s_name : x->x_color, // %s
+        x->x_select ? sel : x->x_color, // %s
         x->x_bufsize, // %.
         x->x_buf, // *s
         x->x_max_pixwidth * x->x_zoom, // %d
@@ -385,10 +391,13 @@ static void note_select(t_gobj *z, t_glist *glist, int state){
     x->x_select = state;
     if(!state && x->x_active)
         note_activate(z, glist, 0);
-    sys_vgui(".x%lx.c itemconfigure txt%lx -fill %s\n", x->x_cv, (unsigned long)x, state ? THISGUI->i_selectcolor->s_name : x->x_color);
-    sys_vgui(".x%lx.c itemconfigure %lx_outline -width %d -outline %s\n",
+    char sel[32];
+    if(x->x_select)
+        snprintf(sel, sizeof(sel), "#%06x", THISGUI->i_selectcolor);
+    sys_vgui(".x%lx.c itemconfigure txt%lx -fill %s\n", x->x_cv, (unsigned long)x, state ? sel : x->x_color);
+    sys_vgui(".x%lx.c itemconfigure %lx_outline -width %d -outline #%06x\n",
         x->x_cv, (unsigned long)x, x->x_zoom,
-        state ? THISGUI->i_selectcolor->s_name : THISGUI->i_foregroundcolor->s_name);
+        state ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor);
 // A regular rtext should set 'canvas_editing' variable to its canvas, we don't do it coz
 // we get keys via global binding to "#key" (and coz 'canvas_editing' isn't exported).
 }
@@ -894,11 +903,13 @@ static void note_bgcolor(t_note *x, t_float r, t_float g, t_float b){
     }
     else if(x->x_bg[0] != red || x->x_bg[1] != green || x->x_bg[2] != blue){
         sprintf(x->x_bgcolor, "#%.2x%.2x%.2x", x->x_bg[0] = red, x->x_bg[1] = green, x->x_bg[2] = blue);
+        char bg[32];
+        snprintf(bg, sizeof(bg), "#%06x", THISGUI->i_backgroundcolor);
         if(gobj_shouldvis((t_gobj *)x, x->x_glist) && glist_isvisible(x->x_glist))
             sys_vgui(".x%lx.c itemconfigure bg%lx -outline %s -fill %s\n",
             x->x_cv,
             (unsigned long)x,
-            x->x_outline ? THISGUI->i_foregroundcolor->s_name : x->x_bgcolor,
+            x->x_outline ? bg : x->x_bgcolor,
             x->x_bgcolor);
     }
 }
@@ -972,8 +983,8 @@ static void note_outline(t_note *x, t_floatarg outline){
             if(x->x_outline || x->x_edit){
                 note_draw_outline(x);
                 if(x->x_bg_flag)
-                    sys_vgui(".x%lx.c itemconfigure bg%lx -outline %s\n",
-                        x->x_cv, (unsigned long)x, THISGUI->i_foregroundcolor->s_name);
+                    sys_vgui(".x%lx.c itemconfigure bg%lx -outline #%06x\n",
+                        x->x_cv, (unsigned long)x, THISGUI->i_foregroundcolor);
             }
             else{
                 sys_vgui(".x%lx.c delete %lx_outline\n", (unsigned long)x->x_cv, (unsigned long)x);
