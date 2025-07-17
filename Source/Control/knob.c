@@ -1122,6 +1122,12 @@ static void knob_bgcolor(t_knob *x, t_symbol *s, int ac, t_atom *av){
     sys_vgui("if {$hex_color eq \"\"} {pdsend \"%s _validate 0 $color_escaped 0\"} else {pdsend \"%s _validate 1 $hex_color 0\"}\n", x->x_bindname->s_name, x->x_bindname->s_name);
 }
 
+static void knob_setbgcolor(t_knob *x, t_symbol *s, int ac, t_atom *av){
+    x->x_ignore = s;
+    x->x_theme = 0;
+    knob_bgcolor(x, NULL, ac, av);
+}
+
 static void knob_arccolor(t_knob *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(!ac)
@@ -1130,6 +1136,12 @@ static void knob_arccolor(t_knob *x, t_symbol *s, int ac, t_atom *av){
     sys_vgui("set color_escaped [string map {{ } {\\ }} $color_name]\n");
     sys_vgui("set hex_color [color2hex $color_name]\n");
     sys_vgui("if {$hex_color eq \"\"} {pdsend \"%s _validate 0 $color_escaped 1\"} else {pdsend \"%s _validate 1 $hex_color 1\"}\n", x->x_bindname->s_name, x->x_bindname->s_name);
+}
+
+static void knob_setarccolor(t_knob *x, t_symbol *s, int ac, t_atom *av){
+    x->x_ignore = s;
+    x->x_theme = 0;
+    knob_arccolor(x, NULL, ac, av);
 }
 
 static void knob_fgcolor(t_knob *x, t_symbol *s, int ac, t_atom *av){
@@ -1142,7 +1154,14 @@ static void knob_fgcolor(t_knob *x, t_symbol *s, int ac, t_atom *av){
     sys_vgui("if {$hex_color eq \"\"} {pdsend \"%s _validate 0 $color_escaped 2\"} else {pdsend \"%s _validate 1 $hex_color 2\"}\n", x->x_bindname->s_name, x->x_bindname->s_name);
 }
 
+static void knob_setfgcolor(t_knob *x, t_symbol *s, int ac, t_atom *av){
+    x->x_ignore = s;
+    x->x_theme = 0;
+    knob_fgcolor(x, NULL, ac, av);
+}
+
 static void knob_colors(t_knob *x, t_symbol *bg, t_symbol *mg, t_symbol *fg){
+    x->x_theme = 0;
     t_atom at[1];
     SETSYMBOL(at, bg);
     knob_bgcolor(x, NULL, 1, at);
@@ -2422,9 +2441,9 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_log, gensym("log"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_discrete, gensym("discrete"), A_FLOAT, 0);
 //    class_addmethod(knob_class, (t_method)knob_proportion, gensym("proportion"), A_FLOAT, 0);
-    class_addmethod(knob_class, (t_method)knob_bgcolor, gensym("bgcolor"), A_GIMME, 0);
-    class_addmethod(knob_class, (t_method)knob_arccolor, gensym("arccolor"), A_GIMME, 0);
-    class_addmethod(knob_class, (t_method)knob_fgcolor, gensym("fgcolor"), A_GIMME, 0);
+    class_addmethod(knob_class, (t_method)knob_setbgcolor, gensym("bgcolor"), A_GIMME, 0);
+    class_addmethod(knob_class, (t_method)knob_setarccolor, gensym("arccolor"), A_GIMME, 0);
+    class_addmethod(knob_class, (t_method)knob_setfgcolor, gensym("fgcolor"), A_GIMME, 0);
     class_addmethod(knob_class, (t_method)knob_colors, gensym("colors"), A_SYMBOL, A_SYMBOL, A_SYMBOL, 0);
     class_addmethod(knob_class, (t_method)knob_send, gensym("send"), A_DEFSYM, 0);
     class_addmethod(knob_class, (t_method)knob_param, gensym("param"), A_DEFSYM, 0);
