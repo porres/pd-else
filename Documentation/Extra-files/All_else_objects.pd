@@ -2,7 +2,7 @@
 #N struct 1006-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
 #N struct 1063-slot float x float y float slotsize float color float width float bordercolor;
 #N canvas 549 38 541 693 10;
-#N canvas 240 38 975 767 GUI 0;
+#N canvas 240 37 975 767 GUI 0;
 #X text 48 -899 [biplot];
 #X text 204 -962 [pic] =>;
 #X text 565 -1011 [function] =>;
@@ -49,7 +49,7 @@
 #X obj 267 -115 else/spectrograph~;
 #X obj 631 -54 else/setdsp~;
 #X obj 770 -86 else/messbox 150 50 235 235 235 0 0 0 0 10;
-#X obj 862 9 else/button 20 20 255 255 255 128 128 159 0;
+#X obj 862 9 else/button 20 20 #FFFFFF #808080 0 1;
 #X obj 840 64 else/note 51 20 helvetica empty 0 0 0 0 0 255 255 255 0 0 note;
 #X obj 889 111 else/display;
 #X obj 740 67 else/gain2~;
@@ -67,7 +67,7 @@
 #X text 548 199 [bicoeff];
 #X text 806 156 [numbox~] ->;
 #X obj 892 157 numbox~ 6 10 100 #C0C0C4 #440008 10 0 0 0;
-#X obj 623 -179 else/knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0;
+#X obj 623 -179 else/knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0 0 0;
 #X text 569 -171 [knob];
 #X obj 73 46 else/out.mc~;
 #X obj 95 693 else/scope~ 200 100 256 3 128 -1 1 0 0 0 0 30 30 30 190 190 190 160 160 160 0 empty;
@@ -78,8 +78,8 @@
 #A saved 0;
 #X text 719 608 [level];
 #X obj 708 769 else/popmenu 128 26 12 #dfdfdf black \  empty empty empty empty 1 0 -1 1 0 1 0 0 0 0 0;
-#X obj 396 670 else/scope3d~ 0 0 140 140 1 0 1 1 1 1 20 8 256 30 30 30 190 190 190 160 160 160 empty;
 #X obj 273 -547 else/circle;
+#X obj 396 670 else/scope3d~ 0 0 140 140 1 0 1 1 1 1 20 8 256 30 30 30 190 190 190 160 160 160 empty;
 #X restore 150 222 pd GUI;
 #X obj 385 121 switch~;
 #X obj 18 34 cnv 30 279 30 empty empty ALL\ OBJECTS\ IN\ THE\ ELSE\ LIBRARY: 12 15 0 14 #e0e0e0 #404040 0;
@@ -97,7 +97,7 @@
 #X connect 5 0 3 0;
 #X coords 0 -1 1 1 174 30 2 100 100;
 #X restore 66 82 pd;
-#X obj 67 83 cnv 15 172 28 empty \$0-label version\ 1.0-0\ rc-13 8 14 0 14 #e0e0e0 #404040 0;
+#X obj 67 83 cnv 15 172 28 empty \$0-label version\ 1.0-0\ rc-14 8 14 0 14 #e0e0e0 #404040 0;
 #N canvas 568 23 241 168 FFT 0;
 #X obj 55 52 else/hann~;
 #X obj 55 78 else/bin.shift~;

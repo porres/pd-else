@@ -75,10 +75,8 @@ static void loop_set(t_loop *x, t_symbol *s, int ac, t_atom *av){
         return;
     else if(ac == 1){
         t_float f = atom_getfloat(av);
-        if(f < 1){
-            pd_error(x, "[loop]: number of iterations need to be >= 1");
+        if(f < 1)
             return;
-        }
         x->x_counter_start = 0;
         x->x_target = (int)f - 1;
         x->x_upwards = x->x_iter = 1;
@@ -101,10 +99,8 @@ static void loop_set(t_loop *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void loop_float(t_loop *x, t_float f){
-    if(f < 1){
-        pd_error(x, "[loop]: number of iterations need to be >= 1");
+    if(f < 1)
         return;
-    }
     x->x_counter_start = 0;
     x->x_target = (int)f - 1;
     x->x_upwards = x->x_iter = 1;
