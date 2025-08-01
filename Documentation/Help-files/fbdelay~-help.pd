@@ -108,8 +108,8 @@
 #X text 184 494 -;
 #X text 97 494 -size <float>;
 #X text 198 493 sets delay size (default 1000 ms or first argument's value if given), f 49;
-#X text 23 216 see also:;
-#X obj 26 238 else/ffdelay~;
+#X text 23 196 see also:;
+#X obj 26 218 else/ffdelay~;
 #X text 184 520 -;
 #X text 139 519 -samps;
 #X text 198 519 sets delay time unit to "samples" (default is ms);
@@ -158,7 +158,7 @@
 #X restore 490 213 pd size;
 #X obj 178 224 else/fbdelay~ 100 2000;
 #X text 162 592 feedback mode: <0> ("t60") or <non-0> (gain mode) \, default 0;
-#X obj 26 262 else/comb.filt~;
+#X obj 26 242 else/comb.filt~;
 #X text 135 356 freeze <float>;
 #X text 226 356 - non zero freezes \, zero unfreezes, f 41;
 #X text 364 199 <= Feedback (Decay time in ms), f 11;
@@ -186,7 +186,8 @@
 #X connect 9 0 7 0;
 #X connect 10 0 9 1;
 #X restore 478 235 pd freeze;
-#X obj 26 285 else/del~ in \$0-x;
+#X obj 26 265 else/del.in~ \$0-x;
+#X obj 26 285 else/del.out~ \$0-x;
 #X connect 24 0 25 0;
 #X connect 25 0 56 0;
 #X connect 27 0 56 2;

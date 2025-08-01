@@ -1,9 +1,9 @@
 #N canvas 183 96 1012 496 12;
 #X text 40 196 This is a collection of Pure Data Abstractions that are inspired by Eurorack Modules. This is a submodule of the ELSE library for Pure Data \, so it requires ELSE. ELSE is by Porres. MERDA is also by Porres., f 67;
 #N canvas 372 212 265 198 all 0;
-#N canvas 371 134 887 739 classic 0;
+#N canvas 371 65 887 739 classic 0;
 #X obj 592 38 else/adsr.m~;
-#A saved 10 20 0.5 50 0 0 0 0 0;
+#A saved 0 57.8 0.56 50 0 0 0 0 0;
 #A saved;
 #A saved;
 #A saved;
@@ -32,7 +32,7 @@
 #A saved;
 #A saved;
 #X obj 44 396 else/seq8.m~;
-#A saved 60 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+#A saved 60 4 0 77 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
 #A saved;
 #A saved;
 #A saved;
@@ -45,7 +45,7 @@
 #A saved 1 1;
 #A saved;
 #X restore 69 41 pd classic;
-#N canvas 531 201 736 659 fx 0;
+#N canvas 531 145 736 659 fx 0;
 #X obj 46 16 else/chorus.m~;
 #A saved 0.1 0 0;
 #A saved;
@@ -91,7 +91,7 @@
 #A saved;
 #A saved;
 #X restore 163 41 pd fx;
-#N canvas 621 255 663 367 tools 0;
+#N canvas 617 255 663 367 tools 0;
 #X obj 82 78 else/presets.m;
 #A saved -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;;
 #X obj 273 69 else/sig.m~;
@@ -156,7 +156,7 @@
 #X text 42 354 M.E.R.D.A. Modules allow you to set values via knobs and other controls. They all have a state saving mechanism \, which means it loads the values from the last time it was saved in a patch. You can also use [presets.m] to save different presets., f 67;
 #X text 42 418 This is still exerimental and some modules aren't really ready \, like \, they don't have CV input and still work more kinda like pedal stompboxes., f 67;
 #X text 577 23 Some modules have CV Input with attenuverters (which are knob controls that control the amount of CV. They attenuate with values from 0 to 1 \, but also invert the signal and attenuate with values from 0 to -1! Usually these CV parameters are also controlled by GUIs \, so the CV values are actually ADDED to GUI value., f 54;
-#X obj 629 136 else/knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0 empty empty 0 12 6 -15 0 1 0 0;
+#X obj 629 136 else/knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0 empty empty 0 12 6 -15 0 1 0 0 0 0;
 #X text 696 139 An important GUI in these modules is the [knob] object from ELSE. Check its help file., f 33;
 #X text 577 358 When activated \, you can also set the knob's value by typing values and then hit 'enter'. In some cases you will see a numeric value attached to this number box (which gets updated when you type numbers)., f 55;
 #X text 577 252 Note that knobs have a shortcut for a MIDI-Learn mechanism \, which is "ctrl+click". The MERDA Modules implement MIDI-learn with this shortcut out of the box. Use "ctrl+click" and start using a MIDI controller and it should work. The MIDI controller information is then saved with the patch. Use "Shift+Ctrl+Click" to 'forget'., f 55;

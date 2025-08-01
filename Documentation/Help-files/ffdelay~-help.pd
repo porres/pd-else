@@ -124,8 +124,8 @@
 #X connect 19 0 7 0;
 #X connect 19 0 13 0;
 #X restore 476 185 pd details;
-#X text 20 202 see also:;
-#X obj 21 224 else/fbdelay~;
+#X text 20 172 see also:;
+#X obj 21 194 else/fbdelay~;
 #X obj 487 65 else/setdsp~;
 #X obj 184 213 else/out~;
 #X text 156 316 freeze <float>;
@@ -147,11 +147,12 @@
 #X connect 5 0 2 0;
 #X connect 8 0 0 0;
 #X restore 482 206 pd freeze;
-#X obj 21 248 else/del~ in \$0-x;
 #X obj 184 149 else/float2imp~;
-#X connect 28 0 51 0;
+#X obj 21 218 else/del.in~ \$0-x;
+#X obj 21 240 else/del.out~ \$0-x;
+#X connect 28 0 50 0;
 #X connect 33 0 34 0;
 #X connect 34 0 36 1;
 #X connect 36 0 46 1;
-#X connect 51 0 36 0;
-#X connect 51 0 46 0;
+#X connect 50 0 36 0;
+#X connect 50 0 46 0;
