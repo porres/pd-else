@@ -1720,6 +1720,7 @@ static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
     char c = fkey, buf[3], namebuf[512];
     buf[1] = 0;
     if(c == 0 || c == '\e'){ // click out
+        knob_update_number(x);
         x->x_clicked = x->x_typing = 0;
         knob_activecheck(x);
         return;
@@ -1729,6 +1730,7 @@ static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
         t_symbol *snd_tab = gensym(namebuf);
         if(snd_tab->s_thing)
             pd_bang(snd_tab->s_thing);
+        return;
     }
     else if(((c == '\n') || (c == 13))){ // enter
         float value = x->x_buf[0] == 0 ? x->x_fval : atof(x->x_buf);
@@ -1742,12 +1744,6 @@ static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
         x->x_typing = 0;
         show_number(x, 0);
         return;
-    }
-    else if(c == '\t'){ // tab
-        sprintf(namebuf, "%s-tab", x->x_snd->s_name);
-        t_symbol *snd_tab = gensym(namebuf);
-        if(snd_tab->s_thing)
-            pd_bang(snd_tab->s_thing);
     }
     else if(((c >= '0') && (c <= '9')) || (c == '.') || (c == '-') ||
     (c == 'e') || (c == '+') || (c == 'E')){ // number characters
