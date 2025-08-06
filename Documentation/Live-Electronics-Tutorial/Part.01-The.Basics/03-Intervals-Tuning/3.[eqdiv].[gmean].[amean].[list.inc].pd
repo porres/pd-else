@@ -1,4 +1,4 @@
-#N canvas 352 23 884 623 12;
+#N canvas 288 43 904 740 12;
 #X declare -path else;
 #X obj 690 27 declare -path else;
 #X text 28 31 The [eqdiv] object from ELSE gives us a full scale based on equal divisions of an interval. Remember we get a ratio value of one step of an equal division of an interval 'x' in 'y' parts if we raise the interval value (x) to the power of 1/y. Below \, instead of an octave \, we are dividing the interval of 3 \, which is an ovtave plus a fifth. The division is in 13 equal steps. This scale is known as the Bohlen-Pierce scale., f 65;
@@ -40,6 +40,9 @@
 #X obj 215 551 eqdiv 13 3;
 #X obj 588 231 print ratio;
 #X obj 639 485 print ratio;
+#X obj 220 656 list.inc;
+#X text 128 657 Check also:;
+#X text 308 633 It generates a list by giving it a start value \, a step value and number of elements. In 'ratio' mode the step is considered a ratio step that it multiplies to \, so it's like setting and interval and it relates to [gmean]. Otherwise it's just a regular linear addition and it relates to [amean]., f 62;
 #X connect 2 0 4 0;
 #X connect 4 0 3 0;
 #X connect 6 0 7 0;

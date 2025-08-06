@@ -6,7 +6,7 @@
 
 ### Version: 1.0-0 RC-14 (release candidate #14) With Live Electronics Tutorial!
 
-### Schedules Release July 14th 2025
+### Scheduled Release: September 4th 2025
 
 Copyright © 2017-2025 Alexandre Torres Porres and others
 
@@ -138,7 +138,7 @@ Some objects are simply based (or better, depend on) on other software and are j
     format swap2 nmess unite separate symbol2any any2symbol changed hot initmess message default pack2 pick limit spread router route2 routeall routetype selector stack store morph interpolate sig2float~ float2sig~ pipe2
 
 #list management
-    break order combine delete remove equal group iterate insert scramble sort reverse rotate replace sum slice stream merge unmerge amean gmean list.inc
+    break order combine delete remove equal group iterate insert scramble sort reverse rotate replace sum slice stream merge unmerge amean gmean list.inc rand.dev list.harm
 
 #file management
     dir
@@ -162,16 +162,16 @@ Some objects are simply based (or better, depend on) on other software and are j
     loop
 
 #audio multichannel tools
-    nchs~ sigs~ repeat~ select~ pick~ get~ sum~ merge~ unmerge~ slice~ lace~ delace~
+    nchs~ mix~ group~ repeat~ select~ pick~ get~ sum~ merge~ unmerge~ slice~ lace~ delace~
 
 #analog circuitry emulation
     circuit~
 
 #fx: assorted
-    downsample~ conv~ chorus~ shaper~ crusher~ drive~ power~ flanger~ freq.shift~ pitch.shift~ stretch.shift~ stretch.shift~ ping.pong~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~ phaser~
+    vca~ vca2~ downsample~ conv~ chorus~ shaper~ crusher~ drive~ power~ flanger~ freq.shift~ pitch.shift~ stretch.shift~ stretch.shift~ ping.pong~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~ phaser~
 
 #fx: delay
-    del~ fbdelay~ ffdelay~ revdelay~ filterdelay~
+    del.in~ del.out~ fbdelay~ ffdelay~ revdelay~ filterdelay~
 
 #fx: dynamics
     compress~ duck~ expand~ noisegate~ norm~
@@ -183,7 +183,7 @@ Some objects are simply based (or better, depend on) on other software and are j
     allpass.2nd~ allpass.filt~ bitnormal~ comb.filt~ lop.bw~ hip.bw~ biquads~ bandpass~ bandstop~ crossover~ bpbank~ bicoeff2 brickwall~ eq~ highpass~ highshelf~ lop2~ lowpass~ lowshelf~ mov.avg~ resonbank~ resonbank2~ resonant~ resonator~ resonator2~ svfilter~
 
 #sampling, playing, granulation
-    player~ gran.player~ pvoc.player~ pvoc.live~ batch.rec~ bach.write~ rec.file~ play.file~ tabplayer~ tabwriter~ sample~ sfload sfinfo
+    player~ gran.player~ pvoc.player~ pvoc.live~ batch.rec~ bach.write~ rec.file~ play.file~ streamin~ streamout~ tabplayer~ tabwriter~ sample~ sfload sfinfo
 
 #synthesis: synthesizers
     pm2~ pm4~ pm6~ sfont~ sfz~ plaits~ synth~
@@ -195,7 +195,7 @@ Some objects are simply based (or better, depend on) on other software and are j
     pluck~
 
 #synthesis: oscillators
-    cosine~ impulse~ impulse2~ parabolic~ pulse~ saw~ saw2~ oscbank~ oscnoise~ sine~ square~ tri~ gaussian~ vsaw~ fm~ pm~ wavetable~ wt2d~ blip~ bl.osc~ bl.imp~ bl.imp2~ bl.saw~ bl.saw2~ bl.square~ bl.tri~ bl.vsaw~ bl.wavetable~ damp.osc~
+    cosine~ impulse~ impulse2~ parabolic~ pulse~ saw~ saw2~ oscbank~ superosc~ oscnoise~ sine~ square~ tri~ gaussian~ vsaw~ fm~ pm~ wavetable~ wt2d~ blip~ bl.osc~ bl.imp~ bl.imp2~ bl.saw~ bl.saw2~ bl.square~ bl.tri~ bl.vsaw~ bl.wavetable~ damp.osc~
 
 #synthesis: chaotic, stochastic, noise
     white~ brown~ perlin~ crackle~ cusp~ fbsine~ fbsine2~ gbman~ gray~ henon~ ikeda~ latoocarfian~ lorenz~ lfnoise~ lincong~ logistic~ quad~ stepnoise~ rampnoise~ randpulse~ randpulse2~ standard~ pink~ xmod~ xmod2~ gendyn~ velvet~
@@ -204,10 +204,10 @@ Some objects are simply based (or better, depend on) on other software and are j
     mouse canvas.mouse keycode keymap keypress
 
 #control: fade/pan/routing
-    euclid fader~ autofade~ autofade.mc~ autofade2~ autofade2.mc~ balance~ pan~ pan.mc~ pan2~ pan4~ spread~ spread.mc~ rotate~ rotate.mc~ xfade~  xfade.mc~ xgate~ xgate.mc~ xgate2~ xgate2.mc~ xselect~ xselect.mc~ xselect2~ xselect2.mc~ mtx~ mtx.mc~
+    fader~ autofade~ autofade.mc~ autofade2~ autofade2.mc~ balance~ ms.enc~ ms.dec~ width~ pan2~ pan4~ pan.stereo~ pan~ pan.mc~ spread~ spread.mc~ rotate~ rotate.mc~ xfade~  xfade.mc~ xgate~ xgate.mc~ xgate2~ xgate2.mc~ xselect~ xselect.mc~ xselect2~ xselect2.mc~ mtx~ mtx.mc~
 
 #control: sequencers
-    score score2 pattern list.seq sequencer sequencer~ phaseseq~ impseq~ rec rec2 lace delace
+    arpeggiator euclid score score2 pattern list.seq sequencer sequencer~ phaseseq~ impseq~ rec rec2 lace delace
 
 #control: envelopes
     asr~ adsr~ decay~ envelope~ envgen~
@@ -228,7 +228,7 @@ Some objects are simply based (or better, depend on) on other software and are j
     clock metronome metronome~ polymetro polymetro~ speed tempo tempo~
 
 #analysis
-    changed~ changed2~ detect~ lastvalue~ median~ peak~ tap range range~ maxpeak~ rms~ mov.rms~ vu~ zerocross~ beat~
+    changed~ changed2~ detect~ lastvalue~ median~ peak~ tap range range~ maxpeak~ follow~ rms~ mov.rms~ vu~ zerocross~ beat~
 
 --------------------------------------------------------------------------
 
@@ -240,13 +240,13 @@ A submodule of ELSE by Porres (this is also by Porres).
 ## Modules list (20 objects):
 
 #classic
-    adsr.m~ lfo.m~ seq8.m~ vca.m~ vcf.m~ vco.m~
+    adsr.m~ lfo.m~ seq8.m~ vca.m~ vca2.m~ vcf.m~ vco.m~
 
 #FX
     chorus.m~ crusher.m~ delay.m~ drive.m~ flanger.m~ phaser.m~ plate.rev.m~ rm.m~
 
 #generators
-    gendyn.m~ plaits.m~ pluck.m~ pm6.m~ sfont.m~
+    superosc.m~ gendyn.m~ plaits.m~ pluck.m~ pm6.m~ sfont.m~
 
 #tools
     presets.m sig.m~ level.m~

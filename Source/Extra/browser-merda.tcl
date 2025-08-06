@@ -16,11 +16,11 @@ proc category_merda_menu::load_menutree {} {
     set menutree { 
         {merda
             {classic
-                {adsr.m~ lfo.m~ seq8.m~ vca.m~ vcf.m~ vco.m~}}
+                {adsr.m~ lfo.m~ seq8.m~ vca.m~ vca2.m~ vcf.m~ vco.m~}}
             {fx
                 {chorus.m~ delay.m~ drive.m~ flanger.m~ phaser.m~ crusher.m~ plate.rev.m~ rm.m~}}
             {generators
-                {gendyn.m~ plaits.m~ pluck.m~ pm6.m~ sfont.m~}}
+                {superosc.m~ gendyn.m~ plaits.m~ pluck.m~ pm6.m~ sfont.m~}}
             {tools
                 {presets.m sig.m~ level.m~}}
             {extra

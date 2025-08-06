@@ -1,4 +1,4 @@
-#N canvas 469 38 952 604 12;
+#N canvas 226 65 952 604 12;
 #X declare -path else;
 #X obj 264 350 nbx 5 14 0 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 726 276 signal;
@@ -109,7 +109,7 @@
 #X text 71 407 noise floor;
 #X text 59 115 Here we divide the spectral components above and below an amplitude threshold. We'll consider the components above as the signal and the ones below as the noise floor. The first example considers a threshold., f 49;
 #X text 759 127 level;
-#N canvas 460 23 558 701 Spectral-Gate(average) 0;
+#N canvas 460 34 558 701 Spectral-Gate(average) 0;
 #X obj 198 460 *~;
 #X obj 166 46 inlet~;
 #X obj 157 461 *~;
@@ -130,7 +130,7 @@
 #X obj 157 562 hann~;
 #X obj 216 402 expr~ 1 - $v1;
 #X obj 216 357 expr~ $v1 < ($v2 * $f3);
-#X obj 295 251 mov.avg~ 512;
+#X obj 295 251 mov.avg~ 512, f 8;
 #X connect 0 0 4 1;
 #X connect 1 0 15 0;
 #X connect 2 0 4 0;

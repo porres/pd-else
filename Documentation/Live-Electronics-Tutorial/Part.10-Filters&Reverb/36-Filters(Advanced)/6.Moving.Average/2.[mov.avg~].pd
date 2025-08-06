@@ -1,4 +1,4 @@
-#N canvas 331 38 903 548 12;
+#N canvas 296 66 903 548 12;
 #X declare -path else;
 #X obj 33 358 cnv 15 798 148 empty empty empty 20 12 0 14 #dcdcdc #404040 0;
 #N canvas 0 22 450 300 (subpatch) 0;
@@ -131,7 +131,6 @@
 #X obj 659 203 mov.avg~ -size 24;
 #X text 682 142 <= Record/Analyze;
 #X text 801 178 <= number of samples, f 10;
-#X text 64 16 Now we'll use the same technique of prforming a FFT of the Impulse Response to get the frequency response of the filer. We're now using the [mov \, avg~] object that we've also already used before to average up to 24 samples., f 76;
 #X text 656 86 Set the number of samples and analyze:, f 20;
 #X text 29 511 0 hz;
 #X text 822 510 Nyquist;
@@ -141,8 +140,9 @@
 #X text 64 214 Zeros are placed at Nyquist and even divisions of Nyquist for averages of even numbers. For an 'n' odd number average \, Zeros are at fractions that go from 2/n \, 4/n \, 6/n and so on until reaching n-1/n., f 76;
 #X text 64 265 Try it on the right and see how the frequency response looks below. Note that the frequency response now is linearly rather than logarithmic., f 76;
 #X obj 659 175 float2imp~;
-#X connect 2 0 19 0;
+#X text 64 16 Now we'll use the same technique of prforming a FFT of the Impulse Response to get the frequency response of the filer. We're now using the [mov.avg~] object that we've also already used before to average up to 24 samples., f 76;
+#X connect 2 0 18 0;
 #X connect 5 0 7 1;
 #X connect 7 0 3 0;
 #X connect 7 0 4 0;
-#X connect 19 0 7 0;
+#X connect 18 0 7 0;
