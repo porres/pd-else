@@ -1600,7 +1600,7 @@ void knob_mouse_hover(t_knob *x, int h){
     sprintf(namebuf, "%s-hover", x->x_snd->s_name);
     t_symbol *snd_hover = gensym(namebuf);
     if(snd_hover->s_thing)
-        pd_float(snd_hover->s_thing, x->x_hover);
+        pd_float(snd_hover->s_thing, h);
     show_number(x, 0);
 }
 
