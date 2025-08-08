@@ -13,6 +13,8 @@ typedef struct _tabreader{
     t_float   x_bias;
     t_float   x_tension;
     t_float   x_value;
+    // new var to store namemode: 0 = <ch>-<arrayname>, 1 = <arrayname>-<ch>
+    int       x_namemode;         // 0 is <ch>-<arrayname>, 1 is <arrayname>-<ch>
     t_outlet *x_outlet;
 }t_tabreader;
 
@@ -145,7 +147,13 @@ static void *tabreader_new(t_symbol *s, int ac, t_atom * av){
     while(ac){
         if(av->a_type == A_SYMBOL){ // symbol
             t_symbol *curarg = atom_getsymbol(av);
-            if(curarg == gensym("-none")){
+            // added flag to set namemode: 0 = <ch>-<arrayname>, 1 = <arrayname>-<ch> 
+            if(curarg == gensym("-chafter")){
+                if(nameset)
+                    goto errstate;
+            x->x_namemode = 1; ac--, av++;
+            }             
+            else if(curarg == gensym("-none")){
                 if(nameset)
                     goto errstate;
                 tabreader_set_nointerp(x), ac--, av++;
@@ -219,7 +227,13 @@ static void *tabreader_new(t_symbol *s, int ac, t_atom * av){
         }
     };
     x->x_ch = (ch < 0 ? 1 : ch > 64 ? 64 : ch);
-    x->x_buffer = buffer_init((t_class *)x, name, 1, x->x_ch);
+    // init buffer according to namemode: 0 = <ch>-<arrayname>, 1 = <arrayname>-<ch>
+    if(x->x_namemode == 0) {
+        x->x_buffer = buffer_init((t_class *)x, name, 1, x->x_ch, 0); /// new arg added 0: <ch>-<arrayname> mode / 1: <arrayname>-<ch> mode !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    }
+    else if(x->x_namemode == 1){
+        x->x_buffer = buffer_init((t_class *)x, name, 1, x->x_ch, 1); 
+    }      
     buffer_getchannel(x->x_buffer, x->x_ch, 1);
     buffer_setminsize(x->x_buffer, 2);
     buffer_playcheck(x->x_buffer);
