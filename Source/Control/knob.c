@@ -99,6 +99,13 @@ typedef struct _knob{
     int            x_lb;
     t_symbol       *x_snd;
     t_symbol       *x_snd_raw;
+    t_symbol       *x_snd_tab;
+    t_symbol       *x_snd_active;
+    t_symbol       *x_snd_typing;
+    t_symbol       *x_snd_enter;
+    t_symbol       *x_snd_hover;
+    t_symbol       *x_snd_learn;
+    t_symbol       *x_snd_forget;
     int             x_flag;
     int             x_r_flag;
     int             x_s_flag;
@@ -1189,6 +1196,24 @@ static void knob_var(t_knob *x, t_symbol *s){
     }
 }
 
+static void knob_send_config(t_knob *x){
+    char namebuf[512];
+    sprintf(namebuf, "%s-hover", x->x_snd->s_name);
+    x->x_snd_hover = gensym(namebuf);
+    sprintf(namebuf, "%s-typing", x->x_snd->s_name);
+    x->x_snd_typing = gensym(namebuf);
+    sprintf(namebuf, "%s-tab", x->x_snd->s_name);
+    x->x_snd_tab = gensym(namebuf);
+    sprintf(namebuf, "%s-learn", x->x_snd->s_name);
+    x->x_snd_learn = gensym(namebuf);
+    sprintf(namebuf, "%s-forget", x->x_snd->s_name);
+    x->x_snd_forget = gensym(namebuf);
+    sprintf(namebuf, "%s-active", x->x_snd->s_name);
+    x->x_snd_active = gensym(namebuf);
+    sprintf(namebuf, "%s-enter", x->x_snd->s_name);
+    x->x_snd_enter = gensym(namebuf);
+}
+
 static void knob_send(t_knob *x, t_symbol *s){
     if(s == gensym(""))
         s = gensym("empty");
@@ -1197,6 +1222,7 @@ static void knob_send(t_knob *x, t_symbol *s){
         x->x_snd_set = 1;
         x->x_snd_raw = s;
         x->x_snd = snd;
+        knob_send_config(x);
         knob_config_io(x);
     }
 }
@@ -1350,7 +1376,7 @@ static t_symbol *get_nmode(t_knob *x){
         return(gensym("Active"));
     else if(x->x_number_mode == 3)
         return(gensym("Typing"));
-    else if(x->x_number_mode == 4)
+    else // x->x_number_mode == 4
         return(gensym("Hovering"));
 }
 
@@ -1359,7 +1385,7 @@ static t_symbol * get_cmode(t_knob *x){
         return(gensym("No"));
     else if(x->x_circular == 1)
         return(gensym("Loop"));
-    else if(x->x_circular == 2)
+    else // x->x_circular == 2
         return(gensym("Infinite"));
 }
 
@@ -1520,13 +1546,8 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
 static void knob_activecheck(t_knob *x){
     show_number(x, 0);
     knob_config_wcenter(x);
-    if(x->x_snd == gensym("empty") || x->x_snd == &s_)
-        return;
-    char buff[512];
-    sprintf(buff, "%s-active", x->x_snd->s_name);
-    t_symbol *snd_active = gensym(buff);
-    if(snd_active->s_thing)
-        pd_float(snd_active->s_thing, x->x_clicked);
+    if(x->x_snd_active->s_thing && x->x_snd != gensym("empty") && x->x_snd != &s_)
+        pd_float(x->x_snd_active->s_thing, x->x_clicked);
 }
 
 static int xm, ym;
@@ -1596,20 +1617,19 @@ static void knob_dowheel(t_knob *x, t_floatarg delta, t_floatarg h){
 }
 
 void knob_mouse_hover(t_knob *x, int h){
-    char namebuf[512];
-    sprintf(namebuf, "%s-hover", x->x_snd->s_name);
-    t_symbol *snd_hover = gensym(namebuf);
-    if(snd_hover->s_thing)
-        pd_float(snd_hover->s_thing, x->x_hover);
+    if(x->x_snd_hover->s_thing && x->x_snd != gensym("empty") && x->x_snd != &s_)
+        pd_float(x->x_snd_hover->s_thing, h);
     show_number(x, 0);
 }
 
 void knob_mouse_enter(t_knob *x){
-    knob_mouse_hover(x, x->x_hover = 1);
+    if(!x->x_edit)
+        knob_mouse_hover(x, x->x_hover = 1);
 }
 
 void knob_mouse_leave(t_knob *x){
-    knob_mouse_hover(x, x->x_hover = 0);
+    if(!x->x_edit)
+        knob_mouse_hover(x, x->x_hover = 0);
 }
 
 static void knob_doup(t_knob *x, t_floatarg up){
@@ -1646,7 +1666,7 @@ static void knob_motion(t_knob *x, t_floatarg dx, t_floatarg dy){
             int xc = text_xpix(&x->x_obj, x->x_glist) + x->x_size / 2; // center x
             int yc = text_ypix(&x->x_obj, x->x_glist) + x->x_size / 2; // center y
             // should be stored
-            float alphacenter = (x->x_end_angle + x->x_arcstart_angle) / 2; // arc center angle
+//            float alphacenter = (x->x_end_angle + x->x_arcstart_angle) / 2; // arc center angle
             // should also be stored
             float lastalpha = atan2(xm - xc, -ym + yc) * 180.0 / M_PI; // last angle
             xm += dx, ym += dy; // update coords
@@ -1717,7 +1737,7 @@ static void knob_list(t_knob *x, t_symbol *sym, int ac, t_atom *av){ // get key 
 static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
     t_knob *x = z;
     x->x_ignore = keysym;
-    char c = fkey, buf[3], namebuf[512];
+    char c = fkey, buf[3];
     buf[1] = 0;
     if(c == 0 || c == '\e'){ // click out
         knob_update_number(x);
@@ -1726,18 +1746,14 @@ static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
         return;
     }
     else if(c == '\t'){ // tab
-        sprintf(namebuf, "%s-tab", x->x_snd->s_name);
-        t_symbol *snd_tab = gensym(namebuf);
-        if(snd_tab->s_thing)
-            pd_bang(snd_tab->s_thing);
+        if(x->x_snd_tab->s_thing && x->x_snd != gensym("empty") && x->x_snd != &s_)
+            pd_bang(x->x_snd_tab->s_thing);
         return;
     }
     else if(((c == '\n') || (c == 13))){ // enter
         float value = x->x_buf[0] == 0 ? x->x_fval : atof(x->x_buf);
-        sprintf(namebuf, "%s-enter", x->x_snd->s_name);
-        t_symbol *snd_enter = gensym(namebuf);
-        if(snd_enter->s_thing)
-            pd_float(snd_enter->s_thing, value);
+        if(x->x_snd_enter->s_thing && x->x_snd != gensym("empty") && x->x_snd != &s_)
+            pd_float(x->x_snd_enter->s_thing, value);
         else
             knob_float(x, value);
         x->x_buf[0] = 0;
@@ -1773,11 +1789,9 @@ update_number:{
         pdgui_vmess(0, "crs rs",glist_getcanvas(x->x_glist),
             "itemconfigure", x->x_tag_number, "-text", cp);
         x->x_buf[sl] = 0;
-        sprintf(namebuf, "%s-typing", x->x_snd->s_name);
-        t_symbol *snd_typing = gensym(namebuf);
-        if(snd_typing->s_thing)
-            pd_symbol(snd_typing->s_thing, gensym(cp));
-    
+        if(x->x_snd_typing->s_thing && x->x_snd
+        != gensym("empty") && x->x_snd != &s_)
+            pd_symbol(x->x_snd_typing->s_thing, gensym(cp));
     }
 }
     
@@ -1798,23 +1812,13 @@ static void knob_reset(t_knob *x){
 }
 
 static void knob_learn(t_knob *x){
-    if(x->x_snd == gensym("empty") || x->x_snd == &s_)
-        return;
-    char buff[512];
-    sprintf(buff, "%s-learn", x->x_snd->s_name);
-    t_symbol *snd_learn = gensym(buff);
-    if(snd_learn->s_thing)
-        pd_bang(snd_learn->s_thing);
+    if(x->x_snd_learn->s_thing && x->x_snd != gensym("empty") && x->x_snd != &s_)
+        pd_bang(x->x_snd_learn->s_thing);
 }
 
 static void knob_forget(t_knob *x){
-    if(x->x_snd == gensym("empty") || x->x_snd == &s_)
-        return;
-    char buff[512];
-    sprintf(buff, "%s-forget", x->x_snd->s_name);
-    t_symbol *snd_forget = gensym(buff);
-    if(snd_forget->s_thing)
-        pd_bang(snd_forget->s_thing);
+    if(x->x_snd_forget->s_thing && x->x_snd != gensym("empty") && x->x_snd != &s_)
+        pd_bang(x->x_snd_forget->s_thing);
 }
 
 static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
@@ -2354,6 +2358,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     }
     knob_param(x, param);
     x->x_snd = canvas_realizedollar(x->x_glist, x->x_snd_raw = snd);
+    knob_send_config(x);
     x->x_var = canvas_realizedollar(x->x_glist, x->x_var_raw = var);
     x->x_rcv = canvas_realizedollar(x->x_glist, x->x_rcv_raw = rcv);
     x->x_size = size < MIN_SIZE ? MIN_SIZE : size;
