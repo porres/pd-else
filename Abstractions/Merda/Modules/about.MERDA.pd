@@ -3,7 +3,7 @@
 #N canvas 372 212 265 198 all 0;
 #N canvas 274 34 887 701 classic 0;
 #X obj 592 35 else/adsr.m~;
-#A saved 0 57.8 0.56 50 0 0 0 0 0;
+#A saved 0 57.8 0.56 50 0 0 0 0 0 0;
 #A saved;
 #A saved;
 #A saved;
@@ -13,7 +13,7 @@
 #A saved;
 #A saved;
 #X obj 13 35 else/vco.m~;
-#A saved 0 0 0 0 0.825 0 0 0;
+#A saved 0 0 0 0 0.825 0 0 0 0;
 #A saved;
 #A saved;
 #A saved;
@@ -50,7 +50,7 @@
 #X restore 69 41 pd classic;
 #N canvas 531 145 736 659 fx 0;
 #X obj 46 16 else/chorus.m~;
-#A saved 0.1 0 0;
+#A saved 0.1 0 0 0;
 #A saved;
 #A saved;
 #A saved;
@@ -87,7 +87,7 @@
 #A saved 20 0;
 #A saved;
 #A saved;
-#X obj 46 399 else/crusher.m~;
+#X obj 46 399 else/crush.m~;
 #A saved 0 0 0 0;
 #A saved;
 #A saved;
@@ -132,7 +132,7 @@
 #A saved;
 #A saved;
 #X obj 43 324 else/pm6.m~;
-#A saved idx 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \; vol 100 0 0 0 0 0 \; ratio 1 1 1 1 1 1 \; detune 0 0 0 0 0 0 \; pan 0 0 0 0 0 0 \;;
+#A saved idx 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \; vol 100 0 0 0 0 0 \; ratio 1 1 1 1 1 1 \; detune 0 0 0 0 0 0 \; pan 0 0 0 0 0 0 \; transp 0 \;;
 #A saved;
 #A saved;
 #A saved;

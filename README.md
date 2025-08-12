@@ -168,7 +168,7 @@ Some objects are simply based (or better, depend on) on other software and are j
     circuit~
 
 #fx: assorted
-    vca~ vca2~ downsample~ conv~ chorus~ shaper~ crusher~ drive~ power~ flanger~ freq.shift~ pitch.shift~ stretch.shift~ stretch.shift~ ping.pong~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~ phaser~
+    vca~ vca2~ downsample~ conv~ chorus~ shaper~ crush~ drive~ power~ flanger~ freq.shift~ pitch.shift~ stretch.shift~ stretch.shift~ ping.pong~ rm~ tremolo~ vibrato~ vocoder~ morph~ freeze~ pvoc.freeze~ phaser~
 
 #fx: delay
     del.in~ del.out~ fbdelay~ ffdelay~ revdelay~ filterdelay~

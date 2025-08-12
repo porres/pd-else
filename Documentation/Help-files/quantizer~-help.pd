@@ -206,8 +206,9 @@
 #X text 153 422 signal(s);
 #X text 232 491 sets approximation mode <0-4>;
 #X text 231 539 approximation mode: 0 (round) \, 1 (int) \, 2 (floor) \, 3 (ceil) 4 (floor/ceil) - default 0, f 50;
-#X text 18 299 see also;
-#X obj 19 322 else/quantizer;
+#X obj 19 309 else/quantizer;
+#X obj 19 331 else/crush~;
+#X text 18 289 see also:;
 #X connect 22 0 40 0;
 #X connect 27 0 28 0;
 #X connect 28 0 40 1;
