@@ -1,4 +1,4 @@
-#N canvas 607 99 561 435 12;
+#N canvas 423 95 561 435 12;
 #X text 319 127 This is just a wrapper around [chorus~] from ELSE \, check it out., f 22;
 #X text 333 330 see -->;
 #X obj 394 329 about.MERDA;
@@ -6,10 +6,10 @@
 #N canvas 174 142 422 333 messages 0;
 #X obj 174 229 outlet;
 #X msg 100 172 rate \$1;
-#X obj 100 63 else/knob 41 0.1 5 4 0.1 empty empty #dfdfdf #bbbbbb #000000 1 0 0 0 1 320 0 0 0.1 empty empty 0 0 0 0 0 0 0 0;
+#X obj 100 63 else/knob 41 0.1 5 4 0.1 empty empty #dfdfdf #bbbbbb #000000 1 0 0 0 1 320 0 0 0.1 empty empty 0 0 0 0 0 0 0 0 0 0;
 #X floatatom 100 135 7 0 0 0 - - - 0;
-#X obj 254 63 else/knob 41 0 1 0 0 empty empty #9f9f9f #afafaf black 1 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0;
-#X obj 174 63 else/knob 41 0 25 2 0 empty empty #dfdfdf #afafaf black 1 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0;
+#X obj 254 63 else/knob 41 0 1 0 0 empty empty #9f9f9f #afafaf black 1 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0 0 0;
+#X obj 174 63 else/knob 41 0 25 2 0 empty empty #dfdfdf #afafaf black 1 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0 0 0;
 #X floatatom 174 135 8 0 0 0 - - - 0;
 #X msg 174 172 depth \$1;
 #X floatatom 254 135 8 0 0 0 - - - 0;
@@ -26,7 +26,7 @@
 #X restore 105 84 pd messages;
 #X obj 375 186 else/chorus~;
 #X obj 77 131 else/chorus.m~;
-#A saved 0.113869 23.7438 0.768293;
+#A saved 0.113869 23.7438 0.768293 1;
 #A saved ratelearn none;
 #A saved depthlearn none;
 #A saved wetlearn none;
