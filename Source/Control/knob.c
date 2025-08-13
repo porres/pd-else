@@ -287,6 +287,7 @@ static void knob_config_fg(t_knob *x){
         snprintf(fg, sizeof(fg), "#%06x", THISGUI->i_foregroundcolor);
     else
         snprintf(fg, sizeof(fg), "%s", x->x_fg->s_name);
+//    post("knob_config_fg = %s", fg);
     pdgui_vmess(0, "crs rsrs", cv, "itemconfigure", x->x_tag_arc,
         "-outline", fg, "-fill", fg);
     pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_number, "-fill", fg);
@@ -296,15 +297,17 @@ static void knob_config_fg(t_knob *x){
         "-outline", fg, "-fill", fg);
 }
 
-static void knob_config_bg_arc(t_knob *x){
+static void knob_config_mg(t_knob *x){
     t_canvas *cv = glist_getcanvas(x->x_glist);
     char mg[32];
     if(x->x_theme)
-        snprintf(mg, sizeof(mg), "#%06x", THISGUI->i_backgroundcolor);
+        snprintf(mg, sizeof(mg), "#%06x", THISGUI->i_foregroundcolor);
     else
         snprintf(mg, sizeof(mg), "%s", x->x_mg->s_name);
     pdgui_vmess(0, "crs rsrs", cv, "itemconfigure",  x->x_tag_bg_arc,
         "-outline", mg, "-fill", mg);
+    pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_base_circle,
+        "-outline", x->x_transparent ? mg : x->x_arc ? "" : mg);
 }
 
 static void knob_config_bg(t_knob *x){
@@ -504,10 +507,17 @@ static void knob_select(t_gobj *z, t_glist *glist, int sel){
             "-highlightcolor", THISGUI->i_selectcolor);
     }
     else{
+        char fg[32];
+        if(x->x_theme)
+            snprintf(fg, sizeof(fg), "#%06x", THISGUI->i_foregroundcolor);
+        else
+            snprintf(fg, sizeof(fg), "%s", x->x_fg->s_name);
         pdgui_vmess(0, "crs rs", cv, "itemconfigure",
-            x->x_tag_number, "-fill", x->x_fg->s_name);
+            x->x_tag_number, "-fill", fg);
         pdgui_vmess(0, "crs rk", cv, "itemconfigure",
             x->x_tag_sel, "-outline", THISGUI->i_foregroundcolor);
+//        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_base_circle,
+//            "-outline", fg);
         pdgui_vmess(0, "rr rk",  sh->h_pathname, "configure",
             "-highlightcolor", THISGUI->i_foregroundcolor);
     }
@@ -626,7 +636,7 @@ static void knob_draw_new(t_knob *x, t_glist *glist){
 // base circle
     char *tags_circle[] = {x->x_tag_base_circle, x->x_tag_obj, x->x_tag_sel};
     pdgui_vmess(0, "crr iiii rS", cv, "create", "oval",
-        x1, y1, 0, 0, "-tags", 3, tags_circle);
+        x1, y1, 0, 0, "-tags", 2, tags_circle); // removed x->x_tag_sel
 // arc
     char *tags_arc_bg[] = {x->x_tag_bg_arc, x->x_tag_obj};
         pdgui_vmess(0, "crr iiii rS", cv, "create", "arc",
@@ -637,9 +647,9 @@ static void knob_draw_new(t_knob *x, t_glist *glist){
         x1, y1, 0, 0,
         "-tags", 2, tags_arc);
 // center circle on top of arc
-char *tags_center[] = {x->x_tag_center_circle, x->x_tag_obj};
-    pdgui_vmess(0, "crr iiii rS", cv, "create", "oval",
-    x1, y1, 0, 0, "-tags", 2, tags_center);
+    char *tags_center[] = {x->x_tag_center_circle, x->x_tag_obj};
+        pdgui_vmess(0, "crr iiii rS", cv, "create", "oval",
+        x1, y1, 0, 0, "-tags", 2, tags_center);
 // wiper and wiper center
     char *tags_wiper_center[] = {x->x_tag_wpr_c, x->x_tag_obj};
         pdgui_vmess(0, "crr iiii rS", cv, "create", "oval",
@@ -681,24 +691,13 @@ char *tags_center[] = {x->x_tag_center_circle, x->x_tag_obj};
     knob_config_size(x);
     knob_config_io(x);
     knob_config_bg(x);
-    knob_config_bg_arc(x);
+    knob_config_mg(x);
     knob_config_fg(x);
     knob_config_arc(x);
     knob_config_wcenter(x);
     knob_config_number(x);
     knob_update(x);
     show_number(x, 1);
-    char fg[32];
-    if(x->x_theme)
-        snprintf(fg, sizeof(fg), "#%06x", THISGUI->i_foregroundcolor);
-    else
-        snprintf(fg, sizeof(fg), "%s", x->x_fg->s_name);
-    pdgui_vmess(0, "crs rk", cv, "itemconfigure", x->x_tag_sel,
-        "-outline", x->x_sel ?
-        THISGUI->i_selectcolor :
-        THISGUI->i_foregroundcolor);       // ??????
-//    pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_number,
-//        "-fill", x->x_sel ? THISGUI->i_selectcolor->s_name : fg);  // ??????
 }
 
 void knob_vis(t_gobj *z, t_glist *glist, int vis){
@@ -1041,6 +1040,7 @@ static void knob_arc(t_knob *x, t_floatarg f){
         x->x_arc = arc;
         if(knob_vis_check(x))
             knob_config_arc(x);
+            knob_config_mg(x);
     }
 }
 
@@ -1102,7 +1102,7 @@ static void knob_validate(t_knob *x, t_floatarg v, t_symbol *color, t_floatarg t
         case 1:
             if (valid){
                 x->x_mg = color;
-                knob_config_bg_arc(x);
+                knob_config_mg(x);
             }
             else
                 pd_error(0, "[knob] invalid arc color '%s'", color->s_name);
@@ -1333,9 +1333,9 @@ static void knob_readonly(t_knob *x, t_floatarg f){
 static void knob_theme(t_knob *x, t_floatarg f){
     x->x_theme = (int)(f != 0);
     if(knob_vis_check(x)){
-        knob_config_fg(x);
-        knob_config_bg_arc(x);
         knob_config_bg(x);
+        knob_config_mg(x);
+        knob_config_fg(x);
     }
 }
 
@@ -1343,6 +1343,7 @@ static void knob_transparent(t_knob *x, t_floatarg f){
     x->x_transparent = (int)(f != 0);
     if(knob_vis_check(x)){
         knob_config_bg(x);
+        knob_config_mg(x);
         knob_config_arc(x);
     }
 }
@@ -1536,7 +1537,7 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
         x->x_circular = 2;
     knob_number_mode(x, n_mode);
     knob_config_fg(x); // rethink
-    knob_config_bg_arc(x);
+    knob_config_mg(x);
     knob_config_bg(x);
     canvas_dirty(x->x_glist, 1);
 }
