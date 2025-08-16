@@ -935,10 +935,10 @@
 #X obj 304 250 else/knob 35 -1 1 0 0 \$0-att-S \$0-att-S-set #bbbbbb #7c7c7c black 0 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0 0 0;
 #X obj 361 250 else/knob 35 -1 1 0 0 \$0-att-R \$0-att-R-set #bbbbbb #7c7c7c black 0 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0 0 0;
 #X text 205 285 ----- Attenuverters -----;
-#X obj 183 208 note 48 12 Menlo \$0-attack-label 0 0 0 0 0 255 255 255 0 1 50;
-#X obj 240 208 note 47 12 Menlo \$0-decay-label 0 0 0 0 0 255 255 255 0 1 106.46;
+#X obj 183 208 note 48 12 Menlo \$0-attack-label 0 0 0 0 0 255 255 255 0 1 10;
+#X obj 240 208 note 47 12 Menlo \$0-decay-label 0 0 0 0 0 255 255 255 0 1 20;
 #X obj 297 208 note 48 12 Menlo \$0-sustain-label 0 0 0 0 0 255 255 255 0 1 0.5;
-#X obj 354 208 note 48 12 Menlo \$0-release-label 0 0 0 0 0 255 255 255 0 1 250;
+#X obj 354 208 note 48 12 Menlo \$0-release-label 0 0 0 0 0 255 255 255 0 1 50;
 #X floatatom 374 130 4 0 0 0 - \$0-set-curve \$0-curve 12;
 #X text 369 111 curve;
 #X obj 336 117 else/button 19 31 #e0e0e0 #808080 2 1 2 0 0 \$0-collapse \$0-button;

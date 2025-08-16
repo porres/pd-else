@@ -1,4 +1,4 @@
-#N canvas 579 42 492 486 12;
+#N canvas 463 70 492 486 12;
 #X text 263 364 see -->;
 #X text 271 141 This is just a wrapper around [flanger~] from ELSE \, check it out., f 22;
 #X obj 323 364 about.MERDA;
