@@ -1,4 +1,4 @@
-#N canvas 379 42 659 695 12;
+#N canvas 572 34 659 695 12;
 #X obj 49 462 *~;
 #X text 446 26 see -->;
 #X obj 506 26 about.MERDA;
@@ -6,7 +6,7 @@
 #X obj 412 569 s \$0-rel;
 #X obj 144 277 r \$0-rel;
 #X text 197 565 The release output value can be used to set the release parameter in [voices~], f 28;
-#N canvas 53 214 648 452 messages 0;
+#N canvas 120 107 648 452 messages 0;
 #X msg 83 87 A \$1;
 #X msg 127 87 D \$1;
 #X msg 174 87 S \$1;
@@ -19,7 +19,7 @@
 #X msg 131 283 D_att \$1;
 #X msg 202 283 S_att \$1;
 #X msg 272 283 R_att \$1;
-#X obj 405 310 outlet;
+#X obj 405 410 outlet;
 #X obj 202 350 s \$0-out;
 #X obj 174 163 s \$0-out;
 #X obj 405 273 r \$0-out;
@@ -35,6 +35,8 @@
 #X obj 272 243 else/knob 30 -1 1 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0 0 0;
 #X msg 266 87 curve \$1;
 #X floatatom 266 56 5 0 2000 0 - - - 0;
+#X obj 431 330 tgl 19 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
+#X msg 431 360 gui \$1;
 #X connect 0 0 14 0;
 #X connect 1 0 14 0;
 #X connect 2 0 14 0;
@@ -57,6 +59,8 @@
 #X connect 25 0 11 0;
 #X connect 26 0 14 0;
 #X connect 27 0 26 0;
+#X connect 28 0 29 0;
+#X connect 29 0 12 0;
 #X restore 169 303 pd messages;
 #N canvas 760 174 484 553 retrigger 0;
 #X obj 68 353 *~;
@@ -89,7 +93,7 @@
 #X obj 49 571 else/out~;
 #X obj 54 25 else/note 375 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [adsr.m~] - Polyphonic ADSR envelope;
 #X obj 49 415 else/sine~ -midi, f 10;
-#X obj 169 332 ./adsr.m~;
+#X obj 169 332 else/adsr.m~;
 #A saved 50 106.455 0.5 250 1 0 0 0 0 1;
 #A saved attacklearn none;
 #A saved decaylearn none;

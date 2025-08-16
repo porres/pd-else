@@ -33,7 +33,7 @@
 #X connect 3 0 1 0;
 #X connect 3 0 2 0;
 #X connect 6 0 5 0;
-#X restore 252 422 pd preset;
+#X restore 420 182 pd preset;
 #N canvas 171 120 601 317 init-savestate 0;
 #X obj 106 75 savestate;
 #X obj 49 125 list;
@@ -49,7 +49,7 @@
 #X connect 3 0 1 1;
 #X connect 4 0 5 0;
 #X connect 6 0 0 0;
-#X restore 193 389 pd init-savestate;
+#X restore 361 149 pd init-savestate;
 #X text 200 125 IN;
 #N canvas 674 132 398 512 (subpatch) 0;
 #X obj 112 112 cnv 15 95 146 empty empty empty 20 12 0 14 #dbdbdb #373737 0;
@@ -94,7 +94,7 @@
 #X connect 13 0 7 0;
 #X connect 14 0 9 0;
 #X restore 52 67 pd db-knob;
-#X restore 208 454 pd MIDI-learn;
+#X restore 376 214 pd MIDI-learn;
 #N canvas 617 145 540 454 GUI 0;
 #X obj 76 186 else/limit 100;
 #X msg 307 233 color 0 0 \$1;
@@ -127,7 +127,7 @@
 #X connect 12 0 6 0;
 #X connect 13 0 0 0;
 #X connect 14 0 13 0;
-#X restore 190 422 pd GUI;
+#X restore 358 182 pd GUI;
 #N canvas 237 170 454 549 set-level 0;
 #X obj 140 370 else/f2s~;
 #X obj 139 180 * -1;
@@ -173,6 +173,14 @@
 #X connect 7 0 8 0;
 #X connect 9 0 2 0;
 #X restore 97 98 pd set;
+#X obj 216 420 cnv 19 95 29 empty \$0-label-collapsed ADSR 20 15 0 24 #bbbbbb #000000 0;
+#X obj 215 419 else/button 97 31 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch empty;
+#X obj 319 420 cnv 10 17 15 empty empty ▲ 5 8 0 12 #bbbbbb #000000 0;
+#X obj 319 434 cnv 10 17 15 empty empty ▼ 5 5 0 12 #bbbbbb #000000 0;
+#X obj 318 419 else/button 19 31 #e0e0e0 #808080 2 1 2 0 0 \$0-uncollapse empty;
+#X obj 359 419 else/button 19 31 #e0e0e0 #808080 2 1 2 0 0 \$0-collapse \$0-button;
+#X obj 360 420 cnv 10 17 15 empty \$0-cnv ▼ 5 8 0 12 #bbbbbb #000000 0;
+#X obj 360 434 cnv 10 17 15 empty \$0-cnv ▲ 5 5 0 12 #bbbbbb #000000 0;
 #X connect 0 0 6 0;
 #X connect 0 1 10 0;
 #X connect 6 0 1 0;
