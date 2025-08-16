@@ -1,8 +1,8 @@
 #N canvas 297 41 654 686 12;
 #X obj 357 573 *~;
 #X text 412 467 see -->;
-#N canvas 47 58 705 401 messages 0;
-#X obj 370 344 outlet;
+#N canvas 51 58 803 426 messages 0;
+#X obj 432 366 outlet;
 #X obj 371 145 tgl 19 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X obj 135 135 else/knob 35 -36 36 0 0 empty empty #dfdfdf #7c7c7c black 1 0 73 1 1 320 0 0 0 empty empty 0 8 0 0 0 0 0 0 0 0;
 #X text 352 128 linear FM, f 6;
@@ -30,6 +30,8 @@
 #X obj 514 106 else/knob 35 -1 1 0 0 empty empty #bbbbbb #7c7c7c black 1 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0 0 0;
 #X floatatom 514 150 5 0 0 0 - - - 0;
 #X msg 514 182 att_pm \$1;
+#X obj 692 151 tgl 19 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
+#X msg 692 181 gui \$1;
 #X connect 1 0 14 0;
 #X connect 2 0 13 0;
 #X connect 4 0 15 0;
@@ -50,6 +52,8 @@
 #X connect 25 0 26 0;
 #X connect 26 0 27 0;
 #X connect 27 0 0 0;
+#X connect 28 0 29 0;
+#X connect 29 0 0 0;
 #X restore 183 187 pd messages;
 #X obj 478 468 about.MERDA;
 #X text 57 305 popmenu for waveforms --->, f 14;

@@ -99,13 +99,6 @@ typedef struct _knob{
     int            x_lb;
     t_symbol       *x_snd;
     t_symbol       *x_snd_raw;
-    t_symbol       *x_snd_tab;
-    t_symbol       *x_snd_active;
-    t_symbol       *x_snd_typing;
-    t_symbol       *x_snd_enter;
-    t_symbol       *x_snd_hover;
-    t_symbol       *x_snd_learn;
-    t_symbol       *x_snd_forget;
     int             x_flag;
     int             x_r_flag;
     int             x_s_flag;
@@ -131,6 +124,7 @@ typedef struct _knob{
     char            x_tag_square[32];
     char            x_tag_hover[32];
     char            x_tag_in[32];
+    char            x_tag_IO[32];
     char            x_tag_out[32];
     char            x_tag_sel[32];
     char            x_tag_number[32];
@@ -287,9 +281,11 @@ static void knob_config_fg(t_knob *x){
         snprintf(fg, sizeof(fg), "#%06x", THISGUI->i_foregroundcolor);
     else
         snprintf(fg, sizeof(fg), "%s", x->x_fg->s_name);
-//    post("knob_config_fg = %s", fg);
     pdgui_vmess(0, "crs rsrs", cv, "itemconfigure", x->x_tag_arc,
         "-outline", fg, "-fill", fg);
+    pdgui_vmess(0, "crs rsrs", cv, "itemconfigure", x->x_tag_IO,
+        "-outline", fg, "-fill", fg);
+    pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_number, "-fill", fg);
     pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_number, "-fill", fg);
     pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_ticks, "-fill", fg);
     pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_wiper, "-fill", fg);
@@ -503,8 +499,8 @@ static void knob_select(t_gobj *z, t_glist *glist, int sel){
             x->x_tag_sel, "-outline", THISGUI->i_selectcolor);
         pdgui_vmess(0, "crs rk",  cv, "itemconfigure",
             x->x_tag_number, "-fill", THISGUI->i_selectcolor);
-        pdgui_vmess(0, "rr rk",  sh->h_pathname, "configure",
-            "-highlightcolor", THISGUI->i_selectcolor);
+//        pdgui_vmess(0, "rr rk",  sh->h_pathname, "configure",
+//            "-highlightcolor", THISGUI->i_selectcolor);
     }
     else{
         char fg[32];
@@ -518,8 +514,8 @@ static void knob_select(t_gobj *z, t_glist *glist, int sel){
             x->x_tag_sel, "-outline", THISGUI->i_foregroundcolor);
 //        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_base_circle,
 //            "-outline", fg);
-        pdgui_vmess(0, "rr rk",  sh->h_pathname, "configure",
-            "-highlightcolor", THISGUI->i_foregroundcolor);
+//        pdgui_vmess(0, "rr rk",  sh->h_pathname, "configure",
+//            "-highlightcolor", THISGUI->i_foregroundcolor);
     }
 }
 
@@ -667,19 +663,19 @@ static void knob_draw_new(t_knob *x, t_glist *glist){
         "-anchor", "w",
         "-tags", 2, tags_number);
 // inlet
-    char *tags_in[] = {x->x_tag_in, x->x_tag_obj};
-    pdgui_vmess(0, "crr iiii rk rk rS", cv, "create", "rectangle",
+    char *tags_in[] = {x->x_tag_in, x->x_tag_IO, x->x_tag_obj};
+    pdgui_vmess(0, "crr iiii rs rs rS", cv, "create", "rectangle",
         x1, y1, 0, 0,
-        "-outline", THISGUI->i_foregroundcolor,
-        "-fill", THISGUI->i_foregroundcolor,
-        "-tags", 2, tags_in);
+        "-outline", x->x_fg->s_name,
+        "-fill", x->x_fg->s_name,
+        "-tags", 3, tags_in);
 // outlet
-    char *tags_out[] = {x->x_tag_out, x->x_tag_obj};
-    pdgui_vmess(0, "crr iiii rk rk rS", cv, "create", "rectangle",
+    char *tags_out[] = {x->x_tag_out, x->x_tag_IO, x->x_tag_obj};
+    pdgui_vmess(0, "crr iiii rs rs rS", cv, "create", "rectangle",
         x1, y1, 0, 0,
-        "-outline", THISGUI->i_foregroundcolor,
-        "-fill", THISGUI->i_foregroundcolor,
-        "-tags", 2, tags_out);
+        "-outline", x->x_fg->s_name,
+        "-fill", x->x_fg->s_name,
+        "-tags", 3, tags_out);
 // hover area
     char *tags_hover[] = {x->x_tag_hover, x->x_tag_obj};
     pdgui_vmess(0, "crr iiii rs rs rS", cv, "create", "rectangle",
@@ -1196,24 +1192,6 @@ static void knob_var(t_knob *x, t_symbol *s){
     }
 }
 
-static void knob_send_config(t_knob *x){
-    char namebuf[512];
-    sprintf(namebuf, "%s-hover", x->x_snd->s_name);
-    x->x_snd_hover = gensym(namebuf);
-    sprintf(namebuf, "%s-typing", x->x_snd->s_name);
-    x->x_snd_typing = gensym(namebuf);
-    sprintf(namebuf, "%s-tab", x->x_snd->s_name);
-    x->x_snd_tab = gensym(namebuf);
-    sprintf(namebuf, "%s-learn", x->x_snd->s_name);
-    x->x_snd_learn = gensym(namebuf);
-    sprintf(namebuf, "%s-forget", x->x_snd->s_name);
-    x->x_snd_forget = gensym(namebuf);
-    sprintf(namebuf, "%s-active", x->x_snd->s_name);
-    x->x_snd_active = gensym(namebuf);
-    sprintf(namebuf, "%s-enter", x->x_snd->s_name);
-    x->x_snd_enter = gensym(namebuf);
-}
-
 static void knob_send(t_knob *x, t_symbol *s){
     if(s == gensym(""))
         s = gensym("empty");
@@ -1222,7 +1200,6 @@ static void knob_send(t_knob *x, t_symbol *s){
         x->x_snd_set = 1;
         x->x_snd_raw = s;
         x->x_snd = snd;
-        knob_send_config(x);
         knob_config_io(x);
     }
 }
@@ -1547,8 +1524,19 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
 static void knob_activecheck(t_knob *x){
     show_number(x, 0);
     knob_config_wcenter(x);
-    if(x->x_snd_active->s_thing && x->x_snd != gensym("empty") && x->x_snd != &s_)
-        pd_float(x->x_snd_active->s_thing, x->x_clicked);
+    char namebuf[512];
+    if(x->x_var != gensym("empty") && x->x_var != &s_){
+        sprintf(namebuf, "%s-active", x->x_var->s_name);
+        t_symbol *snd = gensym(namebuf);
+        if(snd->s_thing)
+            pd_float(snd->s_thing, x->x_clicked);
+    }
+    if(x->x_snd != gensym("empty") && x->x_snd != &s_){
+        sprintf(namebuf, "%s-active", x->x_snd->s_name);
+        t_symbol *snd = gensym(namebuf);
+        if(snd->s_thing)
+            pd_float(snd->s_thing, x->x_clicked);
+    }
 }
 
 static int xm, ym;
@@ -1618,8 +1606,19 @@ static void knob_dowheel(t_knob *x, t_floatarg delta, t_floatarg h){
 }
 
 void knob_mouse_hover(t_knob *x, int h){
-    if(x->x_snd_hover->s_thing && x->x_snd != gensym("empty") && x->x_snd != &s_)
-        pd_float(x->x_snd_hover->s_thing, h);
+    char namebuf[512];
+    if(x->x_var != gensym("empty") && x->x_var != &s_){
+        sprintf(namebuf, "%s-hover", x->x_var->s_name);
+        t_symbol *snd = gensym(namebuf);
+        if(snd->s_thing)
+            pd_float(snd->s_thing, h);
+    }
+    if(x->x_snd != gensym("empty") && x->x_snd != &s_){
+        sprintf(namebuf, "%s-hover", x->x_snd->s_name);
+        t_symbol *snd = gensym(namebuf);
+        if(snd->s_thing)
+            pd_float(snd->s_thing, h);
+    }
     show_number(x, 0);
 }
 
@@ -1738,7 +1737,7 @@ static void knob_list(t_knob *x, t_symbol *sym, int ac, t_atom *av){ // get key 
 static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
     t_knob *x = z;
     x->x_ignore = keysym;
-    char c = fkey, buf[3];
+    char c = fkey, buf[3], namebuf[512];
     buf[1] = 0;
     if(c == 0 || c == '\e'){ // click out
         knob_update_number(x);
@@ -1747,16 +1746,42 @@ static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
         return;
     }
     else if(c == '\t'){ // tab
-        if(x->x_snd_tab->s_thing && x->x_snd != gensym("empty") && x->x_snd != &s_)
-            pd_bang(x->x_snd_tab->s_thing);
+        if(x->x_var != gensym("empty") && x->x_var != &s_){
+            sprintf(namebuf, "%s-tab", x->x_var->s_name);
+            t_symbol *snd = gensym(namebuf);
+            if(snd->s_thing){
+                pd_bang(snd->s_thing);
+                return;
+            }
+        }
+        if(x->x_snd != gensym("empty") && x->x_snd != &s_){
+            sprintf(namebuf, "%s-tab", x->x_snd->s_name);
+            t_symbol *snd = gensym(namebuf);
+            if(snd->s_thing){
+                pd_bang(snd->s_thing);
+                return;
+            }
+        }
         return;
     }
     else if(((c == '\n') || (c == 13))){ // enter
         float value = x->x_buf[0] == 0 ? x->x_fval : atof(x->x_buf);
-        if(x->x_snd_enter->s_thing && x->x_snd != gensym("empty") && x->x_snd != &s_)
-            pd_float(x->x_snd_enter->s_thing, value);
-        else
-            knob_float(x, value);
+        if(x->x_var != gensym("empty") && x->x_var != &s_){
+            sprintf(namebuf, "%s-enter", x->x_var->s_name);
+            t_symbol *snd = gensym(namebuf);
+            if(snd->s_thing)
+                pd_float(snd->s_thing, value);
+            else
+                knob_float(x, value);
+        }
+        if(x->x_snd != gensym("empty") && x->x_snd != &s_){
+            sprintf(namebuf, "%s-enter", x->x_var->s_name);
+            t_symbol *snd = gensym(namebuf);
+            if(snd->s_thing)
+                pd_float(snd->s_thing, value);
+            else
+                knob_float(x, value);
+        }
         x->x_buf[0] = 0;
         x->x_typing = 0;
         show_number(x, 0);
@@ -1790,9 +1815,19 @@ update_number:{
         pdgui_vmess(0, "crs rs",glist_getcanvas(x->x_glist),
             "itemconfigure", x->x_tag_number, "-text", cp);
         x->x_buf[sl] = 0;
-        if(x->x_snd_typing->s_thing && x->x_snd
-        != gensym("empty") && x->x_snd != &s_)
-            pd_symbol(x->x_snd_typing->s_thing, gensym(cp));
+    
+        if(x->x_var != gensym("empty") && x->x_var != &s_){
+            sprintf(namebuf, "%s-typing", x->x_var->s_name);
+            t_symbol *snd = gensym(namebuf);
+            if(snd->s_thing)
+                pd_symbol(snd->s_thing, gensym(cp));
+        }
+        if(x->x_snd != gensym("empty") && x->x_snd != &s_){
+            sprintf(namebuf, "%s-typing", x->x_snd->s_name);
+            t_symbol *snd = gensym(namebuf);
+            if(snd->s_thing)
+            pd_symbol(snd->s_thing, gensym(cp));
+        }
     }
 }
     
@@ -1813,13 +1848,35 @@ static void knob_reset(t_knob *x){
 }
 
 static void knob_learn(t_knob *x){
-    if(x->x_snd_learn->s_thing && x->x_snd != gensym("empty") && x->x_snd != &s_)
-        pd_bang(x->x_snd_learn->s_thing);
+    char namebuf[512];
+    if(x->x_var != gensym("empty") && x->x_var != &s_){
+        sprintf(namebuf, "%s-learn", x->x_var->s_name);
+        t_symbol *snd = gensym(namebuf);
+        if(snd->s_thing)
+            pd_bang(snd->s_thing);
+    }
+    if(x->x_snd != gensym("empty") && x->x_snd != &s_){
+        sprintf(namebuf, "%s-learn", x->x_snd->s_name);
+        t_symbol *snd = gensym(namebuf);
+        if(snd->s_thing)
+            pd_bang(snd->s_thing);
+    }
 }
 
 static void knob_forget(t_knob *x){
-    if(x->x_snd_forget->s_thing && x->x_snd != gensym("empty") && x->x_snd != &s_)
-        pd_bang(x->x_snd_forget->s_thing);
+    char namebuf[512];
+    if(x->x_var != gensym("empty") && x->x_var != &s_){
+        sprintf(namebuf, "%s-forget", x->x_var->s_name);
+        t_symbol *snd = gensym(namebuf);
+        if(snd->s_thing)
+            pd_bang(snd->s_thing);
+    }
+    if(x->x_snd != gensym("empty") && x->x_snd != &s_){
+        sprintf(namebuf, "%s-forget", x->x_snd->s_name);
+        t_symbol *snd = gensym(namebuf);
+        if(snd->s_thing)
+            pd_bang(snd->s_thing);
+    }
 }
 
 static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
@@ -2359,7 +2416,6 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     }
     knob_param(x, param);
     x->x_snd = canvas_realizedollar(x->x_glist, x->x_snd_raw = snd);
-    knob_send_config(x);
     x->x_var = canvas_realizedollar(x->x_glist, x->x_var_raw = var);
     x->x_rcv = canvas_realizedollar(x->x_glist, x->x_rcv_raw = rcv);
     x->x_size = size < MIN_SIZE ? MIN_SIZE : size;
@@ -2399,6 +2455,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     sprintf(x->x_tag_square, "%pSQUARE", x);
     sprintf(x->x_tag_in, "%pIN", x);
     sprintf(x->x_tag_out, "%pOUT", x);
+    sprintf(x->x_tag_IO, "%pIO", x);
     sprintf(x->x_tag_number, "%pNUM", x);
     sprintf(x->x_tag_hover, "%pHOVER", x);
     if(x->x_rcv != gensym("empty"))

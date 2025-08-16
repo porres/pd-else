@@ -1,4 +1,4 @@
-#N canvas 333 38 808 627 12;
+#N canvas 335 62 808 627 12;
 #X obj 281 121 else/adsr~ 250 50 0.85 1000;
 #X text 527 199 Set modulation index int the matrix. The gray diagonal row represents each oscillator and the index value in this row is for self feedback modulation. The bottom left number boxes are for feedforwad modulation and the top right half is for feedback., f 31;
 #X text 527 437 The left inlet is for pitch in MIDI \, the other inlets are for Level inputs of each oscillator and the rightmost if for the master level. If nothing is connected \, the level is set to 1 for all secondary inleys but you can connect signals from envelopes and what not., f 31;
@@ -11,7 +11,14 @@
 #X obj 31 21 else/keyboard 17 80 4 2 0 0 empty empty;
 #X obj 31 136 else/voices~ 4;
 #X obj 31 191 else/pm6.m~;
-#A saved idx 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \; vol 100 0 0 0 0 0 \; ratio 1 1 1 1 1 1 \;;
+#A saved idx 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 \; vol 100 0 0 0 0 0 \; ratio 1 1 1 1 1 1 \; detune 0 0 0 0 0 0 \; pan 0 0 0 0 0 0 \; transp 0 \; gui 1 \;;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
 #X obj 181 551 else/out~;
 #X obj 621 73 else/pm6~, f 10;
 #X connect 0 0 11 1;

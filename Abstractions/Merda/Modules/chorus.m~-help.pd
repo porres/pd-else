@@ -3,8 +3,8 @@
 #X text 333 330 see -->;
 #X obj 394 329 about.MERDA;
 #X text 326 227 this is still a simple module \, with no CV input yet \, so kinda like a pedal still., f 22;
-#N canvas 174 142 422 333 messages 0;
-#X obj 174 229 outlet;
+#N canvas 174 142 461 333 messages 0;
+#X obj 255 260 outlet;
 #X msg 100 172 rate \$1;
 #X obj 100 63 else/knob 41 0.1 5 4 0.1 empty empty #dfdfdf #bbbbbb #000000 1 0 0 0 1 320 0 0 0.1 empty empty 0 0 0 0 0 0 0 0 0 0;
 #X floatatom 100 135 7 0 0 0 - - - 0;
@@ -14,6 +14,8 @@
 #X msg 174 172 depth \$1;
 #X floatatom 254 135 8 0 0 0 - - - 0;
 #X msg 254 172 wet \$1;
+#X obj 337 156 tgl 19 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
+#X msg 337 186 gui \$1;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;
 #X connect 3 0 1 0;
@@ -23,6 +25,8 @@
 #X connect 7 0 0 0;
 #X connect 8 0 9 0;
 #X connect 9 0 0 0;
+#X connect 10 0 11 0;
+#X connect 11 0 0 0;
 #X restore 105 84 pd messages;
 #X obj 375 186 else/chorus~;
 #X obj 77 131 else/chorus.m~;
