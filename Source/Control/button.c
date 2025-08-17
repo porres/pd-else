@@ -144,15 +144,17 @@ static void button_draw(t_button *x, t_glist *glist){
         x->x_state ? transp > 1 ? "" : x->x_fg->s_name : transp ? "" : x->x_bg->s_name);
 // rectangle
     char *tags_base[] = {x->x_base_tag, x->x_button_tag, x->x_all_tag};
-    pdgui_vmess(0, "crr iiii rr rs rS", cv, "create", "rectangle",
+    pdgui_vmess(0, "crr iiii ri rr rs rS", cv, "create", "rectangle",
         xpos, ypos, xpos + x->x_w*z, ypos + x->x_h*z,
+        "-width", z,
         "-outline", "{}",
         "-fill", color,
         "-tags", 3, tags_base);
 // oval
     char *tags_oval[] = {x->x_oval_tag, x->x_button_tag, x->x_all_tag};
-    pdgui_vmess(0, "crr iiii rk rs rS", cv, "create", "oval",
+    pdgui_vmess(0, "crr iiii ri rk rs rS", cv, "create", "oval",
         xpos, ypos, xpos + x->x_w*z, ypos + x->x_h*z,
+        "-width", z,
         "-outline", THISGUI->i_foregroundcolor,
         "-fill", color,
         "-tags", 3, tags_oval);
@@ -315,6 +317,8 @@ static void button_mouserelease(t_button* x){
 }
 
 void button_mouse_hover(t_button *x, int h){
+    if(x->x_readonly)
+        return;
     if(x->x_snd_hover->s_thing && !x->x_edit && x->x_snd != gensym("empty") && x->x_snd != &s_)
         pd_float(x->x_snd_hover->s_thing, h);
 }

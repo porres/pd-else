@@ -2,13 +2,13 @@
 #X text 587 25 see -->;
 #X obj 639 25 about.MERDA;
 #X text 568 61 This is a wrapper around [plaits~] from ELSE \, check it out., f 27;
-#N canvas 417 131 891 581 trigger/level-input 0;
+#N canvas 389 131 891 581 trigger/level-input 0;
 #X text 14 16 When not in MIDI Mode \, you need to feed it signals and if you connect to the trigger input (2nd inlet) you force it into Trigger Mode. Connect to the 3rd inlet sets to level mode input instead. Both Modes make use of an internal LPG (LowPass Gate) with settings for Cutoff and Decay., f 69;
 #X text 272 100 The Trigger Mode sets a percussive envelope and Level mode can sustain while the gate is on., f 26;
 #X obj 13 92 else/keyboard 17 80 2 3 0 0 empty empty;
 #X obj 13 186 else/mono~ 10;
 #X obj 20 213 else/plaits.m~;
-#A saved 0 0.5 0.5 0.5 0 0.5 0.5 0 0 0 0 0 0 0 0;
+#A saved 0 0.5 0.5 0.5 0 0.5 0.5 0 0 0 0 0 0 0 1;
 #A saved;
 #A saved;
 #A saved;
@@ -24,7 +24,7 @@
 #X text 713 79 Some synthesis modes use both Trigger/Level inputs \, they are: 7 \, 11-15 \, 18-20 and 23! The LPG only works for modes 7 and 23 out of these and is controlled by the Level input in both cases. More details on each mode in another subpatch., f 27;
 #X obj 460 504 else/out~;
 #X obj 460 213 else/plaits.m~;
-#A saved 0 0.5 0.5 0.5 0 0.5 0.5 0 0 0 0 0 0 0 0;
+#A saved 0 0.5 0.5 0.5 0 0.5 0.5 0 0 0 0 0 0 0 1;
 #A saved;
 #A saved;
 #A saved;
@@ -40,7 +40,7 @@
 #N canvas 117 101 599 564 trigger-with-polyphony 0;
 #X obj 75 46 else/keyboard 17 80 2 3 0 0 empty empty;
 #X obj 75 161 else/plaits.m~;
-#A saved 0 0.5 0.5 0.5 0 0.5 0.5 0 0 0 0 0 0 0 0;
+#A saved 0 0.5 0.5 0.5 0 0.5 0.5 0 0 0 0 0 0 0 1;
 #A saved;
 #A saved;
 #A saved;
@@ -60,10 +60,10 @@
 #X connect 3 0 1 0;
 #X connect 3 1 1 1;
 #X restore 73 524 pd trigger-with-polyphony;
-#N canvas 776 221 587 543 monophonic-level 0;
+#N canvas 693 221 587 543 monophonic-level 0;
 #X obj 175 37 else/keyboard 17 80 2 3 0 0 empty empty;
 #X obj 75 161 else/plaits.m~;
-#A saved 0 0.5 0.5 0.5 0 0.5 0.5 0 0 0 0 0 0 0 0;
+#A saved 0 0.5 0.5 0.5 0 0.5 0.5 0 0 0 0 0 0 0 1;
 #A saved;
 #A saved;
 #A saved;
