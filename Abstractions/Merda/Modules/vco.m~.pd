@@ -44,7 +44,8 @@
 #X obj 313 366 s \$0-collapse;
 #X obj 290 338 sel 1 0;
 #X obj 28 189 else/message \; \$0-button readonly 0 \, transparent 2 \; pd-\$0-VCO donecanvasdialog 1 1 1 0 0 1 1 161 277 15 15 \, vis 0 \; \$0-cnv color #bbbbbb #000000 #000000 \; \$0-m goprect 50 50 178 308 \, dirty 0 \; \$0-GUI 1, f 55;
-#X obj 28 50 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-VCO donecanvasdialog 1 1 0 0 0 1 1 161 277 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 50 400 132 43 \, dirty 0 \; \$0-GUI 0;
+#X obj 28 50 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-VCO donecanvasdialog 1 1 1 0 0 1 1 161 277 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 50 400 132 43 \, dirty 0 \; \$0-GUI 0;
+#X obj 187 322 loadbang;
 #X connect 0 0 14 0;
 #X connect 1 0 15 0;
 #X connect 2 0 4 0;
@@ -56,6 +57,7 @@
 #X connect 10 0 13 0;
 #X connect 13 0 11 0;
 #X connect 13 1 12 0;
+#X connect 16 0 6 0;
 #X restore 277 19 pd collapse;
 #X obj 42 190 f;
 #X obj 42 215 sel 0;
@@ -607,13 +609,11 @@
 #X restore 409 332 pd MIDI-learn;
 #X obj 276 35 else/initmess 60;
 #N canvas 745 99 196 309 \$0-VCO 0;
-#N canvas 598 192 440 439 (subpatch) 0;
+#N canvas 598 192 322 392 (subpatch) 0;
 #X obj 51 51 cnv 19 159 275 empty empty empty 20 12 0 12 #e0e0e0 #404040 0;
-#X obj 73 210 tgl 22 0 \$0-lin \$0-set-lin empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X text 149 98 transp;
 #X obj 146 122 else/knob 50 -36 36 0 0 \$0-pitch \$0-set-pitch #dfdfdf #7c7c7c black 0 0 73 1 1 320 0 0 0 empty empty 0 8 0 0 0 0 0 0 0 0;
-#X obj 141 211 tgl 19 0 \$0-soft \$0-set-soft empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
-#X text 163 205 Soft Sync, f 4;
+#X text 134 205 Soft Sync, f 4;
 #X obj 83 59 else/note 95 24 Inter empty 5 54 54 54 0 187 187 187 1 1 VCO;
 #X obj 62 156 else/knob 40 -1 1 0 0 \$0-PWM \$0-set-PWM #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0 0 0;
 #X obj 68 265 else/knob 35 -1 1 0 0 \$0-att-fm \$0-set-att-fm #bbbbbb #7c7c7c black 0 0 0 0 1 320 0 0 0 empty empty 0 8 0 0 0 0 0 0 0 0;
@@ -627,10 +627,12 @@
 #X obj 56 121 else/popmenu 75 26 12 #dfdfdf black \  \$0-set-waveform \$0-waveform empty empty 0 0 -1 1 0 1 0 0 0 0 0 sine tri saw vsaw square;
 #X text 62 102 WAVEFORM:;
 #X obj 151 178 else/note 44 12 Inter \$0-set-note-st 0 0 0 0 0 255 255 255 0 0 +00 st;
-#X text 97 205 Lin FM, f 3;
+#X text 67 204 Lin FM, f 3;
 #X obj 185 59 else/button 19 31 #e0e0e0 #808080 2 1 2 0 0 \$0-collapse \$0-button;
 #X obj 186 60 cnv 10 17 15 empty \$0-cnv ▼ 5 8 0 12 #bbbbbb #000000 0;
 #X obj 186 74 cnv 10 17 15 empty \$0-cnv ▲ 5 5 0 12 #bbbbbb #000000 0;
+#X obj 93 208 else/button 25 25 #f5f5f5 #808080 1 1 0 1 0 \$0-lin \$0-set-lin;
+#X obj 167 208 else/button 25 25 #f5f5f5 #808080 1 1 0 1 0 \$0-soft \$0-set-soft;
 #X coords 0 1 100 -1 161 277 1 50 50;
 #X restore 15 15 graph;
 #X coords 0 0 1 1 161 277 1 15 15;

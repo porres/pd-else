@@ -1606,6 +1606,8 @@ static void knob_dowheel(t_knob *x, t_floatarg delta, t_floatarg h){
 }
 
 void knob_mouse_hover(t_knob *x, int h){
+    if(x->x_edit || x->x_readonly)
+        return;
     char namebuf[512];
     if(x->x_var != gensym("empty") && x->x_var != &s_){
         sprintf(namebuf, "%s-hover", x->x_var->s_name);
