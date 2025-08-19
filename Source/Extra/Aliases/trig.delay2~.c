@@ -97,6 +97,7 @@ static void *trig_delay2_new(t_floatarg f1){
     x->x_del_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_del_let, f1);
     outlet_new(&x->x_obj, &s_signal);
+    pd_error(x, "[trig.delay2]: is deprecated, use just [trig.delay~] now");
     return(x);
 }
 
