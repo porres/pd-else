@@ -101,7 +101,7 @@ proc category_else_menu::load_menutree {} {
             {control:\ control\ rate\ lfo
                 {lfo phasor pimp impulse pulse}}
             {control:\ triggers
-                {above above~ bangdiv chance chance~ dust~ dust2~ gatehold gatehold~ gaterelease gaterelease~ gatedelay~ gatedelay gate2imp~ pimp~ pimpmul~ pulsecount~ pulsediv~ sh~ schmitt schmitt~ status status~ trig.delay~ trig.delay2~ toggleff~ timed.gate timed.gate~ match~ trig2bang trig2bang~ trighold~}}
+                {above above~ bangdiv chance chance~ dust~ dust2~ gatehold gatehold~ gaterelease gaterelease~ gatedelay~ gatedelay gate2imp~ pimp~ pimpmul~ pulsecount~ pulsediv~ sh~ schmitt schmitt~ status status~ trig.delay~ toggleff~ timed.gate timed.gate~ match~ trig2bang trig2bang~ trighold~}}
             {control:\ triggers\ clock
                 {clock metronome metronome~ polymetro polymetro~ speed tempo tempo~}}
             {analysis
