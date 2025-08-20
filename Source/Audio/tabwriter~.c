@@ -29,6 +29,8 @@ typedef struct _tabwriter{
     int                 x_n;
     t_float             x_ksr;
     t_int               x_numchans;
+    // new var to store namemode: 0 = <ch>-<arrayname>, 1 = <arrayname>-<ch> 
+    int                 x_namemode;         // 0 is <ch>-<arrayname>, 1 is <arrayname>-<ch>
     t_outlet           *x_outlet_bang;
     t_float           **x_ins; // input vectors
     t_float            *x_out; // signal output
@@ -55,7 +57,14 @@ static void tabwriter_set(t_tabwriter *x, t_symbol *s){
     if(x->x_buffer != NULL)
         buffer_setarray(x->x_buffer, s);
     else{
-        x->x_buffer = buffer_init((t_class *)x, s, x->x_numchans, 0);
+        // init buffer according to namemode: 0 = <ch>-<arrayname>, 1 = <arrayname>-<ch>
+        if(x->x_namemode == 0) {
+            x->x_buffer = buffer_init((t_class *)x, s, x->x_numchans, 0, 0); /// new arg added 0: <ch>-<arrayname> mode / 1: <arrayname>-<ch> mode !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        }
+        else if(x->x_namemode == 1){
+            x->x_buffer = buffer_init((t_class *)x, s, x->x_numchans, 0, 1); 
+        }    
+        // x->x_buffer = buffer_init((t_class *)x, s, x->x_numchans, 0);
         buffer_setminsize(x->x_buffer, 2);
     }
 }
@@ -259,10 +268,17 @@ static void *tabwriter_new(t_symbol *s, int ac, t_atom *av){
     t_int argn = 0;
     t_symbol *name = NULL;
     x->x_buffer = NULL;
+    // new var to store namemode: 0 = <ch>-<arrayname>, 1 = <arrayname>-<ch>
+    x->x_namemode = 0; 
     while(ac > 0){
         if(av->a_type == A_SYMBOL){
             t_symbol *curarg = atom_getsymbolarg(0, ac, av);
-            if(curarg == gensym("-continue") && !argn){
+            // added flag to set namemode: 0 = <ch>-<arrayname>, 1 = <arrayname>-<ch>
+            if(curarg == gensym("-chafter") && !argn){
+                x->x_namemode = 1; 
+                ac--, av++;
+            } 
+            else if(curarg == gensym("-continue") && !argn){
                 if(ac >= 1){
                     x->x_continue = 1;
                     ac--, av++;
@@ -329,7 +345,13 @@ static void *tabwriter_new(t_symbol *s, int ac, t_atom *av){
     };
     int chn_n = (int)numchan > 64 ? 64 : (int)numchan;
     if(name != NULL){
-        x->x_buffer = buffer_init((t_class *)x, name, chn_n, 0);
+        // init buffer according to namemode: 0 = <ch>-<arrayname>, 1 = <arrayname>-<ch>
+        if(x->x_namemode == 0) {
+            x->x_buffer = buffer_init((t_class *)x, name, chn_n, 0, 0); /// new arg added 0: <ch>-<arrayname> mode / 1: <arrayname>-<ch> mode !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        }
+        else if(x->x_namemode == 1){
+            x->x_buffer = buffer_init((t_class *)x, name, chn_n, 0, 1); 
+        }  
         t_buffer *c = x->x_buffer;
         if(c) // set channels and array sizes
             buffer_setminsize(x->x_buffer, 2);
