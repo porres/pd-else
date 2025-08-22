@@ -29,7 +29,7 @@ For copies of the licenses and the terms, please check the 'license' subfolder.
 
 ###   About ELSE
 
-This version of ELSE needs **Pd 0.56-0** or above.
+This version of ELSE needs **Pd 0.56-1** or above.
 
 ELSE is a big library of externals that extends the performance Pure Data (Pd) - Miller S. Puckette's realtime computer music environment (download Pd from: http://msp.ucsd.edu/software.html).
 
