@@ -87,7 +87,7 @@
 #X msg 471 234 set \$1| Hz;
 #X obj 446 284 s \$0-cutoff-label;
 #X obj 471 203 r \$0-cutoff-typing;
-#N canvas 367 183 467 526 collapse 0;
+#N canvas 367 183 629 529 collapse 0;
 #X obj 28 155 r \$0-uncollapse;
 #X obj 33 312 r \$0-detatch-hover;
 #X obj 56 466 s \$0-label-collapsed;
@@ -105,6 +105,9 @@
 #X msg 33 414 label DELAY \, label_font 0 24 \, label_pos 12 15, f 29;
 #X obj 187 322 loadbang;
 #X obj 28 50 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-delay donecanvasdialog 1 1 0 0 0 1 1 215 215 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 225 425 138 44 \, dirty 0 \; \$0-GUI 0;
+#X obj 451 422 s \$0-uncollapse-set;
+#X msg 451 388 readonly \$1;
+#X obj 451 357 else/canvas.edit 3;
 #X connect 0 0 13 0;
 #X connect 1 0 3 0;
 #X connect 3 0 14 0;
@@ -117,6 +120,8 @@
 #X connect 11 0 16 0;
 #X connect 14 0 2 0;
 #X connect 15 0 14 0;
+#X connect 18 0 17 0;
+#X connect 19 0 18 0;
 #X restore 485 456 pd collapse;
 #X msg 680 72 active 0;
 #X msg 661 132 active 1;
@@ -446,7 +451,7 @@
 #X obj 337 447 cnv 10 17 15 empty empty ▼ 5 5 0 12 #bbbbbb #000000 0;
 #X obj 336 432 else/button 19 31 #e0e0e0 #808080 2 1 2 0 0 \$0-uncollapse empty;
 #X obj 234 433 cnv 19 95 29 empty \$0-label-collapsed DELAY 12 15 0 24 #bbbbbb #000000 0;
-#X obj 233 432 else/button 97 31 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch empty;
+#X obj 233 432 else/button 97 31 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch \$0-uncollapse-set;
 #X connect 0 0 8 0;
 #X connect 0 1 6 0;
 #X connect 8 0 1 0;

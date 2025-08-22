@@ -53,7 +53,7 @@
 #X connect 7 0 5 0;
 #X restore 551 185 pd init-savestate;
 #N canvas 200 115 351 307 GUI 0;
-#N canvas 185 162 560 506 collapse 0;
+#N canvas 185 162 659 521 collapse 0;
 #X obj 28 150 r \$0-uncollapse;
 #X obj 33 305 r \$0-detatch-hover;
 #X obj 56 459 s \$0-label-collapsed;
@@ -74,6 +74,9 @@
 #X msg 33 407 label CRUSH \, label_font 0 24 \, label_pos 10 15, f 28;
 #X obj 187 322 loadbang;
 #X obj 28 45 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-crush donecanvasdialog 1 1 0 0 0 1 1 144 194 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 355 405 138 44 \, dirty 0 \; \$0-GUI 0;
+#X obj 454 411 s \$0-uncollapse-set;
+#X msg 454 377 readonly \$1;
+#X obj 454 346 else/canvas.edit 3;
 #X connect 0 0 15 0;
 #X connect 1 0 3 0;
 #X connect 3 0 17 0;
@@ -86,6 +89,8 @@
 #X connect 11 0 19 0;
 #X connect 17 0 2 0;
 #X connect 18 0 17 0;
+#X connect 21 0 20 0;
+#X connect 22 0 21 0;
 #X restore 116 47 pd collapse;
 #X restore 549 218 pd GUI;
 #X text 351 128 IN;
@@ -310,7 +315,7 @@
 #X coords 0 0 1 1 144 194 1 15 15;
 #X restore 359 152 pd \$0-crush;
 #X obj 364 413 cnv 19 95 29 empty \$0-label-collapsed CRUSH 10 15 0 24 #bbbbbb #000000 0;
-#X obj 363 412 else/button 97 31 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch empty;
+#X obj 363 412 else/button 97 31 #bbbbbb #bbbbbb 2 1 2 0 1 \$0-detatch \$0-uncollapse-set;
 #X connect 0 0 18 0;
 #X connect 0 1 6 0;
 #X connect 7 0 9 0;

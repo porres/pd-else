@@ -1,4 +1,4 @@
-#N canvas 391 46 486 614 12;
+#N canvas 391 46 555 628 12;
 #X obj 36 65 inlet~;
 #X obj 38 505 outlet~;
 #N canvas 243 43 499 411 preset 0;
@@ -122,15 +122,12 @@
 #X connect 8 0 3 1;
 #X restore 38 183 pd guts;
 #X obj 257 508 cnv 19 55 29 empty \$0-label-collapsed VCA 6 15 0 24 #bbbbbb #000000 0;
-#X obj 256 507 else/button 57 31 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch empty;
+#X obj 256 507 else/button 57 31 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch \$0-uncollapse-set;
 #X obj 317 508 cnv 10 17 15 empty empty ▲ 5 8 0 12 #bbbbbb #000000 0;
 #X obj 317 522 cnv 10 17 15 empty empty ▼ 5 5 0 12 #bbbbbb #000000 0;
 #X obj 316 507 else/button 19 31 #e0e0e0 #808080 2 1 2 0 0 \$0-uncollapse empty;
-#X obj 393 505 else/button 19 31 #e0e0e0 #808080 2 1 2 0 0 \$0-collapse \$0-button;
-#X obj 394 506 cnv 10 17 15 empty \$0-cnv ▼ 5 8 0 12 #bbbbbb #000000 0;
-#X obj 394 520 cnv 10 17 15 empty \$0-cnv ▲ 5 5 0 12 #bbbbbb #000000 0;
 #N canvas 145 126 278 167 GUI 0;
-#N canvas 161 162 463 499 collapse 0;
+#N canvas 161 162 625 564 collapse 0;
 #X obj 28 150 r \$0-uncollapse;
 #X obj 33 305 r \$0-detatch-hover;
 #X obj 56 459 s \$0-label-collapsed;
@@ -148,6 +145,9 @@
 #X obj 290 447 message \; pd-\$0-VCA vis 1;
 #X obj 207 322 loadbang;
 #X obj 28 45 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-VCA donecanvasdialog 1 1 0 0 0 1 1 97 335 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 250 500 91 44 \, dirty 0 \; \$0-GUI 0;
+#X obj 445 424 s \$0-uncollapse-set;
+#X msg 445 390 readonly \$1;
+#X obj 445 359 else/canvas.edit 3;
 #X connect 0 0 11 0;
 #X connect 1 0 3 0;
 #X connect 3 0 12 0;
@@ -160,6 +160,8 @@
 #X connect 12 0 2 0;
 #X connect 13 0 2 0;
 #X connect 15 0 12 0;
+#X connect 18 0 17 0;
+#X connect 19 0 18 0;
 #X restore 88 30 pd collapse;
 #X restore 115 342 pd GUI;
 #N canvas 918 57 131 378 \$0-VCA 0;

@@ -1,4 +1,4 @@
-#N canvas 357 59 691 551 12;
+#N canvas 357 59 596 556 12;
 #X obj 29 35 inlet~;
 #X text 250 147 Gate;
 #X text 345 147 A;
@@ -886,7 +886,7 @@
 #X connect 21 0 3 0;
 #X connect 23 0 6 0;
 #X restore 88 154 pd release;
-#N canvas 185 162 463 499 collapse 0;
+#N canvas 272 215 685 529 collapse 0;
 #X obj 28 150 r \$0-uncollapse;
 #X obj 33 305 r \$0-detatch-hover;
 #X obj 56 459 s \$0-label-collapsed;
@@ -904,6 +904,9 @@
 #X obj 28 184 else/message \; \$0-button readonly 0 \, transparent 2 \; pd-\$0-ADSR donecanvasdialog 1 1 1 0 0 1 1 237 192 15 15 \, vis 0 \; \$0-cnv color #bbbbbb #000000 #000000 \; \$0-m goprect 250 145 250 222 \, dirty 0 \; \$0-GUI 1, f 56;
 #X obj 187 322 loadbang;
 #X obj 28 45 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-ADSR donecanvasdialog 1 1 0 0 0 1 1 237 192 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 305 425 138 44 \, dirty 0 \; \$0-GUI 0;
+#X obj 450 435 s \$0-uncollapse-set;
+#X msg 450 401 readonly \$1;
+#X obj 450 370 else/canvas.edit 3;
 #X connect 0 0 14 0;
 #X connect 1 0 3 0;
 #X connect 3 0 12 0;
@@ -916,10 +919,12 @@
 #X connect 11 0 16 0;
 #X connect 12 0 2 0;
 #X connect 15 0 12 0;
+#X connect 18 0 17 0;
+#X connect 19 0 18 0;
 #X restore 88 30 pd collapse;
 #X restore 80 252 pd GUI;
 #X obj 313 433 cnv 19 95 29 empty \$0-label-collapsed ADSR 20 15 0 24 #bbbbbb #000000 0;
-#X obj 312 432 else/button 97 31 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch empty;
+#X obj 312 432 else/button 97 31 #bbbbbb #bbbbbb 2 1 2 0 1 \$0-detatch \$0-uncollapse-set;
 #N canvas 860 111 271 231 \$0-ADSR 0;
 #N canvas 588 85 625 535 (subpatch) 0;
 #X obj 176 112 cnv 15 235 190 empty empty empty 20 12 0 14 #dbdbdb #373737 0;
@@ -954,9 +959,6 @@
 #X obj 416 433 cnv 10 17 15 empty empty ▲ 5 8 0 12 #bbbbbb #000000 0;
 #X obj 416 447 cnv 10 17 15 empty empty ▼ 5 5 0 12 #bbbbbb #000000 0;
 #X obj 415 432 else/button 19 31 #e0e0e0 #808080 2 1 2 0 0 \$0-uncollapse empty;
-#X obj 456 432 else/button 19 31 #e0e0e0 #808080 2 1 2 0 0 \$0-collapse \$0-button;
-#X obj 457 433 cnv 10 17 15 empty \$0-cnv ▼ 5 8 0 12 #bbbbbb #000000 0;
-#X obj 457 447 cnv 10 17 15 empty \$0-cnv ▲ 5 5 0 12 #bbbbbb #000000 0;
 #X connect 0 0 10 0;
 #X connect 0 1 10 1;
 #X connect 8 0 10 2;

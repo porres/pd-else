@@ -1,4 +1,4 @@
-#N canvas 453 74 567 618 12;
+#N canvas 453 74 635 611 12;
 #X obj 70 38 inlet~;
 #X obj 70 484 outlet~;
 #N canvas 243 43 499 411 preset 0;
@@ -256,6 +256,9 @@
 #X obj 28 184 else/message \; \$0-button readonly 0 \, transparent 2 \; pd-\$0-flanger donecanvasdialog 1 1 1 0 0 1 1 147 187 15 15 \, vis 0 \; \$0-cnv color #bbbbbb #000000 #000000 \; \$0-m goprect 200 115 164 218 \, dirty 0 \; \$0-GUI 1;
 #X obj 187 322 loadbang;
 #X obj 28 45 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-flanger donecanvasdialog 1 1 0 0 0 1 1 147 187 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 215 375 150 44 \, dirty 0 \; \$0-GUI 0;
+#X obj 457 433 s \$0-uncollapse-set;
+#X msg 457 399 readonly \$1;
+#X obj 457 368 else/canvas.edit 3;
 #X connect 0 0 17 0;
 #X connect 1 0 3 0;
 #X connect 3 0 15 0;
@@ -268,6 +271,8 @@
 #X connect 15 0 2 0;
 #X connect 16 0 2 0;
 #X connect 18 0 15 0;
+#X connect 21 0 20 0;
+#X connect 22 0 21 0;
 #X restore 88 30 pd collapse;
 #X msg 71 129 active 0;
 #X msg 51 189 active 1;
@@ -307,7 +312,7 @@
 #X connect 20 0 17 0;
 #X restore 444 285 pd GUI;
 #X obj 221 383 cnv 19 115 29 empty \$0-label-collapsed FLANGER 6 15 0 24 #bbbbbb #000000 0;
-#X obj 220 382 else/button 117 31 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch empty;
+#X obj 220 382 else/button 117 31 #bbbbbb #bbbbbb 2 1 2 0 1 \$0-detatch \$0-uncollapse-set;
 #X obj 342 383 cnv 10 17 15 empty empty ▲ 5 8 0 12 #bbbbbb #000000 0;
 #X obj 342 397 cnv 10 17 15 empty empty ▼ 5 5 0 12 #bbbbbb #000000 0;
 #X obj 341 382 else/button 19 31 #e0e0e0 #808080 2 1 2 0 0 \$0-uncollapse empty;

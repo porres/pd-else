@@ -373,7 +373,7 @@
 #X connect 3 0 2 0;
 #X connect 4 0 6 0;
 #X restore 899 251 pd preset;
-#N canvas 121 45 1158 708 GUI 1;
+#N canvas 121 45 1158 708 GUI 0;
 #X obj 29 10 r \$0-detune1;
 #X obj 29 58 s \$0-set;
 #X obj 126 58 s \$0-set;
@@ -596,7 +596,7 @@
 #X obj 527 216 / 100;
 #X msg 427 339 pan5 \$1;
 #X msg 527 339 pan6 \$1;
-#N canvas 600 116 560 506 collapse 0;
+#N canvas 600 116 631 506 collapse 0;
 #X obj 28 157 r \$0-uncollapse;
 #X obj 33 312 r \$0-detatch-hover;
 #X obj 56 466 s \$0-label-collapsed;
@@ -617,6 +617,9 @@
 #X msg 56 365 label ⤢ \, label_font 0 48 \, label_pos 45 12, f 25;
 #X obj 207 322 loadbang;
 #X obj 28 52 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-6-Op donecanvasdialog 1 1 0 0 0 1 1 427 277 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 150 405 158 44 \, dirty 0 \; \$0-GUI 0;
+#X obj 451 440 s \$0-uncollapse-set;
+#X msg 451 406 readonly \$1;
+#X obj 451 375 else/canvas.edit 3;
 #X connect 0 0 16 0;
 #X connect 1 0 3 0;
 #X connect 3 0 15 0;
@@ -629,6 +632,8 @@
 #X connect 15 0 2 0;
 #X connect 17 0 2 0;
 #X connect 18 0 15 0;
+#X connect 21 0 20 0;
+#X connect 22 0 21 0;
 #X restore 244 485 pd collapse;
 #N canvas 241 122 674 430 tab 0;
 #X msg 93 77 active 0;
@@ -1099,7 +1104,7 @@
 #X restore 68 185 pd pan6;
 #X restore 886 286 pd MIDI-learn;
 #X obj 157 412 cnv 19 115 29 empty \$0-label-collapsed 6-OP\ FM 5 15 0 24 #bbbbbb #000000 0;
-#X obj 156 411 else/button 117 31 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch empty;
+#X obj 156 411 else/button 117 31 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch \$0-uncollapse-set;
 #X obj 282 411 cnv 10 17 15 empty empty ▲ 5 8 0 12 #bbbbbb #000000 0;
 #X obj 282 425 cnv 10 17 15 empty empty ▼ 5 5 0 12 #bbbbbb #000000 0;
 #X obj 281 410 else/button 19 31 #e0e0e0 #808080 2 1 2 0 0 \$0-uncollapse empty;

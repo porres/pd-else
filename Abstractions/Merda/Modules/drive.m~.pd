@@ -53,7 +53,7 @@
 #X connect 7 0 0 0;
 #X restore 351 115 pd init-savestate;
 #N canvas 200 115 337 184 GUI 0;
-#N canvas 150 114 474 510 collapse 0;
+#N canvas 150 114 620 505 collapse 0;
 #X obj 28 150 r \$0-uncollapse;
 #X obj 33 305 r \$0-detatch-hover;
 #X obj 56 459 s \$0-label-collapsed;
@@ -71,6 +71,9 @@
 #X obj 28 184 else/message \; \$0-button readonly 0 \, transparent 2 \; pd-\$0-drive donecanvasdialog 1 1 1 0 0 1 1 117 109 15 15 \, vis 0 \; \$0-cnv color #bbbbbb #000000 #000000 \; \$0-m goprect 200 75 130 140 \, dirty 0 \; \$0-GUI 1;
 #X obj 187 322 loadbang;
 #X obj 28 45 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-drive donecanvasdialog 1 1 0 0 0 1 1 117 109 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 205 250 130 44 \, dirty 0 \; \$0-GUI 0;
+#X obj 432 412 s \$0-uncollapse-set;
+#X msg 432 378 readonly \$1;
+#X obj 432 347 else/canvas.edit 3;
 #X connect 0 0 14 0;
 #X connect 1 0 3 0;
 #X connect 3 0 13 0;
@@ -83,6 +86,8 @@
 #X connect 11 0 16 0;
 #X connect 13 0 2 0;
 #X connect 15 0 13 0;
+#X connect 18 0 17 0;
+#X connect 19 0 18 0;
 #X restore 116 47 pd collapse;
 #X restore 349 148 pd GUI;
 #X text 200 75 IN;
@@ -209,9 +214,9 @@
 #X coords 0 1 100 -1 117 109 1 50 50;
 #X restore 15 15 graph;
 #X coords 0 0 1 1 117 109 1 15 15;
-#X restore 205 95 pd \$0-drive;
+#X restore 206 95 pd \$0-drive;
 #X obj 210 257 cnv 19 95 29 empty \$0-label-collapsed DRIVE 10 15 0 24 #bbbbbb #000000 0;
-#X obj 209 256 else/button 97 31 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch empty;
+#X obj 209 256 else/button 97 31 #bbbbbb #bbbbbb 2 1 2 0 1 \$0-detatch \$0-uncollapse-set;
 #X connect 0 0 10 0;
 #X connect 0 1 6 0;
 #X connect 7 0 9 0;

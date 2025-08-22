@@ -122,7 +122,7 @@
 #X msg 115 213 set \$1 Hz;
 #X obj 115 113 f;
 #X obj 128 83 sel 0;
-#N canvas 185 162 461 508 collapse 0;
+#N canvas 185 162 682 544 collapse 0;
 #X obj 28 150 r \$0-uncollapse;
 #X obj 33 305 r \$0-detatch-hover;
 #X obj 56 459 s \$0-label-collapsed;
@@ -140,6 +140,9 @@
 #X msg 56 358 label ⤢ \, label_font 0 48 \, label_pos 22 12, f 25;
 #X obj 207 322 loadbang;
 #X obj 28 45 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-ring donecanvasdialog 1 1 0 0 0 1 1 96 195 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 230 375 104 44 \, dirty 0 \; \$0-GUI 0;
+#X obj 463 433 s \$0-uncollapse-set;
+#X msg 463 399 readonly \$1;
+#X obj 463 368 else/canvas.edit 3;
 #X connect 0 0 12 0;
 #X connect 1 0 3 0;
 #X connect 3 0 13 0;
@@ -152,6 +155,8 @@
 #X connect 13 0 2 0;
 #X connect 14 0 2 0;
 #X connect 15 0 13 0;
+#X connect 18 0 17 0;
+#X connect 19 0 18 0;
 #X restore 229 344 pd collapse;
 #X connect 0 0 10 0;
 #X connect 1 0 0 0;
@@ -254,7 +259,7 @@
 #X restore 52 107 pd att-knob;
 #X restore 423 270 pd MIDI-learn;
 #X obj 237 383 cnv 19 66 29 empty \$0-label-collapsed RING 5 15 0 24 #bbbbbb #000000 0;
-#X obj 236 382 else/button 68 31 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch empty;
+#X obj 236 382 else/button 68 31 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch \$0-uncollapse-set;
 #X obj 310 383 cnv 10 17 15 empty empty ▲ 5 8 0 12 #bbbbbb #000000 0;
 #X obj 310 397 cnv 10 17 15 empty empty ▼ 5 5 0 12 #bbbbbb #000000 0;
 #X obj 309 382 else/button 19 31 #e0e0e0 #808080 2 1 2 0 0 \$0-uncollapse empty;
