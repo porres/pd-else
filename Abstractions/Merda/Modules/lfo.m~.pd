@@ -85,8 +85,8 @@
 #X obj 284 458 message \; pd-\$0-ADSR vis 1;
 #X msg 44 418 label LFO \, label_font 0 24 \, label_pos 20 15, f 27;
 #X obj 28 184 else/message \; \$0-button readonly 0 \, transparent 2 \; pd-\$0-LFO donecanvasdialog 1 1 1 0 0 1 1 172 222 15 15 \, vis 0 \; \$0-cnv color #bbbbbb #000000 #000000 \; \$0-m goprect 50 50 189 255 \, dirty 0 \; \$0-GUI 1, f 55;
-#X obj 28 45 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-ALFO donecanvasdialog 1 1 1 0 0 1 1 172 222 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 80 325 135 44 \, dirty 0 \; \$0-GUI 0;
 #X obj 187 322 loadbang;
+#X obj 28 45 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-ALFO donecanvasdialog 1 1 0 0 0 1 1 172 222 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 80 325 135 44 \, dirty 0 \; \$0-GUI 0;
 #X connect 0 0 14 0;
 #X connect 1 0 3 0;
 #X connect 3 0 13 0;
@@ -96,9 +96,9 @@
 #X connect 7 0 10 0;
 #X connect 10 0 8 0;
 #X connect 10 1 9 0;
-#X connect 11 0 15 0;
+#X connect 11 0 16 0;
 #X connect 13 0 2 0;
-#X connect 16 0 13 0;
+#X connect 15 0 13 0;
 #X restore 200 41 pd collapse;
 #X connect 0 0 10 0;
 #X connect 1 0 0 0;

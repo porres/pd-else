@@ -59,8 +59,8 @@
 #X msg 57 419 label PLUCK \, label_font 0 24 \, label_pos 10 15, f 29;
 #X obj 314 459 message \; pd-\$0-pluck vis 1;
 #X obj 28 189 else/message \; \$0-button readonly 0 \, transparent 2 \; pd-\$0-pluck donecanvasdialog 1 1 1 0 0 1 1 147 253 15 15 \, vis 0 \; \$0-cnv color #bbbbbb #000000 #000000 \; \$0-m goprect 50 50 165 286 \, dirty 0 \; \$0-GUI 1, f 55;
-#X obj 28 50 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-pluck donecanvasdialog 1 1 1 0 0 1 1 147 253 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 65 350 138 44 \, dirty 0 \; \$0-GUI 0;
 #X obj 207 322 loadbang;
+#X obj 28 50 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-pluck donecanvasdialog 1 1 0 0 0 1 1 147 253 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 65 350 138 44 \, dirty 0 \; \$0-GUI 0;
 #X connect 0 0 14 0;
 #X connect 1 0 3 0;
 #X connect 3 0 12 0;
@@ -70,9 +70,9 @@
 #X connect 7 0 10 0;
 #X connect 10 0 8 0;
 #X connect 10 1 9 0;
-#X connect 11 0 15 0;
+#X connect 11 0 16 0;
 #X connect 12 0 2 0;
-#X connect 16 0 12 0;
+#X connect 15 0 12 0;
 #X restore 946 45 pd collapse;
 #X connect 0 0 24 0;
 #X connect 1 0 7 0;

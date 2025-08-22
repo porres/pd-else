@@ -207,8 +207,8 @@
 #X obj 290 454 message \; pd-\$0-chorus vis 1;
 #X msg 33 414 label CHORUS \, label_font 0 24 \, label_pos 5 15, f 28;
 #X obj 28 189 else/message \; \$0-button readonly 0 \, transparent 2 \; pd-\$0-chorus donecanvasdialog 1 1 1 0 0 1 1 177 137 15 15 \, vis 0 \; \$0-arrows bgcolor 187 187 187 \, color 0 0 0 \; \$0-m goprect 200 125 196 180 \, dirty 0 \; \$0-GUI 1, f 56;
-#X obj 28 50 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-chorus donecanvasdialog 1 1 1 0 0 1 1 177 137 15 15 \; \$0-arrows bgcolor 224 224 224 \, color 224 224 224 \; \$0-m goprect 225 375 138 44 \, dirty 0 \; \$0-GUI 0;
 #X obj 187 322 loadbang;
+#X obj 28 50 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-chorus donecanvasdialog 1 1 0 0 0 1 1 177 137 15 15 \; \$0-arrows bgcolor 224 224 224 \, color 224 224 224 \; \$0-m goprect 225 375 138 44 \, dirty 0 \; \$0-GUI 0;
 #X connect 0 0 17 0;
 #X connect 1 0 3 0;
 #X connect 3 0 16 0;
@@ -218,9 +218,9 @@
 #X connect 7 0 10 0;
 #X connect 10 0 8 0;
 #X connect 10 1 9 0;
-#X connect 11 0 18 0;
+#X connect 11 0 19 0;
 #X connect 16 0 2 0;
-#X connect 19 0 16 0;
+#X connect 18 0 16 0;
 #X restore 264 219 pd collapse;
 #X connect 0 0 3 0;
 #X connect 1 0 4 0;

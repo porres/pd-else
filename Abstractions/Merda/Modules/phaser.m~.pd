@@ -89,8 +89,8 @@
 #X obj 290 447 message \; pd-\$0-phaser vis 1;
 #X obj 28 184 else/message \; \$0-button readonly 0 \, transparent 2 \; pd-\$0-phaser donecanvasdialog 1 1 1 0 0 1 1 177 137 15 15 \, vis 0 \; \$0-cnv color #bbbbbb #000000 #000000 \; \$0-m goprect 200 125 197 175 \, dirty 0 \; \$0-GUI 1;
 #X msg 33 407 label PHASER \, label_font 0 24 \, label_pos 4 15, f 30;
-#X obj 28 45 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-phaser donecanvasdialog 1 1 1 0 0 1 1 177 137 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 225 350 138 44 \, dirty 0 \; \$0-GUI 0;
 #X obj 187 322 loadbang;
+#X obj 28 45 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-phaser donecanvasdialog 1 1 0 0 0 1 1 177 137 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 225 350 138 44 \, dirty 0 \; \$0-GUI 0;
 #X connect 0 0 13 0;
 #X connect 1 0 3 0;
 #X connect 3 0 14 0;
@@ -100,9 +100,9 @@
 #X connect 7 0 10 0;
 #X connect 10 0 8 0;
 #X connect 10 1 9 0;
-#X connect 11 0 15 0;
+#X connect 11 0 16 0;
 #X connect 14 0 2 0;
-#X connect 16 0 14 0;
+#X connect 15 0 14 0;
 #X restore 348 46 pd collapse;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

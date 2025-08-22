@@ -902,8 +902,8 @@
 #X msg 33 407 label ADSR \, label_font 0 24 \, label_pos 20 15, f 28;
 #X obj 290 447 message \; pd-\$0-ADSR vis 1;
 #X obj 28 184 else/message \; \$0-button readonly 0 \, transparent 2 \; pd-\$0-ADSR donecanvasdialog 1 1 1 0 0 1 1 237 192 15 15 \, vis 0 \; \$0-cnv color #bbbbbb #000000 #000000 \; \$0-m goprect 250 145 250 222 \, dirty 0 \; \$0-GUI 1, f 56;
-#X obj 28 45 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-ADSR donecanvasdialog 1 1 1 0 0 1 1 237 192 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 305 425 138 44 \, dirty 0 \; \$0-GUI 0;
 #X obj 187 322 loadbang;
+#X obj 28 45 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-ADSR donecanvasdialog 1 1 0 0 0 1 1 237 192 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 305 425 138 44 \, dirty 0 \; \$0-GUI 0;
 #X connect 0 0 14 0;
 #X connect 1 0 3 0;
 #X connect 3 0 12 0;
@@ -913,9 +913,9 @@
 #X connect 7 0 10 0;
 #X connect 10 0 8 0;
 #X connect 10 1 9 0;
-#X connect 11 0 15 0;
+#X connect 11 0 16 0;
 #X connect 12 0 2 0;
-#X connect 16 0 12 0;
+#X connect 15 0 12 0;
 #X restore 88 30 pd collapse;
 #X restore 80 252 pd GUI;
 #X obj 313 433 cnv 19 95 29 empty \$0-label-collapsed ADSR 20 15 0 24 #bbbbbb #000000 0;

@@ -218,8 +218,8 @@
 #X obj 28 189 else/message \; \$0-button readonly 0 \, transparent 2 \; pd-\$0-plaits donecanvasdialog 1 1 1 0 0 1 1 402 230 15 15 \, vis 0 \; \$0-cnv color #bbbbbb #000000 #000000 \; \$0-m goprect 400 125 418 259 \, dirty 0 \; \$0-GUI 1;
 #X msg 57 419 label PLAITS \, label_font 0 24 \, label_pos 5 15, f 30;
 #X obj 314 459 message \; pd-\$0-plaits vis 1;
-#X obj 28 50 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-plaits donecanvasdialog 1 1 1 0 0 1 1 215 215 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 500 405 138 44 \, dirty 0 \; \$0-GUI 0;
 #X obj 209 322 loadbang;
+#X obj 28 50 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-plaits donecanvasdialog 1 1 0 0 0 1 1 215 215 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 500 405 138 44 \, dirty 0 \; \$0-GUI 0;
 #X connect 0 0 12 0;
 #X connect 1 0 3 0;
 #X connect 3 0 13 0;
@@ -229,9 +229,9 @@
 #X connect 7 0 10 0;
 #X connect 10 0 8 0;
 #X connect 10 1 9 0;
-#X connect 11 0 15 0;
+#X connect 11 0 16 0;
 #X connect 13 0 2 0;
-#X connect 16 0 13 0;
+#X connect 15 0 13 0;
 #X restore 866 366 pd collapse;
 #X connect 0 0 3 0;
 #X connect 1 0 3 0;

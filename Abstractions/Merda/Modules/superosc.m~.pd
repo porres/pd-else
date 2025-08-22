@@ -47,8 +47,8 @@
 #X msg 33 407 label SUPER-OSC \, label_font 0 24 \, label_pos 2 15, f 33;
 #X msg 56 358 label ⤢ \, label_font 0 48 \, label_pos 58 12, f 25;
 #X obj 28 184 else/message \; \$0-button readonly 0 \, transparent 2 \; pd-\$0-super donecanvasdialog 1 1 1 0 0 1 1 174 277 15 15 \, vis 0 \; \$0-cnv color #bbbbbb #000000 #000000 \; \$0-m goprect 50 50 190 308 \, dirty 0 \; \$0-GUI 1;
-#X obj 28 45 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-super donecanvasdialog 1 1 1 0 0 1 1 174 277 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 50 400 170 44 \, dirty 0 \; \$0-GUI 0;
 #X obj 207 322 loadbang;
+#X obj 28 45 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-super donecanvasdialog 1 1 0 0 0 1 1 174 277 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 50 400 170 44 \, dirty 0 \; \$0-GUI 0;
 #X connect 0 0 14 0;
 #X connect 1 0 3 0;
 #X connect 3 0 12 0;
@@ -57,10 +57,10 @@
 #X connect 6 0 9 0;
 #X connect 9 0 7 0;
 #X connect 9 1 8 0;
-#X connect 10 0 15 0;
+#X connect 10 0 16 0;
 #X connect 12 0 2 0;
 #X connect 13 0 2 0;
-#X connect 16 0 12 0;
+#X connect 15 0 12 0;
 #X restore 82 42 pd collapse;
 #X connect 0 0 1 0;
 #X connect 2 0 5 0;

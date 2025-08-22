@@ -186,8 +186,8 @@
 #X msg 57 419 label REVERB \, label_font 0 24 \, label_pos 5 15, f 30;
 #X obj 314 459 message \; pd-\$0-rev vis 1;
 #X obj 28 189 else/message \; \$0-button readonly 0 \, transparent 2 \; pd-\$0-rev donecanvasdialog 1 1 1 0 0 1 1 150 250 15 15 \, vis 0 \; \$0-cnv color #bbbbbb #000000 #000000 \; \$0-m goprect 200 125 165 282 \, dirty 0 \; \$0-GUI 1, f 55;
-#X obj 28 50 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-rev donecanvasdialog 1 1 1 0 0 1 1 150 250 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 200 425 138 44 \, dirty 0 \; \$0-GUI 0;
 #X obj 207 322 loadbang;
+#X obj 28 50 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-rev donecanvasdialog 1 1 0 0 0 1 1 150 250 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 200 425 138 44 \, dirty 0 \; \$0-GUI 0;
 #X connect 0 0 14 0;
 #X connect 1 0 3 0;
 #X connect 3 0 12 0;
@@ -197,9 +197,9 @@
 #X connect 7 0 10 0;
 #X connect 10 0 8 0;
 #X connect 10 1 9 0;
-#X connect 11 0 15 0;
+#X connect 11 0 16 0;
 #X connect 12 0 2 0;
-#X connect 16 0 12 0;
+#X connect 15 0 12 0;
 #X restore 44 71 pd collapse;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;

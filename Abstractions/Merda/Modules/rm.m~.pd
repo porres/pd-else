@@ -138,8 +138,8 @@
 #X obj 28 184 else/message \; \$0-button readonly 0 \, transparent 2 \; pd-\$0-ring donecanvasdialog 1 1 1 0 0 1 1 96 195 15 15 \, vis 0 \; \$0-cnv color #bbbbbb #000000 #000000 \; \$0-m goprect 250 125 108 223 \, dirty 0 \; \$0-GUI 1, f 55;
 #X msg 33 407 label RING \, label_font 0 24 \, label_pos 5 15, f 28;
 #X msg 56 358 label ⤢ \, label_font 0 48 \, label_pos 22 12, f 25;
-#X obj 28 45 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-ring donecanvasdialog 1 1 1 0 0 1 1 96 195 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 230 375 104 44 \, dirty 0 \; \$0-GUI 0;
 #X obj 207 322 loadbang;
+#X obj 28 45 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-ring donecanvasdialog 1 1 0 0 0 1 1 96 195 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 230 375 104 44 \, dirty 0 \; \$0-GUI 0;
 #X connect 0 0 12 0;
 #X connect 1 0 3 0;
 #X connect 3 0 13 0;
@@ -148,10 +148,10 @@
 #X connect 6 0 9 0;
 #X connect 9 0 7 0;
 #X connect 9 1 8 0;
-#X connect 10 0 15 0;
+#X connect 10 0 16 0;
 #X connect 13 0 2 0;
 #X connect 14 0 2 0;
-#X connect 16 0 13 0;
+#X connect 15 0 13 0;
 #X restore 229 344 pd collapse;
 #X connect 0 0 10 0;
 #X connect 1 0 0 0;

@@ -488,8 +488,8 @@
 #X obj 290 447 message \; pd-\$0-gendyn vis 1;
 #X msg 33 407 label GENDYN \, label_font 0 24 \, label_pos 6 15, f 31;
 #X obj 28 184 else/message \; \$0-button readonly 0 \, transparent 2 \; pd-\$0-gendyn donecanvasdialog 1 1 1 0 0 1 1 202 212 15 15 \, vis 0 \; \$0-cnv color #bbbbbb #000000 #000000 \; \$0-m goprect 50 50 218 247 \, dirty 0 \; \$0-GUI 1;
-#X obj 28 46 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-gendyn donecanvasdialog 1 1 1 0 0 1 1 202 212 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 75 325 135 44 \, dirty 0 \; \$0-GUI 0;
 #X obj 187 322 loadbang;
+#X obj 28 46 else/message \; \$0-button readonly 1 \, transparent 3 \; pd-\$0-gendyn donecanvasdialog 1 1 0 0 0 1 1 202 212 15 15 \; \$0-cnv color #dbdbdb #000000 #dbdbdb \; \$0-m goprect 75 325 135 44 \, dirty 0 \; \$0-GUI 0;
 #X connect 0 0 14 0;
 #X connect 1 0 3 0;
 #X connect 3 0 13 0;
@@ -498,10 +498,10 @@
 #X connect 6 0 9 0;
 #X connect 9 0 7 0;
 #X connect 9 1 8 0;
-#X connect 10 0 15 0;
+#X connect 10 0 16 0;
 #X connect 11 0 2 0;
 #X connect 13 0 2 0;
-#X connect 16 0 13 0;
+#X connect 15 0 13 0;
 #X restore 159 375 pd collapse;
 #X connect 0 0 14 0;
 #X connect 1 0 0 0;
