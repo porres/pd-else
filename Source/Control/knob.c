@@ -2080,6 +2080,10 @@ static t_edit_proxy *edit_proxy_new(t_knob *x, t_symbol *s){
 }
 
 static void knob_free(t_knob *x){
+#ifndef PDINSTANCE
+    mouse_gui_stoppolling((t_pd *)x);
+    mouse_gui_unbindmouse((t_pd *)x);
+#endif
     pd_unbind((t_pd *)x, gensym("#keyname"));
     if(x->x_rcv != gensym("empty"))
         pd_unbind(&x->x_obj.ob_pd, x->x_rcv);
@@ -2090,10 +2094,6 @@ static void knob_free(t_knob *x){
     }
     x->x_proxy->p_cnv = NULL;
     pdgui_stub_deleteforkey(x);
-#ifndef PDINSTANCE
-    mouse_gui_stoppolling((t_pd *)x);
-    mouse_gui_unbindmouse((t_pd *)x);
-#endif
 }
 
 static void *knob_new(t_symbol *s, int ac, t_atom *av){
