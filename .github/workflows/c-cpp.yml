@@ -34,7 +34,7 @@ jobs:
       - name: Downloads pd-Sources
         shell: bash
         run: |
-          curl -L -o pure-data.zip https://api.github.com/repos/pure-data/pure-data/zipball/refs/tags/0.56-0test2
+          curl -L -o pure-data.zip https://api.github.com/repos/pure-data/pure-data/zipball/refs/tags/0.56-1
           unzip pure-data.zip
           rm pure-data.zip
           mv pure-data-* pure-data
@@ -81,7 +81,7 @@ jobs:
       - name: Downloads pd sources
         shell: bash
         run: |
-          curl -L -o pure-data.zip https://api.github.com/repos/pure-data/pure-data/zipball/refs/tags/0.56-0test2
+          curl -L -o pure-data.zip https://api.github.com/repos/pure-data/pure-data/zipball/refs/tags/0.56-1
           unzip pure-data.zip
           rm pure-data.zip
           mv pure-data-* pure-data
@@ -129,10 +129,10 @@ jobs:
       - name: Get Pd
         shell: bash
         run: |
-          curl -L -o pure-data.zip http://msp.ucsd.edu/Software/pd-0.56-0test2.msw.zip
+          curl -L -o pure-data.zip http://msp.ucsd.edu/Software/pd-0.56-1.msw.zip
           unzip pure-data.zip
           rm pure-data.zip
-          mv pd-0.56-0test2 pd
+          mv pd-0.56-1 pd
 
       - name: Install Vorbis/Ogg dependencies
         shell: msys2 {0}
