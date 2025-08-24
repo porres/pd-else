@@ -4,7 +4,7 @@
 #X obj 333 385 about.MERDA;
 #X text 251 303 this is still a simple module \, with no CV input yet \, so kinda like a pedal still., f 22;
 #X obj 192 159 osc~ 1;
-#X obj 91 41 osc~ 440;
+#X obj 91 81 osc~ 440;
 #X obj 91 209 else/rm.m~;
 #A saved 20 0 1;
 #A saved;
@@ -29,7 +29,8 @@
 #X connect 5 0 3 0;
 #X connect 7 0 6 0;
 #X connect 8 0 7 0;
-#X restore 118 101 pd messages;
+#X restore 118 121 pd messages;
+#X obj 54 29 else/note 335 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [rm.m~] - Ring Modulator;
 #X connect 4 0 6 1;
 #X connect 5 0 6 0;
 #X connect 6 0 7 0;

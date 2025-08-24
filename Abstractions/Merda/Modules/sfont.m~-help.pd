@@ -1,7 +1,7 @@
 #N canvas 456 71 685 530 12;
-#X obj 53 53 else/keyboard 17 80 5 2 0 0 empty empty;
-#X obj 51 405 else/out~;
-#X obj 51 206 else/sfont.m~;
+#X obj 53 76 else/keyboard 17 80 5 2 0 0 empty empty;
+#X obj 51 428 else/out~;
+#X obj 51 229 else/sfont.m~;
 #A saved sf/GeneralUser_GS.sf3 9 1;
 #N canvas 293 107 449 284 messages 0;
 #X obj 102 186 outlet;
@@ -18,10 +18,11 @@
 #X connect 5 0 0 0;
 #X connect 6 0 7 0;
 #X connect 7 0 0 0;
-#X restore 82 166 pd messages;
-#X obj 471 251 else/sfont~;
-#X text 351 218 This is a wrapper around [sfont~] \, check it out:, f 35;
-#X text 352 289 In this still experimental and minimal module \, you can choose the program from the popup menu and load sound fonts from the bang button (the file name is shown below). The default sound font is "GeneralUser_GS.sf3" \, which comes as part of ELSE., f 38;
+#X restore 82 189 pd messages;
+#X obj 463 256 else/sfont~;
+#X text 343 223 This is a wrapper around [sfont~] \, check it out:, f 35;
+#X text 344 294 In this still experimental and minimal module \, you can choose the program from the popup menu and load sound fonts from the bang button (the file name is shown below). The default sound font is "GeneralUser_GS.sf3" \, which comes as part of ELSE., f 38;
+#X obj 125 22 else/note 415 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [sfont.m~] - Soundfont synthesizer;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X connect 2 1 1 1;
