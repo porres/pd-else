@@ -1,4 +1,4 @@
-#N canvas 302 23 980 635 12;
+#N canvas 300 34 980 635 12;
 #X declare -path else;
 #X obj 262 408 *;
 #X obj 262 431 display;
@@ -60,13 +60,13 @@
 #X obj 770 210 print control;
 #X text 228 183 [display] object \, from ELSE displays control messages, f 27;
 #X text 33 19 Audio block:;
-#X text 32 235 Latency is the time it takes for an audio process to come out. Within any audio application \, the latency depends mostly on the block size and sample rate. The 64 block size then can represent a lower latency if the sample rate is higher. At 44.1 Khz \, this is about 1.45 ms \, but a sample rate of 88.2 khz would be half of it. See below how the [blocksize~] object can also report the block size in ms and how to calculate that as we've seen before.;
 #X text 33 508 The block size needs to be always 64 samples for [adc~] and [dac~] \, but we can change the block size with the native [block~] object. Despite being redundant \, we have this object below setting a block size of 64 samples.;
 #X text 497 87 The control version of this object is [print]. To reinforce the difference between audio and control objects \, note how the [print] object prints ininterruptly when requested \, but [print~] only operates when the DSP is on., f 63;
 #X text 498 262 Changing the block size with [block~] affects its containing window and subpatches. We usually do this in a subpatch so it only affects that subwindow (and possible further subpatches). This way you can have a subpatch with a block size different than 64 samples and avoid conflicts with [adc~] and [dac~] objects in the patch's main window (which maintains the default block size of 64)., f 63;
 #X text 498 371 In this tutorial we use [block~] to perform one sample feedbacks (that is a block of audio with only one sample) and to perform FFT analysis (with block much larger than 64 samples). A larger block promotes more internal latency in the patch \, which is equal to "block size" minus 64 (we'll see how that works later on when dealing with FFT). The [block~] object can also locally change the sample rate and we'll see it in a bit., f 63;
 #X text 497 488 The [switch~] object has the exact same functions as [block~] \, but can also turn the audio process on or off locally. This can be the whole patch or just a subpatch (and its containing subwindows). This is useful because audio objects will consume CPU power whenever the DSP is on \, so we can save a little when we're not using it. Now click and open the subpatches below for more details:, f 63;
 #X obj 796 12 declare -path else;
+#X text 32 235 Latency is the time it takes for an audio process to come out. Within any audio application \, the latency depends mostly on the block size and sample rate. The 64 block size then can represent a lower latency if the sample rate is higher. At 48 Khz this is 1.33 ms. 44.1 Khz gives about 1.45 ms (and a sample rate of 88.2 khz would be half of it). See below how the [blocksize~] object can also report the block size in ms and how to calculate that as we've seen before.;
 #X connect 0 0 1 0;
 #X connect 2 0 0 1;
 #X connect 3 0 0 0;

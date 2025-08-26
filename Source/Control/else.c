@@ -21,7 +21,7 @@ static int else_major = 1;
 static int else_minor = 0;
 static int else_bugfix = 0;
 
-#define STATUS "rc"
+#define STATUS "rc test release"
 static int status_number = 14;
 
 extern void lua_setup();
@@ -67,7 +67,7 @@ void else_obj_about(t_else_obj *x){
     post("-------------------------------------------------------------------");
     post("  -----> ELSE - EL Locus Solus' Externals for Pure Data <-----");
     post("-------------------------------------------------------------------");
-    post("- Version: %d.%d-%d %s-%d; Released planned for September 04th 2025", else_major, else_minor, else_bugfix, STATUS, status_number);
+    post("- Version: %d.%d-%d %s-%d; Released planned for September 2nd 2025", else_major, else_minor, else_bugfix, STATUS, status_number);
     post("- Author: Alexandre Torres Porres & others");
     post("ELSE binary loaded from: %s", else_obj_class->c_externdir->s_name);
     post("- Repository: https://github.com/porres/pd-else");
@@ -93,13 +93,14 @@ void else_obj_about(t_else_obj *x){
     post("\"Live-Electronics-Tutorial\" folder inside the ELSE folder.");
     post("It has a CC license. Please check its README on how to install it!");
     post("-------------------------------------------------------------------");
-    post("- ALSO NOTE: Loading this binary did not install the ELSE library,");
-    post("you must add it to the \"path preferences\" or use");
-    post("[declare -path else] to load objects without a prefix");
+    post("- ALSO NOTE: Loading this binary did partially install the ELSE");
+    post("library, but you also must add it to the \"path preferences\" or");
+    post("use [declare -path else] to load objects without a prefix.");
     post("-------------------------------------------------------------------");
     post("- ALSO ALSO NOTE: Loading this binary did install an object browser");
     post("plugin for Vanilla and ELSE objects when right clicking on a canvas.");
-    post("This binary also loads a simplified version of pdlua.");
+    post("This binary also loads a simplified version of pdlua & dependencies.");
+    post("for many objects.");
     post("-------------------------------------------------------------------");
     post("-------------------------------------------------------------------");
     post("- ALSO ALSO ALSO NOTE: ELSE has a sublibrary called MERDA, for");

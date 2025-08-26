@@ -46,7 +46,7 @@
 #X obj 442 262 follow~ -f 0 500;
 #X obj 424 344 lin2db;
 #X obj 424 314 f;
-#X text 414 28 The version below is with ELSE objects. In both \, we use the output of wither [env~] of [rms~] to collect the peak amplitude envelope - which happens at every 11 ms or so at 44.1 Khz., f 30;
+#X text 414 28 The version below is with ELSE objects. In both \, we use the output of either [env~] or [rms~] to collect the peak amplitude envelope - which happens at every 11 ms or so at 48 Khz., f 30;
 #X connect 0 0 5 0;
 #X connect 1 0 4 0;
 #X connect 2 0 3 0;
