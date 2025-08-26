@@ -3,16 +3,16 @@
 -------------------------------------------------------------------------
 
 
-cmake -BBuild -DPD_PATH="/Applications/Pd-0.56-0.app/Contents/Resources/"
+cmake -BBuild -DPD_PATH="/Applications/Pd-0.56-1.app/Contents/Resources/"
 cd Build
 make -j7
 
 
-cmake -BBuild -DPD_FLOATSIZE64=1 -DPD_PATH="/Applications/Pd-0.56-0.app/Contents/Resources/"
+cmake -BBuild -DPD_FLOATSIZE64=1 -DPD_PATH="/Applications/Pd-0.56-1.app/Contents/Resources/"
 cd Build
 make -j7
 
-cmake -BBuild -DPD_PATH=/Applications/Pd-0.56-0.app/Contents/Resources -DPD_EXTENSION=".pd_darwin"
+cmake -BBuild -DPD_PATH=/Applications/Pd-0.56-1.app/Contents/Resources -DPD_EXTENSION=".pd_darwin"
 
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
@@ -75,7 +75,7 @@ make install objectsdir=../ floatsize=64 extension=darwin-amd64-64.so
 
 --------------------------------------------------------------------------------------
 
-./deken upload -v 1.0-0_rc13-with_live_electronics_tutorial else --no-source-error
+./deken upload -v 1.0-0_rc14-with_live_electronics_tutorial else --no-source-error
 
 --------------------------------------------------------------------------------------
 

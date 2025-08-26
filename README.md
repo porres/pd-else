@@ -6,7 +6,7 @@
 
 ### Version: 1.0-0 RC-14 (release candidate #14) With Live Electronics Tutorial!
 
-### Scheduled Release: September 4th 2025
+### Scheduled Release: September 2nd 2025
 
 Copyright © 2017-2025 Alexandre Torres Porres and others
 

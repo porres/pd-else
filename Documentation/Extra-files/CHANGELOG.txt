@@ -10,6 +10,74 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 
 
 ----------------------------------------------------------------------------
+1.0-0 Release Candidate 14:
+----------------------------------------------------------------------------
+
+**LIBRARY:**
+
+Breaking changes:
+- [brane.m~] changed arguments.
+- [play.file~] removed "stream" support (use [streamin~] now). By the way, the streaming wasn't really working for all links and I fixed into the new object.
+- [dir] open without a symbol now opens a dialog instead of loading the else directory. If needed, this directory is given by the [else] binary since the previous version.
+- [pan2~] removed -mc flag, the MC support now is different and more like other objects in ELSE
+- [pan~]/[pan.mc~] radians input mode is removed (the input in polar form had an issue and the way to fix it was using a new cartesian mode instead). Offset is now normalized from 0-1.
+- [count]: 'alt' message does not take a float argument anymore.
+- [norm~] window size is now in ms, not samples
+- [mov.avg~] removed 'abs' (absolute) mode
+- [button] changed some messages and behaviour to make it possible to use it with [presets] (unlike [tgl], which is impossible). Changed color args and message so it also takes symbols.
+- Deleted [sigs~], use [sig~] now that it has the same functionality since 0.56-0
+- [timed.gate~] removed 2nd argument
+- [del~] has been deprecated and virtually deleted, use [del.in~] / [del.out~] now - the object hasn't been removed really but will be in version 1.0!
+- [trig.delay2~] has been deprecated and virtually deleted, the same functionality has been added to [trig.delay~] - the object hasn't been removed really but will be in version 1.0!
+
+Enhancements/fixes/other changes:
+- [norm~] fixed the algorithm, which was pretty bad. Added an inlet for window time.
+- fixed load message in [sfload] for loading a single channel to an array
+- Fixed compulation issues for some Linux distributions with objects linked to ffmpeg
+- [lowpass~]/[highpass~] fixed regression bug in RC13 where they got ruined (specially [highpass~]).
+- [knob]/[popmenu]/[numbox~], fixed bug to allow opening multiple properties windows.
+- [knob] Added feedback protection for send/receive (this could blow up Pd before and now it reports an error like atom boxes). Fixed bugs in circular dragging mode. Added a new circular mode for "infinite knob" (which increments infinitely, while the regular circular mode just loops). Added inc/dec messages to increase and decrease, which is like using arrow keys and a "shift" message, which also useful for receiving values from a MIDI input infinite knob. Added support for mouse wheel scrolling when the object is active, which works for all modes and seems better suited for the circular modes. Now [knob] only understand double click to "reset", so it needs 0.56-0 to work inside abstractions (as with MERDA modules). Added better support to set color names supported by tcl/tk. Added a new 'colors' message to set all colors (background, arc color and foreground) at once. Added "theme" awareness, which is taking the colors set in Pd (also needs 0.56-0) and a mode for a transparent background. Added a new "show number" mode, where it starts showing the number value if you hover the mouse on top of the object. A hover send symbol also lets you react to hover status. Now the 'var' symbol is also used for special symbols like learn/forget/hover. Added a resizing handle so you can resize the knob when in edit mode by clicking and dragging on the bottom right corner! I can't believe what a feature creep bloated monster this became... but I think I'm finally done and have all I wanted it here.
+- [button] added a new 'click' mode (which outputs click, double click and modifiers), readonly, added a new oval style mode, transparency, plus send/receive symbol and hovering.
+- [dir] is now an abstraction based on [file], which gets this out of my back and makes it more portable I hope :) there was a Debian/Linux bug that also got fixed with this! Added a mechanism to show just files or just folders. Added new 'show' / 'hide' methods to show you the files/folders from the directory in a 'text' window. A click opens the dialog window to choose the directory. Added a new 'random' message to pick a random possibility from the directory. A show/hide message show the contents of a directory and shift+clicking also shows it.
+- [vocoder~] now there's a default argument for number of channels (16). And it sounds better now I think, as I fixed/improved the [norm~] object used for normalization.
+- [merge] fixed a bug where sometimes a cold inlet would trigger the object.
+- [unmerge] fixed output on extra outlet.
+- [mouse] added 2 outlets for "mouse wheel" scrolling.
+- [db2lin]/[lin2db] added support for list input.
+- [vsaw~] fixed phase bug.
+- [colors] added functionality to convert symbols supported by tcl/tk (black, white, green, purple, magenta, chocolate, misty rose, etc).
+- [count] Added random mode and fixed some bugs.
+- [spectrograph~] Fixed resizing dimensions when in dB mode. Removed -db/-log flag, now it defaults to these settings, use messages to change 
+- [spectograph~] and [graph~] now hide their names with the new 'visname' message to arrays from 0.56-0.
+- [timed.gate~] added 2nd outlet that sends impulses when gate hasn't finished.
+- Added MC support to: [float2imp~], [timed.gate~] and [pan~].
+- [pan2~] implemented a new MC support mode that the object now reacts to MC input. A new 'pan' message sets panning for all channels.
+- [pan~]/[pan.mc~] added 'open' mode and "pan/gain/spread" messages to set parameters when no signals are connected. Added a new cartesian input.
+- [pad] added transparency and improved the code so it doesn't redraw all the time.
+- [slider2d] fixed initialization
+- [range.hsl~] fixed GOP bug where it didn't work at all.
+- [expand~] fixed the gain compensation formula (yikes)
+- [trig.delay~] fixed timing accuracy and added ignore mode.
+- M.E.R.D.A: fixed init errors in [pluck.m~]/[plaits.m~]. Implemented a new mechanism for minimizing and maximizing the GUI or opening at a new window. Added "tab" navigation for most knobs in the modules. Many improvements to [brane.m~] (swapped args, no need to set file sample rate anymore, adopting [sfload] now with all its supported formats, use spacebar to play/stop, allow loading files relative to the patch that owns the abstraction. Master now also controls the independent voice output). A couple new modules (see below)
+- 17 new objects: [arpeggiator], [del.in~], [del.out~], [follow~], [vca~], [vca2~], [ms.enc~], [ms.dec~], [pan.stereo~], [width~], [rand.dev], [list.harm], [superosc~], [streamin~], [streamout~], [mix~] and [group~]. Plus [superosc.m~] and [vca2.m~].
+
+Objects count: total of 589 (332 signal objects [152 of which are MC aware] and 257 control objects)! 
+
+- 328 coded objects (216 signal objects / 112 control objects)
+- 236 abstractions objects (92 signal objects / 144 control objects)
+- 25 MERDA modular abstractions (24 audio / 1 control)
+
+--------------------------------------
+
+**TUTORIAL:**
+- New examples and revisions to add the new objects, features and breaking changes in ELSE. 
+- New and expanded subchapter about stereo imaging. Improved info on envelope following.
+- Total number of examples is now 561! 
+
+--------------------------------------
+
+
+----------------------------------------------------------------------------
 1.0-0 Release Candidate 13:
 ----------------------------------------------------------------------------
 
