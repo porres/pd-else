@@ -1,4 +1,4 @@
-#N canvas 375 46 633 661 12;
+#N canvas 375 46 801 694 12;
 #X text 419 18 see -->;
 #X obj 479 18 about.MERDA;
 #X text 437 220 This is a wrapper around [adsr~] from ELSE \, check it out., f 18;
