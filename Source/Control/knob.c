@@ -1841,7 +1841,7 @@ static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
                 knob_float(x, value);
         }
         if(x->x_snd != gensym("empty") && x->x_snd != &s_){
-            sprintf(namebuf, "%s-enter", x->x_var->s_name);
+            sprintf(namebuf, "%s-enter", x->x_snd->s_name);
             t_symbol *snd = gensym(namebuf);
             if(snd->s_thing)
                 pd_float(snd->s_thing, value);
