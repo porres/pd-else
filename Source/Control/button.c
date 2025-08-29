@@ -319,7 +319,7 @@ static void button_mouserelease(t_button* x){
 void button_mouse_hover(t_button *x, int h){
     if(x->x_readonly)
         return;
-    if(x->x_snd_hover->s_thing && !x->x_edit && x->x_snd != gensym("empty") && x->x_snd != &s_)
+    if(x->x_snd_hover->s_thing && x->x_snd != gensym("empty") && x->x_snd != &s_)
         pd_float(x->x_snd_hover->s_thing, h);
 }
 
@@ -410,14 +410,10 @@ static void button_set(t_button *x, t_floatarg f){
 
 static void button_float(t_button *x, t_floatarg f){
     if(x->x_mode != 2){
-        int state = (int)(f != 0);
-        if(x->x_state != state){
-            x->x_state = state;
-            outlet_float(x->x_obj.ob_outlet, x->x_state);
-            if(x->x_snd->s_thing && !x->x_edit && x->x_snd != gensym("empty") && x->x_snd != &s_)
-                pd_float(x->x_snd->s_thing, x->x_state);
-            x->x_state ? button_setfg(x) : button_setbg(x);
-        }
+        outlet_float(x->x_obj.ob_outlet, x->x_state = (int)(f != 0));
+        if(x->x_snd->s_thing && !x->x_edit && x->x_snd != gensym("empty") && x->x_snd != &s_)
+            pd_float(x->x_snd->s_thing, x->x_state);
+        x->x_state ? button_setfg(x) : button_setbg(x);
     }
 }
 
