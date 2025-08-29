@@ -1,4 +1,4 @@
-#N canvas 132 121 889 513 12;
+#N canvas 238 151 889 513 12;
 #X obj 43 445 outlet~;
 #N canvas 243 43 704 487 preset 0;
 #X obj 125 121 else/sender 1 \\\$0-presets;
@@ -1599,7 +1599,7 @@
 #X restore 15 15 graph;
 #X coords 0 0 1 1 437 240 1 15 15;
 #X restore 208 69 pd \$0-8-step-sequencer;
-#X obj 258 358 cnv 19 95 29 empty \$0-label-collapsed RING 5 15 0 24 #bbbbbb #000000 0;
+#X obj 258 358 cnv 19 95 29 empty \$0-label-collapsed 8-SEQ 10 15 0 24 #bbbbbb #000000 0;
 #X obj 257 357 else/button 97 31 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch \$0-uncollapse-set;
 #X obj 361 358 cnv 10 17 15 empty empty ▲ 5 8 0 12 #bbbbbb #000000 0;
 #X obj 361 372 cnv 10 17 15 empty empty ▼ 5 5 0 12 #bbbbbb #000000 0;
