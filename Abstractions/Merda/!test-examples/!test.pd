@@ -20,7 +20,7 @@
 #X obj 588 510 send2~ \$0-env;
 #X obj 174 275 r~ \$0-env;
 #X obj 320 319 adsr.m~;
-#A saved 80.5694 180 0.48 789.052 0 0 0 0 0;
+#A saved 80.5694 180 0.48 789.052 0 0 0 0 0 1;
 #A saved;
 #A saved;
 #A saved;
@@ -31,7 +31,7 @@
 #A saved;
 #X obj 251 280 imp~;
 #X obj 588 271 adsr.m~;
-#A saved 0 288.8 0.13 189.869 0 0 0 0 0;
+#A saved 0 288.8 0.13 189.869 0 0 0 0 0 1;
 #A saved;
 #A saved;
 #A saved;
@@ -41,7 +41,7 @@
 #A saved;
 #A saved;
 #X obj 43 333 vco.m~;
-#A saved 0 34 0 3 0.325 0.314285 0 0;
+#A saved 0 1 0 3 0.325 0.314285 0 0 1;
 #A saved;
 #A saved;
 #A saved;

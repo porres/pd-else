@@ -1,5 +1,5 @@
-#N canvas 246 34 1034 770 10;
-#X obj 255 329 vcf.m~;
+#N canvas 237 34 1034 770 10;
+#X obj 255 336 vcf.m~;
 #A saved 500 10 0.542857 0 1;
 #A saved;
 #A saved;
@@ -16,8 +16,8 @@
 #A saved 0.48 0 1;
 #A saved;
 #A saved;
-#X obj 690 47 adsr.m~;
-#A saved 0 500 0 0 0 0 0 0 0 1;
+#X obj 690 57 adsr.m~;
+#A saved 0 0 1 500 0 0 0 0 0 1 0;
 #A saved;
 #A saved;
 #A saved;
@@ -26,7 +26,7 @@
 #A saved;
 #A saved;
 #A saved;
-#X obj 408 586 level.m~;
+#X obj 408 593 level.m~;
 #A saved 0 1;
 #A saved;
 #X obj 35 21 seq8.m~;
@@ -46,9 +46,9 @@
 #X obj 770 482 presets.m;
 #A saved 1003-vcf-0 500 10 0.542857 0 || 1003-vco-0 0 0 1 2 0 0 0 0 || 1003-drive-0 0.48 0 || 1003-adsr-0 0 500 0 0 0 0 0 0 0 || 1003-gain-0 -0.34641 || 1003-vca-0 60 4 1 36 56 60 39 55 60 43 60 1 1 1 1 1 1 1 1 || 1003-vca-1 1 || \; 1003-vcf-0 55.0369 18.5222 0.257143 0 || 1003-vco-0 0 0 1 4 0.225 0 0 0 || 1003-drive-0 -0.5 0 || 1003-adsr-0 0 1116.34 0 0 0 0 0 0 0 || 1003-gain-0 -0.173205 || 1003-vca-0 90 4 1 29 56 41 39 45 54 43 32 1 0 1 0 1 1 0 1 || 1003-vca-1 0.962352 || \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;;
 #X obj 167 662 nop~;
-#X obj 380 766 nop~;
+#X obj 379 773 nop~;
 #X obj 533 768 nop~;
-#X obj 497 332 nop~;
+#X obj 503 344 nop~;
 #X connect 0 0 2 0;
 #X connect 1 0 9 0;
 #X connect 2 0 10 0;

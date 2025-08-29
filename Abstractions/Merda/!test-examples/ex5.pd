@@ -1,4 +1,4 @@
-#N canvas 179 63 432 517 10;
+#N canvas 330 71 432 517 10;
 #X obj 31 222 vcf.m~;
 #A saved 500 10 0.542857 0 0;
 #A saved;
@@ -17,7 +17,7 @@
 #A saved;
 #A saved;
 #X obj 184 137 adsr.m~;
-#A saved 0 500 0 0 0 0 0 0 0 0;
+#A saved 0 0 1 500 0 0 0 0 0 0;
 #A saved;
 #A saved;
 #A saved;

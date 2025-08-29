@@ -11,7 +11,7 @@
 #A saved;
 #X obj 286 564 else/out~;
 #X obj 474 323 else/adsr.m~;
-#A saved 0.8 331.471 0 0 0 0 0 0 0 1;
+#A saved 0.5 300 0 0 0 0 0 0 0 1 1;
 #A saved;
 #A saved;
 #A saved;

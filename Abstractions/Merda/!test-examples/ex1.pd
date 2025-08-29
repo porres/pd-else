@@ -16,7 +16,7 @@
 #X obj 207 247 sine~ -midi;
 #X obj 302 242 imp~ -midi;
 #X obj 383 313 adsr.m~;
-#A saved 10 20 0.5 50 0 0 0 0 0 0;
+#A saved 10 20 0.5 50 0 0 0 0 0 1;
 #A saved;
 #A saved;
 #A saved;
@@ -26,7 +26,7 @@
 #A saved;
 #A saved;
 #X obj 655 295 adsr.m~;
-#A saved 10 20 0.5 50 0 0 0 0 0 0;
+#A saved 10 20 0.5 50 0 0 0 0 0 1;
 #A saved;
 #A saved;
 #A saved;
@@ -37,7 +37,7 @@
 #A saved;
 #X obj 105 152 mono~ 25, f 80;
 #X obj 109 326 vco.m~;
-#A saved 0 0 0 3 0.375 0.0971437 0.114286 0.0857142 0;
+#A saved 0 0 0 3 0.375 0.0971437 0 0.0857142 1;
 #A saved;
 #A saved;
 #A saved;
