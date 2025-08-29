@@ -55,7 +55,12 @@ static void adsr_curve(t_adsr *x, t_floatarg f){
 }
 
 static void adsr_rel(t_adsr *x, t_floatarg f){
+    pd_error(x, "[adsr~]: please stop useing 'rel' message, use 'imp' now");
     x->x_rel = (int)(f != 0);
+}
+
+static void adsr_imp(t_adsr *x, t_floatarg f){
+    x->x_rel = (int)(f == 0);
 }
 
 static void adsr_bang(t_adsr *x){ // control impulse
@@ -421,7 +426,7 @@ static void *adsr_new(t_symbol *sym, int ac, t_atom *av){
     x->x_curve = -4;
     x->x_bang = 0;
     x->x_lag = 1;
-    x->x_rel = 0; // release mode
+    x->x_rel = 1; // release mode
     int symarg = 0;
     int argnum = 0;
     x->x_lag = 0;
@@ -463,8 +468,12 @@ static void *adsr_new(t_symbol *sym, int ac, t_atom *av){
                 x->x_lag = 1;
             }
             else if(cursym == gensym("-rel")){
+                pd_error(x, "[adsr~]: don't use '-rel' anymore please, it's the default now");
                 ac--, av++;
-                x->x_rel = 1;
+            }
+            else if(cursym == gensym("-imp")){
+                x->x_rel = 0;
+                ac--, av++;
             }
             else if(cursym == gensym("-curve")){
                 if(ac >= 2){
@@ -510,5 +519,6 @@ void adsr_tilde_setup(void){
     class_addmethod(adsr_class, (t_method)adsr_lin, gensym("lin"), 0);
     class_addmethod(adsr_class, (t_method)adsr_lag, gensym("lag"), 0);
     class_addmethod(adsr_class, (t_method)adsr_rel, gensym("rel"), A_FLOAT, 0);
+    class_addmethod(adsr_class, (t_method)adsr_imp, gensym("imp"), A_FLOAT, 0);
     class_addmethod(adsr_class, (t_method)adsr_curve, gensym("curve"), A_FLOAT, 0);
 }
