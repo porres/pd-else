@@ -817,11 +817,11 @@
 #X obj 274 162 sel 1;
 #X obj 219 119 f;
 #X obj 64 116 spigot 1;
-#X obj 65 176 del 0;
 #X obj 142 235 max 1;
+#X obj 65 176 pipe 0;
 #X connect 0 0 3 0;
 #X connect 1 0 10 0;
-#X connect 1 1 17 0;
+#X connect 1 1 16 0;
 #X connect 2 0 1 0;
 #X connect 3 0 15 0;
 #X connect 5 0 4 0;
@@ -835,9 +835,9 @@
 #X connect 12 1 9 1;
 #X connect 13 0 14 0;
 #X connect 14 0 9 0;
-#X connect 15 0 16 0;
-#X connect 16 0 2 0;
-#X connect 17 0 5 0;
+#X connect 15 0 17 0;
+#X connect 16 0 5 0;
+#X connect 17 0 2 0;
 #X restore 84 337 pd resize;
 #N canvas 189 48 592 549 route 0;
 #X obj 37 18 inlet;
@@ -1061,7 +1061,7 @@
 #X obj 613 413 cnv 10 17 15 empty empty ▲ 5 8 0 12 #bbbbbb #000000 0;
 #X obj 613 427 cnv 10 17 15 empty empty ▼ 5 5 0 12 #bbbbbb #000000 0;
 #X obj 612 412 else/button 19 31 #e0e0e0 #808080 2 1 2 0 0 \$0-uncollapse empty;
-#X obj 510 413 cnv 19 95 29 empty \$0-label-collapsed ⤢ 37 12 0 48 #bbbbbb #000000 0;
+#X obj 510 413 cnv 19 95 29 empty \$0-label-collapsed PLAITS 5 15 0 24 #bbbbbb #000000 0;
 #X obj 509 412 else/button 97 31 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch \$0-uncollapse-set;
 #X connect 0 0 24 0;
 #X connect 0 1 24 1;

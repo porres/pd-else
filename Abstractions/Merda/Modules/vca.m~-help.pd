@@ -30,7 +30,7 @@
 #X text 202 396 A sum toggle sums all channels into a single channel output (this is on by default)., f 24;
 #X text 423 173 see also:;
 #X obj 406 223 else/vca2.m~;
-#A saved 1 0 0;
+#A saved 1 0 1;
 #A saved;
 #X text 423 193 [vca2.m~];
 #X text 222 538 This is a wrapper of;

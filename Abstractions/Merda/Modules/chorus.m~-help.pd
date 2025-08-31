@@ -1,6 +1,5 @@
 #N canvas 438 73 508 464 12;
 #X text 309 183 This is just a wrapper around [chorus~] from ELSE \, check it out., f 22;
-#X obj 337 126 about.MERDA;
 #X text 316 283 this is still a simple module \, with no CV input yet \, so kinda like a pedal still., f 22;
 #N canvas 174 142 461 333 messages 0;
 #X obj 255 260 outlet;
@@ -37,6 +36,7 @@
 #X obj 67 94 else/play.file~ guitar.mp3 1 1;
 #X obj 89 37 else/note 315 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [chorus.m~] - Chorus;
 #X text 339 102 see:;
-#X connect 3 0 5 0;
-#X connect 5 0 6 0;
-#X connect 7 0 5 0;
+#X obj 337 126 about.MERDA;
+#X connect 2 0 4 0;
+#X connect 4 0 5 0;
+#X connect 6 0 4 0;
