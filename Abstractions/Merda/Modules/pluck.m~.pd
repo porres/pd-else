@@ -181,7 +181,7 @@
 #X connect 7 0 5 0;
 #X restore 620 195 pd init-savestate;
 #X text 363 85 Trigger;
-#N canvas 357 43 861 666 set 1;
+#N canvas 357 43 861 666 set 0;
 #X obj 314 36 inlet~;
 #X obj 376 600 outlet;
 #X obj 376 36 inlet;
@@ -254,7 +254,6 @@
 #X obj 376 83 route list cutoff decay cutoff_att decay_att voices gui, f 32;
 #X obj 571 148 s \$0-set-GUI;
 #X obj 571 123 != 0;
-#X obj 104 385 pipe 0;
 #X connect 0 0 10 0;
 #X connect 0 0 17 0;
 #X connect 0 0 19 0;
@@ -262,7 +261,7 @@
 #X connect 3 0 1 0;
 #X connect 8 0 26 0;
 #X connect 8 1 31 0;
-#X connect 9 0 35 0;
+#X connect 9 0 8 0;
 #X connect 10 0 25 0;
 #X connect 11 0 1 0;
 #X connect 12 0 25 1;
@@ -292,7 +291,6 @@
 #X connect 32 5 16 0;
 #X connect 32 6 34 0;
 #X connect 34 0 33 0;
-#X connect 35 0 8 0;
 #X restore 262 170 pd set;
 #X obj 432 106 inlet~;
 #X obj 485 106 inlet~;

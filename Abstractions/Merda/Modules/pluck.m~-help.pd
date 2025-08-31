@@ -61,7 +61,7 @@
 #X obj 44 28 else/keyboard 17 80 3 2 0 127 empty empty;
 #X obj 44 123 else/mono~ 25;
 #X obj 388 277 else/pluck.m~;
-#A saved 100 9005.82 0 0 4 1;
+#A saved 6309.58 15000 0 0 4 1;
 #A saved;
 #A saved;
 #A saved;
