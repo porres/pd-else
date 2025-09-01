@@ -155,8 +155,7 @@ static void tabplayer_bang(t_play *x){
 
 static void tabplayer_play(t_play *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    float stms = 0;
-    float endms =  1E+36; // stupidly high number
+    float stms = 0, endms = 0;
     x->x_rate = 1;
     x->x_isneg = 0;
     int argnum = 0;
@@ -181,7 +180,7 @@ static void tabplayer_play(t_play *x, t_symbol *s, int ac, t_atom *av){
         ac--, av++;
     };
     x->x_start = tabplayer_ms2samp(x, stms);
-    x->x_end = tabplayer_ms2samp(x, endms);
+    x->x_end = endms == 0 ? x->x_npts : tabplayer_ms2samp(x, endms);
     tabplayer_range_check(x);
     tabplayer_bang(x);
 }

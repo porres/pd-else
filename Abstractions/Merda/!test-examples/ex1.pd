@@ -16,7 +16,7 @@
 #X obj 207 247 sine~ -midi;
 #X obj 302 242 imp~ -midi;
 #X obj 383 285 adsr.m~;
-#A saved 10 20 0.5 50 0 0 0 0 0 0 0;
+#A saved 10 20 0.5 50 0 0 0 0 0 0 1;
 #A saved;
 #A saved;
 #A saved;
@@ -26,7 +26,7 @@
 #A saved;
 #A saved;
 #X obj 655 265 adsr.m~;
-#A saved 10 20 0.5 50 0 0 0 0 0 0 0;
+#A saved 10 20 0.5 50 0 0 0 0 0 0 1;
 #A saved;
 #A saved;
 #A saved;

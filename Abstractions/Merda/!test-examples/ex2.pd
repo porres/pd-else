@@ -21,7 +21,7 @@
 #A saved;
 #X obj 273 242 *~;
 #X obj 478 228 adsr.m~;
-#A saved 0 500 0 0 0 0 0 0 0 0 0;
+#A saved 0 500 0 0 0 0 0 0 0 0 1;
 #A saved;
 #A saved;
 #A saved;
