@@ -27,6 +27,7 @@ Breaking changes:
 - [button] changed some messages and behaviour to make it possible to use it with [presets] (unlike [tgl], which is impossible). Changed color args and message so it also takes symbols.
 - Deleted [sigs~], use [sig~] now that it has the same functionality since 0.56-0
 - [timed.gate~] removed 2nd argument
+- [adsr~] the default is again "immediate release", removing the '-rel' flag and message for a new '-imp'/'imp' flag/message. The old one gives an error for now.
 - [del~] has been deprecated and virtually deleted, use [del.in~] / [del.out~] now - the object hasn't been removed really but will be in version 1.0!
 - [trig.delay2~] has been deprecated and virtually deleted, the same functionality has been added to [trig.delay~] - the object hasn't been removed really but will be in version 1.0!
 
@@ -58,7 +59,10 @@ Enhancements/fixes/other changes:
 - [range.hsl~] fixed GOP bug where it didn't work at all.
 - [expand~] fixed the gain compensation formula (yikes)
 - [trig.delay~] fixed timing accuracy and added ignore mode.
-- M.E.R.D.A: fixed init errors in [pluck.m~]/[plaits.m~]. Implemented a new mechanism for minimizing and maximizing the GUI or opening at a new window. Added "tab" navigation for most knobs in the modules. Many improvements to [brane.m~] (swapped args, no need to set file sample rate anymore, adopting [sfload] now with all its supported formats, use spacebar to play/stop, allow loading files relative to the patch that owns the abstraction. Master now also controls the independent voice output). A couple new modules (see below)
+- [sample~] fixed not corrupting the buffer when changing sample rate
+- [ms2samps/samps2ms] only updates if a previous value was sent
+- [tabplayer~] fixed play message for windows
+- M.E.R.D.A: fixed init errors in [pluck.m~]/[plaits.m~]. Implemented a new mechanism for minimizing and maximizing the GUI or opening at a new window. Added "tab" navigation for most knobs in the modules. Added an impulse mode to [adsr.m~]. Many improvements to [brane.m~] (swapped args, no need to set file sample rate anymore, adopting [sfload] now with all its supported formats, use spacebar to play/stop, allow loading files relative to the patch that owns the abstraction. Master now also controls the independent voice output). A couple new modules (see below)
 - 17 new objects: [arpeggiator], [del.in~], [del.out~], [follow~], [vca~], [vca2~], [ms.enc~], [ms.dec~], [pan.stereo~], [width~], [rand.dev], [list.harm], [superosc~], [streamin~], [streamout~], [mix~] and [group~]. Plus [superosc.m~] and [vca2.m~].
 
 Objects count: total of 589 (332 signal objects [152 of which are MC aware] and 257 control objects)! 

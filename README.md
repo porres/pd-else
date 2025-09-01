@@ -183,7 +183,7 @@ Some objects are simply based (or better, depend on) on other software and are j
     allpass.2nd~ allpass.filt~ bitnormal~ comb.filt~ lop.bw~ hip.bw~ biquads~ bandpass~ bandstop~ crossover~ bpbank~ bicoeff2 brickwall~ eq~ highpass~ highshelf~ lop2~ lowpass~ lowshelf~ mov.avg~ resonbank~ resonbank2~ resonant~ resonator~ resonator2~ svfilter~
 
 #sampling, playing, granulation
-    player~ gran.player~ pvoc.player~ pvoc.live~ batch.rec~ bach.write~ rec.file~ play.file~ streamin~ streamout~ tabplayer~ tabwriter~ sample~ sfload sfinfo
+    player~ gran.player~ pvoc.player~ pvoc.live~ batch.rec~ bach.write~ rec.file~ play.file~ tabplayer~ tabwriter~ sample~ sfload sfinfo
 
 #synthesis: synthesizers
     pm2~ pm4~ pm6~ sfont~ sfz~ plaits~ synth~

@@ -75,7 +75,7 @@ proc category_else_menu::load_menutree {} {
             {fx\ filters
                 {allpass.2nd~ allpass.filt~ bitnormal~ comb.filt~ lop.bw~ hip.bw~ biquads~ bandpass~ bandstop~ crossover~ bpbank~ bicoeff2 brickwall~ eq~ highpass~ highshelf~ lop2~ lowpass~ lowshelf~ mov.avg~ resonbank~ resonbank2~ resonant~ resonator~ resonator2~ svfilter~}}
             {sampling\ playing\ granulation
-                {player~ gran.player~ stretch.shift~ pvoc.player~ pvoc.live~ batch.rec~ bach.write~ rec.file~ play.file~ streamin~ streamout~ tabplayer~ tabwriter~ sfload sfinfo sample~}}
+                {player~ gran.player~ stretch.shift~ pvoc.player~ pvoc.live~ batch.rec~ bach.write~ rec.file~ play.file~ tabplayer~ tabwriter~ sfload sfinfo sample~}}
             {synthesis:\ synthesizers
                 {pm2~ pm4~ pm6~ sfont~ sfz~ plaits~ synth~}}
             {synthesis:\ granular

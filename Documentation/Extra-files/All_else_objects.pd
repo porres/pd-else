@@ -1,6 +1,6 @@
-#N struct 1004-cell float x float y float cellsize float color;
-#N struct 1006-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
-#N struct 1063-slot float x float y float slotsize float color float width float bordercolor;
+#N struct 2817-cell float x float y float cellsize float color;
+#N struct 2819-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
+#N struct 2876-slot float x float y float slotsize float color float width float bordercolor;
 #N canvas 549 38 541 693 10;
 #N canvas 240 37 975 767 GUI 0;
 #X text 48 -899 [biplot];
@@ -31,7 +31,7 @@
 #X obj 517 -966 else/colors;
 #X obj 516 -932 else/openfile;
 #X obj 110 -987 else/mtx.ctl;
-#X obj 345 -1030 else/pad 127 127 255 255 255;
+#X obj 345 -1030 else/pad 127 127;
 #X obj 266 -966 else/pic 0 empty empty empty 0 0;
 #X obj 656 -1018 else/function 200 100 empty empty 0 1 220 220 220 50 50 50 0 0 0 0 0 1000 0;
 #X obj 82 -545 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0 0 0 0 0 0 empty empty;
@@ -97,7 +97,7 @@
 #X connect 5 0 3 0;
 #X coords 0 -1 1 1 174 30 2 100 100;
 #X restore 66 82 pd;
-#X obj 67 83 cnv 15 172 28 empty \$0-label version\ 1.0-0\ rc-14 8 14 0 14 #e0e0e0 #404040 0;
+#X obj 67 83 cnv 15 172 28 empty \$0-label version\ 1.0-0\ rc\ test\ release-14 8 14 0 14 #e0e0e0 #404040 0;
 #N canvas 568 23 241 168 FFT 0;
 #X obj 55 52 else/hann~;
 #X obj 55 78 else/bin.shift~;
@@ -281,10 +281,8 @@
 #X obj 58 327 else/batch.write~;
 #X obj 58 351 else/play.file~;
 #X obj 59 30 else/tabreader~;
-#X obj 58 425 else/sfload;
-#X obj 58 451 else/sfinfo;
-#X obj 58 376 else/streamin~;
-#X obj 58 400 else/streamout~;
+#X obj 58 375 else/sfload;
+#X obj 58 401 else/sfinfo;
 #X restore 154 407 pd Buffer/Sampling/Playing/Granulation;
 #N canvas 1011 188 230 109 Granular_synth 0;
 #X obj 62 47 else/grain.synth~;
