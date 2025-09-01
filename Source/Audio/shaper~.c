@@ -215,7 +215,7 @@ static void *shaper_new(t_symbol *s, int ac, t_atom *av){
                 goto errstate;
         }
     };
-    x->x_buffer = buffer_init((t_class *)x, name, 1, 0);
+    x->x_buffer = buffer_init((t_class *)x, name, 1, 0, 0); // just added fifth argument: see buffer.c / buffer.h 
     if(!x->x_arrayset)
         update_cheby_func(x);
     outlet_new(&x->x_obj, gensym("signal"));
