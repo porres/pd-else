@@ -31,7 +31,7 @@
 #X connect 15 0 14 0;
 #X restore 31 61 pd messages;
 #X obj 31 171 else/seq8.m~;
-#A saved 60 4 0 50 53 57 36 71 70 56 71 1 0 1 1 1 1 1 1 1;
+#A saved 60 4 1 50 53 57 36 71 70 56 71 1 0 1 1 1 1 1 1 1;
 #A saved;
 #A saved step2-learn none;
 #A saved;
@@ -40,7 +40,7 @@
 #A saved;
 #A saved;
 #A saved;
-#X obj 170 613 else/out~;
+#X obj 170 610 else/out~;
 #X text 623 122 see:;
 #X obj 477 120 else/float2imp~;
 #X obj 477 88 bng 21 250 50 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000;
@@ -56,7 +56,7 @@
 #A saved;
 #A saved;
 #X obj 254 476 else/adsr.m~;
-#A saved 0 300 0 0 1 0 0 0 0 0;
+#A saved 0 300 0 0 1 0 0 0 0 1 0;
 #A saved;
 #A saved;
 #A saved;
@@ -65,20 +65,17 @@
 #A saved;
 #A saved;
 #A saved;
-#X obj 170 548 else/vca.m~;
+#X obj 170 545 else/vca.m~;
 #A saved 1 0 0;
 #A saved;
-#X obj 478 574 else/trig2bang~;
-#X obj 478 602 bng 23 100 50 0 empty empty empty 0 -10 0 12 #bbbbbb #000000 #000000;
-#X text 513 235 Pitch values are from 12 to 108 (C0 to C8). At the top of each step you can set note names and octaves directly \, quantized to quarter tones \, but there's support for any interval in MIDIcents. Use number boxes for easier increment in semitones since the knob can't do that \, though it's fun to get random microtones. As any knob \, you can type in values but this makes more sense if you do it in the number boxes directly., f 37;
 #X text 513 167 An 8-step sequencer. Left output is MIDI pitch \, mid outlet impulses and right outlet is the internal clock. Still experimental..., f 37;
-#X text 513 417 The toggles set the impulse output on and off for each step. The right outlet outputs the clock \, both the internal and external., f 37;
-#X text 513 487 The left inlet is for an external impulse clock and the right inlet takes an impulse to reset the sequencer to the first step., f 37;
+#X text 513 447 The left inlet is for an external impulse clock and the right inlet takes an impulse to reset the sequencer to the first step., f 37;
 #X obj 219 31 else/note 369 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [seq8.m~] - 8 Step Step Sequencer;
+#X text 513 235 Pitch values are from 12 to 108 (C0 to C8). At the top of each step you can set note names and octaves directly \, quantized to quarter tones \, but there's support for any interval in MIDIcents. Use number boxes for easier increment in semitones since the knob can't do that \, though it's fun to get random microtones. As any knob \, you can type in values but this makes more sense if you do it in the number boxes directly. The toggles set the impulse output on and off for each step., f 37;
+#X text 440 555 ps. be sure to set [adsr.m~] to take impulses.;
 #X connect 1 0 2 0;
 #X connect 2 0 11 0;
 #X connect 2 1 12 0;
-#X connect 2 2 14 0;
 #X connect 5 0 2 1;
 #X connect 6 0 5 0;
 #X connect 7 0 2 0;
@@ -86,4 +83,3 @@
 #X connect 11 0 13 0;
 #X connect 12 0 13 1;
 #X connect 13 0 3 0;
-#X connect 14 0 15 0;

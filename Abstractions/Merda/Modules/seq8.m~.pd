@@ -1202,7 +1202,6 @@
 #X obj 395 191 r \$0-reset;
 #X obj 395 218 else/float2imp~;
 #X obj 389 314 s \$0-flash;
-#X obj 408 526 outlet~;
 #X connect 0 0 1 0;
 #X connect 0 0 2 0;
 #X connect 0 0 23 0;
@@ -1225,7 +1224,6 @@
 #X connect 21 0 0 0;
 #X connect 22 0 8 0;
 #X connect 23 0 22 1;
-#X connect 23 0 28 0;
 #X connect 24 0 27 0;
 #X connect 25 0 26 0;
 #X connect 26 0 0 1;
@@ -1607,12 +1605,9 @@
 #X text 200 50 External Clock;
 #X text 614 50 Reset;
 #X text 201 310 Pitch;
-#X text 401 310 Impulse;
-#X text 614 310 Clock;
-#X obj 173 445 outlet~;
+#X text 600 310 Impulse;
 #X connect 4 0 0 0;
 #X connect 4 1 7 0;
-#X connect 4 2 23 0;
 #X connect 8 0 4 0;
 #X connect 8 1 5 0;
 #X connect 9 0 4 1;
