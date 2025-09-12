@@ -816,8 +816,10 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
                 }
                 else goto errstate;
             }
-            else if(cursym == gensym("-tgl"))
+            else if(cursym == gensym("-tgl")) {
                 x->x_flag = tgl = 1;
+                ac-=1, av+=1;
+            }
             else if(cursym == gensym("-norm")){
                 x->x_flag = 1;
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
