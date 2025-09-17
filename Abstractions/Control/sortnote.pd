@@ -1,0 +1,15 @@
+#N canvas 615 121 592 275 12;
+#X obj 60 21 inlet;
+#X obj 125 54 else/note2midi;
+#X obj 125 88 else/sort;
+#X obj 103 180 outlet;
+#X obj 103 121 else/reorder;
+#X obj 60 73 t a a;
+#X obj 60 45 list;
+#X connect 0 0 6 0;
+#X connect 1 0 2 0;
+#X connect 2 1 4 1;
+#X connect 4 0 3 0;
+#X connect 5 0 4 0;
+#X connect 5 1 1 0;
+#X connect 6 0 5 0;
