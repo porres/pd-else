@@ -107,7 +107,8 @@ static void *noteinfo_new(void){
 }
 
 void noteinfo_setup(void){
-    noteinfo_class = class_new(gensym("noteinfo"), (t_newmethod)noteinfo_new, 0, sizeof(t_noteinfo), 0, 0);
+    noteinfo_class = class_new(gensym("noteinfo"), (t_newmethod)noteinfo_new,
+        0, sizeof(t_noteinfo), 0, 0);
     class_addfloat(noteinfo_class, noteinfo_float);
     class_addbang(noteinfo_class, noteinfo_bang);
 }
