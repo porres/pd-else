@@ -59,7 +59,7 @@
 #X obj 26 187 else/pvoc.live~ 100;
 #X obj 37 206 else/gran.player~;
 #X obj 67 226 else/player~;
-#X obj 199 169 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 199 159 tgl 23 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 281 169 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 364 169 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 283 151 speed (%);
@@ -148,8 +148,10 @@
 #X restore 447 255 pd multi-channel;
 #X text 56 85 [pvoc.player~] is like [player~] but provides independent time stretching and pitch shifting via a phase vocoder (kinda like [pvoc.player~]). Like [player~] \, it is based on [sfload] and support the same file formats (check its help file). NOTE: THIS OBJECT IS HEAVY ON THE CPU!!!, f 79;
 #X obj 73 246 else/sfload;
+#X obj 364 234 bng 25 250 50 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000;
 #X connect 56 0 62 0;
 #X connect 57 0 62 1;
 #X connect 58 0 62 2;
 #X connect 62 0 65 0;
 #X connect 62 1 65 1;
+#X connect 62 2 70 0;
