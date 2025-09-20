@@ -1,8 +1,8 @@
-#N canvas 316 74 781 557 10;
+#N canvas 316 74 796 580 10;
 #X text 593 85 see -->;
 #X obj 645 85 about.MERDA;
 #X text 574 121 This is a wrapper around [plaits~] from ELSE \, check it out., f 27;
-#N canvas 372 134 891 581 trigger/level-input 1;
+#N canvas 372 134 891 581 trigger/level-input 0;
 #X text 14 16 When not in MIDI Mode \, you need to feed it signals and if you connect to the trigger input (2nd inlet) you force it into Trigger Mode. Connect to the 3rd inlet sets to level mode input instead. Both Modes make use of an internal LPG (LowPass Gate) with settings for Cutoff and Decay., f 69;
 #X text 272 100 The Trigger Mode sets a percussive envelope and Level mode can sustain while the gate is on., f 26;
 #X obj 13 92 else/keyboard 17 80 2 3 0 0 empty empty;
@@ -372,7 +372,7 @@
 #X connect 18 0 19 0;
 #X connect 21 0 15 0;
 #X restore 285 191 pd 13-Analog Bass Drum Model;
-#N canvas 395 23 614 658 14-Analog 0;
+#N canvas 395 38 614 658 14-Analog 0;
 #X obj 73 133 else/note 102 13 Menlo empty 4 0 0 0 0 223 223 223 1 1 HARMONICS:;
 #X obj 73 163 else/note 102 13 Menlo empty 4 0 0 0 0 223 223 223 1 1 TIMBRE:;
 #X obj 73 199 else/note 102 13 Menlo empty 4 0 0 0 0 223 223 223 1 1 MORPH:;
@@ -1938,7 +1938,7 @@
 #X obj 30 73 else/keymap;
 #X obj 30 96 else/keyboard 17 80 4 3 0 0 empty empty;
 #X obj 30 210 else/plaits.m~;
-#A saved 0 0.5 0.5 0.5 0 0.5 0.5 0 0 0 0 1 1 0 1;
+#A saved 0 0.5 0.5 0.5 0 0.5 0.5 0 0 0 0 4 1 0 1;
 #A saved;
 #A saved;
 #A saved;

@@ -795,12 +795,12 @@
 #X connect 13 0 3 0;
 #X restore 68 271 pd morph-att-knob;
 #X restore 650 61 pd MIDI-learn;
-#N canvas 293 48 582 524 set 0;
+#N canvas 293 48 582 524 set 1;
 #X obj 95 455 outlet;
 #X obj 84 35 inlet~;
 #X obj 95 397 r \$0-to-plaits;
 #X obj 175 38 inlet;
-#N canvas 703 216 571 476 resize 0;
+#N canvas 703 216 571 476 resize 1;
 #X obj 64 37 inlet~;
 #X obj 64 268 t b f;
 #X obj 64 218 change 0;
@@ -818,7 +818,7 @@
 #X obj 219 119 f;
 #X obj 64 116 spigot 1;
 #X obj 142 235 max 1;
-#X obj 65 176 pipe 0;
+#X obj 64 166 pipe 0;
 #X connect 0 0 3 0;
 #X connect 1 0 10 0;
 #X connect 1 1 16 0;
