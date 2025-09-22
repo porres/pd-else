@@ -1,80 +1,81 @@
-#N canvas 608 23 559 631 10;
-#X obj 224 175 hsl 128 15 441 44100 1 0 empty empty empty -2 -8 0 10
-#dcdcdc #000000 #000000 0 1;
-#X obj 23 40 cnv 4 4 4 empty empty Henon 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 125 40 cnv 4 4 4 empty empty chaotic 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 3 592 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X obj 3 326 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 3 396 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 3 432 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 94 405 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 93 336 cnv 17 3 52 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X text 150 406 signal;
-#X text 137 439 1) float;
-#X obj 221 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
-#X text 114 336 float/signal;
-#X obj 2 3 cnv 15 301 42 empty empty henon~ 20 20 2 37 #e0e0e0 #000000
-0;
+#N canvas 649 72 564 666 10;
+#X obj 192 187 hsl 128 15 441 44100 1 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 23 40 cnv 4 4 4 empty empty Henon 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 125 40 cnv 4 4 4 empty empty chaotic 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 3 638 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 3 399 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 469 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 538 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 94 478 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 93 409 cnv 17 3 52 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X text 137 545 1) float;
+#X obj 189 211 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 2 3 cnv 15 301 42 empty empty henon~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X text 197 336 - frequency in hertz (negative values accepted);
-#X obj 186 40 cnv 4 4 4 empty empty generator 0 28 2 18 #e0e0e0 #000000
-0;
-#X text 280 199 rate in Hz;
-#X text 162 371 list;
-#X text 83 141 The output rate of the equation is given in hertz (default:
-nyquist).;
-#X text 137 456 2) float;
-#X obj 7 535 cnv 3 550 3 empty empty more_info 8 12 0 13 #dcdcdc #000000
-0;
-#X text 197 439 - sets frequency in hertz (default: nyquist);
-#X obj 81 40 cnv 4 4 4 empty empty map 0 28 2 18 #e0e0e0 #000000 0
-;
-#X text 197 407 - henon map chaotic signal;
-#X text 123 543 Object based on SuperCollider's "HenonN" UGEN. This
-equation was discovered by French astronomer Michel Hénon while studying
-the orbits of stars in globular clusters.;
-#X text 84 91 [henon~] is a chaotic generator using the difference
-equation \; y[n] = 1 - a * y[n-1]^2 + b * y[n-2];
-#X text 197 511 - sets initial value of y[n-2] (default 0);
-#X text 197 493 - sets initial value of y[n-1] (default 0);
-#X text 197 456 - sets a (default 1.4);
-#X text 137 474 3) float;
-#X text 137 493 4) float;
-#X text 137 511 5) float;
-#X text 197 474 - sets b (default 0.3);
-#X text 197 371 - 2 floats set y[n-1] and y[n-2] \, respectively;
-#X text 197 353 - floats set 'a' and 'b' \, respectively;
-#X obj 221 228 else/henon~;
-#X text 108 353 coeffs <f \, f>;
-#X obj 221 262 else/out~;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#X obj 186 40 cnv 4 4 4 empty empty generator 0 28 2 18 #e0e0e0 #000000 0;
+#X text 248 211 rate in Hz;
+#X text 137 562 2) float;
+#X text 197 545 - sets frequency in hertz (default: nyquist);
+#X obj 81 40 cnv 4 4 4 empty empty map 0 28 2 18 #e0e0e0 #000000 0;
+#X text 229 480 - henon map chaotic signal;
+#X text 197 617 - sets initial value of y[n-2] (default 0);
+#X text 197 599 - sets initial value of y[n-1] (default 0);
+#X text 197 562 - sets a (default 1.4);
+#X text 137 580 3) float;
+#X text 137 599 4) float;
+#X text 137 617 5) float;
+#X text 197 580 - sets b (default 0.3);
+#X obj 189 300 else/henon~;
+#X obj 189 334 else/out~;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X connect 0 0 11 0;
-#X connect 11 0 36 0;
-#X connect 36 0 38 0;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X text 340 261 (default);
+#X msg 224 261 coeffs 1.4 0.3 0 0;
+#X msg 217 240 coeffs 1.3 1.5 -0.5 0.25;
+#X text 373 239 a \, b \, y[n-1] and y[n-2];
+#X text 54 142 The output rate of the equation is given in hertz (default: nyquist). The object is based on SuperCollider's "HenonN" UGEN and has support for multichannel., f 71;
+#N canvas 725 264 549 379 multichannel 0;
+#X obj 70 248 else/out.mc~;
+#X obj 230 288 else/out~;
+#X floatatom 230 106 5 0 0 0 - - - 12;
+#X msg 243 137 400 600;
+#X msg 256 167 400 600 700;
+#X obj 70 158 sig~ 333 444;
+#X msg 273 210 set 1 555;
+#X text 343 203 the set message sets a single frequency channel, f 24;
+#X text 33 14 If there's a multichannel input \, each represents a frequency and the object outputs the same number of channels. You can initialize it with the -mc flag (you can't set coeffs then) for multichannel output \, in which case you give it a list of frequencies. A list input also works if no signal is connected to set it to multichannel with a list of frequency input. The set message sets the frequency for one of the channels., f 76;
+#X obj 70 197 else/henon~;
+#X obj 230 257 else/henon~ -mc 440 660;
+#X connect 2 0 10 0;
+#X connect 3 0 10 0;
+#X connect 4 0 10 0;
+#X connect 5 0 9 0;
+#X connect 6 0 10 0;
+#X connect 9 0 0 0;
+#X connect 10 0 1 0;
+#X restore 426 358 pd multichannel;
+#X text 140 427 coeffs <list>;
+#X text 134 410 list/signal(s);
+#X text 115 444 set <float \, float> -;
+#X text 242 444 <channel \, freq> set a single frequency channel;
+#X text 229 410 - frequency in hertz (negative values accepted);
+#X text 229 428 - up to 4 floats set 'a' \, 'b' \, y[n-1] and y[n-2];
+#X text 54 91 [henon~] is a chaotic generator whose equation was discovered by French astronomer Michel Hénon while studying the orbits of stars in globular clusters. The difference equation is \; y[n] = 1 - a * y[n-1]^2 + b * y[n-2], f 71;
+#X text 94 514 -mc <list>: sets multichannel output with a list of frequencies, f 63;
+#X obj 4 505 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
+#X text 166 479 signal(s);
+#X connect 0 0 10 0;
+#X connect 10 0 26 0;
+#X connect 26 0 27 0;
+#X connect 37 0 26 0;
+#X connect 38 0 26 0;

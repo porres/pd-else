@@ -63,8 +63,7 @@ static t_int *cusp_perform(t_int *w){
     int chs = (t_int)(w[2]); // number of channels in main input signal (density)
     t_float *freq = (t_float *)(w[3]);
     t_float *out = (t_float *)(w[4]);
-    double a = x->x_a;
-    double b = x->x_b;
+    double a = x->x_a, b = x->x_b;
     double *phase = x->x_phase;
     double *yn = x->x_yn;
     for(int j = 0; j < x->x_nchans; j++){
@@ -164,8 +163,11 @@ static void *cusp_new(t_symbol *s, int ac, t_atom *av){
     x->x_list_size = 1;
     x->x_nchans = 1;
     x->x_ch = 1;
+    x->x_phase = (double *)getbytes(sizeof(*x->x_phase));
+    x->x_yn = (double *)getbytes(sizeof(*x->x_yn));
     x->x_freq_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_freq_list[0] = sys_getsr() * 0.5;
+    x->x_phase[0] = x->x_yn[0] = 0;
     double a = 1, b = 1.9;
     x->x_init_yn = 0; // default parameters
     while(ac && av->a_type == A_SYMBOL){
@@ -183,11 +185,6 @@ static void *cusp_new(t_symbol *s, int ac, t_atom *av){
         else
             goto errstate;
     }
-    
-    x->x_phase = (double *)getbytes(x->x_list_size * sizeof(*x->x_phase));
-    x->x_yn = (double *)getbytes(x->x_list_size * sizeof(*x->x_yn));
-    x->x_phase[0] = x->x_yn[0] = 0;
-    
     if(ac && av->a_type == A_FLOAT){
         x->x_freq_list[0] = av->a_w.w_float;
         ac--; av++;
@@ -217,7 +214,7 @@ errstate:
 
 void cusp_tilde_setup(void){
     cusp_class = class_new(gensym("cusp~"), (t_newmethod)cusp_new, (t_method)cusp_free,
-        sizeof(t_cusp), CLASS_MULTICHANNEL, A_GIMME, 0);
+sizeof(t_cusp), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(cusp_class, nullfn, gensym("signal"), 0);
     class_addmethod(cusp_class, (t_method)cusp_dsp, gensym("dsp"), A_CANT, 0);
     class_addlist(cusp_class, cusp_list);

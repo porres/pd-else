@@ -1,71 +1,72 @@
-#N canvas 552 23 559 526 10;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
-0;
+#N canvas 644 46 567 559 10;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
-0;
-#X obj 23 40 cnv 4 4 4 empty empty Logistic 0 28 2 18 -233017 -1 0
-;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
-0;
-#X obj 90 40 cnv 4 4 4 empty empty chaotic 0 28 2 18 -233017 -1 0;
-#X obj 3 486 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
-0;
-#X obj 3 294 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 350 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 386 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
-0;
-#X obj 101 359 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 100 303 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X text 170 360 signal;
-#X text 157 393 1) float;
-#X obj 174 165 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 134 303 float/signal;
-#X obj 2 3 cnv 15 301 42 empty empty logistic~ 20 20 2 37 -233017 -1
-0;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 23 40 cnv 4 4 4 empty empty Logistic 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 90 40 cnv 4 4 4 empty empty chaotic 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 3 527 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 3 400 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 466 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 101 409 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X text 170 410 signal;
+#X text 157 473 1) float;
+#X obj 232 175 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 2 3 cnv 15 301 42 empty empty logistic~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X text 217 303 - frequency in hertz (negative values accepted);
-#X obj 151 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
-0;
-#X text 104 164 rate in Hz;
-#X text 157 410 2) float;
-#X obj 7 432 cnv 3 550 3 empty empty more_info 8 12 0 13 -228856 -1
-0;
-#X obj 100 326 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
-#X text 134 328 float/signal;
-#X text 217 328 - 'p' parameter (from 0 to 1);
-#X text 217 393 - sets frequency in hertz (default 0);
-#X text 217 410 - sets p (default: 0.5);
-#X text 83 120 The output rate of the equation is given in hertz (default:
-nyquist). The 'p' parameter controls the chaos;
-#X obj 305 175 hsl 128 15 0.01 1 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 302 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 363 199 p;
-#X text 217 361 - logistic chaotic signal;
-#X obj 174 192 else/logistic~ 440;
-#X obj 174 229 else/out~;
-#X text 84 89 [logistic~] is a chaotic generator based on the difference
-equation: y[n] = (3 + p) * y[n-1] * (1- y[n-1]).;
-#X text 143 440 Object inspired on SuperCollider's Logistic UGEN. The
-initial state is 0.5 \, and the output is rescaled. This object produces
-DC offset when the p parameter is lower.;
-#X connect 16 0 35 0;
-#X connect 31 0 32 0;
-#X connect 32 0 35 1;
-#X connect 35 0 36 0;
+#X obj 151 40 cnv 4 4 4 empty empty generator 0 28 2 18 #e0e0e0 #000000 0;
+#X text 162 174 rate in Hz;
+#X text 157 490 2) float;
+#X text 217 473 - sets frequency in hertz (default 0);
+#X text 217 411 - logistic chaotic signal;
+#X obj 3 333 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 113 342 cnv 17 3 50 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X text 149 359 coeffs <list>;
+#X text 143 342 list/signal(s);
+#X text 124 376 set <float \, float> -;
+#X text 251 376 <channel \, freq> set a single frequency channel;
+#X text 238 342 - frequency in hertz (negative values accepted);
+#X text 84 89 [logistic~] is based SuperCollider's Logistic UGEN. It's a chaotic generator based on the difference equation \; y[n] = (3 + p) * y[n-1] * (1- y[n-1])., f 65;
+#X text 238 360 - up to 2 floats set 'p' and y[n-1];
+#N canvas 839 247 549 379 multichannel 0;
+#X obj 70 248 else/out.mc~;
+#X obj 230 288 else/out~;
+#X floatatom 230 106 5 0 0 0 - - - 12;
+#X msg 243 137 400 600;
+#X msg 256 167 400 600 700;
+#X obj 70 158 sig~ 333 444;
+#X msg 273 210 set 1 555;
+#X text 343 203 the set message sets a single frequency channel, f 24;
+#X text 33 14 If there's a multichannel input \, each represents a frequency and the object outputs the same number of channels. You can initialize it with the -mc flag (you can't set coeffs then) for multichannel output \, in which case you give it a list of frequencies. A list input also works if no signal is connected to set it to multichannel with a list of frequency input. The set message sets the frequency for one of the channels., f 76;
+#X obj 70 197 else/logistic~;
+#X obj 230 257 else/logistic~ -mc 440 660;
+#X connect 2 0 10 0;
+#X connect 3 0 10 0;
+#X connect 4 0 10 0;
+#X connect 5 0 9 0;
+#X connect 6 0 10 0;
+#X connect 9 0 0 0;
+#X connect 10 0 1 0;
+#X restore 425 294 pd multichannel;
+#X text 94 442 -mc <list>: sets multichannel output with a list of frequencies, f 63;
+#X obj 4 433 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
+#X text 157 506 2) float;
+#X msg 305 187 coeffs 0.5 0.5;
+#X obj 232 269 else/out~;
+#X obj 232 242 else/logistic~ 440;
+#X msg 315 211 coeffs 1 0.1;
+#X text 398 211 (default);
+#X text 401 187 'p' and 'yn';
+#X text 217 490 - sets p (default: 1);
+#X text 217 506 - sets yn[-1] (default: 0.1);
+#X text 83 127 The output is rescaled and rate of the equation is given in hertz (default: nyquist). The 'p' parameter controls the chaos., f 65;
+#X connect 14 0 37 0;
+#X connect 35 0 37 0;
+#X connect 37 0 36 0;
+#X connect 38 0 37 0;

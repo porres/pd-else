@@ -1,77 +1,75 @@
-#N canvas 426 23 559 579 10;
-#X obj 226 183 hsl 128 15 44.1 44100 1 0 empty empty empty -2 -8 0
-10 #dcdcdc #000000 #000000 0 1;
-#X obj 23 40 cnv 4 4 4 empty empty Linear 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 177 40 cnv 4 4 4 empty empty chaotic 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 3 540 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X obj 3 320 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 3 370 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 3 406 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 94 379 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 92 330 cnv 17 3 33 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X text 160 380 signal;
-#X text 147 413 1) float;
-#X obj 223 207 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
-#X text 124 330 float/signal;
-#X obj 2 3 cnv 15 301 42 empty empty lincong~ 20 20 2 37 #e0e0e0 #000000
-0;
+#N canvas 531 47 560 600 10;
+#X obj 215 183 hsl 128 15 44.1 44100 1 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
+#X obj 23 40 cnv 4 4 4 empty empty Linear 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 177 40 cnv 4 4 4 empty empty chaotic 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 3 568 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 3 323 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 393 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 3 464 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 114 402 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X text 147 471 1) float;
+#X obj 212 207 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 2 3 cnv 15 301 42 empty empty lincong~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X text 207 330 - frequency in hertz (negative values accepted);
-#X obj 238 40 cnv 4 4 4 empty empty generator 0 28 2 18 #e0e0e0 #000000
-0;
-#X text 282 207 rate in Hz;
-#X obj 223 257 else/out~;
-#X text 172 347 list;
-#X text 83 149 The output rate of the equation is given in hertz (default:
-nyquist).;
-#X text 147 430 2) float;
-#X text 147 447 3) float;
-#X obj 7 508 cnv 3 550 3 empty empty more_info 8 12 0 13 #dcdcdc #000000
-0;
-#X text 207 413 - sets frequency in hertz (default: nyquist);
-#X obj 223 232 else/lincong~;
-#X obj 79 40 cnv 4 4 4 empty empty congruential 0 28 2 18 #e0e0e0 #000000
-0;
-#X text 153 516 Object based on SuperCollider's "LincongN" UGEN.;
-#X text 84 90 [lincong~] is a chaotic generator using the difference
-equation \; y[n] = (a * y[n-1] + c) % m - the output signal is scaled
-to a range of -1 to 1 automatically.;
-#X text 147 465 4) float;
-#X text 147 484 5) float;
-#X text 207 430 - sets 'a' (default 1.1);
-#X text 207 447 - sets 'c' (default 0.13);
-#X text 207 465 - sets 'm' (default 1);
-#X text 207 484 - sets initial value of y[n-1] (default 0);
-#X text 207 381 - linear congruential chaotic signal;
-#X text 207 348 - 4 floats sets 'a' \, 'c' \, 'm' and y[n-1];
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#X obj 238 40 cnv 4 4 4 empty empty generator 0 28 2 18 #e0e0e0 #000000 0;
+#X text 271 207 rate in Hz;
+#X obj 212 257 else/out~;
+#X text 147 488 2) float;
+#X text 147 505 3) float;
+#X text 207 471 - sets frequency in hertz (default: nyquist);
+#X obj 212 232 else/lincong~;
+#X obj 79 40 cnv 4 4 4 empty empty congruential 0 28 2 18 #e0e0e0 #000000 0;
+#X text 147 523 4) float;
+#X text 147 542 5) float;
+#X text 207 488 - sets 'a' (default 1.1);
+#X text 207 505 - sets 'c' (default 0.13);
+#X text 207 523 - sets 'm' (default 1);
+#X text 207 542 - sets initial value of y[n-1] (default 0);
+#X text 237 404 - linear congruential chaotic signal;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X connect 0 0 11 0;
-#X connect 11 0 25 0;
-#X connect 25 0 18 0;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 113 332 cnv 17 3 50 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X text 149 349 coeffs <list>;
+#X text 238 350 - up to 3 floats set 'a' \, 'b' and y[n-1];
+#X text 143 332 list/signal(s);
+#X text 124 366 set <float \, float> -;
+#X text 251 366 <channel \, freq> set a single frequency channel;
+#X text 238 332 - frequency in hertz (negative values accepted);
+#X text 84 90 [lincong~] is based on SuperCollider's "LincongN" and is a chaotic generator that uses the difference equation \; y[n] = (a * y[n-1] + c) % m., f 68;
+#X text 175 403 signal(s);
+#X text 84 129 The output signal is scaled to a range of -1 to 1 automatically. The output rate of the equation is given in hertz (default: nyquist). There is support for multichannel., f 68;
+#N canvas 839 247 549 379 multichannel 0;
+#X obj 70 248 else/out.mc~;
+#X obj 230 288 else/out~;
+#X floatatom 230 106 5 0 0 0 - - - 12;
+#X msg 243 137 400 600;
+#X msg 256 167 400 600 700;
+#X obj 70 158 sig~ 333 444;
+#X msg 273 210 set 1 555;
+#X text 343 203 the set message sets a single frequency channel, f 24;
+#X text 33 14 If there's a multichannel input \, each represents a frequency and the object outputs the same number of channels. You can initialize it with the -mc flag (you can't set coeffs then) for multichannel output \, in which case you give it a list of frequencies. A list input also works if no signal is connected to set it to multichannel with a list of frequency input. The set message sets the frequency for one of the channels., f 76;
+#X obj 70 197 else/lincong~;
+#X obj 230 257 else/lincong~ -mc 440 660;
+#X connect 2 0 10 0;
+#X connect 3 0 10 0;
+#X connect 4 0 10 0;
+#X connect 5 0 9 0;
+#X connect 6 0 10 0;
+#X connect 9 0 0 0;
+#X connect 10 0 1 0;
+#X restore 425 275 pd multichannel;
+#X text 94 439 -mc <list>: sets multichannel output with a list of frequencies, f 63;
+#X obj 4 430 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
+#X connect 0 0 9 0;
+#X connect 9 0 18 0;
+#X connect 18 0 14 0;
