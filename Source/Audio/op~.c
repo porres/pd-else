@@ -178,19 +178,15 @@ static void op_dsp(t_op *x, t_signal **sp){
     t_sample *outvec1 = sp[2]->s_vec;
     int i;
     if(n1 > n2)
-        for(i = (n1+n2-1)/n2; i--; )
-        {
+        for(i = (n1+n2-1)/n2; i--; ){
             t_int blocksize = (n2 < n1 - i*n2 ? n2 : n1 - i*n2);
-            dsp_add(op_perform, 5, x, vec1 + i * n2, vec2,
-                    outvec1 + i*n2, blocksize);
+            dsp_add(op_perform, 5, x, vec1 + i * n2, vec2, outvec1 + i*n2, blocksize);
         }
     else for(i = (n1+n2-1)/n1; i--; ){
         t_int blocksize = (n1 < n2 - i*n1 ? n1 : n2 - i*n1);
-        dsp_add(op_perform, 5, x, vec1, vec2 + i*n1,
-                outvec1 + i*n1, blocksize);
+        dsp_add(op_perform, 5, x, vec1, vec2 + i*n1, outvec1 + i*n1, blocksize);
     }
 }
-
 
 static void *op_new(t_symbol *s, int ac, t_atom *av){
     t_op *x = (t_op *)pd_new(op_class);
