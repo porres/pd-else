@@ -33,6 +33,7 @@ static void pan2_pan(t_pan2 *x, t_symbol *s, int ac, t_atom *av){
     }
     for(int i = 0; i < ac; i++)
         x->x_pan_list[i] = atom_getfloat(av+i);
+    else_magic_setnan(x->x_signalscalar);
 }
 
 static t_int *pan2_perform(t_int *w){
@@ -54,7 +55,19 @@ static t_int *pan2_perform(t_int *w){
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0; i < x->x_nblock; i++){
             float in = in1[j*x->x_nblock + i];
-            float pan = x->x_sig2 ? ch2 == 1 ? in2[i] : in2[j*x->x_nblock + i] : x->x_pan_list[j];
+            float pan;
+            if(x->x_sig2){
+                if(ch2 == 1)
+                    pan = in2[i];
+                else
+                    pan = in2[j*x->x_nblock + i];
+            }
+            else{
+                if(ch2 == 1)
+                    pan = x->x_pan_list[0];
+                else
+                    pan = x->x_pan_list[j];
+            }
             pan = (pan < -1 ? -1 : (pan > 1 ? 1 : ((pan + 1) * 0.125)));
             out1[j*x->x_nblock + i] = in * read_sintab(pan + 0.25);
             out2[j*x->x_nblock + i] = in * read_sintab(pan);
@@ -101,6 +114,7 @@ static void *pan2_new(t_symbol *s, int ac, t_atom *av){
     outlet_new((t_object *)x, &s_signal);
     x->x_glist = canvas_getcurrent();
     x->x_signalscalar = obj_findsignalscalar((t_object *)x, 1);
+    else_magic_setnan(x->x_signalscalar);
     return(x);
 }
 

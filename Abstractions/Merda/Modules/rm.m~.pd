@@ -185,7 +185,7 @@
 #X restore 414 235 pd GUI;
 #X text 250 125 IN;
 #X obj 106 35 inlet~;
-#X text 329 125 CV;
+#X text 340 125 CV;
 #N canvas 164 143 450 300 route 0;
 #X obj 74 59 inlet;
 #X obj 114 199 s \$0-set-att;
@@ -269,7 +269,7 @@
 #X connect 14 0 3 0;
 #X restore 52 107 pd att-knob;
 #X restore 423 270 pd MIDI-learn;
-#X obj 237 383 cnv 19 66 29 empty \$0-label-collapsed ⤢ 20 12 0 48 #bbbbbb #000000 0;
+#X obj 237 383 cnv 19 66 29 empty \$0-label-collapsed RING 5 15 0 24 #bbbbbb #000000 0;
 #X obj 236 382 else/button 68 31 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch \$0-uncollapse-set;
 #X obj 310 383 cnv 10 17 15 empty empty ▲ 5 8 0 12 #bbbbbb #000000 0;
 #X obj 310 397 cnv 10 17 15 empty empty ▼ 5 5 0 12 #bbbbbb #000000 0;
