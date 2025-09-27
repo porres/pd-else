@@ -31,16 +31,18 @@ static void decay_float(t_decay *x, t_float f){
 
 static t_int *decay_perform(t_int *w){
     t_decay *x = (t_decay *)(w[1]);
-    int ch2 = (int)(w[2]);
-    t_float *in1 = (t_float *)(w[3]);
-    t_float *in2 = (t_float *)(w[4]);
-    t_float *out = (t_float *)(w[5]);
+    int ch1 = (int)(w[2]);
+    int ch2 = (int)(w[3]);
+    t_float *in1 = (t_float *)(w[4]);
+    t_float *in2 = (t_float *)(w[5]);
+    t_float *out = (t_float *)(w[6]);
+    int n = x->x_nblock;
     double *ynm1 = x->x_ynm1;
     t_float sr_khz = x->x_sr_khz;
     for(int j = 0; j < x->x_nchans; j++){
-        for(int i = 0; i < x->x_nblock; i++){
-            double xn = in1[j*x->x_nblock + i];
-            double ms = ch2 == 1 ? in2[i] : in2[j*x->x_nblock + i];
+        for(int i = 0; i < n; i++){
+            double xn = in1[(j % (int)ch1)*n + i];
+            double ms = in2[(j % (int)ch2)*n + i];
             if(x->x_flag){
                 xn = x->x_f;
                 x->x_flag = 0;
@@ -56,24 +58,24 @@ static t_int *decay_perform(t_int *w){
         }
     }
     x->x_ynm1 = ynm1;
-    return(w+6);
+    return(w+7);
 }
 
 static void decay_dsp(t_decay *x, t_signal **sp){
     x->x_sr_khz = sp[0]->s_sr * 0.001;
     x->x_nblock = sp[0]->s_n;
-    int chs = sp[0]->s_nchans, ch2 = sp[1]->s_nchans;
+    int ch1 = sp[0]->s_nchans;
+    int ch2 = sp[1]->s_nchans;
+    int chs = ch1;
+    if(ch2 > chs)
+        chs = ch2;
     if(x->x_nchans != chs){
        x->x_ynm1 = (double *)resizebytes(x->x_ynm1,
             x->x_nchans * sizeof(double), chs * sizeof(double));
         x->x_nchans = chs;
     }
-    signal_setmultiout(&sp[2], chs);
-    if((ch2 > 1 && ch2 != x->x_nchans)){
-        dsp_add_zero(sp[2]->s_vec, chs*x->x_nblock);
-        pd_error(x, "[decay~]: channel sizes mismatch");
-    }
-    dsp_add(decay_perform, 5, x, ch2, sp[0]->s_vec,
+    signal_setmultiout(&sp[2], x->x_nchans);
+    dsp_add(decay_perform, 6, x, ch1, ch2, sp[0]->s_vec,
         sp[1]->s_vec, sp[2]->s_vec);
 }
 
