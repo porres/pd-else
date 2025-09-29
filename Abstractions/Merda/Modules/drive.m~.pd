@@ -138,7 +138,6 @@
 #X connect 7 0 3 1;
 #X connect 8 0 5 0;
 #X restore 102 152 pd set;
-#X obj 28 233 else/drive~;
 #N canvas 960 162 233 204 MIDI-learn 0;
 #N canvas 880 282 577 472 drive-knob 0;
 #X msg 114 218 forget;
@@ -228,9 +227,10 @@
 #X restore 206 95 pd \$0-drive;
 #X obj 210 257 cnv 19 95 29 empty \$0-label-collapsed DRIVE 10 15 0 24 #bbbbbb #000000 0;
 #X obj 209 256 else/button 97 31 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch \$0-uncollapse-set;
-#X connect 0 0 10 0;
+#X obj 26 229 else/drive~;
+#X connect 0 0 17 0;
 #X connect 0 1 6 0;
 #X connect 7 0 9 0;
-#X connect 9 0 10 1;
-#X connect 10 0 1 0;
+#X connect 9 0 17 1;
+#X connect 17 0 1 0;
 #X coords 0 1 100 -1 130 140 2 200 75;
