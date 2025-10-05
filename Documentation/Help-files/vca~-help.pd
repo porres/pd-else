@@ -1,4 +1,4 @@
-#N canvas 466 34 562 541 10;
+#N canvas 466 38 562 541 10;
 #X obj 4 336 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 431 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 466 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -41,7 +41,7 @@
 #X text 165 489 2) float - sum flag (default 1);
 #X text 61 89 [vca~] is a mono (one in/out) VCA. It is the basis of the [vca.m~] MERDA module. For convenience \, it sums polyphonic (multichannel connections) inputs into a single channel by default. You also have a general gain compensation and a right output to feed a [vu] object. Yeah \, not much different than just using [*~]., f 72;
 #X text 47 252 see also:;
-#X obj 47 280 else/vca~;
+#X obj 47 280 else/vca2~;
 #X connect 22 0 26 1;
 #X connect 23 0 22 0;
 #X connect 24 0 26 0;

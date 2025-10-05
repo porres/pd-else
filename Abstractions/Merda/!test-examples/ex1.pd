@@ -37,13 +37,13 @@
 #A saved;
 #X obj 105 152 mono~ 25, f 80;
 #X obj 109 326 vco.m~;
-#A saved 0 0 0 3 0.375 0.0971437 0 0.0857142 1;
+#A saved 0 0 0 3 0.375 0.0971437 0.020857 0.0874287 1 0;
 #A saved;
 #A saved;
 #A saved;
 #A saved;
 #A saved;
-#X obj 266 661 nop~;
+#X obj 274 671 nop~;
 #X obj 105 13 note.in;
 #X obj 655 539 else/send2~ \$0-env;
 #X connect 0 0 18 0;
