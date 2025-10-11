@@ -61,8 +61,10 @@ static t_int *timed_gate_perform(t_int *w){
             t_float output1 = 0;
             t_float output2 = 0;
             int flag = x->x_retrigger ? 1 : !on[j];
-            if((in != 0 && last_in[j] == 0) || x->x_bang){
+            if((in != 0 && last_in[j] == 0) || x->x_bang){ // trig
                 if(flag){
+                    if(x->x_retrigger && on[j])
+                        output2 = value[j];
                     if(samps >= 0){
                         on[j] = 1;
                         count[j] = 0;
@@ -73,6 +75,7 @@ static t_int *timed_gate_perform(t_int *w){
                 }
                 else
                     output2 = value[j];
+                x->x_bang = 0;
             }
             else if(on[j]){
                 if(count[j] < samps)
@@ -90,7 +93,6 @@ static t_int *timed_gate_perform(t_int *w){
     x->x_value = value;
     x->x_last_in = last_in;
     x->x_on = on;
-    x->x_bang = 0;
     return(w+7);
 }
 
