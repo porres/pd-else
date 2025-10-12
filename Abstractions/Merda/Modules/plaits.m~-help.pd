@@ -1,7 +1,7 @@
 #N canvas 316 74 796 580 10;
-#X text 593 85 see -->;
-#X obj 645 85 about.MERDA;
-#X text 574 121 This is a wrapper around [plaits~] from ELSE \, check it out., f 27;
+#X text 606 85 see -->;
+#X obj 658 85 about.MERDA;
+#X text 587 121 This is a wrapper around [plaits~] from ELSE \, check it out., f 27;
 #N canvas 372 134 891 581 trigger/level-input 0;
 #X text 14 16 When not in MIDI Mode \, you need to feed it signals and if you connect to the trigger input (2nd inlet) you force it into Trigger Mode. Connect to the 3rd inlet sets to level mode input instead. Both Modes make use of an internal LPG (LowPass Gate) with settings for Cutoff and Decay., f 69;
 #X text 272 100 The Trigger Mode sets a percussive envelope and Level mode can sustain while the gate is on., f 26;
@@ -93,9 +93,9 @@
 #X connect 10 0 9 0;
 #X connect 10 1 9 2;
 #X connect 11 0 10 0;
-#X restore 566 310 pd trigger/level-input;
-#X text 468 363 Other inlets are for modulations and are controlled by the attenuverter knobs. Unlike the original object \, you don't need to activate the modulations via messages. When you connect to these inlets \, the modulation becomes active automatically., f 47;
-#N canvas 443 107 708 344 +details 0;
+#X restore 579 310 pd trigger/level-input;
+#X text 481 363 Other inlets are for modulations and are controlled by the attenuverter knobs. Unlike the original object \, you don't need to activate the modulations via messages. When you connect to these inlets \, the modulation becomes active automatically., f 47;
+#N canvas 483 201 708 344 +details 0;
 #X obj 274 292 else/openfile -h https://pichenettes.github.io/mutable-instruments-documentation/modules/plaits/manual/# Manual;
 #X obj 508 292 else/openfile -h https://pichenettes.github.io/mutable-instruments-documentation/modules/plaits/firmware/ Firmware update;
 #N canvas 359 23 707 687 10-Particle 0;
@@ -1824,10 +1824,10 @@
 #X text 80 279 This is the link for the original manual from Mutable Instruments:, f 33;
 #X text 349 279 The 3rd row with the last 8 modes are better described here:, f 33;
 #X text 190 40 Here we have details and examples for each single mode:;
-#X restore 638 458 pd +details;
-#X text 524 187 (But this module has polyphonic capabilities and is much friendlier)., f 37;
-#X text 474 240 This example uses a MIDI Input \, note the MIDI toggle on. You then need to set the number of voices (1 voice makes it like [mono]) and can then use the toggles to set Trigger or Level mode. To use signals for Trigger and Level \, see below., f 45;
-#X obj 650 157 else/plaits~;
+#X restore 651 458 pd +details;
+#X text 537 187 (But this module has polyphonic capabilities and is much friendlier)., f 37;
+#X text 487 240 This example uses a MIDI Input \, note the MIDI toggle on. You then need to set the number of voices (1 voice makes it like [mono]) and can then use the toggles to set Trigger or Level mode. To use signals for Trigger and Level \, see below., f 45;
+#X obj 663 157 else/plaits~;
 #N canvas 499 38 687 578 reference 0;
 #X text 19 19 Signal inlets \; 0- frequency in midi \; 1- trigger \; 2- Level \; 3- Frequency Modulation \; 4- Timbre Modulation \; 5- Harmonics Modulation \; 6- Morph Modulation \;, f 54;
 #X obj 361 169 s \$0-messages;
@@ -1951,7 +1951,7 @@
 #A saved;
 #X obj 30 483 else/out~;
 #X obj 441 483 else/out~;
-#X obj 81 27 else/note 512 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [plaits.m~] - Mutable Instrument's Plaits module;
+#X obj 139 28 else/note 512 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [plaits.m~] - Mutable Instrument's Plaits module;
 #X connect 9 0 13 0;
 #X connect 11 0 12 0;
 #X connect 12 0 13 0;

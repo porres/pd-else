@@ -1,7 +1,7 @@
 #N canvas 216 38 596 618 12;
 #X text 54 201 This is a collection of Pure Data Abstractions that are inspired by Eurorack Modules. This is a submodule of the ELSE library for Pure Data \, so it requires ELSE. ELSE is by Porres. MERDA is also by Porres., f 67;
-#N canvas 372 212 265 198 all 0;
-#N canvas 380 38 887 701 classic 0;
+#N canvas 144 515 265 198 all 0;
+#N canvas 515 38 887 701 classic 0;
 #X obj 592 35 else/adsr.m~;
 #A saved 0.1 0 0 77 0 0 0 0 0 1 1;
 #A saved;
@@ -13,7 +13,7 @@
 #A saved;
 #A saved;
 #X obj 13 35 else/vco.m~;
-#A saved 33.9028 0 1 0 0 0 0 0 1 0;
+#A saved 1 0 1 0 0 0 0 0 1 0;
 #A saved;
 #A saved;
 #A saved;

@@ -16,7 +16,7 @@
 #X obj 588 510 send2~ \$0-env;
 #X obj 174 275 r~ \$0-env;
 #X obj 320 279 adsr.m~;
-#A saved 80.5694 180 0.48 789.052 1 0 0 0 0 0 1;
+#A saved 10 20 0.5 668.431 1 0 0 0 0 0 1;
 #A saved;
 #A saved;
 #A saved;
@@ -27,7 +27,7 @@
 #A saved;
 #X obj 251 280 imp~;
 #X obj 588 231 adsr.m~;
-#A saved 0 288.8 0.13 189.869 0 0 0 0 0 0 1;
+#A saved 146.569 57.8 0.68 349.638 0 0 0 0 0 0 1;
 #A saved;
 #A saved;
 #A saved;
@@ -37,14 +37,13 @@
 #A saved;
 #A saved;
 #X obj 43 333 vco.m~;
-#A saved 0 34 0 3 0.325 0.314285 0 0 1 0;
-#A saved;
+#A saved 1 71 1 94 0.575 0.0300007 0.428571 0 1 0;
 #A saved;
 #A saved;
 #A saved;
 #A saved;
 #X obj 659 558 presets.m;
-#A saved 1003-adsr-0 10 20 0.5 668.431 1 0 0 0 0 0 || 1003-adsr-1 146.569 57.8 0.68 349.638 0 0 0 0 0 0 || 1003-vco-0 0 71 1 94 0.575 0.0300007 0.428571 0 0 || \; 1003-adsr-0 80.5694 180 0.48 789.052 1 0 0 0 0 0 || 1003-adsr-1 0 288.8 0.13 189.869 0 0 0 0 0 0 || 1003-vco-0 0 34 0 3 0.325 0.314285 0 0 0 || \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;;
+#A saved 1413-adsr-0 10 20 0.5 668.431 1 0 0 0 0 0 || 1413-adsr-1 146.569 57.8 0.68 349.638 0 0 0 0 0 0 || 1413-vco-0 1 71 1 94 0.575 0.0300007 0.428571 0 1 0 || \; 1413-adsr-0 80.5694 180 0.48 789.052 1 0 0 0 0 0 || 1413-adsr-1 0 288.8 0.13 189.869 0 0 0 0 0 0 || 1413-vco-0 1 34 0 3 0.325 0.314285 0 0 1 0 || \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;;
 #X obj 214 687 nop~;
 #X obj 85 46 note.in;
 #X obj 295 580 vca~;

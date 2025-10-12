@@ -49,8 +49,7 @@
 #X text 367 87 external reset;
 #X text 82 91 external signal clock, f 12;
 #X obj 31 476 else/vco.m~;
-#A saved 0 0 0 4 0.775 0 0 0 0;
-#A saved;
+#A saved 1 0 0 4 0.775 0 0 0 0 0;
 #A saved;
 #A saved;
 #A saved;

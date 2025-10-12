@@ -77,8 +77,7 @@
 #A saved;
 #X text 75 21 The 2nd inlet is for retriggering with impulses. Here's an example with [mono~]., f 48;
 #X obj 68 264 else/vco.m~;
-#A saved 0 0 0 3 0.674999 0 0 0 0;
-#A saved;
+#A saved 1 0 0 3 0.674999 0 0 0 0 0;
 #A saved;
 #A saved;
 #A saved;
@@ -114,8 +113,7 @@
 #X text 461 375 (0 is linear);
 #X text 28 60 This polyphonic ADSR envelope takes multichannel signals for gate input in the left inlet and retrigger in the 2nd inlet (a bang input in the left inlet also retriggers). The other inlets are audio CV controlls for attack \, decay \, sustain and release that pass through attenuverters and are added to the knob controls. Attack \, decay and release values are in ms \, sustain point is a ratio of the gate input., f 76;
 #X obj 35 405 else/vco.m~;
-#A saved 0 0 0 3 0.849999 0 0 0 0;
-#A saved;
+#A saved 1 0 0 3 0.849999 0 0 0 0 0;
 #A saved;
 #A saved;
 #A saved;
@@ -137,8 +135,7 @@
 #A saved;
 #X obj 211 139 else/tempo~ -on 60;
 #X obj 60 259 else/vco.m~;
-#A saved 0 0 0 3 0.674999 0 0 0 0;
-#A saved;
+#A saved 1 0 0 3 0.674999 0 0 0 0 0;
 #A saved;
 #A saved;
 #A saved;

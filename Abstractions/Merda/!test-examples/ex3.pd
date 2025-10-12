@@ -1,4 +1,4 @@
-#N canvas 354 34 756 737 12;
+#N canvas 354 38 756 737 12;
 #X obj 28 29 else/seq8.m~;
 #A saved 60 4 1 65 75 64 63 53 50 63 60 1 0 1 1 0 1 1 1 1;
 #A saved;
@@ -21,8 +21,7 @@
 #A saved;
 #A saved;
 #X obj 28 348 vco.m~;
-#A saved -24 0 0 3 0.775 0 0 0 1;
-#A saved;
+#A saved 1 0 0 3 0.75 0 0 0 1 0;
 #A saved;
 #A saved;
 #A saved;

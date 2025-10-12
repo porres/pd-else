@@ -3,7 +3,7 @@
 #X obj 308 180 sine~ 6;
 #X obj 83 276 tri~ 6;
 #X obj 308 214 *~;
-#X obj 376 174 knob 65 0 1 0 0 empty empty #dfdfdf #7c7c7c #000000 1 0 0 0 1 320 0 0 0 empty empty 0 12 6 -15 0 1 0 0 0 0;
+#X obj 376 174 knob 65 0 3 0 0 empty empty #dfdfdf #7c7c7c #000000 1 0 0 0 1 320 0 0 0 empty empty 0 12 6 -15 0 1 0 0 0 0;
 #X obj 382 356 noise~;
 #X obj 387 705 out~;
 #X obj 136 15 keymap;

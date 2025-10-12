@@ -1,4 +1,4 @@
-#N canvas 333 38 680 725 12;
+#N canvas 426 80 680 725 12;
 #X obj 237 599 *~;
 #N canvas 492 119 934 418 messages 0;
 #X obj 477 320 outlet;
@@ -71,11 +71,11 @@
 #X connect 36 0 35 0;
 #X connect 37 0 35 0;
 #X restore 64 213 pd messages;
-#X obj 43 78 else/keyboard 17 80 3 3 0 127 empty empty;
+#X obj 42 82 else/keyboard 17 80 3 3 0 127 empty empty;
 #X obj 237 630 else/out~;
 #X text 290 325 This VCO module has a MIDI pitch input (default 60 for no signal input). The input is polyphonic by the way \, via multichannel signals., f 48;
-#X obj 43 173 else/voices~ 4;
-#X obj 43 45 else/note.in;
+#X obj 42 177 else/voices~ 4;
+#X obj 42 49 else/note.in;
 #X obj 255 234 else/adsr.m~;
 #A saved 10 20 0.75 342.141 1 0 0 0 0 0 0;
 #A saved;
@@ -88,7 +88,7 @@
 #A saved;
 #X obj 198 25 else/note 408 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [vco.m~] - Voltage Controlled Oscillator;
 #X obj 43 251 else/vco.m~;
-#A saved 1.00116 0 0 2 -0.458333 0 0 -0.171429 1 0;
+#A saved 1 0 0 2 0 0 0 0 1 0;
 #A saved;
 #A saved;
 #A saved;
@@ -97,7 +97,7 @@
 #X text 290 378 Other inlets are CV signals to set FM (Frequency Modulation) \, PM (Phase Modulation) \, PWM (for square wave and variable saw) and a sync inlet that takes impulses. The attenuverter for FM \, at maximum values \, represents 5 octaves by default or 1.25 khz in Linear FM mode., f 48;
 #X obj 482 82 about.MERDA;
 #X text 445 82 see:;
-#X text 484 138 see also:;
+#X text 434 141 see also:;
 #X obj 430 171 else/sine~;
 #X obj 518 171 else/bl.tri~;
 #X obj 430 200 else/bl.saw~;

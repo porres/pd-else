@@ -1,8 +1,7 @@
 #N canvas 313 38 866 818 12;
 #X obj 164 45 keyboard 17 80 4 3 0 0 empty empty;
 #X obj 18 284 vco.m~;
-#A saved -12 0 0 4 -0.325 0.05 0 0.15 0 0;
-#A saved;
+#A saved 0.5 0 0 4 -0.325 0.223607 0 0.15 0 0.13;
 #A saved;
 #A saved;
 #A saved;
@@ -12,15 +11,13 @@
 #X obj 336 229 *~;
 #X obj 410 173 knob 65 0 1 0 0 empty empty #dfdfdf #7c7c7c #000000 1 0 0 0 1 320 0 0 0 empty empty 0 12 6 -15 0 1 0 0 0 0;
 #X obj 164 284 vco.m~;
-#A saved 0 0 0 2 0 0.05 0 0.15 0 0;
-#A saved;
+#A saved 1 0 0 2 0 0.223607 0 0 0 0;
 #A saved;
 #A saved;
 #A saved;
 #A saved;
 #X obj 305 284 vco.m~;
-#A saved -24 0 0 4 0 0.05 0 0.15 0 0;
-#A saved;
+#A saved 0.25 0 0 4 0 0.223607 0 0 0 0.13;
 #A saved;
 #A saved;
 #A saved;
@@ -80,9 +77,9 @@
 #X connect 11 0 12 0;
 #X connect 11 0 20 0;
 #X connect 13 0 0 0;
+#X connect 14 0 7 0;
 #X connect 14 0 1 0;
 #X connect 14 0 6 0;
-#X connect 14 0 7 0;
 #X connect 14 1 17 0;
 #X connect 14 1 18 0;
 #X connect 14 2 17 1;
