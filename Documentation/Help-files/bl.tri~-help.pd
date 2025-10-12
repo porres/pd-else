@@ -1,4 +1,4 @@
-#N canvas 524 138 566 623 10;
+#N canvas 491 128 566 623 10;
 #X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
@@ -17,9 +17,7 @@
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 5 graph;
 #X obj 22 42 cnv 4 4 4 empty empty Bandlimited 0 28 2 18 #e0e0e0 #000000 0;
-#X text 27 218 see also:;
 #X obj 229 216 else/out~;
-#X obj 27 240 else/tri~;
 #X obj 229 181 else/bl.tri~ 400;
 #N canvas 670 106 449 354 midi 0;
 #X msg 150 150 midi \$1;
@@ -157,5 +155,15 @@
 #X text 133 514 -soft: sets to soft sync mode (default hard);
 #X text 133 499 -midi: sets frequency input in MIDI pitch (default hertz);
 #X text 103 482 -mc <list>: sets multichannel output with a list of frequencies, f 63;
-#X connect 10 0 17 0;
-#X connect 17 0 15 0;
+#N canvas 414 300 288 203 see 0;
+#X text 60 44 see also:;
+#X obj 60 66 else/tri~;
+#X obj 62 102 else/vco.m~;
+#A saved 1 0 0 0 0 0 0 0 0 0;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#X restore 32 241 pd see also;
+#X connect 10 0 15 0;
+#X connect 15 0 14 0;

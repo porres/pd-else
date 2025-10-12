@@ -40,8 +40,16 @@
 #X text 195 381 - non zero sum polyphonic (MC) channels into a single one;
 #X text 165 489 2) float - sum flag (default 1);
 #X text 61 89 [vca~] is a mono (one in/out) VCA. It is the basis of the [vca.m~] MERDA module. For convenience \, it sums polyphonic (multichannel connections) inputs into a single channel by default. You also have a general gain compensation and a right output to feed a [vu] object. Yeah \, not much different than just using [*~]., f 72;
-#X text 47 252 see also:;
-#X obj 47 280 else/vca2~;
+#N canvas 217 188 271 325 see 0;
+#X text 59 84 see also:;
+#X obj 59 112 else/vca2~;
+#X obj 57 148 else/vca.m~;
+#A saved 1 0 0;
+#A saved;
+#X obj 61 207 else/vca2.m~;
+#A saved 1 0 0;
+#A saved;
+#X restore 41 279 pd see also;
 #X connect 22 0 26 1;
 #X connect 23 0 22 0;
 #X connect 24 0 26 0;

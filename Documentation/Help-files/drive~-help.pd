@@ -17,7 +17,7 @@
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -86,7 +86,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -147,8 +147,6 @@
 #X text 184 315 mode <float>;
 #X text 118 430 1) float - initial drive value (default 1 \, minimum 0);
 #X obj 268 175 else/float2sig~ 50;
-#X text 62 199 see also:;
-#X obj 58 243 else/power~;
 #X text 122 401 -mode <float>: sets distorion (0 - default \, 1 or 2);
 #X text 272 315 - sets modes <0 \, 1 or 2>;
 #N canvas 676 118 662 445 examples 0;
@@ -164,7 +162,7 @@
 #X obj 68 276 else/drive~ -mode 1 1;
 #X obj 369 253 else/drive~ -mode 2 1;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -233,7 +231,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -288,7 +286,6 @@
 #X connect 15 0 14 0;
 #X restore 464 229 pd examples;
 #X obj 30 40 cnv 4 4 4 empty empty Soft-clip 0 28 2 18 #e0e0e0 #000000 0;
-#X obj 58 220 else/tanh~;
 #N canvas 665 205 419 339 multichannel 0;
 #X obj 231 241 else/out.mc~;
 #X obj 231 190 else/drive~;
@@ -313,6 +310,15 @@
 #X text 202 368 signal(s);
 #X text 274 368 - the distorted signal(s);
 #X text 70 87 [drive~] simulates an analog "soft clipping" distortion by applying non-linear transfer functions. The object has support fot multichannels.;
+#N canvas 336 259 317 206 see 0;
+#X text 58 36 see also:;
+#X obj 54 80 else/power~;
+#X obj 54 57 else/tanh~;
+#X obj 55 109 else/drive.m~;
+#A saved -1 0 0;
+#A saved;
+#A saved;
+#X restore 37 227 pd see also;
 #X connect 18 0 21 0;
 #X connect 21 0 17 0;
 #X connect 22 0 28 0;

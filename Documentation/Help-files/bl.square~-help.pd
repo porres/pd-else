@@ -18,10 +18,8 @@
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 5 graph;
 #X obj 22 42 cnv 4 4 4 empty empty Bandlimited 0 28 2 18 #e0e0e0 #000000 0;
-#X text 23 225 see also:;
 #X obj 221 229 else/out~;
 #X obj 3 544 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
-#X obj 23 247 else/square~;
 #X obj 3 294 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 3 442 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 122 451 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
@@ -177,5 +175,15 @@
 #X restore 437 258 pd multichannel;
 #X text 182 451 signal(s) -;
 #X text 258 451 band limited square wave signal(s);
-#X connect 11 0 33 0;
-#X connect 33 0 16 0;
+#N canvas 296 152 297 205 see 0;
+#X text 78 46 see also:;
+#X obj 78 68 else/square~;
+#X obj 78 97 else/vco.m~;
+#A saved 1 0 0 0 0 0 0 0 0 0;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#X restore 38 240 pd see also;
+#X connect 11 0 31 0;
+#X connect 31 0 15 0;

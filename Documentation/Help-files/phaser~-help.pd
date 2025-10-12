@@ -42,6 +42,15 @@
 #X text 171 325 q <float> - internal allpass resonance;
 #X text 159 343 wet <float> - dry/wet ratio from 0-1, f 52;
 #X obj 185 165 else/play.file~ guitar.mp3 1 1, f 15;
+#N canvas 333 304 312 227 see 0;
+#X obj 90 54 else/chorus~;
+#X obj 91 83 else/flanger~;
+#X obj 91 117 else/phaser.m~;
+#A saved 0.1 3 0.5 0;
+#A saved;
+#A saved;
+#A saved;
+#X restore 38 243 pd see also;
 #X connect 22 0 33 1;
 #X connect 28 0 22 0;
 #X connect 33 0 0 0;

@@ -13,8 +13,7 @@
 #A saved;
 #A saved;
 #X obj 13 35 else/vco.m~;
-#A saved 36 0 1 0 0 0 0 0 1 0;
-#A saved;
+#A saved 33.9028 0 1 0 0 0 0 0 1 0;
 #A saved;
 #A saved;
 #A saved;
@@ -163,7 +162,7 @@
 #X text 54 262 License: Do What The Fuck You Want To Public License \, Version 2 Note that some modules include objects released under other licenses., f 67;
 #X text 216 169 Copyright Â© 2024-2025 Alexandre Torres Porres;
 #X obj 47 25 else/note 488 40 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© M.E.R.D.A í ½í²© MODULAR EURORACKS DANCING ALONG;
-#N canvas 234 25 1045 667 basic 0;
+#N canvas 234 38 1044 763 basic 0;
 #X obj 51 41 keyboard 17 80 4 1 0 0 empty empty;
 #X listbox 51 131 10 0 0 0 - - - 0;
 #X obj 266 271 vcf.m~;
@@ -173,8 +172,7 @@
 #A saved;
 #A saved;
 #X obj 16 203 vco.m~;
-#A saved 26 0 0 0 0 0 0 0 1 0;
-#A saved;
+#A saved 1 0 0 0 0 0 0 0 1 0;
 #A saved;
 #A saved;
 #A saved;
@@ -224,7 +222,6 @@
 #X restore 864 678 pd knobs;
 #X obj 837 513 else/presets.m;
 #A saved -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;;
-#X msg 887 584;
 #X connect 0 0 1 0;
 #X connect 1 0 13 0;
 #X connect 2 0 4 0;

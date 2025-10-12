@@ -201,6 +201,14 @@
 #X text 210 376 - non zero forces MIDI input over signal, f 49;
 #X text 210 361 - non zero sets to MIDI pitch input instead of hz;
 #X text 175 158 Hz;
+#N canvas 391 72 282 181 see 0;
+#X obj 71 74 else/pluck.m~;
+#A saved 1000 2750 0 0 1 0;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#X restore 31 273 pd see also;
 #X connect 14 0 35 2;
 #X connect 19 0 35 3;
 #X connect 35 0 30 0;

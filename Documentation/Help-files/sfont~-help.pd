@@ -538,8 +538,8 @@
 #X obj 545 32 else/openfile -h https://github.com/FluidSynth/fluidsynth/wiki/FluidFeatures#midi-control-change-implementation-chart Fluid Specificaitions;
 #X obj 30 65 else/keyboard 17 80 6 3 0 0 empty empty;
 #X obj 210 525 else/display;
-#X obj 92 277 else/knob 50 -1200 1200 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0;
-#X obj 167 316 else/knob 50 -1 1 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0;
+#X obj 92 277 else/knob 50 -1200 1200 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0 0 0;
+#X obj 167 316 else/knob 50 -1 1 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0 0 0;
 #X obj 69 460 else/sfont~ sf/waves.sf2;
 #X obj 230 460 print info;
 #X connect 0 0 30 0;
@@ -596,6 +596,11 @@
 #X msg 188 253 info;
 #X text 225 253 print info on Pd's window instead;
 #X text 202 467 - info output, f 39;
+#N canvas 335 163 347 231 see 0;
+#X obj 92 59 else/sfz~;
+#X obj 90 94 else/sfont.m~;
+#A saved sf/GeneralUser_GS.sf3 0 0;
+#X restore 25 338 pd see also;
 #X connect 35 0 42 0;
 #X connect 38 0 42 0;
 #X connect 40 0 41 0;

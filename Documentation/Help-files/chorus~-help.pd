@@ -53,6 +53,15 @@
 #X text 200 421 signal - chorus output;
 #X obj 180 209 else/chorus~, f 22;
 #X obj 180 134 else/play.file~ guitar.mp3 1 1;
+#N canvas 304 275 300 219 see 0;
+#X obj 84 114 else/chorus.m~;
+#A saved 0.1 0 0 0;
+#A saved;
+#A saved;
+#A saved;
+#X obj 82 52 else/phaser~;
+#X obj 84 82 else/flanger~;
+#X restore 445 272 pd see also;
 #X connect 1 0 48 1;
 #X connect 25 0 48 2;
 #X connect 31 0 48 3;

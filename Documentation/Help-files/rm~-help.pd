@@ -1,4 +1,4 @@
-#N canvas 392 106 563 457 10;
+#N canvas 465 106 563 457 10;
 #X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
 #X obj 458 13 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
@@ -36,6 +36,12 @@
 #X text 162 327 signal;
 #X text 88 91 [rm~] is a Ring Modulation abstraction. It takes a modulation frequency input as the argument or via the control right inlet. A modulation frequency of 0 Hz bypasses the input signal., f 63;
 #X obj 224 149 else/player~ violin.flac 1 1;
+#N canvas 341 317 271 136 see 0;
+#X obj 75 43 else/rm.m~;
+#A saved 20 0 0;
+#A saved;
+#A saved;
+#X restore 26 251 pd see also;
 #X connect 24 0 15 0;
 #X connect 25 0 24 1;
 #X connect 32 0 24 0;
