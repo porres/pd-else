@@ -19,7 +19,8 @@
 #X connect 7 0 0 0;
 #X restore 62 174 pd messages;
 #X obj 47 211 else/vca.m~;
-#A saved 1 0 1;
+#A saved 1 1 1;
+#A saved;
 #A saved;
 #X obj 156 158 else/glide~ 50;
 #X text 201 313 This module has support for MultiChannels and the VU displays the average sum of all channels., f 24;
@@ -30,7 +31,8 @@
 #X text 202 396 A sum toggle sums all channels into a single channel output (this is on by default)., f 24;
 #X text 423 173 see also:;
 #X obj 406 223 else/vca2.m~;
-#A saved 1 0 1;
+#A saved 1 1 1;
+#A saved;
 #A saved;
 #X text 423 193 [vca2.m~];
 #X text 222 538 This is a wrapper of;

@@ -26,6 +26,8 @@
 #A saved 0 0 1;
 #A saved;
 #A saved;
+#A saved;
+#A saved;
 #X obj 75 334 else/meter~;
 #X obj 75 486 else/out~;
 #X obj 291 284 else/drive~;
@@ -40,6 +42,8 @@
 #X obj 168 148 else/play.file~ guitar.mp3 1 1;
 #X obj 92 257 else/drive.m~;
 #A saved 0 0.142857 1;
+#A saved;
+#A saved;
 #A saved;
 #A saved;
 #X obj 215 212 else/sine~ 1 1.4;

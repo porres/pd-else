@@ -1,4 +1,4 @@
-#N canvas 499 34 685 676 12;
+#N canvas 499 38 685 676 12;
 #X text 354 94 see -->;
 #X obj 414 94 about.MERDA;
 #N canvas 843 193 257 249 messages 0;
@@ -23,7 +23,8 @@
 #X obj 83 124 else/sine~ -mc 220 470;
 #X text 251 411 A sum toggle sums all channels into a single channel output., f 24;
 #X obj 83 194 else/vca2.m~;
-#A saved 1 0 1;
+#A saved 1 1 1;
+#A saved;
 #A saved;
 #X obj 90 583 else/out~;
 #X obj 144 154 else/sine~ -mc 220 570, f 23;
@@ -32,7 +33,8 @@
 #X text 494 170 see also:;
 #X text 494 190 [vca.m~];
 #X obj 493 223 else/vca.m~;
-#A saved 1 0 1;
+#A saved 1 1 1;
+#A saved;
 #A saved;
 #X text 274 500 This is a wrapper of;
 #X obj 313 532 else/vca2~;

@@ -285,22 +285,14 @@ static void get_cname(t_knob *x, t_floatarg depth){
 static char* knob_get_number(t_knob *x) {
     static char nbuf[16];  // Make nbuf static so it persists after the function returns
     float absv = fabs(x->x_fval);
-    if(absv == 0)
-        sprintf(nbuf, "%g", x->x_fval);
-    else if(absv < 1){
-        sprintf(nbuf, "%.3f", x->x_fval);
-        int l = strlen(nbuf);
-        while(--l >= 0 && nbuf[l] == '0')
-            nbuf[l] = '\0';
-        if(nbuf[l] == '.')
-            sprintf(nbuf, "%.3f", x->x_fval);
-    }
+    if(absv < 10)
+        sprintf(nbuf, "% .3f", x->x_fval);
     else if(absv < 100)
-        sprintf(nbuf, "%.4g", x->x_fval);
+        sprintf(nbuf, "% .2f", x->x_fval);
     else if(absv < 1000)
-        sprintf(nbuf, "%.5g", x->x_fval);
+        sprintf(nbuf, "% .1f", x->x_fval);
     else
-        sprintf(nbuf, "%g", x->x_fval);
+        sprintf(nbuf, "% d", x->x_fval);
     return(nbuf);  // Return the pointer to the string
 }
 
@@ -960,6 +952,10 @@ static void knob_set(t_knob *x, t_floatarg f){
 }
 
 static void knob_bang(t_knob *x){
+    if(x->x_cname->s_thing){
+        knob_get_snd(x);
+        pd_symbol(x->x_cname->s_thing, x->x_snd_raw);
+    }
     if(x->x_circular == 2 && !x->x_setted){ // infinite
         double delta = x->x_fval - x->x_lastval;
         double range = x->x_upper - x->x_lower;
@@ -991,12 +987,6 @@ static void knob_bang(t_knob *x){
             else
                 pd_float(x->x_snd->s_thing, x->x_fval);
         }
-    }
-    //
-    if(x->x_cname->s_thing){
-//        post("hi");
-        knob_get_snd(x);
-        pd_symbol(x->x_cname->s_thing, x->x_snd_raw);
     }
 empty:
     if(x->x_var != gensym("empty"))
@@ -2143,7 +2133,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
 //
     x->x_buf[0] = 0;
     float loadvalue = 0.0, arcstart = 0.0, exp = 0.0, min = 0.0, max = 127.0;
-    x->n_size = 12, x->x_xpos = 6, x->x_ypos = -15;
+    x->n_size = 12, x->x_xpos = 0, x->x_ypos = -15;
     t_symbol *snd = gensym("empty"), *rcv = gensym("empty");
     t_symbol *param = gensym("empty"), *var = gensym("empty");
     int size = 50, steps = 0, discrete = 0;

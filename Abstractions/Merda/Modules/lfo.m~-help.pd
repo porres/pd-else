@@ -56,7 +56,11 @@
 #X obj 53 456 else/s2f~;
 #X obj 39 23 else/note 423 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [lfo.m~] - Low Frequency Oscillator;
 #X obj 53 132 else/lfo.m~;
-#A saved 1 0 0 0 0 0 1;
+#A saved 1 0 0.5 0 -0.0285714 0 1;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
 #A saved;
 #A saved;
 #A saved;

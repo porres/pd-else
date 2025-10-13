@@ -37,10 +37,14 @@
 #X obj 66 111 else/bl.saw~ 110;
 #X obj 66 194 else/flanger.m~;
 #A saved 0.166614 5.36882 0.707317 0.488372 1;
-#A saved ratelearn ctlin 4 5;
-#A saved depthlearn ctlin 4 5;
-#A saved wetlearn ctlin 4 5;
-#A saved coefflearn ctlin 4 5;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
 #X obj 336 297 else/flanger~;
 #X obj 66 453 else/out~;
 #X obj 66 48 else/note 323 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [flanger.m~] - Flanger FX;

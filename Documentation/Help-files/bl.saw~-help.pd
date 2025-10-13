@@ -180,12 +180,16 @@
 #X text 103 469 -mc <list>: sets multichannel output with a list of frequencies, f 63;
 #X text 183 431 signal(s) -;
 #X text 267 431 band limited sawtooth wave signal(s);
-#N canvas 449 185 309 237 see 1;
+#N canvas 449 185 309 237 see 0;
 #X text 76 53 see also:;
 #X obj 76 75 else/saw~;
 #X obj 77 101 else/bl.saw2~;
 #X obj 77 128 else/vco.m~;
 #A saved 1 0 0 0 0 0 0 0 0 0;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
 #A saved;
 #A saved;
 #A saved;
