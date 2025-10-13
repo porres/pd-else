@@ -1,4 +1,4 @@
-#N canvas 308 48 729 724 12;
+#N canvas 308 48 729 811 12;
 #X text 447 478 see -->;
 #N canvas 404 154 855 431 messages 0;
 #X obj 441 357 outlet;
@@ -52,7 +52,13 @@
 #X text 34 494 Attenuverters from -1 to 1, f 13;
 #X obj 154 78 else/keyboard 17 80 4 2 0 127 empty empty;
 #X obj 154 246 else/superosc.m~;
-#A saved 0 0 -1 -0.2 0 19.6875 0 0 0 1;
+#A saved 0 0 0.399999 -0.2 0 19.6875 0 0 0 1;
+#A saved;
+#A saved;
+#A saved PWM-learn none;
+#A saved;
+#A saved;
+#A saved;
 #A saved;
 #A saved;
 #A saved;
@@ -67,7 +73,15 @@
 #X obj 492 584 else/superosc~;
 #X text 500 551 based on:;
 #X obj 392 225 else/adsr.m~;
-#A saved 250 50 0.85 1000 1 0 0 0 0 0;
+#A saved 250 50 0.85 1000 1 0 0 0 0 0 0;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
 #A saved;
 #A saved;
 #A saved;
@@ -80,6 +94,8 @@
 #A saved 1 0 0;
 #A saved;
 #X obj 166 28 else/note 382 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [superosc.m~] - Super Oscillator;
+#X obj 453 638 knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c #000000 1 0 0 0 1 320 0 0 0 empty empty 0 12 6 -15 0 1 0 0 1 0;
+#X obj 452 712 ctlout 12 76;
 #X connect 1 0 7 0;
 #X connect 6 0 9 0;
 #X connect 7 0 16 0;
@@ -89,3 +105,4 @@
 #X connect 15 0 16 2;
 #X connect 16 0 8 0;
 #X connect 16 1 8 1;
+#X connect 18 0 19 0;

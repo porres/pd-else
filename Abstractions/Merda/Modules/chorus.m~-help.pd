@@ -28,7 +28,7 @@
 #X restore 95 140 pd messages;
 #X obj 365 242 else/chorus~;
 #X obj 67 187 else/chorus.m~;
-#A saved 0.113869 23.7438 0.768293 1;
+#A saved 0.11734 7.529 0.426829 1;
 #A saved ratelearn none;
 #A saved depthlearn none;
 #A saved wetlearn none;
