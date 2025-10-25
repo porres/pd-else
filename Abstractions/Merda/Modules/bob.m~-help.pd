@@ -46,7 +46,7 @@
 #X obj 96 543 else/out~;
 #X text 208 115 (change the attenuverter);
 #X obj 71 41 else/note 450 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [bob.m~] - Moog emulation Filter;
-#N canvas 718 146 670 753 multichannel 0;
+#N canvas 707 137 670 753 multichannel 0;
 #X obj 138 34 else/bl.saw~ -mc 55 110;
 #X obj 215 79 tgl 19 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X obj 215 107 sig~ 0 0;
@@ -56,8 +56,8 @@
 #X obj 403 379 else/graph~;
 #X obj 139 520 else/out.mc~;
 #X text 370 238 The object takes multichannel inputs for all inlets., f 29;
-#X obj 139 181 else/bob.m~;
-#A saved 0 40 0.5 0 0 3 1;
+#X obj 139 174 else/bob.m~;
+#A saved 1 40 0.5 0 0 2 3;
 #A saved;
 #A saved;
 #A saved;
@@ -78,7 +78,7 @@
 #X connect 10 0 9 1;
 #X restore 376 506 pd multichannel;
 #X obj 96 222 else/bob.m~;
-#A saved 1 550 3 0.5 0 19 11;
+#A saved 1 550 3 0.5 0 2 3;
 #A saved;
 #A saved;
 #A saved;

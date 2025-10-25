@@ -39,6 +39,10 @@
 #A saved;
 #A saved;
 #A saved;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
 #X obj 340 320 else/crush~;
 #X text 285 241 This is just a wrapper around [crush~] from ELSE \, check it out., f 22;
 #X obj 55 36 else/note 390 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [chrush.m~] - Bit-Crusher / Decimator;

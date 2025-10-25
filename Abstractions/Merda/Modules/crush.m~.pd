@@ -272,7 +272,7 @@
 #X restore 250 178 pd route;
 #X obj 167 89 inlet~;
 #X obj 220 89 inlet~;
-#N canvas 249 235 764 419 att 0;
+#N canvas 394 278 764 419 att 0;
 #X obj 491 215 else/f2s~;
 #X obj 452 63 inlet~;
 #X obj 452 296 outlet~;
@@ -289,8 +289,10 @@
 #X obj 491 185 r \$0-dec;
 #X obj 111 256 clip~ 0 1;
 #X obj 452 251 clip~ 0 1;
-#X obj 150 124 r \$0-real-att-bit;
-#X obj 491 119 r \$0-real-att-dec;
+#X obj 150 105 r \$0-real-att-bit;
+#X obj 491 96 r \$0-real-att-dec;
+#X obj 150 129 * 0.5;
+#X obj 491 122 * 0.5;
 #X connect 0 0 3 1;
 #X connect 1 0 4 0;
 #X connect 3 0 15 0;
@@ -305,8 +307,10 @@
 #X connect 13 0 0 0;
 #X connect 14 0 8 0;
 #X connect 15 0 2 0;
-#X connect 16 0 11 0;
-#X connect 17 0 5 0;
+#X connect 16 0 18 0;
+#X connect 17 0 19 0;
+#X connect 18 0 11 0;
+#X connect 19 0 5 0;
 #X restore 167 233 pd att;
 #X f 8;
 #X text 167 69 crush;
