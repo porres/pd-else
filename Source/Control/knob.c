@@ -279,7 +279,6 @@ static void get_cname(t_knob *x, t_floatarg depth){
     char buf[MAXPDSTRING];
     snprintf(buf, MAXPDSTRING, ".x%lx-link", (long unsigned int)canvas);
     x->x_cname = gensym(buf);
-//    post("x->x_cname = %s", x->x_cname->s_name);
 }
 
 static char* knob_get_number(t_knob *x) {
@@ -951,11 +950,17 @@ static void knob_set(t_knob *x, t_floatarg f){
     
 }
 
-static void knob_bang(t_knob *x){
-    if(x->x_cname->s_thing){
-        knob_get_snd(x);
-        pd_symbol(x->x_cname->s_thing, x->x_snd_raw);
+static void knob_ping(t_knob *x){
+    if(x->x_cname->s_thing && x->x_snd_raw != gensym("empty")){
+        t_atom at[1];
+        SETSYMBOL(at, x->x_snd_raw);
+        typedmess(x->x_cname->s_thing, x->x_cname, 1, at);
     }
+}
+
+static void knob_bang(t_knob *x){
+    knob_get_snd(x);
+    knob_ping(x);
     if(x->x_circular == 2 && !x->x_setted){ // infinite
         double delta = x->x_fval - x->x_lastval;
         double range = x->x_upper - x->x_lower;

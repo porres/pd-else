@@ -1,4 +1,4 @@
-#N canvas 367 73 637 749 12;
+#N canvas 627 72 635 705 12;
 #X text 419 18 see -->;
 #X obj 479 18 about.MERDA;
 #X text 437 220 This is a wrapper around [adsr~] from ELSE \, check it out., f 18;
@@ -68,7 +68,7 @@
 #X obj 213 232 else/adsr.m~;
 #A saved 100 50 0.25 500 1 0 0 0 0 0 1;
 #A saved;
-#A saved;
+#A saved rcv-attack none;
 #A saved;
 #A saved;
 #A saved;
@@ -112,9 +112,9 @@
 #X obj 35 564 else/out~;
 #X obj 27 17 else/note 375 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [adsr.m~] - Polyphonic ADSR envelope;
 #X obj 180 325 else/adsr.m~;
-#A saved 50 50 0.5 250 1 0 0 0 0 0 1;
-#A saved;
-#A saved;
+#A saved 1280 50 0.5 250 1 0 0 0 0 0 1;
+#A saved attack-learn none;
+#A saved none;
 #A saved;
 #A saved;
 #A saved;
@@ -151,7 +151,7 @@
 #X obj 211 187 else/adsr.m~;
 #A saved 200 50 0.5 50 1 0 0 0 0 1 1;
 #A saved;
-#A saved;
+#A saved rcv-attack none;
 #A saved;
 #A saved;
 #A saved;
