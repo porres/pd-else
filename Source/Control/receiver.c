@@ -49,6 +49,13 @@ static void receiver_proxy_learn(t_receiver_proxy *p){
     pd_bind(&p->p_owner->x_obj.ob_pd, p->p_owner->x_cname);
 }
 
+static void receiver_proxy_deactivate(t_receiver_proxy *p){
+    if(p->p_owner->x_learn){
+        p->p_owner->x_learn = 0;
+        pd_unbind(&p->p_owner->x_obj.ob_pd, p->p_owner->x_cname);
+    }
+}
+
 static void receiver_proxy_forget(t_receiver_proxy *p){
     if(p->p_owner->x_learn){
         p->p_owner->x_learn = 0;
@@ -302,4 +309,5 @@ void receiver_setup(void){
     class_addmethod(receiver_proxy_class, (t_method)receiver_proxy_clear, gensym("clear"), 0);
     class_addmethod(receiver_proxy_class, (t_method)receiver_proxy_learn, gensym("learn"), 0);
     class_addmethod(receiver_proxy_class, (t_method)receiver_proxy_forget, gensym("forget"), 0);
+    class_addmethod(receiver_proxy_class, (t_method)receiver_proxy_deactivate, gensym("deactivate"), 0);
 }
