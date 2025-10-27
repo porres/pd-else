@@ -13,7 +13,9 @@ typedef struct _sender{
     t_symbol   *x_sym2;
     t_symbol   *x_raw;
     t_glist    *x_cv;
+    t_glist    *x_init_cv;
     t_int       x_depth_arg;
+    t_int       x_local;
 }t_sender;
 
 static void sender_get_snd(t_sender *x, t_floatarg f){
@@ -23,7 +25,7 @@ static void sender_get_snd(t_sender *x, t_floatarg f){
     else if(idx == 2 && x->x_sym2 != &s_)
         x->x_raw = x->x_sym2;
     else{
-        idx += x->x_depth_arg;
+        idx += (x->x_depth_arg + x->x_local);
         t_binbuf *bb = x->x_obj.te_binbuf;
         if(binbuf_getnatom(bb) > idx){
             char buf[128];
@@ -31,6 +33,21 @@ static void sender_get_snd(t_sender *x, t_floatarg f){
             x->x_raw = gensym(buf);
         }
     }
+}
+
+static t_symbol *get_send_name(t_sender *x){
+    t_symbol *send_name = canvas_realizedollar(x->x_cv, x->x_raw);
+    if(x->x_raw == &s_)
+        return(send_name = &s_);
+    send_name = canvas_realizedollar(x->x_cv, x->x_raw);
+    if(x->x_local){
+        char buf[MAXPDSTRING];
+        snprintf(buf, MAXPDSTRING, ".x%lx-%s",
+                 (long unsigned int)x->x_init_cv,
+                 send_name->s_name);
+        send_name = gensym(buf);
+    }
+    return(send_name);
 }
 
 static void sender_ping(t_sender *x){
@@ -44,13 +61,11 @@ static void sender_ping(t_sender *x){
 static void sender_bang(t_sender *x){
     sender_get_snd(x, 1);
     sender_ping(x);
-    t_symbol *send_name = canvas_realizedollar(x->x_cv, x->x_raw);
-    if(x->x_cname->s_thing)
-        pd_symbol(x->x_cname->s_thing, x->x_raw);
+    t_symbol *send_name = get_send_name(x);
     if(send_name != &s_ && send_name->s_thing)
         pd_bang(send_name->s_thing);
     sender_get_snd(x, 2); // 2nd name
-    send_name = canvas_realizedollar(x->x_cv, x->x_raw);
+    send_name = get_send_name(x);
     if(send_name != &s_ && send_name->s_thing)
         pd_bang(send_name->s_thing);
 }
@@ -58,11 +73,11 @@ static void sender_bang(t_sender *x){
 static void sender_float(t_sender *x, t_float f){
     sender_get_snd(x, 1);
     sender_ping(x);
-    t_symbol *send_name = canvas_realizedollar(x->x_cv, x->x_raw);
+    t_symbol *send_name = get_send_name(x);
     if(send_name != &s_ && send_name->s_thing)
         pd_float(send_name->s_thing, f);
     sender_get_snd(x, 2); // 2nd name
-    send_name = canvas_realizedollar(x->x_cv, x->x_raw);
+    send_name = get_send_name(x);
     if(send_name != &s_ && send_name->s_thing)
         pd_float(send_name->s_thing, f);
 }
@@ -70,11 +85,11 @@ static void sender_float(t_sender *x, t_float f){
 static void sender_symbol(t_sender *x, t_symbol *s){
     sender_get_snd(x, 1);
     sender_ping(x);
-    t_symbol *send_name = canvas_realizedollar(x->x_cv, x->x_raw);
+    t_symbol *send_name = get_send_name(x);
     if(send_name != &s_ && send_name->s_thing)
         pd_symbol(send_name->s_thing, s);
     sender_get_snd(x, 2); // 2nd name
-    send_name = canvas_realizedollar(x->x_cv, x->x_raw);
+    send_name = get_send_name(x);
     if(send_name != &s_ && send_name->s_thing)
         pd_symbol(send_name->s_thing, s);
 }
@@ -82,11 +97,11 @@ static void sender_symbol(t_sender *x, t_symbol *s){
 static void sender_pointer(t_sender *x, t_gpointer *gp){
     sender_get_snd(x, 1);
     sender_ping(x);
-    t_symbol *send_name = canvas_realizedollar(x->x_cv, x->x_raw);
+    t_symbol *send_name = get_send_name(x);
     if(send_name != &s_ && send_name->s_thing)
         pd_pointer(send_name->s_thing, gp);
     sender_get_snd(x, 2); // 2nd name
-    send_name = canvas_realizedollar(x->x_cv, x->x_raw);
+    send_name = get_send_name(x);
     if(send_name != &s_ && send_name->s_thing)
         pd_pointer(send_name->s_thing, gp);
 }
@@ -94,11 +109,11 @@ static void sender_pointer(t_sender *x, t_gpointer *gp){
 static void sender_list(t_sender *x, t_symbol *s, int ac, t_atom *av){
     sender_get_snd(x, 1);
     sender_ping(x);
-    t_symbol *send_name = canvas_realizedollar(x->x_cv, x->x_raw);
+    t_symbol *send_name = get_send_name(x);
     if(send_name != &s_ && send_name->s_thing)
         pd_list(send_name->s_thing, s, ac, av);
     sender_get_snd(x, 2); // 2nd name
-    send_name = canvas_realizedollar(x->x_cv, x->x_raw);
+    send_name = get_send_name(x);
     if(send_name != &s_ && send_name->s_thing)
         pd_list(send_name->s_thing, s, ac, av);
 }
@@ -106,11 +121,11 @@ static void sender_list(t_sender *x, t_symbol *s, int ac, t_atom *av){
 static void sender_anything(t_sender *x, t_symbol *s, int ac, t_atom *av){
     sender_get_snd(x, 1);
     sender_ping(x);
-    t_symbol *send_name = canvas_realizedollar(x->x_cv, x->x_raw);
+    t_symbol *send_name = get_send_name(x);
     if(send_name != &s_ && send_name->s_thing)
         typedmess(send_name->s_thing, s, ac, av);
     sender_get_snd(x, 2); // 2nd name
-    send_name = canvas_realizedollar(x->x_cv, x->x_raw);
+    send_name = get_send_name(x);
     if(send_name != &s_ && send_name->s_thing)
         typedmess(send_name->s_thing, s, ac, av);
 }
@@ -131,9 +146,14 @@ static void *sender_new(t_symbol *s, int ac, t_atom *av){
     int depth = 0;
     x->x_raw = s; // get rid of warning
     x->x_sym1 = x->x_sym2 = &s_;
-    x->x_cv = canvas_getrootfor(canvas_getcurrent());
+    x->x_init_cv = canvas_getcurrent();
+    x->x_cv = canvas_getrootfor(x->x_init_cv);
     symbolinlet_new(&x->x_obj, &x->x_sym1);
     symbolinlet_new(&x->x_obj, &x->x_sym2);
+    if(ac && atom_getsymbol(av) == gensym("-local")){
+        x->x_local = 1;
+        av++, ac--;
+    }
     if(ac && (av)->a_type == A_FLOAT){
         x->x_depth_arg = 1;
         depth = atom_getint(av) < 0 ? 0 : atom_getint(av);

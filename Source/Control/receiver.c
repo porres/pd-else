@@ -17,12 +17,14 @@ typedef struct _receiver{
     t_symbol         *x_sym_2;
     t_symbol         *x_raw;
     t_glist          *x_cv;
+    t_glist          *x_init_cv;
     int               x_bound;
     t_int             x_depth_arg;
     t_clock          *x_bindclock;
     t_outlet         *x_learnout;
     t_symbol         *x_cname;
     int               x_learn;
+    int               x_local;
 }t_receiver;
 
 static void receiver_proxy_init(t_receiver_proxy * p, t_receiver *x){
@@ -180,7 +182,7 @@ static void receiver_anything(t_receiver *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static t_symbol *receiver_get_rcv(t_receiver *x, t_floatarg f){
-    int idx = (int)f + x->x_depth_arg;
+    int idx = (int)f + x->x_depth_arg + x->x_local;
     t_binbuf *bb = x->x_obj.te_binbuf;
     if(binbuf_getnatom(bb) > idx){
         char buf[128];
@@ -195,12 +197,26 @@ static void receiver_bind(t_receiver *x){
     x->x_raw = receiver_get_rcv(x, 1);
     x->x_sym_1 = canvas_realizedollar(x->x_cv, x->x_raw);
     if(x->x_sym_1 != &s_){
+        if(x->x_local){
+            char buf[MAXPDSTRING];
+            snprintf(buf, MAXPDSTRING, ".x%lx-%s",
+                     (long unsigned int)x->x_init_cv,
+                     x->x_sym_1->s_name);
+            x->x_sym_1 = gensym(buf);
+        }
         pd_bind(&x->x_obj.ob_pd, x->x_sym_1);
         x->x_bound = 1;
     }
     x->x_raw = receiver_get_rcv(x, 2);
     x->x_sym_2 = canvas_realizedollar(x->x_cv, x->x_raw);
     if(x->x_sym_2 != &s_){
+        if(x->x_local){
+            char buf[MAXPDSTRING];
+            snprintf(buf, MAXPDSTRING, ".x%lx-%s",
+                     (long unsigned int)x->x_init_cv,
+                     x->x_sym_2->s_name);
+            x->x_sym_2 = gensym(buf);
+        }
         pd_bind(&x->x_obj.ob_pd, x->x_sym_2);
         x->x_bound = 1;
     }
@@ -231,9 +247,14 @@ static void *receiver_new(t_symbol *s, int ac, t_atom *av){
     get_cname(x, 100);
     x->x_sym_1 = x->x_sym_2 = x->x_raw = &s_;
     x->x_bound = 0;
-    x->x_depth_arg = 0;
+    x->x_depth_arg = x->x_local = 0;
     int depth = 0;
-    x->x_cv = canvas_getrootfor(canvas_getcurrent());
+    x->x_init_cv = canvas_getcurrent();
+    x->x_cv = canvas_getrootfor(x->x_init_cv);
+    if(ac && atom_getsymbol(av) == gensym("-local")){
+        x->x_local = 1;
+        av++, ac--;
+    }
     if(ac && (av)->a_type == A_FLOAT){
         x->x_depth_arg = 1;
         depth = atom_getint(av) < 0 ? 0 : atom_getint(av);
@@ -253,8 +274,6 @@ static void *receiver_new(t_symbol *s, int ac, t_atom *av){
 }
 
 static void receiver_free(t_receiver *x){
-//    if(x->x_bindclock)
-//        clock_free(x->x_bindclock);
     if(x->x_learn)
         pd_unbind(&x->x_obj.ob_pd, x->x_cname);
     if(x->x_bound){
