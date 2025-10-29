@@ -1,6 +1,6 @@
 #N canvas 349 38 1033 849 10;
 #X obj 285 336 vcf.m~;
-#A saved 55 20 0.447214 0 1;
+#A saved 500 10 0.657143 0 1;
 #A saved;
 #A saved;
 #A saved;
@@ -10,7 +10,9 @@
 #A saved;
 #A saved;
 #X obj 35 316 vco.m~;
-#A saved 1 0 0 4 0.75 0 0 0 1 0;
+#A saved 0 0 0 2 0.5 0 0 0 1 0;
+#A saved;
+#A saved;
 #A saved;
 #A saved;
 #A saved;
@@ -20,13 +22,13 @@
 #A saved;
 #A saved;
 #X obj 285 595 drive.m~;
-#A saved -0.411954 0 1;
+#A saved 0.420001 0 1;
 #A saved;
 #A saved;
 #A saved;
 #A saved;
 #X obj 719 39 adsr.m~;
-#A saved 0 0 0 1000 0 0 0 0 0 0 1;
+#A saved 0 0 0 500 0 0 0 0 0 0 1;
 #A saved;
 #A saved;
 #A saved;
@@ -44,11 +46,11 @@
 #A saved;
 #A saved;
 #X obj 438 593 level.m~;
-#A saved -0.173205 1;
+#A saved -0.34641 1;
 #A saved;
 #A saved;
 #X obj 35 21 seq8.m~;
-#A saved 90 4 1 29 60 41 60 45 54 60 32 1 0 1 0 1 1 0 1 1;
+#A saved 60 4 1 36 56 60 39 55 60 43 60 1 1 1 1 1 1 1 1 1;
 #A saved;
 #A saved;
 #A saved;
@@ -74,7 +76,7 @@
 #X obj 409 773 nop~;
 #X obj 563 780 nop~;
 #X obj 794 485 else/presets.m;
-#A saved 1003-vcf-0 500 10 0.657143 0 || 1003-vcf-0 500 10 0.657143 0 || 1003-vco-0 1 0 0 2 0.5 0 0 0 0 || 1003-vco-0 1 0 0 2 0.5 0 0 0 0 || 1003-drive-0 0.420001 0 || 1003-drive-0 0.420001 0 || 1003-adsr-0 0 0 0 500 0 0 0 0 0 0 || 1003-adsr-0 0 0 0 500 0 0 0 0 0 0 || 1003-gain-0 -0.34641 || 1003-gain-0 -0.34641 || 1003-vca-0 60 4 1 36 56 60 39 55 60 43 60 1 1 1 1 1 1 1 1 || 1003-vca-0 60 4 1 36 56 60 39 55 60 43 60 1 1 1 1 1 1 1 1 || 1003-vca-1 0.962352 0 || 1003-vca-1 0.962352 0 || \; 1003-vcf-0 55 20 0.447214 0 || 1003-vcf-0 55 20 0.447214 0 || 1003-vco-0 1 0 0 4 0.75 0 0 0 0 || 1003-vco-0 1 0 0 4 0.75 0 0 0 0 || 1003-drive-0 -0.411954 0 || 1003-drive-0 -0.411954 0 || 1003-adsr-0 0 0 0 1000 0 0 0 0 0 0 || 1003-adsr-0 0 0 0 1000 0 0 0 0 0 0 || 1003-gain-0 -0.173205 || 1003-gain-0 -0.173205 || 1003-vca-0 90 4 1 29 60 41 60 45 54 60 32 1 0 1 0 1 1 0 1 || 1003-vca-0 90 4 1 29 60 41 60 45 54 60 32 1 0 1 0 1 1 0 1 || 1003-vca-1 0.962352 0 || 1003-vca-1 0.962352 0 || \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;;
+#A saved 1482-vcf-0 500 10 0.657143 0 || 1482-vcf-0 500 10 0.657143 0 || 1482-vco-0 0 0 0 2 0.5 0 0 0 0 || 1482-vco-0 0 0 0 2 0.5 0 0 0 0 || 1482-drive-0 0.420001 0 || 1482-drive-0 0.420001 0 || 1482-adsr-0 0 0 0 500 0 0 0 0 0 0 || 1482-adsr-0 0 0 0 500 0 0 0 0 0 0 || 1482-gain-0 -0.34641 || 1482-gain-0 -0.34641 || 1482-vca-0 60 4 1 36 56 60 39 55 60 43 60 1 1 1 1 1 1 1 1 || 1482-vca-0 60 4 1 36 56 60 39 55 60 43 60 1 1 1 1 1 1 1 1 || 1482-vca-1 0.962352 0 || 1482-vca-1 0.962352 0 || \; 1482-vcf-0 55 20 0.447214 0 || 1482-vcf-0 55 20 0.447214 0 || 1482-vco-0 0 0 0 4 0.75 0 0 0 0 || 1482-vco-0 0 0 0 4 0.75 0 0 0 0 || 1482-drive-0 -0.411954 0 || 1482-drive-0 -0.411954 0 || 1482-adsr-0 0 0 0 1000 0 0 0 0 0 0 || 1482-adsr-0 0 0 0 1000 0 0 0 0 0 0 || 1482-gain-0 -0.173205 || 1482-gain-0 -0.173205 || 1482-vca-0 90 4 1 29 60 41 60 45 54 60 32 1 0 1 0 1 1 0 1 || 1482-vca-0 90 4 1 29 60 41 60 45 54 60 32 1 0 1 0 1 1 0 1 || 1482-vca-1 0.962352 0 || 1482-vca-1 0.962352 0 || \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;;
 #X connect 0 0 2 0;
 #X connect 1 0 8 0;
 #X connect 2 0 9 0;

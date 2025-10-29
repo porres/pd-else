@@ -18,7 +18,7 @@ proc category_merda_menu::load_menutree {} {
             {classic
                 {adsr.m~ lfo.m~ seq8.m~ vca.m~ vca2.m~ vcf.m~ vco.m~}}
             {fx
-                {chorus.m~ delay.m~ drive.m~ flanger.m~ phaser.m~ crush.m~ plate.rev.m~ rm.m~}}
+                {bob.m~ chorus.m~ delay.m~ drive.m~ flanger.m~ phaser.m~ crush.m~ plate.rev.m~ rm.m~}}
             {generators
                 {superosc.m~ gendyn.m~ plaits.m~ pluck.m~ pm6.m~ sfont.m~}}
             {tools

@@ -650,7 +650,7 @@
 #X obj 187 433 r \$0-deactivate;
 #X obj 431 266 r \$0-deactivate;
 #X obj 173 55 symbol transp;
-#X obj 433 659 else/rescale -36 36;
+#X obj 433 659 else/rescale -24 24;
 #X connect 0 0 30 0;
 #X connect 1 0 2 0;
 #X connect 1 1 23 0;

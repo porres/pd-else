@@ -2,7 +2,9 @@
 #X obj 128 40 keyboard 17 80 4 1 0 0 empty empty;
 #X listbox 128 130 10 0 0 0 - - - 0;
 #X obj 33 202 vco.m~;
-#A saved 1 0 0 2 0.5 0 0 0 1 0;
+#A saved 0 0 0 2 0.5 0 0 0 1 0;
+#A saved;
+#A saved;
 #A saved;
 #A saved;
 #A saved;
