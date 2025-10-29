@@ -1,4 +1,4 @@
-#N canvas 359 55 966 638 12;
+#N canvas 359 55 966 764 12;
 #X declare -path else;
 #X obj 284 524 *~;
 #X text 137 374 pitch;
@@ -44,6 +44,9 @@
 #X text 341 440 <-- velocity;
 #X text 35 563 A more versatile version of [makenote] from ELSE that also takes time input in beats., f 27;
 #X text 493 48 This example uses the MIDI note information to set the frequency of [osc~] and trigger [adsr~]. In the context of MIDI values in the range of 0 to 127 \, we need [mtof] to convert the pitch to hertz., f 62;
+#X obj 523 695 noteinfo;
+#X obj 619 695 notes.on;
+#X text 227 683 see also these couple of objects that report information on MIDI notes ------>, f 40;
 #X connect 0 0 13 0;
 #X connect 2 0 6 0;
 #X connect 5 0 0 0;

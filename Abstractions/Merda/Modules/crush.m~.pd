@@ -26,7 +26,7 @@
 #X restore 90 39 pd id-name-init;
 #X obj 123 256 else/dispatch \$0-set-bit \$0-set-dec \$0-set-att-bit \$0-set-att-dec, f 35;
 #X obj 90 311 else/var \$0-bit \$0-dec \$0-att-bit \$0-att-dec, f 22;
-#X obj 125 121 else/sender 1 \$0-presets;
+#X obj 125 121 else/sender 1 \\\$0-presets;
 #X connect 0 0 6 0;
 #X connect 1 0 2 0;
 #X connect 1 0 5 0;

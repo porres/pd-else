@@ -284,7 +284,7 @@
 #X restore 97 46 pd id-name-init;
 #X obj 98 331 else/var \$0-decay \$0-cutoff \$0-att-decay \$0-att-cut \$0-n-voices, f 35;
 #X obj 123 258 else/dispatch \$0-set-decay \$0-set-cutoff \$0-set-att-decay \$0-set-att-cut \$0-set-n-voices, f 48;
-#X obj 121 133 else/sender 1 \$0-presets;
+#X obj 121 133 else/sender 1 \\\$0-presets;
 #X connect 0 0 6 0;
 #X connect 1 0 2 0;
 #X connect 1 0 4 0;

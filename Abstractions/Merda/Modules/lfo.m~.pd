@@ -304,7 +304,7 @@
 #X restore 97 46 pd id-name-init;
 #X obj 123 258 else/dispatch \$0-hz-set \$0-set-waveform \$0-set-PWM \$0-set-unipolar \$0-att-fm-set \$0-att-pwm-set;
 #X obj 98 311 else/var \$0-set \$0-waveform \$0-PWM \$0-unipolar \$0-att-fm \$0-att-pwm, f 34;
-#X obj 121 133 else/sender 1 \$0-presets;
+#X obj 121 133 else/sender 1 \\\$0-presets;
 #X connect 0 0 6 0;
 #X connect 1 0 2 0;
 #X connect 1 0 5 0;
@@ -543,7 +543,7 @@
 #X obj 77 59 else/note 101 24 Inter empty 5 54 54 54 0 187 187 187 1 1 LFO;
 #X obj 135 118 else/popmenu 75 26 12 #dfdfdf black \  \$0-set-waveform \$0-waveform empty empty 0 0 -1 0 0 1 0 0 0 0 0 sine tri saw vsaw square;
 #X text 140 99 Waveform:;
-#X obj 57 159 else/note 65 12 Menlo \$0-hz-label 0 0 0 0 0 255 255 255 0 1 28.8 Hz;
+#X obj 57 159 else/note 65 12 Menlo \$0-hz-label 0 0 0 0 0 255 255 255 0 1 0.1 Hz;
 #X obj 187 59 else/button 19 31 #e0e0e0 #808080 2 1 2 0 0 \$0-collapse \$0-button;
 #X obj 188 60 cnv 10 17 15 empty \$0-cnv ▼ 5 8 0 12 #bbbbbb #000000 0;
 #X obj 188 74 cnv 10 17 15 empty \$0-cnv ▲ 5 5 0 12 #bbbbbb #000000 0;

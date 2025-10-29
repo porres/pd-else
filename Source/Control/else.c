@@ -21,7 +21,7 @@ static int else_major = 1;
 static int else_minor = 0;
 static int else_bugfix = 0;
 
-#define STATUS "rc"
+#define STATUS "rc test"
 static int status_number = 15;
 
 extern void lua_setup();
@@ -67,7 +67,7 @@ void else_obj_about(t_else_obj *x){
     post("-------------------------------------------------------------------");
     post("  -----> ELSE - EL Locus Solus' Externals for Pure Data <-----");
     post("-------------------------------------------------------------------");
-    post("- Version: %d.%d-%d %s-%d test 1; Released October 23rd 2025", else_major, else_minor, else_bugfix, STATUS, status_number);
+    post("- Version: %d.%d-%d %s-%d test 1; Released October 29th 2025", else_major, else_minor, else_bugfix, STATUS, status_number);
     post("- Author: Alexandre Torres Porres & others");
     post("ELSE binary loaded from: %s", else_obj_class->c_externdir->s_name);
     post("- Repository: https://github.com/porres/pd-else");

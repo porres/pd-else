@@ -4,9 +4,9 @@
 
 ### for the Pure Data programming language
 
-### Version: 1.0-0 RC-14 (release candidate #14) With Live Electronics Tutorial!
+### Version: 1.0-0 RC-15 (release candidate #15) With Live Electronics Tutorial!
 
-### Scheduled Release: September 2nd 2025
+### Scheduled Release: October 29th 2025
 
 Copyright © 2017-2025 Alexandre Torres Porres and others
 
@@ -111,7 +111,7 @@ Some objects are simply based (or better, depend on) on other software and are j
 
 --------------------------------------------------------------------------
 
-## Current Object list (573 objects):
+## Current Object list (595 objects):
 
 #assorted
     else
@@ -129,16 +129,16 @@ Some objects are simply based (or better, depend on) on other software and are j
     buffer tabgen tabreader tabreader~
 
 #tuning/notes
-    scales scale2freq scala autotune autotune2 makenote2 retune eqdiv cents2scale scale2cents cents2frac frac2cents dec2frac frac2dec freq2midi midi2freq note2midi midi2note notedur2ratio
+    scales scale2freq scala autotune autotune2 makenote2 retune eqdiv cents2scale scale2cents cents2frac frac2cents dec2frac frac2dec freq2midi midi2freq note2midi midi2note notedur2ratio intervals notes.on sortnote
 
 #patch/subpatch management
-    loadbanger args meter presets dollsym sender receiver retrieve dispatch var send2~ blocksize~ nop~ click properties fontsize canvas.active canvas.bounds canvas.gop canvas.pos canvas.edit canvas.vis canvas.name canvas.setname canvas.zoom abs.pd~ sendmidi
+    loadbanger closebang args meter presets dollsym sender receiver retrieve dispatch var send2~ blocksize~ nop~ click properties fontsize canvas.active canvas.bounds canvas.gop canvas.pos canvas.edit canvas.vis canvas.name canvas.setname canvas.zoom abs.pd~ sendmidi
 
 #message management
     format swap2 nmess unite separate symbol2any any2symbol changed hot initmess message default pack2 pick limit spread router route2 routeall routetype selector stack store morph interpolate sig2float~ float2sig~ pipe2
 
 #list management
-    break order combine delete remove equal group iterate insert scramble sort reverse rotate replace sum slice stream merge unmerge amean gmean list.inc rand.dev list.harm
+    break order combine delete remove equal group iterate insert scramble sort reverse rotate replace sum slice stream merge unmerge amean gmean list.inc rand.dev list.harm unique filter reorder
 
 #file management
     dir
@@ -243,7 +243,7 @@ A submodule of ELSE by Porres (this is also by Porres).
     adsr.m~ lfo.m~ seq8.m~ vca.m~ vca2.m~ vcf.m~ vco.m~
 
 #FX
-    chorus.m~ crusher.m~ delay.m~ drive.m~ flanger.m~ phaser.m~ plate.rev.m~ rm.m~
+    bob.m~ chorus.m~ crusher.m~ delay.m~ drive.m~ flanger.m~ phaser.m~ plate.rev.m~ rm.m~
 
 #generators
     superosc.m~ gendyn.m~ plaits.m~ pluck.m~ pm6.m~ sfont.m~

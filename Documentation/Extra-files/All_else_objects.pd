@@ -1,7 +1,7 @@
-#N struct 2817-cell float x float y float cellsize float color;
-#N struct 2819-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
-#N struct 2876-slot float x float y float slotsize float color float width float bordercolor;
-#N canvas 549 38 541 693 10;
+#N struct 1004-cell float x float y float cellsize float color;
+#N struct 1006-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
+#N struct 1063-slot float x float y float slotsize float color float width float bordercolor;
+#N canvas 542 38 541 693 10;
 #N canvas 240 37 975 767 GUI 0;
 #X text 48 -899 [biplot];
 #X text 204 -962 [pic] =>;
@@ -97,7 +97,7 @@
 #X connect 5 0 3 0;
 #X coords 0 -1 1 1 174 30 2 100 100;
 #X restore 66 82 pd;
-#X obj 67 83 cnv 15 172 28 empty \$0-label version\ 1.0-0\ rc\ test\ release-14 8 14 0 14 #e0e0e0 #404040 0;
+#X obj 67 83 cnv 15 172 28 empty \$0-label version\ 1.0-0\ rc-15 8 14 0 14 #e0e0e0 #404040 0;
 #N canvas 568 23 241 168 FFT 0;
 #X obj 55 52 else/hann~;
 #X obj 55 78 else/bin.shift~;
@@ -124,12 +124,13 @@
 #A saved -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;;
 #X obj 71 289 else/canvas.name;
 #X obj 71 412 else/sender;
-#X obj 72 511 else/dispatch;
-#X obj 73 534 else/var;
-#X obj 74 561 else/nop~;
-#X obj 72 485 else/send2~;
-#X obj 74 587 else/abs.pd~;
-#X obj 74 612 else/sendmidi;
+#X obj 72 538 else/dispatch;
+#X obj 73 561 else/var;
+#X obj 74 588 else/nop~;
+#X obj 72 512 else/send2~;
+#X obj 74 614 else/abs.pd~;
+#X obj 74 639 else/sendmidi;
+#X obj 72 483 else/closebang;
 #X restore 46 255 pd Patch/subpatch_management;
 #N canvas 655 96 310 486 MIDI 0;
 #X obj 72 125 else/sysrt.in;
@@ -317,7 +318,6 @@
 #X obj 72 813 else/bl.wavetable~;
 #X obj 72 412 else/gaussian~;
 #X obj 73 583 else/blip~;
-#X obj 73 554 bl.osc~;
 #X obj 72 248 else/oscnoise~;
 #X obj 73 840 else/oscnoise~;
 #X obj 72 438 else/pm~;
@@ -325,6 +325,7 @@
 #X obj 72 523 else/wt2d~;
 #X obj 73 866 else/damp.osc~;
 #X obj 72 216 else/superosc~;
+#X obj 73 554 else/bl.osc~;
 #X restore 374 438 pd Oscillators;
 #N canvas 798 47 264 684 Control(Fader/Panning/Routing) 0;
 #X obj 64 128 else/balance~;
@@ -606,7 +607,7 @@
 #X obj 120 58 else/chrono;
 #X obj 114 88 else/datetime;
 #X restore 200 222 pd time;
-#N canvas 568 23 219 496 Tuning/notes 0;
+#N canvas 1098 67 219 566 Tuning/notes 0;
 #X obj 50 68 else/autotune;
 #X obj 50 91 else/autotune2;
 #X obj 50 161 else/retune;
@@ -625,8 +626,11 @@
 #X obj 50 409 else/midi2note;
 #X obj 50 386 else/note2midi;
 #X obj 50 433 else/notedur2ratio;
+#X obj 50 455 else/intervals;
+#X obj 50 503 else/notes.on;
+#X obj 50 479 else/sortnote;
 #X restore 367 222 pd Tuning/notes;
-#N canvas 445 74 436 508 List_management 0;
+#N canvas 836 80 336 509 List_management 0;
 #X obj 73 20 else/break;
 #X obj 73 45 else/order;
 #X obj 73 69 else/group;
@@ -658,6 +662,9 @@
 #X obj 73 745 else/delace;
 #X obj 74 693 else/rand.dev;
 #X obj 73 670 else/list.harm;
+#X obj 74 770 else/unique;
+#X obj 74 794 else/filter;
+#X obj 74 820 else/reorder;
 #X restore 367 255 pd List_management;
 #N canvas 479 51 243 411 Audio 0;
 #X obj 87 26 else/nchs~;

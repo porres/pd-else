@@ -326,7 +326,7 @@
 #X restore 97 46 pd id-name-init;
 #X obj 123 258 else/dispatch \$0-set-transp \$0-set-lin \$0-set-PWM-saw \$0-set-PWM-square \$0-set-waveform \$0-set-detune \$0-set-att-fm \$0-set-att-pwm \$0-set-att-detune;
 #X obj 98 331 else/var \$0-transp \$0-lin \$0-PWM-saw \$0-PWM-square \$0-waveform \$0-detune \$0-att-fm \$0-att-pwm \$0-att-detune;
-#X obj 121 133 else/sender 1 \$0-presets;
+#X obj 121 133 else/sender 1 \\\$0-presets;
 #X connect 0 0 6 0;
 #X connect 1 0 2 0;
 #X connect 1 0 5 0;

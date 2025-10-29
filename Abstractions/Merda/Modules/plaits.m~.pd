@@ -1,7 +1,7 @@
 #N canvas 396 88 884 495 12;
 #X obj 78 74 inlet~;
 #X obj 78 387 outlet~;
-#N canvas 423 57 837 403 preset 1;
+#N canvas 423 57 837 403 preset 0;
 #X msg 125 86 name \$1;
 #X obj 90 161 else/receiver;
 #X obj 123 210 route list;
@@ -24,9 +24,9 @@
 #X connect 6 0 1 0;
 #X connect 7 0 5 0;
 #X restore 90 39 pd id-name-init;
-#X obj 123 247 else/dispatch \$0-set-transp \$0-set-harmonics \$0-set-timbre \$0-set-morph \$0-set-model \$0-set-cutoff \$0-set-decay \$0-set-freq-att \$0-set-timbre-att \$0-set-harmonics-att \$0-set-morph-att \$0-set-n-voices \$0-set-trigger-mode \$0-set-level-mode, f 82;
-#X obj 90 310 else/var \$0-transp \$0-harmonics \$0-timbre \$0-morph \$0-model \$0-cutoff \$0-decay \$0-freq-att \$0-timbre-att \$0-harmonics-att \$0-morph-att \$0-n-voices \$0-trigger-mode \$0-level-mode, f 88;
-#X obj 125 121 else/sender 1 \$0-presets;
+#X obj 123 247 else/dispatch \$0-set-transp \$0-set-harmonics \$0-set-timbre \$0-set-morph \$0-set-model \$0-set-cutoff \$0-set-decay \$0-set-freq-att \$0-set-timbre-att \$0-set-harmonics-att \$0-set-morph-att \$0-set-n-voices \$0-set-trigger-mode \$0-set-level-mode, f 84;
+#X obj 90 325 else/var \$0-transp \$0-harmonics \$0-timbre \$0-morph \$0-model \$0-cutoff \$0-decay \$0-freq-att \$0-timbre-att \$0-harmonics-att \$0-morph-att \$0-n-voices \$0-trigger-mode \$0-level-mode, f 61;
+#X obj 125 121 else/sender 1 \\\$0-presets;
 #X connect 0 0 6 0;
 #X connect 1 0 2 0;
 #X connect 1 0 5 0;

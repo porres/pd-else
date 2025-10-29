@@ -30,7 +30,7 @@
 #X restore 90 39 pd id-name-init;
 #X obj 123 257 else/dispatch \$0-set-attack \$0-set-decay \$0-set-sustain \$0-set-release \$0-set-curve \$0-set-att-A \$0-set-att-D \$0-set-att-S \$0-set-att-R \$0-set-imp;
 #X obj 90 321 else/var \$0-attack \$0-decay \$0-sustain \$0-release \$0-curve \$0-att-A \$0-att-D \$0-att-S \$0-att-R \$0-imp;
-#X obj 125 121 else/sender 1 \$0-presets;
+#X obj 125 121 else/sender 1 \\\$0-presets;
 #X connect 0 0 6 0;
 #X connect 1 0 2 0;
 #X connect 1 0 5 0;

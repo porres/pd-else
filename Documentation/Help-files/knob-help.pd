@@ -318,7 +318,7 @@
 #X connect 52 0 51 0;
 #X connect 60 0 59 0;
 #X restore 414 163 pd activity/number;
-#N canvas 408 66 769 655 receive 0;
+#N canvas 408 66 768 805 receive 0;
 #X obj 233 382 r \$0-knob;
 #X obj 99 365 else/knob 100 0 127 0 0 empty empty #dfdfdf #afafaf black 1 0 0 0 1 360 0 0 0 pitch empty 0 8 0 0 0 1 0 0 0 0;
 #X msg 46 179 send \\\$0-knob;
@@ -375,6 +375,14 @@
 #X obj 364 531 bng 21 250 50 0 empty empty empty 0 -12 0 16 #dfdfdf #000000 #000000;
 #X obj 364 502 r \$0-x-learn;
 #X text 335 290 Use "var' to set a variable and send values to variables in [value] or [var] objects. Note that you also can do that if you have a send name that matches a variable name \, but with the 'var' symbol you bypass sending to a [receive] object and just set the variable directly. Like send/receive \, you need to escape dollar signs in messages. This is particularly useful if you have a 'param' name \, in which case you cannot send values to a [value] object with the same 'send' name \, for instance. HINT: use [var] with [savestate] objects to save the current state of GUIs., f 67;
+#X text 142 693 You can also have [receiver] learn from a built-in send name in [knob], f 19;
+#X obj 292 691 else/knob 50 0 127 0 0 \$0-learn empty #dfdfdf #7c7c7c #000000 1 0 0 0 1 320 0 0 0 empty empty 0 12 0 -15 0 1 0 0 1 0;
+#X obj 382 713 else/receiver;
+#X msg 382 672 learn;
+#X symbolatom 457 742 10 0 0 0 - - - 0;
+#X floatatom 382 741 5 0 0 0 - - - 0;
+#X text 441 670 <- click learn and then move the [knob] next to it, f 26;
+#X text 477 712 <-- check the help file for more;
 #X connect 0 0 9 0;
 #X connect 1 0 10 0;
 #X connect 2 0 1 0;
@@ -404,6 +412,9 @@
 #X connect 43 0 23 0;
 #X connect 50 0 28 0;
 #X connect 52 0 51 0;
+#X connect 56 0 59 0;
+#X connect 56 1 58 0;
+#X connect 57 0 56 0;
 #X restore 396 131 pd receive send param var learn forget;
 #X f 21;
 #N canvas 499 164 543 605 more-messages 0;

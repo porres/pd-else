@@ -25,7 +25,7 @@
 #X restore 90 39 pd id-name-init;
 #X obj 123 247 else/dispatch \$0-set-bpm \$0-set-mul \$0-set-run \$0-midi1-set \$0-midi2-set \$0-midi3-set \$0-midi4-set \$0-midi5-set \$0-midi6-set \$0-midi7-set \$0-midi8-set \$0-trig1-set \$0-trig2-set \$0-trig3-set \$0-trig4-set \$0-trig5-set \$0-trig6-set \$0-trig7-set \$0-trig8-set, f 65;
 #X obj 90 321 else/var \$0-bpm \$0-mul \$0-run \$0-midi1 \$0-midi2 \$0-midi3 \$0-midi4 \$0-midi5 \$0-midi6 \$0-midi7 \$0-midi8 \$0-trig1 \$0-trig2 \$0-trig3 \$0-trig4 \$0-trig5 \$0-trig6 \$0-trig7 \$0-trig8, f 44;
-#X obj 125 121 else/sender 1 \$0-presets;
+#X obj 125 121 else/sender 1 \\\$0-presets;
 #X connect 0 0 6 0;
 #X connect 1 0 2 0;
 #X connect 1 0 5 0;

@@ -27,7 +27,7 @@
 #X obj 91 339 else/dispatch \$0-set-pgm, f 25;
 #X obj 199 277 s \$0-file;
 #X obj 90 273 else/swap2;
-#X obj 125 121 else/sender 1 \$0-presets;
+#X obj 125 121 else/sender 1 \\\$0-presets;
 #X connect 0 0 9 0;
 #X connect 1 0 2 0;
 #X connect 2 0 4 0;

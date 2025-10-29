@@ -26,7 +26,7 @@
 #X restore 97 46 pd id-name-init;
 #X obj 123 258 else/dispatch \$0-set-bw \$0-set-n \$0-set-interp \$0-set-fstep \$0-set-astep, f 40;
 #X obj 98 331 else/var \$0-bw \$0-n \$0-interp \$0-fstep \$0-astep;
-#X obj 121 133 else/sender 1 \$0-presets;
+#X obj 121 133 else/sender 1 \\\$0-presets;
 #X connect 0 0 6 0;
 #X connect 1 0 2 0;
 #X connect 1 0 5 0;

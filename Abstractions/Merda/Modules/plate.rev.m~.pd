@@ -1,4 +1,4 @@
-#N canvas 442 39 613 580 12;
+#N canvas 676 178 613 580 12;
 #X obj 49 35 inlet~;
 #X obj 49 511 outlet~;
 #N canvas 243 43 499 411 preset 0;
@@ -26,7 +26,7 @@
 #X restore 90 39 pd id-name-init;
 #X obj 123 257 else/dispatch \$0-set-pre \$0-set-damp \$0-set-cutoff \$0-set-size \$0-set-wet, f 37;
 #X obj 90 311 else/var \$0-pre \$0-damp \$0-cutoff \$0-size \$0-wet;
-#X obj 125 121 else/sender 1 \$0-presets;
+#X obj 125 121 else/sender 1 \\\$0-presets;
 #X connect 0 0 6 0;
 #X connect 1 0 2 0;
 #X connect 1 0 5 0;
@@ -121,8 +121,6 @@
 #X obj 185 55 route pre;
 #X obj 185 137 f;
 #X obj 197 106 sel 0;
-#X obj 314 70 r \$0-rev-active;
-#X obj 340 199 r \$0-rev-typing;
 #N canvas 564 245 560 397 tab 0;
 #X msg 95 66 active 0;
 #X msg 75 126 active 1;
@@ -217,6 +215,8 @@
 #X connect 22 0 12 0;
 #X connect 23 0 12 0;
 #X restore 44 71 pd collapse;
+#X obj 314 70 r \$0-pre-active;
+#X obj 340 199 r \$0-pre-typing;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 3 0 8 0;
@@ -230,9 +230,9 @@
 #X connect 12 0 13 0;
 #X connect 13 0 4 0;
 #X connect 14 0 13 0;
-#X connect 15 0 6 0;
-#X connect 15 0 14 0;
-#X connect 16 0 9 0;
+#X connect 17 0 6 0;
+#X connect 17 0 14 0;
+#X connect 18 0 9 0;
 #X restore 403 246 pd GUI;
 #X text 201 126 IN;
 #X obj 151 513 outlet~;
@@ -267,15 +267,11 @@
 #N canvas 942 62 185 284 \$0-rev 0;
 #N canvas 743 121 394 451 (subpatch) 0;
 #X obj 112 112 cnv 15 148 248 empty empty empty 20 12 0 14 #dbdbdb #373737 0;
-#X obj 209 240 else/knob 41 0 1 0 0 \$0-rev \$0-set-cutoff #dfdfdf #afafaf #000000 0 0 0 0 1 320 0 0 0 cutoff \$0-cutoff 4 10 0 46 0 0 0 0 0 0;
 #X obj 134 267 else/knob 41 0 1 0 0 \$0-rev \$0-set-damp #dfdfdf #bbbbbb #000000 0 0 0 0 1 320 0 0 0 damp \$0-damp 4 10 0 46 0 0 0 0 0 0;
-#X text 206 224 Cutoff;
 #X obj 133 177 else/knob 41 10 200 4 10 \$0-rev \$0-set-pre #dfdfdf #bbbbbb #000000 0 0 0 0 1 320 0 0 10 pre \$0-pre 0 8 0 0 0 0 0 0 0 0;
-#X obj 206 172 else/knob 41 0 1 0 0 \$0-rev \$0-set-size #dfdfdf #afafaf #000000 0 0 0 0 1 320 0 0 0 size \$0-size 4 10 0 46 0 0 0 0 0 0;
 #X obj 209 308 else/knob 41 0 1 0 0.5 \$0-rev \$0-set-wet #9f9f9f #afafaf #000000 0 0 0 0 1 320 0 0 0 wet \$0-wet 4 10 0 46 0 0 0 0 0 0;
 #X text 121 329 Clear;
 #X text 138 247 Damp;
-#X text 211 156 Size;
 #X text 121 158 Pre delay;
 #X obj 122 119 else/note 101 24 Inter empty 5 54 54 54 0 187 187 187 1 1 REVERB;
 #X obj 123 225 else/note 65 12 Menlo \$0-pre-label 0 0 0 0 0 255 255 255 0 1 50 ms;
@@ -284,6 +280,10 @@
 #X obj 232 120 cnv 10 17 15 empty \$0-cnv ▼ 5 8 0 12 #bbbbbb #000000 0;
 #X obj 232 134 cnv 10 17 15 empty \$0-cnv ▲ 5 5 0 12 #bbbbbb #000000 0;
 #X text 217 292 Wet;
+#X obj 205 240 else/knob 41 0 1 0 0 \$0-rev \$0-set-size #dfdfdf #afafaf #000000 0 0 0 0 1 320 0 0 0 size \$0-size 4 10 0 46 0 0 0 0 0 0;
+#X text 210 224 Size;
+#X obj 205 172 else/knob 41 0 1 0 0 \$0-rev \$0-set-cutoff #dfdfdf #afafaf #000000 0 0 0 0 1 320 0 0 0 cutoff \$0-cutoff 4 10 0 46 0 0 0 0 0 0;
+#X text 202 156 Cutoff;
 #X coords 0 1 100 -1 150 250 1 111 111;
 #X restore 15 15 graph;
 #X coords 0 0 1 1 150 250 1 15 15;

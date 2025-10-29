@@ -26,7 +26,7 @@
 #X restore 90 39 pd id-name-init;
 #X obj 90 321 else/var \$0-cutoff \$0-reson \$0-att-cut \$0-att-Q;
 #X obj 123 257 else/dispatch \$0-set-cutoff \$0-set-reson \$0-set-att-cut \$0-set-att-Q, f 41;
-#X obj 125 121 else/sender 1 \$0-presets;
+#X obj 125 121 else/sender 1 \\\$0-presets;
 #X connect 0 0 6 0;
 #X connect 1 0 2 0;
 #X connect 1 0 4 0;
@@ -383,13 +383,13 @@
 #X obj 132 261 else/knob 35 -1 1 0 0 \$0-att-cut \$0-set-att-cut #bbbbbb #7c7c7c black 0 0 0 0 1 320 0 0 0 empty empty 0 8 0 0 0 0 0 0 0 0;
 #X obj 189 261 else/knob 35 -1 1 0 0 \$0-att-Q \$0-set-att-Q #bbbbbb #7c7c7c black 0 0 0 0 1 320 0 0 0 empty empty 0 8 0 0 0 0 0 0 0 0;
 #X obj 188 158 else/knob 50 0.5 100 2 0.5 \$0-reson \$0-set-reson #e4e4e4 #a8a8a8 #4d4d4d 0 0 0 0 1 270 0 0 0.5 empty empty 0 8 0 0 0 0 0 0 0 0;
-#X obj 118 214 note 58 12 Menlo \$0-cutoff-label 0 0 0 0 0 255 255 255 0 1 1340 Hz;
+#X obj 118 214 note 58 12 Menlo \$0-cutoff-label 0 0 0 0 0 255 255 255 0 1 500 Hz;
 #X obj 189 214 note 48 12 Menlo \$0-reson-label 0 0 0 0 0 255 255 255 0 1 10 Q;
 #X obj 215 119 else/button 19 31 #e0e0e0 #808080 2 1 2 0 0 \$0-collapse \$0-button;
 #X obj 216 120 cnv 10 17 15 empty \$0-cnv ▼ 5 8 0 12 #bbbbbb #000000 0;
 #X obj 216 134 cnv 10 17 15 empty \$0-cnv ▲ 5 5 0 12 #bbbbbb #000000 0;
 #X text 129 305 Attenuverters;
-#X obj 130 296 else/note 36 10 Menlo \$0-att-cut# 0 0 0 0 0 255 255 255 0 1 0.00;
+#X obj 130 296 else/note 36 10 Menlo \$0-att-cut# 0 0 0 0 0 255 255 255 0 1;
 #X obj 186 296 else/note 40 10 Menlo \$0-att-Q# 0 0 0 0 0 255 255 255 0 1;
 #X coords 0 1 100 -1 139 212 1 111 111;
 #X restore 15 15 graph;

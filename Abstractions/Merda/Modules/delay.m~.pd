@@ -26,7 +26,7 @@
 #X restore 90 39 pd id-name-init;
 #X obj 90 311 else/var \$0-time \$0-fb \$0-cutoff \$0-reson \$0-wet;
 #X obj 123 257 else/dispatch \$0-set-time \$0-set-fb \$0-set-cutoff \$0-set-reson \$0-set-wet, f 38;
-#X obj 125 121 else/sender 1 \$0-presets;
+#X obj 125 121 else/sender 1 \\\$0-presets;
 #X connect 0 0 6 0;
 #X connect 1 0 2 0;
 #X connect 1 0 4 0;
