@@ -1,6 +1,6 @@
 #N canvas 426 80 680 725 12;
 #X obj 237 599 *~;
-#N canvas 492 119 934 418 messages 0;
+#N canvas 488 100 934 418 messages 0;
 #X obj 477 320 outlet;
 #X obj 543 145 tgl 19 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X obj 146 135 else/knob 35 -60 60 0 0 empty empty #dfdfdf #7c7c7c #000000 1 0 73 1 1 320 0 0 0 empty empty 0 8 0 0 0 0 0 0 0 0;
@@ -13,7 +13,7 @@
 #X text 49 63 saw;
 #X text 42 84 vsaw;
 #X text 28 104 square;
-#X obj 416 135 else/knob 35 -1 1 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0 0 0;
+#X obj 416 135 else/knob 35 0 1 0 0 empty empty #dfdfdf #7c7c7c #000000 1 0 0 0 1 320 0 0 0 empty empty 0 8 0 0 0 0 0 0 0 0;
 #X msg 543 181 lin \$1;
 #X msg 477 181 soft \$1;
 #X msg 416 181 pwm \$1;
@@ -96,7 +96,7 @@
 #A saved;
 #X obj 198 25 else/note 408 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [vco.m~] - Voltage Controlled Oscillator;
 #X obj 43 251 else/vco.m~;
-#A saved 1 0 0 2 0.5 0 0 0 1 0;
+#A saved 1 0 0 2 0.514286 0 0 0 1 0;
 #A saved;
 #A saved;
 #A saved;

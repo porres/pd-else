@@ -3,7 +3,7 @@
 #X obj 139 415 noise~;
 #X text 300 358 see -->;
 #X obj 360 358 about.MERDA;
-#N canvas 176 389 727 351 messages 0;
+#N canvas 316 517 727 351 messages 0;
 #X obj 417 297 outlet;
 #X obj 49 86 else/knob 40 0.1 20 1 0.1 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0.1 empty empty 0 0 0 0 0 0 0 0 0 0;
 #X obj 294 31 vradio 20 1 0 5 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0;
@@ -12,7 +12,7 @@
 #X text 320 72 saw;
 #X text 319 93 vsaw;
 #X text 317 113 square;
-#X obj 114 86 else/knob 40 -1 1 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0 0 0;
+#X obj 114 86 else/knob 40 0 1 0 0 empty empty #dfdfdf #7c7c7c #000000 1 0 0 0 1 320 0 0 0 empty empty 0 8 0 0 0 0 0 0 0 0;
 #X obj 183 136 tgl 22 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X text 208 137 Unipolar;
 #X msg 49 171 hz \$1;

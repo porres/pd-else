@@ -1,11 +1,11 @@
 #N canvas 439 48 642 731 12;
 #X text 351 470 see -->;
-#N canvas 404 154 855 431 messages 0;
+#N canvas 762 104 855 431 messages 0;
 #X obj 441 357 outlet;
 #X obj 371 145 tgl 19 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
-#X obj 152 135 else/knob 35 -36 36 0 0 empty empty #dfdfdf #7c7c7c black 1 0 73 1 1 320 0 0 0 empty empty 0 8 0 0 0 0 0 0 0 0;
+#X obj 152 135 else/knob 35 -24 24 0 0 empty empty #dfdfdf #7c7c7c #000000 1 0 73 1 1 320 0 0 0 empty empty 0 8 0 0 0 0 0 0 0 0;
 #X text 352 128 linear FM, f 6;
-#X obj 233 135 else/knob 35 -1 1 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0 0 0;
+#X obj 233 135 else/knob 35 0 1 0 0 empty empty #dfdfdf #7c7c7c #000000 1 0 0 0 1 320 0 0 0 empty empty 0 8 0 0 0 0 0 0 0 0;
 #X msg 152 181 transp \$1;
 #X msg 371 181 lin \$1;
 #X msg 233 181 pwm \$1;
@@ -78,7 +78,7 @@
 #A saved;
 #X obj 130 20 else/note 382 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [superosc.m~] - Super Oscillator;
 #X obj 58 241 else/superosc.m~;
-#A saved 0 0 0 0.5 0 0 0 0 0 1;
+#A saved -12.6667 0 0.0571428 0.5 0 18.5714 0 0 0 1;
 #A saved;
 #A saved;
 #A saved;

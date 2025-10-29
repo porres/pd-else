@@ -1,7 +1,7 @@
 #N canvas 396 88 884 495 12;
 #X obj 78 74 inlet~;
 #X obj 78 387 outlet~;
-#N canvas 423 57 837 403 preset 0;
+#N canvas 423 57 837 403 preset 1;
 #X msg 125 86 name \$1;
 #X obj 90 161 else/receiver;
 #X obj 123 210 route list;
@@ -24,8 +24,8 @@
 #X connect 6 0 1 0;
 #X connect 7 0 5 0;
 #X restore 90 39 pd id-name-init;
-#X obj 122 247 else/dispatch \$0-set-freq \$0-set-harmonics \$0-set-timbre \$0-set-morph \$0-set-model \$0-set-cutoff \$0-set-decay \$0-set-freq-att \$0-set-timbre-att \$0-set-harmonics-att \$0-set-morph-att \$0-set-n-voices \$0-set-trigger-mode \$0-set-level-mode, f 82;
-#X obj 90 310 else/var \$0-freq \$0-harmonics \$0-timbre \$0-morph \$0-model \$0-cutoff \$0-decay \$0-freq-att \$0-timbre-att \$0-harmonics-att \$0-morph-att \$0-n-voices \$0-trigger-mode \$0-level-mode, f 88;
+#X obj 123 247 else/dispatch \$0-set-transp \$0-set-harmonics \$0-set-timbre \$0-set-morph \$0-set-model \$0-set-cutoff \$0-set-decay \$0-set-freq-att \$0-set-timbre-att \$0-set-harmonics-att \$0-set-morph-att \$0-set-n-voices \$0-set-trigger-mode \$0-set-level-mode, f 82;
+#X obj 90 310 else/var \$0-transp \$0-harmonics \$0-timbre \$0-morph \$0-model \$0-cutoff \$0-decay \$0-freq-att \$0-timbre-att \$0-harmonics-att \$0-morph-att \$0-n-voices \$0-trigger-mode \$0-level-mode, f 88;
 #X obj 125 121 else/sender 1 \$0-presets;
 #X connect 0 0 6 0;
 #X connect 1 0 2 0;
@@ -40,10 +40,10 @@
 #X obj 49 43 loadbang;
 #X obj 98 128 route list;
 #X obj 97 99 list trim;
-#X obj 214 88 else/var \$0-freq \$0-harmonics \$0-timbre \$0-morph \$0-model \$0-cutoff \$0-decay \$0-freq-att \$0-timbre-att \$0-harmonics-att \$0-morph-att \$0-n-voices \$0-trigger-mode \$0-level-mode \$0-GUI, f 67;
+#X obj 214 88 else/var \$0-transp \$0-harmonics \$0-timbre \$0-morph \$0-model \$0-cutoff \$0-decay \$0-freq-att \$0-timbre-att \$0-harmonics-att \$0-morph-att \$0-n-voices \$0-trigger-mode \$0-level-mode \$0-GUI, f 67;
 #X obj 49 198 else/default 0 0.5 0.5 0.5 0 0.5 0.5 0 0 0 0 1 0 1 1;
 #X obj 49 232 else/delete 15 1;
-#X obj 49 292 else/dispatch \$0-set-freq \$0-set-harmonics \$0-set-timbre \$0-set-morph \$0-set-model \$0-set-cutoff \$0-set-decay \$0-set-freq-att \$0-set-timbre-att \$0-set-harmonics-att \$0-set-morph-att \$0-set-n-voices \$0-set-trigger-mode \$0-set-level-mode, f 73;
+#X obj 49 292 else/dispatch \$0-set-transp \$0-set-harmonics \$0-set-timbre \$0-set-morph \$0-set-model \$0-set-cutoff \$0-set-decay \$0-set-freq-att \$0-set-timbre-att \$0-set-harmonics-att \$0-set-morph-att \$0-set-n-voices \$0-set-trigger-mode \$0-set-level-mode, f 73;
 #X obj 178 233 s \$0-set-GUI;
 #X obj 49 260 else/pipe2 1;
 #X connect 0 0 4 0;
@@ -164,7 +164,7 @@
 #X msg 158 46 set \$1;
 #X obj 158 76 s \$0-set-model-n;
 #X obj 158 15 r \$0-model;
-#X obj 84 375 r \$0-freq;
+#X obj 84 375 r \$0-transp;
 #X msg 84 405 transp \$1;
 #X obj 20 149 else/symbol2any;
 #X obj 433 126 else/hot 3;
@@ -224,8 +224,8 @@
 #N canvas 398 60 962 587 tab 0;
 #X msg 149 86 active 0;
 #X msg 130 146 active 1;
-#X obj 130 57 r \$0-freq-tab;
-#X obj 149 114 s \$0-set-freq;
+#X obj 130 57 r \$0-transp-tab;
+#X obj 149 114 s \$0-set-transp;
 #X obj 130 174 s \$0-set-timbre;
 #X msg 149 237 active 0;
 #X msg 130 297 active 1;
@@ -245,7 +245,7 @@
 #X msg 304 444 active 1;
 #X obj 304 355 r \$0-decay-tab;
 #X obj 323 412 s \$0-set-decay;
-#X obj 304 472 s \$0-set-freq;
+#X obj 304 472 s \$0-set-transp;
 #X obj 300 316 s \$0-set-decay;
 #X obj 308 41 r \$0-morph-tab;
 #X obj 327 98 s \$0-set-morph;
@@ -742,8 +742,8 @@
 #X obj 305 31 r \$0-n;
 #X obj 156 47 r \$0-midi-mode;
 #X obj 185 165 spigot;
-#X obj 64 322 else/var \$0-freq \$0-model \$0-harmonics \$0-timbre \$0-morph \$0-cutoff \$0-decay \$0-trig \$0-level \$0-fm-in \$0-t-in \$0-m-in \$0-freq-att \$0-timbre-att \$0-morph-att \$0-midi-mode;
-#X obj 64 391 else/dispatch \$0-freq \$0-model \$0-harmonics \$0-timbre \$0-morph \$0-cutoff \$0-decay \$0-trig \$0-level \$0-fm-in \$0-t-in \$0-m-in \$0-freq-att \$0-timbre-att \$0-morph-att \$0-midi-mode, f 62;
+#X obj 64 322 else/var \$0-transp \$0-model \$0-harmonics \$0-timbre \$0-morph \$0-cutoff \$0-decay \$0-trig \$0-level \$0-fm-in \$0-t-in \$0-m-in \$0-freq-att \$0-timbre-att \$0-morph-att \$0-midi-mode;
+#X obj 64 391 else/dispatch \$0-transp \$0-model \$0-harmonics \$0-timbre \$0-morph \$0-cutoff \$0-decay \$0-trig \$0-level \$0-fm-in \$0-t-in \$0-m-in \$0-freq-att \$0-timbre-att \$0-morph-att \$0-midi-mode, f 62;
 #X obj 274 101 t f f;
 #X obj 274 162 sel 1;
 #X obj 219 119 f;
@@ -772,7 +772,7 @@
 #X restore 84 337 pd resize;
 #N canvas 189 48 592 549 route 0;
 #X obj 37 18 inlet;
-#X obj 141 487 s \$0-set-freq;
+#X obj 141 487 s \$0-set-transp;
 #X obj 162 431 s \$0-set-harmonics;
 #X obj 150 458 s \$0-set-timbre;
 #X obj 182 403 s \$0-set-morph;
@@ -903,7 +903,7 @@
 #X msg 346 183 0 print;
 #X obj 415 133 s \$0-set-GUI;
 #X obj 415 108 != 0;
-#X obj 37 54 route list pitch timbre harmonics morph cutoff decay fm_att timbre_att harm_att morph_att print gui;
+#X obj 37 54 route list transp timbre harmonics morph cutoff decay fm_att timbre_att harm_att morph_att print gui;
 #X connect 0 0 18 0;
 #X connect 12 0 13 0;
 #X connect 15 0 14 0;
@@ -953,7 +953,7 @@
 #X text 71 179 Timbre;
 #X obj 196 196 else/knob 50 0 1 0 0.5 \$0-morph \$0-set-morph #dfdfdf #7c7c7c #000000 0 0 0 0 1 320 0 0 0.5 empty empty 4 10 3 54 0 0 0 0 0 0;
 #X text 202 179 Morph;
-#X obj 70 117 else/knob 50 -24 24 0 0 \$0-freq \$0-set-freq #dfdfdf #7c7c7c #000000 0 0 0 0 1 320 0 0 0 empty empty 4 10 3 54 0 0 0 0 0 0;
+#X obj 70 117 else/knob 50 -24 24 0 0 \$0-transp \$0-set-transp #dfdfdf #7c7c7c #000000 0 0 0 0 1 320 0 0 0 empty empty 4 10 3 54 0 0 0 0 0 0;
 #X obj 131 102 vradio 18 1 0 8 \$0-radio-1 \$0-set-radio-1 empty 0 -8 0 10 #dfdfdf #00b1a5 #000000 0;
 #X obj 149 102 vradio 18 1 0 8 \$0-radio-2 \$0-set-radio-2 empty 0 -8 0 10 #dfdfdf #dfdfdf #000000 0;
 #X obj 167 102 vradio 18 1 0 8 \$0-radio-3 \$0-set-radio-3 empty 0 -8 0 10 #dfdfdf #dfdfdf #000000 0;
@@ -983,12 +983,12 @@
 #X obj 373 219 else/button 25 25 #f5f5f5 #808080 1 1 0 1 0 \$0-level-mode \$0-set-level-mode;
 #X obj 283 219 else/button 25 25 #f5f5f5 #808080 1 1 0 1 0 \$0-trigger-mode \$0-set-trigger-mode;
 #X obj 280 83 else/note 0 15 Menlo empty 0 0 0 0 0 255 255 255 0 0 LPG;
-#X text 74 99 Pitch;
 #X text 265 126 ----- Attenuverters -----;
 #X obj 269 200 else/note 34 10 Menlo \$0-fm-att# 0 0 0 0 0 255 255 255 0 1;
 #X obj 314 200 else/note 35 10 Menlo \$0-timbre-att# 0 0 0 0 0 255 255 255 0 1;
 #X obj 359 200 else/note 35 10 Menlo \$0-harm-att# 0 0 0 0 0 255 255 255 0 1;
 #X obj 404 200 else/note 35 10 Menlo \$0-morph-att# 0 0 0 0 0 255 255 255 0 1;
+#X text 70 99 Transp;
 #X coords 0 1 100 -1 402 230 1 50 50;
 #X restore 15 15 graph;
 #X coords 0 0 1 1 402 230 1 15 15;
@@ -999,7 +999,7 @@
 #X obj 510 413 cnv 19 95 29 empty \$0-label-collapsed PLAITS 5 15 0 24 #bbbbbb #000000 0;
 #X obj 509 412 else/button 97 31 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch \$0-uncollapse-set;
 #N canvas 866 167 250 378 Learn 0;
-#N canvas 357 34 761 758 freq 0;
+#N canvas 357 38 761 758 transp 0;
 #X msg 173 469 forget;
 #X obj 40 532 else/midi.learn 1;
 #A saved;
@@ -1093,7 +1093,7 @@
 #X msg 72 370 deactivate;
 #X obj 187 433 r \$0-deactivate;
 #X obj 431 266 r \$0-deactivate;
-#X obj 173 55 symbol freq;
+#X obj 173 55 symbol transp;
 #X obj 433 659 else/rescale -24 24;
 #X connect 0 0 30 0;
 #X connect 1 0 2 0;
@@ -1142,7 +1142,7 @@
 #X connect 36 0 18 0;
 #X connect 36 0 7 1;
 #X connect 37 0 26 0;
-#X restore 75 38 pd freq;
+#X restore 75 38 pd transp;
 #N canvas 357 34 761 758 harmonics 0;
 #X msg 173 469 forget;
 #X obj 40 532 else/midi.learn 1;
