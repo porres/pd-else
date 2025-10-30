@@ -44,7 +44,7 @@
 #X obj 315 301 bng 21 250 50 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000;
 #X text 341 303 done;
 #X obj 222 273 else/streamin~ 2;
-#N canvas 596 121 601 455 more 1;
+#N canvas 596 121 601 455 more 0;
 #X obj 71 76 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 70 359 else/out~;
 #X obj 70 274 else/streamin~ 2;

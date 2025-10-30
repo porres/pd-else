@@ -79,6 +79,55 @@ foreach(file ${else_sources})
 
     # Link with else_shared
     target_link_libraries(${target_name} PRIVATE else_shared)
+
+    # If target is streamout_tilde, add static libogg and libvorbis linking on macOS
+    if(${target_name} STREQUAL "streamout_tilde")
+        if(APPLE)
+            set(OGG_STATIC_LIB "/opt/homebrew/lib/libogg.a")
+            set(VORBIS_STATIC_LIB "/opt/homebrew/lib/libvorbis.a")
+            set(VORBISENC_STATIC_LIB "/opt/homebrew/lib/libvorbisenc.a")
+
+            set(OGG_INCLUDE_DIR "/opt/homebrew/include")
+            set(VORBIS_INCLUDE_DIR "/opt/homebrew/include")
+            set(VORBISENC_INCLUDE_DIR "/opt/homebrew/include")
+
+            if(EXISTS ${OGG_STATIC_LIB} AND EXISTS ${VORBIS_STATIC_LIB} AND EXISTS ${VORBISENC_STATIC_LIB})
+                message(STATUS "Found static libogg, libvorbis, and libvorbisenc")
+                target_include_directories(${target_name} PRIVATE
+                    ${OGG_INCLUDE_DIR}
+                    ${VORBIS_INCLUDE_DIR}
+                    ${VORBISENC_INCLUDE_DIR}
+                )
+                target_link_libraries(${target_name} PRIVATE
+                    ${OGG_STATIC_LIB}
+                    ${VORBIS_STATIC_LIB}
+                    ${VORBISENC_STATIC_LIB}
+                    m
+                )
+            else()
+                message(FATAL_ERROR "Static libogg, libvorbis, or libvorbisenc not found in /opt/homebrew/lib")
+            endif()
+        else()
+            # Keep original find_library logic for Linux and other Unix
+            find_path(OGG_INCLUDE_DIR ogg/ogg.h PATHS /opt/homebrew/include /usr/local/include)
+            find_library(OGG_LIBRARY NAMES ogg PATHS /opt/homebrew/lib /usr/local/lib)
+
+            find_path(VORBIS_INCLUDE_DIR vorbis/codec.h PATHS /opt/homebrew/include /usr/local/include)
+            find_library(VORBIS_LIBRARY NAMES vorbis PATHS /opt/homebrew/lib /usr/local/lib)
+
+            find_path(VORBISENC_INCLUDE_DIR vorbis/vorbisenc.h PATHS /opt/homebrew/include /usr/local/include)
+            find_library(VORBISENC_LIBRARY NAMES vorbisenc PATHS /opt/homebrew/lib /usr/local/lib)
+
+            if(OGG_INCLUDE_DIR AND OGG_LIBRARY AND VORBIS_INCLUDE_DIR AND VORBIS_LIBRARY AND VORBISENC_INCLUDE_DIR AND VORBISENC_LIBRARY)
+                message(STATUS "Found libogg, libvorbis, and libvorbisenc")
+                target_include_directories(${target_name} PRIVATE ${OGG_INCLUDE_DIR} ${VORBIS_INCLUDE_DIR} ${VORBISENC_INCLUDE_DIR})
+                target_link_libraries(${target_name} PRIVATE ${OGG_LIBRARY} ${VORBIS_LIBRARY} ${VORBISENC_LIBRARY} m)
+            else()
+                message(FATAL_ERROR "libogg, libvorbis, or libvorbisenc not found")
+            endif()
+        endif()
+    endif()
+    # and of if
 endforeach()
 
 target_sources(beat_tilde PRIVATE ${aubio_sources})
@@ -99,12 +148,14 @@ if(WIN32)
 endif()
 
 target_link_libraries(play.file_tilde PRIVATE ffmpeg)
+target_link_libraries(streamin_tilde PRIVATE ffmpeg)
+target_link_libraries(streamout_tilde PRIVATE ffmpeg)
 target_link_libraries(sfload PRIVATE ffmpeg)
 target_link_libraries(sfinfo PRIVATE ffmpeg)
 
 # Add OpenSSL linking for Linux builds
 if(UNIX AND NOT APPLE)
-    foreach(target sfload play.file_tilde sfinfo)
+    foreach(target streamin_tilde streamout_tilde sfload play.file_tilde sfinfo)
         target_link_libraries(${target} PRIVATE
             "-Wl,--whole-archive"
             OpenSSL::SSL
