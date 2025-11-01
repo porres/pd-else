@@ -62,12 +62,13 @@
 #X obj 205 150 else/randpulse 0.5 0.25;
 #X floatatom 205 182 12 0 0 0 - - - 0;
 #X obj 205 211 else/gatehold 500;
-#X obj 205 241 else/display;
-#X text 42 179 see also;
-#X obj 44 204 else/gatehold~;
+#X text 42 159 see also;
+#X obj 44 184 else/gatehold~;
 #X obj 44 229 else/gaterelease;
 #X obj 44 252 else/gatedelay;
+#X floatatom 205 242 12 0 0 0 - - - 0;
+#X obj 44 206 else/gatemin;
 #X connect 24 0 33 1;
 #X connect 31 0 32 0;
 #X connect 32 0 33 0;
-#X connect 33 0 34 0;
+#X connect 33 0 38 0;

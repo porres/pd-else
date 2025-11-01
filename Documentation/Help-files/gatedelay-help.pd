@@ -22,7 +22,7 @@
 #X obj 466 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 504 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 316 192 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
-#X text 28 150 see also;
+#X text 28 140 see also;
 #X text 373 186 delay time, f 5;
 #X text 254 308 - delay time in ms;
 #X text 115 372 1) float - delay time in ms (default 0 \, no delay time);
@@ -36,9 +36,10 @@
 #X text 213 340 float;
 #X text 254 340 - delayed gate;
 #X floatatom 211 245 9 0 0 0 - - - 0;
-#X obj 28 204 else/gatehold;
-#X obj 28 228 else/gaterelease;
-#X obj 28 179 else/gatedelay~;
+#X obj 28 210 else/gatehold;
+#X obj 28 234 else/gaterelease;
+#X obj 28 164 else/gatedelay~;
+#X obj 28 187 else/gatemin;
 #X connect 18 0 24 1;
 #X connect 24 0 32 0;
 #X connect 25 0 26 0;
