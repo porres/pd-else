@@ -3,6 +3,7 @@
 #include <m_pd.h>
 #include "buffer.h"
 #include "magic.h"
+#include "math.h"
 
 #include <stdlib.h>
 
@@ -53,6 +54,23 @@ static void mix_gain(t_mix *x, t_symbol *s, int ac, t_atom *av){
     }
     for(int i = 0; i < ac; i++)
         x->x_gain_list[i] = atom_getfloat(av+i);
+}
+
+static void mix_db(t_mix *x, t_symbol *s, int ac, t_atom *av){
+    x->x_ignore = s;
+    if(ac == 0)
+        return;
+    if(x->x_gain_size != ac){
+        x->x_gain_size = ac;
+        canvas_update_dsp();
+    }
+    for(int i = 0; i < ac; i++){
+        float db = atom_getfloat(av+i);
+        if(db <= -100)
+            x->x_gain_list[i] = 0;
+        else
+            x->x_gain_list[i] = pow(10., db/20.);
+    }
 }
 
 static t_int *mix_perform(t_int *w){
@@ -170,6 +188,21 @@ static void *mix_new(t_symbol *s, int ac, t_atom *av){
                 }
                 x->x_gain_size = i;
             }
+            else if(sym == gensym("-db")){
+                ac--, av++;
+                if(!ac || av->a_type == A_SYMBOL)
+                    goto errstate;
+                int i = 0;
+                while(ac && av->a_type == A_FLOAT){
+                    float db = atom_getfloat(av);
+                    if(db <= -100)
+                        x->x_gain_list[i] = 0;
+                    else
+                        x->x_gain_list[i] = pow(10., db/20.);
+                    ac--, av++, i++;
+                }
+                x->x_gain_size = i;
+            }
             else if(sym == gensym("-pan")){
                 ac--, av++;
                 if(!ac || av->a_type == A_SYMBOL)
@@ -212,4 +245,5 @@ void mix_tilde_setup(void){
     class_addmethod(mix_class, (t_method)mix_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(mix_class, (t_method)mix_pan, gensym("pan"), A_GIMME, 0);
     class_addmethod(mix_class, (t_method)mix_gain, gensym("gain"), A_GIMME, 0);
+    class_addmethod(mix_class, (t_method)mix_db, gensym("db"), A_GIMME, 0);
 }
