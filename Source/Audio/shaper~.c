@@ -99,21 +99,17 @@ static t_int *shaper_perform(t_int *w){
         double yn, xn;
         float output = 0;
         double ph = ((double)*in++ + 1) * 0.5; // get phase (0-1)
-        while(ph < 0) // wrap
-            ph++;
-        while(ph >= 1)
-            ph--;
+        if(ph < 0)
+            ph = 0;
+        if(ph > 1)
+            ph = 1;
         if(x->x_arrayset && x->x_buffer->c_playable){
             double pos = ph * maxidx;
             int ndx = (int)pos;
             double frac = pos - (double)ndx;
-            int ndxm1 = (ndx == 0 ? 0 : ndx - 1), ndx1 = ndx + 1, ndx2 = ndx + 2;
-            if(ndxm1 < 0)
-                ndxm1 = maxidx - ndxm1;
-            if(ndx1 >= maxidx)
-                ndx1 -= maxidx;
-            if(ndx2 >= maxidx)
-                ndx2 -= maxidx;
+            int ndxm1 = ndx == 0 ? 0 : ndx - 1;
+            int ndx1 = ndx < maxidx ? ndx + 1 : maxidx;
+            int ndx2 = ndx1 < maxidx ? ndx1 + 1 : maxidx;
             double a = buf[ndxm1].w_float;
             double b = buf[ndx].w_float;
             double c = buf[ndx1].w_float;
