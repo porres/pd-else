@@ -18,6 +18,7 @@ typedef struct _shaper{
     t_int       x_norm;
     t_int       x_arrayset;
     t_int       x_dc_filter;
+    t_int       x_clip;
     t_float     x_sr;
     double      x_a;
     double      x_xnm1;
@@ -63,6 +64,10 @@ static void shaper_filter(t_shaper *x, t_float f){
     x->x_dc_filter = f != 0;
 }
 
+static void shaper_clip(t_shaper *x, t_float f){
+    x->x_clip = f != 0;
+}
+
 static void shaper_dc(t_shaper *x, t_float f){
     x->x_coef[0] = f;
     if(!x->x_norm)
@@ -99,21 +104,29 @@ static t_int *shaper_perform(t_int *w){
         double yn, xn;
         float output = 0;
         double ph = ((double)*in++ + 1) * 0.5; // get phase (0-1)
-        while(ph < 0) // wrap
-            ph++;
-        while(ph >= 1)
-            ph--;
+        if(x->x_clip){
+            if(ph < 0)
+                ph = 0;
+            while(ph > 1)
+                ph = 1;
+        }
+        else{ // wrap
+            while(ph < 0)
+                ph++;
+            while(ph >= 1)
+                ph--;
+        }
         if(x->x_arrayset && x->x_buffer->c_playable){
             double pos = ph * maxidx;
             int ndx = (int)pos;
             double frac = pos - (double)ndx;
             int ndxm1 = (ndx == 0 ? 0 : ndx - 1), ndx1 = ndx + 1, ndx2 = ndx + 2;
             if(ndxm1 < 0)
-                ndxm1 = maxidx - ndxm1;
+                ndxm1 = x->x_clip ? 0 : maxidx - ndxm1;
             if(ndx1 >= maxidx)
-                ndx1 -= maxidx;
+                ndx1 = x->x_clip ? maxidx : ndx1 - maxidx;
             if(ndx2 >= maxidx)
-                ndx2 -= maxidx;
+                ndx2 = x->x_clip ? maxidx : ndx2 - maxidx;
             double a = buf[ndxm1].w_float;
             double b = buf[ndx].w_float;
             double c = buf[ndx1].w_float;
@@ -164,6 +177,7 @@ static void *shaper_new(t_symbol *s, int ac, t_atom *av){
     x->x_coef[1] = 1;
     x->x_norm = 1;
     x->x_dc_filter = 1;
+    x->x_clip = 0;
     x->x_arrayset = 0;
     x->x_a = 1 - (5*TWO_PI/(double)sys_getsr());
     int argn = 0;
@@ -203,6 +217,10 @@ static void *shaper_new(t_symbol *s, int ac, t_atom *av){
                     else
                         goto errstate;
                 }
+                else if(curarg == gensym("-clip")){
+                    x->x_clip = 1;
+                    ac--, av++;
+                }
                 else if(!x->x_arrayset){
                     argn = 1;
                     name = curarg;
@@ -231,8 +249,9 @@ void shaper_tilde_setup(void){
     class_addmethod(shaper_class, nullfn, gensym("signal"), 0);
     class_addmethod(shaper_class, (t_method)shaper_dsp, gensym("dsp"), A_CANT,  0);
     class_addmethod(shaper_class, (t_method)shaper_list, gensym("list"), A_GIMME, 0);
-    class_addmethod(shaper_class, (t_method)shaper_norm, gensym("norm"), A_DEFFLOAT, 0);
-    class_addmethod(shaper_class, (t_method)shaper_dc, gensym("dc"), A_DEFFLOAT, 0);
-    class_addmethod(shaper_class, (t_method)shaper_filter, gensym("filter"), A_DEFFLOAT, 0);
+    class_addmethod(shaper_class, (t_method)shaper_norm, gensym("norm"), A_FLOAT, 0);
+    class_addmethod(shaper_class, (t_method)shaper_dc, gensym("dc"), A_FLOAT, 0);
+    class_addmethod(shaper_class, (t_method)shaper_filter, gensym("filter"), A_FLOAT, 0);
+    class_addmethod(shaper_class, (t_method)shaper_clip, gensym("clip"), A_FLOAT, 0);
     class_addmethod(shaper_class, (t_method)shaper_set, gensym("set"), A_SYMBOL, 0);
 }
