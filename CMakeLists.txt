@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 
 # Add Linux-specific configurations
-if(UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE AND NOT EMSCRIPTEN)
     # Set proper flags for forward compatibility
     add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_FORTIFY_SOURCE=2 -O2")
@@ -107,6 +107,8 @@ foreach(file ${else_sources})
             else()
                 message(FATAL_ERROR "Static libogg, libvorbis, or libvorbisenc not found in /opt/homebrew/lib")
             endif()
+        elseif (EMSCRIPTEN)
+        	    message(WARNING "libogg not support by now")
         else()
             # Keep original find_library logic for Linux and other Unix
             find_path(OGG_INCLUDE_DIR ogg/ogg.h PATHS /opt/homebrew/include /usr/local/include)
@@ -154,7 +156,7 @@ target_link_libraries(sfload PRIVATE ffmpeg)
 target_link_libraries(sfinfo PRIVATE ffmpeg)
 
 # Add OpenSSL linking for Linux builds
-if(UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE AND NOT EMSCRIPTEN)
     foreach(target streamin_tilde streamout_tilde sfload play.file_tilde sfinfo)
         target_link_libraries(${target} PRIVATE
             "-Wl,--whole-archive"
