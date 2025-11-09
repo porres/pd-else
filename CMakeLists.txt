@@ -202,8 +202,9 @@ file(GLOB extra_files
 
 file(GLOB merda_files "${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Merda/Modules/*")
 file(GLOB tcl_files ${CMAKE_CURRENT_SOURCE_DIR}/Source/Extra/*.tcl ${CMAKE_CURRENT_SOURCE_DIR}/Source/Extra/tkdnd)
+file(GLOB pdlua_files ${CMAKE_CURRENT_SOURCE_DIR}/Source/Audio/*.pd_lua ${CMAKE_CURRENT_SOURCE_DIR}/Source/Control/*.pd_lua)
 file(GLOB abstractions ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Audio/*.pd ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Control/*.pd ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Extra/*)
-file(COPY ${pdf_help} ${extra_files} ${help_files} ${abstractions} ${tcl_files} DESTINATION ${PD_OUTPUT_PATH})
+file(COPY ${pdf_help} ${extra_files} ${help_files} ${abstractions} ${tcl_files} ${pdlua_files} DESTINATION ${PD_OUTPUT_PATH})
 file(COPY ${merda_files} DESTINATION ${PD_OUTPUT_PATH})
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Source/Audio/sfz~/sfz" DESTINATION ${PD_OUTPUT_PATH})
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Documentation/Live-Electronics-Tutorial" DESTINATION ${PD_OUTPUT_PATH})
