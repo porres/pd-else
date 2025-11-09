@@ -133,16 +133,31 @@ foreach(file ${else_sources})
 endforeach()
 
 target_sources(beat_tilde PRIVATE ${aubio_sources})
-target_link_libraries(else PRIVATE pdlua)
 
 add_subdirectory(Source/Audio/circuit~)
 add_subdirectory(Source/Audio/plaits~)
 add_subdirectory(Source/Audio/sfont~)
 add_subdirectory(Source/Audio/sfz~)
-add_subdirectory(Source/Control/lua)
-
 add_subdirectory(Source/Shared/link)
 add_subdirectory(Source/Shared/ffmpeg)
+
+include(FetchContent)
+FetchContent_Declare(
+  pd_lua
+  GIT_REPOSITORY https://github.com/EL-LOCUS-SOLUS/pd-lua.git
+  GIT_TAG master)
+
+FetchContent_GetProperties(pd_lua)
+if(NOT pd_lua_POPULATED)
+  FetchContent_Populate(pd_lua)
+  add_library(lua STATIC "${pd_lua_SOURCE_DIR}/lua/onelua.c")
+  set_target_properties(lua PROPERTIES POSITION_INDEPENDENT_CODE ON)
+  add_pd_external(pdlua pdlua "${pd_lua_SOURCE_DIR}/pdlua.c")
+  target_include_directories(pdlua PUBLIC "${pd_lua_SOURCE_DIR}/lua")
+  target_link_libraries(pdlua PUBLIC lua)
+  target_compile_definitions(pdlua PRIVATE ELSE)
+  target_link_libraries(else PRIVATE pdlua)
+endif()
 
 if(WIN32)
     target_compile_definitions(opus PUBLIC FLOAT_APPROX=1 _POSIX_SEM_VALUE_MAX=32767)
@@ -185,22 +200,15 @@ file(GLOB extra_files
     ${CMAKE_CURRENT_SOURCE_DIR}/Documentation/Extra-files/audio/*
 )
 
-set(lua_resources
-    ${CMAKE_CURRENT_SOURCE_DIR}/Source/Audio/scope3d~.pd_lua
-    ${CMAKE_CURRENT_SOURCE_DIR}/Source/Control/lua/pd.lua
-    ${CMAKE_CURRENT_SOURCE_DIR}/Source/Control/lua/pdx.lua
-    ${CMAKE_CURRENT_SOURCE_DIR}/Source/Control/lua/luadoc/hello.lua
-    ${CMAKE_CURRENT_SOURCE_DIR}/Source/Control/lua/luadoc/hello.pd_lua
-)
-
 file(GLOB merda_files "${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Merda/Modules/*")
 file(GLOB tcl_files ${CMAKE_CURRENT_SOURCE_DIR}/Source/Extra/*.tcl ${CMAKE_CURRENT_SOURCE_DIR}/Source/Extra/tkdnd)
 file(GLOB abstractions ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Audio/*.pd ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Control/*.pd ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Extra/*)
-file(COPY ${pdf_help} ${extra_files} ${help_files} ${abstractions} ${tcl_files} ${lua_resources} DESTINATION ${PD_OUTPUT_PATH})
+file(COPY ${pdf_help} ${extra_files} ${help_files} ${abstractions} ${tcl_files} DESTINATION ${PD_OUTPUT_PATH})
 file(COPY ${merda_files} DESTINATION ${PD_OUTPUT_PATH})
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Source/Audio/sfz~/sfz" DESTINATION ${PD_OUTPUT_PATH})
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Documentation/Live-Electronics-Tutorial" DESTINATION ${PD_OUTPUT_PATH})
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE" DESTINATION ${PD_OUTPUT_PATH}/LICENSE)
+file(COPY "${pd_lua_SOURCE_DIR}/pd.lua" DESTINATION ${PD_OUTPUT_PATH}/)
 file(REMOVE_RECURSE ${PD_OUTPUT_PATH}/audio)
 
 # Log the object count

@@ -103,7 +103,7 @@ jobs:
   # ===============================================================
 
   Windows-Build:
-    runs-on: windows-2022
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -138,7 +138,7 @@ jobs:
         shell: msys2 {0}
         run: |
           pacman -S --noconfirm mingw-w64-x86_64-libogg mingw-w64-x86_64-libvorbis
-     
+
       - name: Configure pd-else
         shell: msys2 {0}
         run: |
