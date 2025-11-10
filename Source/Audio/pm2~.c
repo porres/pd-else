@@ -186,8 +186,8 @@ static t_int *pm2_perform(t_int *w){
             bus1 += (op2 * x->x_2to1);
             float bus2 = (op2 * x->x_2to2);
             
-            double inc1 = (hz + x->x_detune1) * x->x_ratio1 * x->x_sr_rec;
-            double inc2 = (hz + x->x_detune2) * x->x_ratio2 * x->x_sr_rec;
+            double inc1 = (x->x_detune1 + hz * x->x_ratio1) * x->x_sr_rec;
+            double inc2 = (x->x_detune2 + hz * x->x_ratio2) * x->x_sr_rec;
             ph1[j] = pm2_wrap_phase(ph1[j] + inc1); // phase inc
             ph2[j] = pm2_wrap_phase(ph2[j] + inc2); // phase inc
             

@@ -636,12 +636,12 @@ static t_int *pm6_perform(t_int *w){
             bus5 += (op6 * x->x_6to5);
             float bus6 = (op6 * x->x_6to6);
             
-            double inc1 = (hz + x->x_detune1) * x->x_ratio1 * x->x_sr_rec;
-            double inc2 = (hz + x->x_detune2) * x->x_ratio2 * x->x_sr_rec;
-            double inc3 = (hz + x->x_detune3) * x->x_ratio3 * x->x_sr_rec;
-            double inc4 = (hz + x->x_detune4) * x->x_ratio4 * x->x_sr_rec;
-            double inc5 = (hz + x->x_detune5) * x->x_ratio5 * x->x_sr_rec;
-            double inc6 = (hz + x->x_detune6) * x->x_ratio6 * x->x_sr_rec;
+            double inc1 = (x->x_detune1 + hz * x->x_ratio1) * x->x_sr_rec;
+            double inc2 = (x->x_detune2 + hz * x->x_ratio2) * x->x_sr_rec;
+            double inc3 = (x->x_detune3 + hz * x->x_ratio3) * x->x_sr_rec;
+            double inc4 = (x->x_detune4 + hz * x->x_ratio4) * x->x_sr_rec;
+            double inc5 = (x->x_detune5 + hz * x->x_ratio5) * x->x_sr_rec;
+            double inc6 = (x->x_detune6 + hz * x->x_ratio6) * x->x_sr_rec;
             ph1[j] = pm6_wrap_phase(ph1[j] + inc1); // phase inc
             ph2[j] = pm6_wrap_phase(ph2[j] + inc2); // phase inc
             ph3[j] = pm6_wrap_phase(ph3[j] + inc3); // phase inc
