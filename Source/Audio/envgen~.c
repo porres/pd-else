@@ -13,6 +13,7 @@ enum { LINEAR, CURVE, POWER, LAG, SINE, DUMMY, HANN };
 
 typedef struct _envgen{
     t_object        x_obj;
+    t_inlet        *x_inlet_mul;
     int             x_ac;
     int             x_ac_rel;
     int             x_pause;
@@ -25,6 +26,7 @@ typedef struct _envgen{
     int             x_samps;
     int             x_lintype;
     float           x_curve; // exponential power or curve parameter
+    float           x_mul;
     t_float         x_retrigger;
     t_float        *x_value;
     t_float        *x_inc;
@@ -81,9 +83,9 @@ static float envgen_get_step(t_envgen *x, int j){
 
 static int envgen_get_nleft(t_envgen *x, float time){
     if(x->x_samps)
-        return((int)(time));
+        return((int)(time * x->x_mul));
     else
-        return((int)(time * sys_getsr()*0.001 + 0.5));
+        return((int)(time * x->x_mul * sys_getsr()*0.001 + 0.5));
 }
 
 static void envgen_set_line_type(t_envgen *x, int j){
@@ -149,10 +151,8 @@ static void envgen_retarget(t_envgen *x, int j){
         x->x_b[j] = x->x_delta[j] / (1 - exp(x->x_curve));
         x->x_a[j] = x->x_value[j] + x->x_b[j];
     }
-    if(x->x_nleft[j] == 0){
-//        post("exit");
+    if(x->x_nleft[j] == 0)
         return; // exit if after skipping 0-length segments we have nothing left
-    }
     
     // Proceed with normal ramp setup
     
@@ -355,8 +355,10 @@ static t_int *envgen_perform(t_int *w){
     t_envgen *x = (t_envgen *)(w[1]);
     t_float *in1 = (t_float *)(w[2]);
     t_float *in2 = (t_float *)(w[3]);
-    t_float *out = (t_float *)(w[4]);
-    int ch2 = (int)(w[5]);
+    t_float *in3 = (t_float *)(w[4]);
+    t_float *out = (t_float *)(w[5]);
+    int ch2 = (int)(w[6]);
+    int ch3 = (int)(w[7]);
     int n = x->x_nblock, chs = x->x_nchans;
     float *lastin = x->x_lastin;
     for(int j = 0; j < chs; j++){
@@ -364,6 +366,7 @@ static t_int *envgen_perform(t_int *w){
             float output;
             t_float f = in1[j*n + i];
             t_float retrig = ch2 == 1 ? in2[i] : in2[j*n + i];
+            x->x_mul = ch3 == 1 ? in3[i] : in3[j*n + i];
             if(f != 0 && lastin[j] == 0){ // set attack ramp
                 x->x_gain[j] = f;
                 envgen_attack(x, x->x_ac, x->x_av, j);
@@ -449,12 +452,12 @@ static t_int *envgen_perform(t_int *w){
         }
     }
     x->x_lastin = lastin;
-    return(w+6);
+    return(w+9);
 }
 
 static void envgen_dsp(t_envgen *x, t_signal **sp){
     x->x_nblock = sp[0]->s_n;
-    int chs = sp[0]->s_nchans, ch2 = sp[1]->s_nchans;
+    int chs = sp[0]->s_nchans, ch2 = sp[1]->s_nchans, ch3 = sp[2]->s_nchans;
     if(x->x_nchans != chs){
         x->x_lastin = (t_float *)resizebytes(x->x_lastin,
             x->x_nchans * sizeof(t_float), chs * sizeof(t_float));
@@ -492,13 +495,14 @@ static void envgen_dsp(t_envgen *x, t_signal **sp){
             x->x_nchans * sizeof(int), chs * sizeof(int));
         x->x_nchans = chs;
     }
-    signal_setmultiout(&sp[2], chs);
-    if((ch2 > 1 && ch2 != chs)){
-        dsp_add_zero(sp[2]->s_vec, chs*x->x_nblock);
+    signal_setmultiout(&sp[3], chs);
+    if((ch2 > 1 && ch2 != chs) || (ch3 > 1 && ch3 != chs)){
+        dsp_add_zero(sp[3]->s_vec, chs*x->x_nblock);
         pd_error(x, "[envgen~]: channel sizes mismatch");
         return;
     }
-    dsp_add(envgen_perform, 5, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, ch2);
+    dsp_add(envgen_perform, 8, x, sp[0]->s_vec, sp[1]->s_vec,
+        sp[2]->s_vec, sp[2]->s_vec, ch2, ch3);
 }
 
 static void envgen_free(t_envgen *x){
@@ -562,6 +566,7 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     x->x_retrigger = 0;
     x->x_pause = 0;
     x->x_suspoint = x->x_legato = 0;
+    float mul = 1;
     int i = 0;
     for(i = 0; i < MAX_SEGS; i++) // set exponential list to linear
         SETFLOAT(x->x_at_exp+i, 0);
@@ -586,6 +591,14 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
             else if(cursym == gensym("-retrigger")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     x->x_retrigger = atom_getfloatarg(1, ac, av);
+                    ac-=2, av+=2;
+                }
+                else
+                    goto errstate;
+            }
+            else if(cursym == gensym("-mul")){
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    mul = atom_getfloatarg(1, ac, av);
                     ac-=2, av+=2;
                 }
                 else
@@ -629,6 +642,8 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     }
     x->x_last_target[0] = x->x_value[0];
     inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+    x->x_inlet_mul = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_inlet_mul, mul);
     outlet_new((t_object *)x, &s_signal);
     x->x_out2 = outlet_new((t_object *)x, &s_float);
     x->x_clock = clock_new(x, (t_method)envgen_tick);
