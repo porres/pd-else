@@ -1017,6 +1017,10 @@ static void knob_load(t_knob *x, t_symbol *s, int ac, t_atom *av){
     }
 }
 
+static void knob_reload(t_knob *x){
+    knob_float(x, x->x_load);
+}
+
 static void knob_arcstart(t_knob *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(!ac)
@@ -1962,9 +1966,12 @@ static void knob_forget(t_knob *x){
 
 static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
     t_knob *x = (t_knob *)z;
-    x->x_ignore_int = alt;
     if(x->x_readonly)
         return(0);
+    if(alt && doit){
+        knob_float(x, x->x_load);
+        return(1);
+    }
     x->x_shift = shift;
     if(x->x_ctrl && doit){
         if(x->x_shift)
@@ -2583,6 +2590,7 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_exp, gensym("exp"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_log, gensym("log"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_discrete, gensym("discrete"), A_FLOAT, 0);
+    class_addmethod(knob_class, (t_method)knob_reload, gensym("reload"), 0);
 //    class_addmethod(knob_class, (t_method)knob_proportion, gensym("proportion"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_setbgcolor, gensym("bgcolor"), A_GIMME, 0);
     class_addmethod(knob_class, (t_method)knob_setarccolor, gensym("arccolor"), A_GIMME, 0);
