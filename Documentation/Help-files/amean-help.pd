@@ -48,9 +48,10 @@
 #X msg 142 175 10 200 4;
 #X text 156 331 list - set start/end/steps and generate list;
 #X text 52 118 The number of steps is the output list length - 1 and represents the number of values until reaching the end. The minimum number of steps is "1"., f 64;
-#X text 35 217 see also:;
-#X obj 35 245 else/gmean;
-#X obj 35 275 else/list.inc;
+#X text 28 185 see also:;
+#X obj 28 213 else/gmean;
+#X obj 28 243 else/list.inc;
+#X obj 28 270 else/list.harm;
 #X connect 0 0 40 0;
 #X connect 1 0 40 1;
 #X connect 2 0 40 2;
