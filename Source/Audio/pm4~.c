@@ -351,19 +351,19 @@ static t_int *pm4_perform(t_int *w){
             float level4 = ch5 == 1 ? l4[i] : l4[j*n + i];
             
             float mod1 = ((y1n1[j] + y1n2[j]) * 0.5); // fb bus1
-            float op1 = read_sintab(pm4_wrap_phase(ph1[j] + mod1));
+            float op1 = read_sintab(pm4_wrap_phase(ph1[j] + mod1)) * level1;
             float bus1 = op1 * x->x_1to1;
             
             float mod2 = ((y2n1[j] + y2n2[j]) * 0.5); // fb bus2
             mod2 += (op1 * x->x_1to2); // ff
-            float op2 = read_sintab(pm4_wrap_phase(ph2[j] + mod2));
+            float op2 = read_sintab(pm4_wrap_phase(ph2[j] + mod2)) * level2;
             bus1 += (op2 * x->x_2to1);
             float bus2 = (op2 * x->x_2to2);
             
             float mod3 = ((y3n1[j] + y3n2[j]) * 0.5); // fb bus3
             mod3 += (op1 * x->x_1to3);
             mod3 += (op2 * x->x_2to3);
-            float op3 = read_sintab(pm4_wrap_phase(ph3[j] + mod3));;
+            float op3 = read_sintab(pm4_wrap_phase(ph3[j] + mod3)) * level3;
             bus1 += (op3 * x->x_3to1);
             bus2 += (op3 * x->x_3to2);
             float bus3 = op3 * x->x_3to3;
@@ -372,7 +372,7 @@ static t_int *pm4_perform(t_int *w){
             mod4 += (op1 * x->x_1to4);
             mod4 += (op2 * x->x_2to4);
             mod4 += (op3 * x->x_3to4);
-            float op4 = read_sintab(pm4_wrap_phase(ph4[j] + mod4));
+            float op4 = read_sintab(pm4_wrap_phase(ph4[j] + mod4)) * level4;
             bus1 += (op4 * x->x_4to1);
             bus2 += (op4 * x->x_4to2);
             bus3 += (op4 * x->x_4to3);
@@ -387,10 +387,10 @@ static t_int *pm4_perform(t_int *w){
             ph3[j] = pm4_wrap_phase(ph3[j] + inc3); // phase inc
             ph4[j] = pm4_wrap_phase(ph4[j] + inc4); // phase inc
             
-            float g1 = op1 * vol1 * level1;
-            float g2 = op2 * vol2 * level2;
-            float g3 = op3 * vol3 * level3;
-            float g4 = op4 * vol4 * level4;
+            float g1 = op1 * vol1;
+            float g2 = op2 * vol2;
+            float g3 = op3 * vol3;
+            float g4 = op4 * vol4;
             float panL = 0;
             panL += (g1 * read_sintab(pan1 + 0.25));
             panL += (g2 * read_sintab(pan2 + 0.25));

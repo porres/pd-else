@@ -177,12 +177,12 @@ static t_int *pm2_perform(t_int *w){
             float level2 = ch3 == 1 ? l2[i] : l2[j*n + i];
             
             float mod1 = ((y1n1[j] + y1n2[j]) * 0.5); // fb bus1
-            float op1 = read_sintab(pm2_wrap_phase(ph1[j] + mod1));
+            float op1 = read_sintab(pm2_wrap_phase(ph1[j] + mod1)) * level1;
             float bus1 = op1 * x->x_1to1;
             
             float mod2 = ((y2n1[j] + y2n2[j]) * 0.5); // fb bus2
             mod2 += (op1 * x->x_1to2); // ff
-            float op2 = read_sintab(pm2_wrap_phase(ph2[j] + mod2));
+            float op2 = read_sintab(pm2_wrap_phase(ph2[j] + mod2)) * level2;
             bus1 += (op2 * x->x_2to1);
             float bus2 = (op2 * x->x_2to2);
             
@@ -191,8 +191,8 @@ static t_int *pm2_perform(t_int *w){
             ph1[j] = pm2_wrap_phase(ph1[j] + inc1); // phase inc
             ph2[j] = pm2_wrap_phase(ph2[j] + inc2); // phase inc
             
-            float g1 = op1 * vol1 * level1;
-            float g2 = op2 * vol2 * level2;
+            float g1 = op1 * vol1;
+            float g2 = op2 * vol2;
             float panL = 0;
             panL += (g1 * read_sintab(pan1 + 0.25));
             panL += (g2 * read_sintab(pan2 + 0.25));
