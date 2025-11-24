@@ -42,7 +42,7 @@
 #A saved;
 #X obj 534 668 noise~;
 #X obj 863 659 vcf.m~;
-#A saved 40 1 1 0 1;
+#A saved 139.288 0.19 0.0999998 0.742858 0 0 1 2 100 0;
 #A saved;
 #A saved;
 #A saved;
@@ -51,10 +51,14 @@
 #A saved;
 #A saved;
 #A saved;
-#X obj 864 1104 out~;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
+#X obj 722 1026 out~;
 #X obj 223 174 mono~ 10, f 120;
 #X obj 643 351 else/adsr.m~;
-#A saved 10 950 0.5 500 1 0 0 0 0 0 1;
+#A saved 10 950 0.5 500 1 0 0 0 0 0 1 0;
 #A saved;
 #A saved;
 #A saved;
@@ -72,7 +76,7 @@
 #A saved;
 #A saved;
 #X obj 938 351 else/adsr.m~;
-#A saved 50 1500 0.5 500 1 0 0 0 0 0 1;
+#A saved 50 1500 0.5 500 1 0 0 0 0 0 1 0;
 #A saved;
 #A saved;
 #A saved;
@@ -93,7 +97,7 @@
 #A saved 0.482319 0 1;
 #A saved;
 #A saved;
-#X obj 886 933 scope~ 301 152 8 3 64 -1 1 50 0 0 0 30 30 30 190 190 190 160 160 160 0 empty;
+#X obj 863 984 scope~ 301 152 8 3 64 -1 1 50 0 0 0 30 30 30 190 190 190 160 160 160 0 empty;
 #X obj 235 48 keymap -1;
 #X obj 223 17 note.in;
 #X text 432 221 LFO;

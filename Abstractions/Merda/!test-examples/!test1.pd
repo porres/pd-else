@@ -19,7 +19,7 @@
 #A saved;
 #X obj 286 564 else/out~;
 #X obj 474 323 else/adsr.m~;
-#A saved 0.5 300 0 0 0 0 0 0 0 1 1;
+#A saved 0.5 300 0 0 0 0 0 0 0 1 1 0;
 #A saved;
 #A saved;
 #A saved;
@@ -52,7 +52,7 @@
 #A saved 1 0 0;
 #A saved;
 #A saved;
-#X obj 214 681 nop~;
+#X obj 214 702 nop~;
 #X obj 225 377 keyboard 17 80 2 3 0 0 empty empty;
 #X obj 225 332 s2f~;
 #X msg 225 354 show \$1;
