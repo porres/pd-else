@@ -13,6 +13,7 @@ typedef struct _decay{
     t_int       x_flag;
     int         x_nchans;
     int         x_nblock;
+    double     *x_xnm1;
     double     *x_ynm1;
     double      x_f;
     t_symbol   *x_ignore;
@@ -35,11 +36,13 @@ static t_int *decay_perform(t_int *w){
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
     t_float *out = (t_float *)(w[5]);
+    double *xnm1 = x->x_xnm1;
     double *ynm1 = x->x_ynm1;
     t_float sr_khz = x->x_sr_khz;
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0; i < x->x_nblock; i++){
-            double xn = in1[j*x->x_nblock + i];
+            double in = in1[j*x->x_nblock + i];
+            double xn = (in != 0 && xnm1[j] == 0) ? in : 0;
             double ms = ch2 == 1 ? in2[i] : in2[j*x->x_nblock + i];
             if(x->x_flag){
                 xn = x->x_f;
@@ -53,8 +56,10 @@ static t_int *decay_perform(t_int *w){
                 out[j*x->x_nblock + i] = yn;
                 ynm1[j] = yn;
             }
+            xnm1[j] = in;
         }
     }
+    x->x_xnm1 = xnm1;
     x->x_ynm1 = ynm1;
     return(w+6);
 }
@@ -64,7 +69,9 @@ static void decay_dsp(t_decay *x, t_signal **sp){
     x->x_nblock = sp[0]->s_n;
     int chs = sp[0]->s_nchans, ch2 = sp[1]->s_nchans;
     if(x->x_nchans != chs){
-       x->x_ynm1 = (double *)resizebytes(x->x_ynm1,
+       x->x_xnm1 = (double *)resizebytes(x->x_xnm1,
+            x->x_nchans * sizeof(double), chs * sizeof(double));
+        x->x_ynm1 = (double *)resizebytes(x->x_ynm1,
             x->x_nchans * sizeof(double), chs * sizeof(double));
         x->x_nchans = chs;
     }
@@ -78,11 +85,13 @@ static void decay_dsp(t_decay *x, t_signal **sp){
 }
 
 static void decay_clear(t_decay *x){
-    for(int i = 0; i < x->x_nchans; i++)
-        x->x_ynm1[i] = 0.;
+    for(int i = 0; i < x->x_nchans; i++){
+        x->x_xnm1[i] = x->x_ynm1[i] = 0.;
+    }
 }
 
 static void *decay_free(t_decay *x){
+    freebytes(x->x_xnm1, x->x_nchans * sizeof(*x->x_xnm1));
     freebytes(x->x_ynm1, x->x_nchans * sizeof(*x->x_ynm1));
     return(void *)x;
 }
@@ -92,8 +101,9 @@ static void *decay_new(t_symbol *s, int argc, t_atom *argv){
     x->x_ignore = s;
     float ms = 1000;
     x->x_f = 1.;
+    x->x_xnm1 = (double *)getbytes(sizeof(*x->x_xnm1));
     x->x_ynm1 = (double *)getbytes(sizeof(*x->x_ynm1));
-    x->x_ynm1[0] = 0;
+    x->x_xnm1[0] = x->x_ynm1[0] = 0;
 /////////////////////////////////////////////////////////////////////////////////////
     int argnum = 0;
     while(argc > 0){
