@@ -8,6 +8,7 @@ typedef struct _tempo{
     t_object       x_obj;
     t_random_state x_rstate;
     double         x_phase;
+    int            x_count;
     int            x_val;
     t_inlet       *x_inlet_tempo;
     t_inlet       *x_inlet_swing;
@@ -28,7 +29,7 @@ static t_class *tempo_class;
 
 static void tempo_seed(t_tempo *x, t_symbol *s, int ac, t_atom *av){
     random_init(&x->x_rstate, get_seed(s, ac, av, x->x_id));
-    x->x_deviation = x->x_phase = 1;
+    x->x_deviation = x->x_phase = 1; // ??????
 }
 
 static void tempo_bang(t_tempo *x){
@@ -49,6 +50,7 @@ static t_int *tempo_perform(t_int *w){
     float last_gate = x->x_last_gate; // last gate state
     float last_sync = x->x_last_sync; // last gate state
     double phase = x->x_phase;
+    int count = x->x_count;
     double sr = x->x_sr;
     int val = x->x_val;
     float deviation = x->x_deviation;
@@ -68,23 +70,42 @@ static t_int *tempo_perform(t_int *w){
         else if(x->x_mode == 1)
             t = 1000. / t;
         double hz = (t * (double)x->x_current_mul);
+        int period = (int)((1. / hz) * sr);
+        if(period < 1)
+            period = 1;
+//        post("count = %d", count);
+//        post("period = %d", period);
         double phase_step = hz / sr; // phase_step
         if(phase_step > 1)
             phase_step = 1;
         if(gate != 0){ // if on
-            if(last_gate == 0)
+            if(last_gate == 0){
                 phase = 1;
-            if(sync != 0 && last_sync == 0)
+                count = period;
+            }
+            if(sync != 0 && last_sync == 0){
                 phase = 1;
-            *out++ = phase >= 1.;
+                count = period;
+            }
+//            *out++ = phase >= 1.;
             if(phase >= 1.){
                 phase = phase - 1; // wrapped phase
+                count = period;
+// update deviation/mul
+                /*                x->x_current_mul = x->x_mul;
+                t_float random = (t_float)(random_frand(s1, s2, s3));
+                x->x_deviation = exp(log(ratio) * random);*/
+            }
+            *out++ = count >= period;
+            if(count >= period){
+                count = 0; // reset
 // update deviation/mul
                 x->x_current_mul = x->x_mul;
                 t_float random = (t_float)(random_frand(s1, s2, s3));
                 x->x_deviation = exp(log(ratio) * random);
             }
-            phase += phase_step; // next phase
+//            phase += phase_step; // next phase
+            count++;
         }
         else
             *out++ = 0; // resets phase too
@@ -92,6 +113,7 @@ static t_int *tempo_perform(t_int *w){
         last_sync = sync;
         deviation = x->x_deviation;
     }
+    x->x_count = count;
     x->x_phase = phase;
     x->x_last_gate = last_gate;
     x->x_last_sync = last_sync;
@@ -231,6 +253,7 @@ static void *tempo_new(t_symbol *s, int ac, t_atom *av){
     x->x_gate = on;
     x->x_sr = sys_getsr(); // sample rate
     x->x_phase = 1;
+    x->x_count = 0;
     x->x_inlet_tempo = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_tempo, init_tempo);
     x->x_inlet_swing = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
