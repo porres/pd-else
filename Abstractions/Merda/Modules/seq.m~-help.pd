@@ -1,4 +1,4 @@
-#N canvas 191 106 1279 713 12;
+#N canvas 191 87 1279 713 12;
 #X obj 1116 75 about.MERDA;
 #N canvas 559 239 619 326 messages 0;
 #X floatatom 222 61 5 1 1000 0 - - - 16;
@@ -77,9 +77,9 @@
 #X text 981 239 Pitch values are from 12 to 108 (C0 to C8). At the top of each step you can set note names and octaves directly \, quantized to quarter tones \, but there's support for any interval in MIDIcents. Use number boxes for easier increment in semitones since the knob can't do that \, though it's fun to get random microtones. As any knob \, you can type in values but this makes more sense if you do it in the number boxes directly. The toggles set the impulse output on and off for each step., f 37;
 #X text 981 517 This object is still experimental..., f 37;
 #X text 981 170 A step sequencer. Left output is MIDI pitch \, mid outlet impulses and right outlet is a gate output with the duration of half the beat., f 37;
-#X obj 24 137 else/seq.m~;
+#X obj 23 130 else/seq.m~;
 #A saved 1 0 1;
-#A saved sequence 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60;
+#A saved sequence 50 60 56 60 60 60 60 60 60 60 60 60 60 60 60 60;
 #A saved nsteps 16;
 #A saved bpms 60;
 #A saved muls 4;
