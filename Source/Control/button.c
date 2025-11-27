@@ -548,6 +548,8 @@ static void button_bgcolor(t_button *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void button_transparent(t_button *x, t_floatarg f){
+    if((int)f == x->x_transparent)
+        return;
     x->x_transparent = f < 0 ? 0 : f > 3 ? 3 : (int)(f);
     if(!button_vis_check(x))
         return;
