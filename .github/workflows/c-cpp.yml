@@ -30,18 +30,20 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libogg-dev libvorbis-dev libssl-dev
+          sudo add-apt-repository ppa:pure-data/pure-data -y
+          sudo apt install puredata -y
           
-      - name: Downloads pd-Sources
-        shell: bash
-        run: |
-          curl -L -o pure-data.zip https://api.github.com/repos/pure-data/pure-data/zipball/refs/tags/0.56-1
-          unzip pure-data.zip
-          rm pure-data.zip
-          mv pure-data-* pure-data
+      # - name: Downloads pd-Sources
+      #   shell: bash
+      #   run: |
+      #     curl -L -o pure-data.zip https://api.github.com/repos/pure-data/pure-data/zipball/refs/tags/0.56-1
+      #     unzip pure-data.zip
+      #     rm pure-data.zip
+      #     mv pure-data-* pure-data
 
       - name: Configure pd-else
         run: |
-          cmake -BBuild -DPD_PATH=${{github.workspace}}/pure-data \
+          cmake -B build \
               -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
               -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
               -DOPENSSL_USE_STATIC_LIBS=TRUE \
@@ -55,13 +57,13 @@ jobs:
           
       - name: Build pd-else
         run: |
-          cmake --build Build
+          cmake --build build
 
       - name: Upload Zip
         uses: actions/upload-artifact@v4
         with:
           name: else-linux
-          path: ./Build/else
+          path: ./build/else
                     
   # ===============================================================
   macOS-Build:
@@ -79,26 +81,22 @@ jobs:
           brew install libogg libvorbis
 
       - name: Downloads pd sources
-        shell: bash
         run: |
-          curl -L -o pure-data.zip https://api.github.com/repos/pure-data/pure-data/zipball/refs/tags/0.56-1
-          unzip pure-data.zip
-          rm pure-data.zip
-          mv pure-data-* pure-data
+          brew install pd
 
       - name: Configure pd-else
         run: |
-          cmake -BBuild -DPD_PATH=${{github.workspace}}/pure-data -DCMAKE_C_COMPILER_LAUNCHER="ccache" -DCMAKE_CXX_COMPILER_LAUNCHER="ccache"
+          cmake -B build -DCMAKE_C_COMPILER_LAUNCHER="ccache" -DCMAKE_CXX_COMPILER_LAUNCHER="ccache"
 
-      - name: Build pd-else
+      - name: build pd-else
         run: |
-          cmake --build Build
+          cmake --build build
 
       - name: Upload Zip
         uses: actions/upload-artifact@v4
         with:
           name: else-macos
-          path: ./Build/else
+          path: ./build/else
 
   # ===============================================================
 
@@ -115,7 +113,7 @@ jobs:
       - name: Install Vorbis/Ogg dependencies
         shell: msys2 {0}
         run: |
-          pacman -S --noconfirm mingw-w64-x86_64-libogg mingw-w64-x86_64-libvorbis
+          pacman -S --noconfirm mingw-w64-x86_64-libogg mingw-w64-x86_64-libvorbis mingw-w64-x86_64-gcc-fortran
 
       - name: Restore build cache
         uses: actions/cache/restore@v4
@@ -126,13 +124,9 @@ jobs:
             ccache-windows-${{ github.sha }}
             ccache-windows-
 
-      - name: Get Pd
-        shell: bash
+      - name: Install PureData Float 32
         run: |
-          curl -L -o pure-data.zip http://msp.ucsd.edu/Software/pd-0.56-1.msw.zip
-          unzip pure-data.zip
-          rm pure-data.zip
-          mv pd-0.56-1 pd
+          winget install -e --id MillerPuckette.PureData --accept-source-agreements
 
       - name: Install Vorbis/Ogg dependencies
         shell: msys2 {0}
@@ -142,7 +136,7 @@ jobs:
       - name: Configure pd-else
         shell: msys2 {0}
         run: |
-          cmake -GNinja -BBuild -DPD_PATH=./pd -DCMAKE_C_COMPILER_LAUNCHER="ccache" -DCMAKE_CXX_COMPILER_LAUNCHER="ccache"
+          cmake -GNinja -B build -DCMAKE_C_COMPILER_LAUNCHER="ccache" -DCMAKE_CXX_COMPILER_LAUNCHER="ccache"
 
       - name: Build pd-else
         shell: msys2 {0}
@@ -151,7 +145,7 @@ jobs:
           export CCACHE_COMPRESSLEVEL=6
           export CCACHE_MAXSIZE=1G
           export CCACHE_DIR=D:/ccache
-          cmake --build Build
+          cmake --build build
           ccache -s
           rm -rf ./Build/else/*.a
         env:
@@ -170,7 +164,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: else-windows
-          path: ./Build/else
+          path: ./build/else
 
   merge:
     runs-on: ubuntu-latest
