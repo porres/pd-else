@@ -75,5 +75,5 @@ set(CMAKE_SHARED_LINKER_FLAGS "${EXTRA_LDFLAGS}")
 
 add_library(fluidsynth STATIC ${FLUIDSYNTH_SOURCES})
 # Add the Pure Data external library
-add_pd_external(sfont_tilde sfont~ sfont~.c)
+pd_add_external(sfont~ sfont~.c)
 target_link_libraries(sfont_tilde PRIVATE fluidsynth else_shared)
