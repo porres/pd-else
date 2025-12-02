@@ -150,6 +150,7 @@ static void pimp_dsp(t_pimp *x, t_signal **sp){
     if((x->x_ch2 > 1 && x->x_ch2 != x->x_nchans)
     || (x->x_ch3 > 1 && x->x_ch3 != x->x_nchans)){
         dsp_add_zero(sp[3]->s_vec, x->x_nchans*x->x_n);
+        dsp_add_zero(sp[4]->s_vec, x->x_nchans*x->x_n);
         pd_error(x, "[pimp~]: channel sizes mismatch");
         return;
     }

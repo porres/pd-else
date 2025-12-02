@@ -80,7 +80,7 @@
 #X obj 167 75 else/trunc~;
 #X restore 473 314 pd compare;
 #X text 55 88 [quantizer~] approximates a value to step values defined by the argument. There are 4 approximation modes: round (default) \, int \, floor & ceil. It has support for multichannel signals., f 64;
-#N canvas 565 118 534 490 multichannel 0;
+#N canvas 565 118 506 497 multichannel 0;
 #X listbox 90 241 17 0 0 0 - - - 12;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
@@ -191,7 +191,7 @@
 #X obj 90 178 else/quantizer~ 0.25;
 #X obj 162 294 sig~ 1.1 1.3 1.6 1.9;
 #X obj 249 329 sig~ 0.25 0.5 1 2;
-#X text 42 27 If the object has a multichannel left input \, it outputs the same number of channels. If the secondary inlet has a signal with a single channel \, the single value is applied to all channels. If thr secondary inlet is also a multichhanel signal \, then each channel gets its quantizing value. Note \, however \, that the number of multichannels in the right inlet need to match the same number of channels from the left input., f 76;
+#X text 86 44 If one of the inlets has more than one channel \, then the object outputs the same number of channels. If both have more than one channel \, they must be of the same size and each channel has its own input., f 53;
 #X connect 2 0 0 0;
 #X connect 3 0 7 0;
 #X connect 5 0 4 0;
