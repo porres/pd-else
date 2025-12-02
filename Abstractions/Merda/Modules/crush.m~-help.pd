@@ -47,6 +47,7 @@
 #X text 285 241 This is just a wrapper around [crush~] from ELSE \, check it out., f 22;
 #X obj 55 36 else/note 390 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [chrush.m~] - Bit-Crusher / Decimator;
 #X text 356 94 see:;
+#X text 294 380 The object has support for Multichannels, f 22;
 #X connect 1 0 4 0;
 #X connect 3 0 4 0;
 #X connect 4 0 2 0;

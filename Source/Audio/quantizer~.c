@@ -11,6 +11,7 @@ typedef struct _quantizer{
 	int         x_mode;
     int         x_nchans;
     t_int       x_n;
+    t_int       x_ch1;
     t_int       x_ch2;
 }t_quantizer;
 
@@ -30,7 +31,7 @@ static t_int *quantizer_perform(t_int *w){
     int n = x->x_n;
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0; i < n; i++){
-            float in = in1[j*n + i];
+            float in = x->x_ch1 == 1 ? in1[i] : in1[j*n + i];
             float step = x->x_ch2 == 1 ? in2[i] : in2[j*n + i];
             float output;
             if(step > 0.){ // quantize
@@ -59,9 +60,11 @@ static t_int *quantizer_perform(t_int *w){
 }
 
 static void quantizer_dsp(t_quantizer *x, t_signal **sp){
-    x->x_n = sp[0]->s_n, x->x_nchans = sp[0]->s_nchans, x->x_ch2 = sp[1]->s_nchans;
+    x->x_n = sp[0]->s_n, x->x_ch1 = sp[0]->s_nchans, x->x_ch2 = sp[1]->s_nchans;
+    x->x_nchans = x->x_ch1 > x->x_ch2 ? x->x_ch1 : x->x_ch2;
     signal_setmultiout(&sp[2], x->x_nchans);
-    if((x->x_ch2 > 1 && x->x_ch2 != x->x_nchans)){
+    if(x->x_ch1 > 1 && x->x_ch1 != x->x_nchans ||
+    x->x_ch2 > 1 && x->x_ch2 != x->x_nchans){
         dsp_add_zero(sp[2]->s_vec, x->x_nchans*x->x_n);
         pd_error(x, "[quantizer~]: channel sizes mismatch");
         return;

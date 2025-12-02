@@ -260,6 +260,14 @@ static void moog_dsp(t_moog *x, t_signal **sp){
         moog_clear(x);
     }
     signal_setmultiout(&sp[4], x->x_nchs);
+    if(x->x_ch1 > 1 && x->x_ch1 != x->x_nchs ||
+       x->x_ch2 > 1 && x->x_ch2 != x->x_nchs ||
+       x->x_ch3 > 1 && x->x_ch3 != x->x_nchs ||
+       x->x_ch4 > 1 && x->x_ch4 != x->x_nchs){
+        dsp_add_zero(sp[4]->s_vec, x->x_nchs*x->x_n);
+        pd_error(x, "[moog~]: channel sizes mismatch");
+        return;
+    }
     dsp_add(moog_perform, 6, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec,
         sp[3]->s_vec, sp[4]->s_vec);
 }
