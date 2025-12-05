@@ -349,31 +349,15 @@ static void tempo_start(t_tempo *x){
 
 static void tempo_swing(t_tempo *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
-    if(ac == 0)
+    if(ac == 0 || ac > 128)
         return;
-    if(ac == 1){
-        if(x->x_swing_list_size != ac){
-            x->x_swing_list[0] = atom_getfloat(av);
-            x->x_swing_list_size = ac;
-            x->x_cycle = 0;
-            canvas_update_dsp();
-        }
-    }
-    else{ // ac >= 2
-        if(x->x_swing_list_size != (ac-1)){
-            x->x_swing_list_size = (ac-1);
-            canvas_update_dsp();
-        }
-        for(int i = 0; i < ac; i++){
-            if(i < (ac-1))
-                x->x_swing_list[i] = atom_getfloat(av+i);
-            else if(i == (ac-1)){
-                t_float f2 = atom_getfloat(av+i);
-                x->x_cycle = f2 > 128 ? 128 : f2;
-            }
-        }
-    }
+    for(int i = 0; i < ac; i++)
+        x->x_swing_list[i] = atom_getfloat(av+i);
     else_magic_setnan(x->x_sigscalar2);
+    if(x->x_swing_list_size != ac){
+        x->x_swing_list_size = ac;
+        canvas_update_dsp();
+    }
 }
 
 static void tempo_tempo(t_tempo *x, t_symbol *s, int ac, t_atom *av){
@@ -406,12 +390,18 @@ static void tempo_synced(t_tempo *x, t_floatarg f){
     x->x_synced = (f != 0);
 }
 
+static void tempo_cycle(t_tempo *x, t_floatarg f){
+    x->x_cycle = f > 128 ? 128 : (int)f;
+}
+
 static void tempo_bpm(t_tempo *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(ac){
         pd_float((t_pd *)x->x_inlet_tempo, atom_getfloatarg(0, ac, av));
-        if(ac == 2)
+        if(ac >= 2)
             pd_float((t_pd *)x->x_inlet_swing, atom_getfloatarg(1, ac, av));
+        if(ac == 3)
+            tempo_cycle(x, atom_getfloatarg(2, ac, av));
     }
     x->x_mode = 0;
 }
@@ -420,8 +410,10 @@ static void tempo_ms(t_tempo *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(ac){
         pd_float((t_pd *)x->x_inlet_tempo, atom_getfloatarg(0, ac, av));
-        if(ac == 2)
+        if(ac >= 2)
             pd_float((t_pd *)x->x_inlet_swing, atom_getfloatarg(1, ac, av));
+        if(ac == 3)
+            tempo_cycle(x, atom_getfloatarg(2, ac, av));
     }
     x->x_mode = 1;
 }
@@ -430,8 +422,10 @@ static void tempo_hz(t_tempo *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(ac){
         pd_float((t_pd *)x->x_inlet_tempo, atom_getfloatarg(0, ac, av));
-        if(ac == 2)
+        if(ac >= 2)
             pd_float((t_pd *)x->x_inlet_swing, atom_getfloatarg(1, ac, av));
+        if(ac == 3)
+            tempo_cycle(x, atom_getfloatarg(2, ac, av));
     }
     x->x_mode = 2;
 }
@@ -596,6 +590,7 @@ void tempo_tilde_setup(void){
     class_addmethod(tempo_class, (t_method)tempo_tempo, gensym("tempo"), A_GIMME, 0);
     class_addmethod(tempo_class, (t_method)tempo_set, gensym("set"), A_GIMME, 0);
     class_addmethod(tempo_class, (t_method)tempo_swing, gensym("swing"), A_GIMME, 0);
+    class_addmethod(tempo_class, (t_method)tempo_cycle, gensym("cycle"), A_FLOAT, 0);
     class_addmethod(tempo_class, (t_method)tempo_synced, gensym("sync"), A_FLOAT, 0);
     class_addmethod(tempo_class, (t_method)tempo_seed, gensym("seed"), A_GIMME, 0);
 }

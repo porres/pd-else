@@ -81,16 +81,15 @@ static void tempo_sync(t_tempo *x, t_floatarg f){
     x->x_sync = f != 0;
 }
 
-static void tempo_swing(t_tempo *x, t_floatarg swing, t_floatarg cycle){
+static void tempo_swing(t_tempo *x, t_floatarg swing){
     if(swing < 0)
         swing = 0;
     x->x_swing_ratio = (swing/100.) + 1;
-    x->x_cycle = cycle > 128 ? 128 : cycle;
 }
 
-/*static void tempo_cycle(t_tempo *x, t_floatarg f){
+static void tempo_cycle(t_tempo *x, t_floatarg f){
     x->x_cycle = f < 0 ? 0 : f > 128 ? 128 : (int)f;
-}*/
+}
 
 static void tempo_tempo(t_tempo *x, t_floatarg tempo){
     int zero = tempo <= 0;
@@ -198,26 +197,50 @@ static void tempo_float(t_tempo *x, t_float f){
     }
 }
 
-static void tempo_bpm(t_tempo *x ){
+static void tempo_bpm(t_tempo *x, t_symbol *s, int ac, t_atom *av){
+    x->x_ignore = s;
+    if(ac){
+        tempo_tempo(x, atom_getfloatarg(0, ac, av));
+        if(ac >= 2)
+            tempo_swing(x, atom_getfloatarg(1, ac, av));
+        if(ac == 3)
+            tempo_cycle(x, atom_getfloatarg(2, ac, av));
+    }
     x->x_mode = 0;
     tempo_setms(x);
 }
 
-static void tempo_ms(t_tempo *x ){
+static void tempo_ms(t_tempo *x, t_symbol *s, int ac, t_atom *av){
+    x->x_ignore = s;
+    if(ac){
+        tempo_tempo(x, atom_getfloatarg(0, ac, av));
+        if(ac >= 2)
+            tempo_swing(x, atom_getfloatarg(1, ac, av));
+        if(ac == 3)
+            tempo_cycle(x, atom_getfloatarg(2, ac, av));
+    }
     x->x_mode = 1;
     tempo_setms(x);
 }
 
-static void tempo_hz(t_tempo *x ){
+static void tempo_hz(t_tempo *x, t_symbol *s, int ac, t_atom *av){
+    x->x_ignore = s;
+    if(ac){
+        tempo_tempo(x, atom_getfloatarg(0, ac, av));
+        if(ac >= 2)
+            tempo_swing(x, atom_getfloatarg(1, ac, av));
+        if(ac == 3)
+            tempo_cycle(x, atom_getfloatarg(2, ac, av));
+    }
     x->x_mode = 2;
     tempo_setms(x);
 }
 
-static void tempo_start(t_tempo *x ){
+static void tempo_start(t_tempo *x){
     tempo_float(x, 1);
 }
 
-static void tempo_stop(t_tempo *x ){
+static void tempo_stop(t_tempo *x){
     tempo_float(x, 0);
 }
 
@@ -333,11 +356,11 @@ void tempo_setup(void){
     class_addmethod(tempo_class, (t_method)tempo_tempo, gensym("tempo"), A_FLOAT, 0);
     class_addmethod(tempo_class, (t_method)tempo_sync, gensym("sync"), A_FLOAT, 0);
     class_addmethod(tempo_class, (t_method)tempo_swing, gensym("swing"), A_FLOAT, A_DEFFLOAT, 0);
+    class_addmethod(tempo_class, (t_method)tempo_cycle, gensym("cycle"), A_FLOAT, 0);
     class_addmethod(tempo_class, (t_method)tempo_start, gensym("start"), 0);
     class_addmethod(tempo_class, (t_method)tempo_stop, gensym("stop"), 0);
-    class_addmethod(tempo_class, (t_method)tempo_ms, gensym("ms"), 0);
-    class_addmethod(tempo_class, (t_method)tempo_bpm, gensym("bpm"), 0);
-    class_addmethod(tempo_class, (t_method)tempo_hz, gensym("hz"), 0);
-//    class_addmethod(tempo_class, (t_method)tempo_cycle, gensym("cycle"), A_FLOAT, 0);
+    class_addmethod(tempo_class, (t_method)tempo_ms, gensym("ms"), A_GIMME, 0);
+    class_addmethod(tempo_class, (t_method)tempo_bpm, gensym("bpm"), A_GIMME, 0);
+    class_addmethod(tempo_class, (t_method)tempo_hz, gensym("hz"), A_GIMME, 0);
     class_addmethod(tempo_class, (t_method)tempo_seed, gensym("seed"), A_GIMME, 0);
 }

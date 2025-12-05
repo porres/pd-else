@@ -1,4 +1,4 @@
-#N canvas 569 38 565 666 10;
+#N canvas 445 38 565 666 10;
 #X obj 3 374 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 3 532 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 3 589 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -81,9 +81,19 @@
 #X text 108 452 open <symbol>;
 #X msg 233 236 open cantor.txt;
 #X text 334 235 open a new textfile;
-#N canvas 676 118 662 445 import 0;
+#N canvas 766 273 330 282 import 0;
+#X obj 138 86 text define -k rule;
+#A set axiom a \; a a b \; b a \;;
+#X obj 80 132 text tolist rule;
+#X obj 80 97 bng 19 250 50 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000;
+#X obj 80 211 else/lsystem;
+#X text 67 27 You can import a text with rules via the "import" message., f 32;
+#X obj 80 169 else/insert import;
+#X connect 1 0 5 0;
+#X connect 2 0 1 0;
+#X connect 5 0 3 0;
 #X restore 485 324 pd import;
-#N canvas 631 133 453 599 example 1;
+#N canvas 631 133 453 599 example 0;
 #X obj 116 378 else/play.file~ bagal.flac, f 15;
 #X obj 227 378 else/play.file~ dholak.flac, f 15;
 #X obj 129 189 tgl 21 1 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
