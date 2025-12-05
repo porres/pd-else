@@ -120,9 +120,8 @@ static void *pulsecount_new(t_floatarg f1, t_floatarg f2){
 }
 
 void pulsecount_tilde_setup(void){
-    pulsecount_class = class_new(gensym("pulsecount~"),
-        (t_newmethod)pulsecount_new, (t_method)pulsecount_free,
-        sizeof(t_pulsecount), CLASS_DEFAULT, A_DEFFLOAT, A_DEFFLOAT, 0);
+    pulsecount_class = class_new(gensym("pulsecount~"), (t_newmethod)pulsecount_new,
+        (t_method)pulsecount_free, sizeof(t_pulsecount), CLASS_DEFAULT, A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(pulsecount_class, nullfn, gensym("signal"), 0);
     class_addmethod(pulsecount_class, (t_method) pulsecount_dsp, gensym("dsp"), A_CANT, 0);
     class_addbang(pulsecount_class, pulsecount_reset);
