@@ -278,11 +278,11 @@ static void tempo_dsp(t_tempo *x, t_signal **sp){
     x->x_ch3 = x->x_sig3 ? sp[2]->s_nchans : x->x_swing_list_size;
     x->x_ch4 = sp[3]->s_nchans;
     int chs = x->x_ch1 = sp[0]->s_nchans;
-    if(x->x_ch2 > 1)
+    if(x->x_ch2 > chs)
         chs = x->x_ch2;
-    if(x->x_ch3 > 1)
+    if(x->x_ch3 > chs)
         chs = x->x_ch3;
-    if(x->x_ch4 > 1)
+    if(x->x_ch4 > chs)
         chs = x->x_ch4;
     if(x->x_nchs != chs){
         x->x_swing_array = (float *)resizebytes(x->x_swing_array,
@@ -436,6 +436,13 @@ static void *tempo_free(t_tempo *x){
     inlet_free(x->x_inlet_sync);
     freebytes(x->x_swing_array, x->x_nchs * LEN * sizeof(*x->x_swing_array));
     freebytes(x->x_slack, x->x_nchs * LEN * sizeof(*x->x_slack));
+    freebytes(x->x_phase, x->x_nchs * sizeof(*x->x_phase));
+    freebytes(x->x_ms, x->x_nchs * sizeof(*x->x_ms));
+    freebytes(x->x_swing_index, x->x_nchs * sizeof(*x->x_swing_index));
+    freebytes(x->x_count, x->x_nchs * sizeof(*x->x_count));
+    freebytes(x->x_last_sync, x->x_nchs * sizeof(*x->x_last_sync));
+    freebytes(x->x_last_gate, x->x_nchs * sizeof(*x->x_last_gate));
+    freebytes(x->x_deviation, x->x_nchs * sizeof(*x->x_deviation));
     free(x->x_tempo_list);
     free(x->x_set_tempo_list);
     free(x->x_swing_list);

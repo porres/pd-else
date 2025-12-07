@@ -1,12 +1,13 @@
 // porres
 
 #include <m_pd.h>
-#include <buffer.h>
+#include "buffer.h"
 
 typedef struct _tabreader{
     t_object  x_obj;
     t_buffer *x_buffer;
-    t_float   x_f; // dummy
+    t_int       x_n;
+    t_int         x_nchs;
     int       x_i_mode;
     int       x_ch;
     int       x_idx;
@@ -68,80 +69,83 @@ static t_int *tabreader_perform(t_int *w){
     t_tabreader *x = (t_tabreader *)(w[1]);
     t_sample *in = (t_float *)(w[2]);
     t_sample *out = (t_float *)(w[3]);
-    int nblock = (int)(w[4]);
     t_buffer *buf = x->x_buffer;
     int npts = x->x_loop ? buf->c_npts : buf->c_npts - 1;
     t_word *vp = buf->c_vectors[0];
-    while(nblock--){
-        if(buf->c_playable){ // ????
-            double index = (double)(*in++);
-            double xpos = x->x_idx ? index : index*npts;
-            if(xpos < 0)
-                xpos = 0;
-            if(xpos >= npts)
-                xpos = x->x_loop ? 0 : npts;
-            int ndx = (int)xpos;
-            double frac = xpos - ndx;
-            if(ndx == npts - 1 && x->x_loop)
-                ndx = 0;
-            int ndx1 = ndx + 1;
-            if(ndx1 >= npts - 1)
-                ndx1 = x->x_loop ? 0 : npts - 1;
-            int ndxm1 = 0, ndx2 = 0;
-            if(x->x_i_mode){
-                ndxm1 = ndx - 1;
-                if(ndxm1 < 0)
-                    ndxm1 = x->x_loop ? npts - 1 : 0;
-                ndx2 = ndx1 + 1;
-                if(ndx2 >= npts)
-                    ndx2 = x->x_loop ? ndx2 - npts : npts;
-            }
-            if(vp){
-                double a = 0, b = 0, c = 0, d = 0;
-                b = (double)vp[ndx].w_float;
+    for(int j = 0; j < x->x_nchs; j++){
+        for(int i = 0, n = x->x_n; i < n; i++){
+            if(buf->c_playable){ // ????
+                double index = (double)(in[j*n+i]);
+                double xpos = x->x_idx ? index : index*npts;
+                if(xpos < 0)
+                    xpos = 0;
+                if(xpos >= npts)
+                    xpos = x->x_loop ? 0 : npts;
+                int ndx = (int)xpos;
+                double frac = xpos - ndx;
+                if(ndx == npts - 1 && x->x_loop)
+                    ndx = 0;
+                int ndx1 = ndx + 1;
+                if(ndx1 >= npts - 1)
+                    ndx1 = x->x_loop ? 0 : npts - 1;
+                int ndxm1 = 0, ndx2 = 0;
                 if(x->x_i_mode){
-                    c = (double)vp[ndx1].w_float;
-                    if(x->x_i_mode > 2){
-                        a = (double)vp[ndxm1].w_float;
-                        d = (double)vp[ndx2].w_float;
+                    ndxm1 = ndx - 1;
+                    if(ndxm1 < 0)
+                        ndxm1 = x->x_loop ? npts - 1 : 0;
+                    ndx2 = ndx1 + 1;
+                    if(ndx2 >= npts)
+                        ndx2 = x->x_loop ? ndx2 - npts : npts;
+                }
+                if(vp){
+                    double a = 0, b = 0, c = 0, d = 0;
+                    b = (double)vp[ndx].w_float;
+                    if(x->x_i_mode){
+                        c = (double)vp[ndx1].w_float;
+                        if(x->x_i_mode > 2){
+                            a = (double)vp[ndxm1].w_float;
+                            d = (double)vp[ndx2].w_float;
+                        }
+                    }
+                    switch(x->x_i_mode){
+                        case 0: // no interpolation
+                            out[j*n+i] = b;
+                            break;
+                        case 1: // linear
+                            out[j*n+i] = interp_lin(frac, b, c);
+                            break;
+                        case 2: // cos
+                            out[j*n+i] = interp_cos(frac, b, c);
+                            break;
+                        case 3: // lagrange
+                            out[j*n+i] = interp_lagrange(frac, a, b, c, d);
+                            break;
+                        case 4: // cubic
+                            out[j*n+i] = interp_cubic(frac, a, b, c, d);
+                            break;
+                        case 5: // spline
+                            out[j*n+i] = interp_spline(frac, a, b, c, d);
+                            break;
+                        case 6: // hermite
+                            out[j*n+i] = interp_hermite(frac, a, b, c, d, x->x_bias, x->x_tension);
+                            break;
+                        default:
+                            break;
                     }
                 }
-                switch(x->x_i_mode){
-                    case 0: // no interpolation
-                        *out++ = b;
-                        break;
-                    case 1: // linear
-                        *out++ = interp_lin(frac, b, c);
-                        break;
-                    case 2: // cos
-                        *out++ = interp_cos(frac, b, c);
-                        break;
-                    case 3: // lagrange
-                        *out++ = interp_lagrange(frac, a, b, c, d);
-                        break;
-                    case 4: // cubic
-                        *out++ = interp_cubic(frac, a, b, c, d);
-                        break;
-                    case 5: // spline
-                        *out++ = interp_spline(frac, a, b, c, d);
-                        break;
-                    case 6: // hermite
-                        *out++ = interp_hermite(frac, a, b, c, d, x->x_bias, x->x_tension);
-                        break;
-                    default:
-                        break;
-                }
             }
+            else
+                out[j*n+i] = 0;
         }
-        else
-            *out++ = 0;
     }
-    return(w+5);
+    return(w+4);
 }
 
 static void tabreader_dsp(t_tabreader *x, t_signal **sp){
     buffer_checkdsp(x->x_buffer);
-    dsp_add(tabreader_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
+    x->x_n = sp[0]->s_n;
+    signal_setmultiout(&sp[1], x->x_nchs = sp[0]->s_nchans);
+    dsp_add(tabreader_perform, 3, x, sp[0]->s_vec, sp[1]->s_vec);
 }
 
 static void tabreader_free(t_tabreader *x){
@@ -244,9 +248,9 @@ static void *tabreader_new(t_symbol *s, int ac, t_atom * av){
 }
 
 void tabreader_tilde_setup(void){
-    tabreader_class = class_new(gensym("tabreader~"), (t_newmethod)tabreader_new,
-        (t_method)tabreader_free, sizeof(t_tabreader), 0, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(tabreader_class, t_tabreader, x_f);
+    tabreader_class = class_new(gensym("tabreader~"), (t_newmethod)(void*)tabreader_new,
+        (t_method)tabreader_free, sizeof(t_tabreader), CLASS_MULTICHANNEL, A_GIMME, 0);
+    class_addmethod(tabreader_class, nullfn, gensym("signal"), 0);
     class_addmethod(tabreader_class, (t_method)tabreader_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(tabreader_class, (t_method)tabreader_set, gensym("set"), A_SYMBOL, 0);
     class_addmethod(tabreader_class, (t_method)tabreader_channel, gensym("channel"), A_FLOAT, 0);
