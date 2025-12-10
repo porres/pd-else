@@ -42,6 +42,7 @@ typedef struct _playfile{
     int             x_mc;
     int             x_n;
     int             x_sr;
+    int             x_file_nch;
     t_symbol       *x_play_next;
     t_symbol       *x_openpanel_sym;
 }t_playfile;
@@ -222,6 +223,11 @@ static err_t playfile_load(t_playfile *x, int index){
     int pd_sr = sys_getsr();
     if(x->x_sr != pd_sr)
         post("[play.file~] Warning: file's sample rate (%d Hz) differs from Pd's (%d Hz)", x->x_sr, pd_sr);
+    int file_nch = x->x_stream_ctx->ch_layout.nb_channels;
+/*    if(file_nch != x->x_file_nch && x->x_mc){
+        x->x_file_nch = file_nch;
+        canvas_update_dsp();
+    }*/
     return(playfile_reset(x));
 }
 
@@ -487,7 +493,7 @@ static t_int *playfile_perform(t_int *w){
 static t_int *playfile_perform_mc(t_int *w){
     t_playfile *x = (t_playfile *)(w[1]);
     t_sample *out = (t_sample *)(w[2]);
-    unsigned nch = x->x_nch;
+    unsigned int nch = x->x_nch;
     int n = x->x_n;
     int i = 0;
     if(x->x_play){
@@ -572,6 +578,12 @@ static void playfile_dsp(t_playfile *x, t_signal **sp){
         post("[play.file~] Warning: file's sample rate (%d Hz) differs from Pd's (%d Hz)",
              x->x_sr, sr);
     if(x->x_mc){
+/*        if(x->x_nch != x->x_file_nch){
+            x->x_buffer = (t_sample *)resizebytes(x->x_buffer,
+                x->x_nch * FRAMES * sizeof(t_sample), x->x_file_nch * FRAMES * sizeof(t_sample));
+            x->x_nch = x->x_file_nch;
+        }
+        signal_setmultiout(&sp[0], x->x_file_nch);*/
         signal_setmultiout(&sp[0], x->x_nch);
         dsp_add(playfile_perform_mc, 2, x, sp[0]->s_vec);
     }
@@ -640,6 +652,7 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
     x->x_canvas = canvas_getcurrent();
     x->x_open = x->x_play = 0;
     x->x_sr = -1;
+    x->x_file_nch = 1;
     x->x_pkt = av_packet_alloc();
     x->x_frm = av_frame_alloc();
     x->x_ic = NULL;
@@ -670,14 +683,18 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
     }
     else{ // ac
         if(av->a_type == A_FLOAT){ // Num channels from float arg
-            ncharg = 1;
-            nch = atom_getfloat(av);
-            if(nch < 1)
-                nch = 1;
-            uint64_t mask = 0;
-            for(int ch = 0; ch < nch; ch++)
-                mask |= (ch + 1);
-            av_channel_layout_from_mask(&layout, mask);
+            if(!x->x_mc){
+                ncharg = 1;
+                nch = atom_getfloat(av);
+                if(nch < 1)
+                    nch = 1;
+                uint64_t mask = 0;
+                for(int ch = 0; ch < nch; ch++)
+                    mask |= (ch + 1);
+                av_channel_layout_from_mask(&layout, mask);
+            }
+            else // ignore arg if MC and give warning
+                post("[play.file~] channels arg is ignore in -mc mode");
             ac--, av++;
         }
         if(ac && av->a_type == A_SYMBOL){
@@ -689,7 +706,7 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
                 SETSYMBOL(at, sym);
                 if(!ncharg){ // Num channels from file
                     layout = playfile_get_channel_layout_for_file(x, dir, file);
-                    nch = layout.nb_channels;
+                    x->x_file_nch = nch = layout.nb_channels;
                 }
             }
             ac--, av++;
