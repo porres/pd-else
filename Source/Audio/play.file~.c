@@ -264,6 +264,7 @@ static int playfile_find_file(t_playfile *x, t_symbol* file, char* dir_out, char
         pd_error(x, "[play.file~] file '%s' not found", file->s_name);
         return(0);
     }
+    sys_close(fd);
     return(1);
 }
 
