@@ -41,6 +41,7 @@ typedef struct _playfile{
     int             x_loop;
     int             x_mc;
     int             x_n;
+    int             x_sr;
     t_symbol       *x_play_next;
     t_symbol       *x_openpanel_sym;
 }t_playfile;
@@ -210,13 +211,17 @@ static err_t playfile_load(t_playfile *x, int index){
         x->x_stream_idx = i;
         if(i < 0){
             post("play.file~: No audio stream found in '%s'", url);
-            return "No audio stream found";
+            return("No audio stream found");
         }
     }
     err_t err_msg = playfile_context(x);
     if(err_msg)
         return err_msg;
     x->x_frm->pts = 0;
+    x->x_sr = x->x_stream_ctx->sample_rate;
+    int pd_sr = sys_getsr();
+    if(x->x_sr != pd_sr)
+        post("[play.file~] Warning: file's sample rate (%d Hz) differs from Pd's (%d Hz)", x->x_sr, pd_sr);
     return(playfile_reset(x));
 }
 
@@ -558,6 +563,10 @@ static t_int *playfile_perform_mc(t_int *w){
 
 static void playfile_dsp(t_playfile *x, t_signal **sp){
     x->x_n =  sp[0]->s_n;
+    int sr = sp[0]->s_sr;
+    if(x->x_sr > 0 && x->x_sr != sr)
+        post("[play.file~] Warning: file's sample rate (%d Hz) differs from Pd's (%d Hz)",
+             x->x_sr, sr);
     if(x->x_mc){
         signal_setmultiout(&sp[0], x->x_nch);
         dsp_add(playfile_perform_mc, 2, x, sp[0]->s_vec);
@@ -626,6 +635,7 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
     t_playfile *x = (t_playfile *)pd_new(playfile_class);
     x->x_canvas = canvas_getcurrent();
     x->x_open = x->x_play = 0;
+    x->x_sr = -1;
     x->x_pkt = av_packet_alloc();
     x->x_frm = av_frame_alloc();
     x->x_ic = NULL;
