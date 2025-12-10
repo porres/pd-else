@@ -407,23 +407,27 @@ static t_int *playfile_perform(t_int *w){
     int n = x->x_n, i = 0;
     if(x->x_play){
         while(i < n){
-            if(x->x_buff_idx >= x->x_bufsize){ // Need to read and convert more data
+            if(x->x_buff_idx >= x->x_bufsize){
                 x->x_buff_idx = x->x_bufsize = 0;
                 while(av_read_frame(x->x_ic, x->x_pkt) >= 0){
                     if(x->x_pkt->stream_index == x->x_stream_idx){
                         if(avcodec_send_packet(x->x_stream_ctx, x->x_pkt) < 0
-                        || avcodec_receive_frame(x->x_stream_ctx, x->x_frm) < 0)
+                        || avcodec_receive_frame(x->x_stream_ctx, x->x_frm) < 0){
+                            av_packet_unref(x->x_pkt);
                             continue;
+                        }
                         int samples_converted = swr_convert(x->x_swr, (uint8_t **)&x->x_buffer, FRAMES,
                             (const uint8_t **)x->x_frm->extended_data, x->x_frm->nb_samples);
                         x->x_bufsize = samples_converted;
                         if(samples_converted < 0){
                             fprintf(stderr, "Error converting samples\n");
                             x->x_bufsize = 0;
+                            av_packet_unref(x->x_pkt);
                             continue;
                         }
                         x->x_bufsize = samples_converted * nch;
-                        break; // Break out of the inner while loop
+                        av_packet_unref(x->x_pkt);
+                        break;
                     }
                     av_packet_unref(x->x_pkt);
                 }
@@ -451,7 +455,6 @@ static t_int *playfile_perform(t_int *w){
                     }
                 }
             }
-            // Fill the output buffer
             while(i < n && x->x_buff_idx < x->x_bufsize){
                 for(unsigned int ch = 0; ch < nch; ch++)
                     outs[ch][i] = x->x_buffer[x->x_buff_idx + ch];
@@ -485,8 +488,10 @@ static t_int *playfile_perform_mc(t_int *w){
                 while(av_read_frame(x->x_ic, x->x_pkt) >= 0){
                     if(x->x_pkt->stream_index == x->x_stream_idx){
                         if(avcodec_send_packet(x->x_stream_ctx, x->x_pkt) < 0 ||
-                           avcodec_receive_frame(x->x_stream_ctx, x->x_frm) < 0)
+                           avcodec_receive_frame(x->x_stream_ctx, x->x_frm) < 0){
+                            av_packet_unref(x->x_pkt);
                             continue;
+                        }
                         int samples_converted =
                             swr_convert(x->x_swr,
                                 (uint8_t **)&x->x_buffer, FRAMES,
@@ -495,9 +500,11 @@ static t_int *playfile_perform_mc(t_int *w){
                         if(samples_converted < 0){
                             fprintf(stderr, "Error converting samples\n");
                             x->x_bufsize = 0;
+                            av_packet_unref(x->x_pkt);
                             continue;
                         }
                         x->x_bufsize = samples_converted * nch;
+                        av_packet_unref(x->x_pkt);
                         break;
                     }
                     av_packet_unref(x->x_pkt);
@@ -530,7 +537,7 @@ static t_int *playfile_perform_mc(t_int *w){
                     }
                 }
             }
-            while(i < n && x->x_buff_idx < x->x_bufsize){  //  write output
+            while(i < n && x->x_buff_idx < x->x_bufsize){
                 for(unsigned ch = 0; ch < nch; ch++)
                     out[ch*n + i] = x->x_buffer[x->x_buff_idx + ch];
                 x->x_buff_idx += nch;
