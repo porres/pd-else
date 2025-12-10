@@ -400,7 +400,11 @@ static void playfile_loop(t_playfile *x, t_float f){
 }
 
 static void playfile_set(t_playfile *x, t_symbol* s){
-    x->x_play_next = s;
+    if(x->x_open && x->x_play)
+        x->x_play_next = s;
+    else
+        playfile_open(x, gensym("open"), 1, &(t_atom){.a_type = A_SYMBOL,
+            .a_w = { .w_symbol = s }});
 }
 
 static t_int *playfile_perform(t_int *w){
