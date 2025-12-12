@@ -180,6 +180,7 @@ if(UNIX AND NOT APPLE AND NOT EMSCRIPTEN)
             "-Wl,--no-whole-archive"
             pthread
             dl
+            zstd
         )
         target_compile_definitions(${target} PRIVATE
             OPENSSL_NO_KRB5
