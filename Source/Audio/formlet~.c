@@ -5,28 +5,26 @@
 
 #define PI 3.14159265358979323846
 
-typedef struct _resonant2{
+typedef struct _formlet{
     t_object    x_obj;
     t_int       x_n;
-    t_inlet    *x_inlet_freq;
+    t_inlet    *x_inlet_excitation;
     t_inlet    *x_inlet_t1;
     t_inlet    *x_inlet_t2;
     t_outlet   *x_out;
     t_float     x_nyq;
-    double  x_x1nm1;
-    double  x_x1nm2;
-    double  x_y1nm1;
-    double  x_y1nm2;
-    double  x_x2nm1;
-    double  x_x2nm2;
-    double  x_y2nm1;
-    double  x_y2nm2;
-}t_resonant2;
+    t_float     x_freq;
+    double      x_x1nm1, x_x1nm2;
+    double      x_x2nm1, x_x2nm2;
+    double      x_y1nm1, x_y1nm2;
+    double      x_y2nm1, x_y2nm2;
+    t_symbol   *x_ignore;
+}t_formlet;
 
-static t_class *resonant2_class;
+static t_class *formlet_class;
 
-static t_int *resonant2_perform(t_int *w){
-    t_resonant2 *x = (t_resonant2 *)(w[1]);
+static t_int *formlet_perform(t_int *w){
+    t_formlet *x = (t_formlet *)(w[1]);
     int nblock = (int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
@@ -43,14 +41,13 @@ static t_int *resonant2_perform(t_int *w){
     double y2nm2 = x->x_y2nm2;
     t_float nyq = x->x_nyq;
     while(nblock--){
-        double xn = *in1++, f = *in2++, t1 = *in3++, t2 = *in4++;
+        double f = *in1++, xn = *in2++, t1 = *in3++, t2 = *in4++;
         double q, omega, alphaQ, cos_w, a0, a2, b0, b1, b2, y1n, y2n;
         double a = 0, b = 0;
         if(f < 0.000001)
             f = 0.000001;
         if(f > nyq - 0.000001)
             f = nyq - 0.000001;
-//        post("xn = %f, f = %f, t1 = %f, t2 = %f", xn, f, t1, t2);
         if(t1 <= 0)
             y1n = 0; // attack = 0
         else{
@@ -83,11 +80,8 @@ static t_int *resonant2_perform(t_int *w){
         }
         
         if((t1 > 0 && t2 > 0) && (t1 != t2)){
-        //        post("a = %f !!!!!! b = %f", a, b);
             double t = log(a/b) / (a-b);
-        //        post("t = %f !!!!!! log(a/b) = %f & (a-b) = %f", t, log(a/b), (a-b));
             double n = fabs(1/(exp(-b*t) - exp(-a*t)));
-        //        post("y1n = %f / y2n = %f / n = %f", y1n, y2n, n);
             *out++ = (y2n - y1n) * n; // decay - attack
         }
         else
@@ -112,32 +106,30 @@ static t_int *resonant2_perform(t_int *w){
     return(w+8);
 }
 
-static void resonant2_dsp(t_resonant2 *x, t_signal **sp){
+static void formlet_dsp(t_formlet *x, t_signal **sp){
     x->x_nyq = sp[0]->s_sr / 2;
-    dsp_add(resonant2_perform, 7, x, sp[0]->s_n, sp[0]->s_vec,sp[1]->s_vec,
+    dsp_add(formlet_perform, 7, x, sp[0]->s_n, sp[0]->s_vec,sp[1]->s_vec,
             sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
 
-static void resonant2_clear(t_resonant2 *x){
+static void formlet_clear(t_formlet *x){
     x->x_x1nm1 = x->x_x1nm2 = x->x_y1nm1 = x->x_y1nm2 = 0.;
     x->x_x2nm1 = x->x_x2nm2 = x->x_y2nm1 = x->x_y2nm2 = 0.;
 }
 
-static void *resonant2_new(t_symbol *s, int ac, t_atom *av){
-    t_resonant2 *x = (t_resonant2 *)pd_new(resonant2_class);
-    s = NULL;
-    float freq = 0;
-    float reson1 = 0;
-    float reson2 = 0;
+static void *formlet_new(t_symbol *s, int ac, t_atom *av){
+    t_formlet *x = (t_formlet *)pd_new(formlet_class);
+    x->x_ignore = s;
+    x->x_freq = 0.000001;
+    float reson1 = 0, reson2 = 0;
 /////////////////////////////////////////////////////////////////////////////////////
     int argnum = 0;
-    while(ac > 0)
-    {
+    while(ac > 0){
         if(av -> a_type == A_FLOAT){ //if current argument is a float
             t_float aval = atom_getfloatarg(0, ac, av);
             switch(argnum){
                 case 0:
-                    freq = aval;
+                    x->x_freq = aval;
                     break;
                 case 1:
                     reson1 = aval;
@@ -156,8 +148,7 @@ static void *resonant2_new(t_symbol *s, int ac, t_atom *av){
             goto errstate;
     };
 /////////////////////////////////////////////////////////////////////////////////////
-    x->x_inlet_freq = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_inlet_freq, freq);
+    x->x_inlet_excitation = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     x->x_inlet_t1 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_t1, reson1);
     x->x_inlet_t2 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
@@ -165,15 +156,14 @@ static void *resonant2_new(t_symbol *s, int ac, t_atom *av){
     x->x_out = outlet_new((t_object *)x, &s_signal);
     return(x);
 errstate:
-    pd_error(x, "[resonant2~]: improper args");
-    return NULL;
+    pd_error(x, "[formlet~]: improper args");
+    return(NULL);
 }
 
-void resonant2_tilde_setup(void)
-{
-    resonant2_class = class_new(gensym("resonant2~"), (t_newmethod)resonant2_new, 0,
-        sizeof(t_resonant2), CLASS_DEFAULT, A_GIMME, 0);
-    class_addmethod(resonant2_class, (t_method)resonant2_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(resonant2_class, nullfn, gensym("signal"), 0);
-    class_addmethod(resonant2_class, (t_method)resonant2_clear, gensym("clear"), 0);
+void formlet_tilde_setup(void){
+    formlet_class = class_new(gensym("formlet~"), (t_newmethod)formlet_new, 0,
+        sizeof(t_formlet), CLASS_DEFAULT, A_GIMME, 0);
+    CLASS_MAINSIGNALIN(formlet_class, t_formlet, x_freq);
+    class_addmethod(formlet_class, (t_method)formlet_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(formlet_class, (t_method)formlet_clear, gensym("clear"), 0);
 }
