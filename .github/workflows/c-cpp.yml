@@ -1,122 +1,154 @@
-name: C/C++ CI
-
+---
+name: Compile PureData Object
 on:
-  workflow_dispatch:
   push:
-    branches: ["master", "CI"]
-  pull_request:
-    branches: ["master", "CI"]
-
+    branches: [master]
+#╭──────────────────────────────────────╮
+#│  Uncomment if you want to trigger a  │
+#│               release                │
+#╰──────────────────────────────────────╯
+  # workflow_dispatch:
+  #   inputs:
+  #     publish_release:
+  #       description: Publish a GitHub Release using LIBVERSION after build
+  #       required: false
+  #       type: boolean
+  #       default: false
 env:
-  BUILD_TYPE: Release
-  CMAKE_BUILD_PARALLEL_LEVEL: 4
-
+  LIBNAME: else
+  LIBVERSION: v1.0-rc15
+permissions:
+  contents: write
 jobs:
-  # ===============================================================
-  Linux-Build:
-    runs-on: ubuntu-22.04
+  macos:
+    runs-on: ${{ matrix.machines }}
+    strategy:
+      matrix:
+        precision: [32]
+        machines: [macos-15-intel, macos-latest]
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
-
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
-          key: ccache-linux
-
-      - name: Install dependencies
+          key: ccache-${{matrix.machines}}
+      - name: Install PureData and Deps
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libogg-dev libvorbis-dev libssl-dev
-          
-      - name: Downloads pd-Sources
-        shell: bash
+          brew install pd
+          brew install libogg libvorbis
+      - name: Build
         run: |
-          curl -L -o pure-data.zip https://api.github.com/repos/pure-data/pure-data/zipball/refs/tags/0.56-1
-          unzip pure-data.zip
-          rm pure-data.zip
-          mv pure-data-* pure-data
-
+          cmake . -B build \
+            -DCMAKE_C_COMPILER_LAUNCHER="ccache" -DCMAKE_CXX_COMPILER_LAUNCHER="ccache"
+          cmake --build build -j$(sysctl -n hw.logicalcpu)
+      - name: Upload Object
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{env.LIBNAME}}-${{env.LIBVERSION}}-${{matrix.machines}}-pd${{matrix.precision}}
+          path: build/else
+  raspberry-build:
+    runs-on: ubuntu-24.04-arm
+    strategy:
+      matrix:
+        precision: [32]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 1
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ccache-linux-arm
+      - name: PureData Sources
+        run: |
+          sudo apt update
+          sudo add-apt-repository ppa:pure-data/pure-data -y
+          sudo apt install puredata -y
+      - name: Configure
+        run: |
+          sudo apt install -y libogg-dev libvorbis-dev libssl-dev
       - name: Configure pd-else
         run: |
-          cmake -BBuild -DPD_PATH=${{github.workspace}}/pure-data \
+          cmake . -B build \
               -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
               -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
+              -DPD_FLOATSIZE=${{ matrix.precision }} \
+              -DPDLIBDIR=./ \
+              -DCMAKE_BUILD_TYPE=Release \
               -DOPENSSL_USE_STATIC_LIBS=TRUE \
               -DCMAKE_SHARED_LINKER_FLAGS="-static-libgcc -static-libstdc++" \
               -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-
-      - name: Verify Binary Compatibility
+      - name: Build Object
         run: |
-          echo "Checking OpenSSL version:"
-          openssl version
-          
-      - name: Build pd-else
-        run: |
-          cmake --build Build
-
-      - name: Upload Zip
+          cmake --build build -- -j$(nproc)
+      - name: Upload Object
         uses: actions/upload-artifact@v4
         with:
-          name: else-linux
-          path: ./Build/else
-                    
-  # ===============================================================
-  macOS-Build:
-    runs-on: macos-latest
+          name: ${{env.LIBNAME}}-${{env.LIBVERSION}}-linux_raspberry-pd${{matrix.precision}}
+          path: build/else
+  linux-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        precision: [32]
     steps:
       - uses: actions/checkout@v4
-
+        with:
+          submodules: recursive
+          fetch-depth: 1
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
-          key: ccache-macos
-          
-      - name: Install libogg and libvorbis
+          key: ccache-linux-x86
+      - name: PureData Sources
         run: |
-          brew install libogg libvorbis
-
-      - name: Downloads pd sources
-        shell: bash
+          sudo apt update
+          sudo add-apt-repository ppa:pure-data/pure-data -y
+          sudo apt install puredata -y
+      - name: Configure
         run: |
-          curl -L -o pure-data.zip https://api.github.com/repos/pure-data/pure-data/zipball/refs/tags/0.56-1
-          unzip pure-data.zip
-          rm pure-data.zip
-          mv pure-data-* pure-data
-
-      - name: Configure pd-else
+          sudo apt install -y libogg-dev libvorbis-dev libssl-dev
+          cmake . -B build \
+              -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
+              -DCMAKE_CXX_COMPILER_LAUNCHER="ccache" \
+              -DPD_FLOATSIZE=${{ matrix.precision }} \
+              -DPDLIBDIR=./ \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DOPENSSL_USE_STATIC_LIBS=TRUE \
+              -DCMAKE_SHARED_LINKER_FLAGS="-static-libgcc -static-libstdc++" \
+              -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+      - name: Build Object
         run: |
-          cmake -BBuild -DPD_PATH=${{github.workspace}}/pure-data -DCMAKE_C_COMPILER_LAUNCHER="ccache" -DCMAKE_CXX_COMPILER_LAUNCHER="ccache"
-
-      - name: Build pd-else
-        run: |
-          cmake --build Build
-
-      - name: Upload Zip
+          cmake --build build -- -j$(nproc)
+      - name: Upload Object
         uses: actions/upload-artifact@v4
         with:
-          name: else-macos
-          path: ./Build/else
-
-  # ===============================================================
-
-  Windows-Build:
+          name: ${{env.LIBNAME}}-${{env.LIBVERSION}}-linux_x86-pd${{matrix.precision}}
+          path: build/else
+  windows-build:
     runs-on: windows-latest
+    strategy:
+      matrix:
+        compiler: [mingw]
+        arch: [amd64]
+        precision: [32]
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: msys2/setup-msys2@v2
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-cmake mingw64/mingw-w64-x86_64-ccache
-          cache: true
-          
-      - name: Install Vorbis/Ogg dependencies
-        shell: msys2 {0}
-        run: |
-          pacman -S --noconfirm mingw-w64-x86_64-libogg mingw-w64-x86_64-libvorbis
-
+          submodules: recursive
+          fetch-depth: 0
+      - if: matrix.compiler == 'mingw'
+        name: Set up Msys2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: mingw64
+          install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-cmake mingw-w64-x86_64-libogg mingw-w64-x86_64-libvorbis mingw64/mingw-w64-x86_64-ccache
+          update: false
       - name: Restore build cache
         uses: actions/cache/restore@v4
         with:
@@ -125,58 +157,69 @@ jobs:
           restore-keys: |
             ccache-windows-${{ github.sha }}
             ccache-windows-
-
-      - name: Get Pd
-        shell: bash
+      - name: Install PureData Float 32
         run: |
-          curl -L -o pure-data.zip http://msp.ucsd.edu/Software/pd-0.56-1.msw.zip
-          unzip pure-data.zip
-          rm pure-data.zip
-          mv pd-0.56-1 pd
-
-      - name: Install Vorbis/Ogg dependencies
+          winget install -e --id MillerPuckette.PureData --accept-source-agreements
+      - name: Configure and build Mingw
         shell: msys2 {0}
+        if: matrix.compiler == 'mingw'
         run: |
-          pacman -S --noconfirm mingw-w64-x86_64-libogg mingw-w64-x86_64-libvorbis
-
-      - name: Configure pd-else
-        shell: msys2 {0}
-        run: |
-          cmake -GNinja -BBuild -DPD_PATH=./pd -DCMAKE_C_COMPILER_LAUNCHER="ccache" -DCMAKE_CXX_COMPILER_LAUNCHER="ccache"
-
-      - name: Build pd-else
-        shell: msys2 {0}
-        run: |
+          cmake . -B build -DPD_FLOATSIZE=${{ matrix.precision }} -DPDLIBDIR=./ -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER_LAUNCHER="ccache" -DCMAKE_CXX_COMPILER_LAUNCHER="ccache"
           export CCACHE_COMPRESS=1
           export CCACHE_COMPRESSLEVEL=6
           export CCACHE_MAXSIZE=1G
           export CCACHE_DIR=D:/ccache
-          cmake --build Build
+          cmake --build build --parallel
           ccache -s
-          rm -rf ./Build/else/*.a
+          rm -rf ./build/else/*.a
         env:
           CCACHE_COMPRESS: "1"
           CCACHE_COMPRESSLEVEL: "6"
           CCACHE_MAXSIZE: "1G"
           CCACHE_DIR: D:/ccache
 
-      - name: Save build cache
-        uses: actions/cache/save@v4
-        with:
-          path: D:/ccache
-          key: ccache-windows-${{ github.run_id }}
-
-      - name: Upload Zip
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: else-windows
-          path: ./Build/else
+          name: ${{env.LIBNAME}}-${{env.LIBVERSION}}-Windows-pd${{matrix.precision}}
+          path: build/else
 
-  merge:
-    runs-on: ubuntu-latest
-    needs: [Windows-Build, macOS-Build, Linux-Build]
-    steps:
-      - name: Merge Artifacts
-        uses: actions/upload-artifact/merge@v4
-        with:
-          name: else
+#╭──────────────────────────────────────╮
+#│   Here an example to how publish a   │
+#│   release, uncomment the input or    │
+#│            remove the if             │
+#╰──────────────────────────────────────╯
+  # publish-release:
+  #   if: ${{ github.event.inputs.publish_release == 'true' }}
+  #   needs: [macos, linux-build, windows-build]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Download all artifacts
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         path: artifacts
+  #     - name: Create unified onnx directory and archive
+  #       run: |
+  #         set -e
+  #         TOPDIR="$LIBNAME"
+  #         mkdir -p "$TOPDIR"
+  #         for artifact_dir in artifacts/*; do
+  #           [ -d "$artifact_dir" ] || continue
+  #           cp -r "$artifact_dir/"* "$TOPDIR/"
+  #         done
+  #         ls -1 "$TOPDIR"
+  #         ZIP_NAME="${LIBNAME}-${LIBVERSION}-all-platforms.zip"
+  #         zip -r "$ZIP_NAME" "$TOPDIR"
+  #     - name: Create / Update GitHub Release
+  #       uses: softprops/action-gh-release@v2
+  #       with:
+  #         tag_name: v${{ env.LIBVERSION }}
+  #         name: ${{ env.LIBNAME }} v${{ env.LIBVERSION }}
+  #         target_commitish: ${{ github.sha }}
+  #         files: |
+  #           ${{ env.LIBNAME }}-${{ env.LIBVERSION }}-all-platforms.zip
+  #         draft: true
+  #         prerelease: false
+  #
+  #
+

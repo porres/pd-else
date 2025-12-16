@@ -130,7 +130,7 @@ add_custom_target(sfizz_build
     DEPENDS ${SFIZZ_LIBS}
 )
 
-add_pd_external(sfz_tilde sfz~ sfz~.c)
+pd_add_external(sfz~ sfz~.c)
 target_link_libraries(sfz_tilde PRIVATE ${SFIZZ_LIBS} else_shared stdc++)
 target_include_directories(sfz_tilde PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/sfizz/library/src)
 target_compile_definitions(sfz_tilde PRIVATE MIDI_CC_COUNT=127 SFIZZ_VERSION="1.2.2")

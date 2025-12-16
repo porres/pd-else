@@ -380,16 +380,13 @@ static void knob_config_fg(t_knob *x){
         snprintf(fg, sizeof(fg), "#%06x", THISGUI->i_foregroundcolor);
     else
         snprintf(fg, sizeof(fg), "%s", x->x_fg->s_name);
-    pdgui_vmess(0, "crs rsrs", cv, "itemconfigure", x->x_tag_arc,
-        "-outline", fg, "-fill", fg);
-    pdgui_vmess(0, "crs rsrs", cv, "itemconfigure", x->x_tag_IO,
-        "-outline", fg, "-fill", fg);
     pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_fg, "-fill", fg);
-    pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_number, "-fill", fg);
-    pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_ticks, "-fill", fg);
-    pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_wiper, "-fill", fg);
     pdgui_vmess(0, "crs rsrs", cv, "itemconfigure", x->x_tag_wpr_c,
         "-outline", fg, "-fill", fg);
+    pdgui_vmess(0, "crs rsrs", cv, "itemconfigure", x->x_tag_arc,
+        "-outline", fg, "-fill", fg);
+    pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_IO,
+        "-outline", fg);
 }
 
 static void knob_config_mg(t_knob *x){
@@ -402,7 +399,7 @@ static void knob_config_mg(t_knob *x){
     pdgui_vmess(0, "crs rsrs", cv, "itemconfigure",  x->x_tag_bg_arc,
         "-outline", mg, "-fill", mg);
     pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_base_circle,
-        "-outline", x->x_transparent ? mg : x->x_arc ? "" : mg);
+        "-outline", x->x_transparent > 0 ? mg : x->x_arc ? "" : mg);
 }
 
 static void knob_config_bg(t_knob *x){
@@ -413,12 +410,12 @@ static void knob_config_bg(t_knob *x){
     else
         snprintf(bg, sizeof(bg), "%s", x->x_bg->s_name);
     pdgui_vmess(0, "crs rsrsrs", cv, "itemconfigure", x->x_tag_center_circle,
-        "-outline", bg, "-fill", bg, "-state", x->x_transparent ? "hidden" : "normal");
+        "-outline", bg, "-fill", bg, "-state", x->x_transparent > 0 ? "hidden" : "normal");
     pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_base_circle, "-fill",
-        x->x_transparent ? "" : bg);
+        x->x_transparent > 0 ? "" : bg);
     if(x->x_square)
         pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_square, "-fill",
-            x->x_transparent ? "" : bg);
+            x->x_transparent > 0 ? "" : bg);
 }
 
 static void knob_config_number(t_knob *x){ // show or hide number value
@@ -531,15 +528,10 @@ static void knob_config_io(t_knob *x){
 // configure arc
 static void knob_config_arc(t_knob *x){
     t_canvas *cv = glist_getcanvas(x->x_glist);
-    
-/*    post("flag = %d", x->x_arc && !x->x_transparent && x->x_fval != x->x_arcstart);
-    post("arc (%d) && !transp (%d) && (fval != arcstart) (%d)",
-        x->x_arc, !x->x_transparent, x->x_fval != x->x_arcstart);*/
-    
     pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_arc,
-        "-state", x->x_arc && !x->x_transparent ? "normal" : "hidden");
+        "-state", x->x_arc && !x->x_transparent > 0 ? "normal" : "hidden");
     pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_bg_arc,
-        "-state", x->x_arc && !x->x_transparent ? "normal" : "hidden");
+        "-state", x->x_arc && !x->x_transparent > 0 ? "normal" : "hidden");
 }
 
 // Update Arc/Wiper according to position
@@ -703,13 +695,13 @@ static void knob_draw_ticks(t_knob *x){
         int y1 = yc + (int)(dy);
         int x2 = xc + (int)(dx * 0.65);
         int y2 = yc + (int)(dy * 0.65);
-        char *tags_ticks[] = {x->x_tag_ticks, x->x_tag_obj};
+        char *tags_ticks[] = {x->x_tag_ticks, x->x_tag_fg, x->x_tag_obj};
         pdgui_vmess(0, "crr iiii ri rs rS",
             cv, "create", "line",
             x1, y1, x2, y2,
             "-width", width * z,
             "-fill", fg,
-            "-tags", 2, tags_ticks);
+            "-tags", 3, tags_ticks);
     }
     else for(int t = 1; t <= x->x_steps; t++){
         int thicker = (t == 1 || t == x->x_steps);
@@ -804,36 +796,36 @@ static void knob_draw_new(t_knob *x, t_glist *glist){
         pdgui_vmess(0, "crr iiii rS", cv, "create", "oval",
         wx1, wy1, wx2, wy2,
         "-tags", 2, tags_wiper_center);
-    char *tags_wiper[] = {x->x_tag_wiper, x->x_tag_obj};
+    char *tags_wiper[] = {x->x_tag_wiper, x->x_tag_fg, x->x_tag_obj};
         pdgui_vmess(0, "crr iiii ri rS", cv, "create", "line",
         xc, yc, xp, yp,
         "-width", w_width < z ? z : w_width,
-        "-tags", 2, tags_wiper);
+        "-tags", 3, tags_wiper);
 // number
     t_atom at[2];
     SETSYMBOL(at, gensym(def_font));
     SETFLOAT(at+1, -x->n_size*z);
-    char *tags_number[] = {x->x_tag_number, x->x_tag_obj};
+    char *tags_number[] = {x->x_tag_number, x->x_tag_fg, x->x_tag_obj};
     pdgui_vmess(0, "crr ii rs rs rA rS", cv, "create", "text",
         x1 + x->x_xpos*x->x_zoom, y1 + x->x_ypos*x->x_zoom,
         "-text", knob_get_number(x),
         "-anchor", "w",
         "-font", 2, at,
-        "-tags", 2, tags_number);
+        "-tags", 3, tags_number);
 // inlet
-    char *tags_in[] = {x->x_tag_in, x->x_tag_IO, x->x_tag_obj};
+    char *tags_in[] = {x->x_tag_in, x->x_tag_fg, x->x_tag_IO, x->x_tag_obj};
     pdgui_vmess(0, "crr iiii rs rs rS", cv, "create", "rectangle",
         x1, y1, x1 + IOWIDTH*z, y1 + IHEIGHT*z,
         "-outline", x->x_fg->s_name,
         "-fill", x->x_fg->s_name,
-        "-tags", 3, tags_in);
+        "-tags", 4, tags_in);
 // outlet
-    char *tags_out[] = {x->x_tag_out, x->x_tag_IO, x->x_tag_obj};
+    char *tags_out[] = {x->x_tag_out, x->x_tag_fg, x->x_tag_IO, x->x_tag_obj};
     pdgui_vmess(0, "crr iiii rs rs rS", cv, "create", "rectangle",
         x1, y2 - OHEIGHT*z, x1 + IOWIDTH*z, y2,
         "-outline", x->x_fg->s_name,
         "-fill", x->x_fg->s_name,
-        "-tags", 3, tags_out);
+        "-tags", 4, tags_out);
 // hover area
     char *tags_hover[] = {x->x_tag_hover, x->x_tag_obj};
     pdgui_vmess(0, "crr iiii rs rs rS", cv, "create", "rectangle",
@@ -1396,7 +1388,7 @@ static void knob_theme(t_knob *x, t_floatarg f){
 }
 
 static void knob_transparent(t_knob *x, t_floatarg f){
-    x->x_transparent = (int)(f != 0);
+    x->x_transparent = (int)f;
     if(knob_vis_check(x)){
         knob_config_bg(x);
         knob_config_arc(x);
