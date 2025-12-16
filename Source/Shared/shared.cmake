@@ -29,7 +29,7 @@ elseif(WIN32)
     PD_LIBRARY
     NAMES pd
     HINTS ${PD_LIB_PATH})
-  target_link_libraries(else_shared PRIVATE ws2_32 ${PD_LIBRARY})
+  target_link_libraries(else_shared PRIVATE ws2_32 "${PDBINDIR}/pd.dll")
 endif()
 
 if(PD_FLOATSIZE64)
