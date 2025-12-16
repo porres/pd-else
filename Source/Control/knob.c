@@ -402,7 +402,7 @@ static void knob_config_mg(t_knob *x){
     pdgui_vmess(0, "crs rsrs", cv, "itemconfigure",  x->x_tag_bg_arc,
         "-outline", mg, "-fill", mg);
     pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_base_circle,
-        "-outline", x->x_transparent ? mg : x->x_arc ? "" : mg);
+        "-outline", x->x_transparent > 0 ? mg : x->x_arc ? "" : mg);
 }
 
 static void knob_config_bg(t_knob *x){
@@ -413,12 +413,12 @@ static void knob_config_bg(t_knob *x){
     else
         snprintf(bg, sizeof(bg), "%s", x->x_bg->s_name);
     pdgui_vmess(0, "crs rsrsrs", cv, "itemconfigure", x->x_tag_center_circle,
-        "-outline", bg, "-fill", bg, "-state", x->x_transparent ? "hidden" : "normal");
+        "-outline", bg, "-fill", bg, "-state", x->x_transparent > 0 ? "hidden" : "normal");
     pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_base_circle, "-fill",
-        x->x_transparent ? "" : bg);
+        x->x_transparent > 0 ? "" : bg);
     if(x->x_square)
         pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_square, "-fill",
-            x->x_transparent ? "" : bg);
+            x->x_transparent > 0 ? "" : bg);
 }
 
 static void knob_config_number(t_knob *x){ // show or hide number value
@@ -531,15 +531,10 @@ static void knob_config_io(t_knob *x){
 // configure arc
 static void knob_config_arc(t_knob *x){
     t_canvas *cv = glist_getcanvas(x->x_glist);
-    
-/*    post("flag = %d", x->x_arc && !x->x_transparent && x->x_fval != x->x_arcstart);
-    post("arc (%d) && !transp (%d) && (fval != arcstart) (%d)",
-        x->x_arc, !x->x_transparent, x->x_fval != x->x_arcstart);*/
-    
     pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_arc,
-        "-state", x->x_arc && !x->x_transparent ? "normal" : "hidden");
+        "-state", x->x_arc && !x->x_transparent > 0 ? "normal" : "hidden");
     pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_bg_arc,
-        "-state", x->x_arc && !x->x_transparent ? "normal" : "hidden");
+        "-state", x->x_arc && !x->x_transparent > 0 ? "normal" : "hidden");
 }
 
 // Update Arc/Wiper according to position
@@ -1396,7 +1391,7 @@ static void knob_theme(t_knob *x, t_floatarg f){
 }
 
 static void knob_transparent(t_knob *x, t_floatarg f){
-    x->x_transparent = (int)(f != 0);
+    x->x_transparent = (int)f;
     if(knob_vis_check(x)){
         knob_config_bg(x);
         knob_config_arc(x);
