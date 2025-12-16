@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Project name and version
-project(plaits)
+# project(plaits)
+
 
 # Add the source files
 set(PLAITS_SOURCES
@@ -58,6 +59,6 @@ if(WIN32)
 endif()
 
 # Create the Pure Data external
-add_pd_external(plaits_tilde plaits~ plaits~.cpp)
+pd_add_external(plaits~ plaits~.cpp)
 
 target_link_libraries(plaits_tilde PRIVATE plaits)
