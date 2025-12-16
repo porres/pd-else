@@ -34,7 +34,7 @@ jobs:
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
-          key: ccache-${{matrix.precision}}
+          key: ccache-${{matrix.machines}}
       - name: Install PureData and Deps
         run: |
           brew install pd
@@ -165,7 +165,19 @@ jobs:
         if: matrix.compiler == 'mingw'
         run: |
           cmake . -B build -DPD_FLOATSIZE=${{ matrix.precision }} -DPDLIBDIR=./ -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER_LAUNCHER="ccache" -DCMAKE_CXX_COMPILER_LAUNCHER="ccache"
+          export CCACHE_COMPRESS=1
+          export CCACHE_COMPRESSLEVEL=6
+          export CCACHE_MAXSIZE=1G
+          export CCACHE_DIR=D:/ccache
           cmake --build build --parallel
+          ccache -s
+          rm -rf ./build/else/*.a
+        env:
+          CCACHE_COMPRESS: "1"
+          CCACHE_COMPRESSLEVEL: "6"
+          CCACHE_MAXSIZE: "1G"
+          CCACHE_DIR: D:/ccache
+
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
