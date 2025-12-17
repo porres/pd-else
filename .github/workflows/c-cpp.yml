@@ -34,7 +34,7 @@ jobs:
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
-          key: ccache-${{matrix.machines}}
+          key: ccache-${{matrix.machines}}-v1
       - name: Install PureData and Deps
         run: |
           brew install pd
@@ -62,7 +62,7 @@ jobs:
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
-          key: ccache-linux-arm
+          key: ccache-linux-arm-v1
       - name: PureData Sources
         run: |
           sudo apt update
@@ -103,7 +103,7 @@ jobs:
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
-          key: ccache-linux-x86
+          key: ccache-linux-x86-v1
       - name: PureData Sources
         run: |
           sudo apt update
@@ -153,10 +153,10 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: D:/ccache
-          key: ccache-windows-${{ github.run_id }}
+          key: ccache-windows-v1-${{ github.run_id }}
           restore-keys: |
-            ccache-windows-${{ github.sha }}
-            ccache-windows-
+            ccache-windows-v1-${{ github.sha }}
+            ccache-windows-v1
       - name: Install PureData Float 32
         run: |
           winget install -e --id MillerPuckette.PureData --accept-source-agreements
