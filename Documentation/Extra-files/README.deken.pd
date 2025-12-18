@@ -47,7 +47,7 @@
 #X obj 282 36 loadbang;
 #X obj 282 129 else, f 6;
 #X msg 67 159 symbol else/All_else_objects.pd;
-#X obj 67 120 delay 1500;
+#X obj 67 120 delay 5000;
 #X connect 0 0 16 0;
 #X connect 1 0 14 0;
 #X connect 2 0 3 0;

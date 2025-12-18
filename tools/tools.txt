@@ -4,17 +4,17 @@
 
 
 cmake -BBuild \
-  -DPD_PATH="/Applications/Pd-0.56-1.app/Contents/Resources/" \
+  -DPD_PATH="/Applications/Pd-0.56-2.app/Contents/Resources/" \
   -DCMAKE_OSX_SYSROOT=$(xcrun --sdk macosx --show-sdk-path)
 cd Build
 make -j7
 
 
-cmake -BBuild -DPD_FLOATSIZE64=1 -DPD_PATH="/Applications/Pd-0.56-1.app/Contents/Resources/"
+cmake -BBuild -DPD_FLOATSIZE64=1 -DPD_PATH="/Applications/Pd-0.56-2.app/Contents/Resources/"
 cd Build
 make -j7
 
-cmake -BBuild -DPD_PATH=/Applications/Pd-0.56-1.app/Contents/Resources -DPD_EXTENSION=".pd_darwin"
+cmake -BBuild -DPD_PATH=/Applications/Pd-0.56-2.app/Contents/Resources -DPD_EXTENSION=".pd_darwin"
 
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
@@ -46,7 +46,6 @@ make install objectsdir=../ arch="arm64 x86_64" extension=d_fat
 
 make install objectsdir=../ floatsize=32 arch="arm64 x86_64" extension=darwin-fat-32.so
 make install objectsdir=../ floatsize=64 arch="arm64 x86_64" extension=darwin-fat-64.so
-
 
 make install floatsize=64 arch="arm64 x86_64" extension=darwin-fat-64.so
 make install floatsize=32 arch="arm64 x86_64" extension=darwin-fat-32.so
