@@ -1672,6 +1672,8 @@ static void knob_dowheel(t_knob *x, t_floatarg delta, t_floatarg h){
         #ifdef __APPLE__
         if(!h)
             delta = -delta;
+        #else
+            delta /= 120.0;
         #endif
         knob_arrow_motion(x, delta);
     }
