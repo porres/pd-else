@@ -1,25 +1,29 @@
-
 #ifndef __buffer_H__
 #define __buffer_H__
 
-#ifdef INT_MAX
-#define SHARED_INT_MAX  INT_MAX
-#else
-#define SHARED_INT_MAX  0x7FFFFFFF
-#endif
-
-#define buffer_MAXCHANS 64 //max number of channels
-
-#define _USE_MATH_DEFINES
+#include <limits.h>
 #include <math.h>
 
-#define TWO_PI (M_PI * 2)
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
+#if defined(_MSC_VER)
+#define isfinite _finite
+#define isnan    _isnan
+#endif
+
+#define SHARED_INT_MAX INT_MAX
+
+#define buffer_MAXCHANS 64
+
+#define TWO_PI  (M_PI * 2.0)
 #define HALF_PI (M_PI * 0.5)
-
 #define ONE_SIXTH 0.16666666666666666666667f
-
-#define ELSE_SIN_TABSIZE  16384
+#define ELSE_GEN_TABSIZE  16384
 #define ELSE_FADE_TABSIZE 4096
+#define GAUSS_WIDTH 3.0
+#define buffer_MAXCHANS 64 //max number of channels
 
 typedef struct _buffer{
     void       *c_owner;     // owner of buffer, note i don't know if this actually works
@@ -45,12 +49,16 @@ double interp_hermite(double frac, double a, double b, double c, double d,
     double bias, double tension);
 
 double read_sintab(double phase);
+double read_costab(double phase);
 double read_partab(double phase);
+double read_gausstab(double phase);
 double read_fadetab(double phase, int tab);
 double read_pantab(double phase);
 
 void init_sine_table(void);
+void init_cosine_table(void);
 void init_parabolic_table(void);
+void init_gauss_table(void);
 void init_fade_tables(void);
 
 void buffer_bug(char *fmt, ...);

@@ -1,6 +1,7 @@
 
-#include <m_pd.h>
+#include "m_pd.h"
 #include "buffer.h"
+#include <math.h>
 #include <string.h>
 #include <stdarg.h>
 
@@ -73,7 +74,7 @@ double bias, double tension){
 
 ////////////////////////////////   INIT TABLES!!!! They stays allocated as long as Pd is running
 
-static double *sintable, *partable;
+static double *sintable, *costable, *partable, *gausstable;
 static int fadetables = 0;
 
 static double *tab_fade_sin;
@@ -86,25 +87,51 @@ static double *tab_fade_sqrt;
 void init_sine_table(void){
     if(sintable)
         return;
-    sintable = getbytes((ELSE_SIN_TABSIZE + 1) * sizeof(*sintable));
+    sintable = getbytes((ELSE_GEN_TABSIZE + 1) * sizeof(*sintable));
     double *tp = sintable;
-    double inc = TWO_PI / ELSE_SIN_TABSIZE, phase = 0;
-    for(int i = ELSE_SIN_TABSIZE/4 - 1; i >= 0; i--, phase += inc)
+    double inc = TWO_PI / ELSE_GEN_TABSIZE, phase = 0;
+    for(int i = ELSE_GEN_TABSIZE/4 - 1; i >= 0; i--, phase += inc)
         *tp++ = sin(phase); // populate 1st quarter
     *tp++ = 1;
-    for(int i = ELSE_SIN_TABSIZE/4 - 1; i >= 0; i--)
+    for(int i = ELSE_GEN_TABSIZE/4 - 1; i >= 0; i--)
         *tp++ = sintable[i]; // mirror inverted
-    for(int i = ELSE_SIN_TABSIZE/2 - 1; i >= 0; i--)
+    for(int i = ELSE_GEN_TABSIZE/2 - 1; i >= 0; i--)
         *tp++ = -sintable[i]; // mirror back
+}
+
+void init_cosine_table(void){
+    if(costable)
+        return;
+    costable = getbytes((ELSE_GEN_TABSIZE + 1) * sizeof(*costable));
+    double *tp = costable;
+    double inc = TWO_PI / ELSE_GEN_TABSIZE, phase = 0;
+    for(int i = ELSE_GEN_TABSIZE/4 - 1; i >= 0; i--, phase += inc)
+        *tp++ = cos(phase);   // populate 1st quarter
+    *tp++ = 0;
+    for(int i = ELSE_GEN_TABSIZE/4 - 1; i >= 0; i--)
+        *tp++ = -costable[i]; // mirror inverted
+    for(int i = ELSE_GEN_TABSIZE/2 - 1; i >= 0; i--)
+        *tp++ = costable[i];  // mirror back
+}
+
+void init_gauss_table(void){
+    if(gausstable)
+        return;
+    gausstable = getbytes((ELSE_GEN_TABSIZE + 1) * sizeof(*gausstable));
+    double step = GAUSS_WIDTH / ELSE_GEN_TABSIZE;
+    for(int i = 0; i <= ELSE_GEN_TABSIZE; i++){
+        double x = i * step;
+        gausstable[i] = exp(-(x*x));
+    }
 }
 
 void init_parabolic_table(void){
     if(partable)
         return;
-    partable = getbytes((ELSE_SIN_TABSIZE + 1) * sizeof(*partable));
+    partable = getbytes((ELSE_GEN_TABSIZE + 1) * sizeof(*partable));
     double *tp = partable;
-    double inc = 1.0f / ELSE_SIN_TABSIZE, phase = 0;
-    for(int i = 0; i < ELSE_SIN_TABSIZE; i++, phase += inc)
+    double inc = 1.0f / ELSE_GEN_TABSIZE, phase = 0;
+    for(int i = 0; i < ELSE_GEN_TABSIZE; i++, phase += inc)
         *tp++ = (1 - pow(fmod(phase * 2, 1) * 2 - 1, 2)) * (phase <= 0.5 ? 1 : -1);
 }
 
@@ -180,20 +207,66 @@ double read_pantab(double phase){
     return(read_fadetab(phase, 4));
 }
 
-double read_sintab(double phase){
-    double tabphase = phase * ELSE_SIN_TABSIZE;
-    int i = (int)tabphase;
-    double frac = tabphase - i, p1 = sintable[i], p2 = sintable[i+1];
-    return(interp_lin(frac, p1, p2));
+double wrap_bufphase(double phase){
+    if(!isfinite(phase) || isnan(phase))
+        phase = 0;
+    while(phase >= 1)
+        phase -= 1;
+    while(phase < 0)
+        phase += 1;
+    return(phase);
 }
+
+double read_gausstab(double x){
+    if(!isfinite(x) || x <= 0)
+        return(1.0);
+    if(x >= GAUSS_WIDTH)
+        x = GAUSS_WIDTH;
+    double tabphase = x * (ELSE_GEN_TABSIZE / GAUSS_WIDTH);
+    int i1 = (int)tabphase;
+    double frac = tabphase - i1;
+    int i2 = i1 + 1;
+    if(i2 > ELSE_GEN_TABSIZE)
+        i2 = ELSE_GEN_TABSIZE;
+    return(interp_lin(frac, gausstable[i1], gausstable[i2]));
+}
+
+double read_sintab(double phase){
+    phase = wrap_bufphase(phase);
+    double tabphase = phase * ELSE_GEN_TABSIZE;
+    int i1 = (int)tabphase;
+    double frac = tabphase - i1;
+    int i2 = i1 + 1;
+    if(i2 > ELSE_GEN_TABSIZE)
+        i2 = 0;
+    return(interp_lin(frac, sintable[i1], sintable[i2]));
+}
+
+double read_costab(double phase){
+    phase = wrap_bufphase(phase);
+    double tabphase = phase * ELSE_GEN_TABSIZE;
+    int i1 = (int)tabphase;
+    double frac = tabphase - i1;
+    int i2 = i1 + 1;
+    if(i2 > ELSE_GEN_TABSIZE)
+        i2 = 0;
+    return(interp_lin(frac, costable[i1], costable[i2]));
+}
+
+/*double read_costab(double phase){
+    return(read_sintab(phase + 0.25));
+}*/
 
 double read_partab(double phase){
-    double tabphase = phase * ELSE_SIN_TABSIZE;
-    int i = (int)tabphase;
-    double frac = tabphase - i, p1 = partable[i], p2 = partable[i+1];
-    return(interp_lin(frac, p1, p2));
+    phase = wrap_bufphase(phase);
+    double tabphase = phase * ELSE_GEN_TABSIZE;
+    int i1 = (int)tabphase;
+    double frac = tabphase - i1;
+    int i2 = i1 + 1;
+    if(i2 > ELSE_GEN_TABSIZE)
+        i2 = 0;
+    return(interp_lin(frac, partable[i1], partable[i2]));
 }
-
 
 // on failure *bufsize is not modified
 t_word *buffer_get(t_buffer *c, t_symbol * name, int *bufsize, int indsp, int complain){
