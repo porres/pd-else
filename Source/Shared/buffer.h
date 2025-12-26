@@ -21,6 +21,9 @@
 #define ELSE_SIN_TABSIZE  16384
 #define ELSE_FADE_TABSIZE 4096
 
+#define GAUSS_TABRANGE 3.0
+#define CAUCHY_TABRANGE 3.0
+
 typedef struct _buffer{
     void       *c_owner;     // owner of buffer, note i don't know if this actually works
     int         c_npts;      // used also as a validation flag, number of samples in an array */
@@ -45,12 +48,18 @@ double interp_hermite(double frac, double a, double b, double c, double d,
     double bias, double tension);
 
 double read_sintab(double phase);
+double read_costab(double phase);
 double read_partab(double phase);
+double read_gausstab(double phase);
+double read_cauchytab(double phase);
 double read_fadetab(double phase, int tab);
 double read_pantab(double phase);
 
 void init_sine_table(void);
+void init_cosine_table(void);
 void init_parabolic_table(void);
+void init_gauss_table(void);
+void init_cauchy_table(void);
 void init_fade_tables(void);
 
 void buffer_bug(char *fmt, ...);
