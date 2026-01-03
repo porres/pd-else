@@ -111,7 +111,6 @@ static void *fm_new(t_symbol *s, int ac, t_atom *av){
     t_float init_freq = f1;
     t_float init_ratio = f2;
     t_float init_idx = f3;
-    init_sine_table();
     x->x_freq = init_freq;
     x->x_inlet_ratio = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_ratio, init_ratio);
@@ -126,4 +125,5 @@ void fm_tilde_setup(void){
         sizeof(t_fm), CLASS_MULTICHANNEL, A_GIMME, 0);
     CLASS_MAINSIGNALIN(fm_class, t_fm, x_freq);
     class_addmethod(fm_class, (t_method)fm_dsp, gensym("dsp"), A_CANT, 0);
+    init_sine_table();
 }

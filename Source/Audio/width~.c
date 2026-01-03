@@ -97,7 +97,6 @@ static void *width_free(t_width *x){
 static void *width_new(t_symbol *s, int ac, t_atom *av){
     t_width *x = (t_width *)pd_new(width_class);
     x->x_ignore = s;
-    init_sine_table();
     x->x_width_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_width_list[0] = 0;
     x->x_widthlist_size = 1;
@@ -122,4 +121,5 @@ void width_tilde_setup(void){
     class_addmethod(width_class, nullfn, gensym("signal"), 0);
     class_addmethod(width_class, (t_method)width_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(width_class, (t_method)width_width, gensym("width"), A_GIMME, 0);
+    init_sine_table();
 }

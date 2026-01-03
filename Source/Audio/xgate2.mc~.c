@@ -72,7 +72,6 @@ void xgate2mc_free(t_xgate2mc *x){
 void *xgate2mc_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_xgate2mc *x = (t_xgate2mc *)pd_new(xgate2mc_class);
-    init_sine_table();
     t_float outchs = 2;
     float spread = 1;
     if(ac){
@@ -116,4 +115,5 @@ void setup_xgate20x2emc_tilde(void){
     class_addmethod(xgate2mc_class, (t_method)xgate2mc_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(xgate2mc_class, (t_method)xgate2mc_index, gensym("index"), A_FLOAT, 0);
     class_addmethod(xgate2mc_class, (t_method)xgate2mc_n, gensym("n"), A_DEFFLOAT, 0);
+    init_sine_table();
 }

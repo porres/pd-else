@@ -66,7 +66,6 @@ void spread_free(t_spread *x){
 void *spread_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_spread *x = (t_spread *)pd_new(spread_class);
-    init_sine_table();
     int i, ins = 2, outs = 2;
     float spread = 1;
     x->x_n = sys_getblksize();
@@ -102,4 +101,5 @@ void spread_tilde_setup(void){
         (t_method)spread_free, sizeof(t_spread), 0, A_GIMME, 0);
     class_addmethod(spread_class, nullfn, gensym("signal"), 0);
     class_addmethod(spread_class, (t_method)spread_dsp, gensym("dsp"),0);
+    init_sine_table();
 }

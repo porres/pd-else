@@ -135,7 +135,6 @@ static void *autofademc_free(t_autofademc *x){
 static void *autofademc_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_autofademc *x = (t_autofademc *)pd_new(autofademc_class);
-    init_fade_tables();
     t_float fadems = 10.;
     x->x_n_chans = 1;
     x->x_ksr = sys_getsr() * .001;
@@ -184,4 +183,5 @@ void setup_autofade0x2emc_tilde(void){
     class_addmethod(autofademc_class, (t_method)autofademc_hann, gensym("hann"), 0);
     class_addmethod(autofademc_class, (t_method)autofademc_linsin, gensym("linsin"), 0);
     class_addmethod(autofademc_class, (t_method)autofademc_hannsin, gensym("hannsin"), 0);
+    init_fade_tables();
 }

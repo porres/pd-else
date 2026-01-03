@@ -74,7 +74,6 @@ static void xfade_free(t_xfade *x){
 static void *xfade_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_xfade *x = (t_xfade *)pd_new(xfade_class);
-    init_sine_table();
     t_float f1 = 1, f2 = 0;
     if(av->a_type == A_SYMBOL){
         if(atom_getsymbol(av) == gensym("-lin"))
@@ -120,4 +119,5 @@ void xfade_tilde_setup(void){
     class_addmethod(xfade_class, nullfn, gensym("signal"), 0);
     class_addmethod(xfade_class, (t_method)xfade_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(xfade_class, (t_method)xfade_lin, gensym("lin"), A_FLOAT, 0);
+    init_sine_table();
 }

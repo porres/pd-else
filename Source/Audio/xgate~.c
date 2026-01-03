@@ -84,7 +84,6 @@ void *xgate_free(t_xgate *x){
 
 static void *xgate_new(t_floatarg f1, t_floatarg f2, t_floatarg f3){
     t_xgate *x = (t_xgate *)pd_new(xgate_class);
-    init_sine_table();
     for(int n = 0; n < MAXOUTS; n++){
         x->x_active_out[n] = 0;
         x->x_count[n] = 0;
@@ -109,4 +108,5 @@ void xgate_tilde_setup(void){
     class_addmethod(xgate_class, nullfn, gensym("signal"), 0);
     class_addmethod(xgate_class, (t_method)xgate_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(xgate_class, (t_method)xgate_time, gensym("time"), A_FLOAT, 0);
+    init_sine_table();
 }

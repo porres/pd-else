@@ -101,7 +101,6 @@ static void *pan2_free(t_pan2 *x){
 static void *pan2_new(t_symbol *s, int ac, t_atom *av){
     t_pan2 *x = (t_pan2 *)pd_new(pan2_class);
     x->x_ignore = s;
-    init_sine_table();
     x->x_pan_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_pan_list[0] = 0;
     x->x_list_size = 1;
@@ -124,4 +123,5 @@ void pan2_tilde_setup(void){
     class_addmethod(pan2_class, nullfn, gensym("signal"), 0);
     class_addmethod(pan2_class, (t_method)pan2_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(pan2_class, (t_method)pan2_pan, gensym("pan"), A_GIMME, 0);
+    init_sine_table();
 }

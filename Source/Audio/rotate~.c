@@ -80,7 +80,6 @@ static void rotate_free(t_rotate *x){
 
 static void *rotate_new(t_floatarg f1, t_floatarg f2){
     t_rotate *x = (t_rotate *)pd_new(rotate_class);
-    init_sine_table();
     t_int ch = (t_int)f1;
     if(ch < 2)
         ch = 2;
@@ -107,4 +106,5 @@ void rotate_tilde_setup(void){
             (t_method)rotate_free, sizeof(t_rotate), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(rotate_class, nullfn, gensym("signal"), 0);
     class_addmethod(rotate_class, (t_method)rotate_dsp, gensym("dsp"), A_CANT, 0);
+    init_sine_table();
 }

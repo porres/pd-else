@@ -89,7 +89,6 @@ static void *balance_free(t_balance *x){
 static void *balance_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_balance *x = (t_balance *)pd_new(balance_class);
-    init_sine_table();
     float f = 0;
     x->x_mc = 0;
     while(ac && av->a_type == A_SYMBOL){
@@ -115,4 +114,5 @@ void balance_tilde_setup(void){
         (t_method)balance_free, sizeof(t_balance), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(balance_class, nullfn, gensym("signal"), 0);
     class_addmethod(balance_class, (t_method)balance_dsp, gensym("dsp"), A_CANT, 0);
+    init_sine_table();
 }

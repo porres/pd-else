@@ -107,7 +107,6 @@ static void *pan4_free(t_pan4 *x){
 static void *pan4_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_pan4 *x = (t_pan4 *)pd_new(pan4_class);
-    init_sine_table();
     float f1 = 0, f2 = 0;
     x->x_mc = 0;
     while(ac && av->a_type == A_SYMBOL){
@@ -143,5 +142,6 @@ void pan4_tilde_setup(void){
         (t_method)pan4_free, sizeof(t_pan4), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(pan4_class, nullfn, gensym("signal"), 0);
     class_addmethod(pan4_class, (t_method)pan4_dsp, gensym("dsp"), A_CANT, 0);
+    init_sine_table();
 }
 

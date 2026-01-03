@@ -85,7 +85,6 @@ void xsel2mc_free(t_xsel2mc *x){
 void *xsel2mc_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_xsel2mc *x = (t_xsel2mc *)pd_new(xsel2mc_class);
-    init_sine_table();
     float spread = 1;
     x->x_index = x->x_circular = 0;
     if(ac){
@@ -123,4 +122,5 @@ void setup_xselect20x2emc_tilde(void){
     class_addmethod(xsel2mc_class, (t_method)xsel2mc_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(xsel2mc_class, (t_method)xsel2mc_index, gensym("index"), A_FLOAT, 0);
     class_addmethod(xsel2mc_class, (t_method)xsel2mc_circular, gensym("circular"), A_FLOAT, 0);
+    init_sine_table();
 }

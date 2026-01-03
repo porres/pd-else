@@ -283,7 +283,6 @@ static void *pm2_new(t_symbol *s, int ac, t_atom *av){
     x->x_y1n2 = (float *)getbytes(sizeof(*x->x_y1n2));
     x->x_y2n1 = (float *)getbytes(sizeof(*x->x_y2n1));
     x->x_y2n2 = (float *)getbytes(sizeof(*x->x_y2n2));
-    init_sine_table();
     x->x_ratio1 = x->x_ratio2 = 1;
     x->x_vol1 = x->x_fvol1 = x->x_fvol2 = x->x_vol2 = 1;
     x->x_pan1 = x->x_fpan1 = x->x_fpan2 = x->x_pan2 = .125;
@@ -381,4 +380,5 @@ void pm2_tilde_setup(void){
     class_addmethod(pm2_class, (t_method)pm2_pan, gensym("pan"), A_GIMME, 0);
     class_addmethod(pm2_class, (t_method)pm2_pan1, gensym("pan1"), A_FLOAT, 0);
     class_addmethod(pm2_class, (t_method)pm2_pan2, gensym("pan2"), A_FLOAT, 0);
+    init_sine_table();
 }

@@ -537,7 +537,6 @@ static void envgen_resume(t_envgen *x){
 static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     t_symbol *cursym = s; // avoid warning
     t_envgen *x = (t_envgen *)pd_new(envgen_class);
-    init_fade_tables();
     x->x_nchans = 1;
     x->x_gain = (t_float *)getbytes(sizeof(*x->x_gain));
     x->x_phase = (t_float *)getbytes(sizeof(*x->x_phase));
@@ -670,4 +669,5 @@ void envgen_tilde_setup(void){
     class_addmethod(envgen_class, (t_method)envgen_samps, gensym("samps"), A_FLOAT, 0);
     class_addmethod(envgen_class, (t_method)envgen_suspoint, gensym("suspoint"), A_FLOAT, 0);
     class_addmethod(envgen_class, (t_method)envgen_retrigger, gensym("retrigger"), A_FLOAT, 0);
+    init_fade_tables();
 }

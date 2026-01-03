@@ -67,7 +67,6 @@ static void xfademc_free(t_xfademc *x){
 static void *xfademc_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_xfademc *x = (t_xfademc *)pd_new(xfademc_class);
-    init_sine_table();
     t_float init_mix = 0;
     x->x_lin = 0;
     if(av->a_type == A_SYMBOL){
@@ -90,4 +89,5 @@ void setup_xfade0x2emc_tilde(void){
     class_addmethod(xfademc_class, nullfn, gensym("signal"), 0);
     class_addmethod(xfademc_class, (t_method)xfademc_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(xfademc_class, (t_method)xfademc_lin, gensym("lin"), A_FLOAT, 0);
+    init_sine_table();
 }

@@ -60,7 +60,6 @@ static void xgate2_dsp(t_xgate2 *x, t_signal **sp){
 static void *xgate2_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_xgate2 *x = (t_xgate2 *)pd_new(xgate2_class);
-    init_sine_table();
     t_float n_outlets = 2;
     float spread = 1;
     if(ac){
@@ -109,4 +108,5 @@ void xgate2_tilde_setup(void){
     class_addmethod(xgate2_class, nullfn, gensym("signal"), 0);
     class_addmethod(xgate2_class, (t_method)xgate2_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(xgate2_class, (t_method)xgate2_index, gensym("index"), A_FLOAT, 0);
+    init_sine_table();
 }

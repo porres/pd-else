@@ -112,7 +112,6 @@ static void *panstereo_free(t_panstereo *x){
 static void *panstereo_new(t_symbol *s, int ac, t_atom *av){
     t_panstereo *x = (t_panstereo *)pd_new(panstereo_class);
     x->x_ignore = s;
-    init_fade_tables();
     x->x_pan_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_pan_list[0] = 0;
     x->x_panlist_size = 1;
@@ -137,4 +136,5 @@ void setup_pan0x2estereo_tilde(void){
     class_addmethod(panstereo_class, nullfn, gensym("signal"), 0);
     class_addmethod(panstereo_class, (t_method)panstereo_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(panstereo_class, (t_method)panstereo_pan, gensym("pan"), A_GIMME, 0);
+    init_fade_tables();
 }

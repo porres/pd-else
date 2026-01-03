@@ -33,7 +33,6 @@ static void sin_dsp(t_sin *x, t_signal **sp){
 
 void *sin_new(void){
     t_sin *x = (t_sin *)pd_new(sin_class);
-    init_sine_table();
     outlet_new(&x->x_obj, &s_signal);
     return(x);
 }
@@ -43,4 +42,5 @@ void sin_tilde_setup(void){
         0, sizeof(t_sin), CLASS_MULTICHANNEL, 0);
     class_addmethod(sin_class, nullfn, gensym("signal"), 0);
     class_addmethod(sin_class, (t_method) sin_dsp, gensym("dsp"), A_CANT,  0);
+    init_sine_table();
 }

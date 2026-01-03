@@ -78,7 +78,6 @@ void spreadmc_free(t_spreadmc *x){
 void *spreadmc_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_spreadmc *x = (t_spreadmc *)pd_new(spreadmc_class);
-    init_sine_table();
     int outs = 2;
     float spread = 1;
     x->x_n = sys_getblksize();
@@ -106,4 +105,5 @@ void setup_spread0x2emc_tilde(void){
     class_addmethod(spreadmc_class, nullfn, gensym("signal"), 0);
     class_addmethod(spreadmc_class, (t_method)spreadmc_dsp, gensym("dsp"),0);
     class_addmethod(spreadmc_class, (t_method)spreadmc_n, gensym("n"), A_DEFFLOAT, 0);
+    init_sine_table();
 }

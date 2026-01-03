@@ -204,7 +204,6 @@ static void *sine_new(t_symbol *s, int ac, t_atom *av){
             ac--, av++;
         }
     }
-    init_sine_table();
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_sync, 0);
     x->x_inlet_phase = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
@@ -228,4 +227,5 @@ void sine_tilde_setup(void){
     class_addmethod(sine_class, (t_method)sine_soft, gensym("soft"), A_DEFFLOAT, 0);
     class_addmethod(sine_class, (t_method)sine_midi, gensym("midi"), A_DEFFLOAT, 0);
     class_addmethod(sine_class, (t_method)sine_set, gensym("set"), A_GIMME, 0);
+    init_sine_table();
 }

@@ -165,7 +165,6 @@ static void *mix_new(t_symbol *s, int ac, t_atom *av){
     t_mix *x = (t_mix *)pd_new(mix_class);
     x->x_ignore = s;
     x->x_glist = canvas_getcurrent();
-    init_sine_table();
     x->x_pan_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_gain_list = (float*)malloc(MAXLEN * sizeof(float));
 /*    for(int i = 0; i < MAXLEN; i++){
@@ -246,4 +245,5 @@ void mix_tilde_setup(void){
     class_addmethod(mix_class, (t_method)mix_pan, gensym("pan"), A_GIMME, 0);
     class_addmethod(mix_class, (t_method)mix_gain, gensym("gain"), A_GIMME, 0);
     class_addmethod(mix_class, (t_method)mix_db, gensym("db"), A_GIMME, 0);
+    init_sine_table();
 }

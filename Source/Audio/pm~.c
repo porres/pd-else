@@ -127,7 +127,6 @@ static void *pm_new(t_symbol *s, int ac, t_atom *av){
         x->x_phase1[0] = 1.;
     else
         x->x_phase1[0] = init_phase;
-    init_sine_table();
     x->x_freq = init_freq;
     x->x_inlet_ratio = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_ratio, init_ratio);
@@ -144,4 +143,5 @@ void pm_tilde_setup(void){
         sizeof(t_pm), CLASS_MULTICHANNEL, A_GIMME, 0);
     CLASS_MAINSIGNALIN(pm_class, t_pm, x_freq);
     class_addmethod(pm_class, (t_method)pm_dsp, gensym("dsp"), A_CANT, 0);
+    init_sine_table();
 }

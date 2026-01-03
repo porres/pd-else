@@ -154,7 +154,6 @@ static void *autofade_free(t_autofade *x){
 static void *autofade_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_autofade *x = (t_autofade *)pd_new(autofade_class);
-    init_fade_tables();
     t_float fadems = 10.;
     x->x_n_chans = 1;
     x->x_ksr = sys_getsr() * .001;
@@ -214,4 +213,5 @@ void autofade_tilde_setup(void){
     class_addmethod(autofade_class, (t_method)autofade_hann, gensym("hann"), 0);
     class_addmethod(autofade_class, (t_method)autofade_linsin, gensym("linsin"), 0);
     class_addmethod(autofade_class, (t_method)autofade_hannsin, gensym("hannsin"), 0);
+    init_fade_tables();
 }

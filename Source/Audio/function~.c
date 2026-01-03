@@ -191,7 +191,6 @@ static void function_free(t_function *x){
 static void *function_new(t_symbol *s,int ac,t_atom* av){
     t_function *x = (t_function *)pd_new(function_class);
     x->x_ignore = s;
-    init_fade_tables();
     for(int i = 0; i < MAX_SIZE; i++) // set exponential list to linear
         SETFLOAT(x->x_at_exp+i, 0);
     x->x_single_exp = 1;
@@ -240,4 +239,5 @@ void function_tilde_setup(void){
     class_addlist(function_class, function_list);
     class_addmethod(function_class, (t_method)function_dsp, gensym("dsp"), 0);
     class_addmethod(function_class, (t_method)function_curve, gensym("curve"), A_GIMME, 0);
+    init_fade_tables();
 }

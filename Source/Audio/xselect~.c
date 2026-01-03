@@ -133,7 +133,6 @@ void *xselect_free(t_xselect *x){
 static void *xselect_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_xselect *x = (t_xselect *)pd_new(xselect_class);
-    init_sine_table();
     x->x_sr_khz = sys_getsr() * 0.001;
     t_float ch = 1, ms = 0, init_channel = 0;
     int i;
@@ -185,4 +184,5 @@ void xselect_tilde_setup(void){
     class_addmethod(xselect_class, nullfn, gensym("signal"), 0);
     class_addmethod(xselect_class, (t_method)xselect_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(xselect_class, (t_method)xselect_time, gensym("time"), A_FLOAT, 0);
+    init_sine_table();
 }

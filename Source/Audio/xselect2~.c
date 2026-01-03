@@ -81,7 +81,6 @@ static void xselect2_dsp(t_xselect2 *x, t_signal **sp){
 static void *xselect2_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_xselect2 *x = (t_xselect2 *)pd_new(xselect2_class);
-    init_sine_table();
     t_float n_ins = 2; // inlets not counting channel selection
     x->x_indexed = x->x_circular = 0;
     float spread = 1;
@@ -135,4 +134,5 @@ void xselect2_tilde_setup(void){
     class_addmethod(xselect2_class, nullfn, gensym("signal"), 0);
     class_addmethod(xselect2_class, (t_method)xselect2_index, gensym("index"), A_FLOAT, 0);
     class_addmethod(xselect2_class, (t_method)xselect2_circular, gensym("circular"), A_FLOAT, 0);
+    init_sine_table();
 }

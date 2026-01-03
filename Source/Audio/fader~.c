@@ -63,7 +63,6 @@ static void fader_tilde_dsp(t_fader *x, t_signal **sp){
 
 static void *fader_tilde_new(t_symbol *s){
     t_fader *x = (t_fader *)pd_new(fader_class);
-    init_fade_tables();
     x->x_table = 0; // quartic
     if(s == gensym("quartic"))
         x->x_table = 0;
@@ -95,4 +94,5 @@ void fader_tilde_setup(void){
     class_addmethod(fader_class, (t_method)fader_hann, gensym("hann"), 0);
     class_addmethod(fader_class, (t_method)fader_linsin, gensym("linsin"), 0);
     class_addmethod(fader_class, (t_method)fader_hannsin, gensym("hannsin"), 0);
+    init_fade_tables();
 }

@@ -58,7 +58,6 @@ void rotatemc_free(t_rotatemc *x){
 
 static void *rotatemc_new(t_floatarg f){
     t_rotatemc *x = (t_rotatemc *)pd_new(rotatemc_class);
-    init_sine_table();
     x->x_n = x->x_chs = 0;
     x->x_input = (t_float *)getbytes(0);
     x->x_inlet_pos = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
@@ -72,4 +71,5 @@ void setup_rotate0x2emc_tilde(void){
         0, sizeof(t_rotatemc), CLASS_MULTICHANNEL, A_DEFFLOAT, 0);
     class_addmethod(rotatemc_class, nullfn, gensym("signal"), 0);
     class_addmethod(rotatemc_class, (t_method)rotatemc_dsp, gensym("dsp"), A_CANT, 0);
+    init_sine_table();
 }

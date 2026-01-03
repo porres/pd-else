@@ -88,7 +88,7 @@ static t_int *cosine_perform(t_int *w){
                 }
             }
             double phase_offset = x->x_ch3 == 1 ? in3[i] : in3[j*n + i];
-            out[j*n + i] = read_sintab(cosine_wrap_phase(phase[j] + phase_offset + 0.25));
+            out[j*n + i] = read_costab(cosine_wrap_phase(phase[j] + phase_offset));
             phase[j] = cosine_wrap_phase(phase[j] + step);
         }
     }
@@ -204,7 +204,6 @@ static void *cosine_new(t_symbol *s, int ac, t_atom *av){
             ac--, av++;
         }
     }
-    init_sine_table();
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_sync, 0);
     x->x_inlet_phase = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
@@ -228,4 +227,5 @@ void cosine_tilde_setup(void){
     class_addmethod(cosine_class, (t_method)cosine_soft, gensym("soft"), A_DEFFLOAT, 0);
     class_addmethod(cosine_class, (t_method)cosine_midi, gensym("midi"), A_DEFFLOAT, 0);
     class_addmethod(cosine_class, (t_method)cosine_set, gensym("set"), A_GIMME, 0);
+    init_cosine_table();
 }

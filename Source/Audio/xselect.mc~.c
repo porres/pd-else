@@ -78,7 +78,6 @@ static void xselectmc_dsp(t_xselectmc *x, t_signal **sp){
 
 static void *xselectmc_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    init_sine_table();
     t_xselectmc *x = (t_xselectmc *)pd_new(xselectmc_class);
     x->x_ch = x->x_last_ch = 0;
     x->x_sr_khz = sys_getsr() * 0.001;
@@ -114,4 +113,5 @@ void setup_xselect0x2emc_tilde(void){
     class_addmethod(xselectmc_class, (t_method)xselectmc_dsp, gensym("dsp"), 0);
     class_addmethod(xselectmc_class, (t_method)xselectmc_time, gensym("time"), A_FLOAT, 0);
     class_addmethod(xselectmc_class, (t_method)xselectmc_n, gensym("n"), A_FLOAT, 0);
+    init_sine_table();
 }

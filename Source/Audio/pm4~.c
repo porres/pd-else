@@ -532,7 +532,6 @@ static void *pm4_new(t_symbol *s, int ac, t_atom *av){
     x->x_y3n2 = (float *)getbytes(sizeof(*x->x_y3n2));
     x->x_y4n1 = (float *)getbytes(sizeof(*x->x_y4n1));
     x->x_y4n2 = (float *)getbytes(sizeof(*x->x_y4n2));
-    init_sine_table();
     x->x_ratio1 = x->x_ratio2 = x->x_ratio3 = x->x_ratio4 = 1;
     x->x_vol1 = x->x_fvol1 = x->x_fvol2 = x->x_vol2 = 1;
     x->x_vol3 = x->x_fvol3 = x->x_fvol4 = x->x_vol4 = 1;
@@ -696,4 +695,5 @@ void pm4_tilde_setup(void){
     class_addmethod(pm4_class, (t_method)pm4_pan2, gensym("pan2"), A_FLOAT, 0);
     class_addmethod(pm4_class, (t_method)pm4_pan3, gensym("pan3"), A_FLOAT, 0);
     class_addmethod(pm4_class, (t_method)pm4_pan4, gensym("pan4"), A_FLOAT, 0);
+    init_sine_table();
 }

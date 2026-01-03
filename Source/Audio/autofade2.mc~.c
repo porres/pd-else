@@ -143,7 +143,6 @@ static void *autofade2mc_free(t_autofade2mc *x){
 static void *autofade2mc_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_autofade2mc *x = (t_autofade2mc *)pd_new(autofade2mc_class);
-    init_fade_tables();
     t_float fademsin = 10., fademsout = 10.;
     x->x_n_chans = 1;
     x->x_ksr = sys_getsr() * .001;
@@ -198,4 +197,5 @@ void setup_autofade20x2emc_tilde(void){
     class_addmethod(autofade2mc_class, (t_method)autofade2mc_hann, gensym("hann"), 0);
     class_addmethod(autofade2mc_class, (t_method)autofade2mc_linsin, gensym("linsin"), 0);
     class_addmethod(autofade2mc_class, (t_method)autofade2mc_hannsin, gensym("hannsin"), 0);
+    init_fade_tables();
 }

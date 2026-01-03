@@ -98,7 +98,6 @@ void *panmc_free(t_panmc *x){
 static void *panmc_new(t_symbol *s, int ac, t_atom *av){
     t_panmc *x = (t_panmc *)pd_new(panmc_class);
     x->x_ignore = s;
-    init_sine_table();
     t_float n_outlets = 2;
     float spread = 1, gain = 1;
     x->x_offset = 0;
@@ -165,4 +164,5 @@ void setup_pan0x2emc_tilde(void){
     class_addmethod(panmc_class, (t_method)panmc_offset, gensym("offset"), A_FLOAT, 0);
     class_addmethod(panmc_class, (t_method)panmc_n, gensym("n"), A_FLOAT, 0);
     class_addmethod(panmc_class, (t_method)panmc_cartesian, gensym("cartesian"), A_FLOAT, 0);
+    init_sine_table();
 }

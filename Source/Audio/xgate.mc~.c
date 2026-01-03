@@ -87,7 +87,6 @@ void xgatemc_free(t_xgatemc *x){
 
 static void *xgatemc_new(t_floatarg f1, t_floatarg f2, t_floatarg f3){
     t_xgatemc *x = (t_xgatemc *)pd_new(xgatemc_class);
-    init_sine_table();
     for(int n = 0; n < MAXOUTS; n++){
         x->x_active_out[n] = 0;
         x->x_count[n] = 0;
@@ -114,4 +113,5 @@ void setup_xgate0x2emc_tilde(void) {
     class_addmethod(xgatemc_class, (t_method)xgatemc_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(xgatemc_class, (t_method)xgatemc_time, gensym("time"), A_FLOAT, 0);
     class_addmethod(xgatemc_class, (t_method)xgatemc_n, gensym("n"), A_FLOAT, 0);
+    init_sine_table();
 }

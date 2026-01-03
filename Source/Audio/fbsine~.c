@@ -187,7 +187,6 @@ static void *fbsine_new(t_symbol *s, int ac, t_atom *av){
             }
         }
     }
-    init_sine_table();
     t_float init_freq = f1;
     t_float init_fb = f2;
     t_float init_phase = f3;
@@ -212,4 +211,5 @@ void fbsine_tilde_setup(void){
     CLASS_MAINSIGNALIN(fbsine_class, t_fbsine, x_freq);
     class_addmethod(fbsine_class, (t_method)fbsine_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(fbsine_class, (t_method)fbsine_filter, gensym("filter"), A_FLOAT, 0);
+    init_sine_table();
 }

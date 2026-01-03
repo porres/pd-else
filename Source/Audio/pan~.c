@@ -207,7 +207,6 @@ static void *pan_new(t_symbol *s, int ac, t_atom *av){
     t_pan *x = (t_pan *)pd_new(pan_class);
     x->x_ignore = s;
     x->x_glist = canvas_getcurrent();
-    init_sine_table();
     x->x_pan_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_gain_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_spread_list = (float*)malloc(MAXLEN * sizeof(float));
@@ -287,4 +286,5 @@ void pan_tilde_setup(void){
     class_addmethod(pan_class, (t_method)pan_pos, gensym("pos"), A_GIMME, 0);
     class_addmethod(pan_class, (t_method)pan_spread, gensym("spread"), A_GIMME, 0);
     class_addmethod(pan_class, (t_method)pan_gain, gensym("gain"), A_GIMME, 0);
+    init_sine_table();
 }

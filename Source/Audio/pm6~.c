@@ -844,7 +844,6 @@ static void *pm6_new(t_symbol *s, int ac, t_atom *av){
     x->x_y5n2 = (float *)getbytes(sizeof(*x->x_y5n2));
     x->x_y6n1 = (float *)getbytes(sizeof(*x->x_y6n1));
     x->x_y6n2 = (float *)getbytes(sizeof(*x->x_y6n2));
-    init_sine_table();
     x->x_ratio1 = x->x_ratio2 = x->x_ratio3 = x->x_ratio4 = x->x_ratio5 = x->x_ratio6 = 1;
     x->x_vol1 = x->x_fvol1 = x->x_fvol2 = x->x_vol2 = 1;
     x->x_vol3 = x->x_fvol3 = x->x_fvol4 = x->x_vol4 = 1;
@@ -1098,4 +1097,5 @@ void pm6_tilde_setup(void){
     class_addmethod(pm6_class, (t_method)pm6_pan4, gensym("pan4"), A_FLOAT, 0);
     class_addmethod(pm6_class, (t_method)pm6_pan5, gensym("pan5"), A_FLOAT, 0);
     class_addmethod(pm6_class, (t_method)pm6_pan6, gensym("pan6"), A_FLOAT, 0);
+    init_sine_table();
 }
