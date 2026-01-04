@@ -12,7 +12,8 @@
 typedef struct _bandpass{
     t_object    x_obj;
     t_int       x_n;
-    int         x_nchans;
+    int         x_nchs;
+    t_int       x_sig1;
     t_int       x_sig2;
     t_int       x_sig3;
     t_int       x_ch1;
@@ -125,13 +126,18 @@ static t_int *bandpass_perform(t_int *w){
             else_magic_setnan(x->x_sigscalar2);
         }
     }
-    for(int j = 0; j < x->x_nchans; j++){
+    for(int j = 0; j < x->x_nchs; j++){
         for(int i = 0, n = x->x_n; i < n; i++){
             double xn, yn, f, reson;
-            if(x->x_ch1 == 1)
-                xn = in1[i];
-            else
-                xn = in1[j*n + i];
+            if(!x->x_sig1)
+                xn = 0.0f;
+            else{
+                if(x->x_ch1 == 1)
+                    xn = in1[i];
+                else
+                    xn = in1[j*n + i];
+            }
+//            post("xn = %f", xn);
             if(x->x_ch2 == 1)
                 f = x->x_sig2 ? in2[i] : x->x_freq_list[0];
             else
@@ -171,6 +177,7 @@ static void bandpass_dsp(t_bandpass *x, t_signal **sp){
         x->x_radcoeff = PI / x->x_nyq;
         update_coeffs(x, x->x_f, x->x_reson);
     }
+    x->x_sig1 = else_magic_inlet_connection((t_object *)x, x->x_glist, 0, &s_signal);
     x->x_sig2 = else_magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal);
     x->x_sig3 = else_magic_inlet_connection((t_object *)x, x->x_glist, 2, &s_signal);
     x->x_ch2 = x->x_sig2 ? sp[1]->s_nchans : x->x_f_list_size;
@@ -180,22 +187,22 @@ static void bandpass_dsp(t_bandpass *x, t_signal **sp){
         chs = x->x_ch2;
     if(x->x_ch3 > chs)
         chs = x->x_ch3;
-    if(x->x_nchans != chs){
+    if(x->x_nchs != chs){
         x->x_xnm1 = (double *)resizebytes(x->x_xnm1,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
+            x->x_nchs * sizeof(double), chs * sizeof(double));
         x->x_xnm2 = (double *)resizebytes(x->x_xnm2,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
+            x->x_nchs * sizeof(double), chs * sizeof(double));
         x->x_ynm1 = (double *)resizebytes(x->x_ynm1,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
+            x->x_nchs * sizeof(double), chs * sizeof(double));
         x->x_ynm2 = (double *)resizebytes(x->x_ynm2,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
-        x->x_nchans = chs;
+            x->x_nchs * sizeof(double), chs * sizeof(double));
+        x->x_nchs = chs;
     }
-    signal_setmultiout(&sp[3], x->x_nchans);
-    if((x->x_ch1 > 1 && x->x_ch1 != x->x_nchans)
-    || (x->x_ch2 > 1 && x->x_ch2 != x->x_nchans)
-    || (x->x_ch3 > 1 && x->x_ch3 != x->x_nchans)){
-        dsp_add_zero(sp[3]->s_vec, x->x_nchans*x->x_n);
+    signal_setmultiout(&sp[3], x->x_nchs);
+    if((x->x_ch1 > 1 && x->x_ch1 != x->x_nchs)
+    || (x->x_ch2 > 1 && x->x_ch2 != x->x_nchs)
+    || (x->x_ch3 > 1 && x->x_ch3 != x->x_nchs)){
+        dsp_add_zero(sp[3]->s_vec, x->x_nchs*x->x_n);
         pd_error(x, "[bandpass~]: channel sizes mismatch");
         return;
     }
@@ -204,7 +211,7 @@ static void bandpass_dsp(t_bandpass *x, t_signal **sp){
 }
 
 static void bandpass_clear(t_bandpass *x){
-    for(int i = 0; i < x->x_nchans; i++)
+    for(int i = 0; i < x->x_nchs; i++)
         x->x_xnm1[i] = x->x_xnm2[i] = x->x_ynm1[i] = x->x_ynm2[i] = 0.;
 }
 
@@ -226,10 +233,10 @@ static void *bandpass_free(t_bandpass *x){
     inlet_free(x->x_inlet_freq);
     inlet_free(x->x_inlet_q);
     outlet_free(x->x_out);
-    freebytes(x->x_xnm1, x->x_nchans * sizeof(*x->x_xnm1));
-    freebytes(x->x_xnm2, x->x_nchans * sizeof(*x->x_xnm2));
-    freebytes(x->x_ynm1, x->x_nchans * sizeof(*x->x_ynm1));
-    freebytes(x->x_ynm2, x->x_nchans * sizeof(*x->x_ynm2));
+    freebytes(x->x_xnm1, x->x_nchs * sizeof(*x->x_xnm1));
+    freebytes(x->x_xnm2, x->x_nchs * sizeof(*x->x_xnm2));
+    freebytes(x->x_ynm1, x->x_nchs * sizeof(*x->x_ynm1));
+    freebytes(x->x_ynm2, x->x_nchs * sizeof(*x->x_ynm2));
     free(x->x_freq_list);
     free(x->x_reson_list);
     return(void *)x;

@@ -1,4 +1,4 @@
-// Porres 2017
+// Porres 2026
 
 #include "m_pd.h"
 #include "magic.h"
@@ -11,8 +11,9 @@
 typedef struct _formlet{
     t_object    x_obj;
     t_int       x_n;
-    int         x_nchans;
+    int         x_nchs;
     t_int       x_sig1;
+    t_int       x_sig2;
     t_int       x_sig3;
     t_int       x_sig4;
     t_int       x_ch1;
@@ -23,23 +24,61 @@ typedef struct _formlet{
     t_int       x_a_list_size;
     t_int       x_d_list_size;
     float      *x_f_list, *x_a_list, *x_d_list;
-    t_inlet    *x_inlet_excitation;
+    t_inlet    *x_inlet_hz;
     t_inlet    *x_inlet_t1;
     t_inlet    *x_inlet_t2;
     t_float     x_nyq;
-    t_float     x_freq;
     double     *x_x1nm1, *x_x1nm2;
     double     *x_x2nm1, *x_x2nm2;
     double     *x_y1nm1, *x_y1nm2;
     double     *x_y2nm1, *x_y2nm2;
     t_glist    *x_glist;
-    t_float    *x_sigscalar1;
+    t_float    *x_sigscalar2;
     t_float    *x_sigscalar3;
     t_float    *x_sigscalar4;
     t_symbol   *x_ignore;
 }t_formlet;
 
 static t_class *formlet_class;
+
+static void formlet_freq(t_formlet *x, t_symbol *s, int ac, t_atom *av){
+    x->x_ignore = s;
+    if(ac == 0)
+        return;
+    for(int i = 0; i < ac; i++)
+        x->x_f_list[i] = atom_getfloat(av+i);
+    if(x->x_f_list_size != ac){
+        x->x_f_list_size = ac;
+        canvas_update_dsp();
+    }
+    else_magic_setnan(x->x_sigscalar2);
+}
+
+static void formlet_attack(t_formlet *x, t_symbol *s, int ac, t_atom *av){
+    x->x_ignore = s;
+    if(ac == 0)
+        return;
+    for(int i = 0; i < ac; i++)
+        x->x_a_list[i] = atom_getfloat(av+i);
+    if(x->x_a_list_size != ac){
+        x->x_a_list_size = ac;
+        canvas_update_dsp();
+    }
+    else_magic_setnan(x->x_sigscalar3);
+}
+
+static void formlet_decay(t_formlet *x, t_symbol *s, int ac, t_atom *av){
+    x->x_ignore = s;
+    if(ac == 0)
+        return;
+    for(int i = 0; i < ac; i++)
+        x->x_d_list[i] = atom_getfloat(av+i);
+    if(x->x_d_list_size != ac){
+        x->x_d_list_size = ac;
+        canvas_update_dsp();
+    }
+    else_magic_setnan(x->x_sigscalar4);
+}
 
 static t_int *formlet_perform(t_int *w){
     t_formlet *x = (t_formlet *)(w[1]);
@@ -53,13 +92,13 @@ static t_int *formlet_perform(t_int *w){
     double *y1nm1 = x->x_y1nm1, *y1nm2 = x->x_y1nm2;
     double *y2nm1 = x->x_y2nm1, *y2nm2 = x->x_y2nm2;
     t_float nyq = x->x_nyq;
-    if(!x->x_sig1){
-        t_float *scalar = x->x_sigscalar1;
-        if(!else_magic_isnan(*x->x_sigscalar1)){
+    if(!x->x_sig2){
+        t_float *scalar = x->x_sigscalar2;
+        if(!else_magic_isnan(*x->x_sigscalar2)){
             t_float freq = *scalar;
-            x->x_ch1 = x->x_f_list_size = 1;
+            x->x_ch2 = x->x_f_list_size = 1;
             x->x_f_list[0] = freq;
-            else_magic_setnan(x->x_sigscalar1);
+            else_magic_setnan(x->x_sigscalar2);
         }
     }
     if(!x->x_sig3){
@@ -80,21 +119,27 @@ static t_int *formlet_perform(t_int *w){
             else_magic_setnan(x->x_sigscalar4);
         }
     }
-    for(int j = 0; j < x->x_nchans; j++){
+    for(int j = 0; j < x->x_nchs; j++){
         for(int i = 0, n = x->x_n; i < n; i++){
-            double f, xn, t1, t2;
-            if(x->x_ch1 == 1)
-                f = x->x_sig1 ? in1[i] : x->x_f_list[0];
+            double xn, f, t1, t2;
+            if(!x->x_sig1)
+                xn = 0.0f;
+            else{
+                if(x->x_ch1 == 1)
+                    xn = in1[i];
+                else
+                    xn = in1[j*n + i];
+            }
+/*            if(i == 0)
+                post("-----> xn = %f", xn);*/
+            if(x->x_ch2 == 1)
+                f = x->x_sig2 ? in2[i] : x->x_f_list[0];
             else
-                f = x->x_sig1 ? in1[j*n + i] : x->x_f_list[j];
+                f = x->x_sig2 ? in2[j*n + i] : x->x_f_list[j];
             if(f < 0.000001)
                 f = 0.000001;
             if(f > nyq - 0.000001)
                 f = nyq - 0.000001;
-            if(x->x_ch2 == 1)
-                xn = in2[i];
-            else
-                xn = in2[j*n + i];
             if(x->x_ch3 == 1)
                 t1 = x->x_sig3 ? in3[i] : x->x_a_list[0];
             else
@@ -103,13 +148,8 @@ static t_int *formlet_perform(t_int *w){
                 t2 = x->x_sig4 ? in4[i] : x->x_d_list[0];
             else
                 t2 = x->x_sig4 ? in4[j*n + i] : x->x_d_list[j];
-//            post("f = %f / t1 = %f / t2 = %f", f, t1, t2);
             double q, omega, alphaQ, cos_w, a0, a2, b0, b1, b2, y1n, y2n;
             double a = 0, b = 0;
-            if(f < 0.000001)
-                f = 0.000001;
-            if(f > nyq - 0.000001)
-                f = nyq - 0.000001;
             if(t1 <= 0)
                 y1n = 0; // attack = 0
             else{
@@ -165,7 +205,7 @@ static t_int *formlet_perform(t_int *w){
 }
 
 static void formlet_dsp(t_formlet *x, t_signal **sp){
-    int nyq = sp[0]->s_sr / 2;
+    int nyq = sp[0]->s_sr * 0.5;
     x->x_n = sp[0]->s_n;
     if(nyq != x->x_nyq){
         x->x_nyq = nyq;
@@ -173,10 +213,11 @@ static void formlet_dsp(t_formlet *x, t_signal **sp){
 //        update_coeffs(x, x->x_f, x->x_reson);
     }
     x->x_sig1 = else_magic_inlet_connection((t_object *)x, x->x_glist, 0, &s_signal);
+    x->x_sig2 = else_magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal);
     x->x_sig3 = else_magic_inlet_connection((t_object *)x, x->x_glist, 2, &s_signal);
     x->x_sig4 = else_magic_inlet_connection((t_object *)x, x->x_glist, 3, &s_signal);
-    int chs = x->x_ch1 = x->x_sig1 ? sp[0]->s_nchans : x->x_f_list_size;
-    x->x_ch2 = sp[1]->s_nchans;
+    int chs = x->x_ch1 = sp[0]->s_nchans;
+    x->x_ch2 = x->x_sig2 ? sp[1]->s_nchans : x->x_f_list_size;
     x->x_ch3 = x->x_sig3 ? sp[2]->s_nchans : x->x_a_list_size;
     x->x_ch4 = x->x_sig4 ? sp[3]->s_nchans : x->x_d_list_size;
     if(x->x_ch2 > chs)
@@ -185,31 +226,42 @@ static void formlet_dsp(t_formlet *x, t_signal **sp){
         chs = x->x_ch3;
     if(x->x_ch4 > chs)
         chs = x->x_ch4;
-    if(x->x_nchans != chs){
+/*    post("chs = %d", chs);
+    post("x->x_ch1 = %d", x->x_ch1);
+    post("x->x_ch2 = %d", x->x_ch2);
+    post("x->x_ch3 = %d", x->x_ch3);
+    post("x->x_ch4 = %d", x->x_ch4);
+    post("x->x_f_list_size = %d",  x->x_f_list_size);
+    post("x->x_a_list_size = %d",  x->x_a_list_size);
+    post("x->x_d_list_size = %d",  x->x_d_list_size);
+    post("x->x_f_list[0] = %f",  x->x_f_list[0]);
+    post("x->x_a_list[0] = %f",  x->x_a_list[0]);
+    post("x->x_d_list[0] = %f",  x->x_d_list[0]);*/
+    if(x->x_nchs != chs){
         x->x_x1nm1 = (double *)resizebytes(x->x_x1nm1,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
+            x->x_nchs * sizeof(double), chs * sizeof(double));
         x->x_x1nm2 = (double *)resizebytes(x->x_x1nm2,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
+            x->x_nchs * sizeof(double), chs * sizeof(double));
         x->x_x2nm1 = (double *)resizebytes(x->x_x2nm1,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
+            x->x_nchs * sizeof(double), chs * sizeof(double));
         x->x_x2nm2 = (double *)resizebytes(x->x_x2nm2,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
+            x->x_nchs * sizeof(double), chs * sizeof(double));
         x->x_y1nm1 = (double *)resizebytes(x->x_y1nm1,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
+            x->x_nchs * sizeof(double), chs * sizeof(double));
         x->x_y1nm2 = (double *)resizebytes(x->x_y1nm2,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
+            x->x_nchs * sizeof(double), chs * sizeof(double));
         x->x_y2nm1 = (double *)resizebytes(x->x_y2nm1,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
+            x->x_nchs * sizeof(double), chs * sizeof(double));
         x->x_y2nm2 = (double *)resizebytes(x->x_y2nm2,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
-        x->x_nchans = chs;
+            x->x_nchs * sizeof(double), chs * sizeof(double));
+        x->x_nchs = chs;
     }
-    signal_setmultiout(&sp[4], x->x_nchans);
-    if((x->x_ch1 > 1 && x->x_ch1 != x->x_nchans)
-    || (x->x_ch2 > 1 && x->x_ch2 != x->x_nchans)
-    || (x->x_ch3 > 1 && x->x_ch3 != x->x_nchans)
-    || (x->x_ch4 > 1 && x->x_ch4 != x->x_nchans)){
-        dsp_add_zero(sp[4]->s_vec, x->x_nchans*x->x_n);
+    signal_setmultiout(&sp[4], x->x_nchs);
+    if((x->x_ch1 > 1 && x->x_ch1 != x->x_nchs)
+    || (x->x_ch2 > 1 && x->x_ch2 != x->x_nchs)
+    || (x->x_ch3 > 1 && x->x_ch3 != x->x_nchs)
+    || (x->x_ch4 > 1 && x->x_ch4 != x->x_nchs)){
+        dsp_add_zero(sp[4]->s_vec, x->x_nchs*x->x_n);
         pd_error(x, "[formlet~]: channel sizes mismatch");
         return;
     }
@@ -218,63 +270,24 @@ static void formlet_dsp(t_formlet *x, t_signal **sp){
 }
 
 static void formlet_clear(t_formlet *x){
-    for(int i = 0; i < x->x_nchans; i++){
+    for(int i = 0; i < x->x_nchs; i++){
         x->x_x1nm1[i] = x->x_x1nm2[i] = x->x_y1nm1[i] = x->x_y1nm2[i] = 0.;
         x->x_x2nm1[i] = x->x_x2nm2[i] = x->x_y2nm1[i] = x->x_y2nm2[i] = 0.;
     }
 }
 
-static void formlet_freq(t_formlet *x, t_symbol *s, int ac, t_atom *av){
-    x->x_ignore = s;
-    if(ac == 0)
-        return;
-    for(int i = 0; i < ac; i++)
-        x->x_f_list[i] = atom_getfloat(av+i);
-    if(x->x_f_list_size != ac){
-        x->x_f_list_size = ac;
-        canvas_update_dsp();
-    }
-    else_magic_setnan(x->x_sigscalar1);
-}
-
-static void formlet_attack(t_formlet *x, t_symbol *s, int ac, t_atom *av){
-    x->x_ignore = s;
-    if(ac == 0)
-        return;
-    for(int i = 0; i < ac; i++)
-        x->x_a_list[i] = atom_getfloat(av+i);
-    if(x->x_a_list_size != ac){
-        x->x_a_list_size = ac;
-        canvas_update_dsp();
-    }
-    else_magic_setnan(x->x_sigscalar3);
-}
-
-static void formlet_decay(t_formlet *x, t_symbol *s, int ac, t_atom *av){
-    x->x_ignore = s;
-    if(ac == 0)
-        return;
-    for(int i = 0; i < ac; i++)
-        x->x_d_list[i] = atom_getfloat(av+i);
-    if(x->x_d_list_size != ac){
-        x->x_d_list_size = ac;
-        canvas_update_dsp();
-    }
-    else_magic_setnan(x->x_sigscalar4);
-}
-
 static void *formlet_free(t_formlet *x){
-    inlet_free(x->x_inlet_excitation);
+    inlet_free(x->x_inlet_hz);
     inlet_free(x->x_inlet_t1);
     inlet_free(x->x_inlet_t2);
-    freebytes(x->x_x1nm1, x->x_nchans * sizeof(*x->x_x1nm1));
-    freebytes(x->x_x1nm2, x->x_nchans * sizeof(*x->x_x1nm2));
-    freebytes(x->x_x2nm1, x->x_nchans * sizeof(*x->x_x2nm1));
-    freebytes(x->x_x2nm2, x->x_nchans * sizeof(*x->x_x2nm2));
-    freebytes(x->x_y1nm1, x->x_nchans * sizeof(*x->x_y1nm1));
-    freebytes(x->x_y1nm2, x->x_nchans * sizeof(*x->x_y1nm2));
-    freebytes(x->x_y2nm1, x->x_nchans * sizeof(*x->x_y2nm1));
-    freebytes(x->x_y2nm2, x->x_nchans * sizeof(*x->x_y2nm2));
+    freebytes(x->x_x1nm1, x->x_nchs * sizeof(*x->x_x1nm1));
+    freebytes(x->x_x1nm2, x->x_nchs * sizeof(*x->x_x1nm2));
+    freebytes(x->x_x2nm1, x->x_nchs * sizeof(*x->x_x2nm1));
+    freebytes(x->x_x2nm2, x->x_nchs * sizeof(*x->x_x2nm2));
+    freebytes(x->x_y1nm1, x->x_nchs * sizeof(*x->x_y1nm1));
+    freebytes(x->x_y1nm2, x->x_nchs * sizeof(*x->x_y1nm2));
+    freebytes(x->x_y2nm1, x->x_nchs * sizeof(*x->x_y2nm1));
+    freebytes(x->x_y2nm2, x->x_nchs * sizeof(*x->x_y2nm2));
     free(x->x_f_list);
     free(x->x_a_list);
     free(x->x_d_list);
@@ -284,7 +297,7 @@ static void *formlet_free(t_formlet *x){
 static void *formlet_new(t_symbol *s, int ac, t_atom *av){
     t_formlet *x = (t_formlet *)pd_new(formlet_class);
     x->x_ignore = s;
-    x->x_freq = 0.000001;
+    float freq = 0.000001;
     float reson1 = 0, reson2 = 0;
     x->x_x1nm1 = (double *)getbytes(sizeof(*x->x_x1nm1));
     x->x_x1nm2 = (double *)getbytes(sizeof(*x->x_x1nm2));
@@ -307,7 +320,8 @@ static void *formlet_new(t_symbol *s, int ac, t_atom *av){
             t_float aval = atom_getfloat(av);
             switch(argnum){
                 case 0:
-                    x->x_freq = aval;
+                    freq = aval;
+//                    post("freq arg = %f", freq);
                     break;
                 case 1:
                     reson1 = aval;
@@ -326,16 +340,23 @@ static void *formlet_new(t_symbol *s, int ac, t_atom *av){
             goto errstate;
     };
 /////////////////////////////////////////////////////////////////////////////////////
-    x->x_f_list[0] = x->x_freq, x->x_a_list[0] = reson1, x->x_d_list[0] = reson2;
-    x->x_inlet_excitation = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+    x->x_f_list[0] = freq, x->x_a_list[0] = reson1, x->x_d_list[0] = reson2;
+//    post("x->x_f_list[0] = %f / freq = %f",  x->x_f_list[0], freq);
+    x->x_inlet_hz = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_inlet_hz, freq);
     x->x_inlet_t1 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_t1, reson1);
     x->x_inlet_t2 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_t2, reson2);
     outlet_new((t_object *)x, &s_signal);
+/*    post("-----------new--------------");
+    post("x->x_f_list[0] = %f",  x->x_f_list[0]);
+    post("x->x_a_list[0] = %f",  x->x_a_list[0]);
+    post("x->x_d_list[0] = %f",  x->x_d_list[0]);
+    post("----------------------------");*/
     x->x_glist = canvas_getcurrent();
-    x->x_sigscalar1 = obj_findsignalscalar((t_object *)x, 0);
-    else_magic_setnan(x->x_sigscalar1);
+    x->x_sigscalar2 = obj_findsignalscalar((t_object *)x, 1);
+    else_magic_setnan(x->x_sigscalar2);
     x->x_sigscalar3 = obj_findsignalscalar((t_object *)x, 2);
     else_magic_setnan(x->x_sigscalar3);
     x->x_sigscalar4 = obj_findsignalscalar((t_object *)x, 3);
@@ -349,7 +370,7 @@ errstate:
 void formlet_tilde_setup(void){
     formlet_class = class_new(gensym("formlet~"), (t_newmethod)(void*)formlet_new,
         (t_method)formlet_free, sizeof(t_formlet), CLASS_MULTICHANNEL, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(formlet_class, t_formlet, x_freq);
+    class_addmethod(formlet_class, nullfn, gensym("signal"), 0);
     class_addmethod(formlet_class, (t_method)formlet_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(formlet_class, (t_method)formlet_clear, gensym("clear"), 0);
     class_addmethod(formlet_class, (t_method)formlet_freq, gensym("freq"), A_GIMME, 0);

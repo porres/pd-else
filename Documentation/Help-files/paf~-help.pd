@@ -82,8 +82,8 @@
 #X connect 27 0 23 0;
 #X restore 443 242 pd multichannel;
 #X text 167 441 signal(s) -;
-#X obj 18 238 else/vosim~;
-#X obj 18 260 else/formlet~;
+#X obj 18 235 else/vosim~;
+#X obj 18 257 else/formlet~;
 #X obj 262 172 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 264 151 formant;
 #X obj 324 172 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
