@@ -76,10 +76,10 @@
 #X restore 463 260 pd details;
 #X obj 274 193 else/impseq~;
 #X text 296 165 <-- excite the resonator;
-#X text 23 238 see also:;
-#X obj 22 262 else/resonator~;
+#X text 23 198 see also:;
+#X obj 22 222 else/resonator~;
 #X text 60 89 Inspired by SuperCollider's Formlet UGen \, [formlet~] is a resonant filter similar to [resonator~] in bandpass mode (and [resonant~] by extension). The difference is that you you can also specify an attack time besides the decay time. An advantage to this filter over FOF is that there is no limit to the number of overlapping grains., f 79;
-#X obj 22 286 else/resonant~;
+#X obj 22 246 else/resonant~;
 #X floatatom 225 183 5 0 0 0 - - - 0;
 #X obj 225 228 else/formlet~ 1100 10 200;
 #X text 229 426 - excitation signal;
@@ -143,6 +143,8 @@
 #X text 229 386 - attack time in ms for each channel;
 #X text 144 401 decay <list>;
 #X text 229 401 - decay time in ms for each channel;
+#X obj 22 272 else/formant~;
+#X obj 22 294 else/paf~;
 #X connect 22 0 32 0;
 #X connect 24 0 39 0;
 #X connect 32 0 39 1;

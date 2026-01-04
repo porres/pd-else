@@ -56,9 +56,8 @@
 #X text 164 429 signal(s) -;
 #X text 182 508 signal - vosim oscillator signal;
 #X text 392 202 duty cycle;
-#X text 14 265 see also:;
-#X obj 18 310 else/formlet~;
-#X obj 18 288 else/paf~;
+#X text 14 247 see also:;
+#X obj 18 270 else/paf~;
 #N canvas 646 168 725 625 multichannel 0;
 #X obj 479 95 knob 50 100 10000 1 500 empty empty #dfdfdf #7c7c7c #000000 1 0 0 0 1 320 0 0 100 empty empty 0 8 0 0 0 1 0 0 0 0;
 #X obj 479 152 else/pack2;
@@ -123,6 +122,8 @@
 #X restore 426 303 pd example;
 #X text 158 388 cf <flist> -;
 #X text 235 388 list of center frequencies, f 48;
+#X obj 18 312 else/formlet~;
+#X obj 18 292 else/formant~;
 #X connect 22 0 47 2;
 #X connect 23 0 47 0;
 #X connect 27 0 47 0;
