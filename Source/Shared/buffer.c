@@ -74,7 +74,7 @@ double bias, double tension){
 
 ////////////////////////////////   INIT TABLES!!!! They stays allocated as long as Pd is running
 
-static double *sintable, *costable, *partable, *gausstable;
+static double *sintable, *costable, *partable, *sinsqrtable, *gausstable;
 static int fadetables = 0;
 
 static double *tab_fade_sin;
@@ -133,6 +133,18 @@ void init_parabolic_table(void){
     double inc = 1.0f / ELSE_GEN_TABSIZE, phase = 0;
     for(int i = 0; i < ELSE_GEN_TABSIZE; i++, phase += inc)
         *tp++ = (1 - pow(fmod(phase * 2, 1) * 2 - 1, 2)) * (phase <= 0.5 ? 1 : -1);
+}
+
+void init_sinsqr_table(void){
+    if(sinsqrtable)
+        return;
+    int size = ELSE_GEN_TABSIZE / 2;
+    sinsqrtable = getbytes((size + 1) * sizeof(*sinsqrtable));
+    double *tp = sinsqrtable;
+    double inc = M_PI / (double)size;
+    double phase = 0;
+    for(int i = 0; i < size; i++, phase += inc)
+        *tp++ = sin(phase) * sin(phase);
 }
 
 void init_fade_tables(void){
@@ -231,6 +243,18 @@ double read_gausstab(double x){
     return(interp_lin(frac, gausstable[i1], gausstable[i2]));
 }
 
+double read_sinsqrtab(double phase){
+    phase = wrap_bufphase(phase);
+    int size = ELSE_GEN_TABSIZE / 2;
+    double tabphase = phase * (double)size;
+    int i1 = (int)tabphase;
+    double frac = tabphase - i1;
+    int i2 = i1 + 1;
+    if(i2 > size)
+        i2 = 0;
+    return(interp_lin(frac, sinsqrtable[i1], sinsqrtable[i2]));
+}
+
 double read_sintab(double phase){
     phase = wrap_bufphase(phase);
     double tabphase = phase * ELSE_GEN_TABSIZE;
@@ -252,10 +276,6 @@ double read_costab(double phase){
         i2 = 0;
     return(interp_lin(frac, costable[i1], costable[i2]));
 }
-
-/*double read_costab(double phase){
-    return(read_sintab(phase + 0.25));
-}*/
 
 double read_partab(double phase){
     phase = wrap_bufphase(phase);

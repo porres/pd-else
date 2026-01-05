@@ -3,14 +3,12 @@
 
 #include "m_pd.h"
 #include "magic.h"
+#include "buffer.h"
 #include <math.h>
 #include <stdlib.h>
 
 #define MAXLEN 1024
 
-#define SINSQRSIZE 512
-
-static t_sample *sinsqr_tbl;
 static t_class *vosim_class;
 
 typedef struct _vosim{
@@ -38,23 +36,6 @@ typedef struct _vosim{
     t_float    *x_sigscalar1;
     t_float    *x_sigscalar2;
 }t_vosim;
-
-static void vosim_maketab(void){
-	t_sample incr = M_PI/(SINSQRSIZE - 1);
-	sinsqr_tbl = getbytes((SINSQRSIZE) * sizeof(t_sample));
-	for(int i = 0; i < SINSQRSIZE; i++)
-		sinsqr_tbl[i] = pow(sin(incr*i), 2);
-}
-
-static t_sample vosim_readtab(t_sample idx){ // read with linear interpolation
-	int index = (int)idx;
-    int next  = index + 1;
-    if(next >= SINSQRSIZE)
-        next = 0;
-	t_sample frac = idx - index;
-    t_sample v1 = sinsqr_tbl[index], v2 = sinsqr_tbl[next];
-	return(v1 + frac*(v2-v1));
-}
 
 static void vosim_f0(t_vosim *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
@@ -165,8 +146,7 @@ static t_int *vosim_perform(t_int *w){
                     }
                 }
             }
-            double phase = cf_phase[j]*(double)(SINSQRSIZE-1);
-            out[j*n + i] = vosim_readtab(phase) * curdec[j];
+            out[j*n + i] = read_sinsqrtab(cf_phase[j]) * curdec[j];
             fund_phase[j] += fund_inc, cf_phase[j] += cf_inc;
         }
     }
@@ -266,7 +246,6 @@ static void *vosim_new(t_symbol *s, int ac, t_atom *av){
 }
 
 void vosim_tilde_setup(void){
-	vosim_maketab();
     vosim_class = class_new(gensym("vosim~"), (t_newmethod)(void*)vosim_new,
         (t_method)vosim_free, sizeof(t_vosim), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(vosim_class, nullfn, gensym("signal"), 0);
@@ -274,4 +253,5 @@ void vosim_tilde_setup(void){
     class_addlist(vosim_class, vosim_f0);
     class_addmethod(vosim_class, (t_method)vosim_cf, gensym("cf"), A_GIMME, 0);
     class_addmethod(vosim_class, (t_method)vosim_reset, gensym("reset"), 0);
+    init_sinsqr_table();
 }

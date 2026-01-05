@@ -1,4 +1,4 @@
-#N canvas 459 118 561 643 10;
+#N canvas 483 59 561 643 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
@@ -99,7 +99,7 @@
 #X connect 20 0 2 0;
 #X connect 21 0 14 0;
 #X connect 22 0 21 0;
-#X restore 426 281 pd multichannel;
+#X restore 432 290 pd multichannel;
 #N canvas 876 216 328 393 example 0;
 #X obj 69 265 else/group~ 1 1;
 #X obj 69 298 else/out~;
@@ -119,7 +119,7 @@
 #X connect 6 0 4 1;
 #X connect 8 0 9 0;
 #X connect 9 0 0 0;
-#X restore 426 303 pd example;
+#X restore 462 312 pd example;
 #X text 158 388 cf <flist> -;
 #X text 235 388 list of center frequencies, f 48;
 #X obj 18 312 else/formlet~;

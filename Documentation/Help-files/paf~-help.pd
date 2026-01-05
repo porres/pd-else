@@ -1,4 +1,4 @@
-#N canvas 517 61 565 586 10;
+#N canvas 500 94 565 586 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
@@ -25,7 +25,7 @@
 #X restore 2 3 graph;
 #X obj 201 232 else/out~;
 #X text 94 487 2) float;
-#X text 14 185 see also:;
+#X text 22 185 see also:;
 #X obj 108 309 cnv 17 3 70 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #N canvas 646 168 725 625 multichannel 0;
 #X obj 436 96 knob 50 100 10000 1 500 empty empty #dfdfdf #7c7c7c #000000 1 0 0 0 1 320 0 0 100 empty empty 0 8 0 0 0 1 0 0 0 0;
@@ -82,8 +82,8 @@
 #X connect 27 0 23 0;
 #X restore 443 242 pd multichannel;
 #X text 167 441 signal(s) -;
-#X obj 18 235 else/vosim~;
-#X obj 18 257 else/formlet~;
+#X obj 26 230 else/vosim~;
+#X obj 26 252 else/formlet~;
 #X obj 262 172 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 264 151 formant;
 #X obj 324 172 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
@@ -141,7 +141,7 @@
 #X connect 8 0 6 1;
 #X restore 443 264 pd example;
 #X text 58 87 [paf~] is a formant oscillator where you specify the fundamental (f0) frequency \, the center (or formant) frequency and the bandwidth (around the center frequency). All these parameters are in hertz. This technique is used to synthesize vocal sounds. The object has support for multichannels., f 73;
-#X obj 18 211 else/formant~;
+#X obj 26 207 else/formant~;
 #X connect 17 0 43 0;
 #X connect 28 0 43 1;
 #X connect 30 0 43 2;
