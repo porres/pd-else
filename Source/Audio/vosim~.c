@@ -13,7 +13,6 @@ static t_class *vosim_class;
 
 typedef struct _vosim{
     t_object    x_obj;
-    t_float     x_f;
     int         x_n;
     int         x_nchs;
     int         x_ch1;
@@ -74,6 +73,14 @@ static void vosim_reset(t_vosim *x){
     }
 }
 
+static void vosim_decay(t_vosim *x, t_floatarg f){
+    x->x_decay = f < 0 ? 0 : f > 1 ? 1 : f;
+}
+
+static void vosim_duty(t_vosim *x, t_floatarg f){
+    x->x_duty = f < 0 ? 0 : f > 1 ? 1 : f;
+}
+
 static t_int *vosim_perform(t_int *w){
 	t_vosim *x = (t_vosim *)(w[1]);
 	t_sample *in1 = (t_sample *)(w[2]);
@@ -105,6 +112,7 @@ static t_int *vosim_perform(t_int *w){
     }
     for(int j = 0; j < x->x_nchs; j++){
         for(int i = 0, n = x->x_n; i < n; i++){
+// fundamental and formant frequency
             float fund;
             if(x->x_ch1 == 1)
                 fund = x->x_sig1 ? in1[i] : x->x_f0_list[0];
@@ -125,11 +133,12 @@ static t_int *vosim_perform(t_int *w){
             float cf_inc = cf*sr_inv;
             if(cf_inc > 1)
                 cf_inc = 1;
-            if(fund_phase[j] >= 1){
-                curdec[j] = 1;
-                fund_phase[j] -= 1;
+// now for the algorithm
+            if(fund_phase[j] >= 1){ // reset
+                fund_phase[j] -= 1; // wrap phase
                 res[j] = fund_phase[j];
-                cf_phase[j] = 0;
+                cf_phase[j] = 0; // hard sync phase
+                curdec[j] = 1; // reset decay
             }
             else{
                 if(cf_phase[j] >= 1){
@@ -141,13 +150,14 @@ static t_int *vosim_perform(t_int *w){
                     if(rfund_phase <= 0)
                         curdec[j] = 0;
                     else{ // a little fading
-                        curdec[j] *= fmin(fmax(decay, 0), 1);
+                        curdec[j] *= decay;
                         curdec[j] *= fmin(rfund_phase/ratio, 1.);
                     }
                 }
             }
             out[j*n + i] = read_sinsqrtab(cf_phase[j]) * curdec[j];
-            fund_phase[j] += fund_inc, cf_phase[j] += cf_inc;
+            fund_phase[j] += fund_inc;
+            cf_phase[j] += cf_inc;
         }
     }
 	x->x_res = res;
@@ -204,8 +214,9 @@ static void *vosim_free(t_vosim *x){
 static void *vosim_new(t_symbol *s, int ac, t_atom *av){
 	t_vosim *x = (t_vosim *)pd_new(vosim_class);
     x->x_ignore = s;
-    x->x_f = x->x_decay = x->x_sr_inv = 0.0;
-    x->x_duty = 1;
+    x->x_sr_inv = 0.0;
+    float duty = 1;
+    float decay = 0.9f;
     x->x_nchs = 1;
     float cf = 0.0f;
     x->x_f0_list_size = x->x_cf_list_size = x->x_nchs = 1;
@@ -224,18 +235,18 @@ static void *vosim_new(t_symbol *s, int ac, t_atom *av){
             x->x_cf_list[0] = atom_getfloat(av);
             ac--, av++;
             if(ac){
-                x->x_decay = atom_getfloat(av);
+                decay = atom_getfloat(av);
                 ac--, av++;
                 if(ac){
-                    x->x_duty = atom_getfloat(av);
+                    duty = atom_getfloat(av);
                     ac--, av++;
                 }
             }
         }
     }
+    x->x_decay = fmin(fmax(decay, 0), 1);
+    x->x_duty = fmin(fmax(duty, 0), 1);
     signalinlet_new(&x->x_obj, cf);
-	floatinlet_new(&x->x_obj, &x->x_decay);
-	floatinlet_new(&x->x_obj, &x->x_duty);
 	outlet_new(&x->x_obj, &s_signal);
     x->x_glist = canvas_getcurrent();
     x->x_sigscalar1 = obj_findsignalscalar((t_object *)x, 0);
@@ -253,5 +264,7 @@ void vosim_tilde_setup(void){
     class_addlist(vosim_class, vosim_f0);
     class_addmethod(vosim_class, (t_method)vosim_cf, gensym("cf"), A_GIMME, 0);
     class_addmethod(vosim_class, (t_method)vosim_reset, gensym("reset"), 0);
+    class_addmethod(vosim_class, (t_method)vosim_decay, gensym("decay"), A_FLOAT, 0);
+    class_addmethod(vosim_class, (t_method)vosim_duty, gensym("duty"), A_FLOAT, 0);
     init_sinsqr_table();
 }
