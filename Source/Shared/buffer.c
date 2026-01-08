@@ -312,19 +312,19 @@ t_word *buffer_get(t_buffer *c, t_symbol * name, int *bufsize, int indsp, int co
     return(0);
 }
 
-//making peek~ work with channel number choosing, assuming 1-indexed
+// making "peek~" work with channel number choosing, assuming 1-indexed
 void buffer_getchannel(t_buffer *c, int chan_num, int complain){
     int chan_idx;
     char buf[MAXPDSTRING];
-    t_symbol * curname; //name of the current channel we want
-    int vsz = c->c_npts;  
-    t_word *retvec = NULL;//pointer to the corresponding channel to return
-    //1-indexed bounds checking
-    chan_num = chan_num < 1 ? 1 : (chan_num > buffer_MAXCHANS ? buffer_MAXCHANS : chan_num);
+    t_symbol * curname; // name of the current channel we want
+    int vsz = c->c_npts;
+    t_word *retvec = NULL; // pointer to the corresponding channel to return
+    // 1-indexed bounds checking
+    chan_num = chan_num < 1 ? 1 : (chan_num > BUFFER_MAXCHANS ? BUFFER_MAXCHANS : chan_num);
     c->c_single = chan_num;
-    //convert to 0-indexing, separate steps and diff variable for sanity's sake
+    // convert to 0-indexing, separate steps and diff variable for sanity's sake
     chan_idx = chan_num - 1;
-    //making the buffer channel name string we'll be looking for
+    // making the buffer channel name string we'll be looking for
     if(c->c_bufname != &s_){
         if(chan_idx == 0){
             //if channel idx is 0, check for just plain bufname as well
@@ -344,7 +344,6 @@ void buffer_getchannel(t_buffer *c, int chan_num, int complain){
         c->c_vectors[0] = retvec;
         return;
     };
-
 }
 
 void buffer_bug(char *fmt, ...){ // from loud.c
@@ -386,7 +385,7 @@ void buffer_redraw(t_buffer *c){
         char buf[MAXPDSTRING];
         t_symbol * curname; //name of the current channel we want
         int chan_num = c->c_single; //1-indexed channel number
-        chan_num = chan_num < 1 ? 1 : (chan_num > buffer_MAXCHANS ? buffer_MAXCHANS : chan_num);
+        chan_num = chan_num < 1 ? 1 : (chan_num > BUFFER_MAXCHANS ? BUFFER_MAXCHANS : chan_num);
          //convert to 0-indexing, separate steps and diff variable for sanity's sake
         chan_idx = chan_num - 1;
         //making the buffer channel name string we'll be looking for
@@ -500,7 +499,7 @@ void *buffer_init(t_class *owner, t_symbol *bufname, int numchans, int singlemod
         bufname = &s_;
     c->c_bufname = bufname;
     singlemode = singlemode > 0 ? 1 : 0; // single mode forces numchans = 1
-    numchans = (numchans < 1 || singlemode) ? 1 : (numchans > buffer_MAXCHANS ? buffer_MAXCHANS : numchans);
+    numchans = (numchans < 1 || singlemode) ? 1 : (numchans > BUFFER_MAXCHANS ? BUFFER_MAXCHANS : numchans);
     if(!(vectors = (t_word **)getbytes(numchans* sizeof(*vectors))))
 		return(0);
 	if(!(channames = (t_symbol **)getbytes(numchans * sizeof(*channames)))){

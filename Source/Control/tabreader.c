@@ -117,7 +117,7 @@ static void tabreader_float(t_tabreader *x, t_float f){
 }
 
 static void tabreader_channel(t_tabreader *x, t_floatarg f){
-    x->x_ch = f < 1 ? 1 : (f > 64 ? 64 : (int) f);
+    x->x_ch = f < 1 ? 1 : (f > BUFFER_MAXCHANS ? BUFFER_MAXCHANS : (int) f);
     buffer_getchannel(x->x_buffer, x->x_ch, 1);
 }
 
@@ -218,7 +218,7 @@ static void *tabreader_new(t_symbol *s, int ac, t_atom * av){
             ch = (int)atom_getfloat(av), ac--, av++;
         }
     };
-    x->x_ch = (ch < 0 ? 1 : ch > 64 ? 64 : ch);
+    x->x_ch = (ch < 0 ? 1 : ch > BUFFER_MAXCHANS ? BUFFER_MAXCHANS : ch);
     x->x_buffer = buffer_init((t_class *)x, name, 1, x->x_ch);
     buffer_getchannel(x->x_buffer, x->x_ch, 1);
     buffer_setminsize(x->x_buffer, 2);

@@ -560,7 +560,7 @@ static void *tabplayer_new(t_symbol * s, int ac, t_atom *av){
     };
     x->x_isneg = (int)(x->x_rate < 0);
     // one auxiliary signal:  position input
-    int chn_n = (int)channels > 64 ? 64 : (int)channels;
+    int chn_n = (int)channels > BUFFER_MAXCHANS ? BUFFER_MAXCHANS : (int)channels;
     x->x_glist = canvas_getcurrent();
     x->x_hasfeeders = 0;
     x->x_buffer = buffer_init((t_class *)x, arrname, chn_n, 0);

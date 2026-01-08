@@ -15,15 +15,13 @@
 
 #define SHARED_INT_MAX INT_MAX
 
-#define buffer_MAXCHANS 64
-
 #define TWO_PI  (M_PI * 2.0)
 #define HALF_PI (M_PI * 0.5)
 #define ONE_SIXTH 0.16666666666666666666667f
 #define ELSE_GEN_TABSIZE  16384
 #define ELSE_FADE_TABSIZE 4096
 #define GAUSS_WIDTH 3.0
-#define buffer_MAXCHANS 64 //max number of channels
+#define BUFFER_MAXCHANS 4096 //max number of channels
 
 typedef struct _buffer{
     void       *c_owner;     // owner of buffer, note i don't know if this actually works

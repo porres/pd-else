@@ -6,8 +6,8 @@
 typedef struct _tabreader{
     t_object  x_obj;
     t_buffer *x_buffer;
-    t_int       x_n;
-    t_int         x_nchs;
+    t_int     x_n;
+    t_int     x_nchs;
     int       x_i_mode;
     int       x_ch;
     int       x_idx;
@@ -53,7 +53,7 @@ static void tabreader_set(t_tabreader *x, t_symbol *s){
 }
 
 static void tabreader_channel(t_tabreader *x, t_floatarg f){
-    x->x_ch = f < 1 ? 1 : (f > 64 ? 64 : (int) f);
+    x->x_ch = f < 1 ? 1 : (f > BUFFER_MAXCHANS ? BUFFER_MAXCHANS : (int) f);
     buffer_getchannel(x->x_buffer, x->x_ch, 1);
 }
 
