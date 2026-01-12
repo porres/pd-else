@@ -1,7 +1,12 @@
-file(GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/Source/Shared/*.c
-     ${CMAKE_CURRENT_SOURCE_DIR}/Source/Shared/libsamplerate/*.c)
+file(GLOB SOURCES
+     ${CMAKE_CURRENT_SOURCE_DIR}/Source/Shared/*.c
+     ${CMAKE_CURRENT_SOURCE_DIR}/Source/Shared/libsamplerate/*.c
+     ${CMAKE_CURRENT_SOURCE_DIR}/Source/Shared/fftease/*.c)
 
 add_library(else_shared SHARED ${SOURCES})
+
+target_include_directories(else_shared PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/Source/Shared)
 
 set_target_properties(else_shared PROPERTIES LIBRARY_OUTPUT_DIRECTORY
                                              ${PD_OUTPUT_PATH})
