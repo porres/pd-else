@@ -1,4 +1,4 @@
-#N canvas 538 23 563 392 10;
+#N canvas 538 38 563 392 10;
 #X obj 3 265 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 3 296 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 3 331 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -52,6 +52,9 @@
 #X text 153 305 signal(s);
 #X text 226 275 - time value(s) in ms;
 #X text 222 305 - converted value(s) in number of samples;
+#X text 29 174 see also:;
+#X obj 26 198 else/ms2samps;
+#X obj 26 223 else/samps2ms~;
 #X connect 5 0 26 0;
 #X connect 25 0 28 0;
 #X connect 26 0 25 0;

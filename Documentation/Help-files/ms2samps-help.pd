@@ -1,4 +1,4 @@
-#N canvas 552 34 563 381 10;
+#N canvas 503 38 563 381 10;
 #X obj 3 255 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 3 288 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 3 322 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -34,9 +34,20 @@
 #X text 153 331 (none);
 #X text 202 298 - converted value in number of samples;
 #X text 206 265 - time value in ms;
-#X text 159 298 float;
-#X text 159 265 float;
 #X text 314 178 If you sent it a number to convert \, the value gets updated and output when the sample rate changes., f 35;
+#X text 23 181 see also:;
+#X obj 21 201 else/ms2samps~;
+#X obj 21 223 else/samps2ms;
+#X text 159 265 list;
+#X text 159 298 list;
+#N canvas 798 238 417 250 list 0;
+#X obj 127 100 else/initmess 100 250 450;
+#X obj 127 131 else/samps2ms;
+#X listbox 127 172 26 0 0 0 - - - 0;
+#X text 126 51 There's support for lists.;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X restore 456 228 pd list;
 #X connect 5 0 6 0;
 #X connect 6 0 26 0;
 #X connect 26 0 17 0;
