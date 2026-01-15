@@ -1,4 +1,4 @@
-#N canvas 420 34 565 686 10;
+#N canvas 420 38 565 686 10;
 #X obj 2 4 cnv 15 301 42 empty empty del.in~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -15,8 +15,8 @@
 #X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X text 19 399 see also:;
-#X obj 175 400 else/ffdelay~;
-#X obj 268 400 else/fbdelay~;
+#X obj 211 400 else/ffdelay~;
+#X obj 304 400 else/fbdelay~;
 #X text 50 87 [del.in~] sets and writes to a delay line. Use [del.out~] to read it. This is quite similar to [delread~]/[delread4~] \, but with more features., f 74;
 #X obj 4 448 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 524 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
@@ -55,7 +55,6 @@
 #X obj 104 132 else/player~ bubul.mp3 1 1;
 #X obj 124 276 else/del.in~ -samps \$0-y 44100;
 #X text 272 306 The second argument also defines the maximum delay amount a corresponding [del.out~] has., f 44;
-#X obj 87 400 else/del.out~;
 #N canvas 630 306 444 290 example 0;
 #X obj 118 75 hsl 128 15 0 1000 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 115 192 else/out~;
@@ -70,6 +69,7 @@
 #X connect 3 0 7 0;
 #X connect 7 0 1 0;
 #X restore 441 395 pd example;
+#X obj 87 400 else/del.out~ \$0-y;
 #X connect 31 0 50 0;
 #X connect 33 0 50 0;
 #X connect 34 0 33 0;

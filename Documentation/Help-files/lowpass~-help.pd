@@ -165,13 +165,15 @@
 #X obj 81 71 else/lop2~;
 #X obj 81 96 else/bicoeff2;
 #X obj 80 123 else/vcf.m~;
-#A saved 500 10 0 0 0;
+#A saved 500 1 0 0 1 1 0 2 100 0;
 #A saved;
 #A saved;
 #A saved;
 #A saved;
-#X obj 80 183 else/bob.m~;
-#A saved 500 10 0 0 2 3 0;
+#A saved;
+#A saved;
+#A saved;
+#A saved;
 #A saved;
 #A saved;
 #A saved;

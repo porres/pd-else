@@ -292,9 +292,9 @@
 #X text 98 572 -fgcolor <f f f> | -bgcolor <f f f> | -gridcolor <f f f> | -range <f f> | -trigger <f> | -triglevel <f> | -nsamples <f> | -nlines <f> | -delay <f> | -dim <f f> | -receive <sym>, f 62;
 #X text 207 60 [scope~] displays signals in the style of an oscilloscope. It works up to two dimensions., f 40;
 #N canvas 626 294 419 280 see 0;
-#X obj 128 86 scope3d~ 0 0 140 140 1 0 1 1 1 1 20 8 256 30 30 30 190 190 190 160 160 160 empty;
 #X text 127 22 For up to 3D plots \, see:;
 #X text 159 49 [scope3d~];
+#X obj 128 86 else/scope3d~ 0 0 140 140 1 0 1 1 1 1 20 8 256 30 30 30 190 190 190 160 160 160 empty;
 #X restore 479 199 pd see also;
 #X text 110 485 rate <float>;
 #X text 196 485 - onset time delay between displays (default 0), f 58;

@@ -1,4 +1,4 @@
-#N canvas 34 78 574 458 10;
+#N canvas 580 160 574 458 10;
 #X obj 6 346 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 6 381 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 6 416 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;

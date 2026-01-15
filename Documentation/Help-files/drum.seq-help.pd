@@ -1,6 +1,6 @@
-#N struct 1008-slot float x float y float slotsize float color float width float bordercolor;
-#N struct 1038-slot float x float y float slotsize float color float width float bordercolor;
 #N canvas 476 45 562 639 10;
+#N struct \$0-slot float x float y float slotsize float color float width float bordercolor;
+#N struct \$0-slot float x float y float slotsize float color float width float bordercolor;
 #X obj 24 39 cnv 4 4 4 empty empty Drum 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 75 39 cnv 4 4 4 empty empty sequence 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 215 39 cnv 4 4 4 empty empty GUI 0 28 2 18 #e0e0e0 #000000 0;
