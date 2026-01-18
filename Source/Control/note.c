@@ -1274,7 +1274,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
             x->x_max_pixwidth = (int)av->a_w.w_float;
             ac--, av++;
             if(ac && av->a_type == A_FLOAT){ // 2ND Size
-                x->x_fontsize = (int)av->a_w.w_float * x->x_zoom;
+                x->x_fontsize = (int)av->a_w.w_float;
                 ac--, av++;
                 if(ac && av->a_type == A_SYMBOL){ // 3RD type
                     x->x_fontname = av->a_w.w_symbol;
