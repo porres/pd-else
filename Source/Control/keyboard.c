@@ -322,8 +322,7 @@ static void keyboard_select(t_gobj *z, t_glist *gl, int sel){
 }
 
 static void keyboard_delete(t_gobj *z, t_glist *glist){
-    t_text *x = (t_text *)z;
-    canvas_deletelinesfor(glist_getcanvas(glist), x);
+    canvas_deletelinesfor(glist, (t_text *)z);
 }
 
 static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
