@@ -121,6 +121,10 @@ static void sfont_note(t_sfont *x, t_symbol *s, int ac, t_atom *av){
 
 static void sfont_program_change(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
+    if(x->x_sfname == NULL){
+        post("[sfont~]: can't set program, no soundfont loaded");
+        return;
+    }
     if(ac == 1 || ac == 2){
         int pgm = atom_getintarg(0, ac, av);
         x->x_pgm = pgm < 0 ? 0 : pgm > 127 ? 127 : pgm;
@@ -129,33 +133,31 @@ static void sfont_program_change(t_sfont *x, t_symbol *s, int ac, t_atom *av){
             post("[sfont~]: program channel (%d) out of range (max is: %d)", ch, x->x_ch);
             return;
         }
-        int fail = fluid_synth_program_change(x->x_synth, ch, x->x_pgm);
-        if(!fail){
-            fluid_preset_t* preset = fluid_synth_get_channel_preset(x->x_synth, ch);
-            int bank = fluid_preset_get_banknum(preset);
-            if(preset == NULL){
-                if(x->x_verbosity)
-                    post("[sfont~]: couldn't load progam %d from bank %d\n", x->x_pgm, bank);
-            }
-            else{
-                x->x_bank = bank;
-                const char* pname = fluid_preset_get_name(preset);
-                if(x->x_verbosity)
-                    post("[sfont~]: loaded \"%s\" (bank %d, pgm %d) in channel %d\n",
-                        pname, x->x_bank, x->x_pgm, ch + 1);
-                t_atom at[1];
-                SETSYMBOL(&at[0], gensym(pname));
-                outlet_anything(x->x_info_out, gensym("preset"), 1, at);
-            }
+        fluid_preset_t* preset = fluid_sfont_get_preset(x->x_sfont, x->x_bank, x->x_pgm);
+        if(preset == NULL){
+            if(x->x_verbosity)
+                post("[sfont~]: couldn't load progam %d from bank %d\n", x->x_pgm, x->x_bank);
+            return;
         }
-        else
-            post("[sfont~]: couldn't load progam %d from bank %d into channel %d",
-                 x->x_pgm, x->x_bank, ch+1);
+        fluid_synth_program_change(x->x_synth, ch, x->x_pgm);
+        preset = fluid_synth_get_channel_preset(x->x_synth, ch);
+        x->x_bank = fluid_preset_get_banknum(preset);
+        const char* pname = fluid_preset_get_name(preset);
+        if(x->x_verbosity)
+            post("[sfont~]: loaded \"%s\" (bank %d, pgm %d) in channel %d\n",
+                pname, x->x_bank, x->x_pgm, ch + 1);
+        t_atom at[1];
+        SETSYMBOL(&at[0], gensym(pname));
+        outlet_anything(x->x_info_out, gensym("preset"), 1, at);
     }
 }
 
 static void sfont_bank(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
+    if(x->x_sfname == NULL){
+        post("[sfont~]: can't set bank, no soundfont loaded");
+        return;
+    }
     if(ac == 1 || ac == 2){
         int bank = atom_getintarg(0, ac, av);
         if(bank < 0)
@@ -166,7 +168,7 @@ static void sfont_bank(t_sfont *x, t_symbol *s, int ac, t_atom *av){
             return;
         }
         int fail = fluid_synth_bank_select(x->x_synth, ch, bank);
-        if(!fail && x->x_sfont){
+        if(!fail){
             x->x_bank = bank;
             fluid_preset_t* preset = fluid_sfont_get_preset(x->x_sfont, x->x_bank, x->x_pgm);
             if(preset == NULL){
@@ -477,10 +479,12 @@ static void sfont_info(t_sfont *x){
     post("Loaded soundfont: %s", fluid_sfont_get_name(x->x_sfont));
     post("------------------- presets -------------------");
     fluid_preset_t* preset = fluid_sfont_get_preset(x->x_sfont, 0, 0);
-    if(!preset) 
+    if(!preset){
+//        post("oops, first preset is empty");
         return;
+    }
     fluid_sfont_iteration_start(x->x_sfont);
-        while((fluid_sfont_iteration_next(x->x_sfont, preset))){
+    while((fluid_sfont_iteration_next(x->x_sfont, preset))){
         int bank = preset->get_banknum(preset), pgm = preset->get_num(preset);
         const char* name = preset->get_name(preset);
         post("bank (%02d) pgm (%03d) preset name (%s)", bank, pgm, name);
@@ -550,6 +554,9 @@ static void fluid_do_load(t_sfont *x, t_symbol *name){
             SETSYMBOL(&at[0], gensym(pname));
             outlet_anything(x->x_info_out, gensym("preset"), 1, at);
         }
+        else{
+            post("[sfont~]: no preset loaded, nothing to output");
+        }
     }
     else
         post("[sfont~]: couldn't load %d", realname);
@@ -597,6 +604,7 @@ static void sfont_free(t_sfont *x){
 static void *sfont_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_sfont *x = (t_sfont *)pd_new(sfont_class);
+    x->x_sfont = NULL;
     x->x_elsefilehandle = elsefile_new((t_pd *)x, sfont_readhook, 0);
     x->x_synth = NULL;
     x->x_settings = NULL;
