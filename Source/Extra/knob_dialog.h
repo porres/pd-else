@@ -1,6 +1,7 @@
 // Based on dialogs from iemguis in Pd Vanilla (by Tim Schoen & Porres)
 
 sys_gui("\n"
+// function called on the C-Side
 "proc color2hex {name} {\n"
 "    if {[catch {winfo rgb . $name} rgb]} {\n"
 "        return \"\"\n"
@@ -11,6 +12,15 @@ sys_gui("\n"
 "    return \"#$r$g$b\"\n"
 "}\n"
 "\n"
+// get symbol from Pd
+"proc get_symbol {text} {\n"
+//"    ::pdwindow::post \"RAW: <$text>\\n\"\n"
+" set sym [subst -nocommands -novariables $text]\n" // unescape backslashes
+" if {$sym eq \"empty\"} {set sym \"\"}\n" // set "empty" to literal empty
+//"    ::pdwindow::post \"Cooked: <$sym>\\n\"\n"
+" return $sym\n"
+"}\n"
+// Actual start of properties
 "namespace eval ::dialog_knob:: {\n"
 "}\n"
 // arrays to store per-dialog values
@@ -60,8 +70,8 @@ sys_gui("\n"
 "\n"
 
 // ------------------------------------------------------------------------------------------------
+        
 // Get parameters from Pd when asking for properties!
-
 "proc knob_dialog {id \\\n"
 "         size square \\\n"
 "         show_arc arcstart \\\n"
@@ -94,30 +104,22 @@ sys_gui("\n"
 "    set ::dialog_knob::var_exp($vid) $exp \n"
 "    set ::dialog_knob::var_readonly($vid) $readonly \n"
 "    set ::dialog_knob::var_jump($vid) $jump \n"
-"    set ::dialog_knob::var_circular($vid) [string map {{\\ } \" \"} $circular]\n" // ?????
-"    set ::dialog_knob::var_nmode($vid) [string map {{\\ } \" \"} $n_mode]\n" // ?????
-"    set ::dialog_knob::var_n_size($vid) $n_size\n"
-"    set ::dialog_knob::var_xpos($vid) $xpos\n"
-"    set ::dialog_knob::var_ypos($vid) $ypos\n"
+// remove escape backslashes before spaces with "string map"
+"    set ::dialog_knob::var_circular($vid) $circular \n"
+"    set ::dialog_knob::var_nmode($vid) $n_mode] \n"
+"    set ::dialog_knob::var_n_size($vid) $n_size \n"
+"    set ::dialog_knob::var_xpos($vid) $xpos \n"
+"    set ::dialog_knob::var_ypos($vid) $ypos \n"
 "\n" // attached symbols
-"    set rcv [::pdtk_text::unescape $rcv]\n"
-"    set snd [::pdtk_text::unescape $snd]\n"
-"    set prm [::pdtk_text::unescape $prm]\n"
-"    set var [::pdtk_text::unescape $var]\n"
-"    if {$rcv==\"empty\"} {\n"
-"       set rcv \"\"\n"
-"    }\n"
-"    if {$snd==\"empty\"} {\n"
-"       set snd \"\"\n"
-"    }\n"
-"    if {$prm==\"empty\"} {\n"
-"       set prm \"\"\n"
-"    }\n"
-"    if {$var==\"empty\"} {\n"
-"       set var \"\"\n"
-"    }\n"
-"\n"
+"    set rcv [get_symbol $rcv] \n"
+"    set snd [get_symbol $snd] \n"
+"    set prm [get_symbol $prm] \n"
+"    set var [get_symbol $var] \n"
+"\n" // more mapping needed for some reason, but why??? I thought get_symbol had already unescaped this
+//"    ::pdwindow::post \"before: <$rcv>\\n\"\n"
 "    set ::dialog_knob::var_rcv($vid) [string map {{\\ } \" \"} $rcv]\n"
+//"    set tmp $::dialog_knob::var_rcv($vid)\n"
+//"    ::pdwindow::post \"after: <$tmp>\\n\"\n"
 "    set ::dialog_knob::var_snd($vid) [string map {{\\ } \" \"} $snd]\n"
 "    set ::dialog_knob::var_prm($vid) [string map {{\\ } \" \"} $prm]\n"
 "    set ::dialog_knob::var_var($vid) [string map {{\\ } \" \"} $var]\n"
@@ -134,6 +136,17 @@ sys_gui("\n"
         
 // HELPER PROCEDURES/FUNCTIONS:
         
+// set a string to send it to Pd:
+//   - Remove: semicolons, commas, backslashes (but allow curlies, unlike vanilla)
+//   - Escape spaces and dollar signs
+//   - If the string is empty, set to "empty"
+"proc sanitize_string {x} {\n"
+"    set y [string map {\" \" {\\ } \";\" \"\" \",\" \"\" \"\\\\\" \"\" \"$\" {\\$}} $x]\n"
+"    if {$y eq \"\"} {set y \"empty\"}\n"
+"    concat $y\n"
+"}\n"
+               
+// clip values
 "proc ::dialog_knob::clip {val min {max {}}} {\n"
 "    if {$min ne {} && $val < $min} {return $min}\n"
 "    if {$max ne {} && $val > $max} {return $max}\n"
@@ -682,10 +695,10 @@ sys_gui("\n"
 "                $::dialog_knob::var_n_size($vid) \\\n"
 "                $::dialog_knob::var_xpos($vid) \\\n"
 "                $::dialog_knob::var_ypos($vid) \\\n"
-"                [string map {\"$\" {\\$}} [unspace_text $rcv_name]] \\\n"
-"                [string map {\"$\" {\\$}} [unspace_text $snd_name]] \\\n"
-"                [string map {\"$\" {\\$}} [unspace_text $prm_name]] \\\n" // clean?
-"                [string map {\"$\" {\\$}} [unspace_text $var_name]] \\\n" // clean?
+"                [sanitize_string $rcv_name] \\\n"
+"                [sanitize_string $snd_name] \\\n"
+"                [sanitize_string $prm_name] \\\n"
+"                [sanitize_string $var_name] \\\n"
 "                [string tolower $::dialog_knob::var_color_bg($vid)] \\\n"
 "                [string tolower $::dialog_knob::var_color_arc($vid)] \\\n"
 "                [string tolower $::dialog_knob::var_color_fg($vid)] \\\n"
