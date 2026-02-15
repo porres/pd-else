@@ -346,6 +346,8 @@ static void blsquare_free(t_blsquare *x) {
 static void *blsquare_new(t_symbol *s, int ac, t_atom *av){
     t_blsquare *x = (t_blsquare *)pd_new(blsquare_class);
     x->x_ignore = s;
+    
+    t_float width = 0.5f;
     x->x_midi = x->x_soft = 0;
     x->x_dir = (t_int *)getbytes(sizeof(*x->x_dir));
     x->x_phase = (t_float *)getbytes(sizeof(*x->x_phase));
@@ -382,12 +384,16 @@ static void *blsquare_new(t_symbol *s, int ac, t_atom *av){
         x->x_freq_list[0] = av->a_w.w_float;
         ac--, av++;
         if(ac && av->a_type == A_FLOAT){
-            x->x_phase[0] = av->a_w.w_float;
+            width = av->a_w.w_float;
             ac--, av++;
+            if(ac && av->a_type == A_FLOAT){
+                x->x_phase[0] = av->a_w.w_float;
+                ac--, av++;
+            }
         }
     }
     x->x_inlet_width = inlet_new(&x->x_obj, &x->x_obj.ob_pd,  &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_inlet_width, 0.5f);
+    pd_float((t_pd *)x->x_inlet_width, width);
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_sync, 0);
     x->x_inlet_phase = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
