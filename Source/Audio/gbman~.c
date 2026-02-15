@@ -231,6 +231,7 @@ static void *gbman_new(t_symbol *s, int ac, t_atom *av){
     
     x->x_coeff1 = y1;
     x->x_coeff2 = y2;
+    
     for(int i = 0; i < x->x_list_size; i++){
         if(x->x_freq_list[i] >= 0)
             x->x_phase[i] = 1;

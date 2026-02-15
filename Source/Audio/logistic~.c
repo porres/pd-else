@@ -163,11 +163,8 @@ static void *logistic_new(t_symbol *s, int ac, t_atom *av){
     x->x_list_size = 1;
     x->x_nchans = 1;
     x->x_ch = 1;
-    x->x_phase = (double *)getbytes(sizeof(*x->x_phase));
-    x->x_ynm1 = (double *)getbytes(sizeof(*x->x_ynm1));
     x->x_freq_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_freq_list[0] = sys_getsr() * 0.5;
-    x->x_phase[0] = 0;
     double p = 1;
     x->x_init_ynm1 = 0.1;
     while(ac && av->a_type == A_SYMBOL){
@@ -195,6 +192,10 @@ static void *logistic_new(t_symbol *s, int ac, t_atom *av){
                 x->x_init_ynm1 = av->a_w.w_float;
     }
     x->x_p = p;
+    
+    x->x_phase = (double *)getbytes(sizeof(*x->x_phase) * x->x_list_size);
+    x->x_ynm1 = (double *)getbytes(sizeof(*x->x_ynm1) * x->x_list_size);
+    x->x_phase[0] = 0;
     for(int i = 0; i < x->x_list_size; i++){
         if(x->x_freq_list[i] >= 0)
             x->x_phase[i] = 1;
