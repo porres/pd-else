@@ -211,25 +211,33 @@ static void *fbsine2_new(t_symbol *s, int ac, t_atom *av){
         else
             goto errstate;
     }
-    if(ac && av->a_type == A_FLOAT){
+    if(ac > 0 && av->a_type == A_FLOAT){
         x->x_freq_list[0] = av->a_w.w_float;
         ac--; av++;
-        if(ac && av->a_type == A_FLOAT)
+        if(ac && av->a_type == A_FLOAT) {
             im = av->a_w.w_float;
             ac--; av++;
-            if(ac && av->a_type == A_FLOAT)
+            if(ac && av->a_type == A_FLOAT) {
                 fb = av->a_w.w_float;
                 ac--; av++;
-                if(ac && av->a_type == A_FLOAT)
+                if(ac && av->a_type == A_FLOAT) {
                     a = av->a_w.w_float;
                     ac--; av++;
-                    if(ac && av->a_type == A_FLOAT)
+                    if(ac && av->a_type == A_FLOAT) {
                         c = av->a_w.w_float;
                         ac--; av++;
-                        if(ac && av->a_type == A_FLOAT)
+                        if(ac && av->a_type == A_FLOAT) {
                             x->x_init_xn = av->a_w.w_float;
-                            if(ac && av->a_type == A_FLOAT)
+                            // ?? either set to same value, so no need for if check
+                            // if separate argument, we should ac--
+                            if(ac && av->a_type == A_FLOAT) {
                                 x->x_init_yn = av->a_w.w_float;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     x->x_im = im;
     x->x_fb = fb;

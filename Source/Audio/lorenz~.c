@@ -282,27 +282,34 @@ static void *lorenz_new(t_symbol *sym, int ac, t_atom *av){
         else
             goto errstate;
     }
-    if(ac && av->a_type == A_FLOAT){
+    if(ac > 0 && av->a_type == A_FLOAT){
         x->x_freq_list[0] = av->a_w.w_float;
         ac--; av++;
-        if(ac && av->a_type == A_FLOAT)
+        if(ac && av->a_type == A_FLOAT) {
             s = av->a_w.w_float;
             ac--; av++;
-            if(ac && av->a_type == A_FLOAT)
+            if(ac && av->a_type == A_FLOAT) {
                 r = av->a_w.w_float;
                 ac--; av++;
-                if(ac && av->a_type == A_FLOAT)
+                if(ac && av->a_type == A_FLOAT) {
                     b = av->a_w.w_float;
                     ac--; av++;
-                    if(ac && av->a_type == A_FLOAT)
+                    if(ac && av->a_type == A_FLOAT) {
                         h = av->a_w.w_float;
                         ac--; av++;
-                        if(ac && av->a_type == A_FLOAT)
+                        if(ac && av->a_type == A_FLOAT) {
                             x->x_init_xn = av->a_w.w_float;
-                            if(ac && av->a_type == A_FLOAT)
+                            if(ac && av->a_type == A_FLOAT) {
                                 x->x_init_yn = av->a_w.w_float;
-                                if(ac && av->a_type == A_FLOAT)
+                                if(ac && av->a_type == A_FLOAT) {
                                     x->x_init_zn = av->a_w.w_float;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     x->x_s = s, x->x_r = r, x->x_b = b, x->x_h = h;
     

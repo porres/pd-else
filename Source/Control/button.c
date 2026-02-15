@@ -790,7 +790,7 @@ static void *button_new(t_symbol *s, int ac, t_atom *av){
     sprintf(x->x_in_tag, "%pIN", x);
     sprintf(x->x_out_tag, "%pOUT", x);
     sprintf(x->x_hover_tag, "%pHOVER", x);
-    if(x->x_rcv != gensym("empty"))
+    if(x->x_rcv != gensym("empty") && x->x_rcv != &s_)
         pd_bind(&x->x_obj.ob_pd, x->x_rcv);
     return(x);
     errstate:

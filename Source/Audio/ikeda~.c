@@ -196,16 +196,19 @@ static void *ikeda_new(t_symbol *s, int ac, t_atom *av){
         else
             goto errstate;
     }
-    if(ac && av->a_type == A_FLOAT){
+    if(ac > 0 && av->a_type == A_FLOAT){
         x->x_freq_list[0] = av->a_w.w_float;
         ac--; av++;
-        if(ac && av->a_type == A_FLOAT)
+        if(ac && av->a_type == A_FLOAT) {
             u = av->a_w.w_float;
             ac--; av++;
-            if(ac && av->a_type == A_FLOAT)
+            if(ac && av->a_type == A_FLOAT) {
                 x->x_init_ynm1 = av->a_w.w_float;
-                if(ac && av->a_type == A_FLOAT)
+                if(ac && av->a_type == A_FLOAT) {
                     x->x_init_ynm2 = av->a_w.w_float;
+                }
+            }
+        }
     }
     x->x_u = u;
     

@@ -211,25 +211,31 @@ static void *latoocarfian_new(t_symbol *s, int ac, t_atom *av){
         else
             goto errstate;
     }
-    if(ac && av->a_type == A_FLOAT){
+    if(ac > 0 && av->a_type == A_FLOAT){
         x->x_freq_list[0] = av->a_w.w_float;
         ac--; av++;
-        if(ac && av->a_type == A_FLOAT)
+        if(ac && av->a_type == A_FLOAT) {
             a = av->a_w.w_float;
             ac--; av++;
-            if(ac && av->a_type == A_FLOAT)
+            if(ac && av->a_type == A_FLOAT) {
                 b = av->a_w.w_float;
                 ac--; av++;
-                if(ac && av->a_type == A_FLOAT)
+                if(ac && av->a_type == A_FLOAT) {
                     c = av->a_w.w_float;
                     ac--; av++;
-                    if(ac && av->a_type == A_FLOAT)
+                    if(ac && av->a_type == A_FLOAT) {
                         d = av->a_w.w_float;
                         ac--; av++;
-                        if(ac && av->a_type == A_FLOAT)
+                        if(ac && av->a_type == A_FLOAT) {
                             x->x_init_xn = av->a_w.w_float;
-                            if(ac && av->a_type == A_FLOAT)
+                            if(ac && av->a_type == A_FLOAT) {
                                 x->x_init_yn = av->a_w.w_float;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     x->x_a = a, x->x_b = b, x->x_c = c, x->x_d = d;
     

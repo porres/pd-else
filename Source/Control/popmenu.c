@@ -854,7 +854,7 @@ static void menu_free(t_menu*x){
     if(x->x_items)
         freebytes(x->x_items, sizeof(t_symbol*)*x->x_maxitems);
     pd_unbind(&x->x_obj.ob_pd, x->x_sym);
-    if(x->x_rcv != gensym("empty"))
+    if(x->x_rcv != gensym("empty") && x->x_rcv != &s_)
         pd_unbind(&x->x_obj.ob_pd, x->x_rcv);
     x->x_proxy->p_cnv = NULL;
     pdgui_stub_deleteforkey(x);
@@ -1186,7 +1186,7 @@ static void *menu_new(t_symbol *s, int ac, t_atom *av){
     sprintf(x->x_tag_in, "%pIN", (void *)x);
     sprintf(x->x_tag_out, "%pOUT", (void *)x);
     sprintf(x->x_tag_sel, "%pSEL", (void *)x);
-    if(x->x_rcv != gensym("empty"))
+    if(x->x_rcv != gensym("empty") && x->x_rcv != &s_)
         pd_bind(&x->x_obj.ob_pd, x->x_rcv);
     outlet_new(&x->x_obj, &s_float);
     return(x);

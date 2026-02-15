@@ -209,14 +209,16 @@ static void *gbman_new(t_symbol *s, int ac, t_atom *av){
             goto errstate;
     }
     t_float y1 = 1.2, y2 = 2.1; // default parameters
-    if(ac && av->a_type == A_FLOAT){
+    if(ac > 0 && av->a_type == A_FLOAT){
         x->x_freq_list[0] = av->a_w.w_float;
         ac--; av++;
-        if(ac && av->a_type == A_FLOAT)
+        if(ac && av->a_type == A_FLOAT) {
             y1 = av->a_w.w_float;
             ac--; av++;
-            if(ac && av->a_type == A_FLOAT)
+            if(ac && av->a_type == A_FLOAT) {
                 y2 = av->a_w.w_float;
+            }
+        }
     }
     
     x->x_phase = (double *)getbytes(sizeof(*x->x_phase) * x->x_list_size);
