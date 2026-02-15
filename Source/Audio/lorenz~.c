@@ -260,17 +260,11 @@ static void *lorenz_new(t_symbol *sym, int ac, t_atom *av){
     x->x_list_size = 1;
     x->x_nchans = 1;
     x->x_ch = 1;
-    x->x_phase = (double *)getbytes(sizeof(*x->x_phase));
     x->x_dx = (double *)getbytes(sizeof(*x->x_dx));
-    x->x_xn = (double *)getbytes(sizeof(*x->x_xn));
-    x->x_yn = (double *)getbytes(sizeof(*x->x_yn));
-    x->x_zn = (double *)getbytes(sizeof(*x->x_zn));
     x->x_xnm1 = (double *)getbytes(sizeof(*x->x_xnm1));
     x->x_ynm1 = (double *)getbytes(sizeof(*x->x_ynm1));
     x->x_znm1 = (double *)getbytes(sizeof(*x->x_znm1));
     x->x_freq_list = (float*)malloc(MAXLEN * sizeof(float));
-    x->x_freq_list[0] = sys_getsr() * 0.5;
-    x->x_phase[0] = x->x_yn[0] = 0;
     double s = 10, r = 28, b = 2.667, h = 0.05;
     x->x_init_xn = 0.1, x->x_init_yn = 0., x->x_init_zn = 0.;
     while(ac && av->a_type == A_SYMBOL){
@@ -311,6 +305,14 @@ static void *lorenz_new(t_symbol *sym, int ac, t_atom *av){
                                     x->x_init_zn = av->a_w.w_float;
     }
     x->x_s = s, x->x_r = r, x->x_b = b, x->x_h = h;
+    
+    x->x_phase = (double *)getbytes(sizeof(*x->x_phase) * x->x_list_size);
+    x->x_xn = (double *)getbytes(sizeof(*x->x_xn) * x->x_list_size);
+    x->x_yn = (double *)getbytes(sizeof(*x->x_yn) * x->x_list_size);
+    x->x_zn = (double *)getbytes(sizeof(*x->x_zn) * x->x_list_size);
+    
+    x->x_freq_list[0] = sys_getsr() * 0.5;
+    x->x_phase[0] = x->x_yn[0] = 0;
     for(int i = 0; i < x->x_list_size; i++){
         if(x->x_freq_list[i] >= 0)
             x->x_phase[i] = 1;
