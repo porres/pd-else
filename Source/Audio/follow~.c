@@ -2,6 +2,7 @@
 
 #include <m_pd.h>
 #include <math.h>
+#include <else_alloca.h>
 
 #define LOG001 log(0.001)
 
@@ -60,7 +61,7 @@ static t_int *follow_perform_float(t_int *w){
     double *last_out = x->x_last_out;
     double ms_up = x->x_ms_up, ms_down = x->x_ms_down;
     double output, a, yn;
-    t_atom at[x->x_nchans];
+    t_atom* at = ALLOCA(t_atom, x->x_nchans);
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0; i < n; i++){
             double xn = fabs(in[j*n + i]);
@@ -86,6 +87,7 @@ static t_int *follow_perform_float(t_int *w){
     }
     x->x_last_out = last_out;
     outlet_list(x->x_outlet, &s_list, x->x_nchans, at);
+    FREEA(at, t_atom, x->x_nchans);
     return(w+4);
 }
 
