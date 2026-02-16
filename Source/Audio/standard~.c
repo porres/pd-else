@@ -226,6 +226,11 @@ static void *standard_new(t_symbol *s, int ac, t_atom *av){
                     x->x_init_yn = av->a_w.w_float;
     }
     x->x_k = k;
+
+    x->x_phase = (double *)getbytes(sizeof(*x->x_phase) * x->x_list_size);
+    x->x_xn = (double *)getbytes(sizeof(*x->x_xn) * x->x_list_size);
+    x->x_yn = (double *)getbytes(sizeof(*x->x_yn) * x->x_list_size);
+    x->x_phase[0] = x->x_lastout[0] = 0;
     for(int i = 0; i < x->x_list_size; i++){
         if(x->x_freq_list[i] >= 0)
             x->x_phase[i] = 1;
