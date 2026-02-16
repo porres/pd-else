@@ -1,6 +1,6 @@
 // Based on dialogs from iemguis in Pd Vanilla (by Tim Schoen & Porres)
 
-sys_gui("\n"
+static const char *knob_dialog_tcl =
 // function called on the C-Side
 "proc color2hex {name} {\n"
 "    if {[catch {winfo rgb . $name} rgb]} {\n"
@@ -106,7 +106,7 @@ sys_gui("\n"
 "    set ::dialog_knob::var_jump($vid) $jump \n"
 // remove escape backslashes before spaces with "string map"
 "    set ::dialog_knob::var_circular($vid) $circular \n"
-"    set ::dialog_knob::var_nmode($vid) $n_mode] \n"
+"    set ::dialog_knob::var_nmode($vid) $n_mode \n"
 "    set ::dialog_knob::var_n_size($vid) $n_size \n"
 "    set ::dialog_knob::var_xpos($vid) $xpos \n"
 "    set ::dialog_knob::var_ypos($vid) $ypos \n"
@@ -767,4 +767,4 @@ sys_gui("\n"
 "proc ::dialog_knob::unbind_return {id} {\n"
 "    bind $id <KeyPress-Return> break\n"
 "    return 1\n"
-"}\n");
+"}\n";

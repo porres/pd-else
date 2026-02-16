@@ -112,12 +112,11 @@ static void mouse_gui__remouse(t_mouse_gui *snk){
 }
 
 static void mouse_gui_dobindfocus(t_mouse_gui *snk){
-    sys_vgui("bind Canvas <<mouse_focusin>> \
-             {if {[mouse_gui_ispatcher %%W]} \
-             {pdsend {%s _focus %%W 1}}}\n", snk->g_psgui->s_name);
-    sys_vgui("bind Canvas <<mouse_focusout>> \
-             {if {[mouse_gui_ispatcher %%W]} \
-             {pdsend {%s _focus %%W 0}}}\n", snk->g_psgui->s_name);
+    const char *script =
+        "bind Canvas <<mouse_focusin>> {if {[mouse_gui_ispatcher %%W]} {pdsend {%s _focus %%W 1}}}\n"
+        "bind Canvas <<mouse_focusout>> {if {[mouse_gui_ispatcher %%W]} {pdsend {%s _focus %%W 0}}}\n";
+
+    pdgui_vmess(script, snk->g_psgui->s_name, snk->g_psgui->s_name);
 }
 
 static void mouse_gui__refocus(t_mouse_gui *snk){
@@ -188,97 +187,79 @@ static int mouse_gui_setup(void){
     class_addmethod(mouse_gui_class, (t_method)mouse_gui__focus, ps__focus, A_SYMBOL, A_FLOAT, 0);
     class_addmethod(mouse_gui_class, (t_method)mouse_gui__vised, ps__vised, A_SYMBOL, A_FLOAT, 0);
     class_addmethod(mouse_gui_class, (t_method)mouse_gui__wheel, ps__wheel, A_FLOAT, A_FLOAT, 0);
-    
     /* Protect against pdCmd being called (via "Canvas <Destroy>" binding)
      during Tcl_Finalize().  FIXME this should be a standard exit handler. */
-    sys_gui("proc mouse_gui_exithook {cmd op} {proc ::pdsend {} {}}\n");
-    sys_gui("if {[info tclversion] >= 8.4} {\n\
-            trace add execution exit enter mouse_gui_exithook}\n");
-    
-    sys_gui("proc mouse_gui_ispatcher {cv} {\n");
-    sys_gui(" if {[string range $cv 0 1] == \".x\"");
-    sys_gui("  && [string range $cv end-1 end] == \".c\"} {\n");
-    sys_gui("  return 1} else {return 0}\n");
-    sys_gui("}\n");
-    
-    sys_gui("proc mouse_gui_remouse {} {\n");
-    sys_gui(" bind all <<mouse_down>> {}\n");
-    sys_gui(" bind all <<mouse_up>> {}\n");
-    sys_gui(" bind all <<mouse_wheel_v>> {}\n");
-    sys_gui(" bind all <<mouse_wheel_h>> {}\n");
-    sys_gui(" pdsend {#mouse_gui _remouse}\n");
-    sys_gui("}\n");
-    
-    sys_gui("proc mouse_gui_getscreen {} {\n");
-    sys_gui(" set px [winfo pointerx .]\n");
-    sys_gui(" set py [winfo pointery .]\n");
-    sys_gui(" pdsend \"#mouse_mouse _getscreen $px $py\"\n");
-    sys_gui("}\n");
-    
-    sys_gui("proc mouse_gui_getscreenfocused {} {\n");
-    sys_gui(" set px [winfo pointerx .]\n");
-    sys_gui(" set py [winfo pointery . ]\n");
-    sys_gui(" set wx [winfo x $::focused_window]\n");
-    sys_gui(" set wy [winfo y $::focused_window]\n");
-    sys_gui(" pdsend \"#mouse_mouse _getscreenfocused ");
-    sys_gui("$px $py $wx $wy\"\n");
-    sys_gui("}\n");
-    
-    // visibility hack for msw, LATER rethink
-    sys_gui("global mouse_gui_ispolling\n");
-    sys_gui("global mouse_gui_px\n");
-    sys_gui("global mouse_gui_py\n");
-    sys_gui("set mouse_gui_ispolling 0\n");
-    sys_gui("set mouse_gui_px 0\n");
-    sys_gui("set mouse_gui_py 0\n");
-    sys_gui("set mouse_gui_wx 0\n");
-    sys_gui("set mouse_gui_wy 0\n");
-    
-    sys_gui("proc mouse_gui_poll {} {\n");
-    sys_gui("global mouse_gui_ispolling\n");
-    sys_gui("global mouse_gui_px\n");
-    sys_gui("global mouse_gui_py\n");
-    sys_gui("global mouse_gui_wx\n");
-    sys_gui("global mouse_gui_wy\n");
-    sys_gui("if {$mouse_gui_ispolling > 0} {\n");
-    // mode0 and 1
-    sys_gui("set px [winfo pointerx .]\n");
-    sys_gui("set py [winfo pointery .]\n");
-    sys_gui("if {$mouse_gui_ispolling <= 2} {\n");
-    sys_gui("if {$mouse_gui_px != $px || $mouse_gui_py != $py} {\n");
-    sys_gui(" pdsend \"#mouse_mouse _getscreen $px $py\"\n");
-    sys_gui(" set mouse_gui_px $px\n");
-    sys_gui(" set mouse_gui_py $py\n");
-    sys_gui("}\n");
-    sys_gui("} ");
-    // mode2
-    sys_gui("elseif {$mouse_gui_ispolling == 3} {\n");
-    sys_gui(" set wx [winfo x $::focused_window]\n");
-    sys_gui(" set wy [winfo y $::focused_window]\n");
-    sys_gui("if {$mouse_gui_px != $px || $mouse_gui_py != $py ");
-    sys_gui("|| $mouse_gui_wx != $wx || $mouse_gui_wy != $wy} {\n ");
-    sys_gui(" pdsend \"#mouse_mouse _getscreenfocused ");
-    sys_gui("$px $py $wx $wy\"\n");
-    sys_gui(" set mouse_gui_px $px\n");
-    sys_gui(" set mouse_gui_py $py\n");
-    sys_gui(" set mouse_gui_wx $wx\n");
-    sys_gui(" set mouse_gui_wy $wy\n");
-    sys_gui("}\n");
-    sys_gui("}\n");
-    sys_gui("after 50 mouse_gui_poll\n");
-    sys_gui("}\n");
-    sys_gui("}\n");
-    
-    sys_gui("proc mouse_gui_refocus {} {\n");
-    sys_gui(" bind Canvas <<mouse_focusin>> {}\n");
-    sys_gui(" bind Canvas <<mouse_focusout>> {}\n");
-    sys_gui(" pdsend {#mouse_gui _refocus}\n");
-    sys_gui("}\n");
-    sys_gui("proc mouse_gui_revised {} {\n");
-    sys_gui(" bind Canvas <<mouse_vised>> {}\n");
-    sys_gui(" bind Canvas <<mouse_unvised>> {}\n");
-    sys_gui(" pdsend {#mouse_gui _revised}\n");
-    sys_gui("}\n");
+    const char *script =
+        "proc mouse_gui_exithook {cmd op} {proc ::pdsend {} {}}\n"
+        "if {[info tclversion] >= 8.4} {\n"
+        "    trace add execution exit enter mouse_gui_exithook\n"
+        "}\n"
+        "proc mouse_gui_ispatcher {cv} {\n"
+        "    if {[string range $cv 0 1] == \".x\" && [string range $cv end-1 end] == \".c\"} {\n"
+        "        return 1\n"
+        "    } else {return 0}\n"
+        "}\n"
+        "proc mouse_gui_remouse {} {\n"
+        "    bind all <<mouse_down>> {}\n"
+        "    bind all <<mouse_up>> {}\n"
+        "    bind all <<mouse_wheel_v>> {}\n"
+        "    bind all <<mouse_wheel_h>> {}\n"
+        "    pdsend {#mouse_gui _remouse}\n"
+        "}\n"
+        "proc mouse_gui_getscreen {} {\n"
+        "    set px [winfo pointerx .]\n"
+        "    set py [winfo pointery .]\n"
+        "    pdsend \"#mouse_mouse _getscreen $px $py\"\n"
+        "}\n"
+        "proc mouse_gui_getscreenfocused {} {\n"
+        "    set px [winfo pointerx .]\n"
+        "    set py [winfo pointery .]\n"
+        "    set wx [winfo x $::focused_window]\n"
+        "    set wy [winfo y $::focused_window]\n"
+        "    pdsend \"#mouse_mouse _getscreenfocused $px $py $wx $wy\"\n"
+        "}\n"
+        "global mouse_gui_ispolling mouse_gui_px mouse_gui_py mouse_gui_wx mouse_gui_wy\n"
+        "set mouse_gui_ispolling 0\n"
+        "set mouse_gui_px 0\n"
+        "set mouse_gui_py 0\n"
+        "set mouse_gui_wx 0\n"
+        "set mouse_gui_wy 0\n"
+        "proc mouse_gui_poll {} {\n"
+        "    global mouse_gui_ispolling mouse_gui_px mouse_gui_py mouse_gui_wx mouse_gui_wy\n"
+        "    if {$mouse_gui_ispolling > 0} {\n"
+        "        set px [winfo pointerx .]\n"
+        "        set py [winfo pointery .]\n"
+        "        if {$mouse_gui_ispolling <= 2} {\n"
+        "            if {$mouse_gui_px != $px || $mouse_gui_py != $py} {\n"
+        "                pdsend \"#mouse_mouse _getscreen $px $py\"\n"
+        "                set mouse_gui_px $px\n"
+        "                set mouse_gui_py $py\n"
+        "            }\n"
+        "        } elseif {$mouse_gui_ispolling == 3} {\n"
+        "            set wx [winfo x $::focused_window]\n"
+        "            set wy [winfo y $::focused_window]\n"
+        "            if {$mouse_gui_px != $px || $mouse_gui_py != $py || $mouse_gui_wx != $wx || $mouse_gui_wy != $wy} {\n"
+        "                pdsend \"#mouse_mouse _getscreenfocused $px $py $wx $wy\"\n"
+        "                set mouse_gui_px $px\n"
+        "                set mouse_gui_py $py\n"
+        "                set mouse_gui_wx $wx\n"
+        "                set mouse_gui_wy $wy\n"
+        "            }\n"
+        "        }\n"
+        "        after 50 mouse_gui_poll\n"
+        "    }\n"
+        "}\n"
+        "proc mouse_gui_refocus {} {\n"
+        "    bind Canvas <<mouse_focusin>> {}\n"
+        "    bind Canvas <<mouse_focusout>> {}\n"
+        "    pdsend {#mouse_gui _refocus}\n"
+        "}\n"
+        "proc mouse_gui_revised {} {\n"
+        "    bind Canvas <<mouse_vised>> {}\n"
+        "    bind Canvas <<mouse_unvised>> {}\n"
+        "    pdsend {#mouse_gui _revised}\n"
+        "}\n";
+    pdgui_vmess(script, NULL);
     return(1);
 }
 
