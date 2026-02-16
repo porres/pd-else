@@ -325,94 +325,77 @@ static t_elsefile *elsefile_getproxy(t_pd *master){
     return(0);
 }
 
-static void editor_guidefs(void){
-    sys_gui("proc editor_open {name geometry title sendable} {\n");
-    sys_gui(" if {[winfo exists $name]} {\n");
-    sys_gui("  $name.text delete 1.0 end\n");
-    sys_gui(" } else {\n");
-    sys_gui("  toplevel $name\n");
-    sys_gui("  wm title $name $title\n");
-    sys_gui("  wm geometry $name $geometry\n");
-    sys_gui("  if {$sendable} {\n");
-    sys_gui("   wm protocol $name WM_DELETE_WINDOW \\\n");
-    sys_gui("    [concat editor_close $name 1]\n");
-    sys_gui("   bind $name <<Modified>> \"editor_dodirty $name\"\n");
-    sys_gui("  }\n");
-    sys_gui("  text $name.text -relief raised -bd 2 \\\n");
-    sys_gui("   -font -*-courier-medium--normal--12-* \\\n");
-    sys_gui("   -yscrollcommand \"$name.scroll set\" -background white\n");
-    sys_gui("  scrollbar $name.scroll -command \"$name.text yview\"\n");
-    sys_gui("  pack $name.scroll -side right -fill y\n");
-    sys_gui("  pack $name.text -side left -fill both -expand 1\n");
-    sys_gui(" }\n");
-    sys_gui("}\n");
-//
-    sys_gui("proc editor_dodirty {name} {\n");
-    sys_gui(" if {[catch {$name.text edit modified} dirty]} {set dirty 1}\n");
-    sys_gui(" set title [wm title $name]\n");
-    sys_gui(" set dt [string equal -length 1 $title \"*\"]\n");
-    sys_gui(" if {$dirty} {\n");
-    sys_gui("  if {$dt == 0} {wm title $name *$title}\n");
-    sys_gui(" } else {\n");
-    sys_gui("  if {$dt} {wm title $name [string range $title 1 end]}\n");
-    sys_gui(" }\n");
-    sys_gui("}\n");
-//
-    sys_gui("proc editor_setdirty {name flag} {\n");
-    sys_gui(" if {[winfo exists $name]} {\n");
-    sys_gui("  catch {$name.text edit modified $flag}\n");
-    sys_gui(" }\n");
-    sys_gui("}\n");
-//
-    sys_gui("proc editor_doclose {name} {\n");
-    sys_gui(" destroy $name\n");
-    sys_gui("}\n");
-//
-    sys_gui("proc editor_append {name contents} {\n");
-    sys_gui(" if {[winfo exists $name]} {\n");
-    sys_gui("  $name.text insert end $contents\n");
-    sys_gui(" }\n");
-    sys_gui("}\n");
-// FIXME make it more reliable
-    sys_gui("proc editor_send {name} {\n");
-    sys_gui(" if {[winfo exists $name]} {\n");
-    sys_gui("  pdsend \"ELSEFILE$name clear\"\n");
-    sys_gui("  for {set i 1} \\\n");
-    sys_gui("   {[$name.text compare $i.end < end]} \\\n");
-    sys_gui("  	{incr i 1} {\n");
-    sys_gui("   set lin [$name.text get $i.0 $i.end]\n");
-    sys_gui("   if {$lin != \"\"} {\n");
-// LATER rethink semi/comma mapping
-    sys_gui("    regsub -all \\; $lin \"  _semi_ \" tmplin\n");
-    sys_gui("    regsub -all \\, $tmplin \"  _comma_ \" lin\n");
-    sys_gui("    pdsend \"ELSEFILE$name addline $lin\"\n");
-    sys_gui("   }\n");
-    sys_gui("  }\n");
-    sys_gui("  pdsend \"ELSEFILE$name end\"\n");
-    sys_gui(" }\n");
-    sys_gui("}\n");
-//
-    sys_gui("proc editor_close {name ask} {\n");
-    sys_gui(" if {[winfo exists $name]} {\n");
-    sys_gui("  if {[catch {$name.text edit modified} dirty]} {set dirty 1}\n");
-    sys_gui("  if {$ask && $dirty} {\n");
-    sys_gui("   set title [wm title $name]\n");
-    sys_gui("   if {[string equal -length 1 $title \"*\"]} {\n");
-    sys_gui("    set title [string range $title 1 end]\n");
-    sys_gui("   }\n");
-    sys_gui("   set answer [tk_messageBox \\-type yesnocancel \\\n");
-    sys_gui("    \\-icon question \\\n");
-    sys_gui("    \\-message [concat Save changes to \\\"$title\\\"?]]\n");
-    sys_gui("   if {$answer == \"yes\"} {editor_send $name}\n");
-    sys_gui("   if {$answer != \"cancel\"} {editor_doclose $name}\n");
-    sys_gui("  } else {editor_doclose $name}\n");
-    sys_gui(" }\n");
-    sys_gui("}\n");
+static void elsefile_text_window_editor_guidefs(void){
+    static const char *script =
+    "proc editor_open {name geometry title sendable} {\n"
+    " if {[winfo exists $name]} {\n"
+    "  $name.text delete 1.0 end\n"
+    " } else {\n"
+    "  toplevel $name\n"
+    "  wm title $name $title\n"
+    "  wm geometry $name $geometry\n"
+    "  if {$sendable} {\n"
+    "   wm protocol $name WM_DELETE_WINDOW [concat editor_close $name 1]\n"
+    "   bind $name <<Modified>> \"editor_dodirty $name\"\n"
+    "  }\n"
+    "  text $name.text -relief raised -bd 2 \\\n"
+    "   -font -*-courier-medium--normal--12-* \\\n"
+    "   -yscrollcommand \"$name.scroll set\" -background white\n"
+    "  scrollbar $name.scroll -command \"$name.text yview\"\n"
+    "  pack $name.scroll -side right -fill y\n"
+    "  pack $name.text -side left -fill both -expand 1\n"
+    " }\n"
+    "}\n"
+    "proc editor_dodirty {name} {\n"
+    " if {[catch {$name.text edit modified} dirty]} {set dirty 1}\n"
+    " set title [wm title $name]\n"
+    " set dt [string equal -length 1 $title \"*\"]\n"
+    " if {$dirty} {\n"
+    "  if {$dt == 0} {wm title $name *$title}\n"
+    " } else {\n"
+    "  if {$dt} {wm title $name [string range $title 1 end]}\n"
+    " }\n"
+    "}\n"
+    "proc editor_setdirty {name flag} {\n"
+    " if {[winfo exists $name]} {catch {$name.text edit modified $flag}}\n"
+    "}\n"
+    "proc editor_doclose {name} {destroy $name}\n"
+    "proc editor_append {name contents} {\n"
+    " if {[winfo exists $name]} {$name.text insert end $contents}\n"
+    "}\n"
+    "proc editor_send {name} {\n"
+    " if {[winfo exists $name]} {\n"
+    "  pdsend \"ELSEFILE$name clear\"\n"
+    "  for {set i 1} {[$name.text compare $i.end < end]} {incr i 1} {\n"
+    "   set lin [$name.text get $i.0 $i.end]\n"
+    "   if {$lin != \"\"} {\n"
+    "    regsub -all \\; $lin \"  _semi_ \" tmplin\n"
+    "    regsub -all \\, $tmplin \"  _comma_ \" lin\n"
+    "    pdsend \"ELSEFILE$name addline $lin\"\n"
+    "   }\n"
+    "  }\n"
+    "  pdsend \"ELSEFILE$name end\"\n"
+    " }\n"
+    "}\n"
+    "proc editor_close {name ask} {\n"
+    " if {[winfo exists $name]} {\n"
+    "  if {[catch {$name.text edit modified} dirty]} {set dirty 1}\n"
+    "  if {$ask && $dirty} {\n"
+    "   set title [wm title $name]\n"
+    "   if {[string equal -length 1 $title \"*\"]} {set title [string range $title 1 end]}\n"
+    "   set answer [tk_messageBox -type yesnocancel -icon question \\\n"
+    "    -message [concat Save changes to \\\"$title\\\"?]]\n"
+    "   if {$answer == \"yes\"} {editor_send $name}\n"
+    "   if {$answer != \"cancel\"} {editor_doclose $name}\n"
+    "  } else {editor_doclose $name}\n"
+    " }\n"
+    "}\n";
+    pdgui_vmess(script, NULL);
 }
 
 // null owner defaults to class name, pass "" to suppress
 void editor_open(t_elsefile *f, char *title, char *owner){
-    if(!owner)
+    if (!owner)
         owner = (char *)(class_getname(*f->f_master));
     if(!*owner)
         owner = 0;
@@ -420,16 +403,31 @@ void editor_open(t_elsefile *f, char *title, char *owner){
         title = owner;
         owner = 0;
     }
-    if(owner)
-        sys_vgui("editor_open .%lx %dx%d {%s: %s} %d\n", (unsigned long)f,
-            600, 340, owner, title, (f->f_editorfn != 0));
-    else
-        sys_vgui("editor_open .%lx %dx%d {%s} %d\n", (unsigned long)f,
-            600, 340, (title ? title : "Untitled"), (f->f_editorfn != 0));
+    char buf[256];
+    if(owner){
+        snprintf(buf, sizeof(buf),
+            "editor_open .%lx %dx%d {%s: %s} %d",
+            (unsigned long)f,
+            600, 340,
+            owner, title,
+            (f->f_editorfn != 0));
+    }
+    else{
+        snprintf(buf, sizeof(buf),
+            "editor_open .%lx %dx%d {%s} %d",
+            (unsigned long)f,
+            600, 340,
+            (title ? title : "Untitled"),
+            (f->f_editorfn != 0));
+    }
+    pdgui_vmess(buf, NULL);
 }
 
+
 static void editor_tick(t_elsefile *f){
-    sys_vgui("editor_close .%lx 1\n", (unsigned long)f);
+    char buf[64];
+    snprintf(buf, sizeof(buf), "editor_close .%lx 1", (unsigned long)f);
+    pdgui_vmess(buf, NULL);
 }
 
 void editor_close(t_elsefile *f, int ask){
@@ -437,31 +435,56 @@ void editor_close(t_elsefile *f, int ask){
 	// hack: deferring modal dialog creation in order to allow for
 	// a message box redraw to happen -- LATER investigate
         clock_delay(f->f_editorclock, 0);
-    else
-        sys_vgui("editor_close .%lx 0\n", (unsigned long)f);
+    else{
+        char buf[64];
+        snprintf(buf, sizeof(buf), "editor_close .%lx 0", (unsigned long)f);
+        pdgui_vmess(buf, NULL);
+    }
 }
 
-void editor_append(t_elsefile *f, char *contents){
-    if(contents){
+void editor_append(t_elsefile *f, char *contents)
+{
+    if (contents) {
         char *ptr;
-        for(ptr = contents; *ptr; ptr++){
-            if(*ptr == '{' || *ptr == '}'){
+        char buf[512];
+
+        for (ptr = contents; *ptr; ptr++) {
+            if (*ptr == '{' || *ptr == '}') {
                 char c = *ptr;
                 *ptr = 0;
-                sys_vgui("editor_append .%lx {%s}\n", (unsigned long)f, contents);
-                sys_vgui("editor_append .%lx \"%c\"\n", (unsigned long)f, c);
+
+                snprintf(buf, sizeof(buf),
+                    "editor_append .%lx {%s}",
+                    (unsigned long)f, contents);
+                pdgui_vmess(buf, NULL);
+
+                snprintf(buf, sizeof(buf),
+                    "editor_append .%lx \"%c\"",
+                    (unsigned long)f, c);
+                pdgui_vmess(buf, NULL);
+
                 *ptr = c;
                 contents = ptr + 1;
             }
         }
-        if(*contents)
-            sys_vgui("editor_append .%lx {%s}\n", (unsigned long)f, contents);
+
+        if (*contents) {
+            snprintf(buf, sizeof(buf),
+                "editor_append .%lx {%s}",
+                (unsigned long)f, contents);
+            pdgui_vmess(buf, NULL);
+        }
     }
 }
 
 void editor_setdirty(t_elsefile *f, int flag){
-    if(f->f_editorfn)
-        sys_vgui("editor_setdirty .%lx %d\n", (unsigned long)f, flag);
+    if (f->f_editorfn){
+        char buf[64];
+        snprintf(buf, sizeof(buf),
+            "editor_setdirty .%lx %d",
+            (unsigned long)f, flag);
+        pdgui_vmess(buf, NULL);
+    }
 }
 
 static void editor_clear(t_elsefile *f){
@@ -474,7 +497,7 @@ static void editor_clear(t_elsefile *f){
 }
 
 static void editor_addline(t_elsefile *f, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
+    (void)s;
     if(f->f_editorfn){
         int i;
         t_atom *ap;
@@ -498,39 +521,40 @@ static void editor_end(t_elsefile *f){
     }
 }
 
-static void panel_guidefs(void){
-    sys_gui("proc panel_open {target inidir} {\n");
-    sys_gui(" global pd_opendir\n");
-    sys_gui(" if {$inidir == \"\"} {\n");
-    sys_gui("  set $inidir $pd_opendir\n");
-    sys_gui(" }\n");
-    sys_gui(" set filename [tk_getOpenFile \\\n");
-    sys_gui("  -initialdir $inidir]\n");
-    sys_gui(" if {$filename != \"\"} {\n");
-    sys_gui("  set directory [string range $filename 0 \\\n");
-    sys_gui("   [expr [string last / $filename ] - 1]]\n");
-    sys_gui("  if {$directory == \"\"} {set directory \"/\"}\n");
-    sys_gui("  puts stderr [concat $directory]\n");
-    sys_gui("  pdsend \"$target path \\\n");
-    sys_gui("   [enquote_path $filename] [enquote_path $directory] \"\n");
-    sys_gui(" }\n");
-    sys_gui("}\n");
-//
-    sys_gui("proc panel_save {target inidir inifile} {\n");
-    sys_gui(" if {$inifile != \"\"} {\n");
-    sys_gui("  set filename [tk_getSaveFile \\\n");
-    sys_gui("   -initialdir $inidir -initialfile $inifile]\n");
-    sys_gui(" } else {\n");
-    sys_gui("  set filename [tk_getSaveFile]\n");
-    sys_gui(" }\n");
-    sys_gui(" if {$filename != \"\"} {\n");
-    sys_gui("  set directory [string range $filename 0 \\\n");
-    sys_gui("   [expr [string last / $filename ] - 1]]\n");
-    sys_gui("  if {$directory == \"\"} {set directory \"/\"}\n");
-    sys_gui("  pdsend \"$target path \\\n");
-    sys_gui("   [enquote_path $filename] [enquote_path $directory] \"\n");
-    sys_gui(" }\n");
-    sys_gui("}\n");
+static void elsefile_panel_guidefs(void){
+    static const char script[] =
+    "proc panel_open {target inidir} {\n"
+    " global pd_opendir\n"
+    " if {$inidir == \"\"} {\n"
+    "  set inidir $pd_opendir\n"
+    " }\n"
+    " set filename [tk_getOpenFile \\\n"
+    "  -initialdir $inidir]\n"
+    " if {$filename != \"\"} {\n"
+    "  set directory [string range $filename 0 \\\n"
+    "   [expr [string last / $filename ] - 1]]\n"
+    "  if {$directory == \"\"} {set directory \"/\"}\n"
+    "  puts stderr [concat $directory]\n"
+    "  pdsend \"$target path \\\n"
+    "   [enquote_path $filename] [enquote_path $directory] \"\n"
+    " }\n"
+    "}\n"
+    "proc panel_save {target inidir inifile} {\n"
+    " if {$inifile != \"\"} {\n"
+    "  set filename [tk_getSaveFile \\\n"
+    "   -initialdir $inidir -initialfile $inifile]\n"
+    " } else {\n"
+    "  set filename [tk_getSaveFile]\n"
+    " }\n"
+    " if {$filename != \"\"} {\n"
+    "  set directory [string range $filename 0 \\\n"
+    "   [expr [string last / $filename ] - 1]]\n"
+    "  if {$directory == \"\"} {set directory \"/\"}\n"
+    "  pdsend \"$target path \\\n"
+    "   [enquote_path $filename] [enquote_path $directory] \"\n"
+    " }\n"
+    "}\n";
+    pdgui_vmess(script, NULL);
 }
 
 /* There are two modes of -initialdir persistence:
@@ -548,11 +572,21 @@ static void panel_path(t_elsefile *f, t_symbol *s1, t_symbol *s2){
 }
 
 static void panel_tick(t_elsefile *f){
-    if(f->f_savepanel)
-        sys_vgui("panel_open %s {%s}\n", f->f_bindname->s_name, f->f_inidir->s_name);
-    else
-        sys_vgui("panel_save %s {%s} {%s}\n", f->f_bindname->s_name,
-        f->f_inidir->s_name, f->f_inifile->s_name);
+    char buf[256];
+    if(f->f_savepanel){
+        snprintf(buf, sizeof(buf),
+            "panel_open %s {%s}",
+            f->f_bindname->s_name,
+            f->f_inidir->s_name);
+    }
+    else{
+        snprintf(buf, sizeof(buf),
+            "panel_save %s {%s} {%s}",
+            f->f_bindname->s_name,
+            f->f_inidir->s_name,
+            f->f_inifile->s_name);
+    }
+    pdgui_vmess(buf, NULL);
 }
 
 // these are hacks: deferring modal dialog creation in order to allow for
@@ -748,7 +782,7 @@ void elsefile_setup(t_class *c, int embeddable){
         class_addmethod(elsefile_class, (t_method)editor_addline, gensym("addline"), A_GIMME, 0);
         class_addmethod(elsefile_class, (t_method)editor_end, gensym("end"), 0);
 // LATER find a way of ensuring these are not defined yet
-        editor_guidefs();
-        panel_guidefs();
+        elsefile_text_window_editor_guidefs();
+        elsefile_panel_guidefs();
     }
 }
