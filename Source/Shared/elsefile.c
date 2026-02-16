@@ -744,11 +744,11 @@ void elsefile_setup(t_class *c, int embeddable){
         ps__C = gensym("#C");
         elsefile_class = class_new(gensym("_elsefile"), 0, 0,sizeof(t_elsefile), CLASS_PD | CLASS_NOINLET, 0);
         class_addmethod(elsefile_class, (t_method)panel_path,gensym("path"), A_SYMBOL, A_DEFSYM, 0);
-//        class_addmethod(elsefile_class, (t_method)editor_clear, gensym("clear"), 0);
-//        class_addmethod(elsefile_class, (t_method)editor_addline, gensym("addline"), A_GIMME, 0);
-//        class_addmethod(elsefile_class, (t_method)editor_end, gensym("end"), 0);
+        class_addmethod(elsefile_class, (t_method)editor_clear, gensym("clear"), 0);
+        class_addmethod(elsefile_class, (t_method)editor_addline, gensym("addline"), A_GIMME, 0);
+        class_addmethod(elsefile_class, (t_method)editor_end, gensym("end"), 0);
 // LATER find a way of ensuring these are not defined yet
-//        editor_guidefs();
+        editor_guidefs();
         panel_guidefs();
     }
 }
