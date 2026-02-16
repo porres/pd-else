@@ -7,8 +7,8 @@
 #endif
 
 #include <m_pd.h>
-#include <elsefile.h>
-#include <else_alloca.h>
+#include "elsefile.h"
+#include "else_alloca.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -298,7 +298,7 @@ static void rec_track_speed(t_rec_track *tp, t_floatarg f){
 }
 
 static void rec_calltracks(t_rec *x, t_rec_trackfn fn, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
+    (void)s;
     int ntracks = x->x_ntracks;
     t_rec_track **tpp = x->x_tracks;
     if(ac){ // FIXME: CHECKED tracks called in the order of being mentioned (without duplicates)
@@ -417,7 +417,7 @@ static void rec_doread(t_rec *x, t_symbol *fname){
 }
 
 static int rec_writetrack(t_rec *x, t_rec_track *tp, FILE *fp){
-    x = NULL;
+    (void)x;
     int natoms = binbuf_getnatom(tp->tr_binbuf);
     if(natoms) { /* CHECKED empty tracks not stored */
         char sbuf[REC_FILEBUFSIZE], *bp = sbuf, *ep = sbuf + REC_FILEBUFSIZE;
@@ -497,14 +497,14 @@ static void rec_dowrite(t_rec *x, t_symbol *fname){
 }
 
 static void rec_readhook(t_pd *z, t_symbol *fname, int ac, t_atom *av){
-    ac = 0;
-    av = NULL;
+    (void)ac;
+    (void)av;
     rec_doread((t_rec *)z, fname);
 }
 
 static void rec_writehook(t_pd *z, t_symbol *fname, int ac, t_atom *av){
-    ac = 0;
-    av = NULL;
+    (void)ac;
+    (void)av;
     rec_dowrite((t_rec *)z, fname);
 }
 
@@ -543,7 +543,7 @@ static void rec_free(t_rec *x){
 }
 
 static void *rec_new(t_symbol * s, int ac, t_atom *av){
-    s = NULL;
+    (void)s;
     t_rec *x = (t_rec *)pd_new(rec_class);;
     int ntracks = 1;
     t_symbol *name = &s_;
@@ -568,7 +568,7 @@ static void *rec_new(t_symbol * s, int ac, t_atom *av){
         (*tpp)->tr_clock = clock_new(*tpp, (t_method)rec_track_tick);
     }
     x->x_canvas = canvas_getcurrent();
-    x->x_elsefilehandle = elsefile_new((t_pd *)x, rec_readhook, rec_writehook);
+    x->x_elsefilehandle = elsefile_new((t_pd *)x, NULL, rec_readhook, rec_writehook, NULL);
     if(ntracks > REC_MAXTRACKS)
         ntracks = REC_MAXTRACKS;
     x->x_ntracks = ntracks;
@@ -612,5 +612,5 @@ void rec_setup(void){
     class_addmethod(rec_class, (t_method)rec_write, gensym("save"), A_DEFSYM, 0);
     class_addmethod(rec_class, (t_method)rec_speed, gensym("speed"), A_DEFFLOAT, 0);
     class_addmethod(rec_class, (t_method)rec_click, gensym("click"), 0);
-    elsefile_setup();
+    elsefile_setup(rec_class, 0);
 }

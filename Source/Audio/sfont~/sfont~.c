@@ -605,7 +605,7 @@ static void *sfont_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_sfont *x = (t_sfont *)pd_new(sfont_class);
     x->x_sfont = NULL;
-    x->x_elsefilehandle = elsefile_new((t_pd *)x, sfont_readhook, 0);
+    x->x_elsefilehandle = elsefile_new((t_pd *)x, NULL, sfont_readhook, NULL, NULL);
     x->x_synth = NULL;
     x->x_settings = NULL;
     x->x_sfname = NULL;
@@ -723,7 +723,7 @@ void sfont_tilde_setup(void){
     class_addmethod(sfont_class, (t_method)sfont_info, gensym("info"), 0);
     class_addmethod(sfont_class, (t_method)sfont_dump, gensym("dump"), 0);
     class_addmethod(sfont_class, (t_method)sfont_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    elsefile_setup();
+    elsefile_setup(sfont_class, 0);
 }
 
 // https://www.fluidsynth.org/api/

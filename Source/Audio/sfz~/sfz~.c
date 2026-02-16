@@ -325,7 +325,7 @@ static void sfz_free(t_sfz* x){
 static void* sfz_new(t_symbol *s, int ac, t_atom *av){
     (void)s;
     t_sfz* x = (t_sfz*)pd_new(sfz_class);
-    x->x_elsefilehandle = elsefile_new((t_pd *)x, sfz_readhook, 0);
+    x->x_elsefilehandle = elsefile_new((t_pd *)x, NULL, sfz_readhook, NULL, NULL);
     x->x_binbuf = binbuf_new();
     x->x_bufsize = 0;
 
@@ -380,5 +380,5 @@ void sfz_tilde_setup(){
     class_addmethod(sfz_class, (t_method)sfz_voices, gensym("voices"), A_FLOAT, 0);
     class_addmethod(sfz_class, (t_method)sfz_info, gensym("info"), 0);
     class_addmethod(sfz_class, (t_method)sfz_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    elsefile_setup();
+    elsefile_setup(sfz_class, 0);
 }
