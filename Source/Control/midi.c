@@ -934,7 +934,7 @@ static void midi_free(t_midi *x){
 static void *midi_new(t_symbol * s, int ac, t_atom *av){
     t_midi *x = (t_midi *)pd_new(midi_class);
     x->x_canvas = canvas_getcurrent();
-    x->x_elsefilehandle = elsefile_new((t_pd *)x, midi_readhook, midi_writehook);
+    x->x_elsefilehandle = elsefile_new((t_pd *)x, NULL, midi_readhook, midi_writehook, NULL);
     x->x_timescale = 1.;
     x->x_newtimescale = 1.;
     x->x_prevtime = 0.;
@@ -996,5 +996,5 @@ void midi_setup(void){
     class_addmethod(midi_class, (t_method)midi_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
 //    class_addmethod(midi_class, (t_method)midi_goto, gensym("goto"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(midi_class, (t_method)midi_speed, gensym("speed"), A_FLOAT, 0);;
-    elsefile_setup();
+    elsefile_setup(midi_class, 0);
 }
