@@ -24,6 +24,8 @@
 #X obj 196 153 cnv 16 245 90 empty empty empty 20 12 0 10 #e0e0e0 #404040 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-file 534167 float 2;
+#A color 0;
+#A width 2;
 #X coords 0 1 534167 -1 247 92 1 0 0;
 #X restore 195 152 graph;
 #X text 176 308 set <symbol> - set array name, f 61;
@@ -42,6 +44,8 @@
 #X obj 101 424 cnv 16 245 90 empty empty empty 20 12 0 10 #e0e0e0 #404040 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-threaded 534167 float 2;
+#A color 0;
+#A width 2;
 #X coords 0 1 534167 -1 247 92 1 0 0;
 #X restore 100 423 graph;
 #X listbox 174 330 18 0 0 0 - - - 0;
@@ -56,7 +60,7 @@
 #X obj 220 244 tgl 16 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
 #X msg 189 220 0;
 #X msg 220 220 1;
-#X text 75 23 By default [sfload] works in threaded mode \, which guarantees order of execution. If you wanna load large files and would like to not choke Pd's audio you can try loading files in threaded mode \, but this ruins order of execution (and you can use the output of [sfload] to know when it is done loading)., f 49;
+#X text 75 23 By default [sfload] works in non threaded mode \, which guarantees order of execution. If you wanna load large files and would like to not choke Pd's audio you can try loading files in threaded mode \, but this ruins order of execution (and you can use the output of [sfload] to know when it is done loading)., f 49;
 #X connect 0 0 5 0;
 #X connect 3 0 9 0;
 #X connect 5 0 3 0;
@@ -81,11 +85,15 @@
 #X obj 48 503 cnv 16 245 130 empty empty empty 20 12 0 10 #e0e0e0 #404040 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array 0-\$0-example 11025 float 2;
+#A color 0;
+#A width 2;
 #X coords 0 1 11025 -1 247 132 1 0 0;
 #X restore 47 502 graph;
 #X obj 314 502 cnv 16 245 130 empty empty empty 20 12 0 10 #e0e0e0 #404040 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array 1-\$0-example 146081 float 2;
+#A color 0;
+#A width 2;
 #X coords 0 1 146081 -1 247 132 1 0 0;
 #X restore 313 501 graph;
 #X msg 67 193 load stereo.wav;
@@ -116,6 +124,8 @@
 #X obj 57 191 cnv 16 245 130 empty empty empty 20 12 0 10 #e0e0e0 #404040 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array 0-\$0-stereo 168131 float 2;
+#A color 0;
+#A width 2;
 #X coords 0 1 168131 -1 247 132 1 0 0;
 #X restore 56 190 graph;
 #X obj 413 452 else/sfload \$0-stereo;
@@ -130,6 +140,8 @@
 #X obj 57 342 cnv 16 245 130 empty empty empty 20 12 0 10 #e0e0e0 #404040 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array 1-\$0-stereo 168131 float 2;
+#A color 0;
+#A width 2;
 #X coords 0 1 168131 -1 247 132 1 0 0;
 #X restore 56 341 graph;
 #X msg 48 84 download https://upload.wikimedia.org/wikipedia/en/1/10/Michael_Jackson_Thriller.ogg, f 84;
