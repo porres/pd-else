@@ -773,7 +773,7 @@ static void *button_new(t_symbol *s, int ac, t_atom *av){
             }
             else if(s == gensym("-size")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
-                    w = h = atom_getfloat(av);
+                    w = h = atom_getfloat(av+1);
                     ac-=2, av+=2;
                     x->x_flag = 1;
                 }
@@ -781,7 +781,7 @@ static void *button_new(t_symbol *s, int ac, t_atom *av){
             }
             else if(s == gensym("-bgcolor")){
                 if(ac >= 2 && (av+1)->a_type == A_SYMBOL){
-                    x->x_bg = atom_getsymbol(av);
+                    x->x_bg = atom_getsymbol(av+1);
                     ac-=2, av+=2;
                     x->x_flag = 1;
                 }
@@ -789,7 +789,7 @@ static void *button_new(t_symbol *s, int ac, t_atom *av){
             }
             else if(s == gensym("-fgcolor")){
                 if(ac >= 2 && (av+1)->a_type == A_SYMBOL){
-                    x->x_fg = atom_getsymbol(av);
+                    x->x_fg = atom_getsymbol(av+1);
                     ac-=2, av+=2;
                     x->x_flag = 1;
                 }
