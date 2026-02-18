@@ -655,10 +655,10 @@ static void *button_new(t_symbol *s, int ac, t_atom *av){
                 fgcolor_rgb[i] = (uint8_t)av->a_w.w_float; ac--; av++;
             }
             
-            char bgstr[7];
-            char fgstr[7];
-            snprintf(bgstr, 7, "%02X%02X%02X",  bgcolor_rgb[0], bgcolor_rgb[1], bgcolor_rgb[2]);
-            snprintf(fgstr, 7, "%02X%02X%02X", fgcolor_rgb[0], fgcolor_rgb[1], fgcolor_rgb[2]);
+            char bgstr[20];
+            char fgstr[20];
+            snprintf(bgstr, 20, "#%.2x%.2x%.2x",  bgcolor_rgb[0], bgcolor_rgb[1], bgcolor_rgb[2]);
+            snprintf(fgstr, 20, "#%.2x%.2x%.2x", fgcolor_rgb[0], fgcolor_rgb[1], fgcolor_rgb[2]);
 
             // Assign to t_symbol
             x->x_bg = gensym(bgstr);
