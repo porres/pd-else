@@ -447,8 +447,7 @@ static t_int *envgen_perform(t_int *w){
                     }
                 }
             }
-            // TODO: fix this crash!
-            //out[j*n + i] = output;
+            out[j*n + i] = output;
             lastin[j] = f;
         }
     }
