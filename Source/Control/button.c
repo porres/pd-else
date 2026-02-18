@@ -664,13 +664,15 @@ static void *button_new(t_symbol *s, int ac, t_atom *av){
             x->x_bg = gensym(bgstr);
             x->x_fg = gensym(fgstr);
         }
-        else {
+        else if(av->a_type == A_SYMBOL && ac >= 2) {
             x->x_bg = av->a_w.w_symbol;  // BG
             ac--, av++;
             if(!ac) goto end;
             x->x_fg = av->a_w.w_symbol;  // FG
             ac--, av++;
         }
+        else goto errstate;
+        
         if(!ac) goto end;
         int mode = (int)av->a_w.w_float;  // mode
         x->x_mode = mode < 0 ? 0 : mode > 3 ? 3 : mode;
