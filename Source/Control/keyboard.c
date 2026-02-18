@@ -105,7 +105,7 @@ static void keyboard_get_snd_rcv(t_keyboard* x){
             }
             else{ // we got no flags, let's search for argument
                 int arg_n = 7; // receive argument number
-                if(n_args >= arg_n){ // we have it, get it
+                if(n_args > arg_n){ // we have it, get it
                     atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
                     x->x_snd_raw = gensym(buf);
                 }
@@ -131,7 +131,7 @@ static void keyboard_get_snd_rcv(t_keyboard* x){
             }
             else{ // we got no flags, let's search for argument
                 int arg_n = 8; // receive argument number
-                if(n_args >= arg_n){ // we have it, get it
+                if(n_args > arg_n){ // we have it, get it
                     atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
                     x->x_rcv_raw = gensym(buf);
                 }

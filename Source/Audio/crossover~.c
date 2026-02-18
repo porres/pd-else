@@ -35,7 +35,7 @@ typedef struct _cross{
 
 static t_class *cross_class;
 
-void cross_clear(t_cross *x){
+static void cross_clear(t_cross *x){
     x->x_L1x1 = x->x_L1x2 = x->x_L1y1 = x->x_L1y2 = 0.;
     x->x_L2x1 = x->x_L2x2 = x->x_L2y1 = x->x_L2y2 = 0.;
     x->x_H1x1 = x->x_H1x2 = x->x_H1y1 = x->x_H1y2 = 0.;

@@ -186,6 +186,7 @@ void pvretune_dsp(t_pvretune *x, t_signal **sp){
     if(x->x_n > x->x_hop){
         pd_error(x, "[pvretune~]: hop size can't be smaller than the block size");
         dsp_add_zero(sp[1]->s_vec, x->x_nchs*n);
+        return;
     }
     dsp_add(pvretune_perform, 3, x, sp[0]->s_vec, sp[1]->s_vec);
 }

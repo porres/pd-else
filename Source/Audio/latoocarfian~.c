@@ -192,12 +192,8 @@ static void *latoocarfian_new(t_symbol *s, int ac, t_atom *av){
     x->x_list_size = 1;
     x->x_nchans = 1;
     x->x_ch = 1;
-    x->x_phase = (double *)getbytes(sizeof(*x->x_phase));
-    x->x_xn = (double *)getbytes(sizeof(*x->x_xn));
-    x->x_yn = (double *)getbytes(sizeof(*x->x_yn));
     x->x_freq_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_freq_list[0] = sys_getsr() * 0.5;
-    x->x_phase[0] = x->x_yn[0] = 0;
     double a = 1, b = 3, c = 0.5, d = 0.5;
     x->x_init_xn = x->x_init_yn = 0.5;
     while(ac && av->a_type == A_SYMBOL){
@@ -215,27 +211,39 @@ static void *latoocarfian_new(t_symbol *s, int ac, t_atom *av){
         else
             goto errstate;
     }
-    if(ac && av->a_type == A_FLOAT){
+    if(ac > 0 && av->a_type == A_FLOAT){
         x->x_freq_list[0] = av->a_w.w_float;
         ac--; av++;
-        if(ac && av->a_type == A_FLOAT)
+        if(ac && av->a_type == A_FLOAT) {
             a = av->a_w.w_float;
             ac--; av++;
-            if(ac && av->a_type == A_FLOAT)
+            if(ac && av->a_type == A_FLOAT) {
                 b = av->a_w.w_float;
                 ac--; av++;
-                if(ac && av->a_type == A_FLOAT)
+                if(ac && av->a_type == A_FLOAT) {
                     c = av->a_w.w_float;
                     ac--; av++;
-                    if(ac && av->a_type == A_FLOAT)
+                    if(ac && av->a_type == A_FLOAT) {
                         d = av->a_w.w_float;
                         ac--; av++;
-                        if(ac && av->a_type == A_FLOAT)
+                        if(ac && av->a_type == A_FLOAT) {
                             x->x_init_xn = av->a_w.w_float;
-                            if(ac && av->a_type == A_FLOAT)
+                            if(ac && av->a_type == A_FLOAT) {
                                 x->x_init_yn = av->a_w.w_float;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     x->x_a = a, x->x_b = b, x->x_c = c, x->x_d = d;
+    
+    x->x_phase = (double *)getbytes(sizeof(*x->x_phase) * x->x_list_size);
+    x->x_xn = (double *)getbytes(sizeof(*x->x_xn) * x->x_list_size);
+    x->x_yn = (double *)getbytes(sizeof(*x->x_yn) * x->x_list_size);
+    x->x_phase[0] = x->x_yn[0] = 0;
+    
     for(int i = 0; i < x->x_list_size; i++){
         if(x->x_freq_list[i] >= 0)
             x->x_phase[i] = 1;

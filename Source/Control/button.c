@@ -643,11 +643,34 @@ static void *button_new(t_symbol *s, int ac, t_atom *av){
         h = av->a_w.w_float; // height
         ac--, av++;
         if(!ac) goto end;
-        x->x_bg = av->a_w.w_symbol;  // BG
-        ac--, av++;
-        if(!ac) goto end;
-        x->x_fg = av->a_w.w_symbol;  // FG
-        ac--, av++;
+        if(av->a_type == A_FLOAT && ac >= 6) // Backward compat with the old color format
+        {
+            uint8_t bgcolor_rgb[3];
+            uint8_t fgcolor_rgb[3];
+
+            for (int i = 0; i < 3; i++) {
+                bgcolor_rgb[i] = (uint8_t)av->a_w.w_float; ac--; av++;
+            }
+            for (int i = 0; i < 3; i++) {
+                fgcolor_rgb[i] = (uint8_t)av->a_w.w_float; ac--; av++;
+            }
+            
+            char bgstr[20];
+            char fgstr[20];
+            snprintf(bgstr, 20, "#%.2x%.2x%.2x",  bgcolor_rgb[0], bgcolor_rgb[1], bgcolor_rgb[2]);
+            snprintf(fgstr, 20, "#%.2x%.2x%.2x", fgcolor_rgb[0], fgcolor_rgb[1], fgcolor_rgb[2]);
+
+            // Assign to t_symbol
+            x->x_bg = gensym(bgstr);
+            x->x_fg = gensym(fgstr);
+        }
+        else {
+            x->x_bg = av->a_w.w_symbol;  // BG
+            ac--, av++;
+            if(!ac) goto end;
+            x->x_fg = av->a_w.w_symbol;  // FG
+            ac--, av++;
+        }
         if(!ac) goto end;
         int mode = (int)av->a_w.w_float;  // mode
         x->x_mode = mode < 0 ? 0 : mode > 3 ? 3 : mode;
@@ -790,7 +813,7 @@ static void *button_new(t_symbol *s, int ac, t_atom *av){
     sprintf(x->x_in_tag, "%pIN", x);
     sprintf(x->x_out_tag, "%pOUT", x);
     sprintf(x->x_hover_tag, "%pHOVER", x);
-    if(x->x_rcv != gensym("empty"))
+    if(x->x_rcv != gensym("empty") && x->x_rcv != &s_)
         pd_bind(&x->x_obj.ob_pd, x->x_rcv);
     return(x);
     errstate:

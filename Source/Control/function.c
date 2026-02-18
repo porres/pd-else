@@ -294,7 +294,7 @@ static void function_save(t_gobj *z, t_binbuf *b){
             }
             else{ // we got no flags, let's search for argument
                 int arg_n = 3; // receive argument number
-                if(n_args >= arg_n){ // we have it, get it
+                if(n_args > arg_n){ // we have it, get it
                     atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
                     x->x_snd_raw = gensym(buf);
                 }
