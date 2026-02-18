@@ -447,7 +447,8 @@ static t_int *envgen_perform(t_int *w){
                     }
                 }
             }
-            out[j*n + i] = output;
+            // TODO: fix this crash!
+            //out[j*n + i] = output;
             lastin[j] = f;
         }
     }
@@ -502,7 +503,7 @@ static void envgen_dsp(t_envgen *x, t_signal **sp){
         return;
     }
     dsp_add(envgen_perform, 8, x, sp[0]->s_vec, sp[1]->s_vec,
-        sp[2]->s_vec, sp[2]->s_vec, ch2, ch3);
+        sp[2]->s_vec, sp[3]->s_vec, ch2, ch3);
 }
 
 static void envgen_free(t_envgen *x){
