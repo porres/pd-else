@@ -327,27 +327,31 @@ static t_elsefile *elsefile_getproxy(t_pd *master){
 
 static void elsefile_text_window_editor_guidefs(void){
     static const char *script =
-    "proc else_editor_open {name geometry title sendable} {\n"
+    "proc else_editor_open {name geometry title sendable bg fg sel fontsize} {\n"
     " if {[winfo exists $name]} {\n"
     "  $name.text delete 1.0 end\n"
     " } else {\n"
     "  toplevel $name\n"
     "  wm title $name $title\n"
     "  wm geometry $name $geometry\n"
+    "  wm protocol $name WM_DELETE_WINDOW [concat else_editor_close $name 1]\n"
+    "  if {[tk windowingsystem] eq \"aqua\"} {\n"
+    "   bind $name <Command-w> \"else_editor_close $name 1\"\n"
+    "  } else {\n"
+    "   bind $name <Control-w> \"else_editor_close $name 1\"\n"
+    "  }\n"
     "  if {$sendable} {\n"
-    "   wm protocol $name WM_DELETE_WINDOW [concat else_editor_close $name 1]\n"
     "   bind $name <<Modified>> \"else_editor_dodirty $name\"\n"
     "   if {[tk windowingsystem] eq \"aqua\"} {\n"
-    "    bind $name <Command-w> \"else_editor_close $name 1\"\n"
     "    bind $name <Command-s> \"else_editor_send $name; else_editor_setdirty $name 0\"\n"
     "   } else {\n"
-    "    bind $name <Control-w> \"else_editor_close $name 1\"\n"
     "    bind $name <Control-s> \"else_editor_send $name; else_editor_setdirty $name 0\"\n"
     "   }\n"
     "  }\n"
     "  text $name.text -relief raised -bd 2 \\\n"
-    "   -font -*-courier-medium--normal--12-* \\\n"
-    "   -yscrollcommand \"$name.scroll set\" -background white\n"
+    "   -font [list -*-courier-medium--normal--$fontsize-*] \\\n"
+    "   -yscrollcommand \"$name.scroll set\" \\\n"
+    "   -background $bg -foreground $fg -insertbackground $fg -selectbackground $sel \n"
     "  scrollbar $name.scroll -command \"$name.text yview\"\n"
     "  pack $name.scroll -side right -fill y\n"
     "  pack $name.text -side left -fill both -expand 1\n"
@@ -401,7 +405,7 @@ static void elsefile_text_window_editor_guidefs(void){
 }
 
 // null owner defaults to class name, pass "" to suppress
-void else_editor_open(t_elsefile *f, char *title, char *owner){
+void elsefile_editor_open(t_elsefile *f, char *title, char *owner){
     if (!owner)
         owner = (char *)(class_getname(*f->f_master));
     if(!*owner)
@@ -413,19 +417,23 @@ void else_editor_open(t_elsefile *f, char *title, char *owner){
     char buf[256];
     if(owner){
         snprintf(buf, sizeof(buf),
-            "else_editor_open .%lx %dx%d {%s: %s} %d",
+            "else_editor_open .%lx %dx%d {%s: %s} %d #%06X #%06X #%06X %i",
             (unsigned long)f,
             600, 340,
             owner, title,
-            (f->f_editorfn != 0));
+            (f->f_editorfn != 0),
+            THISGUI->i_backgroundcolor, THISGUI->i_foregroundcolor, THISGUI->i_selectcolor,
+            (glist_getfont(f->f_canvas) * 6 / 5));
     }
     else{
         snprintf(buf, sizeof(buf),
-            "else_editor_open .%lx %dx%d {%s} %d",
+            "else_editor_open .%lx %dx%d {%s} %d #%06X #%06X #%06X %i",
             (unsigned long)f,
             600, 340,
             (title ? title : "Untitled"),
-            (f->f_editorfn != 0));
+            (f->f_editorfn != 0),
+            THISGUI->i_backgroundcolor, THISGUI->i_foregroundcolor, THISGUI->i_selectcolor,
+            (glist_getfont(f->f_canvas) * 6 / 5));
     }
     pdgui_vmess(buf, NULL);
 }

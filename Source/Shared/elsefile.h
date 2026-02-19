@@ -37,10 +37,10 @@ EXTERN_STRUCT _elsefile;
 typedef void (*t_elsefilefn)(t_pd *, t_symbol *, int, t_atom *);
 typedef void (*t_embedfn)(t_pd *, t_binbuf *, t_symbol *);
 
-void editor_open(t_elsefile *f, char *title, char *owner);
-void editor_close(t_elsefile *f, int ask);
-void editor_append(t_elsefile *f, char *contents);
-void editor_setdirty(t_elsefile *f, int flag);
+void elsefile_editor_open(t_elsefile *f, char *title, char *owner);
+void else_editor_close(t_elsefile *f, int ask);
+void else_editor_append(t_elsefile *f, char *contents);
+void else_editor_setdirty(t_elsefile *f, int flag);
 void elsefile_panel_click_open(t_elsefile *f);
 void panel_setopendir(t_elsefile *f, t_symbol *dir);
 t_symbol *panel_getopendir(t_elsefile *f);
