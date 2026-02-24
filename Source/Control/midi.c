@@ -16,9 +16,10 @@
 #define MIDI_INISEQSIZE             256    // LATER rethink
 #define MIDI_INITEMPOMAPSIZE        128    // LATER rethink
 #define MIDI_META                   255    // META marker
-#define MIDI_TICKSPERSEC            48
+#define MIDI_TICKPERIOD             500 / 24
+#define MIDI_CLOCKSPERMSEC          0.048
 #define MIDI_MINTICKDELAY           1.     // LATER rethink
-#define MIDI_TICKEPSILON ((double) .0001)
+#define midi_clockEPSILON ((double) .0001)
 #define MIDI_STARTEPSILON          .0001   // if inside: play unmodified
 #define MIDI_TEMPOEPSILON          .0001   // if inside: pause
 #define MIDI_ISRUNNING(x) ((x)->x_prevtime > (double).0001)
@@ -346,8 +347,10 @@ static void midi_startslavery(t_midi *x){
     if(x->x_nevents){
         x->x_playhead = 0;
         x->x_nextscoretime = 0.;
-        x->x_prevtime = 0.;
         x->x_slaveprevtime = 0.;
+        x->x_clockdelay = 0.;
+        x->x_prevtime = 0.;
+        x->x_timescale = x->x_newtimescale = 1.;
     }
     else
         x->x_mode = MIDI_IDLEMODE;
@@ -406,32 +409,28 @@ static void midi_slaveclocktick(t_midi *x){
 }
 
 // LATER dealing with self-invokation (outlet -> 'tick')
-static void midi_tick(t_midi *x){
+static void midi_clock(t_midi *x){
     if(x->x_mode == MIDI_SLAVEMODE){
-        if(x->x_slaveprevtime >= 0){
+        if(x->x_slaveprevtime == 0){ // 1st tick
+            x->x_prevtime = x->x_slaveprevtime = clock_getlogicaltime();
+            x->x_clockdelay = x->x_sequence[x->x_playhead].e_delta;
+            clock_delay(x->x_slaveclock, MIDI_TICKPERIOD);
+            clock_delay(x->x_clock, x->x_clockdelay);
+        }
+        else{
             double elapsed = clock_gettimesince(x->x_slaveprevtime);
             if(elapsed < MIDI_MINTICKDELAY)
                 return;
             clock_delay(x->x_slaveclock, elapsed);
-            midi_settimescale(x, (float)(elapsed * (MIDI_TICKSPERSEC / 1000.)));
-            if(MIDI_ISRUNNING(x)){
-                x->x_clockdelay -= clock_gettimesince(x->x_prevtime);
-                x->x_clockdelay *= x->x_newtimescale / x->x_timescale;
-            }
-            else
-                x->x_clockdelay = x->x_sequence[x->x_playhead].e_delta * x->x_newtimescale;
+            midi_settimescale(x, (float)(elapsed * MIDI_CLOCKSPERMSEC));
+            x->x_clockdelay *= x->x_newtimescale / x->x_timescale;
+            x->x_clockdelay -= clock_gettimesince(x->x_prevtime);
             if(x->x_clockdelay < 0.)
                 x->x_clockdelay = 0.;
             clock_delay(x->x_clock, x->x_clockdelay);
             x->x_prevtime = clock_getlogicaltime();
             x->x_slaveprevtime = x->x_prevtime;
             x->x_timescale = x->x_newtimescale;
-        }
-        else{
-            x->x_clockdelay = 0.;  // redundant
-            x->x_prevtime = 0.;    // redundant
-            x->x_slaveprevtime = clock_getlogicaltime();
-            x->x_timescale = 1.;   // redundant
         }
     }
 }
@@ -456,18 +455,6 @@ static void midi_stop(t_midi *x){
         midi_setmode(x, MIDI_IDLEMODE);
     }
 }
-
-// All delta times are set permanently (they are stored in a elsefile)
-/*static void midi_hook(t_midi *x, t_floatarg f){
-    int nevents;
-    if((nevents = x->x_nevents)){
-        t_midievent *ev = x->x_sequence;
-        if(f < 0)
-            f = 0;  // CHECKED signed/unsigned bug (not emulated)
-        while(nevents--)
-            ev++->e_delta *= f;
-    }
-}*/
 
 static void midi_pause(t_midi *x){
     if(x->x_mode == MIDI_PLAYMODE && MIDI_ISRUNNING(x)){
@@ -562,7 +549,7 @@ static void midi_clocktick(t_midi *x){
         if(x->x_playhead < x->x_nevents){
             ep++;
             x->x_nextscoretime += ep->e_delta;
-            if(ep->e_delta < MIDI_TICKEPSILON){ // continue output in the same scheduler event, LATER rethink
+            if(ep->e_delta < midi_clockEPSILON){ // continue output in the same scheduler event, LATER rethink
                 x->x_playhead++;
                 bp = ep->e_bytes;
                 goto nextevent;
@@ -589,7 +576,7 @@ static void midi_clocktick(t_midi *x){
          t_midievent *ev;
          int ndx, nevents = x->x_nevents;
          double ms = (double)f * 1000., sum;
-         if(ms <= MIDI_TICKEPSILON)
+         if(ms <= midi_clockEPSILON)
              ms = 0.;
          if(x->x_mode != MIDI_PLAYMODE){
              midi_settimescale(x, x->x_timescale);
@@ -598,11 +585,11 @@ static void midi_clocktick(t_midi *x){
              clock_unset(x->x_clock);
              x->x_prevtime = 0.;
          }
-         for(ndx = 0, ev = x->x_sequence, sum = MIDI_TICKEPSILON; ndx < nevents; ndx++, ev++){
+         for(ndx = 0, ev = x->x_sequence, sum = midi_clockEPSILON; ndx < nevents; ndx++, ev++){
              if((sum += ev->e_delta) >= ms){
                  x->x_playhead = ndx;
                  x->x_nextscoretime = sum;
-                 x->x_clockdelay = sum - MIDI_TICKEPSILON - ms;
+                 x->x_clockdelay = sum - midi_clockEPSILON - ms;
                  if(x->x_clockdelay < 0.)
                      x->x_clockdelay = 0.;
                  if(MIDI_ISRUNNING(x)){
@@ -684,7 +671,7 @@ static void midi_foldtime(t_midi *x, double deftempo){
     double coef = 1000. / deftempo;
     int ex, tx = 0;
     double prevscoretime = 0.;
-    while(tx < x->x_ntempi && stm->t_scoretime < MIDI_TICKEPSILON)
+    while(tx < x->x_ntempi && stm->t_scoretime < midi_clockEPSILON)
     tx++, coef = 1000. / stm++->t_sr;
     for(ex = 0, sev = x->x_sequence; ex < x->x_nevents; ex++, sev++){
         double clockdelta = 0.;
@@ -979,8 +966,9 @@ static void *midi_new(t_symbol * s, int ac, t_atom *av){
 void midi_setup(void){
     midi_class = class_new(gensym("midi"), (t_newmethod)midi_new,
         (t_method)midi_free, sizeof(t_midi), 0, A_GIMME, 0);
-    class_addbang(midi_class, midi_tick);
+    class_addbang(midi_class, midi_clock);
     class_addfloat(midi_class, midi_float);
+    class_addmethod(midi_class, (t_method)midi_clock, gensym("clock"), 0);
     class_addmethod(midi_class, (t_method)midi_clear, gensym("clear"), 0);
     class_addmethod(midi_class, (t_method)midi_record, gensym("record"), 0);
     class_addmethod(midi_class, (t_method)midi_play, gensym("play"), 0);
