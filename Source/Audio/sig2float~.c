@@ -14,7 +14,6 @@ typedef struct _sig2float{
     int       x_nblock;
     float     x_ksr;
     t_clock  *x_clock;
-//
     int      x_nchs;
     t_atom  *x_vec;
 }t_sig2float;
@@ -180,11 +179,25 @@ static void *sig2float_new(t_symbol *s, int argc, t_atom * argv){
 
 void sig2float_tilde_setup(void){
     sig2float_class = class_new(gensym("sig2float~"), (t_newmethod)sig2float_new,
-        (t_method)sig2float_free, sizeof(t_sig2float), CLASS_MULTICHANNEL, A_GIMME,0);
+        (t_method)sig2float_free, sizeof(t_sig2float), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_domainsignalin(sig2float_class, -1);
+    class_addbang(sig2float_class, (t_method)sig2float_bang);
     class_addfloat(sig2float_class, (t_method)sig2float_float);
     class_addmethod(sig2float_class, (t_method)sig2float_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(sig2float_class, (t_method)sig2float_ms, gensym("\f"), A_FLOAT, 0);
+    class_addmethod(sig2float_class, (t_method)sig2float_offset, gensym("offset"), A_FLOAT, 0);
+    class_addmethod(sig2float_class, (t_method)sig2float_set, gensym("set"), A_FLOAT, 0);
+    class_addmethod(sig2float_class, (t_method)sig2float_start, gensym("start"), 0);
+    class_addmethod(sig2float_class, (t_method)sig2float_stop, gensym("stop"), 0);
+}
+
+void s2f_tilde_setup(void){ // alias
+    sig2float_class = class_new(gensym("s2f~"), (t_newmethod)sig2float_new,
+        (t_method)sig2float_free, sizeof(t_sig2float), CLASS_MULTICHANNEL, A_GIMME, 0);
+    class_domainsignalin(sig2float_class, -1);
     class_addbang(sig2float_class, (t_method)sig2float_bang);
+    class_addfloat(sig2float_class, (t_method)sig2float_float);
+    class_addmethod(sig2float_class, (t_method)sig2float_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(sig2float_class, (t_method)sig2float_ms, gensym("\f"), A_FLOAT, 0);
     class_addmethod(sig2float_class, (t_method)sig2float_offset, gensym("offset"), A_FLOAT, 0);
     class_addmethod(sig2float_class, (t_method)sig2float_set, gensym("set"), A_FLOAT, 0);

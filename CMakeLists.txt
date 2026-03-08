@@ -87,11 +87,17 @@ foreach(file ${else_sources})
     get_filename_component(name ${file} NAME)
     string(REGEX REPLACE "\\.[^.]*$" "" name_we ${name})
     string(REGEX REPLACE "~" "_tilde" target_name ${name_we})
+
     pd_add_external(${name_we} ${file})
     target_link_libraries(${target_name} PRIVATE else_shared)
 
+# aliases
+    if(${target_name} STREQUAL "sig2float_tilde")
+        pd_add_external(s2f~ ${file})
+        target_link_libraries(s2f_tilde PRIVATE else_shared)
+
     # If target is streamout_tilde, add static libogg and libvorbis linking on macOS
-    if(${target_name} STREQUAL "streamout_tilde")
+    elseif(${target_name} STREQUAL "streamout_tilde")
         if(APPLE)
             # Detect Homebrew prefix based on architecture
             execute_process(
