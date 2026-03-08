@@ -95,6 +95,12 @@ foreach(file ${else_sources})
     if(${target_name} STREQUAL "sig2float_tilde")
         pd_add_external(s2f~ ${file})
         target_link_libraries(s2f_tilde PRIVATE else_shared)
+    elseif(${target_name} STREQUAL "car2pol_tilde")
+        pd_add_external(cartopol~ ${file})
+        target_link_libraries(cartopol_tilde PRIVATE else_shared)
+    elseif(${target_name} STREQUAL "pol2car_tilde")
+        pd_add_external(poltocar~ ${file})
+        target_link_libraries(poltocar_tilde PRIVATE else_shared)
 
     # If target is streamout_tilde, add static libogg and libvorbis linking on macOS
     elseif(${target_name} STREQUAL "streamout_tilde")

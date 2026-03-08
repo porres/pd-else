@@ -57,3 +57,11 @@ void car2pol_tilde_setup(void){
     class_addmethod(car2pol_tilde_class, nullfn, gensym("signal"), 0);
     class_addmethod(car2pol_tilde_class, (t_method)car2pol_tilde_dsp, gensym("dsp"), A_CANT, 0);
 }
+
+void cartopol_tilde_setup(void){
+    car2pol_tilde_class = class_new(gensym("cartopol~"), (t_newmethod)car2pol_tilde_new, 0,
+        sizeof(t_car2pol_tilde), CLASS_MULTICHANNEL, 0);
+    class_addmethod(car2pol_tilde_class, nullfn, gensym("signal"), 0);
+    class_addmethod(car2pol_tilde_class, (t_method)car2pol_tilde_dsp, gensym("dsp"), A_CANT, 0);
+    class_sethelpsymbol(car2pol_tilde_class, gensym("car2pol~"));
+}

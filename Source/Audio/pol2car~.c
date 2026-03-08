@@ -57,3 +57,12 @@ void pol2car_tilde_setup(void){
     class_addmethod(pol2car_tilde_class, nullfn, gensym("signal"), 0);
     class_addmethod(pol2car_tilde_class, (t_method)pol2car_tilde_dsp, gensym("dsp"), A_CANT, 0);
 }
+
+
+void poltocar_tilde_setup(void){
+    pol2car_tilde_class = class_new(gensym("poltocar~"), (t_newmethod)pol2car_tilde_new, 0,
+        sizeof(t_pol2car_tilde), CLASS_MULTICHANNEL, 0);
+    class_addmethod(pol2car_tilde_class, nullfn, gensym("signal"), 0);
+    class_addmethod(pol2car_tilde_class, (t_method)pol2car_tilde_dsp, gensym("dsp"), A_CANT, 0);
+    class_sethelpsymbol(pol2car_tilde_class, gensym("pol2car~"));
+}
