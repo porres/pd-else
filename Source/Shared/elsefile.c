@@ -327,7 +327,7 @@ static t_elsefile *elsefile_getproxy(t_pd *master){
 
 static void elsefile_text_window_editor_guidefs(void){
     static const char *script =
-    "proc else_editor_open {name geometry title sendable bg fg sel fontsize} {\n"
+    "proc else_editor_open {name geometry title sendable bg fg sel fontname fontsize} {\n"
     " if {[winfo exists $name]} {\n"
     "  $name.text delete 1.0 end\n"
     " } else {\n"
@@ -343,18 +343,25 @@ static void elsefile_text_window_editor_guidefs(void){
     "  if {$sendable} {\n"
     "   bind $name <<Modified>> \"else_editor_dodirty $name\"\n"
     "   if {[tk windowingsystem] eq \"aqua\"} {\n"
-    "    bind $name <Command-s> \"else_editor_send $name; else_editor_setdirty $name 0\"\n"
+    "    bind $name <Command-s> \"else_editor_send $name; editor_setdirty $name 0\"\n"
     "   } else {\n"
-    "    bind $name <Control-s> \"else_editor_send $name; else_editor_setdirty $name 0\"\n"
+    "    bind $name <Control-s> \"else_editor_send $name; editor_setdirty $name 0\"\n"
     "   }\n"
     "  }\n"
-    "  text $name.text -relief raised -bd 2 \\\n"
-    "   -font [list -*-courier-medium--normal--$fontsize-*] \\\n"
+//    "  ::pdwindow::post \"DEBUG: font for $fontsize -> [get_font_for_size $fontsize]\"\n"
+    "  set fontlist [get_font_for_size $fontsize]\n"
+    "  set style [lindex $fontlist 2]\n"
+    "  text $name.text -relief raised -highlightthickness 0 -bd 2 \\\n"
+    "   -font [list -*-$fontname-medium--$style--$fontsize-*] \\\n"
     "   -yscrollcommand \"$name.scroll set\" \\\n"
-    "   -background $bg -foreground $fg -insertbackground $fg -selectbackground $sel \n"
+    "   -background $bg -foreground $fg -insertbackground $fg -selectbackground $sel \\\n"
+    "   -exportselection 1 -undo 1\n"
     "  scrollbar $name.scroll -command \"$name.text yview\"\n"
     "  pack $name.scroll -side right -fill y\n"
     "  pack $name.text -side left -fill both -expand 1\n"
+    "  bind $name.text <$::modifier-Key-z> \"else_editor_undo $name; break\"\n"
+    "  bind $name.text <$::modifier-Shift-Key-Z> \"else_editor_redo $name; break\"\n"
+    "  bind $name.text <$::modifier-Shift-Key-z> \"else_editor_redo $name; break\"\n"
     " }\n"
     "}\n"
     "proc else_editor_dodirty {name} {\n"
@@ -367,7 +374,7 @@ static void elsefile_text_window_editor_guidefs(void){
     "  if {$dt} {wm title $name [string range $title 1 end]}\n"
     " }\n"
     "}\n"
-    "proc else_editor_setdirty {name flag} {\n"
+    "proc editor_setdirty {name flag} {\n"
     " if {[winfo exists $name]} {catch {$name.text edit modified $flag}}\n"
     "}\n"
     "proc else_editor_doclose {name} {destroy $name}\n"
@@ -400,6 +407,12 @@ static void elsefile_text_window_editor_guidefs(void){
     "   if {$answer != \"cancel\"} {else_editor_doclose $name}\n"
     "  } else {else_editor_doclose $name}\n"
     " }\n"
+    "}\n"
+    "proc else_editor_undo {name} {\n"
+    " if {[winfo exists $name]} {catch {$name.text edit undo}}\n"
+    "}\n"
+    "proc else_editor_redo {name} {\n"
+    " if {[winfo exists $name]} {catch {$name.text edit redo}}\n"
     "}\n";
     pdgui_vmess(script, NULL);
 }
@@ -417,23 +430,25 @@ void elsefile_editor_open(t_elsefile *f, char *title, char *owner){
     char buf[256];
     if(owner){
         snprintf(buf, sizeof(buf),
-            "else_editor_open .%lx %dx%d {%s: %s} %d #%06X #%06X #%06X %i",
+            "else_editor_open .%lx %dx%d {%s: %s} %d #%06X #%06X #%06X %s %i",
             (unsigned long)f,
             600, 340,
             owner, title,
             (f->f_editorfn != 0),
             THISGUI->i_backgroundcolor, THISGUI->i_foregroundcolor, THISGUI->i_selectcolor,
-            (glist_getfont(f->f_canvas) * 6 / 5));
+            sys_font,
+            sys_hostfontsize(glist_getfont(f->f_canvas), glist_getzoom(f->f_canvas)) * 6 / 5);
     }
     else{
         snprintf(buf, sizeof(buf),
-            "else_editor_open .%lx %dx%d {%s} %d #%06X #%06X #%06X %i",
+            "else_editor_open .%lx %dx%d {%s} %d #%06X #%06X #%06X %s %i",
             (unsigned long)f,
             600, 340,
             (title ? title : "Untitled"),
             (f->f_editorfn != 0),
             THISGUI->i_backgroundcolor, THISGUI->i_foregroundcolor, THISGUI->i_selectcolor,
-            (glist_getfont(f->f_canvas) * 6 / 5));
+            sys_font,
+            sys_hostfontsize(glist_getfont(f->f_canvas), glist_getzoom(f->f_canvas)) * 6 / 5);
     }
     pdgui_vmess(buf, NULL);
 }
@@ -457,33 +472,27 @@ void else_editor_close(t_elsefile *f, int ask){
     }
 }
 
-void else_editor_append(t_elsefile *f, char *contents)
-{
-    if (contents) {
+void else_editor_append(t_elsefile *f, char *contents){
+    if(contents){
         char *ptr;
         char buf[512];
-
-        for (ptr = contents; *ptr; ptr++) {
-            if (*ptr == '{' || *ptr == '}') {
+        for(ptr = contents; *ptr; ptr++){
+            if(*ptr == '{' || *ptr == '}'){
                 char c = *ptr;
                 *ptr = 0;
-
                 snprintf(buf, sizeof(buf),
                     "else_editor_append .%lx {%s}",
                     (unsigned long)f, contents);
                 pdgui_vmess(buf, NULL);
-
                 snprintf(buf, sizeof(buf),
                     "else_editor_append .%lx \"%c\"",
                     (unsigned long)f, c);
                 pdgui_vmess(buf, NULL);
-
                 *ptr = c;
                 contents = ptr + 1;
             }
         }
-
-        if (*contents) {
+        if(*contents){
             snprintf(buf, sizeof(buf),
                 "else_editor_append .%lx {%s}",
                 (unsigned long)f, contents);
@@ -493,10 +502,9 @@ void else_editor_append(t_elsefile *f, char *contents)
 }
 
 void else_editor_setdirty(t_elsefile *f, int flag){
-    if (f->f_editorfn){
+    if(f->f_editorfn){
         char buf[64];
-        snprintf(buf, sizeof(buf),
-            "else_editor_setdirty .%lx %d",
+        snprintf(buf, sizeof(buf), "editor_setdirty .%lx %d",
             (unsigned long)f, flag);
         pdgui_vmess(buf, NULL);
     }
@@ -773,7 +781,7 @@ t_elsefilefn writefn, t_elsefilefn updatefn){
     else
         result->f_savepanel = 0;
     if((result->f_editorfn = updatefn)){ // Text editor
-        result->f_editorclock = clock_new(result, (t_method )else_editor_tick);
+        result->f_editorclock = clock_new(result, (t_method)else_editor_tick);
         if(!result->f_bindname){
             char buf[64];
             sprintf(buf, "ELSEFILE.%lx", (unsigned long)result);

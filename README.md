@@ -259,17 +259,18 @@ A submodule of ELSE by Porres (this is also by Porres).
 
 **ALTERNATIVES TO CYCLONE**
 
-ELSE offers alternatives to objects from the Cyclone library (a library that clones objects from MAX/MSP). The objects that have no similar counterpart in ELSE (at least so far) are: anal / bucket / buddy / capture / capture~ / decide / decode / frameaccum~ / framedelta~ / funbuff / funnel / flush / forward / kink~ / linedrive / prob / match / maximum / minimum / mousefilter / next / offer / peak / prob / pv / substitute / teeth~ / trough / universal / vectral~
+ELSE offers alternatives to objects from the Cyclone library (a library that clones objects from MAX/MSP). The objects that have no similar counterpart in ELSE (at least so far) are: anal / buddy / capture / capture~ / decide / decode / frameaccum~ / framedelta~ / funbuff / funnel / flush / forward / kink~ / linedrive / prob / match / maximum / minimum / mousefilter / next / offer / peak / prob / pv / substitute / teeth~ / trough / universal / vectral~
 
 But, here are some considerations:
 - maximum/minimum => [array max] [array min] (you need to set an array with the list)
 - for [capture~] you can use [print~]
 - for [kink~] you can use [function~] (and [function])
 - [spike~] => [else/status~] + [else/detect~] => [threshold~] + [timer]
-- [anal] is usually used with [prob] for markov chains, but you can use [else/markov] instead
+- [anal]/[prob] are usually used together for markov chains, but you can use [else/markov] instead
 - [teeth~] is just a comb reverberator which can be constructed with [else/ffdelay~] + [else/fbdelay~]
 - [forward] => just message boxes with ";"
 - [flush] => [poly] has a flush option, so does [else/voices]
+- [pv] => just use [value]
 
 Alternatives:
 
@@ -286,6 +287,7 @@ Alternatives:
 - borax / else/noteinfo
 - average~ / avg~ => else/mov.avg~
 - bondo => else/hot
+- bucket => else/shift
 - buffer~ => else/sample~
 - buffir~ => else/conv~
 - coll => else/messcoll, or vanilla's [text]

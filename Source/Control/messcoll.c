@@ -11,9 +11,7 @@
 #endif
 
 // LATER make sure that ``reentrancy protection hack'' is really working...
-
-enum{COLL_HEADRESET, COLL_HEADNEXT, COLL_HEADPREV,  // distinction not used, currently
-    COLL_HEADDELETED};
+enum{COLL_HEADRESET, COLL_HEADNEXT, COLL_HEADPREV, COLL_HEADDELETED};
 
 typedef struct _collelem{
     int                e_hasnumkey;
@@ -87,24 +85,17 @@ typedef struct _threadedFunctionParams{
 static t_class *messcoll_class;
 static t_class *messcollcommon_class;
 
-/// Porres: de-louding in a lazy way
-void coll_messarg(t_pd *x, t_symbol *s){
-    pd_error(x, "[messcoll]: bad arguments for message \"%s\"", s->s_name);
-}
-
 int coll_checkint(t_pd *x, t_float f, int *valuep, t_symbol *mess){
     if((*valuep = (int)f) == f)
-        return (1);
+        return(1);
     else{
         if(mess == &s_float)
-            pd_error(x, "[messcoll]: doesn't understand \"noninteger float\"");
+            pd_error(x, "[messcoll]: \"noninteger float\" is not a valid address");
         else if(mess)
-            pd_error(x, "[messcoll]: \"noninteger float\" argument invalid for message \"%s\"",
-                     mess->s_name);
-        return (0);
+            pd_error(x, "[messcoll]: \"%s\" has an invalid \"noninteger float\" address", mess->s_name);
+        return(0);
     }
 }
-///////////
 
 static void coll_q_free(t_messcoll *x){
     t_messcoll_q *q2;
@@ -583,6 +574,8 @@ static void collcommon_editorhook(t_pd *z, t_symbol *s, int ac, t_atom *av){
         return;
     }
     collcommon_dirty(cc);
+    for(t_messcoll *x = cc->c_refs; x; x = x->x_next)
+        outlet_anything(x->x_info_out, gensym("updated"), 0, NULL);
 }
 
 static void collcommon_free(t_messcollcommon *cc){
@@ -620,19 +613,6 @@ static void coll_unbind(t_messcoll *x, int flag){
     x->x_common = 0;
     x->x_name = 0;
     x->x_next = 0;
-}
-
-static void *collcommon_init(void){
-    t_messcollcommon *cc = (t_messcollcommon *)pd_new(messcollcommon_class);
-    cc->c_keepflag = 0;
-    cc->c_first = 0;
-    cc->c_last = 0;
-    cc->c_head = 0;
-    cc->c_refs = 0;
-    cc->c_increation = 0;
-    cc->c_fileoninit = 0;
-    cc->c_headstate = COLL_HEADRESET;
-    return(cc);
 }
 
 static void coll_dooutput(t_messcoll *x, int ac, t_atom *av){
@@ -699,26 +679,24 @@ static t_messcollelem *coll_findkey(t_messcoll *x, t_atom *key, t_symbol *mess){
     }
     else if(key->a_type == A_SYMBOL)
         ep = collcommon_symkey(cc, key->a_w.w_symbol);
-    else if(mess){
-        coll_messarg((t_pd *)x, mess);
-        mess = 0;
+    else if(mess)
+        return(ep);
+    if(!ep && mess){
+        outlet_anything(x->x_info_out, gensym("noaddress"), 0, NULL);
+        post("[messcoll]: address not found to %s", mess->s_name);
     }
-    if(!ep && mess)
-        pd_error((t_pd *)x, "[messcoll]: no such key");
     return(ep);
 }
 
 static t_messcollelem *coll_tokey(t_messcoll *x, t_atom *key, int ac, t_atom *av, int replace, t_symbol *mess){
     t_messcollcommon *cc = x->x_common;
     t_messcollelem *ep = 0;
-    
     for(int i = 0; i < ac; i++){
         if(av[i].a_type == A_SYMBOL){
             if(av[i].a_w.w_symbol == gensym(","))
                 av[i].a_type = A_COMMA;
         }
     }
-
     if(key->a_type == A_FLOAT){
         int numkey;
         if(coll_checkint((t_pd *)x, key->a_w.w_float, &numkey, mess))
@@ -726,8 +704,6 @@ static t_messcollelem *coll_tokey(t_messcoll *x, t_atom *key, int ac, t_atom *av
     }
     else if(key->a_type == A_SYMBOL)
         ep = collcommon_tosymkey(cc, key->a_w.w_symbol, ac, av, replace);
-    else if(mess)
-        coll_messarg((t_pd *)x, mess);
     return(ep);
 }
 
@@ -832,15 +808,15 @@ static void check_open(t_messcoll *x, int open){
 }
 
 static void coll_update(t_messcoll *x){
-    check_open(x, 0);
+    check_open(x, 0); // ??????
 }
 
 // methods -------------------------------------------------------------------------------------
-static void coll_wclose(t_messcoll *x){
+static void coll_hide(t_messcoll *x){
     else_editor_close(x->x_common->c_filehandle, 1); // ask to save contents if edited
 }
 
-static void coll_open(t_messcoll *x){
+static void coll_show(t_messcoll *x){
     check_open(x, 1);
 }
 
@@ -856,16 +832,14 @@ t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
 }
 
 static void coll_delete(t_messcoll *x, t_symbol *s, int ac, t_atom *av){
-    if(!ac)
-        return;
+    if(ac != 1)
+        pd_error(x, "[messcoll]: 'delete' needs to have a single argument");
     else{
         t_messcollelem *ep;
         if((ep = coll_findkey(x, av, s))){
             collcommon_delete(x->x_common, ep);
             coll_update(x);
         }
-        else
-            post("[messcoll]: delete address not found");
     }
 }
 
@@ -875,13 +849,7 @@ static void coll_clear(t_messcoll *x){
     coll_delete_window_contents((unsigned long)cc->c_filehandle);
 }
 
-/* CHECKED traversal direction change is consistent with the general rule:
-   'next' always outputs e_next of a previous output, and 'prev' always
-   outputs e_prev, whether preceded by 'prev', or by 'next'.  This is
-   currently implemented by pre-updating of the head (which is inhibited
-   if there was no previous output, i.e. after 'goto', 'end', or collection
-   initialization).  CHECKME again. */
-static void coll_bang(t_messcoll *x){
+static void coll_next(t_messcoll *x){
     t_messcollcommon *cc = x->x_common;
     if(cc->c_headstate != COLL_HEADRESET && cc->c_headstate != COLL_HEADDELETED){// asymmetric, LATER rethink
 		if(cc->c_head)
@@ -896,7 +864,7 @@ static void coll_bang(t_messcoll *x){
     if(cc->c_head)
         coll_dooutput(x, cc->c_head->e_size, cc->c_head->e_data);
     else if(!cc->c_selfmodified)
-		bug("messcoll_bang");  // LATER rethink
+		bug("messcoll_next");  // LATER rethink
 }
 
 static void coll_float(t_messcoll *x, t_float f){
@@ -907,11 +875,11 @@ static void coll_float(t_messcoll *x, t_float f){
             coll_keyoutput(x, ep);
             coll_dooutput(x, ep->e_size, ep->e_data);
         }
-        else
+        else{
+            outlet_anything(x->x_info_out, gensym("noaddress"), 0, NULL);
             post("[messcoll]: address \"%i\" not found", (int)f);
+        }
     }
-    else
-        post("[messcoll]: address \"%f\" not an integer", f);
 }
 
 static void coll_symbol(t_messcoll *x, t_symbol *s){
@@ -920,8 +888,10 @@ static void coll_symbol(t_messcoll *x, t_symbol *s){
         coll_keyoutput(x, ep);
         coll_dooutput(x, ep->e_size, ep->e_data);
     }
-    else
+    else{
+        outlet_anything(x->x_info_out, gensym("noaddress"), 0, NULL);
         post("[messcoll]: address \"%s\" not found", s->s_name);
+    }
 }
 
 static void coll_store(t_messcoll *x, t_symbol *s, int ac, t_atom *av){
@@ -935,10 +905,67 @@ static void coll_store(t_messcoll *x, t_symbol *s, int ac, t_atom *av){
         pd_error(x, "[messcoll]: bad arguments for 'store'");
 }
 
+static void coll_import(t_messcoll *x, t_symbol *s, int ac, t_atom *av){
+    t_messcollcommon *cc = x->x_common;
+    t_messcollelem *ep = 0;
+    coll_clear(x);
+    int lastsemi = 0, semi = 0, size = 0, address = 0;
+    for(int i = 0; i < ac; i++){
+        if(address == 0){
+            if((av+i)->a_type == A_FLOAT)
+                address = 1;
+            else if ((av+i)->a_type == A_SYMBOL){
+                if(av[i].a_w.w_symbol == gensym(",") || av[i].a_w.w_symbol == gensym(";")){
+                    pd_error(x, "[messcoll]: corrupted message when importing");
+                    return;
+                }
+                else
+                    address = 1;
+            }
+        }
+        else if(address == 1){
+            if(av[i].a_w.w_symbol != gensym(",")){
+                pd_error(x, "[messcoll]: no address/message given when importing, skipping");
+                return;
+            }
+            else
+                address = 2;
+        }
+        else if(av[i].a_w.w_symbol == gensym(";")){
+            semi = i;
+            size = semi - lastsemi - 1;
+            if(size == 1){
+                lastsemi = semi + 1;
+                pd_error(x, "[messcoll]: no message given when importing, skipping");
+                continue;
+            }
+            coll_tokey(x, av+lastsemi, size-1, av+lastsemi+2, 1, s);
+            lastsemi = semi + 1;
+        }
+    }
+    coll_update(x);
+}
+
+static void coll_export(t_messcoll *x){
+    t_messcollcommon *cc = x->x_common;
+    t_binbuf *bb = binbuf_new();
+    collcommon_tobinbuf(cc, bb);
+    int ac = binbuf_getnatom(bb);
+    t_atom *av = binbuf_getvec(bb);
+    for(int i = 0; i < ac; i++){
+        if(av[i].a_type == A_COMMA)
+            SETSYMBOL(&av[i], gensym(","));
+        else if(av[i].a_type == A_SEMI)
+            SETSYMBOL(&av[i], gensym(";"));
+    }
+    outlet_anything(x->x_info_out, gensym("export"), ac, av);
+    binbuf_free(bb);
+}
+
 static void coll_list(t_messcoll *x, t_symbol *s, int ac, t_atom *av){
     (void)s;
     if(!ac)
-        coll_bang(x);
+        coll_next(x);
     if(ac == 1){
         if(av->a_type == A_FLOAT)
             coll_float(x, atom_getfloat(av));
@@ -980,7 +1007,9 @@ static void coll_end(t_messcoll *x){
 }
 
 static void coll_goto(t_messcoll *x, t_symbol *s, int ac, t_atom *av){
-    if(ac){
+    if(ac != 1)
+        pd_error(x, "[messcoll]: 'goto' needs to have a single argument");
+    else{
         t_messcollelem *ep = coll_findkey(x, av, s);
         if(ep){
             t_messcollcommon *cc = x->x_common;
@@ -988,8 +1017,6 @@ static void coll_goto(t_messcoll *x, t_symbol *s, int ac, t_atom *av){
             cc->c_headstate = COLL_HEADRESET;
         }
     }
-    else
-        coll_start(x);
 }
 
 static void coll_size(t_messcoll *x){
@@ -1004,9 +1031,6 @@ static void coll_size(t_messcoll *x){
     SETFLOAT(at, result);
     outlet_anything(x->x_info_out, gensym("size"), 1, at);
 }
-
-/*static void coll_check_window(t_messcoll *x, t_symbol *name){
-}*/
 
 static void coll_set(t_messcoll *x, t_symbol *name){
     if(name == &s_)
@@ -1164,13 +1188,26 @@ static void coll_threaded(t_messcoll *x, t_float f){
 }
 
 static void coll_free(t_messcoll *x){
-    coll_wclose(x);
+    coll_hide(x);
 	if(x->x_threaded == 1)
         coll_dothread(x, 0);
     pd_unbind(&x->x_obj.ob_pd, x->x_bindsym);
     clock_free(x->x_clock);
     elsefile_free(x->x_filehandle);
     coll_unbind(x, 0);
+}
+
+static void *collcommon_init(void){
+    t_messcollcommon *cc = (t_messcollcommon *)pd_new(messcollcommon_class);
+    cc->c_keepflag = 0;
+    cc->c_first = 0;
+    cc->c_last = 0;
+    cc->c_head = 0;
+    cc->c_refs = 0;
+    cc->c_increation = 0;
+    cc->c_fileoninit = 0;
+    cc->c_headstate = COLL_HEADRESET;
+    return(cc);
 }
 
 static void coll_init(t_messcoll *x, t_symbol *name){
@@ -1210,8 +1247,6 @@ static void *coll_new(t_symbol *s, int ac, t_atom *av){
     x->x_info_out = outlet_new((t_object *)x, &s_bang);
     x->x_filehandle = elsefile_new((t_pd *)x, coll_keephook, 0, 0, 0);
     int keep = 0, threaded = 0, arg = 0;
-    // check arguments for filename and threaded version
-    // right now, don't care about arg order (mb we should?) - DK
     if(av->a_type == A_SYMBOL){
         while(ac){
             t_symbol * cursym = atom_getsymbol(av);
@@ -1247,6 +1282,7 @@ static void *coll_new(t_symbol *s, int ac, t_atom *av){
         };
     };
     x->x_keep = keep;
+    inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("symbol"), gensym("set"));
     return(x);
 	errstate:
 		pd_error(x, "[messcoll]: improper args");
@@ -1257,13 +1293,12 @@ void messcoll_setup(void){
     messcoll_class = class_new(gensym("messcoll"), (t_newmethod)(void*)coll_new,
         (t_method)coll_free, sizeof(t_messcoll), 0, A_GIMME, 0);
     class_addlist(messcoll_class, coll_list);
-    class_addbang(messcoll_class, coll_bang);
-    class_addfloat(messcoll_class, coll_float);
-    class_addsymbol(messcoll_class, coll_symbol);
+    class_addmethod(messcoll_class, (t_method)coll_import, gensym("import"), A_GIMME, 0);
+    class_addmethod(messcoll_class, (t_method)coll_export, gensym("export"), 0);
     class_addmethod(messcoll_class, (t_method)coll_store, gensym("store"), A_GIMME, 0);
     class_addmethod(messcoll_class, (t_method)coll_delete, gensym("delete"), A_GIMME, 0);
     class_addmethod(messcoll_class, (t_method)coll_clear, gensym("clear"), 0);
-    class_addmethod(messcoll_class, (t_method)coll_bang, gensym("next"), 0);
+    class_addmethod(messcoll_class, (t_method)coll_next, gensym("next"), 0);
     class_addmethod(messcoll_class, (t_method)coll_prev, gensym("prev"), 0);
     class_addmethod(messcoll_class, (t_method)coll_start, gensym("start"), 0);
     class_addmethod(messcoll_class, (t_method)coll_end, gensym("end"), 0);
@@ -1275,8 +1310,8 @@ void messcoll_setup(void){
     class_addmethod(messcoll_class, (t_method)coll_read, gensym("read"), A_DEFSYM, 0);
     class_addmethod(messcoll_class, (t_method)coll_write, gensym("write"), A_DEFSYM, 0);
     class_addmethod(messcoll_class, (t_method)coll_dump, gensym("dump"), 0);
-    class_addmethod(messcoll_class, (t_method)coll_open, gensym("show"), 0);
-    class_addmethod(messcoll_class, (t_method)coll_wclose, gensym("hide"), 0);
+    class_addmethod(messcoll_class, (t_method)coll_show, gensym("show"), 0);
+    class_addmethod(messcoll_class, (t_method)coll_hide, gensym("hide"), 0);
     class_addmethod(messcoll_class, (t_method)coll_click, gensym("click"),
         A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(messcoll_class, (t_method)coll_is_opened, gensym("_is_opened"), A_FLOAT , A_FLOAT, 0);
