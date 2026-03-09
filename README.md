@@ -6,9 +6,9 @@
 
 ### Version: 1.0-0 RC-15 (release candidate #15) With Live Electronics Tutorial!
 
-### Scheduled Release: October 29th 2025
+### Scheduled Release: Abril 9th 2026
 
-Copyright © 2017-2025 Alexandre Torres Porres and others
+Copyright © 2017-2026 Alexandre Torres Porres and others
 
 
 This work is free. You can redistribute it and/or modify it under the terms of the Do What The Fuck You Want To Public License, Version 2, as published by Sam Hocevar. See License.txt <https://github.com/porres/pd-else/blob/master/License.txt> and <http://www.wtfpl.net/> for more details
@@ -29,7 +29,7 @@ For copies of the licenses and the terms, please check the 'license' subfolder.
 
 ###   About ELSE
 
-This version of ELSE needs **Pd 0.56-1** or above.
+This version of ELSE needs **Pd 0.56-2** or above.
 
 ELSE is a big library of externals that extends the performance Pure Data (Pd) - Miller S. Puckette's realtime computer music environment (download Pd from: http://msp.ucsd.edu/software.html).
 
@@ -259,7 +259,7 @@ A submodule of ELSE by Porres (this is also by Porres).
 
 **ALTERNATIVES TO CYCLONE**
 
-ELSE offers alternatives to objects from the Cyclone library (a library that clones objects from MAX/MSP). The objects that have no similar counterpart in ELSE (at least so far) are: anal / buddy / capture / capture~ / coll / cycle / decide / decode / frameaccum~ / framedelta~ / funbuff / funnel / flush / forward / kink~ / linedrive / prob / match / maximum / minimum / mousefilter / next / offer / peak / prob / pv / spray / substitute / teeth~ / trough / universal / vectral~
+ELSE offers alternatives to objects from the Cyclone library (a library that clones objects from MAX/MSP). The objects that have no similar counterpart in ELSE (at least so far) are: anal / buddy / capture / capture~ / decide / decode / frameaccum~ / framedelta~ / funbuff / funnel / flush / forward / kink~ / linedrive / prob / match / maximum / minimum / mousefilter / next / offer / peak / prob / pv / spray / substitute / teeth~ / trough / universal / vectral~
 
 But, here are some considerations:
 - maximum/minimum => [array max] [array min] (you need to set an array with the list)
@@ -270,7 +270,6 @@ But, here are some considerations:
 - [teeth~] is just a comb reverberator which can be constructed with [else/ffdelay~] + [else/fbdelay~]
 - [forward] => just message boxes with ";"
 - [flush] => [poly] has a flush option, so does [else/voices]
-- for [coll], you can use [text] which miller considers is a better design, but it's simpler.
 
 Alternatives:
 
@@ -289,6 +288,7 @@ Alternatives:
 - bondo => else/hot
 - buffer~ => else/sample~
 - buffir~ => else/conv~
+- coll => else/messcoll, or vanilla's [text]
 - counter => else/count
 - changed => else/changed~
 - click~ => else/impseq~
@@ -296,6 +296,7 @@ Alternatives:
 - comb~ => else/comb.rev~
 - count~ => else/ramp~
 - cross~ => else/crossover~
+- cycle => else/robin
 - cycle~ => else/wavetable~ => tabosc4~
 - curve~ => else/envgen~
 - cartopol/poltocar/cartopol~/poltocar~ => else car2pol/pol2car/car2pol~/pol2car~
