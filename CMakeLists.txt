@@ -87,20 +87,20 @@ foreach(file ${else_sources})
     get_filename_component(name ${file} NAME)
     string(REGEX REPLACE "\\.[^.]*$" "" name_we ${name})
     string(REGEX REPLACE "~" "_tilde" target_name ${name_we})
-
     pd_add_external(${name_we} ${file})
     target_link_libraries(${target_name} PRIVATE else_shared)
 
 # aliases
     if(${target_name} STREQUAL "sig2float_tilde")
         pd_add_external(s2f~ ${file})
-        target_link_libraries(s2f_tilde PRIVATE else_shared)
     elseif(${target_name} STREQUAL "car2pol_tilde")
         pd_add_external(cartopol~ ${file})
-        target_link_libraries(cartopol_tilde PRIVATE else_shared)
     elseif(${target_name} STREQUAL "pol2car_tilde")
         pd_add_external(poltocar~ ${file})
-        target_link_libraries(poltocar_tilde PRIVATE else_shared)
+    elseif(${target_name} STREQUAL "car2pol")
+        pd_add_external(cartopol ${file})
+    elseif(${target_name} STREQUAL "pol2car")
+        pd_add_external(poltocar ${file})
 
     # If target is streamout_tilde, add static libogg and libvorbis linking on macOS
     elseif(${target_name} STREQUAL "streamout_tilde")
@@ -278,3 +278,4 @@ math(EXPR total_abstractions "${control_pd_file_count} + ${signal_pd_file_count}
 message(STATUS "${total_compiled} coded objects (${signal_c_file_count} signal objects / ${control_c_file_count} control objects)")
 message(STATUS "${total_abstractions} abstractions (${signal_pd_file_count} signal objects / ${control_pd_file_count} control objects)")
 message(STATUS "Merda modules: ${modules_pd_file_count}")
+
