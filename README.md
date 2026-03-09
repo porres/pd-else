@@ -259,7 +259,7 @@ A submodule of ELSE by Porres (this is also by Porres).
 
 **ALTERNATIVES TO CYCLONE**
 
-ELSE offers alternatives to objects from the Cyclone library (a library that clones objects from MAX/MSP). The objects that have no similar counterpart in ELSE (at least so far) are: anal / buddy / capture / capture~ / decide / decode / frameaccum~ / framedelta~ / funbuff / funnel / flush / forward / kink~ / linedrive / prob / match / maximum / minimum / mousefilter / next / offer / peak / prob / pv / spray / substitute / teeth~ / trough / universal / vectral~
+ELSE offers alternatives to objects from the Cyclone library (a library that clones objects from MAX/MSP). The objects that have no similar counterpart in ELSE (at least so far) are: anal / bucket / buddy / capture / capture~ / decide / decode / frameaccum~ / framedelta~ / funbuff / funnel / flush / forward / kink~ / linedrive / prob / match / maximum / minimum / mousefilter / next / offer / peak / prob / pv / substitute / teeth~ / trough / universal / vectral~
 
 But, here are some considerations:
 - maximum/minimum => [array max] [array min] (you need to set an array with the list)
@@ -354,6 +354,7 @@ Alternatives:
 - spell => [list fromsymbol]
 - split => else/spread
 - sprintf => else/format => makefilename
+- spray => else/listspread
 - sustain => else/suspedal
 - switch => else/selector
 - sah~ => else/sh~ => samphold~

@@ -30,8 +30,8 @@
 #X text 240 215 >= 10 < 20, f 5;
 #X text 294 215 >= 20 < 40, f 5;
 #X text 343 215 >= 40;
-#X text 29 178 see also:;
-#X obj 44 203 moses;
+#X text 39 159 see also:;
+#X obj 38 184 moses;
 #X text 200 327 output to an outlet as the result of the comparison;
 #X obj 198 138 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 198 167 else/spread 10 20 40, f 26;
@@ -100,6 +100,7 @@
 #X connect 1 2 4 0;
 #X connect 1 3 5 0;
 #X restore 432 211 pd keyboard-split;
+#X obj 37 208 else/listspread;
 #X connect 30 0 31 0;
 #X connect 31 0 18 0;
 #X connect 31 1 17 0;
