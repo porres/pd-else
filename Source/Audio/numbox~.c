@@ -10,12 +10,6 @@
 #define MAX_NUMBOX_LEN 32
 #define MINSIZE        8
 
-#if __APPLE__
-char def_font[100] = "Menlo";
-#else
-char def_font[100] = "DejaVu Sans Mono";
-#endif
-
 typedef struct _numbox{
     t_object  x_obj;
     t_clock  *x_clock_update;
@@ -567,7 +561,7 @@ static void *numbox_new(t_symbol *s, int ac, t_atom *av){
     x->x_ramp_ms = ramp_ms < 0 ? 0 : ramp_ms;    
     x->x_out_val = x->x_ramp_val = x->x_set_val;
     x->x_sr_khz = sys_getsr() * 0.001;
-    x->x_font = gensym(def_font);
+    x->x_font = gensym(sys_font);
     x->x_clock_update = clock_new(x, (t_method)clock_update);
     clock_delay(x->x_clock_update, x->x_rate); // Start repaint clock
     sprintf(x->x_tag_number, "%pNUM", x);

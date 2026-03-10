@@ -31,12 +31,6 @@
 #define POS_INF         0x7F800000ul
 #define NEG_INF         0xFF800000ul
 
-#if __APPLE__
-char def_font[100] = "Menlo";
-#else
-char def_font[100] = "DejaVu Sans Mono";
-#endif
-
 typedef struct _edit_proxy{
     t_object      p_obj;
     t_symbol     *p_sym;
@@ -420,7 +414,7 @@ static void knob_config_bg(t_knob *x){
 
 static void knob_config_number(t_knob *x){ // show or hide number value
     t_atom at[2];
-    SETSYMBOL(at, gensym(def_font));
+    SETSYMBOL(at, gensym(sys_font));
     SETFLOAT(at+1, -x->n_size*x->x_zoom);
     t_canvas *cv = glist_getcanvas(x->x_glist);
     pdgui_vmess(0, "crs rA", cv, "itemconfigure", x->x_tag_number, "-font", 2, at);
@@ -823,7 +817,7 @@ static void knob_draw_new(t_knob *x, t_glist *glist){
         "-tags", 3, tags_wiper);
 // number
     t_atom at[2];
-    SETSYMBOL(at, gensym(def_font));
+    SETSYMBOL(at, gensym(sys_font));
     SETFLOAT(at+1, -x->n_size*z);
     char *tags_number[] = {x->x_tag_number, x->x_tag_fg, x->x_tag_obj};
     pdgui_vmess(0, "crr ii rs rs rA rS", cv, "create", "text",

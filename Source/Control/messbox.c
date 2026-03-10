@@ -9,7 +9,6 @@
 #pragma warning( disable : 4305 )
 #endif
 
-#define FONT_NAME    "DejaVu Sans Mono"
 //#define HANDLE_SIZE  15
 #define MIN_WIDTH    60
 #define MIN_HEIGHT   30
@@ -103,7 +102,7 @@ static void messbox_draw(t_messbox *x, t_glist *glist){
 //    sys_vgui("destroy %s\n", x->handle_id);
     sys_vgui("frame %s\n", x->frame_id);
     sys_vgui("text %s -font {{%s} %d %s}  -highlightthickness 0 -bg \"%s\" -fg \"%s\"\n", x->text_id,
-        FONT_NAME, x->x_font_size*x->x_zoom, x->x_font_weight->s_name, x->x_bgcolor, x->x_fgcolor);
+        sys_font, x->x_font_size*x->x_zoom, x->x_font_weight->s_name, x->x_bgcolor, x->x_fgcolor);
     // catch ctl-v events from being propagated
     sys_vgui("bindtags %s {pre%s Text %s . all}\n", x->text_id, x->text_id, x->text_id);
     sys_vgui("::pd_bindings::bind_capslock %s $::modifier-Key v \
@@ -369,7 +368,7 @@ static void messbox_bold(t_messbox *x, t_symbol *s, int ac, t_atom *av){
     if(av[0].a_type == A_FLOAT){
         float bold = atom_getfloatarg(0, ac, av);
         x->x_font_weight = (int)(bold != 0) ? gensym("bold") : gensym("normal");
-        sys_vgui("%s configure -font {{%s} %d %s}\n", x->text_id, FONT_NAME,
+        sys_vgui("%s configure -font {{%s} %d %s}\n", x->text_id, sys_font,
             x->x_font_size*x->x_zoom, x->x_font_weight->s_name);
     }
 }
@@ -380,7 +379,7 @@ static void messbox_fontsize(t_messbox *x, t_symbol *s, int ac, t_atom *av){
         float font_size = atom_getfloatarg(0, ac, av);
         x->x_font_size = font_size < 8 ? 8 : (int)font_size;
         sys_vgui("%s configure -font {{%s} %d %s}\n",
-            x->text_id, FONT_NAME, x->x_font_size*x->x_zoom, x->x_font_weight->s_name);
+            x->text_id, sys_font, x->x_font_size*x->x_zoom, x->x_font_weight->s_name);
     }
 }
 

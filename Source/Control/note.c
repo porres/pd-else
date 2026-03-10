@@ -12,12 +12,6 @@
 #define NOTE_HANDLE_WIDTH  8
 #define NOTE_OUTBUFSIZE    16384
 
-#if __APPLE__
-static char default_font[100] = "Menlo";
-#else
-static char default_font[100] = "DejaVu Sans Mono";
-#endif
-
 static t_class *note_class, *notesink_class, *handle_class, *edit_proxy_class;
 static t_widgetbehavior note_widgetbehavior;
 
@@ -1232,7 +1226,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     x->x_glist = canvas_getcurrent();
     x->x_cv = canvas_getcurrent();
     x->x_zoom = x->x_glist->gl_zoom;
-    x->x_fontname = gensym(default_font);
+    x->x_fontname = gensym(sys_font);
     x->x_edit = x->x_glist->gl_edit;
     x->x_buf = 0;
     x->x_keynum = 0;

@@ -7,12 +7,6 @@
 
 #define MAX_ITEMS 1024
 
-#if __APPLE__
-char def_font[100] = "Menlo";
-#else
-char def_font[100] = "DejaVu Sans Mono";
-#endif
-
 static t_class *menu_class, *edit_proxy_class;
 static t_widgetbehavior menu_widgetbehavior;
 
@@ -267,7 +261,7 @@ static void create_menu(t_menu *x, t_glist *glist){
     pdgui_vmess(0, "rr", "destroy", x->x_tag_mb); // in case it exists (vis?)
     // Create a shared Tcl variable for the selected item
     t_atom at[2];
-    SETSYMBOL(at, gensym(def_font));
+    SETSYMBOL(at, gensym(sys_font));
     SETFLOAT(at+1, -x->x_fontsize*x->x_zoom);
     // Create the menubutton
     pdgui_vmess(0, "rs rs rA rsrs rs rs rs rr rs rs rs",
@@ -629,7 +623,7 @@ static void menu_height(t_menu* x, t_floatarg f){
 static void menu_fontsize(t_menu* x, t_floatarg f){
     x->x_fontsize = f < 8 ? 8 : (int)f;
     t_atom at[2];
-    SETSYMBOL(at, gensym(def_font));
+    SETSYMBOL(at, gensym(sys_font));
     SETFLOAT(at+1, -x->x_fontsize*x->x_zoom);
     if(vis(x))
         pdgui_vmess(0, "rr rA", x->x_tag_mb, "configure",
