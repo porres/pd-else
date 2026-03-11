@@ -20,7 +20,9 @@ static const char *knob_dialog_tcl =
 //"    ::pdwindow::post \"Cooked: <$sym>\\n\"\n"
 " return $sym\n"
 "}\n"
-// Actual start of properties
+
+// ---------------------- Actual start of properties ---------------------- \\
+// 
 "namespace eval ::dialog_knob:: {\n"
 "}\n"
 // arrays to store per-dialog values
@@ -69,9 +71,8 @@ static const char *knob_dialog_tcl =
 "array set ::dialog_knob::var_colorradio {} ;\n" // radio for what color type we're setting
 "\n"
 
-// ------------------------------------------------------------------------------------------------
-        
-// Get parameters from Pd when asking for properties!
+// ------------------ Get parameters from Pd when asking for properties! ------------------ \\
+//
 "proc knob_dialog {id \\\n"
 "         size square \\\n"
 "         show_arc arcstart \\\n"
@@ -132,10 +133,8 @@ static const char *knob_dialog_tcl =
 "    set ::dialog_knob::var_colorradio($vid) 0\n" // init to 'bg'
 "\n"
 
-// ------------------------------------------------------------------------------------------------
-        
-// HELPER PROCEDURES/FUNCTIONS:
-        
+// ------------------------- HELPER PROCEDURES/FUNCTIONS ------------------------- \\
+  
 // set a string to send it to Pd:
 //   - Remove: semicolons, commas, backslashes (but allow curlies, unlike vanilla)
 //   - Escape spaces and dollar signs
@@ -223,10 +222,8 @@ static const char *knob_dialog_tcl =
 "}\n"
 "\n"
         
-// ----------------------------------------------------------------------------------------------------
-
-// DRAW PROPERTIES' WINDOW:
-        
+// ------------------------------ DRAW PROPERTIES' WINDOW ------------------------------ \\
+  
 // Initialize creation/drawing of properties window
 "    toplevel $id -class DialogWindow\n"
 "    wm title $id {[knob] Properties}\n"
@@ -262,6 +259,7 @@ static const char *knob_dialog_tcl =
         // column 1
 "    grid $id.basic.square -row 0 -column 1 -sticky e -padx {60 0}\n"
 "\n"
+
 // Frame for Arc settings
 "    labelframe $id.arcsettings\n"
 "    pack $id.arcsettings -side top -fill x\n"
@@ -340,6 +338,7 @@ static const char *knob_dialog_tcl =
 "    pack $id.discrete.mode $id.discrete.ticks $id.discrete.steps -side left -anchor center\n"
 "    $id.discrete config -padx 30\n"
 "\n"
+
 // Frame for Angle entry
 "    labelframe $id.angle\n"
 "    pack $id.angle -side top -fill x\n"
@@ -359,6 +358,7 @@ static const char *knob_dialog_tcl =
 "    pack $id.angle.range $id.angle.offset -side left -anchor center\n"
 "    $id.angle config -padx 60\n"
 "\n"
+
 // Frame for output range section
 "    labelframe $id.rng\n"
 "    pack $id.rng -side top -fill x\n"
@@ -400,6 +400,7 @@ static const char *knob_dialog_tcl =
 "    pack $id.rng.logmode.expmode_entry $id.rng.logmode.radio2 $id.rng.logmode.radio1 $id.rng.logmode.radio0 -side right \n"
 "    pack $id.rng.range $id.rng.logmode -side top\n"
 "\n"
+
 // Frame for Mouse/Click behaviour (Read Only / Jump on click / Circular motion)
 "    labelframe $id.mouse\n"
 "    pack $id.mouse -side top -fill x\n"
@@ -430,7 +431,6 @@ static const char *knob_dialog_tcl =
 "           -command \"::dialog_knob::cmenucheck $cmode_selection $id\"\n"
 "   }\n"
 "    pack $id.mouse.move.lab $id.mouse.move.mb -side left\n"
-        
 /* When read only is selected, disbale jump/circular
 "    if { $::dialog_knob::var_readonly($vid) >= 1 } {\n"
 "       $id.mouse.jump.ent configure -state disabled\n"
@@ -480,6 +480,7 @@ static const char *knob_dialog_tcl =
 "    pack $id.num.xpos $id.num.ypos -side left -anchor center\n"
 "    $id.num config -padx 35\n"
 "\n"
+
 // Frame for attached symbols
 "    labelframe $id.syms -borderwidth 1 -padx 5 -pady 8 -text [_ \"Attached symbols: \"]\n"
 "    pack $id.syms -side top -fill x\n"
@@ -524,6 +525,7 @@ static const char *knob_dialog_tcl =
 "    grid $id.syms.param -row 0 -column 1 -sticky e -padx {5 0}\n"
 "    grid $id.syms.var -row 1 -column 1 -sticky e -padx {5 0}\n"
 "\n"
+
 // Frame for colors section
 "    labelframe $id.colors -borderwidth 1 -text [_ \"Colors:\"] -padx 5 -pady 8\n"
 "    pack $id.colors -fill x\n"
@@ -578,6 +580,7 @@ static const char *knob_dialog_tcl =
 "           $id.colors.presets.$r.c8 $id.colors.presets.$r.c9 -side left\n"
 "    }\n"
 "\n"
+
 // Cancel, Apply and OK buttons
 "    frame $id.cao -pady 4\n"
 "    pack $id.cao -side top\n"

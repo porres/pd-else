@@ -626,53 +626,49 @@ static void knob_select(t_gobj *z, t_glist *glist, int sel){
 
 static void knob_draw_handle(t_knob *x, int state){
     t_handle *sh = (t_handle *)x->x_handle;
-
     pdgui_vmess(0, "rs", "destroy", sh->h_pathname);
-
     if(state){
-        pdgui_vmess(0, "rsdddddd",
-            "canvas_new",
-            sh->h_pathname,
-            HANDLE_SIZE,
-            HANDLE_SIZE,
-            THISGUI->i_selectcolor,
-            THISGUI->i_foregroundcolor,
-            THISGUI->i_gopcolor,
-            2*x->x_zoom);
-
+        pdgui_vmess(0, "rs riri rkrkrk ri rr",
+            "canvas", sh->h_pathname,
+            "-width", HANDLE_SIZE, "-height", HANDLE_SIZE,
+            "-bg", THISGUI->i_selectcolor,
+            "-highlightcolor", THISGUI->i_foregroundcolor,
+            "-highlightbackground", THISGUI->i_gopcolor,
+            "-highlightthickness", 2*x->x_zoom,
+            "-cursor", "bottom_right_corner");
         int x1, y1, x2, y2;
         knob_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
-
-        pdgui_vmess(0, "rcddddss",
-            "canvas_create_window",
-            x->x_cv, /* canvas pointer */
+        t_canvas *cv = (t_canvas *)x->x_cv;
+        char tags[256];
+        snprintf(tags, sizeof(tags), "{%s %s}", x->x_tag_handle, x->x_tag_obj);
+        pdgui_vmess(0, "crr ii rs ri ri rs rs",
+            cv, "create", "window",
             x2 - HANDLE_SIZE*x->x_zoom + 1,
             y2 - HANDLE_SIZE*x->x_zoom + 1,
-            HANDLE_SIZE*x->x_zoom,
-            HANDLE_SIZE*x->x_zoom,
-            sh->h_pathname,
-            x->x_tag_handle,
-            x->x_tag_obj);
-
-        pdgui_vmess(0, "rss",
-            "bind_click",
-            sh->h_pathname,
-            sh->h_bindsym->s_name);
-
-        pdgui_vmess(0, "rss",
-            "bind_release",
-            sh->h_pathname,
-            sh->h_bindsym->s_name);
-
-        pdgui_vmess(0, "rss",
-            "bind_motion",
-            sh->h_pathname,
-            sh->h_bindsym->s_name);
-
-        pdgui_vmess(0, "rs", "focus", sh->h_pathname);
+            "-anchor", "nw",
+            "-width", HANDLE_SIZE*x->x_zoom,
+            "-height", HANDLE_SIZE*x->x_zoom,
+            "-window", sh->h_pathname,
+            "-tags", tags);
+        char buf[512];
+        snprintf(buf, sizeof(buf),
+            "bind %s <Button> {pdsend [concat %s _click 1 \\;]}",
+            sh->h_pathname, sh->h_bindsym->s_name);
+        pdgui_vmess(buf, NULL);
+        snprintf(buf, sizeof(buf),
+            "bind %s <ButtonRelease> {pdsend [concat %s _click 0 \\;]}",
+            sh->h_pathname, sh->h_bindsym->s_name);
+        pdgui_vmess(buf, NULL);
+        snprintf(buf, sizeof(buf),
+            "bind %s <Motion> {pdsend [concat %s _motion %%x %%y \\;]}",
+            sh->h_pathname, sh->h_bindsym->s_name);
+        pdgui_vmess(buf, NULL);
+        snprintf(buf, sizeof(buf),
+            "focus %s",
+            sh->h_pathname); // coz of damn weird bug
+        pdgui_vmess(buf, NULL);
     }
 }
-
 
 // Draw ticks
 static void knob_draw_ticks(t_knob *x){
@@ -2048,13 +2044,11 @@ static void handle__click_callback(t_handle *sh, t_floatarg f){
     int click = (int)f;
     t_knob *x = sh->h_master;
     if(sh->h_dragon && click == 0){
-        
         char buf[128];
         snprintf(buf, sizeof(buf),
             ".x%lx.c delete %s",
             (unsigned long)x->x_cv, sh->h_outlinetag);
         pdgui_vmess(buf, NULL);
-    
         t_atom undo[1];
         SETFLOAT(undo, x->x_size);
         t_atom redo[1];
@@ -2069,13 +2063,15 @@ static void handle__click_callback(t_handle *sh, t_floatarg f){
     else if(!sh->h_dragon && click){
         int x1, y1, x2, y2;
         knob_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+        
         t_canvas *cv = (t_canvas *)x->x_cv;
-        pdgui_vmess(0, "crs riii ri rs",
+        pdgui_vmess(0, "crr iiii rk ri rs",
             cv, "create", "rectangle",
             x1, y1, x2, y2,
             "-outline", THISGUI->i_selectcolor,
             "-width", KNOB_SELBDWIDTH * x->x_zoom,
             "-tags", sh->h_outlinetag);
+        
         pdgui_vmess(0, "rr rk",  sh->h_pathname, "configure",
             "-highlightcolor", THISGUI->i_selectcolor);
 //        sh->h_dragx = sh->h_dragy = sh->h_drag_delta = 0;
@@ -2591,7 +2587,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     sprintf(x->x_tag_IO, "%pIO", x);
     sprintf(x->x_tag_number, "%pNUM", x);
     sprintf(x->x_tag_hover, "%pHOVER", x);
-    if(x->x_rcv != gensym("empty") && x->x_rcv != &s_)
+    if(x->x_rcv != gensym("empty"))
         pd_bind(&x->x_obj.ob_pd, x->x_rcv);
     pd_bind(&x->x_obj.ob_pd, gensym("#keyname")); // listen to key events
     get_cname(x, 100);
