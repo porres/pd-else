@@ -14,6 +14,10 @@ sys_gui(
     if {$wd > 0} {$cv itemconfig $tag -text $tt -width $wd} else {\n\
     $cv itemconfig $tag -text $tt}}\n"
         
+// Get font list
+"proc get_font_list {} {\n\
+    return [lsort [font families]]\n\}\n"
+        
 // DRAW - creates text item and bind to note_click
 "proc note_draw {tgt cv tag1 tag2 x y fnm fsz clr tt wd wt sl just ul} {\n\
     if {$ul} {\n\
@@ -83,6 +87,12 @@ sys_gui(
            "        [string map {\"$\" {\\$} \" \" {\\ } \";\" \"\" \",\" \"\" \"\\\\\" \"\" \"\\{\" \"\" \"\\}\" \"\"} [eval concat $$var_rcv]]\\;]\n"
            "    pd $cmd\n"
   "}\n"
+  "proc note_applymacos {id} {\n"
+  "    if {$::windowingsystem eq \"aqua\"} {\n"
+  "        note_apply $id\n"
+  "    }\n"
+  "}\n"
+  "\n"
   "proc note_cancel {id} {\n"
   "    set cmd [concat $id cancel \\;]\n"
   "    pd $cmd\n"
@@ -135,14 +145,17 @@ sys_gui(
   "    wm title $id {[note] Properties}\n"
   "    wm protocol $id WM_DELETE_WINDOW [concat note_cancel $id]\n"
   "\n"
+        
   "    frame $id.name_size\n"
   "    pack $id.name_size -side top\n"
   "    label $id.name_size.lname -text \"Font Name:\"\n"
-  "    entry $id.name_size.name -textvariable $var_name -width 30\n"
+  "    ttk::combobox $id.name_size.name -textvariable $var_name -values [get_font_list] -state normal -width 28\n"
+  "    bind $id.name_size.name <<ComboboxSelected>> \"note_applymacos $id\"\n"
   "    label $id.name_size.lsize -text \"Font Size:\"\n"
   "    entry $id.name_size.size -textvariable $var_size -width 3\n"
   "    pack $id.name_size.lname $id.name_size.name $id.name_size.lsize $id.name_size.size -side left\n"
-  "\n"
+        
+        
   "    frame $id.justification\n"
   "    pack $id.justification -side top\n"
   "    checkbutton $id.justification.ol -variable $var_outline \n"
@@ -257,7 +270,7 @@ sys_gui(
    "            -activebackground [eval concat $$var_var_bg] \\\n"
    "            -foreground [eval concat $$var_var_bg] \\\n"
    "            -activeforeground [eval concat $$var_var_bg]}\n"
-   "     note_apply $id\n"
+   "     note_applymacos $id\n"
    "}\n"
    "\n"
    "proc preset_col {id presetcol} {\n"
