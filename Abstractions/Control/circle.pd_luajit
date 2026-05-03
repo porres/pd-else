@@ -1,0 +1,236 @@
+local else_gui = require("else_gui")
+local circle   = pd.Class:new():register("circle")
+
+else_gui.setup(circle, {
+    { "size",           127,          "on_resize", "Size",             "int",   {frame="Dimensions", ncols=1, flag="size", min=10, max=4096} },
+    { "xrange",         {-1, 1},      "repaint",   "X Range",          "range", {frame="General", flag="xrange"}},
+    { "yrange",         {-1, 1},      "repaint",   "Y Range",          "range", {frame="General", flag="yrange"}},
+    { "mode",           1,            "repaint",   "Mode",             "combo", {frame="General", flag="mode", items={"none", "crosshair", "line to center"}} },
+    { "bgcolor1",       pd.bg_color,  "repaint",   "Background",       "color", {frame="Appearance", ncols=3, flag="bgcolor1", msg="bgcolor1"} },
+    { "bgcolor2",       pd.bg_color,  "repaint",   "Circle",           "color", {frame="Appearance", flag="bgcolor2", msg="bgcolor2"} },
+    { "fgcolor",        pd.fg_color,  "repaint",   "Handle",           "color", {frame="Appearance", flag="fgcolor", msg="fgcolor"} },
+    { "grid",           1,            "repaint",   "Grid",             "check", {frame="General", flag="grid"}},
+    { "jump",           0,            nil,         "Jump on Click",    "check", {frame="General", flag="jump"}},
+    { "savestate",      0,            nil,         "Save State",       "check", {frame="General", flag="savestate"}},
+    { "init_x",         0,            nil,         nil,                "float" },
+    { "init_y",         0,            nil,         nil,                "float" },
+    { "send",           "empty",      nil,         "Send",             "text",  {frame="General", flag="send"}},
+    { "receive",        "empty",      "on_receive","Receive",          "text",  {frame="General", flag="receive"}},
+    { "clip",           1,            "repaint",   "Clip to Circle",   "check", {frame="General", flag="clip"}},
+}, {["-range"] = function(self, atoms, i)
+        self.xrange[1], self.yrange[2] = tonumber(atoms[i]),   tonumber(atoms[i])
+        self.xrange[2], self.yrange[1] = tonumber(atoms[i+1]), tonumber(atoms[i+1])
+        return 2
+    end
+    })
+
+function circle:initialize(sel, atoms)
+    self.inlets   = 1
+    self.outlets  = 1
+    self.shift    = 0
+    self.dragging = false
+
+    self:init_args(atoms)
+
+    if self.savestate ~= 0 then
+        self.slider_position_x = self.init_x
+        self.slider_position_y = self.init_y
+    else
+        self.slider_position_x = 0.5
+        self.slider_position_y = 0.5
+    end
+
+    self:setup_receive(self.receive)
+    self:set_size(self.size, self.size)
+    return true
+end
+
+function circle:in_1_bgcolor(atoms)
+    self.bgcolor1 = { tonumber(atoms[1]) or 0, tonumber(atoms[2]) or 0, tonumber(atoms[3]) or 0 }
+    self.bgcolor2 = { self.bgcolor1[1], self.bgcolor1[2], self.bgcolor1[3] }
+    self:save_args(); self:repaint()
+end
+
+function circle:in_1_range(atoms)
+    local lo, hi = tonumber(atoms[1]), tonumber(atoms[2])
+    if lo then self.xrange[1], self.yrange[2] = lo, lo end
+    if hi then self.xrange[2], self.yrange[1] = hi, hi end
+    self:save_args(); self:repaint()
+end
+
+function circle:key(down, name)
+    if name == "Shift_L" then
+        self.shift = down
+    end
+end
+
+function circle:on_resize(sym)
+    self:set_size(self.size, self.size)
+end
+
+function circle:on_receive(sym)
+    self:setup_receive(sym)
+end
+
+function circle:scale(norm, lo, hi)
+    return lo + (hi - lo) * norm
+end
+
+function circle:unscale(val, lo, hi)
+    return (val - lo) / (hi - lo)
+end
+
+function circle:output()
+    if self._outputting then return end
+    self._outputting = true
+    local x = self:scale(self.slider_position_x, self.xrange[1], self.xrange[2])
+    local y = self:scale(self.slider_position_y, self.yrange[2],   self.yrange[1])
+    self:outlet(1, "list", {x, y})
+    if self.send ~= "" and self.send ~= "empty" then
+        pd.send(self.send, "list", {x, y})
+    end
+    self._outputting = false
+end
+
+function circle:record_init()
+    if self.savestate ~= 0 then
+        self.init_x = self.slider_position_x
+        self.init_y = self.slider_position_y
+        self:save_args()
+    end
+end
+
+function circle:setup_receive(sym)
+    self.recv = nil
+    if sym ~= "" and sym ~= "empty" then
+        self.recv = pd.Receive:new():register(self, sym, "receive_cb")
+    end
+end
+
+function circle:clamp_position()
+    if self.clip ~= 0 then
+        local dx = self.slider_position_x - 0.5
+        local dy = self.slider_position_y - 0.5
+
+        local dist = math.sqrt(dx*dx + dy*dy)
+        if dist > 0.5 then
+            local scale = 0.5 / dist
+            dx = dx * scale
+            dy = dy * scale
+        end
+
+        self.slider_position_x = dx + 0.5
+        self.slider_position_y = dy + 0.5
+    else
+        self.slider_position_x = math.max(0, math.min(1, self.slider_position_x))
+        self.slider_position_y = math.max(0, math.min(1, self.slider_position_y))
+    end
+end
+
+function circle:mouse_down(x, y)
+    local w, h = self:get_size()
+    self.dragging = true
+    self.last_mouse_x = x
+    self.last_mouse_y = y
+
+    if self.jump == 1 then
+        self.slider_position_x =  x / w
+        self.slider_position_y = 1 - (y / h)
+        self:clamp_position()
+        self:repaint(); self:output()
+    end
+end
+
+function circle:mouse_drag(x, y)
+    if not self.dragging then return end
+    local w, h = self:get_size()
+
+    local dx = x - self.last_mouse_x
+    local dy = y - self.last_mouse_y
+    if self.shift ~= 0 then dx, dy = dx / 10, dy / 10 end
+
+    self.slider_position_x = self.slider_position_x + dx / w
+    self.slider_position_y = self.slider_position_y - dy / h
+
+    self:clamp_position()
+    self:repaint(); self:output()
+
+    self.last_mouse_x = x
+    self.last_mouse_y = y
+end
+
+
+function circle:mouse_up()
+    self.dragging = false
+    self:record_init()
+end
+
+function circle:receive_cb(sel, atoms)
+    if     sel == "bang" then self:in_1_bang()
+    elseif sel == "list" then self:in_1_list(atoms)
+    elseif sel == "set"  then self:in_1_set(atoms)
+    end
+end
+
+function circle:in_1_bang()
+    self:output()
+end
+
+function circle:in_1_list(atoms)
+    self.slider_position_x = self:unscale(tonumber(atoms[1]) or 0, self.xrange[1], self.xrange[2])
+    self.slider_position_y = self:unscale(tonumber(atoms[2]) or 0, self.yrange[2], self.yrange[1])
+    self:clamp_position()
+    self:repaint(); self:output(); self:record_init()
+end
+
+function circle:in_1_set(atoms)
+    self.slider_position_x = self:unscale(tonumber(atoms[1]) or 0, self.xrange[1], self.xrange[2])
+    self.slider_position_y = self:unscale(tonumber(atoms[2]) or 0, self.yrange[2],   self.yrange[1])
+    self:clamp_position()
+    self:repaint(); self:record_init()
+end
+
+function circle:set_color_from(g, c)
+    g:set_color(c[1], c[2], c[3])
+end
+
+function circle:paint(g)
+    local w, h = self:get_size()
+    local px =  self.slider_position_x * w
+    local py = (1 - self.slider_position_y) * h
+
+    -- background square
+    self:set_color_from(g, self.bgcolor1)
+    g:fill_all()
+
+    -- circle face
+    self:set_color_from(g, self.bgcolor2)
+    g:fill_ellipse(1, 1, w - 1, h - 1)
+
+    -- grid lines
+    self:set_color_from(g, self.fgcolor)
+    if self.grid ~= 0 then
+        g:draw_line(w/2, 0,  w/2, h,   1)
+        g:draw_line(0,  h/2,  w, h/2,  1)
+    end
+
+    -- mode lines
+    if self.mode == 1 then
+        g:draw_line(px, py, px, h/2, 2)
+        g:draw_line(px, py, w/2, py, 2)
+    elseif self.mode == 2 then
+        g:draw_line(px, py, w/2, h/2, 2)
+    end
+
+    -- circle border
+    g:stroke_ellipse(1, 1, w - 1, h - 1, 1)
+
+    -- handle
+    g:fill_ellipse(px - 3.5, py - 3.5, 7, 7)
+
+    -- for plugdata dynamic resize
+    if w ~= self.size then
+        self.size = w
+        self:save_args()
+    end
+end
