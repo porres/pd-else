@@ -8,7 +8,7 @@ else_gui.setup(circle, {
     { "mode",           1,            "repaint",   "Mode",             "combo", {frame="General", flag="mode", items={"none", "crosshair", "line to center"}} },
     { "bgcolor1",       pd.bg_color,  "repaint",   "Background",       "color", {frame="Appearance", ncols=3, flag="bgcolor1", msg="bgcolor1"} },
     { "bgcolor2",       pd.bg_color,  "repaint",   "Circle",           "color", {frame="Appearance", flag="bgcolor2", msg="bgcolor2"} },
-    { "fgcolor",        pd.fg_color,  "repaint",   "Handle",           "color", {frame="Appearance", flag="fgcolor", msg="fgcolor"} },
+    { "fgcolor",        pd.fg_color,  "repaint",   "Foreground",           "color", {frame="Appearance", flag="fgcolor", msg="fgcolor"} },
     { "grid",           1,            "repaint",   "Grid",             "check", {frame="General", flag="grid"}},
     { "jump",           0,            nil,         "Jump on Click",    "check", {frame="General", flag="jump"}},
     { "savestate",      0,            nil,         "Save State",       "check", {frame="General", flag="savestate"}},
