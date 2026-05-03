@@ -174,16 +174,22 @@ static void knob_get_var(t_knob* x){
     if(!x->x_var_set){ // no var set, search arguments
         t_binbuf *bb = x->x_obj.te_binbuf;
         int n_args = binbuf_getnatom(bb) - 1; // number of arguments
-        char buf[128];
         if(n_args > 0){ // we have arguments, let's search them
+            t_atom *av = binbuf_getvec(bb);
             if(x->x_flag){ // arguments are flags actually
                 if(x->x_v_flag){ // we got a var flag, let's get it
-                    for(int i = 0;  i <= n_args; i++){
-                        atom_string(binbuf_getvec(bb) + i, buf, 128);
-                        if(gensym(buf) == gensym("-var")){
+                    for(int i = 0; i <= n_args; i++){
+                        if(av[i].a_type == A_SYMBOL && av[i].a_w.w_symbol == gensym("-var")){
                             i++;
-                            atom_string(binbuf_getvec(bb) + i, buf, 128);
-                            x->x_var_raw = gensym(buf);
+                            if(i <= n_args){
+                                if(av[i].a_type == A_SYMBOL)
+                                    x->x_var_raw = av[i].a_w.w_symbol;
+                                else{
+                                    char buf[128];
+                                    atom_string(av + i, buf, 128);
+                                    x->x_var_raw = gensym(buf);
+                                }
+                            }
                             break;
                         }
                     }
@@ -192,8 +198,13 @@ static void knob_get_var(t_knob* x){
             else{ // we got no flags, let's search for argument
                 int arg_n = 21; // var argument number
                 if(n_args >= arg_n){ // we have it, get it
-                    atom_string(binbuf_getvec(bb) + arg_n, buf, 128);
-                    x->x_var_raw = gensym(buf);
+                    if(av[arg_n].a_type == A_SYMBOL)
+                        x->x_var_raw = av[arg_n].a_w.w_symbol;
+                    else{
+                        char buf[128];
+                        atom_string(av + arg_n, buf, 128);
+                        x->x_var_raw = gensym(buf);
+                    }
                 }
             }
         }
@@ -206,16 +217,22 @@ static void knob_get_snd(t_knob* x){
     if(!x->x_snd_set){ // no send set, search arguments
         t_binbuf *bb = x->x_obj.te_binbuf;
         int n_args = binbuf_getnatom(bb) - 1; // number of arguments
-        char buf[128];
         if(n_args > 0){ // we have arguments, let's search them
+            t_atom *av = binbuf_getvec(bb);
             if(x->x_flag){ // arguments are flags actually
                 if(x->x_s_flag){ // we got a send flag, let's get it
-                    for(int i = 0;  i <= n_args; i++){
-                        atom_string(binbuf_getvec(bb) + i, buf, 128);
-                        if(gensym(buf) == gensym("-send")){
+                    for(int i = 0; i <= n_args; i++){
+                        if(av[i].a_type == A_SYMBOL && av[i].a_w.w_symbol == gensym("-send")){
                             i++;
-                            atom_string(binbuf_getvec(bb) + i, buf, 128);
-                            x->x_snd_raw = gensym(buf);
+                            if(i <= n_args){
+                                if(av[i].a_type == A_SYMBOL)
+                                    x->x_snd_raw = av[i].a_w.w_symbol;
+                                else{
+                                    char buf[128];
+                                    atom_string(av + i, buf, 128);
+                                    x->x_snd_raw = gensym(buf);
+                                }
+                            }
                             break;
                         }
                     }
@@ -224,8 +241,13 @@ static void knob_get_snd(t_knob* x){
             else{ // we got no flags, let's search for argument
                 int arg_n = 6; // send argument number
                 if(n_args >= arg_n){ // we have it, get it
-                    atom_string(binbuf_getvec(bb) + arg_n, buf, 128);
-                    x->x_snd_raw = gensym(buf);
+                    if(av[arg_n].a_type == A_SYMBOL)
+                        x->x_snd_raw = av[arg_n].a_w.w_symbol;
+                    else{
+                        char buf[128];
+                        atom_string(av + arg_n, buf, 128);
+                        x->x_snd_raw = gensym(buf);
+                    }
                 }
             }
         }
@@ -238,16 +260,22 @@ static void knob_get_rcv(t_knob* x){
     if(!x->x_rcv_set){ // no receive set, search arguments
         t_binbuf *bb = x->x_obj.te_binbuf;
         int n_args = binbuf_getnatom(bb) - 1; // number of arguments
-        char buf[128];
         if(n_args > 0){ // we have arguments, let's search them
+            t_atom *av = binbuf_getvec(bb);
             if(x->x_flag){ // arguments are flags actually
                 if(x->x_r_flag){ // we got a receive flag, let's get it
-                    for(int i = 0;  i <= n_args; i++){
-                        atom_string(binbuf_getvec(bb) + i, buf, 128);
-                        if(gensym(buf) == gensym("-receive")){
+                    for(int i = 0; i <= n_args; i++){
+                        if(av[i].a_type == A_SYMBOL && av[i].a_w.w_symbol == gensym("-receive")){
                             i++;
-                            atom_string(binbuf_getvec(bb) + i, buf, 128);
-                            x->x_rcv_raw = gensym(buf);
+                            if(i <= n_args){
+                                if(av[i].a_type == A_SYMBOL)
+                                    x->x_rcv_raw = av[i].a_w.w_symbol;
+                                else{
+                                    char buf[128];
+                                    atom_string(av + i, buf, 128);
+                                    x->x_rcv_raw = gensym(buf);
+                                }
+                            }
                             break;
                         }
                     }
@@ -256,8 +284,13 @@ static void knob_get_rcv(t_knob* x){
             else{ // we got no flags, let's search for argument
                 int arg_n = 7; // receive argument number
                 if(n_args >= arg_n){ // we have it, get it
-                    atom_string(binbuf_getvec(bb) + arg_n, buf, 128);
-                    x->x_rcv_raw = gensym(buf);
+                    if(av[arg_n].a_type == A_SYMBOL)
+                        x->x_rcv_raw = av[arg_n].a_w.w_symbol;
+                    else{
+                        char buf[128];
+                        atom_string(av + arg_n, buf, 128);
+                        x->x_rcv_raw = gensym(buf);
+                    }
                 }
             }
         }
