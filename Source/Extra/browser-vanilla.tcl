@@ -534,7 +534,7 @@ proc category_menu_vanilla::build_menu {parent_menu node x y} {
         } else {
             $current_menu add command \
                 -label [regsub -all {^\-$} $element {−}] \
-                -command "category_menu::send_item \$::focused_window $x $y {$element}"
+		-command "category_menu_vanilla::send_item \$::focused_window $x $y {$element}"
         }
     }
 }
