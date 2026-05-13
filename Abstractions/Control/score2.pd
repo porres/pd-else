@@ -7,7 +7,7 @@
 #X obj 280 209 outlet;
 #X obj 394 209 outlet;
 #X obj 280 178 r \$0-data-out;
-#N canvas 218 170 1110 674 route 0;
+#N canvas 170 98 1110 674 route 1;
 #X obj 127 32 inlet;
 #X obj 128 252 != 0;
 #X msg 171 130 1;
@@ -254,10 +254,10 @@
 #X obj 614 334 r \$0-speed;
 #X obj 600 398 s \$0-set-speed;
 #X obj 296 360 s \$0-playing;
+#X obj 128 285 t f f;
 #X connect 0 0 26 0;
 #X connect 1 0 10 1;
-#X connect 1 0 16 0;
-#X connect 1 0 45 0;
+#X connect 1 0 46 0;
 #X connect 2 0 1 0;
 #X connect 3 0 1 0;
 #X connect 4 0 10 1;
@@ -315,6 +315,8 @@
 #X connect 41 0 39 0;
 #X connect 42 0 41 1;
 #X connect 43 0 22 0;
+#X connect 46 0 16 0;
+#X connect 46 1 45 0;
 #X restore 59 63 pd route;
 #N canvas 521 60 551 298 init 0;
 #X obj 116 226 else/canvas.setname \$0-parent 1 1;
@@ -380,7 +382,7 @@
 #X obj 394 178 r \$0-end-out;
 #X obj 50 178 r \$0-event-out;
 #X obj 170 178 r \$0-dur-out;
-#N canvas 732 66 482 747 play 1;
+#N canvas 732 66 482 747 play 0;
 #X obj 79 25 inlet;
 #X obj 79 165 until;
 #X obj 111 134 r \$0-stop;
@@ -631,7 +633,7 @@
 #X connect 4 2 5 0;
 #X connect 4 3 3 0;
 #X restore 135 637 pd data;
-#N canvas 658 109 599 628 event 1;
+#N canvas 658 109 599 628 event 0;
 #X obj 52 32 inlet;
 #X obj 52 183 v type_\$0;
 #X obj 52 214 t f f;
@@ -738,7 +740,7 @@
 #X obj 114 346 s \$0-dur-out;
 #X obj 198 222 t b b;
 #X obj 312 271 f;
-#N canvas 721 38 629 878 check-tie 1;
+#N canvas 721 38 629 878 check-tie 0;
 #X obj 108 54 inlet;
 #X obj 196 104 else/slice -1;
 #X obj 284 131 sel _;

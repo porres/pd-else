@@ -336,11 +336,11 @@
 #X restore 219 408 pd goto;
 #X obj 623 186 s \$0-goto;
 #X obj 187 78 route float bang start stop pause continue play loop bar;
+#X obj 188 276 t f f;
 #X connect 0 0 27 0;
 #X connect 1 0 10 0;
-#X connect 2 0 1 1;
 #X connect 2 0 12 1;
-#X connect 2 0 18 0;
+#X connect 2 0 28 0;
 #X connect 3 0 2 0;
 #X connect 4 0 2 0;
 #X connect 5 0 1 1;
@@ -378,6 +378,8 @@
 #X connect 27 7 22 0;
 #X connect 27 8 26 0;
 #X connect 27 9 11 0;
+#X connect 28 0 18 0;
+#X connect 28 1 1 1;
 #X restore 83 67 pd play;
 #X f 14;
 #X obj 288 404 outlet;
@@ -791,12 +793,12 @@
 #X msg 88 258 0;
 #X msg 162 255 1;
 #X text 391 81 ????????;
-#N canvas 319 56 481 389 check 1;
+#N canvas 319 56 481 389 check 0;
 #X obj 105 57 inlet;
 #X obj 105 98 list split 1, f 43;
 #X obj 105 129 route float symbol, f 19;
 #X obj 170 226 list append;
-#N canvas 504 97 684 643 check 1;
+#N canvas 504 97 684 643 check 0;
 #X obj 150 54 inlet;
 #X obj 355 599 outlet;
 #X obj 182 515 +;
