@@ -27,7 +27,11 @@ proc category_else_menu::load_else_menutree {} {
         {assorted
             {else}}
         {gui
-            {knob numbox~ drum.seq bicoeff pad messbox mtx.ctl biplot zbiplot pic colors function circle slider2d display out.mc~ out~ out4~ out8~ gain~ gain2~ level~ button popmenu keyboard graph~ range.hsl multi.vsl spectrograph~ meter~ meter2~ meter4~ meter8~ note mix2~ mix4~ setdsp~ openfile scope~ scope3d~}}
+            {control
+                {knob drum.seq bicoeff pad messbox mtx.ctl biplot zbiplot pic colors function circle slider2d display button popmenu keyboard range.hsl multi.vsl note openfile}}
+            {signal
+                {numbox~ out.mc~ out~ out4~ out8~ gain~ gain2~ level~ graph~ spectrograph~ meter~ meter2~ meter4~ meter8~ scope~ scope3d~  mix2~ mix4~ setdsp~}}
+        }
         {time
             {chrono datetime}}
         {table
