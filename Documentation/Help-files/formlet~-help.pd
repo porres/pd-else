@@ -1,4 +1,4 @@
-#N canvas 532 57 566 618 10;
+#N canvas 569 56 566 618 10;
 #X obj 4 331 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 494 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 4 527 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -33,7 +33,7 @@
 #X text 229 450 - attack time in ms;
 #X text 229 471 - decay time in ms;
 #X text 175 535 1) float - central frequency in hertz (default 0), f 55;
-#N canvas 568 200 762 525 details 0;
+#N canvas 518 200 762 525 details 0;
 #X obj 529 133 else/imp~ 1;
 #X obj 601 236 else/out~;
 #X obj 471 296 else/out~;
@@ -84,7 +84,6 @@
 #X obj 22 189 else/resonator~;
 #X obj 22 210 else/resonant~;
 #X obj 225 228 else/formlet~ 1100 10 200;
-#X text 180 427 signal;
 #N canvas 601 204 731 441 multichannel 0;
 #X obj 97 187 sig~ 500 1000;
 #X obj 72 329 else/out.mc~;
@@ -148,7 +147,7 @@
 #X obj 22 251 else/paf~;
 #X text 228 338 - excitation signal;
 #X text 229 426 - central frequency in Hertz;
-#N canvas 874 271 455 473 example 0;
+#N canvas 793 262 455 473 example 0;
 #X obj 81 341 else/group~ 1 1;
 #X obj 81 370 else/out~;
 #X obj 157 235 else/initmess freq 500 790 1000 \, attack 5 10 7 \, decay 50 100 75, f 32;
@@ -174,6 +173,7 @@
 #X text 60 89 Based on SuperCollider's Formlet UGen \, [formlet~] is a resonant filter similar to [resonator~] in bandpass mode (and [resonant~] by extension). The difference is that you you can also specify an attack time besides the decay time. An advantage to this filter over FOF is that there is no limit to the number of overlapping grains., f 79;
 #X obj 22 272 else/formfm~;
 #X obj 22 292 else/packet~;
+#X text 162 427 signal(s);
 #X connect 21 0 31 0;
 #X connect 23 0 36 0;
 #X connect 31 0 36 0;

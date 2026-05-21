@@ -27,7 +27,7 @@
 #X text 94 487 2) float;
 #X text 24 161 see also:;
 #X obj 108 309 cnv 17 3 70 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
-#N canvas 646 168 725 625 multichannel 0;
+#N canvas 548 138 725 625 multichannel 0;
 #X obj 436 96 knob 50 100 10000 1 500 empty empty #dfdfdf #7c7c7c #000000 1 0 0 0 1 320 0 0 100 empty empty 0 8 0 0 0 1 0 0 0 0;
 #X obj 436 153 else/pack2;
 #X obj 436 300 else/out.mc~;
@@ -110,7 +110,7 @@
 #X text 161 366 bw <flist> -;
 #X text 239 366 list of bandwidths, f 43;
 #X text 242 441 paf oscillator signal(s);
-#N canvas 864 196 450 336 phase 0;
+#N canvas 830 196 450 336 phase 0;
 #X msg 149 157 phase 0 0.5, f 12;
 #X obj 137 221 else/out~;
 #X obj 137 190 else/paf~ 80 250 100 0 0;
