@@ -188,8 +188,13 @@ static void knob_get_snd(t_knob* x){
                             i++;
                             if((binbuf_getvec(bb)+i)->a_type == A_SYMBOL)
                                 s = atom_getsymbol(binbuf_getvec(bb)+i)->s_name;
-                            else
+                            else if((binbuf_getvec(bb)+i)->a_type == A_FLOAT)
                                 s = "empty";
+                            else{
+                                char astring[80];
+                                atom_string(binbuf_getvec(bb)+i, astring, sizeof(astring));
+                                s = astring;
+                            }
                             if(strcmp(s, "empty")){
                                 x->x_snd_raw = gensym(s);
                                 x->x_snd_set = 1;
@@ -204,8 +209,13 @@ static void knob_get_snd(t_knob* x){
                     const char *s;
                     if((binbuf_getvec(bb)+arg_n)->a_type == A_SYMBOL)
                         s = atom_getsymbol(binbuf_getvec(bb)+arg_n)->s_name;
-                    else
+                    else if((binbuf_getvec(bb)+arg_n)->a_type == A_FLOAT)
                         s = "empty";
+                    else{
+                        char astring[80];
+                        atom_string(binbuf_getvec(bb)+arg_n, astring, sizeof(astring));
+                        s = astring;
+                    }
                     if(strcmp(s, "empty")){
                         x->x_snd_raw = gensym(s);
                         x->x_snd_set = 1;
@@ -236,8 +246,13 @@ static void knob_get_rcv(t_knob* x){
                             i++;
                             if((binbuf_getvec(bb)+i)->a_type == A_SYMBOL)
                                 s = atom_getsymbol(binbuf_getvec(bb)+i)->s_name;
-                            else
+                            else if((binbuf_getvec(bb)+i)->a_type == A_FLOAT)
                                 s = "empty";
+                            else{
+                                char astring[80];
+                                atom_string(binbuf_getvec(bb)+i, astring, sizeof(astring));
+                                s = astring;
+                            }
                             if(strcmp(s, "empty")){
                                 x->x_rcv_raw = gensym(s);
                                 x->x_rcv_set = 1;
@@ -252,8 +267,13 @@ static void knob_get_rcv(t_knob* x){
                     const char *s;
                     if((binbuf_getvec(bb)+arg_n)->a_type == A_SYMBOL)
                         s = atom_getsymbol(binbuf_getvec(bb)+arg_n)->s_name;
-                    else
+                    else if((binbuf_getvec(bb)+arg_n)->a_type == A_FLOAT)
                         s = "empty";
+                    else{
+                        char astring[80];
+                        atom_string(binbuf_getvec(bb)+arg_n, astring, sizeof(astring));
+                        s = astring;
+                    }
                     if(strcmp(s, "empty")){
                         x->x_rcv_raw = gensym(s);
                         x->x_rcv_set = 1;
@@ -284,8 +304,13 @@ static void knob_get_var(t_knob* x){
                             i++;
                             if((binbuf_getvec(bb)+i)->a_type == A_SYMBOL)
                                 s = atom_getsymbol(binbuf_getvec(bb)+i)->s_name;
-                            else
+                            else if((binbuf_getvec(bb)+i)->a_type == A_FLOAT)
                                 s = "empty";
+                            else{
+                                char astring[80];
+                                atom_string(binbuf_getvec(bb)+i, astring, sizeof(astring));
+                                s = astring;
+                            }
                             if(strcmp(s, "empty")){
                                 x->x_var_raw = gensym(s);
                                 x->x_var_set = 1;
@@ -300,8 +325,13 @@ static void knob_get_var(t_knob* x){
                     const char *s;
                     if((binbuf_getvec(bb)+arg_n)->a_type == A_SYMBOL)
                         s = atom_getsymbol(binbuf_getvec(bb)+arg_n)->s_name;
-                    else
+                    else if((binbuf_getvec(bb)+arg_n)->a_type == A_FLOAT)
                         s = "empty";
+                    else{
+                        char astring[80];
+                        atom_string(binbuf_getvec(bb)+arg_n, astring, sizeof(astring));
+                        s = astring;
+                    }
                     if(strcmp(s, "empty")){
                         x->x_var_raw = gensym(s);
                         x->x_var_set = 1;
