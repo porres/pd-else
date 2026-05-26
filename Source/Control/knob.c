@@ -1093,6 +1093,10 @@ static void knob_float(t_knob *x, t_floatarg f){
     knob_bang(x);
 }
 
+static void knob_dirty(t_knob *x){
+    canvas_dirty(x->x_glist, 1);
+}
+
 static void knob_load(t_knob *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(!ac)
@@ -2080,23 +2084,23 @@ static int knob_click(t_gobj *z, struct _glist *glist, int xpix, int ypix, int s
     t_knob *x = (t_knob *)z;
     if(x->x_readonly)
         return(0);
-    if(alt && doit){
+    if(!x->x_ctrl && alt && doit){ // alt+click
         knob_float(x, x->x_load);
         return(1);
     }
     x->x_shift = shift;
-    if(x->x_ctrl && doit){
+    if(x->x_ctrl && doit){ // ctrl+click
         if(x->x_shift)
-            knob_forget(x);
+            knob_forget(x); // ctrl+shift+click
         else
             knob_learn(x);
         return(1);
     }
-    else if(dbl){
+    else if(dbl){ // double click
         knob_reset(x);
         return(1);
     }
-    if(doit){
+    if(doit){ // regular single click without modifiers
         x->x_buf[0] = 0;
         x->x_clicked = 1;
         knob_activecheck(x);
@@ -2708,6 +2712,7 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_set, gensym("set"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_size, gensym("size"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_circular, gensym("circular"), A_FLOAT, 0);
+    class_addmethod(knob_class, (t_method)knob_dirty, gensym("dirty"), 0);
     class_addmethod(knob_class, (t_method)knob_up, gensym("inc"), 0);
     class_addmethod(knob_class, (t_method)knob_down, gensym("dec"), 0);
     class_addmethod(knob_class, (t_method)knob_shift, gensym("shift"), A_FLOAT, 0);
