@@ -579,7 +579,7 @@
 #X connect 25 0 18 0;
 #X restore 123 202 pd guts;
 #X f 12;
-#N canvas 857 82 245 324 \$0-VCF 0;
+#N canvas 857 82 241 288 \$0-VCF 0;
 #N canvas 580 264 523 474 (subpatch) 0;
 #X obj 112 112 cnv 15 205 253 empty empty empty 20 12 0 14 #dbdbdb #373737 0;
 #X obj 160 119 else/note 84 24 Inter empty 5 54 54 54 0 187 187 187 1 1 VCF;
@@ -594,7 +594,7 @@
 #X obj 252 119 else/button 19 31 #e0e0e0 #808080 2 1 2 0 0 \$0-collapse \$0-button;
 #X obj 253 120 cnv 10 17 15 empty \$0-cnv ▼ 5 8 0 12 #bbbbbb #000000 0;
 #X obj 253 134 cnv 10 17 15 empty \$0-cnv ▲ 5 5 0 12 #bbbbbb #000000 0;
-#X obj 130 311 else/note 36 10 Menlo \$0-att-cut# 0 0 0 0 0 255 255 255 0 1;
+#X obj 130 311 else/note 36 10 Menlo \$0-att-cut# 0 0 0 0 0 255 255 255 0 1 0.00;
 #X obj 194 311 else/note 40 10 Menlo \$0-att-Q# 0 0 0 0 0 255 255 255 0 1;
 #X floatatom 170 333 4 0 100 0 - \$0-set-tracking \$0-tracking 0;
 #X text 121 327 Track amount, f 6;
