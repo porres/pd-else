@@ -31,6 +31,8 @@
 #X text 193 301 - interval list;
 #X text 49 85 [intervals] outputs a list of intervals in relation to the first pitch., f 51;
 #X msg 136 173 C#4 G4;
+#X text 29 199 see also:;
+#X obj 29 218 else/scales;
 #X connect 18 0 20 0;
 #X connect 19 0 18 0;
 #X connect 20 0 21 0;

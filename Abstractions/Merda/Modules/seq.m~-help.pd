@@ -1,6 +1,6 @@
-#N canvas 197 115 1259 704 12;
+#N canvas 197 75 1259 704 12;
 #X obj 1116 105 about.MERDA;
-#N canvas 291 60 883 540 messages 0;
+#N canvas 363 99 883 540 messages 0;
 #X floatatom 341 138 5 1 1000 0 - - - 16;
 #X obj 216 133 tgl 25 0 empty empty empty 0 -10 0 12 #202020 #ffffff #ffffff 0 1;
 #X msg 216 172 run \$1;
@@ -22,6 +22,7 @@
 #X text 466 137 also sets the number of pages to 1;
 #X text 530 208 set all picthes (2 pages);
 #X text 479 275 If you first set 'bpm'/'mul' and 'step' and then set pitches or triggers expanding to two pages or more \, the same value 'bpm'/'mul' and 'step' values apply to all pages., f 46;
+#X text 45 132 superseeds signal ----> input on left inlet, f 23;
 #X connect 0 0 4 0;
 #X connect 1 0 2 0;
 #X connect 2 0 7 0;
@@ -45,7 +46,7 @@
 #X text 796 92 external reset;
 #X text 492 76 external signal clock, f 12;
 #X obj 24 468 else/vco.m~;
-#A saved -12 0 0 4 0.725 0 0 0 0 0;
+#A saved 0 0 0 4 0.725 0 0 0 0 0;
 #A saved;
 #A saved;
 #A saved;
@@ -80,12 +81,12 @@
 #A saved;
 #X obj 302 25 else/note 369 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [seq.m~] - Step Sequencer;
 #X obj 23 160 else/seq.m~;
-#A saved 1 0 1;
-#A saved sequence 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60;
-#A saved nsteps 16;
-#A saved bpms 60;
-#A saved muls 7;
-#A saved trig 1 0 1 0 0 1 1 0 0 0 1 1 0 0 1 1;
+#A saved 1 0 2;
+#A saved sequence 60 60 48 60 60 60 54 60 60 60 63 59 60 60 64 61 60 60 48 60 57.5 50.5 58 60 60 60 60 60 60 60 60 60;
+#A saved nsteps 16 7;
+#A saved bpms 60 110;
+#A saved muls 7 3;
+#A saved trig 1 0 1 0 0 1 1 0 0 0 1 1 0 0 0 1 1 0 1 0 1 1 1 0 0 0 0 0 0 0 0 0;
 #A saved;
 #A saved;
 #A saved;
@@ -128,7 +129,7 @@
 #X text 952 252 Pitch values are from 12 to 108 (C0 to C8). At the top of each step you can set note names and octaves directly \, quantized to quarter tones \, but there's support for any interval in MIDIcents. Use number boxes for easier increment in semitones since the knob can't do that \, though it's fun to get random microtones with them. As any knob \, you can type in values but this makes more sense if you do it in the number boxes directly. The toggles set the trigger output on and off for each step., f 37;
 #X text 952 463 The left inlet is a gate for running the sequencer \, the mid input is an impulse input for external clock and the right inlet takes an impulse to reset the sequencer to the first step., f 37;
 #X text 376 542 You can set many "pages" for different concatenated sequences. Each page has its own BPM \, beat multiplier and number of steps (up to 16)., f 73;
-#X text 636 616 THIS OBJECT IS STILL WAY TOO EXPERIMENTAL... :);
+#X text 1024 589 THIS OBJECT IS STILL QUITE EXPERIMENTAL... :), f 18;
 #X connect 1 0 14 0;
 #X connect 4 0 14 2;
 #X connect 5 0 4 0;

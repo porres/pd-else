@@ -25,10 +25,13 @@
 #X text 155 259 list -;
 #X text 134 228 anything -;
 #X text 207 229 a message to sort, f 51;
-#X obj 201 152 else/sortnote;
-#X msg 201 122 E4 C#3 Ab4;
+#X obj 221 151 else/sortnote;
+#X msg 221 121 E4 C#3 Ab4;
 #X text 237 296 none, f 5;
 #X text 62 85 [sortnote] sorts note symbols with for pitches., f 70;
-#X listbox 201 185 13 0 0 0 - - - 0;
+#X listbox 221 184 13 0 0 0 - - - 0;
+#X text 44 127 see also:;
+#X obj 41 153 else/scales;
+#X obj 41 176 else/midi2note;
 #X connect 22 0 26 0;
 #X connect 23 0 22 0;

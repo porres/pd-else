@@ -23,10 +23,9 @@
 #X obj 504 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 292 210 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 184 338 float;
-#X text 34 186 see also;
 #X obj 187 208 else/numbox~ 6 10 100 #C0C0C4 #440008 10 0 0 0;
 #X obj 187 267 else/numbox~ 6 10 100 #C0C0C4 #440008 10 0 0 0;
-#X obj 36 231 else/gatehold~;
+#X obj 36 241 else/gatehold~;
 #N canvas 781 160 429 393 multichannel 0;
 #X obj 212 206 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 208 185 release time;
@@ -48,9 +47,9 @@
 #X text 160 311 signal(s);
 #X text 160 370 signal(s);
 #X text 224 311 - gate value(s);
-#X obj 36 253 else/gatedelay~;
+#X obj 36 263 else/gatedelay~;
 #X text 350 208 <- minimum gate time, f 10;
-#X obj 36 207 else/gaterelease~;
+#X obj 36 219 else/gaterelease~;
 #X obj 481 95 else/setdsp~;
 #X obj 187 172 else/randpulse~ 0.75;
 #X obj 187 237 else/gatemin~ 1000;
@@ -58,7 +57,9 @@
 #X text 224 338 - minimum time in ms;
 #X text 224 370 - the gate(s) with a minimum time;
 #X text 139 402 1) float - minimum time in ms (default 0);
-#X connect 18 0 33 1;
-#X connect 21 0 33 0;
+#X obj 36 197 else/gatemin;
+#X text 37 174 see also:;
+#X connect 18 0 32 1;
+#X connect 20 0 32 0;
+#X connect 31 0 20 0;
 #X connect 32 0 21 0;
-#X connect 33 0 22 0;

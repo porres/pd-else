@@ -50,7 +50,6 @@
 #X connect 7 0 4 0;
 #X connect 7 0 6 0;
 #X restore 432 257 pd multichannel;
-#X text 56 86 [gaterelease~] allows you to release one gate in your patch while you still hold another. [gaterelease~] releases a gate value after a given amount of time (specified in ms) after the gate has opened. If the gate is closed before the release time \, the object is reset. If the release time is 0 or less \, the object is bypassed. The object has support for multichannels, f 68;
 #X text 160 311 signal(s);
 #X text 160 370 signal(s);
 #X text 224 370 - released gate(s);
@@ -58,6 +57,7 @@
 #X obj 44 266 else/gatedelay~;
 #X obj 493 108 else/setdsp~;
 #X obj 44 222 else/gatemin~;
+#X text 62 89 [gaterelease~] allows you to release one gate in your patch while you still hold another. It releases a gate value after a given amount of time (specified in ms) after the gate has opened. If the gate is closed before the release time \, the object is reset. If the release time is 0 or less \, the object is bypassed. The object has support for multichannels, f 65;
 #X connect 19 0 24 1;
 #X connect 24 0 27 0;
 #X connect 25 0 26 0;
