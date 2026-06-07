@@ -34,6 +34,9 @@
 #X msg 306 149 44100 48000 96000;
 #X text 200 249 list;
 #X text 200 282 list;
+#X text 28 147 see also:;
+#X obj 25 169 else/bpm2hz;
+#X obj 25 190 else/hz2bpm;
 #X connect 18 0 25 0;
 #X connect 25 0 19 0;
 #X connect 26 0 27 0;
