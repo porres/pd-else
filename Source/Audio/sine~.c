@@ -19,6 +19,7 @@ typedef struct _sine{
     t_int       x_ch3;
     t_int       x_midi;
     t_int       x_soft;
+    t_int       x_verbose;
     t_int      *x_dir;
     float      *x_freq_list;
     t_int       x_list_size;
@@ -114,7 +115,8 @@ static void sine_dsp(t_sine *x, t_signal **sp){
     if((x->x_ch2 > 1 && x->x_ch2 != x->x_nchans)
     || (x->x_ch3 > 1 && x->x_ch3 != x->x_nchans)){
         dsp_add_zero(sp[3]->s_vec, x->x_nchans*x->x_n);
-        pd_error(x, "[sine~]: channel sizes mismatch");
+        if(x->x_verbose)
+            pd_error(x, "[sine~]: channel sizes mismatch");
         return;
     }
     dsp_add(sine_perform, 5, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
@@ -154,6 +156,10 @@ static void sine_soft(t_sine *x, t_floatarg f){
     x->x_soft = (int)(f != 0);
 }
 
+static void sine_verbose(t_sine *x, t_floatarg f){
+    x->x_verbose = (int)(f != 0);
+}
+
 static void *sine_free(t_sine *x){
     inlet_free(x->x_inlet_sync);
     inlet_free(x->x_inlet_phase);
@@ -173,6 +179,7 @@ static void *sine_new(t_symbol *s, int ac, t_atom *av){
     x->x_freq_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_freq_list[0] = x->x_phase[0] = 0;
     x->x_list_size = 1;
+    x->x_verbose = 1;
     while(ac && av->a_type == A_SYMBOL){
         if(atom_getsymbol(av) == gensym("-midi")){
             x->x_midi = 1;
@@ -224,8 +231,9 @@ void sine_tilde_setup(void){
     class_addmethod(sine_class, nullfn, gensym("signal"), 0);
     class_addmethod(sine_class, (t_method)sine_dsp, gensym("dsp"), A_CANT, 0);
     class_addlist(sine_class, sine_list);
-    class_addmethod(sine_class, (t_method)sine_soft, gensym("soft"), A_DEFFLOAT, 0);
-    class_addmethod(sine_class, (t_method)sine_midi, gensym("midi"), A_DEFFLOAT, 0);
+    class_addmethod(sine_class, (t_method)sine_verbose, gensym("verbose"), A_FLOAT, 0);
+    class_addmethod(sine_class, (t_method)sine_soft, gensym("soft"), A_FLOAT, 0);
+    class_addmethod(sine_class, (t_method)sine_midi, gensym("midi"), A_FLOAT, 0);
     class_addmethod(sine_class, (t_method)sine_set, gensym("set"), A_GIMME, 0);
     init_sine_table();
 }

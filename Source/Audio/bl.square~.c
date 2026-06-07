@@ -181,6 +181,7 @@ typedef struct _blsquare{
     t_int       x_ch4;
     t_int       x_midi;
     t_int       x_soft;
+    t_int       x_verbose;
     t_int      *x_dir;
     float      *x_freq_list;
     t_int       x_list_size;
@@ -306,7 +307,8 @@ static void blsquare_dsp(t_blsquare *x, t_signal **sp){
     || (x->x_ch3 > 1 && x->x_ch3 != x->x_nchans)
     || (x->x_ch4 > 1 && x->x_ch4 != x->x_nchans)){
         dsp_add_zero(sp[4]->s_vec, x->x_nchans * x->x_n);
-        pd_error(x, "[blsquare~]: channel sizes mismatch");
+        if(x->x_verbose)
+            pd_error(x, "[blsquare~]: channel sizes mismatch");
         return;
     }
     dsp_add(blsquare_perform, 6, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
@@ -346,6 +348,10 @@ static void blsquare_soft(t_blsquare *x, t_floatarg f){
     x->x_soft = (int)(f != 0);
 }
 
+static void blsquare_verbose(t_blsquare *x, t_floatarg f){
+    x->x_verbose = (int)(f != 0);
+}
+
 static void blsquare_free(t_blsquare *x) {
     inlet_free(x->x_inlet_sync);
     inlet_free(x->x_inlet_phase);
@@ -360,7 +366,6 @@ static void blsquare_free(t_blsquare *x) {
 static void *blsquare_new(t_symbol *s, int ac, t_atom *av){
     t_blsquare *x = (t_blsquare *)pd_new(blsquare_class);
     x->x_ignore = s;
-
     t_float width = 0.5f;
     x->x_midi = x->x_soft = 0;
     x->x_dir = (t_int *)getbytes(sizeof(*x->x_dir));
@@ -371,6 +376,7 @@ static void *blsquare_new(t_symbol *s, int ac, t_atom *av){
     x->x_freq_list[0] = 0;
     x->x_phase[0] = 0;
     x->x_list_size = 1;
+    x->x_verbose = 1;
     while(ac && av->a_type == A_SYMBOL){
         if(atom_getsymbol(av) == gensym("-midi")){
             x->x_midi = 1;
@@ -426,7 +432,8 @@ void setup_bl0x2esquare_tilde(void){
     class_addmethod(blsquare_class, nullfn, gensym("signal"), 0);
     class_addmethod(blsquare_class, (t_method)blsquare_dsp, gensym("dsp"), A_CANT, 0);
     class_addlist(blsquare_class, blsquare_list);
-    class_addmethod(blsquare_class, (t_method)blsquare_soft, gensym("soft"), A_DEFFLOAT, 0);
-    class_addmethod(blsquare_class, (t_method)blsquare_midi, gensym("midi"), A_DEFFLOAT, 0);
+    class_addmethod(blsquare_class, (t_method)blsquare_verbose, gensym("verbose"), A_FLOAT, 0);
+    class_addmethod(blsquare_class, (t_method)blsquare_soft, gensym("soft"), A_FLOAT, 0);
+    class_addmethod(blsquare_class, (t_method)blsquare_midi, gensym("midi"), A_FLOAT, 0);
     class_addmethod(blsquare_class, (t_method)blsquare_set, gensym("set"), A_GIMME, 0);
 }

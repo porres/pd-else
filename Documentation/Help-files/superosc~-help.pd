@@ -208,7 +208,6 @@
 #X text 237 543 superosc right signal(s);
 #X text 191 137 hz;
 #X text 308 159 <- freq \, width \, detune;
-#X obj 151 160 else/superosc2~ 110 0 25;
 #X text 62 87 By default \, [superosc~] sums 7 detuned sawtooth \, but note they are variable sawtoothds ([bl.vsaw~]). We also have square wave with PWM or sine with waveshaping., f 67;
 #X text 254 450 width/shape modulation, f 47;
 #X text 129 601 -square/-sine: sets to square or sine (default variable saw);
@@ -309,6 +308,7 @@
 #X restore 311 222 pd detune-mode-curve;
 #X text 135 631 -detmode: detune sync mode 0 (default 0) or 1/2 (random), f 59;
 #X text 254 336 sets detune mode (also affected by sync), f 47;
-#X connect 30 0 64 0;
-#X connect 64 0 31 0;
-#X connect 64 1 31 1;
+#X obj 151 160 else/superosc2~ 110 0 25;
+#X connect 30 0 84 0;
+#X connect 84 0 31 0;
+#X connect 84 1 31 1;

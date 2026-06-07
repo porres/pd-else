@@ -22,6 +22,7 @@ typedef struct _blvsaw{
     t_int       x_ch4;
     t_int       x_midi;
     t_int       x_soft;
+    t_int       x_verbose;
     t_int      *x_dir;
     float      *x_freq_list;
     t_int       x_list_size;
@@ -174,7 +175,8 @@ static void blvsaw_dsp(t_blvsaw *x, t_signal **sp){
     || (x->x_ch3 > 1 && x->x_ch3 != x->x_nchans)
     || (x->x_ch4 > 1 && x->x_ch4 != x->x_nchans)){
         dsp_add_zero(sp[4]->s_vec, x->x_nchans * x->x_n);
-        pd_error(x, "[blvsaw~]: channel sizes mismatch");
+        if(x->x_verbose)
+            pd_error(x, "[blvsaw~]: channel sizes mismatch");
         return;
     }
     dsp_add(blvsaw_perform, 6, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
@@ -214,6 +216,10 @@ static void blvsaw_soft(t_blvsaw *x, t_floatarg f){
     x->x_soft = (int)(f != 0);
 }
 
+static void blvsaw_verbose(t_blvsaw *x, t_floatarg f){
+    x->x_verbose = (int)(f != 0);
+}
+
 static void blvsaw_free(t_blvsaw *x) {
     inlet_free(x->x_inlet_sync);
     inlet_free(x->x_inlet_phase);
@@ -238,6 +244,7 @@ static void *blvsaw_new(t_symbol *s, int ac, t_atom *av){
     x->x_freq_list[0] = 0;
     x->x_phase[0] = 0;
     x->x_list_size = 1;
+    x->x_verbose = 1;
     while(ac && av->a_type == A_SYMBOL){
         if(atom_getsymbol(av) == gensym("-midi")){
             x->x_midi = 1;
@@ -293,7 +300,8 @@ void setup_bl0x2evsaw_tilde(void){
     class_addmethod(blvsaw_class, nullfn, gensym("signal"), 0);
     class_addmethod(blvsaw_class, (t_method)blvsaw_dsp, gensym("dsp"), A_CANT, 0);
     class_addlist(blvsaw_class, blvsaw_list);
-    class_addmethod(blvsaw_class, (t_method)blvsaw_soft, gensym("soft"), A_DEFFLOAT, 0);
-    class_addmethod(blvsaw_class, (t_method)blvsaw_midi, gensym("midi"), A_DEFFLOAT, 0);
+    class_addmethod(blvsaw_class, (t_method)blvsaw_verbose, gensym("verbose"), A_FLOAT, 0);
+    class_addmethod(blvsaw_class, (t_method)blvsaw_soft, gensym("soft"), A_FLOAT, 0);
+    class_addmethod(blvsaw_class, (t_method)blvsaw_midi, gensym("midi"), A_FLOAT, 0);
     class_addmethod(blvsaw_class, (t_method)blvsaw_set, gensym("set"), A_GIMME, 0);
 }

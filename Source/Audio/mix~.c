@@ -21,6 +21,7 @@ typedef struct _mix{
     t_int       x_sig2, x_sig3;
     int         x_nchans;
     int         x_n;            // block size
+    t_int       x_verbose;
     t_int       x_pan_size, x_gain_size;
     float      *x_pan_list;
     float      *x_gain_list;
@@ -144,11 +145,16 @@ static void mix_dsp(t_mix *x, t_signal **sp){
     || (x->x_ch3 > 1 && x->x_ch3 != x->x_nchans)){
         for(i = 0; i < NOUTS; i++)
             dsp_add_zero(sp[NINS+i]->s_vec, x->x_n);
-        pd_error(x, "[mix~]: channel sizes mismatch");
+        if(x->x_verbose)
+            pd_error(x, "[mix~]: channel sizes mismatch");
         return;
     }
     else
         dsp_add(mix_perform, 1, x);
+}
+
+static void mix_verbose(t_mix *x, t_floatarg f){
+    x->x_verbose = (int)(f != 0);
 }
 
 void *mix_free(t_mix *x){
@@ -173,6 +179,7 @@ static void *mix_new(t_symbol *s, int ac, t_atom *av){
     x->x_gain_list[0] = 1, x->x_pan_list[0] = 0;
     x->x_pan_size = x->x_gain_size = 1;
     x->x_nchans = 1;
+    x->x_verbose = 1;
     while(ac){
         if(av->a_type == A_SYMBOL){
             t_symbol *sym = atom_getsymbol(av);
@@ -245,5 +252,6 @@ void mix_tilde_setup(void){
     class_addmethod(mix_class, (t_method)mix_pan, gensym("pan"), A_GIMME, 0);
     class_addmethod(mix_class, (t_method)mix_gain, gensym("gain"), A_GIMME, 0);
     class_addmethod(mix_class, (t_method)mix_db, gensym("db"), A_GIMME, 0);
+    class_addmethod(mix_class, (t_method)mix_verbose, gensym("verbose"), A_FLOAT, 0);
     init_sine_table();
 }
