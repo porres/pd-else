@@ -42,10 +42,17 @@ static t_int *decay_perform(t_int *w){
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0; i < x->x_nblock; i++){
             double in = in1[j*x->x_nblock + i];
-            double xn = (in != 0 && xnm1[j] == 0) ? in : 0;
+            double xn;
+            if((in != 0 && xnm1[j] == 0)){
+                x->x_ynm1[j] = 0.;
+                xn = in;
+            }
+            else
+                xn = 0;
             double ms = ch2 == 1 ? in2[i] : in2[j*x->x_nblock + i];
             if(x->x_flag){
                 xn = x->x_f;
+                x->x_ynm1[j] = 0.;
                 x->x_flag = 0;
             }
             if(ms <= 0)
