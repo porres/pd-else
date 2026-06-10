@@ -13,8 +13,10 @@ static t_int * tanh_perform(t_int *w){
     int n = (int)(w[1]);
     t_float *in = (t_float *)(w[2]);
     t_float *out = (t_float *)(w[3]);
-    while(n--)
-        *out++ = tanhf(*in++);
+    while(n--){
+        float x = *in++;
+        *out++ = (x == 0.f) ? 0.f : tanhf(x);
+    }
     return(w+4);
 }
 

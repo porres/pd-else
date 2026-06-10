@@ -15,7 +15,7 @@ static t_int * cents2ratio_perform(t_int *w){
     t_float *out = (t_float *)(w[3]);
     while(n--){
         float f = *in++;
-        *out++ = pow(2, (f/1200));
+        *out++ = (f == 0.f) ? 1.f : exp2f(f * (1.f / 1200.f));
     }
     return(w+4);
 }

@@ -19,49 +19,99 @@ static t_int *op_perform(t_int *w){
     int n = (int)(w[5]);
     switch(x->x_op){
         case 0: // lt
-            while(n--) *out++ = *in1++ < *in2++;
+            while(n--){
+                t_float f1 = *in1++, f2 = *in2++;
+                *out++ = f1 < f2;
+            }
             break;
         case 1: // gt
-            while(n--) *out++ = *in1++ > *in2++;
+            while(n--){
+                t_float f1 = *in1++, f2 = *in2++;
+                *out++ = f1 > f2;
+            }
             break;
         case 2: // le
-            while(n--) *out++ = *in1++ <= *in2++;
+            while(n--){
+                t_float f1 = *in1++, f2 = *in2++;
+                *out++ = f1 <= f2;
+            }
             break;
         case 3: // ge
-            while(n--) *out++ = *in1++ >= *in2++;
+            while(n--){
+                t_float f1 = *in1++, f2 = *in2++;
+                *out++ = f1 >= f2;
+            }
             break;
         case 4: // ne
-            while(n--) *out++ = *in1++ != *in2++;
+            while(n--){
+                t_float f1 = *in1++, f2 = *in2++;
+                *out++ = f1 != f2;
+            }
             break;
         case 5: // eq
-            while(n--) *out++ = *in1++ == *in2++;
+            while(n--){
+                t_float f1 = *in1++, f2 = *in2++;
+                *out++ = f1 == f2;
+            }
             break;
         case 6: // and
-            while(n--) *out++ = *in1++ && *in2++;
+            while(n--){
+                t_float f1 = *in1++, f2 = *in2++;
+                *out++ = f1 && f2;
+            }
             break;
         case 7: // or
-            while(n--) *out++ = *in1++ || *in2++;
+            while(n--){
+                t_float f1 = *in1++, f2 = *in2++;
+                *out++ = f1 || f2;
+            }
             break;
         case 8: // not
-            while(n--) *out++ = (!(*in1++));
+            while(n--){
+                t_float f1 = *in1++;
+                *out++ = !f1;
+            }
             break;
         case 9: // bitand
-            while(n--) *out++ = (t_float)(((int32_t)*in1++) & ((int32_t)*in2++));
+            while(n--){
+                int32_t i1 = (int32_t)*in1++;
+                int32_t i2 = (int32_t)*in2++;
+                *out++ = (t_float)(i1 & i2);
+            }
             break;
         case 10: // bitor
-            while(n--) *out++ = (t_float)(((int32_t)*in1++) | ((int32_t)*in2++));
+            while(n--){
+                int32_t i1 = (int32_t)*in1++;
+                int32_t i2 = (int32_t)*in2++;
+                *out++ = (t_float)(i1 | i2);
+            }
             break;
         case 11: // bitnot
-            while(n--) *out++ = (t_float)(~((int32_t)*in1++));
+            while(n--){
+                int32_t i1 = (int32_t)*in1++;
+                *out++ = (t_float)(~i1);
+            }
             break;
         case 12: // bitxor
-            while(n--) *out++ = (t_float)(((int32_t)*in1++) ^ ((int32_t)*in2++));
+            while(n--){
+                int32_t i1 = (int32_t)*in1++;
+                int32_t i2 = (int32_t)*in2++;
+                *out++ = (t_float)(i1 ^ i2);
+            }
             break;
         case 13: // bit shift left
-            while(n--) *out++ = (t_float)(((int32_t)*in1++) << ((int32_t)*in2++));
+            while(n--){
+                int32_t i1 = (int32_t)*in1++;
+                int32_t i2 = (int32_t)*in2++;
+                *out++ = (t_float)(i1 << i2);
+            }
             break;
         case 14: // bit shift right
-            while(n--) *out++ = (t_float)(((int32_t)*in1++) >> ((int32_t)*in2++));
+            while(n--){
+                int32_t i1 = (int32_t)*in1++;
+                int32_t i2 = (int32_t)*in2++;
+                *out++ = (t_float)(i1 >> i2);
+            }
             break;
         case 15: // %s
             while(n--){
@@ -70,16 +120,28 @@ static t_int *op_perform(t_int *w){
             }
             break;
 /*        case 16: // multiply
-            while(n--) *out++ = in1++ * in2++;
+            while(n--){
+                t_float f1 = *in1++, f2 = *in2++;
+                *out++ = f1 * f2;
+            }
             break;
         case 17: // division
-            while(n--) *out++ = in1++ / in2++;
+            while(n--){
+                t_float f1 = *in1++, f2 = *in2++;
+                *out++ = f1 / f2;
+            }
             break;
         case 18: // plus
-            while(n--) *out++ = in1++ + in2++;
+            while(n--){
+                t_float f1 = *in1++, f2 = *in2++;
+                *out++ = f1 + f2;
+            }
             break;
         case 19: // minus
-            while(n--) *out++ = in1++ - in2++;
+            while(n--){
+                t_float f1 = *in1++, f2 = *in2++;
+                *out++ = f1 - f2;
+            }
             break;*/
     }
     return(w+6);
@@ -164,7 +226,6 @@ static void op_plus(t_op *x){
     x->x_op = 18;
 }
 
-
 static void op_minus(t_op *x){
     x->x_op = 19;
 }*/
@@ -178,19 +239,15 @@ static void op_dsp(t_op *x, t_signal **sp){
     t_sample *outvec1 = sp[2]->s_vec;
     int i;
     if(n1 > n2)
-        for(i = (n1+n2-1)/n2; i--; )
-        {
+        for(i = (n1+n2-1)/n2; i--; ){
             t_int blocksize = (n2 < n1 - i*n2 ? n2 : n1 - i*n2);
-            dsp_add(op_perform, 5, x, vec1 + i * n2, vec2,
-                    outvec1 + i*n2, blocksize);
+            dsp_add(op_perform, 5, x, vec1 + i * n2, vec2, outvec1 + i*n2, blocksize);
         }
     else for(i = (n1+n2-1)/n1; i--; ){
         t_int blocksize = (n1 < n2 - i*n1 ? n1 : n2 - i*n1);
-        dsp_add(op_perform, 5, x, vec1, vec2 + i*n1,
-                outvec1 + i*n1, blocksize);
+        dsp_add(op_perform, 5, x, vec1, vec2 + i*n1, outvec1 + i*n1, blocksize);
     }
 }
-
 
 static void *op_new(t_symbol *s, int ac, t_atom *av){
     t_op *x = (t_op *)pd_new(op_class);
@@ -232,9 +289,18 @@ static void *op_new(t_symbol *s, int ac, t_atom *av){
                 x->x_op = 14;
             else if(s == gensym("%"))
                 x->x_op = 15;
+/*            else if(s == gensym("*"))
+                x->x_op = 16;
+            else if(s == gensym("/"))
+                x->x_op = 17;
+            else if(s == gensym("+"))
+                x->x_op = 18;
+            else if(s == gensym("-"))
+                x->x_op = 19;*/
             else
                 goto errstate;
-            v = atom_getfloatarg(1, ac, av);
+            if(ac > 1)
+                v = atom_getfloatarg(1, ac, av);
     }
     x->x_inlet_v = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_v, v);

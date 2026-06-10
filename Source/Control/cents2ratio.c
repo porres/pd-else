@@ -14,7 +14,7 @@ typedef struct _cents2ratio{
 }t_cents2ratio;
 
 static t_float convert(t_float f){
-    return(pow(2, (f/1200)));
+    return((f == 0.f) ? 1.f : exp2f(f * (1.f / 1200.f)));
 }
 
 static void cents2ratio_list(t_cents2ratio *x, t_symbol *s, int ac, t_atom *av){
