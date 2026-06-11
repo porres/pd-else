@@ -62,9 +62,9 @@
 #X connect 15 1 2 1;
 #X restore 447 194 pd spectral \; processing;
 #X text 20 149 see also:;
-#X obj 24 194 else/mag~;
-#X obj 24 215 else/pol2car~;
-#X obj 24 172 else/car2pol;
+#X obj 25 192 else/mag~;
+#X obj 25 236 else/pol2car~;
+#X obj 25 170 else/car2pol;
 #X obj 255 215 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
 #X obj 162 149 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
 #X obj 255 149 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
@@ -100,6 +100,7 @@
 #X text 80 90 [car2pol~] converts cartesian coordinates (real / imaginary) to polar coordinates (amplitude / phase). It has support for multichannel signals. You can create is ad [cartopol~] as an alias.;
 #X obj 337 183 else/cartopol~;
 #X text 282 184 alias ->;
+#X obj 25 213 else/atan2~;
 #X connect 31 0 32 0;
 #X connect 31 1 39 0;
 #X connect 40 0 31 0;

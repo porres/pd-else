@@ -1,4 +1,4 @@
-#N canvas 441 34 562 457 10;
+#N canvas 441 38 562 457 10;
 #X obj 1 281 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 1 343 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 1 385 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -8,9 +8,9 @@
 #X obj 1 420 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
 #X text 199 245 Amplitude;
 #X text 223 189 Real;
-#X text 403 189 Imaginary;
+#X text 391 189 Imaginary;
 #X obj 263 190 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
-#X obj 344 190 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 332 190 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 218 292 - real part from the cartesian coordinates, f 43;
 #X text 219 320 - imaginary part from the cartesian coordinates, f 48;
 #X obj 4 5 cnv 15 301 42 empty empty mag~ 20 20 2 37 #e0e0e0 #000000 0;
@@ -48,10 +48,9 @@
 #X restore 481 224 pd power;
 #X text 69 91 [mag~] gets the spectrum magnitudes (amplitudes) from cartesian coordinates (real / imaginary). This is much like the amplitude output of [car2pol~] \, but you can also get the power magnitudesinstead with the 1st argument., f 63;
 #X text 221 355 - magnitude, f 32;
-#X obj 33 245 else/car2pol~;
-#X text 30 198 see also:;
-#X obj 263 213 else/mag~ norm;
-#X obj 33 223 else/mag;
+#X obj 33 227 else/car2pol~;
+#X text 30 184 see also:;
+#X obj 33 205 else/mag;
 #X obj 263 244 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
 #N canvas 667 165 371 312 multichannel 0;
 #X obj 105 130 snake~ in;
@@ -74,10 +73,12 @@
 #X connect 9 0 1 0;
 #X connect 10 0 8 0;
 #X restore 442 251 pd multichannel;
-#X text 69 140 This object is useful for spectral processing that doesn't require the phase values. It has support for multichannel connections., f 63;
 #X text 114 292 float/signal(s);
 #X text 114 320 float/signal(s);
 #X text 149 355 signal(s);
-#X connect 10 0 34 0;
-#X connect 11 0 34 1;
-#X connect 34 0 36 0;
+#X obj 263 213 else/mag~, f 12;
+#X obj 33 249 else/atan2~;
+#X text 69 140 This is useful for spectral processing that doesn't require the phase values. It has support for multichannel connections., f 63;
+#X connect 10 0 40 0;
+#X connect 11 0 40 1;
+#X connect 40 0 35 0;

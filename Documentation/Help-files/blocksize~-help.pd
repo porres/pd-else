@@ -1,87 +1,75 @@
-#N canvas 528 88 562 484 10;
-#X obj 4 274 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 348 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 383 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 119 357 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 120 281 cnv 17 3 60 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 4 460 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X text 154 281 bang;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#N canvas 550 90 561 522 10;
+#X obj 4 294 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 4 368 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 119 377 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 120 301 cnv 17 3 60 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 4 490 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X text 154 301 bang;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 4 pd;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 23 41 cnv 4 4 4 empty empty Get 0 28 2 18 #e0e0e0 #000000 0
-;
-#X obj 57 41 cnv 4 4 4 empty empty block 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 167 163 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
-#000000 #000000;
-#X text 148 357 float;
-#X obj 107 41 cnv 4 4 4 empty empty size 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 3 4 cnv 15 301 42 empty empty blocksize~ 20 20 2 37 #e0e0e0
-#000000 0;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 23 41 cnv 4 4 4 empty empty Get 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 57 41 cnv 4 4 4 empty empty block 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 164 183 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
+#X text 148 377 float;
+#X obj 107 41 cnv 4 4 4 empty empty size 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 3 4 cnv 15 301 42 empty empty blocksize~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 4 graph;
-#X text 166 329 hz;
-#X msg 189 163 hz;
-#X text 202 390 (none);
-#X obj 4 415 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
-0;
-#N canvas 900 287 411 216 pd-dsp-started 0;
-#X obj 79 94 r pd-dsp-started;
-#X obj 79 157 else/display 6;
-#X obj 79 129 else/blocksize~;
-#X obj 293 69 else/setdsp~;
-#X text 52 26 The "pd-dsp-started" message is automatically sent when
-DSP is started in Pd and can also be used to trigger [blocksize~].
-, f 31;
-#X connect 0 0 2 0;
-#X connect 2 0 1 0;
-#X restore 431 240 pd pd-dsp-started;
-#X msg 231 185 ms;
-#X obj 221 239 else/display;
-#X text 166 314 ms;
-#X text 184 314 - set and get the sample rate period in ms;
-#X text 204 439 - sets to period in ms;
-#X text 180 439 -ms;
+#X text 166 349 hz;
+#X msg 189 183 hz;
+#X obj 4 405 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
+#X msg 231 205 ms;
+#X obj 221 259 else/display;
+#X text 166 334 ms;
+#X text 184 334 - set and get the sample rate period in ms;
+#X text 180 429 -ms;
 #X obj 494 85 else/setdsp~;
-#X msg 221 163 samps;
-#X text 184 357 - block size period or frequency;
-#X text 148 297 samps;
-#X text 184 281 - get block size period or frequency;
-#X text 184 329 - set and get the block size frequency in Hz;
-#X text 184 297 - set and get the block size period in samples;
-#X obj 221 213 else/blocksize~ -ms;
-#X text 180 422 -hz;
-#X text 204 422 - sets to frequency in hz;
-#X text 58 87 [blocksize~] reports the block size when the audio is
-turned on \, when it changes or via a bang. The period is reported
-in samples or ms \, but you can also query the corresponding frequency
-in hz. The default output is the block size in samples. The DSP needs
-to be turned on so a block size is detected!, f 64;
-#X connect 17 0 40 0;
-#X connect 23 0 40 0;
-#X connect 27 0 40 0;
-#X connect 34 0 40 0;
-#X connect 40 0 28 0;
+#X msg 221 183 samps;
+#X text 184 377 - block size period or frequency;
+#X text 148 317 samps;
+#X text 184 301 - get block size period or frequency;
+#X text 184 349 - set and get the block size frequency in Hz;
+#X text 184 317 - set and get the block size period in samples;
+#X text 180 412 -hz;
+#X obj 4 449 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X text 148 463 1) symbol - [value] name (default none);
+#X text 58 87 [blocksize~] reports the block size in samples (default) or ms and hz. Besides when banged and clicked on \, the value is reported when initializing the patch (before loadbang) and whenever it changes. Clicking on the object is useful when you're patching as a quick way to get the value after you creted the object., f 60;
+#N canvas 870 166 467 418 value 0;
+#X obj 171 288 bng 19 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
+#X obj 171 351 else/display;
+#X obj 102 233 else/display;
+#X obj 232 235 else/display;
+#X obj 102 173 bng 19 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
+#X obj 232 173 bng 19 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
+#X text 59 34 [sr~] can take a [value] name as an argument. You can then retrieve this value in another [value] or [var] object or inside an expression in [expr].;
+#X obj 102 204 value blocksize;
+#X obj 83 112 else/blocksize~ blocksize;
+#X obj 263 113 else/sr~ -hz w_freq_\$0;
+#X obj 232 206 else/var w_freq_\$0;
+#X obj 171 319 expr 1/blocksize;
+#X connect 0 0 11 0;
+#X connect 4 0 7 0;
+#X connect 5 0 10 0;
+#X connect 7 0 2 0;
+#X connect 10 0 3 0;
+#X connect 11 0 1 0;
+#X restore 464 250 pd value;
+#X text 34 222 see also:;
+#X obj 35 246 else/sr~;
+#X obj 221 233 else/blocksize~ -ms;
+#X text 204 412 - sets to frequency in hz (default samples);
+#X text 204 429 - sets to period in ms (default samples);
+#X connect 16 0 43 0;
+#X connect 22 0 43 0;
+#X connect 24 0 43 0;
+#X connect 30 0 43 0;
+#X connect 43 0 25 0;

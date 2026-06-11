@@ -88,8 +88,7 @@ static void *nyquist_new(t_symbol *s, int ac, t_atom *av){
     x->x_khz = x->x_period = 0;
     while(ac){
         if(av->a_type == A_SYMBOL){
-            t_symbol *sym = s; // get rid of warning
-            sym = atom_getsymbolarg(0, ac, av);
+            t_symbol *sym = atom_getsymbol(av);
             if(sym == gensym("-khz"))
                 x->x_khz = 1;
             else if(sym == gensym("-ms"))
