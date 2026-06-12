@@ -121,11 +121,21 @@ static void stepnoise_dsp(t_stepnoise *x, t_signal **sp){
     int nchans = chs;
     if(chs == 1)
         chs = x->x_ch;
-    if(x->x_nchans != chs){
+    int old_chs = x->x_nchans;
+    if(old_chs != chs){
         x->x_phase = (double *)resizebytes(x->x_phase,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
+            old_chs * sizeof(double), chs * sizeof(double));
         x->x_val = (t_float *)resizebytes(x->x_val,
-            x->x_nchans * sizeof(t_float), chs * sizeof(t_float));
+            old_chs * sizeof(t_float), chs * sizeof(t_float));
+        if(chs > old_chs){
+            uint32_t *s1 = &x->x_rstate.s1;
+            uint32_t *s2 = &x->x_rstate.s2;
+            uint32_t *s3 = &x->x_rstate.s3;
+            for(int i = old_chs; i < chs; i++){
+                x->x_phase[i] = 0.;
+                x->x_val[i] = (t_float)random_frand(s1, s2, s3);
+            }
+        }
         x->x_nchans = chs;
     }
     signal_setmultiout(&sp[1], x->x_nchans);

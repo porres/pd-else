@@ -144,11 +144,18 @@ static void randpulse_dsp(t_randpulse *x, t_signal **sp){
     int nchans = chs;
     if(chs == 1)
         chs = x->x_ch;
-    if(x->x_nchans != chs){
+    int old_chs = x->x_nchans;
+    if(old_chs != chs){
         x->x_phase = (double *)resizebytes(x->x_phase,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
+            old_chs * sizeof(double), chs * sizeof(double));
         x->x_random = (t_float *)resizebytes(x->x_random,
-            x->x_nchans * sizeof(t_float), chs * sizeof(t_float));
+            old_chs * sizeof(t_float), chs * sizeof(t_float));
+        if(chs > old_chs){
+            for(int i = old_chs; i < chs; i++){
+                x->x_phase[i] = 1.;
+                x->x_random[i] = 0.;
+            }
+        }
         x->x_nchans = chs;
     }
     signal_setmultiout(&sp[3], x->x_nchans);
