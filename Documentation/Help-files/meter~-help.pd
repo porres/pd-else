@@ -261,4 +261,3 @@
 #X obj 251 137 noise~;
 #X text 85 89 [meter~] is a convenient mono VU-meter abstraction. See also [meter2~] \, [meter4~] and [meter8~]., f 52;
 #X connect 34 0 25 0;
-#X coords 0 476 1 475 74 39 0;

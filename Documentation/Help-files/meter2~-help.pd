@@ -283,4 +283,3 @@
 #X text 84 89 [meter2~] is a convenient stereo VU-meter abstraction. See also [meter~] \, [meter4~] and [meter8~]., f 54;
 #X connect 22 0 21 0;
 #X connect 23 0 21 1;
-#X coords 0 525 1 524 74 39 0;

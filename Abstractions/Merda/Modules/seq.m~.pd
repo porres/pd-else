@@ -2341,7 +2341,7 @@
 #X connect 45 0 35 0;
 #X connect 45 0 42 0;
 #X restore 680 408 pd GUI;
-#N canvas 658 38 532 793 seq 1;
+#N canvas 658 38 532 793 seq 0;
 #N canvas 383 38 871 502 set-bangs 0;
 #X obj 70 42 inlet~;
 #X obj 70 356 else/trig2bang~;
@@ -2523,11 +2523,12 @@
 #X text 117 13 clock;
 #X obj 450 715 outlet~;
 #X obj 269 683 r \$0-run;
-#X obj 117 633 *~;
+#X obj 137 633 *~;
 #X obj 178 683 *~;
 #X connect 1 0 12 0;
 #X connect 1 0 18 1;
 #X connect 2 0 31 0;
+#X connect 2 0 5 0;
 #X connect 3 0 2 1;
 #X connect 3 0 11 0;
 #X connect 4 0 18 0;
@@ -2556,7 +2557,6 @@
 #X connect 26 0 24 0;
 #X connect 30 0 31 1;
 #X connect 30 0 32 1;
-#X connect 31 0 5 0;
 #X connect 32 0 16 0;
 #X restore 43 295 pd seq;
 #N canvas 54 38 571 288 route 0;
@@ -2634,7 +2634,7 @@
 #X obj 61 428 outlet~;
 #X obj 43 72 inlet~;
 #X obj 95 144 inlet~;
-#N canvas 1217 202 902 285 \$0-8-step-sequencer 1;
+#N canvas 1217 202 902 285 \$0-8-step-sequencer 0;
 #N canvas 351 88 1069 526 (subpatch) 0;
 #X obj 112 112 cnv 15 870 238 empty empty empty 20 12 0 14 #dbdbdb #373737 0;
 #X floatatom 340 318 6 0 0 0 - \$0-set-bpm \$0-bpm 16;
@@ -2685,9 +2685,9 @@
 #X floatatom 520 159 2 0 7 0 - \$0-oct8-set \$0-oct8 0;
 #X symbolatom 488 159 4 0 0 0 - \$0-note8-set \$0-note8 0;
 #X obj 269 317 else/button 25 25 #f5f5f5 #808080 2 1 0 1 0 \$0-reset \$0-set-reset;
-#X obj 625 119 else/button 19 31 #e0e0e0 #808080 2 1 3 0 1 \$0-collapse \$0-button;
-#X obj 626 120 cnv 10 17 15 empty \$0-cnv ▼ 5 8 0 12 #dbdbdb #dbdbdb 0;
-#X obj 626 134 cnv 10 17 15 empty \$0-cnv ▲ 5 5 0 12 #dbdbdb #dbdbdb 0;
+#X obj 625 119 else/button 19 31 #e0e0e0 #808080 2 1 2 0 0 \$0-collapse \$0-button;
+#X obj 626 120 cnv 10 17 15 empty \$0-cnv ▼ 5 8 0 12 #bbbbbb #000000 0;
+#X obj 626 134 cnv 10 17 15 empty \$0-cnv ▲ 5 5 0 12 #bbbbbb #000000 0;
 #X obj 437 119 else/note 171 24 Inter empty 5 54 54 54 0 187 187 187 1 1 SEQUENCER;
 #X obj 138 285 else/button 20 20 #000000 #ff0000 2 1 0 1 1 0-b1 \$0-set-b1;
 #X obj 190 285 else/button 20 20 #000000 #ff0000 2 1 0 1 1 0-b2 \$0-set-b2;
@@ -2757,7 +2757,7 @@
 #X text 653 321 Page;
 #X coords 0 1 100 -1 872 240 1 111 111;
 #X restore 15 15 graph;
-#X coords 0 285 1 284 872 240 0;
+#X coords 0 0 1 1 872 240 1 15 15;
 #X restore 209 69 pd \$0-8-step-sequencer;
 #X obj 260 358 cnv 19 140 29 empty \$0-label-collapsed SEQUENCER 4 15 0 24 #bbbbbb #000000 0;
 #X obj 260 358 else/button 140 29 #bbbbbb #bbbbbb 2 1 2 0 0 \$0-detatch \$0-uncollapse-set;
@@ -5405,4 +5405,4 @@
 #X connect 7 1 5 0;
 #X connect 8 0 4 2;
 #X connect 21 0 4 1;
-#X coords 0 1 100 -1 195 44 2 250 350;
+#X coords 0 1 100 -1 890 278 2 200 50;
