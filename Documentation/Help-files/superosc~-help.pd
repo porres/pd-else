@@ -34,7 +34,7 @@
 #X text 146 469 float/signal(s) -;
 #X text 146 261 float/signal(s) - frequency in hz or midi, f 65;
 #X obj 151 138 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
-#X obj 169 192 else/out~;
+#X obj 166 192 else/out~;
 #X obj 102 449 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 146 450 float/signal(s) -;
 #X text 115 760 3) float;
@@ -308,7 +308,7 @@
 #X restore 311 222 pd detune-mode-curve;
 #X text 135 631 -detmode: detune sync mode 0 (default 0) or 1/2 (random), f 59;
 #X text 254 336 sets detune mode (also affected by sync), f 47;
-#X obj 151 160 else/superosc2~ 110 0 25;
+#X obj 151 160 else/superosc~ 110 0 25;
 #X connect 30 0 84 0;
 #X connect 84 0 31 0;
 #X connect 84 1 31 1;

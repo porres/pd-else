@@ -215,7 +215,6 @@
 #X obj 190 283 else/numbox~ 6 10 100 #C0C0C4 #440008 10 0 0 0;
 #X obj 190 225 else/numbox~ 6 10 100 #C0C0C4 #440008 10 0 0 0;
 #X obj 190 249 else/keytrack~;
-#X text 51 84 [keytrack~] maps MIDI pitch input from a keyboard and outputs a function you can use to control things like a filter cutoff. The output is pitch ratio value with MIDI pitch 60 (middle C) as an unaltered reference point (ratio 1) by default. Hence \, the mapping occurs above and down the reference point or range (as you can set a lower and upper reference points forming an unaltered range). The tracking amount affects the mapping amount \, where a minimum value of 0 sets no tracking (all ratios are equal to 1)., f 67;
 #X text 111 331 signal(s) -;
 #X text 111 434 signal(s) -;
 #X text 187 434 The tracked/mapped output as a ratio;
@@ -230,6 +229,7 @@
 #X connect 2 0 4 0;
 #X connect 4 0 0 0;
 #X restore 441 279 pd multichannel;
+#X text 51 84 [keytrack~] maps MIDI pitch input from a keyboard and outputs a function you can use to control things like a filter cutoff \, envelope time \, LFO speed \, any sort of modulation and whatnot. The output is pitch ratio value with MIDI pitch 60 (middle C) as an unaltered reference point (ratio 1) by default. Hence \, the mapping occurs above and down the reference point or range (as you can set a lower and upper reference points forming an unaltered range). The tracking amount affects the mapping amount \, where a minimum value of 0 sets no tracking (all ratios are equal to 1)., f 66;
 #X connect 17 0 47 0;
 #X connect 24 0 25 0;
 #X connect 24 0 48 1;
