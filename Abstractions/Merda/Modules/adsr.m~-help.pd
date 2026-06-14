@@ -36,10 +36,12 @@
 #X obj 431 330 tgl 19 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X msg 431 360 gui \$1;
 #X msg 382 59 minsus \$1;
-#X floatatom 382 21 7 -1 10000 0 - - - 0;
-#X floatatom 462 21 7 -1 10000 0 - - - 0;
+#X floatatom 382 27 7 -1 10000 0 - - - 0;
+#X floatatom 462 27 7 -1 10000 0 - - - 0;
 #X msg 462 59 maxsus \$1;
 #X obj 462 101 s \$0-out;
+#X msg 542 59 norm \$1;
+#X obj 542 24 tgl 21 0 empty empty empty 0 -10 0 12 #dfdfdf #000000 #000000 0 1;
 #X connect 0 0 14 0;
 #X connect 1 0 14 0;
 #X connect 2 0 14 0;
@@ -68,13 +70,15 @@
 #X connect 31 0 30 0;
 #X connect 32 0 33 0;
 #X connect 33 0 34 0;
+#X connect 35 0 34 0;
+#X connect 36 0 35 0;
 #X restore 180 296 pd messages;
-#N canvas 712 173 520 544 retrigger 0;
+#N canvas 712 173 520 547 retrigger 0;
 #X obj 68 74 else/keyboard 17 80 3 3 0 0 empty empty;
 #X obj 68 176 else/mono~ 10, f 28;
 #X obj 68 408 else/out~;
 #X obj 221 232 else/adsr.m~;
-#A saved 100 50 0.25 500 1 0 0 0 0 -1 1 -1;
+#A saved 100 50 0.25 500 1 0 0 0 0 -1 1 -1 0;
 #A saved rcv-attack none;
 #A saved;
 #A saved;
@@ -122,7 +126,7 @@
 #X obj 35 564 else/out~;
 #X obj 43 16 else/note 375 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [adsr.m~] - Polyphonic ADSR envelope;
 #X obj 180 325 else/adsr.m~;
-#A saved 259.2 50 0.5 500 1 0 0 0 0 -1 1 0;
+#A saved 259.2 50 0.5 500 1 0 0 0 0 -1 1 0 0;
 #A saved;
 #A saved attack-learn none;
 #A saved;
@@ -159,7 +163,7 @@
 #N canvas 334 177 950 471 min/maxsus 0;
 #X obj 69 317 else/out~;
 #X obj 220 117 else/adsr.m~;
-#A saved 200 50 0.5 50 1 0 0 0 0 250 1 -1;
+#A saved 200 50 0.5 50 1 0 0 0 0 250 1 -1 0;
 #A saved rcv-attack none;
 #A saved;
 #A saved;
@@ -210,7 +214,7 @@
 #N canvas 660 166 675 533 mul 0;
 #X obj 100 410 else/out~;
 #X obj 251 210 else/adsr.m~;
-#A saved 50 10 0.5 50 1 0 0 0 0 250 1 -1;
+#A saved 50 10 0.5 50 1 0 0 0 0 250 1 -1 0;
 #A saved rcv-attack none;
 #A saved;
 #A saved;
@@ -266,6 +270,7 @@
 #X text 208 611 The release output value can be used to set the release parameter in [voices~]., f 28;
 #X text 439 556 <--;
 #X text 470 553 curve parameter (0 is linear), f 15;
+#X text 57 360 push to trigger --->;
 #X connect 4 0 9 1;
 #X connect 5 0 12 0;
 #X connect 7 0 9 0;

@@ -38,7 +38,8 @@ typedef struct _adsr{
     double     *x_delta; // new
     double     *x_phase; // new, for knowing where the ouput should be in log mode
     float       x_curve;
-    int        x_status;
+    int         x_norm;
+    int         x_status;
     t_float    *x_last;
     t_float    *x_target;
 }t_adsr;
@@ -56,6 +57,10 @@ static void adsr_lag(t_adsr *x){
 static void adsr_curve(t_adsr *x, t_floatarg f){
     x->x_curve = f * -4;
     x->x_lag = 0;
+}
+
+static void adsr_norm(t_adsr *x, t_floatarg f){
+    x->x_norm = f != 0;
 }
 
 static void adsr_rel(t_adsr *x, t_floatarg f){
@@ -169,7 +174,10 @@ static t_int *adsr_perform(t_int *w){
             int n_maxsustain = (int)roundf(x->x_maxsus * mul * x->x_sr_khz);
 // trigger
             if(x->x_kretrig){ // control trigger
-                target[j] = x->x_f_gate;
+                if(x->x_norm)
+                    target[j] = copysign(1, x->x_f_gate);
+                else
+                    target[j] = x->x_f_gate;
                 phase[j] = last[j];
                 delta[j] = target[j] - last[j];
                 decayed[j] = sustained[j] = 0;
@@ -186,10 +194,12 @@ static t_int *adsr_perform(t_int *w){
                     n_minsus[j] = n_maxsus[j] = 0; // zero sustain count
                     // get target, control or audio
                     x->x_last_gate = x->x_f_gate != 0 ? x->x_f_gate : input_gate;
+                    if(x->x_norm)
+                        x->x_last_gate = copysign(1, x->x_last_gate);
                     target[j] = x->x_last_gate;
                     attacked[j] = 1; // tag enveloped as "attacked"
                     decayed[j] = sustained[j] = 0;
-                    delta[j] =  target[j] - last[j];
+                    delta[j] = target[j] - last[j];
                     
                     x->x_b[j] = x->x_delta[j] / (1 - exp(x->x_curve));
                     x->x_a[j] = last[j] + x->x_b[j];
@@ -216,7 +226,7 @@ static t_int *adsr_perform(t_int *w){
                 }
             }
             else if(attacked[j] && retrig != 0){ // signal retrigger
-                target[j] = x->x_last_gate > 0 ? retrig : -retrig;
+                target[j] = x->x_norm ? copysign(1, retrig) : retrig;
                 phase[j] = last[j];
                 delta[j] = target[j] - last[j];
                 decayed[j] = sustained[j] = 0;
@@ -459,6 +469,7 @@ static void *adsr_new(t_symbol *sym, int ac, t_atom *av){
     x->x_last_gate = 0;
     x->x_status = 0;
     x->x_kretrig = 0;
+    x->x_norm = 0;
     x->x_curve = -4;
     x->x_bang = 0;
     x->x_lag = 1;
@@ -512,6 +523,10 @@ static void *adsr_new(t_symbol *sym, int ac, t_atom *av){
             else if(cursym == gensym("-imp")){
                 pd_error(x, "[adsr~]: don't use '-imp' anymore please, use '-minsus' now");
                 x->x_minsus = -1;
+                ac--, av++;
+            }
+            else if(cursym == gensym("-norm")){
+                x->x_norm = 1;
                 ac--, av++;
             }
             else if(cursym == gensym("-minsus")){
@@ -582,4 +597,5 @@ void adsr_tilde_setup(void){
     class_addmethod(adsr_class, (t_method)adsr_minsus, gensym("minsus"), A_FLOAT, 0);
     class_addmethod(adsr_class, (t_method)adsr_maxsus, gensym("maxsus"), A_FLOAT, 0);
     class_addmethod(adsr_class, (t_method)adsr_curve, gensym("curve"), A_FLOAT, 0);
+    class_addmethod(adsr_class, (t_method)adsr_norm, gensym("norm"), A_FLOAT, 0);
 }

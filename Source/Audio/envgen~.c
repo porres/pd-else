@@ -46,6 +46,7 @@ typedef struct _envgen{
     int            *x_n_lines;  // number of lines
     int            *x_exp_idx;
     int             x_single_exp;
+    int             x_norm;
     t_float         x_current_target[MAX_SEGS];
     t_float         x_current_time[MAX_SEGS];
     t_symbol       *x_ignore;
@@ -298,13 +299,17 @@ static void envgen_bang(t_envgen *x){
 
 static void envgen_float(t_envgen *x, t_floatarg f){
     if(f != 0){
-        x->x_gain[0] = f;
+        x->x_gain[0] = x->x_norm ? copysign(1, f) : f;
         envgen_attack(x, x->x_ac, x->x_av, 0);
     }
     else{
         if(x->x_release[0])
             envgen_release(x, x->x_ac_rel, x->x_av_rel, 0);
     }
+}
+
+static void envgen_norm(t_envgen *x, t_floatarg f){
+    x->x_norm = f != 0;
 }
 
 static void envgen_list(t_envgen *x,t_symbol* s, int ac, t_atom* av){
@@ -368,14 +373,14 @@ static t_int *envgen_perform(t_int *w){
             t_float retrig = ch2 == 1 ? in2[i] : in2[j*n + i];
             x->x_mul = ch3 == 1 ? in3[i] : in3[j*n + i];
             if(f != 0 && lastin[j] == 0){ // set attack ramp
-                x->x_gain[j] = f;
+                x->x_gain[j] = x->x_norm ? copysign(1, f) : f;
                 envgen_attack(x, x->x_ac, x->x_av, j);
             }
             else if(x->x_release[j] && f == 0 && lastin[j] != 0) // set release ramp
                 envgen_release(x, x->x_ac_rel, x->x_av_rel, j);
             if(f != 0 && lastin[j] != 0){ // gate on
                 if(retrig != 0){ // retrigger
-                    x->x_gain[j] = f;
+                    x->x_gain[j] = x->x_norm ? copysign(1, f) : f;
                     envgen_attack(x, x->x_ac, x->x_av, j);
                 }
             }
@@ -564,6 +569,7 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     x->x_n_lines[0] = x->x_line_idx[0] = x->x_running[0] = 0;
     x->x_retrigger = 0;
     x->x_pause = 0;
+    x->x_norm = 0;
     x->x_suspoint = x->x_legato = 0;
     float mul = 1;
     int i = 0;
@@ -602,6 +608,10 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
                 }
                 else
                     goto errstate;
+            }
+            else if(cursym == gensym("-norm")){
+                x->x_norm = 1;
+                ac--, av++;
             }
             else if(cursym == gensym("-loop")){
                 x->x_loop = 1;
@@ -669,5 +679,6 @@ void envgen_tilde_setup(void){
     class_addmethod(envgen_class, (t_method)envgen_samps, gensym("samps"), A_FLOAT, 0);
     class_addmethod(envgen_class, (t_method)envgen_suspoint, gensym("suspoint"), A_FLOAT, 0);
     class_addmethod(envgen_class, (t_method)envgen_retrigger, gensym("retrigger"), A_FLOAT, 0);
+    class_addmethod(envgen_class, (t_method)envgen_norm, gensym("norm"), A_FLOAT, 0);
     init_fade_tables();
 }

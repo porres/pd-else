@@ -33,7 +33,8 @@ typedef struct _asr{
     double     *x_delta; // new
     double     *x_phase; // new, for knowing where the ouput should be in log mode
     float       x_curve;
-    int        x_status;
+    int         x_status;
+    int         x_norm;
     t_float    *x_last;
     t_float    *x_target;
 }t_asr;
@@ -51,6 +52,10 @@ static void asr_lag(t_asr *x){
 static void asr_curve(t_asr *x, t_floatarg f){
     x->x_curve = f * -4;
     x->x_lag = 0;
+}
+
+static void asr_norm(t_asr *x, t_floatarg f){
+    x->x_norm = f != 0;
 }
 
 static void asr_rel(t_asr *x, t_floatarg f){
@@ -136,6 +141,8 @@ static t_int *asr_perform(t_int *w){
                     n_minsus[j] = n_maxsus[j] = 0; // zero sustain count
                     // get target, control or audio
                     x->x_last_gate = x->x_f_gate != 0 ? x->x_f_gate : input_gate;
+                    if(x->x_norm)
+                        x->x_last_gate = copysign(1, x->x_last_gate);
                     target[j] = x->x_last_gate;
                     attacked[j] = 1; // tag envelope as "attacked"
                     sustained[j] = 0;
@@ -369,6 +376,7 @@ static void *asr_new(t_symbol *sym, int ac, t_atom *av){
     x->x_lag = 1;
     x->x_minsus = -1;
     x->x_maxsus = -1;
+    x->x_norm = 0;
     int argnum = 0;
     x->x_lag = 0;
     while(ac > 0){
@@ -399,6 +407,10 @@ static void *asr_new(t_symbol *sym, int ac, t_atom *av){
             if(cursym == gensym("-lin")){
                 ac--, av++;
                 x->x_curve = 0;
+            }
+            else if(cursym == gensym("-norm")){
+                x->x_norm = 1;
+                ac--, av++;
             }
             else if(cursym == gensym("-lag")){
                 ac--, av++;
@@ -469,4 +481,5 @@ void asr_tilde_setup(void){
     class_addmethod(asr_class, (t_method)asr_minsus, gensym("minsus"), A_FLOAT, 0);
     class_addmethod(asr_class, (t_method)asr_maxsus, gensym("maxsus"), A_FLOAT, 0);
     class_addmethod(asr_class, (t_method)asr_curve, gensym("curve"), A_FLOAT, 0);
+    class_addmethod(asr_class, (t_method)asr_norm, gensym("norm"), A_FLOAT, 0);
 }

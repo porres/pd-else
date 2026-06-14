@@ -1,4 +1,4 @@
-// Porres 2017
+// Porres 2017-2026
 
 #include <m_pd.h>
 #include <math.h>
@@ -13,6 +13,7 @@ typedef struct _decay{
     t_int       x_flag;
     int         x_nchans;
     int         x_nblock;
+    int         x_norm;
     double     *x_xnm1;
     double     *x_ynm1;
     double      x_f;
@@ -26,8 +27,12 @@ static void decay_bang(t_decay *x){
 }
 
 static void decay_float(t_decay *x, t_float f){
-    x->x_f = (double)f;
+    x->x_f = x->x_norm ? (double)f : copysign(1, f);
     x->x_flag = 1;
+}
+
+static void decay_norm(t_decay *x, t_floatarg f){
+    x->x_norm = f != 0;
 }
 
 static t_int *decay_perform(t_int *w){
@@ -45,7 +50,7 @@ static t_int *decay_perform(t_int *w){
             double xn;
             if((in != 0 && xnm1[j] == 0)){
                 x->x_ynm1[j] = 0.;
-                xn = in;
+                xn = x->x_norm ? copysign(1, in) : in;
             }
             else
                 xn = 0;
@@ -103,33 +108,43 @@ static void *decay_free(t_decay *x){
     return(void *)x;
 }
 
-static void *decay_new(t_symbol *s, int argc, t_atom *argv){
+static void *decay_new(t_symbol *s, int ac, t_atom *av){
     t_decay *x = (t_decay *)pd_new(decay_class);
-    x->x_ignore = s;
+    (void)s;
     float ms = 1000;
     x->x_f = 1.;
+    x->x_norm = 0;
     x->x_xnm1 = (double *)getbytes(sizeof(*x->x_xnm1));
     x->x_ynm1 = (double *)getbytes(sizeof(*x->x_ynm1));
     x->x_xnm1[0] = x->x_ynm1[0] = 0;
 /////////////////////////////////////////////////////////////////////////////////////
     int argnum = 0;
-    while(argc > 0){
-        if(argv -> a_type == A_FLOAT){ //if current argument is a float
-            t_float argval = atom_getfloatarg(0, argc, argv);
+    while(ac > 0){
+        if(av->a_type == A_FLOAT){
+            float aval = atom_getfloat(av);
             switch(argnum){
                 case 0:
-                    ms = argval;
-
+                    ms = aval;
+                    break;
+                case 1:
                 default:
                     break;
             };
             argnum++;
-            argc--;
-            argv++;
+            ac--;
+            av++;
+        }
+        else if(av->a_type == A_SYMBOL && !argnum){
+            if(atom_getsymbol(av) == gensym("-norm")){
+                x->x_norm = 1;
+                ac--, av++;
+            }
+            else
+                goto errstate;
         }
         else
             goto errstate;
-    };
+    }
 /////////////////////////////////////////////////////////////////////////////////////
     x->x_inlet_ms = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_ms, ms);
@@ -145,7 +160,8 @@ void decay_tilde_setup(void){
         (t_method)decay_free, sizeof(t_decay), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(decay_class, (t_method)decay_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(decay_class, nullfn, gensym("signal"), 0);
-    class_addmethod(decay_class, (t_method)decay_clear, gensym("clear"), 0);
-    class_addfloat(decay_class, (t_method)decay_float);
     class_addbang(decay_class, (t_method)decay_bang);
+    class_addfloat(decay_class, (t_method)decay_float);
+    class_addmethod(decay_class, (t_method)decay_clear, gensym("clear"), 0);
+    class_addmethod(decay_class, (t_method)decay_norm, gensym("norm"), A_FLOAT, 0);
 }
