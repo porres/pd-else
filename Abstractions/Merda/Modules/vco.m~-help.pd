@@ -65,7 +65,7 @@
 #X obj 42 177 else/voices~ 4;
 #X obj 42 49 else/note.in;
 #X obj 255 234 else/adsr.m~;
-#A saved 10 20 0.75 250 1 0 0 0 0 0 0 0;
+#A saved 10 20 0.75 250 1 0 0 0 0 0 0 0 0;
 #A saved;
 #A saved;
 #A saved;
@@ -106,8 +106,8 @@
 #X obj 430 208 else/bl.square~;
 #X obj 482 238 else/bl.saw2~;
 #X text 450 270 ([vco.m~] is a wrapper of these objects above), f 23;
-#X text 289 471 There is a detune number box that modulates the pitch in Hz and a transposition knob that changes the pitch in semitones and midi cents (from -24 to 24 \, so 2 octaves down and up). The detuning is added to the transposition., f 48;
 #X obj 545 207 else/shark~;
+#X text 289 471 There is a detune number box that modulates the pitch in Hz and a transposition knob that changes the pitch in semitones and midi cents (from -36 to 36 \, so 3 octaves down and up). The detuning is added to the transposition., f 48;
 #X connect 0 0 3 0;
 #X connect 1 0 9 0;
 #X connect 2 0 5 0;

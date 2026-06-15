@@ -710,7 +710,7 @@
 #X obj 69 338 else/note 35 9 Menlo \$0-fm-att# 0 0 0 0 0 255 255 255 0 1;
 #X obj 114 338 else/note 35 9 Menlo \$0-pm-att# 0 0 0 0 0 255 255 255 0 1;
 #X obj 159 338 else/note 35 9 Menlo \$0-pwm-att# 0 0 0 0 0 255 255 255 0 1;
-#X obj 149 162 else/knob 50 -24 24 0 0 \$0-transp \$0-set-transp #dfdfdf #7c7c7c #000000 0 0 73 1 1 320 0 0 0 empty empty 4 10 3 56 0 0 0 0 0 0;
+#X obj 149 162 else/knob 50 -36 36 0 0 \$0-transp \$0-set-transp #dfdfdf #7c7c7c #000000 0 0 73 1 1 320 0 0 0 empty empty 4 10 3 56 0 0 0 0 0 0;
 #X text 151 144 Transp;
 #X msg 268 112 clear \, add sine tri saw vsaw square shark saw2;
 #X coords 0 1 100 -1 161 301 1 50 50;
@@ -1395,7 +1395,7 @@
 #X obj 187 433 r \$0-deactivate;
 #X obj 431 266 r \$0-deactivate;
 #X obj 173 55 symbol transp;
-#X obj 433 659 else/rescale -24 24;
+#X obj 433 659 else/rescale -36 36;
 #X connect 0 0 30 0;
 #X connect 1 0 2 0;
 #X connect 1 1 23 0;
