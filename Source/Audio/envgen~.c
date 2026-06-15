@@ -115,7 +115,7 @@ static void envgen_set_line_type(t_envgen *x, int j){
             x->x_lintype = HANN;
             return;
         }
-        sprintf(p, "%s", sym->s_name);
+        snprintf(p, MAXPDSTRING, "%s", sym->s_name);
         if(p[0] == '^'){
             x->x_curve = atof(p + 1); // convert after '^'
             x->x_lintype = POWER;
