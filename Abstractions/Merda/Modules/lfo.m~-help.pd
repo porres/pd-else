@@ -65,6 +65,7 @@
 #A saved;
 #A saved;
 #A saved;
+#X text 265 116 You can sync with impulses or gates., f 18;
 #X connect 0 0 7 0;
 #X connect 1 0 0 0;
 #X connect 4 0 10 0;
