@@ -290,6 +290,7 @@ static void *moog_new(t_symbol *s, int ac, t_atom *av){
     float cutoff = 0, reson = 0, drive = 0, oversample = 2;
     int argnum = 0;
     x->x_nchs = 1;
+    x->x_f_list_size = x->x_reson_list_size = x->x_drive_list_size = 1;
     while(ac > 0){
         if(av->a_type == A_FLOAT){
             float argval = atom_getfloat(av);

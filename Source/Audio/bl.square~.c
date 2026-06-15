@@ -308,7 +308,7 @@ static void blsquare_dsp(t_blsquare *x, t_signal **sp){
     || (x->x_ch4 > 1 && x->x_ch4 != x->x_nchans)){
         dsp_add_zero(sp[4]->s_vec, x->x_nchans * x->x_n);
         if(x->x_verbose)
-            pd_error(x, "[blsquare~]: channel sizes mismatch");
+            pd_error(x, "[bl.square~]: channel sizes mismatch");
         return;
     }
     dsp_add(blsquare_perform, 6, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
