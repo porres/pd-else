@@ -1,4 +1,4 @@
-#N canvas 462 23 561 476 10;
+#N canvas 462 38 561 476 10;
 #X obj 2 448 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0 14 #dcdcdc #404040 0;
 #X obj 2 313 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 2 348 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0 13 #dcdcdc #000000 0;
@@ -25,7 +25,7 @@
 #X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X text 199 321 - incoming mono signal to be vu-metered;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -94,7 +94,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -129,10 +129,11 @@
 #X text 199 424 - hop size for the [vu~] object, f 44;
 #N canvas 717 164 317 429 example 0;
 #X obj 78 119 else/gain~ 1 0 20 0 1;
+#A saved;
 #X obj 57 389 dac~;
 #X obj 78 233 else/meter~;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c #fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -201,7 +202,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -241,7 +242,7 @@
 #X connect 2 0 1 1;
 #X connect 2 1 7 0;
 #X connect 6 0 0 0;
-#X restore 472 251 pd example;
+#X restore 472 231 pd example;
 #X obj 251 166 else/meter~;
 #X text 129 226 [else/meter~] ==>;
 #X obj 121 356 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 #dcdcdc #9c9c9c 0;
@@ -260,4 +261,12 @@
 #X restore 467 277 pd see also;
 #X obj 251 137 noise~;
 #X text 85 89 [meter~] is a convenient mono VU-meter abstraction. See also [meter2~] \, [meter4~] and [meter8~]., f 52;
+#N canvas 717 164 374 406 multichannel 0;
+#X obj 114 169 else/meter~;
+#X obj 114 124 else/white~ -ch 2;
+#X obj 114 324 out~;
+#X text 62 23 The [meter~] object can take and pass multichannel signals \, but it sums them in order to plot the metering. This is useful if you have a polyphonic signal that actually represents a single audio channel., f 38;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X restore 442 254 pd multichannel;
 #X connect 34 0 25 0;
