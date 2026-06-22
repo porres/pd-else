@@ -10,6 +10,7 @@ typedef struct _xfademc{
     t_inlet    *x_inlet_mix;
     int         x_block;
     int         x_chs;
+    int         x_chs_pos;
     int         x_lin;
 }t_xfademc;
 
@@ -21,17 +22,18 @@ static t_int *xfademc_perform(t_int *w){
     t_float *out = (t_float *)(w[5]);
     int n =  x->x_block, chs =  x->x_chs;
     for(int i = 0; i < x->x_block; i++){
-        float pos = pos_in[i]; // xfade value [-1: left (A) input, 1: right (B) input]
-        if(pos > 1)
-            pos = 1;
-        if(pos < -1)
-            pos = -1;
-        pos += 1; // Mix from 0 to 2
-        if(x->x_lin)
-            pos *= 0.5; // Mix from 0 to 1
-        else
-            pos *= 0.125; // Mix from 0 to 0.25
         for(int j = 0; j < chs; j++){
+            int pos_idx = x->x_chs_pos == 1 ? i : j*n + i;
+            float pos = pos_in[pos_idx]; // xfade value [-1: left (A) input, 1: right (B) input]
+            if(pos > 1)
+                pos = 1;
+            if(pos < -1)
+                pos = -1;
+            pos += 1; // Mix from 0 to 2
+            if(x->x_lin)
+                pos *= 0.5; // Mix from 0 to 1
+            else
+                pos *= 0.125; // Mix from 0 to 0.25
             if(x->x_lin)
                 out[j*n + i] = in1[j*n + i] * (1-pos) + in2[j*n + i] * pos;
             else{
@@ -45,10 +47,13 @@ static t_int *xfademc_perform(t_int *w){
 }
 
 static void xfademc_dsp(t_xfademc *x, t_signal **sp){
-    int n = sp[0]->s_n, chs1 = sp[0]->s_nchans, chs2 = sp[1]->s_nchans;
+    int n = sp[0]->s_n;
+    int chs1 = sp[0]->s_nchans, chs2 = sp[1]->s_nchans, chs3 = sp[2]->s_nchans;
     signal_setmultiout(&sp[3], chs1);
-    x->x_block = n, x->x_chs = chs1;
-    if(chs1 != chs2){
+    x->x_block = n, x->x_chs = chs1, x->x_chs_pos = chs3;
+    if((chs1 != chs2) ||
+    (chs3 > 1 && chs3 != chs2) ||
+    (chs3 > 1 && chs3 != chs1)){
         dsp_add_zero(sp[3]->s_vec, chs1*n);
         pd_error(x, "[xfade.mc~]: channel sizes mismatch");
     }
