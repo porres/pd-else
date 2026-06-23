@@ -1,56 +1,32 @@
-#N canvas 530 37 564 446 10;
-#X obj 4 304 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 353 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 386 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 416 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X obj 109 362 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 109 312 cnv 17 3 35 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X text 181 312 signal;
-#X text 181 362 signal;
-#X obj 23 41 cnv 4 4 4 empty empty Hold 0 28 2 18 #e0e0e0 #000000 0
-;
-#X obj 86 41 cnv 4 4 4 empty empty trigger 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 144 41 cnv 4 4 4 empty empty value 0 28 2 18 #e0e0e0 #000000
-0;
+#N canvas 530 38 564 446 10;
+#X obj 4 304 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 4 353 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 4 386 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
+#X obj 4 416 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X obj 129 362 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 129 312 cnv 17 3 35 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 23 41 cnv 4 4 4 empty empty Hold 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 86 41 cnv 4 4 4 empty empty trigger 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 144 41 cnv 4 4 4 empty empty value 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 68 41 cnv 4 4 4 empty empty a 0 28 2 18 #e0e0e0 #000000 0;
-#X obj 2 4 cnv 15 301 42 empty empty trighold~ 20 20 2 37 #e0e0e0 #000000
-0;
+#X obj 2 4 cnv 15 301 42 empty empty trighold~ 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 4 pd;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
 #X obj 58 204 else/trighold~;
 #X text 232 393 (none);
-#X text 230 362 - held trigger;
-#X text 61 91 [trighold~] holds a trigger value. A trigger happens
-when a transition from 0 to non-zero occurs.;
-#X text 230 312 - trigger signal to be held;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
-#fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -119,8 +95,7 @@ when a transition from 0 to non-zero occurs.;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
-0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -132,8 +107,7 @@ when a transition from 0 to non-zero occurs.;
 #X obj 136 86 snapshot~;
 #X obj 91 52 del 5;
 #X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 74 126 switch~;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -153,8 +127,7 @@ when a transition from 0 to non-zero occurs.;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 61 pd;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
-#fcfcfc 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -223,8 +196,7 @@ when a transition from 0 to non-zero occurs.;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
-0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
 #X obj 226 139 s \$0-tgl-r;
@@ -236,8 +208,7 @@ when a transition from 0 to non-zero occurs.;
 #X obj 136 86 snapshot~;
 #X obj 91 52 del 5;
 #X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 74 126 switch~;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -257,28 +228,47 @@ when a transition from 0 to non-zero occurs.;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 61 pd;
 #X obj 58 172 else/dust2~ 5;
-#X obj 379 140 noise~;
-#X obj 379 175 *~;
-#X obj 421 173 else/pulse~ 1;
-#X obj 379 236 else/trighold~;
-#X obj 207 239 else/trighold~;
-#X obj 207 170 else/randpulse~ 1;
-#X obj 379 266 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
-#X obj 207 269 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
-#X obj 379 200 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
-#X obj 207 203 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 329 140 noise~;
+#X obj 329 175 *~;
+#X obj 371 173 else/pulse~ 1;
+#X obj 329 236 else/trighold~;
+#X obj 187 239 else/trighold~;
+#X obj 187 170 else/randpulse~ 1;
+#X obj 329 266 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 187 269 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 329 200 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 187 203 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
 #X obj 58 232 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
 #X text 187 330 clear;
 #X text 230 330 - clear and set output to zero;
-#X msg 168 139 clear;
-#X connect 22 0 40 0;
-#X connect 29 0 22 0;
-#X connect 30 0 31 0;
-#X connect 31 0 38 0;
-#X connect 32 0 31 1;
-#X connect 33 0 36 0;
-#X connect 34 0 37 0;
-#X connect 35 0 39 0;
-#X connect 38 0 33 0;
-#X connect 39 0 34 0;
-#X connect 43 0 34 0;
+#X msg 148 139 clear;
+#N canvas 792 237 376 280 multichannel 0;
+#X obj 119 111 *~;
+#X obj 119 152 else/trighold~;
+#X obj 119 76 else/white~ -ch 2;
+#X obj 119 183 else/s2f~;
+#X listbox 119 214 20 0 0 0 - - - 0;
+#X obj 161 109 else/dust~ -ch 2 1;
+#X text 81 30 There's support for multichannels.;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 2 0 0 0;
+#X connect 3 0 4 0;
+#X connect 5 0 0 1;
+#X restore 438 268 pd multichannel;
+#X text 163 312 signal(s);
+#X text 163 362 signal(s);
+#X text 230 362 - held trigger(s);
+#X text 230 312 - trigger signal(s) to be held;
+#X text 61 91 [trighold~] holds a trigger value. A trigger happens when a transition from 0 to non-zero occurs. There's support for multichannels.;
+#X connect 20 0 35 0;
+#X connect 24 0 20 0;
+#X connect 25 0 26 0;
+#X connect 26 0 33 0;
+#X connect 27 0 26 1;
+#X connect 28 0 31 0;
+#X connect 29 0 32 0;
+#X connect 30 0 34 0;
+#X connect 33 0 28 0;
+#X connect 34 0 29 0;
+#X connect 38 0 29 0;
