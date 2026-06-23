@@ -20,6 +20,8 @@ typedef struct _shaper{
     t_int       x_dc_filter;
     t_int       x_clip;
     t_float     x_sr;
+    int         x_nchs;
+    int         x_n;
     double      x_a;
     double      x_xnm1;
     double      x_ynm1;
@@ -95,9 +97,9 @@ static t_int *shaper_perform(t_int *w){
     t_shaper *x = (t_shaper *) (w[1]);
     t_float *in = (t_float *)(w[2]);
     t_float *out = (t_float *)(w[3]);
+    int n = (int)(w[4]);
     double xnm1 = x->x_xnm1;
     double ynm1 = x->x_ynm1;
-    int n = (int)(w[4]);
     t_word *buf = (t_word *)x->x_buffer->c_vectors[0];
     double maxidx = (double)(x->x_buffer->c_npts - 1);
     while(n--){
@@ -156,8 +158,11 @@ static void shaper_dsp(t_shaper *x, t_signal **sp){
         x->x_sr = sp[0]->s_sr;
         x->x_a = 1 - (5*TWO_PI/(double)x->x_sr);
     }
+    int nchs = sp[0]->s_nchans;
+    int n = sp[0]->s_n * nchs;
+    signal_setmultiout(&sp[1], nchs);
     buffer_checkdsp(x->x_buffer);
-    dsp_add(shaper_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
+    dsp_add(shaper_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, n);
 }
 
 static void shaper_free(t_shaper *x){
@@ -245,7 +250,7 @@ static void *shaper_new(t_symbol *s, int ac, t_atom *av){
 
 void shaper_tilde_setup(void){
     shaper_class = class_new(gensym("shaper~"), (t_newmethod)shaper_new,
-        (t_method)shaper_free,sizeof(t_shaper), 0, A_GIMME, 0);
+        (t_method)shaper_free,sizeof(t_shaper), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(shaper_class, nullfn, gensym("signal"), 0);
     class_addmethod(shaper_class, (t_method)shaper_dsp, gensym("dsp"), A_CANT,  0);
     class_addmethod(shaper_class, (t_method)shaper_list, gensym("list"), A_GIMME, 0);
