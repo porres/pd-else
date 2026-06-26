@@ -4,6 +4,8 @@
 #include <m_pd.h>
 #include <stdlib.h>
 
+#define INV_HALF_PI 0.6366197723675814
+
 typedef struct _drive{
     t_object  x_obj;
     t_inlet  *x_inlet;
@@ -18,7 +20,7 @@ typedef struct _drive{
 static t_class *drive_class;
 
 static void drive_mode(t_drive *x, t_floatarg f){
-    x->x_mode = f < 0 ? 0 : f > 2 ? 2 : (int)f;
+    x->x_mode = f < 0 ? 0 : f > 5 ? 5 : (int)f;
 }
 
 static t_int *drive_perform(t_int *w){
@@ -26,33 +28,46 @@ static t_int *drive_perform(t_int *w){
     t_float *in1 = (t_float *)(w[2]);
     t_float *in2 = (t_float *)(w[3]);
     t_float *out = (t_float *)(w[4]);
-    t_float mode = x->x_mode;
+    t_float output;
     for(int j = 0; j < x->x_nchans; j++){
         for(int i = 0, n = x->x_n; i < n; i++){
             float in = x->x_ch1 == 1 ? in1[i] : in1[j*n + i];
             float f2 = x->x_ch2 == 1 ? in2[i] : in2[j*n + i];
             if(f2 < 0)
                 f2 = 0;
-            if(mode == 0)
-                out[j*n + i] = tanhf(in * f2);
-            else if(mode == 1){
-                if(in >= 1.)
-                    out[j*n + i] = 1.;
-                else if(in <= -1)
-                    out[j*n + i] = -1.;
-                else if(f2 < 1)
-                    out[j*n + i] = f2 * in;
-                else if(in > 0)
-                    out[j*n + i] = 1. - powf(1. - in, f2);
-                else
-                    out[j*n + i] = powf(1. + in, f2) - 1.;
+            switch(x->x_mode){
+                case 0: // Hyperbolic tangent soft clipper
+                    output = tanhf(in * f2);
+                    break;
+                case 1: // Arctangent soft clipper
+                    output = atanf(in * f2) * INV_HALF_PI;
+                    break;
+                case 2: // Threshold soft clipper
+                    if(f2 > 1)
+                        f2 = 1;
+                    t_float abs_in = fabs(in);
+                    output = abs_in > f2 ? copysignf((1-(f2*(f2-2)+1) / (abs_in-2*f2+1)), in) : in;
+                    break;
+                case 3: // Cubic soft clipper
+                    in *= f2;
+                    if(in > 1)
+                        in = 1;
+                    else if(in < -1)
+                        in = -1;
+                    output = (in - powf(in, 3)/3) * 1.5;
+                    break;
+                case 4: // Exponential soft clipper
+                    output = copysignf(1.0f - expf(-f2 * fabsf(in)), in);
+                    break;
+                case 5: // Rational soft clipper
+                    if(in > 1)
+                        in = 1;
+                    else if(in < -1)
+                        in = -1;
+                    output = (in / (1.0f + f2 * fabsf(in))) * (1.0f + f2);
+                    break;
             }
-            else{
-                if(f2 > 1)
-                    f2 = 1;
-                t_float abs_in = fabs(in);
-                out[j*n + i] = abs_in > f2 ? copysignf((1-(f2*(f2-2)+1) / (abs_in-2*f2+1)), in) : in;
-            }
+            out[j*n + i] = output;
         }
     }
     return(w+5);
@@ -91,7 +106,7 @@ void *drive_new(t_symbol *s, int ac, t_atom *av){
                 ac--, av++;
                 if(av->a_type == A_FLOAT){
                     t_float f = atom_getfloatarg(0, ac, av);
-                    x->x_mode = f < 0 ? 0 : f > 2 ? 2 : (int)f;
+                    x->x_mode = f < 0 ? 0 : f > 5 ? 5 : (int)f;
                     ac--, av++;
                 }
                 else
