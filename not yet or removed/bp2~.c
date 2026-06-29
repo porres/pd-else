@@ -19,8 +19,6 @@ typedef struct _bp2{
     t_int       x_ch1;
     t_int       x_ch2;
     t_int       x_ch3;
-    double     *x_xnm1;
-    double     *x_xnm2;
     double     *x_ynm1;
     double     *x_ynm2;
     float      *x_freq_list;
@@ -76,10 +74,8 @@ static void bp2_reson(t_bp2 *x, t_symbol *s, int ac, t_atom *av){
 static void update_coeffs(t_bp2 *x, double f, double reson){
     x->x_reson = reson;
     x->x_f = f;
-
     double omega = f * x->x_radcoeff;
     double q;
-
     switch(x->x_resmode){
     case 0:
         q = reson;
@@ -93,20 +89,16 @@ static void update_coeffs(t_bp2 *x, double f, double reson){
         q = f * reson * T60_COEFF;
         break;
     }
-
     if(q < 1e-6){
         x->x_a0 = 1.0;
         x->x_b1 = 0.0;
         x->x_b2 = 0.0;
         return;
     }
-
     double oneminusr = omega / q;
     if(oneminusr > 1.0)
         oneminusr = 1.0;
-
     double r = 1.0 - oneminusr;
-
     x->x_b1 = 2.0 * cos(omega) * r;
     x->x_b2 = -r * r;
     x->x_a0 = 2.0 * oneminusr * (oneminusr + r * omega);
@@ -192,10 +184,6 @@ static void bp2_dsp(t_bp2 *x, t_signal **sp){
     if(x->x_ch3 > chs)
         chs = x->x_ch3;
     if(x->x_nchans != chs){
-        x->x_xnm1 = (double *)resizebytes(x->x_xnm1,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
-        x->x_xnm2 = (double *)resizebytes(x->x_xnm2,
-            x->x_nchans * sizeof(double), chs * sizeof(double));
         x->x_ynm1 = (double *)resizebytes(x->x_ynm1,
             x->x_nchans * sizeof(double), chs * sizeof(double));
         x->x_ynm2 = (double *)resizebytes(x->x_ynm2,
@@ -216,7 +204,7 @@ static void bp2_dsp(t_bp2 *x, t_signal **sp){
 
 static void bp2_clear(t_bp2 *x){
     for(int i = 0; i < x->x_nchans; i++)
-        x->x_xnm1[i] = x->x_xnm2[i] = x->x_ynm1[i] = x->x_ynm2[i] = 0.;
+        x->x_ynm1[i] = x->x_ynm2[i] = 0.;
 }
 
 static void bp2_bypass(t_bp2 *x, t_floatarg f){
@@ -242,8 +230,6 @@ static void *bp2_free(t_bp2 *x){
     inlet_free(x->x_inlet_freq);
     inlet_free(x->x_inlet_q);
     outlet_free(x->x_out);
-    freebytes(x->x_xnm1, x->x_nchans * sizeof(*x->x_xnm1));
-    freebytes(x->x_xnm2, x->x_nchans * sizeof(*x->x_xnm2));
     freebytes(x->x_ynm1, x->x_nchans * sizeof(*x->x_ynm1));
     freebytes(x->x_ynm2, x->x_nchans * sizeof(*x->x_ynm2));
     free(x->x_freq_list);
@@ -258,14 +244,11 @@ static void *bp2_new(t_symbol *s, int ac, t_atom *av){
     float reson = 0;
     int resmode = 0;
     int argnum = 0;
-    x->x_xnm1 = (double *)getbytes(sizeof(*x->x_xnm1));
-    x->x_xnm2 = (double *)getbytes(sizeof(*x->x_xnm2));
     x->x_ynm1 = (double *)getbytes(sizeof(*x->x_ynm1));
     x->x_ynm2 = (double *)getbytes(sizeof(*x->x_ynm2));
     x->x_freq_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_reson_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_freq_list[0] = x->x_reson_list[0] = 0;
-    x->x_xnm1[0] = x->x_xnm2[0] = 0;
     x->x_ynm1[0] = x->x_ynm2[0] = 0;
     x->x_f_list_size = x->x_q_list_size = 1;
     while(ac > 0){

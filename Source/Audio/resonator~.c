@@ -7,17 +7,20 @@
 
 typedef struct _resonator{
     t_object    x_obj;
-    t_int       x_n;
+    int         x_n;
+    int         x_nchans;
+    int         x_ch2;
+    int         x_ch3;
     t_inlet    *x_inlet_excitation;
     t_inlet    *x_inlet_t60;
     t_outlet   *x_out;
     t_float     x_nyq;
     t_float     x_freq;
     int         x_mode; // 0: bp / 1: lop / 2: hip
-    double      x_xnm1;
-    double      x_xnm2;
-    double      x_ynm1;
-    double      x_ynm2;
+    double     *x_xnm1;
+    double     *x_xnm2;
+    double     *x_ynm1;
+    double     *x_ynm2;
     double      x_f;
     double      x_reson;
     double      x_a0;
@@ -76,45 +79,72 @@ static void update_coeffs(t_resonator *x, double f, double reson){
 
 static t_int *resonator_perform(t_int *w){
     t_resonator *x = (t_resonator *)(w[1]);
-    int nblock = (int)(w[2]);
-    t_float *in1 = (t_float *)(w[3]);
-    t_float *in2 = (t_float *)(w[4]);
-    t_float *in3 = (t_float *)(w[5]);
-    t_float *out = (t_float *)(w[6]);
-    double xnm1 = x->x_xnm1;
-    double xnm2 = x->x_xnm2;
-    double ynm1 = x->x_ynm1;
-    double ynm2 = x->x_ynm2;
+    t_float *in1 = (t_float *)(w[2]);
+    t_float *in2 = (t_float *)(w[3]);
+    t_float *in3 = (t_float *)(w[4]);
+    t_float *out = (t_float *)(w[5]);
+    double *xnm1 = x->x_xnm1;
+    double *xnm2 = x->x_xnm2;
+    double *ynm1 = x->x_ynm1;
+    double *ynm2 = x->x_ynm2;
     t_float nyq = x->x_nyq;
-    while(nblock--){
-        double f = *in1++, xn = *in2++, reson = *in3++, yn;
-        if(f < 0.000001)
-            f = 0.000001;
-        if(f > nyq - 0.000001)
-            f = nyq - 0.000001;
-        if(f != x->x_f || reson != x->x_reson)
-            update_coeffs(x, (double)f, (double)reson);
-        yn = x->x_a0 * xn + x->x_a1 * xnm1 + x->x_a2 * xnm2 + x->x_b1 * ynm1 + x->x_b2 * ynm2;
-        *out++ = yn;
-        xnm2 = xnm1;
-        xnm1 = xn;
-        ynm2 = ynm1;
-        ynm1 = yn;
+    int n = x->x_n, ch2 = x->x_ch2, ch3 = x->x_ch3;
+    for(int j = 0; j < x->x_nchans; j++){
+        for(int i = 0; i < n; i++){
+            double f = in1[j*n + i];
+            double xn = ch2 == 1 ? (double)in2[i] : (double)in2[j*n + i];
+            double reson = ch3 == 1 ? (double)in3[i] : (double)in3[j*n + i];
+            double yn;
+            if(f < 0.000001)
+                f = 0.000001;
+            if(f > nyq - 0.000001)
+                f = nyq - 0.000001;
+            if(f != x->x_f || reson != x->x_reson)
+                update_coeffs(x, (double)f, (double)reson);
+            yn = x->x_a0 * xn + x->x_a1 * xnm1[j] + x->x_a2 * xnm2[j] + x->x_b1 * ynm1[j] + x->x_b2 * ynm2[j];
+            out[j*n + i] = yn;
+            xnm2[j] = xnm1[j];
+            xnm1[j] = xn;
+            ynm2[j] = ynm1[j];
+            ynm1[j] = yn;
+        }
     }
     x->x_xnm1 = xnm1;
     x->x_xnm2 = xnm2;
     x->x_ynm1 = ynm1;
     x->x_ynm2 = ynm2;
-    return(w+7);
+    return(w+6);
 }
 
 static void resonator_dsp(t_resonator *x, t_signal **sp){
     t_float nyq = sp[0]->s_sr / 2;
+    x->x_n = sp[0]->s_n;
+    int chs = sp[0]->s_nchans;
+    int ch2 = sp[1]->s_nchans, ch3 = sp[2]->s_nchans;
+    if(x->x_nchans != chs){
+        x->x_xnm1 = (double *)resizebytes(x->x_xnm1,
+            x->x_nchans * sizeof(double), chs * sizeof(double));
+        x->x_xnm2 = (double *)resizebytes(x->x_xnm2,
+            x->x_nchans * sizeof(double), chs * sizeof(double));
+        x->x_ynm1 = (double *)resizebytes(x->x_ynm1,
+            x->x_nchans * sizeof(double), chs * sizeof(double));
+        x->x_ynm2 = (double *)resizebytes(x->x_ynm2,
+            x->x_nchans * sizeof(double), chs * sizeof(double));
+        for(int i = 0; i < chs; i++)
+            x->x_xnm1[i] = x->x_xnm2[i] = x->x_ynm1[i] = x->x_ynm2[i] = 0.0;
+        x->x_nchans = chs;
+    }
     if(nyq != x->x_nyq){
         x->x_nyq = nyq;
         update_coeffs(x, x->x_f, x->x_reson);
     }
-    dsp_add(resonator_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,sp[1]->s_vec, sp[2]->s_vec,
+    signal_setmultiout(&sp[3], chs);
+    if((ch2 > 1 && ch2 != x->x_nchans) || (ch3 > 1 && ch3 != x->x_nchans)){
+        dsp_add_zero(sp[3]->s_vec, chs*x->x_n);
+        pd_error(x, "[resonator~]: channel sizes mismatch");
+        return;
+    }
+    dsp_add(resonator_perform, 5, x, sp[0]->s_vec,sp[1]->s_vec, sp[2]->s_vec,
             sp[3]->s_vec);
 }
 
@@ -134,16 +164,22 @@ static void resonator_hip(t_resonator *x){
 }
 
 static void resonator_clear(t_resonator *x){
-    x->x_xnm1 = x->x_xnm2 = x->x_ynm1 = x->x_ynm2 = 0.;
+    for(int i = 0; i < x->x_nchans; i++)
+        x->x_xnm1[i] = x->x_xnm2[i] = x->x_ynm1[i] = x->x_ynm2[i] = 0.;
 }
 
 static void *resonator_new(t_symbol *s, int ac, t_atom *av){
-    s = NULL;
+    (void)s;
     t_resonator *x = (t_resonator *)pd_new(resonator_class);
     x->x_freq = 0.000001;
     float reson = 0;
     int argnum = 0;
     int mode = 0;
+    x->x_xnm1 = (double *)getbytes(sizeof(*x->x_xnm1));
+    x->x_xnm2 = (double *)getbytes(sizeof(*x->x_xnm2));
+    x->x_ynm1 = (double *)getbytes(sizeof(*x->x_ynm1));
+    x->x_ynm2 = (double *)getbytes(sizeof(*x->x_ynm2));
+    x->x_xnm1[0] = x->x_xnm2[0] = x->x_ynm1[0] = x->x_ynm2[0] = 0.0;
     while(ac > 0){
         if(av->a_type == A_FLOAT){ //if current argument is a float
             t_float aval = atom_getfloat(av);
@@ -190,7 +226,7 @@ errstate:
 
 void resonator_tilde_setup(void){
     resonator_class = class_new(gensym("resonator~"), (t_newmethod)resonator_new, 0,
-        sizeof(t_resonator), CLASS_DEFAULT, A_GIMME, 0);
+        sizeof(t_resonator), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(resonator_class, (t_method)resonator_dsp, gensym("dsp"), A_CANT, 0);
     CLASS_MAINSIGNALIN(resonator_class, t_resonator, x_freq);
     class_addmethod(resonator_class, (t_method)resonator_clear, gensym("clear"), 0);
