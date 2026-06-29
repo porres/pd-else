@@ -1,5 +1,5 @@
 #N canvas 397 179 969 408 10;
-#X obj 175 70 inlet~ fwd;
+#X obj 175 70 inlet~;
 #N canvas 598 38 561 522 guts 0;
 #X obj 103 38 inlet;
 #X obj 138 283 trigger float float bang, f 25;

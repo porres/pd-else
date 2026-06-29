@@ -412,7 +412,6 @@
 #X restore 65 59 pd guts;
 #X text 215 46 Part of ELSE \; https://github.com/porres/pd-else;
 #X obj 53 102 cnv 15 296 136 empty \$0-bgcnv empty 20 12 0 14 #a0b4bc #404040 0;
-#X obj 65 31 inlet~ fwd;
 #N canvas 444 260 552 544 \$0-array-cnv 0;
 #N canvas 109 97 450 278 (subpatch) 0;
 #X array \$0-array-name 512 float 8;
@@ -425,6 +424,7 @@
 #X coords 0 1 100 -1 298 138 2 99 19;
 #X restore 52 101 pd \$0-array-cnv;
 #X text 214 32 Alexandre Torres Porres (2017-2025);
-#X connect 3 0 0 0;
-#X connect 3 1 0 1;
+#X obj 65 31 inlet~;
+#X connect 5 0 0 0;
+#X connect 5 1 0 1;
 #X coords 0 1 100 -1 300 140 2 51 100;

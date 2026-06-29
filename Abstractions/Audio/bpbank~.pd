@@ -1,5 +1,4 @@
 #N canvas 338 38 628 326 10;
-#X obj 97 49 inlet~ fwd;
 #N canvas 395 165 582 459 route/init 0;
 #X obj 287 374 outlet;
 #X obj 144 27 inlet;
@@ -132,7 +131,7 @@
 #X connect 16 0 5 0;
 #X connect 16 1 17 0;
 #X connect 17 0 0 0;
-#X restore 154 82 pd route/init;
+#X restore 130 82 pd route/init;
 #X obj 97 262 outlet~;
 #X obj 97 139 clone -x -do else/bpclone 1;
 #N canvas 360 151 395 378 sum 0;
@@ -162,8 +161,9 @@
 #X restore 97 205 pd sum;
 #X text 321 137 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 323 118 Alexandre Torres Porres (2017);
-#X connect 0 0 3 0;
-#X connect 0 1 1 0;
-#X connect 1 0 3 0;
-#X connect 3 0 4 0;
-#X connect 4 0 2 0;
+#X obj 97 49 inlet~;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
+#X connect 6 0 2 0;
+#X connect 6 1 0 0;

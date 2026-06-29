@@ -91,7 +91,7 @@
 #X restore 139 169 pd mix~;
 #X text 184 26 control;
 #X text 93 26 in;
-#X obj 95 48 inlet~ fwd;
+#X obj 95 48 inlet~;
 #X connect 0 0 6 1;
 #X connect 0 0 5 1;
 #X connect 5 0 6 0;

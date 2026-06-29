@@ -368,7 +368,7 @@
 #X restore 194 99 pd args;
 #X text 238 225 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 240 206 Alexandre Torres Porres (2019);
-#X obj 84 73 inlet~ fwd;
+#X obj 84 73 inlet~;
 #X connect 3 0 1 0;
 #X connect 3 1 2 0;
 #X connect 4 0 3 1;

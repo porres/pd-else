@@ -27,7 +27,7 @@
 #X connect 8 1 7 1;
 #X connect 9 0 2 0;
 #X restore 67 152 pd read;
-#X obj 157 62 inlet;
+#X obj 133 62 inlet;
 #X obj 67 212 outlet~;
 #N canvas 950 235 292 310 table 0;
 #X obj 79 185 s \$0-size;
@@ -85,8 +85,8 @@
 #X connect 14 0 15 0;
 #X connect 15 0 11 0;
 #X connect 16 0 13 0;
-#X restore 124 90 pd set;
-#X obj 67 61 inlet~ fwd;
+#X restore 100 90 pd set;
+#X obj 67 61 inlet~;
 #X connect 0 0 1 0;
 #X connect 1 0 3 0;
 #X connect 2 0 7 1;
