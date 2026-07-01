@@ -52,13 +52,9 @@
 #X obj 89 29 inlet;
 #X obj 205 188 outlet;
 #X obj 89 58 trigger bang bang;
-#X listbox 176 151 20 0 0 0 - - - 0;
-#X obj 165 235 out~;
 #X connect 0 0 2 0;
 #X connect 1 0 2 0;
-#X connect 1 0 8 0;
 #X connect 2 0 3 0;
-#X connect 2 0 9 0;
 #X connect 4 0 1 0;
 #X connect 5 0 7 0;
 #X connect 7 0 4 0;
@@ -236,7 +232,7 @@
 #X restore 84 234 pd biquad;
 #X text 202 154 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 204 135 Alexandre Torres Porres (2017);
-#N canvas 640 154 556 505 frequency 1;
+#N canvas 640 154 556 505 frequency 0;
 #X obj 281 369 t b f;
 #X obj 281 427 outlet;
 #X obj 313 395 v r_\$0;
