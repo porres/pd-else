@@ -1,137 +1,84 @@
-// based on delwrite~/delread4~
+// based on delwrite~
 
-#include <m_pd.h>
-#include <g_canvas.h>
-#include <buffer.h>
-#include <string.h>
-extern int ugen_getsortno(void);
+#include "m_pd.h"
+#include "del.h"
 
-static t_class *del_in_class;
+static t_class *delin_class;
 
-typedef struct delwritectl{
-    int             c_n;        // number of samples
-    t_sample       *c_vec;      // vector
-    int             c_phase;    // phase
-}t_delwritectl;
-
-typedef struct _del_in{
-    t_object        x_obj;
-    t_symbol       *x_sym;
-    t_float         x_deltime;  // delay size
-    t_delwritectl   x_cspace;
-    int             x_sortno;   // DSP sort number at which this was last put on chain
-    int             x_rsortno;  // DSP sort # for first delread or write in chain
-    int             x_vecsize;  // vector size for del~ out to use
-    int             x_freeze;
-    unsigned int    x_ms;       // ms flag
-    unsigned int    x_maxsize;  // buffer size in samples
-    unsigned int    x_maxsofar; // largest maxsize so far
-    t_float         x_sr;
-    t_float         x_f;
-}t_del_in;
-
-#define XTRASAMPS 4 // extra number of samples (for guard points)
-#define SAMPBLK   4 // ???
-
-static void del_in_update(t_del_in *x){ // added by Mathieu Bouchard
-    int nsamps = x->x_deltime;
-    if(x->x_ms)
-        nsamps *= (x->x_sr * (t_float)(0.001f));
-    if(nsamps < 1)
-        nsamps = 1;
-    nsamps += ((-nsamps) & (SAMPBLK - 1));
-    nsamps += x->x_vecsize;
-    if(x->x_cspace.c_n != nsamps){
-        x->x_cspace.c_vec = (t_sample *)resizebytes(x->x_cspace.c_vec,
-            (x->x_cspace.c_n + XTRASAMPS) * sizeof(t_sample), (nsamps + XTRASAMPS) * sizeof(t_sample));
-        x->x_cspace.c_n = nsamps;
-        x->x_cspace.c_phase = XTRASAMPS;
+static t_int *delin_perform(t_int *w){
+    t_delin *x = (t_delin *)(w[1]);
+    t_sample *in = (t_sample *)(w[2]);
+    t_delinctl *c = (t_delinctl *)(w[3]);
+    int n = x->x_n, phase;
+    for(int i = 0; i < c->c_nchans; i++){
+        t_sample *vp = c->c_vec + i * (c->c_n + XTRASAMPS), *bp, *ep;
+        int k = n;
+        phase = c->c_phase;
+        bp = vp + phase;
+        ep = vp + (c->c_n + XTRASAMPS);
+        phase += k;
+        while(k--){
+            if(!x->x_freeze){
+                t_sample f = *in++;
+                *bp = PD_BIGORSMALL(f) ? 0.f : f;
+            }
+            bp++;
+            if(bp == ep){
+                vp[0] = ep[-4];
+                vp[1] = ep[-3];
+                vp[2] = ep[-2];
+                vp[3] = ep[-1];
+                bp = vp + XTRASAMPS;
+                phase -= c->c_n;
+            }
+        }
     }
+    c->c_phase = phase;
+    return(w+4);
 }
 
-static void del_in_freeze(t_del_in *x, t_floatarg f){
+static void delin_clear (t_delin *x){
+    if(x->x_cspace.c_n > 0)
+        memset(x->x_cspace.c_vec, 0,
+            (x->x_cspace.c_n + XTRASAMPS) * x->x_cspace.c_nchans * sizeof(t_sample));
+}
+
+static void delin_freeze(t_delin *x, t_floatarg f){
     x->x_freeze = (int)(f != 0);
 }
 
-static void del_in_clear(t_del_in *x){
-    if(x->x_cspace.c_n > 0)
-        memset(x->x_cspace.c_vec, 0, sizeof(t_sample)*(x->x_cspace.c_n + XTRASAMPS));
-}
-
-static void del_in_size(t_del_in *x, t_floatarg f){
+static void delin_size(t_delin *x, t_floatarg f){
     if(f < 0)
         f = 0;
     if(f != x->x_deltime){
         x->x_deltime = f;
-        del_in_clear(x);
-        del_in_update(x);
+        delin_clear(x);
+        del_update(x);
     }
 }
 
-// check that all ins/outs have the same vecsize
-static void del_in_checkvecsize(t_del_in *x, int vecsize, t_float sr){
-    if(x->x_rsortno != ugen_getsortno()){
-        x->x_vecsize = vecsize;
-        x->x_sr = sr;
-        x->x_rsortno = ugen_getsortno();
-    }
-    else{ // Subsequent objects are only allowed to increase the vector size/samplerate
-        if(vecsize > x->x_vecsize)
-            x->x_vecsize = vecsize;
-        if(sr > x->x_sr)
-            x->x_sr = sr;
-    }
-}
-
-static t_int *del_in_perform(t_int *w){
-    t_sample *in = (t_sample *)(w[1]);
-    t_delwritectl *c = (t_delwritectl *)(w[3]);
-    int n = (int)(w[4]);
-    t_del_in *x = (t_del_in *)(w[5]);
-    int phase = c->c_phase;                     // phase
-    int nsamps = c->c_n;                        // number of samples
-    t_sample *vp = c->c_vec;                    // vector
-    t_sample *bp = vp + phase;                  // buffer point = vector + phase
-    t_sample *ep = vp + (nsamps + XTRASAMPS);   // end point = vector point + nsamples
-    phase += n;                                 // phase += block size
-    while(n--){
-        if(x->x_freeze)
-            bp++; // just advance buffer point
-        else{
-            t_sample f = *in++;
-            *bp++ = PD_BIGORSMALL(f) ? 0.f : f; // advance and write input into buffer point
-        }
-        if(bp == ep){
-            vp[0] = ep[-4]; // copy guard points
-            vp[1] = ep[-3];
-            vp[2] = ep[-2];
-            vp[3] = ep[-1];
-            bp = vp + XTRASAMPS; // go back to the beginning
-            phase -= nsamps;     // go back to the beginning
-        }
-    }
-    c->c_phase = phase; // update phase
-    return(w+6);
-}
-
-static void del_in_dsp(t_del_in *x, t_signal **sp){
-    dsp_add(del_in_perform, 5, sp[0]->s_vec, sp[1]->s_vec, &x->x_cspace, (t_int)sp[0]->s_n, x);
+static void delin_dsp(t_delin *x, t_signal **sp){
+    x->x_nchans = sp[0]->s_nchans;
+    x->x_n = sp[0]->s_length;
     x->x_sortno = ugen_getsortno();
-    del_in_checkvecsize(x, sp[0]->s_n, sp[0]->s_sr);
-    del_in_update(x);
+    del_check(x, x->x_n, sp[0]->s_sr);
+    del_update(x); // don't pass buf pointer as it can be resized by del.out~
+    signal_setmultiout(&sp[1], 1);
+    dsp_add_zero(sp[1]->s_vec, x->x_n);
+    dsp_add(delin_perform, 3, x, sp[0]->s_vec, &x->x_cspace);
 }
 
-static void del_in_free(t_del_in *x){
+static void delin_free(t_delin *x){
     pd_unbind(&x->x_obj.ob_pd, x->x_sym);
-    freebytes(x->x_cspace.c_vec, (x->x_cspace.c_n + XTRASAMPS) * sizeof(t_sample));
+    freebytes(x->x_cspace.c_vec,
+        (x->x_cspace.c_n + XTRASAMPS) * x->x_cspace.c_nchans * sizeof(t_sample));
 }
 
-static void *del_in_new(t_symbol *s, int ac, t_atom *av){
-    s = NULL;
-    t_del_in *x = (t_del_in *)pd_new(del_in_class);
+static void *delin_new(t_symbol *s, int ac, t_atom *av){
+    (void)s;
+    t_delin *x = (t_delin *)pd_new(delin_class);
     x->x_deltime = 1000;
     x->x_ms = 1;
-    int argn = 0;
     t_canvas *canvas = canvas_getrootfor(canvas_getcurrent());
     char buf[MAXPDSTRING];
     snprintf(buf, MAXPDSTRING, "$0-delay-.x%lx.c", (long unsigned int)canvas);
@@ -150,7 +97,7 @@ static void *del_in_new(t_symbol *s, int ac, t_atom *av){
                 ac--, av++;
             }
             if(av->a_type == A_SYMBOL){
-                x->x_sym = atom_getsymbolarg(0, ac, av);
+                x->x_sym = atom_getsymbol(av);
                 ac--, av++;
                 if(ac){
                     if((av)->a_type == A_FLOAT){
@@ -166,7 +113,6 @@ static void *del_in_new(t_symbol *s, int ac, t_atom *av){
             else if((av)->a_type == A_FLOAT){
                 x->x_deltime = (av)->a_w.w_float;
                 ac--, av++;
-                argn = 1;
             }
             else
                 goto errstate;
@@ -177,11 +123,12 @@ static void *del_in_new(t_symbol *s, int ac, t_atom *av){
     }
     pd_bind(&x->x_obj.ob_pd, x->x_sym);
     x->x_cspace.c_n = 0;
+    x->x_cspace.c_nchans = 1;
     x->x_cspace.c_vec = getbytes(XTRASAMPS * sizeof(t_sample));
     x->x_sortno = 0;
     x->x_vecsize = 0;
+    x->x_nchans = 1;
     x->x_sr = 0;
-    x->x_f = 0;
     x->x_freeze = 0;
     outlet_new(&x->x_obj, &s_signal);
     return(x);
@@ -191,11 +138,11 @@ static void *del_in_new(t_symbol *s, int ac, t_atom *av){
 }
 
 void setup_del0x2ein_tilde(void){
-    del_in_class = class_new(gensym("del.in~"), (t_newmethod)del_in_new,
-        (t_method)del_in_free, sizeof(t_del_in), 0, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(del_in_class, t_del_in, x_f);
-    class_addmethod(del_in_class, (t_method)del_in_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(del_in_class, (t_method)del_in_clear, gensym("clear"), 0);
-    class_addmethod(del_in_class, (t_method)del_in_freeze, gensym("freeze"), A_DEFFLOAT, 0);
-    class_addmethod(del_in_class, (t_method)del_in_size, gensym("size"), A_DEFFLOAT, 0);
+    delin_class = class_new(gensym("del.in~"), (t_newmethod)(void*)delin_new,
+        (t_method)delin_free, sizeof(t_delin), CLASS_MULTICHANNEL, A_GIMME, 0);
+    class_addmethod(delin_class, nullfn, gensym("signal"), 0);
+    class_addmethod(delin_class, (t_method)delin_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(delin_class, (t_method)delin_clear, gensym("clear"), 0);
+    class_addmethod(delin_class, (t_method)delin_freeze, gensym("freeze"), A_FLOAT, 0);
+    class_addmethod(delin_class, (t_method)delin_size, gensym("size"), A_FLOAT, 0);
 }
