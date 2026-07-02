@@ -73,7 +73,7 @@ static void rampnoise_set(t_rampnoise *x, t_symbol *s, int ac, t_atom *av){
 
 static t_int *rampnoise_perform(t_int *w){
     t_rampnoise *x = (t_rampnoise *)(w[1]);
-    int chs = (t_int)(w[2]); // number of channels in main input signal (density)
+    int chs = (t_int)(w[2]); // number of channels in main input signal
     t_float *in = (t_float *)(w[3]);
     t_float *out = (t_sample *)(w[4]);
     uint32_t *s1 = &x->x_rstate.s1;
