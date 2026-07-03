@@ -30,7 +30,6 @@ typedef struct _sine{
 // MAGIC:
     t_glist    *x_glist; // object list
     t_float    *x_signalscalar; // right inlet's float field
-    t_float     x_phase_sync_float; // float from magic
 }t_sine;
 
 static t_class *sine_class;
