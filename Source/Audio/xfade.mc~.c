@@ -70,7 +70,7 @@ static void xfademc_free(t_xfademc *x){
 }
 
 static void *xfademc_new(t_symbol *s, int ac, t_atom *av){
-    s = NULL;
+    (void)s;
     t_xfademc *x = (t_xfademc *)pd_new(xfademc_class);
     t_float init_mix = 0;
     x->x_lin = 0;
