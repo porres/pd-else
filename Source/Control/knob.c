@@ -38,6 +38,8 @@ typedef struct _edit_proxy{
     struct _knob *p_cnv;
 }t_edit_proxy;
 
+static int focus_gui_inited = 0;
+
 typedef struct _knob{
     t_object        x_obj;
     t_edit_proxy   *x_proxy;
@@ -174,7 +176,6 @@ static void knob_get_snd(t_knob* x){
     if(!x->x_snd_set){ // no send set, search arguments
         t_binbuf *bb = x->x_obj.te_binbuf;
         int n_args = binbuf_getnatom(bb) - 1; // number of arguments
-        char buf[128];
         if(n_args > 0){ // we have arguments, let's search them
             if(x->x_flag){ // arguments are flags actually
                 if(x->x_s_flag){ // we got a send flag, let's get it
@@ -233,7 +234,6 @@ static void knob_get_rcv(t_knob* x){
     if(!x->x_rcv_set){ // no receive set, search arguments
         t_binbuf *bb = x->x_obj.te_binbuf;
         int n_args = binbuf_getnatom(bb) - 1; // number of arguments
-        char buf[128];
         if(n_args > 0){ // we have arguments, let's search them
             if(x->x_flag){ // arguments are flags actually
                 if(x->x_r_flag){ // we got a receive flag, let's get it
@@ -292,7 +292,6 @@ static void knob_get_var(t_knob* x){
     if(!x->x_var_set){ // no var set, search arguments
         t_binbuf *bb = x->x_obj.te_binbuf;
         int n_args = binbuf_getnatom(bb) - 1; // number of arguments
-        char buf[128];
         if(n_args > 0){ // we have arguments, let's search them
             if(x->x_flag){ // arguments are flags actually
                 if(x->x_v_flag){ // we got a var flag, let's get it
@@ -2046,6 +2045,11 @@ static void knob_active(t_knob *x, t_floatarg f){
         x->x_typing = 0;
 }
 
+static void knob_focus_callback(t_knob *x){
+    if(x->x_clicked)
+        knob_active(x, 0);
+}
+
 static void knob_reset(t_knob *x){
     knob_set(x, x->x_arcstart);
     knob_bang(x);
@@ -2262,6 +2266,10 @@ static void knob_free(t_knob *x){
     mouse_gui_stoppolling((t_pd *)x);
     mouse_gui_unbindmouse((t_pd *)x);
 #endif
+// focus
+    pd_unbind((t_pd *)x, gensym("#focus_gui_call"));
+    if(!gensym("#focus_gui_call")->s_thing) // last instance: stop listening
+        pdgui_vmess("bind Canvas <<active_focusin>> {}", NULL);
 }
 
 static void *knob_new(t_symbol *s, int ac, t_atom *av){
@@ -2697,6 +2705,21 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     mouse_updatepos(x);*/
 #endif
 //    pd_bind(&x->x_obj.ob_pd, gensym("#mouse_mouse")); // listen to mouse events
+    
+// focus
+    if(!focus_gui_inited){
+        focus_gui_inited = 1;
+        pdgui_vmess("event add <<active_focusin>> <FocusIn>", NULL);
+        pdgui_vmess("proc focus_gui_exithook {cmd op} {proc ::pdsend {} {}}", NULL);
+        pdgui_vmess("trace add execution exit enter focus_gui_exithook", NULL);
+    }
+    if(!gensym("#focus_gui_call")->s_thing){ // nobody bound yet: (re)install the tcl binding
+        pdgui_vmess("bind Canvas <<active_focusin>> "
+            "{if {[string range %W 0 1] == \".x\" && [string range %W end-1 end] == \".c\"} "
+            "{pdsend {#focus_gui_call _focus_callback}}}", NULL);
+    }
+    pd_bind((t_pd *)x, gensym("#focus_gui_call"));
+//
     outlet_new(&x->x_obj, &s_float);
     return(x);
 errstate:
@@ -2763,10 +2786,12 @@ void knob_setup(void){
         A_FLOAT, A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_dobang, gensym("_bang"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_dozero, gensym("_zero"), A_FLOAT, A_FLOAT, 0);
+    class_addmethod(knob_class, (t_method)knob_focus_callback, gensym("_focus_callback"), 0);
     handle_class = class_new(gensym("_handle"), 0, 0, sizeof(t_handle), CLASS_PD, 0);
     class_addmethod(handle_class, (t_method)handle__click_callback, gensym("_click"), A_FLOAT, 0);
     class_addmethod(handle_class, (t_method)handle__motion_callback, gensym("_motion"),
         A_FLOAT, A_FLOAT, 0);
+    
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
     knob_widgetbehavior.w_getrectfn  = knob_getrect;
