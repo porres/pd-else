@@ -53,6 +53,7 @@ typedef struct _knob{
     int             x_log;
     t_float         x_load;         // value when loading patch
     t_float         x_arcstart;     // arc start value
+    t_float         x_default;      // default value
     t_float         x_radius;
     float           x_start_angle;
     float           x_drag_start_pos;
@@ -127,8 +128,6 @@ typedef struct _knob{
     char            x_tag_sel[32];
     char            x_tag_number[32];
     char            x_buf[MAX_NUMBOX_LEN]; // number buffer
-    t_symbol       *x_ignore;
-    int             x_ignore_int;
     t_symbol       *x_bindname;
 // handle
     t_pd           *x_handle;
@@ -986,7 +985,7 @@ static void knob_save(t_gobj *z, t_binbuf *b){
     knob_get_rcv(x);
     if(x->x_savestate)
         x->x_load = x->x_fval;
-    binbuf_addv(b, "iffffsssssiiiiiiiifssiiiiiiiiii", // 31 args
+    binbuf_addv(b, "iffffsssssiiiiiiiifssiiiiiiiiiif", // 32 args
         x->x_size, // 01: i SIZE
         (float)x->x_lower, // 02: f lower
         (float)x->x_upper, // 03: f upper
@@ -1017,7 +1016,8 @@ static void knob_save(t_gobj *z, t_binbuf *b){
         x->x_ticks, // 28: i show ticks
         x->x_readonly, // 29: i read only
         x->x_theme, // 30: i color theme
-        x->x_transparent); // 31: i transparent background
+        x->x_transparent, // 31: i transparent background
+        x->x_default); // 32: f default
     binbuf_addv(b, ";");
 }
 
@@ -1100,7 +1100,7 @@ static void knob_dirty(t_knob *x){
 }
 
 static void knob_load(t_knob *x, t_symbol *s, int ac, t_atom *av){
-    x->x_ignore = s;
+    (void)s;
     if(!ac)
         x->x_load = x->x_fval;
     else if(ac == 1 && av->a_type == A_FLOAT){
@@ -1109,12 +1109,20 @@ static void knob_load(t_knob *x, t_symbol *s, int ac, t_atom *av){
     }
 }
 
+static void knob_default(t_knob *x, t_symbol *s, int ac, t_atom *av){
+    (void)s;
+    if(!ac)
+        x->x_default = x->x_fval;
+    else if(ac == 1 && av->a_type == A_FLOAT)
+        x->x_default = knob_clipfloat(x, atom_getfloat(av));
+}
+
 static void knob_reload(t_knob *x){
     knob_float(x, x->x_load);
 }
 
 static void knob_arcstart(t_knob *x, t_symbol *s, int ac, t_atom *av){
-    x->x_ignore = s;
+    (void)s;
     if(!ac)
         x->x_arcstart = x->x_fval;
     else if(ac == 1 && av->a_type == A_FLOAT){
@@ -1563,9 +1571,9 @@ static void knob_properties(t_gobj *z, t_glist *owner){
     char pd_fg[32];
     snprintf(pd_fg, sizeof(pd_fg), "#%06X", THISGUI->i_foregroundcolor);
     pdgui_stub_vnew(&x->x_obj.ob_pd, "knob_dialog", x,
-        "ii if iif iii ii ffif iis siii ss ss sss ss ii",
+        "ii iff iif iii ii ffif iis siii ss ss sss ss ii",
         x->x_size, x->x_square, // ii
-        x->x_arc, x->x_arcstart, // if
+        x->x_arc, x->x_arcstart, x->x_default, // iff
         x->x_lb, x->x_savestate, x->x_load, // iif
         x->x_discrete, x->x_ticks, x->x_steps, // iii
         x->x_angle_range, x->x_angle_offset, // ii
@@ -1580,8 +1588,8 @@ static void knob_properties(t_gobj *z, t_glist *owner){
 }
 
 static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
-    x->x_ignore = s;
-    t_atom undo[32];
+    (void)s;
+    t_atom undo[33];
     SETFLOAT(undo+0, x->x_size);
     SETFLOAT(undo+1, x->x_square);
     SETFLOAT(undo+2, x->x_arc);
@@ -1614,6 +1622,7 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     SETSYMBOL(undo+29, x->x_fg);
     SETFLOAT(undo+30, x->x_theme);
     SETFLOAT(undo+31, x->x_transparent);
+    SETFLOAT(undo+32, x->x_default);
     pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 32, undo, ac, av);
     int size = (int)atom_getintarg(0, ac, av);
     int square = atom_getintarg(1, ac, av);
@@ -1647,6 +1656,7 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     t_symbol *fg = atom_getsymbolarg(29, ac, av);
     x->x_theme = atom_getintarg(30, ac, av);
     x->x_transparent = atom_getintarg(31, ac, av);
+    float def = atom_getfloatarg(32, ac, av);
     knob_config_io(x); // for outline/square
     if(expmode == 0){
         knob_log(x, 0);
@@ -1681,6 +1691,10 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
     if(x->x_arcstart != arcstart){
         SETFLOAT(at, arcstart);
         knob_arcstart(x, NULL, 1, at);
+    }
+    if(x->x_default != def){
+        SETFLOAT(at, def);
+        knob_default(x, NULL, 1, at);
     }
     knob_param(x, param);
     knob_var(x, var);
@@ -1936,7 +1950,7 @@ static void knob_list(t_knob *x, t_symbol *sym, int ac, t_atom *av){ // get key 
 
 static void knob_key(void *z, t_symbol *keysym, t_floatarg fkey){
     t_knob *x = z;
-    x->x_ignore = keysym;
+    (void)keysym;
     char c = fkey, buf[3], namebuf[512];
     buf[1] = 0;
     if(c == 0 || c == '\e'){ // click out
@@ -2051,7 +2065,7 @@ static void knob_focus_callback(t_knob *x){
 }
 
 static void knob_reset(t_knob *x){
-    knob_set(x, x->x_arcstart);
+    knob_set(x, x->x_default);
     knob_bang(x);
 }
 
@@ -2274,7 +2288,7 @@ static void knob_free(t_knob *x){
 
 static void *knob_new(t_symbol *s, int ac, t_atom *av){
     t_knob *x = (t_knob *)pd_new(knob_class);
-    x->x_ignore = s;
+    (void)s;
 // handle
    x->x_handle = pd_new(handle_class);
     t_handle *sh = (t_handle *)x->x_handle;
@@ -2285,7 +2299,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     sprintf(sh->h_outlinetag, "h%lx", (unsigned long)sh);
 //
     x->x_buf[0] = 0;
-    float loadvalue = 0.0, arcstart = 0.0, exp = 0.0, min = 0.0, max = 127.0;
+    float loadvalue = 0.0, def = 0.0, arcstart = 0.0, exp = 0.0, min = 0.0, max = 127.0;
     x->n_size = 12, x->x_xpos = 0, x->x_ypos = -15;
     t_symbol *snd = gensym("empty"), *rcv = gensym("empty");
     t_symbol *param = gensym("empty"), *var = gensym("empty");
@@ -2339,6 +2353,10 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
             x->x_readonly = atom_getintarg(28, ac, av); // 29: read only
             x->x_theme = atom_getintarg(29, ac, av); // 30: color theme
             x->x_transparent = atom_getintarg(30, ac, av); // 31: transparent
+            if(ac == 32)
+                def = atom_getfloatarg(31, ac, av); // 32: f default value
+            else
+                def = arcstart;
         }
         else{
             while(ac){
@@ -2519,6 +2537,19 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
                     else
                         goto errstate;
                 }
+                else if(sym == gensym("-default")){
+                    if(ac >= 2){
+                        x->x_flag = 1, av++, ac--;
+                        if(av->a_type == A_FLOAT){
+                            def = atom_getfloat(av);
+                            av++, ac--;
+                        }
+                        else
+                            goto errstate;
+                    }
+                    else
+                        goto errstate;
+                }
                 else if(sym == gensym("-circular")){
                     if(ac >= 2){
                         x->x_flag = 1, av++, ac--;
@@ -2655,7 +2686,8 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
         knob_log(x, 1);
     else
         knob_exp(x, exp);
-    x->x_arcstart = arcstart;
+    x->x_arcstart = knob_clipfloat(x, arcstart);
+    x->x_default = knob_clipfloat(x, def);
     x->x_steps = steps < 0 ? 0 : steps;
     x->x_discrete = discrete;
     x->x_arc = arc;
@@ -2734,6 +2766,7 @@ void knob_setup(void){
     class_addfloat(knob_class, knob_float);
     class_addlist(knob_class, knob_list); // used for float and keypresses
     class_addmethod(knob_class, (t_method)knob_load, gensym("load"), A_GIMME, 0);
+    class_addmethod(knob_class, (t_method)knob_default, gensym("default"), A_GIMME, 0);
     class_addmethod(knob_class, (t_method)knob_arcstart, gensym("arcstart"), A_GIMME, 0);
     class_addmethod(knob_class, (t_method)knob_set, gensym("set"), A_FLOAT, 0);
     class_addmethod(knob_class, (t_method)knob_size, gensym("size"), A_FLOAT, 0);

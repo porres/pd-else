@@ -3,7 +3,7 @@
 
 A submodule of ELSE by Porres (this is also by Porres).
 
-Copyright © 2024-2025 Alexandre Torres Porres
+Copyright © 2024-2026 Alexandre Torres Porres
 
 License: Do What The Fuck You Want To Public License, Version 2. Note that some modules include objects released under other licenses.
 

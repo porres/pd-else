@@ -31,6 +31,7 @@ static const char *knob_dialog_tcl =
 "\n"
 "array set ::dialog_knob::var_showarc {} ;\n"
 "array set ::dialog_knob::var_arcstart {} ;\n"
+"array set ::dialog_knob::var_default {} ;\n"
 "\n"
 "array set ::dialog_knob::var_loadbang {} ;\n"
 "array set ::dialog_knob::var_savestate {} ;\n"
@@ -86,7 +87,7 @@ static const char *knob_dialog_tcl =
 //
 "proc knob_dialog {id \\\n"
 "         size square \\\n"
-"         show_arc arcstart \\\n"
+"         show_arc arcstart default \\\n"
 "         loadbang savestate load \\\n"
 "         discrete showticks steps \\\n"
 "         angle_range angle_offset \\\n"
@@ -103,6 +104,7 @@ static const char *knob_dialog_tcl =
 "    set ::dialog_knob::var_square($vid) $square \n"
 "    set ::dialog_knob::var_showarc($vid) $show_arc \n"
 "    set ::dialog_knob::var_arcstart($vid) $arcstart \n"
+"    set ::dialog_knob::var_default($vid) $default \n"
 "    set ::dialog_knob::var_loadbang($vid) $loadbang \n"
 "    set ::dialog_knob::var_savestate($vid) $savestate \n"
 "    set ::dialog_knob::var_load($vid) $load \n"
@@ -395,8 +397,13 @@ static const char *knob_dialog_tcl =
 "    if { $::dialog_knob::var_savestate($vid) == 1 } {\n"
 "       $id.load.load.ent configure -state disabled\n"
 "    }\n"
+// Entry for default value
+"    frame $id.load.default \n"
+"    label $id.load.default.lab -text [_ \"Default Value\"]\n"
+"    entry $id.load.default.ent -textvariable ::dialog_knob::var_default($vid) -width 7 -state normal\n"
+"    pack $id.load.default.ent $id.load.default.lab -side right -anchor e\n"
         // Position of items
-"    pack $id.load.loadbang $id.load.savestate $id.load.load -side left -anchor center\n"        
+"    pack $id.load.loadbang $id.load.savestate $id.load.load $id.load.default -side left -anchor center\n"
 "    $id.load config -padx 20\n"
 "\n"
         
@@ -901,6 +908,7 @@ static const char *knob_dialog_tcl =
 "                [string tolower $::dialog_knob::var_color_fg($vid)] \\\n"
 "                $::dialog_knob::var_theme($vid) \\\n"
 "                $::dialog_knob::var_transp($vid) \\\n"
+"                $::dialog_knob::var_default($vid) \\\n"
 "            ]\n"
 "}\n"
 // Bind and unbind enter key to Apply button on macOS for entry widgets
@@ -909,6 +917,7 @@ static const char *knob_dialog_tcl =
 "        bind $id.basic.dim.w_ent <KeyPress-Return> \"::dialog_knob::bind_enter_to_apply $id\"\n"
 "        bind $id.load.load.ent <KeyPress-Return> \"::dialog_knob::bind_enter_to_apply $id\"\n"
 "        bind $id.arcsettings.arcstart.ent <KeyPress-Return> \"::dialog_knob::bind_enter_to_apply $id\"\n"
+"        bind $id.load.default.ent <KeyPress-Return> \"::dialog_knob::bind_enter_to_apply $id\"\n"
 "        bind $id.num.size.ent <KeyPress-Return> \"::dialog_knob::bind_enter_to_apply $id\"\n"
 "        bind $id.num.xpos.ent <KeyPress-Return> \"::dialog_knob::bind_enter_to_apply $id\"\n"
 "        bind $id.num.ypos.ent <KeyPress-Return> \"::dialog_knob::bind_enter_to_apply $id\"\n"
@@ -929,6 +938,7 @@ static const char *knob_dialog_tcl =
 "        $id.basic.dim.w_ent config -validate focusin -vcmd \"::dialog_knob::unbind_return $id\"\n"
 "        $id.load.load.ent config -validate focusin -vcmd \"::dialog_knob::unbind_return $id\"\n"
 "        $id.arcsettings.arcstart.ent config -validate focusin -vcmd \"::dialog_knob::unbind_return $id\"\n"
+"        $id.load.default.ent config -validate focusin -vcmd \"::dialog_knob::unbind_return $id\"\n"
 "        $id.num.size.ent config -validate focusin -vcmd \"::dialog_knob::unbind_return $id\"\n"
 "        $id.num.xpos.ent config -validate focusin -vcmd \"::dialog_knob::unbind_return $id\"\n"
 "        $id.num.ypos.ent config -validate focusin -vcmd \"::dialog_knob::unbind_return $id\"\n"
