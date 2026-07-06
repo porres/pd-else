@@ -45,7 +45,6 @@
 #X obj 34 168 else/ctl.in;
 #X obj 231 182 else/ctl.out 4;
 #X text 143 392 1) list;
-#X text 216 391 1 float sets channel number (default 1). Two floats set control# (default 1) and channel, f 51;
 #X text 89 87 [ctl.out] formats and sends raw MIDI control messages to Pd's MIDI output and its outlet. An argument sets channel number (the default is 1)., f 64;
 #N canvas 480 188 521 291 external 0;
 #X obj 206 213 print;
@@ -71,6 +70,7 @@
 #X obj 161 218 cnv 17 3 35 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X text 169 237 ext <float>;
 #X text 244 237 - non zero sets to listen only to external mode;
+#X text 216 391 1 float sets channel number (default 1). Two floats set control# (default 0) and channel (default 1), f 51;
 #X connect 23 0 40 0;
 #X connect 24 0 40 1;
 #X connect 27 0 40 2;
