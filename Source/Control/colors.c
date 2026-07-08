@@ -61,7 +61,7 @@ static void colors_bang(t_colors *x){
             
             char hex[MAXPDSTRING];
             sprintf(hex, "#%02x%02x%02x", red, green, blue);
-            strncpy(x->x_color, hex, 7);
+            strcpy(x->x_color, hex);
         }
     }
 }
@@ -69,7 +69,8 @@ static void colors_bang(t_colors *x){
 static void colors_valid(t_colors *x, t_floatarg v, t_symbol *c){
     int valid = (int)v;
     if(v){
-        strncpy(x->x_color, c->s_name, MAXPDSTRING);
+        strncpy(x->x_color, c->s_name, MAXPDSTRING - 1);
+        x->x_color[MAXPDSTRING - 1] = 0;
         colors_bang(x);
     }
     else
@@ -106,7 +107,7 @@ static void colors_convert_to(t_colors *x, t_symbol *s){
 }
 
 static void colors_hex(t_colors *x, t_symbol *s){
-    strncpy(x->x_color, s->s_name, 7);
+    strcpy(x->x_color, s->s_name);
     colors_bang(x);
 }
 
@@ -128,7 +129,7 @@ static void colors_ds(t_colors *x, t_floatarg ds){
     
     char hex[MAXPDSTRING];
     sprintf(hex, "#%02x%02x%02x", r, g, b);
-    strncpy(x->x_color, hex, 7);
+    strcpy(x->x_color, hex);
     
     colors_bang(x);
 }
@@ -140,7 +141,7 @@ static void colors_gui(t_colors *x, t_floatarg gui){
     unsigned int blue = (unsigned int)(fmod(gui, 256));
     char hex[MAXPDSTRING];
     sprintf(hex, "#%02x%02x%02x", red, green, blue);
-    strncpy(x->x_color, hex, 7);
+    strcpy(x->x_color, hex);
     colors_bang(x);
 }
 
@@ -149,7 +150,7 @@ static void colors_gray(t_colors *x, t_floatarg g){
     unsigned int rgb = (unsigned int)(rint(255 * gray));
     char hex[MAXPDSTRING];
     sprintf(hex, "#%02x%02x%02x", rgb, rgb, rgb);
-    strncpy(x->x_color, hex, 7);
+    strcpy(x->x_color, hex);
     colors_bang(x);
 }
 
@@ -163,7 +164,7 @@ static void colors_cmyk(t_colors *x, t_floatarg c, t_floatarg m, t_floatarg y, t
     unsigned int blue = (unsigned int)(rint(255 * oneminusy * oneminusk));
     char hex[MAXPDSTRING];
     sprintf(hex, "#%02x%02x%02x", red, green, blue);
-    strncpy(x->x_color, hex, 7);
+    strcpy(x->x_color, hex);
     colors_bang(x);
 }
 
@@ -173,7 +174,7 @@ static void colors_rgb(t_colors *x, t_floatarg r, t_floatarg g, t_floatarg b){
     unsigned int blue = (unsigned int)(b > 255 ? 255 : b < 0 ? 0 : rint(b));
     char hex[MAXPDSTRING];
     sprintf(hex, "#%02x%02x%02x", red, green, blue);
-    strncpy(x->x_color, hex, 7);
+    strcpy(x->x_color, hex);
     colors_bang(x);
 }
 
@@ -205,7 +206,7 @@ static void colors_hsv(t_colors *x, t_floatarg H, t_floatarg S, t_floatarg V){
     int B = rint((b+m)*255);
     char hex[MAXPDSTRING];
     sprintf(hex, "#%02x%02x%02x", R, G, B);
-    strncpy(x->x_color, hex, 7);
+    strcpy(x->x_color, hex);
     colors_bang(x);
 }
 
@@ -244,13 +245,14 @@ static void colors_hsl(t_colors *x, t_floatarg H, t_floatarg S, t_floatarg L){
     }
     char hex[MAXPDSTRING];
     sprintf(hex, "#%02x%02x%02x", R, G, B);
-    strncpy(x->x_color, hex, 7);
+    strcpy(x->x_color, hex);
     colors_bang(x);
 }
 
 static void colors_picked_color(t_colors *x, t_symbol *color){
     if(color != &s_){
-        strncpy(x->x_color, color->s_name, MAXPDSTRING);
+        strncpy(x->x_color, color->s_name, MAXPDSTRING - 1);
+        x->x_color[MAXPDSTRING - 1] = 0;
         colors_bang(x);
     }
 }
@@ -263,7 +265,7 @@ static void *colors_new(t_symbol *s){
     t_colors *x = (t_colors *)pd_new(colors_class);
     x->x_hex = x->x_gui = x->x_ds = x->x_rgb = 0;
     char buf[MAXPDSTRING];
-    sprintf(buf, "#%lx", (t_int)x);
+    snprintf(buf, MAXPDSTRING, "#%p", (void *)x);
     x->x_id = gensym(buf);
     pd_bind(&x->x_obj.ob_pd, x->x_id);
     outlet_new(&x->x_obj, &s_list);
