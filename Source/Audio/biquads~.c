@@ -19,8 +19,9 @@ typedef struct _biquads{
     int         x_bypass;
     int         x_n;
     int         x_nchans;
-    int 	    x_numfilt; // number of biquad filters
-	double 	    x_coeff[MAX_COEFFS]; // array of coeffs
+    int         x_numfilt; // number of biquad filters
+    int         x_allocfilt;
+    double      x_coeff[MAX_COEFFS]; // array of coeffs
 // the coeff array is an easy/cheap way of doing this
 // without malloc/calloc-ing - maybe worth changing in the future
 }t_biquads;
@@ -28,10 +29,8 @@ typedef struct _biquads{
 void *biquads_new(void);
 
 void biquads_clear(t_biquads *x){
-//    for(int i = 0; i < x->x_numfilt; i++)
-//        x->x_xnm1[i] = x->x_xnm2[i] = x->x_ynm1[i] = x->x_ynm2[i] = 0.f;
-    for(int i = 0; i < MAX_STAGES * x->x_nchans; i++)
-        x->x_xnm1[i] = x->x_xnm2[i] = x->x_ynm1[i] = x->x_ynm2[i] = 0.f;
+    for(int i = 0; i < x->x_allocfilt * x->x_nchans; i++)
+        x->x_xnm1[i] = x->x_xnm2[i] = x->x_ynm1[i] = x->x_ynm2[i] = 0.;
 }
 
 void biquads_bypass(t_biquads *x, t_floatarg f){
@@ -40,25 +39,41 @@ void biquads_bypass(t_biquads *x, t_floatarg f){
 
 static void biquads_list(t_biquads *x, t_symbol *s, int ac, t_atom *av){
     (void)s;
-	int numfilt = (int)(ac/COEFFS); // nearest multiple - anything over is ignored
-	if(numfilt > MAX_STAGES)
-		numfilt = MAX_STAGES;
-	x->x_numfilt = numfilt;
-	int curfilt = 0; // filter counter
-	while(curfilt < numfilt){
-        int idx = COEFFS*curfilt; // current starting index
-        t_float b1 = atom_getfloatarg(idx+0, ac, av);
-        t_float b2 = atom_getfloatarg(idx+1, ac, av);
-		t_float a0 = atom_getfloatarg(idx+2, ac, av);
-		t_float a1 = atom_getfloatarg(idx+3, ac, av);
-		t_float a2 = atom_getfloatarg(idx+4, ac, av);
-		x->x_coeff[idx+0] = (double)b1;
-		x->x_coeff[idx+1] = (double)b2;
-		x->x_coeff[idx+2] = (double)a0;
-		x->x_coeff[idx+3] = (double)a1;
-		x->x_coeff[idx+4] = (double)a2;
-		curfilt++;
-	};
+    if(ac % COEFFS != 0)
+        pd_error(x, "biquads~: list length must be a multiple of %d, "
+            "trailing %d atom(s) ignored", COEFFS, ac % COEFFS);
+
+    int numfilt = ac / COEFFS;
+    if(numfilt > MAX_STAGES){
+        pd_error(x, "biquads~: too many stages (%d), truncating to %d",
+            numfilt, MAX_STAGES);
+        numfilt = MAX_STAGES;
+    }
+    if(numfilt != x->x_allocfilt){
+        x->x_xnm1 = (double *)resizebytes(x->x_xnm1,
+            x->x_allocfilt * x->x_nchans * sizeof(double),
+            numfilt * x->x_nchans * sizeof(double));
+        x->x_xnm2 = (double *)resizebytes(x->x_xnm2,
+            x->x_allocfilt * x->x_nchans * sizeof(double),
+            numfilt * x->x_nchans * sizeof(double));
+        x->x_ynm1 = (double *)resizebytes(x->x_ynm1,
+            x->x_allocfilt * x->x_nchans * sizeof(double),
+            numfilt * x->x_nchans * sizeof(double));
+        x->x_ynm2 = (double *)resizebytes(x->x_ynm2,
+            x->x_allocfilt * x->x_nchans * sizeof(double),
+            numfilt * x->x_nchans * sizeof(double));
+        x->x_allocfilt = numfilt;
+        biquads_clear(x);
+    }
+    x->x_numfilt = numfilt;
+    for(int curfilt = 0; curfilt < numfilt; curfilt++){
+        int idx = COEFFS * curfilt;
+        x->x_coeff[idx+0] = atom_getfloatarg(idx+0, ac, av);
+        x->x_coeff[idx+1] = atom_getfloatarg(idx+1, ac, av);
+        x->x_coeff[idx+2] = atom_getfloatarg(idx+2, ac, av);
+        x->x_coeff[idx+3] = atom_getfloatarg(idx+3, ac, av);
+        x->x_coeff[idx+4] = atom_getfloatarg(idx+4, ac, av);
+    }
 }
 
 static t_int *biquads_perform(t_int *w){
@@ -69,7 +84,7 @@ static t_int *biquads_perform(t_int *w){
     double a0, a1, a2, b1, b2;
     double xn, xnm1, xnm2, yn, ynm1, ynm2;
     for(int j = 0; j < x->x_nchans; j++){
-        unsigned int offset = j * MAX_STAGES;
+        unsigned int offset = j * x->x_allocfilt;
         for(int i = 0; i < n; i++){
             if(x->x_bypass)
                 out[j*n+i] = in[j*n+i];
@@ -104,48 +119,48 @@ static void biquads_dsp(t_biquads *x, t_signal **sp){
     x->x_n = sp[0]->s_n;
     int chs = sp[0]->s_nchans;
     if(chs != x->x_nchans){
-        x->x_xnm1 = (double *)resizebytes(x->x_xnm1,
-            x->x_nchans * MAX_STAGES * sizeof(double),
-            chs * MAX_STAGES * sizeof(double));
-        x->x_xnm2 = (double *)resizebytes(x->x_xnm2,
-            x->x_nchans * MAX_STAGES * sizeof(double),
-            chs * MAX_STAGES * sizeof(double));
-        x->x_ynm1 = (double *)resizebytes(x->x_ynm1,
-            x->x_nchans * MAX_STAGES * sizeof(double),
-            chs * MAX_STAGES * sizeof(double));
-        x->x_ynm2 = (double *)resizebytes(x->x_ynm2,
-            x->x_nchans * MAX_STAGES * sizeof(double),
-            chs * MAX_STAGES * sizeof(double));
-        x->x_nchans = chs;
-        biquads_clear(x);
+        if(x->x_allocfilt > 0){
+            x->x_xnm1 = (double *)resizebytes(x->x_xnm1,
+                x->x_nchans * x->x_allocfilt * sizeof(double),
+                chs * x->x_allocfilt * sizeof(double));
+            x->x_xnm2 = (double *)resizebytes(x->x_xnm2,
+                x->x_nchans * x->x_allocfilt * sizeof(double),
+                chs * x->x_allocfilt * sizeof(double));
+            x->x_ynm1 = (double *)resizebytes(x->x_ynm1,
+                x->x_nchans * x->x_allocfilt * sizeof(double),
+                chs * x->x_allocfilt * sizeof(double));
+            x->x_ynm2 = (double *)resizebytes(x->x_ynm2,
+                x->x_nchans * x->x_allocfilt * sizeof(double),
+                chs * x->x_allocfilt * sizeof(double));
+            x->x_nchans = chs;
+            biquads_clear(x);
+        }
+        else
+            x->x_nchans = chs;
     }
-    signal_setmultiout(&sp[1], x->x_nchans);
+    signal_setmultiout(&sp[1], chs);
     dsp_add(biquads_perform, 3, x, sp[0]->s_vec, sp[1]->s_vec);
 }
 
 static void *biquads_free(t_biquads *x){
-    freebytes(x->x_xnm1, MAX_STAGES * x->x_nchans * sizeof(double));
-    freebytes(x->x_xnm2, MAX_STAGES * x->x_nchans * sizeof(double));
-    freebytes(x->x_ynm1, MAX_STAGES * x->x_nchans * sizeof(double));
-    freebytes(x->x_ynm2, MAX_STAGES * x->x_nchans * sizeof(double));
+    freebytes(x->x_xnm1, x->x_allocfilt * x->x_nchans * sizeof(double));
+    freebytes(x->x_xnm2, x->x_allocfilt * x->x_nchans * sizeof(double));
+    freebytes(x->x_ynm1, x->x_allocfilt * x->x_nchans * sizeof(double));
+    freebytes(x->x_ynm2, x->x_allocfilt * x->x_nchans * sizeof(double));
     outlet_free(x->x_outlet);
-	return(void *)x;
+    return (void *)x;
 }
-
 void *biquads_new(void){
     t_biquads *x = (t_biquads *)pd_new(biquads_class);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     x->x_bypass = 0;
-    x->x_numfilt = 0; // setting number of filters to 0 initially bc no coeffs
+    x->x_n = 0;
+    x->x_numfilt = 0;
+    x->x_allocfilt = 0;
     x->x_nchans = 1;
-    x->x_xnm1 = (double *)getbytes(MAX_STAGES * sizeof(double));
-    x->x_xnm2 = (double *)getbytes(MAX_STAGES * sizeof(double));
-    x->x_ynm1 = (double *)getbytes(MAX_STAGES * sizeof(double));
-    x->x_ynm2 = (double *)getbytes(MAX_STAGES * sizeof(double));
-    for(int i = 0; i < MAX_COEFFS; i++) // zeroing out coeff array
-        x->x_coeff[i] = 0.f;
-    for(int j = 0; j < MAX_STAGES; j++) // zeroing out filter's memory
-        x->x_xnm1[j] = x->x_xnm2[j] = x->x_ynm1[j] = x->x_ynm2[j] = 0.f;
+    x->x_xnm1 = x->x_xnm2 = x->x_ynm1 = x->x_ynm2 = NULL;
+    for(int i = 0; i < MAX_COEFFS; i++)
+        x->x_coeff[i] = 0.;
     return(x);
 }
 

@@ -59,7 +59,6 @@
 #X obj 256 187 else/rescale~ 40 100;
 #X obj 256 213 mtof~;
 #X obj 256 163 else/tri~ 0.3;
-#X obj 215 243 else/phaser~ 12 0.1 1;
 #N canvas 888 244 451 344 multichannel 0;
 #X obj 120 97 else/play.file~ stereo.wav 1 1;
 #X obj 120 128 snake~ in 2;
@@ -82,8 +81,13 @@
 #X text 209 405 signal(s) - frequency input(s);
 #X text 209 426 signal(s) - Q resonance(s);
 #X text 209 447 signal(s) - wet value(s);
-#X connect 31 0 39 0;
+#X obj 215 243 else/phaser~ 12 0.1 1;
+#X obj 65 176 knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c #000000 1 0 0 0 1 320 0 0 0 empty empty 0 12 0 -15 0 1 0 0 1 0 0;
+#X msg 65 231 fb \$1;
+#X connect 31 0 45 0;
 #X connect 36 0 37 0;
-#X connect 37 0 39 1;
+#X connect 37 0 45 1;
 #X connect 38 0 36 0;
-#X connect 39 0 0 0;
+#X connect 45 0 0 0;
+#X connect 46 0 47 0;
+#X connect 47 0 45 0;

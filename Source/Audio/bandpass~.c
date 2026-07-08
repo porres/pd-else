@@ -44,15 +44,16 @@ typedef struct _bandpass{
     t_glist    *x_glist;
     t_float    *x_sigscalar1;
     t_float    *x_sigscalar2;
-    t_symbol   *x_ignore;
 }t_bandpass;
 
 static t_class *bandpass_class;
 
 static void bandpass_freq(t_bandpass *x, t_symbol *s, int ac, t_atom *av){
-    x->x_ignore = s;
+    (void)s;
     if(ac == 0)
         return;
+    if(ac > MAXLEN)
+        ac = MAXLEN;
     for(int i = 0; i < ac; i++)
         x->x_freq_list[i] = atom_getfloat(av+i);
     if(x->x_f_list_size != ac){
@@ -63,9 +64,11 @@ static void bandpass_freq(t_bandpass *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void bandpass_reson(t_bandpass *x, t_symbol *s, int ac, t_atom *av){
-    x->x_ignore = s;
+    (void)s;
     if(ac == 0)
         return;
+    if(ac > MAXLEN)
+        ac = MAXLEN;
     for(int i = 0; i < ac; i++)
         x->x_reson_list[i] = atom_getfloat(av+i);
     if(x->x_q_list_size != ac){
@@ -243,8 +246,8 @@ static void *bandpass_free(t_bandpass *x){
 }
 
 static void *bandpass_new(t_symbol *s, int ac, t_atom *av){
+    (void)s;
     t_bandpass *x = (t_bandpass *)pd_new(bandpass_class);
-    x->x_ignore = s;
     float freq = 0.000001;
     float reson = 0;
     int bw = 0;
