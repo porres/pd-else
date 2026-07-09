@@ -78,9 +78,7 @@ static void ctlin_list(t_ctlin *x, t_symbol *s, int ac, t_atom *av){
     int n = atom_getfloatarg(0, ac, av);
     int value = atom_getfloatarg(1, ac, av);
     int channel = atom_getfloatarg(2, ac, av);
-    if(x->x_ch_in > 0 && x->x_ch_in != channel)
-        return;
-    if(x->x_ctl_in > 0 && x->x_ctl_in != n)
+    if((x->x_ch_in > 0 && x->x_ch_in != channel) || x->x_ctl_in != n)
         return;
     outlet_float(x->x_chanout, channel);
     outlet_float(x->x_n_out, n);
