@@ -98,8 +98,8 @@
 #X text 156 614 3) float - Q (default 1), f 44;
 #X text 412 216 Q - resonance;
 #X text 156 583 1) float - order from 2 to 128 (default 2), f 44;
-#X msg 51 212 n \$1;
-#X floatatom 51 185 5 0 0 0 - - - 0;
+#X msg 71 212 n \$1;
+#X floatatom 71 185 5 0 0 0 - - - 0;
 #X text 171 391 n <float>;
 #X text 238 391 - sets order (needs to be multiple of 2), f 49;
 #X obj 27 331 else/phaser~;

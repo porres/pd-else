@@ -274,7 +274,7 @@ static void allpass_filt_dsp(t_allpass_filt *x, t_signal **sp){
         sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
 
-static void *allpass_filt_free(t_allpass_filt *x){
+static void allpass_filt_free(t_allpass_filt *x){
     inlet_free(x->x_inlet_freq);
     inlet_free(x->x_inlet_q);
     inlet_free(x->x_inlet_fb);
@@ -286,7 +286,6 @@ static void *allpass_filt_free(t_allpass_filt *x){
     freebytes(x->x_fb, x->x_nchs * sizeof(*x->x_fb));
     free(x->x_freq_list);
     free(x->x_reson_list);
-    return(void*)x;
 }
 
 void *allpass_filt_new(t_symbol *s, int ac, t_atom *av){

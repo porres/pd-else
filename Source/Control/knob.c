@@ -912,6 +912,8 @@ static void knob_draw_new(t_knob *x, t_glist *glist){
         "-anchor", "w",
         "-font", 2, at,
         "-tags", 3, tags_number);
+    pdgui_vmess(0, "crs ii", cv, "moveto", x->x_tag_number,
+        x1 + x->x_xpos*x->x_zoom, y1 + x->x_ypos*x->x_zoom);
 // inlet
     char *tags_in[] = {x->x_tag_in, x->x_tag_fg, x->x_tag_IO, x->x_tag_obj};
     pdgui_vmess(0, "crr iiii rS", cv, "create", "rectangle",
@@ -1726,7 +1728,8 @@ static void knob_apply(t_knob *x, t_symbol *s, int ac, t_atom *av){
 
 static void knob_activecheck(t_knob *x){
     show_number(x, 0);
-    knob_config_wcenter(x);
+    if(knob_vis_check(x))
+        knob_config_wcenter(x);
     char namebuf[512];
     if(x->x_var != gensym("empty") && x->x_var != &s_){
         sprintf(namebuf, "%s-active", x->x_var->s_name);

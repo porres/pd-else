@@ -31,7 +31,7 @@ static void db2lin_tilde_dsp(t_db2lin_tilde *x, t_signal **sp){
 }
 
 
-void * db2lin_tilde_new(t_symbol *s, int ac, t_atom *av){
+void *db2lin_tilde_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_db2lin_tilde *x = (t_db2lin_tilde *) pd_new(db2lin_tilde_class);
     x->x_min = -100;
