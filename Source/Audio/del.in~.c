@@ -7,8 +7,9 @@ static t_class *delin_class;
 
 static t_int *delin_perform(t_int *w){
     t_delin *x = (t_delin *)(w[1]);
-    t_sample *in = (t_sample *)(w[2]);
-    t_delinctl *c = (t_delinctl *)(w[3]);
+    t_delinctl *c = (t_delinctl *)(w[2]);
+    t_sample *in = (t_sample *)(w[3]);
+//    t_sample *out = (t_sample *)(w[4]);
     int n = x->x_n, phase;
     for(int i = 0; i < c->c_nchans; i++){
         t_sample *vp = c->c_vec + i * (c->c_n + XTRASAMPS), *bp, *ep;
@@ -31,6 +32,8 @@ static t_int *delin_perform(t_int *w){
                 bp = vp + XTRASAMPS;
                 phase -= c->c_n;
             }
+//            if(i == 0)
+//                out[k] = 0.;
         }
     }
     c->c_phase = phase;
@@ -63,9 +66,9 @@ static void delin_dsp(t_delin *x, t_signal **sp){
     x->x_sortno = ugen_getsortno();
     del_check(x, x->x_n, sp[0]->s_sr);
     del_update(x); // don't pass buf pointer as it can be resized by del.out~
-    signal_setmultiout(&sp[1], 1);
-    dsp_add_zero(sp[1]->s_vec, x->x_n);
-    dsp_add(delin_perform, 3, x, sp[0]->s_vec, &x->x_cspace);
+//    signal_setmultiout(&sp[1], 1);
+//    dsp_add(delin_perform, 4, x, &x->x_cspace, sp[0]->s_vec, sp[1]->s_vec);
+    dsp_add(delin_perform, 3, x, &x->x_cspace, sp[0]->s_vec);
 }
 
 static void delin_free(t_delin *x){
@@ -130,7 +133,7 @@ static void *delin_new(t_symbol *s, int ac, t_atom *av){
     x->x_nchans = 1;
     x->x_sr = 0;
     x->x_freeze = 0;
-    outlet_new(&x->x_obj, &s_signal);
+//    outlet_new(&x->x_obj, &s_signal);
     return(x);
     errstate:
         pd_error(x, "[del.in~]: improper args");

@@ -16,7 +16,6 @@ typedef struct _fbdelay{
     t_inlet        *x_alet;
     t_outlet       *x_outlet;
     t_float         x_sr_khz;
-    t_int           x_gain;
 // pointers to delay buf
     t_int           x_alloc;  // if we are using allocated buf
     t_float         x_maxdel;   // maximum delay in ms
@@ -24,7 +23,6 @@ typedef struct _fbdelay{
     double          x_fbstack[FBD_STACK];
     unsigned int    x_sz;       // actual size of each delay buffer
     unsigned int    x_wp;       // write head
-    unsigned int    x_ms;       // ms flag
     unsigned int    x_freeze;
 }t_fbdelay;
 
@@ -61,8 +59,11 @@ static void fbdelay_sz(t_fbdelay *x){ // deal with allocation issues
     fbdelay_clear(x);
 }
 
-static void fbdelay_freeze(t_fbdelay *x, t_float f){
-    x->x_freeze = (unsigned int)(f != 0);
+static void fbdelay_size(t_fbdelay *x, t_floatarg f1){
+    if(f1 < 0)
+        f1 = 0;
+    x->x_maxdel = f1;
+    fbdelay_sz(x);
 }
 
 static t_int *fbdelay_perform(t_int *w){
@@ -71,18 +72,17 @@ static t_int *fbdelay_perform(t_int *w){
     t_float *xin = (t_float *)(w[3]);
     t_float *din = (t_float *)(w[4]);
     t_float *ain = (t_float *)(w[5]);
-    t_float *out = (t_float *)(w[6]);
+    t_float *xout = (t_float *)(w[6]);
     for(t_int i = 0; i < n; i++){
+        double in = (double)xin[i];
         t_float del = din[i];
-        double y_n;
-        if(!x->x_ms)
-            del /= x->x_sr_khz;
         if(del > x->x_maxdel)
             del = x->x_maxdel;
-        t_float ms = del;
         del *= x->x_sr_khz;     // delay in samples
         if(del < 1)             // minimum of 1 sample delay
             del = 1;
+        double fb = (double)ain[i];
+        double out;
         if((del - floor(del)) == 0){
             double rp = (double)x->x_wp + ((double)x->x_sz - del);  // find read point
             while(rp >= x->x_sz)       // wrap into length of delay buffer (???)
@@ -90,9 +90,9 @@ static t_int *fbdelay_perform(t_int *w){
             unsigned int ndx = (unsigned int)rp;
             if(ndx >= x->x_sz - 1) // clip index
                 ndx = x->x_sz - 1;
-            y_n = x->x_ybuf[ndx];
+            out = x->x_ybuf[ndx];
         }
-        else{ // lagrange interpolation
+        else{
             double rp = (double)x->x_wp + ((double)x->x_sz - (del + 1));  // find read point
             while(rp >= x->x_sz)       // wrap into length of delay buffer (???)
                 rp -= (double)x->x_sz;
@@ -109,17 +109,18 @@ static t_int *fbdelay_perform(t_int *w){
             double b = x->x_ybuf[ndx];
             double c = x->x_ybuf[ndx1];
             double d = x->x_ybuf[ndx2];
-            y_n = interp_spline(frac, a, b, c, d);
+            out = interp_spline(frac, a, b, c, d);
         }
-        if(!x->x_gain)
-            ain[i] = ain[i] == 0 ? 0 : copysign(exp(log(0.001) * ms/fabs(ain[i])), ain[i]);
-        double output = (double)xin[i] + y_n * (double)ain[i];
-        out[i] = (t_float)output;
         if(!x->x_freeze)
-            x->x_ybuf[x->x_wp] = output;       // write output to buffer
+            x->x_ybuf[x->x_wp] = in + (out  * fb); // write
         x->x_wp = (x->x_wp + 1) % x->x_sz; // increment and wrap write head
+        xout[i] = (t_float)out;
     };
     return(w+7);
+}
+
+static void fbdelay_freeze(t_fbdelay *x, t_float f){
+    x->x_freeze = (unsigned int)(f != 0);
 }
 
 static void fbdelay_dsp(t_fbdelay *x, t_signal **sp){
@@ -129,20 +130,7 @@ static void fbdelay_dsp(t_fbdelay *x, t_signal **sp){
         fbdelay_sz(x);
     };
     dsp_add(fbdelay_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
-            sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
-}
-
-static void fbdelay_size(t_fbdelay *x, t_floatarg f1){
-    if(f1 < 0)
-        f1 = 0;
-    x->x_maxdel = f1;
-    if(!x->x_ms)
-        x->x_maxdel /= x->x_sr_khz;
-    fbdelay_sz(x);
-}
-
-static void fbdelay_gain(t_fbdelay *x, t_floatarg f1){
-    x->x_gain = f1 != 0;
+        sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
 static void *fbdelay_new(t_symbol *s, int argc, t_atom * argv){
@@ -157,8 +145,6 @@ static void *fbdelay_new(t_symbol *s, int argc, t_atom * argv){
     float delsize = 1000;
     float fb = 0;
     x->x_freeze = 0;
-    x->x_gain = 0;
-    x->x_ms = 1;
 /////////////////////////////////////////////////////////////////////////////////
     int argnum = 0;
     while(argc > 0){
@@ -172,14 +158,6 @@ static void *fbdelay_new(t_symbol *s, int argc, t_atom * argv){
                 }
                 else
                     goto errstate;
-            }
-            else if(cursym == gensym("-samps")){
-                x->x_ms = 0;
-                argc--, argv++;
-            }
-            else if(cursym == gensym("-gain")){
-                x->x_gain = 1;
-                argc--, argv++;
             }
             else
                 goto errstate;
@@ -197,9 +175,6 @@ static void *fbdelay_new(t_symbol *s, int argc, t_atom * argv){
                 case 1:
                     fb = argval;
                     break;
-                case 2:
-                    x->x_gain = argval != 0;
-                    break;
                 default:
                     break;
             };
@@ -211,8 +186,6 @@ static void *fbdelay_new(t_symbol *s, int argc, t_atom * argv){
     };
 /////////////////////////////////////////////////////////////////////////////////
     x->x_maxdel = delsize;
-    if(!x->x_ms)
-        x->x_maxdel /= x->x_sr_khz;
     fbdelay_sz(x);
     x->x_dellet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_dellet, del_time);
@@ -221,7 +194,7 @@ static void *fbdelay_new(t_symbol *s, int argc, t_atom * argv){
     x->x_outlet = outlet_new((t_object *)x, &s_signal);
     return(x);
 errstate:
-    pd_error(x, "[fbdelay~]: improper args");
+    pd_error(x, "[fbdelay2~]: improper args");
     return(NULL);
 }
 
@@ -234,14 +207,13 @@ static void * fbdelay_free(t_fbdelay *x){
     return(void *)x;
 }
 
-void fbdelay_tilde_setup(void){
-    fbdelay_class = class_new(gensym("fbdelay~"), (t_newmethod)fbdelay_new,
-                              (t_method)fbdelay_free, sizeof(t_fbdelay), 0, A_GIMME, 0);
+void fbdelay2_tilde_setup(void){
+    fbdelay_class = class_new(gensym("fbdelay2~"), (t_newmethod)fbdelay_new,
+        (t_method)fbdelay_free, sizeof(t_fbdelay), 0, A_GIMME, 0);
     class_addmethod(fbdelay_class, nullfn, gensym("signal"), 0);
     class_addmethod(fbdelay_class, (t_method)fbdelay_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(fbdelay_class, (t_method)fbdelay_clear, gensym("clear"), 0);
-    class_addmethod(fbdelay_class, (t_method)fbdelay_size, gensym("size"), A_FLOAT, 0);
-    class_addmethod(fbdelay_class, (t_method)fbdelay_gain, gensym("gain"), A_FLOAT, 0);
     class_addmethod(fbdelay_class, (t_method)fbdelay_freeze, gensym("freeze"), A_FLOAT, 0);
+    class_addmethod(fbdelay_class, (t_method)fbdelay_size, gensym("size"), A_FLOAT, 0);
 }
         
