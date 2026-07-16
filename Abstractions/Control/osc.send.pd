@@ -2,12 +2,12 @@
 #X obj 286 347 netsend -u -b;
 #X obj 286 392 outlet;
 #X obj 72 122 route disconnect connect, f 31;
-#X msg 72 284 disconnect;
+#X msg 72 279 disconnect;
 #X obj 72 65 inlet;
 #X text 438 201 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 440 182 Alexandre Torres Porres (2023);
 #X obj 286 212 else/osc.format;
-#X obj 179 236 t a b;
+#X obj 179 226 t a b;
 #N canvas 159 229 357 385 check 0;
 #X obj 117 37 inlet;
 #X obj 191 252 outlet;
@@ -26,7 +26,7 @@
 #X connect 5 1 7 0;
 #X connect 6 0 1 0;
 #X connect 7 0 1 0;
-#X restore 179 285 pd check;
+#X restore 179 279 pd check;
 #X obj 179 192 else/changed;
 #N canvas 487 137 319 229 init 0;
 #X obj 108 91 else/args;
@@ -37,8 +37,9 @@
 #X connect 1 0 0 0;
 #X connect 2 1 3 0;
 #X restore 198 156 pd init;
+#X obj 72 151 t b b;
 #X connect 0 0 1 0;
-#X connect 2 0 3 0;
+#X connect 2 0 12 0;
 #X connect 2 1 10 0;
 #X connect 2 2 7 0;
 #X connect 3 0 0 0;
@@ -49,3 +50,5 @@
 #X connect 9 0 0 0;
 #X connect 10 0 8 0;
 #X connect 11 0 10 0;
+#X connect 12 0 3 0;
+#X connect 12 1 10 1;
