@@ -1,0 +1,111 @@
+local else_gui = require("else_gui")
+local display = pd.Class:new():register("display")
+
+local CHAR_W = 7
+
+else_gui.setup(display, {
+    { "fixed_chars", 0,            "on_resize", "Fixed Chars",  "int",   {min=0, max=1024, flag="chars"} },
+    { "refresh_ms",  100,          nil,         "Refresh (ms)", "int",   {min=10, max=5000, flag="refresh"} },
+    { "noflash",     0,            nil,         "No Flash",     "check", {flag="noflash"} },
+    { "bgcolor",     pd.bg_color,  "repaint",   "Background",   "color", {frame="Appearance", flag="bgcolor"} },
+    { "flashcolor",  {220,220,255},"repaint",   "Flash",        "color", {frame="Appearance", flag="flashcolor"} },
+    { "fgcolor",     pd.fg_color,  "repaint",   "Text",         "color", {frame="Appearance", flag="fgcolor"} },
+}, {
+    ["-noflash"] = function(self, atoms, i)
+        self.noflash = 1
+        return 0   -- bare flag; no value consumed
+    end,
+})
+
+function display:initialize(sel, atoms)
+    self.inlets   = 1
+    self.outlets  = 1
+    self.message  = ""
+    self.flashing = false
+    self.clock    = pd.Clock:new():register(self, "flash_off")
+
+    self:init_args(atoms)
+    self:update_size()
+    return true
+end
+
+function display:finalize()
+    self.clock:destruct()
+end
+
+function display:on_resize()
+    self:update_size()
+    self:repaint()
+end
+
+function display:update_size()
+    if self.fixed_chars > 0 then
+        self:set_size(self.fixed_chars * CHAR_W + 8, 19)
+    else
+        self:set_size(math.max(1, #self.message) * CHAR_W + 8, 19)
+    end
+end
+
+local function fmt(a)
+    local n = tonumber(a)
+    if n and math.type(n) ~= "integer" and n ~= math.floor(n) then
+        return string.format("%.6g", n)
+    end
+    return tostring(a)
+end
+
+function display:format_message(sel, atoms)
+    if sel == "bang" then return "bang" end
+    if sel == "float" or sel == "symbol" then return fmt(atoms[1]) end
+    local parts = {}
+    if sel ~= "list" then parts[1] = sel end
+    for _, a in ipairs(atoms) do parts[#parts + 1] = fmt(a) end
+    return table.concat(parts, " ")
+end
+
+function display:show(sel, atoms)
+    local msg = self:format_message(sel, atoms)
+
+    if self.fixed_chars > 0 then
+        local max_chars = math.floor((select(1, self:get_size()) - 8) / CHAR_W)
+        if #msg > max_chars then msg = msg:sub(1, max_chars - 1) .. "…" end
+    end
+
+    self.message = msg
+
+    if self.noflash == 0 then
+        self.flashing = true
+        self.clock:delay(self.refresh_ms)
+    end
+
+    self:update_size()
+    self:repaint()
+end
+
+function display:flash_off()
+    self.flashing = false
+    self:repaint()
+end
+
+function display:in_1(sel, atoms)
+    self:show(sel, atoms)
+    self:outlet(1, sel, atoms)
+end
+
+local function contrast_color(c)
+    -- standard luminance coefficients
+    local lum = 0.299 * c[1] + 0.587 * c[2] + 0.114 * c[3]
+    return lum > 128 and {0, 0, 0} or {255, 255, 255}
+end
+
+function display:paint(g)
+    local w, h = self:get_size()
+    local bg = self.flashing and self.flashcolor or self.bgcolor
+    local fg = self.flashing and contrast_color(self.flashcolor) or self.fgcolor
+
+    g:set_color(bg[1], bg[2], bg[3])
+    g:fill_all()
+
+    g:set_color(fg[1], fg[2], fg[3])
+    g:draw_text(self.message, 4, 3, w)
+end
