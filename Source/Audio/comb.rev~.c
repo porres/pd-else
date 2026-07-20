@@ -114,6 +114,13 @@ static void comb_dsp(t_comb *x, t_signal **sp){
         comb_sz(x);
     }
     signal_setmultiout(&sp[5], x->x_nchans);
+    for(int i = 1; i < 5; i++){
+        if(sp[i]->s_nchans > 1){
+            dsp_add_zero(sp[5]->s_vec, x->x_nchans * x->x_n);
+            pd_error(x, "[comb.rev~]: secondary inlets must be mono");
+            return;
+        }
+    }
     if(sr != x->x_sr){ // realloc if sample rate changed
         x->x_sr = sr;
         x->x_sr_khz = (double)x->x_sr * 0.001;

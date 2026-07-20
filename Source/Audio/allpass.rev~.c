@@ -1,78 +1,50 @@
-// Porres 2017
-// Based on cyclone's allpass
+// Porres 2017 - 2026
 
 #include <math.h>
 #include <stdlib.h>
 #include <m_pd.h>
 
-#define allpass_rev_STACK 48000 // stack buf size, 1 sec at 48k
-#define allpass_rev_MAXD 4294967294 // max delay = 2**32 - 2
+#define ALLPASS_REV_MAXD 4294967294 // max delay = 2**32 - 2
 
 static t_class *allpass_rev_class;
 
-typedef struct _allpass_rev
-{
+typedef struct _allpass_rev{
     t_object        x_obj;
     t_inlet         *x_dellet;
     t_inlet         *x_alet;
     t_outlet        *x_outlet;
     int             x_sr;
     int             x_gain;
-// pointers to the delay bufs
-    double          * x_ybuf;
-    double          x_ffstack[allpass_rev_STACK];
-    double          * x_xbuf;
-    double          x_fbstack[allpass_rev_STACK];
-    int             x_alloc; // if we are using allocated bufs
-    unsigned int    x_sz; // actual size of each delay buffer
-    t_float         x_maxdel;  // maximum delay in ms
-    unsigned int    x_wh;     // writehead
-} t_allpass_rev;
+    double         *x_xbuf;
+    double         *x_ybuf;
+    unsigned int    x_sz;
+    t_float         x_maxdel;
+    unsigned int    *x_wh;   // changed
+    int             x_n;
+    int             x_nchans;
+}t_allpass_rev;
 
 static void allpass_rev_clear(t_allpass_rev *x){
-    unsigned int i;
-    for(i=0; i<x->x_sz; i++){
+    for(unsigned int i = 0; i < x->x_sz * x->x_nchans; i++){
         x->x_xbuf[i] = 0.;
         x->x_ybuf[i] = 0.;
-    };
-    x->x_wh = 0;
+    }
+    for(int ch = 0; ch < x->x_nchans; ch++)
+        x->x_wh[ch] = 0;
 }
 
 static void allpass_rev_sz(t_allpass_rev *x){
-    // helper function to deal with allocation issues if needed
-    // ie if wanted size x->x_maxdel is bigger than stack, allocate
-    
-    // convert ms to samps
-    unsigned int newsz = (unsigned int)ceil((double)x->x_maxdel*0.001*(double)x->x_sr);
-    newsz++; // add a sample for good measure since say bufsize is 2048 and
-    // you want a delay of 2048 samples,.. problem!
-    
-    int alloc = x->x_alloc;
-    unsigned int cursz = x->x_sz; //current size
-    
-    if(newsz < 0)
-        newsz = 0;
-    else if(newsz > allpass_rev_MAXD)
-        newsz = allpass_rev_MAXD;
-    if(!alloc && newsz > allpass_rev_STACK){
-        x->x_xbuf = (double *)malloc(sizeof(double)*newsz);
-        x->x_ybuf = (double *)malloc(sizeof(double)*newsz);
-        x->x_alloc = 1;
-        x->x_sz = newsz;
-    }
-    else if(alloc && newsz > cursz){
-        x->x_xbuf = (double *)realloc(x->x_xbuf, sizeof(double)*newsz);
-        x->x_ybuf = (double *)realloc(x->x_ybuf, sizeof(double)*newsz);
-        x->x_sz = newsz;
-    }
-    else if(alloc && newsz < allpass_rev_STACK){
-        free(x->x_xbuf);
-        free(x->x_ybuf);
-        x->x_sz = allpass_rev_STACK;
-        x->x_xbuf = x->x_ffstack;
-        x->x_ybuf = x->x_fbstack;
-        x->x_alloc = 0;
-    };
+    unsigned int newsz = (unsigned int)ceil((double)x->x_maxdel * x->x_sr * 0.001) + 1;
+    if(newsz < 64)
+        newsz = 64;
+    else if(newsz > ALLPASS_REV_MAXD)
+        newsz = ALLPASS_REV_MAXD;
+    x->x_xbuf = (double *)realloc(x->x_xbuf,
+        sizeof(double) * newsz * x->x_nchans);
+    x->x_ybuf = (double *)realloc(x->x_ybuf,
+        sizeof(double) * newsz * x->x_nchans);
+    x->x_sz = newsz;
+    x->x_maxdel = (double)newsz / ((double)x->x_sr * 0.001);
     allpass_rev_clear(x);
 }
 
@@ -86,10 +58,6 @@ static double allpass_rev_getlin(double tab[], unsigned int sz, double idx){
         tabphase1 = sz - 1; // checking to see if index falls within bounds
         output = tab[tabphase1];
     }
-    else if(tabphase1 < 0){
-        tabphase1 = 0;
-        output = tab[tabphase1];
-    }
     else{
         double yb = tab[tabphase2]; // linear interp
         double ya = tab[tabphase1];
@@ -98,77 +66,75 @@ static double allpass_rev_getlin(double tab[], unsigned int sz, double idx){
     return output;
 }
 
-static double allpass_rev_readmsdelay(t_allpass_rev *x, double arr[], t_float ms){
-    //helper func, basically take desired ms delay, convert to samp, read from arr[]
-    
-    //eventual reading head
-    double rh = (double)ms*((double)x->x_sr*0.001); //converting ms to samples
-    //bounds checking for minimum delay in samples
-    if(rh < 0)
-        rh = 0;
-    rh = (double)x->x_wh+((double)x->x_sz-rh); //essentially subracting from writehead to find proper position in buffer
-    //wrapping into length of delay buffer
-    while(rh >= x->x_sz){
-        rh -= (double)x->x_sz;
-    };
-    //now to read from the buffer!
-    double output = allpass_rev_getlin(arr, x->x_sz, rh);
-    return output;
-}
-
 static t_int *allpass_rev_perform(t_int *w){
     t_allpass_rev *x = (t_allpass_rev *)(w[1]);
-    int n = (int)(w[2]);
-    t_float *xin = (t_float *)(w[3]);
-    t_float *din = (t_float *)(w[4]);
-    t_float *ain = (t_float *)(w[5]);
-    t_float *out = (t_float *)(w[6]);
-    int i;
-    for(i=0; i<n;i++){
-        int wh = x->x_wh;
-        double input = (double)xin[i];
-        double output;
-// first off, write input to delay buf
-        x->x_xbuf[wh] = input;
-// get delayed values of x and y
-        t_float delms = din[i];
-// bounds checking
-        if(delms < 0)
-            delms = 0;
-        else if(delms > x->x_maxdel)
-            delms = x->x_maxdel;
-// now get those delayed vals
-        double delx = allpass_rev_readmsdelay(x, x->x_xbuf, delms);
-        double dely = allpass_rev_readmsdelay(x, x->x_ybuf, delms);
-        if(!x->x_gain)
-            {
-            if (ain[i] == 0)
-                ain[i] = 0;
-            else
-                ain[i] = copysign(exp(log(0.001) * delms/fabs(ain[i])), ain[i]);
+    t_float *xin = (t_float *)(w[2]);
+    t_float *din = (t_float *)(w[3]);
+    t_float *ain = (t_float *)(w[4]);
+    t_float *out = (t_float *)(w[5]);
+    int n = x->x_n;
+    for(int ch = 0; ch < x->x_nchans; ch++){
+        unsigned int offset = ch * x->x_sz;
+        t_float *in_ch = xin + ch * n;
+        t_float *out_ch = out + ch * n;
+        for(int i = 0; i < n; i++){
+            unsigned int wh = x->x_wh[ch];
+            double input = in_ch[i];
+            x->x_xbuf[offset + wh] = input;
+            t_float delms = din[i];
+            if(delms < 0)
+                delms = 0;
+            else if(delms > x->x_maxdel)
+                delms = x->x_maxdel;
+            double rh = wh + x->x_sz -
+                delms * x->x_sr * 0.001;
+            while(rh >= x->x_sz)
+                rh -= x->x_sz;
+            double delx = allpass_rev_getlin(
+                x->x_xbuf + offset, x->x_sz, rh);
+            double dely = allpass_rev_getlin(
+                x->x_ybuf + offset, x->x_sz, rh);
+            double a = ain[i];
+            if(!x->x_gain){
+                if(a != 0)
+                    a = copysign(exp(log(0.001) *
+                    delms / fabs(a)), a);
             }
-// y[n] = -a * x[n] + x[n-d] + a * y[n-d]
-        if (delms == 0)
-            output = input;
-        else
-            output = (double)ain[i]*-1.*input + delx + (double)ain[i]*dely;
-        x->x_ybuf[wh] = output;
-        out[i] = output;
-        x->x_wh = (wh + 1) % x->x_sz; // increment writehead
-    };
-    return (w + 7);
+            double output;
+            if(delms == 0)
+                output = input;
+            else
+                output = -a * input + delx + a * dely;
+            x->x_ybuf[offset + wh] = output;
+            out_ch[i] = output;
+            x->x_wh[ch] = (wh + 1) % x->x_sz;
+        }
+    }
+    return(w+6);
 }
 
-static void allpass_rev_dsp(t_allpass_rev *x, t_signal **sp)
-{
+static void allpass_rev_dsp(t_allpass_rev *x, t_signal **sp){
     int sr = sp[0]->s_sr;
+    x->x_n = sp[0]->s_n;
+    int chs = sp[0]->s_nchans;
+    if(chs != x->x_nchans){
+        x->x_wh = (unsigned int *)resizebytes(x->x_wh,
+            x->x_nchans * sizeof(unsigned int),
+            chs * sizeof(unsigned int));
+        x->x_nchans = chs;
+        allpass_rev_sz(x);
+    }
+    signal_setmultiout(&sp[3], x->x_nchans);
+    if(sp[1]->s_nchans > 1 || sp[2]->s_nchans > 1){
+        dsp_add_zero(sp[3]->s_vec, x->x_nchans * x->x_n);
+        pd_error(x, "[allpass.rev~]: secondary inlets must be mono");
+        return;
+    }
     if(sr != x->x_sr){
-// if new sample rate isn't old sample rate, need to realloc
         x->x_sr = sr;
         allpass_rev_sz(x);
-    };
-    dsp_add(allpass_rev_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
-        sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+    }
+    dsp_add(allpass_rev_perform, 5, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
 static void allpass_rev_size(t_allpass_rev *x, t_floatarg f1){
@@ -183,16 +149,16 @@ static void allpass_rev_gain(t_allpass_rev *x, t_floatarg f1){
 }
 
 static void *allpass_rev_new(t_symbol *s, int argc, t_atom *argv){
-    s = NULL;
+    (void)s;
     t_allpass_rev *x = (t_allpass_rev *)pd_new(allpass_rev_class);
     x->x_sr = sys_getsr();
-    x->x_alloc = 0;
     x->x_gain = 0;
-    x->x_sz = allpass_rev_STACK;
-// clear out stack bufs, set pointer to stack
-    x->x_ybuf = x->x_fbstack;
-    x->x_xbuf = x->x_ffstack;
-    allpass_rev_clear(x);
+    x->x_sz = 0;
+    x->x_xbuf = NULL;
+    x->x_ybuf = NULL;
+    x->x_n = 64;
+    x->x_nchans = 1;
+    x->x_wh = (unsigned int *)getbytes(sizeof(*x->x_wh));
 /////////////////////////////////////////////////////////////////////////////////////
     float init_maxdelay = 0.0f;
     float init_coeff = 0.0f;
@@ -235,27 +201,24 @@ static void *allpass_rev_new(t_symbol *s, int argc, t_atom *argv){
     x->x_alet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_alet, init_coeff);
     x->x_outlet = outlet_new((t_object *)x, &s_signal);
-    return (x);
+    return(x);
 errstate:
     pd_error(x, "allpass.rev~: improper args");
     return NULL;
 }
 
 static void * allpass_rev_free(t_allpass_rev *x){
-    if(x->x_alloc){
-        free(x->x_xbuf);
-        free(x->x_ybuf);
-    };
+    free(x->x_xbuf);
+    free(x->x_ybuf);
     inlet_free(x->x_dellet);
     inlet_free(x->x_alet);
     outlet_free(x->x_outlet);
+    freebytes(x->x_wh, x->x_nchans * sizeof(*x->x_wh));
     return (void *)x;
 }
 
-void setup_allpass0x2erev_tilde(void)
-{
-    allpass_rev_class = class_new(gensym("allpass.rev~"), (t_newmethod)allpass_rev_new,
-        (t_method)allpass_rev_free, sizeof(t_allpass_rev), 0, A_GIMME, 0);
+void setup_allpass0x2erev_tilde(void){
+    allpass_rev_class = class_new(gensym("allpass.rev~"), (t_newmethod)allpass_rev_new, (t_method)allpass_rev_free, sizeof(t_allpass_rev), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(allpass_rev_class, nullfn, gensym("signal"), 0);
     class_addmethod(allpass_rev_class, (t_method)allpass_rev_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(allpass_rev_class, (t_method)allpass_rev_clear, gensym("clear"), 0);
