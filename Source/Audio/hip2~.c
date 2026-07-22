@@ -36,16 +36,13 @@ static void update_coeffs(t_hip2 *x, int j, double f){
         x->x_a1[j] = x->x_b1[j] = 0;
         return;
     }
-
     double omega = f * x->x_srcoef;
     double cosw = cos(omega);
     double k;
-
     if(fabs(cosw) < 1e-12)
         k = 1.0;
     else
         k = (cosw - 1.0 + sqrt(1.0 - cosw * cosw)) / cosw;
-
     x->x_a0[j] = 1.0 - 0.5 * k;
     x->x_a1[j] = -x->x_a0[j];
     x->x_b1[j] = 1.0 - k;
