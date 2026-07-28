@@ -53,27 +53,8 @@ static t_class *messbox_class;
 static t_class *messbox_proxy_class;
 static t_widgetbehavior messbox_widgetbehavior;
 
-static void set_tk_widget_ids(t_messbox *x, t_canvas *canvas){
-    char buf[MAXPDSTRING];
-    x->x_canvas = canvas;
-    sprintf(buf,".x%lx.c", (long unsigned int)canvas);
-    x->x_cv_id = getbytes(strlen(buf)+1); // Tk ID for the current canvas this object belongs
-    strcpy(x->x_cv_id, buf);
-    sprintf(buf,"%s.frame%lx", x->x_cv_id, (long unsigned int)x);
-    x->frame_id = getbytes(strlen(buf)+1); // Tk ID for the "frame" the other things are drawn in
-    strcpy(x->frame_id, buf);
-    sprintf(buf,"%s.text%lx", x->frame_id, (long unsigned int)x);
-    x->text_id = getbytes(strlen(buf)+1); // Tk ID for the "text"
-    strcpy(x->text_id, buf);
-    sprintf(buf,"%s.window%lx", x->x_cv_id, (long unsigned int)x);
-    x->window_tag = getbytes(strlen(buf)+1); // Tk ID for the resizing "window"
-    strcpy(x->window_tag, buf);
-//    sprintf(buf,"%s.handle%lx", x->x_cv_id, (long unsigned int)x);
-//    x->handle_id = getbytes(strlen(buf)+1); // Tk ID for the resizing "handle"
-//    strcpy(x->handle_id, buf);
-    sprintf(buf,"all%lx", (long unsigned int)x);
-    x->all_tag = getbytes(strlen(buf)+1); // Tk ID for ALL
-    strcpy(x->all_tag, buf);
+static int box_vis_check(t_messbox *x){
+    return(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist));
 }
 
 static void draw_box(t_messbox *x){
@@ -222,7 +203,7 @@ static void messbox_vis(t_gobj *z, t_glist *gl, int vis){
 
 /////////// METHODS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 static void messbox_list(t_messbox* x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
+    (void)s;
     if(!ac){ // bang
         sys_vgui("pdsend \"%s [string map {\\$0 %s} [%s get 0.0 end]]\"\n",
             x->x_proxy->x_bind_sym->s_name, x->x_dollzero->s_name, x->text_id);
@@ -257,7 +238,7 @@ static void messbox_proxy_anything(t_messbox_proxy* x, t_symbol *s, int ac,
 }
 
 static void messbox_append(t_messbox* x,  t_symbol *s, int ac, t_atom *av){
-    s = NULL;
+    (void)s;
     char buf[40];
     size_t length;
     sys_vgui("%s configure -state normal\n", x->text_id);
@@ -295,19 +276,22 @@ static void messbox_append(t_messbox* x,  t_symbol *s, int ac, t_atom *av){
 }
 
 static void messbox_set(t_messbox *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
+    (void)s;
     char buf[40];
     size_t length;
-    sys_vgui("%s configure -state normal\n", x->text_id);
-    sys_vgui("%s delete 0.0 end \n", x->text_id);
+    if(box_vis_check){
+        sys_vgui("%s configure -state normal\n", x->text_id);
+        sys_vgui("%s delete 0.0 end \n", x->text_id);
+    }
     if(ac){
         int i;
         size_t pos;
         for(i = 0; i < ac; i++){
             t_symbol *sym = atom_getsymbolarg(i, ac, av);
-            if(sym == &s_) {
+            if(sym == &s_){
                 sys_vgui("%s insert end \"%g \"\n", x->text_id, atom_getfloatarg(i, ac , av));
-            } else{
+            }
+            else{
                 int j = 0;
                 length = 39;
                 for(pos = 0; pos < strlen(sym->s_name); pos++) {
@@ -335,7 +319,7 @@ static void messbox_set(t_messbox *x, t_symbol *s, int ac, t_atom *av){
 }
 
 void messbox_bgcolor(t_messbox *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
+    (void)s;
     if(av[0].a_type == A_FLOAT && av[1].a_type == A_FLOAT && av[2].a_type == A_FLOAT){
         float r = atom_getfloatarg(0, ac, av);
         float g = atom_getfloatarg(1, ac, av);
@@ -350,7 +334,7 @@ void messbox_bgcolor(t_messbox *x, t_symbol *s, int ac, t_atom *av){
 }
 
 void messbox_fgcolor(t_messbox *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
+    (void)s;
     if(av[0].a_type == A_FLOAT && av[1].a_type == A_FLOAT && av[2].a_type == A_FLOAT){
         float r = atom_getfloatarg(0, ac, av);
         float g = atom_getfloatarg(1, ac, av);
@@ -364,7 +348,7 @@ void messbox_fgcolor(t_messbox *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void messbox_bold(t_messbox *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
+    (void)s;
     if(av[0].a_type == A_FLOAT){
         float bold = atom_getfloatarg(0, ac, av);
         x->x_font_weight = (int)(bold != 0) ? gensym("bold") : gensym("normal");
@@ -374,7 +358,7 @@ static void messbox_bold(t_messbox *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void messbox_fontsize(t_messbox *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
+    (void)s;
     if(av[0].a_type == A_FLOAT){
         float font_size = atom_getfloatarg(0, ac, av);
         x->x_font_size = font_size < 8 ? 8 : (int)font_size;
@@ -384,7 +368,7 @@ static void messbox_fontsize(t_messbox *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void messbox_size(t_messbox *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
+    (void)s;
     if(av[0].a_type == A_FLOAT && av[1].a_type == A_FLOAT){
         float w = atom_getfloatarg(0, ac, av), h = atom_getfloatarg(1, ac, av);
         x->x_width = w < MIN_WIDTH ? MIN_WIDTH : (int)w;
@@ -461,16 +445,36 @@ static void messbox_free(t_messbox *x){
 }
 
 static void *messbox_new(t_symbol *s, int ac, t_atom *av){
-    s = NULL;
+    (void)s;
     t_messbox *x = (t_messbox *)pd_new(messbox_class);
     char buf[MAXPDSTRING];
     x->x_glist = canvas_getcurrent();
+    x->x_canvas = glist_getcanvas(x->x_glist);
     x->x_zoom = x->x_glist->gl_zoom;
     x->x_dollzero = binbuf_realizedollsym(gensym("$0"), 0, 0, 0);
     if(!(x->x_proxy = (t_messbox_proxy *)pd_new(messbox_proxy_class)))
         return(0);
     x->x_proxy->p_master = x;
-    set_tk_widget_ids(x, glist_getcanvas(x->x_glist));
+    
+    sprintf(buf,".x%lx.c", (long unsigned int) x->x_canvas);
+    x->x_cv_id = getbytes(strlen(buf)+1); // Tk ID for the current canvas this object belongs
+    strcpy(x->x_cv_id, buf);
+    sprintf(buf,"%s.frame%lx", x->x_cv_id, (long unsigned int)x);
+    x->frame_id = getbytes(strlen(buf)+1); // Tk ID for the "frame" the other things are drawn in
+    strcpy(x->frame_id, buf);
+    sprintf(buf,"%s.text%lx", x->frame_id, (long unsigned int)x);
+    x->text_id = getbytes(strlen(buf)+1); // Tk ID for the "text"
+    strcpy(x->text_id, buf);
+    sprintf(buf,"%s.window%lx", x->x_cv_id, (long unsigned int)x);
+    x->window_tag = getbytes(strlen(buf)+1); // Tk ID for the resizing "window"
+    strcpy(x->window_tag, buf);
+    //    sprintf(buf,"%s.handle%lx", x->x_cv_id, (long unsigned int)x);
+    //    x->handle_id = getbytes(strlen(buf)+1); // Tk ID for the resizing "handle"
+    //    strcpy(x->handle_id, buf);
+    sprintf(buf,"all%lx", (long unsigned int)x);
+    x->all_tag = getbytes(strlen(buf)+1); // Tk ID for ALL
+    strcpy(x->all_tag, buf);
+    
     sprintf(buf, "messbox%lx", (long unsigned int)x);
     x->tcl_namespace = getbytes(strlen(buf)+1);
     strcpy(x->tcl_namespace, buf);

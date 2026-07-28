@@ -210,9 +210,9 @@
 #X text 179 386 - resets range from 0 to array size, f 61;
 #X text 179 330 - sets start point in ms, f 61;
 #X text 179 344 - sets end point in ms, f 61;
-#X obj 79 191 else/player~;
+#X obj 48 175 else/player~;
 #X text 179 582 - when it stops/finishes playing or when looping, f 61;
-#X text 21 191 see also:;
+#X text 66 156 see also:;
 #X text 179 358 - sets start and end point range proportionally (from 0 to 1), f 61;
 #X text 129 372 pos <f>;
 #X text 179 372 - sets position proportionally within range (from 0 to 1), f 61;
@@ -285,7 +285,6 @@
 #X text 179 481 - non zero enables looping \, <0> disables it (default 0), f 61;
 #X text 111 523 sr <float>;
 #X text 179 523 - sets sample rate of sample (default \, Pd's sample rate), f 61;
-#X obj 62 211 else/tabwriter~;
 #X text 191 414 start playing - optional 1st float sets start (ms) \, 2nd sets end (in ms) and 3rd sets speed rate, f 59;
 #X text 179 277 -;
 #X text 191 277 gate on or impulse starts playing \, gate off stops if not in trigger mode \, which is the default mode;
@@ -315,10 +314,10 @@
 #X floatatom 238 228 6 0 0 0 - - - 0;
 #X obj 238 180 else/sample~ \$0-sax sax.wav;
 #X text 22 17 You can set the sample rate of the loaded sound file. This allows [tabplayer~] to adjust the reading rate to correspond to the sound file's sample rate. Note \, however \, that this is not need if you're using [sample~]., f 63;
-#X text 22 77 In the example below we have a sound file whose sample rate is 88200 Hz. If Pd's sample rate is at 44100 (the default one) \, then playing this file at Pd's sample rate would read it at half speed. Since the file is loaded with [sample~] \, the sample rate is internally and automatically retrieved. Note that the [sample~] object also outputs the sample rate \, and so does [soundfiler]., f 63;
 #X text 79 271 interpolation;
 #X obj 182 264 else/initmess read sax.wav;
 #X text 26 463 By default \, [tabplayer~] uses 'spline' interpolation \, but you can set to lagrange instead. For more details \, check the subsection 'interpolation' of chapter 28 (buffer) in the live electronics tutorial., f 65;
+#X text 22 77 In the example below we have a sound file whose sample rate is 88200 Hz. If Pd's sample rate is at 44100 \, then playing this file at Pd's sample rate would read it at half speed. Since the file is loaded with [sample~] \, the sample rate is internally and automatically retrieved. Note that the [sample~] object also outputs the sample rate \, and so does [soundfiler]., f 63;
 #X connect 1 0 17 0;
 #X connect 2 0 3 0;
 #X connect 3 0 11 0;
@@ -332,9 +331,11 @@
 #X connect 13 1 15 0;
 #X connect 16 0 2 0;
 #X connect 18 0 1 0;
-#X connect 22 0 13 0;
+#X connect 21 0 13 0;
 #X restore 431 179 pd sr/interpolation;
-#X obj 47 129 else/sample~ \$0-violin violin.flac, f 12;
+#X obj 33 101 else/sample~ \$0-violin violin.flac, f 12;
+#X obj 31 216 else/tabwriter~;
+#X obj 31 195 else/tabreader~;
 #X connect 12 0 49 0;
 #X connect 13 0 49 0;
 #X connect 14 0 49 0;

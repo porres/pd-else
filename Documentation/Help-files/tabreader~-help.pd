@@ -37,7 +37,7 @@
 #X obj 128 23 loadbang;
 #X connect 2 0 3 0;
 #X connect 4 0 2 0;
-#X restore 101 179 pd table;
+#X restore 97 157 pd table;
 #X text 128 284 set <symbol> - sets an entire array to be used as a waveform, f 62;
 #X obj 213 155 hsl 138 16 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 210 204 else/tabreader~ \$0-table;
@@ -46,7 +46,7 @@
 #X text 122 301 index <float> - non-0 sets to index mode, f 62;
 #X obj 493 62 else/setdsp~;
 #X obj 210 230 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
-#X text 40 168 check table -->, f 9;
+#X text 36 146 check table -->, f 9;
 #N canvas 658 97 430 428 interpolation 0;
 #X obj 126 149 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 129 126 hsl 128 15 0 514 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
@@ -105,8 +105,8 @@
 #X text 170 406 cubic - sets to cubic interpolation mode, f 53;
 #X text 218 421 sets to hermite interpolation and tension/bias;
 #X text 69 88 [tabreader] accepts indexes from 0 to 1 by default and reads an array with different interpolation methods with multi channel support. There's no need to have guard points in the array as these are taken care of internally., f 63;
-#X text 26 208 see also:;
-#X obj 29 231 else/tabreader;
+#X text 29 185 see also:;
+#X obj 32 208 else/tabreader;
 #N canvas 546 106 747 470 loop-mode 0;
 #X obj 137 195 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 140 172 hsl 138 16 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
@@ -165,6 +165,7 @@
 #X text 128 542 -index: sets to indexed mode, f 52;
 #X text 150 602 2) float;
 #X text 206 602 - set initial loaded channel (default 1);
+#X obj 32 231 else/tabplayer~;
 #X connect 20 0 24 0;
 #X connect 23 0 20 0;
 #X connect 24 0 29 0;
