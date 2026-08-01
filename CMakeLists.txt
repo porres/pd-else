@@ -108,6 +108,7 @@ target_sources(beat_tilde PRIVATE ${aubio_sources})
 
 add_subdirectory(Source/Audio/circuit~)
 add_subdirectory(Source/Audio/plaits~)
+add_subdirectory(Source/Audio/drum~)
 add_subdirectory(Source/Audio/sfont~)
 add_subdirectory(Source/Audio/sfz~)
 add_subdirectory(Source/Shared/link)
