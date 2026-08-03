@@ -1,6 +1,6 @@
 // based on the plaits engine by Mutable instruments
 // also based on the pd port from github.com/jnonis/pd-plaits
-// redesigned and rewritten by Porres 2023-2026
+// redesigned, rewritten and adapted to Pd by Porres 2023-2026
 // Liscense: MIT Liscense (which is the original liscense of plaits)
 
 #include <stdint.h>
