@@ -4,7 +4,6 @@ cmake_minimum_required(VERSION 3.10)
 set(BASSDRUM_SOURCES
     stmlib/utils/random.cc
     plaits/dsp/voice.cc
-    plaits/dsp/engine/bass_drum_engine.cc
     plaits/dsp/engine/hi_hat_engine.cc
     plaits/dsp/engine/snare_drum_engine.cc
     plaits/resources.cc

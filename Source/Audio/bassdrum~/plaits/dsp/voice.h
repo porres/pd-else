@@ -10,7 +10,7 @@
 #include "stmlib/dsp/limiter.h"
 #include "stmlib/dsp/hysteresis_quantizer.h"
 #include "stmlib/utils/buffer_allocator.h"
-#include "plaits/dsp/engine/bass_drum_engine.h"
+#include "plaits/dsp/engine/bass_drum.h"
 #include "plaits/dsp/engine/engine.h"
 #include "plaits/dsp/engine/hi_hat_engine.h"
 #include "plaits/dsp/engine/snare_drum_engine.h"
