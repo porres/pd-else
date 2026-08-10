@@ -9,6 +9,7 @@
 #define HALF_LOG2 log(2)/2
 #define T60_COEFF PI / (log(1000) * 1000)
 #define MAXLEN 1024
+#define DEFQ sqrtf(0.5f)
 
 typedef struct _highpass{
     t_object    x_obj;
@@ -255,7 +256,7 @@ static void *highpass_new(t_symbol *s, int ac, t_atom *av){
     t_highpass *x = (t_highpass *)pd_new(highpass_class);
     x->x_ignore = s;
     float freq = 0.000001;
-    float reson = 0;
+    float reson = DEFQ;
     int resmode = 0;
     int argnum = 0;
     x->x_xnm1 = (double *)getbytes(sizeof(*x->x_xnm1));
@@ -264,7 +265,6 @@ static void *highpass_new(t_symbol *s, int ac, t_atom *av){
     x->x_ynm2 = (double *)getbytes(sizeof(*x->x_ynm2));
     x->x_freq_list = (float*)malloc(MAXLEN * sizeof(float));
     x->x_reson_list = (float*)malloc(MAXLEN * sizeof(float));
-    x->x_freq_list[0] = x->x_reson_list[0] = 0;
     x->x_xnm1[0] = x->x_xnm2[0] = 0;
     x->x_ynm1[0] = x->x_ynm2[0] = 0;
     x->x_f_list_size = x->x_q_list_size = 1;
@@ -302,7 +302,8 @@ static void *highpass_new(t_symbol *s, int ac, t_atom *av){
     x->x_resmode = resmode;
     x->x_nyq = sys_getsr() * 0.5;
     x->x_radcoeff = PI / x->x_nyq;
-    x->x_freq_list[0] = freq, x->x_reson_list[0] = reson;
+    x->x_freq_list[0] = freq;
+    x->x_reson_list[0] = reson;
     update_coeffs(x, (double)freq, (double)reson);
     x->x_inlet_freq = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_freq, freq);

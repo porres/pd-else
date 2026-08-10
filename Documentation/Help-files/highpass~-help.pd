@@ -69,13 +69,12 @@
 #X obj 109 464 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 109 408 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
 #X obj 109 431 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0;
-#X text 136 543 1) float - central frequency in Hertz (default 0);
+#X text 116 543 1) float - central frequency in Hertz (default 0);
 #X obj 3 490 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
 #X text 148 497 -bw;
 #X text 178 497 - sets resonance parameter to bandwidth in octaves, f 51;
 #X text 142 515 -t60;
 #X text 178 515 - sets resonance parameter to 't60', f 51;
-#X text 136 561 2) float - resonance in 'Q'm \, 'bw' or 't60' (default 1 \, Q);
 #N canvas 604 125 676 412 resonance 0;
 #X text 27 95 Alternatively \, you can switch from 'q' to 'bw' with the message methods., f 56;
 #X text 27 23 By default \, the resonance parameter is the filter 'q' \, but you can also set it to 'bw' or 't60'. The 'bw' means resonance as bandwidth in octaves and you can set it with the -bw flag or 'bw' message \, whereas 't60' means decay time in 't60' (time it takes for the signal to resonate and decay 60db in ms)., f 56;
@@ -164,10 +163,11 @@
 #X obj 21 221 else/bicoeff2;
 #X obj 21 244 else/svfilter~;
 #X obj 21 197 else/hip2~;
+#X text 116 561 2) float - resonance in 'Q' \, 'bw' or 't60' (default 0.707107 \, Q), f 65;
 #X connect 1 0 9 0;
 #X connect 2 0 9 1;
 #X connect 3 0 9 2;
 #X connect 4 0 9 0;
 #X connect 6 0 9 0;
 #X connect 9 0 0 0;
-#X connect 63 0 4 0;
+#X connect 62 0 4 0;
