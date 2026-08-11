@@ -37,7 +37,6 @@ typedef struct _bandpass{
     double      x_f;
     double      x_reson;
     double      x_a0;
-    double      x_a1;
     double      x_a2;
     double      x_b1;
     double      x_b2;
@@ -158,7 +157,7 @@ static t_int *bandpass_perform(t_int *w){
             else{
                 if(f != x->x_f || reson != x->x_reson)
                     update_coeffs(x, (double)f, (double)reson);
-                yn = x->x_a0 * xn + x->x_a1 * xnm1[j] + x->x_a2 * xnm2[j] + x->x_b1 * ynm1[j] + x->x_b2 * ynm2[j];
+                yn = x->x_a0 * xn + x->x_a2 * xnm2[j] + x->x_b1 * ynm1[j] + x->x_b2 * ynm2[j];
                 out[j*n + i] = yn;
                 xnm2[j] = xnm1[j];
                 xnm1[j] = xn;
