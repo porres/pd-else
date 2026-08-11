@@ -45,7 +45,7 @@
 #X obj 270 168 else/compress~ -30 5 5 5 12 256, f 16;
 #X text 77 90 [compress~] is an abstraction that performs compression. It attenuates an input signal above a given threshold., f 57;
 #X obj 270 137 else/play.file~ 1 kantele.flac 1 1;
-#X text 25 188 see also:;
+#X text 25 158 see also:;
 #X obj 25 207 else/expand~;
 #N canvas 892 207 454 297 multichannel 0;
 #X obj 101 77 else/play.file~ 1 kantele.flac 1 1;
@@ -65,6 +65,7 @@
 #X text 171 396 signal(s) - compressed signal(s), f 46;
 #X text 201 417 list - reduction in dB for each channel, f 45;
 #X obj 25 231 else/sidechain~;
+#X obj 25 183 else/limit~;
 #X connect 39 0 26 0;
 #X connect 39 1 34 0;
 #X connect 41 0 35 0;
