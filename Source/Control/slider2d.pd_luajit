@@ -1,0 +1,221 @@
+local else_gui = require("else_gui")
+local slider2d = pd.Class:new():register("slider2d")
+
+else_gui.setup(slider2d, {
+    { "width",       127,           "resize",     "Width",        "int",   {frame="Dimensions", min=10, max=4096} },
+    { "height",      127,           "resize",     "Height",       "int",   {frame="Dimensions", min=10, max=4096} },
+    { "xrange",      {-1, 1},       "repaint",    "X Range",      "range", {frame="General", flag="xrange"} },
+    { "yrange",      {-1, 1},       "repaint",    "Y Range",      "range", {frame="General", flag="yrange"} },
+    { "line",        1,             "repaint",    "Crosshair",    "check", {frame="Appearance", order=4, flag="line"} },
+    { "bgcolor",     pd.bg_color,   "repaint",    "Background",   "color", {frame="Appearance", order=1, flag="bgcolor"} },
+    { "fgcolor",     pd.fg_color,   "repaint",    "Foreground",   "color", {frame="Appearance", order=2, flag="fgcolor"} },
+    { "grid",        0,             "repaint",    "Show grid",    "check", {frame="Appearance", order=2, flag="grid"} },
+    { "jump",        0,             nil,          "Jump on Click","check", {frame="General", flag="jump"} },
+    { "savestate",   0,             nil,          "Save State",   "check", {frame="General", flag="savestate"} },
+    { "init_x",      0,             nil,          nil,            "float" },
+    { "init_y",      0,             nil,          nil,            "float" },
+    { "send",        "empty",       nil,          "Send",         "text",  {frame="General", flag="send"} },
+    { "receive",     "empty",       "on_receive", "Receive",      "text",  {frame="General", flag="receive"} }
+}, {
+["-range"] = function(self, atoms, i)
+        self.xrange[1], self.yrange[1] = tonumber(atoms[i]),   tonumber(atoms[i])
+        self.xrange[2], self.yrange[2] = tonumber(atoms[i+1]), tonumber(atoms[i+1])
+        return 2
+    end,
+["-dim"] = function(self, atoms, i)
+        self.width = tonumber(atoms[i])
+        self.height = tonumber(atoms[i+1])
+        return 2
+    end,
+["-size"] = function(self, atoms, i)
+        self.width = tonumber(atoms[i])
+        self.height = tonumber(atoms[i])
+        return 1
+    end}
+)
+
+function slider2d:initialize(sel, atoms)
+    self.inlets   = 1
+    self.outlets  = 1
+    self.dragging = false
+    self.shift    = 0
+
+    self:init_args(atoms)
+
+    self.val_x = (self.savestate == 1) and self.init_x or 0.5
+    self.val_y = (self.savestate == 1) and self.init_y or 0.5
+
+    self:setup_receive(self.receive)
+    self:set_size(self.width, self.height)
+    return true
+end
+
+function slider2d:in_1_list(atoms)
+    if atoms[1] then self.val_x = self:to_norm_x(tonumber(atoms[1]) or 0) end
+    if atoms[2] then self.val_y = self:to_norm_y(tonumber(atoms[2]) or 0) end
+    self:clamp(); self:repaint(); self:output()
+end
+
+function slider2d:in_1_set(atoms)
+    if atoms[1] then self.val_x = self:to_norm_x(tonumber(atoms[1]) or 0) end
+    if atoms[2] then self.val_y = self:to_norm_y(tonumber(atoms[2]) or 0) end
+    self:clamp(); self:repaint()
+end
+
+-- output: denormalize on the way out
+function slider2d:output()
+    if self._outputting then return end
+    self._outputting = true
+    self:outlet(1, "list", { self:from_norm_x(self.val_x), self:from_norm_y(self.val_y) })
+    if self.send ~= "" and self.send ~= "empty" then
+        pd.send(self.send, "list", { self:from_norm_x(self.val_x), self:from_norm_y(self.val_y) })
+    end
+    self._outputting = false
+end
+
+function slider2d:to_norm_x(v)
+    local lo, hi = self.xrange[1], self.xrange[2]
+    return hi ~= lo and (v - lo) / (hi - lo) or 0
+end
+
+function slider2d:to_norm_y(v)
+    local lo, hi = self.yrange[1], self.yrange[2]
+    return hi ~= lo and (v - lo) / (hi - lo) or 0
+end
+
+function slider2d:from_norm_x(n)
+    return self.xrange[1] + n * (self.xrange[2] - self.xrange[1])
+end
+
+function slider2d:from_norm_y(n)
+    return self.yrange[1] + n * (self.yrange[2] - self.yrange[1])
+end
+
+function slider2d:clamp()
+    self.val_x = math.max(0, math.min(1, self.val_x))
+    self.val_y = math.max(0, math.min(1, self.val_y))
+end
+
+function slider2d:px_to_val(px, py)
+    local w, h = self:get_size()
+    return math.max(0, math.min(1, px / w)),
+           math.max(0, math.min(1, 1 - py / h))
+end
+
+function slider2d:val_to_px(vx, vy)
+    local w, h = self:get_size()
+    return vx * w, (1 - vy) * h
+end
+
+function slider2d:in_1_range(atoms)
+    self.xrange = { tonumber(atoms[1]) or self.xrange[1], tonumber(atoms[2]) or self.xrange[2] }
+    self.yrange = { tonumber(atoms[1]) or self.yrange[1], tonumber(atoms[2]) or self.yrange[2] }
+    self:save_args(); self:repaint()
+end
+
+function slider2d:key(down, name)
+    if name == "Shift_L" then
+        if self.dragging then
+            local hx, hy = self:val_to_px(self.val_x, self.val_y)
+            local scale = (down ~= 0) and 10 or 1
+            self.drag_ox = self.last_x - hx * scale
+            self.drag_oy = self.last_y - hy * scale
+        end
+        self.shift = down
+    end
+end
+
+function slider2d:setup_receive(sym)
+    self.recv = nil
+    if sym ~= "" and sym ~= "empty" then
+        self.recv = pd.Receive:new():register(self, sym, "receive_cb")
+    end
+end
+
+function slider2d:on_receive(sym)
+    self:setup_receive(sym)
+end
+
+function slider2d:receive_cb(sel, atoms)
+    if     sel == "bang" then self:in_1_bang()
+    elseif sel == "list" then self:in_1_list(atoms)
+    elseif sel == "set"  then self:in_1_set(atoms)
+    end
+end
+
+function slider2d:in_1_bang()
+    self:output()
+end
+
+-- "size <f>" sets both axes uniformly
+function slider2d:in_1_size(atoms)
+    local s = tonumber(atoms[1]); if not s then return end
+    self.width, self.height = s, s
+    self:set_size(s, s); self:save_args(); self:repaint()
+end
+
+
+function slider2d:mouse_down(x, y)
+    self.dragging = true
+    self.last_x, self.last_y = x, y
+    if self.jump == 1 then
+        self.val_x, self.val_y = self:px_to_val(x, y)
+        self:clamp(); self:repaint(); self:output()
+    end
+    local hx, hy = self:val_to_px(self.val_x, self.val_y)
+    local scale = (self.shift ~= 0) and 10 or 1
+    self.drag_ox = x - hx * scale
+    self.drag_oy = y - hy * scale
+end
+
+function slider2d:mouse_drag(x, y)
+    if not self.dragging then return end
+    self.last_x, self.last_y = x, y
+    local dx = x - self.drag_ox
+    local dy = y - self.drag_oy
+    if self.shift ~= 0 then dx, dy = dx / 10, dy / 10 end
+    self.val_x, self.val_y = self:px_to_val(dx, dy)
+    self:clamp(); self:repaint(); self:output()
+end
+
+function slider2d:mouse_up()
+    self.dragging = false
+    if self.savestate == 1 then
+        self.init_x, self.init_y = self.val_x, self.val_y
+        self:save_args()
+    end
+end
+
+function slider2d:paint(g)
+    local w, h = self:get_size()
+
+    -- background
+    g:set_color(self.bgcolor[1], self.bgcolor[2], self.bgcolor[3])
+    g:fill_all()
+
+    g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+    if self.grid == 1 then
+        g:draw_line(w / 2, 0, w / 2, h, 1)
+        g:draw_line(0, h / 2, w, h / 2, 1)
+    end
+
+    -- handle position
+    local px, py = self:val_to_px(self.val_x, self.val_y)
+
+    -- crosshair
+    if self.line == 1 then
+        g:draw_line(px, 0, px, h+1, 2)
+        g:draw_line(0, py, w+1, py, 2)
+    end
+
+    -- handle fill
+    local R = 4
+    g:fill_ellipse(px - R, py - R, R * 2, R * 2)
+
+    -- for plugdata dynamic resize
+    if w ~= self.width or h ~= self.height then
+        self.width = w
+        self.height = h
+        self:save_args()
+    end
+end
