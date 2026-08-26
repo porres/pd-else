@@ -18,7 +18,6 @@ typedef struct _conv{
     t_word         *x_vec;
     t_clock        *x_clock;
     t_sample       *x_ir_signal;
-    int             x_startup_flag;
     int             x_array_size;
     int             x_num_parts;
     t_float         x_n;
@@ -138,55 +137,34 @@ static void conv_set(t_conv *x, t_symbol *arrayName){
         old_non_overlapped_size = 2*x->x_window_double;
     else
         old_non_overlapped_size = 0;
-    // if incoming arrayName doesn't match x->x_array_name, load arrayName and dump its samples into x_ir_signal
-    if(arrayName->s_name != x->x_array_name->s_name || x->x_startup_flag){
-        int old_array_size;
-        x->x_startup_flag = 0;
-        old_array_size = x->x_array_size;
-        if(!(array_ptr = (t_garray *)pd_findbyclass(arrayName, garray_class))){
-            if(*arrayName->s_name){
-                pd_error(x, "[conv~]: no array named %s", arrayName->s_name);
-                // resize x_ir_signal back to 0
-                x->x_ir_signal = (t_sample *)t_resizebytes( x->x_ir_signal, old_array_size*sizeof(t_sample), 0);
-                x->x_array_size = 0;
-                x->x_vec = 0;
-                return;
-            }
-        }
-        else if(!garray_getfloatwords(array_ptr, &x->x_array_size, &x->x_vec)){
-            pd_error(x, "[conv~]: bad template for %s", arrayName->s_name);
+    
+    int old_array_size;
+    old_array_size = x->x_array_size;
+    if(!(array_ptr = (t_garray *)pd_findbyclass(arrayName, garray_class))){
+        if(*arrayName->s_name){
+            pd_error(x, "[conv~]: no array named %s", arrayName->s_name);
             // resize x_ir_signal back to 0
-            x->x_ir_signal = (t_sample *)t_resizebytes(x->x_ir_signal, old_array_size*sizeof(t_sample), 0);
+            x->x_ir_signal = (t_sample *)t_resizebytes( x->x_ir_signal, old_array_size*sizeof(t_sample), 0);
             x->x_array_size = 0;
             x->x_vec = 0;
             return;
         }
-        else
-            x->x_array_name = arrayName;
-        // resize x_ir_signal
-        x->x_ir_signal = (t_sample *)t_resizebytes(x->x_ir_signal, old_array_size*sizeof(t_sample), x->x_array_size*sizeof(t_sample));
-        // since this is first analysis of arrayName, load it into x_ir_signal
-        for(i = 0; i < x->x_array_size; i++)
-            x->x_ir_signal[i] = x->x_vec[i].w_float;
     }
-    else{
-        t_garray *this_array_ptr;
-        t_word *this_vec;
-        int this_array_size;
-        // if we want to assume that a 2nd call to analyze() with the same array name is safe (and we don't have to reload x_vec or update x_array_size), we have to do some careful safety checks to make sure that the size of x_array_name hasn't changed since the last time this was called. If it has, we should just abort for now.
-        this_array_size = 0;
-        this_array_ptr = (t_garray *)pd_findbyclass(arrayName, garray_class);
-        if(this_array_ptr) {
-            garray_getfloatwords(this_array_ptr, &this_array_size, &this_vec);
-        }
-        else {
-            pd_error(x, "[conv~]: array %s doesn't exist", arrayName->s_name);
-        }
-        if(this_array_size != x->x_array_size){
-            pd_error(x, "[conv~]: size of array %s has changed since previous analysis...aborting. Reload %s with previous IR contents or analyze another array.", arrayName->s_name, arrayName->s_name);
-            return;
-        }
+    else if(!garray_getfloatwords(array_ptr, &x->x_array_size, &x->x_vec)){
+        pd_error(x, "[conv~]: bad template for %s", arrayName->s_name);
+        // resize x_ir_signal back to 0
+        x->x_ir_signal = (t_sample *)t_resizebytes(x->x_ir_signal, old_array_size*sizeof(t_sample), 0);
+        x->x_array_size = 0;
+        x->x_vec = 0;
+        return;
     }
+    else
+        x->x_array_name = arrayName;
+    // resize x_ir_signal
+    x->x_ir_signal = (t_sample *)t_resizebytes(x->x_ir_signal, old_array_size*sizeof(t_sample), x->x_array_size*sizeof(t_sample));
+    // since this is first analysis of arrayName, load it into x_ir_signal
+    for(i = 0; i < x->x_array_size; i++)
+        x->x_ir_signal[i] = x->x_vec[i].w_float;
     // count how many partitions there will be for this IR
     x->x_num_parts = 0;
     while((x->x_num_parts*x->x_window) < x->x_array_size)
@@ -309,7 +287,6 @@ static void conv_print(t_conv *x){
 }
 
 static void conv_initClock(t_conv *x){
-    x->x_startup_flag = 1;
     // try analyzing at creation if there was a table specified
     if(x->x_array_name != gensym("NOARRAYSPECIFIED"))
         conv_set(x, x->x_array_name);
