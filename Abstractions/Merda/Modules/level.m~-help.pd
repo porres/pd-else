@@ -18,7 +18,7 @@
 #X obj 57 157 else/level.m~;
 #A saved 0 1;
 #A saved;
-#X obj 44 22 else/note 423 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [level.m~] - Gain level Adjustment;
+#X obj 44 22 else/note 423 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 ðŸ’© [level.m~] - Gain level Adjustment;
 #X obj 309 293 level~;
 #A saved 0;
 #X text 232 159 This is a simple gain module that adjusts the gain in dB. It works with MC inputs., f 29;

@@ -63,7 +63,7 @@
 #A saved;
 #A saved;
 #A saved;
-#X obj 104 33 else/note 485 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [gendyn.m~] - Stochastic Synthesis Oscillator;
+#X obj 104 33 else/note 485 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 ðŸ’© [gendyn.m~] - Stochastic Synthesis Oscillator;
 #X connect 1 0 10 0;
 #X connect 5 0 11 0;
 #X connect 6 0 7 0;

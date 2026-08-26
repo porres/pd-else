@@ -52,7 +52,7 @@
 #A saved;
 #A saved;
 #X obj 79 82 else/player~ guitar.mp3 1 1;
-#X obj 50 27 else/note 454 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [plate.rev.m~] - Plate Reverb Emulation;
+#X obj 50 27 else/note 454 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 ðŸ’© [plate.rev.m~] - Plate Reverb Emulation;
 #X connect 4 0 7 0;
 #X connect 7 0 5 0;
 #X connect 7 1 5 1;

@@ -37,7 +37,7 @@
 #A saved;
 #X obj 67 383 else/out~;
 #X obj 67 94 else/play.file~ guitar.mp3 1 1;
-#X obj 89 37 else/note 315 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [chorus.m~] - Chorus;
+#X obj 89 37 else/note 315 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 ðŸ’© [chorus.m~] - Chorus;
 #X text 339 102 see:;
 #X obj 337 126 about.MERDA;
 #N canvas 686 120 369 466 multichannel 0;

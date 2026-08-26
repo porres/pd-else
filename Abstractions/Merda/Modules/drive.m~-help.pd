@@ -32,7 +32,7 @@
 #X obj 75 486 else/out~;
 #X obj 291 284 else/drive~;
 #X obj 75 89 else/player~ bubul.mp3 1 1;
-#X obj 54 24 else/note 376 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [drive.m~] - Overdrive Distortion;
+#X obj 54 24 else/note 376 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 ðŸ’© [drive.m~] - Overdrive Distortion;
 #N canvas 791 157 440 600 multichannel 0;
 #X obj 92 492 else/out~;
 #X obj 91 148 snake~ in;

@@ -124,7 +124,7 @@
 #X obj 506 275 else/adsr~;
 #X obj 35 318 else/voices~ 4;
 #X obj 35 564 else/out~;
-#X obj 43 16 else/note 375 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [adsr.m~] - Polyphonic ADSR envelope;
+#X obj 43 16 else/note 375 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 ðŸ’© [adsr.m~] - Polyphonic ADSR envelope;
 #X obj 180 325 else/adsr.m~;
 #A saved 259.2 50 0.5 500 1 0 0 0 0 -1 1 0 0;
 #A saved;
