@@ -1,4 +1,4 @@
-#N canvas 370 189 555 415 12;
+#N canvas 613 140 555 415 12;
 #X obj 146 221 else/op~ > 0;
 #X obj 76 31 inlet~;
 #X obj 171 31 inlet;
@@ -9,7 +9,7 @@
 #X obj 146 343 outlet~;
 #X text 253 141 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 255 122 Alexandre Torres Porres (2026);
-#N canvas 142 130 340 311 init 1;
+#N canvas 142 130 340 311 init 0;
 #X obj 124 29 loadbang;
 #X obj 112 205 outlet;
 #X obj 124 57 else/args -;

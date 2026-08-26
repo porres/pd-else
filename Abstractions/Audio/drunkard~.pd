@@ -3,7 +3,7 @@
 #X obj 123 407 outlet~;
 #X obj 123 296 *~;
 #X obj 137 217 max 0;
-#N canvas 258 166 355 374 fb 1;
+#N canvas 258 166 355 374 fb 0;
 #X obj 73 40 inlet~;
 #X obj 105 157 r \$0-min;
 #X obj 151 189 r \$0-max;
