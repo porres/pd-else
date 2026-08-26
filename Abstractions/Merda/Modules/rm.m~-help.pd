@@ -31,7 +31,7 @@
 #X connect 7 0 6 0;
 #X connect 8 0 7 0;
 #X restore 118 121 pd messages;
-#X obj 54 29 else/note 335 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [rm.m~] - Ring Modulator;
+#X obj 54 29 else/note 335 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 ðŸ’© [rm.m~] - Ring Modulator;
 #N canvas 686 120 522 543 multichannel 0;
 #X text 241 211 The object has support for Multichannels, f 22;
 #X text 229 266 Hence \, you can have a MC input to the left and a single or MC CV inputs for each channel., f 33;

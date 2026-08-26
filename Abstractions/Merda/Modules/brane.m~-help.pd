@@ -432,7 +432,7 @@
 #X obj 40 343 else/brane.m~ sax.wav;
 #X text 69 296 arguments: 1) time in minutes if float or filename if symbol (default 1), f 72;
 #X text 146 315 2) preset number (default 1);
-#X obj 27 17 else/note 595 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [brane.m~] - Sampler/Granulator/PhaseVocoder/Harmonizer/etc.;
+#X obj 27 17 else/note 595 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 ðŸ’© [brane.m~] - Sampler/Granulator/PhaseVocoder/Harmonizer/etc.;
 #X connect 4 0 17 0;
 #X connect 5 0 17 0;
 #X connect 17 0 13 0;

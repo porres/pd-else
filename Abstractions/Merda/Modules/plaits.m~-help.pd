@@ -2000,7 +2000,7 @@
 #A saved;
 #X obj 30 483 else/out~;
 #X obj 441 483 else/out~;
-#X obj 139 28 else/note 512 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [plaits.m~] - Mutable Instrument's Plaits module;
+#X obj 139 28 else/note 512 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 ðŸ’© [plaits.m~] - Mutable Instrument's Plaits module;
 #X text 487 233 This example uses a MIDI Input \, note the MIDI toggle on. You then need to set the number of voices (1 voice makes it like [mono]) and can then use the toggles to set Trigger or Level mode. To use signals for Trigger and Level \, see below. In MIDI mode there's only a single channel output with all the voices. But for signal input we have each voice in a single channel., f 45;
 #X connect 8 0 12 0;
 #X connect 10 0 11 0;

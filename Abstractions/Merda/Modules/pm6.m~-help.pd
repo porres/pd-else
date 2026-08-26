@@ -21,7 +21,7 @@
 #A saved;
 #X obj 191 600 else/out~;
 #X obj 638 132 else/pm6~, f 10;
-#X obj 66 29 else/note 376 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [op6.m~] - 6 Operators FM synth;
+#X obj 66 29 else/note 376 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 ðŸ’© [op6.m~] - 6 Operators FM synth;
 #X connect 0 0 11 1;
 #X connect 0 0 11 2;
 #X connect 0 0 11 4;

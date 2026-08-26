@@ -80,7 +80,7 @@
 #A saved 0.464159 0 0;
 #A saved;
 #A saved;
-#X obj 112 19 else/note 382 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [superosc.m~] - Super Oscillator;
+#X obj 112 19 else/note 382 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 ðŸ’© [superosc.m~] - Super Oscillator;
 #X obj 40 240 else/superosc.m~;
 #A saved 0 0 0.0821428 0.5 0 7.5 0 0 0 1 0;
 #A saved;

@@ -24,7 +24,7 @@
 #X text 280 204 This VCO module has a MIDI pitch input (default 60 for no signal input). The input is polyphonic by the way \, via multichannel signals., f 48;
 #X obj 42 177 else/voices~ 4;
 #X obj 42 49 else/note.in;
-#X obj 198 25 else/note 408 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [transp.m~] - Transpose MIDI pitch;
+#X obj 198 25 else/note 408 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 ðŸ’© [transp.m~] - Transpose MIDI pitch;
 #X text 279 350 There is a detune number box that modulates the pitch in Hz and transposition number boxes that change the pitch in semitones (integer values only) and cents. Alternatively \, you can set transposition with a ratio value either as a float or as a fraction (as in "3/2"). The detuning is added to the transposition., f 48;
 #X text 280 257 Other inlets are CV signals to set FM (Frequency Modulation) \, PM (Phase Modulation) \, PWM (for square wave and variable saw) and a sync inlet that takes impulses. The attenuverter for FM \, at maximum values \, represents 5 octaves by default or 1.25 khz in Linear FM mode., f 48;
 #X obj 482 82 about.MERDA;

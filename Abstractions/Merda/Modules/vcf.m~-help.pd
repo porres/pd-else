@@ -69,7 +69,7 @@
 #A saved;
 #A saved;
 #X obj 133 573 else/out~;
-#X obj 137 27 else/note 450 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 í ½í²© [vcf.m~] - Voltage Controlled Filter;
+#X obj 137 27 else/note 450 15 Menlo empty 4 0 0 0 0 223 223 223 1 1 ðŸ’© [vcf.m~] - Voltage Controlled Filter;
 #N canvas 718 146 676 758 multichannel 0;
 #X obj 114 126 else/adsr~ 500 500 0.5 500;
 #X obj 59 167 else/vcf.m~;
