@@ -333,6 +333,7 @@ static void elsefile_text_window_editor_guidefs(void){
     " } else {\n"
     "  toplevel $name\n"
     "  wm title $name $title\n"
+    "  ::pd_menus::menubar_for_dialog $name\n"
     "  wm geometry $name $geometry\n"
     "  wm protocol $name WM_DELETE_WINDOW [concat else_editor_close $name 1]\n"
     "  if {[tk windowingsystem] eq \"aqua\"} {\n"
@@ -343,9 +344,9 @@ static void elsefile_text_window_editor_guidefs(void){
     "  if {$sendable} {\n"
     "   bind $name <<Modified>> \"else_editor_dodirty $name\"\n"
     "   if {[tk windowingsystem] eq \"aqua\"} {\n"
-    "    bind $name <Command-s> \"else_editor_send $name; editor_setdirty $name 0\"\n"
+    "    bind $name <Command-s> \"else_editor_send $name; else_editor_setdirty $name 0\"\n"
     "   } else {\n"
-    "    bind $name <Control-s> \"else_editor_send $name; editor_setdirty $name 0\"\n"
+    "    bind $name <Control-s> \"else_editor_send $name; else_editor_setdirty $name 0\"\n"
     "   }\n"
     "  }\n"
 //    "  ::pdwindow::post \"DEBUG: font for $fontsize -> [get_font_for_size $fontsize]\"\n"
@@ -374,7 +375,7 @@ static void elsefile_text_window_editor_guidefs(void){
     "  if {$dt} {wm title $name [string range $title 1 end]}\n"
     " }\n"
     "}\n"
-    "proc editor_setdirty {name flag} {\n"
+    "proc else_editor_setdirty {name flag} {\n"
     " if {[winfo exists $name]} {catch {$name.text edit modified $flag}}\n"
     "}\n"
     "proc else_editor_doclose {name} {destroy $name}\n"
@@ -505,7 +506,7 @@ void else_editor_append(t_elsefile *f, char *contents){
 void else_editor_setdirty(t_elsefile *f, int flag){
     if(f->f_editorfn){
         char buf[64];
-        snprintf(buf, sizeof(buf), "editor_setdirty .%lx %d",
+        snprintf(buf, sizeof(buf), "else_editor_setdirty .%lx %d",
             (unsigned long)f, flag);
         pdgui_vmess(buf, NULL);
     }
