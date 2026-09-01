@@ -333,6 +333,7 @@ static void elsefile_text_window_editor_guidefs(void){
     " } else {\n"
     "  toplevel $name\n"
     "  wm title $name $title\n"
+    "  ::pd_menus::menubar_for_dialog $name\n"
     "  wm geometry $name $geometry\n"
     "  wm protocol $name WM_DELETE_WINDOW [concat else_editor_close $name 1]\n"
     "  if {[tk windowingsystem] eq \"aqua\"} {\n"
