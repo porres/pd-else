@@ -55,6 +55,7 @@ typedef struct _coll{
     t_outlet           *x_keyout;
     t_outlet           *x_info_out;
     t_symbol           *x_bindsym;
+    int                 x_filearg;
     int                 x_is_opened;
     int                 x_threaded;
     int                 x_initread; // if we're reading a file for the first time
@@ -1032,7 +1033,7 @@ static void coll_size(t_messcoll *x){
     outlet_anything(x->x_info_out, gensym("size"), 1, at);
 }
 
-static void coll_set(t_messcoll *x, t_symbol *name){
+static void coll_name(t_messcoll *x, t_symbol *name){
     if(name == &s_)
         post("[messcoll]: empty name to set to");
     t_messcollcommon *cc = (t_messcollcommon *)pd_findbyclass(name, messcollcommon_class);
@@ -1048,7 +1049,11 @@ static void coll_set(t_messcoll *x, t_symbol *name){
 }
 
 static void coll_keep(t_messcoll *x, t_float f){
-    x->x_common->c_keepflag = f != 0;    
+    if(x->x_filearg){
+        post("[messcoll]: file arg is given, so keep message is ignored");
+        return;
+    }
+    x->x_common->c_keepflag = f != 0;
 }
 
 static void coll_read(t_messcoll *x, t_symbol *s){
@@ -1240,6 +1245,7 @@ static void *coll_new(t_symbol *s, int ac, t_atom *av){
     x->x_canvas = canvas_getcurrent();
     char buf[MAXPDSTRING];
     buf[MAXPDSTRING-1] = 0;
+    x->x_filearg = 0;
     sprintf(buf, "#%lx", (long)x);
     pd_bind(&x->x_obj.ob_pd, x->x_bindsym = gensym(buf));
     outlet_new((t_object *)x, &s_);
@@ -1258,8 +1264,14 @@ static void *coll_new(t_symbol *s, int ac, t_atom *av){
                 name = cursym;
                 arg = 1;
             }
-            else if(file == NULL && arg == 1)
+            else if(file == NULL && arg == 1){
                 file = cursym;
+                x->x_filearg = 1;
+                if(keep){
+                    keep = 0;
+                    post("[messcoll]: file arg is given, so keep flag is ignored");
+                }
+            }
             else
                 goto errstate;
             ac--, av++;
@@ -1282,7 +1294,7 @@ static void *coll_new(t_symbol *s, int ac, t_atom *av){
         };
     };
     x->x_keep = keep;
-    inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("symbol"), gensym("set"));
+    inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("symbol"), gensym("name"));
     return(x);
 	errstate:
 		pd_error(x, "[messcoll]: improper args");
@@ -1304,7 +1316,7 @@ void messcoll_setup(void){
     class_addmethod(messcoll_class, (t_method)coll_end, gensym("end"), 0);
     class_addmethod(messcoll_class, (t_method)coll_goto, gensym("goto"), A_GIMME, 0);
     class_addmethod(messcoll_class, (t_method)coll_size, gensym("size"), 0);
-    class_addmethod(messcoll_class, (t_method)coll_set, gensym("set"), A_SYMBOL, 0);
+    class_addmethod(messcoll_class, (t_method)coll_name, gensym("name"), A_SYMBOL, 0);
     class_addmethod(messcoll_class, (t_method)coll_keep, gensym("keep"), A_FLOAT,0);
     class_addmethod(messcoll_class, (t_method)coll_threaded, gensym("threaded"), A_FLOAT,0);
     class_addmethod(messcoll_class, (t_method)coll_read, gensym("read"), A_DEFSYM, 0);
