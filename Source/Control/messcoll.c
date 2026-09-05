@@ -1032,7 +1032,7 @@ static void coll_size(t_messcoll *x){
     outlet_anything(x->x_info_out, gensym("size"), 1, at);
 }
 
-static void coll_set(t_messcoll *x, t_symbol *name){
+static void coll_name(t_messcoll *x, t_symbol *name){
     if(name == &s_)
         post("[messcoll]: empty name to set to");
     t_messcollcommon *cc = (t_messcollcommon *)pd_findbyclass(name, messcollcommon_class);
@@ -1304,7 +1304,8 @@ void messcoll_setup(void){
     class_addmethod(messcoll_class, (t_method)coll_end, gensym("end"), 0);
     class_addmethod(messcoll_class, (t_method)coll_goto, gensym("goto"), A_GIMME, 0);
     class_addmethod(messcoll_class, (t_method)coll_size, gensym("size"), 0);
-    class_addmethod(messcoll_class, (t_method)coll_set, gensym("set"), A_SYMBOL, 0);
+    class_addmethod(messcoll_class, (t_method)coll_name, gensym("name"), A_SYMBOL, 0);
+    class_addmethod(messcoll_class, (t_method)coll_rename, gensym("rename"), A_SYMBOL, 0);
     class_addmethod(messcoll_class, (t_method)coll_keep, gensym("keep"), A_FLOAT,0);
     class_addmethod(messcoll_class, (t_method)coll_threaded, gensym("threaded"), A_FLOAT,0);
     class_addmethod(messcoll_class, (t_method)coll_read, gensym("read"), A_DEFSYM, 0);
