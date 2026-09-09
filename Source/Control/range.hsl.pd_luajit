@@ -1,0 +1,232 @@
+local else_gui   = require("else_gui")
+local range_hsl  = pd.Class:new():register("range.hsl")
+
+else_gui.setup(range_hsl, {
+    { "width",     127,           "resize",     "Width",      "int",   {frame="Dimensions", min=10, max=4096, flag="width"}   },
+    { "height",    20,            "resize",     "Height",     "int",   {frame="Dimensions", min=4,  max=256,  flag="height"}  },
+    { "range",     {0, 127},      nil,          "Range",      "range", {frame="General",    flag="range"}                     },
+    { "mode",      0,             nil,          "Base Mode",  "combo", {frame="General",    flag="mode", items={"Move","Select","Extend","Expand"}}},
+    { "bgcolor",   pd.bg_color,   "repaint",    "Background", "color", {frame="Appearance", flag="bgcolor"}                   },
+    { "fgcolor",   pd.fg_color,   "repaint",    "Range Fill", "color", {frame="Appearance", flag="fgcolor"}                   },
+    { "send",      "empty",        nil,         "Send",       "text",  {frame="General",    flag="send"}                      },
+    { "receive",   "empty",       "on_receive", "Receive",    "text",  {frame="General",    flag="receive"}                   }
+})
+
+function range_hsl:initialize(sel, atoms)
+    self.inlets   = 1
+    self.outlets  = 1
+
+    -- runtime modifier state (not saved)
+    self.key_shift = false
+    self.key_ctrl  = false
+    self.key_alt   = false
+    self.dragging  = false
+
+    self:init_args(atoms)
+
+    local span = self.range[2] - self.range[1]
+    self.val_lo = self.range[1] + span / 3
+    self.val_hi = self.range[1] + 2 * span / 3
+
+    self:setup_receive(self.receive)
+    self:set_size(self.width, self.height)
+    return true
+end
+
+function range_hsl:in_1_range(atoms)
+    self.range = {
+        tonumber(atoms[1]) or self.range[1],
+        tonumber(atoms[2]) or self.range[2],
+    }
+    self:clamp_values()
+    self:save_args(); self:repaint()
+end
+
+function range_hsl:in_1_list(atoms)
+    self.val_lo = tonumber(atoms[1]) or self.val_lo
+    self.val_hi = tonumber(atoms[2]) or self.val_hi
+    self:clamp_values()
+    self:save_args(); self:repaint(); self:output()
+end
+
+function range_hsl:in_1_set(atoms)
+    self.val_lo = tonumber(atoms[1]) or self.val_lo
+    self.val_hi = tonumber(atoms[2]) or self.val_hi
+    self:clamp_values()
+    self:save_args(); self:repaint()
+end
+
+function range_hsl:on_receive(sym)
+    self:setup_receive(sym)
+end
+
+function range_hsl:val_to_px(v)
+    local w = select(1, self:get_size())
+    return (v - self.range[1]) / (self.range[2] - self.range[1]) * w
+end
+
+function range_hsl:px_to_val(x)
+    local w = select(1, self:get_size())
+    local v = self.range[1] + (x / w) * (self.range[2] - self.range[1])
+    return math.max(self.range[1], math.min(self.range[2], v))
+end
+
+function range_hsl:clamp_values()
+    local lo, hi = self.range[1], self.range[2]
+    self.val_lo = math.max(lo, math.min(hi, self.val_lo))
+    self.val_hi = math.max(lo, math.min(hi, self.val_hi))
+    if self.val_lo > self.val_hi then
+        self.val_lo, self.val_hi = self.val_hi, self.val_lo
+    end
+end
+
+function range_hsl:output()
+    if self._outputting then return end
+    self._outputting = true
+    self:outlet(1, "list", { self.val_lo, self.val_hi })
+    if self.send ~= "empty" and self.send ~= "" then
+        pd.send(self.send, "list", { self.val_lo, self.val_hi })
+    end
+    self._outputting = false
+end
+
+function range_hsl:setup_receive(sym)
+    self.recv = nil
+    if sym ~= "empty" and sym ~= "" then
+        self.recv = pd.Receive:new():register(self, sym, "receive_cb")
+    end
+end
+
+function range_hsl:active_mode()
+    if self.key_shift then return 1 end
+    if self.key_ctrl  then return 2 end
+    if self.key_alt   then return 3 end
+    return self.mode
+end
+
+function range_hsl:key(down, name)
+    local held = (down ~= 0)
+    if     name == "Shift_L"   or name == "Shift_R"               then self.key_shift = held
+    elseif name == "Control_L" or name == "Control_R"
+        or name == "Meta_L"    or name == "Meta_R"                 then self.key_ctrl  = held
+    elseif name == "Alt_L"     or name == "Alt_R"                  then self.key_alt   = held
+    end
+end
+
+function range_hsl:mouse_down(x, y)
+    self.dragging = true
+    local m = self:active_mode()
+
+    if m == 0 then
+        -- Move: record anchor in value space
+        self.drag_down_x  = x
+        self.drag_down_lo = self.val_lo
+        self.drag_down_hi = self.val_hi
+
+    elseif m == 1 then
+        -- Select: start a fresh selection from the click point
+        local v = self:px_to_val(x)
+        self.drag_anchor = v
+        self.val_lo, self.val_hi = v, v
+        self:repaint(); self:output()
+
+    elseif m == 2 then
+        -- Extend: choose which endpoint to drag
+        local v = self:px_to_val(x)
+        self.drag_endpoint =
+            math.abs(v - self.val_lo) <= math.abs(v - self.val_hi) and "lo" or "hi"
+
+    elseif m == 3 then
+        -- Expand: record centre and half-width
+        self.drag_down_y      = y
+        self.drag_down_center = (self.val_lo + self.val_hi) / 2
+        self.drag_down_half   = (self.val_hi - self.val_lo) / 2
+    end
+end
+
+function range_hsl:mouse_drag(x, y)
+    if not self.dragging then return end
+    local m = self:active_mode()
+    local w, h = self:get_size()
+    local span_val = self.range[2] - self.range[1]
+
+    if m == 0 then
+        -- Move: translate both endpoints by the pixel delta in value space
+        local dx_val = (x - self.drag_down_x) / w * span_val
+        local rng_w  = self.drag_down_hi - self.drag_down_lo
+        local new_lo = math.max(self.range[1],
+                        math.min(self.range[2] - rng_w,
+                                 self.drag_down_lo + dx_val))
+        self.val_lo = new_lo
+        self.val_hi = new_lo + rng_w
+
+    elseif m == 1 then
+        -- Select: stretch from anchor to current position
+        local v = self:px_to_val(x)
+        self.val_lo = math.min(self.drag_anchor, v)
+        self.val_hi = math.max(self.drag_anchor, v)
+
+    elseif m == 2 then
+        -- Extend: move only the nearest endpoint
+        local v = self:px_to_val(x)
+        if self.drag_endpoint == "lo" then
+            self.val_lo = math.min(v, self.val_hi)
+        else
+            self.val_hi = math.max(v, self.val_lo)
+        end
+
+    elseif m == 3 then
+        -- Expand: drag up = wider, drag down = narrower, centre stays fixed
+        local dy       = (y - self.drag_down_y) / 8
+        local scale    = span_val / h
+        local new_half = math.max(0, self.drag_down_half - dy * scale)
+        local center   = self.drag_down_center
+        self.val_lo    = math.max(self.range[1], center - new_half)
+        self.val_hi    = math.min(self.range[2], center + new_half)
+    end
+
+    self:clamp_values()
+    self:repaint(); self:output()
+end
+
+function range_hsl:mouse_up()
+    self.dragging = false
+end
+
+function range_hsl:receive_cb(sel, atoms)
+    if     sel == "bang" then self:in_1_bang()
+    elseif sel == "list" then self:in_1_list(atoms)
+    elseif sel == "set"  then self:in_1_set(atoms)
+    end
+end
+
+function range_hsl:in_1_bang()
+    self:output()
+end
+
+function range_hsl:paint(g)
+    local w, h  = self:get_size()
+    local bg    = self.bgcolor
+    local fg    = self.fgcolor
+    local px_lo = self:val_to_px(self.val_lo)
+    local px_hi = self:val_to_px(self.val_hi)
+
+    -- background
+    g:set_color(bg[1], bg[2], bg[3])
+    g:fill_all()
+
+    -- range fill
+    g:set_color(fg[1], fg[2], fg[3])
+    g:fill_rect(px_lo, 0, math.max(1, px_hi - px_lo), h+1)
+
+    -- endpoint handles
+    g:set_color(fg[1] * 0.7, fg[2] * 0.7, fg[3] * 0.7)
+    g:fill_rect(px_lo, 0, 2, h+1)
+    g:fill_rect(px_hi - 2, 0, 2, h+1)
+
+    if w ~= self.width or h ~= self.height then
+        self.width = w
+        self.height = h
+        self:save_args()
+    end
+end

@@ -1,0 +1,452 @@
+local else_gui  = require("else_gui")
+local multi_vsl = pd.Class:new():register("multi.vsl")
+
+else_gui.setup(multi_vsl, {
+    { "width",      200,          "resize",     "Width",      "int",   {frame="Dimensions", min=4,  flag="width"}              },
+    { "height",     127,          "resize",     "Height",     "int",   {frame="Dimensions", min=4,  flag="height"}             },
+    { "range",      {0, 127},     nil,          "Range",      "range", {frame="General",    flag="range"}                      },
+    { "n",          8,            "on_n",       "Sliders",    "int",   {frame="Dimensions", min=1,  flag="n"}                  },
+    { "tabname",    "internal",   "on_rename",  "Array Name", "text",  {frame="General",    flag="name", msg="rename"}      },
+    { "send",       "empty",      nil,          "Send",       "text",  {frame="General",    flag="send"}                       },
+    { "receive",    "empty",      "on_receive", "Receive",    "text",  {frame="General",    flag="receive"}                    },
+    { "bgcolor",    pd.bg_color,  "repaint",    "Background", "color", {frame="Appearance", flag="bgcolor"}                    },
+    { "fgcolor",    {90, 90, 90}, "repaint",    "Foreground", "color", {frame="Appearance", flag="fgcolor"}                    },
+    { "linecolor",  pd.fg_color,  "repaint",    "Line",       "color", {frame="Appearance", flag="linecolor"}                  },
+    { "jump",       0,            nil,          "Jump",       "check", {frame="General",    flag="jump"}                       },
+    { "savestate",  0,            nil,          "Save State", "check", {frame="General",    flag="savestate"}                  },
+    { "mode",       0,            nil,          "List Mode",  "check", {frame="General",    flag="mode"}                       },
+}, {
+    -- -dim <w> <h>
+    ["-dim"] = function(self, atoms, i)
+        self.width  = math.max(4, math.floor(tonumber(atoms[i])   or self.width))
+        self.height = math.max(4, math.floor(tonumber(atoms[i+1]) or self.height))
+        return 2
+    end,
+    -- -set <v0> <v1> ... <vn>: pre-set slider values (reads exactly n values)
+    ["-set"] = function(self, atoms, i)
+        -- we don't know n yet at parse time so stash raw atoms for post-init
+        self._preset_atoms = atoms
+        self._preset_start = i
+        return self.n   -- consume n values (n is already set from earlier flags)
+    end,
+    -- -savestate (bare flag)
+    ["-savestate"] = function(self, atoms, i)
+        self.savestate = 1
+        return 0
+    end,
+})
+
+local _base_save_args = multi_vsl.save_args
+
+function multi_vsl:save_args()
+    _base_save_args(self)
+    if self.savestate ~= 0 and self.values then
+        local args = self:get_args()
+        for i = 1, self.n do
+            args[#args + 1] = self.values[i] or 0
+        end
+        self:set_args(args)
+    end
+end
+
+function multi_vsl:in_1_list(atoms)
+    for i, a in ipairs(atoms) do
+        local idx = i   -- 1-based internally
+        if idx <= self.n then
+            self.values[idx] = self:clamp_val(tonumber(a) or 0)
+        end
+    end
+    self:on_change_all()
+    self:save_state(); self:repaint()
+end
+
+-- set <index> <v0> <v1> ...: set values starting from 1-based index
+function multi_vsl:in_1_set(atoms)
+    local start = math.floor(tonumber(atoms[1]) or 0) + 1  -- convert to 1-based
+    for i = 2, #atoms do
+        local idx = start + (i - 2)
+        if idx >= 1 and idx <= self.n then
+            self.values[idx] = self:clamp_val(tonumber(atoms[i]) or 0)
+        end
+    end
+    self:save_state(); self:repaint()
+end
+
+-- get <index> [count]: output value(s) starting from index
+function multi_vsl:in_1_get(atoms)
+    local start = math.floor(tonumber(atoms[1]) or 0) + 1
+    local count = math.floor(tonumber(atoms[2]) or 1)
+    for i = 0, count - 1 do
+        local idx = start + i
+        if idx >= 1 and idx <= self.n then
+            self:outlet(1, "list", { idx - 1, self.values[idx] })
+        end
+    end
+end
+
+-- dim <w> <h>: set width and height together
+function multi_vsl:in_1_dim(atoms)
+    if atoms[1] then self.width  = math.max(4, math.floor(tonumber(atoms[1]) or self.width))  end
+    if atoms[2] then self.height = math.max(4, math.floor(tonumber(atoms[2]) or self.height)) end
+    self:set_size(self.width, self.height)
+    self:save_args(); self:repaint()
+end
+
+-- range <lo> <hi>
+function multi_vsl:in_1_range(atoms)
+    local old_lo, old_hi = self.range[1], self.range[2]
+    local new_lo = tonumber(atoms[1]) or old_lo
+    local new_hi = tonumber(atoms[2]) or old_hi
+    local old_span = old_hi - old_lo
+    local new_span = new_hi - new_lo
+
+    for i = 1, self.n do
+        if old_span ~= 0 then
+            local norm = (self.values[i] - old_lo) / old_span
+            self.values[i] = new_lo + norm * new_span
+        else
+            self.values[i] = new_lo
+        end
+    end
+
+    local t = pd.Table:new():sync(self.tabname)
+    if t then
+        for i = 1, self.n do t:set(i - 1, self.values[i] or 0) end
+        t:redraw()
+    end
+
+    self.range = { new_lo, new_hi }
+    self:clamp_all()
+    self:save_args(); self:repaint()
+end
+
+-- import <n> <v0> <v1> ...: resize and set values, then dump
+function multi_vsl:in_1_import(atoms)
+    local new_n = math.max(1, math.floor(tonumber(atoms[1]) or self.n))
+    self:resize_sliders(new_n)
+    for i = 2, #atoms do
+        local idx = i - 1
+        if idx >= 1 and idx <= self.n then
+            self.values[idx] = self:clamp_val(tonumber(atoms[i]) or 0)
+        end
+    end
+    self:on_change_all()
+    self:save_state(); self:repaint()
+end
+
+
+-- Alias so inlet/prop callbacks can call save_state which also handles external tables.
+function multi_vsl:save_state()
+    if self.tabname ~= "internal" and self.tabname ~= "" then
+        local t = pd.Table:new():sync(self.tabname)
+        if t then
+            for i = 1, self.n do t:set(i - 1, self.values[i] or 0) end
+            t:redraw()
+        end
+    end
+    self:save_args()
+end
+
+-- ─── Lifecycle ────────────────────────────────────────────────────────────────
+
+function multi_vsl:initialize(sel, atoms)
+    self.inlets    = 1
+    self.outlets   = 1
+    self.values    = {}
+    self.dragging  = false
+    self.drag_idx  = nil
+    self.last_y    = nil
+    self.shift     = false
+
+    self:init_args(atoms)
+
+    -- allocate values
+    self:resize_sliders(self.n)
+
+    -- restore embedded savestate values: they follow the fixed header slots.
+    -- Header slots: width(1) height(1) n(1) range(2) mode(1) jump(1) savestate(1)
+    --               tabname(1) send(1) receive(1) bgcolor(3) fgcolor(3) linecolor(3) = 20 slots
+    if self.savestate ~= 0 then
+        local HEADER = 20
+        local positional = self:_extract_positional(atoms)
+        for i = 1, self.n do
+            local raw = tonumber(positional[HEADER + i])
+            if raw then self.values[i] = self:clamp_val(raw) end
+        end
+    end
+
+    -- apply -set preset if captured during flag parsing
+    if self._preset_atoms then
+        local a, s = self._preset_atoms, self._preset_start
+        for i = 1, self.n do
+            local raw = tonumber(a[s + i - 1])
+            if raw then self.values[i] = self:clamp_val(raw) end
+        end
+        self._preset_atoms = nil
+    end
+
+    -- sync from external table if named
+    if self.tabname ~= "internal" and self.tabname ~= "" then
+        self:sync_from_table()
+    end
+
+    self:setup_receive(self.receive)
+    self:set_size(self.width, self.height)
+    return true
+end
+
+-- Extract positional atoms (strip flag tokens and their consumed values).
+-- Used to find embedded savestate data.
+function multi_vsl:_extract_positional(atoms)
+    local known_flags = {
+        ["-dim"]=2, ["-n"]=1, ["-range"]=2, ["-name"]=1, ["-jump"]=1,
+        ["-savestate"]=0, ["-send"]=1, ["-receive"]=1,
+        ["-bgcolor"]=3, ["-fgcolor"]=3, ["-linecolor"]=3, ["-mode"]=1, ["-set"]=self.n,
+        ["-width"]=1, ["-height"]=1,
+    }
+    local pos = {}
+    local i = 1
+    while i <= #atoms do
+        local a = tostring(atoms[i])
+        local consume = known_flags[a]
+        if consume then
+            i = i + 1 + consume
+        else
+            pos[#pos + 1] = atoms[i]
+            i = i + 1
+        end
+    end
+    return pos
+end
+
+function multi_vsl:on_n()
+    self:resize_sliders(self.n)
+    self:save_state(); self:repaint()
+end
+
+function multi_vsl:on_rename()
+    if self.tabname ~= "internal" and self.tabname ~= "" then
+        self:sync_from_table()
+    end
+    self:repaint()
+end
+
+function multi_vsl:on_receive(sym)
+    self:setup_receive(sym)
+end
+
+function multi_vsl:clamp_val(v)
+    local lo = math.min(self.range[1], self.range[2])
+    local hi = math.max(self.range[1], self.range[2])
+    return math.max(lo, math.min(hi, v))
+end
+
+function multi_vsl:clamp_all()
+    for i = 1, self.n do
+        self.values[i] = self:clamp_val(self.values[i] or 0)
+    end
+end
+
+function multi_vsl:resize_sliders(new_n)
+    local old = self.values or {}
+    self.values = {}
+    for i = 1, new_n do
+        self.values[i] = self:clamp_val(old[i] or 0)
+    end
+    self.n = new_n
+end
+
+function multi_vsl:slider_width()
+    return self.width / self.n
+end
+
+function multi_vsl:px_to_idx(x)
+    return math.max(1, math.min(self.n, math.floor(x / self:slider_width()) + 1))
+end
+
+function multi_vsl:val_to_norm(v)
+    local lo, hi = self.range[1], self.range[2]
+    if lo == hi then return 0 end
+    return (v - lo) / (hi - lo)
+end
+
+function multi_vsl:norm_to_val(n)
+    return self.range[1] + n * (self.range[2] - self.range[1])
+end
+
+function multi_vsl:y_to_val(y)
+    local norm = 1 - y / self.height   -- flip: top = max
+    return self:clamp_val(self:norm_to_val(norm))
+end
+
+function multi_vsl:output_single(idx)
+    local v = self.values[idx]
+    if self.mode ~= 0 then
+        -- list mode: output all values as a list
+        self:output_all_list()
+    else
+        self:outlet(1, "list", { idx - 1, v })
+        if self.send ~= "empty" and self.send ~= "" then
+            pd.send(self.send, "list", { idx - 1, v })
+        end
+    end
+end
+
+function multi_vsl:output_all_list()
+    local out = {}
+    for i = 1, self.n do out[i] = self.values[i] end
+    self:outlet(1, "list", out)
+    if self.send ~= "empty" and self.send ~= "" then
+        pd.send(self.send, "list", out)
+    end
+end
+
+function multi_vsl:on_change_all()
+    if self.mode ~= 0 then
+        self:output_all_list()
+    else
+        for i = 1, self.n do
+            self:outlet(1, "list", { i - 1, self.values[i] })
+        end
+        if self.send ~= "empty" and self.send ~= "" then
+            local out = {}
+            for i = 1, self.n do out[i] = self.values[i] end
+            pd.send(self.send, "list", out)
+        end
+    end
+end
+
+function multi_vsl:setup_receive(sym)
+    self.recv = nil
+    if sym ~= "empty" and sym ~= "" then
+        self.recv = pd.Receive:new():register(self, sym, "receive_cb")
+    end
+end
+
+function multi_vsl:sync_from_table()
+    local t = pd.Table:new():sync(self.tabname)
+    if not t then return end
+    local len = math.min(self.n, t:length())
+    for i = 1, len do
+        self.values[i] = self:clamp_val(t:get(i - 1))
+    end
+end
+
+function multi_vsl:mouse_down(x, y)
+    self.dragging = true
+    self.drag_idx = self:px_to_idx(x)
+    self.last_y   = y
+
+    if self.jump ~= 0 then
+        self.values[self.drag_idx] = self:y_to_val(y)
+        self:output_single(self.drag_idx)
+        self:save_state(); self:repaint()
+    end
+end
+
+function multi_vsl:mouse_drag(x, y)
+    if not self.dragging then return end
+    local dy   = y - self.last_y
+    local scale = self.shift and 10 or 1
+    local span  = self.range[2] - self.range[1]
+    local delta = -(dy / self.height) * span / scale
+
+    self.values[self.drag_idx] = self:clamp_val(
+        (self.values[self.drag_idx] or 0) + delta)
+    self.last_y = y
+
+    self:output_single(self.drag_idx)
+    self:save_state(); self:repaint()
+end
+
+function multi_vsl:mouse_up()
+    self.dragging = false
+end
+
+function multi_vsl:key(down, name)
+    if name == "Shift_L" or name == "Shift_R" then
+        self.shift = (down ~= 0)
+    end
+end
+
+function multi_vsl:receive_cb(sel, atoms)
+    if     sel == "bang" then self:in_1_bang()
+    elseif sel == "list" then self:in_1_list(atoms)
+    elseif sel == "set"  then self:in_1_set(atoms)
+    end
+end
+
+function multi_vsl:in_1_bang()
+    if self.mode ~= 0 then
+        self:output_all_list()
+    else
+        for i = 1, self.n do
+            self:outlet(1, "list", { i - 1, self.values[i] })
+        end
+    end
+end
+
+function multi_vsl:in_1_dump()
+    for i = 1, self.n do
+        self:outlet(1, "list", { i - 1, self.values[i] })
+    end
+end
+
+function multi_vsl:in_1_setall(atoms)
+    local v = self:clamp_val(tonumber(atoms[1]) or 0)
+    for i = 1, self.n do self.values[i] = v end
+    self:save_state(); self:repaint()
+end
+
+function multi_vsl:in_1_export()
+    local out = {}
+    for i = 1, self.n do out[i] = self.values[i] end
+    self:outlet(1, "list", out)
+end
+
+function multi_vsl:paint(g)
+    local w, h  = self:get_size()
+    local sw    = w / self.n
+    local bg    = self.bgcolor
+    local fg    = self.fgcolor
+    local lc    = self.linecolor
+
+    -- background
+    g:set_color(bg[1], bg[2], bg[3])
+    g:fill_all()
+
+    -- slider fills
+    g:set_color(fg[1], fg[2], fg[3])
+    for i = 1, self.n do
+        local norm  = self:val_to_norm(self.values[i])
+        local bar_h = norm * h
+        local x     = (i - 1) * sw
+        g:fill_rect(x, h - bar_h, sw, bar_h)
+    end
+
+    -- value lines and dividers
+    g:set_color(lc[1], lc[2], lc[3])
+    for i = 1, self.n do
+        local norm  = self:val_to_norm(self.values[i])
+        local bar_h = norm * h
+        local x     = (i - 1) * sw
+        -- value line across the top of the bar
+        g:draw_line(x, h - bar_h, x + sw, h - bar_h, 1.5)
+        -- divider
+        if i > 1 then g:draw_line(x, 0, x, h, 1) end
+    end
+
+    -- highlight active slider while dragging
+    --if self.dragging and self.drag_idx then
+    --    local x = (self.drag_idx - 1) * sw
+    --    g:set_color(20, 20, 20)
+    --    g:fill_rect(x, 0, sw, h)
+    --end
+
+    -- for plugdata dynamic resize
+    if w ~= self.width or h ~= self.height then
+        self.width = w
+        self.height = h
+        self:save_args();
+    end
+end

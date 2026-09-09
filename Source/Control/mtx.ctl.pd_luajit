@@ -1,0 +1,260 @@
+local else_gui = require("else_gui")
+local mtxctl   = pd.Class:new():register("mtx.ctl")
+
+else_gui.setup(mtxctl, {
+    { "cols",      3,             "on_cols",      "Columns",    "int",   {frame="Dimensions", min=1, max=256, flag="cols"} },
+    { "rows",      3,             "on_rows",      "Rows",       "int",   {frame="Dimensions", min=1, max=256, flag="rows"} },
+    { "cell_size", 20,            "on_cell_size", "Cell Size",  "int",   {frame="Dimensions", min=4, max=128, flag="size"} },
+    { "embed",     0,             nil,            "Embed",      "check", {frame="Dimensions", flag="embed"} },
+    -- 11 dummy positional placeholders to match the original arg layout
+    { "_d1", 0 }, { "_d2", 0 }, { "_d3", 0 }, { "_d4", 0 }, { "_d5", 0 },
+    { "_d6", 0 }, { "_d7", 0 }, { "_d8", 0 }, { "_d9", 0 }, { "_d10", 0 }, { "_d11", 0 },
+    { "content",   {},            nil,            nil,          "float", {consume="rows*cols"} },
+    { "bgcolor",   pd.bg_color,   "repaint",      "Background", "color", {frame="Appearance", flag="bgcolor"} },
+    { "fgcolor",   pd.fg_color,   "repaint",      "Active Cell","color", {frame="Appearance", flag="fgcolor"} },
+    { "gridcolor", {120,120,120}, "repaint",      "Grid",       "color", {frame="Appearance", flag="gridcolor"} },
+}, {
+    ["-n"] = function(self, atoms, i)
+        self.cols = math.max(1, math.floor(tonumber(atoms[i])   or self.cols))
+        self.rows = math.max(1, math.floor(tonumber(atoms[i+1]) or self.rows))
+        return 2
+    end,
+})
+
+function mtxctl:initialize(sel, atoms)
+    self.inlets  = 1
+    self.outlets = 1
+    self.paint_val      = nil
+    self.last_painted_r = nil
+    self.last_painted_c = nil
+
+    self:init_args(atoms)
+
+    self.matrix = {}
+    for r = 1, self.rows do
+        self.matrix[r] = {}
+        for c = 1, self.cols do self.matrix[r][c] = 0 end
+    end
+
+    if self.embed ~= 0 then
+        local positional = {}
+        local i = 1
+        while i <= #atoms do
+            local a = tostring(atoms[i])
+            if a:sub(1,1) == "-" then
+                -- skip flag and its arguments by trying to count consumed values
+                -- we can't know exactly, so we skip until next flag or end
+                i = i + 1
+                while i <= #atoms and tostring(atoms[i]):sub(1,1) ~= "-" do
+                    positional[#positional + 1] = atoms[i]
+                    i = i + 1
+                end
+            else
+                positional[#positional + 1] = atoms[i]
+                i = i + 1
+            end
+        end
+        -- positional: rows cols cell_size embed [cell data...]
+        -- cell_size is 1 slot, bgcolor/fgcolor/gridcolor are 3 each = 4+9=13 header slots
+        local header_slots = 4 + 3 + 3 + 3  -- rows cols size embed + 3 colors
+        local n = header_slots + 1
+        for r = 1, self.rows do
+            for c = 1, self.cols do
+                if positional[n] then
+                    self.matrix[r][c] = (tonumber(positional[n]) or 0) ~= 0 and 1 or 0
+                end
+                n = n + 1
+            end
+        end
+    end
+
+    self:update_size()
+    return true
+end
+
+function mtxctl:in_1_list(atoms)
+    local c   = math.floor(tonumber(atoms[1]) or 0)
+    local r   = math.floor(tonumber(atoms[2]) or 0)
+    local val = (tonumber(atoms[3]) or 0) ~= 0 and 1 or 0
+    if not self:in_bounds(r, c) then return end
+    self.matrix[r][c] = val
+    self:output_cell(r, c)
+    self:save_state(); self:repaint()
+end
+
+function mtxctl:in_1_set(atoms)
+    local c   = math.floor(tonumber(atoms[1]) or 0)
+    local r   = math.floor(tonumber(atoms[2]) or 0)
+    local val = (tonumber(atoms[3]) or 0) ~= 0 and 1 or 0
+    if not self:in_bounds(r, c) then return end
+    self.matrix[r][c] = val
+    self:save_state(); self:repaint()
+end
+
+function mtxctl:in_1_get(atoms)
+    local c = math.floor(tonumber(atoms[1]) or 0)
+    local r = math.floor(tonumber(atoms[2]) or 0)
+    if not self:in_bounds(r, c) then return end
+    self:output_cell(r, c)
+end
+
+function mtxctl:in_1_rows(atoms)
+    local n = math.max(1, math.floor(tonumber(atoms[1]) or self.rows))
+    self:resize_matrix(n, self.cols)
+    self:update_size(); self:save_state(); self:repaint()
+end
+
+function mtxctl:in_1_columns(atoms)
+    local n = math.max(1, math.floor(tonumber(atoms[1]) or self.cols))
+    self:resize_matrix(self.rows, n)
+    self:update_size(); self:save_state(); self:repaint()
+end
+
+function mtxctl:in_1_size(atoms)
+    self.cell_size = math.max(4, math.floor(tonumber(atoms[1]) or self.cell_size))
+    self:update_size(); self:save_state(); self:repaint()
+end
+
+function mtxctl:in_1_import(atoms)
+    local n = 1
+    for r = 1, self.rows do
+        for c = 1, self.cols do
+            self.matrix[r][c] = (tonumber(atoms[n]) or 0) ~= 0 and 1 or 0
+            n = n + 1
+        end
+    end
+    self:save_state(); self:repaint()
+end
+
+function mtxctl:save_state()
+    if self.embed ~= 0 then
+        self.content = {}
+        for r = 1, self.rows do
+            for c = 1, self.cols do
+                self.content[#self.content + 1] = self.matrix[r][c]
+            end
+        end
+    else
+        self.content = {}
+    end
+    self:save_args()
+end
+
+function mtxctl:on_rows()
+    self:resize_matrix(self.rows, self.cols)
+    self:update_size(); self:repaint()
+end
+
+function mtxctl:on_cols()
+    self:resize_matrix(self.rows, self.cols)
+    self:update_size(); self:repaint()
+end
+
+function mtxctl:on_cell_size()
+    self:update_size(); self:repaint()
+end
+
+function mtxctl:update_size()
+    self:set_size(self.cols * self.cell_size, self.rows * self.cell_size)
+end
+
+function mtxctl:in_bounds(r, c)
+    return r >= 1 and r <= self.rows and c >= 1 and c <= self.cols
+end
+
+function mtxctl:cell_at(x, y)
+    local c = math.max(1, math.min(self.cols, math.floor(x / self.cell_size) + 1))
+    local r = math.max(1, math.min(self.rows, math.floor(y / self.cell_size) + 1))
+    return r, c
+end
+
+function mtxctl:output_cell(r, c)
+    self:outlet(1, "list", { c-1, r-1, self.matrix[r][c] })
+end
+
+function mtxctl:resize_matrix(new_rows, new_cols)
+    self.rows = new_rows
+    self.cols = new_cols
+
+    self.matrix = {}
+    for r = 1, self.rows do
+        self.matrix[r] = {}
+        for c = 1, self.cols do self.matrix[r][c] = 0 end
+    end
+
+    if self.embed ~= 0 and #self.content > 0 then
+        local n = 1
+        for r = 1, self.rows do
+            for c = 1, self.cols do
+                self.matrix[r][c] = (self.content[n] or 0) ~= 0 and 1 or 0
+                n = n + 1
+            end
+        end
+    end
+end
+
+function mtxctl:mouse_down(x, y)
+    local r, c = self:cell_at(x, y)
+    self.paint_val = 1 - self.matrix[r][c]
+    self.matrix[r][c] = self.paint_val
+    self.last_painted_r, self.last_painted_c = r, c
+    self:output_cell(r, c)
+    self:save_state(); self:repaint()
+end
+
+function mtxctl:mouse_drag(x, y)
+    local r, c = self:cell_at(x, y)
+    if r == self.last_painted_r and c == self.last_painted_c then return end
+    self.matrix[r][c] = self.paint_val
+    self.last_painted_r, self.last_painted_c = r, c
+    self:output_cell(r, c)
+    self:save_state(); self:repaint()
+end
+
+function mtxctl:in_1_bang()
+    self:in_1_flush()
+end
+
+function mtxctl:in_1_clear()
+    for r = 1, self.rows do
+        for c = 1, self.cols do self.matrix[r][c] = 0 end
+    end
+    self:save_state(); self:repaint()
+end
+
+function mtxctl:in_1_flush()
+    for r = 1, self.rows do
+        for c = 1, self.cols do self:output_cell(r, c) end
+    end
+end
+
+function mtxctl:in_1_export()
+    local out = {}
+    for r = 1, self.rows do
+        for c = 1, self.cols do out[#out + 1] = self.matrix[r][c] end
+    end
+    self:outlet(1, "list", out)
+end
+
+function mtxctl:paint(g)
+    local w, h  = self:get_size()
+    local cs    = self.cell_size
+    local bg    = self.bgcolor
+    local fg    = self.fgcolor
+    local grid  = self.gridcolor
+
+    g:set_color(bg[1], bg[2], bg[3]); g:fill_all()
+
+    g:set_color(fg[1], fg[2], fg[3])
+    for r = 1, self.rows do
+        for c = 1, self.cols do
+            if self.matrix[r][c] ~= 0 then
+                g:fill_rect((c-1)*cs, (r-1)*cs, cs, cs)
+            end
+        end
+    end
+
+    g:set_color(grid[1], grid[2], grid[3])
+    for c = 1, self.cols-1 do g:draw_line(c*cs, 0, c*cs, h, 1) end
+    for r = 1, self.rows-1 do g:draw_line(0, r*cs, w, r*cs, 1) end
+end

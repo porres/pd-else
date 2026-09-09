@@ -1,0 +1,270 @@
+local else_gui = require("else_gui")
+local drum_seq  = pd.Class:new():register("drum.seq")
+
+else_gui.setup(drum_seq, {
+    { "tracks",     2,             "on_tracks",   "Tracks",        "int",   {frame="Dimensions", min=1, max=64,  flag="tracks"} },
+    { "slots",      4,             "on_slots",    "Slots",         "int",   {frame="Dimensions", min=1, max=256, flag="slots"}  },
+    { "cell_size",  20,            "on_resize",   "Cell Size",     "int",   {frame="Dimensions", min=4, max=128, flag="size"}   },
+    { "embed",      0,             nil,           "Embed",         "check", {frame="Dimensions", flag="embed" }                 },
+    -- 11 dummy positional placeholders to match the original arg layout
+    { "_d1", 0 }, { "_d2", 0 }, { "_d3", 0 }, { "_d4", 0 }, { "_d5", 0 },
+    { "_d6", 0 }, { "_d7", 0 }, { "_d8", 0 }, { "_d9", 0 }, { "_d10", 0 }, { "_d11", 0 },
+    { "content",    {},            nil,           nil,             "float", {consume="slots*tracks"} },
+    { "bgcolor",    pd.bg_color,   "repaint",     "Background",    "color", {frame="Appearance", flag="bgcolor"}   },
+    { "activecolor",pd.fg_color,   "repaint",     "Active Cell",   "color", {frame="Appearance", flag="activecolor"} },
+    { "cursorcolor",{180,210,255}, "repaint",     "Cursor Column", "color", {frame="Appearance", flag="cursorcolor"} },
+    { "gridcolor",  {160,160,160}, "repaint",     "Grid",          "color", {frame="Appearance", flag="gridcolor"}  },
+}, {
+    ["-embed"] = function(self, atoms, i)
+        self.embed = 1
+        return 0
+    end,
+})
+
+
+function drum_seq:initialize(sel, atoms)
+    self.inlets   = 1
+    self.outlets  = 2
+    self.cur_slot = 0
+
+    -- paint state
+    self.paint_val        = nil
+    self.last_painted_t   = nil
+    self.last_painted_s   = nil
+
+    self:init_args(atoms)
+    self:alloc_grid(self.tracks, self.slots)
+
+    if self.embed ~= 0 and #self.content > 0 then
+        local n = 1
+        for t = 1, self.tracks do
+            for s = 1, self.slots do
+                self.grid[t][s] = (self.content[n] or 0) ~= 0 and 1 or 0
+                n = n + 1
+            end
+        end
+    end
+
+    self:set_size(self.slots * self.cell_size, self.tracks * self.cell_size)
+    return true
+end
+
+function drum_seq:in_1_list(atoms)
+    local track  = math.floor(tonumber(atoms[1]) or 1)
+    local slot   = math.floor(tonumber(atoms[2]) or 1)
+    local status = (tonumber(atoms[3]) or 0) ~= 0 and 1 or 0
+    if self:in_bounds(track, slot) then
+        self.grid[track][slot] = status
+        self:save_state(); self:repaint()
+    end
+end
+
+-- track <n> <v0> <v1> ...: set all values for one track
+function drum_seq:in_1_track(atoms)
+    local track = math.floor(tonumber(atoms[1]) or 1)
+    if track < 1 or track > self.tracks then return end
+    for i = 2, #atoms do
+        local slot = i - 1
+        if slot <= self.slots then
+            self.grid[track][slot] = (tonumber(atoms[i]) or 0) ~= 0 and 1 or 0
+        end
+    end
+    self:save_state(); self:repaint()
+end
+
+function drum_seq:in_1_import(atoms)
+    local n = 1
+    for t = 1, self.tracks do
+        for s = 1, self.slots do
+            self.grid[t][s] = (tonumber(atoms[n]) or 0) ~= 0 and 1 or 0
+            n = n + 1
+        end
+    end
+    self:save_state(); self:repaint()
+end
+
+function drum_seq:save_state()
+    if self.embed ~= 0 then
+        self.content = {}
+        for t = 1, self.tracks do
+            for s = 1, self.slots do
+                self.content[#self.content + 1] = self.grid[t][s]
+            end
+        end
+    end
+    self:save_args()
+end
+
+function drum_seq:alloc_grid(t, s)
+    self.grid = {}
+    for tr = 1, t do
+        self.grid[tr] = {}
+        for sl = 1, s do self.grid[tr][sl] = 0 end
+    end
+end
+
+function drum_seq:on_tracks()
+    self:alloc_grid(self.tracks, self.slots)
+    self:set_size(self.slots * self.cell_size, self.tracks * self.cell_size)
+    self:save_state(); self:repaint()
+end
+
+function drum_seq:on_slots()
+    self:alloc_grid(self.tracks, self.slots)
+    self:set_size(self.slots * self.cell_size, self.tracks * self.cell_size)
+    self:save_state(); self:repaint()
+end
+
+function drum_seq:on_resize()
+    self:set_size(self.slots * self.cell_size, self.tracks * self.cell_size)
+    self:repaint()
+end
+
+function drum_seq:in_bounds(t, s)
+    return t >= 1 and t <= self.tracks and s >= 1 and s <= self.slots
+end
+
+function drum_seq:cell_at(x, y)
+    local cs = self.cell_size
+    local s  = math.max(1, math.min(self.slots,  math.floor(x / cs) + 1))
+    local t  = math.max(1, math.min(self.tracks, math.floor(y / cs) + 1))
+    return t, s
+end
+
+-- Output all track values at the current slot, one list per track.
+function drum_seq:output_slot()
+    for t = 1, self.tracks do
+        self:outlet(1, "list", { t, self.grid[t][self.cur_slot] })
+    end
+end
+
+-- Advance cur_slot, output bang on wrap.
+function drum_seq:advance()
+    self.cur_slot = self.cur_slot + 1
+    if self.cur_slot > self.slots then
+        self.cur_slot = 1
+        self:outlet(2, "bang", {})
+    end
+    self:repaint()
+end
+
+function drum_seq:mouse_down(x, y)
+    local t, s = self:cell_at(x, y)
+    self.paint_val = 1 - self.grid[t][s]
+    self.grid[t][s] = self.paint_val
+    self.last_painted_t = t
+    self.last_painted_s = s
+    self:save_state(); self:repaint()
+end
+
+function drum_seq:mouse_drag(x, y)
+    local t, s = self:cell_at(x, y)
+    if t == self.last_painted_t and s == self.last_painted_s then return end
+    self.grid[t][s] = self.paint_val
+    self.last_painted_t = t
+    self.last_painted_s = s
+    self:save_state(); self:repaint()
+end
+
+-- bang: output current slot values then advance
+function drum_seq:in_1_bang()
+    self:advance()
+    self:output_slot()
+end
+
+-- float: set slot and output
+function drum_seq:in_1_float(val)
+    local s = math.max(1, math.min(self.slots, math.floor(tonumber(val) or 1)))
+    self.cur_slot = s
+    self:output_slot()
+    self:repaint()
+end
+
+-- goto: set slot without output
+function drum_seq:in_1_goto(atoms)
+    local s = math.max(1, math.min(self.slots, math.floor(tonumber(atoms[1]) or 1)))
+    self.cur_slot = s
+    self:repaint()
+end
+
+function drum_seq:in_1_clear()
+    self:alloc_grid(self.tracks, self.slots)
+    self:save_state(); self:repaint()
+end
+
+-- export <track>: export one track as list; no arg = export all flat
+function drum_seq:in_1_export(atoms)
+    local t = atoms[1] and math.floor(tonumber(atoms[1]) or 0)
+    if t and t >= 1 and t <= self.tracks then
+        local out = {}
+        for s = 1, self.slots do out[s] = self.grid[t][s] end
+        self:outlet(1, "list", out)
+    else
+        -- export all as flat row-major list
+        local out = {}
+        for tr = 1, self.tracks do
+            for s = 1, self.slots do out[#out + 1] = self.grid[tr][s] end
+        end
+        self:outlet(1, "list", out)
+    end
+end
+
+function drum_seq:in_1_tracks(atoms)
+    self.tracks = math.max(1, math.floor(tonumber(atoms[1]) or self.tracks))
+    self:alloc_grid(self.tracks, self.slots)
+    self:set_size(self.slots * self.cell_size, self.tracks * self.cell_size)
+    self:save_state(); self:repaint()
+end
+
+function drum_seq:in_1_slots(atoms)
+    self.slots = math.max(1, math.floor(tonumber(atoms[1]) or self.slots))
+    self.cur_slot = math.min(self.cur_slot, self.slots)
+    self:alloc_grid(self.tracks, self.slots)
+    self:set_size(self.slots * self.cell_size, self.tracks * self.cell_size)
+    self:save_state(); self:repaint()
+end
+
+function drum_seq:in_1_size(atoms)
+    self.cell_size = math.max(4, math.floor(tonumber(atoms[1]) or self.cell_size))
+    self:set_size(self.slots * self.cell_size, self.tracks * self.cell_size)
+    self:save_state(); self:repaint()
+end
+
+function drum_seq:in_1_embed(atoms)
+    self.embed = (tonumber(atoms[1]) or 0) ~= 0 and 1 or 0
+    self:save_state()
+end
+
+function drum_seq:paint(g)
+    local cs   = self.cell_size
+    local w, h = self:get_size()
+    local bg   = self.bgcolor
+    local ac   = self.activecolor
+    local cc   = self.cursorcolor
+    local gc   = self.gridcolor
+
+    -- background
+    g:set_color(bg[1], bg[2], bg[3])
+    g:fill_all()
+
+    -- cursor column highlight
+    g:set_color(cc[1], cc[2], cc[3])
+    g:fill_rect((math.max(0, self.cur_slot - 1)) * cs + 1, 1, cs - 1, h - 1)
+
+    -- active cells
+    g:set_color(ac[1], ac[2], ac[3])
+    for t = 1, self.tracks do
+        for s = 1, self.slots do
+            if self.grid[t][s] ~= 0 then
+                local x = (s - 1) * cs
+                local y = (t - 1) * cs
+                g:fill_rect(x, y, cs, cs)
+            end
+        end
+    end
+
+    -- grid lines
+    g:set_color(gc[1], gc[2], gc[3])
+    for s = 1, self.slots-1 do g:draw_line(s * cs, 0,  s * cs, h,    1) end
+    for t = 1, self.tracks-1 do g:draw_line(0, t * cs, w,    t * cs, 1) end
+end
