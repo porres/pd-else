@@ -41,8 +41,16 @@ typedef struct _nlist_frame{
     t_nlist_node *last;
 } t_nlist_frame;
 
+t_nlist_node *nlist_new_list(void);
+t_nlist_node **nlist_find_link(t_nlist_node **node, int index);
 t_nlist *nlist_get(t_symbol *name, t_symbol *obj);
 t_nlist_node *nlist_parse_all(t_nlist *x, int ac, t_atom *av);
+int nlist_get_len(t_nlist_node *node);
+int nlist_get_depth(t_nlist_node *node);
+int nlist_has_list(t_nlist_node *node);
+int nlist_count_leaves(t_nlist_node *node);
+int nlist_parse_path(int ac, t_atom *av, int **path_out, int *path_ac_out);
+void nlist_insert_at(t_nlist *nlist, int path_ac, int *path, t_nlist_node *contents);
 void nlist_tree_to_binbuf(t_nlist_node *node, t_binbuf *bb);
 void nlist_clear_nodes(t_nlist_node *node);
 void nlist_post_indented(int depth, const char *content);
@@ -54,8 +62,5 @@ void nlist_do_open(t_nlist *x);
 void nlist_open(t_nlist *x);
 void nlist_dirty(t_nlist *x);
 
-// Tree queries
-int nlist_get_len(t_nlist_node *node);
-int nlist_get_depth(t_nlist_node *node);
 
 #endif // NLIST_H

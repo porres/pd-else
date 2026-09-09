@@ -38,11 +38,7 @@ static void nlistdelete_delete(t_nlistdelete *x, t_symbol *s, int ac, t_atom *av
             post("[nlist.delete] index out of range");
             return;
         }
-        t_nlist_node **item = link;
-        while(*item && index > 0){
-            item = &(*item)->next;
-            index--;
-        }
+        t_nlist_node **item = nlist_find_link(link, index);
         if(!*item){
             post("[nlist.delete] index out of range");
             return;

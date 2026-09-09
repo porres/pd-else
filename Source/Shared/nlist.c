@@ -23,7 +23,7 @@ t_nlist *nlist_get(t_symbol *name, t_symbol *obj){
     return(nlist);
 }
 
-static t_nlist_node *nlist_new_list(void){
+t_nlist_node *nlist_new_list(void){
     t_nlist_node *node = (t_nlist_node *)getbytes(sizeof(*node));
     node->type = 1;
     node->child = NULL;
@@ -200,7 +200,7 @@ static void nlist_editor_line(t_elsefile *fh, int depth, const char *content){
     else_editor_append(fh, buf);
 }
 
-static int nlist_has_list(t_nlist_node *node){
+int nlist_has_list(t_nlist_node *node){
     while(node){
         if(node->type == 1)
             return(1);
@@ -319,7 +319,30 @@ void nlist_clear_nodes(t_nlist_node *node){
     }
 }
 
-// ------------ Tree queries ---------------------------------
+t_nlist_node **nlist_find_link(t_nlist_node **node, int index){
+    while(*node && index > 0){
+        node = &(*node)->next;
+        index--;
+    }
+    return(node);
+}
+
+int nlist_count_leaves(t_nlist_node *node){
+    int n = 0;
+    while(node){
+        if(node->type == 1){
+            if(node->child)
+                n += nlist_count_leaves(node->child);
+            else
+                n++;
+        }
+        else
+            n++;
+        node = node->next;
+    }
+    return(n);
+}
+
 int nlist_get_len(t_nlist_node *node){
     int n = 0;
     while(node){
@@ -340,4 +363,44 @@ int nlist_get_depth(t_nlist_node *node){
         node = node->next;
     }
     return(depth);
+}
+
+void nlist_insert_at(t_nlist *nlist, int path_ac, int *path, t_nlist_node *contents){
+    if(!nlist || !contents) return;
+    t_nlist_node **link = &nlist->x_root;
+    for(int i = 0; i < path_ac; i++){
+        if(i == path_ac - 1) break;
+        link = nlist_find_link(link, path[i]);
+        if(!*link || (*link)->type != 1) return;
+        link = &(*link)->child;
+    }
+    if(path_ac)
+        link = nlist_find_link(link, path[path_ac - 1]);
+    t_nlist_node *last = contents;
+    while(last->next) last = last->next;
+    last->next = *link;
+    *link = contents;
+    nlist->x_len = nlist_get_len(nlist->x_root);
+    nlist->x_depth = nlist_get_depth(nlist->x_root);
+}
+
+int nlist_parse_path(int ac, t_atom *av, int **path_out, int *path_ac_out){
+    if(!ac || !av)
+        return(0);
+    int *path = (int *)getbytes(sizeof(int) * ac);
+    for(int i = 0; i < ac; i++){
+        if(av[i].a_type != A_FLOAT){
+            freebytes(path, sizeof(int) * ac);
+            return(0);
+        }
+        int index = (int)atom_getfloat(av + i);
+        if(index < 0){
+            freebytes(path, sizeof(int) * ac);
+            return(0);
+        }
+        path[i] = index;
+    }
+    *path_out = path;
+    *path_ac_out = ac;
+    return(1);
 }

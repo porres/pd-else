@@ -23,30 +23,6 @@ t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
         nlist_open(nlist);
 }
 
-static t_nlist_node *nlistget_find(t_nlist_node *node, int index){
-    while(node && index > 0){
-        node = node->next;
-        index--;
-    }
-    return(node);
-}
-
-static int nlistget_count(t_nlist_node *node){
-    int n = 0;
-    while(node){
-        if(node->type == 1){
-            if(node->child)
-                n += nlistget_count(node->child);
-            else
-                n++;
-        }
-        else
-            n++;
-        node = node->next;
-    }
-    return(n);
-}
-
 static void nlistget_atom(t_atom *atom, t_atom *out, int *pos, int open, int close){
     if(!open && !close){
         out[(*pos)++] = *atom;
@@ -117,23 +93,14 @@ static int nlistget_write(t_nlist_node *node, t_atom *out, int pos, int open, in
     return(pos);
 }
 
-static int nlistget_has_nested(t_nlist_node *node){
-    while(node){
-        if(node->type == 1)
-            return(1);
-        node = node->next;
-    }
-    return(0);
-}
-
 static void nlistget_get(t_nlistget *x, t_symbol *s, int ac, t_atom *av){
     (void)s;
     t_nlist *nlist = nlist_get(x->x_sym, gensym("get"));
     if(!nlist)
         return;
     if(ac == 1 && av->a_type == A_FLOAT && atom_getfloat(av) == -1){
-        int type = nlistget_has_nested(nlist->x_root) ? 2 : 1;
-        int n = nlistget_count(nlist->x_root);
+        int type = nlist_has_list(nlist->x_root) ? 2 : 1;
+        int n = nlist_count_leaves(nlist->x_root);
         if(!n){
             outlet_float(x->x_typeout, 1);
             outlet_list(x->x_obj.ob_outlet, &s_list, 0, NULL);
@@ -157,7 +124,7 @@ static void nlistget_get(t_nlistget *x, t_symbol *s, int ac, t_atom *av){
             outlet_float(x->x_typeout, -1);
             return;
         }
-        node = nlistget_find(node, index);
+        node = *nlist_find_link(&node, index);
         if(!node){
             outlet_float(x->x_typeout, -1);
             return;
@@ -175,8 +142,8 @@ static void nlistget_get(t_nlistget *x, t_symbol *s, int ac, t_atom *av){
         outlet_list(x->x_obj.ob_outlet, &s_list, 1, &node->atom);
         return;
     }
-    int type = nlistget_has_nested(node->child) ? 2 : 1;
-    int n = nlistget_count(node->child);
+    int type = nlist_has_list(node->child) ? 2 : 1;
+    int n = nlist_count_leaves(node->child);
     if(!n){
         outlet_float(x->x_typeout, 1);
         outlet_list(x->x_obj.ob_outlet, &s_list, 0, NULL);

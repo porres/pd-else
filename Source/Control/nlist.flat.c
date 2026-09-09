@@ -22,18 +22,6 @@ t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
         nlist_open(nlist);
 }
 
-static int nlistflat_count(t_nlist_node *node){
-    int n = 0;
-    while(node){
-        if(node->child)
-            n += nlistflat_count(node->child);
-        else
-            n++;
-        node = node->next;
-    }
-    return(n);
-}
-
 static void nlistflat_walk(t_nlist_node *node, t_atom *out, int *pos){
     while(node){
         if(node->child)
@@ -47,7 +35,7 @@ static void nlistflat_walk(t_nlist_node *node, t_atom *out, int *pos){
 static void nlistflat_bang(t_nlistflat *x){
     t_nlist *nlist = nlist_get(x->x_sym, gensym("flat"));
     if(nlist){
-        int n = nlistflat_count(nlist->x_root);
+        int n = nlist_count_leaves(nlist->x_root);
         t_atom *out = getbytes(n * sizeof(t_atom));
         int pos = 0;
         nlistflat_walk(nlist->x_root, out, &pos);

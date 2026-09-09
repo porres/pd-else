@@ -28,57 +28,14 @@ t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
 
 static void nlistset_set(t_nlistset *x, t_symbol *s, int ac, t_atom *av){
     (void)s;
-    if(!ac)
-        return;
     if(x->x_path){
         freebytes(x->x_path, sizeof(int) * x->x_path_ac);
         x->x_path = NULL;
         x->x_path_ac = 0;
     }
-    x->x_path = (int *)getbytes(sizeof(int) * ac);
-    for(int i = 0; i < ac; i++){
-        if(av[i].a_type != A_FLOAT){
-            pd_error(x, "[nlist.set] index must be a number");
-            freebytes(x->x_path, sizeof(int) * ac);
-            x->x_path = NULL;
-            return;
-        }
-        int index = (int)atom_getfloat(av + i);
-        if(index < 0){
-            pd_error(x, "[nlist.set] index must be non-negative");
-            freebytes(x->x_path, sizeof(int) * ac);
-            x->x_path = NULL;
-            return;
-        }
-        x->x_path[i] = index;
+    if(!nlist_parse_path(ac, av, &x->x_path, &x->x_path_ac)){
+        pd_error(x, "[nlist.set] invalid index path arguments");
     }
-    x->x_path_ac = ac;
-}
-
-static t_nlist_node *nlistset_new_list(void){
-    t_nlist_node *node = (t_nlist_node *)getbytes(sizeof(*node));
-    node->type = 1;
-    node->child = NULL;
-    node->next = NULL;
-    return(node);
-}
-
-static void nlistset_free_nodes(t_nlist_node *node){
-    while(node){
-        t_nlist_node *next = node->next;
-        if(node->type == 1)
-            nlistset_free_nodes(node->child);
-        freebytes(node, sizeof(*node));
-        node = next;
-    }
-}
-
-static t_nlist_node **nlistset_find_link(t_nlist_node **node, int index){
-    while(*node && index > 0){
-        node = &(*node)->next;
-        index--;
-    }
-    return(node);
 }
 
 static void nlistset_list(t_nlistset *x, t_symbol *s, int ac, t_atom *av){
@@ -88,7 +45,7 @@ static void nlistset_list(t_nlistset *x, t_symbol *s, int ac, t_atom *av){
         return;
     t_nlist_node **link = &nlist->x_root;
     for(int i = 0; i < x->x_path_ac; i++){
-        link = nlistset_find_link(link, x->x_path[i]);
+        link = nlist_find_link(link, x->x_path[i]);
         if(!*link){
             pd_error(x, "[nlist.set] index out of range");
             return;
@@ -108,7 +65,7 @@ static void nlistset_list(t_nlistset *x, t_symbol *s, int ac, t_atom *av){
     t_nlist_node *contents = nlist_parse_all(&temp, ac, av);
     t_nlist_node *replacement;
     if(contents && contents->next){
-        replacement = nlistset_new_list();
+        replacement = nlist_new_list();
         replacement->child = contents;
     }
     else
@@ -119,7 +76,7 @@ static void nlistset_list(t_nlistset *x, t_symbol *s, int ac, t_atom *av){
     replacement->next = old->next;
     *link = replacement;
     old->next = NULL;
-    nlistset_free_nodes(old);
+    nlist_clear_nodes(old);
     nlist->x_len = nlist_get_len(nlist->x_root);
     nlist->x_depth = nlist_get_depth(nlist->x_root);
     nlist_do_update(nlist);

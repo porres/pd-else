@@ -41,8 +41,7 @@ static void nlistlen_level(t_nlist_node *node, int depth, int target,
             }
         }
         else if(node->child)
-            nlistlen_level(node->child, depth + 1, target,
-                path, len_out, idx_out);
+            nlistlen_level(node->child, depth+1, target, path, len_out, idx_out);
         index++;
         node = node->next;
     }

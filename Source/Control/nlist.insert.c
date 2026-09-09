@@ -28,39 +28,14 @@ t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
 
 static void nlistinsert_set(t_nlistinsert *x, t_symbol *s, int ac, t_atom *av){
     (void)s;
-    if(!ac)
-        return;
     if(x->x_path){
         freebytes(x->x_path, sizeof(int) * x->x_path_ac);
         x->x_path = NULL;
         x->x_path_ac = 0;
     }
-    x->x_path = (int *)getbytes(sizeof(int) * ac);
-    for(int i = 0; i < ac; i++){
-        if(av[i].a_type != A_FLOAT){
-            pd_error(x, "[nlist.insert] index must be a number");
-            freebytes(x->x_path, sizeof(int) * ac);
-            x->x_path = NULL;
-            return;
-        }
-        int index = (int)atom_getfloat(av + i);
-        if(index < 0){
-            pd_error(x, "[nlist.insert] index must be non-negative");
-            freebytes(x->x_path, sizeof(int) * ac);
-            x->x_path = NULL;
-            return;
-        }
-        x->x_path[i] = index;
+    if(!nlist_parse_path(ac, av, &x->x_path, &x->x_path_ac)){
+        pd_error(x, "[nlist.insert] invalid index path arguments");
     }
-    x->x_path_ac = ac;
-}
-
-static t_nlist_node **nlistinsert_find_link(t_nlist_node **node, int index){
-    while(*node && index > 0){
-        node = &(*node)->next;
-        index--;
-    }
-    return(node);
 }
 
 static void nlistinsert_list(t_nlistinsert *x, t_symbol *s, int ac, t_atom *av){
@@ -68,23 +43,6 @@ static void nlistinsert_list(t_nlistinsert *x, t_symbol *s, int ac, t_atom *av){
     t_nlist *nlist = nlist_get(x->x_sym, gensym("insert"));
     if(!nlist || !ac)
         return;
-    t_nlist_node **link = &nlist->x_root;
-    for(int i = 0; i < x->x_path_ac; i++){
-        if(i == x->x_path_ac - 1)
-            break;
-        link = nlistinsert_find_link(link, x->x_path[i]);
-        if(!*link){
-            pd_error(x, "[nlist.insert] index out of range");
-            return;
-        }
-        if((*link)->type != 1){
-            pd_error(x, "[nlist.insert] path exceeds list depth");
-            return;
-        }
-        link = &(*link)->child;
-    }
-    if(x->x_path_ac)
-        link = nlistinsert_find_link(link, x->x_path[x->x_path_ac - 1]);
     t_nlist temp;
     temp.x_root = NULL;
     temp.x_len = 0;
@@ -92,13 +50,7 @@ static void nlistinsert_list(t_nlistinsert *x, t_symbol *s, int ac, t_atom *av){
     t_nlist_node *contents = nlist_parse_all(&temp, ac, av);
     if(!contents)
         return;
-    t_nlist_node *last = contents;
-    while(last->next)
-        last = last->next;
-    last->next = *link;
-    *link = contents;
-    nlist->x_len = nlist_get_len(nlist->x_root);
-    nlist->x_depth = nlist_get_depth(nlist->x_root);
+    nlist_insert_at(nlist, x->x_path_ac, x->x_path, contents);
     nlist_dirty(nlist);
     if(nlist->x_is_opened)
         nlist_do_update(nlist);
