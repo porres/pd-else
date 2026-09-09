@@ -81,28 +81,6 @@ static t_nlist_node **nlistset_find_link(t_nlist_node **node, int index){
     return(node);
 }
 
-static int nlistset_len(t_nlist_node *node){
-    int n = 0;
-    while(node){
-        n++;
-        node = node->next;
-    }
-    return(n);
-}
-
-static int nlistset_depth(t_nlist_node *node, int depth){
-    int maxdepth = depth;
-    while(node){
-        if(node->type == 1 && node->child){
-            int d = nlistset_depth(node->child, depth + 1);
-            if(d > maxdepth)
-                maxdepth = d;
-        }
-        node = node->next;
-    }
-    return(maxdepth);
-}
-
 static void nlistset_list(t_nlistset *x, t_symbol *s, int ac, t_atom *av){
     (void)s;
     t_nlist *nlist = nlist_get(x->x_sym, gensym("set"));
@@ -142,8 +120,8 @@ static void nlistset_list(t_nlistset *x, t_symbol *s, int ac, t_atom *av){
     *link = replacement;
     old->next = NULL;
     nlistset_free_nodes(old);
-    nlist->x_len = nlistset_len(nlist->x_root);
-    nlist->x_depth = nlistset_depth(nlist->x_root, 0);
+    nlist->x_len = nlist_get_len(nlist->x_root);
+    nlist->x_depth = nlist_get_depth(nlist->x_root);
     nlist_do_update(nlist);
 }
 

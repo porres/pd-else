@@ -54,4 +54,8 @@ void nlist_do_open(t_nlist *x);
 void nlist_open(t_nlist *x);
 void nlist_dirty(t_nlist *x);
 
+// Tree queries
+int nlist_get_len(t_nlist_node *node);
+int nlist_get_depth(t_nlist_node *node);
+
 #endif // NLIST_H

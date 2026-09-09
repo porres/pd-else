@@ -140,7 +140,6 @@ t_nlist_node *nlist_parse_all(t_nlist *x, int ac, t_atom *av){
 }
 
 // ------------ Tree / editor formatting ---------------------------------
-
 static void nlist_buf_append(char *buf, size_t bufsize, size_t *pos, const char *str){
     if(*pos + 1 >= bufsize)
         return;
@@ -318,4 +317,27 @@ void nlist_clear_nodes(t_nlist_node *node){
         freebytes(node, sizeof(*node));
         node = next;
     }
+}
+
+// ------------ Tree queries ---------------------------------
+int nlist_get_len(t_nlist_node *node){
+    int n = 0;
+    while(node){
+        n++;
+        node = node->next;
+    }
+    return(n);
+}
+
+int nlist_get_depth(t_nlist_node *node){
+    int depth = 0;
+    while(node){
+        if(node->type == 1){
+            int d = nlist_get_depth(node->child) + 1;
+            if(d > depth)
+                depth = d;
+        }
+        node = node->next;
+    }
+    return(depth);
 }
