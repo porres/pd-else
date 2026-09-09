@@ -1,0 +1,215 @@
+local else_gui = require("else_gui")
+local tab      = pd.Class:new():register("tab")
+
+local CHAR_W   = 7    -- approximate character width in default font
+local FONT     = 11
+local PAD_X    = 6    -- horizontal padding per tab
+
+else_gui.setup(tab, {
+    { "width",       200,           "on_resize", "Width",      "int",   {frame="Dimensions", min=30, max=4096, flag="width"} },
+    { "height",      25,            "on_resize", "Height",     "int",   {frame="Dimensions", min=12, max=256,  flag="height"} },
+    { "ntabs",       3,             "on_ntabs",  "Tabs",       "int",   {frame="General",    min=1,  max=128,  flag="ntabs"} },
+    { "savestate",   0,             nil,         "Save State", "check", {frame="General", flag="savestate"} },
+    { "init_tab",    0,             nil,         nil,          "int" },
+    { "bgcolor",     pd.bg_color,   "repaint",   "Background", "color", {frame="Appearance", flag="bgcolor"} },
+    { "activecolor", pd.fg_color,   "repaint",   "Active Tab", "color", {frame="Appearance", flag="activecolor"} },
+    { "fgcolor",     pd.fg_color,   "repaint",   "Text",       "color", {frame="Appearance", flag="fgcolor"} },
+    { "activetextcolor", pd.bg_color, "repaint", "Active Text","color", {frame="Appearance", flag="activetextcolor"} },
+    { "send",        "empty",       nil,         "Send",       "text",  {frame="General", flag="send"} },
+    { "receive",     "empty",       "on_receive","Receive",    "text",  {frame="General", flag="receive"} },
+}, {
+    -- -labels tab1 tab2 tab3 ...  (consumes tokens until the next flag)
+    ["-labels"] = function(self, atoms, i)
+        self._flag_labels = {}
+        local n = 0
+        while i + n <= #atoms and tostring(atoms[i + n]):sub(1, 1) ~= "-" do
+            self._flag_labels[#self._flag_labels + 1] = tostring(atoms[i + n])
+            n = n + 1
+        end
+        return n
+    end,
+})
+
+local _base_save_args = tab.save_args
+
+function tab:save_args()
+    _base_save_args(self)
+    local args = self:get_args()
+    args[#args + 1] = "-labels"
+    for i = 1, self.ntabs do
+        args[#args + 1] = self.labels[i] or ("tab" .. i)
+    end
+    self:set_args(args)
+end
+
+function tab:initialize(sel, atoms)
+    self.inlets  = 1
+    self.outlets = 1
+    self.labels  = {}
+
+    self:init_args(atoms)
+
+    -- default labels (no spaces — Pd atoms can't contain whitespace)
+    for i = 1, self.ntabs do
+        self.labels[i] = self.labels[i] or ("tab" .. i)
+    end
+
+    -- apply -labels flag if captured during init_args
+    if self._flag_labels then
+        for i, lbl in ipairs(self._flag_labels) do
+            if i <= self.ntabs then self.labels[i] = lbl end
+        end
+        self._flag_labels = nil
+    end
+
+    self.active = (self.savestate ~= 0) and self.init_tab or 0
+    self.active = math.max(0, math.min(self.ntabs - 1, self.active))
+
+    self:setup_receive(self.receive)
+    self:set_size(self.width, self.height)
+    return true
+end
+
+function tab:on_resize()
+    self:set_size(self.width, self.height)
+end
+
+function tab:on_ntabs()
+    self.ntabs = math.max(1, self.ntabs)
+    local old = self.labels
+    self.labels = {}
+    for i = 1, self.ntabs do
+        self.labels[i] = old[i] or ("tab" .. i)
+    end
+    self.active = math.max(0, math.min(self.ntabs - 1, self.active))
+    self:save_args(); self:repaint()
+end
+
+function tab:on_receive(sym)
+    self:setup_receive(sym)
+end
+
+function tab:setup_receive(sym)
+    self.recv = nil
+    if sym ~= "empty" and sym ~= "" then
+        self.recv = pd.Receive:new():register(self, sym, "receive_cb")
+    end
+end
+
+function tab:receive_cb(sel, atoms)
+    if     sel == "bang"  then self:in_1_bang()
+    elseif sel == "float" then self:in_1_float(atoms)
+    elseif sel == "set"   then self:in_1_set(atoms)
+    end
+end
+
+function tab:select_tab(idx)
+    self.active = math.max(0, math.min(self.ntabs - 1, math.floor(idx)))
+    self:save_state(); self:repaint()
+end
+
+function tab:output()
+    self:outlet(1, "float", { self.active })
+    if self.send ~= "empty" and self.send ~= "" then
+        pd.send(self.send, "float", { self.active })
+    end
+end
+
+function tab:save_state()
+    if self.savestate ~= 0 then
+        self.init_tab = self.active
+        self:save_args()
+    end
+end
+
+function tab:in_1_bang()
+    self:output()
+end
+
+function tab:in_1_float(atoms)
+    self:select_tab(tonumber(atoms[1]) or 0)
+    self:output()
+end
+
+function tab:in_1_set(atoms)
+    self:select_tab(tonumber(atoms[1]) or 0)
+end
+
+-- labels <s1> <s2> ...: set all tab labels
+function tab:in_1_labels(atoms)
+    for i = 1, math.min(#atoms, self.ntabs) do
+        self.labels[i] = tostring(atoms[i])
+    end
+    self:save_args(); self:repaint()
+end
+
+-- label <idx> <text>: set a single tab label (0-indexed)
+function tab:in_1_label(atoms)
+    local idx = math.floor(tonumber(atoms[1]) or 0) + 1
+    if idx >= 1 and idx <= self.ntabs and atoms[2] then
+        self.labels[idx] = tostring(atoms[2])
+        self:save_args(); self:repaint()
+    end
+end
+
+-- tabs <n>: change the number of tabs
+function tab:in_1_tabs(atoms)
+    local n = tonumber(atoms[1])
+    if n then
+        self.ntabs = math.max(1, math.floor(n))
+        self:on_ntabs()
+    end
+end
+
+function tab:mouse_down(x, y)
+    local w = select(1, self:get_size())
+    local tw = w / self.ntabs
+    local idx = math.floor(x / tw)
+    idx = math.max(0, math.min(self.ntabs - 1, idx))
+    self:select_tab(idx)
+    self:output()
+end
+
+function tab:paint(g)
+    local w, h = self:get_size()
+    local tw = math.ceil(w / self.ntabs)
+
+    -- background
+    g:set_color(self.bgcolor[1], self.bgcolor[2], self.bgcolor[3])
+    g:fill_all()
+
+    -- active tab fill
+    g:set_color(self.activecolor[1], self.activecolor[2], self.activecolor[3])
+    g:fill_rect(self.active * tw, 0, tw, h)
+
+    -- dividers
+    g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+    for i = 1, self.ntabs - 1 do
+        g:draw_line(i * tw, 0, i * tw, h, 1)
+    end
+
+    -- labels
+    local text_y = (h - FONT) / 2
+    for i = 1, self.ntabs do
+        local lbl = self.labels[i] or ""
+        local is_active = (i - 1) == self.active
+
+        if is_active then
+            g:set_color(self.activetextcolor[1], self.activetextcolor[2], self.activetextcolor[3])
+        else
+            g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+        end
+
+        -- center text in tab cell
+        local text_w = #lbl * CHAR_W
+        local tx = (i - 1) * tw + (tw - text_w) / 2
+        g:draw_text(lbl, tx, text_y, tw, FONT)
+    end
+
+    -- plugdata dynamic resize
+    if w ~= self.width or h ~= self.height then
+        self.width = w
+        self.height = h
+        self:save_args()
+    end
+end

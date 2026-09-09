@@ -1,0 +1,519 @@
+local playlist = pd.Class:new():register("playlist-gui")
+
+local ROW_H    = 18
+local FONT     = 11
+local CHAR_W   = 7
+local BTN_W    = 28
+local SCROLL_W = 16
+local TICK_MS  = 30
+
+-- ─── Lifecycle ────────────────────────────────────────────────────────────────
+
+function playlist:initialize(sel, atoms)
+    self.inlets  = {SIGNAL}
+    self.outlets = 1
+
+    self.width     = 300
+    self.height    = 190
+    self.list_rows = 8
+
+    self.bgcolor     = pd.bg_color()
+    self.wavecolor   = pd.fg_color()
+    self.fgcolor     = pd.fg_color()
+    self.selectcolor = {60, 100, 180}
+    self.cursorcolor = {220, 60, 60}
+
+    self.array_name = self:canvas_realizedollar("0-$0-active")
+
+    self.files    = {}
+    self.selected = -1
+    self.scroll   = 0
+
+    self.playing         = false
+    self.cursor          = 0
+    self.samples_elapsed = 0
+    self.array_len       = 0
+    self.dsp_sr          = 44100
+    self.file_sr         = 44100   -- SR of the loaded audio file
+
+    self.clock = pd.Clock:new():register(self, "tick")
+
+    self.dragging    = false
+    self.drag_zone   = nil
+    self.btn_pressed = false
+    self.scroll_btn  = 0
+
+    self:set_size(self.width, self.height)
+    return true
+end
+
+function playlist:finalize()
+    self.clock:destruct()
+end
+
+-- ─── DSP ──────────────────────────────────────────────────────────────────────
+
+function playlist:dsp(sr, bs)
+    self.dsp_sr = sr
+end
+
+function playlist:perform(in1)
+    if not self.playing then return end
+
+    -- advance by block size scaled by SR ratio
+    local ratio = self.file_sr / self.dsp_sr
+    self.samples_elapsed = self.samples_elapsed + #in1 * ratio
+
+    if self.array_len > 0 and self.samples_elapsed >= self.array_len then
+        self.samples_elapsed = 0
+        self.cursor = 0
+        self:set_playing(false)
+    end
+end
+
+function playlist:tick()
+    if not self.playing then return end
+
+    if self.array_len > 0 then
+        self.cursor = self.samples_elapsed / self.array_len
+    end
+
+    self:repaint(3)
+    self.clock:delay(TICK_MS)
+end
+
+-- ─── Layout ───────────────────────────────────────────────────────────────────
+
+function playlist:wave_height()
+    return math.max(30, self.height - self.list_rows * ROW_H)
+end
+
+function playlist:visible_rows()
+    return math.floor((self.height - self:wave_height()) / ROW_H)
+end
+
+function playlist:max_scroll()
+    return math.max(0, #self.files - self:visible_rows())
+end
+
+function playlist:can_scroll()
+    return #self.files > self:visible_rows()
+end
+
+function playlist:scroll_col_x()
+    return self.width - SCROLL_W
+end
+
+function playlist:ensure_visible()
+    if self.selected < 0 then return end
+    local vis = self:visible_rows()
+    if self.selected < self.scroll then
+        self.scroll = self.selected
+    elseif self.selected >= self.scroll + vis then
+        self.scroll = self.selected - vis + 1
+    end
+    self.scroll = math.max(0, math.min(self:max_scroll(), self.scroll))
+end
+
+function playlist:sync_array_len()
+    local t = pd.Table:new():sync(self.array_name)
+    self.array_len = t and t:length() or 0
+end
+
+-- ─── Transport ────────────────────────────────────────────────────────────────
+
+function playlist:set_playing(state)
+    self.playing = state
+    if state then
+        self:sync_array_len()
+        self.clock:delay(TICK_MS)
+    end
+    if state then
+        self:outlet(1, "resume", {})
+    else
+        self:outlet(1, "pause", {})
+    end
+    self:repaint(3)
+end
+
+function playlist:toggle_play()
+    if self.playing then
+        self:set_playing(false)
+    elseif self.selected >= 0 then
+        self:set_playing(true)
+    end
+end
+
+-- ─── Inlet messages ───────────────────────────────────────────────────────────
+
+function playlist:in_1_bang()
+    self:sync_array_len()
+    self:repaint()
+end
+
+function playlist:in_1_float(atoms)
+    self:do_select(math.floor(tonumber(atoms[1]) or 0))
+end
+
+function playlist:in_1_add(atoms)
+    for _, a in ipairs(atoms) do
+        self.files[#self.files + 1] = {
+            path = tostring(a),
+            name = basename(tostring(a)),
+        }
+    end
+    if self.selected < 0 and #self.files > 0 then
+        self:do_select(0)
+    end
+    self:repaint(3)
+end
+
+function playlist:in_1_remove(atoms)
+    local idx = math.floor(tonumber(atoms[1]) or 0)
+    if idx >= 0 and idx < #self.files then
+        table.remove(self.files, idx + 1)
+        if self.selected >= #self.files then
+            self.selected = #self.files - 1
+        end
+        self:ensure_visible()
+        self:repaint(3)
+    end
+end
+
+function playlist:in_1_select(atoms)
+    self:do_select(math.floor(tonumber(atoms[1]) or 0))
+end
+
+function playlist:in_1_play(atoms)
+    local state = (tonumber(atoms[1]) or 0) ~= 0
+    if state == self.playing then return end
+    self:set_playing(state)
+end
+
+function playlist:in_1_pos(atoms)
+    local pos = math.max(0, math.min(1, tonumber(atoms[1]) or 0))
+    self.cursor = pos
+    self:sync_array_len()
+    if self.array_len > 0 then
+        self.samples_elapsed = math.floor(pos * self.array_len)
+    end
+    self:repaint(3)
+end
+
+-- sr <float>: sample rate of the currently loaded audio file
+function playlist:in_1_sr(atoms)
+    self.file_sr = tonumber(atoms[1]) or self.file_sr
+end
+
+function playlist:in_1_clear()
+    self:set_playing(false)
+    self.files    = {}
+    self.selected = -1
+    self.scroll   = 0
+    self.cursor   = 0
+    self.samples_elapsed = 0
+    self.array_len       = 0
+    self:repaint()
+end
+
+-- ─── Selection ────────────────────────────────────────────────────────────────
+
+function playlist:do_select(idx)
+    if idx < 0 or idx >= #self.files then return end
+    if self.playing then self:set_playing(false) end
+    self.selected = idx
+    self.cursor   = 0
+    self.samples_elapsed = 0
+    self:ensure_visible()
+    self:outlet(1, "open", { self.files[idx + 1].path })
+    self:outlet(1, "pos", { 0 })
+    self:set_playing(self.playing)
+    self:sync_array_len()
+    self:repaint()
+end
+
+-- ─── Mouse ────────────────────────────────────────────────────────────────────
+
+function playlist:mouse_down(x, y)
+    local wave_h = self:wave_height()
+
+    if y < wave_h then
+        if x < BTN_W then
+            self.dragging    = true
+            self.drag_zone   = "btn"
+            self.btn_pressed = true
+            self:repaint(3)
+        else
+            self.dragging  = true
+            self.drag_zone = "wave"
+            self:scrub_at(x)
+        end
+    elseif self:can_scroll() and x >= self:scroll_col_x() then
+        local list_h  = self.height - wave_h
+        local local_y = y - wave_h
+
+        self.dragging = true
+        if local_y < SCROLL_W then
+            self.drag_zone  = "scroll_up"
+            self.scroll_btn = -1
+            self.scroll     = math.max(0, self.scroll - 1)
+        elseif local_y >= list_h - SCROLL_W then
+            self.drag_zone  = "scroll_dn"
+            self.scroll_btn = 1
+            self.scroll     = math.min(self:max_scroll(), self.scroll + 1)
+        else
+            self.drag_zone = "scroll_track"
+            local track_h  = list_h - 2 * SCROLL_W
+            local frac     = (local_y - SCROLL_W) / track_h
+            self.scroll    = math.floor(frac * self:max_scroll() + 0.5)
+            self.scroll    = math.max(0, math.min(self:max_scroll(), self.scroll))
+        end
+        self:repaint(3)
+    else
+        self.dragging    = true
+        self.drag_zone   = "list"
+        self.drag_last_y = y
+        local row = math.floor((y - wave_h) / ROW_H) + self.scroll
+        if row >= 0 and row < #self.files then
+            self:do_select(row)
+        end
+    end
+end
+
+function playlist:mouse_drag(x, y)
+    if not self.dragging then return end
+
+    if self.drag_zone == "wave" then
+        self:scrub_at(x)
+    elseif self.drag_zone == "scroll_track" then
+        local wave_h  = self:wave_height()
+        local list_h  = self.height - wave_h
+        local track_h = list_h - 2 * SCROLL_W
+        local local_y = y - wave_h - SCROLL_W
+        local frac    = local_y / track_h
+        self.scroll   = math.floor(frac * self:max_scroll() + 0.5)
+        self.scroll   = math.max(0, math.min(self:max_scroll(), self.scroll))
+        self:repaint(3)
+    elseif self.drag_zone == "list" then
+        local dy = y - self.drag_last_y
+        if math.abs(dy) >= ROW_H then
+            self.scroll = math.max(0, math.min(self:max_scroll(),
+                self.scroll - math.floor(dy / ROW_H)))
+            self.drag_last_y = y
+            self:repaint(3)
+        end
+    end
+end
+
+function playlist:mouse_up(x, y)
+    if self.drag_zone == "btn" then
+        if x < BTN_W and y < self:wave_height() then
+            self:toggle_play()
+        end
+        self.btn_pressed = false
+        self:repaint(3)
+    elseif self.drag_zone == "scroll_up" or self.drag_zone == "scroll_dn" then
+        self.scroll_btn = 0
+        self:repaint(3)
+    end
+    self.dragging  = false
+    self.drag_zone = nil
+end
+
+function playlist:scrub_at(x)
+    local pos = math.max(0, math.min(1, (x - BTN_W) / (self.width - BTN_W)))
+    self.cursor = pos
+    self:sync_array_len()
+    if self.array_len > 0 then
+        self.samples_elapsed = math.floor(pos * self.array_len)
+    end
+    self:outlet(1, "pos", { pos })
+    self:set_playing(self.playing)
+    self:repaint(3)
+end
+
+function playlist:paint(g)
+    local w, h = self:get_size()
+    g:set_color(self.bgcolor[1], self.bgcolor[2], self.bgcolor[3])
+    g:fill_all()
+    if w ~= self.width or h ~= self.height then
+        self.width = w; self.height = h
+    end
+end
+
+-- ─── Paint: layer 2 (waveform) ───────────────────────────────────────────────
+
+function playlist:paint_layer_2(g)
+    local w      = self.width
+    local wave_h = self:wave_height()
+    self:draw_waveform(g, BTN_W, 0, w - BTN_W, wave_h)
+    g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+    g:draw_line(BTN_W, 0, BTN_W, wave_h, 0.5)
+end
+
+-- ─── Paint: layer 3 (cursor, controls, list) ────────────────────────────────
+
+function playlist:paint_layer_3(g)
+    local w      = self.width
+    local h      = self.height
+    local wave_h = self:wave_height()
+    local list_h = h - wave_h
+
+    -- play button
+    local cx, cy = BTN_W / 2, wave_h / 2
+    if self.btn_pressed then
+        g:set_color(self.selectcolor[1], self.selectcolor[2], self.selectcolor[3])
+        g:fill_rect(0, 0, BTN_W, wave_h)
+    end
+    if self.playing then
+        g:set_color(self.cursorcolor[1], self.cursorcolor[2], self.cursorcolor[3])
+        g:fill_rect(cx - 4.5, cy - 5, 3, 10)
+        g:fill_rect(cx + 1.5, cy - 5, 3, 10)
+    else
+        g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+        local tri = Path(cx - 4, cy - 6)
+        tri:line_to(cx - 4, cy + 6)
+        tri:line_to(cx + 6, cy)
+        tri:close()
+        g:fill_path(tri)
+    end
+
+    -- cursor
+    if self.cursor > 0 or self.playing then
+        g:set_color(self.cursorcolor[1], self.cursorcolor[2], self.cursorcolor[3])
+        g:draw_line(BTN_W + self.cursor * (w - BTN_W), 0,
+                    BTN_W + self.cursor * (w - BTN_W), wave_h, 1.5)
+    end
+
+    -- divider
+    g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+    g:draw_line(0, wave_h, w, wave_h, 1)
+
+    -- file list
+    local scrollable = self:can_scroll()
+    local text_right = scrollable and (w - SCROLL_W - 4) or (w - 4)
+    local vis        = self:visible_rows()
+
+    for i = 0, vis - 1 do
+        local fi = self.scroll + i
+        if fi >= #self.files then break end
+        local ry    = wave_h + i * ROW_H
+        local entry = self.files[fi + 1]
+
+        if fi == self.selected then
+            g:set_color(self.selectcolor[1], self.selectcolor[2], self.selectcolor[3])
+            g:fill_rect(0, ry, scrollable and (w - SCROLL_W) or w, ROW_H)
+        end
+
+        g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+        g:draw_text(tostring(fi), 6, ry + (ROW_H - FONT) / 2, 24, FONT)
+
+        if fi == self.selected then
+            g:set_color(self.bgcolor[1], self.bgcolor[2], self.bgcolor[3])
+        else
+            g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+        end
+        local name = entry.name
+        local mc = math.floor((text_right - 30) / CHAR_W)
+        if #name > mc and mc > 1 then name = name:sub(1, mc - 1) .. "…" end
+        g:draw_text(name, 20, ry + (ROW_H - FONT) / 2, text_right - 32, FONT)
+    end
+
+    -- scrollbar
+    if scrollable then self:draw_scrollbar(g, wave_h, list_h) end
+end
+
+-- ─── Scrollbar ────────────────────────────────────────────────────────────────
+
+function playlist:draw_scrollbar(g, wave_h, list_h)
+    local sx = self:scroll_col_x()
+    local cx = sx + SCROLL_W / 2
+    local am = 4
+
+    g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+    g:draw_line(sx, wave_h, sx, wave_h + list_h, 0.5)
+
+    -- up button
+    local up_y = wave_h
+    if self.scroll_btn == -1 then
+        g:set_color(self.selectcolor[1], self.selectcolor[2], self.selectcolor[3])
+        g:fill_rect(sx, up_y, SCROLL_W, SCROLL_W)
+    end
+    if self.scroll > 0 then
+        g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+    else
+        g:set_color(self.fgcolor[1]*0.4, self.fgcolor[2]*0.4, self.fgcolor[3]*0.4)
+    end
+    local up = Path(sx + am, up_y + SCROLL_W - am)
+    up:line_to(cx, up_y + am)
+    up:line_to(sx + SCROLL_W - am, up_y + SCROLL_W - am)
+    g:stroke_path(up, 1.5)
+    g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+    g:draw_line(sx, up_y + SCROLL_W, sx + SCROLL_W, up_y + SCROLL_W, 0.5)
+
+    -- down button
+    local dn_y = wave_h + list_h - SCROLL_W
+    if self.scroll_btn == 1 then
+        g:set_color(self.selectcolor[1], self.selectcolor[2], self.selectcolor[3])
+        g:fill_rect(sx, dn_y, SCROLL_W, SCROLL_W)
+    end
+    if self.scroll < self:max_scroll() then
+        g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+    else
+        g:set_color(self.fgcolor[1]*0.4, self.fgcolor[2]*0.4, self.fgcolor[3]*0.4)
+    end
+    local dn = Path(sx + am, dn_y + am)
+    dn:line_to(cx, dn_y + SCROLL_W - am)
+    dn:line_to(sx + SCROLL_W - am, dn_y + am)
+    g:stroke_path(dn, 1.5)
+    g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+    g:draw_line(sx, dn_y, sx + SCROLL_W, dn_y, 0.5)
+
+    -- thumb
+    local track_y = wave_h + SCROLL_W
+    local track_h = list_h - 2 * SCROLL_W
+    if track_h <= 0 then return end
+    local max_s   = self:max_scroll()
+    local thumb_h = math.max(8, math.floor(track_h * self:visible_rows() / #self.files))
+    local thumb_y = track_y
+    if max_s > 0 then
+        thumb_y = track_y + math.floor((track_h - thumb_h) * self.scroll / max_s)
+    end
+    g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+    g:fill_rect(sx + 3, thumb_y, SCROLL_W - 6, thumb_h)
+end
+
+-- ─── Waveform ─────────────────────────────────────────────────────────────────
+
+function playlist:draw_waveform(g, x, y, w, h)
+    local t = pd.Table:new():sync(self.array_name)
+    if not t then
+        g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+        g:draw_text("no waveform", x + 4, y + h/2 - 6, w, FONT)
+        return
+    end
+    local len = t:length()
+    if len == 0 then return end
+
+    local mid, half = y + h/2, h/2
+    g:set_color(self.wavecolor[1], self.wavecolor[2], self.wavecolor[3])
+    for px = 0, w - 1 do
+        local i0 = math.floor(px / w * len)
+        local i1 = math.max(i0, math.min(len - 1, math.floor((px+1) / w * len) - 1))
+        local mn, mx = 0, 0
+        for i = i0, i1 do
+            local v = t:get(i)
+            if v < mn then mn = v end
+            if v > mx then mx = v end
+        end
+        g:draw_line(x + px, mid - mx*half, x + px, math.max(mid - mn*half, mid - mx*half + 1), 1)
+    end
+    g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+    g:draw_line(x, mid, x + w, mid, 0.5)
+end
+
+-- ─── Utility ──────────────────────────────────────────────────────────────────
+
+function basename(path)
+    return tostring(path):match("([^/\\]+)$") or tostring(path)
+end

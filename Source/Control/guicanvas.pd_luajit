@@ -1,0 +1,367 @@
+local else_gui   = require("else_gui")
+local guicanvas  = pd.Class:new():register("guicanvas")
+
+else_gui.setup(guicanvas, {
+    { "width",   200,         "on_resize", "Width",      "int",   {frame="Dimensions", min=10, max=4096, flag="width"} },
+    { "height",  200,         "on_resize", "Height",     "int",   {frame="Dimensions", min=10, max=4096, flag="height"} },
+    { "bgcolor", pd.bg_color, "repaint",   "Background", "color", {frame="Appearance", flag="bgcolor"} },
+})
+
+-- ─── Lifecycle ────────────────────────────────────────────────────────────────
+
+function guicanvas:initialize(sel, atoms)
+    self.inlets  = 1
+    self.outlets = 2    -- 1: mouse state (down/up), 2: mouse coordinates
+
+    self:init_args(atoms)
+
+    -- drawing state
+    self.drawings     = { [0] = {} }   -- layer 0 = base paint
+    self.current_layer = 0
+    self.stroke_width  = 2
+    self.text_align    = 0             -- TOP_LEFT default
+
+    self:set_size(self.width, self.height)
+    return true
+end
+
+function guicanvas:on_resize()
+    self:set_size(self.width, self.height)
+end
+
+-- ─── Layer management ─────────────────────────────────────────────────────────
+
+function guicanvas:ensure_layer(n)
+    if not self.drawings[n] then
+        self.drawings[n] = {}
+    end
+    -- layers >= 1 need a paint_layer_N method
+    if n >= 1 and not self["paint_layer_" .. n] then
+        self["paint_layer_" .. n] = function(obj, g)
+            obj:render_layer(g, n)
+        end
+    end
+end
+
+function guicanvas:push(item)
+    self:ensure_layer(self.current_layer)
+    self.drawings[self.current_layer][#self.drawings[self.current_layer] + 1] = item
+end
+
+-- ─── Message dispatcher ──────────────────────────────────────────────────────
+
+function guicanvas:in_1(sel, atoms)
+    -- layer selection
+    if sel == "layer" and #atoms >= 1 then
+        local n = math.floor(tonumber(atoms[1]) or 0)
+        self.current_layer = math.max(0, n)
+        self:ensure_layer(self.current_layer)
+        return
+    end
+
+    -- commit: repaint the current layer
+    if sel == "end" or sel == "bang" then
+        if self.current_layer == 0 then
+            self:repaint()
+        else
+            self:repaint(self.current_layer)
+        end
+        return
+    end
+
+    -- clear
+    if sel == "clear" then
+        if #atoms >= 1 then
+            local n = math.floor(tonumber(atoms[1]) or 0)
+            self.drawings[n] = {}
+        else
+            self.drawings[self.current_layer] = {}
+        end
+        return
+    end
+
+    -- clearall: wipe every layer
+    if sel == "clearall" then
+        for k in pairs(self.drawings) do
+            self.drawings[k] = {}
+        end
+        return
+    end
+
+    -- size
+    if sel == "size" and #atoms >= 2 then
+        self.width  = math.max(10, math.floor(tonumber(atoms[1]) or self.width))
+        self.height = math.max(10, math.floor(tonumber(atoms[2]) or self.height))
+        self:set_size(self.width, self.height)
+        self:save_args(); self:repaint()
+        return
+    end
+
+    -- stroke width state
+    if sel == "linewidth" and #atoms >= 1 then
+        self.stroke_width = math.max(0.5, tonumber(atoms[1]) or 2)
+        return
+    end
+
+    -- text alignment state
+    -- 0=top-left 1=top-center 2=top-right 3=center-left 4=center
+    -- 5=center-right 6=bottom-left 7=bottom-center 8=bottom-right
+    if sel == "textalign" and #atoms >= 1 then
+        self.text_align = math.max(0, math.min(8, math.floor(tonumber(atoms[1]) or 0)))
+        return
+    end
+
+    -- ── Drawing primitives ────────────────────────────────────────────────
+
+    -- color r g b [a]  (0–1 floats)
+    if sel == "color" and #atoms >= 3 then
+        self:push({ type = "color",
+            r = tonumber(atoms[1]) or 0,
+            g = tonumber(atoms[2]) or 0,
+            b = tonumber(atoms[3]) or 0,
+            a = tonumber(atoms[4]) or 1 })
+        return
+    end
+
+    -- fillall
+    if sel == "fillall" then
+        self:push({ type = "fillall" })
+        return
+    end
+
+    -- rectangle x y w h [style]
+    if sel == "rectangle" and #atoms >= 4 then
+        self:push({ type = "rect",
+            x = tonumber(atoms[1]) or 0, y = tonumber(atoms[2]) or 0,
+            w = tonumber(atoms[3]) or 0, h = tonumber(atoms[4]) or 0,
+            style = tostring(atoms[5] or "fill"), lw = self.stroke_width })
+        return
+    end
+
+    -- roundedrect x y w h radius [style]
+    if sel == "roundedrect" and #atoms >= 5 then
+        self:push({ type = "rrect",
+            x = tonumber(atoms[1]) or 0, y = tonumber(atoms[2]) or 0,
+            w = tonumber(atoms[3]) or 0, h = tonumber(atoms[4]) or 0,
+            radius = tonumber(atoms[5]) or 0,
+            style = tostring(atoms[6] or "fill"), lw = self.stroke_width })
+        return
+    end
+
+    -- ellipse x y w h [style]
+    if sel == "ellipse" and #atoms >= 4 then
+        self:push({ type = "ellipse",
+            x = tonumber(atoms[1]) or 0, y = tonumber(atoms[2]) or 0,
+            w = tonumber(atoms[3]) or 0, h = tonumber(atoms[4]) or 0,
+            style = tostring(atoms[5] or "fill"), lw = self.stroke_width })
+        return
+    end
+
+    -- line x1 y1 x2 y2
+    if sel == "line" and #atoms >= 4 then
+        self:push({ type = "line",
+            x1 = tonumber(atoms[1]) or 0, y1 = tonumber(atoms[2]) or 0,
+            x2 = tonumber(atoms[3]) or 0, y2 = tonumber(atoms[4]) or 0,
+            lw = self.stroke_width })
+        return
+    end
+
+    -- path x1 y1 x2 y2 ... [style]   (even count = all coords; odd = last atom is style)
+    if sel == "path" and #atoms >= 4 then
+        local style = "stroke"
+        local coord_count = #atoms
+        if coord_count % 2 ~= 0 then
+            style = tostring(atoms[coord_count])
+            coord_count = coord_count - 1
+        end
+        local pts = {}
+        for i = 1, coord_count, 2 do
+            pts[#pts + 1] = { tonumber(atoms[i]) or 0, tonumber(atoms[i + 1]) or 0 }
+        end
+        self:push({ type = "path", points = pts, style = style, lw = self.stroke_width })
+        return
+    end
+
+    -- curve x1 y1 cx1 cy1 cx2 cy2 x2 y2  (cubic bezier)
+    if sel == "curve" and #atoms >= 8 then
+        self:push({ type = "curve", lw = self.stroke_width,
+            points = {
+                { tonumber(atoms[1]) or 0, tonumber(atoms[2]) or 0 },
+                { tonumber(atoms[3]) or 0, tonumber(atoms[4]) or 0 },
+                { tonumber(atoms[5]) or 0, tonumber(atoms[6]) or 0 },
+                { tonumber(atoms[7]) or 0, tonumber(atoms[8]) or 0 },
+            }})
+        return
+    end
+
+    -- text <string> x y fontsize [align]
+    if sel == "text" and #atoms >= 4 then
+        self:push({ type = "text",
+            text = tostring(atoms[1]),
+            x = tonumber(atoms[2]) or 0,
+            y = tonumber(atoms[3]) or 0,
+            size = tonumber(atoms[4]) or 12,
+            align = math.floor(tonumber(atoms[5]) or self.text_align) })
+        return
+    end
+
+    -- image <filepath> x y
+    if sel == "image" and #atoms >= 3 then
+        self:push({ type = "image",
+            path = tostring(atoms[1]),
+            x = tonumber(atoms[2]) or 0,
+            y = tonumber(atoms[3]) or 0})
+        return
+    end
+
+    -- svg <filepath_or_markup> x y
+    -- Note: Pd atoms cannot contain spaces, so complex inline SVG
+    -- must be loaded from a file path.
+    if sel == "svg" and #atoms >= 3 then
+        pd.post(tostring(atoms[1]))
+        self:push({ type = "svg",
+            data = tostring(atoms[1]),
+            x = tonumber(atoms[2]) or 0,
+            y = tonumber(atoms[3]) or 0})
+        return
+    end
+
+    -- ── Transform ─────────────────────────────────────────────────────────
+
+    if sel == "translate" and #atoms >= 2 then
+        self:push({ type = "translate",
+            x = tonumber(atoms[1]) or 0, y = tonumber(atoms[2]) or 0 })
+        return
+    end
+
+    if sel == "scale" and #atoms >= 1 then
+        local sx = tonumber(atoms[1]) or 1
+        local sy = tonumber(atoms[2]) or sx
+        self:push({ type = "scale", x = sx, y = sy })
+        return
+    end
+
+    if sel == "reset" then
+        self:push({ type = "reset" })
+        return
+    end
+end
+
+-- ─── Mouse callbacks ──────────────────────────────────────────────────────────
+
+function guicanvas:mouse_down(x, y)
+    self:outlet(2, "list", { x, y })
+    self:outlet(1, "list", { 1, x, y })
+end
+
+function guicanvas:mouse_up(x, y)
+    self:outlet(2, "list", { x, y })
+    self:outlet(1, "list", { 0, x, y })
+end
+
+function guicanvas:mouse_drag(x, y)
+    self:outlet(2, "list", { x, y })
+end
+
+function guicanvas:mouse_move(x, y)
+    self:outlet(2, "list", { x, y })
+end
+
+-- ─── Rendering ────────────────────────────────────────────────────────────────
+
+function guicanvas:paint(g)
+    -- background
+    g:set_color(self.bgcolor[1], self.bgcolor[2], self.bgcolor[3])
+    g:fill_all()
+
+    -- render base layer (0)
+    self:render_layer(g, 0)
+
+    -- plugdata dynamic resize
+    local w, h = self:get_size()
+    if w ~= self.width or h ~= self.height then
+        self.width = w; self.height = h
+        self:save_args()
+    end
+end
+
+function guicanvas:render_layer(g, layer)
+    local cmds = self.drawings[layer]
+    if not cmds then return end
+
+    local w = self.width   -- for text width fallback
+
+    for _, d in ipairs(cmds) do
+        local t = d.type
+
+        if t == "color" then
+            g:set_color(d.r, d.g, d.b, d.a)
+
+        elseif t == "fillall" then
+            g:fill_all()
+
+        elseif t == "rect" then
+            if d.style == "stroke" then
+                g:stroke_rect(d.x, d.y, d.w, d.h, d.lw)
+            else
+                g:fill_rect(d.x, d.y, d.w, d.h)
+            end
+
+        elseif t == "rrect" then
+            if d.style == "stroke" then
+                g:stroke_rounded_rect(d.x, d.y, d.w, d.h, d.radius, d.lw)
+            else
+                g:fill_rounded_rect(d.x, d.y, d.w, d.h, d.radius)
+            end
+
+        elseif t == "ellipse" then
+            if d.style == "stroke" then
+                g:stroke_ellipse(d.x, d.y, d.w, d.h, d.lw)
+            else
+                g:fill_ellipse(d.x, d.y, d.w, d.h)
+            end
+
+        elseif t == "line" then
+            g:draw_line(d.x1, d.y1, d.x2, d.y2, d.lw)
+
+        elseif t == "path" then
+            local p = Path(d.points[1][1], d.points[1][2])
+            for i = 2, #d.points do
+                p:line_to(d.points[i][1], d.points[i][2])
+            end
+            if d.style == "fill" then
+                p:close_path()
+                g:fill_path(p)
+            else
+                g:stroke_path(p, d.lw)
+            end
+
+        elseif t == "curve" then
+            local p = Path(d.points[1][1], d.points[1][2])
+            p:cubic_to(
+                d.points[2][1], d.points[2][2],
+                d.points[3][1], d.points[3][2],
+                d.points[4][1], d.points[4][2])
+            g:stroke_path(p, d.lw)
+
+        elseif t == "text" then
+            g:draw_text(d.text, d.x, d.y, w, d.size, d.align)
+
+        elseif t == "image" then
+            g:draw_image(d.path, d.x, d.y)
+
+        elseif t == "svg" then
+            pd.post("DRAW_SVG:" .. d.data)
+            g:draw_svg(d.data, d.x, d.y)
+
+        elseif t == "translate" then
+            g:translate(d.x, d.y)
+
+        elseif t == "scale" then
+            g:scale(d.x, d.y)
+
+        elseif t == "reset" then
+            g:reset_transform()
+        end
+    end
+end

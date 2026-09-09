@@ -1,0 +1,186 @@
+local else_gui = require("else_gui")
+local incdec   = pd.Class:new():register("incdec")
+
+else_gui.setup(incdec, {
+    { "width",     20,           "on_resize", "Width",      "int",   {frame="Dimensions", min=20, max=4096, flag="width"} },
+    { "height",    30,           "on_resize", "Height",     "int",   {frame="Dimensions", min=12, max=4096, flag="height"} },
+    { "step",      1,            nil,         "Step",       "float", {frame="General", flag="step"} },
+    { "range",     {-1e6, 1e6},  nil,         "Range",      "range", {frame="General", flag="range"} },
+    { "savestate", 0,            nil,         "Save State", "check", {frame="General", flag="savestate"} },
+    { "init_val",  0,            nil,         nil,          "float" },
+    { "bgcolor",   pd.bg_color,  "repaint",   "Background", "color", {frame="Appearance", flag="bgcolor"} },
+    { "fgcolor",   pd.fg_color,  "repaint",   "Foreground", "color", {frame="Appearance", flag="fgcolor"} },
+    { "send",      "empty",      nil,         "Send",       "text",  {frame="General", flag="send"} },
+    { "receive",   "empty",      "on_receive","Receive",    "text",  {frame="General", flag="receive"} },
+})
+
+function incdec:initialize(sel, atoms)
+    self.inlets  = 1
+    self.outlets = 1
+    self.shift   = false
+    self.active  = 0   -- -1 = down pressed, 1 = up pressed, 0 = idle
+
+    self:init_args(atoms)
+
+    self.val = (self.savestate ~= 0) and self.init_val or 0
+
+    self:setup_receive(self.receive)
+    self:set_size(self.width, self.height)
+    return true
+end
+
+function incdec:on_resize()
+    self:set_size(self.width, self.height)
+end
+
+function incdec:on_receive(sym)
+    self:setup_receive(sym)
+end
+
+function incdec:setup_receive(sym)
+    self.recv = nil
+    if sym ~= "empty" and sym ~= "" then
+        self.recv = pd.Receive:new():register(self, sym, "receive_cb")
+    end
+end
+
+function incdec:receive_cb(sel, atoms)
+    if     sel == "bang"  then self:in_1_bang()
+    elseif sel == "float" then self:in_1_float(atoms)
+    elseif sel == "set"   then self:in_1_set(atoms)
+    end
+end
+
+function incdec:clamp(v)
+    local lo = math.min(self.range[1], self.range[2])
+    local hi = math.max(self.range[1], self.range[2])
+    return math.max(lo, math.min(hi, v))
+end
+
+function incdec:current_step()
+    return self.shift and self.step / 10 or self.step
+end
+
+function incdec:increment()
+    self.val = self:clamp(self.val + self:current_step())
+    self:save_state(); self:repaint(); self:output()
+end
+
+function incdec:decrement()
+    self.val = self:clamp(self.val - self:current_step())
+    self:save_state(); self:repaint(); self:output()
+end
+
+function incdec:output()
+    self:outlet(1, "float", { self.val })
+    if self.send ~= "empty" and self.send ~= "" then
+        pd.send(self.send, "float", { self.val })
+    end
+end
+
+function incdec:save_state()
+    if self.savestate ~= 0 then
+        self.init_val = self.val
+        self:save_args()
+    end
+end
+
+function incdec:in_1_bang()
+    self:output()
+end
+
+function incdec:in_1_float(atoms)
+    self.val = self:clamp(tonumber(atoms[1]) or 0)
+    self:save_state(); self:repaint(); self:output()
+end
+
+function incdec:in_1_set(atoms)
+    self.val = self:clamp(tonumber(atoms[1]) or 0)
+    self:save_state(); self:repaint()
+end
+
+function incdec:in_1_step(atoms)
+    self.step = tonumber(atoms[1]) or self.step
+    self:save_args()
+end
+
+function incdec:in_1_range(atoms)
+    self.range = {
+        tonumber(atoms[1]) or self.range[1],
+        tonumber(atoms[2]) or self.range[2],
+    }
+    self.val = self:clamp(self.val)
+    self:save_args(); self:repaint()
+end
+
+function incdec:mouse_down(x, y)
+    local h = select(2, self:get_size())
+    if y < h / 2 then
+        self.active = 1
+        self:increment()
+    else
+        self.active = -1
+        self:decrement()
+    end
+end
+
+function incdec:mouse_up()
+    self.active = 0
+    self:repaint()
+end
+
+function incdec:key(down, name)
+    if name == "Shift_L" or name == "Shift_R" then
+        self.shift = (down ~= 0)
+    end
+end
+
+function incdec:paint(g)
+    local w, h = self:get_size()
+    local mid  = h / 2
+
+    -- background
+    g:set_color(self.bgcolor[1], self.bgcolor[2], self.bgcolor[3])
+    g:fill_all()
+
+    -- highlight active half
+    if self.active == 1 then
+        g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+        g:fill_rect(0, 0, w, mid)
+    elseif self.active == -1 then
+        g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+        g:fill_rect(0, mid, w, mid)
+    end
+
+    -- divider line
+    g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+    g:draw_line(0, mid, w, mid, 1)
+
+    -- arrow geometry
+    local mx = w * 0.25           -- horizontal margin
+    local my = mid * 0.25         -- vertical margin within each half
+    local lw = math.max(1.5, math.min(2.5, w / 20))
+
+    -- up arrow ∧ (top half)
+    local up_color = (self.active == 1) and self.bgcolor or self.fgcolor
+    g:set_color(up_color[1], up_color[2], up_color[3])
+    local up = Path(mx, mid - my)
+    up:line_to(w / 2, my)
+    up:line_to(w - mx, mid - my)
+    g:stroke_path(up, lw)
+
+    -- down arrow ∨ (bottom half)
+    local dn_color = (self.active == -1) and self.bgcolor or self.fgcolor
+    g:set_color(dn_color[1], dn_color[2], dn_color[3])
+    local dn = Path(mx, mid + my)
+    dn:line_to(w / 2, h - my)
+    dn:line_to(w - mx, mid + my)
+    g:stroke_path(dn, lw)
+
+    -- plugdata dynamic resize
+    if w ~= self.width or h ~= self.height then
+        self.width = w
+        self.height = h
+        self:save_args()
+    end
+end
