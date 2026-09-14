@@ -37,6 +37,10 @@ elseif(WIN32)
     NAMES pd
     HINTS ${PD_LIB_PATH})
   target_link_libraries(else_shared PRIVATE ws2_32 "${PDBINDIR}/pd.dll")
+  if(MINGW)
+    # Explicit exports (e.g. cJSON) disable MinGW auto-export unless forced.
+    target_link_options(else_shared PRIVATE -Wl,--export-all-symbols)
+  endif()
 endif()
 
 if(PD_FLOATSIZE64)
