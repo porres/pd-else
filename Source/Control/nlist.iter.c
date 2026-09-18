@@ -22,61 +22,54 @@ t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
         nlist_open(nlist);
 }
 
-// Collecting the paths first (below) and only firing outlet_list() once the
-// whole walk is finished means nothing downstream -- e.g. a [nlist.set] that
-// writes back into the very index just reported -- can free/replace a node
-// this traversal is still standing on. Emitting during the walk (as before)
-// held live pointers into the tree across a synchronous call into code that
-// could mutate that same tree, which corrupted the walk.
-typedef struct _nl_iter_collect{
-    t_atom *paths;    // flat storage: count * (maxdepth + 1) atoms
-    int    *lens;     // actual path length (<= maxdepth + 1) per leaf
-    int     maxdepth;
-    int     count;
-}t_nl_iter_collect;
-
-static void nl_iter_collect(t_nlist_node *node, int depth, t_atom *path,
-t_nl_iter_collect *c){
+// ------------ Mutation-aware iteration -------------------------------
+//
+// Same hazard as [nlist.traverse]: outlet_list() here can run straight
+// through something like [nlist.delete] and back before we return, so we
+// never carry a t_nlist_node pointer across an outlet call. Instead, before
+// every single emission we re-walk the tree from the live root, skipping
+// over however many leaves we've already emitted, and send out whichever
+// leaf comes next. If a fresh scan can't find that many leaves anymore,
+// we're done - nothing more is sent, rather than chasing a freed pointer
+// or emitting a leaf that no longer exists.
+//
+// Cost: each emission re-scans from the root, so this is roughly O(n^2) in
+// the number of leaves. Fine for interactively-sized lists.
+static int nl_iter_emit_nth(t_nlist_node *node, int depth, int *skip, t_atom *path, t_outlet *out){
     int index = 0;
     while(node){
         SETFLOAT(&path[depth], index++);
-        if(node->child)
-            nl_iter_collect(node->child, depth + 1, path, c);
+        if(node->child){
+            if(nl_iter_emit_nth(node->child, depth + 1, skip, path, out))
+                return(1);
+        }
         else{
-            t_atom *dst = c->paths + (size_t)c->count * (c->maxdepth + 1);
-            for(int i = 0; i <= depth; i++)
-                dst[i] = path[i];
-            c->lens[c->count] = depth + 1;
-            c->count++;
+            if(*skip == 0){
+                outlet_list(out, &s_list, depth + 1, path);
+                return(1);
+            }
+            (*skip)--;
         }
         node = node->next;
     }
+    return(0);
 }
 
 static void nl_iter_bang(t_nl_iter *x){
     t_nlist *nlist = nlist_get(x->x_sym, gensym("iter"));
     if(!nlist)
         return;
-    int n = nlist_count_leaves(nlist->x_root);
-    if(!n)
-        return;
-    int maxdepth = nlist->x_depth;
-    t_atom *scratch = getbytes((maxdepth + 1) * sizeof(t_atom));
-    t_nl_iter_collect c;
-    c.maxdepth = maxdepth;
-    c.count = 0;
-    c.paths = getbytes((size_t)n * (maxdepth + 1) * sizeof(t_atom));
-    c.lens = getbytes(sizeof(int) * n);
-    nl_iter_collect(nlist->x_root, 0, scratch, &c);
-    freebytes(scratch, (maxdepth + 1) * sizeof(t_atom));
-    // Traversal is fully done and nothing below touches nlist->x_root
-    // anymore -- safe to fan out even if a receiver mutates this nlist.
-    for(int i = 0; i < c.count; i++){
-        t_atom *p = c.paths + (size_t)i * (maxdepth + 1);
-        outlet_list(x->x_obj.ob_outlet, &s_list, c.lens[i], p);
+    int count = 0;
+    while(1){
+        int depth = nlist->x_depth; // re-read: mutation may have changed it since last pass
+        t_atom *path = getbytes((depth + 1) * sizeof(t_atom));
+        int skip = count;
+        int found = nl_iter_emit_nth(nlist->x_root, 0, &skip, path, x->x_obj.ob_outlet);
+        freebytes(path, (depth + 1) * sizeof(t_atom));
+        if(!found)
+            break;
+        count++;
     }
-    freebytes(c.paths, (size_t)n * (maxdepth + 1) * sizeof(t_atom));
-    freebytes(c.lens, sizeof(int) * n);
 }
 
 static void *nl_iter_new(t_symbol *s, int ac, t_atom *av){
