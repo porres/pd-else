@@ -300,4 +300,5 @@ void nlist_setup(void){
         (t_method)nlist_free, sizeof(t_nlist), CLASS_DEFAULT, A_GIMME, 0);
     nlist_class_setup(nlist_class);
     class_sethelpsymbol(nlist_class, gensym("nlist.define"));
+    post("\"nlist\" objects are still quite experimental and might change");
 }

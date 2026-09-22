@@ -1331,4 +1331,5 @@ void messcoll_setup(void){
     messcollcommon_class = class_new(gensym("messcoll"), 0, 0, sizeof(t_messcollcommon), CLASS_PD, 0);
 // nop (collcommon doesn't keep, file is already set), but it's good to have it just in case?
     elsefile_setup(messcollcommon_class, 0);
+    post("[messcoll] is still quite experimental and might change");
 }

@@ -365,23 +365,57 @@ int nlist_get_depth(t_nlist_node *node){
     return(depth);
 }
 
-void nlist_insert_at(t_nlist *nlist, int path_ac, int *path, t_nlist_node *contents){
-    if(!nlist || !contents) return;
+int nlist_insert_at(t_nlist *nlist, int path_ac, int *path, t_nlist_node *contents){
+    int debug = 0;
+    if(!nlist || !contents){
+        if(debug) post("[nlist.insert_at] FAIL: missing nlist or contents");
+        return(0);
+    }
+    if(debug){
+        post("[nlist.insert_at] path:");
+        for(int i = 0; i < path_ac; i++)
+            post("  path[%d] = %d", i, path[i]);
+    }
     t_nlist_node **link = &nlist->x_root;
     for(int i = 0; i < path_ac; i++){
-        if(i == path_ac - 1) break;
+        if(debug)
+            post("[nlist.insert_at] level %d, index %d", i, path[i]);
+        if(i == path_ac - 1)
+            break;
         link = nlist_find_link(link, path[i]);
-        if(!*link || (*link)->type != 1) return;
+        if(!*link){
+            if(i == path_ac - 2){
+                if(debug)
+                    post("[nlist.insert_at] creating missing child list at index 0");
+                *link = nlist_new_list();
+            }
+            else{
+                if(debug)
+                    post("[nlist.insert_at] FAIL: path[%d] does not exist", i);
+                return(0);
+            }
+        }
+        if((*link)->type != 1){
+            if(debug)
+                post("[nlist.insert_at] FAIL: path[%d] is not a list", i);
+            return(0);
+        }
         link = &(*link)->child;
     }
     if(path_ac)
         link = nlist_find_link(link, path[path_ac - 1]);
+    if(debug)
+        post("[nlist.insert_at] target link = %p, target node = %p", (void *)link, (void *)*link);
     t_nlist_node *last = contents;
-    while(last->next) last = last->next;
+    while(last->next)
+        last = last->next;
     last->next = *link;
     *link = contents;
     nlist->x_len = nlist_get_len(nlist->x_root);
     nlist->x_depth = nlist_get_depth(nlist->x_root);
+    if(debug)
+        post("[nlist.insert_at] SUCCESS");
+    return(1);
 }
 
 int nlist_parse_path(int ac, t_atom *av, int **path_out, int *path_ac_out){
