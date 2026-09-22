@@ -50,7 +50,7 @@ int nlist_get_depth(t_nlist_node *node);
 int nlist_has_list(t_nlist_node *node);
 int nlist_count_leaves(t_nlist_node *node);
 int nlist_parse_path(int ac, t_atom *av, int **path_out, int *path_ac_out);
-void nlist_insert_at(t_nlist *nlist, int path_ac, int *path, t_nlist_node *contents);
+int nlist_insert_at(t_nlist *nlist, int path_ac, int *path, t_nlist_node *contents);
 void nlist_tree_to_binbuf(t_nlist_node *node, t_binbuf *bb);
 void nlist_clear_nodes(t_nlist_node *node);
 void nlist_post_indented(int depth, const char *content);
