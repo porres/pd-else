@@ -371,4 +371,5 @@ void dict_setup(void){
         (t_method)dict_free, sizeof(t_dict), CLASS_DEFAULT, A_GIMME, 0);
     dict_class_setup(dict_class);
     class_sethelpsymbol(dict_class, gensym("dict.define"));
+    post("\"dict\" objects are still quite experimental and might change");
 }
