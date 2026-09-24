@@ -14,7 +14,7 @@
 #X text 211 329 clear;
 #X obj 195 171 noise~;
 #X obj 309 156 hsl 128 15 200 2000 0 0 empty empty empty -2 -8 0 10 #dcdcdc #000000 #000000 0 1;
-#X obj 306 177 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 306 177 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 258 329 - clears filter's memory;
 #X text 258 310 - signal to be filtered;
 #X text 258 351 - cutoff frequency;
@@ -44,6 +44,18 @@
 #X obj 195 199 else/crossover~ 500;
 #X obj 208 234 else/out~;
 #X text 94 94 [crossover~] is a 4th order butterworth crossover filter. It has two outlets for lowpass (left) and highpass (right) filters that you can use separately or in combination to form a crossover filter., f 58;
+#N canvas 808 291 469 402 multichannel 0;
+#X obj 129 260 else/crossover~ 500;
+#X obj 129 302 else/out.mc~;
+#X obj 129 182 else/white~ -ch 2;
+#X obj 240 302 else/out.mc~;
+#X obj 240 224 sig~ 100 1000;
+#X text 53 57 The filter outputs the same number of channels as the left input. If the right input has more than one channel \, the number channels must match the left input. A single input channel in the secondary inlets gets repeated to meet the number of multichannels of the left input., f 56;
+#X connect 0 0 1 0;
+#X connect 0 1 3 0;
+#X connect 2 0 0 0;
+#X connect 4 0 0 1;
+#X restore 435 264 pd multichannel;
 #X connect 13 0 38 0;
 #X connect 14 0 15 0;
 #X connect 15 0 38 1;

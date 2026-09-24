@@ -1,4 +1,4 @@
-#N canvas 453 23 560 494 10;
+#N canvas 453 38 561 478 10;
 #X obj 3 280 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 3 363 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
 #X obj 3 417 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000 0;
@@ -148,7 +148,7 @@
 #X obj 181 211 else/out~;
 #N canvas 615 144 459 508 multichannel 0;
 #X obj 105 329 meter2~;
-#X obj 294 172 knob 50 -1 1 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0;
+#X obj 294 172 knob 50 -1 1 0 0 empty empty #dfdfdf #7c7c7c black 1 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0 0 0 0;
 #X obj 294 234 f2s~;
 #X obj 195 327 else/out.mc~;
 #X obj 195 268 else/balance~ -mc;
