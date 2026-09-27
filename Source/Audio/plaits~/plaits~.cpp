@@ -19,7 +19,6 @@ typedef struct _plaits{
     t_int               x_n;
     t_int               x_model;
     t_int               x_pitch_mode;
-    t_float             x_pitch_correction;
     t_float             x_harmonics;
     t_float             x_timbre;
     t_float             x_morph;
@@ -40,7 +39,6 @@ typedef struct _plaits{
     bool                x_level_active;
     t_int               x_block_size;
     t_int               x_block_count;
-    t_int               x_last_n;
     t_int               x_last_engine;
     t_int               x_last_engine_perform;
     plaits::Voice       x_voice;
@@ -289,21 +287,6 @@ t_int *plaits_perform(t_int *w){
     t_sample *mmod  = (t_sample *) (w[8]);  // morph modulation input
     t_sample *out   = (t_sample *) (w[9]);  // out
     t_sample *aux   = (t_sample *) (w[10]); // aux out
-    int n = x->x_n; // block size
-    if(n != x->x_last_n){
-        if(n > 24){ // Plaits uses a block size of 24 max
-            int block_size = 24;
-            while(n > 24 && n % block_size > 0)
-                block_size--;
-            x->x_block_size = block_size;
-            x->x_block_count = n / block_size;
-        }
-        else{
-            x->x_block_size = n;
-            x->x_block_count = 1;
-        }
-        x->x_last_n = n;
-    }
     x->x_patch.engine = x->x_model; // Model
     int active_engine = x->x_voice.active_engine(); // Send current engine
     if(x->x_last_engine_perform > 128 && x->x_last_engine != active_engine){
@@ -325,6 +308,7 @@ t_int *plaits_perform(t_int *w){
     x->x_modulations.timbre_patched = x->x_timbre_active;
     x->x_modulations.morph_patched = x->x_morph_active;
     x->x_modulations.level_patched = x->x_level_active;
+    plaits::Voice::Frame output[plaits::kMaxBlockSize];
     for(int j = 0; j < x->x_block_count; j++){
         float pitch;
         if(x->x_midi_mode){
@@ -339,12 +323,11 @@ t_int *plaits_perform(t_int *w){
                 x->x_modulations.trigger = (trig[x->x_block_size * j] != 0);
             x->x_modulations.level = level[x->x_block_size * j];
         }
-        x->x_patch.note = x->x_transp + (pitch + x->x_pitch_correction) * 12.f;
+        x->x_patch.note = x->x_transp + pitch * 12.f;
         x->x_modulations.timbre = tmod[x->x_block_size * j] * 0.5;
         x->x_modulations.frequency = fmod[x->x_block_size * j] * 60.f;
         x->x_modulations.morph = mmod[x->x_block_size * j] * 0.5;
         x->x_modulations.harmonics = hmod[x->x_block_size * j] * 0.5;
-        plaits::Voice::Frame output[x->x_block_size];
         x->x_voice.Render(x->x_patch, x->x_modulations, output, x->x_block_size);
         for(int i = 0; i < x->x_block_size; i++){
             out[i + (x->x_block_size * j)] = output[i].out / 32768.0f;
@@ -355,8 +338,20 @@ t_int *plaits_perform(t_int *w){
 }
 
 void plaits_dsp(t_plaits *x, t_signal **sp){
-    x->x_pitch_correction = log2f(48000.f / sys_getsr());
-    x->x_n = sp[0]->s_n;
+    plaits::kSampleRate = (float)sp[0]->s_sr;
+    plaits::a0 = 55.f / plaits::kSampleRate;
+    int n = sp[0]->s_n;
+    if(n != x->x_n){
+        if(n >= 16){
+            x->x_block_size = 16;
+            x->x_block_count = n / x->x_block_size;
+        }
+        else{
+            x->x_block_size = n;
+            x->x_block_count = 1;
+        }
+        x->x_n = n;
+    }
     dsp_add(plaits_perform, 10, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec,
         sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec);
 }
@@ -373,14 +368,13 @@ void *plaits_new(t_symbol *s, int ac, t_atom *av){
     x->x_voice.Init(&allocator);
     int floatarg = 0;
     x->x_model = x->x_pitch_mode = x->x_midi_mode = 0;
-    x->x_pitch_correction = log2f(48000.f / sys_getsr());
     x->x_harmonics = x->x_timbre = x->x_morph = x->x_lpg_cutoff = x->x_decay = 0.5f;
     x->x_mod_timbre = x->x_mod_fm = x->x_mod_morph = 0;
     x->x_frequency_active = x->x_timbre_active = false;
     x->x_morph_active = x->x_trigger_mode = x->x_level_active = false;
     x->x_last_engine = x->x_last_engine_perform = 0;
     x->x_transp = 60.0;
-    x->x_last_n = 0;
+    x->x_n = 0;
     while(ac){
         if((av)->a_type == A_SYMBOL){
             if(floatarg)

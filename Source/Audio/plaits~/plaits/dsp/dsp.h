@@ -32,8 +32,6 @@
 #include "stmlib/stmlib.h"
 
 namespace plaits {
-  
-static const float kSampleRate = 48000.0f;
 
 // There is no proper PLL for I2S, only a divider on the system clock to derive
 // the bit clock.
@@ -46,11 +44,10 @@ static const float kSampleRate = 48000.0f;
 
 //static const float kCorrectedSampleRate = 47872.34f;
 
-// commented the above because this is fucking Pd
+// ignored the above because this is fucking Pd and we're now using its SR
 
-static const float kCorrectedSampleRate = kSampleRate;
-
-const float a0 = (440.0f / 8.0f) / kCorrectedSampleRate;
+extern float a0;
+extern float kSampleRate; // used to be fixed at 48khz, nos is Pd's
 
 const size_t kMaxBlockSize = 24;
 const size_t kBlockSize = 12;

@@ -77,7 +77,7 @@ void SixOpEngine::Init(BufferAllocator* allocator) {
 
   algorithms_.Init();
   for (int i = 0; i < kNumSixOpVoices; ++i) {
-    voice_[i].Init(&algorithms_, kCorrectedSampleRate);
+    voice_[i].Init(&algorithms_, kSampleRate);
   }
   temp_buffer_ = allocator->Allocate<float>(kMaxBlockSize * 4);
   acc_buffer_ = allocator->Allocate<float>(kMaxBlockSize * kNumSixOpVoices);
@@ -111,7 +111,7 @@ void SixOpEngine::Render(
   
   if (parameters.trigger & TRIGGER_UNPATCHED) {
     const float t = parameters.morph;
-    voice_[0].mutable_lfo()->Scrub(2.0f * kCorrectedSampleRate * t);
+    voice_[0].mutable_lfo()->Scrub(2.0f * kSampleRate * t);
 
     for (int i = 0; i < kNumSixOpVoices; ++i) {
       voice_[i].LoadPatch(&patches_[patch_index]);

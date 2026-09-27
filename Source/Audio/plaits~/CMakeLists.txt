@@ -9,6 +9,7 @@ set(PLAITS_SOURCES
     stmlib/dsp/units.cc
     stmlib/utils/random.cc
     stmlib/dsp/atan.cc
+    plaits/dsp/dsp.cc
     plaits/dsp/voice.cc
     plaits/dsp/engine/additive_engine.cc
     plaits/dsp/engine/bass_drum_engine.cc

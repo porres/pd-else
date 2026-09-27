@@ -238,7 +238,7 @@ void LPCSpeechSynthController::Render(
   
   // All utterances have been normalized for an average f0 of 100 Hz.
   const float pitch_shift = frequency / \
-      (rate_ratio * kLPCSpeechSynthDefaultF0 / kCorrectedSampleRate);
+      (rate_ratio * kLPCSpeechSynthDefaultF0 / kSampleRate);
   const float time_stretch = SemitonesToRatio(-speed * 24.0f +
         (formant_shift < 0.4f ? (formant_shift - 0.4f) * -45.0f
             : (formant_shift > 0.6f ? (formant_shift - 0.6f) * -45.0f : 0.0f)));
