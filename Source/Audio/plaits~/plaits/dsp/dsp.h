@@ -44,7 +44,12 @@ static const float kSampleRate = 48000.0f;
 //
 // That's only 4.6 cts of error, but we care!
 
-static const float kCorrectedSampleRate = 47872.34f;
+//static const float kCorrectedSampleRate = 47872.34f;
+
+// commented the above because this is fucking Pd
+
+static const float kCorrectedSampleRate = kSampleRate;
+
 const float a0 = (440.0f / 8.0f) / kCorrectedSampleRate;
 
 const size_t kMaxBlockSize = 24;
