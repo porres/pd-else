@@ -47,10 +47,10 @@ namespace plaits {
 // ignored the above because this is fucking Pd and we're now using its SR
 
 extern float a0;
-extern float kSampleRate; // used to be fixed at 48khz, nos is Pd's
+extern float kSampleRate; // used to be fixed at 48khz, now is Pd's
 
-const size_t kMaxBlockSize = 24;
-const size_t kBlockSize = 12;
+const size_t kMaxBlockSize = 16; // original was 24
+const size_t kBlockSize = 8; // original was 12
 
 }  // namespace plaits
 

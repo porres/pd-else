@@ -129,7 +129,7 @@ namespace plaits {
         trigger_state_ = false;
         previous_note_ = 0.0f;
         
-        trigger_delay_.Init(trigger_delay_line_);
+//        trigger_delay_.Init(trigger_delay_line_);
     }
     
     void Voice::Render(
@@ -141,8 +141,11 @@ namespace plaits {
         
         // Delay trigger by 1ms to deal with sequencers or MIDI interfaces whose
         // CV out lags behind the GATE out.
-        trigger_delay_.Write(modulations.trigger);
-        float trigger_value = trigger_delay_.Read(kTriggerDelay);
+//        trigger_delay_.Write(modulations.trigger);
+//        float trigger_value = trigger_delay_.Read(kTriggerDelay);
+        // delay removed, makes no sense in Pd...
+        
+        float trigger_value = modulations.trigger;
         
         bool previous_trigger_state = trigger_state_;
         if (!previous_trigger_state) {

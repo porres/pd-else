@@ -67,8 +67,8 @@
 namespace plaits {
     
     const int kMaxEngines = 24;
-    const int kMaxTriggerDelay = 8;
-    const int kTriggerDelay = 5;
+//    const int kMaxTriggerDelay = 8;
+//    const int kTriggerDelay = 5;
     
     class ChannelPostProcessor {
     public:
@@ -235,8 +235,8 @@ namespace plaits {
         DecayEnvelope decay_envelope_;
         LPGEnvelope lpg_envelope_;
         
-        float trigger_delay_line_[kMaxTriggerDelay];
-        DelayLine<float, kMaxTriggerDelay> trigger_delay_;
+//        float trigger_delay_line_[kMaxTriggerDelay];
+ //       DelayLine<float, kMaxTriggerDelay> trigger_delay_;
         
         ChannelPostProcessor out_post_processor_;
         ChannelPostProcessor aux_post_processor_;
