@@ -1,6 +1,6 @@
 // based on the plaits engine by Mutable instruments
 // also based on the pd port from github.com/jnonis/pd-plaits
-// redesigned and rewritten by Porres 2023-2024
+// redesigned and rewritten by Porres 2023-2026
 // Liscense: MIT Liscense (which is the original liscense of plaits)
 
 #include <stdint.h>
@@ -19,66 +19,23 @@ typedef struct _plaits{
     t_int               x_n;
     t_int               x_model;
     t_int               x_pitch_mode;
-    t_float             x_harmonics;
-    t_float             x_timbre;
-    t_float             x_morph;
-    t_float             x_lpg_cutoff;
-    t_float             x_decay;
     t_float             x_transp;
-    t_float             x_mod_timbre;
-    t_float             x_mod_fm;
-    t_float             x_mod_morph;
     t_float             x_midi_pitch;
     t_float             x_midi_tr;
     t_float             x_midi_lvl;
-    bool                x_frequency_active;
     bool                x_midi_mode;
-    bool                x_timbre_active;
-    bool                x_morph_active;    
-    bool                x_trigger_mode;
-    bool                x_level_active;
     t_int               x_block_size;
     t_int               x_block_count;
     t_int               x_last_engine;
     t_int               x_last_engine_perform;
     plaits::Voice       x_voice;
     plaits::Patch       x_patch;
-    plaits::Modulations x_modulations;
+    plaits::Modulations x_mod;
     char                x_shared_buffer[16384];
     t_outlet           *x_info_out;
 }t_plaits;
 
-extern "C"{
-    t_int *plaits_perform(t_int *w);
-    t_int *plaits_perform_midi(t_int *w);
-    void  *plaits_new(t_symbol *s, int ac, t_atom *av);
-    void   plaits_dsp(t_plaits *x, t_signal **sp);
-    void   plaits_free(t_plaits *x);
-    void   plaits_tilde_setup(void);
-    void   plaits_model(t_plaits *x, t_floatarg f);
-    void   plaits_harmonics(t_plaits *x, t_floatarg f);
-    void   plaits_timbre(t_plaits *x, t_floatarg f);
-    void   plaits_timbreatt(t_plaits *x, t_floatarg f);
-    void   plaits_morph(t_plaits *x, t_floatarg f);
-    void   plaits_morphatt(t_plaits *x, t_floatarg f);
-    void   plaits_fmatt(t_plaits *x, t_floatarg f);
-    void   plaits_lpg_cutoff(t_plaits *x, t_floatarg f);
-    void   plaits_decay(t_plaits *x, t_floatarg f);
-    void   plaits_transp(t_plaits *x, t_floatarg f);
-    void   plaits_midi(t_plaits *x);
-    void   plaits_hz(t_plaits *x);
-    void   plaits_cv(t_plaits *x);
-    void   plaits_voct(t_plaits *x);
-    void   plaits_dump(t_plaits *x);
-    void   plaits_print(t_plaits *x);
-    void   plaits_trigger_mode(t_plaits *x, t_floatarg f);
-    void   plaits_level_active(t_plaits *x, t_floatarg f);
-    void   plaits_morph_active(t_plaits *x, t_floatarg f);
-    void   plaits_freq_active(t_plaits *x, t_floatarg f);
-    void   plaits_timbre_active(t_plaits *x, t_floatarg f);
-    void   plaits_midi_active(t_plaits *x, t_floatarg f);
-    void   plaits_list(t_plaits *x, t_symbol *s, int ac, t_atom *av);
-}
+extern "C" void plaits_tilde_setup(void);
 
 static const char* modelLabels[24] = {
     "Pair of classic waveforms",
@@ -107,51 +64,51 @@ static const char* modelLabels[24] = {
     "Chiptune"
 };
 
-void plaits_print(t_plaits *x){
+static void plaits_print(t_plaits *x){
     post("[plaits~] settings:");
     post("- name: %s", modelLabels[x->x_model]);
-    post("- harmonics: %f", x->x_harmonics);
-    post("- timbre: %f", x->x_timbre);
-    post("- morph: %f", x->x_morph);
-    post("- trigger mode: %d", x->x_trigger_mode);
-    post("- cutoff: %f", x->x_lpg_cutoff);
-    post("- decay: %f", x->x_decay);
-    post("- level active: %d", x->x_level_active);
-    post("- morph active: %d", x->x_morph_active);
-    post("- freq active: %d", x->x_frequency_active);
-    post("- timbre active: %d", x->x_timbre_active);
+    post("- harmonics: %f", x->x_patch.harmonics);
+    post("- timbre: %f", x->x_patch.timbre);
+    post("- morph: %f", x->x_patch.morph);
+    post("- trigger mode: %d", x->x_mod.trigger_patched);
+    post("- cutoff: %f", x->x_patch.lpg_colour);
+    post("- decay: %f", x->x_patch.decay);
+    post("- level active: %d", x->x_mod.level_patched);
+    post("- morph active: %d", x->x_mod.morph_patched);
+    post("- freq active: %d", x->x_mod.frequency_patched);
+    post("- timbre active: %d", x->x_mod.timbre_patched);
     post("- midi active: %d", x->x_midi_mode);
 }
 
-void plaits_dump(t_plaits *x){
+static void plaits_dump(t_plaits *x){
     t_atom at[1];
     SETSYMBOL(at, gensym(modelLabels[x->x_model]));
     outlet_anything(x->x_info_out, gensym("name"), 1, at);
-    SETFLOAT(at, x->x_harmonics);
+    SETFLOAT(at, x->x_patch.harmonics);
     outlet_anything(x->x_info_out, gensym("harmonics"), 1, at);
-    SETFLOAT(at, x->x_timbre);
+    SETFLOAT(at, x->x_patch.timbre);
     outlet_anything(x->x_info_out, gensym("timbre"), 1, at);
-    SETFLOAT(at, x->x_morph);
+    SETFLOAT(at, x->x_patch.morph);
     outlet_anything(x->x_info_out, gensym("morph"), 1, at);
-    SETFLOAT(at, x->x_lpg_cutoff);
+    SETFLOAT(at, x->x_patch.lpg_colour);
     outlet_anything(x->x_info_out, gensym("cutoff"), 1, at);
-    SETFLOAT(at, x->x_decay);
+    SETFLOAT(at, x->x_patch.decay);
     outlet_anything(x->x_info_out, gensym("decay"), 1, at);
-    SETFLOAT(at, x->x_trigger_mode);
+    SETFLOAT(at, x->x_mod.trigger_patched);
     outlet_anything(x->x_info_out, gensym("trigger mode"), 1, at);
-    SETFLOAT(at, x->x_level_active);
+    SETFLOAT(at, x->x_mod.level_patched);
     outlet_anything(x->x_info_out, gensym("level active"), 1, at);
-    SETFLOAT(at, x->x_morph_active);
+    SETFLOAT(at, x->x_mod.morph_patched);
     outlet_anything(x->x_info_out, gensym("morph active"), 1, at);
-    SETFLOAT(at, x->x_frequency_active);
+    SETFLOAT(at, x->x_mod.frequency_patched);
     outlet_anything(x->x_info_out, gensym("freq active"), 1, at);
-    SETFLOAT(at, x->x_timbre_active);
+    SETFLOAT(at, x->x_mod.timbre_patched);
     outlet_anything(x->x_info_out, gensym("timbre active"), 1, at);
     SETFLOAT(at, x->x_midi_mode);
     outlet_anything(x->x_info_out, gensym("midi active"), 1, at);
 }
 
-void plaits_list(t_plaits *x, t_symbol *s, int ac, t_atom *av){
+static void plaits_list(t_plaits *x, t_symbol *s, int ac, t_atom *av){
     if(ac == 0)
         return;
     if(ac == 1 && s)
@@ -184,82 +141,82 @@ void plaits_list(t_plaits *x, t_symbol *s, int ac, t_atom *av){
         x->x_midi_lvl = atom_getfloat(av) / 127.;
 }
 
-void plaits_model(t_plaits *x, t_floatarg f){
+static void plaits_model(t_plaits *x, t_floatarg f){
     x->x_model = f < 0 ? 0 : f > 23 ? 23 : (int)f;
     t_atom at[1];
     SETSYMBOL(at, gensym(modelLabels[x->x_model]));
     outlet_anything(x->x_info_out, gensym("name"), 1, at);
 }
 
-void plaits_harmonics(t_plaits *x, t_floatarg f){
-    x->x_harmonics = f < 0 ? 0 : f > 1 ? 1 : f;
+static void plaits_harmonics(t_plaits *x, t_floatarg f){
+    x->x_patch.harmonics = f < 0 ? 0 : f > 1 ? 1 : f;
 }
 
-void plaits_timbre(t_plaits *x, t_floatarg f){
-    x->x_timbre = f < 0 ? 0 : f > 1 ? 1 : f;
+static void plaits_timbre(t_plaits *x, t_floatarg f){
+    x->x_patch.timbre = f < 0 ? 0 : f > 1 ? 1 : f;
 }
 
-void plaits_timbreatt(t_plaits *x, t_floatarg f){
-    x->x_mod_timbre = f < -1 ? -1 : f > 1 ? 1 : f;
+static void plaits_timbreatt(t_plaits *x, t_floatarg f){
+    x->x_patch.timbre_modulation_amount = f < -1 ? -1 : f > 1 ? 1 : f;
 }
 
-void plaits_morph(t_plaits *x, t_floatarg f){
-    x->x_morph = f < 0 ? 0 : f > 1 ? 1 : f;
+static void plaits_morph(t_plaits *x, t_floatarg f){
+    x->x_patch.morph = f < 0 ? 0 : f > 1 ? 1 : f;
 }
 
-void plaits_morphatt(t_plaits *x, t_floatarg f){
-    x->x_mod_morph = f < -1 ? -1 : f > 1 ? 1 : f;
+static void plaits_morphatt(t_plaits *x, t_floatarg f){
+    x->x_patch.morph_modulation_amount = f < -1 ? -1 : f > 1 ? 1 : f;
 }
 
-void plaits_fmatt(t_plaits *x, t_floatarg f){
-    x->x_mod_fm = f < -1 ? -1 : f > 1 ? 1 : f;
+static void plaits_fmatt(t_plaits *x, t_floatarg f){
+    x->x_patch.frequency_modulation_amount = f < -1 ? -1 : f > 1 ? 1 : f;
 }
 
-void plaits_lpg_cutoff(t_plaits *x, t_floatarg f){
-    x->x_lpg_cutoff = f < 0 ? 0 : f > 1 ? 1 : f;
+static void plaits_lpg_cutoff(t_plaits *x, t_floatarg f){
+    x->x_patch.lpg_colour = f < 0 ? 0 : f > 1 ? 1 : f;
 }
 
-void plaits_decay(t_plaits *x, t_floatarg f){
-    x->x_decay = f < 0 ? 0 : f > 1 ? 1 : f;
+static void plaits_decay(t_plaits *x, t_floatarg f){
+    x->x_patch.decay = f < 0 ? 0 : f > 1 ? 1 : f;
 }
 
-void plaits_transp(t_plaits *x, t_floatarg f){
+static void plaits_transp(t_plaits *x, t_floatarg f){
     x->x_transp = 60 + f;
 }
 
-void plaits_hz(t_plaits *x){
+static void plaits_hz(t_plaits *x){
     x->x_pitch_mode = 0;
 }
 
-void plaits_midi(t_plaits *x){
+static void plaits_midi(t_plaits *x){
     x->x_pitch_mode = 1;
 }
 
-void plaits_cv(t_plaits *x){
+static void plaits_cv(t_plaits *x){
     x->x_pitch_mode = 2;
 }
 
-void plaits_trigger_mode(t_plaits *x, t_floatarg f){
-    x->x_trigger_mode = (int)(f != 0);
+static void plaits_trigger_mode(t_plaits *x, t_floatarg f){
+    x->x_mod.trigger_patched = (int)(f != 0);
 }
 
-void plaits_level_active(t_plaits *x, t_floatarg f){
-    x->x_level_active = (int)(f != 0);
+static void plaits_level_active(t_plaits *x, t_floatarg f){
+    x->x_mod.level_patched = (int)(f != 0);
 }
 
-void plaits_morph_active(t_plaits *x, t_floatarg f){
-    x->x_morph_active = (int)(f != 0);
+static void plaits_morph_active(t_plaits *x, t_floatarg f){
+    x->x_mod.morph_patched = (int)(f != 0);
 }
 
-void plaits_freq_active(t_plaits *x, t_floatarg f){
-    x->x_frequency_active = (int)(f != 0);
+static void plaits_freq_active(t_plaits *x, t_floatarg f){
+    x->x_mod.frequency_patched = (int)(f != 0);
 }
 
-void plaits_timbre_active(t_plaits *x, t_floatarg f){
-    x->x_timbre_active = (int)(f != 0);
+static void plaits_timbre_active(t_plaits *x, t_floatarg f){
+    x->x_mod.timbre_patched = (int)(f != 0);
 }
 
-void plaits_midi_active(t_plaits *x, t_floatarg f){
+static void plaits_midi_active(t_plaits *x, t_floatarg f){
     x->x_midi_mode = (int)(f != 0);
 }
 
@@ -276,7 +233,7 @@ static float plaits_get_pitch(t_plaits *x, t_floatarg f){
         return(f*5);
 }
 
-t_int *plaits_perform(t_int *w){
+static t_int *plaits_perform(t_int *w){
     t_plaits *x     = (t_plaits *) (w[1]);
     t_sample *freq  = (t_sample *) (w[2]);  // frequency input
     t_sample *trig  = (t_sample *) (w[3]);  // trigger input
@@ -295,49 +252,61 @@ t_int *plaits_perform(t_int *w){
     }
     else
         x->x_last_engine_perform++;
-    x->x_patch.harmonics = x->x_harmonics;
-    x->x_patch.timbre = x->x_timbre;
-    x->x_patch.morph = x->x_morph;
-    x->x_patch.lpg_colour = x->x_lpg_cutoff;
-    x->x_patch.decay = x->x_decay;
-    x->x_patch.timbre_modulation_amount = x->x_mod_timbre;
-    x->x_patch.frequency_modulation_amount = x->x_mod_fm;
-    x->x_patch.morph_modulation_amount = x->x_mod_morph;
-    x->x_modulations.trigger_patched = x->x_trigger_mode;
-    x->x_modulations.frequency_patched = x->x_frequency_active;
-    x->x_modulations.timbre_patched = x->x_timbre_active;
-    x->x_modulations.morph_patched = x->x_morph_active;
-    x->x_modulations.level_patched = x->x_level_active;
     plaits::Voice::Frame output[plaits::kMaxBlockSize];
     for(int j = 0; j < x->x_block_count; j++){
-        float pitch;
+        int base = x->x_block_size * j;
+        int trigger_at = -1;
+        if(x->x_mod.trigger_patched && !x->x_midi_mode){
+            for(int i = 0; i < x->x_block_size; i++){
+                if(trig[base + i] != 0){
+                    trigger_at = i;
+                    break;
+                }
+            }
+        }
+        int sample_at = base + (trigger_at > 0 ? trigger_at : 0);
         if(x->x_midi_mode){
-            pitch = plaits_get_pitch(x, x->x_midi_pitch);
-            if(x->x_trigger_mode) // trigger mode
-                x->x_modulations.trigger = x->x_midi_tr;
-            x->x_modulations.level = x->x_midi_lvl;
+            x->x_patch.note = x->x_transp + plaits_get_pitch(x, x->x_midi_pitch) * 12.f;
+            if(x->x_mod.trigger_patched) // trigger mode
+                x->x_mod.trigger = x->x_midi_tr;
+            x->x_mod.level = x->x_midi_lvl;
         }
         else{
-            pitch = plaits_get_pitch(x, freq[x->x_block_size * j]);
-            if(x->x_trigger_mode) // trigger mode
-                x->x_modulations.trigger = (trig[x->x_block_size * j] != 0);
-            x->x_modulations.level = level[x->x_block_size * j];
+            x->x_patch.note = x->x_transp + plaits_get_pitch(x, freq[sample_at]) * 12.f;
+            if(x->x_mod.trigger_patched) // trigger mode
+                x->x_mod.trigger = (trigger_at >= 0);
+            x->x_mod.level = level[sample_at];
         }
-        x->x_patch.note = x->x_transp + pitch * 12.f;
-        x->x_modulations.timbre = tmod[x->x_block_size * j] * 0.5;
-        x->x_modulations.frequency = fmod[x->x_block_size * j] * 60.f;
-        x->x_modulations.morph = mmod[x->x_block_size * j] * 0.5;
-        x->x_modulations.harmonics = hmod[x->x_block_size * j] * 0.5;
-        x->x_voice.Render(x->x_patch, x->x_modulations, output, x->x_block_size);
-        for(int i = 0; i < x->x_block_size; i++){
-            out[i + (x->x_block_size * j)] = output[i].out / 32768.0f;
-            aux[i + (x->x_block_size * j)] = output[i].aux / 32768.0f;
+        x->x_mod.timbre = tmod[sample_at] * 0.5;
+        x->x_mod.frequency = fmod[sample_at] * 60.f;
+        x->x_mod.morph = mmod[sample_at] * 0.5;
+        x->x_mod.harmonics = hmod[sample_at] * 0.5;
+        if(trigger_at > 0){
+            x->x_mod.trigger = 0;
+            x->x_voice.Render(x->x_patch, x->x_mod, output, trigger_at);
+            for(int i = 0; i < trigger_at; i++){
+                out[i + base] = output[i].out / 32768.0f;
+                aux[i + base] = output[i].aux / 32768.0f;
+            }
+            x->x_mod.trigger = 1;
+            x->x_voice.Render(x->x_patch, x->x_mod, output, x->x_block_size - trigger_at);
+            for(int i = 0; i < x->x_block_size - trigger_at; i++){
+                out[i + base + trigger_at] = output[i].out / 32768.0f;
+                aux[i + base + trigger_at] = output[i].aux / 32768.0f;
+            }
+        }
+        else{
+            x->x_voice.Render(x->x_patch, x->x_mod, output, x->x_block_size);
+            for(int i = 0; i < x->x_block_size; i++){
+                out[i + base] = output[i].out / 32768.0f;
+                aux[i + base] = output[i].aux / 32768.0f;
+            }
         }
     }
     return(w+11);
 }
 
-void plaits_dsp(t_plaits *x, t_signal **sp){
+static void plaits_dsp(t_plaits *x, t_signal **sp){
     plaits::kSampleRate = (float)sp[0]->s_sr;
     plaits::a0 = 55.f / plaits::kSampleRate;
     int n = sp[0]->s_n;
@@ -356,92 +325,79 @@ void plaits_dsp(t_plaits *x, t_signal **sp){
         sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec);
 }
 
-void plaits_free(t_plaits *x){
+static void plaits_free(t_plaits *x){
     x->x_voice.FreeEngines();
     outlet_free(x->x_info_out);
 }
 
-void *plaits_new(t_symbol *s, int ac, t_atom *av){
-    s = NULL;
+static void *plaits_new(t_symbol *s, int ac, t_atom *av){
+    (void)s;
     t_plaits *x = (t_plaits *)pd_new(plaits_class);
     stmlib::BufferAllocator allocator(x->x_shared_buffer, sizeof(x->x_shared_buffer));
     x->x_voice.Init(&allocator);
-    int floatarg = 0;
-    x->x_model = x->x_pitch_mode = x->x_midi_mode = 0;
-    x->x_harmonics = x->x_timbre = x->x_morph = x->x_lpg_cutoff = x->x_decay = 0.5f;
-    x->x_mod_timbre = x->x_mod_fm = x->x_mod_morph = 0;
-    x->x_frequency_active = x->x_timbre_active = false;
-    x->x_morph_active = x->x_trigger_mode = x->x_level_active = false;
-    x->x_last_engine = x->x_last_engine_perform = 0;
+    int nfloats = 0;
+    x->x_model = 0;
+    x->x_pitch_mode = 0;
+    x->x_midi_mode = 0;
+    x->x_patch.harmonics = 0.5;
+    x->x_patch.timbre = 0.5;
+    x->x_patch.morph = 0.5;
+    x->x_patch.lpg_colour = 0.5;
+    x->x_patch.decay = 0.5f;
+    x->x_patch.frequency_modulation_amount = 0;
+    x->x_patch.timbre_modulation_amount = 0;
+    x->x_patch.morph_modulation_amount = 0;
+    x->x_mod.frequency_patched = false;
+    x->x_mod.timbre_patched = false;
+    x->x_mod.morph_patched = false;
+    x->x_mod.trigger_patched = false;
+    x->x_mod.level_patched = false;
+    x->x_last_engine = 0;
+    x->x_last_engine_perform = 0;
     x->x_transp = 60.0;
     x->x_n = 0;
     while(ac){
-        if((av)->a_type == A_SYMBOL){
-            if(floatarg)
-                goto errstate;
+        if(av->a_type == A_SYMBOL){
             t_symbol *sym = atom_getsymbol(av);
             ac--, av++;
             if(sym == gensym("-midi"))
                 x->x_pitch_mode = 1;
             else if(sym == gensym("-cv"))
                 x->x_pitch_mode = 2;
-            else if(sym == gensym("-model")){
-                if((av)->a_type == A_FLOAT){
-                    t_float m = atom_getint(av);
-                    x->x_model = m < 0 ? 0 : m > 23 ? 23 : m;
-                    ac--, av++;
-                }
+            else if(sym == gensym("-model") && ac && av->a_type == A_FLOAT){
+                t_float m = atom_getint(av);
+                x->x_model = m < 0 ? 0 : m > 23 ? 23 : m;
+                ac--, av++;
             }
             else if(sym == gensym("-tr_active"))
-                x->x_trigger_mode = 1;
+                x->x_mod.trigger_patched = true;
             else if(sym == gensym("-lvl_active"))
-                x->x_level_active = 1;
+                x->x_mod.level_patched = 1;
             else if(sym == gensym("-timbre_active"))
-                x->x_timbre_active = 1;
+                x->x_mod.timbre_patched = 1;
             else if(sym == gensym("-freq_active"))
-                x->x_frequency_active = 1;
+                x->x_mod.frequency_patched = 1;
             else if(sym == gensym("-morph_active"))
-                x->x_morph_active = 1;
+                x->x_mod.morph_patched = 1;
             else if(sym == gensym("-midi_active"))
                 x->x_midi_mode = 1;
             else
                 goto errstate;
         }
         else{
-            floatarg = 1;
-            x->x_f = atom_getfloat(av); // pitch
+            float f = atom_getfloat(av);
             ac--, av++;
-            if(ac && (av)->a_type == A_FLOAT){ // harmonics
-                x->x_harmonics = atom_getfloat(av);
-                ac--, av++;
-                if(ac && (av)->a_type == A_FLOAT){ // timbre
-                    x->x_timbre = atom_getfloat(av);
-                    ac--, av++;
-                    if(ac && (av)->a_type == A_FLOAT){ // morph
-                        x->x_morph = atom_getfloat(av);
-                        ac--, av++;
-                        if(ac && (av)->a_type == A_FLOAT){ // cutoff
-                            x->x_lpg_cutoff = atom_getfloat(av);
-                            ac--, av++;
-                            if(ac && (av)->a_type == A_FLOAT){ // decay
-                                x->x_decay = atom_getfloat(av);
-                                ac--, av++;
-                                if(ac && (av)->a_type == A_FLOAT){ // timbre att
-                                    x->x_mod_timbre = atom_getfloat(av);
-                                    ac--, av++;
-                                    if(ac && (av)->a_type == A_FLOAT){ // freq att
-                                        x->x_mod_fm = atom_getfloat(av);
-                                        ac--, av++;
-                                        if(ac && (av)->a_type == A_FLOAT){ // morph att
-                                            x->x_mod_morph = atom_getfloat(av);
-                                            ac--, av++;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            switch(nfloats++){
+                case 0: x->x_f = f; break;                      // pitch
+                case 1: x->x_patch.harmonics = f; break;        // harmonics
+                case 2: x->x_patch.timbre = f; break;           // timbre
+                case 3: x->x_patch.morph = f; break;            // morph
+                case 4: x->x_patch.lpg_colour = f; break;       // cutoff
+                case 5: x->x_patch.decay = f; break;            // decay
+                case 6: x->x_patch.timbre_modulation_amount = f; break; // timbre att
+                case 7: x->x_patch.frequency_modulation_amount = f; break; // freq att
+                case 8: x->x_patch.morph_modulation_amount = f; break;  // morph att
+                default: goto errstate;
             }
         }
     }
