@@ -990,27 +990,8 @@ static inline void voice_render(
         120.0f);
   }
 
-  p.timbre = voice_apply_modulations(
-      p_patch->timbre,
-      p_patch->timbre_modulation_amount,
-      0,
-      0.0f,
-      use_internal_envelope,
-      internal_envelope_amplitude_timbre * v->decay_env,
-      0.0f,
-      0.0f,
-      1.0f);
-
-  p.morph = voice_apply_modulations(
-      p_patch->morph,
-      p_patch->morph_modulation_amount,
-      0,
-      0.0f,
-      use_internal_envelope,
-      internal_envelope_amplitude * v->decay_env,
-      0.0f,
-      0.0f,
-      1.0f);
+  p.timbre = p_patch->timbre;
+  p.morph = p_patch->morph;
 
   bass_drum_engine_render(e, &p, v->out_buffer, v->aux_buffer, size);
 
