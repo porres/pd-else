@@ -1,7 +1,7 @@
 // Based on Plaits' voice.cc (Copyright 2016 Emilie Gillet, MIT).
 // Bass drum only, trigger mode only. See voice.h for what was removed.
 
-#include "plaits/voice.h"
+#include "voice.h"
 
 namespace plaits {
 

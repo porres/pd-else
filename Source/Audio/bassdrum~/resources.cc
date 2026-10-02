@@ -30,7 +30,7 @@
 // make resources
 
 
-#include "plaits/resources.h"
+#include "resources.h"
 
 namespace plaits {
 

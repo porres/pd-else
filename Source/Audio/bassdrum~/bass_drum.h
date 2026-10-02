@@ -5,9 +5,9 @@
 #include <algorithm>
 
 #include "stmlib.h"
-#include "plaits/dsp.h"
-#include "plaits/sine_oscillator.h"
-#include "plaits/overdrive.h"
+#include "dsp.h"
+#include "sine_oscillator.h"
+#include "overdrive.h"
 
 namespace plaits {
 

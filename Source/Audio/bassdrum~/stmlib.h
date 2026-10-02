@@ -2,7 +2,6 @@
 
 #pragma once
 
-#define _USE_MATH_DEFINES
 #define TEST 1
 
 #include <inttypes.h>

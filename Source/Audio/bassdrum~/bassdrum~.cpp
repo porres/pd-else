@@ -2,8 +2,8 @@
 
 #include <m_pd.h>
 #include <math.h>
-#include "plaits/dsp.h"
-#include "plaits/voice.h"
+#include "dsp.h"
+#include "voice.h"
 
 static t_class *bd_class;
 

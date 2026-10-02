@@ -1,4 +1,4 @@
-#include "plaits/dsp.h"
+#include "dsp.h"
 
 namespace plaits {
 

@@ -34,7 +34,7 @@
 
 #include "stmlib.h"
 
-#include "plaits/resources.h"
+#include "resources.h"
 
 namespace plaits {
   

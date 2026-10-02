@@ -19,8 +19,8 @@
 
 #include "stmlib.h"
 
-#include "plaits/bass_drum.h"
-#include "plaits/envelope.h"
+#include "bass_drum.h"
+#include "envelope.h"
 
 namespace plaits {
 
