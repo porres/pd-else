@@ -31,7 +31,7 @@
 
 #include <algorithm>
 
-#include "stmlib/stmlib.h"
+#include "stmlib.h"
 
 namespace plaits {
   

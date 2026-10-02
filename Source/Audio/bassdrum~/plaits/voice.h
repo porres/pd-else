@@ -17,9 +17,9 @@
 #include <algorithm>
 #include <math.h>
 
-#include "stmlib/stmlib.h"
+#include "stmlib.h"
 
-#include "plaits/engine/bass_drum.h"
+#include "plaits/bass_drum.h"
 #include "plaits/envelope.h"
 
 namespace plaits {

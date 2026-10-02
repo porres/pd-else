@@ -32,7 +32,7 @@
 #ifndef PLAITS_DSP_OSCILLATOR_SINE_OSCILLATOR_H_
 #define PLAITS_DSP_OSCILLATOR_SINE_OSCILLATOR_H_
 
-#include "stmlib/stmlib.h"
+#include "stmlib.h"
 
 #include "plaits/resources.h"
 

@@ -29,7 +29,7 @@
 #ifndef PLAITS_DSP_DSP_H_
 #define PLAITS_DSP_DSP_H_
 
-#include "stmlib/stmlib.h"
+#include "stmlib.h"
 
 namespace plaits {
 

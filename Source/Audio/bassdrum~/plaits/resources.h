@@ -34,7 +34,7 @@
 #define PLAITS_RESOURCES_H_
 
 
-#include "stmlib/stmlib.h"
+#include "stmlib.h"
 
 
 
