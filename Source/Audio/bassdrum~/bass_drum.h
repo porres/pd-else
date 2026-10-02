@@ -15,10 +15,6 @@
     var = (max); \
   }
 
-#define MAKE_INTEGRAL_FRACTIONAL(x) \
-  int32_t x ## _integral = (int32_t)(x); \
-  float x ## _fractional = (x) - (float)(x ## _integral);
-
 #define ONE_POLE(out, in, coefficient) out += (coefficient) * ((in) - out);
 #define SLOPE(out, in, positive, negative) { \
   float error = (in) - out; \
@@ -382,8 +378,7 @@ static inline void synthetic_bass_drum_init(synthetic_bass_drum* d){
 
 static inline float synthetic_bass_drum_distorted_sine(float phase, float phase_noise, float dirtiness) {
   phase += phase_noise * dirtiness;
-  MAKE_INTEGRAL_FRACTIONAL(phase);
-  phase = phase_fractional;
+  phase -= (float)((int32_t)phase);
   float triangle = (phase < 0.5f ? phase : 1.0f - phase) * 4.0f - 1.0f;
   float s = 2.0f * triangle / (1.0f + fabsf(triangle));
   float clean_sine = sine(phase + 0.75f);
