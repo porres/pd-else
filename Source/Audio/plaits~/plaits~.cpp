@@ -11,12 +11,15 @@
 
 #include <m_pd.h>
 
+#define SHARED_BUFFER_SIZE 16384
+
 static t_class *plaits_class;
 
 typedef struct _plaits{
     t_object            x_obj;
     t_float             x_f;
     t_int               x_n;
+    t_int               x_nchans;
     t_int               x_model;
     t_int               x_pitch_mode;
     t_float             x_transp;
@@ -26,12 +29,18 @@ typedef struct _plaits{
     bool                x_midi_mode;
     t_int               x_block_size;
     t_int               x_block_count;
-    t_int               x_last_engine;
-    t_int               x_last_engine_perform;
-    plaits::Voice       x_voice;
+    t_int               x_ch_trig;
+    t_int               x_ch_level;
+    t_int               x_ch_fmod;
+    t_int               x_ch_tmod;
+    t_int               x_ch_hmod;
+    t_int               x_ch_mmod;
+    t_int               x_ch_freq;
+    t_int               x_nalloc;      // number of voices allocated (never shrinks)
+    plaits::Voice       **x_voice;     // table of pointers: a Voice never moves
+    char                **x_buffer;    // one shared RAM slice per voice
     plaits::Patch       x_patch;
     plaits::Modulations x_mod;
-    char                x_shared_buffer[16384];
     t_outlet           *x_info_out;
 }t_plaits;
 
@@ -233,73 +242,105 @@ static float plaits_get_pitch(t_plaits *x, t_floatarg f){
         return(f*5);
 }
 
+// Voices are allocated once and individually, and are never moved or freed
+// until the object dies. Only the table of pointers is resized.
+static void plaits_grow(t_plaits *x, int chs){
+    if(chs <= x->x_nalloc)
+        return;
+    plaits::Voice **v = (plaits::Voice **)getbytes(chs * sizeof(plaits::Voice *));
+    char **b = (char **)getbytes(chs * sizeof(char *));
+    for(int c = 0; c < x->x_nalloc; c++){
+        v[c] = x->x_voice[c];
+        b[c] = x->x_buffer[c];
+    }
+    for(int c = x->x_nalloc; c < chs; c++){
+        v[c] = (plaits::Voice *)getbytes(sizeof(plaits::Voice));
+        b[c] = (char *)getbytes(SHARED_BUFFER_SIZE);
+        stmlib::BufferAllocator allocator(b[c], SHARED_BUFFER_SIZE);
+        v[c]->Init(&allocator);
+    }
+    if(x->x_nalloc){
+        freebytes(x->x_voice, x->x_nalloc * sizeof(plaits::Voice *));
+        freebytes(x->x_buffer, x->x_nalloc * sizeof(char *));
+    }
+    x->x_voice = v;
+    x->x_buffer = b;
+    x->x_nalloc = chs;
+}
+
 static t_int *plaits_perform(t_int *w){
     t_plaits *x     = (t_plaits *) (w[1]);
-    t_sample *freq  = (t_sample *) (w[2]);  // frequency input
-    t_sample *trig  = (t_sample *) (w[3]);  // trigger input
-    t_sample *level = (t_sample *) (w[4]);  // level input
-    t_sample *fmod  = (t_sample *) (w[5]);  // frequency modulation input
-    t_sample *tmod  = (t_sample *) (w[6]);  // timbre modulation input
-    t_sample *hmod  = (t_sample *) (w[7]);  // harmonics modulation input
-    t_sample *mmod  = (t_sample *) (w[8]);  // morph modulation input
-    t_sample *out   = (t_sample *) (w[9]);  // out
-    t_sample *aux   = (t_sample *) (w[10]); // aux out
-    x->x_patch.engine = x->x_model; // Model
-    int active_engine = x->x_voice.active_engine(); // Send current engine
-    if(x->x_last_engine_perform > 128 && x->x_last_engine != active_engine){
-        x->x_last_engine = active_engine;
-        x->x_last_engine_perform = 0;
-    }
-    else
-        x->x_last_engine_perform++;
+    t_sample *freq  = (t_sample *) (w[2]);
+    t_sample *trig  = (t_sample *) (w[3]);
+    t_sample *level = (t_sample *) (w[4]);
+    t_sample *fmod  = (t_sample *) (w[5]);
+    t_sample *tmod  = (t_sample *) (w[6]);
+    t_sample *hmod  = (t_sample *) (w[7]);
+    t_sample *mmod  = (t_sample *) (w[8]);
+    t_sample *out   = (t_sample *) (w[9]);
+    t_sample *aux   = (t_sample *) (w[10]);
+    int n = x->x_n;
+    int nchans = x->x_nchans;
+    x->x_patch.engine = x->x_model;
     plaits::Voice::Frame output[plaits::kMaxBlockSize];
-    for(int j = 0; j < x->x_block_count; j++){
-        int base = x->x_block_size * j;
-        int trigger_at = -1;
-        if(x->x_mod.trigger_patched && !x->x_midi_mode){
-            for(int i = 0; i < x->x_block_size; i++){
-                if(trig[base + i] != 0){
-                    trigger_at = i;
-                    break;
+    for(int c = 0; c < nchans; c++){
+        t_sample *fc = x->x_ch_freq  == 1 ? freq  : freq  + c * n;
+        t_sample *tc = x->x_ch_trig  == 1 ? trig  : trig  + c * n;
+        t_sample *lc = x->x_ch_level == 1 ? level : level + c * n;
+        t_sample *fmc= x->x_ch_fmod  == 1 ? fmod  : fmod  + c * n;
+        t_sample *tmc= x->x_ch_tmod  == 1 ? tmod  : tmod  + c * n;
+        t_sample *hmc= x->x_ch_hmod  == 1 ? hmod  : hmod  + c * n;
+        t_sample *mmc= x->x_ch_mmod  == 1 ? mmod  : mmod  + c * n;
+        t_sample *oc = out + c * n;
+        t_sample *ac = aux + c * n;
+        for(int j = 0; j < x->x_block_count; j++){
+            int base = x->x_block_size * j;
+            int trigger_at = -1;
+            if(x->x_mod.trigger_patched && !x->x_midi_mode){
+                for(int i = 0; i < x->x_block_size; i++){
+                    if(tc[base + i] != 0){
+                        trigger_at = i;
+                        break;
+                    }
                 }
             }
-        }
-        int sample_at = base + (trigger_at > 0 ? trigger_at : 0);
-        if(x->x_midi_mode){
-            x->x_patch.note = x->x_transp + plaits_get_pitch(x, x->x_midi_pitch) * 12.f;
-            if(x->x_mod.trigger_patched) // trigger mode
-                x->x_mod.trigger = x->x_midi_tr;
-            x->x_mod.level = x->x_midi_lvl;
-        }
-        else{
-            x->x_patch.note = x->x_transp + plaits_get_pitch(x, freq[sample_at]) * 12.f;
-            if(x->x_mod.trigger_patched) // trigger mode
-                x->x_mod.trigger = (trigger_at >= 0);
-            x->x_mod.level = level[sample_at];
-        }
-        x->x_mod.timbre = tmod[sample_at] * 0.5;
-        x->x_mod.frequency = fmod[sample_at] * 60.f;
-        x->x_mod.morph = mmod[sample_at] * 0.5;
-        x->x_mod.harmonics = hmod[sample_at] * 0.5;
-        if(trigger_at > 0){
-            x->x_mod.trigger = 0;
-            x->x_voice.Render(x->x_patch, x->x_mod, output, trigger_at);
-            for(int i = 0; i < trigger_at; i++){
-                out[i + base] = output[i].out / 32768.0f;
-                aux[i + base] = output[i].aux / 32768.0f;
+            int sample_at = base + (trigger_at > 0 ? trigger_at : 0);
+            if(x->x_midi_mode){
+                x->x_patch.note = x->x_transp + plaits_get_pitch(x, x->x_midi_pitch) * 12.f;
+                if(x->x_mod.trigger_patched)
+                    x->x_mod.trigger = x->x_midi_tr;
+                x->x_mod.level = x->x_midi_lvl;
             }
-            x->x_mod.trigger = 1;
-            x->x_voice.Render(x->x_patch, x->x_mod, output, x->x_block_size - trigger_at);
-            for(int i = 0; i < x->x_block_size - trigger_at; i++){
-                out[i + base + trigger_at] = output[i].out / 32768.0f;
-                aux[i + base + trigger_at] = output[i].aux / 32768.0f;
+            else{
+                x->x_patch.note = x->x_transp + plaits_get_pitch(x, fc[sample_at]) * 12.f;
+                if(x->x_mod.trigger_patched)
+                    x->x_mod.trigger = (trigger_at >= 0);
+                x->x_mod.level = lc[sample_at];
             }
-        }
-        else{
-            x->x_voice.Render(x->x_patch, x->x_mod, output, x->x_block_size);
-            for(int i = 0; i < x->x_block_size; i++){
-                out[i + base] = output[i].out / 32768.0f;
-                aux[i + base] = output[i].aux / 32768.0f;
+            x->x_mod.timbre = tmc[sample_at] * 0.5;
+            x->x_mod.frequency = fmc[sample_at] * 60.f;
+            x->x_mod.morph = mmc[sample_at] * 0.5;
+            x->x_mod.harmonics = hmc[sample_at] * 0.5;
+            if(trigger_at > 0){
+                x->x_mod.trigger = 0;
+                x->x_voice[c]->Render(x->x_patch, x->x_mod, output, trigger_at);
+                for(int i = 0; i < trigger_at; i++){
+                    oc[i + base] = output[i].out / 32768.0f;
+                    ac[i + base] = output[i].aux / 32768.0f;
+                }
+                x->x_mod.trigger = 1;
+                x->x_voice[c]->Render(x->x_patch, x->x_mod, output, x->x_block_size - trigger_at);
+                for(int i = 0; i < x->x_block_size - trigger_at; i++){
+                    oc[i + base + trigger_at] = output[i].out / 32768.0f;
+                    ac[i + base + trigger_at] = output[i].aux / 32768.0f;
+                }
+            }
+            else{
+                x->x_voice[c]->Render(x->x_patch, x->x_mod, output, x->x_block_size);
+                for(int i = 0; i < x->x_block_size; i++){
+                    oc[i + base] = output[i].out / 32768.0f;
+                    ac[i + base] = output[i].aux / 32768.0f;
+                }
             }
         }
     }
@@ -310,6 +351,30 @@ static void plaits_dsp(t_plaits *x, t_signal **sp){
     plaits::kSampleRate = (float)sp[0]->s_sr;
     plaits::a0 = 55.f / plaits::kSampleRate;
     int n = sp[0]->s_n;
+    int ch[7], chs = 1;
+    for(int i = 0; i < 7; i++){
+        ch[i] = sp[i]->s_nchans < 1 ? 1 : sp[i]->s_nchans;
+        if(ch[i] > chs)
+            chs = ch[i];
+    }
+    // every inlet is either mono (broadcast to all voices) or has 'chs' channels
+    for(int i = 0; i < 7; i++){
+        if(ch[i] > 1 && ch[i] != chs){
+            signal_setmultiout(&sp[7], chs);
+            signal_setmultiout(&sp[8], chs);
+            dsp_add_zero(sp[7]->s_vec, chs * n);
+            dsp_add_zero(sp[8]->s_vec, chs * n);
+            pd_error(x, "[plaits~]: channel sizes mismatch");
+            return;
+        }
+    }
+    x->x_ch_freq  = ch[0];
+    x->x_ch_trig  = ch[1];
+    x->x_ch_level = ch[2];
+    x->x_ch_fmod  = ch[3];
+    x->x_ch_tmod  = ch[4];
+    x->x_ch_hmod  = ch[5];
+    x->x_ch_mmod  = ch[6];
     if(n != x->x_n){
         if(n >= 16){
             x->x_block_size = 16;
@@ -321,20 +386,29 @@ static void plaits_dsp(t_plaits *x, t_signal **sp){
         }
         x->x_n = n;
     }
-    dsp_add(plaits_perform, 10, x, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec,
+    plaits_grow(x, chs); // only ever grows, existing voices are untouched
+    x->x_nchans = chs;
+    signal_setmultiout(&sp[7], chs);
+    signal_setmultiout(&sp[8], chs);
+    dsp_add(plaits_perform, 10, x,
+        sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec,
         sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec);
 }
 
 static void plaits_free(t_plaits *x){
-    x->x_voice.FreeEngines();
+    for(int c = 0; c < x->x_nalloc; c++){
+        x->x_voice[c]->FreeEngines();
+        freebytes(x->x_voice[c], sizeof(plaits::Voice));
+        freebytes(x->x_buffer[c], SHARED_BUFFER_SIZE);
+    }
+    freebytes(x->x_voice, x->x_nalloc * sizeof(plaits::Voice *));
+    freebytes(x->x_buffer, x->x_nalloc * sizeof(char *));
     outlet_free(x->x_info_out);
 }
 
 static void *plaits_new(t_symbol *s, int ac, t_atom *av){
     (void)s;
     t_plaits *x = (t_plaits *)pd_new(plaits_class);
-    stmlib::BufferAllocator allocator(x->x_shared_buffer, sizeof(x->x_shared_buffer));
-    x->x_voice.Init(&allocator);
     int nfloats = 0;
     x->x_model = 0;
     x->x_pitch_mode = 0;
@@ -352,10 +426,20 @@ static void *plaits_new(t_symbol *s, int ac, t_atom *av){
     x->x_mod.morph_patched = false;
     x->x_mod.trigger_patched = false;
     x->x_mod.level_patched = false;
-    x->x_last_engine = 0;
-    x->x_last_engine_perform = 0;
     x->x_transp = 60.0;
     x->x_n = 0;
+    x->x_nchans = 1;
+    x->x_ch_trig  = 1;
+    x->x_ch_level = 1;
+    x->x_ch_fmod  = 1;
+    x->x_ch_tmod  = 1;
+    x->x_ch_hmod  = 1;
+    x->x_ch_mmod  = 1;
+    x->x_ch_freq  = 1;
+    x->x_nalloc = 0;
+    x->x_voice = NULL;
+    x->x_buffer = NULL;
+    plaits_grow(x, 1);
     while(ac){
         if(av->a_type == A_SYMBOL){
             t_symbol *sym = atom_getsymbol(av);
@@ -388,15 +472,15 @@ static void *plaits_new(t_symbol *s, int ac, t_atom *av){
             float f = atom_getfloat(av);
             ac--, av++;
             switch(nfloats++){
-                case 0: x->x_f = f; break;                      // pitch
-                case 1: x->x_patch.harmonics = f; break;        // harmonics
-                case 2: x->x_patch.timbre = f; break;           // timbre
-                case 3: x->x_patch.morph = f; break;            // morph
-                case 4: x->x_patch.lpg_colour = f; break;       // cutoff
-                case 5: x->x_patch.decay = f; break;            // decay
-                case 6: x->x_patch.timbre_modulation_amount = f; break; // timbre att
-                case 7: x->x_patch.frequency_modulation_amount = f; break; // freq att
-                case 8: x->x_patch.morph_modulation_amount = f; break;  // morph att
+                case 0: x->x_f = f; break;
+                case 1: x->x_patch.harmonics = f; break;
+                case 2: x->x_patch.timbre = f; break;
+                case 3: x->x_patch.morph = f; break;
+                case 4: x->x_patch.lpg_colour = f; break;
+                case 5: x->x_patch.decay = f; break;
+                case 6: x->x_patch.timbre_modulation_amount = f; break;
+                case 7: x->x_patch.frequency_modulation_amount = f; break;
+                case 8: x->x_patch.morph_modulation_amount = f; break;
                 default: goto errstate;
             }
         }
@@ -418,7 +502,7 @@ errstate:
 
 void plaits_tilde_setup(void){
     plaits_class = class_new(gensym("plaits~"), (t_newmethod)plaits_new,
-        (t_method)plaits_free, sizeof(t_plaits), 0, A_GIMME, 0);
+        (t_method)plaits_free, sizeof(t_plaits), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(plaits_class, (t_method)plaits_dsp, gensym("dsp"), A_CANT, 0);
     CLASS_MAINSIGNALIN(plaits_class, t_plaits, x_f);
     class_addlist(plaits_class, plaits_list);
