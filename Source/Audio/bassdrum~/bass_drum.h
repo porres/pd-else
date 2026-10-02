@@ -328,31 +328,6 @@ static inline float sine(float phase) {
   return interpolate_wrap(lut_sine, phase, kSineLUTSize);
 }
 
-static inline float sine_no_wrap(float phase) {
-  return interpolate(lut_sine, phase, kSineLUTSize);
-}
-
-// SineOscillator
-typedef struct {
-  float phase;
-} sine_oscillator;
-
-static inline void sine_oscillator_init(sine_oscillator* o) {
-  o->phase = 0.0f;
-}
-
-static inline void sine_oscillator_next(sine_oscillator* o, float frequency, float amplitude, float* out_sin, float* out_cos) {
-  if (frequency >= 0.5f) {
-    frequency = 0.5f;
-  }
-  o->phase += frequency;
-  if (o->phase >= 1.0f) {
-    o->phase -= 1.0f;
-  }
-  *out_sin = amplitude * sine_no_wrap(o->phase);
-  *out_cos = amplitude * sine_no_wrap(o->phase + 0.25f);
-}
-
 // Overdrive
 typedef struct {
   float pre_gain;
@@ -389,7 +364,6 @@ static inline void overdrive_process(overdrive* o, float drive, float* in_out, s
 
 #define TRIGGER_LOW          0
 #define TRIGGER_RISING_EDGE  1
-#define TRIGGER_UNPATCHED    2
 #define TRIGGER_HIGH         4
 
 static inline float note_to_frequency(float midi_note) {
@@ -425,9 +399,7 @@ typedef struct {
   float retrig_pulse;
   float lp_out;
   float tone_lp;
-  float sustain_gain;
   svf resonator;
-  sine_oscillator oscillator;
 } analog_bass_drum;
 
 static inline void analog_bass_drum_init(analog_bass_drum* d) {
@@ -440,9 +412,7 @@ static inline void analog_bass_drum_init(analog_bass_drum* d) {
   d->retrig_pulse = 0.0f;
   d->lp_out = 0.0f;
   d->tone_lp = 0.0f;
-  d->sustain_gain = 0.0f;
   svf_init(&d->resonator);
-  sine_oscillator_init(&d->oscillator);
 }
 
 static inline float analog_bass_drum_diode(float x) {
@@ -456,7 +426,6 @@ static inline float analog_bass_drum_diode(float x) {
 
 static inline void analog_bass_drum_render(
     analog_bass_drum* d,
-    int sustain,
     int trigger,
     float accent,
     float f0,
@@ -485,9 +454,6 @@ static inline void analog_bass_drum_render(
     d->lp_out = 0.0f;
   }
 
-  param_interp sustain_gain;
-  pi_init(&sustain_gain, &d->sustain_gain, accent * decay, size);
-
   while (size--) {
     float pulse = 0.0f;
     if (d->pulse_remaining_samples) {
@@ -497,9 +463,6 @@ static inline void analog_bass_drum_render(
     } else {
       d->pulse *= 1.0f - 1.0f / pulse_decay_time;
       pulse = d->pulse;
-    }
-    if (sustain) {
-      pulse = 0.0f;
     }
 
     ONE_POLE(d->pulse_lp, pulse, 1.0f / pulse_filter_time);
@@ -513,9 +476,6 @@ static inline void analog_bass_drum_render(
     } else {
       d->retrig_pulse *= 1.0f - 1.0f / retrig_pulse_duration;
     }
-    if (sustain) {
-      fm_pulse = 0.0f;
-    }
     ONE_POLE(d->fm_pulse_lp, fm_pulse, 1.0f / pulse_filter_time);
 
     float punch = 0.7f + analog_bass_drum_diode(10.0f * d->lp_out - 1.0f);
@@ -526,19 +486,13 @@ static inline void analog_bass_drum_render(
     CONSTRAIN(f, 0.0f, 0.4f);
 
     float resonator_out;
-    if (sustain) {
-      sine_oscillator_next(&d->oscillator, f, pi_next(&sustain_gain), &resonator_out, &d->lp_out);
-    } else {
-      svf_set_f_q_dirty(&d->resonator, f, 1.0f + q * f);
-      svf_process_bp_lp(&d->resonator, (pulse - d->retrig_pulse * 0.2f) * scale, &resonator_out, &d->lp_out);
-    }
+    svf_set_f_q_dirty(&d->resonator, f, 1.0f + q * f);
+    svf_process_bp_lp(&d->resonator, (pulse - d->retrig_pulse * 0.2f) * scale, &resonator_out, &d->lp_out);
 
     ONE_POLE(d->tone_lp, pulse * exciter_leak + resonator_out, tone_f);
 
     *out++ = d->tone_lp;
   }
-
-  pi_finish(&sustain_gain);
 }
 
 // =============================================================================
@@ -590,7 +544,6 @@ typedef struct{
   float body_env_lp;
   float transient_env;
   float transient_env_lp;
-  float sustain_gain;
   float tone_lp;
   synthetic_bass_drum_click click;
   synthetic_bass_drum_attack_noise noise;
@@ -609,7 +562,6 @@ static inline void synthetic_bass_drum_init(synthetic_bass_drum* d){
   d->body_env_pulse_width = 0;
   d->fm_pulse_width = 0;
   d->tone_lp = 0.0f;
-  d->sustain_gain = 0.0f;
   synthetic_bass_drum_click_init(&d->click);
   synthetic_bass_drum_attack_noise_init(&d->noise);
 }
@@ -631,7 +583,6 @@ static inline float synthetic_bass_drum_transistor_vca(float s, float gain) {
 
 static inline void synthetic_bass_drum_render(
     synthetic_bass_drum* d,
-    int sustain,
     int trigger,
     float accent,
     float f0,
@@ -670,55 +621,44 @@ static inline void synthetic_bass_drum_render(
     d->fm_pulse_width = (int)(kSampleRate * 0.0013f);
   }
 
-  param_interp sustain_gain;
-  pi_init(&sustain_gain, &d->sustain_gain, accent * decay, size);
-
   while (size--) {
     ONE_POLE(d->phase_noise, random_get_float() - 0.5f, 0.002f);
     float mix = 0.0f;
-    if (sustain) {
-      d->phase += pi_next(&f0_mod);
+
+    if (d->fm_pulse_width) {
+      --d->fm_pulse_width;
+      d->phase = 0.25f;
+    } else {
+      d->fm *= fm_decay;
+      float fm = 1.0f + fm_envelope_amount * 3.5f * d->fm_lp;
+      float phase_inc = pi_next(&f0_mod) * fm;
+      if (phase_inc > 0.5f) phase_inc = 0.5f;
+      d->phase += phase_inc;
       if (d->phase >= 1.0f) {
         d->phase -= 1.0f;
       }
-      float body = synthetic_bass_drum_distorted_sine(d->phase, d->phase_noise, dirtiness);
-      mix -= synthetic_bass_drum_transistor_vca(body, pi_next(&sustain_gain));
-    } else {
-      if (d->fm_pulse_width) {
-        --d->fm_pulse_width;
-        d->phase = 0.25f;
-      } else {
-        d->fm *= fm_decay;
-        float fm = 1.0f + fm_envelope_amount * 3.5f * d->fm_lp;
-        float phase_inc = pi_next(&f0_mod) * fm;
-        if (phase_inc > 0.5f) phase_inc = 0.5f;
-        d->phase += phase_inc;
-        if (d->phase >= 1.0f) {
-          d->phase -= 1.0f;
-        }
-      }
-
-      if (d->body_env_pulse_width) {
-        --d->body_env_pulse_width;
-      } else {
-        d->body_env *= body_env_decay;
-        d->transient_env *= transient_env_decay;
-      }
-      const float envelope_lp_f = 0.1f;
-      ONE_POLE(d->body_env_lp, d->body_env, envelope_lp_f);
-      ONE_POLE(d->transient_env_lp, d->transient_env, envelope_lp_f);
-      ONE_POLE(d->fm_lp, d->fm, envelope_lp_f);
-      float body = synthetic_bass_drum_distorted_sine(d->phase, d->phase_noise, dirtiness);
-      float transient = synthetic_bass_drum_click_process(&d->click, d->body_env_pulse_width ? 0.0f : 1.0f)
-                      + synthetic_bass_drum_attack_noise_render(&d->noise);
-      mix -= synthetic_bass_drum_transistor_vca(body, d->body_env_lp);
-      mix -= transient * d->transient_env_lp * transient_level;
     }
+
+    if (d->body_env_pulse_width) {
+      --d->body_env_pulse_width;
+    } else {
+      d->body_env *= body_env_decay;
+      d->transient_env *= transient_env_decay;
+    }
+    const float envelope_lp_f = 0.1f;
+    ONE_POLE(d->body_env_lp, d->body_env, envelope_lp_f);
+    ONE_POLE(d->transient_env_lp, d->transient_env, envelope_lp_f);
+    ONE_POLE(d->fm_lp, d->fm, envelope_lp_f);
+    float body = synthetic_bass_drum_distorted_sine(d->phase, d->phase_noise, dirtiness);
+    float transient = synthetic_bass_drum_click_process(&d->click, d->body_env_pulse_width ? 0.0f : 1.0f)
+                    + synthetic_bass_drum_attack_noise_render(&d->noise);
+    mix -= synthetic_bass_drum_transistor_vca(body, d->body_env_lp);
+    mix -= transient * d->transient_env_lp * transient_level;
+
     ONE_POLE(d->tone_lp, mix, tone_f);
     *out++ = d->tone_lp;
   }
   pi_finish(&f0_mod);
-  pi_finish(&sustain_gain);
 }
 
 // =============================================================================
@@ -756,11 +696,8 @@ static inline void bass_drum_engine_render(
     if (self_fm_amount < 0.0f) self_fm_amount = 0.0f;
     float drive = (c > 0.0f ? c : 0.0f) * (d > 0.0f ? d : 0.0f);
 
-    const int sustain = parameters->trigger & TRIGGER_UNPATCHED;
-
     analog_bass_drum_render(
         &e->analog_bass_drum,
-        sustain,
         parameters->trigger & TRIGGER_RISING_EDGE,
         parameters->accent,
         f0,
@@ -774,14 +711,11 @@ static inline void bass_drum_engine_render(
     overdrive_process(&e->overdrive, 0.5f + 0.5f * drive, out, size);
 
     {
-      float d_aux = sustain
-          ? parameters->harmonics
-          : 0.4f - 0.25f * parameters->morph * parameters->morph;
+      float d_aux = 0.4f - 0.25f * parameters->morph * parameters->morph;
       float fma = parameters->harmonics * 2.0f;
       float fmd = parameters->harmonics * 2.0f - 1.0f;
       synthetic_bass_drum_render(
           &e->synthetic_bass_drum,
-          sustain,
           parameters->trigger & TRIGGER_RISING_EDGE,
           parameters->accent,
           f0,
