@@ -31,8 +31,8 @@
 
 #include <algorithm>
 
-#include "stmlib/dsp/dsp.h"
-#include "stmlib/dsp/parameter_interpolator.h"
+#include "stmlib/dsp.h"
+#include "stmlib/parameter_interpolator.h"
 
 namespace plaits {
   

@@ -32,9 +32,9 @@
 #ifndef PLAITS_DSP_OSCILLATOR_SINE_OSCILLATOR_H_
 #define PLAITS_DSP_OSCILLATOR_SINE_OSCILLATOR_H_
 
-#include "stmlib/dsp/dsp.h"
-#include "stmlib/dsp/parameter_interpolator.h"
-#include "stmlib/dsp/rsqrt.h"
+#include "stmlib/dsp.h"
+#include "stmlib/parameter_interpolator.h"
+#include "stmlib/rsqrt.h"
 
 #include "plaits/resources.h"
 

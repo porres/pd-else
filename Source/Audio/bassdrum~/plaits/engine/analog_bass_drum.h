@@ -31,13 +31,13 @@
 
 #include <algorithm>
 
-#include "stmlib/dsp/dsp.h"
-#include "stmlib/dsp/filter.h"
-#include "stmlib/dsp/parameter_interpolator.h"
-#include "stmlib/dsp/units.h"
+#include "stmlib/dsp.h"
+#include "stmlib/filter.h"
+#include "stmlib/parameter_interpolator.h"
+#include "stmlib/units.h"
 
-#include "plaits/dsp/dsp.h"
-#include "plaits/dsp/oscillator/sine_oscillator.h"
+#include "plaits/dsp.h"
+#include "plaits/sine_oscillator.h"
 
 namespace plaits {
 

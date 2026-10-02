@@ -29,10 +29,10 @@
 #ifndef PLAITS_DSP_ENGINE_ENGINE_H_
 #define PLAITS_DSP_ENGINE_ENGINE_H_
 
-#include "plaits/dsp/dsp.h"
+#include "plaits/dsp.h"
 
-#include "stmlib/dsp/units.h"
-#include "stmlib/utils/buffer_allocator.h"
+#include "stmlib/units.h"
+#include "stmlib/buffer_allocator.h"
 
 namespace plaits {
 

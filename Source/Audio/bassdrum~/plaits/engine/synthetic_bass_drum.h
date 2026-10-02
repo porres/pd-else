@@ -30,12 +30,12 @@
 #ifndef PLAITS_DSP_DRUMS_SYNTHETIC_BASS_DRUM_H_
 #define PLAITS_DSP_DRUMS_SYNTHETIC_BASS_DRUM_H_
 
-#include "stmlib/dsp/dsp.h"
-#include "stmlib/dsp/units.h"
-#include "stmlib/utils/random.h"
+#include "stmlib/dsp.h"
+#include "stmlib/units.h"
+#include "stmlib/random.h"
 
-#include "plaits/dsp/dsp.h"
-#include "plaits/dsp/oscillator/sine_oscillator.h"
+#include "plaits/dsp.h"
+#include "plaits/sine_oscillator.h"
 
 namespace plaits {
 

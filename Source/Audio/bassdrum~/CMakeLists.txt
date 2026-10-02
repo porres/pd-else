@@ -3,11 +3,11 @@ cmake_minimum_required(VERSION 3.10)
 # Same layout as the plaits~ CMakeLists: the DSP sources are built into a static
 # library which the external links against. Only the files bassdrum~ needs.
 set(BASSDRUM_SOURCES
-    stmlib/dsp/units.cc
-    stmlib/utils/random.cc
-    plaits/dsp/dsp.cc
-    plaits/dsp/voice.cc
-    plaits/dsp/engine/bass_drum_engine.cc
+    stmlib/units.cc
+    stmlib/random.cc
+    plaits/dsp.cc
+    plaits/voice.cc
+    plaits/engine/bass_drum_engine.cc
     plaits/resources.cc
 )
 
