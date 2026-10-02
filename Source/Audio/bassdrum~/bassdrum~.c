@@ -4,10 +4,7 @@
 #include <math.h>
 #include "bass_drum.h"
 
-// =============================================================================
-// Global constants + sine LUT (were in bass_drum.c)
-// =============================================================================
-
+// Global constants + sine LUT
 float kSampleRate = 48000.0f;
 float a0 = 55.0f / 48000.0f;
 

@@ -7,10 +7,6 @@
 #include <stddef.h>
 #include <math.h>
 
-#ifndef NULL
-#define NULL 0
-#endif
-
 // stmlib utilities
 #define CONSTRAIN(var, min, max) \
   if (var < (min)) { \
@@ -48,26 +44,12 @@ static inline float soft_clip(float x) {
   }
 }
 
-static inline int32_t clip16(int32_t x) {
-  if (x < -32768) {
-    return -32768;
-  } else if (x > 32767) {
-    return 32767;
-  } else {
-    return x;
-  }
-}
-
 // Random
 static uint32_t stmlib_rng_state = 0x21;
 
-static inline uint32_t random_get_word(void) {
-  stmlib_rng_state = stmlib_rng_state * 1664525L + 1013904223L;
-  return stmlib_rng_state;
-}
-
 static inline float random_get_float(void) {
-  return (float)random_get_word() / 4294967296.0f;
+  stmlib_rng_state = stmlib_rng_state * 1664525L + 1013904223L;
+  return (float)stmlib_rng_state / 4294967296.0f;
 }
 
 // ParameterInterpolator
@@ -126,16 +108,12 @@ typedef struct {
   float state_2;
 } svf;
 
-static inline void svf_reset(svf* s) {
-  s->state_1 = 0.0f;
-  s->state_2 = 0.0f;
-}
-
 static inline void svf_init(svf* s) {
   s->g = onepole_tan_dirty(0.01f);
   s->r = 1.0f / 100.0f;
   s->h = 1.0f / (1.0f + s->r * s->g + s->g * s->g);
-  svf_reset(s);
+  s->state_1 = 0.0f;
+  s->state_2 = 0.0f;
 }
 
 static inline void svf_set_f_q_dirty(svf* s, float f, float resonance) {
@@ -233,11 +211,6 @@ typedef struct {
   float harmonics;
   float accent;
 } engine_parameters;
-
-typedef struct {
-  float out_gain;
-  float aux_gain;
-} post_processing_settings;
 
 // =============================================================================
 // AnalogBassDrum
@@ -522,7 +495,8 @@ typedef struct {
   analog_bass_drum analog_bass_drum;
   synthetic_bass_drum synthetic_bass_drum;
   overdrive overdrive;
-  post_processing_settings post_processing_settings;
+  float out_gain;
+  float aux_gain;
 } bass_drum_engine;
 
 static inline void bass_drum_engine_init(bass_drum_engine* e) {
@@ -587,7 +561,10 @@ static inline void bass_drum_engine_render(
 static inline void channel_post_processor_process(float gain, float* in, short* out, size_t size, size_t stride) {
   const float post_gain = (gain < 0.0f ? 1.0f : gain) * -32767.0f;
   while (size--) {
-    *out = (short)clip16(1 + (int32_t)(*in++ * post_gain));
+    int32_t v = 1 + (int32_t)(*in++ * post_gain);
+    if (v < -32768) v = -32768;
+    else if (v > 32767) v = 32767;
+    *out = (short)v;
     out += stride;
   }
 }
@@ -623,9 +600,8 @@ typedef struct {
 } voice;
 
 static inline void voice_init(voice* v) {
-  post_processing_settings* s = &v->bass_drum_engine.post_processing_settings;
-  s->out_gain = 0.8f;
-  s->aux_gain = 0.8f;
+  v->bass_drum_engine.out_gain = 0.8f;
+  v->bass_drum_engine.aux_gain = 0.8f;
 
   bass_drum_engine_init(&v->bass_drum_engine);
   v->decay_env = 0.0f;
@@ -657,7 +633,6 @@ static inline void voice_render(
   engine_parameters p;
 
   int rising_edge = v->trigger_state && !previous_trigger_state;
-  const post_processing_settings* pp_s = &e->post_processing_settings;
 
   p.trigger = (rising_edge ? TRIGGER_RISING_EDGE : TRIGGER_LOW)
             | (v->trigger_state ? TRIGGER_HIGH : TRIGGER_LOW);
@@ -690,8 +665,8 @@ static inline void voice_render(
 
   bass_drum_engine_render(e, &p, v->out_buffer, v->aux_buffer, size);
 
-  channel_post_processor_process(pp_s->out_gain, v->out_buffer, &frames->out, size, 2);
-  channel_post_processor_process(pp_s->aux_gain, v->aux_buffer, &frames->aux, size, 2);
+  channel_post_processor_process(e->out_gain, v->out_buffer, &frames->out, size, 2);
+  channel_post_processor_process(e->aux_gain, v->aux_buffer, &frames->aux, size, 2);
 }
 
 #endif  // PLAITS_BASS_DRUM_H_
