@@ -11,10 +11,7 @@
 #define NULL 0
 #endif
 
-// =============================================================================
-// stmlib utilities (was stmlib.h)
-// =============================================================================
-
+// stmlib utilities
 #define CONSTRAIN(var, min, max) \
   if (var < (min)) { \
     var = (min); \
@@ -51,17 +48,13 @@ static inline float interpolate_wrap(const float* table, float index, float size
   return a + (b - a) * index_fractional;
 }
 
-static inline float soft_limit(float x) {
-  return x * (27.0f + x * x) / (27.0f + 9.0f * x * x);
-}
-
 static inline float soft_clip(float x) {
   if (x < -3.0f) {
     return -1.0f;
   } else if (x > 3.0f) {
     return 1.0f;
   } else {
-    return soft_limit(x);
+      return x * (27.0f + x * x) / (27.0f + 9.0f * x * x);
   }
 }
 
@@ -75,10 +68,7 @@ static inline int32_t clip16(int32_t x) {
   }
 }
 
-// =============================================================================
 // Random
-// =============================================================================
-
 static uint32_t stmlib_rng_state = 0x21;
 
 static inline uint32_t random_get_word(void) {
@@ -90,10 +80,7 @@ static inline float random_get_float(void) {
   return (float)random_get_word() / 4294967296.0f;
 }
 
-// =============================================================================
 // ParameterInterpolator
-// =============================================================================
-
 typedef struct {
   float* state;
   float value;
@@ -115,10 +102,7 @@ static inline void pi_finish(param_interp* p) {
   *p->state = p->value;
 }
 
-// =============================================================================
 // units (SemitonesToRatio)
-// =============================================================================
-
 static const float lut_pitch_ratio_high[] = {
    6.151958251e-04,  6.517772725e-04,  6.905339660e-04,  7.315952524e-04,
    7.750981699e-04,  8.211879055e-04,  8.700182794e-04,  9.217522585e-04,
@@ -260,10 +244,7 @@ static inline float semitones_to_ratio(float semitones) {
       lut_pitch_ratio_low[(int32_t)(pitch_fractional * 256.0f)];
 }
 
-// =============================================================================
 // filter (Svf)
-// =============================================================================
-
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -335,10 +316,7 @@ static inline void svf_process_bp_lp(svf* s, float in, float* out_bp, float* out
   *out_lp = lp;
 }
 
-// =============================================================================
-// Global constants + sine LUT (were in resources.h + resources.cc)
-// =============================================================================
-
+// Global constants + sine LUT
 extern float kSampleRate;
 extern float a0;
 
@@ -354,10 +332,7 @@ static inline float sine_no_wrap(float phase) {
   return interpolate(lut_sine, phase, kSineLUTSize);
 }
 
-// =============================================================================
 // SineOscillator
-// =============================================================================
-
 typedef struct {
   float phase;
 } sine_oscillator;
@@ -378,10 +353,7 @@ static inline void sine_oscillator_next(sine_oscillator* o, float frequency, flo
   *out_cos = amplitude * sine_no_wrap(o->phase + 0.25f);
 }
 
-// =============================================================================
 // Overdrive
-// =============================================================================
-
 typedef struct {
   float pre_gain;
   float post_gain;
@@ -399,25 +371,19 @@ static inline void overdrive_process(overdrive* o, float drive, float* in_out, s
   const float pre_gain = pre_gain_a + (pre_gain_b - pre_gain_a) * drive_2;
   const float drive_squashed = drive * (2.0f - drive);
   const float post_gain = 1.0f / soft_clip(0.33f + drive_squashed * (pre_gain - 0.33f));
-
   param_interp pre;
   param_interp post;
   pi_init(&pre, &o->pre_gain, pre_gain, size);
   pi_init(&post, &o->post_gain, post_gain, size);
-
   while (size--) {
     float p = pi_next(&pre) * *in_out;
     *in_out++ = soft_clip(p) * pi_next(&post);
   }
-
   pi_finish(&pre);
   pi_finish(&post);
 }
 
-// =============================================================================
 // Engine parameters + trigger state
-// =============================================================================
-
 #define kMaxBlockSize 16
 #define kBlockSize 8
 
@@ -449,7 +415,6 @@ typedef struct {
 // =============================================================================
 // AnalogBassDrum
 // =============================================================================
-
 typedef struct {
   int pulse_remaining_samples;
   int fm_pulse_remaining_samples;
@@ -461,7 +426,6 @@ typedef struct {
   float lp_out;
   float tone_lp;
   float sustain_gain;
-
   svf resonator;
   sine_oscillator oscillator;
 } analog_bass_drum;
@@ -477,7 +441,6 @@ static inline void analog_bass_drum_init(analog_bass_drum* d) {
   d->lp_out = 0.0f;
   d->tone_lp = 0.0f;
   d->sustain_gain = 0.0f;
-
   svf_init(&d->resonator);
   sine_oscillator_init(&d->oscillator);
 }
@@ -581,7 +544,6 @@ static inline void analog_bass_drum_render(
 // =============================================================================
 // SyntheticBassDrum
 // =============================================================================
-
 typedef struct {
   float lp;
   float hp;
@@ -618,30 +580,25 @@ static inline float synthetic_bass_drum_attack_noise_render(synthetic_bass_drum_
   return n->lp - n->hp;
 }
 
-typedef struct {
+typedef struct{
   float f0;
   float phase;
   float phase_noise;
-
   float fm;
   float fm_lp;
   float body_env;
   float body_env_lp;
   float transient_env;
   float transient_env_lp;
-
   float sustain_gain;
-
   float tone_lp;
-
   synthetic_bass_drum_click click;
   synthetic_bass_drum_attack_noise noise;
-
   int body_env_pulse_width;
   int fm_pulse_width;
-} synthetic_bass_drum;
+}synthetic_bass_drum;
 
-static inline void synthetic_bass_drum_init(synthetic_bass_drum* d) {
+static inline void synthetic_bass_drum_init(synthetic_bass_drum* d){
   d->phase = 0.0f;
   d->phase_noise = 0.0f;
   d->f0 = 0.0f;
@@ -653,7 +610,6 @@ static inline void synthetic_bass_drum_init(synthetic_bass_drum* d) {
   d->fm_pulse_width = 0;
   d->tone_lp = 0.0f;
   d->sustain_gain = 0.0f;
-
   synthetic_bass_drum_click_init(&d->click);
   synthetic_bass_drum_attack_noise_init(&d->noise);
 }
@@ -719,9 +675,7 @@ static inline void synthetic_bass_drum_render(
 
   while (size--) {
     ONE_POLE(d->phase_noise, random_get_float() - 0.5f, 0.002f);
-
     float mix = 0.0f;
-
     if (sustain) {
       d->phase += pi_next(&f0_mod);
       if (d->phase >= 1.0f) {
@@ -750,24 +704,19 @@ static inline void synthetic_bass_drum_render(
         d->body_env *= body_env_decay;
         d->transient_env *= transient_env_decay;
       }
-
       const float envelope_lp_f = 0.1f;
       ONE_POLE(d->body_env_lp, d->body_env, envelope_lp_f);
       ONE_POLE(d->transient_env_lp, d->transient_env, envelope_lp_f);
       ONE_POLE(d->fm_lp, d->fm, envelope_lp_f);
-
       float body = synthetic_bass_drum_distorted_sine(d->phase, d->phase_noise, dirtiness);
       float transient = synthetic_bass_drum_click_process(&d->click, d->body_env_pulse_width ? 0.0f : 1.0f)
                       + synthetic_bass_drum_attack_noise_render(&d->noise);
-
       mix -= synthetic_bass_drum_transistor_vca(body, d->body_env_lp);
       mix -= transient * d->transient_env_lp * transient_level;
     }
-
     ONE_POLE(d->tone_lp, mix, tone_f);
     *out++ = d->tone_lp;
   }
-
   pi_finish(&f0_mod);
   pi_finish(&sustain_gain);
 }
@@ -847,10 +796,7 @@ static inline void bass_drum_engine_render(
   }
 }
 
-// =============================================================================
 // ChannelPostProcessor
-// =============================================================================
-
 static inline void channel_post_processor_process(float gain, float* in, short* out, size_t size, size_t stride) {
   const float post_gain = (gain < 0.0f ? 1.0f : gain) * -32767.0f;
   while (size--) {
@@ -862,22 +808,18 @@ static inline void channel_post_processor_process(float gain, float* in, short* 
 // =============================================================================
 // Voice + support structs
 // =============================================================================
-
 typedef struct {
   float note;
   float harmonics;
   float timbre;
   float morph;
   float frequency_modulation_amount;
-  float timbre_modulation_amount;
-  float morph_modulation_amount;
   float decay;
 } patch;
 
 typedef struct {
   float trigger;
   float level;
-  int level_patched;
 } modulations;
 
 typedef struct {
@@ -940,7 +882,7 @@ static inline void voice_render(
 
   float compressed_level = 1.3f * p_mods->level / (0.3f + fabsf(p_mods->level));
   CONSTRAIN(compressed_level, 0.0f, 1.0f);
-  p.accent = p_mods->level_patched ? compressed_level : 0.8f;
+  p.accent = compressed_level;
 
   p.harmonics = p_patch->harmonics;
   CONSTRAIN(p.harmonics, 0.0f, 1.0f);

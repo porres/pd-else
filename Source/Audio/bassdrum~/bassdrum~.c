@@ -344,13 +344,10 @@ static void* bd_new(t_symbol* s, int ac, t_atom* av){
     x->x_nchans = 1;
     x->x_voice = (voice*)getbytes(sizeof(voice));
     x->x_mod.level = bd_clip01(lvl);
-    x->x_mod.level_patched = 1;
     bd_freq(x, pitch);
     x->x_patch.harmonics = bd_clip01(punch);
     x->x_patch.timbre = bd_clip01(tone);
     x->x_patch.morph = bd_clip01(decay);
-    x->x_patch.timbre_modulation_amount = 0;
-    x->x_patch.morph_modulation_amount = 0;
     bd_ptime(x, ptime);
     bd_pdepth(x, pdepth);
     x->x_mod.trigger = 0;
