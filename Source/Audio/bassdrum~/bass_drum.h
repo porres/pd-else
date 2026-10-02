@@ -903,32 +903,6 @@ static inline void voice_init(voice* v) {
   v->trigger_state = 0;
 }
 
-static inline float voice_apply_modulations(
-    float base_value,
-    float modulation_amount,
-    int use_external_modulation,
-    float external_modulation,
-    int use_internal_envelope,
-    float envelope,
-    float default_internal_modulation,
-    float minimum_value,
-    float maximum_value) {
-  float value = base_value;
-  {
-    float m = fabsf(modulation_amount) - 0.05f;
-    if (m < 0.05f) m = 0.05f;
-    modulation_amount *= m;
-  }
-  modulation_amount *= 1.05f;
-
-  float modulation = use_external_modulation
-      ? external_modulation
-      : (use_internal_envelope ? envelope : default_internal_modulation);
-  value += modulation_amount * modulation;
-  CONSTRAIN(value, minimum_value, maximum_value);
-  return value;
-}
-
 static inline void voice_render(
     voice* v,
     const patch* p_patch,
@@ -968,26 +942,18 @@ static inline void voice_render(
   CONSTRAIN(compressed_level, 0.0f, 1.0f);
   p.accent = p_mods->level_patched ? compressed_level : 0.8f;
 
-  const int use_internal_envelope = 1;
-
   p.harmonics = p_patch->harmonics;
   CONSTRAIN(p.harmonics, 0.0f, 1.0f);
 
-  const float internal_envelope_amplitude = 1.0f;
-  const float internal_envelope_amplitude_timbre = 1.0f;
-
   {
     float env_val = v->decay_env;
-    p.note = voice_apply_modulations(
-        p_patch->note,
-        p_patch->frequency_modulation_amount,
-        0,
-        0.0f,
-        use_internal_envelope,
-        internal_envelope_amplitude * env_val * env_val * 48.0f,
-        1.0f,
-        -119.0f,
-        120.0f);
+    float mod_amt = p_patch->frequency_modulation_amount;
+    float m = fabsf(mod_amt) - 0.05f;
+    if (m < 0.05f) m = 0.05f;
+    mod_amt *= m * 1.05f;
+
+    p.note = p_patch->note + mod_amt * (env_val * env_val * 48.0f);
+    CONSTRAIN(p.note, -119.0f, 120.0f);
   }
 
   p.timbre = p_patch->timbre;
