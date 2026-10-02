@@ -422,76 +422,6 @@ static inline void synthetic_bass_drum_render(
   pi_finish(&f0_mod);
 }
 
-// =============================================================================
-// BassDrumEngine
-typedef struct{
-  analog_bass_drum analog_bass_drum;
-  synthetic_bass_drum synthetic_bass_drum;
-  overdrive overdrive;
-  float out_gain;
-  float aux_gain;
-}bass_drum_engine;
-
-static inline void bass_drum_engine_init(bass_drum_engine* e){
-  analog_bass_drum_init(&e->analog_bass_drum);
-  synthetic_bass_drum_init(&e->synthetic_bass_drum);
-  e->overdrive.pre_gain = 0.0f;
-  e->overdrive.post_gain = 0.0f;
-}
-
-static inline void bass_drum_engine_render(
-    bass_drum_engine* e,
-    int rising_edge,
-    float accent,
-    float note,
-    float timbre,
-    float morph,
-    float harmonics,
-    float* out,
-    float* aux,
-    size_t size){
-  const float f0 = note_to_frequency(note);
-  {
-    float a = harmonics * 4.0f;
-    float b = harmonics * 4.0f - 1.0f;
-    float c = harmonics * 2.0f - 1.0f;
-    float d = 1.0f - 16.0f * f0;
-    float attack_fm_amount = a < 1.0f ? a : 1.0f;
-    float self_fm_amount = (b < 1.0f ? b : 1.0f);
-    if (self_fm_amount < 0.0f) self_fm_amount = 0.0f;
-    float drive = (c > 0.0f ? c : 0.0f) * (d > 0.0f ? d : 0.0f);
-    analog_bass_drum_render(
-        &e->analog_bass_drum,
-        rising_edge,
-        accent,
-        f0,
-        timbre,
-        morph,
-        attack_fm_amount,
-        self_fm_amount,
-        out,
-        size);
-    overdrive_process(&e->overdrive, 0.5f + 0.5f * drive, out, size);
-    {
-      float d_aux = 0.4f - 0.25f * morph * morph;
-      float fma = harmonics * 2.0f;
-      float fmd = harmonics * 2.0f - 1.0f;
-      synthetic_bass_drum_render(
-          &e->synthetic_bass_drum,
-          rising_edge,
-          accent,
-          f0,
-          timbre,
-          morph,
-          d_aux,
-          fma < 1.0f ? fma : 1.0f,
-          fmd > 0.0f ? fmd : 0.0f,
-          aux,
-          size);
-    }
-  }
-}
-
 // ChannelPostProcessor
 static inline void channel_post_processor_process(float gain, float* in, short* out, size_t size, size_t stride){
   const float post_gain = (gain < 0.0f ? 1.0f : gain) * -32767.0f;
@@ -512,7 +442,11 @@ typedef struct{
 }voice_frame;
 
 typedef struct{
-  bass_drum_engine bass_drum_engine;
+  analog_bass_drum analog_bass_drum;
+  synthetic_bass_drum synthetic_bass_drum;
+  overdrive overdrive;
+  float out_gain;
+  float aux_gain;
   int trigger_state;
   float decay_env;
   float out_buffer[kMaxBlockSize];
@@ -520,9 +454,12 @@ typedef struct{
 }voice;
 
 static inline void voice_init(voice* v){
-  v->bass_drum_engine.out_gain = 0.8f;
-  v->bass_drum_engine.aux_gain = 0.8f;
-  bass_drum_engine_init(&v->bass_drum_engine);
+  v->out_gain = 0.8f;
+  v->aux_gain = 0.8f;
+  analog_bass_drum_init(&v->analog_bass_drum);
+  synthetic_bass_drum_init(&v->synthetic_bass_drum);
+  v->overdrive.pre_gain = 0.0f;
+  v->overdrive.post_gain = 0.0f;
   v->decay_env = 0.0f;
   v->trigger_state = 0;
 }
@@ -603,7 +540,6 @@ static inline void voice_render(t_bd* x, int channel, voice_frame* frames, size_
   }
   else if(trigger_value < 0.1f)
     v->trigger_state = 0;
-  bass_drum_engine* e = &v->bass_drum_engine;
   int rising_edge = v->trigger_state && !previous_trigger_state;
   const float short_decay = (100.0f * kMaxBlockSize) / kSampleRate * st2ratio(-96.0f * x->x_decay);
   v->decay_env *= (1.0f - short_decay * 2.0f);
@@ -622,10 +558,48 @@ static inline void voice_render(t_bd* x, int channel, voice_frame* frames, size_
     note = x->x_note + mod_amt * (env_val * env_val * 48.0f);
     CONSTRAIN(note, -119.0f, 120.0f);
   }
-  bass_drum_engine_render(e, rising_edge, accent, note, x->x_timbre, x->x_morph,
-      harmonics, v->out_buffer, v->aux_buffer, size);
-  channel_post_processor_process(e->out_gain, v->out_buffer, &frames->out, size, 2);
-  channel_post_processor_process(e->aux_gain, v->aux_buffer, &frames->aux, size, 2);
+  {
+    const float f0 = note_to_frequency(note);
+    float a = harmonics * 4.0f;
+    float b = harmonics * 4.0f - 1.0f;
+    float c = harmonics * 2.0f - 1.0f;
+    float d = 1.0f - 16.0f * f0;
+    float attack_fm_amount = a < 1.0f ? a : 1.0f;
+    float self_fm_amount = (b < 1.0f ? b : 1.0f);
+    if (self_fm_amount < 0.0f) self_fm_amount = 0.0f;
+    float drive = (c > 0.0f ? c : 0.0f) * (d > 0.0f ? d : 0.0f);
+    analog_bass_drum_render(
+        &v->analog_bass_drum,
+        rising_edge,
+        accent,
+        f0,
+        x->x_timbre,
+        x->x_morph,
+        attack_fm_amount,
+        self_fm_amount,
+        v->out_buffer,
+        size);
+    overdrive_process(&v->overdrive, 0.5f + 0.5f * drive, v->out_buffer, size);
+    {
+      float d_aux = 0.4f - 0.25f * x->x_morph * x->x_morph;
+      float fma = harmonics * 2.0f;
+      float fmd = harmonics * 2.0f - 1.0f;
+      synthetic_bass_drum_render(
+          &v->synthetic_bass_drum,
+          rising_edge,
+          accent,
+          f0,
+          x->x_timbre,
+          x->x_morph,
+          d_aux,
+          fma < 1.0f ? fma : 1.0f,
+          fmd > 0.0f ? fmd : 0.0f,
+          v->aux_buffer,
+          size);
+    }
+  }
+  channel_post_processor_process(v->out_gain, v->out_buffer, &frames->out, size, 2);
+  channel_post_processor_process(v->aux_gain, v->aux_buffer, &frames->aux, size, 2);
 }
 
 static t_int* bd_perform(t_int* w){
