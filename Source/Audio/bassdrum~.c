@@ -137,31 +137,6 @@ static inline void svf_process_bp_lp(svf* s, float in, float* out_bp, float* out
   *out_lp = lp;
 }
 
-// Overdrive
-typedef struct{
-  float pre_gain;
-  float post_gain;
-}overdrive;
-
-static inline void overdrive_process(overdrive* o, float drive, float* in_out, size_t size){
-  const float drive_2 = drive * drive;
-  const float pre_gain_a = drive * 0.5f;
-  const float pre_gain_b = drive_2 * drive_2 * drive * 24.0f;
-  const float pre_gain = pre_gain_a + (pre_gain_b - pre_gain_a) * drive_2;
-  const float drive_squashed = drive * (2.0f - drive);
-  const float post_gain = 1.0f / soft_clip(0.33f + drive_squashed * (pre_gain - 0.33f));
-  param_interp pre;
-  param_interp post;
-  pi_init(&pre, &o->pre_gain, pre_gain, size);
-  pi_init(&post, &o->post_gain, post_gain, size);
-  while (size--){
-    float p = pi_next(&pre) * *in_out;
-    *in_out++ = soft_clip(p) * pi_next(&post);
-  }
-  pi_finish(&pre);
-  pi_finish(&post);
-}
-
 // Engine parameters + trigger state
 #define kMaxBlockSize 16
 
@@ -183,6 +158,8 @@ typedef struct {
   float retrig_pulse;
   float lp_out;
   float tone_lp;
+  float od_pre_gain;
+  float od_post_gain;
   svf resonator;
 }analog_bass_drum;
 
@@ -196,6 +173,8 @@ static inline void analog_bass_drum_init(analog_bass_drum* d){
   d->retrig_pulse = 0.0f;
   d->lp_out = 0.0f;
   d->tone_lp = 0.0f;
+  d->od_pre_gain = 0.0f;
+  d->od_post_gain = 0.0f;
   svf_init(&d->resonator);
 }
 
@@ -444,7 +423,6 @@ typedef struct{
 typedef struct{
   analog_bass_drum analog_bass_drum;
   synthetic_bass_drum synthetic_bass_drum;
-  overdrive overdrive;
   float out_gain;
   float aux_gain;
   int trigger_state;
@@ -458,8 +436,6 @@ static inline void voice_init(voice* v){
   v->aux_gain = 0.8f;
   analog_bass_drum_init(&v->analog_bass_drum);
   synthetic_bass_drum_init(&v->synthetic_bass_drum);
-  v->overdrive.pre_gain = 0.0f;
-  v->overdrive.post_gain = 0.0f;
   v->decay_env = 0.0f;
   v->trigger_state = 0;
 }
@@ -568,34 +544,33 @@ static inline void voice_render(t_bd* x, int channel, voice_frame* frames, size_
     float self_fm_amount = (b < 1.0f ? b : 1.0f);
     if (self_fm_amount < 0.0f) self_fm_amount = 0.0f;
     float drive = (c > 0.0f ? c : 0.0f) * (d > 0.0f ? d : 0.0f);
-    analog_bass_drum_render(
-        &v->analog_bass_drum,
-        rising_edge,
-        accent,
-        f0,
-        x->x_timbre,
-        x->x_morph,
-        attack_fm_amount,
-        self_fm_amount,
-        v->out_buffer,
-        size);
-    overdrive_process(&v->overdrive, 0.5f + 0.5f * drive, v->out_buffer, size);
+    analog_bass_drum_render(&v->analog_bass_drum, rising_edge, accent, f0, x->x_timbre, x->x_morph,
+        attack_fm_amount, self_fm_amount, v->out_buffer, size);
+    {
+      float dr = 0.5f + 0.5f * drive;
+      float dr2 = dr * dr;
+      float pre_gain_a = dr * 0.5f;
+      float pre_gain_b = dr2 * dr2 * dr * 24.0f;
+      float pre_gain = pre_gain_a + (pre_gain_b - pre_gain_a) * dr2;
+      float dr_sq = dr * (2.0f - dr);
+      float post_gain = 1.0f / soft_clip(0.33f + dr_sq * (pre_gain - 0.33f));
+      param_interp pre;
+      param_interp post;
+      pi_init(&pre, &v->analog_bass_drum.od_pre_gain, pre_gain, size);
+      pi_init(&post, &v->analog_bass_drum.od_post_gain, post_gain, size);
+      for (size_t i = 0; i < size; i++){
+        float s = pi_next(&pre) * v->out_buffer[i];
+        v->out_buffer[i] = soft_clip(s) * pi_next(&post);
+      }
+      pi_finish(&pre);
+      pi_finish(&post);
+    }
     {
       float d_aux = 0.4f - 0.25f * x->x_morph * x->x_morph;
       float fma = harmonics * 2.0f;
       float fmd = harmonics * 2.0f - 1.0f;
-      synthetic_bass_drum_render(
-          &v->synthetic_bass_drum,
-          rising_edge,
-          accent,
-          f0,
-          x->x_timbre,
-          x->x_morph,
-          d_aux,
-          fma < 1.0f ? fma : 1.0f,
-          fmd > 0.0f ? fmd : 0.0f,
-          v->aux_buffer,
-          size);
+      synthetic_bass_drum_render(&v->synthetic_bass_drum, rising_edge, accent, f0, x->x_timbre, x->x_morph,
+          d_aux, fma < 1.0f ? fma : 1.0f, fmd > 0.0f ? fmd : 0.0f, v->aux_buffer, size);
     }
   }
   channel_post_processor_process(v->out_gain, v->out_buffer, &frames->out, size, 2);
