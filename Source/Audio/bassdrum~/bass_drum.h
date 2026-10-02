@@ -149,11 +149,6 @@ typedef struct {
   float post_gain;
 } overdrive;
 
-static inline void overdrive_init(overdrive* o) {
-  o->pre_gain = 0.0f;
-  o->post_gain = 0.0f;
-}
-
 static inline void overdrive_process(overdrive* o, float drive, float* in_out, size_t size) {
   const float drive_2 = drive * drive;
   const float pre_gain_a = drive * 0.5f;
@@ -317,7 +312,8 @@ typedef struct {
 static inline void synthetic_bass_drum_click_init(synthetic_bass_drum_click* c) {
   c->lp = 0.0f;
   c->hp = 0.0f;
-  svf_init(&c->filter);
+  c->filter.state_1 = 0.0f;
+  c->filter.state_2 = 0.0f;
   svf_set_f_q_fast(&c->filter, 5000.0f / kSampleRate, 2.0f);
 }
 
@@ -331,11 +327,6 @@ typedef struct {
   float lp;
   float hp;
 } synthetic_bass_drum_attack_noise;
-
-static inline void synthetic_bass_drum_attack_noise_init(synthetic_bass_drum_attack_noise* n) {
-  n->lp = 0.0f;
-  n->hp = 0.0f;
-}
 
 static inline float synthetic_bass_drum_attack_noise_render(synthetic_bass_drum_attack_noise* n) {
   float sample = random_get_float();
@@ -372,8 +363,9 @@ static inline void synthetic_bass_drum_init(synthetic_bass_drum* d){
   d->body_env_pulse_width = 0;
   d->fm_pulse_width = 0;
   d->tone_lp = 0.0f;
+  d->noise.lp = 0.0f;
+  d->noise.hp = 0.0f;
   synthetic_bass_drum_click_init(&d->click);
-  synthetic_bass_drum_attack_noise_init(&d->noise);
 }
 
 static inline float synthetic_bass_drum_distorted_sine(float phase, float phase_noise, float dirtiness) {
@@ -485,7 +477,8 @@ typedef struct {
 static inline void bass_drum_engine_init(bass_drum_engine* e) {
   analog_bass_drum_init(&e->analog_bass_drum);
   synthetic_bass_drum_init(&e->synthetic_bass_drum);
-  overdrive_init(&e->overdrive);
+  e->overdrive.pre_gain = 0.0f;
+  e->overdrive.post_gain = 0.0f;
 }
 
 static inline void bass_drum_engine_render(
