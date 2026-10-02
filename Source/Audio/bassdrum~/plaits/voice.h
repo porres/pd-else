@@ -18,11 +18,8 @@
 #include <math.h>
 
 #include "stmlib/stmlib.h"
-#include "stmlib/dsp.h"
-#include "stmlib/delay_line.h"
-#include "stmlib/buffer_allocator.h"
 
-#include "plaits/engine/bass_drum_engine.h"
+#include "plaits/engine/bass_drum.h"
 #include "plaits/envelope.h"
 
 namespace plaits {
