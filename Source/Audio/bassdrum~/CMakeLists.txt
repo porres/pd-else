@@ -1,38 +1,17 @@
 cmake_minimum_required(VERSION 3.10)
 
-# Same layout as the plaits~ CMakeLists: the DSP sources are built into a static
-# library which the external links against. Only the files bassdrum~ needs.
-set(BASSDRUM_SOURCES
-   resources.cc
-)
+# Create the Pure Data externals
+pd_add_external(bassdrum~ bassdrum~.cpp)
+pd_add_external(bd~ bassdrum~.cpp)
 
-add_library(bassdrum STATIC ${BASSDRUM_SOURCES})
-target_compile_definitions(bassdrum PUBLIC TEST=1 _USE_MATH_DEFINES=1)
-target_compile_features(bassdrum PUBLIC cxx_std_14)
-target_compile_options(bassdrum PRIVATE -Wno-unused-local-typedefs)
-target_include_directories(bassdrum PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-set_target_properties(bassdrum PROPERTIES POSITION_INDEPENDENT_CODE ON)
+foreach(tgt bassdrum_tilde bd_tilde)
+    target_compile_definitions(${tgt} PRIVATE TEST=1 _USE_MATH_DEFINES=1)
+    target_compile_features(${tgt} PRIVATE cxx_std_17)
+endforeach()
 
 if(WIN32)
-    target_link_options(bassdrum PUBLIC -static-libgcc -static-libstdc++ -static)
-    target_link_libraries(bassdrum PUBLIC "ws2_32;stdc++")
-endif()
-
-# Create the Pure Data external
-pd_add_external(bassdrum~ bassdrum~.cpp)
-target_link_libraries(bassdrum_tilde PRIVATE bassdrum)
-
-# bd~ is an alias for bassdrum~, same source, different class name.
-pd_add_external(bd~ bassdrum~.cpp)
-target_link_libraries(bd_tilde PRIVATE bassdrum)
-
-# bassdrum~ contains its own copy of the plaits/stmlib code (same namespaces and
-# symbol names as plaits~, but a different Voice). Compile the DSP library with
-# hidden symbols so they stay private to this binary and Pd loading both
-# externals can never bind one to the other. The external itself is left at
-# default visibility, so bassdrum_tilde_setup is always exported.
-if(NOT WIN32)
-    set_target_properties(bassdrum PROPERTIES
-        CXX_VISIBILITY_PRESET hidden
-        VISIBILITY_INLINES_HIDDEN ON)
+    foreach(tgt bassdrum_tilde bd_tilde)
+        target_link_options(${tgt} PRIVATE -static-libgcc -static-libstdc++ -static)
+        target_link_libraries(${tgt} PRIVATE "ws2_32;stdc++")
+    endforeach()
 endif()
