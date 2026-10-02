@@ -415,30 +415,6 @@ static inline void overdrive_process(overdrive* o, float drive, float* in_out, s
 }
 
 // =============================================================================
-// DecayEnvelope
-// =============================================================================
-
-typedef struct {
-  float value;
-} decay_envelope;
-
-static inline void decay_envelope_init(decay_envelope* e) {
-  e->value = 0.0f;
-}
-
-static inline void decay_envelope_trigger(decay_envelope* e) {
-  e->value = 1.0f;
-}
-
-static inline void decay_envelope_process(decay_envelope* e, float decay) {
-  e->value *= (1.0f - decay);
-}
-
-static inline float decay_envelope_value(const decay_envelope* e) {
-  return e->value;
-}
-
-// =============================================================================
 // Engine parameters + trigger state
 // =============================================================================
 
@@ -912,7 +888,7 @@ typedef struct {
 typedef struct {
   bass_drum_engine bass_drum_engine;
   int trigger_state;
-  decay_envelope decay_envelope;
+  float decay_env;
   float out_buffer[kMaxBlockSize];
   float aux_buffer[kMaxBlockSize];
 } voice;
@@ -923,7 +899,7 @@ static inline void voice_init(voice* v) {
   s->aux_gain = 0.8f;
 
   bass_drum_engine_init(&v->bass_drum_engine);
-  decay_envelope_init(&v->decay_envelope);
+  v->decay_env = 0.0f;
   v->trigger_state = 0;
 }
 
@@ -965,7 +941,7 @@ static inline void voice_render(
   if (!previous_trigger_state) {
     if (trigger_value > 0.3f) {
       v->trigger_state = 1;
-      decay_envelope_trigger(&v->decay_envelope);
+      v->decay_env = 1.0f;
     }
   } else {
     if (trigger_value < 0.1f) {
@@ -986,7 +962,7 @@ static inline void voice_render(
   const float short_decay = (200.0f * kBlockSize) / kSampleRate *
       semitones_to_ratio(-96.0f * p_patch->decay);
 
-  decay_envelope_process(&v->decay_envelope, short_decay * 2.0f);
+  v->decay_env *= (1.0f - short_decay * 2.0f);
 
   float compressed_level = 1.3f * p_mods->level / (0.3f + fabsf(p_mods->level));
   CONSTRAIN(compressed_level, 0.0f, 1.0f);
@@ -1001,7 +977,7 @@ static inline void voice_render(
   const float internal_envelope_amplitude_timbre = 1.0f;
 
   {
-    float env_val = decay_envelope_value(&v->decay_envelope);
+    float env_val = v->decay_env;
     p.note = voice_apply_modulations(
         p_patch->note,
         p_patch->frequency_modulation_amount,
@@ -1020,7 +996,7 @@ static inline void voice_render(
       0,
       0.0f,
       use_internal_envelope,
-      internal_envelope_amplitude_timbre * decay_envelope_value(&v->decay_envelope),
+      internal_envelope_amplitude_timbre * v->decay_env,
       0.0f,
       0.0f,
       1.0f);
@@ -1031,7 +1007,7 @@ static inline void voice_render(
       0,
       0.0f,
       use_internal_envelope,
-      internal_envelope_amplitude * decay_envelope_value(&v->decay_envelope),
+      internal_envelope_amplitude * v->decay_env,
       0.0f,
       0.0f,
       1.0f);
