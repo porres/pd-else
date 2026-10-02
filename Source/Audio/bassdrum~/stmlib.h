@@ -3,10 +3,9 @@
 #ifndef STMLIB_H_
 #define STMLIB_H_
 
-#include <inttypes.h>
+#include <stdint.h>
 #include <stddef.h>
 #include <math.h>
-#include <string.h>
 
 #ifndef NULL
 #define NULL 0
@@ -78,21 +77,9 @@ static inline int32_t clip16(int32_t x) {
 
 static uint32_t stmlib_rng_state = 0x21;
 
-static inline uint32_t random_state(void) {
-  return stmlib_rng_state;
-}
-
-static inline void random_seed(uint32_t seed) {
-  stmlib_rng_state = seed;
-}
-
 static inline uint32_t random_get_word(void) {
   stmlib_rng_state = stmlib_rng_state * 1664525L + 1013904223L;
   return stmlib_rng_state;
-}
-
-static inline int16_t random_get_sample(void) {
-  return (int16_t)(random_get_word() >> 16);
 }
 
 static inline float random_get_float(void) {
@@ -113,12 +100,6 @@ static inline void pi_init(param_interp* p, float* state, float new_value, size_
   p->state = state;
   p->value = *state;
   p->increment = (new_value - *state) / (float)size;
-}
-
-static inline void pi_init_step(param_interp* p, float* state, float new_value, float step) {
-  p->state = state;
-  p->value = *state;
-  p->increment = (new_value - *state) * step;
 }
 
 static inline float pi_next(param_interp* p) {
@@ -279,13 +260,6 @@ static inline float semitones_to_ratio(float semitones) {
 // filter.h
 // =============================================================================
 
-enum FilterMode {
-  FILTER_MODE_LOW_PASS,
-  FILTER_MODE_BAND_PASS,
-  FILTER_MODE_BAND_PASS_NORMALIZED,
-  FILTER_MODE_HIGH_PASS
-};
-
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -347,33 +321,6 @@ static inline float svf_process_lp(svf* s, float in) {
   return lp;
 }
 
-static inline float svf_process_bp(svf* s, float in) {
-  float hp = (in - s->r * s->state_1 - s->g * s->state_1 - s->state_2) * s->h;
-  float bp = s->g * hp + s->state_1;
-  s->state_1 = s->g * hp + bp;
-  float lp = s->g * bp + s->state_2;
-  s->state_2 = s->g * bp + lp;
-  return bp;
-}
-
-static inline float svf_process_bp_norm(svf* s, float in) {
-  float hp = (in - s->r * s->state_1 - s->g * s->state_1 - s->state_2) * s->h;
-  float bp = s->g * hp + s->state_1;
-  s->state_1 = s->g * hp + bp;
-  float lp = s->g * bp + s->state_2;
-  s->state_2 = s->g * bp + lp;
-  return bp * s->r;
-}
-
-static inline float svf_process_hp(svf* s, float in) {
-  float hp = (in - s->r * s->state_1 - s->g * s->state_1 - s->state_2) * s->h;
-  float bp = s->g * hp + s->state_1;
-  s->state_1 = s->g * hp + bp;
-  float lp = s->g * bp + s->state_2;
-  s->state_2 = s->g * bp + lp;
-  return hp;
-}
-
 static inline void svf_process_bp_lp(svf* s, float in, float* out_bp, float* out_lp) {
   float hp = (in - s->r * s->state_1 - s->g * s->state_1 - s->state_2) * s->h;
   float bp = s->g * hp + s->state_1;
@@ -382,16 +329,6 @@ static inline void svf_process_bp_lp(svf* s, float in, float* out_bp, float* out
   s->state_2 = s->g * bp + lp;
   *out_bp = bp;
   *out_lp = lp;
-}
-
-static inline void svf_process_lp_bp(svf* s, float in, float* out_lp, float* out_bp) {
-  float hp = (in - s->r * s->state_1 - s->g * s->state_1 - s->state_2) * s->h;
-  float bp = s->g * hp + s->state_1;
-  s->state_1 = s->g * hp + bp;
-  float lp = s->g * bp + s->state_2;
-  s->state_2 = s->g * bp + lp;
-  *out_lp = lp;
-  *out_bp = bp;
 }
 
 #endif  // STMLIB_H_
