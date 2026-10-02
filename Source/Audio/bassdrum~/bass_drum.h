@@ -1,25 +1,9 @@
 // Original copyright Emilie Gillet, MIT license.
-//
-// Consolidated bass-drum header. Merges what were previously:
-//   bass_drum.h, sine_oscillator.h, overdrive.h, envelope.h, voice.h, voice.cc
-//
-// Only the parts actually reachable from the bass-drum engine are kept:
-//   - SineOscillator  (used by AnalogBassDrum in sustain mode)
-//   - Overdrive       (used by BassDrumEngine)
-//   - DecayEnvelope   (used by Voice)
-//   - Engine / TriggerState / EngineParameters / PostProcessingSettings
-//   - AnalogBassDrum / SyntheticBassDrum (+ helpers)
-//   - BassDrumEngine
-//   - ChannelPostProcessor / Patch / Modulations / Voice
-//
-// FastSineOscillator and LPGEnvelope were dead code for this engine and are
-// dropped. kSampleRate / a0 / kMaxBlockSize / kBlockSize live in resources.cc.
 
 #pragma once
 
 #include <algorithm>
 #include <math.h>
-
 #include "stmlib.h"
 
 namespace plaits {
@@ -38,13 +22,9 @@ constexpr size_t kBlockSize = 8;
 // Sines (was sine_oscillator.h)
 // =============================================================================
 
-// Import the sine LUT from resources.h. We re-declare it here to avoid
-// pulling in resources.h (which itself includes stmlib.h).
 extern const float lut_sine[];
 
 const float kSineLUTSize = 512.0f;
-const size_t kSineLUTQuadrature = 128;
-const size_t kSineLUTBits = 9;
 
 // Safe for phase >= 0.0f, will wrap.
 inline float Sine(float phase) {
@@ -56,27 +36,6 @@ inline float SineNoWrap(float phase) {
   return stmlib::Interpolate(lut_sine, phase, kSineLUTSize);
 }
 
-// With positive or negative phase modulation up to an index of 32.
-inline float SinePM(uint32_t phase, float pm) {
-  const float max_uint32 = 4294967296.0f;
-  const int max_index = 32;
-  const float offset = float(max_index);
-  const float scale = max_uint32 / float(max_index * 2);
-
-  phase += static_cast<uint32_t>((pm + offset) * scale) * max_index * 2;
-
-  uint32_t integral = phase >> (32 - kSineLUTBits);
-  float fractional = static_cast<float>(phase << kSineLUTBits) / float(max_uint32);
-  float a = lut_sine[integral];
-  float b = lut_sine[integral + 1];
-  return a + (b - a) * fractional;
-}
-
-// Direct lookup without interpolation.
-inline float SineRaw(uint32_t phase) {
-  return lut_sine[phase >> (32 - kSineLUTBits)];
-}
-
 class SineOscillator {
  public:
   SineOscillator() { }
@@ -84,21 +43,6 @@ class SineOscillator {
 
   void Init() {
     phase_ = 0.0f;
-    frequency_ = 0.0f;
-    amplitude_ = 0.0f;
-  }
-
-  inline float Next(float frequency) {
-    if (frequency >= 0.5f) {
-      frequency = 0.5f;
-    }
-
-    phase_ += frequency;
-    if (phase_ >= 1.0f) {
-      phase_ -= 1.0f;
-    }
-
-    return SineNoWrap(phase_);
   }
 
   inline void Next(float frequency, float amplitude, float* sin, float* cos) {
@@ -115,41 +59,8 @@ class SineOscillator {
     *cos = amplitude * SineNoWrap(phase_ + 0.25f);
   }
 
-  void Render(float frequency, float amplitude, float* out, size_t size) {
-    RenderInternal<true>(frequency, amplitude, out, size);
-  }
-
-  void Render(float frequency, float* out, size_t size) {
-    RenderInternal<false>(frequency, 1.0f, out, size);
-  }
-
  private:
-  template<bool additive>
-  void RenderInternal(
-      float frequency, float amplitude, float* out, size_t size) {
-    if (frequency >= 0.5f) {
-      frequency = 0.5f;
-    }
-    stmlib::ParameterInterpolator fm(&frequency_, frequency, size);
-    stmlib::ParameterInterpolator am(&amplitude_, amplitude, size);
-
-    while (size--) {
-      phase_ += fm.Next();
-      if (phase_ >= 1.0f) {
-        phase_ -= 1.0f;
-      }
-      float s = SineNoWrap(phase_);
-      if (additive) {
-        *out++ += am.Next() * s;
-      } else {
-        *out++ = s;
-      }
-    }
-  }
-
   float phase_;
-  float frequency_;
-  float amplitude_;
 
   DISALLOW_COPY_AND_ASSIGN(SineOscillator);
 };
@@ -230,8 +141,7 @@ class DecayEnvelope {
 };
 
 // =============================================================================
-// Engine interface + registry-free engine selection
-// (was engine.h, trimmed)
+// Engine parameters + trigger state
 // =============================================================================
 
 inline float NoteToFrequency(float midi_note) {
@@ -257,31 +167,9 @@ struct EngineParameters {
 };
 
 struct PostProcessingSettings {
-  // A negative value indicates that a limiter must be used.
   float out_gain;
   float aux_gain;
-
-  // When this flag is set to true, the engine declares that it will
-  // render a signal that already has an envelope (eg: modal drum, 808 kick).
-  // By reporting this information, the synthesis voice upstream will
-  // bypass the internal envelope/LPG.
   bool already_enveloped;
-};
-
-class Engine {
- public:
-  Engine() { }
-  ~Engine() { }
-  virtual void Init(stmlib::BufferAllocator* allocator) = 0;
-  virtual void Reset() = 0;
-  virtual void LoadUserData(const uint8_t* user_data) = 0;
-  virtual void Render(
-      const EngineParameters& parameters,
-      float* out,
-      float* aux,
-      size_t size,
-      bool* already_enveloped) = 0;
-  PostProcessingSettings post_processing_settings;
 };
 
 // =============================================================================
@@ -646,29 +534,22 @@ class SyntheticBassDrum {
 // BassDrumEngine (was bass_drum_engine.h + bass_drum_engine.cc)
 // =============================================================================
 
-class BassDrumEngine final : public Engine {
+class BassDrumEngine {
  public:
   BassDrumEngine() { }
   ~BassDrumEngine() { }
 
-  virtual void Init(stmlib::BufferAllocator* allocator) {
-    (void)allocator;
+  void Init() {
     analog_bass_drum_.Init();
     synthetic_bass_drum_.Init();
     overdrive_.Init();
   }
 
-  virtual void Reset() { }
-
-  virtual void LoadUserData(const uint8_t* user_data) { (void)user_data; }
-
-  virtual void Render(
+  void Render(
       const EngineParameters& parameters,
       float* out,
       float* aux,
-      size_t size,
-      bool* already_enveloped) {
-    (void)already_enveloped;
+      size_t size) {
     const float f0 = NoteToFrequency(parameters.note);
 
     const float attack_fm_amount = std::min(parameters.harmonics * 4.0f, 1.0f);
@@ -711,6 +592,8 @@ class BassDrumEngine final : public Engine {
         size);
   }
 
+  PostProcessingSettings post_processing_settings;
+
  private:
   AnalogBassDrum analog_bass_drum_;
   SyntheticBassDrum synthetic_bass_drum_;
@@ -724,7 +607,6 @@ class BassDrumEngine final : public Engine {
 // Voice + support structs (was voice.h + voice.cc)
 // =============================================================================
 
-// Original ChannelPostProcessor, lpg_bypass branch only.
 class ChannelPostProcessor {
  public:
   ChannelPostProcessor() { }
@@ -770,14 +652,12 @@ class Voice {
   };
 
   void Init() {
-    // Same as EngineRegistry::RegisterInstance(bass_drum_engine_, true, 0.8f, 0.8f)
     PostProcessingSettings* s = &bass_drum_engine_.post_processing_settings;
     s->already_enveloped = true;
     s->out_gain = 0.8f;
     s->aux_gain = 0.8f;
 
-    bass_drum_engine_.Init(NULL);  // The bass drum does not use the allocator.
-    bass_drum_engine_.Reset();
+    bass_drum_engine_.Init();
 
     decay_envelope_.Init();
 
@@ -864,8 +744,7 @@ class Voice {
         0.0f,
         1.0f);
 
-    bool already_enveloped = pp_s.already_enveloped;
-    e->Render(p, out_buffer_, aux_buffer_, size, &already_enveloped);
+    e->Render(p, out_buffer_, aux_buffer_, size);
 
     // lpg_bypass is always true for the bass drum (already_enveloped).
     out_post_processor_.Process(pp_s.out_gain, out_buffer_, &frames->out, size, 2);
