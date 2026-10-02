@@ -4,7 +4,6 @@ pd_add_external(bassdrum~ bassdrum~.c)
 pd_add_external(bd~ bassdrum~.c)
 
 foreach(tgt bassdrum_tilde bd_tilde)
-    target_sources(${tgt} PRIVATE bass_drum.c)
     target_compile_definitions(${tgt} PRIVATE _USE_MATH_DEFINES=1)
 endforeach()
 
