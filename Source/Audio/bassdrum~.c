@@ -166,10 +166,6 @@ static inline void overdrive_process(overdrive* o, float drive, float* in_out, s
 #define kMaxBlockSize 16
 #define kBlockSize 8
 
-#define TRIGGER_LOW          0
-#define TRIGGER_RISING_EDGE  1
-#define TRIGGER_HIGH         4
-
 static inline float note_to_frequency(float midi_note){
   midi_note -= 9.0f;
   CONSTRAIN(midi_note, -128.0f, 127.0f);
@@ -177,7 +173,7 @@ static inline float note_to_frequency(float midi_note){
 }
 
 typedef struct{
-  int trigger;
+  int rising_edge;
   float note;
   float timbre;
   float morph;
@@ -471,7 +467,7 @@ static inline void bass_drum_engine_render(
     float drive = (c > 0.0f ? c : 0.0f) * (d > 0.0f ? d : 0.0f);
     analog_bass_drum_render(
         &e->analog_bass_drum,
-        parameters->trigger & TRIGGER_RISING_EDGE,
+        parameters->rising_edge,
         parameters->accent,
         f0,
         parameters->timbre,
@@ -487,7 +483,7 @@ static inline void bass_drum_engine_render(
       float fmd = parameters->harmonics * 2.0f - 1.0f;
       synthetic_bass_drum_render(
           &e->synthetic_bass_drum,
-          parameters->trigger & TRIGGER_RISING_EDGE,
+          parameters->rising_edge,
           parameters->accent,
           f0,
           parameters->timbre,
@@ -570,9 +566,7 @@ static inline void voice_render(
   }
   bass_drum_engine* e = &v->bass_drum_engine;
   engine_parameters p;
-  int rising_edge = v->trigger_state && !previous_trigger_state;
-  p.trigger = (rising_edge ? TRIGGER_RISING_EDGE : TRIGGER_LOW)
-            | (v->trigger_state ? TRIGGER_HIGH : TRIGGER_LOW);
+  p.rising_edge = v->trigger_state && !previous_trigger_state;
   const float short_decay = (200.0f * kBlockSize) / kSampleRate *
       st2ratio(-96.0f * p_patch->decay);
   v->decay_env *= (1.0f - short_decay * 2.0f);
