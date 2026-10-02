@@ -34,6 +34,9 @@
 
 namespace plaits {
 
+float kSampleRate = 48000.0f;
+float a0 = 55.f / kSampleRate;
+
 const uint8_t syx_bank_0[] = {
       99,     58,     99,     60,
       99,      0,      0,      0,

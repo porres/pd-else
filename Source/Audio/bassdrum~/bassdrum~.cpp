@@ -2,8 +2,7 @@
 
 #include <m_pd.h>
 #include <math.h>
-#include "dsp.h"
-#include "voice.h"
+#include "bass_drum.h"
 
 static t_class *bd_class;
 
