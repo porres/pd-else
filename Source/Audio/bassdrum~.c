@@ -26,7 +26,7 @@ float a0 = 55.0f / 48000.0f;
 }
 
 static inline float soft_clip(float x){
-  if (x < -3.0f)
+  if(x < -3.0f)
     return -1.0f;
   else if (x > 3.0f)
     return 1.0f;
@@ -164,22 +164,12 @@ static inline void overdrive_process(overdrive* o, float drive, float* in_out, s
 
 // Engine parameters + trigger state
 #define kMaxBlockSize 16
-#define kBlockSize 8
 
 static inline float note_to_frequency(float midi_note){
   midi_note -= 9.0f;
   CONSTRAIN(midi_note, -128.0f, 127.0f);
   return a0 * 0.25f * st2ratio(midi_note);
 }
-
-typedef struct{
-  int rising_edge;
-  float note;
-  float timbre;
-  float morph;
-  float harmonics;
-  float accent;
-}engine_parameters;
 
 // =============================================================================
 // AnalogBassDrum
@@ -451,15 +441,20 @@ static inline void bass_drum_engine_init(bass_drum_engine* e){
 
 static inline void bass_drum_engine_render(
     bass_drum_engine* e,
-    const engine_parameters* parameters,
+    int rising_edge,
+    float accent,
+    float note,
+    float timbre,
+    float morph,
+    float harmonics,
     float* out,
     float* aux,
     size_t size){
-  const float f0 = note_to_frequency(parameters->note);
+  const float f0 = note_to_frequency(note);
   {
-    float a = parameters->harmonics * 4.0f;
-    float b = parameters->harmonics * 4.0f - 1.0f;
-    float c = parameters->harmonics * 2.0f - 1.0f;
+    float a = harmonics * 4.0f;
+    float b = harmonics * 4.0f - 1.0f;
+    float c = harmonics * 2.0f - 1.0f;
     float d = 1.0f - 16.0f * f0;
     float attack_fm_amount = a < 1.0f ? a : 1.0f;
     float self_fm_amount = (b < 1.0f ? b : 1.0f);
@@ -467,27 +462,27 @@ static inline void bass_drum_engine_render(
     float drive = (c > 0.0f ? c : 0.0f) * (d > 0.0f ? d : 0.0f);
     analog_bass_drum_render(
         &e->analog_bass_drum,
-        parameters->rising_edge,
-        parameters->accent,
+        rising_edge,
+        accent,
         f0,
-        parameters->timbre,
-        parameters->morph,
+        timbre,
+        morph,
         attack_fm_amount,
         self_fm_amount,
         out,
         size);
     overdrive_process(&e->overdrive, 0.5f + 0.5f * drive, out, size);
     {
-      float d_aux = 0.4f - 0.25f * parameters->morph * parameters->morph;
-      float fma = parameters->harmonics * 2.0f;
-      float fmd = parameters->harmonics * 2.0f - 1.0f;
+      float d_aux = 0.4f - 0.25f * morph * morph;
+      float fma = harmonics * 2.0f;
+      float fmd = harmonics * 2.0f - 1.0f;
       synthetic_bass_drum_render(
           &e->synthetic_bass_drum,
-          parameters->rising_edge,
-          parameters->accent,
+          rising_edge,
+          accent,
           f0,
-          parameters->timbre,
-          parameters->morph,
+          timbre,
+          morph,
           d_aux,
           fma < 1.0f ? fma : 1.0f,
           fmd > 0.0f ? fmd : 0.0f,
@@ -510,21 +505,7 @@ static inline void channel_post_processor_process(float gain, float* in, short* 
 }
 
 // =============================================================================
-// Voice + support structs
-typedef struct {
-  float note;
-  float harmonics;
-  float timbre;
-  float morph;
-  float frequency_modulation_amount;
-  float decay;
-} patch;
-
-typedef struct{
-  float trigger;
-  float level;
-}modulations;
-
+// Voice
 typedef struct{
   short out;
   short aux;
@@ -546,52 +527,6 @@ static inline void voice_init(voice* v){
   v->trigger_state = 0;
 }
 
-static inline void voice_render(
-    voice* v,
-    const patch* p_patch,
-    const modulations* p_mods,
-    voice_frame* frames,
-    size_t size){
-  float trigger_value = p_mods->trigger;
-  int previous_trigger_state = v->trigger_state;
-  if (!previous_trigger_state){
-    if (trigger_value > 0.3f){
-      v->trigger_state = 1;
-      v->decay_env = 1.0f;
-    }
-  }
-  else{
-    if(trigger_value < 0.1f)
-      v->trigger_state = 0;
-  }
-  bass_drum_engine* e = &v->bass_drum_engine;
-  engine_parameters p;
-  p.rising_edge = v->trigger_state && !previous_trigger_state;
-  const float short_decay = (200.0f * kBlockSize) / kSampleRate *
-      st2ratio(-96.0f * p_patch->decay);
-  v->decay_env *= (1.0f - short_decay * 2.0f);
-  float compressed_level = 1.3f * p_mods->level / (0.3f + fabsf(p_mods->level));
-  CONSTRAIN(compressed_level, 0.0f, 1.0f);
-  p.accent = compressed_level;
-  p.harmonics = p_patch->harmonics;
-  CONSTRAIN(p.harmonics, 0.0f, 1.0f);
-  {
-    float env_val = v->decay_env;
-    float mod_amt = p_patch->frequency_modulation_amount;
-    float m = fabsf(mod_amt) - 0.05f;
-    if (m < 0.05f) m = 0.05f;
-    mod_amt *= m * 1.05f;
-
-    p.note = p_patch->note + mod_amt * (env_val * env_val * 48.0f);
-    CONSTRAIN(p.note, -119.0f, 120.0f);
-  }
-  p.timbre = p_patch->timbre;
-  p.morph = p_patch->morph;
-  bass_drum_engine_render(e, &p, v->out_buffer, v->aux_buffer, size);
-  channel_post_processor_process(e->out_gain, v->out_buffer, &frames->out, size, 2);
-  channel_post_processor_process(e->aux_gain, v->aux_buffer, &frames->aux, size, 2);
-}
-
 // =============================================================================
 // Pd glue
 static t_class *bd_class;
@@ -605,8 +540,14 @@ typedef struct _bd{
     t_int       x_block_count;
     t_int       x_nchans;
     voice      *x_voice;
-    patch       x_patch;
-    modulations x_mod;
+    float       x_note;
+    float       x_harmonics;
+    float       x_timbre;
+    float       x_morph;
+    float       x_decay;
+    float       x_pdepth;
+    float       x_level;
+    float       x_trigger;
 }t_bd;
 
 static float bd_clip01(float f){
@@ -615,7 +556,7 @@ static float bd_clip01(float f){
 
 static void bd_freq(t_bd* x, t_floatarg f){
     t_floatarg pitch = log2f((f < 0 ? f * -1 : f) / 440) + 0.75;
-    x->x_patch.note = 60.0f + pitch * 12.f;
+    x->x_note = 60.0f + pitch * 12.f;
 }
 
 static void bd_bang(t_bd* x){
@@ -627,27 +568,64 @@ static void bd_mode(t_bd* x, t_floatarg f){
 }
 
 static void bd_punch(t_bd* x, t_floatarg f){
-    x->x_patch.harmonics = bd_clip01(f);
+    x->x_harmonics = bd_clip01(f);
 }
 
 static void bd_tone(t_bd* x, t_floatarg f){
-    x->x_patch.timbre = bd_clip01(f);
+    x->x_timbre = bd_clip01(f);
 }
 
 static void bd_decay(t_bd* x, t_floatarg f){
-    x->x_patch.morph = bd_clip01(f);
+    x->x_morph = bd_clip01(f);
 }
 
 static void bd_level(t_bd* x, t_floatarg f){
-    x->x_mod.level = bd_clip01(f);
+    x->x_level = bd_clip01(f);
 }
 
 static void bd_ptime(t_bd* x, t_floatarg f){
-    x->x_patch.decay = bd_clip01(f);
+    x->x_decay = bd_clip01(f);
 }
 
 static void bd_pdepth(t_bd* x, t_floatarg f){
-    x->x_patch.frequency_modulation_amount = bd_clip01(f);
+    x->x_pdepth = bd_clip01(f);
+}
+
+static inline void voice_render(t_bd* x, int channel, voice_frame* frames, size_t size){
+  voice* v = &x->x_voice[channel];
+  float trigger_value = x->x_trigger;
+  int previous_trigger_state = v->trigger_state;
+  if(!previous_trigger_state){
+    if(trigger_value > 0.3f){
+      v->trigger_state = 1;
+      v->decay_env = 1.0f;
+    }
+  }
+  else if(trigger_value < 0.1f)
+    v->trigger_state = 0;
+  bass_drum_engine* e = &v->bass_drum_engine;
+  int rising_edge = v->trigger_state && !previous_trigger_state;
+  const float short_decay = (100.0f * kMaxBlockSize) / kSampleRate * st2ratio(-96.0f * x->x_decay);
+  v->decay_env *= (1.0f - short_decay * 2.0f);
+  float compressed_level = 1.3f * x->x_level / (0.3f + fabsf(x->x_level));
+  CONSTRAIN(compressed_level, 0.0f, 1.0f);
+  float accent = compressed_level;
+  float harmonics = x->x_harmonics;
+  CONSTRAIN(harmonics, 0.0f, 1.0f);
+  float note;
+  {
+    float env_val = v->decay_env;
+    float mod_amt = x->x_pdepth;
+    float m = fabsf(mod_amt) - 0.05f;
+    if (m < 0.05f) m = 0.05f;
+    mod_amt *= m * 1.05f;
+    note = x->x_note + mod_amt * (env_val * env_val * 48.0f);
+    CONSTRAIN(note, -119.0f, 120.0f);
+  }
+  bass_drum_engine_render(e, rising_edge, accent, note, x->x_timbre, x->x_morph,
+      harmonics, v->out_buffer, v->aux_buffer, size);
+  channel_post_processor_process(e->out_gain, v->out_buffer, &frames->out, size, 2);
+  channel_post_processor_process(e->aux_gain, v->aux_buffer, &frames->aux, size, 2);
 }
 
 static t_int* bd_perform(t_int* w){
@@ -663,34 +641,34 @@ static t_int* bd_perform(t_int* w){
             int base = x->x_nsize * j;
             int trigger_at = -1;
             for(int i = 0; i < x->x_nsize; i++){
-                if (trig[base + i] != 0){
-                    x->x_mod.level = bd_clip01(fabsf(trig[base + i]));
+                if(trig[base + i] != 0){
+                    x->x_level = bd_clip01(fabsf(trig[base + i]));
                     trigger_at = i;
                     break;
                 }
             }
             if(x->x_k_trig){
-                if (trigger_at < 0)
+                if(trigger_at < 0)
                     trigger_at = 0;
                 x->x_k_trig = 0;
             }
             if(trigger_at > 0){
-                x->x_mod.trigger = 0;
-                voice_render(&x->x_voice[c], &x->x_patch, &x->x_mod, output, trigger_at);
+                x->x_trigger = 0;
+                voice_render(x, c, output, trigger_at);
                 for (int i = 0; i < trigger_at; i++){
                     short bd = x->x_mode ? output[i].aux : output[i].out;
                     outc[i + base] = (float)bd / 32768.0f;
                 }
-                x->x_mod.trigger = 1;
-                voice_render(&x->x_voice[c], &x->x_patch, &x->x_mod, output, x->x_nsize - trigger_at);
+                x->x_trigger = 1;
+                voice_render(x, c, output, x->x_nsize - trigger_at);
                 for (int i = 0; i < x->x_nsize - trigger_at; i++){
                     short bd = x->x_mode ? output[i].aux : output[i].out;
                     outc[i + base + trigger_at] = (float)bd / 32768.0f;
                 }
             }
             else{
-                x->x_mod.trigger = (trigger_at == 0);
-                voice_render(&x->x_voice[c], &x->x_patch, &x->x_mod, output, x->x_nsize);
+                x->x_trigger = (trigger_at == 0);
+                voice_render(x, c, output, x->x_nsize);
                 for (int i = 0; i < x->x_nsize; i++){
                     short bd = x->x_mode ? output[i].aux : output[i].out;
                     outc[i + base] = (float)bd / 32768.0f;
@@ -763,14 +741,14 @@ static void* bd_new(t_symbol* s, int ac, t_atom* av){
     x->x_n = 0;
     x->x_nchans = 1;
     x->x_voice = (voice*)getbytes(sizeof(voice));
-    x->x_mod.level = bd_clip01(lvl);
+    x->x_level = bd_clip01(lvl);
     bd_freq(x, pitch);
-    x->x_patch.harmonics = bd_clip01(punch);
-    x->x_patch.timbre = bd_clip01(tone);
-    x->x_patch.morph = bd_clip01(decay);
+    x->x_harmonics = bd_clip01(punch);
+    x->x_timbre = bd_clip01(tone);
+    x->x_morph = bd_clip01(decay);
     bd_ptime(x, ptime);
     bd_pdepth(x, pdepth);
-    x->x_mod.trigger = 0;
+    x->x_trigger = 0;
     voice_init(&x->x_voice[0]);
     outlet_new(&x->x_obj, &s_signal);
     return (void*)x;
