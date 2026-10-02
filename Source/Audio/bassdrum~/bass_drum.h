@@ -25,15 +25,6 @@
   out += (error > 0 ? positive : negative) * error; \
 }
 
-static inline float interpolate_wrap(const float* table, float index, float size) {
-  index -= (float)((int32_t)index);
-  index *= size;
-  MAKE_INTEGRAL_FRACTIONAL(index)
-  float a = table[index_integral];
-  float b = table[index_integral + 1];
-  return a + (b - a) * index_fractional;
-}
-
 static inline float soft_clip(float x) {
   if (x < -3.0f) {
     return -1.0f;
@@ -87,6 +78,11 @@ static inline float semitones_to_ratio(float semitones) {
 #define M_PI_F ((float)M_PI)
 #define M_PI_POW_3 (M_PI_F * M_PI_F * M_PI_F)
 #define M_PI_POW_5 (M_PI_POW_3 * M_PI_F * M_PI_F)
+
+// TEMP: replaced LUT-based sine with libm sinf. Swap for ELSE LUT later.
+static inline float sine(float phase) {
+  return sinf(phase * 2.0f * M_PI_F);
+}
 
 static inline float onepole_tan_dirty(float f) {
   const float a = 3.736e-01f * M_PI_POW_3;
@@ -147,17 +143,9 @@ static inline void svf_process_bp_lp(svf* s, float in, float* out_bp, float* out
   *out_lp = lp;
 }
 
-// Global constants + sine LUT
+// Global constants
 extern float kSampleRate;
 extern float a0;
-
-#define kSineLUTSize 512.0f
-
-extern const float lut_sine[];
-
-static inline float sine(float phase) {
-  return interpolate_wrap(lut_sine, phase, kSineLUTSize);
-}
 
 // Overdrive
 typedef struct {
