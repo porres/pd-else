@@ -140,7 +140,6 @@ typedef struct {
 typedef struct {
   float out_gain;
   float aux_gain;
-  int already_enveloped;
 } post_processing_settings;
 
 // =============================================================================
@@ -592,7 +591,6 @@ typedef struct {
 
 static inline void voice_init(voice* v) {
   post_processing_settings* s = &v->bass_drum_engine.post_processing_settings;
-  s->already_enveloped = 1;
   s->out_gain = 0.8f;
   s->aux_gain = 0.8f;
 
