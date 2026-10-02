@@ -1,20 +1,16 @@
 // Original copyright Emilie Gillet, MIT license.
 
-#pragma once
+#ifndef STMLIB_H_
+#define STMLIB_H_
 
 #include <inttypes.h>
 #include <stddef.h>
 #include <math.h>
-#include <cstdint>
-#include <algorithm>
+#include <string.h>
 
 #ifndef NULL
 #define NULL 0
 #endif
-
-#define DISALLOW_COPY_AND_ASSIGN(TypeName) \
-  TypeName(const TypeName&);               \
-  void operator=(const TypeName&)
 
 #define CONSTRAIN(var, min, max) \
   if (var < (min)) { \
@@ -23,34 +19,9 @@
     var = (max); \
   }
 
-namespace stmlib {
-
-// =============================================================================
-// dsp.h (trimmed)
-// =============================================================================
-
 #define MAKE_INTEGRAL_FRACTIONAL(x) \
-  int32_t x ## _integral = static_cast<int32_t>(x); \
-  float x ## _fractional = x - static_cast<float>(x ## _integral);
-
-inline float Interpolate(const float* table, float index, float size) {
-  index *= size;
-  if (index == size) { index--; }
-  MAKE_INTEGRAL_FRACTIONAL(index)
-  if (!table || index_integral < 0) { return 0; }
-  float a = table[index_integral];
-  float b = table[index_integral + 1];
-  return a + (b - a) * index_fractional;
-}
-
-inline float InterpolateWrap(const float* table, float index, float size) {
-  index -= static_cast<float>(static_cast<int32_t>(index));
-  index *= size;
-  MAKE_INTEGRAL_FRACTIONAL(index)
-  float a = table[index_integral];
-  float b = table[index_integral + 1];
-  return a + (b - a) * index_fractional;
-}
+  int32_t x ## _integral = (int32_t)(x); \
+  float x ## _fractional = (x) - (float)(x ## _integral);
 
 #define ONE_POLE(out, in, coefficient) out += (coefficient) * ((in) - out);
 #define SLOPE(out, in, positive, negative) { \
@@ -58,21 +29,40 @@ inline float InterpolateWrap(const float* table, float index, float size) {
   out += (error > 0 ? positive : negative) * error; \
 }
 
-inline float SoftLimit(float x) {
+static inline float interpolate(const float* table, float index, float size) {
+  index *= size;
+  if (index == size) { index--; }
+  MAKE_INTEGRAL_FRACTIONAL(index)
+  if (!table || index_integral < 0) { return 0.0f; }
+  float a = table[index_integral];
+  float b = table[index_integral + 1];
+  return a + (b - a) * index_fractional;
+}
+
+static inline float interpolate_wrap(const float* table, float index, float size) {
+  index -= (float)((int32_t)index);
+  index *= size;
+  MAKE_INTEGRAL_FRACTIONAL(index)
+  float a = table[index_integral];
+  float b = table[index_integral + 1];
+  return a + (b - a) * index_fractional;
+}
+
+static inline float soft_limit(float x) {
   return x * (27.0f + x * x) / (27.0f + 9.0f * x * x);
 }
 
-inline float SoftClip(float x) {
+static inline float soft_clip(float x) {
   if (x < -3.0f) {
     return -1.0f;
   } else if (x > 3.0f) {
     return 1.0f;
   } else {
-    return SoftLimit(x);
+    return soft_limit(x);
   }
 }
 
-inline int32_t Clip16(int32_t x) {
+static inline int32_t clip16(int32_t x) {
   if (x < -32768) {
     return -32768;
   } else if (x > 32767) {
@@ -83,78 +73,65 @@ inline int32_t Clip16(int32_t x) {
 }
 
 // =============================================================================
-// random.h + random.cc (trimmed)
+// Random
 // =============================================================================
 
-class Random {
- public:
-  static inline uint32_t state() { return rng_state_; }
+static uint32_t stmlib_rng_state = 0x21;
 
-  static inline void Seed(uint32_t seed) {
-    rng_state_ = seed;
-  }
+static inline uint32_t random_state(void) {
+  return stmlib_rng_state;
+}
 
-  static inline uint32_t GetWord() {
-    rng_state_ = rng_state_ * 1664525L + 1013904223L;
-    return state();
-  }
+static inline void random_seed(uint32_t seed) {
+  stmlib_rng_state = seed;
+}
 
-  static inline int16_t GetSample() {
-    return static_cast<int16_t>(GetWord() >> 16);
-  }
+static inline uint32_t random_get_word(void) {
+  stmlib_rng_state = stmlib_rng_state * 1664525L + 1013904223L;
+  return stmlib_rng_state;
+}
 
-  static inline float GetFloat() {
-    return static_cast<float>(GetWord()) / 4294967296.0f;
-  }
+static inline int16_t random_get_sample(void) {
+  return (int16_t)(random_get_word() >> 16);
+}
 
- private:
-  static uint32_t rng_state_;
-
-  DISALLOW_COPY_AND_ASSIGN(Random);
-};
-
-inline uint32_t Random::rng_state_ = 0x21;
+static inline float random_get_float(void) {
+  return (float)random_get_word() / 4294967296.0f;
+}
 
 // =============================================================================
-// parameter_interpolator.h (trimmed)
+// ParameterInterpolator
 // =============================================================================
 
-class ParameterInterpolator {
- public:
-  ParameterInterpolator() { }
-  ParameterInterpolator(float* state, float new_value, size_t size) {
-    Init(state, new_value, size);
-  }
+typedef struct {
+  float* state;
+  float value;
+  float increment;
+} param_interp;
 
-  ParameterInterpolator(float* state, float new_value, float step) {
-    state_ = state;
-    value_ = *state;
-    increment_ = (new_value - *state) * step;
-  }
+static inline void pi_init(param_interp* p, float* state, float new_value, size_t size) {
+  p->state = state;
+  p->value = *state;
+  p->increment = (new_value - *state) / (float)size;
+}
 
-  ~ParameterInterpolator() {
-    *state_ = value_;
-  }
+static inline void pi_init_step(param_interp* p, float* state, float new_value, float step) {
+  p->state = state;
+  p->value = *state;
+  p->increment = (new_value - *state) * step;
+}
 
-  inline void Init(float* state, float new_value, size_t size) {
-    state_ = state;
-    value_ = *state;
-    increment_ = (new_value - *state) / static_cast<float>(size);
-  }
+static inline float pi_next(param_interp* p) {
+  p->value += p->increment;
+  return p->value;
+}
 
-  inline float Next() {
-    value_ += increment_;
-    return value_;
-  }
-
- private:
-  float* state_;
-  float value_;
-  float increment_;
-};
+static inline void pi_finish(param_interp* p) {
+  *p->state = p->value;
+}
 
 // =============================================================================
-// units.h + units.cc (trimmed)
+// units.h + units.cc (SemitonesToRatio)
 // =============================================================================
 
 static const float lut_pitch_ratio_high[] = {
@@ -291,16 +268,15 @@ static const float lut_pitch_ratio_low[] = {
    1.058507323e+00,  1.058746185e+00,  1.058985101e+00,  1.059224071e+00,
 };
 
-inline float SemitonesToRatio(float semitones) {
+static inline float semitones_to_ratio(float semitones) {
   float pitch = semitones + 128.0f;
   MAKE_INTEGRAL_FRACTIONAL(pitch)
-
   return lut_pitch_ratio_high[pitch_integral] * \
-      lut_pitch_ratio_low[static_cast<int32_t>(pitch_fractional * 256.0f)];
+      lut_pitch_ratio_low[(int32_t)(pitch_fractional * 256.0f)];
 }
 
 // =============================================================================
-// filter.h (trimmed)
+// filter.h
 // =============================================================================
 
 enum FilterMode {
@@ -310,235 +286,112 @@ enum FilterMode {
   FILTER_MODE_HIGH_PASS
 };
 
-enum FrequencyApproximation {
-  FREQUENCY_EXACT,
-  FREQUENCY_ACCURATE,
-  FREQUENCY_FAST,
-  FREQUENCY_DIRTY
-};
-
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
 
-#define M_PI_F float(M_PI)
-#define M_PI_POW_2 M_PI * M_PI
-#define M_PI_POW_3 M_PI_POW_2 * M_PI
-#define M_PI_POW_5 M_PI_POW_3 * M_PI_POW_2
-#define M_PI_POW_7 M_PI_POW_5 * M_PI_POW_2
-#define M_PI_POW_9 M_PI_POW_7 * M_PI_POW_2
-#define M_PI_POW_11 M_PI_POW_9 * M_PI_POW_2
+#define M_PI_F ((float)M_PI)
+#define M_PI_POW_3 (M_PI_F * M_PI_F * M_PI_F)
+#define M_PI_POW_5 (M_PI_POW_3 * M_PI_F * M_PI_F)
 
-class OnePole {
- public:
-  OnePole() { }
-  ~OnePole() { }
+static inline float onepole_tan_dirty(float f) {
+  const float a = 3.736e-01f * M_PI_POW_3;
+  return f * (M_PI_F + a * f * f);
+}
 
-  void Init() {
-    set_f<FREQUENCY_DIRTY>(0.01f);
-    Reset();
-  }
+static inline float onepole_tan_fast(float f) {
+  const float a = 3.260e-01f * M_PI_POW_3;
+  const float b = 1.823e-01f * M_PI_POW_5;
+  float f2 = f * f;
+  return f * (M_PI_F + f2 * (a + b * f2));
+}
 
-  void Reset() {
-    state_ = 0.0f;
-  }
+typedef struct {
+  float g;
+  float r;
+  float h;
+  float state_1;
+  float state_2;
+} svf;
 
-  template<FrequencyApproximation approximation>
-  static inline float tan(float f) {
-    if (approximation == FREQUENCY_EXACT) {
-      f = f < 0.497f ? f : 0.497f;
-      return tanf(M_PI_F * f);
-    } else if (approximation == FREQUENCY_DIRTY) {
-      const float a = 3.736e-01f * M_PI_POW_3;
-      return f * (M_PI_F + a * f * f);
-    } else if (approximation == FREQUENCY_FAST) {
-      const float a = 3.260e-01f * M_PI_POW_3;
-      const float b = 1.823e-01f * M_PI_POW_5;
-      float f2 = f * f;
-      return f * (M_PI_F + f2 * (a + b * f2));
-    } else if (approximation == FREQUENCY_ACCURATE) {
-      const float a = 3.333314036e-01f * M_PI_POW_3;
-      const float b = 1.333923995e-01f * M_PI_POW_5;
-      const float c = 5.33740603e-02f * M_PI_POW_7;
-      const float d = 2.900525e-03f * M_PI_POW_9;
-      const float e = 9.5168091e-03f * M_PI_POW_11;
-      float f2 = f * f;
-      return f * (M_PI_F + f2 * (a + f2 * (b + f2 * (c + f2 * (d + f2 * e)))));
-    }
-    return 0.0f;
-  }
+static inline void svf_reset(svf* s) {
+  s->state_1 = 0.0f;
+  s->state_2 = 0.0f;
+}
 
-  template<FrequencyApproximation approximation>
-  inline void set_f(float f) {
-    g_ = tan<approximation>(f);
-    gi_ = 1.0f / (1.0f + g_);
-  }
+static inline void svf_init(svf* s) {
+  s->g = onepole_tan_dirty(0.01f);
+  s->r = 1.0f / 100.0f;
+  s->h = 1.0f / (1.0f + s->r * s->g + s->g * s->g);
+  svf_reset(s);
+}
 
-  template<FilterMode mode>
-  inline float Process(float in) {
-    float lp;
-    lp = (g_ * in + state_) * gi_;
-    state_ = g_ * (in - lp) + lp;
+static inline void svf_set_f_q_dirty(svf* s, float f, float resonance) {
+  s->g = onepole_tan_dirty(f);
+  s->r = 1.0f / resonance;
+  s->h = 1.0f / (1.0f + s->r * s->g + s->g * s->g);
+}
 
-    if (mode == FILTER_MODE_LOW_PASS) {
-      return lp;
-    } else if (mode == FILTER_MODE_HIGH_PASS) {
-      return in - lp;
-    } else {
-      return 0.0f;
-    }
-  }
+static inline void svf_set_f_q_fast(svf* s, float f, float resonance) {
+  s->g = onepole_tan_fast(f);
+  s->r = 1.0f / resonance;
+  s->h = 1.0f / (1.0f + s->r * s->g + s->g * s->g);
+}
 
-  template<FilterMode mode>
-  inline void Process(float* in_out, size_t size) {
-    while (size--) {
-      *in_out = Process<mode>(*in_out);
-      ++in_out;
-    }
-  }
+static inline float svf_process_lp(svf* s, float in) {
+  float hp = (in - s->r * s->state_1 - s->g * s->state_1 - s->state_2) * s->h;
+  float bp = s->g * hp + s->state_1;
+  s->state_1 = s->g * hp + bp;
+  float lp = s->g * bp + s->state_2;
+  s->state_2 = s->g * bp + lp;
+  return lp;
+}
 
- private:
-  float g_;
-  float gi_;
-  float state_;
+static inline float svf_process_bp(svf* s, float in) {
+  float hp = (in - s->r * s->state_1 - s->g * s->state_1 - s->state_2) * s->h;
+  float bp = s->g * hp + s->state_1;
+  s->state_1 = s->g * hp + bp;
+  float lp = s->g * bp + s->state_2;
+  s->state_2 = s->g * bp + lp;
+  return bp;
+}
 
-  DISALLOW_COPY_AND_ASSIGN(OnePole);
-};
+static inline float svf_process_bp_norm(svf* s, float in) {
+  float hp = (in - s->r * s->state_1 - s->g * s->state_1 - s->state_2) * s->h;
+  float bp = s->g * hp + s->state_1;
+  s->state_1 = s->g * hp + bp;
+  float lp = s->g * bp + s->state_2;
+  s->state_2 = s->g * bp + lp;
+  return bp * s->r;
+}
 
-class Svf {
- public:
-  Svf() { }
-  ~Svf() { }
+static inline float svf_process_hp(svf* s, float in) {
+  float hp = (in - s->r * s->state_1 - s->g * s->state_1 - s->state_2) * s->h;
+  float bp = s->g * hp + s->state_1;
+  s->state_1 = s->g * hp + bp;
+  float lp = s->g * bp + s->state_2;
+  s->state_2 = s->g * bp + lp;
+  return hp;
+}
 
-  void Init() {
-    set_f_q<FREQUENCY_DIRTY>(0.01f, 100.0f);
-    Reset();
-  }
+static inline void svf_process_bp_lp(svf* s, float in, float* out_bp, float* out_lp) {
+  float hp = (in - s->r * s->state_1 - s->g * s->state_1 - s->state_2) * s->h;
+  float bp = s->g * hp + s->state_1;
+  s->state_1 = s->g * hp + bp;
+  float lp = s->g * bp + s->state_2;
+  s->state_2 = s->g * bp + lp;
+  *out_bp = bp;
+  *out_lp = lp;
+}
 
-  void Reset() {
-    state_1_ = state_2_ = 0.0f;
-  }
+static inline void svf_process_lp_bp(svf* s, float in, float* out_lp, float* out_bp) {
+  float hp = (in - s->r * s->state_1 - s->g * s->state_1 - s->state_2) * s->h;
+  float bp = s->g * hp + s->state_1;
+  s->state_1 = s->g * hp + bp;
+  float lp = s->g * bp + s->state_2;
+  s->state_2 = s->g * bp + lp;
+  *out_lp = lp;
+  *out_bp = bp;
+}
 
-  template<FrequencyApproximation approximation>
-  inline void set_f_q(float f, float resonance) {
-    g_ = OnePole::tan<approximation>(f);
-    r_ = 1.0f / resonance;
-    h_ = 1.0f / (1.0f + r_ * g_ + g_ * g_);
-  }
-
-  template<FilterMode mode>
-  inline float Process(float in) {
-    float hp, bp, lp;
-    hp = (in - r_ * state_1_ - g_ * state_1_ - state_2_) * h_;
-    bp = g_ * hp + state_1_;
-    state_1_ = g_ * hp + bp;
-    lp = g_ * bp + state_2_;
-    state_2_ = g_ * bp + lp;
-
-    if (mode == FILTER_MODE_LOW_PASS) {
-      return lp;
-    } else if (mode == FILTER_MODE_BAND_PASS) {
-      return bp;
-    } else if (mode == FILTER_MODE_BAND_PASS_NORMALIZED) {
-      return bp * r_;
-    } else if (mode == FILTER_MODE_HIGH_PASS) {
-      return hp;
-    }
-    return 0.0f;
-  }
-
-  template<FilterMode mode_1, FilterMode mode_2>
-  inline void Process(float in, float* out_1, float* out_2) {
-    float hp, bp, lp;
-    hp = (in - r_ * state_1_ - g_ * state_1_ - state_2_) * h_;
-    bp = g_ * hp + state_1_;
-    state_1_ = g_ * hp + bp;
-    lp = g_ * bp + state_2_;
-    state_2_ = g_ * bp + lp;
-
-    if (mode_1 == FILTER_MODE_LOW_PASS) {
-      *out_1 = lp;
-    } else if (mode_1 == FILTER_MODE_BAND_PASS) {
-      *out_1 = bp;
-    } else if (mode_1 == FILTER_MODE_BAND_PASS_NORMALIZED) {
-      *out_1 = bp * r_;
-    } else if (mode_1 == FILTER_MODE_HIGH_PASS) {
-      *out_1 = hp;
-    }
-
-    if (mode_2 == FILTER_MODE_LOW_PASS) {
-      *out_2 = lp;
-    } else if (mode_2 == FILTER_MODE_BAND_PASS) {
-      *out_2 = bp;
-    } else if (mode_2 == FILTER_MODE_BAND_PASS_NORMALIZED) {
-      *out_2 = bp * r_;
-    } else if (mode_2 == FILTER_MODE_HIGH_PASS) {
-      *out_2 = hp;
-    }
-  }
-
- private:
-  float g_;
-  float r_;
-  float h_;
-
-  float state_1_;
-  float state_2_;
-
-  DISALLOW_COPY_AND_ASSIGN(Svf);
-};
-
-// =============================================================================
-// buffer_allocator.h (trimmed)
-// =============================================================================
-
-class BufferAllocator {
- public:
-  BufferAllocator() { }
-  ~BufferAllocator() { }
-
-  BufferAllocator(void* buffer, size_t size) {
-    Init(buffer, size);
-  }
-
-  inline void Init(void* buffer, size_t size) {
-    buffer_ = static_cast<uint8_t*>(buffer);
-    size_ = size;
-    Free();
-  }
-
-  template<typename T>
-  inline T* Allocate() {
-    return Allocate<T>(1);
-  }
-
-  template<typename T>
-  inline T* Allocate(size_t size) {
-    size_t size_bytes = sizeof(T) * size;
-    if (size_bytes <= free_) {
-      T* start = static_cast<T*>(static_cast<void*>(next_));
-      next_ += size_bytes;
-      free_ -= size_bytes;
-      return start;
-    } else {
-      return NULL;
-    }
-  }
-
-  inline void Free() {
-    next_ = buffer_;
-    free_ = size_;
-  }
-
-  inline size_t free() const { return free_; }
-
- private:
-  uint8_t* next_;
-  uint8_t* buffer_;
-  size_t free_;
-  size_t size_;
-
-  DISALLOW_COPY_AND_ASSIGN(BufferAllocator);
-};
-
-}  // namespace stmlib
+#endif  // STMLIB_H_
