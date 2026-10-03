@@ -285,13 +285,6 @@ float f0, size_t size){
     pi_finish(&post);
 }
 
-static inline float synth_bd_click_process(synth_bd_click* c, float in){
-    float error = in - c->lp;
-    c->lp += (error > 0 ? 0.5f : 0.1f) * error;
-    ONE_POLE(c->hp, c->lp, 0.04f);
-    return(svf_process_lp(&c->filter, c->lp - c->hp));
-}
-
 static inline float synth_bd_distorted_sine(float phase, float phase_noise, float dirtiness){
     phase += phase_noise * dirtiness;
     phase -= (float)((int32_t)phase);
@@ -306,15 +299,7 @@ static inline float random_get_float(uint32_t* state){
     return((float)*state / 4294967296.0f);
 }
 
-static inline float synth_bd_attack_noise_render(synth_bd_attack_noise* n, uint32_t* rng){
-    float sample = random_get_float(rng);
-    ONE_POLE(n->lp, sample, 0.05f);
-    ONE_POLE(n->hp, n->lp, 0.005f);
-    return(n->lp - n->hp);
-}
-
-static inline void synth_bd_render(t_bd* x, voice* v, int trigger, float accent,
-float f0, size_t size){
+static inline void synth_bd_render(t_bd* x, voice* v, int trigger, float accent, float f0, size_t size){
     synth_bd* d = &v->synth_bd;
     uint32_t* rng = &v->rng;
     const float transient_level = x->x_tone, decay = x->x_decay, sr = x->x_sr;
@@ -362,8 +347,16 @@ float f0, size_t size){
         ONE_POLE(d->transient_env_lp, d->transient_env, envelope_lp_f);
         ONE_POLE(d->fm_lp, d->fm, envelope_lp_f);
         float body = synth_bd_distorted_sine(d->phase, d->phase_noise, dirtiness);
-        float transient = synth_bd_click_process(&d->click, d->body_env_pulse_width ? 0.0f : 1.0f)
-            + synth_bd_attack_noise_render(&d->noise, rng);
+        synth_bd_click* c = &d->click; // click process
+        float error = (d->body_env_pulse_width ? 0.0f : 1.0f) - c->lp;
+        c->lp += (error > 0 ? 0.5f : 0.1f) * error;
+        ONE_POLE(c->hp, c->lp, 0.04f);
+        float click = svf_process_lp(&c->filter, c->lp - c->hp);
+        synth_bd_attack_noise* n = &d->noise; // attack noise
+        float white = random_get_float(rng); // white noise
+        ONE_POLE(n->lp, white, 0.05f);
+        ONE_POLE(n->hp, n->lp, 0.005f);
+        float transient = click + n->lp - n->hp;
         float gain = d->body_env_lp;
         float tr_vca = (body - 0.6f) * gain; // transistor_vca
         float body_out = 3.0f * tr_vca / (2.0f + fabsf(tr_vca)) + gain * 0.3f;
