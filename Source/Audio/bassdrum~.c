@@ -165,8 +165,8 @@ static inline float analog_bd_diode(float x){
 }
 
 static inline void analog_bd_render(analog_bd* d, int trigger, float accent, float f0,
-float tone, float decay, float attack_fm_amount, float self_fm_amount, float sr, float *out,
-size_t size){
+float tone, float decay, float attack_fm_amount, float self_fm_amount, float drive,
+float sr, float *out, size_t size){
     const int trigger_pulse_duration = (int)(1.0e-3f * sr);
     const int fm_pulse_duration = (int)(6.0e-3f * sr);
     const float pulse_decay_time = 0.2e-3f * sr;
@@ -176,6 +176,17 @@ size_t size){
     const float q = 1500.0f * st2ratio(decay * 80.0f);
     const float tone_f = tone_filter_coeff(f0, tone);
     const float exciter_leak = 0.08f * (tone + 0.25f);
+    // overdrive gains (interpolated per sample below)
+    const float dr = 0.5f + 0.5f * drive;
+    const float dr2 = dr * dr;
+    const float pre_gain_a = dr * 0.5f;
+    const float pre_gain_b = dr2 * dr2 * dr * 24.0f;
+    const float pre_gain = pre_gain_a + (pre_gain_b - pre_gain_a) * dr2;
+    const float dr_sq = dr * (2.0f - dr);
+    const float post_gain = 1.0f / soft_clip(0.33f + dr_sq * (pre_gain - 0.33f));
+    param_interp pre, post;
+    pi_init(&pre, &d->od_pre_gain, pre_gain, size);
+    pi_init(&post, &d->od_post_gain, post_gain, size);
     if(trigger){
         d->pulse_remaining_samples = trigger_pulse_duration;
         d->fm_pulse_remaining_samples = fm_pulse_duration;
@@ -213,25 +224,8 @@ size_t size){
         svf_process_bp_lp(&d->resonator, (pulse - d->retrig_pulse * 0.2f) * scale,
             &resonator_out, &d->lp_out);
         ONE_POLE(d->tone_lp, pulse * exciter_leak + resonator_out, tone_f);
-        *out++ = d->tone_lp;
-    }
-}
-
-// Soft-clipping overdrive applied after the analog engine (in place)
-static inline void analog_bd_overdrive(analog_bd* d, float* buf, float drive, size_t size){
-    const float dr = 0.5f + 0.5f * drive;
-    const float dr2 = dr * dr;
-    const float pre_gain_a = dr * 0.5f;
-    const float pre_gain_b = dr2 * dr2 * dr * 24.0f;
-    const float pre_gain = pre_gain_a + (pre_gain_b - pre_gain_a) * dr2;
-    const float dr_sq = dr * (2.0f - dr);
-    const float post_gain = 1.0f / soft_clip(0.33f + dr_sq * (pre_gain - 0.33f));
-    param_interp pre, post;
-    pi_init(&pre, &d->od_pre_gain, pre_gain, size);
-    pi_init(&post, &d->od_post_gain, post_gain, size);
-    for(size_t i = 0; i < size; i++){
-        float s = pi_next(&pre) * buf[i];
-        buf[i] = soft_clip(s) * pi_next(&post);
+        float s = pi_next(&pre) * d->tone_lp;
+        *out++ = soft_clip(s) * pi_next(&post);
     }
     pi_finish(&pre);
     pi_finish(&post);
@@ -455,8 +449,7 @@ static inline void voice_render(t_bd* x, int channel, int trigger, t_sample* out
         float self_fm_amount = clamp01(x->x_punch * 4.0f - 1.0f);
         float drive = fmaxf(x->x_punch * 2.0f - 1.0f, 0.0f) * fmaxf(1.0f - 16.0f * f0, 0.0f);
         analog_bd_render(&v->analog_bd, rising_edge, accent, f0, x->x_tone, x->x_decay,
-            attack_fm_amount, self_fm_amount, x->x_sr, v->out_buffer, size);
-        analog_bd_overdrive(&v->analog_bd, v->out_buffer, drive, size);
+            attack_fm_amount, self_fm_amount, drive, x->x_sr, v->out_buffer, size);
     }
     const float gain = kOutGain * -32767.0f; // float -> 16 bit (legacy from plaits)
     for(size_t i = 0; i < size; i++){
