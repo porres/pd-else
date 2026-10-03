@@ -79,11 +79,8 @@ static inline void pi_finish(param_interp* p){
 #define M_PI_POW_5 (M_PI_POW_3 * M_PI_F * M_PI_F)
 
 typedef struct{
-    float g;
-    float r;
-    float h;
-    float state_1;
-    float state_2;
+    float g, r, h;
+    float state_1, state_2;
 }svf;
 
 static inline float onepole_tan_dirty(float f){
@@ -106,8 +103,7 @@ static inline void svf_set(svf* s, float g, float resonance){
 }
 
 static inline void svf_init(svf* s){
-    s->state_1 = 0.0f;
-    s->state_2 = 0.0f;
+    s->state_1 = s->state_2 = 0.0f;
     svf_set(s, onepole_tan_dirty(0.01f), 100.0f);
 }
 
@@ -166,8 +162,7 @@ static inline float analog_bd_diode(float x){
 
 // SyntheticBassDrum ================================================================
 typedef struct{
-    float lp;
-    float hp;
+    float lp, hp;
     svf   filter;
 }synth_bd_click;
 
@@ -184,8 +179,7 @@ static inline float synth_bd_click_process(synth_bd_click* c, float in){
 }
 
 typedef struct{
-    float lp;
-    float hp;
+    float lp, hp;
 }synth_bd_attack_noise;
 
 static inline float synth_bd_attack_noise_render(synth_bd_attack_noise* n, uint32_t* rng){
@@ -449,20 +443,18 @@ static inline void voice_render(t_bd* x, int channel, int trigger, t_sample* out
     const float short_decay = (100.0f * kBlockSize) / x->x_sr * st2ratio(-96.0f * x->x_ptime);
     v->decay_env *= 1.0f - short_decay * 2.0f;
     const float accent = 1.3f * x->x_level / (0.3f + fabsf(x->x_level));
-    // pitch envelope
-    float mod_amt = x->x_pdepth;
+    float mod_amt = x->x_pdepth; // pitch envelope
     mod_amt *= fmaxf(fabsf(mod_amt) - 0.05f, 0.05f) * 1.05f;
     float note = clampf(x->x_note + mod_amt * (v->decay_env * v->decay_env * 48.0f), -119.0f, 120.0f);
     const float f0 = 13.75f / x->x_sr * st2ratio(clampf(note - 9.0f, -128.0f, 127.0f));
-    if(x->x_mode)
+    if(x->x_mode) // synthetic bass drum model (inadvertedly tr-909ish)
         synth_bd_render(x, v, rising_edge, accent, f0, size);
-    else
+    else // analog bass drum model TR-808 like
         analog_bd_render(x, v, rising_edge, accent, f0, size);
     const float gain = kOutGain * -32767.0f; // float -> 16 bit (legacy from plaits)
     for(size_t i = 0; i < size; i++){
         int32_t s = 1 + (int32_t)(v->out_buffer[i] * gain);
-        s = s < -32768 ? -32768 : s > 32767 ? 32767 : s;
-        out[i] = (float)s / 32768.0f;
+        out[i] = (float)(s < -32768 ? -32768 : s > 32767 ? 32767 : s) / 32768.0f;
     }
 }
 
