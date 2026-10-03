@@ -25,6 +25,15 @@ float a0 = 55.0f / 48000.0f;
   out += (error > 0 ? positive : negative) * error; \
 }
 
+static inline float soft_clip(float x){
+  if(x < -3.0f)
+    return -1.0f;
+  else if(x > 3.0f)
+    return 1.0f;
+  else
+    return x * (27.0f + x * x) / (27.0f + 9.0f * x * x);
+}
+
 // Random
 static uint32_t stmlib_rng_state = 0x21;
 
@@ -39,7 +48,7 @@ typedef struct{
     float     value;
     float     increment;
 }param_interp;
-    
+
 static inline void pi_init(param_interp* p, float* state, float new_value, size_t size){
     p->state = state;
     p->value = *state;
@@ -376,23 +385,16 @@ static inline void synth_bd_render(
 
 // Voice ========================================================================
 typedef struct{
-    short out;
-    short aux;
-}voice_frame;
-
-typedef struct{
     analog_bd analog_bd;
     synth_bd synth_bd;
     float out_gain;
-    float aux_gain;
     int trigger_state;
     float decay_env;
     float out_buffer[kMaxBlockSize];
-    float aux_buffer[kMaxBlockSize];
 }voice;
 
 static inline void voice_init(voice* v){
-    v->out_gain = v->aux_gain = 0.8f;
+    v->out_gain = 0.8f;
     analog_bd_init(&v->analog_bd);
     synth_bd_init(&v->synth_bd);
     v->decay_env = 0.0f;
@@ -458,7 +460,7 @@ static void bd_pdepth(t_bd* x, t_floatarg f){
     x->x_pdepth = f < 0 ? 0 : f > 1 ? 1 : f;
 }
 
-static inline void ch_post_process(float gain, float* in, short* out, size_t size, size_t stride){
+static inline void ch_post_process(float gain, float* in, short* out, size_t size){
     const float post_gain = gain * -32767.0f;
     while(size--){
         int32_t v = 1 + (int32_t)(*in++ * post_gain);
@@ -466,21 +468,11 @@ static inline void ch_post_process(float gain, float* in, short* out, size_t siz
             v = -32768;
         else if(v > 32767)
             v = 32767;
-        *out = (short)v;
-        out += stride;
+        *out++ = (short)v;
     }
 }
 
-static inline float soft_clip(float x){
-  if(x < -3.0f)
-    return -1.0f;
-  else if(x > 3.0f)
-    return 1.0f;
-  else
-    return x * (27.0f + x * x) / (27.0f + 9.0f * x * x);
-}
-
-static inline void voice_render(t_bd* x, int channel, voice_frame* frames, size_t size){
+static inline void voice_render(t_bd* x, int channel, short* out, size_t size){
   voice* v = &x->x_voice[channel];
   float trigger_value = x->x_trigger;
   int previous_trigger_state = v->trigger_state;
@@ -506,10 +498,17 @@ static inline void voice_render(t_bd* x, int channel, voice_frame* frames, size_
     note = x->x_note + mod_amt * (env_val * env_val * 48.0f);
     CONSTRAIN(note, -119.0f, 120.0f);
   }
-  {
-    float nn = note - 9.0f; // note_to_frequency
-    CONSTRAIN(nn, -128.0f, 127.0f);
-    const float f0 = a0 * 0.25f * st2ratio(nn);
+  float nn = note - 9.0f; // note_to_frequency
+  CONSTRAIN(nn, -128.0f, 127.0f);
+  const float f0 = a0 * 0.25f * st2ratio(nn);
+  if(x->x_mode){
+    float d_aux = 0.4f - 0.25f * x->x_morph * x->x_morph;
+    float fma = x->x_harmonics * 2.0f;
+    float fmd = x->x_harmonics * 2.0f - 1.0f;
+    synth_bd_render(&v->synth_bd, rising_edge, accent, f0, x->x_timbre, x->x_morph,
+        d_aux, fma < 1.0f ? fma : 1.0f, fmd > 0.0f ? fmd : 0.0f, v->out_buffer, size);
+  }
+  else{
     float a = x->x_harmonics * 4.0f;
     float b = x->x_harmonics * 4.0f - 1.0f;
     float c = x->x_harmonics * 2.0f - 1.0f;
@@ -520,35 +519,25 @@ static inline void voice_render(t_bd* x, int channel, voice_frame* frames, size_
     float drive = (c > 0.0f ? c : 0.0f) * (d > 0.0f ? d : 0.0f);
     analog_bd_render(&v->analog_bd, rising_edge, accent, f0, x->x_timbre, x->x_morph,
         attack_fm_amount, self_fm_amount, v->out_buffer, size);
-    {
-      float dr = 0.5f + 0.5f * drive;
-      float dr2 = dr * dr;
-      float pre_gain_a = dr * 0.5f;
-      float pre_gain_b = dr2 * dr2 * dr * 24.0f;
-      float pre_gain = pre_gain_a + (pre_gain_b - pre_gain_a) * dr2;
-      float dr_sq = dr * (2.0f - dr);
-      float post_gain = 1.0f / soft_clip(0.33f + dr_sq * (pre_gain - 0.33f));
-      param_interp pre;
-      param_interp post;
-      pi_init(&pre, &v->analog_bd.od_pre_gain, pre_gain, size);
-      pi_init(&post, &v->analog_bd.od_post_gain, post_gain, size);
-      for(size_t i = 0; i < size; i++){
-          float s = pi_next(&pre) * v->out_buffer[i];
-          v->out_buffer[i] = soft_clip(s) * pi_next(&post);
-      }
-      pi_finish(&pre);
-      pi_finish(&post);
+    float dr = 0.5f + 0.5f * drive;
+    float dr2 = dr * dr;
+    float pre_gain_a = dr * 0.5f;
+    float pre_gain_b = dr2 * dr2 * dr * 24.0f;
+    float pre_gain = pre_gain_a + (pre_gain_b - pre_gain_a) * dr2;
+    float dr_sq = dr * (2.0f - dr);
+    float post_gain = 1.0f / soft_clip(0.33f + dr_sq * (pre_gain - 0.33f));
+    param_interp pre;
+    param_interp post;
+    pi_init(&pre, &v->analog_bd.od_pre_gain, pre_gain, size);
+    pi_init(&post, &v->analog_bd.od_post_gain, post_gain, size);
+    for(size_t i = 0; i < size; i++){
+        float s = pi_next(&pre) * v->out_buffer[i];
+        v->out_buffer[i] = soft_clip(s) * pi_next(&post);
     }
-    {
-      float d_aux = 0.4f - 0.25f * x->x_morph * x->x_morph;
-      float fma = x->x_harmonics * 2.0f;
-      float fmd = x->x_harmonics * 2.0f - 1.0f;
-      synth_bd_render(&v->synth_bd, rising_edge, accent, f0, x->x_timbre, x->x_morph,
-          d_aux, fma < 1.0f ? fma : 1.0f, fmd > 0.0f ? fmd : 0.0f, v->aux_buffer, size);
-    }
+    pi_finish(&pre);
+    pi_finish(&post);
   }
-  ch_post_process(v->out_gain, v->out_buffer, &frames->out, size, 2);
-  ch_post_process(v->aux_gain, v->aux_buffer, &frames->aux, size, 2);
+  ch_post_process(v->out_gain, v->out_buffer, out, size);
 }
 
 static t_int* bd_perform(t_int* w){
@@ -556,7 +545,7 @@ static t_int* bd_perform(t_int* w){
     t_sample* in = (t_sample*)(w[2]);
     t_sample* out = (t_sample*)(w[3]);
     int n = x->x_n;
-    voice_frame output[kMaxBlockSize];
+    short output[kMaxBlockSize];
     for(int c = 0; c < x->x_nchans; c++){
         t_sample* trig = in + c * n;
         t_sample* outc = out + c * n;
@@ -579,24 +568,18 @@ static t_int* bd_perform(t_int* w){
             if(trigger_at > 0){
                 x->x_trigger = 0;
                 voice_render(x, c, output, trigger_at);
-                for(int i = 0; i < trigger_at; i++){
-                    short bd = x->x_mode ? output[i].aux : output[i].out;
-                    outc[i + base] = (float)bd / 32768.0f;
-                }
+                for(int i = 0; i < trigger_at; i++)
+                    outc[i + base] = (float)output[i] / 32768.0f;
                 x->x_trigger = 1;
                 voice_render(x, c, output, x->x_nsize - trigger_at);
-                for(int i = 0; i < x->x_nsize - trigger_at; i++){
-                    short bd = x->x_mode ? output[i].aux : output[i].out;
-                    outc[i + base + trigger_at] = (float)bd / 32768.0f;
-                }
+                for(int i = 0; i < x->x_nsize - trigger_at; i++)
+                    outc[i + base + trigger_at] = (float)output[i] / 32768.0f;
             }
             else{
                 x->x_trigger = (trigger_at == 0);
                 voice_render(x, c, output, x->x_nsize);
-                for(int i = 0; i < x->x_nsize; i++){
-                    short bd = x->x_mode ? output[i].aux : output[i].out;
-                    outc[i + base] = (float)bd / 32768.0f;
-                }
+                for(int i = 0; i < x->x_nsize; i++)
+                    outc[i + base] = (float)output[i] / 32768.0f;
             }
         }
     }
