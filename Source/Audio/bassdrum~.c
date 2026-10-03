@@ -1,4 +1,5 @@
 // based on the plaits' bassdrum engine by Mutable Instruments (MIT)
+// rewritten, refactored and redesigned by Porres
 // Original copyright Emilie Gillet, MIT license.
 
 #include <m_pd.h>
@@ -6,6 +7,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <string.h>
+#include <time.h>
 #include <buffer.h>
 
 #define kMaxBlockSize 16
@@ -44,6 +46,14 @@ static inline float tone_filter_coeff(float f0, float tone){
 static inline float random_get_float(uint32_t* state){
     *state = *state * 1664525u + 1013904223u;
     return (float)*state / 4294967296.0f;
+}
+
+// scrambles a seed so that similar inputs (e.g. consecutive seconds) end up far apart
+static inline uint32_t hash_seed(uint32_t h){
+    h ^= h >> 16; h *= 0x85ebca6bu;
+    h ^= h >> 13; h *= 0xc2b2ae35u;
+    h ^= h >> 16;
+    return h;
 }
 
 // ParameterInterpolator
@@ -358,9 +368,9 @@ typedef struct{
     float     out_buffer[kMaxBlockSize];
 }voice;
 
-static inline void voice_init(voice* v, float sr, int channel){
+static inline void voice_init(voice* v, float sr, uint32_t seed){
     memset(v, 0, sizeof(*v));
-    v->rng = 0x21u + (uint32_t)channel * 2654435761u; // different noise per channel
+    v->rng = seed;
     analog_bd_init(&v->analog_bd);
     synth_bd_init(&v->synth_bd, sr);
 }
@@ -376,6 +386,7 @@ typedef struct _bd{
     t_int     x_nsize;
     t_int     x_block_count;
     t_int     x_nchans;
+    uint32_t  x_seed;
     float     x_sr;
     voice    *x_voice;
     float     x_note;
@@ -428,7 +439,7 @@ static inline void post_process(const float* in, t_sample* out, size_t size){
     }
 }
 
-static inline void drum_render(t_bd* x, int channel, int trigger, t_sample* out, size_t size){
+static inline void voice_render(t_bd* x, int channel, int trigger, t_sample* out, size_t size){
     voice* v = &x->x_voice[channel];
     int rising_edge = trigger && !v->trigger_state;
     v->trigger_state = trigger;
@@ -441,7 +452,8 @@ static inline void drum_render(t_bd* x, int channel, int trigger, t_sample* out,
     float mod_amt = x->x_pdepth;
     mod_amt *= fmaxf(fabsf(mod_amt) - 0.05f, 0.05f) * 1.05f;
     float note = clampf(x->x_note + mod_amt * (v->decay_env * v->decay_env * 48.0f), -119.0f, 120.0f);
-    const float f0 = 13.75f * st2ratio(clampf(note - 9.0f, -128.0f, 127.0f)) / x->x_sr;
+    // 13.75 Hz is MIDI note 9, so this maps note (0..127) to normalised frequency
+    const float f0 = 13.75f / x->x_sr * st2ratio(clampf(note - 9.0f, -128.0f, 127.0f));
     if(x->x_mode){ // synth drum
         float dirtiness = 0.4f - 0.25f * x->x_decay * x->x_decay;
         float fm_amount = fminf(x->x_punch * 2.0f, 1.0f);
@@ -484,11 +496,11 @@ static t_int* bd_perform(t_int* w){
                 x->x_k_trig = 0;
             }
             if(trigger_at > 0){
-                drum_render(x, c, 0, outb, trigger_at);
-                drum_render(x, c, 1, outb + trigger_at, size - trigger_at);
+                voice_render(x, c, 0, outb, trigger_at);
+                voice_render(x, c, 1, outb + trigger_at, size - trigger_at);
             }
             else
-                drum_render(x, c, trigger_at == 0, outb, size);
+                voice_render(x, c, trigger_at == 0, outb, size);
         }
     }
     return(w+4);
@@ -512,7 +524,7 @@ static void bd_dsp(t_bd* x, t_signal** sp){
         x->x_voice = (voice*)resizebytes(x->x_voice,
             x->x_nchans * sizeof(voice), chs * sizeof(voice));
         for(int c = x->x_nchans; c < chs; c++)
-            voice_init(&x->x_voice[c], x->x_sr, c);
+            voice_init(&x->x_voice[c], x->x_sr, x->x_seed + (uint32_t)c * 2654435761u);
         x->x_nchans = chs;
     }
     signal_setmultiout(&sp[1], x->x_nchans);
@@ -554,6 +566,7 @@ static void* bd_new(t_symbol* s, int ac, t_atom* av){
     x->x_n = 0;
     x->x_nchans = 1;
     x->x_sr = 48000.0f; // updated in bd_dsp
+    x->x_seed = hash_seed((uint32_t)time(NULL) ^ (uint32_t)(uintptr_t)x); // differs per object and per session
     x->x_voice = (voice*)getbytes(sizeof(voice));
     bd_level(x, lvl);
     bd_freq(x, pitch);
@@ -562,7 +575,7 @@ static void* bd_new(t_symbol* s, int ac, t_atom* av){
     bd_decay(x, decay);
     bd_ptime(x, ptime);
     bd_pdepth(x, pdepth);
-    voice_init(&x->x_voice[0], x->x_sr, 0);
+    voice_init(&x->x_voice[0], x->x_sr, x->x_seed);
     outlet_new(&x->x_obj, &s_signal);
     return(void*)x;
 errstate:
