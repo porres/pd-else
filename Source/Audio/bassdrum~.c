@@ -451,11 +451,8 @@ static inline void voice_render(t_bd* x, int channel, int trigger, t_sample* out
         synth_bd_render(x, v, rising_edge, accent, f0, size);
     else // analog bass drum model TR-808 like
         analog_bd_render(x, v, rising_edge, accent, f0, size);
-    const float gain = kOutGain * -32767.0f; // float -> 16 bit (legacy from plaits)
-    for(size_t i = 0; i < size; i++){
-        int32_t s = 1 + (int32_t)(v->out_buffer[i] * gain);
-        out[i] = (float)(s < -32768 ? -32768 : s > 32767 ? 32767 : s) / 32768.0f;
-    }
+    for(size_t i = 0; i < size; i++)
+        out[i] = clampf(v->out_buffer[i] * kOutGain, -1.0f, 1.0f);
 }
 
 static t_int* bd_perform(t_int* w){
