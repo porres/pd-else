@@ -10,8 +10,8 @@
 #include <time.h>
 #include <buffer.h>
 
-#define kMaxBlockSize 16
-#define kOutGain      0.8f
+#define kBlockSize 16
+#define kOutGain   0.8f
 
 // utilities ========================================================================
 #define ONE_POLE(out, in, coefficient) out += (coefficient) * ((in) - out)
@@ -26,15 +26,6 @@ static inline float clamp01(float x){
 
 static inline float st2ratio(float semitones){
     return powf(2.0f, semitones / 12.0f);
-}
-
-static inline float soft_clip(float x){
-    if(x < -3.0f)
-        return -1.0f;
-    else if(x > 3.0f)
-        return 1.0f;
-    else
-        return x * (27.0f + x * x) / (27.0f + 9.0f * x * x);
 }
 
 // Cutoff of the output low-pass shared by both engines
@@ -162,6 +153,15 @@ static inline float analog_bd_diode(float x){
         return x;
     x *= 2.0f;
     return 0.7f * x / (1.0f + fabsf(x));
+}
+
+static inline float soft_clip(float x){
+    if(x < -3.0f)
+        return -1.0f;
+    else if(x > 3.0f)
+        return 1.0f;
+    else
+        return x * (27.0f + x * x) / (27.0f + 9.0f * x * x);
 }
 
 static inline void analog_bd_render(analog_bd* d, int trigger, float accent, float f0,
@@ -359,7 +359,7 @@ typedef struct{
     uint32_t  rng;
     int       trigger_state;
     float     decay_env;
-    float     out_buffer[kMaxBlockSize];
+    float     out_buffer[kBlockSize];
 }voice;
 
 static inline void voice_init(voice* v, float sr, uint32_t seed){
@@ -392,8 +392,8 @@ typedef struct _bd{
     float     x_level;
 }t_bd;
 
-static void bd_freq(t_bd* x, t_floatarg f){
-    x->x_note = 69.0f + 12.0f * log2f(fabsf(f) / 440.0f); // Hz -> MIDI note
+static void bd_freq(t_bd* x, t_floatarg f){ // Hz -> MIDI note
+    x->x_note = 69.0f + 12.0f * log2f(fabsf(f) / 440.0f);
 }
 
 static void bd_bang(t_bd* x){
@@ -429,7 +429,7 @@ static inline void voice_render(t_bd* x, int channel, int trigger, t_sample* out
     v->trigger_state = trigger;
     if(rising_edge)
         v->decay_env = 1.0f;
-    const float short_decay = (100.0f * kMaxBlockSize) / x->x_sr * st2ratio(-96.0f * x->x_ptime);
+    const float short_decay = (100.0f * kBlockSize) / x->x_sr * st2ratio(-96.0f * x->x_ptime);
     v->decay_env *= 1.0f - short_decay * 2.0f;
     const float accent = 1.3f * x->x_level / (0.3f + fabsf(x->x_level));
     // pitch envelope
@@ -503,7 +503,7 @@ static void bd_dsp(t_bd* x, t_signal** sp){
     int n = sp[0]->s_n;
     int chs = sp[0]->s_nchans;
     if(n != x->x_n){
-        x->x_nsize = n < kMaxBlockSize ? n : kMaxBlockSize;
+        x->x_nsize = n < kBlockSize ? n : kBlockSize;
         x->x_block_count = n / x->x_nsize;
         x->x_n = n;
     }
@@ -552,7 +552,7 @@ static void* bd_new(t_symbol* s, int ac, t_atom* av){
     x->x_k_trig = 0;
     x->x_n = 0;
     x->x_nchans = 1;
-    x->x_sr = 48000.0f; // updated in bd_dsp
+    x->x_sr = sys_getsr();
     x->x_seed = hash_seed((uint32_t)time(NULL) ^ (uint32_t)(uintptr_t)x);
     x->x_voice = (voice*)getbytes(sizeof(voice));
     bd_level(x, lvl);
