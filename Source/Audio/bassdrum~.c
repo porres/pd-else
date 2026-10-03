@@ -1,5 +1,5 @@
 // based on the plaits' bassdrum engine by Mutable Instruments (MIT)
-// Original code/copyright Emilie Gillet, MIT license.
+// Original copyright Emilie Gillet, MIT license.
 
 #include <m_pd.h>
 #include <math.h>
@@ -10,8 +10,6 @@
 
 #define kMaxBlockSize 16
 #define kOutGain      0.8f
-
-float k_SR = 48000.0f, a0 = 55.0f / 48000.0f; // Globals
 
 // utilities ========================================================================
 #define ONE_POLE(out, in, coefficient) out += (coefficient) * ((in) - out)
@@ -42,12 +40,10 @@ static inline float tone_filter_coeff(float f0, float tone){
     return fminf(4.0f * f0 * st2ratio(tone * 108.0f), 1.0f);
 }
 
-// Random
-static uint32_t stmlib_rng_state = 0x21;
-
-static inline float random_get_float(void){
-    stmlib_rng_state = stmlib_rng_state * 1664525L + 1013904223L;
-    return (float)stmlib_rng_state / 4294967296.0f;
+// Random (state lives in the voice)
+static inline float random_get_float(uint32_t* state){
+    *state = *state * 1664525u + 1013904223u;
+    return (float)*state / 4294967296.0f;
 }
 
 // ParameterInterpolator
@@ -159,13 +155,13 @@ static inline float analog_bd_diode(float x){
 }
 
 static inline void analog_bd_render(analog_bd* d, int trigger, float accent, float f0,
-float tone, float decay, float attack_fm_amount, float self_fm_amount, float *out,
+float tone, float decay, float attack_fm_amount, float self_fm_amount, float sr, float *out,
 size_t size){
-    const int trigger_pulse_duration = (int)(1.0e-3f * k_SR);
-    const int fm_pulse_duration = (int)(6.0e-3f * k_SR);
-    const float pulse_decay_time = 0.2e-3f * k_SR;
-    const float pulse_filter_time = 0.1e-3f * k_SR;
-    const float retrig_pulse_duration = 0.05f * k_SR;
+    const int trigger_pulse_duration = (int)(1.0e-3f * sr);
+    const int fm_pulse_duration = (int)(6.0e-3f * sr);
+    const float pulse_decay_time = 0.2e-3f * sr;
+    const float pulse_filter_time = 0.1e-3f * sr;
+    const float retrig_pulse_duration = 0.05f * sr;
     const float scale = 0.001f / f0;
     const float q = 1500.0f * st2ratio(decay * 80.0f);
     const float tone_f = tone_filter_coeff(f0, tone);
@@ -211,6 +207,7 @@ size_t size){
     }
 }
 
+// Soft-clipping overdrive applied after the analog engine (in place)
 static inline void analog_bd_overdrive(analog_bd* d, float* buf, float drive, size_t size){
     const float dr = 0.5f + 0.5f * drive;
     const float dr2 = dr * dr;
@@ -237,9 +234,9 @@ typedef struct{
     svf   filter;
 }synth_bd_click;
 
-static inline void synth_bd_click_init(synth_bd_click* c){
+static inline void synth_bd_click_init(synth_bd_click* c, float sr){
     memset(c, 0, sizeof(*c));
-    svf_set(&c->filter, onepole_tan_fast(5000.0f / k_SR), 2.0f);
+    svf_set(&c->filter, onepole_tan_fast(5000.0f / sr), 2.0f);
 }
 
 static inline float synth_bd_click_process(synth_bd_click* c, float in){
@@ -254,8 +251,8 @@ typedef struct{
     float hp;
 }synth_bd_attack_noise;
 
-static inline float synth_bd_attack_noise_render(synth_bd_attack_noise* n){
-    float sample = random_get_float();
+static inline float synth_bd_attack_noise_render(synth_bd_attack_noise* n, uint32_t* rng){
+    float sample = random_get_float(rng);
     ONE_POLE(n->lp, sample, 0.05f);
     ONE_POLE(n->hp, n->lp, 0.005f);
     return n->lp - n->hp;
@@ -278,9 +275,9 @@ typedef struct{
     int                   fm_pulse_width;
 }synth_bd;
 
-static inline void synth_bd_init(synth_bd* d){
+static inline void synth_bd_init(synth_bd* d, float sr){
     memset(d, 0, sizeof(*d));
-    synth_bd_click_init(&d->click);
+    synth_bd_click_init(&d->click, sr);
 }
 
 static inline float synth_bd_distorted_sine(float phase, float phase_noise, float dirtiness){
@@ -299,26 +296,26 @@ static inline float synth_bd_transistor_vca(float s, float gain){
 
 static inline void synth_bd_render(synth_bd* d, int trigger, float accent, float f0,
 float tone, float decay, float dirtiness, float fm_envelope_amount,
-float fm_envelope_decay, float* out, size_t size){
+float fm_envelope_decay, float sr, uint32_t* rng, float* out, size_t size){
     decay *= decay;
     fm_envelope_decay *= fm_envelope_decay;
     param_interp f0_mod;
     pi_init(&f0_mod, &d->f0, f0, size);
     dirtiness *= fmaxf(1.0f - 8.0f * f0, 0.0f);
-    const float fm_decay = 1.0f - 1.0f / (0.008f * (1.0f + fm_envelope_decay * 4.0f) * k_SR);
-    const float body_env_decay = 1.0f - 1.0f / (0.02f * k_SR) * st2ratio(-decay * 60.0f);
-    const float transient_env_decay = 1.0f - 1.0f / (0.005f * k_SR);
+    const float fm_decay = 1.0f - 1.0f / (0.008f * (1.0f + fm_envelope_decay * 4.0f) * sr);
+    const float body_env_decay = 1.0f - 1.0f / (0.02f * sr) * st2ratio(-decay * 60.0f);
+    const float transient_env_decay = 1.0f - 1.0f / (0.005f * sr);
     const float tone_f = tone_filter_coeff(f0, tone);
     const float transient_level = tone;
     const float envelope_lp_f = 0.1f;
     if(trigger){
         d->fm = 1.0f;
         d->body_env = d->transient_env = 0.3f + 0.7f * accent;
-        d->body_env_pulse_width = (int)(k_SR * 0.001f);
-        d->fm_pulse_width = (int)(k_SR * 0.0013f);
+        d->body_env_pulse_width = (int)(sr * 0.001f);
+        d->fm_pulse_width = (int)(sr * 0.0013f);
     }
     while(size--){
-        ONE_POLE(d->phase_noise, random_get_float() - 0.5f, 0.002f);
+        ONE_POLE(d->phase_noise, random_get_float(rng) - 0.5f, 0.002f);
         if(d->fm_pulse_width){
             --d->fm_pulse_width;
             d->phase = 0.25f;
@@ -342,7 +339,7 @@ float fm_envelope_decay, float* out, size_t size){
         ONE_POLE(d->fm_lp, d->fm, envelope_lp_f);
         float body = synth_bd_distorted_sine(d->phase, d->phase_noise, dirtiness);
         float transient = synth_bd_click_process(&d->click, d->body_env_pulse_width ? 0.0f : 1.0f)
-            + synth_bd_attack_noise_render(&d->noise);
+            + synth_bd_attack_noise_render(&d->noise, rng);
         float mix = -synth_bd_transistor_vca(body, d->body_env_lp)
             - transient * d->transient_env_lp * transient_level;
         ONE_POLE(d->tone_lp, mix, tone_f);
@@ -355,15 +352,17 @@ float fm_envelope_decay, float* out, size_t size){
 typedef struct{
     analog_bd analog_bd;
     synth_bd  synth_bd;
+    uint32_t  rng;
     int       trigger_state;
     float     decay_env;
     float     out_buffer[kMaxBlockSize];
 }voice;
 
-static inline void voice_init(voice* v){
+static inline void voice_init(voice* v, float sr, int channel){
     memset(v, 0, sizeof(*v));
+    v->rng = 0x21u + (uint32_t)channel * 2654435761u; // different noise per channel
     analog_bd_init(&v->analog_bd);
-    synth_bd_init(&v->synth_bd);
+    synth_bd_init(&v->synth_bd, sr);
 }
 
 // Pd glue ==========================================================================
@@ -377,6 +376,7 @@ typedef struct _bd{
     t_int     x_nsize;
     t_int     x_block_count;
     t_int     x_nchans;
+    float     x_sr;
     voice    *x_voice;
     float     x_note;
     float     x_punch;
@@ -388,7 +388,7 @@ typedef struct _bd{
 }t_bd;
 
 static void bd_freq(t_bd* x, t_floatarg f){
-    x->x_note = 69.0f + 12.0f * log2f(fabsf(f) / 440.0f); // Hz to MIDI 
+    x->x_note = 69.0f + 12.0f * log2f(fabsf(f) / 440.0f); // Hz -> MIDI note
 }
 
 static void bd_bang(t_bd* x){
@@ -401,7 +401,7 @@ static void bd_mode(t_bd* x, t_floatarg f){
         x->x_mode = new_mode;
         for(int c = 0; c < x->x_nchans; c++){
             if(new_mode)
-                synth_bd_init(&x->x_voice[c].synth_bd);
+                synth_bd_init(&x->x_voice[c].synth_bd, x->x_sr);
             else
                 analog_bd_init(&x->x_voice[c].analog_bd);
         }
@@ -428,33 +428,33 @@ static inline void post_process(const float* in, t_sample* out, size_t size){
     }
 }
 
-static inline void voice_render(t_bd* x, int channel, int trigger, t_sample* out, size_t size){
+static inline void drum_render(t_bd* x, int channel, int trigger, t_sample* out, size_t size){
     voice* v = &x->x_voice[channel];
     int rising_edge = trigger && !v->trigger_state;
     v->trigger_state = trigger;
     if(rising_edge)
         v->decay_env = 1.0f;
-    const float short_decay = (100.0f * kMaxBlockSize) / k_SR * st2ratio(-96.0f * x->x_ptime);
+    const float short_decay = (100.0f * kMaxBlockSize) / x->x_sr * st2ratio(-96.0f * x->x_ptime);
     v->decay_env *= 1.0f - short_decay * 2.0f;
     const float accent = 1.3f * x->x_level / (0.3f + fabsf(x->x_level));
     // pitch envelope
     float mod_amt = x->x_pdepth;
     mod_amt *= fmaxf(fabsf(mod_amt) - 0.05f, 0.05f) * 1.05f;
     float note = clampf(x->x_note + mod_amt * (v->decay_env * v->decay_env * 48.0f), -119.0f, 120.0f);
-    const float f0 = a0 * 0.25f * st2ratio(clampf(note - 9.0f, -128.0f, 127.0f));
+    const float f0 = 13.75f * st2ratio(clampf(note - 9.0f, -128.0f, 127.0f)) / x->x_sr;
     if(x->x_mode){ // synth drum
         float dirtiness = 0.4f - 0.25f * x->x_decay * x->x_decay;
         float fm_amount = fminf(x->x_punch * 2.0f, 1.0f);
         float fm_decay = fmaxf(x->x_punch * 2.0f - 1.0f, 0.0f);
         synth_bd_render(&v->synth_bd, rising_edge, accent, f0, x->x_tone, x->x_decay,
-            dirtiness, fm_amount, fm_decay, v->out_buffer, size);
+            dirtiness, fm_amount, fm_decay, x->x_sr, &v->rng, v->out_buffer, size);
     }
     else{ // analog
         float attack_fm_amount = fminf(x->x_punch * 4.0f, 1.0f);
         float self_fm_amount = clamp01(x->x_punch * 4.0f - 1.0f);
         float drive = fmaxf(x->x_punch * 2.0f - 1.0f, 0.0f) * fmaxf(1.0f - 16.0f * f0, 0.0f);
         analog_bd_render(&v->analog_bd, rising_edge, accent, f0, x->x_tone, x->x_decay,
-            attack_fm_amount, self_fm_amount, v->out_buffer, size);
+            attack_fm_amount, self_fm_amount, x->x_sr, v->out_buffer, size);
         analog_bd_overdrive(&v->analog_bd, v->out_buffer, drive, size);
     }
     post_process(v->out_buffer, out, size);
@@ -484,19 +484,23 @@ static t_int* bd_perform(t_int* w){
                 x->x_k_trig = 0;
             }
             if(trigger_at > 0){
-                voice_render(x, c, 0, outb, trigger_at);
-                voice_render(x, c, 1, outb + trigger_at, size - trigger_at);
+                drum_render(x, c, 0, outb, trigger_at);
+                drum_render(x, c, 1, outb + trigger_at, size - trigger_at);
             }
             else
-                voice_render(x, c, trigger_at == 0, outb, size);
+                drum_render(x, c, trigger_at == 0, outb, size);
         }
     }
     return(w+4);
 }
 
 static void bd_dsp(t_bd* x, t_signal** sp){
-    k_SR = (float)sp[0]->s_sr;
-    a0 = 55.f / k_SR;
+    float sr = (float)sp[0]->s_sr;
+    if(sr != x->x_sr){
+        x->x_sr = sr;
+        for(int c = 0; c < x->x_nchans; c++)
+            synth_bd_click_init(&x->x_voice[c].synth_bd.click, sr);
+    }
     int n = sp[0]->s_n;
     int chs = sp[0]->s_nchans;
     if(n != x->x_n){
@@ -508,7 +512,7 @@ static void bd_dsp(t_bd* x, t_signal** sp){
         x->x_voice = (voice*)resizebytes(x->x_voice,
             x->x_nchans * sizeof(voice), chs * sizeof(voice));
         for(int c = x->x_nchans; c < chs; c++)
-            voice_init(&x->x_voice[c]);
+            voice_init(&x->x_voice[c], x->x_sr, c);
         x->x_nchans = chs;
     }
     signal_setmultiout(&sp[1], x->x_nchans);
@@ -549,6 +553,7 @@ static void* bd_new(t_symbol* s, int ac, t_atom* av){
     x->x_k_trig = 0;
     x->x_n = 0;
     x->x_nchans = 1;
+    x->x_sr = 48000.0f; // updated in bd_dsp
     x->x_voice = (voice*)getbytes(sizeof(voice));
     bd_level(x, lvl);
     bd_freq(x, pitch);
@@ -557,7 +562,7 @@ static void* bd_new(t_symbol* s, int ac, t_atom* av){
     bd_decay(x, decay);
     bd_ptime(x, ptime);
     bd_pdepth(x, pdepth);
-    voice_init(&x->x_voice[0]);
+    voice_init(&x->x_voice[0], x->x_sr, 0);
     outlet_new(&x->x_obj, &s_signal);
     return(void*)x;
 errstate:
