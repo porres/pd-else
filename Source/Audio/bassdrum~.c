@@ -292,11 +292,6 @@ static inline float synth_bd_click_process(synth_bd_click* c, float in){
     return(svf_process_lp(&c->filter, c->lp - c->hp));
 }
 
-static inline float synth_bd_transistor_vca(float s, float gain){
-    s = (s - 0.6f) * gain;
-    return(3.0f * s / (2.0f + fabsf(s)) + gain * 0.3f);
-}
-
 static inline float synth_bd_distorted_sine(float phase, float phase_noise, float dirtiness){
     phase += phase_noise * dirtiness;
     phase -= (float)((int32_t)phase);
@@ -369,7 +364,10 @@ float f0, size_t size){
         float body = synth_bd_distorted_sine(d->phase, d->phase_noise, dirtiness);
         float transient = synth_bd_click_process(&d->click, d->body_env_pulse_width ? 0.0f : 1.0f)
             + synth_bd_attack_noise_render(&d->noise, rng);
-        float mix = -synth_bd_transistor_vca(body, d->body_env_lp) - transient * d->transient_env_lp * transient_level;
+        float gain = d->body_env_lp;
+        float tr_vca = (body - 0.6f) * gain; // transistor_vca
+        float body_out = 3.0f * tr_vca / (2.0f + fabsf(tr_vca)) + gain * 0.3f;
+        float mix = -body_out - transient * d->transient_env_lp * transient_level;
         ONE_POLE(d->tone_lp, mix, tone_f);
         *out++ = d->tone_lp;
     }
