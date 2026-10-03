@@ -7,9 +7,7 @@
 #include <stddef.h>
 #include <buffer.h>
 
-// Globals
-float k_SR = 48000.0f;
-float a0 = 55.0f / 48000.0f;
+float k_SR = 48000.0f, a0 = 55.0f / 48000.0f; // Globals
 
 // stmlib utilities
 #define CONSTRAIN(var, min, max) \
@@ -23,15 +21,6 @@ float a0 = 55.0f / 48000.0f;
 #define SLOPE(out, in, positive, negative){ \
   float error = (in) - out; \
   out += (error > 0 ? positive : negative) * error; \
-}
-
-static inline float soft_clip(float x){
-  if(x < -3.0f)
-    return -1.0f;
-  else if(x > 3.0f)
-    return 1.0f;
-  else
-    return x * (27.0f + x * x) / (27.0f + 9.0f * x * x);
 }
 
 // Random
@@ -92,30 +81,30 @@ static inline float onepole_tan_dirty(float f){
 }
 
 static inline void svf_init(svf* s){
-  s->g = onepole_tan_dirty(0.01f);
-  s->r = 1.0f / 100.0f;
-  s->h = 1.0f / (1.0f + s->r * s->g + s->g * s->g);
-  s->state_1 = 0.0f;
-  s->state_2 = 0.0f;
+    s->g = onepole_tan_dirty(0.01f);
+    s->r = 1.0f / 100.0f;
+    s->h = 1.0f / (1.0f + s->r * s->g + s->g * s->g);
+    s->state_1 = 0.0f;
+    s->state_2 = 0.0f;
 }
 
 static inline void svf_set_f_q_dirty(svf* s, float f, float resonance){
-  s->g = onepole_tan_dirty(f);
-  s->r = 1.0f / resonance;
-  s->h = 1.0f / (1.0f + s->r * s->g + s->g * s->g);
+    s->g = onepole_tan_dirty(f);
+    s->r = 1.0f / resonance;
+    s->h = 1.0f / (1.0f + s->r * s->g + s->g * s->g);
 }
 
 static inline float onepole_tan_fast(float f){
-  const float a = 3.260e-01f * M_PI_POW_3;
-  const float b = 1.823e-01f * M_PI_POW_5;
-  float f2 = f * f;
-  return f * (M_PI_F + f2 * (a + b * f2));
+    const float a = 3.260e-01f * M_PI_POW_3;
+    const float b = 1.823e-01f * M_PI_POW_5;
+    float f2 = f * f;
+    return f * (M_PI_F + f2 * (a + b * f2));
 }
 
 static inline void svf_set_f_q_fast(svf* s, float f, float resonance){
-  s->g = onepole_tan_fast(f);
-  s->r = 1.0f / resonance;
-  s->h = 1.0f / (1.0f + s->r * s->g + s->g * s->g);
+    s->g = onepole_tan_fast(f);
+    s->r = 1.0f / resonance;
+    s->h = 1.0f / (1.0f + s->r * s->g + s->g * s->g);
 }
 
 static inline float svf_process_lp(svf* s, float in){
@@ -242,62 +231,62 @@ typedef struct{
 }synth_bd_click;
 
 static inline float synth_bd_click_process(synth_bd_click* c, float in){
-  SLOPE(c->lp, in, 0.5f, 0.1f);
-  ONE_POLE(c->hp, c->lp, 0.04f);
-  return svf_process_lp(&c->filter, c->lp - c->hp);
+    SLOPE(c->lp, in, 0.5f, 0.1f);
+    ONE_POLE(c->hp, c->lp, 0.04f);
+    return svf_process_lp(&c->filter, c->lp - c->hp);
 }
 
 typedef struct{
-  float lp;
-  float hp;
+    float lp;
+    float hp;
 }synth_bd_attack_noise;
 
 static inline float synth_bd_attack_noise_render(synth_bd_attack_noise* n){
-  float sample = random_get_float();
-  ONE_POLE(n->lp, sample, 0.05f);
-  ONE_POLE(n->hp, n->lp, 0.005f);
-  return n->lp - n->hp;
+    float sample = random_get_float();
+    ONE_POLE(n->lp, sample, 0.05f);
+    ONE_POLE(n->hp, n->lp, 0.005f);
+    return n->lp - n->hp;
 }
 
 typedef struct{
-  float f0;
-  float phase;
-  float phase_noise;
-  float fm;
-  float fm_lp;
-  float body_env;
-  float body_env_lp;
-  float transient_env;
-  float transient_env_lp;
-  float tone_lp;
-  synth_bd_click click;
-  synth_bd_attack_noise noise;
-  int body_env_pulse_width;
-  int fm_pulse_width;
+    float                 f0;
+    float                 phase;
+    float                 phase_noise;
+    float                 fm;
+    float                 fm_lp;
+    float                 body_env;
+    float                 body_env_lp;
+    float                 transient_env;
+    float                 transient_env_lp;
+    float                 tone_lp;
+    synth_bd_click        click;
+    synth_bd_attack_noise noise;
+    int                   body_env_pulse_width;
+    int                   fm_pulse_width;
 }synth_bd;
 
 static inline void synth_bd_click_init(synth_bd_click* c){
-  c->lp = 0.0f;
-  c->hp = 0.0f;
-  c->filter.state_1 = 0.0f;
-  c->filter.state_2 = 0.0f;
-  svf_set_f_q_fast(&c->filter, 5000.0f / k_SR, 2.0f);
+    c->lp = 0.0f;
+    c->hp = 0.0f;
+    c->filter.state_1 = 0.0f;
+    c->filter.state_2 = 0.0f;
+    svf_set_f_q_fast(&c->filter, 5000.0f / k_SR, 2.0f);
 }
 
 static inline void synth_bd_init(synth_bd* d){
-  d->phase = 0.0f;
-  d->phase_noise = 0.0f;
-  d->f0 = 0.0f;
-  d->fm = 0.0f;
-  d->fm_lp = 0.0f;
-  d->body_env_lp = 0.0f;
-  d->body_env = 0.0f;
-  d->body_env_pulse_width = 0;
-  d->fm_pulse_width = 0;
-  d->tone_lp = 0.0f;
-  d->noise.lp = 0.0f;
-  d->noise.hp = 0.0f;
-  synth_bd_click_init(&d->click);
+    d->phase = 0.0f;
+    d->phase_noise = 0.0f;
+    d->f0 = 0.0f;
+    d->fm = 0.0f;
+    d->fm_lp = 0.0f;
+    d->body_env_lp = 0.0f;
+    d->body_env = 0.0f;
+    d->body_env_pulse_width = 0;
+    d->fm_pulse_width = 0;
+    d->tone_lp = 0.0f;
+    d->noise.lp = 0.0f;
+    d->noise.hp = 0.0f;
+    synth_bd_click_init(&d->click);
 }
 
 static inline float synth_bd_distorted_sine(float phase, float phase_noise, float dirtiness){
@@ -385,12 +374,12 @@ static inline void synth_bd_render(
 
 // Voice ========================================================================
 typedef struct{
-    analog_bd analog_bd;
-    synth_bd synth_bd;
-    float out_gain;
-    int trigger_state;
-    float decay_env;
-    float out_buffer[kMaxBlockSize];
+    analog_bd   analog_bd;
+    synth_bd    synth_bd;
+    float       out_gain;
+    int         trigger_state;
+    float       decay_env;
+    float       out_buffer[kMaxBlockSize];
 }voice;
 
 static inline void voice_init(voice* v){
@@ -433,7 +422,16 @@ static void bd_bang(t_bd* x){
 }
 
 static void bd_mode(t_bd* x, t_floatarg f){
-    x->x_mode = f != 0;
+    t_int new_mode = f != 0;
+    if(new_mode != x->x_mode){
+        x->x_mode = new_mode;
+        for(int c = 0; c < x->x_nchans; c++){
+            if(new_mode)
+                synth_bd_init(&x->x_voice[c].synth_bd);
+            else
+                analog_bd_init(&x->x_voice[c].analog_bd);
+        }
+    }
 }
 
 static void bd_punch(t_bd* x, t_floatarg f){
@@ -472,6 +470,15 @@ static inline void ch_post_process(float gain, float* in, short* out, size_t siz
     }
 }
 
+static inline float soft_clip(float x){
+  if(x < -3.0f)
+    return -1.0f;
+  else if(x > 3.0f)
+    return 1.0f;
+  else
+    return x * (27.0f + x * x) / (27.0f + 9.0f * x * x);
+}
+
 static inline void voice_render(t_bd* x, int channel, short* out, size_t size){
   voice* v = &x->x_voice[channel];
   float trigger_value = x->x_trigger;
@@ -501,14 +508,14 @@ static inline void voice_render(t_bd* x, int channel, short* out, size_t size){
   float nn = note - 9.0f; // note_to_frequency
   CONSTRAIN(nn, -128.0f, 127.0f);
   const float f0 = a0 * 0.25f * st2ratio(nn);
-  if(x->x_mode){
+  if(x->x_mode){ // synth drum
     float d_aux = 0.4f - 0.25f * x->x_morph * x->x_morph;
     float fma = x->x_harmonics * 2.0f;
     float fmd = x->x_harmonics * 2.0f - 1.0f;
     synth_bd_render(&v->synth_bd, rising_edge, accent, f0, x->x_timbre, x->x_morph,
         d_aux, fma < 1.0f ? fma : 1.0f, fmd > 0.0f ? fmd : 0.0f, v->out_buffer, size);
   }
-  else{
+  else{ // analog
     float a = x->x_harmonics * 4.0f;
     float b = x->x_harmonics * 4.0f - 1.0f;
     float c = x->x_harmonics * 2.0f - 1.0f;
