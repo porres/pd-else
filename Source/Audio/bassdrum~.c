@@ -127,6 +127,15 @@ static inline float svf_process_lp(svf* s, float in){
     return lp;
 }
 
+static inline float soft_clip(float x){
+    if(x < -3.0f)
+        return -1.0f;
+    else if(x > 3.0f)
+        return 1.0f;
+    else
+        return x * (27.0f + x * x) / (27.0f + 9.0f * x * x);
+}
+
 // AnalogBassDrum ===================================================================
 typedef struct{
     int   pulse_remaining_samples;
@@ -153,82 +162,6 @@ static inline float analog_bd_diode(float x){
         return x;
     x *= 2.0f;
     return 0.7f * x / (1.0f + fabsf(x));
-}
-
-static inline float soft_clip(float x){
-    if(x < -3.0f)
-        return -1.0f;
-    else if(x > 3.0f)
-        return 1.0f;
-    else
-        return x * (27.0f + x * x) / (27.0f + 9.0f * x * x);
-}
-
-static inline void analog_bd_render(analog_bd* d, int trigger, float accent, float f0,
-float tone, float decay, float attack_fm_amount, float self_fm_amount, float drive,
-float sr, float *out, size_t size){
-    const int trigger_pulse_duration = (int)(1.0e-3f * sr);
-    const int fm_pulse_duration = (int)(6.0e-3f * sr);
-    const float pulse_decay_time = 0.2e-3f * sr;
-    const float pulse_filter_time = 0.1e-3f * sr;
-    const float retrig_pulse_duration = 0.05f * sr;
-    const float scale = 0.001f / f0;
-    const float q = 1500.0f * st2ratio(decay * 80.0f);
-    const float tone_f = tone_filter_coeff(f0, tone);
-    const float exciter_leak = 0.08f * (tone + 0.25f);
-    // overdrive gains (interpolated per sample below)
-    const float dr = 0.5f + 0.5f * drive;
-    const float dr2 = dr * dr;
-    const float pre_gain_a = dr * 0.5f;
-    const float pre_gain_b = dr2 * dr2 * dr * 24.0f;
-    const float pre_gain = pre_gain_a + (pre_gain_b - pre_gain_a) * dr2;
-    const float dr_sq = dr * (2.0f - dr);
-    const float post_gain = 1.0f / soft_clip(0.33f + dr_sq * (pre_gain - 0.33f));
-    param_interp pre, post;
-    pi_init(&pre, &d->od_pre_gain, pre_gain, size);
-    pi_init(&post, &d->od_post_gain, post_gain, size);
-    if(trigger){
-        d->pulse_remaining_samples = trigger_pulse_duration;
-        d->fm_pulse_remaining_samples = fm_pulse_duration;
-        d->pulse_height = 3.0f + 7.0f * accent;
-        d->lp_out = 0.0f;
-    }
-    while(size--){
-        float pulse = 0.0f;
-        if(d->pulse_remaining_samples){
-            --d->pulse_remaining_samples;
-            pulse = d->pulse_remaining_samples ? d->pulse_height : d->pulse_height - 1.0f;
-            d->pulse = pulse;
-        }
-        else{
-            d->pulse *= 1.0f - 1.0f / pulse_decay_time;
-            pulse = d->pulse;
-        }
-        ONE_POLE(d->pulse_lp, pulse, 1.0f / pulse_filter_time);
-        pulse = analog_bd_diode((pulse - d->pulse_lp) + pulse * 0.044f);
-        float fm_pulse = 0.0f;
-        if(d->fm_pulse_remaining_samples){
-            --d->fm_pulse_remaining_samples;
-            fm_pulse = 1.0f;
-            d->retrig_pulse = d->fm_pulse_remaining_samples ? 0.0f : -0.8f;
-        }
-        else
-            d->retrig_pulse *= 1.0f - 1.0f / retrig_pulse_duration;
-        ONE_POLE(d->fm_pulse_lp, fm_pulse, 1.0f / pulse_filter_time);
-        float punch = 0.7f + analog_bd_diode(10.0f * d->lp_out - 1.0f);
-        float attack_fm = d->fm_pulse_lp * 1.7f * attack_fm_amount;
-        float self_fm = punch * 0.08f * self_fm_amount;
-        float f = clampf(f0 * (1.0f + attack_fm + self_fm), 0.0f, 0.4f);
-        float resonator_out;
-        svf_set(&d->resonator, onepole_tan_dirty(f), 1.0f + q * f);
-        svf_process_bp_lp(&d->resonator, (pulse - d->retrig_pulse * 0.2f) * scale,
-            &resonator_out, &d->lp_out);
-        ONE_POLE(d->tone_lp, pulse * exciter_leak + resonator_out, tone_f);
-        float s = pi_next(&pre) * d->tone_lp;
-        *out++ = soft_clip(s) * pi_next(&post);
-    }
-    pi_finish(&pre);
-    pi_finish(&post);
 }
 
 // SyntheticBassDrum ================================================================
@@ -298,9 +231,132 @@ static inline float synth_bd_transistor_vca(float s, float gain){
     return 3.0f * s / (2.0f + fabsf(s)) + gain * 0.3f;
 }
 
-static inline void synth_bd_render(synth_bd* d, int trigger, float accent, float f0,
-float tone, float decay, float dirtiness, float fm_envelope_amount,
-float fm_envelope_decay, float sr, uint32_t* rng, float* out, size_t size){
+// Voice + Pd object ================================================================
+typedef struct{
+    analog_bd analog_bd;
+    synth_bd  synth_bd;
+    uint32_t  rng;
+    int       trigger_state;
+    float     decay_env;
+    float     out_buffer[kBlockSize];
+}voice;
+
+static t_class *bd_class;
+
+typedef struct _bd{
+    t_object  x_obj;
+    t_int     x_mode;
+    t_int     x_k_trig;
+    t_int     x_n;
+    t_int     x_nsize;
+    t_int     x_block_count;
+    t_int     x_nchans;
+    uint32_t  x_seed;
+    float     x_sr;
+    voice    *x_voice;
+    float     x_note;
+    float     x_punch;
+    float     x_tone;
+    float     x_decay;
+    float     x_ptime;
+    float     x_pdepth;
+    float     x_level;
+}t_bd;
+
+static inline void voice_init(voice* v, float sr, uint32_t seed){
+    memset(v, 0, sizeof(*v));
+    v->rng = seed;
+    analog_bd_init(&v->analog_bd);
+    synth_bd_init(&v->synth_bd, sr);
+}
+
+// Engine render ====================================================================
+static inline void analog_bd_render(t_bd* x, voice* v, int trigger, float accent,
+float f0, size_t size){
+    analog_bd* d = &v->analog_bd;
+    float* out = v->out_buffer;
+    float tone = x->x_tone;
+    float decay = x->x_decay;
+    float sr = x->x_sr;
+    const float punch = x->x_punch;
+    const float attack_fm_amount = fminf(punch * 4.0f, 1.0f);
+    const float self_fm_amount = clamp01(punch * 4.0f - 1.0f);
+    const float drive = fmaxf(punch * 2.0f - 1.0f, 0.0f) * fmaxf(1.0f - 16.0f * f0, 0.0f);
+    const int trigger_pulse_duration = (int)(1.0e-3f * sr);
+    const int fm_pulse_duration = (int)(6.0e-3f * sr);
+    const float pulse_decay_time = 0.2e-3f * sr;
+    const float pulse_filter_time = 0.1e-3f * sr;
+    const float retrig_pulse_duration = 0.05f * sr;
+    const float scale = 0.001f / f0;
+    const float q = 1500.0f * st2ratio(decay * 80.0f);
+    const float tone_f = tone_filter_coeff(f0, tone);
+    const float exciter_leak = 0.08f * (tone + 0.25f);
+    // overdrive gains (interpolated per sample below)
+    const float dr = 0.5f + 0.5f * drive;
+    const float dr2 = dr * dr;
+    const float pre_gain_a = dr * 0.5f;
+    const float pre_gain_b = dr2 * dr2 * dr * 24.0f;
+    const float pre_gain = pre_gain_a + (pre_gain_b - pre_gain_a) * dr2;
+    const float dr_sq = dr * (2.0f - dr);
+    const float post_gain = 1.0f / soft_clip(0.33f + dr_sq * (pre_gain - 0.33f));
+    param_interp pre, post;
+    pi_init(&pre, &d->od_pre_gain, pre_gain, size);
+    pi_init(&post, &d->od_post_gain, post_gain, size);
+    if(trigger){
+        d->pulse_remaining_samples = trigger_pulse_duration;
+        d->fm_pulse_remaining_samples = fm_pulse_duration;
+        d->pulse_height = 3.0f + 7.0f * accent;
+        d->lp_out = 0.0f;
+    }
+    while(size--){
+        float pulse = 0.0f;
+        if(d->pulse_remaining_samples){
+            --d->pulse_remaining_samples;
+            pulse = d->pulse_remaining_samples ? d->pulse_height : d->pulse_height - 1.0f;
+            d->pulse = pulse;
+        }
+        else{
+            d->pulse *= 1.0f - 1.0f / pulse_decay_time;
+            pulse = d->pulse;
+        }
+        ONE_POLE(d->pulse_lp, pulse, 1.0f / pulse_filter_time);
+        pulse = analog_bd_diode((pulse - d->pulse_lp) + pulse * 0.044f);
+        float fm_pulse = 0.0f;
+        if(d->fm_pulse_remaining_samples){
+            --d->fm_pulse_remaining_samples;
+            fm_pulse = 1.0f;
+            d->retrig_pulse = d->fm_pulse_remaining_samples ? 0.0f : -0.8f;
+        }
+        else
+            d->retrig_pulse *= 1.0f - 1.0f / retrig_pulse_duration;
+        ONE_POLE(d->fm_pulse_lp, fm_pulse, 1.0f / pulse_filter_time);
+        float punch_env = 0.7f + analog_bd_diode(10.0f * d->lp_out - 1.0f);
+        float attack_fm = d->fm_pulse_lp * 1.7f * attack_fm_amount;
+        float self_fm = punch_env * 0.08f * self_fm_amount;
+        float f = clampf(f0 * (1.0f + attack_fm + self_fm), 0.0f, 0.4f);
+        float resonator_out;
+        svf_set(&d->resonator, onepole_tan_dirty(f), 1.0f + q * f);
+        svf_process_bp_lp(&d->resonator, (pulse - d->retrig_pulse * 0.2f) * scale,
+            &resonator_out, &d->lp_out);
+        ONE_POLE(d->tone_lp, pulse * exciter_leak + resonator_out, tone_f);
+        float s = pi_next(&pre) * d->tone_lp;
+        *out++ = soft_clip(s) * pi_next(&post);
+    }
+    pi_finish(&pre);
+    pi_finish(&post);
+}
+
+static inline void synth_bd_render(t_bd* x, voice* v, int trigger, float accent,
+float f0, size_t size){
+    synth_bd* d = &v->synth_bd;
+    uint32_t* rng = &v->rng;
+    float* out = v->out_buffer;
+    float tone = x->x_tone;
+    float decay = x->x_decay;
+    float sr = x->x_sr;
+    float dirtiness = 0.4f - 0.25f * decay * decay;
+    float fm_envelope_amount = fminf(x->x_punch * 2.0f, 1.0f);
+    float fm_envelope_decay = fmaxf(x->x_punch * 2.0f - 1.0f, 0.0f);
     decay *= decay;
     fm_envelope_decay *= fm_envelope_decay;
     param_interp f0_mod;
@@ -352,46 +408,7 @@ float fm_envelope_decay, float sr, uint32_t* rng, float* out, size_t size){
     pi_finish(&f0_mod);
 }
 
-// Voice ============================================================================
-typedef struct{
-    analog_bd analog_bd;
-    synth_bd  synth_bd;
-    uint32_t  rng;
-    int       trigger_state;
-    float     decay_env;
-    float     out_buffer[kBlockSize];
-}voice;
-
-static inline void voice_init(voice* v, float sr, uint32_t seed){
-    memset(v, 0, sizeof(*v));
-    v->rng = seed;
-    analog_bd_init(&v->analog_bd);
-    synth_bd_init(&v->synth_bd, sr);
-}
-
 // Pd glue ==========================================================================
-static t_class *bd_class;
-
-typedef struct _bd{
-    t_object  x_obj;
-    t_int     x_mode;
-    t_int     x_k_trig;
-    t_int     x_n;
-    t_int     x_nsize;
-    t_int     x_block_count;
-    t_int     x_nchans;
-    uint32_t  x_seed;
-    float     x_sr;
-    voice    *x_voice;
-    float     x_note;
-    float     x_punch;
-    float     x_tone;
-    float     x_decay;
-    float     x_ptime;
-    float     x_pdepth;
-    float     x_level;
-}t_bd;
-
 static void bd_freq(t_bd* x, t_floatarg f){ // Hz -> MIDI note
     x->x_note = 69.0f + 12.0f * log2f(fabsf(f) / 440.0f);
 }
@@ -437,20 +454,10 @@ static inline void voice_render(t_bd* x, int channel, int trigger, t_sample* out
     mod_amt *= fmaxf(fabsf(mod_amt) - 0.05f, 0.05f) * 1.05f;
     float note = clampf(x->x_note + mod_amt * (v->decay_env * v->decay_env * 48.0f), -119.0f, 120.0f);
     const float f0 = 13.75f / x->x_sr * st2ratio(clampf(note - 9.0f, -128.0f, 127.0f));
-    if(x->x_mode){ // synth drum
-        float dirtiness = 0.4f - 0.25f * x->x_decay * x->x_decay;
-        float fm_amount = fminf(x->x_punch * 2.0f, 1.0f);
-        float fm_decay = fmaxf(x->x_punch * 2.0f - 1.0f, 0.0f);
-        synth_bd_render(&v->synth_bd, rising_edge, accent, f0, x->x_tone, x->x_decay,
-            dirtiness, fm_amount, fm_decay, x->x_sr, &v->rng, v->out_buffer, size);
-    }
-    else{ // analog
-        float attack_fm_amount = fminf(x->x_punch * 4.0f, 1.0f);
-        float self_fm_amount = clamp01(x->x_punch * 4.0f - 1.0f);
-        float drive = fmaxf(x->x_punch * 2.0f - 1.0f, 0.0f) * fmaxf(1.0f - 16.0f * f0, 0.0f);
-        analog_bd_render(&v->analog_bd, rising_edge, accent, f0, x->x_tone, x->x_decay,
-            attack_fm_amount, self_fm_amount, drive, x->x_sr, v->out_buffer, size);
-    }
+    if(x->x_mode)
+        synth_bd_render(x, v, rising_edge, accent, f0, size);
+    else
+        analog_bd_render(x, v, rising_edge, accent, f0, size);
     const float gain = kOutGain * -32767.0f; // float -> 16 bit (legacy from plaits)
     for(size_t i = 0; i < size; i++){
         int32_t s = 1 + (int32_t)(v->out_buffer[i] * gain);
