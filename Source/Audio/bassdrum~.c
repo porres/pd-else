@@ -429,16 +429,6 @@ BD_SETTER(bd_level, x_level)
 BD_SETTER(bd_ptime, x_ptime)
 BD_SETTER(bd_pdepth, x_pdepth)
 
-// float -> 16 bit (legacy from plaits) -> float
-static inline void post_process(const float* in, t_sample* out, size_t size){
-    const float gain = kOutGain * -32767.0f;
-    while(size--){
-        int32_t v = 1 + (int32_t)(*in++ * gain);
-        v = v < -32768 ? -32768 : v > 32767 ? 32767 : v;
-        *out++ = (float)v / 32768.0f;
-    }
-}
-
 static inline void voice_render(t_bd* x, int channel, int trigger, t_sample* out, size_t size){
     voice* v = &x->x_voice[channel];
     int rising_edge = trigger && !v->trigger_state;
@@ -452,7 +442,6 @@ static inline void voice_render(t_bd* x, int channel, int trigger, t_sample* out
     float mod_amt = x->x_pdepth;
     mod_amt *= fmaxf(fabsf(mod_amt) - 0.05f, 0.05f) * 1.05f;
     float note = clampf(x->x_note + mod_amt * (v->decay_env * v->decay_env * 48.0f), -119.0f, 120.0f);
-    // 13.75 Hz is MIDI note 9, so this maps note (0..127) to normalised frequency
     const float f0 = 13.75f / x->x_sr * st2ratio(clampf(note - 9.0f, -128.0f, 127.0f));
     if(x->x_mode){ // synth drum
         float dirtiness = 0.4f - 0.25f * x->x_decay * x->x_decay;
@@ -469,7 +458,12 @@ static inline void voice_render(t_bd* x, int channel, int trigger, t_sample* out
             attack_fm_amount, self_fm_amount, x->x_sr, v->out_buffer, size);
         analog_bd_overdrive(&v->analog_bd, v->out_buffer, drive, size);
     }
-    post_process(v->out_buffer, out, size);
+    const float gain = kOutGain * -32767.0f; // float -> 16 bit (legacy from plaits)
+    for(size_t i = 0; i < size; i++){
+        int32_t s = 1 + (int32_t)(v->out_buffer[i] * gain);
+        s = s < -32768 ? -32768 : s > 32767 ? 32767 : s;
+        out[i] = (float)s / 32768.0f;
+    }
 }
 
 static t_int* bd_perform(t_int* w){
@@ -566,7 +560,7 @@ static void* bd_new(t_symbol* s, int ac, t_atom* av){
     x->x_n = 0;
     x->x_nchans = 1;
     x->x_sr = 48000.0f; // updated in bd_dsp
-    x->x_seed = hash_seed((uint32_t)time(NULL) ^ (uint32_t)(uintptr_t)x); // differs per object and per session
+    x->x_seed = hash_seed((uint32_t)time(NULL) ^ (uint32_t)(uintptr_t)x);
     x->x_voice = (voice*)getbytes(sizeof(voice));
     bd_level(x, lvl);
     bd_freq(x, pitch);
