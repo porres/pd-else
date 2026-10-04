@@ -478,6 +478,11 @@ static void bd_pdepth(t_bd* x, t_floatarg f){
     x->x_pdepth = clampf(f, 0.0f, 1.0f);
 }
 
+static void bd_free(t_bd* x){
+    if(x->x_channel_voice)
+        freebytes(x->x_channel_voice, x->x_nchans * sizeof(voice));
+}
+
 static void* bd_new(t_symbol* s, int ac, t_atom* av){
     (void)s;
     t_bd* x = (t_bd*)pd_new(bd_class);
@@ -533,8 +538,8 @@ errstate:
 
 static void bd_class_setup(const char* name){
     init_sine_table();
-    bd_class = class_new(gensym(name), (t_newmethod)bd_new, 0, sizeof(t_bd),
-        CLASS_MULTICHANNEL, A_GIMME, 0);
+    bd_class = class_new(gensym(name), (t_newmethod)bd_new, (t_method)bd_free,
+        sizeof(t_bd), CLASS_MULTICHANNEL, A_GIMME, 0);
     class_addmethod(bd_class, (t_method)bd_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(bd_class, nullfn, gensym("signal"), A_NULL);
     class_addbang(bd_class, (t_method)bd_bang);
