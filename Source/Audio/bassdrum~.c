@@ -3,7 +3,6 @@
 
 #include <m_pd.h>
 #include <math.h>
-#include <stdint.h>
 #include <stddef.h>
 #include <string.h>
 #include <time.h>
@@ -76,7 +75,7 @@ typedef struct{
 typedef struct{
     analog_bd analog_bd;
     synth_bd  synth_bd;
-    uint32_t  rng;
+    unsigned  rng;
     int       trigger_state;
     float     decay_env;
     float     out_buffer[kBlockSize];
@@ -91,7 +90,7 @@ typedef struct _bd{
     t_int     x_nsize;
     t_int     x_block_count;
     t_int     x_nchans;
-    uint32_t  x_seed;
+    unsigned  x_seed;
     float     x_sr;
     float     x_freq;
     float     x_punch;
@@ -111,7 +110,7 @@ static inline float st2ratio(float semitones){
     return(powf(2.0f, semitones / 12.0f));
 }
 
-static inline uint32_t hash_seed(uint32_t h){
+static inline unsigned hash_seed(unsigned h){
     h ^= h >> 16; h *= 0x85ebca6bu;
     h ^= h >> 13; h *= 0xc2b2ae35u;
     h ^= h >> 16;
@@ -184,7 +183,7 @@ static inline void synth_bd_init(synth_bd* d, float sr){
     synth_bd_click_init(&d->click, sr);
 }
 
-static inline void drum_init(voice* v, float sr, uint32_t seed){
+static inline void drum_init(voice* v, float sr, unsigned seed){
     memset(v, 0, sizeof(*v));
     v->rng = seed;
     analog_bd_init(&v->analog_bd);
@@ -213,8 +212,8 @@ static inline void analog_bd_render(t_bd* x, voice* v, int trigger, float accent
     float attack_fm_amount = fminf(x->x_punch * 4.0f, 1.0f);
     float self_fm_amount = clampf(x->x_punch * 4.0f - 1.0f, 0.0f, 1.0f);
     float drive = fmaxf(x->x_punch * 2.0f - 1.0f, 0.0f) * fmaxf(1.0f - 16.0f * f0, 0.0f);
-    int   trigger_pulse_duration = (int)(1.0e-3f * x->x_sr);
-    int   fm_pulse_duration = (int)(6.0e-3f * x->x_sr);
+    int trigger_pulse_duration = (int)(1.0e-3f * x->x_sr);
+    int fm_pulse_duration = (int)(6.0e-3f * x->x_sr);
     float pulse_decay_time = 0.2e-3f * x->x_sr;
     float pulse_filter_time = 0.1e-3f * x->x_sr;
     float retrig_pulse_duration = 0.05f * x->x_sr;
@@ -276,14 +275,14 @@ static inline void analog_bd_render(t_bd* x, voice* v, int trigger, float accent
     pi_finish(&post);
 }
 
-static inline float random_get_float(uint32_t* state){
+static inline float random_get_float(unsigned* state){
     *state = *state * 1664525u + 1013904223u;
     return((float)*state / 4294967296.0f);
 }
 
 static inline void synth_bd_render(t_bd* x, voice* v, int trigger, float accent, float f0, size_t size){
     synth_bd* d = &v->synth_bd;
-    uint32_t* rng = &v->rng;
+    unsigned* rng = &v->rng;
     float transient_level = x->x_tone, decay = x->x_decay, sr = x->x_sr;
     float* out = v->out_buffer;
     float dirtiness = 0.4f - 0.25f * decay * decay;
@@ -328,7 +327,7 @@ static inline void synth_bd_render(t_bd* x, voice* v, int trigger, float accent,
         ONE_POLE(d->transient_env_lp, d->transient_env, envelope_lp_f);
         ONE_POLE(d->fm_lp, d->fm, envelope_lp_f);
         float ph = d->phase + d->phase_noise * dirtiness;
-        ph -= (float)((int32_t)ph);
+        ph -= (float)((int)ph);
         float triangle = (ph < 0.5f ? ph : 1.0f - ph) * 4.0f - 1.0f;
         float tr = 2.0f * triangle / (1.0f + fabsf(triangle));
         float clean_sine = read_sintab(ph + 0.75f);
@@ -372,52 +371,6 @@ static inline void drum_render(t_bd* x, int ch, int trigger, t_sample* out, size
         synth_bd_render(x, v, rising_edge, accent, f0, size);
     for(size_t i = 0; i < size; i++)
         out[i] = clampf(v->out_buffer[i], -1.0f, 1.0f);
-}
-
-// Pd glue ==========================================================================
-static void bd_bang(t_bd* x){
-    x->x_k_trig = 1;
-}
-
-static void bd_mode(t_bd* x, t_floatarg f){
-    t_int new_mode = f != 0;
-    if(new_mode != x->x_mode){
-        x->x_mode = new_mode;
-        for(int ch = 0; ch < x->x_nchans; ch++){
-            if(new_mode)
-                synth_bd_init(&x->x_channel_voice[ch].synth_bd, x->x_sr);
-            else
-                analog_bd_init(&x->x_channel_voice[ch].analog_bd);
-        }
-    }
-}
-
-static void bd_freq(t_bd* x, t_floatarg f){ // input in Hz
-    x->x_freq = f;
-}
-
-static void bd_punch(t_bd* x, t_floatarg f){
-    x->x_punch = clampf(f, 0.0f, 1.0f);
-}
-
-static void bd_tone(t_bd* x, t_floatarg f){
-    x->x_tone = clampf(f, 0.0f, 1.0f);
-}
-
-static void bd_decay(t_bd* x, t_floatarg f){
-    x->x_decay = clampf(f, 0.0f, 1.0f);
-}
-
-static void bd_level(t_bd* x, t_floatarg f){
-    x->x_level = clampf(f, 0.0f, 1.0f);
-}
-
-static void bd_ptime(t_bd* x, t_floatarg f){
-    x->x_ptime = clampf(f, 0.0f, 1.0f);
-}
-
-static void bd_pdepth(t_bd* x, t_floatarg f){
-    x->x_pdepth = clampf(f, 0.0f, 1.0f);
 }
 
 static t_int* bd_perform(t_int* w){
@@ -471,11 +424,56 @@ static void bd_dsp(t_bd* x, t_signal** sp){
         x->x_channel_voice = (voice*)resizebytes(x->x_channel_voice,
             x->x_nchans * sizeof(voice), chs * sizeof(voice));
         for(int ch = x->x_nchans; ch < chs; ch++)
-            drum_init(&x->x_channel_voice[ch], x->x_sr, x->x_seed + (uint32_t)ch * 2654435761u);
+            drum_init(&x->x_channel_voice[ch], x->x_sr, x->x_seed + (unsigned)ch * 2654435761u);
         x->x_nchans = chs;
     }
     signal_setmultiout(&sp[1], x->x_nchans);
     dsp_add(bd_perform, 3, x, sp[0]->s_vec, sp[1]->s_vec);
+}
+
+static void bd_bang(t_bd* x){
+    x->x_k_trig = 1;
+}
+
+static void bd_mode(t_bd* x, t_floatarg f){
+    t_int new_mode = f != 0;
+    if(new_mode != x->x_mode){
+        x->x_mode = new_mode;
+        for(int ch = 0; ch < x->x_nchans; ch++){
+            if(new_mode)
+                synth_bd_init(&x->x_channel_voice[ch].synth_bd, x->x_sr);
+            else
+                analog_bd_init(&x->x_channel_voice[ch].analog_bd);
+        }
+    }
+}
+
+static void bd_freq(t_bd* x, t_floatarg f){
+    x->x_freq = f;  // input in Hz
+}
+
+static void bd_punch(t_bd* x, t_floatarg f){
+    x->x_punch = clampf(f, 0.0f, 1.0f);
+}
+
+static void bd_tone(t_bd* x, t_floatarg f){
+    x->x_tone = clampf(f, 0.0f, 1.0f);
+}
+
+static void bd_decay(t_bd* x, t_floatarg f){
+    x->x_decay = clampf(f, 0.0f, 1.0f);
+}
+
+static void bd_level(t_bd* x, t_floatarg f){
+    x->x_level = clampf(f, 0.0f, 1.0f);
+}
+
+static void bd_ptime(t_bd* x, t_floatarg f){
+    x->x_ptime = clampf(f, 0.0f, 1.0f);
+}
+
+static void bd_pdepth(t_bd* x, t_floatarg f){
+    x->x_pdepth = clampf(f, 0.0f, 1.0f);
 }
 
 static void* bd_new(t_symbol* s, int ac, t_atom* av){
@@ -520,7 +518,7 @@ static void* bd_new(t_symbol* s, int ac, t_atom* av){
     bd_decay(x, decay);
     bd_ptime(x, ptime);
     bd_pdepth(x, pdepth);
-    x->x_seed = hash_seed((uint32_t)time(NULL) ^ (uint32_t)(uintptr_t)x);
+    x->x_seed = hash_seed((unsigned)time(NULL) ^ (unsigned)(uintptr_t)x);
     x->x_channel_voice = (voice*)getbytes(sizeof(voice));
     drum_init(&x->x_channel_voice[0], x->x_sr, x->x_seed);
     outlet_new(&x->x_obj, &s_signal);
