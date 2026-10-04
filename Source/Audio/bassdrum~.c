@@ -99,6 +99,7 @@ typedef struct _bd{
     float     x_ptime;
     float     x_pdepth;
     float     x_level;
+    float     x_klvl;
 }t_bd;
 
 static inline float clampf(float x, float lo, float hi){ // utils <=====
@@ -388,11 +389,14 @@ static t_int* bd_perform(t_int* w){
             for(int i = 0; i < size; i++){
                 if(trig[i] != 0){
                     x->x_level = fminf(fabsf(trig[i]), 1.0f);
+                    if(ch == 0)
+                        x->x_klvl = x->x_level;
                     trigger_at = i;
                     break;
                 }
             }
             if(x->x_k_trig){
+                x->x_level = x->x_klvl;
                 if(trigger_at < 0)
                     trigger_at = 0;
                 x->x_k_trig = 0;
@@ -467,7 +471,7 @@ static void bd_decay(t_bd* x, t_floatarg f){
 }
 
 static void bd_level(t_bd* x, t_floatarg f){
-    x->x_level = clampf(f, 0.0f, 1.0f);
+    x->x_klvl = clampf(f, 0.0f, 1.0f);
 }
 
 static void bd_ptime(t_bd* x, t_floatarg f){
