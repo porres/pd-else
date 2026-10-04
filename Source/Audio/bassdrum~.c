@@ -91,14 +91,6 @@ static inline float clampf(float x, float lo, float hi){ // utils <=====
     return(x < lo ? lo : x > hi ? hi : x);
 }
 
-static inline float onepole_lp(float out, float in, float c){
-    return(out + c * (in - out));
-}
-
-static inline float onepole_coef(float c, float sr){
-    return(-expm1f(log1pf(-c) * (REF_SR / sr)));
-}
-
 static inline float st2ratio(float semitones){
     return(powf(2.0f, semitones / 12.0f));
 }
@@ -110,13 +102,12 @@ static inline unsigned hash_seed(unsigned h){
     return(h);
 }
 
-// f: normalized frequency (0..0.5), reson: Q
-static inline void svf_set(svf* s, float f, float reson){
-    float a = 3.260e-01f * M_PI_POW_3, b = 1.823e-01f * M_PI_POW_5;
-    float f2 = f * f;
-    s->g = f * (M_PI_F + f2 * (a + b * f2)); // tan(pi*f) approximation, prewarped cutoff
-    s->r = 1.0f / reson;
-    s->h = 1.0f / (1.0f + s->r * s->g + s->g * s->g);
+static inline float onepole_lp(float out, float in, float c){ // filters <=====
+    return(out + c * (in - out));
+}
+
+static inline float onepole_coef(float c, float sr){
+    return(-expm1f(log1pf(-c) * (REF_SR / sr)));
 }
 
 static inline void svf_process_bp_lp(svf* s, float in, float* out_bp, float* out_lp){
@@ -131,10 +122,12 @@ static inline void svf_process_bp_lp(svf* s, float in, float* out_bp, float* out
     *out_lp = lp;
 }
 
-static inline float svf_process_lp(svf* s, float in){
-    float bp, lp;
-    svf_process_bp_lp(s, in, &bp, &lp);
-    return(lp);
+static inline void svf_set(svf* s, float f0, float reson){
+    float a = 3.260e-01f * M_PI_POW_3, b = 1.823e-01f * M_PI_POW_5;
+    float f2 = f0 * f0;
+    s->g = f0 * (M_PI_F + f2 * (a + b * f2)); // tan(pi*f) approximation
+    s->r = 1.0f / reson;
+    s->h = 1.0f / (1.0f + s->r * s->g + s->g * s->g);
 }
 
 // Rendering ====================================================================
@@ -295,7 +288,8 @@ static inline void synth_bd_render(t_bd* x, voice* v, int trigger, float accent,
         float error = (d->body_env_pulse_width ? 0.0f : 1.0f) - d->click_lp; // click
         d->click_lp += (error > 0 ? click_up_f : click_down_f) * error;
         d->click_hp = onepole_lp(d->click_hp, d->click_lp, click_hp_f);
-        float click = svf_process_lp(&d->click_filter, d->click_lp - d->click_hp);
+        float click, click_bp; //  click_bp is dummy/unused, we just want low pass (click)
+        svf_process_bp_lp(&d->click_filter, d->click_lp - d->click_hp, &click_bp, &click);
         d->noise_lp = onepole_lp(d->noise_lp, random_get_float(rng) * noise_gain, noise_lp_f); // attack noise
         d->noise_hp = onepole_lp(d->noise_hp, d->noise_lp, noise_hp_f);
         float transient = click + d->noise_lp - d->noise_hp;
