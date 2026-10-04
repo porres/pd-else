@@ -15,9 +15,8 @@
 #define M_PI_F ((float)M_PI)
 #define M_PI_POW_3 (M_PI_F * M_PI_F * M_PI_F)
 #define M_PI_POW_5 (M_PI_POW_3 * M_PI_F * M_PI_F)
-#define ONE_POLE(out, in, coefficient) out += (coefficient) * ((in) - out)
 #define kBlockSize 16
-#define REF_SR 48000.0f // sample rate the original plaits constants were tuned at
+#define REF_SR 48000.0f // original sample rate plaits constants were tuned at
 
 static t_class *bd_class;
 
@@ -27,8 +26,8 @@ typedef struct{
 }svf;
 
 typedef struct{
-    int   pulse_remaining_samples;
-    int   fm_pulse_remaining_samples;
+    int   pulse_nsamps;
+    int   fm_pulse_nsamps;
     float pulse;
     float pulse_height;
     float pulse_lp;
@@ -62,7 +61,7 @@ typedef struct{
 typedef struct{
     analog_bd analog_bd;
     synth_bd  synth_bd;
-    unsigned  rng;
+    unsigned  rng; // each channel has its random state
     int       trigger_state;
     float     decay_env;
 }voice; // channel voice
@@ -92,7 +91,10 @@ static inline float clampf(float x, float lo, float hi){ // utils <=====
     return(x < lo ? lo : x > hi ? hi : x);
 }
 
-// one-pole coefficient tuned at 48k, rescaled so its time constant stays the same at sr
+static inline float onepole_lp(float out, float in, float coefficient){
+    return(out + coefficient * (in - out));
+}
+
 static inline float onepole_coef(float c, float sr){
     return(-expm1f(log1pf(-c) * (REF_SR / sr)));
 }
@@ -108,18 +110,18 @@ static inline unsigned hash_seed(unsigned h){
     return(h);
 }
 
-static inline float onepole_tan_dirty(float f){ // filter (Svf) <=====
+static inline float svf_tan_dirty(float f){ // filter (Svf) <=====
     float a = 3.736e-01f * M_PI_POW_3;
     return(f * (M_PI_F + a * f * f));
 }
 
-static inline float onepole_tan_fast(float f){
+static inline float svf_tan_fast(float f){
     float a = 3.260e-01f * M_PI_POW_3, b = 1.823e-01f * M_PI_POW_5;
     float f2 = f * f;
     return(f * (M_PI_F + f2 * (a + b * f2)));
 }
 
-// g: prewarped cutoff (onepole_tan_*), resonance: Q
+// g: prewarped cutoff (svf_tan_*), resonance: Q
 static inline void svf_set(svf* s, float g, float resonance){
     s->g = g;
     s->r = 1.0f / resonance;
@@ -192,42 +194,42 @@ static inline void analog_bd_render(t_bd* x, voice* v, int trigger, float accent
     float pre = d->od_pre_gain, pre_inc = (pre_gain - pre) / (float)size;
     float post = d->od_post_gain, post_inc = (post_gain - post) / (float)size;
     if(trigger){
-        d->pulse_remaining_samples = trigger_pulse_duration;
-        d->fm_pulse_remaining_samples = fm_pulse_duration;
+        d->pulse_nsamps = trigger_pulse_duration;
+        d->fm_pulse_nsamps = fm_pulse_duration;
         d->pulse_height = 3.0f + 7.0f * accent;
         d->lp_out = 0.0f;
     }
     while(size--){
         float pulse = 0.0f;
-        if(d->pulse_remaining_samples){
-            --d->pulse_remaining_samples;
-            pulse = d->pulse_remaining_samples ? d->pulse_height : d->pulse_height - 1.0f;
+        if(d->pulse_nsamps){
+            --d->pulse_nsamps;
+            pulse = d->pulse_nsamps ? d->pulse_height : d->pulse_height - 1.0f;
             d->pulse = pulse;
         }
         else{
             d->pulse *= 1.0f - 1.0f / pulse_decay_time;
             pulse = d->pulse;
         }
-        ONE_POLE(d->pulse_lp, pulse, 1.0f / pulse_filter_time);
+        d->pulse_lp = onepole_lp(d->pulse_lp, pulse, 1.0f / pulse_filter_time);
         pulse = analog_bd_diode((pulse - d->pulse_lp) + pulse * 0.044f);
         float fm_pulse = 0.0f;
-        if(d->fm_pulse_remaining_samples){
-            --d->fm_pulse_remaining_samples;
+        if(d->fm_pulse_nsamps){
+            --d->fm_pulse_nsamps;
             fm_pulse = 1.0f;
-            d->retrig_pulse = d->fm_pulse_remaining_samples ? 0.0f : -0.8f;
+            d->retrig_pulse = d->fm_pulse_nsamps ? 0.0f : -0.8f;
         }
         else
             d->retrig_pulse *= 1.0f - 1.0f / retrig_pulse_duration;
-        ONE_POLE(d->fm_pulse_lp, fm_pulse, 1.0f / pulse_filter_time);
+        d->fm_pulse_lp = onepole_lp(d->fm_pulse_lp, fm_pulse, 1.0f / pulse_filter_time);
         float punch_env = 0.7f + analog_bd_diode(10.0f * d->lp_out - 1.0f);
         float attack_fm = d->fm_pulse_lp * 1.7f * attack_fm_amount;
         float self_fm = punch_env * 0.08f * self_fm_amount;
         float f = clampf(f0 * (1.0f + attack_fm + self_fm), 0.0f, 0.4f);
         float resonator_out;
-        svf_set(&d->resonator, onepole_tan_dirty(f), 1.0f + q * f);
+        svf_set(&d->resonator, svf_tan_dirty(f), 1.0f + q * f);
         svf_process_bp_lp(&d->resonator, (pulse - d->retrig_pulse * 0.2f) * scale,
             &resonator_out, &d->lp_out);
-        ONE_POLE(d->tone_lp, pulse * exciter_leak + resonator_out, tone_f);
+        d->tone_lp = onepole_lp(d->tone_lp, pulse * exciter_leak + resonator_out, tone_f);
         pre += pre_inc;
         post += post_inc;
         *out++ = analog_soft_clip(pre * d->tone_lp) * post;
@@ -262,7 +264,7 @@ static inline void synth_bd_render(t_bd* x, voice* v, int trigger, float accent,
     float body_env_decay = 1.0f - 1.0f / (0.02f * sr) * st2ratio(-decay * 60.0f);
     float transient_env_decay = 1.0f - 1.0f / (0.005f * sr);
     float tone_f = fminf(4.0f * f0 * st2ratio(transient_level * 108.0f), 1.0f);
-    svf_set(&d->click_filter, onepole_tan_fast(5000.0f / sr), 2.0f);
+    svf_set(&d->click_filter, svf_tan_fast(5000.0f / sr), 2.0f);
     if(trigger){
         d->fm = 1.0f;
         d->body_env = d->transient_env = 0.3f + 0.7f * accent;
@@ -270,7 +272,7 @@ static inline void synth_bd_render(t_bd* x, voice* v, int trigger, float accent,
         d->fm_pulse_width = (int)(sr * 0.0013f);
     }
     while(size--){
-        ONE_POLE(d->phase_noise, (random_get_float(rng) - 0.5f) * noise_gain, phase_noise_f);
+        d->phase_noise = onepole_lp(d->phase_noise, (random_get_float(rng) - 0.5f) * noise_gain, phase_noise_f);
         f0_cur += f0_inc;
         if(d->fm_pulse_width){
             --d->fm_pulse_width;
@@ -290,9 +292,9 @@ static inline void synth_bd_render(t_bd* x, voice* v, int trigger, float accent,
             d->body_env *= body_env_decay;
             d->transient_env *= transient_env_decay;
         }
-        ONE_POLE(d->body_env_lp, d->body_env, envelope_lp_f);
-        ONE_POLE(d->transient_env_lp, d->transient_env, envelope_lp_f);
-        ONE_POLE(d->fm_lp, d->fm, envelope_lp_f);
+        d->body_env_lp = onepole_lp(d->body_env_lp, d->body_env, envelope_lp_f);
+        d->transient_env_lp = onepole_lp(d->transient_env_lp, d->transient_env, envelope_lp_f);
+        d->fm_lp = onepole_lp(d->fm_lp, d->fm, envelope_lp_f);
         float ph = d->phase + d->phase_noise * dirtiness;
         ph -= (float)((int)ph);
         float triangle = (ph < 0.5f ? ph : 1.0f - ph) * 4.0f - 1.0f;
@@ -301,16 +303,16 @@ static inline void synth_bd_render(t_bd* x, voice* v, int trigger, float accent,
         float body = tr + (1.0f - dirtiness) * (clean_sine - tr); // distorted sine
         float error = (d->body_env_pulse_width ? 0.0f : 1.0f) - d->click_lp; // click
         d->click_lp += (error > 0 ? click_up_f : click_down_f) * error;
-        ONE_POLE(d->click_hp, d->click_lp, click_hp_f);
+        d->click_hp = onepole_lp(d->click_hp, d->click_lp, click_hp_f);
         float click = svf_process_lp(&d->click_filter, d->click_lp - d->click_hp);
-        ONE_POLE(d->noise_lp, random_get_float(rng) * noise_gain, noise_lp_f); // attack noise
-        ONE_POLE(d->noise_hp, d->noise_lp, noise_hp_f);
+        d->noise_lp = onepole_lp(d->noise_lp, random_get_float(rng) * noise_gain, noise_lp_f); // attack noise
+        d->noise_hp = onepole_lp(d->noise_hp, d->noise_lp, noise_hp_f);
         float transient = click + d->noise_lp - d->noise_hp;
         float gain = d->body_env_lp;
         float tr_vca = (body - 0.6f) * gain; // transistor_vca
         float body_out = 3.0f * tr_vca / (2.0f + fabsf(tr_vca)) + gain * 0.3f;
         float mix = -body_out - transient * d->transient_env_lp * transient_level;
-        ONE_POLE(d->tone_lp, mix, tone_f);
+        d->tone_lp = onepole_lp(d->tone_lp, mix, tone_f);
         *out++ = d->tone_lp;
     }
     d->f0 = PD_BIGORSMALL(f0_cur) ? 0.0f : f0_cur;
