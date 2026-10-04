@@ -46,6 +46,10 @@ typedef struct _plaits{
 
 extern "C" void plaits_tilde_setup(void);
 
+static inline float flush(float s){
+    return PD_BIGORSMALL(s) ? 0.0f : s;
+}
+
 static const char* modelLabels[24] = {
     "Pair of classic waveforms",
     "Waveshaping oscillator",
@@ -325,21 +329,21 @@ static t_int *plaits_perform(t_int *w){
                 x->x_mod.trigger = 0;
                 x->x_voice[c]->Render(x->x_patch, x->x_mod, output, trigger_at);
                 for(int i = 0; i < trigger_at; i++){
-                    oc[i + base] = output[i].out / 32768.0f;
-                    ac[i + base] = output[i].aux / 32768.0f;
+                    oc[i + base] = flush(output[i].out);
+                    ac[i + base] = flush(output[i].aux);
                 }
                 x->x_mod.trigger = 1;
                 x->x_voice[c]->Render(x->x_patch, x->x_mod, output, x->x_block_size - trigger_at);
                 for(int i = 0; i < x->x_block_size - trigger_at; i++){
-                    oc[i + base + trigger_at] = output[i].out / 32768.0f;
-                    ac[i + base + trigger_at] = output[i].aux / 32768.0f;
+                    oc[i + base + trigger_at] = flush(output[i].out);
+                    ac[i + base + trigger_at] = flush(output[i].aux);
                 }
             }
             else{
                 x->x_voice[c]->Render(x->x_patch, x->x_mod, output, x->x_block_size);
                 for(int i = 0; i < x->x_block_size; i++){
-                    oc[i + base] = output[i].out / 32768.0f;
-                    ac[i + base] = output[i].aux / 32768.0f;
+                    oc[i + base] = flush(output[i].out);
+                    ac[i + base] = flush(output[i].aux);
                 }
             }
         }

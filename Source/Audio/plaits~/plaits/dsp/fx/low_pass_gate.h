@@ -8,10 +8,10 @@
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,7 +19,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-// 
+//
 // See http://creativecommons.org/licenses/MIT/ for more information.
 //
 // -----------------------------------------------------------------------------
@@ -67,7 +67,7 @@ class LowPassGate {
       float frequency,
       float hf_bleed,
       float* in,
-      short* out,
+      float* out,
       size_t size,
       size_t stride) {
     stmlib::ParameterInterpolator gain_modulation(&previous_gain_, gain, size);
@@ -75,7 +75,7 @@ class LowPassGate {
     while (size--) {
       const float s = *in++ * gain_modulation.Next();
       const float lp = filter_.Process<stmlib::FILTER_MODE_LOW_PASS>(s);
-      *out = stmlib::Clip16(1 + static_cast<int32_t>(lp + (s - lp) * hf_bleed));
+      *out = lp + (s - lp) * hf_bleed;
       out += stride;
     }
   }

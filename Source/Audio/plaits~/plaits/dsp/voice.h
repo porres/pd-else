@@ -8,10 +8,10 @@
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,7 +19,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-// 
+//
 // See http://creativecommons.org/licenses/MIT/ for more information.
 //
 // -----------------------------------------------------------------------------
@@ -91,13 +91,13 @@ namespace plaits {
                      float low_pass_gate_frequency,
                      float low_pass_gate_hf_bleed,
                      float* in,
-                     short* out,
+                     float* out,
                      size_t size,
                      size_t stride) {
             if (gain < 0.0f) {
                 limiter_.Process(-gain, in, size);
             }
-            const float post_gain = (gain < 0.0f ? 1.0f : gain) * -32767.0f;
+            const float post_gain = gain < 0.0f ? 1.0f : gain;
             if (!bypass_lpg) {
                 lpg_.Process(
                              post_gain * low_pass_gate_gain,
@@ -109,7 +109,7 @@ namespace plaits {
                              stride);
             } else {
                 while (size--) {
-                    *out = stmlib::Clip16(1 + static_cast<int32_t>(*in++ * post_gain));
+                    *out = *in++ * post_gain;
                     out += stride;
                 }
             }
@@ -162,8 +162,8 @@ namespace plaits {
         ~Voice() {}
         
         struct Frame {
-            short out;
-            short aux;
+            float out;
+            float aux;
         };
         
         void Init(stmlib::BufferAllocator* allocator);
