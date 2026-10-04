@@ -366,12 +366,12 @@ static inline void drum_render(t_bd* x, int ch, int trigger, t_sample* out, size
     float mod_amt = x->x_pdepth;
     mod_amt *= fmaxf(fabsf(mod_amt) - 0.05f, 0.05f) * 1.05f;
     float f0 = clampf(x->x_freq*powf(2.0f, mod_amt*env), 0.0f, x->x_sr * 0.4f) / x->x_sr;
-    if(x->x_mode) // synthetic bass drum model (inadvertedly tr-909ish)
-        synth_bd_render(x, v, rising_edge, accent, f0, size);
-    else // analog bass drum model TR-808 like
+    if(!x->x_mode) // analog bass drum model TR-808 like
         analog_bd_render(x, v, rising_edge, accent, f0, size);
+    else // synthetic bass drum model (inadvertedly tr-909ish)
+        synth_bd_render(x, v, rising_edge, accent, f0, size);
     for(size_t i = 0; i < size; i++)
-        out[i] = clampf(v->out_buffer[i] * 0.8f, -1.0f, 1.0f);
+        out[i] = clampf(v->out_buffer[i], -1.0f, 1.0f);
 }
 
 // Pd glue ==========================================================================
