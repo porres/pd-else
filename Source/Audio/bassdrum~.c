@@ -119,7 +119,7 @@ static inline unsigned hash_seed(unsigned h){
 static inline void pi_init(param_interp* p, float* state, float new_value, size_t size){
     p->state = state;
     p->value = *state;
-    p->increment = (new_value - *state) / (float)size;
+    p->increment = size ? (new_value - *state) / (float)size : 0.0f;
 }
 
 static inline float pi_next(param_interp* p){
@@ -128,7 +128,7 @@ static inline float pi_next(param_interp* p){
 }
 
 static inline void pi_finish(param_interp* p){
-    *p->state = p->value;
+    *p->state = PD_BIGORSMALL(p->value) ? 0.0f : p->value;
 }
 
 static inline float onepole_tan_dirty(float f){ // filter (Svf) <=====
@@ -155,6 +155,8 @@ static inline void svf_process_bp_lp(svf* s, float in, float* out_bp, float* out
     s->state_1 = s->g * hp + bp;
     float lp = s->g * bp + s->state_2;
     s->state_2 = s->g * bp + lp;
+    if(PD_BIGORSMALL(s->state_1)) s->state_1 = 0.0f;
+    if(PD_BIGORSMALL(s->state_2)) s->state_2 = 0.0f;
     *out_bp = bp;
     *out_lp = lp;
 }
@@ -367,8 +369,10 @@ static inline void drum_render(t_bd* x, int ch, int trigger, t_sample* out, size
         analog_bd_render(x, v, rising_edge, accent, f0, size);
     else // synthetic bass drum model (inadvertedly tr-909ish)
         synth_bd_render(x, v, rising_edge, accent, f0, size);
-    for(size_t i = 0; i < size; i++)
-        out[i] = clampf(v->out_buffer[i], -1.0f, 1.0f);
+    for(size_t i = 0; i < size; i++){
+        float s = v->out_buffer[i];
+        out[i] = PD_BIGORSMALL(s) ? 0.0f : clampf(s, -1.0f, 1.0f);
+    }
 }
 
 static t_int* bd_perform(t_int* w){
