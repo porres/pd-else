@@ -101,8 +101,7 @@ typedef struct _bd{
     float     x_level;
 }t_bd;
 
-// utils ========================================================================
-static inline float clampf(float x, float lo, float hi){
+static inline float clampf(float x, float lo, float hi){ // utils <=====
     return(x < lo ? lo : x > hi ? hi : x);
 }
 
@@ -132,8 +131,7 @@ static inline void pi_finish(param_interp* p){
     *p->state = p->value;
 }
 
-// filter (Svf) =====================================================================
-static inline float onepole_tan_dirty(float f){
+static inline float onepole_tan_dirty(float f){ // filter (Svf) <=====
     float a = 3.736e-01f * M_PI_POW_3;
     return(f * (M_PI_F + a * f * f));
 }
@@ -480,17 +478,20 @@ static void* bd_new(t_symbol* s, int ac, t_atom* av){
     (void)s;
     t_bd* x = (t_bd*)pd_new(bd_class);
     x->x_sr = sys_getsr();
+    x->x_mode = x->x_k_trig = x->x_n = 0;
     float pitch = 50, punch = 0.5f, tone = 0.5f, decay = 0.5f, ptime = 0, pdepth = 0, lvl = 0.5f;
     int nfloats = 0;
-    x->x_mode = 0;
     while(ac){
         if(av->a_type == A_SYMBOL){
+            if(nfloats)
+                goto errstate;
             t_symbol* sym = atom_getsymbol(av);
             ac--, av++;
             if(sym == gensym("-mode") && ac && av->a_type == A_FLOAT){
                 x->x_mode = atom_getfloat(av) != 0;
                 ac--, av++;
-            } else
+            }
+            else
                 goto errstate;
         }
         else{
@@ -508,8 +509,6 @@ static void* bd_new(t_symbol* s, int ac, t_atom* av){
             }
         }
     }
-    x->x_k_trig = 0;
-    x->x_n = 0;
     x->x_nchans = 1;
     bd_level(x, lvl);
     bd_freq(x, pitch);
