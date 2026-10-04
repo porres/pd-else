@@ -91,8 +91,8 @@ static inline float clampf(float x, float lo, float hi){ // utils <=====
     return(x < lo ? lo : x > hi ? hi : x);
 }
 
-static inline float onepole_lp(float out, float in, float coefficient){
-    return(out + coefficient * (in - out));
+static inline float onepole_lp(float out, float in, float c){
+    return(out + c * (in - out));
 }
 
 static inline float onepole_coef(float c, float sr){
@@ -110,21 +110,12 @@ static inline unsigned hash_seed(unsigned h){
     return(h);
 }
 
-static inline float svf_tan_dirty(float f){ // filter (Svf) <=====
-    float a = 3.736e-01f * M_PI_POW_3;
-    return(f * (M_PI_F + a * f * f));
-}
-
-static inline float svf_tan_fast(float f){
+// f: normalized frequency (0..0.5), reson: Q
+static inline void svf_set(svf* s, float f, float reson){
     float a = 3.260e-01f * M_PI_POW_3, b = 1.823e-01f * M_PI_POW_5;
     float f2 = f * f;
-    return(f * (M_PI_F + f2 * (a + b * f2)));
-}
-
-// g: prewarped cutoff (svf_tan_*), resonance: Q
-static inline void svf_set(svf* s, float g, float resonance){
-    s->g = g;
-    s->r = 1.0f / resonance;
+    s->g = f * (M_PI_F + f2 * (a + b * f2)); // tan(pi*f) approximation, prewarped cutoff
+    s->r = 1.0f / reson;
     s->h = 1.0f / (1.0f + s->r * s->g + s->g * s->g);
 }
 
@@ -226,7 +217,7 @@ static inline void analog_bd_render(t_bd* x, voice* v, int trigger, float accent
         float self_fm = punch_env * 0.08f * self_fm_amount;
         float f = clampf(f0 * (1.0f + attack_fm + self_fm), 0.0f, 0.4f);
         float resonator_out;
-        svf_set(&d->resonator, svf_tan_dirty(f), 1.0f + q * f);
+        svf_set(&d->resonator, f, 1.0f + q * f);
         svf_process_bp_lp(&d->resonator, (pulse - d->retrig_pulse * 0.2f) * scale,
             &resonator_out, &d->lp_out);
         d->tone_lp = onepole_lp(d->tone_lp, pulse * exciter_leak + resonator_out, tone_f);
@@ -264,7 +255,7 @@ static inline void synth_bd_render(t_bd* x, voice* v, int trigger, float accent,
     float body_env_decay = 1.0f - 1.0f / (0.02f * sr) * st2ratio(-decay * 60.0f);
     float transient_env_decay = 1.0f - 1.0f / (0.005f * sr);
     float tone_f = fminf(4.0f * f0 * st2ratio(transient_level * 108.0f), 1.0f);
-    svf_set(&d->click_filter, svf_tan_fast(5000.0f / sr), 2.0f);
+    svf_set(&d->click_filter, 5000.0f / sr, 2.0f);
     if(trigger){
         d->fm = 1.0f;
         d->body_env = d->transient_env = 0.3f + 0.7f * accent;
