@@ -46,7 +46,7 @@ if(WIN32)
 endif()
 
 option(ENABLE_OPUS "Enable opus for pdlink~ stream compression" ON)
-if(!ENABLE_OPUS)
+if(NOT ENABLE_OPUS)
     add_compile_definitions(ENABLE_OPUS=0)
 endif()
 
