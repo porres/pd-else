@@ -1,0 +1,5 @@
+local multi_slider = require("multi_slider")
+local multi_vsl    = pd.Class:new():register("multi.vsl")
+
+-- vertical sliders, side by side; the rest is in multi_slider.lua
+multi_slider.setup(multi_vsl, "multi.vsl", true)

@@ -2,6 +2,7 @@
 
 #include <m_pd.h>
 #include <m_imp.h>
+#include <string.h>
 
 struct _outlet{
     t_object        *o_owner;
@@ -31,11 +32,44 @@ typedef struct _bindlist{
     t_bindelem  *b_list;
 }t_bindlist;
 
+/* pdlua binds a receive name to a small proxy, not to the Lua object itself.
+   Its class is registered as patchable, so pd_checkobject() takes it for a
+   whole t_object although it has no inlets or outlets, and using it as one
+   writes past it. What we want is the Lua object (a GUI) that owns it; a bang
+   to it has to go through the proxy, as the object takes no messages itself. */
+typedef struct _pdlua_proxyreceive{
+    t_pd        p_pd;
+    t_object   *p_owner; // the pdlua object, which starts with its t_object
+    t_symbol   *p_name;
+}t_pdlua_proxyreceive;
+
+static int retrieve_islua(t_pd *x){
+    return(!strcmp(class_getname(*x), "pdlua proxy receive"));
+}
+
+static t_object *retrieve_checkobject(t_pd *x){
+    if(retrieve_islua(x))
+        return(((t_pdlua_proxyreceive *)x)->p_owner);
+    return(pd_checkobject(x));
+}
+
+/* A Lua GUI is asked with "retrieve" rather than a bang. It answers with its
+   whole state in one message, as [presets] needs it ([multi.vsl] outputs one
+   message per slider on a bang), and not to its send name; the abstractions
+   these GUIs replace did the same with a [receiver] and a [default] inside. */
+static void retrieve_ask(t_pd *x){
+    if(retrieve_islua(x))
+        pd_typedmess(x, gensym("retrieve"), 0, 0);
+    else
+        pd_bang(x);
+}
+
 typedef struct _retrieve{
     t_object        x_obj;
     t_symbol       *x_rcv_name;     // the receive name to retrieve from
 //    t_outlet       *x_rightout;   // right outlet (if there's no receive name)
     t_object	   *x_receiver;     // object containing the receiver
+    t_pd           *x_bangto;       // where to bang it: what is bound to the name
     int				x_maxcons;	    // maximum number of connections from receiver
     t_object      **x_retrieved;    // array of retrieved objects
     t_outconnect  **x_retrievecons; // array of retrieved connections
@@ -121,19 +155,73 @@ static void retrieve_start(t_retrieve *x){
                 x->x_bindelem = ((t_bindlist *)proxy)->b_list;
                 while(x->x_bindelem){
                 	// once we find it, prep it and go from there
-                    if((obj = pd_checkobject(x->x_bindelem->e_who)))
+                    if((obj = retrieve_checkobject(x->x_bindelem->e_who))){
+                        x->x_bangto = x->x_bindelem->e_who;
                         if(retrieve_prep(x, obj)) // why 'if'???
                         	return;
+                    }
                     x->x_bindelem = x->x_bindelem->e_next;
                 }
             }
             // it's a single object otherwise. If patchable, prep it
-            else if((obj = pd_checkobject(proxy)))
+            else if((obj = retrieve_checkobject(proxy))){
+                x->x_bangto = proxy;
                 retrieve_prep(x, obj);
+            }
         }
     }
 //    else // not looking for receive name
 //        retrieve_prep(x, &x->x_obj); // prep [retrieve] and assign x_rightout as the proxy
+}
+
+/* Point an object's outlet at whatever [retrieve]'s outlet is connected to,
+   with connections of its own. Sharing [retrieve]'s connections instead (as
+   this used to) shares the cords drawn for them: if the canvas redraws its
+   cords while the answer comes in (an object there resizes, say), the cord
+   from [retrieve] is moved over to the retrieved object and stays there.
+   The object's own connections are stored by the caller, and given back by
+   retrieve_giveback. An object without an outlet has nothing to lend, and a
+   signal outlet carries no messages to retrieve: changing its connections
+   would only rebuild the DSP graph (twice per object, on every retrieve), so
+   both are left alone. */
+static int retrieve_canlend(t_object *obj){
+    t_outlet *objout;
+    obj_starttraverseoutlet(obj, &objout, 0);
+    return(objout && !obj_issignaloutlet(obj, 0));
+}
+
+static void retrieve_lend(t_retrieve *x, t_object *obj){
+    t_outlet *op, *objout;
+    t_object *to;
+    t_inlet *ip;
+    int inno;
+    if(!retrieve_canlend(obj))
+        return;
+    t_outconnect *oc = obj_starttraverseoutlet((t_object *)x, &op, 0);
+    obj_starttraverseoutlet(obj, &objout, 0);
+    objout->o_connections = 0;
+    while(oc){
+        oc = obj_nexttraverseoutlet(oc, &to, &ip, &inno);
+        obj_connect(obj, 0, to, inno);
+    }
+}
+
+// take down what retrieve_lend made and give the object its own back
+static void retrieve_giveback(t_object *obj, t_outconnect *own){
+    t_outlet *objout;
+    t_object *to;
+    t_inlet *ip;
+    int inno;
+    t_outconnect *oc;
+    if(!retrieve_canlend(obj)) // nothing was lent (see retrieve_lend)
+        return;
+    while((oc = obj_starttraverseoutlet(obj, &objout, 0))){
+        obj_nexttraverseoutlet(oc, &to, &ip, &inno);
+        obj_disconnect(obj, 0, to, inno);
+        if(obj_starttraverseoutlet(obj, &objout, 0) == oc) // can't happen, but don't hang
+            break;
+    }
+    objout->o_connections = own;
 }
 
 /* retrieve_next is where all the work gets done. For reference, obj_starttraverseoutlet
@@ -150,7 +238,6 @@ static int retrieve_next(t_retrieve *x){
 	t_outconnect **retrieveconsp = x->x_retrievecons;
 	t_object *gr; // the retrieved object below the [receive].
 	int inno;
-	t_outlet *op; // dummy outlet pointer required for obj_starttraverseoutlet
 	t_outlet *goutp; // the outlet pointer; we need to get its connections
 nextremote:
 	// if the receiver is not a [receive] (gatom, nbx, etc.), retrieve directly from it
@@ -159,10 +246,9 @@ nextremote:
     x->x_receiver->te_g.g_pd->c_name != gensym("receiver"))){
 		*retrievedp = x->x_receiver; // store the receiver itself in the object buffer
 		*retrieveconsp = obj_starttraverseoutlet(x->x_receiver, &goutp, 0);
-		/* now, we overwrite the outlet's connection list with the connection list
-		   from our [retrieve]'s 0th outlet. This essentially connects the retrieved receiver
-		   to whatever [retrieve] is connected to */
-		goutp->o_connections = obj_starttraverseoutlet((t_object *)x, &op, 0);
+		/* now, we connect the outlet to whatever [retrieve] is connected to
+		   instead (see retrieve_lend) */
+		retrieve_lend(x, x->x_receiver);
 		/* this is a flag to let us know we've done the work for this object; otherwise
 		   we get an infinite loop in the retrieve_bang, routine. There's
 		   probably a better way to do this... */
@@ -194,10 +280,9 @@ nextremote:
 					   in order to do this, which is costly for a lot of outlets).*/
 					/* now we get the connection lists for the outlet */
                     *retrieveconsp++ = obj_starttraverseoutlet(gr, &goutp, 0);
-                    /* now replace its connection list with the connection list from our
-                    [retrieve]'s ith outlet. This essentially connects the retrieved object's
-                    ith outlet to whatever [retrieve]'s ith outlet  is connected to */
-                    goutp->o_connections = obj_starttraverseoutlet((t_object *)x, &op, 0);
+                    /* now connect its outlet to whatever [retrieve]'s outlet is
+                    connected to instead (see retrieve_lend) */
+                    retrieve_lend(x, gr);
 				}
 			}
 		}
@@ -208,8 +293,9 @@ nextremote:
     if(x->x_bindelem){
         while((x->x_bindelem = x->x_bindelem->e_next)){
             t_object *obj;
-            if((obj = pd_checkobject(x->x_bindelem->e_who))){
+            if((obj = retrieve_checkobject(x->x_bindelem->e_who))){
                 x->x_nonreceive = 0;
+                x->x_bangto = x->x_bindelem->e_who;
                 retrieve_prep(x, obj);
                 retrievedp = x->x_retrieved;
                 retrieveconsp = x->x_retrievecons;
@@ -226,14 +312,12 @@ static void retrieve_restore(t_retrieve *x, int nobs){
 	t_object **retrievedp = x->x_retrieved;
 	t_outconnect **retrieveconsp = x->x_retrievecons;
 	t_object *gr;
-	t_outlet *goutp;
 	// retrieve_next returns the number of objects it's stored, so we can pass it to
 	// retrieve_restore in order to tell it how many objects to restore from the buffers
 	while(nobs--){
 		gr = *retrievedp++; // get the object
         // restore the connection lists to outlet
-        obj_starttraverseoutlet(gr, &goutp, 0);
-        goutp->o_connections = *retrieveconsp++;
+        retrieve_giveback(gr, *retrieveconsp++);
 	}
 }
 
@@ -245,7 +329,7 @@ static void retrieve_bang(t_retrieve *x){
            from the retrieved objects to [retrieve]. Then we call that receiver's bang method,
            and the output from the retrieved objects comes through [retrieve] instead. */
         if(x->x_receiver)
-            pd_bang(&x->x_receiver->ob_pd);
+            retrieve_ask(x->x_bangto);
 //        else outlet_bang(x->x_rightout);
         retrieve_restore(x, nobs);
     }

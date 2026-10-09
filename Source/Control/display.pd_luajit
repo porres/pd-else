@@ -1,0 +1,149 @@
+local else_gui = require("else_gui")
+local display = pd.Class:new():register("display")
+
+-- [display] shows every message it receives, so it must not answer to any
+-- message itself: the settings below are creation flags and properties only.
+
+local CHAR_W = 7
+
+-- Text is UTF-8, so count and cut it by characters, not bytes: a character
+-- starts at every byte that isn't a continuation byte (128-191).
+local function ulen(s)
+    return select(2, s:gsub("[^\128-\191]", ""))
+end
+
+-- the first n characters of s
+local function usub(s, n)
+    local count = 0
+    for i = 1, #s do
+        local c = s:byte(i)
+        if c < 128 or c >= 192 then
+            if count == n then return s:sub(1, i - 1) end
+            count = count + 1
+        end
+    end
+    return s
+end
+
+else_gui.setup(display, {
+    { "fixed_chars", 0,            "on_resize", "Fixed Chars",  "int",   {min=0, max=1024, flag="chars", nomsg=true} },
+    -- how often the display redraws at most, and how long a flash lasts
+    { "refresh_ms",  100,          nil,         "Refresh (ms)", "int",   {min=10, max=5000, flag="refresh", nomsg=true} },
+    { "noflash",     0,            nil,         "No Flash",     "check", {flag="noflash", nomsg=true} },
+    { "bgcolor",     pd.bg_color,  "repaint",   "Background",   "color", {frame="Appearance", flag="bgcolor", nomsg=true} },
+    { "flashcolor",  {220,220,255},"repaint",   "Flash",        "color", {frame="Appearance", flag="flashcolor", nomsg=true} },
+    { "fgcolor",     pd.fg_color,  "repaint",   "Text",         "color", {frame="Appearance", flag="fgcolor", nomsg=true} },
+}, {
+    ["-noflash"] = function(self, atoms, i)
+        self.noflash = 1
+        return 0   -- bare flag; no value consumed
+    end,
+})
+
+function display:initialize(sel, atoms)
+    self.inlets   = 1
+    self.outlets  = 1
+    self.message  = ""
+    self.pending  = nil     -- arrived since the last redraw, not shown yet
+    self.waiting  = false   -- redrawn less than refresh_ms ago
+    self.flashing = false
+    self.clock    = pd.Clock:new():register(self, "refresh")
+
+    self:init_args(atoms)
+    self:update_size()
+    return true
+end
+
+function display:finalize()
+    self.clock:destruct()
+end
+
+function display:on_resize()
+    self:update_size()
+    self:repaint()
+end
+
+function display:update_size()
+    if self.fixed_chars > 0 then
+        self:set_size(self.fixed_chars * CHAR_W + 8, 19)
+    else
+        self:set_size(math.max(1, ulen(self.message)) * CHAR_W + 8, 19)
+    end
+end
+
+-- floats get Pd's 6 significant digits; symbols are shown as they came
+local function fmt(a)
+    if type(a) == "number" and a ~= math.floor(a) then
+        return string.format("%.6g", a)
+    end
+    return tostring(a)
+end
+
+function display:format_message(sel, atoms)
+    if sel == "bang" then return "bang" end
+    if sel == "float" or sel == "symbol" then return fmt(atoms[1]) end
+    local parts = {}
+    if sel ~= "list" then parts[1] = sel end
+    for _, a in ipairs(atoms) do parts[#parts + 1] = fmt(a) end
+    return table.concat(parts, " ")
+end
+
+-- Redraw at most once per refresh period, like the old abstraction's metro:
+-- a message that comes in sooner is shown when the period is over.
+function display:show(sel, atoms)
+    self.pending = self:format_message(sel, atoms)
+    if not self.waiting then self:draw_pending() end
+end
+
+function display:draw_pending()
+    local msg = self.pending
+    self.pending = nil
+
+    if self.fixed_chars > 0 then
+        local max_chars = math.floor((select(1, self:get_size()) - 8) / CHAR_W)
+        if ulen(msg) > max_chars then msg = usub(msg, max_chars - 1) .. "…" end
+    end
+
+    self.message  = msg
+    self.flashing = self.noflash == 0
+
+    self:update_size()
+    self:repaint()
+    self.waiting = true
+    self.clock:delay(self.refresh_ms)
+end
+
+-- the end of a refresh period: show what came in meanwhile, if anything,
+-- otherwise end the flash
+function display:refresh()
+    self.waiting = false
+    if self.pending then
+        self:draw_pending()
+    elseif self.flashing then
+        self.flashing = false
+        self:repaint()
+    end
+end
+
+function display:in_1(sel, atoms)
+    self:show(sel, atoms)
+    self:outlet(1, sel, atoms)
+end
+
+local function contrast_color(c)
+    -- standard luminance coefficients
+    local lum = 0.299 * c[1] + 0.587 * c[2] + 0.114 * c[3]
+    return lum > 128 and {0, 0, 0} or {255, 255, 255}
+end
+
+function display:paint(g)
+    local w, h = self:get_size()
+    local bg = self.flashing and self.flashcolor or self.bgcolor
+    local fg = self.flashing and contrast_color(self.flashcolor) or self.fgcolor
+
+    g:set_color(bg[1], bg[2], bg[3])
+    g:fill_all()
+
+    g:set_color(fg[1], fg[2], fg[3])
+    g:draw_text(self.message, 4, 4, w)
+end
