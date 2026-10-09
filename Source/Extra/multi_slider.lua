@@ -1,6 +1,6 @@
 -- multi_slider.lua
--- The multi slider GUI behind [multi.vsl]: all of it but the direction the
--- sliders go in, which the object passes to setup().
+-- Everything [multi.vsl] and [multi.hsl] share, which is all of it but the
+-- direction the sliders go in.
 --
 -- Usage:
 --   local multi_slider = require("multi_slider")
@@ -13,7 +13,7 @@ function multi_slider.setup(class, name, vertical)
         { "width",      200,          "resize",     "Width",      "int",   {frame="Dimensions", min=4,  flag="width"}              },
         { "height",     127,          "resize",     "Height",     "int",   {frame="Dimensions", min=4,  flag="height"}             },
         { "range",      {0, 127},     "on_range",   "Range",      "range", {frame="General",    flag="range"}                      },
-        { "n",          8,            "on_n",       "Sliders",    "int",   {frame="Dimensions", min=1,  flag="n"}                  },
+        { "n",          8,            "on_n",       "Sliders",    "int",   {frame="Dimensions", min=1,  max=1024, flag="n"}        },
         { "tabname",    "internal",   "on_rename",  "Array Name", "text",  {frame="General",    flag="name", msg="rename", dollar=true}      },
         { "send",       "empty",      nil,          "Send",       "text",  {frame="General",    flag="send", dollar=true}                       },
         { "receive",    "empty",      "on_receive", "Receive",    "text",  {frame="General",    flag="receive", dollar=true}                    },

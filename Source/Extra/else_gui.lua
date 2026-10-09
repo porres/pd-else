@@ -14,6 +14,13 @@ function else_gui.text(a)
     return tostring(a)
 end
 
+-- A float method's argument as a number: pdlua hands it a bare number, but
+-- a receive_cb passes it on as a table.
+function else_gui.as_float(a)
+    if type(a) == "table" then return tonumber(a[1]) end
+    return tonumber(a)
+end
+
 -- The numbers that follow a flag at atoms[i], at most n of them: a flag can
 -- be given fewer, or be followed straight away by the next flag.
 function else_gui.numbers(atoms, i, n)
