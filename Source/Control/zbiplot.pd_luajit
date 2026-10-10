@@ -1,0 +1,384 @@
+local else_gui = require("else_gui")
+local zbiplot  = pd.Class:new():register("zbiplot")
+
+else_gui.setup(zbiplot, {
+    { "size",      200,          "on_resize", "Size",       "int",   {frame="Dimensions", min=50, max=4096, flag="size"} },
+    { "savestate", 0,            nil,         "Save State", "check", {frame="General", flag="savestate"} },
+    { "bgcolor",   pd.bg_color,  "repaint",   "Background", "color", {frame="Appearance", flag="bgcolor"} },
+    { "fgcolor",   pd.fg_color,  "repaint",   "Axes",       "color", {frame="Appearance", flag="fgcolor"} },
+    { "polecolor", {220,40,40},  "repaint",   "Poles",      "color", {frame="Appearance", flag="polecolor"} },
+    { "zerocolor", {40,40,220},  "repaint",   "Zeros",      "color", {frame="Appearance", flag="zerocolor"} },
+})
+
+-- in save state mode the roots are saved after the declared arguments:
+-- np p1_re p1_im ... nz z1_re z1_im ... gain
+function zbiplot:extra_args(out)
+    if self.savestate == 0 or not self.poles then return end
+    out[#out + 1] = #self.poles
+    for _, p in ipairs(self.poles) do
+        out[#out + 1] = p[1]; out[#out + 1] = p[2]
+    end
+    out[#out + 1] = #self.zeros
+    for _, z in ipairs(self.zeros) do
+        out[#out + 1] = z[1]; out[#out + 1] = z[2]
+    end
+    out[#out + 1] = self.gain
+end
+
+local HIT_RADIUS = 8
+local CONJ_TOL   = 1e-6
+
+function zbiplot:initialize(sel, atoms)
+    self.inlets  = 2
+    self.outlets = 1   -- coeff list only
+
+    self.poles = {}
+    self.zeros = {}
+    self.gain  = 1
+
+    -- drag state
+    self.dragging    = false
+    self.drag_points = nil
+    self.drag_index  = nil
+    self.drag_mirrored = false
+    self.shift       = false
+    self.last_x      = 0
+    self.last_y      = 0
+
+    local positional, first = self:init_args(atoms)
+
+    if self.savestate ~= 0 then
+        self:restore_state(positional, first)
+    else
+        -- two real poles and two real zeros at the origin
+        self.poles = { {0, 0}, {0, 0} }
+        self.zeros = { {0, 0}, {0, 0} }
+        self.gain  = 1
+    end
+
+    self:set_size(self.size, self.size)
+    return true
+end
+
+-- pos: the positional arguments, as init_args parsed them; the saved roots
+-- start at pos[i], just after the ones it reads
+function zbiplot:restore_state(pos, i)
+    local np = math.floor(tonumber(pos[i]) or 0); i = i + 1
+    self.poles = {}
+    for _ = 1, np do
+        local re = tonumber(pos[i]) or 0; i = i + 1
+        local im = tonumber(pos[i]) or 0; i = i + 1
+        self.poles[#self.poles + 1] = { re, im }
+    end
+
+    local nz = math.floor(tonumber(pos[i]) or 0); i = i + 1
+    self.zeros = {}
+    for _ = 1, nz do
+        local re = tonumber(pos[i]) or 0; i = i + 1
+        local im = tonumber(pos[i]) or 0; i = i + 1
+        self.zeros[#self.zeros + 1] = { re, im }
+    end
+
+    local g = tonumber(pos[i])
+    if g then self.gain = g end
+
+    -- If nothing was restored, fall back to defaults.
+    if #self.poles == 0 then self.poles = { {0, 0}, {0, 0} } end
+    if #self.zeros == 0 then self.zeros = { {0, 0}, {0, 0} } end
+end
+
+function zbiplot:on_resize()
+    self:set_size(self.size, self.size)
+end
+
+function zbiplot:z_to_px(re, im)
+    local w, h = self:get_size()
+    local scale = w / 3
+    return w / 2 + re * scale,
+           h / 2 - im * scale
+end
+
+function zbiplot:px_to_z(px, py)
+    local w, h = self:get_size()
+    local scale = w / 3
+    return (px - w / 2) / scale,
+           (h / 2 - py) / scale
+end
+
+function zbiplot:canonicalize(points)
+    local canon = {}
+    for _, pt in ipairs(points) do
+        local re, im = pt[1], math.abs(pt[2])
+        local dup = false
+        -- a complex pair is stored once, as the root with the positive
+        -- imaginary part. Real roots are never merged: a repeated real root
+        -- is still two roots and has to stay countable as two.
+        if im > CONJ_TOL then
+            for _, c in ipairs(canon) do
+                if math.abs(c[1] - re) < CONJ_TOL and math.abs(c[2] - im) < CONJ_TOL then
+                    dup = true; break
+                end
+            end
+        end
+        if not dup then
+            canon[#canon + 1] = { re, im }
+        end
+    end
+    return canon
+end
+
+function zbiplot:expand(canonical)
+    local full = {}
+    for _, pt in ipairs(canonical) do
+        full[#full + 1] = { pt[1], pt[2] }
+        if pt[2] > CONJ_TOL then
+            full[#full + 1] = { pt[1], -pt[2] }
+        end
+    end
+    return full
+end
+
+function zbiplot:root_count(canonical)
+    local n = 0
+    for _, pt in ipairs(canonical) do
+        n = n + (pt[2] > CONJ_TOL and 2 or 1)
+    end
+    return n
+end
+
+-- Coefficients are in [biquad~] order: fb1 fb2 ff1 ff2 ff3, the same order
+-- [else/bicoeff2] emits and [else/biplot] expects.
+function zbiplot:in_1_coeff(atoms)
+    local a1 = tonumber(atoms[1]) or 0
+    local a2 = tonumber(atoms[2]) or 0
+    local b0 = tonumber(atoms[3]) or 0
+    local b1 = tonumber(atoms[4]) or 0
+    local b2 = tonumber(atoms[5]) or 0
+
+    self.gain  = b0
+    self.zeros = self:canonicalize(self:quadratic_roots(b0, b1, b2))
+    self.poles = self:canonicalize(self:quadratic_roots(1, -a1, -a2))
+    self:save_state(); self:repaint()
+end
+
+-- list: pole coordinates as re/im pairs. Past four values, as the old
+-- [zbiplot] took them, the first four are the poles and the rest the zeros.
+function zbiplot:in_1_list(atoms)
+    if #atoms > 4 then
+        self.poles = self:canonicalize(self:parse_pairs({ atoms[1], atoms[2], atoms[3], atoms[4] }))
+        self.zeros = self:canonicalize(self:parse_pairs({ select(5, (table.unpack or unpack)(atoms)) }))
+    else
+        self.poles = self:canonicalize(self:parse_pairs(atoms))
+    end
+    self:save_state(); self:repaint()
+end
+
+function zbiplot:in_1_set(atoms)
+    self:in_1_list(atoms)
+end
+
+function zbiplot:in_2_list(atoms)
+    self.zeros = self:canonicalize(self:parse_pairs(atoms))
+    self:save_state(); self:repaint()
+end
+
+function zbiplot:in_1_bang()
+    self:output()
+end
+
+function zbiplot:parse_pairs(atoms)
+    local pts = {}
+    for i = 1, #atoms - 1, 2 do
+        pts[#pts + 1] = { tonumber(atoms[i]) or 0, tonumber(atoms[i + 1]) or 0 }
+    end
+    return pts
+end
+
+function zbiplot:quadratic_roots(a, b, c)
+    if a == 0 then
+        if b ~= 0 then return {{ -c / b, 0 }} end
+        return {}
+    end
+    local disc = b * b - 4 * a * c
+    if disc >= 0 then
+        local sq = math.sqrt(disc)
+        return {
+            { (-b + sq) / (2 * a), 0 },
+            { (-b - sq) / (2 * a), 0 },
+        }
+    else
+        local sq = math.sqrt(-disc)
+        return {
+            { -b / (2 * a),  sq / (2 * a) },
+            { -b / (2 * a), -sq / (2 * a) },
+        }
+    end
+end
+
+function zbiplot:find_nearest(px, py)
+    local best_dist = HIT_RADIUS
+    local best_coll, best_idx, best_mirrored = nil, nil, false
+
+    for _, entry in ipairs({{ self.poles, "poles" }, { self.zeros, "zeros" }}) do
+        local coll = entry[1]
+        for i, pt in ipairs(coll) do
+            local x1, y1 = self:z_to_px(pt[1], pt[2])
+            local d1 = math.sqrt((px - x1)^2 + (py - y1)^2)
+            if d1 < best_dist then
+                best_dist = d1; best_coll = coll; best_idx = i; best_mirrored = false
+            end
+            if pt[2] > CONJ_TOL then
+                local x2, y2 = self:z_to_px(pt[1], -pt[2])
+                local d2 = math.sqrt((px - x2)^2 + (py - y2)^2)
+                if d2 < best_dist then
+                    best_dist = d2; best_coll = coll; best_idx = i; best_mirrored = true
+                end
+            end
+        end
+    end
+
+    -- mirrored: the lower marker of a pair, the conjugate of the stored root
+    return best_coll, best_idx, best_mirrored
+end
+
+function zbiplot:mouse_down(x, y)
+    local coll, idx, mirrored = self:find_nearest(x, y)
+    if not coll then return end
+
+    self.dragging      = true
+    self.drag_points   = coll
+    self.drag_index    = idx
+    self.drag_mirrored = mirrored
+    self.last_x        = x
+    self.last_y        = y
+end
+
+function zbiplot:mouse_drag(x, y)
+    if not self.dragging then return end
+
+    local w = select(1, self:get_size())
+    local scale = w / 3
+    local div   = self.shift and 10 or 1
+
+    local dre =  (x - self.last_x) / scale / div
+    local dim = -(y - self.last_y) / scale / div
+    -- the lower marker is the conjugate, so it moves the stored root the
+    -- other way
+    if self.drag_mirrored then dim = -dim end
+
+    local pts = self.drag_points
+    local pt  = pts[self.drag_index]
+    local was_pair = pt[2] > CONJ_TOL
+    pt[1] = pt[1] + dre
+    pt[2] = math.max(0, pt[2] + dim)
+    local is_pair = pt[2] > CONJ_TOL
+
+    -- keep the number of roots the same: a real root pulled off the axis
+    -- becomes a pair, which takes the place of the nearest other real root
+    -- (with no other real root it stays on the axis), and a pair pushed onto
+    -- the axis becomes two coincident real roots
+    if is_pair and not was_pair then
+        local other, dist = nil, math.huge
+        for i, q in ipairs(pts) do
+            if i ~= self.drag_index and q[2] <= CONJ_TOL and math.abs(q[1] - pt[1]) < dist then
+                other, dist = i, math.abs(q[1] - pt[1])
+            end
+        end
+        if other then
+            table.remove(pts, other)
+            if other < self.drag_index then self.drag_index = self.drag_index - 1 end
+        else
+            pt[2] = 0
+        end
+    elseif was_pair and not is_pair then
+        pt[2] = 0
+        table.insert(pts, self.drag_index + 1, { pt[1], 0 })
+    end
+
+    self.last_x = x
+    self.last_y = y
+    self:repaint()
+    self:output()
+end
+
+function zbiplot:mouse_up()
+    self.dragging = false
+    self:save_state()
+end
+
+function zbiplot:key(down, name)
+    if name == "Shift_L" or name == "Shift_R" then
+        self.shift = (down ~= 0)
+    end
+end
+
+function zbiplot:save_state()
+    if self.savestate ~= 0 then
+        self:save_args()
+    end
+end
+
+function zbiplot:output()
+    if self:root_count(self.poles) == 2 and self:root_count(self.zeros) == 2 then
+        self:output_coeff()
+    end
+end
+
+function zbiplot:output_coeff()
+    local zf = self:expand(self.zeros)
+    local pf = self:expand(self.poles)
+
+    local z_sum_re  = zf[1][1] + zf[2][1]
+    local z_prod_re = zf[1][1] * zf[2][1] - zf[1][2] * zf[2][2]
+    local b0 = self.gain
+    local b1 = -b0 * z_sum_re
+    local b2 =  b0 * z_prod_re
+
+    local p_sum_re  = pf[1][1] + pf[2][1]
+    local p_prod_re = pf[1][1] * pf[2][1] - pf[1][2] * pf[2][2]
+    local a1 =  p_sum_re
+    local a2 = -p_prod_re
+
+    self:outlet(1, "list", { a1, a2, b0, b1, b2 })
+end
+
+function zbiplot:paint(g)
+    local w, h = self:get_size()
+    local scale = w / 3
+    local M = 5
+
+    g:set_color(self.bgcolor[1], self.bgcolor[2], self.bgcolor[3])
+    g:fill_all()
+
+    g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+    g:draw_line(0, h / 2, w, h / 2, 1)
+    g:draw_line(w / 2, 0, w / 2, h, 1)
+    g:stroke_ellipse(w / 2 - scale, h / 2 - scale, scale * 2, scale * 2, 1)
+
+    g:set_color(self.zerocolor[1], self.zerocolor[2], self.zerocolor[3])
+    for _, z in ipairs(self.zeros) do
+        local px, py = self:z_to_px(z[1], z[2])
+        g:stroke_ellipse(px - M, py - M, M * 2, M * 2, 1.5)
+        if z[2] > CONJ_TOL then
+            local cx, cy = self:z_to_px(z[1], -z[2])
+            g:stroke_ellipse(cx - M, cy - M, M * 2, M * 2, 1.5)
+        end
+    end
+
+    g:set_color(self.polecolor[1], self.polecolor[2], self.polecolor[3])
+    for _, p in ipairs(self.poles) do
+        local px, py = self:z_to_px(p[1], p[2])
+        g:draw_line(px - M, py - M, px + M, py + M, 1.5)
+        g:draw_line(px - M, py + M, px + M, py - M, 1.5)
+        if p[2] > CONJ_TOL then
+            local cx, cy = self:z_to_px(p[1], -p[2])
+            g:draw_line(cx - M, cy - M, cx + M, cy + M, 1.5)
+            g:draw_line(cx - M, cy + M, cx + M, cy - M, 1.5)
+        end
+    end
+
+    if w ~= self.size then
+        self.size = w
+        self:save_args()
+    end
+end

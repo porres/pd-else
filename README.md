@@ -111,13 +111,13 @@ Some objects are simply based (or better, depend on) on other software and are j
 
 --------------------------------------------------------------------------
 
-## Current Object list (595 objects):
+## Current Object list (600 objects):
 
 #assorted
     else
 
 #gui
-    knob numbox~ drum.seq bicoeff pad messbox mtx.ctl biplot zbiplot pic colors function circle slider2d display popmenu out.mc~ out~ out4~ out8~ gain~ gain2~ level~ button keyboard graph~ range.hsl multi.vsl spectrograph~ meter~ meter2~ meter4~ meter8~ note mix2~ mix4~ setdsp~ openfile scope~ scope3d~
+    knob numbox~ drum.seq bicoeff pad messbox mtx.ctl biplot zbiplot pic colors function circle slider2d display popmenu out.mc~ out~ out4~ out8~ gain~ gain2~ level~ button keyboard graph~ range.hsl multi.vsl multi.hsl spectrograph~ meter~ meter2~ meter4~ meter8~ note mix2~ mix4~ setdsp~ openfile scope~ scope3d~ incdec tab guicanvas playlist~
 
 #time
     chrono datetime
