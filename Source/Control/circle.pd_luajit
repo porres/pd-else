@@ -11,11 +11,11 @@ else_gui.setup(circle, {
     { "fgcolor",        pd.fg_color,  "repaint",   "Foreground",           "color", {frame="Appearance", flag="fgcolor", msg="fgcolor"} },
     { "grid",           1,            "repaint",   "Grid",             "check", {frame="General", flag="grid"}},
     { "jump",           0,            nil,         "Jump on Click",    "check", {frame="General", flag="jump"}},
-    { "savestate",      0,            nil,         "Save State",       "check", {frame="General", flag="savestate"}},
+    { "savestate",      0,            "record_init","Save State",      "check", {frame="General", flag="savestate"}},
     { "init_x",         0,            nil,         nil,                "float" },
     { "init_y",         0,            nil,         nil,                "float" },
-    { "send",           "empty",      nil,         "Send",             "text",  {frame="General", flag="send"}},
-    { "receive",        "empty",      "on_receive","Receive",          "text",  {frame="General", flag="receive"}},
+    { "send",           "empty",      nil,         "Send",             "text",  {frame="General", flag="send", dollar=true}},
+    { "receive",        "empty",      "on_receive","Receive",          "text",  {frame="General", flag="receive", dollar=true}},
     { "clip",           1,            "repaint",   "Clip to Circle",   "check", {frame="General", flag="clip"}},
 }, {["-range"] = function(self, atoms, i)
         self.xrange[1], self.yrange[2] = tonumber(atoms[i]),   tonumber(atoms[i])
@@ -80,16 +80,18 @@ function circle:unscale(val, lo, hi)
     return (val - lo) / (hi - lo)
 end
 
+-- While we output, what comes back in through the receive name is dropped,
+-- and an answer to [retrieve] isn't sent (see receive_cb in else_gui).
 function circle:output()
-    if self._outputting then return end
+    local outer = self._outputting
     self._outputting = true
     local x = self:scale(self.slider_position_x, self.xrange[1], self.xrange[2])
     local y = self:scale(self.slider_position_y, self.yrange[2],   self.yrange[1])
     self:outlet(1, "list", {x, y})
-    if self.send ~= "" and self.send ~= "empty" then
-        pd.send(self.send, "list", {x, y})
+    if self.send ~= "" and self.send ~= "empty" and not self._retrieving then
+        pd.send(self:realize_symbol(self.send), "list", {x, y})
     end
-    self._outputting = false
+    self._outputting = outer   -- outputs can nest, so restore
 end
 
 function circle:record_init()
@@ -97,13 +99,6 @@ function circle:record_init()
         self.init_x = self.slider_position_x
         self.init_y = self.slider_position_y
         self:save_args()
-    end
-end
-
-function circle:setup_receive(sym)
-    self.recv = nil
-    if sym ~= "" and sym ~= "empty" then
-        self.recv = pd.Receive:new():register(self, sym, "receive_cb")
     end
 end
 
@@ -163,13 +158,6 @@ end
 function circle:mouse_up()
     self.dragging = false
     self:record_init()
-end
-
-function circle:receive_cb(sel, atoms)
-    if     sel == "bang" then self:in_1_bang()
-    elseif sel == "list" then self:in_1_list(atoms)
-    elseif sel == "set"  then self:in_1_set(atoms)
-    end
 end
 
 function circle:in_1_bang()
