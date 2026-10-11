@@ -11,9 +11,9 @@ else_gui.setup(drum_seq, {
     { "_d6", 0 }, { "_d7", 0 }, { "_d8", 0 }, { "_d9", 0 }, { "_d10", 0 }, { "_d11", 0 },
     { "content",    {},            nil,           nil,             "float", {consume="slots*tracks"} },
     { "bgcolor",    pd.bg_color,   "repaint",     "Background",    "color", {frame="Appearance", flag="bgcolor"}   },
-    { "activecolor",pd.fg_color,   "repaint",     "Active Cell",   "color", {frame="Appearance", flag="activecolor"} },
-    { "cursorcolor",{180,210,255}, "repaint",     "Cursor Column", "color", {frame="Appearance", flag="cursorcolor"} },
-    { "gridcolor",  {160,160,160}, "repaint",     "Grid",          "color", {frame="Appearance", flag="gridcolor"}  },
+    { "activecolor",{180,210,255}, "repaint",     "Active Cell",   "color", {frame="Appearance", flag="activecolor"} },
+    { "gridcolor",  pd.fg_color,   "repaint",     "Grid",          "color", {frame="Appearance", flag="gridcolor"}  },
+    { "flashcolor", pd.gop_color,  "repaint",     "Flash",         "color", {frame="Appearance", flag="flashcolor"}  },
 }, {
     ["-embed"] = function(self, atoms, i)
         self.embed = 1
@@ -27,6 +27,9 @@ function drum_seq:initialize(sel, atoms)
     self.outlets  = 2
     self.cur_slot  = 0   -- the slot the cursor shows: the last one played
     self.next_slot = 1   -- the slot the next bang plays
+    self.flashing   = false
+    self.refresh_ms = 150
+    self.clock = pd.Clock:new():register(self, "refresh")
 
     -- paint state
     self.paint_val        = nil
@@ -50,6 +53,10 @@ function drum_seq:initialize(sel, atoms)
 
     self:set_size(self.slots * self.cell_size, self.tracks * self.cell_size)
     return true
+end
+
+function drum_seq:finalize()
+    self.clock:destruct()
 end
 
 function drum_seq:in_1_list(atoms)
@@ -178,7 +185,9 @@ function drum_seq:play(s)
         self:outlet(2, "bang", {})
         self:outlet(1, "bang", {})
     end
+    self.flashing = true
     self:repaint()
+    self.clock:delay(self.refresh_ms)
 end
 
 function drum_seq:mouse_down(x, y)
@@ -261,36 +270,50 @@ function drum_seq:in_1_embed(atoms)
     self:save_state()
 end
 
+function drum_seq:refresh()
+    self.flashing = false
+    self:repaint()
+end
+
 function drum_seq:paint(g)
     local cs   = self.cell_size
     local w, h = self:get_size()
     local bg   = self.bgcolor
     local ac   = self.activecolor
-    local cc   = self.cursorcolor
     local gc   = self.gridcolor
+    local fc   = self.flashcolor
 
     -- background
     g:set_color(bg[1], bg[2], bg[3])
-    g:fill_all()
+    g:fill_rect(0, 0, w, h)
 
-    -- cursor column highlight
-    g:set_color(cc[1], cc[2], cc[3])
-    g:fill_rect((math.max(0, self.cur_slot - 1)) * cs + 1, 1, cs - 1, h - 1)
+    -- cursor column: the lines around and across it in the active colour,
+    -- its cells in the cursor colour
+    local cur    = math.max(1, self.cur_slot)
+    local cx     = (cur - 1) * cs
+    local x1, x2 = math.max(0, cx - 1), math.min(w, cx + cs + 1)
 
     -- active cells
     g:set_color(ac[1], ac[2], ac[3])
     for t = 1, self.tracks do
         for s = 1, self.slots do
             if self.grid[t][s] ~= 0 then
-                local x = (s - 1) * cs
-                local y = (t - 1) * cs
-                g:fill_rect(x, y, cs, cs)
+                g:fill_rect((s - 1) * cs, (t - 1) * cs, cs, cs)
             end
         end
     end
 
     -- grid lines
     g:set_color(gc[1], gc[2], gc[3])
-    for s = 1, self.slots-1 do g:draw_line(s * cs, 0,  s * cs, h,    1) end
-    for t = 1, self.tracks-1 do g:draw_line(0, t * cs, w,    t * cs, 1) end
+    for s = 1, self.slots - 1 do g:fill_rect(s * cs - 1, 0, 2, h) end
+    for t = 1, self.tracks - 1 do g:fill_rect(0, t * cs - 1, w, 2) end
+
+    g:set_color(bg[1], bg[2], bg[3], 0)
+    g:fill_all()
+
+    local col = self.flashing and fc or gc
+    g:set_color(col[1], col[2], col[3])
+    for t = 1, self.tracks do
+        g:stroke_rect(cx, (t - 1) * cs, cs, cs, 3)
+    end
 end
