@@ -7,8 +7,8 @@ else_gui.setup(slider2d, {
     { "xrange",      {0, 127},      "repaint",    "X Range",      "range", {frame="General", flag="xrange"} },
     { "yrange",      {0, 127},      "repaint",    "Y Range",      "range", {frame="General", flag="yrange"} },
     { "line",        1,             "repaint",    "Crosshair",    "check", {frame="Appearance", order=4, flag="line"} },
-    { "bgcolor",     pd.bg_color,   "repaint",    "Background",   "color", {frame="Appearance", order=1, flag="bgcolor"} },
-    { "fgcolor",     pd.fg_color,   "repaint",    "Foreground",   "color", {frame="Appearance", order=2, flag="fgcolor"} },
+    { "bgcolor",     pd.bg_color,   "repaint",    "Background",   "color", {frame="Appearance", order=1, flag="bgcolor", theme="bg"} },
+    { "fgcolor",     pd.fg_color,   "repaint",    "Foreground",   "color", {frame="Appearance", order=2, flag="fgcolor", theme="fg"} },
     { "grid",        0,             "repaint",    "Show grid",    "check", {frame="Appearance", order=2, flag="grid"} },
     { "jump",        0,             nil,          "Jump on Click","check", {frame="General", flag="jump"} },
     { "savestate",   0,             nil,          "Save State",   "check", {frame="General", flag="savestate"} },
@@ -16,7 +16,10 @@ else_gui.setup(slider2d, {
     { "init_x",      0,             nil,          nil,            "float" },
     { "init_y",      0,             nil,          nil,            "float" },
     { "send",        "empty",       nil,          "Send",         "text",  {frame="General", flag="send", dollar=true} },
-    { "receive",     "empty",       "on_receive", "Receive",      "text",  {frame="General", flag="receive", dollar=true} }
+    { "receive",     "empty",       "on_receive", "Receive",      "text",  {frame="General", flag="receive", dollar=true} },
+    -- appended so that the positional argument order above never changes
+    { "usetheme",    0, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
+    { "transparent", 0, "repaint", "Transparent",      "check", {frame="Appearance", order=0, flag="transparent"} },
 }, {
 -- these take only the numbers given: what's left out keeps its value
 ["-range"] = function(self, atoms, i)
@@ -211,10 +214,10 @@ function slider2d:paint(g)
     local w, h = self:get_size()
 
     -- background
-    g:set_color(self.bgcolor[1], self.bgcolor[2], self.bgcolor[3])
-    g:fill_all()
+    self:fill_background(g, "bgcolor")
 
-    g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+    local fg = self:color("fgcolor")
+    g:set_color(fg[1], fg[2], fg[3])
     if self.grid == 1 then
         g:draw_line(w / 2, 0, w / 2, h, 1)
         g:draw_line(0, h / 2, w, h / 2, 1)

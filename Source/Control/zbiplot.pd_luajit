@@ -4,10 +4,13 @@ local zbiplot  = pd.Class:new():register("zbiplot")
 else_gui.setup(zbiplot, {
     { "size",      200,          "on_resize", "Size",       "int",   {frame="Dimensions", min=50, max=4096, flag="size"} },
     { "savestate", 0,            nil,         "Save State", "check", {frame="General", flag="savestate"} },
-    { "bgcolor",   pd.bg_color,  "repaint",   "Background", "color", {frame="Appearance", flag="bgcolor"} },
-    { "fgcolor",   pd.fg_color,  "repaint",   "Axes",       "color", {frame="Appearance", flag="fgcolor"} },
+    { "bgcolor",   pd.bg_color,  "repaint",   "Background", "color", {frame="Appearance", flag="bgcolor", theme="bg"} },
+    { "fgcolor",   pd.fg_color,  "repaint",   "Axes",       "color", {frame="Appearance", flag="fgcolor", theme="fg"} },
     { "polecolor", {220,40,40},  "repaint",   "Poles",      "color", {frame="Appearance", flag="polecolor"} },
     { "zerocolor", {40,40,220},  "repaint",   "Zeros",      "color", {frame="Appearance", flag="zerocolor"} },
+    -- appended so that the positional argument order above never changes
+    { "usetheme",    0, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
+    { "transparent", 0, "repaint", "Transparent",      "check", {frame="Appearance", order=0, flag="transparent"} },
 })
 
 -- in save state mode the roots are saved after the declared arguments:
@@ -347,10 +350,10 @@ function zbiplot:paint(g)
     local scale = w / 3
     local M = 5
 
-    g:set_color(self.bgcolor[1], self.bgcolor[2], self.bgcolor[3])
-    g:fill_all()
+    self:fill_background(g, "bgcolor")
 
-    g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+    local fg = self:color("fgcolor")
+    g:set_color(fg[1], fg[2], fg[3])
     g:draw_line(0, h / 2, w, h / 2, 1)
     g:draw_line(w / 2, 0, w / 2, h, 1)
     g:stroke_ellipse(w / 2 - scale, h / 2 - scale, scale * 2, scale * 2, 1)
