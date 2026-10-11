@@ -31,6 +31,7 @@ else_gui.setup(display, {
     { "refresh_ms",  100,             nil,         "Refresh (ms)",     "int",   {min=10, max=5000, flag="refresh", nomsg=true} },
     { "noflash",     0,               nil,         "No Flash",         "check", {flag="noflash", nomsg=true} },
     { "usetheme",    1,               "repaint",   "Use Theme Colors", "check", {frame="Appearance", flag="usetheme", nomsg=true} },
+    { "transparent", 0,               "repaint",   "Transparent",      "check", {frame="Appearance", flag="transparent", nomsg=true} },
     { "bgcolor",     {224, 224, 224}, "repaint",   "Background",       "color", {frame="Appearance", flag="bgcolor", nomsg=true} },
     { "flashcolor",  {74, 79, 81},    "repaint",   "Flash",            "color", {frame="Appearance", flag="flashcolor", nomsg=true} },
     { "fgcolor",     {64, 64, 64},    "repaint",   "Text",             "color", {frame="Appearance", flag="fgcolor", nomsg=true} },
@@ -169,7 +170,13 @@ function display:paint(g)
     local bg = self.flashing and flashc or bgc
     local fg = self.flashing and contrast_color(flashc) or fgc
 
-    g:set_color(bg[1], bg[2], bg[3])
+    if self.transparent ~= 0 and not self.flashing then
+        -- fill with the canvas background so we read as transparent
+        local p = pd.bg_color()
+        g:set_color(p[1], p[2], p[3])
+    else
+        g:set_color(bg[1], bg[2], bg[3])
+    end
     g:fill_all()
 
     g:set_color(fg[1], fg[2], fg[3])
