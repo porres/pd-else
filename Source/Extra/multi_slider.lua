@@ -525,9 +525,8 @@ function multi_slider.setup(class, name, vertical)
         local fg    = self.fgcolor
         local lc    = self.linecolor
 
-        -- background
         g:set_color(bg[1], bg[2], bg[3])
-        g:fill_all()
+        g:fill_rect(0, 0, w, h)
 
         -- slider fills: up from the bottom, or right from the left edge. The
         -- bars end on whole pixels too, see edge() above.
@@ -567,6 +566,10 @@ function multi_slider.setup(class, name, vertical)
             self.height = h
             self:save_args()
         end
+
+        -- outline
+        g:set_color(0, 0, 0, 0)
+        g:fill_all()
     end
 end
 
