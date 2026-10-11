@@ -1,4 +1,4 @@
-#N canvas 202 161 1400 688 10;
+#N canvas 628 58 572 663 10;
 #X obj 2 3 cnv 15 301 42 empty empty tab 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -21,7 +21,7 @@
 #X obj 150 141 else/tab 220 25 4 -labels sine saw square noise;
 #X floatatom 150 190 7 0 0 0 - - - 0;
 #X text 205 190 index of the selected tab;
-#N canvas 202 161 1400 688 labels 0;
+#N canvas 876 180 500 538 labels 0;
 #X text 30 20 Set every label at once with the 'labels' message \, or a single one with 'label' followed by the tab index (counting from 0) and the new text., f 56;
 #X text 30 78 The number of tabs is set with the 'tabs' message or the '-ntabs' flag. Changing the number of tabs keeps the labels that are still in range and fills the rest with 'tab1' \, 'tab2' and so on., f 56;
 #X obj 30 300 else/tab 300 24 3 -labels low mid high;
@@ -51,7 +51,7 @@
 #X connect 15 0 16 0;
 #X connect 16 0 2 0;
 #X restore 55 235 pd labels;
-#N canvas 614 96 560 560 colors 0;
+#N canvas 614 96 481 441 colors 0;
 #X text 40 20 [tab] has four colors: the background \, the fill of the active tab \, the text of the inactive tabs (which also draws the dividers) and the text of the active tab., f 56;
 #X text 40 70 Set them with the 'bgcolor' \, 'activecolor' \, 'fgcolor' and 'activetextcolor' messages \, or with the matching flags. Colors are in RGB., f 56;
 #X obj 40 300 else/tab 260 26 3 -labels one two three;
@@ -74,7 +74,7 @@
 #X connect 9 0 2 0;
 #X connect 10 0 2 0;
 #X restore 55 258 pd colors;
-#N canvas 600 120 520 400 savestate 0;
+#N canvas 600 120 496 388 savestate 0;
 #X text 30 20 With the 'savestate' message or the '-savestate' flag the GUI operates in 'save state mode' \, where it saves the selected tab from the last time the patch was saved. Note that this is only useful for patches and not abstractions. For abstractions you should use [savestate] instead \, and also have a look at [presets]. Unlike iemguis \, the value is not output when loading the patch \, use [loadbang] for that., f 62;
 #X obj 60 175 tgl 19 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
 #X msg 60 205 savestate \$1;
@@ -88,7 +88,7 @@
 #X connect 2 0 3 0;
 #X connect 3 0 4 0;
 #X restore 145 235 pd savestate;
-#N canvas 620 120 560 400 send/receive 0;
+#N canvas 620 120 557 333 send/receive 0;
 #X text 40 20 You can also set send/receive names with the 'send'/'receive' messages or the '-send'/'-receive' flags., f 48;
 #X text 40 62 Make sure to escape "\$0" properly with backslashes (as in: "\\\$0")., f 48;
 #X text 40 100 Setting these to 'empty' removes the send/receive symbols., f 48;
@@ -104,7 +104,7 @@
 #X connect 6 0 7 0;
 #X connect 8 0 9 0;
 #X restore 145 258 pd send/receive;
-#N canvas 600 100 540 460 example 0;
+#N canvas 600 100 415 450 example 0;
 #X text 40 20 A typical use for [tab] is picking one of several options. Here the tab index chooses an interval to transpose a note by., f 56;
 #X obj 60 90 else/tab 280 26 4 -labels unison third fifth octave;
 #X obj 60 145 select 0 1 2 3;

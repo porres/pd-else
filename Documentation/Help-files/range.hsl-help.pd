@@ -1,4 +1,4 @@
-#N canvas 202 161 1400 688 10;
+#N canvas 511 54 570 602 10;
 #X obj 84 39 cnv 4 4 4 empty empty horizontal 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 163 39 cnv 4 4 4 empty empty slider 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 305 3 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
@@ -62,7 +62,7 @@
 #X text 412 200 The two colors default to the Pd theme's background and foreground colors., f 24;
 #X text 114 457 savestate <float>;
 #X text 227 457 - non zero sets to save state mode, f 52;
-#N canvas 202 161 1400 688 savestate 0;
+#N canvas 835 241 470 332 savestate 0;
 #X text 30 20 With the 'savestate' message or the '-savestate' flag the GUI operates in 'save state mode' \, where it saves the low and high values from the last time the patch was saved. Note that this is only useful for patches and not abstractions. For abstractions you should use [savestate] instead \, and also have a look at [presets]. Unlike iemguis \, the values are not output when loading the patch \, use [loadbang] for that., f 62;
 #X obj 57 134 tgl 19 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000 0 1;
 #X msg 57 164 savestate \$1;

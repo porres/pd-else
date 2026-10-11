@@ -1,4 +1,4 @@
-#N canvas 169 133 1438 875 10;
+#N canvas 538 38 593 883 10;
 #X obj 2 3 cnv 15 301 42 empty empty guicanvas 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;

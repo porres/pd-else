@@ -1,4 +1,4 @@
-#N canvas 203 162 1400 688 10;
+#N canvas 599 81 564 666 10;
 #X obj 2 2 cnv 15 301 42 empty empty multi.vsl 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -239,7 +239,7 @@
 #X restore 20 206 pd send/receive;
 #X text 245 114 press shift for fine tuning and alt/option for locking on a slider, f 11;
 #X obj 320 201 else/display 7;
-#X text 378 205 <= slider number / value;
+#X text 385 202 <= slider number / value;
 #X text 211 279 - sets and dumps sliders values from the first (0), f 56;
 #X text 94 335 dim <float \, float>;
 #X text 211 335 - sets dimensions (horizontal \, vertical), f 52;

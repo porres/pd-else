@@ -1,4 +1,4 @@
-#N canvas 202 161 1400 688 10;
+#N canvas 744 111 571 669 10;
 #X obj 2 2 cnv 15 301 42 empty empty multi.hsl 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;

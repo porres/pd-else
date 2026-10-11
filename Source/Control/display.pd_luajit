@@ -26,16 +26,21 @@ local function usub(s, n)
 end
 
 else_gui.setup(display, {
-    { "fixed_chars", 0,            "on_resize", "Fixed Chars",  "int",   {min=0, max=1024, flag="chars", nomsg=true} },
+    { "fixed_chars", 0,               "on_resize", "Fixed Chars",      "int",   {min=0, max=1024, flag="chars", nomsg=true} },
     -- how often the display redraws at most, and how long a flash lasts
-    { "refresh_ms",  100,          nil,         "Refresh (ms)", "int",   {min=10, max=5000, flag="refresh", nomsg=true} },
-    { "noflash",     0,            nil,         "No Flash",     "check", {flag="noflash", nomsg=true} },
-    { "bgcolor",     pd.bg_color,  "repaint",   "Background",   "color", {frame="Appearance", flag="bgcolor", nomsg=true} },
-    { "flashcolor",  {220,220,255},"repaint",   "Flash",        "color", {frame="Appearance", flag="flashcolor", nomsg=true} },
-    { "fgcolor",     pd.fg_color,  "repaint",   "Text",         "color", {frame="Appearance", flag="fgcolor", nomsg=true} },
+    { "refresh_ms",  100,             nil,         "Refresh (ms)",     "int",   {min=10, max=5000, flag="refresh", nomsg=true} },
+    { "noflash",     0,               nil,         "No Flash",         "check", {flag="noflash", nomsg=true} },
+    { "usetheme",    1,               "repaint",   "Use Theme Colors", "check", {frame="Appearance", flag="usetheme", nomsg=true} },
+    { "bgcolor",     {224, 224, 224}, "repaint",   "Background",       "color", {frame="Appearance", flag="bgcolor", nomsg=true} },
+    { "flashcolor",  {74, 79, 81},    "repaint",   "Flash",            "color", {frame="Appearance", flag="flashcolor", nomsg=true} },
+    { "fgcolor",     {64, 64, 64},    "repaint",   "Text",             "color", {frame="Appearance", flag="fgcolor", nomsg=true} },
 }, {
     ["-noflash"] = function(self, atoms, i)
         self.noflash = 1
+        return 0   -- bare flag; no value consumed
+    end,
+    ["-notheme"] = function(self, atoms, i)
+        self.usetheme = 0
         return 0   -- bare flag; no value consumed
     end,
 })
@@ -80,10 +85,22 @@ local function fmt(a)
 end
 
 function display:format_message(sel, atoms)
+    if sel == "list" and #atoms == 0 then return "bang" end
     if sel == "bang" then return "bang" end
-    if sel == "float" or sel == "symbol" then return fmt(atoms[1]) end
+    if sel == "float" then return fmt(atoms[1]) end
+    if sel == "toggle" then return "toggle " .. fmt(atoms[1]) end
+
+    -- a single-symbol list shows as "symbol X"; a real "symbol" too
+    if (sel == "symbol" or sel == "list")
+       and #atoms == 1 and type(atoms[1]) == "string" then
+        return "symbol " .. fmt(atoms[1])
+    end
+
     local parts = {}
-    if sel ~= "list" then parts[1] = sel end
+    -- show the selector unless it's "list" whose first element is a number
+    if sel ~= "list" or type(atoms[1]) == "string" then
+        parts[1] = sel
+    end
     for _, a in ipairs(atoms) do parts[#parts + 1] = fmt(a) end
     return table.concat(parts, " ")
 end
@@ -136,10 +153,21 @@ local function contrast_color(c)
     return lum > 128 and {0, 0, 0} or {255, 255, 255}
 end
 
+-- pick the active palette: live theme colors if the toggle is on,
+-- otherwise the user-set colors stored as properties
+function display:colors()
+    if self.usetheme ~= 0 then
+        return pd.bg_color(), pd.sel_color(), pd.fg_color()
+    end
+    return self.bgcolor, self.flashcolor, self.fgcolor
+end
+
 function display:paint(g)
     local w, h = self:get_size()
-    local bg = self.flashing and self.flashcolor or self.bgcolor
-    local fg = self.flashing and contrast_color(self.flashcolor) or self.fgcolor
+    local bgc, flashc, fgc = self:colors()
+
+    local bg = self.flashing and flashc or bgc
+    local fg = self.flashing and contrast_color(flashc) or fgc
 
     g:set_color(bg[1], bg[2], bg[3])
     g:fill_all()
