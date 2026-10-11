@@ -31,6 +31,7 @@ else_gui.setup(display, {
     { "refresh_ms",  100,             nil,         "Refresh (ms)",     "int",   {min=10, max=5000, flag="refresh", nomsg=true} },
     { "noflash",     0,               nil,         "No Flash",         "check", {flag="noflash", nomsg=true} },
     { "usetheme",    1,               "repaint",   "Use Theme Colors", "check", {frame="Appearance", flag="usetheme", nomsg=true} },
+    { "transparent", 0,               "on_transparent", "Transparent", "check", {frame="Appearance", flag="transparent", nomsg=true} },
     { "bgcolor",     {224, 224, 224}, "repaint",   "Background",       "color", {frame="Appearance", flag="bgcolor", nomsg=true} },
     { "flashcolor",  {74, 79, 81},    "repaint",   "Flash",            "color", {frame="Appearance", flag="flashcolor", nomsg=true} },
     { "fgcolor",     {64, 64, 64},    "repaint",   "Text",             "color", {frame="Appearance", flag="fgcolor", nomsg=true} },
@@ -41,6 +42,10 @@ else_gui.setup(display, {
     end,
     ["-notheme"] = function(self, atoms, i)
         self.usetheme = 0
+        return 0   -- bare flag; no value consumed
+    end,
+    ["-transparent"] = function(self, atoms, i)
+        self.transparent = 1
         return 0   -- bare flag; no value consumed
     end,
 })
@@ -55,12 +60,22 @@ function display:initialize(sel, atoms)
     self.clock    = pd.Clock:new():register(self, "refresh")
 
     self:init_args(atoms)
+    self:on_transparent()
     self:update_size()
     return true
 end
 
 function display:finalize()
     self.clock:destruct()
+end
+
+function display:on_transparent()
+    if self.transparent ~= 0 then
+        self.bgcolor = ""
+    elseif self.bgcolor == "" then
+        self.bgcolor = {224, 224, 224}
+    end
+    self:repaint()
 end
 
 function display:on_resize()
@@ -169,7 +184,11 @@ function display:paint(g)
     local bg = self.flashing and flashc or bgc
     local fg = self.flashing and contrast_color(flashc) or fgc
 
-    g:set_color(bg[1], bg[2], bg[3])
+    if type(bg) == "table" then
+        g:set_color(bg[1], bg[2], bg[3])
+    else
+        g:set_color(0, 0, 0, 0)   -- alpha 0 → no fill, outline stays
+    end
     g:fill_all()
 
     g:set_color(fg[1], fg[2], fg[3])
