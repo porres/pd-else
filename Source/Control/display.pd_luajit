@@ -31,10 +31,10 @@ else_gui.setup(display, {
     { "refresh_ms",  100,             nil,         "Refresh (ms)",     "int",   {min=10, max=5000, flag="refresh", nomsg=true} },
     { "noflash",     0,               nil,         "No Flash",         "check", {flag="noflash", nomsg=true} },
     { "usetheme",    1,               "repaint",   "Use Theme Colors", "check", {frame="Appearance", flag="usetheme", nomsg=true} },
-    { "transparent", 0,               "on_transparent", "Transparent", "check", {frame="Appearance", flag="transparent", nomsg=true} },
-    { "bgcolor",     {224, 224, 224}, "repaint",   "Background",       "color", {frame="Appearance", flag="bgcolor", nomsg=true} },
-    { "flashcolor",  {74, 79, 81},    "repaint",   "Flash",            "color", {frame="Appearance", flag="flashcolor", nomsg=true} },
-    { "fgcolor",     {64, 64, 64},    "repaint",   "Text",             "color", {frame="Appearance", flag="fgcolor", nomsg=true} },
+    { "transparent", 0,               "repaint",   "Transparent",      "check", {frame="Appearance", flag="transparent", nomsg=true} },
+    { "bgcolor",     {224, 224, 224}, "repaint",   "Background",       "color", {frame="Appearance", flag="bgcolor", nomsg=true, theme="bg"} },
+    { "flashcolor",  {74, 79, 81},    "repaint",   "Flash",            "color", {frame="Appearance", flag="flashcolor", nomsg=true, theme="sel"} },
+    { "fgcolor",     {64, 64, 64},    "repaint",   "Text",             "color", {frame="Appearance", flag="fgcolor", nomsg=true, theme="fg"} },
 }, {
     ["-noflash"] = function(self, atoms, i)
         self.noflash = 1
@@ -60,22 +60,12 @@ function display:initialize(sel, atoms)
     self.clock    = pd.Clock:new():register(self, "refresh")
 
     self:init_args(atoms)
-    self:on_transparent()
     self:update_size()
     return true
 end
 
 function display:finalize()
     self.clock:destruct()
-end
-
-function display:on_transparent()
-    if self.transparent ~= 0 then
-        self.bgcolor = ""
-    elseif self.bgcolor == "" then
-        self.bgcolor = {224, 224, 224}
-    end
-    self:repaint()
 end
 
 function display:on_resize()
@@ -168,28 +158,19 @@ local function contrast_color(c)
     return lum > 128 and {0, 0, 0} or {255, 255, 255}
 end
 
--- pick the active palette: live theme colors if the toggle is on,
--- otherwise the user-set colors stored as properties
-function display:colors()
-    if self.usetheme ~= 0 then
-        return pd.bg_color(), pd.sel_color(), pd.fg_color()
-    end
-    return self.bgcolor, self.flashcolor, self.fgcolor
-end
-
 function display:paint(g)
     local w, h = self:get_size()
-    local bgc, flashc, fgc = self:colors()
+    local fg = self:color("fgcolor")
 
-    local bg = self.flashing and flashc or bgc
-    local fg = self.flashing and contrast_color(flashc) or fgc
-
-    if type(bg) == "table" then
-        g:set_color(bg[1], bg[2], bg[3])
+    -- a flash shows even on a transparent background
+    if self.flashing then
+        local flashc = self:color("flashcolor")
+        g:set_color(flashc[1], flashc[2], flashc[3])
+        g:fill_all()
+        fg = contrast_color(flashc)
     else
-        g:set_color(0, 0, 0, 0)   -- alpha 0 → no fill, outline stays
+        self:fill_background(g, "bgcolor")
     end
-    g:fill_all()
 
     g:set_color(fg[1], fg[2], fg[3])
     g:draw_text(self.message, 4, 4, w)

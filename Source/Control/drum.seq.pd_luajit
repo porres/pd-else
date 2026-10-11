@@ -10,10 +10,13 @@ else_gui.setup(drum_seq, {
     { "_d1", 0 }, { "_d2", 0 }, { "_d3", 0 }, { "_d4", 0 }, { "_d5", 0 },
     { "_d6", 0 }, { "_d7", 0 }, { "_d8", 0 }, { "_d9", 0 }, { "_d10", 0 }, { "_d11", 0 },
     { "content",    {},            nil,           nil,             "float", {consume="slots*tracks"} },
-    { "bgcolor",    pd.bg_color,   "repaint",     "Background",    "color", {frame="Appearance", flag="bgcolor"}   },
+    { "bgcolor",    pd.bg_color,   "repaint",     "Background",    "color", {frame="Appearance", flag="bgcolor", theme="bg"}     },
     { "activecolor",{180,210,255}, "repaint",     "Active Cell",   "color", {frame="Appearance", flag="activecolor"} },
-    { "gridcolor",  pd.fg_color,   "repaint",     "Grid",          "color", {frame="Appearance", flag="gridcolor"}  },
-    { "flashcolor", pd.gop_color,  "repaint",     "Flash",         "color", {frame="Appearance", flag="flashcolor"}  },
+    { "gridcolor",  pd.fg_color,   "repaint",     "Grid",          "color", {frame="Appearance", flag="gridcolor", theme="fg"}  },
+    { "flashcolor", pd.gop_color,  "repaint",     "Flash",         "color", {frame="Appearance", flag="flashcolor", theme="gop"} },
+    -- appended so that the positional argument order above never changes
+    { "usetheme",    0, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
+    { "transparent", 0, "repaint", "Transparent",      "check", {frame="Appearance", order=0, flag="transparent"} },
 }, {
     ["-embed"] = function(self, atoms, i)
         self.embed = 1
@@ -278,14 +281,16 @@ end
 function drum_seq:paint(g)
     local cs   = self.cell_size
     local w, h = self:get_size()
-    local bg   = self.bgcolor
+    local bg   = self:background("bgcolor")
     local ac   = self.activecolor
-    local gc   = self.gridcolor
-    local fc   = self.flashcolor
+    local gc   = self:color("gridcolor")
+    local fc   = self:color("flashcolor")
 
     -- background
-    g:set_color(bg[1], bg[2], bg[3])
-    g:fill_rect(0, 0, w, h)
+    if bg then
+        g:set_color(bg[1], bg[2], bg[3])
+        g:fill_rect(0, 0, w, h)
+    end
 
     -- cursor column: the lines around and across it in the active colour,
     -- its cells in the cursor colour
@@ -308,7 +313,8 @@ function drum_seq:paint(g)
     for s = 1, self.slots - 1 do g:fill_rect(s * cs - 1, 0, 2, h) end
     for t = 1, self.tracks - 1 do g:fill_rect(0, t * cs - 1, w, 2) end
 
-    g:set_color(bg[1], bg[2], bg[3], 0)
+    -- outline
+    g:set_color(0, 0, 0, 0)
     g:fill_all()
 
     local col = self.flashing and fc or gc

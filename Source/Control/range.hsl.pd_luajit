@@ -6,14 +6,16 @@ else_gui.setup(range_hsl, {
     { "height",    20,            "resize",     "Height",     "int",   {frame="Dimensions", min=4,  max=256,  flag="height"}  },
     { "range",     {0, 127},      "on_range",   "Range",      "range", {frame="General",    flag="range"}                     },
     { "mode",      0,             nil,          "Base Mode",  "combo", {frame="General",    flag="mode", items={"Move","Select","Extend","Expand"}}},
-    { "bgcolor",   pd.bg_color,   "repaint",    "Background", "color", {frame="Appearance", flag="bgcolor"}                   },
-    { "fgcolor",   pd.fg_color,   "repaint",    "Range Fill", "color", {frame="Appearance", flag="fgcolor"}                   },
+    { "bgcolor",   pd.bg_color,   "repaint",    "Background", "color", {frame="Appearance", flag="bgcolor", theme="bg"}       },
+    { "fgcolor",   pd.fg_color,   "repaint",    "Range Fill", "color", {frame="Appearance", flag="fgcolor", theme="fg"}       },
     { "send",      "empty",        nil,         "Send",       "text",  {frame="General",    flag="send", dollar=true}                      },
     { "receive",   "empty",       "on_receive", "Receive",    "text",  {frame="General",    flag="receive", dollar=true}                   },
     -- appended so that the positional argument order above never changes
     { "savestate", 0,             "save_state", "Save State", "check", {frame="General",    flag="savestate"}                 },
     { "init_lo",   0,             nil,          nil,          "float"                                                        },
-    { "init_hi",   0,             nil,          nil,          "float"                                                        }
+    { "init_hi",   0,             nil,          nil,          "float"                                                        },
+    { "usetheme",    0, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
+    { "transparent", 0, "repaint", "Transparent",      "check", {frame="Appearance", order=0, flag="transparent"} },
 })
 
 function range_hsl:initialize(sel, atoms)
@@ -234,15 +236,13 @@ end
 
 function range_hsl:paint(g)
     local w, h  = self:get_size()
-    local bg    = self.bgcolor
-    local fg    = self.fgcolor
+    local fg    = self:color("fgcolor")
     -- with a backwards range the low value is the right end
     local px_lo = math.min(self:val_to_px(self.val_lo), self:val_to_px(self.val_hi))
     local px_hi = math.max(self:val_to_px(self.val_lo), self:val_to_px(self.val_hi))
 
     -- background
-    g:set_color(bg[1], bg[2], bg[3])
-    g:fill_all()
+    self:fill_background(g, "bgcolor")
 
     -- range fill
     g:set_color(fg[1], fg[2], fg[3])

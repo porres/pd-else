@@ -6,9 +6,9 @@ else_gui.setup(circle, {
     { "xrange",         {-1, 1},      "repaint",   "X Range",          "range", {frame="General", flag="xrange"}},
     { "yrange",         {-1, 1},      "repaint",   "Y Range",          "range", {frame="General", flag="yrange"}},
     { "mode",           1,            "repaint",   "Mode",             "combo", {frame="General", flag="mode", items={"none", "crosshair", "line to center"}} },
-    { "bgcolor1",       pd.bg_color,  "repaint",   "Background",       "color", {frame="Appearance", ncols=3, flag="bgcolor1", msg="bgcolor1"} },
-    { "bgcolor2",       pd.bg_color,  "repaint",   "Circle",           "color", {frame="Appearance", flag="bgcolor2", msg="bgcolor2"} },
-    { "fgcolor",        pd.fg_color,  "repaint",   "Foreground",           "color", {frame="Appearance", flag="fgcolor", msg="fgcolor"} },
+    { "bgcolor1",       pd.bg_color,  "repaint",   "Background",       "color", {frame="Appearance", ncols=3, flag="bgcolor1", msg="bgcolor1", theme="bg"} },
+    { "bgcolor2",       pd.bg_color,  "repaint",   "Circle",           "color", {frame="Appearance", flag="bgcolor2", msg="bgcolor2", theme="bg"} },
+    { "fgcolor",        pd.fg_color,  "repaint",   "Foreground",           "color", {frame="Appearance", flag="fgcolor", msg="fgcolor", theme="fg"} },
     { "grid",           1,            "repaint",   "Grid",             "check", {frame="General", flag="grid"}},
     { "jump",           0,            nil,         "Jump on Click",    "check", {frame="General", flag="jump"}},
     { "savestate",      0,            "record_init","Save State",      "check", {frame="General", flag="savestate"}},
@@ -17,6 +17,9 @@ else_gui.setup(circle, {
     { "send",           "empty",      nil,         "Send",             "text",  {frame="General", flag="send", dollar=true}},
     { "receive",        "empty",      "on_receive","Receive",          "text",  {frame="General", flag="receive", dollar=true}},
     { "clip",           1,            "repaint",   "Clip to Circle",   "check", {frame="General", flag="clip"}},
+    -- appended so that the positional argument order above never changes
+    { "usetheme",    0, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
+    { "transparent", 0, "repaint", "Transparent",      "check", {frame="Appearance", order=0, flag="transparent"} },
 }, {["-range"] = function(self, atoms, i)
         self.xrange[1], self.yrange[2] = tonumber(atoms[i]),   tonumber(atoms[i])
         self.xrange[2], self.yrange[1] = tonumber(atoms[i+1]), tonumber(atoms[i+1])
@@ -188,15 +191,14 @@ function circle:paint(g)
     local py = (1 - self.slider_position_y) * h
 
     -- background square
-    self:set_color_from(g, self.bgcolor1)
-    g:fill_all()
+    self:fill_background(g, "bgcolor1")
 
     -- circle face
-    self:set_color_from(g, self.bgcolor2)
+    self:set_color_from(g, self:color("bgcolor2"))
     g:fill_ellipse(1, 1, w - 1, h - 1)
 
     -- grid lines
-    self:set_color_from(g, self.fgcolor)
+    self:set_color_from(g, self:color("fgcolor"))
     if self.grid ~= 0 then
         g:draw_line(w/2, 0,  w/2, h,   1)
         g:draw_line(0,  h/2,  w, h/2,  1)

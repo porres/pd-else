@@ -8,14 +8,16 @@ else_gui.setup(incdec, {
     { "range",     {-1e6, 1e6},  "on_range",  "Range",      "range", {frame="General", flag="range"} },
     { "savestate", 0,            "save_state", "Save State", "check", {frame="General", flag="savestate"} },
     { "init_val",  0,            nil,         nil,          "float" },
-    { "bgcolor",   pd.bg_color,  "repaint",   "Background", "color", {frame="Appearance", flag="bgcolor"} },
-    { "fgcolor",   pd.fg_color,  "repaint",   "Foreground", "color", {frame="Appearance", flag="fgcolor"} },
+    { "bgcolor",   pd.bg_color,  "repaint",   "Background", "color", {frame="Appearance", flag="bgcolor", theme="bg"} },
+    { "fgcolor",   pd.fg_color,  "repaint",   "Foreground", "color", {frame="Appearance", flag="fgcolor", theme="fg"} },
     { "send",      "empty",      nil,         "Send",       "text",  {frame="General", flag="send", dollar=true} },
     { "receive",   "empty",      "on_receive","Receive",    "text",  {frame="General", flag="receive", dollar=true} },
     -- appended so that the positional argument order above never changes
     { "autorepeat", 0,           nil,         "Autorepeat", "check", {frame="General", flag="repeat", msg="repeat"} },
     { "relative",  0,            nil,         "Relative",   "check", {frame="General", flag="relative"} },
     { "horizontal",0,            "on_resize", "Horizontal", "check", {frame="General", flag="horizontal"} },
+    { "usetheme",    0, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
+    { "transparent", 0, "repaint", "Transparent",      "check", {frame="Appearance", order=0, flag="transparent"} },
 })
 
 local REPEAT_DELAY = 400   -- ms held down before autorepeat kicks in
@@ -188,20 +190,20 @@ end
 
 function incdec:paint(g)
     local w, h = self:get_size()
+    local bg, fg = self:color("bgcolor"), self:color("fgcolor")
 
     -- background
-    g:set_color(self.bgcolor[1], self.bgcolor[2], self.bgcolor[3])
-    g:fill_all()
+    self:fill_background(g, "bgcolor")
 
     local lw = math.max(1.5, math.min(2.5, math.min(w, h) / 20))
-    local up_color = (self.active ==  1) and self.bgcolor or self.fgcolor
-    local dn_color = (self.active == -1) and self.bgcolor or self.fgcolor
+    local up_color = (self.active ==  1) and bg or fg
+    local dn_color = (self.active == -1) and bg or fg
 
     if self.horizontal ~= 0 then
         local mid = w / 2
 
         -- highlight the half being pressed: right increments, left decrements
-        g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+        g:set_color(fg[1], fg[2], fg[3])
         if self.active == 1 then
             g:fill_rect(mid, 0, mid, h)
         elseif self.active == -1 then
@@ -231,7 +233,7 @@ function incdec:paint(g)
         local mid = h / 2
 
         -- highlight the half being pressed: top increments, bottom decrements
-        g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+        g:set_color(fg[1], fg[2], fg[3])
         if self.active == 1 then
             g:fill_rect(0, 0, w, mid)
         elseif self.active == -1 then

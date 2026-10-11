@@ -17,12 +17,17 @@ function multi_slider.setup(class, name, vertical)
         { "tabname",    "internal",   "on_rename",  "Array Name", "text",  {frame="General",    flag="name", msg="rename", dollar=true}      },
         { "send",       "empty",      nil,          "Send",       "text",  {frame="General",    flag="send", dollar=true}                       },
         { "receive",    "empty",      "on_receive", "Receive",    "text",  {frame="General",    flag="receive", dollar=true}                    },
-        { "bgcolor",    pd.bg_color,  "repaint",    "Background", "color", {frame="Appearance", flag="bgcolor"}                    },
-        { "fgcolor",    {90, 90, 90}, "repaint",    "Foreground", "color", {frame="Appearance", flag="fgcolor"}                    },
-        { "linecolor",  pd.fg_color,  "repaint",    "Line",       "color", {frame="Appearance", flag="linecolor"}                  },
+        { "bgcolor",    pd.bg_color,  "repaint",    "Background", "color", {frame="Appearance", flag="bgcolor", theme="bg"}        },
+        { "fgcolor",    {90, 90, 90}, "repaint",    "Foreground", "color", {frame="Appearance", flag="fgcolor", theme=0.65}        },
+        { "linecolor",  pd.fg_color,  "repaint",    "Line",       "color", {frame="Appearance", flag="linecolor", theme="fg"}      },
         { "jump",       0,            nil,          "Jump",       "check", {frame="General",    flag="jump"}                       },
         { "savestate",  0,            nil,          "Save State", "check", {frame="General",    flag="savestate"}                  },
         { "mode",       0,            nil,          "List Mode",  "check", {frame="General",    flag="mode"}                       },
+        -- appended so that the positional argument order above never
+        -- changes. Patches saved by the old abstraction have "holder"
+        -- placeholders here, which leave these at their defaults.
+        { "usetheme",   0,            "repaint",    "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"}   },
+        { "transparent",0,            "repaint",    "Transparent",      "check", {frame="Appearance", order=0, flag="transparent"} },
     }, {
         -- -dim <w> <h>
         ["-dim"] = function(self, atoms, i)
@@ -521,12 +526,14 @@ function multi_slider.setup(class, name, vertical)
 
     function class:paint(g)
         local w, h  = self:get_size()
-        local bg    = self.bgcolor
-        local fg    = self.fgcolor
-        local lc    = self.linecolor
+        local bg    = self:background("bgcolor")
+        local fg    = self:color("fgcolor")
+        local lc    = self:color("linecolor")
 
-        g:set_color(bg[1], bg[2], bg[3])
-        g:fill_rect(0, 0, w, h)
+        if bg then
+            g:set_color(bg[1], bg[2], bg[3])
+            g:fill_rect(0, 0, w, h)
+        end
 
         -- slider fills: up from the bottom, or right from the left edge. The
         -- bars end on whole pixels too, see edge() above.

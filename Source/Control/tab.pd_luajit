@@ -11,14 +11,16 @@ else_gui.setup(tab, {
     { "ntabs",       3,             "on_ntabs",  "Tabs",       "int",   {frame="General",    min=1,  max=128,  flag="ntabs"} },
     { "savestate",   0,             "save_state", "Save State", "check", {frame="General", flag="savestate"} },
     { "init_tab",    0,             nil,         nil,          "int" },
-    { "bgcolor",     pd.bg_color,   "repaint",   "Background", "color", {frame="Appearance", flag="bgcolor"} },
-    { "activecolor", pd.fg_color,   "repaint",   "Active Tab", "color", {frame="Appearance", flag="activecolor"} },
-    { "fgcolor",     pd.fg_color,   "repaint",   "Text",       "color", {frame="Appearance", flag="fgcolor"} },
-    { "activetextcolor", pd.bg_color, "repaint", "Active Text","color", {frame="Appearance", flag="activetextcolor"} },
+    { "bgcolor",     pd.bg_color,   "repaint",   "Background", "color", {frame="Appearance", flag="bgcolor", theme="bg"} },
+    { "activecolor", pd.fg_color,   "repaint",   "Active Tab", "color", {frame="Appearance", flag="activecolor", theme="fg"} },
+    { "fgcolor",     pd.fg_color,   "repaint",   "Text",       "color", {frame="Appearance", flag="fgcolor", theme="fg"} },
+    { "activetextcolor", pd.bg_color, "repaint", "Active Text","color", {frame="Appearance", flag="activetextcolor", theme="bg"} },
     { "send",        "empty",       nil,         "Send",       "text",  {frame="General", flag="send", dollar=true} },
     { "receive",     "empty",       "on_receive","Receive",    "text",  {frame="General", flag="receive", dollar=true} },
     -- appended so that the positional argument order above never changes
     { "mode",        0,             nil,         "Output Label","check", {frame="General", flag="mode"} },
+    { "usetheme",    0, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
+    { "transparent", 0, "repaint", "Transparent",      "check", {frame="Appearance", order=0, flag="transparent"} },
 }, {
     -- -labels tab1 tab2 tab3 ...  (takes words up to the next of our flags,
     -- so a label may start with "-", like "-3dB")
@@ -201,18 +203,20 @@ end
 function tab:paint(g)
     local w, h = self:get_size()
     local n  = math.max(1, self.ntabs)     -- never divide by zero here
+    local fg = self:color("fgcolor")
+    local ac = self:color("activecolor")
+    local at = self:color("activetextcolor")
 
     -- background
-    g:set_color(self.bgcolor[1], self.bgcolor[2], self.bgcolor[3])
-    g:fill_all()
+    self:fill_background(g, "bgcolor")
 
     -- active tab fill
     local a0, a1 = self:tab_edge(self.active, w), self:tab_edge(self.active + 1, w)
-    g:set_color(self.activecolor[1], self.activecolor[2], self.activecolor[3])
+    g:set_color(ac[1], ac[2], ac[3])
     g:fill_rect(a0, 0, a1 - a0, h)
 
     -- dividers
-    g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+    g:set_color(fg[1], fg[2], fg[3])
     for i = 1, n - 1 do
         local x = self:tab_edge(i, w)
         g:draw_line(x, 0, x, h, 1)
@@ -225,9 +229,9 @@ function tab:paint(g)
         local is_active = (i - 1) == self.active
 
         if is_active then
-            g:set_color(self.activetextcolor[1], self.activetextcolor[2], self.activetextcolor[3])
+            g:set_color(at[1], at[2], at[3])
         else
-            g:set_color(self.fgcolor[1], self.fgcolor[2], self.fgcolor[3])
+            g:set_color(fg[1], fg[2], fg[3])
         end
 
         -- center text in tab cell

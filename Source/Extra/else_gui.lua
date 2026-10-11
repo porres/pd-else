@@ -29,6 +29,22 @@ function else_gui.numbers(atoms, i, n)
     return t
 end
 
+-- A color of the theme Pd or plugdata paints in, as {r, g, b}. A color field
+-- names the one it stands for with opts.theme: "bg", "fg", "sel" or "gop"
+-- for the background, foreground, selection and graph-on-parent colors, or a
+-- number for a shade between the background (0) and the foreground (1).
+local THEME = { bg = "bg_color", fg = "fg_color", sel = "sel_color", gop = "gop_color" }
+
+function else_gui.theme_color(role)
+    if type(role) == "number" then
+        local bg, fg = pd.bg_color(), pd.fg_color()
+        local c = {}
+        for i = 1, 3 do c[i] = math.floor(bg[i] + (fg[i] - bg[i]) * role + 0.5) end
+        return c
+    end
+    return pd[THEME[role]]()
+end
+
 -- ─── Internal helpers ─────────────────────────────────────────────────────────
 
 local function is_color(def) return def[5] == "color" end
@@ -211,6 +227,34 @@ function else_gui.setup(class, defs, flags)
     for _, def in ipairs(defs) do def_of[def[1]] = def end
     class.limited = function(self, field, v)
         return limit(def_of[field], v)
+    end
+
+    -- ── Theme colors and transparency ─────────────────────────────────────────
+    -- The color to paint field `name` in: with "Use Theme Colors" on (a
+    -- "usetheme" field) the theme's (see else_gui.theme_color), otherwise
+    -- its own. It is read every time the object paints, so that it follows
+    -- a change of theme; the field keeps its own for when the toggle is off.
+    class.color = function(self, name)
+        local role = (def_of[name][6] or {}).theme
+        if role ~= nil and (self.usetheme or 0) ~= 0 then
+            return else_gui.theme_color(role)
+        end
+        return self[name]
+    end
+
+    -- The color to fill the background with, from field `name`, or nil
+    -- when it is transparent (a "transparent" field).
+    class.background = function(self, name)
+        if (self.transparent or 0) ~= 0 then return nil end
+        return self:color(name)
+    end
+
+    -- Fill the box with background field `name`, which draws its outline
+    -- too; with a transparent background only the outline.
+    class.fill_background = function(self, g, name)
+        local c = self:background(name)
+        if c then g:set_color(c[1], c[2], c[3]) else g:set_color(0, 0, 0, 0) end
+        g:fill_all()
     end
 
     -- whether a creation argument is one of this class's flags, for flag
