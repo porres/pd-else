@@ -19,7 +19,7 @@ else_gui.setup(tab, {
     { "receive",     "empty",       "on_receive","Receive",    "text",  {frame="General", flag="receive", dollar=true} },
     -- appended so that the positional argument order above never changes
     { "mode",        0,             nil,         "Output Label","check", {frame="General", flag="mode"} },
-    { "usetheme",    0, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
+    { "usetheme",    1, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
     { "transparent", 0, "repaint", "Transparent",      "check", {frame="Appearance", order=0, flag="transparent"} },
 }, {
     -- -labels tab1 tab2 tab3 ...  (takes words up to the next of our flags,

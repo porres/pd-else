@@ -18,7 +18,7 @@ else_gui.setup(circle, {
     { "receive",        "empty",      "on_receive","Receive",          "text",  {frame="General", flag="receive", dollar=true}},
     { "clip",           1,            "repaint",   "Clip to Circle",   "check", {frame="General", flag="clip"}},
     -- appended so that the positional argument order above never changes
-    { "usetheme",    0, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
+    { "usetheme",    1, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
     -- what is transparent: the background square only, or the circle too
     { "transparent", 0, "repaint", "Transparent",      "combo", {frame="Appearance", order=0, flag="transparent", items={"none", "background", "all"}} },
 }, {["-range"] = function(self, atoms, i)

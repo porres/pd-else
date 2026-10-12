@@ -18,7 +18,7 @@ else_gui.setup(slider2d, {
     { "send",        "empty",       nil,          "Send",         "text",  {frame="General", flag="send", dollar=true} },
     { "receive",     "empty",       "on_receive", "Receive",      "text",  {frame="General", flag="receive", dollar=true} },
     -- appended so that the positional argument order above never changes
-    { "usetheme",    0, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
+    { "usetheme",    1, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
     { "transparent", 0, "repaint", "Transparent",      "check", {frame="Appearance", order=0, flag="transparent"} },
 }, {
 -- these take only the numbers given: what's left out keeps its value

@@ -16,7 +16,7 @@ else_gui.setup(incdec, {
     { "autorepeat", 0,           nil,         "Autorepeat", "check", {frame="General", flag="repeat", msg="repeat"} },
     { "relative",  0,            nil,         "Relative",   "check", {frame="General", flag="relative"} },
     { "horizontal",0,            "on_resize", "Horizontal", "check", {frame="General", flag="horizontal"} },
-    { "usetheme",    0, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
+    { "usetheme",    1, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
     { "transparent", 0, "repaint", "Transparent",      "check", {frame="Appearance", order=0, flag="transparent"} },
 })
 

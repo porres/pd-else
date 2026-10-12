@@ -9,7 +9,7 @@ else_gui.setup(zbiplot, {
     { "polecolor", {220,40,40},  "repaint",   "Poles",      "color", {frame="Appearance", flag="polecolor"} },
     { "zerocolor", {40,40,220},  "repaint",   "Zeros",      "color", {frame="Appearance", flag="zerocolor"} },
     -- appended so that the positional argument order above never changes
-    { "usetheme",    0, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
+    { "usetheme",    1, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
     { "transparent", 0, "repaint", "Transparent",      "check", {frame="Appearance", order=0, flag="transparent"} },
 })
 

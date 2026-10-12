@@ -15,7 +15,7 @@ else_gui.setup(drum_seq, {
     { "gridcolor",  pd.fg_color,   "repaint",     "Grid",          "color", {frame="Appearance", flag="gridcolor", theme="fg"}  },
     { "flashcolor", pd.gop_color,  "repaint",     "Flash",         "color", {frame="Appearance", flag="flashcolor", theme="gop"} },
     -- appended so that the positional argument order above never changes
-    { "usetheme",    0, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
+    { "usetheme",    1, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
     { "transparent", 0, "repaint", "Transparent",      "check", {frame="Appearance", order=0, flag="transparent"} },
 }, {
     ["-embed"] = function(self, atoms, i)
