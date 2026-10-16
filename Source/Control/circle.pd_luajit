@@ -6,21 +6,31 @@ else_gui.setup(circle, {
     { "xrange",         {-1, 1},      "repaint",   "X Range",          "range", {frame="General", flag="xrange"}},
     { "yrange",         {-1, 1},      "repaint",   "Y Range",          "range", {frame="General", flag="yrange"}},
     { "mode",           1,            "repaint",   "Mode",             "combo", {frame="General", flag="mode", items={"none", "crosshair", "line to center"}} },
-    { "bgcolor1",       pd.bg_color,  "repaint",   "Background",       "color", {frame="Appearance", ncols=3, flag="bgcolor1", msg="bgcolor1"} },
-    { "bgcolor2",       pd.bg_color,  "repaint",   "Circle",           "color", {frame="Appearance", flag="bgcolor2", msg="bgcolor2"} },
-    { "fgcolor",        pd.fg_color,  "repaint",   "Foreground",           "color", {frame="Appearance", flag="fgcolor", msg="fgcolor"} },
+    { "bgcolor1",       pd.bg_color,  "repaint",   "Background",       "color", {frame="Appearance", ncols=3, flag="bgcolor1", msg="bgcolor1", theme="bg"} },
+    { "bgcolor2",       pd.bg_color,  "repaint",   "Circle",           "color", {frame="Appearance", flag="bgcolor2", msg="bgcolor2", theme="bg"} },
+    { "fgcolor",        pd.fg_color,  "repaint",   "Foreground",           "color", {frame="Appearance", flag="fgcolor", msg="fgcolor", theme="fg"} },
     { "grid",           1,            "repaint",   "Grid",             "check", {frame="General", flag="grid"}},
     { "jump",           0,            nil,         "Jump on Click",    "check", {frame="General", flag="jump"}},
-    { "savestate",      0,            nil,         "Save State",       "check", {frame="General", flag="savestate"}},
+    { "savestate",      0,            "record_init","Save State",      "check", {frame="General", flag="savestate"}},
     { "init_x",         0,            nil,         nil,                "float" },
     { "init_y",         0,            nil,         nil,                "float" },
-    { "send",           "empty",      nil,         "Send",             "text",  {frame="General", flag="send"}},
-    { "receive",        "empty",      "on_receive","Receive",          "text",  {frame="General", flag="receive"}},
+    { "send",           "empty",      nil,         "Send",             "text",  {frame="General", flag="send", dollar=true}},
+    { "receive",        "empty",      "on_receive","Receive",          "text",  {frame="General", flag="receive", dollar=true}},
     { "clip",           1,            "repaint",   "Clip to Circle",   "check", {frame="General", flag="clip"}},
+    -- appended so that the positional argument order above never changes
+    { "usetheme",    1, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
+    -- what is transparent: the background square only, or the circle too
+    { "transparent", 0, "repaint", "Transparent",      "combo", {frame="Appearance", order=0, flag="transparent", items={"none", "background", "all"}} },
 }, {["-range"] = function(self, atoms, i)
         self.xrange[1], self.yrange[2] = tonumber(atoms[i]),   tonumber(atoms[i])
         self.xrange[2], self.yrange[1] = tonumber(atoms[i+1]), tonumber(atoms[i+1])
         return 2
+    end,
+    -- given bare, the background is transparent, as with the other GUIs
+    ["-transparent"] = function(self, atoms, i)
+        local v = else_gui.numbers(atoms, i, 1)
+        self.transparent = v[1] and math.floor(v[1]) or 1
+        return #v
     end
     })
 
@@ -80,16 +90,18 @@ function circle:unscale(val, lo, hi)
     return (val - lo) / (hi - lo)
 end
 
+-- While we output, what comes back in through the receive name is dropped,
+-- and an answer to [retrieve] isn't sent (see receive_cb in else_gui).
 function circle:output()
-    if self._outputting then return end
+    local outer = self._outputting
     self._outputting = true
     local x = self:scale(self.slider_position_x, self.xrange[1], self.xrange[2])
     local y = self:scale(self.slider_position_y, self.yrange[2],   self.yrange[1])
     self:outlet(1, "list", {x, y})
-    if self.send ~= "" and self.send ~= "empty" then
-        pd.send(self.send, "list", {x, y})
+    if self.send ~= "" and self.send ~= "empty" and not self._retrieving then
+        pd.send(self:realize_symbol(self.send), "list", {x, y})
     end
-    self._outputting = false
+    self._outputting = outer   -- outputs can nest, so restore
 end
 
 function circle:record_init()
@@ -97,13 +109,6 @@ function circle:record_init()
         self.init_x = self.slider_position_x
         self.init_y = self.slider_position_y
         self:save_args()
-    end
-end
-
-function circle:setup_receive(sym)
-    self.recv = nil
-    if sym ~= "" and sym ~= "empty" then
-        self.recv = pd.Receive:new():register(self, sym, "receive_cb")
     end
 end
 
@@ -135,7 +140,7 @@ function circle:mouse_down(x, y)
 
     if self.jump == 1 then
         self.slider_position_x =  x / w
-        self.slider_position_y = 1 - (y / h)
+        self.slider_position_y = y / h
         self:clamp_position()
         self:repaint(); self:output()
     end
@@ -150,7 +155,7 @@ function circle:mouse_drag(x, y)
     if self.shift ~= 0 then dx, dy = dx / 10, dy / 10 end
 
     self.slider_position_x = self.slider_position_x + dx / w
-    self.slider_position_y = self.slider_position_y - dy / h
+    self.slider_position_y = self.slider_position_y + dy / h
 
     self:clamp_position()
     self:repaint(); self:output()
@@ -163,13 +168,6 @@ end
 function circle:mouse_up()
     self.dragging = false
     self:record_init()
-end
-
-function circle:receive_cb(sel, atoms)
-    if     sel == "bang" then self:in_1_bang()
-    elseif sel == "list" then self:in_1_list(atoms)
-    elseif sel == "set"  then self:in_1_set(atoms)
-    end
 end
 
 function circle:in_1_bang()
@@ -197,18 +195,19 @@ end
 function circle:paint(g)
     local w, h = self:get_size()
     local px =  self.slider_position_x * w
-    local py = (1 - self.slider_position_y) * h
+    local py = self.slider_position_y * h
 
     -- background square
-    self:set_color_from(g, self.bgcolor1)
-    g:fill_all()
+    self:fill_background(g, "bgcolor1")
 
     -- circle face
-    self:set_color_from(g, self.bgcolor2)
-    g:fill_ellipse(1, 1, w - 1, h - 1)
+    if self.transparent ~= 2 then
+        self:set_color_from(g, self:color("bgcolor2"))
+        g:fill_ellipse(1, 1, w - 1, h - 1)
+    end
 
     -- grid lines
-    self:set_color_from(g, self.fgcolor)
+    self:set_color_from(g, self:color("fgcolor"))
     if self.grid ~= 0 then
         g:draw_line(w/2, 0,  w/2, h,   1)
         g:draw_line(0,  h/2,  w, h/2,  1)
