@@ -1,0 +1,5 @@
+local multi_slider = require("multi_slider")
+local multi_hsl    = pd.Class:new():register("multi.hsl")
+
+-- horizontal sliders, one above the other; the rest is shared with [multi.vsl]
+multi_slider.setup(multi_hsl, "multi.hsl", false)
