@@ -140,7 +140,7 @@ function circle:mouse_down(x, y)
 
     if self.jump == 1 then
         self.slider_position_x =  x / w
-        self.slider_position_y = 1 - (y / h)
+        self.slider_position_y = y / h
         self:clamp_position()
         self:repaint(); self:output()
     end
@@ -155,7 +155,7 @@ function circle:mouse_drag(x, y)
     if self.shift ~= 0 then dx, dy = dx / 10, dy / 10 end
 
     self.slider_position_x = self.slider_position_x + dx / w
-    self.slider_position_y = self.slider_position_y - dy / h
+    self.slider_position_y = self.slider_position_y + dy / h
 
     self:clamp_position()
     self:repaint(); self:output()
@@ -195,7 +195,7 @@ end
 function circle:paint(g)
     local w, h = self:get_size()
     local px =  self.slider_position_x * w
-    local py = (1 - self.slider_position_y) * h
+    local py = self.slider_position_y * h
 
     -- background square
     self:fill_background(g, "bgcolor1")
