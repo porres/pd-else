@@ -14,7 +14,7 @@ else_gui.setup(range_hsl, {
     { "savestate", 0,             "save_state", "Save State", "check", {frame="General",    flag="savestate"}                 },
     { "init_lo",   0,             nil,          nil,          "float"                                                        },
     { "init_hi",   0,             nil,          nil,          "float"                                                        },
-    { "usetheme",    0, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
+    { "usetheme",    1, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
     { "transparent", 0, "repaint", "Transparent",      "check", {frame="Appearance", order=0, flag="transparent"} },
 })
 

@@ -26,7 +26,7 @@ function multi_slider.setup(class, name, vertical)
         -- appended so that the positional argument order above never
         -- changes. Patches saved by the old abstraction have "holder"
         -- placeholders here, which leave these at their defaults.
-        { "usetheme",   0,            "repaint",    "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"}   },
+        { "usetheme",   1,            "repaint",    "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"}   },
         { "transparent",0,            "repaint",    "Transparent",      "check", {frame="Appearance", order=0, flag="transparent"} },
     }, {
         -- -dim <w> <h>

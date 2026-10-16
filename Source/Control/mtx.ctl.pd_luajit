@@ -14,7 +14,7 @@ else_gui.setup(mtxctl, {
     { "fgcolor",   pd.fg_color,   "repaint",      "Active Cell","color", {frame="Appearance", flag="fgcolor", theme="fg"} },
     { "gridcolor", {120,120,120}, "repaint",      "Grid",       "color", {frame="Appearance", flag="gridcolor", theme=0.5} },
     -- appended so that the positional argument order above never changes
-    { "usetheme",    0, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
+    { "usetheme",    1, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
     { "transparent", 0, "repaint", "Transparent",      "check", {frame="Appearance", order=0, flag="transparent"} },
 }, {
     ["-n"] = function(self, atoms, i)
