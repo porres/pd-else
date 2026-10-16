@@ -1,0 +1,3 @@
+#N canvas 147 125 450 300 12;
+#X text 109 44 You can set background and foreground colors as a RGB list or hexadecimal symbol. The "colors" message sets bacgrounds and foreground colors as hexadecimal symbols respectively. You can also set the object to use the Pd colors (aka 'theme'). You can change that via properties or the '-theme' creation flag. Setting colors gets the object out of the theme mode., f 95;
+#X text 459 171 You can set the background transparency via message or flag., f 14;

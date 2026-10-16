@@ -16,7 +16,7 @@ end
 
 function scope3d:postpostinit_task()
   local args = self:get_args()
-  
+
   self.methods = {
     { name = "rotate",      defaults = { 0, 0 } },
     { name = "rotatex" },
@@ -37,17 +37,20 @@ function scope3d:postpostinit_task()
     { name = "gridcolor",   defaults = { 160, 160, 160 } },
     { name = "receive",     defaults = { "empty" } },
   }
-  
+
   self.cameraDistance = 6
   self.rotationAngleX, self.rotationAngleY = 0, 0
   self.rotationStartAngleX, self.rotationStartAngleY = 0, 0
   self.gridLines = self:create_grid(-1, 1, 0.25)
 
+  self._initializing = true
   self:init_pd_methods(args)
+  self._initializing = false
+
   self:reset_buffer()
-  
+
   self.initialized = true
-  
+
   -- Process any pending messages if we have any
   if #self.pendingMessages > 0 then
     for _, msg in ipairs(self.pendingMessages) do
@@ -77,7 +80,7 @@ function scope3d:reset_buffer()
   self.signalX, self.signalY, self.signalZ = {}, {}, {}
   self.rotatedX, self.rotatedY, self.rotatedZ = {}, {}, {}
   -- prefill ring buffer
-  for i = 1, self.nlines do 
+  for i = 1, self.nlines do
     self.signalX[i], self.signalY[i], self.signalZ[i] = 0, 0, 0
     self.rotatedX[i], self.rotatedY[i], self.rotatedZ[i] = 0, 0, 0
   end
@@ -96,6 +99,41 @@ function scope3d:finalize()
   if self.recv then self.recv:destruct() end
 end
 
+-- Parse "#RRGGBB" or "#RGB" (leading # REQUIRED); returns {r,g,b} or nil.
+local function hex_to_rgb(hex)
+  if type(hex) ~= "string" then return nil end
+  if hex:sub(1, 1) ~= "#" then return nil end
+  hex = hex:sub(2)
+  if #hex == 3 then hex = hex:gsub("(.)", "%1%1") end
+  if #hex ~= 6 then return nil end
+  local r = tonumber(hex:sub(1, 2), 16)
+  local g = tonumber(hex:sub(3, 4), 16)
+  local b = tonumber(hex:sub(5, 6), 16)
+  if not (r and g and b) then return nil end
+  return { r, g, b }
+end
+
+-- Accepts only:
+--   * a single symbol atom beginning with '#'
+--   * exactly three number atoms, each in [0, 255]
+local function color_from_atoms(atoms)
+  if #atoms == 1 and type(atoms[1]) == "string" then
+    return hex_to_rgb(atoms[1])
+  end
+  if #atoms == 3
+     and type(atoms[1]) == "number"
+     and type(atoms[2]) == "number"
+     and type(atoms[3]) == "number" then
+    local r, g, b = atoms[1], atoms[2], atoms[3]
+    if r >= 0 and r <= 255
+       and g >= 0 and g <= 255
+       and b >= 0 and b <= 255 then
+      return { r, g, b }
+    end
+  end
+  return nil
+end
+
 function scope3d:pd_width(x)
   if type(x[1]) == "number" then
     self.strokeWidth = x[1]
@@ -103,13 +141,13 @@ function scope3d:pd_width(x)
 end
 
 function scope3d:pd_zoom(x)
-  if type(x[1]) == "number" then 
+  if type(x[1]) == "number" then
     self.zoom = x[1]
   end
 end
 
 function scope3d:pd_perspective(x)
-  if type(x[1]) == "number" then 
+  if type(x[1]) == "number" then
     self.perspective = x[1]
   end
 end
@@ -128,31 +166,47 @@ function scope3d:pd_drag(x)
   if type(x[1]) == "number" then self.drag = x[1] end
 end
 
+-- Colors: only "#RRGGBB" / "#RGB" or exactly 3 numbers in [0, 255].
+-- At load time (self._initializing) an invalid saved color falls back to the
+-- default. Live invalid input keeps the current state but still returns a
+-- valid triple so handle_pd_message doesn't write the bad values into pd_args.
 function scope3d:pd_gridcolor(x)
-  if #x == 3 and
-     type(x[1]) == "number" and
-     type(x[2]) == "number" and
-     type(x[3]) == "number" then
-    self.gridColorR, self.gridColorG, self.gridColorB = table.unpack(x)
+  local c = color_from_atoms(x)
+  if not c then
+    if self._initializing or not self.gridColorR then
+      c = { 160, 160, 160 }
+    else
+      return { self.gridColorR, self.gridColorG, self.gridColorB }
+    end
   end
+  self.gridColorR, self.gridColorG, self.gridColorB = c[1], c[2], c[3]
+  return c
 end
 
 function scope3d:pd_bgcolor(x)
-  if #x == 3 and
-     type(x[1]) == "number" and
-     type(x[2]) == "number" and
-     type(x[3]) == "number" then
-    self.bgColorR, self.bgColorG, self.bgColorB = table.unpack(x)
+  local c = color_from_atoms(x)
+  if not c then
+    if self._initializing or not self.bgColorR then
+      c = { 190, 190, 190 }
+    else
+      return { self.bgColorR, self.bgColorG, self.bgColorB }
+    end
   end
+  self.bgColorR, self.bgColorG, self.bgColorB = c[1], c[2], c[3]
+  return c
 end
 
 function scope3d:pd_fgcolor(x)
-  if #x == 3 and
-     type(x[1]) == "number" and
-     type(x[2]) == "number" and
-     type(x[3]) == "number" then
-    self.fgColorR, self.fgColorG, self.fgColorB = table.unpack(x)
+  local c = color_from_atoms(x)
+  if not c then
+    if self._initializing or not self.fgColorR then
+      c = { 30, 30, 30 }
+    else
+      return { self.fgColorR, self.fgColorG, self.fgColorB }
+    end
   end
+  self.fgColorR, self.fgColorG, self.fgColorB = c[1], c[2], c[3]
+  return c
 end
 
 function scope3d:pd_rate(x)
@@ -160,7 +214,7 @@ function scope3d:pd_rate(x)
     self.frameDelay = math.max(8, x[1])
   end
   if self.clock then
-    self.clock:unset() 
+    self.clock:unset()
     self.clock:delay(self.frameDelay)
   end
 end
@@ -233,7 +287,7 @@ function scope3d:mouse_up(x, y)
 end
 
 function scope3d:mouse_drag(x, y)
-  if self.drag == 1 then 
+  if self.drag == 1 then
     self.rotationAngleY = self.rotationStartAngleY + ((x-self.dragStartX) / 2)
     self.rotationAngleX = self.rotationStartAngleX + ((-y+self.dragStartY) / 2)
     self:repaint()
@@ -268,7 +322,7 @@ function scope3d:paint(g)
     g:set_color(self.gridColorR, self.gridColorG, self.gridColorB)
     for i = 1, #self.gridLines do
       local lineFromX, lineFromY, lineFromZ, lineToX, lineToY, lineToZ = table.unpack(self.gridLines[i])
-      
+
       -- apply rotation to grid lines
       lineFromX, lineFromY, lineFromZ = self:rotate_y(lineFromX, lineFromY, lineFromZ, self.rotationAngleY)
       lineFromX, lineFromY, lineFromZ = self:rotate_x(lineFromX, lineFromY, lineFromZ, self.rotationAngleX)
@@ -361,7 +415,7 @@ function scope3d:init_pd_methods(args)
     elseif not self.pd_env.ignorewarnings then
       self:error(self.pd_env.name..': no function \'' .. pd_method_name .. '\' defined')
     end
-    
+
     if method.defaults then
       self.pd_methods[method.name].index = argIndex
       self.pd_methods[method.name].arg_count = #method.defaults

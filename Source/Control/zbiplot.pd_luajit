@@ -1,0 +1,796 @@
+
+local else_gui = require("else_gui")
+
+local zbiplot = pd.Class:new():register("zbiplot")
+
+-- Parse "#RRGGBB" or "#RGB" (leading # REQUIRED); returns {r,g,b} or nil.
+-- Defined before else_gui.setup so the color-flag handlers can use it.
+
+local function normalize_order(n)
+    n = tonumber(n)
+    if not n then return nil end
+    n = math.floor(n / 2) * 2
+    return math.max(2, math.min(128, n))
+end
+
+local function hex_to_rgb(hex)
+    if type(hex) ~= "string" then return nil end
+    if hex:sub(1, 1) ~= "#" then return nil end
+    hex = hex:sub(2)
+    if #hex == 3 then hex = hex:gsub("(.)", "%1%1") end
+    if #hex ~= 6 then return nil end
+    local r = tonumber(hex:sub(1, 2), 16)
+    local g = tonumber(hex:sub(3, 4), 16)
+    local b = tonumber(hex:sub(5, 6), 16)
+    if not (r and g and b) then return nil end
+    return { r, g, b }
+end
+
+else_gui.setup(zbiplot, {
+    { "size", 200, "on_resize", "Size", "int", {frame="Dimensions", min=50, max=4096, flag="size"} },
+    { "savestate", 0, nil, "Save State", "check", {frame="General", flag="savestate"} },
+    { "bgcolor", {255,255,255}, "repaint", "Background", "color", {frame="Appearance", flag="bgcolor", theme="bg"} },
+    { "fgcolor", {0,0,0}, "repaint", "Foreground", "color", {frame="Appearance", flag="fgcolor", theme="fg"} },
+    { "polecolor", {220,40,40}, "repaint", "Poles", "color", {frame="Appearance", flag="polecolor", theme="gop"} },
+    { "zerocolor", {40,40,220}, "repaint", "Zeros", "color", {frame="Appearance", flag="zerocolor", theme="sel"} },
+
+    -- appended so that the positional argument order above never changes
+    { "usetheme", 1, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
+    { "transparent", 0, "repaint", "Transparent", "check", {frame="Appearance", order=0, flag="transparent"} },
+    { "order", 2, "on_order", "Order", "int", {frame="General", min=2, max=128, step=2, flag="order"} },
+
+}, {
+    -- bare flags: no value consumed
+    ["-theme"] = function(self, atoms, i)
+        self.usetheme = 1
+        return 0
+    end,
+
+    ["-savestate"] = function(self, atoms, i)
+        self.savestate = 1
+        return 0
+    end,
+
+    ["-transparent"] = function(self, atoms, i)
+        self.transparent = 1
+        return 0
+    end,
+
+    -- numeric flags: each consumes one atom
+    ["-size"] = function(self, atoms, i)
+        local v = else_gui.numbers(atoms, i, 1)
+        if v[1] then
+            self.size = math.max(50, math.min(4096, math.floor(v[1])))
+        end
+        return #v
+    end,
+
+    ["-order"] = function(self, atoms, i)
+        local v = else_gui.numbers(atoms, i, 1)
+        local n = v[1] and normalize_order(v[1])
+        if n then self.order = n end
+        return #v
+    end,
+
+    -- hex-only color flags: each takes exactly one '#RRGGBB' / '#RGB' symbol.
+    -- An invalid hex is skipped; the flag still consumes its one atom.
+    ["-bgcolor"] = function(self, atoms, i)
+        local c = hex_to_rgb(atoms[i])
+        if c then
+            self.bgcolor = c
+            self.usetheme = 0
+        end
+        return 1
+    end,
+
+    ["-fgcolor"] = function(self, atoms, i)
+        local c = hex_to_rgb(atoms[i])
+        if c then
+            self.fgcolor = c
+            self.usetheme = 0
+        end
+        return 1
+    end,
+
+    ["-polecolor"] = function(self, atoms, i)
+        local c = hex_to_rgb(atoms[i])
+        if c then
+            self.polecolor = c
+            self.usetheme = 0
+        end
+        return 1
+    end,
+
+    ["-zerocolor"] = function(self, atoms, i)
+        local c = hex_to_rgb(atoms[i])
+        if c then
+            self.zerocolor = c
+            self.usetheme = 0
+        end
+        return 1
+    end,
+})
+
+-- Strict validator for a color message from the inlet.
+-- Accepts exactly one of:
+--   * a single symbol atom beginning with '#'
+--   * exactly three number atoms, each in [0, 255]
+-- Anything else returns nil.
+
+local function color_from_atoms(atoms)
+    if #atoms == 1 and type(atoms[1]) == "string" then
+        return hex_to_rgb(atoms[1])
+    end
+    if #atoms == 3
+       and type(atoms[1]) == "number"
+       and type(atoms[2]) == "number"
+       and type(atoms[3]) == "number" then
+        local r, g, b = atoms[1], atoms[2], atoms[3]
+        if r >= 0 and r <= 255
+           and g >= 0 and g <= 255
+           and b >= 0 and b <= 255 then
+            return { r, g, b }
+        end
+    end
+    return nil
+end
+
+-- Reject any restored color that is not a {r, g, b} of numbers 0-255.
+-- This cleans up older patches that saved a bare number, etc.
+
+local function sanitize_color(c, default)
+    default = default or { 0, 0, 0 }
+    if type(c) == "table"
+       and type(c[1]) == "number"
+       and type(c[2]) == "number"
+       and type(c[3]) == "number"
+       and c[1] >= 0 and c[1] <= 255
+       and c[2] >= 0 and c[2] <= 255
+       and c[3] >= 0 and c[3] <= 255 then
+        return { c[1], c[2], c[3] }
+    end
+    return default
+end
+
+-- in save state mode the roots are saved after the declared arguments:
+-- np p1_re p1_im ... nz z1_re z1_im ... gain
+
+function zbiplot:extra_args(out)
+    if self.savestate == 0 or not self.poles then return end
+    out[#out + 1] = #self.poles
+    for _, p in ipairs(self.poles) do
+        out[#out + 1] = p[1]; out[#out + 1] = p[2]
+    end
+    out[#out + 1] = #self.zeros
+    for _, z in ipairs(self.zeros) do
+        out[#out + 1] = z[1]; out[#out + 1] = z[2]
+    end
+    out[#out + 1] = self.gain
+end
+
+local HIT_RADIUS = 8
+local CONJ_TOL = 1e-6
+
+function zbiplot:initialize(sel, atoms)
+    self.inlets = 2
+    self.outlets = 1 -- coeff list only
+    self.poles = {}
+    self.zeros = {}
+    self.gain = 1
+    self.cascade = nil -- biquad stages from the last coeff message
+
+    -- drag state
+    self.dragging = false
+    self.drag_points = nil
+    self.drag_index = nil
+    self.drag_mirrored = false
+    self.shift = false
+    self.last_x = 0
+    self.last_y = 0
+
+    local positional, first = self:init_args(atoms)
+
+    -- drop any malformed color state inherited from older saves
+    self.bgcolor = sanitize_color(self.bgcolor, { 255, 255, 255 })
+    self.fgcolor = sanitize_color(self.fgcolor, { 0, 0, 0 })
+    self.polecolor = sanitize_color(self.polecolor, { 220, 40, 40 })
+    self.zerocolor = sanitize_color(self.zerocolor, { 40, 40, 220 })
+
+    if self.savestate ~= 0 then
+        self:restore_state(positional, first)
+    else
+        -- two real poles and two real zeros at the origin
+        self.poles = { {0, 0}, {0, 0} }
+        self.zeros = { {0, 0}, {0, 0} }
+        self.gain = 1
+    end
+
+    self.order = normalize_order(self:root_count(self.poles))
+
+    self:set_size(self.size, self.size)
+    return true
+end
+
+-- pos: the positional arguments, as init_args parsed them; the saved roots
+-- start at pos[i], just after the ones it reads
+
+function zbiplot:restore_state(pos, i)
+    local np = math.floor(tonumber(pos[i]) or 0); i = i + 1
+    self.poles = {}
+    for _ = 1, np do
+        local re = tonumber(pos[i]) or 0; i = i + 1
+        local im = tonumber(pos[i]) or 0; i = i + 1
+        self.poles[#self.poles + 1] = { re, im }
+    end
+
+    local nz = math.floor(tonumber(pos[i]) or 0); i = i + 1
+    self.zeros = {}
+    for _ = 1, nz do
+        local re = tonumber(pos[i]) or 0; i = i + 1
+        local im = tonumber(pos[i]) or 0; i = i + 1
+        self.zeros[#self.zeros + 1] = { re, im }
+    end
+
+    local g = tonumber(pos[i])
+    if g then self.gain = g end
+
+    -- If nothing was restored, fall back to defaults.
+    if #self.poles == 0 then self.poles = { {0, 0}, {0, 0} } end
+    if #self.zeros == 0 then self.zeros = { {0, 0}, {0, 0} } end
+end
+
+function zbiplot:on_resize()
+    self:set_size(self.size, self.size)
+end
+
+function zbiplot:on_order()
+    self:in_1_order({ self.order })
+end
+
+function zbiplot:z_to_px(re, im)
+    local w, h = self:get_size()
+    local scale = w / 3
+    return w / 2 + re * scale,
+           h / 2 - im * scale
+end
+
+function zbiplot:px_to_z(px, py)
+    local w, h = self:get_size()
+    local scale = w / 3
+    return (px - w / 2) / scale,
+           (h / 2 - py) / scale
+end
+
+function zbiplot:canonicalize(points)
+    local canon = {}
+    for _, pt in ipairs(points) do
+        local re, im = pt[1], math.abs(pt[2])
+        local dup = false
+
+        -- a complex pair is stored once, as the root with the positive
+        -- imaginary part. Real roots are never merged: a repeated real root
+        -- is still two roots and has to stay countable as two.
+        if im > CONJ_TOL then
+            for _, c in ipairs(canon) do
+                if math.abs(c[1] - re) < CONJ_TOL and math.abs(c[2] - im) < CONJ_TOL then
+                    dup = true; break
+                end
+            end
+        end
+
+        if not dup then
+            canon[#canon + 1] = { re, im }
+        end
+    end
+    return canon
+end
+
+function zbiplot:expand(canonical)
+    local full = {}
+    for _, pt in ipairs(canonical) do
+        full[#full + 1] = { pt[1], pt[2] }
+        if pt[2] > CONJ_TOL then
+            full[#full + 1] = { pt[1], -pt[2] }
+        end
+    end
+    return full
+end
+
+function zbiplot:root_count(canonical)
+    local n = 0
+    for _, pt in ipairs(canonical) do
+        n = n + (pt[2] > CONJ_TOL and 2 or 1)
+    end
+    return n
+end
+
+-- Resize a canonical root list to exactly `target` roots.
+-- Keeps entries from the start, never splitting a complex conjugate pair:
+-- if the next entry would overshoot, stop and pad with real roots at (0, 0).
+
+function zbiplot:resize_roots(canonical, target)
+    local out = {}
+    local count = 0
+    for _, r in ipairs(canonical) do
+        local w = (r[2] > CONJ_TOL) and 2 or 1
+        if count + w > target then break end
+        out[#out + 1] = { r[1], r[2] }
+        count = count + w
+    end
+    while count < target do
+        out[#out + 1] = { 0, 0 }
+        count = count + 1
+    end
+    return out
+end
+
+-- Partition canonical roots into pairs suitable for biquad form.
+-- Each complex conjugate pair (im > 0) becomes one pair with its conjugate.
+-- Real roots are sorted by value and paired consecutively; an odd real root
+-- is paired with itself (a repeated real root is the only biquad-compatible
+-- way to represent an odd count).
+
+function zbiplot:pair_roots(canonical)
+    local pairs = {}
+    local reals = {}
+
+    for _, r in ipairs(canonical) do
+        if r[2] > CONJ_TOL then
+            pairs[#pairs + 1] = { r, { r[1], -r[2] } }
+        else
+            reals[#reals + 1] = r
+        end
+    end
+
+    table.sort(reals, function(a, b) return a[1] < b[1] end)
+
+    local i = 1
+    while i <= #reals do
+        if reals[i + 1] then
+            pairs[#pairs + 1] = { reals[i], reals[i + 1] }
+            i = i + 2
+        else
+            pairs[#pairs + 1] = { reals[i], reals[i] }
+            i = i + 1
+        end
+    end
+    return pairs
+end
+
+-- Denominator coefficients for 1 - a1 z^-1 - a2 z^-2 with poles p1, p2.
+-- For real coefficients the imaginary parts cancel; taking only the real
+-- parts keeps the invariant even if rounding leaves a residue.
+
+function zbiplot:pole_pair_to_ab(p1, p2)
+    local sum_re = p1[1] + p2[1]
+    local prod_re = p1[1] * p2[1] - p1[2] * p2[2]
+    return sum_re, -prod_re
+end
+
+-- Numerator coefficients for gain * (z - z1)(z - z2) = b0 z^2 + b1 z + b2.
+
+function zbiplot:zero_pair_to_b(z1, z2, gain)
+    local sum_re = z1[1] + z2[1]
+    local prod_re = z1[1] * z2[1] - z1[2] * z2[2]
+    return gain, -gain * sum_re, gain * prod_re
+end
+
+-- shared: apply one or more biquads from coefficient values in
+-- fb1 fb2 ff1 ff2 ff3 order (any number of 5-value groups).
+-- Stores the cascade verbatim so it round-trips through output.
+
+function zbiplot:apply_coeff(atoms)
+    if #atoms == 0 or #atoms % 5 ~= 0 then return false end
+
+    local n = #atoms / 5
+    local raw_poles, raw_zeros = {}, {}
+    local cascade = {}
+    local gain = 1
+
+    for i = 0, n - 1 do
+        local base = i * 5
+        local a1 = tonumber(atoms[base + 1]) or 0
+        local a2 = tonumber(atoms[base + 2]) or 0
+        local b0 = tonumber(atoms[base + 3]) or 0
+        local b1 = tonumber(atoms[base + 4]) or 0
+        local b2 = tonumber(atoms[base + 5]) or 0
+
+        cascade[#cascade + 1] = { a1, a2, b0, b1, b2 }
+
+        for _, z in ipairs(self:quadratic_roots(b0, b1, b2)) do
+            raw_zeros[#raw_zeros + 1] = z
+        end
+
+        for _, p in ipairs(self:quadratic_roots(1, -a1, -a2)) do
+            raw_poles[#raw_poles + 1] = p
+        end
+
+        if b0 ~= 0 then gain = gain * b0 end
+    end
+
+    self.cascade = cascade
+    self.order = normalize_order(n * 2)
+    self.gain = gain
+    self.poles = self:canonicalize(raw_poles)
+    self.zeros = self:canonicalize(raw_zeros)
+    return true
+end
+
+-- shared: pole coordinates as re/im pairs. Past four values, as the old
+-- [zbiplot] took them, the first four are the poles and the rest the zeros.
+
+function zbiplot:apply_pairs(atoms)
+    if #atoms > 4 then
+        self.poles = self:canonicalize(self:parse_pairs({ atoms[1], atoms[2], atoms[3], atoms[4] }))
+        self.zeros = self:canonicalize(self:parse_pairs({ select(5, (table.unpack or unpack)(atoms)) }))
+    else
+        self.poles = self:canonicalize(self:parse_pairs(atoms))
+    end
+    self.order = normalize_order(self:root_count(self.poles))
+    self.cascade = nil
+end
+
+-- coeff: biquad coefficients in fb1 fb2 ff1 ff2 ff3 order.
+-- Accepts one or more 5-value groups (5, 10, 15, ...). Outputs the
+-- resulting cascade.
+
+function zbiplot:in_1_coeff(atoms)
+    if not self:apply_coeff(atoms) then return end
+    self:save_state(); self:repaint(); self:output()
+end
+
+-- list: pole coordinates as re/im pairs. Past four values, as the old
+-- [zbiplot] took them, the first four are the poles and the rest the zeros.
+-- Outputs the resulting biquad(s).
+
+function zbiplot:in_1_list(atoms)
+    self:apply_pairs(atoms)
+    self:save_state(); self:repaint(); self:output()
+end
+
+-- set: same as list, no output
+
+function zbiplot:in_1_set(atoms)
+    self:apply_pairs(atoms)
+    self:save_state(); self:repaint()
+end
+
+-- order <n>: even number of poles and zeros, 2..128. Keeps existing
+-- entries from the start, pads with real roots at (0, 0), and drops
+-- trailing entries when trimming (never splitting a complex pair).
+-- Does not output; send bang or list afterwards to emit the cascade.
+
+function zbiplot:in_1_order(atoms)
+    local n = normalize_order(atoms[1])
+    if not n then return end
+
+    local old_p = self:root_count(self.poles)
+    local old_z = self:root_count(self.zeros)
+
+    self.poles = self:resize_roots(self.poles, n)
+    self.zeros = self:resize_roots(self.zeros, n)
+    self.order = n
+
+    if old_p ~= n or old_z ~= n then
+        self.cascade = nil
+    end
+
+    self:save_state(); self:repaint()
+end
+
+function zbiplot:in_2_list(atoms)
+    self.zeros = self:canonicalize(self:parse_pairs(atoms))
+    self.cascade = nil
+    self:save_state(); self:repaint()
+end
+
+function zbiplot:in_1_bang()
+    self:output()
+end
+
+function zbiplot:parse_pairs(atoms)
+    local pts = {}
+    for i = 1, #atoms - 1, 2 do
+        pts[#pts + 1] = { tonumber(atoms[i]) or 0, tonumber(atoms[i + 1]) or 0 }
+    end
+    return pts
+end
+
+function zbiplot:quadratic_roots(a, b, c)
+    if a == 0 then
+        if b ~= 0 then return {{ -c / b, 0 }} end
+        return {}
+    end
+
+    local disc = b * b - 4 * a * c
+    if disc >= 0 then
+        local sq = math.sqrt(disc)
+        return {
+            { (-b + sq) / (2 * a), 0 },
+            { (-b - sq) / (2 * a), 0 },
+        }
+    else
+        local sq = math.sqrt(-disc)
+        return {
+            { -b / (2 * a), sq / (2 * a) },
+            { -b / (2 * a), -sq / (2 * a) },
+        }
+    end
+end
+
+function zbiplot:find_nearest(px, py)
+    local best_dist = HIT_RADIUS
+    local best_coll, best_idx, best_mirrored = nil, nil, false
+
+    for _, entry in ipairs({{ self.poles, "poles" }, { self.zeros, "zeros" }}) do
+        local coll = entry[1]
+        for i, pt in ipairs(coll) do
+            local x1, y1 = self:z_to_px(pt[1], pt[2])
+            local d1 = math.sqrt((px - x1)^2 + (py - y1)^2)
+
+            if d1 < best_dist then
+                best_dist = d1; best_coll = coll; best_idx = i; best_mirrored = false
+            end
+
+            if pt[2] > CONJ_TOL then
+                local x2, y2 = self:z_to_px(pt[1], -pt[2])
+                local d2 = math.sqrt((px - x2)^2 + (py - y2)^2)
+
+                if d2 < best_dist then
+                    best_dist = d2; best_coll = coll; best_idx = i; best_mirrored = true
+                end
+            end
+        end
+    end
+
+    -- mirrored: the lower marker of a pair, the conjugate of the stored root
+    return best_coll, best_idx, best_mirrored
+end
+
+function zbiplot:mouse_down(x, y)
+    local coll, idx, mirrored = self:find_nearest(x, y)
+    if not coll then return end
+
+    self.dragging = true
+    self.drag_points = coll
+    self.drag_index = idx
+    self.drag_mirrored = mirrored
+    self.last_x = x
+    self.last_y = y
+end
+
+function zbiplot:mouse_drag(x, y)
+    if not self.dragging then return end
+
+    local w = select(1, self:get_size())
+    local scale = w / 3
+    local div = self.shift and 10 or 1
+    local dre = (x - self.last_x) / scale / div
+    local dim = -(y - self.last_y) / scale / div
+
+    -- the lower marker is the conjugate, so it moves the stored root the
+    -- other way
+    if self.drag_mirrored then dim = -dim end
+
+    local pts = self.drag_points
+    local pt = pts[self.drag_index]
+    local was_pair = pt[2] > CONJ_TOL
+
+    pt[1] = pt[1] + dre
+    pt[2] = math.max(0, pt[2] + dim)
+
+    local is_pair = pt[2] > CONJ_TOL
+
+    -- keep the number of roots the same: a real root pulled off the axis
+    -- becomes a pair, which takes the place of the nearest other real root
+    -- (with no other real root it stays on the axis), and a pair pushed onto
+    -- the axis becomes two coincident real roots
+
+    if is_pair and not was_pair then
+        local other, dist = nil, math.huge
+        for i, q in ipairs(pts) do
+            if i ~= self.drag_index and q[2] <= CONJ_TOL and math.abs(q[1] - pt[1]) < dist then
+                other, dist = i, math.abs(q[1] - pt[1])
+            end
+        end
+
+        if other then
+            table.remove(pts, other)
+            if other < self.drag_index then self.drag_index = self.drag_index - 1 end
+        else
+            pt[2] = 0
+        end
+
+    elseif was_pair and not is_pair then
+        pt[2] = 0
+        table.insert(pts, self.drag_index + 1, { pt[1], 0 })
+    end
+
+    self.cascade = nil -- roots moved: re-pair on output
+    self.last_x = x
+    self.last_y = y
+    self:repaint()
+    self:output()
+end
+
+function zbiplot:mouse_up()
+    self.dragging = false
+    self:save_state()
+end
+
+function zbiplot:key(down, name)
+    if name == "Shift_L" or name == "Shift_R" then
+        self.shift = (down ~= 0)
+    end
+end
+
+function zbiplot:save_state()
+    if self.savestate ~= 0 then
+        self:save_args()
+    end
+end
+
+-- Theme: 0 = use explicit colors, nonzero = follow Pd's theme
+
+function zbiplot:in_1_theme(atoms)
+    local v = tonumber(atoms[1])
+    if v == nil then return end
+    self.usetheme = v ~= 0 and 1 or 0
+    self:save_args()
+    self:repaint()
+end
+
+function zbiplot:in_1_bgcolor(atoms)
+    local c = color_from_atoms(atoms)
+    if not c then return end
+    self.bgcolor = c
+    self.usetheme = 0 -- an explicit color means: use this color
+    self:save_args(); self:repaint()
+end
+
+function zbiplot:in_1_fgcolor(atoms)
+    local c = color_from_atoms(atoms)
+    if not c then return end
+    self.fgcolor = c
+    self.usetheme = 0 -- an explicit color means: use this color
+    self:save_args(); self:repaint()
+end
+
+function zbiplot:in_1_polecolor(atoms)
+    local c = color_from_atoms(atoms)
+    if not c then return end
+    self.polecolor = c
+    self.usetheme = 0 -- an explicit color means: use this color
+    self:save_args(); self:repaint()
+end
+
+function zbiplot:in_1_zerocolor(atoms)
+    local c = color_from_atoms(atoms)
+    if not c then return end
+    self.zerocolor = c
+    self.usetheme = 0 -- an explicit color means: use this color
+    self:save_args(); self:repaint()
+end
+
+-- All four colors in one shot:
+--   colors #RRGGBB #RRGGBB #RRGGBB #RRGGBB
+-- bgcolor, fgcolor, polecolor, zerocolor — in that order.
+-- Only four hex symbols are accepted; anything else is ignored.
+
+function zbiplot:in_1_colors(atoms)
+    if #atoms ~= 4 then return end
+    local c = {}
+    for i = 1, 4 do
+        if type(atoms[i]) ~= "string" then return end
+        c[i] = hex_to_rgb(atoms[i])
+        if not c[i] then return end
+    end
+
+    self.bgcolor = c[1]
+    self.fgcolor = c[2]
+    self.polecolor = c[3]
+    self.zerocolor = c[4]
+    self.usetheme = 0 -- an explicit color means: use this color
+    self:save_args(); self:repaint()
+end
+
+-- size <f>: both axes to the same value, clamped to the property limits
+
+function zbiplot:in_1_size(atoms)
+    local s = tonumber(atoms[1])
+    if not s then return end
+    self.size = math.max(50, math.min(4096, math.floor(s)))
+    self:set_size(self.size, self.size)
+    self:save_args(); self:repaint()
+end
+
+-- Emit all biquad coefficients in one list.
+-- If the last coeff message set a cascade, replay it verbatim.
+-- Otherwise pair current roots into biquads, matching pole pair i to zero pair i
+-- and putting the total gain on stage 1.
+
+function zbiplot:output()
+    local c = self.cascade
+
+    if type(c) == "table" and #c > 0 then
+        local out = {}
+        for i = 1, #c do
+            for j = 1, 5 do
+                out[#out + 1] = c[i][j]
+            end
+        end
+        self:outlet(1, "list", out)
+        return
+    end
+
+    local pole_pairs = self:pair_roots(self.poles)
+    local zero_pairs = self:pair_roots(self.zeros)
+    local n = math.max(#pole_pairs, #zero_pairs)
+
+    if n == 0 then return end
+
+    local out = {}
+
+    for i = 1, n do
+        local pp = pole_pairs[i] or { {0, 0}, {0, 0} }
+        local zp = zero_pairs[i] or { {0, 0}, {0, 0} }
+        local a1, a2 = self:pole_pair_to_ab(pp[1], pp[2])
+        local g = (i == 1) and self.gain or 1
+        local b0, b1, b2 = self:zero_pair_to_b(zp[1], zp[2], g)
+
+        out[#out + 1] = a1
+        out[#out + 1] = a2
+        out[#out + 1] = b0
+        out[#out + 1] = b1
+        out[#out + 1] = b2
+    end
+
+    self:outlet(1, "list", out)
+end
+
+function zbiplot:paint(g)
+    local w, h = self:get_size()
+    local scale = w / 3
+    local M = 5
+
+    self:fill_background(g, "bgcolor")
+
+    local fg = self:color("fgcolor")
+    g:set_color(fg[1], fg[2], fg[3])
+    g:draw_line(0, h / 2, w, h / 2, 1)
+    g:draw_line(w / 2, 0, w / 2, h, 1)
+    g:stroke_ellipse(w / 2 - scale, h / 2 - scale, scale * 2, scale * 2, 1)
+
+    local zc = self:color("zerocolor")
+    g:set_color(zc[1], zc[2], zc[3])
+
+    for _, z in ipairs(self.zeros) do
+        local px, py = self:z_to_px(z[1], z[2])
+        g:stroke_ellipse(px - M, py - M, M * 2, M * 2, 1.5)
+
+        if z[2] > CONJ_TOL then
+            local cx, cy = self:z_to_px(z[1], -z[2])
+            g:stroke_ellipse(cx - M, cy - M, M * 2, M * 2, 1.5)
+        end
+    end
+
+    local pc = self:color("polecolor")
+    g:set_color(pc[1], pc[2], pc[3])
+
+    for _, p in ipairs(self.poles) do
+        local px, py = self:z_to_px(p[1], p[2])
+        g:draw_line(px - M, py - M, px + M, py + M, 1.5)
+        g:draw_line(px - M, py + M, px + M, py - M, 1.5)
+
+        if p[2] > CONJ_TOL then
+            local cx, cy = self:z_to_px(p[1], -p[2])
+            g:draw_line(cx - M, cy - M, cx + M, cy + M, 1.5)
+            g:draw_line(cx - M, cy + M, cx + M, cy - M, 1.5)
+        end
+    end
+
+    if w ~= self.size then
+        self.size = w
+        self:save_args()
+    end
+end

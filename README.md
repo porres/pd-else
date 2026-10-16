@@ -35,9 +35,9 @@ ELSE is a big library of externals that extends the performance Pure Data (Pd) -
 
 ELSE provides a cohesive system for computer music, it also serves as a basis for an Live Electronics Tutorial by the same author, yours truly, Alexandre Torres Porres. This library's repository resides at <https://github.com/porres/pd-else/>. This tutorial is also found as part of the download of the ELSE library. Look for the 'Live-Electronics-Tutorial' folder inside it and also check its README on how to install it.
 
-ELSE is also part of PlugData by Timothy Schoen, which is a fork of Pd that loads as a standalone or VST with a revamped GUI. ELSE has received collaboration from Tim and others involved with PlugData and many objects have been included in ELSE just so they are supported in PlugData. ​See: <https://github.com/timothyschoen/PlugData>
+ELSE is part of PlugData by Timothy Schoen, which is a fork of Pd that loads as a standalone or VST with a revamped GUI. ELSE has received collaboration from Tim and others involved with PlugData and many objects have been included in ELSE just so they are supported in PlugData. ​See: <https://github.com/timothyschoen/PlugData>. ELSE is also currently being ported to Pd-l2ork <https://github.com/pd-l2ork/pd-l2ork>. 
 
-ELSE also ships a modifiction of [pdlua] <https://github.com/agraef/pd-lua> which is needed for a couple of GUI objects.
+ELSE includes and ships a modifiction of [pdlua] <https://github.com/agraef/pd-lua> which is needed for a couple of GUI objects.
 
 This project is still in an experimental phase (currently at a 'release candidate' phase), where  changes may occur and backwards compatibility is not guaranteed until a final and more stable release is available.
 

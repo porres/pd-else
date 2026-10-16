@@ -1,0 +1,4 @@
+local else_gui     = require("else_gui")
+local range_slider = require("range_slider")
+local range_vsl    = pd.Class:new():register("range.vsl")
+range_slider.setup(range_vsl, "range.vsl", true)

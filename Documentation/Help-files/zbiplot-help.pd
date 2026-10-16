@@ -1,57 +1,156 @@
-#N canvas 507 58 561 333 10;
-#X obj 4 163 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 240 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 273 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 5 303 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
-0;
-#X obj 92 171 cnv 17 3 40 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X obj 149 40 cnv 4 4 4 empty empty plot 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 85 40 cnv 4 4 4 empty empty Biquad 0 28 2 18 #e0e0e0 #000000
-0;
-#X obj 2 3 cnv 15 301 42 empty empty zbiplot 20 20 2 37 #e0e0e0 #000000
-0;
+#N canvas 481 57 571 798 10;
+#X obj 4 386 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 4 594 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000 0;
+#X obj 92 394 cnv 17 3 170 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X obj 149 40 cnv 4 4 4 empty empty plot 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 85 40 cnv 4 4 4 empty empty Biquad 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 2 3 cnv 15 301 42 empty empty zbiplot 20 20 2 37 #e0e0e0 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X text 197 171 - list of coefficients as taken by [biquad~];
-#N canvas 680 83 565 632 example 0;
-#X obj 127 35 nbx 5 14 0.01 1 1 0 empty empty empty 0 -8 0 10 #dcdcdc
-#000000 #000000 0 256;
-#X obj 201 36 nbx 5 14 -24 24 0 0 empty empty empty 0 -8 0 10 #dcdcdc
-#000000 #000000 0 256;
-#X obj 54 36 nbx 5 14 20 20000 1 0 empty empty empty 0 -8 0 10 #dcdcdc
-#000000 #000000 0 256;
-#X text 65 19 Freq;
-#X text 133 18 Q;
-#X obj 27 36 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
-#000000;
-#X text 209 16 gain;
-#X obj 54 70 else/bicoeff2 eq 500 10 24;
-#X obj 54 131 else/zbiplot;
-#X obj 399 31 nbx 5 14 0.01 1 1 0 empty empty empty 0 -8 0 10 #dcdcdc
-#000000 #000000 0 256;
-#X obj 491 32 nbx 5 14 -24 24 0 0 empty empty empty 0 -8 0 10 #dcdcdc
-#000000 #000000 0 256;
-#X obj 308 32 nbx 5 14 20 20000 1 0 empty empty empty 0 -8 0 10 #dcdcdc
-#000000 #000000 0 256;
-#X text 319 15 Freq;
-#X obj 281 32 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
-#000000;
-#X text 499 12 gain;
-#X obj 308 87 else/coeff2pz;
-#X obj 308 65 else/bicoeff2 lowshelf 500 10 24;
-#X text 405 14 Slope;
-#X obj 54 96 else/insert coeff;
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc 0;
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc 0;
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc 0;
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 304 3 graph;
+#X obj 18 40 cnv 4 4 4 empty empty Z-plane 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 92 570 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X text 195 570 list;
+#X text 227 570 - list of zeros coordinates;
+#X obj 175 132 else/zbiplot 200 0 255 255 255 0 0 0 220 40 40 40 40 220 0 0 8;
+#X listbox 175 352 46 0 0 0 - - - 12;
+#X obj 92 604 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0;
+#X text 195 604 list;
+#X text 227 604 - list of biquad coefficients;
+#N canvas 639 140 505 679 colors 0;
+#X obj 180 443 cnv 16 225 220 empty empty empty 20 12 0 10 #e0e0e0 #404040 0;
+#X msg 181 218 bgcolor 245 245 250;
+#X msg 139 191 transparent \$1;
+#X obj 139 161 tgl 21 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
+#X msg 73 191 theme \$1;
+#X obj 73 161 tgl 21 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000 0 1;
+#X msg 209 274 fgcolor 90 170 220;
+#X msg 198 239 bgcolor #dd22aa;
+#X msg 215 295 fgcolor #ee33ee;
+#X msg 73 327 colors #ddeeff #aa99dd #0055aa #ff0044, f 7;
+#X obj 192 452 else/zbiplot 200 1 221 238 255 170 153 221 0 85 170 255 0 68 0 0 1 0.51 0.42 1 -0.525 0.315 1;
+#X msg 227 323 zerocolor 160 160 160;
+#X msg 242 343 zerocolor #ff9900;
+#X msg 257 367 polecolor 60 70 90;
+#X msg 263 389 polecolor 180 210 255;
+#X text 27 19 [zbiplot] has four colors: the background \, the foreground \, the zero and pole colors. Set them with the 'bgcolor' \, 'fgcolor' \, 'zerocolor' and 'polecolor' messages or with the matching flags. Colors are set as RGB list or hexadecimal symbols. The colors message takes 4 symbols and sets bg \, fg \, zero and pole colors respectively., f 73;
+#X text 27 80 You can set it to use the Pd colors \, or "theme" \, where the zero color is the select color and the pole color is the GOP color. Change it in properties or via the "theme" message or the -theme flag. Setting colors gets the object out of the theme mode. You can set the background to transparent via the flag \, message or properties as well., f 73;
+#X connect 1 0 10 0;
+#X connect 2 0 10 0;
+#X connect 3 0 2 0;
+#X connect 4 0 10 0;
+#X connect 5 0 4 0;
+#X connect 6 0 10 0;
+#X connect 7 0 10 0;
+#X connect 8 0 10 0;
+#X connect 9 0 10 0;
+#X connect 11 0 10 0;
+#X connect 12 0 10 0;
+#X connect 13 0 10 0;
+#X connect 14 0 10 0;
+#X restore 461 269 pd colors;
+#X obj 7 630 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000 0;
+#X obj 7 765 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020 0;
+#X text 147 638 -size <float>: sets plot size in pixels (default 200), f 55;
+#X text 147 653 -savestate: sets savestate mode (default off), f 55;
+#X text 147 668 -theme: use Pd's colors, f 55;
+#X text 147 683 -transparent: sets transparent background, f 55;
+#X text 105 700 -bgcolor <symbol>: background color as hex (default #FFFFFF), f 62;
+#X text 105 730 -polecolor <symbol>: poles color as hex (default #DC2828), f 62;
+#X text 105 745 -zerocolor <symbol>: zeros color as hex (default #2828DC), f 62;
+#X text 105 715 -fgcolor <symbol>: axes color as hex (default #000000), f 62;
+#X text 195 433 bang;
+#X text 229 433 - outputs the biquad coefficients, f 49;
+#X text 195 392 list;
+#X text 159 406 set <list>;
+#X text 229 406 - same as list \, but no output, f 49;
+#X text 147 420 coeff <list>;
+#X text 147 448 size <float>;
+#X text 141 477 theme <float>;
+#X text 229 477 - non zero sets to Pd's color, f 49;
+#X text 111 492 bgcolor <anything>;
+#X text 229 492 - sets background color as RGB list or hex, f 49;
+#X text 111 506 fgcolor <anything>;
+#X text 229 506 - sets axes color as RGB list or hex, f 49;
+#X text 99 520 polecolor <anything>;
+#X text 229 520 - sets poles color as RGB list or hex, f 49;
+#X text 99 534 zerocolor <anything>;
+#X text 229 534 - sets zeros color as RGB list or hex, f 49;
+#X text 105 548 colors <s \, s \, s \, s>;
+#X text 229 548 - sets bg \, fg \, pole and zero colors as hex, f 49;
+#X text 229 392 - list of poles coordinates, f 49;
+#X text 229 420 - list of coefficients as taken by [biquad~], f 49;
+#X text 229 448 - sets size in pixels, f 49;
+#X text 117 462 savestate <float>;
+#X text 229 462 - non zero sets to savestate mode, f 49;
+#N canvas 150 125 981 357 see-also 0;
+#X obj 39 47 else/biplot;
+#X text 77 18 [else/biplot];
+#X restore 27 340 pd see-also;
+#N canvas 273 128 1022 753 cascade 0;
+#X obj 69 46 else/bicoeff2 eq 500 10 24;
+#X obj 150 74 else/bicoeff2 eq 900 10 24;
+#X obj 69 21 else/lb 2, f 14;
+#X obj 69 76 list;
+#X obj 69 149 else/zbiplot 200 1 255 255 255 0 0 0 220 40 40 40 40 220 1 0 4 2 0.996573 0.0711082 0.9902 0.127662 2 0.983529 0.0687786 0.967171 0.122208 1.03739;
+#X listbox 69 368 86 0 0 0 - - - 12;
+#X obj 69 107 else/insert coeff;
+#X obj 363 91 else/zbiplot;
+#X msg 363 52 order 4;
+#X text 615 160 By default \, [zbiplot] is a second order filter. You can change the order via message \, properties but also by sending groups as a list of 5 biquad coefficients \, or list of poles and zeros as groups of two. Hence \, order are only even numbers., f 48;
+#X text 297 337 the output is also a list of cascaded coefficients;
+#X obj 69 405 else/biplot;
+#X connect 0 0 3 0;
+#X connect 1 0 3 1;
+#X connect 2 0 0 0;
+#X connect 2 1 1 0;
+#X connect 3 0 6 0;
+#X connect 4 0 5 0;
+#X connect 5 0 11 0;
+#X connect 6 0 4 0;
+#X connect 8 0 7 0;
+#X restore 456 291 pd cascade;
+#N canvas 518 140 630 578 basic 0;
+#X obj 175 134 nbx 5 14 0.01 1 1 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 252 135 nbx 5 14 -24 24 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 99 135 nbx 7 14 20 20000 1 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X text 110 118 Freq;
+#X text 181 117 Q;
+#X obj 72 135 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
+#X text 260 115 gain;
+#X obj 99 169 else/bicoeff2 eq 500 10 24;
+#X obj 147 267 else/zbiplot 200 1 255 255 255 0 0 0 220 40 40 40 40 220 1 0 2 1 0.974751 0.024628 1 0.89991 0.0909453 1.01326;
+#X obj 397 170 nbx 5 14 0.01 1 1 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 492 171 nbx 5 14 -24 24 0 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 303 171 nbx 7 14 20 20000 1 0 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0 256;
+#X text 314 154 Freq;
+#X obj 275 171 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000;
+#X text 500 151 gain;
+#X obj 303 226 else/coeff2pz;
+#X obj 303 204 else/bicoeff2 lowshelf 500 10 24;
+#X text 403 153 Slope;
+#X obj 99 195 else/insert coeff;
+#X listbox 147 492 44 0 0 0 - - - 12;
+#X text 68 25 The object takes lists for poles (left inlet) and zeros (right inlet). Alternatively you can have the "coeff" message to set a list of 5 biquad coefficients as taken by [biquad~]. One way or another you can click on poles and zeros to drag them and the outlet outputs the biquad coefficients. Note you can use [else/coeff2pz] to convert from biquad coefficients to lists of poles and zeros., f 76;
+#X obj 147 525 print zbiplot;
+#X obj 147 223 bng 21 250 50 0 empty empty empty 0 -8 0 10 #dfdfdf #000000 #000000;
+#X text 173 226 output;
 #X connect 0 0 7 1;
 #X connect 1 0 7 2;
 #X connect 2 0 7 0;
 #X connect 5 0 7 0;
 #X connect 7 0 18 0;
+#X connect 8 0 19 0;
 #X connect 9 0 16 1;
 #X connect 10 0 16 2;
 #X connect 11 0 16 0;
@@ -60,35 +159,8 @@
 #X connect 15 1 8 1;
 #X connect 16 0 15 0;
 #X connect 18 0 8 0;
-#X restore 165 131 pd example;
-#X text 236 132 <= click to open and check;
-#X text 231 282 (none);
-#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
-0;
-#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
-0;
-#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
-0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 252 42 1 0 0;
-#X restore 304 3 graph;
-#X obj 18 40 cnv 4 4 4 empty empty Z-plane 0 28 2 18 #e0e0e0 #000000
-0;
-#X text 76 87 [zbiplot] plots the biquad coefficients as poles and
-zeros on the Z-Plane., f 52;
-#X obj 92 216 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X text 165 216 list;
-#X text 165 191 list;
-#X text 197 191 - list of poles coordinates;
-#X text 197 216 - list of zeros coordinates;
-#X text 231 251 (none);
-#X text 117 171 coeff <list>;
+#X connect 19 0 21 0;
+#X connect 22 0 8 0;
+#X restore 467 249 pd basic;
+#X text 39 90 [zbiplot] is a GUI coded in lua that plots the biquad coefficients as poles and zeros on the Z-Plane. You can also click and drag on poles and zeros., f 66;
+#X connect 19 0 20 0;
