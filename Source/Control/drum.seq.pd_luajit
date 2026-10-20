@@ -10,10 +10,10 @@ else_gui.setup(drum_seq, {
     { "_d1", 0 }, { "_d2", 0 }, { "_d3", 0 }, { "_d4", 0 }, { "_d5", 0 },
     { "_d6", 0 }, { "_d7", 0 }, { "_d8", 0 }, { "_d9", 0 }, { "_d10", 0 }, { "_d11", 0 },
     { "content",    {},            nil,           nil,             "float", {consume="slots*tracks"} },
-    { "bgcolor",    pd.bg_color,   "repaint",     "Background",    "color", {frame="Appearance", flag="bgcolor", theme="bg"}     },
+    { "bgcolor",    {255, 255, 255},   "repaint",     "Background",    "color", {frame="Appearance", flag="bgcolor", theme="bg"}     },
     { "activecolor",{180,210,255}, "repaint",     "Active Cell",   "color", {frame="Appearance", flag="activecolor"} },
-    { "gridcolor",  pd.fg_color,   "repaint",     "Grid",          "color", {frame="Appearance", flag="gridcolor", theme="fg"}  },
-    { "flashcolor", pd.gop_color,  "repaint",     "Flash",         "color", {frame="Appearance", flag="flashcolor", theme="gop"} },
+    { "gridcolor",  {0, 0, 0},   "repaint",     "Grid",          "color", {frame="Appearance", flag="gridcolor", theme="fg"}  },
+    { "flashcolor", {200, 0, 0},  "repaint",     "Flash",         "color", {frame="Appearance", flag="flashcolor", theme="gop"} },
     -- appended so that the positional argument order above never changes
     { "usetheme",    1, "repaint", "Use Theme Colors", "check", {frame="Appearance", order=0, flag="usetheme"} },
     { "transparent", 0, "repaint", "Transparent",      "check", {frame="Appearance", order=0, flag="transparent"} },
