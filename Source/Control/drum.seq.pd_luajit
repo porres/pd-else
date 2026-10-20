@@ -11,7 +11,7 @@ else_gui.setup(drum_seq, {
     { "_d6", 0 }, { "_d7", 0 }, { "_d8", 0 }, { "_d9", 0 }, { "_d10", 0 }, { "_d11", 0 },
     { "content",    {},            nil,           nil,             "float", {consume="slots*tracks"} },
     { "bgcolor",    {255, 255, 255},   "repaint",     "Background",    "color", {frame="Appearance", flag="bgcolor", theme="bg"}     },
-    { "activecolor",{180,210,255}, "repaint",     "Active Cell",   "color", {frame="Appearance", flag="activecolor"} },
+    { "activecolor",{128,128,159}, "repaint",     "Active Cell",   "color", {frame="Appearance", flag="activecolor", theme="sel"} },
     { "gridcolor",  {0, 0, 0},   "repaint",     "Grid",          "color", {frame="Appearance", flag="gridcolor", theme="fg"}  },
     { "flashcolor", {200, 0, 0},  "repaint",     "Flash",         "color", {frame="Appearance", flag="flashcolor", theme="gop"} },
     -- appended so that the positional argument order above never changes
