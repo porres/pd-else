@@ -282,7 +282,7 @@ function drum_seq:paint(g)
     local cs   = self.cell_size
     local w, h = self:get_size()
     local bg   = self:background("bgcolor")
-    local ac   = self.activecolor
+    local ac   = self:color("activecolor")
     local gc   = self:color("gridcolor")
     local fc   = self:color("flashcolor")
 
