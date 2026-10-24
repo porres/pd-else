@@ -38,6 +38,9 @@ void pvretune_setFFT(t_pvretune *x){
         fftease_oscbank_setbins(fft, x->x_lofreq, x->x_hifreq);
         x->x_hop = fft->D;
     }
+    // fftease_init() rounds the size to one it supports, which is what the buffers are allocated for
+    if(x->x_nchs > 0)
+        x->x_size = x->x_fft[0].N;
 }
 
 void pvretune_copy_scale(t_pvretune *x){
@@ -145,6 +148,10 @@ t_int *pvretune_perform(t_int *w){
     if(x->x_bypass){
         for(int i = 0; i < n*x->x_nchs; i++)
             output[i] = input[i];
+        return(w+4);
+    }
+    if(n > x->x_hop){ // an "fft" message made the hop smaller than the block size
+        memset(output, 0, n*x->x_nchs*sizeof(t_float));
         return(w+4);
     }
     for(int ch = 0; ch < x->x_nchs; ch++){
