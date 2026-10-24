@@ -295,6 +295,10 @@ static void sfont_scale(t_sfont *x, t_symbol *s, int ac, t_atom *av){
         sfont_scale(x, gensym("scale"), 13, at);
         return;
     }
+    else if(ac == 1){ // the steps are computed modulo ac-1
+        post("[sfont~]: scale needs at least 2 values");
+        return;
+    }
     else{
         scale = calloc(sizeof(double), ac);
         for(i = 0; i < ac; i++)
