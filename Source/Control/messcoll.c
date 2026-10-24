@@ -86,7 +86,7 @@ typedef struct _threadedFunctionParams{
 static t_class *messcoll_class;
 static t_class *messcollcommon_class;
 
-int coll_checkint(t_pd *x, t_float f, int *valuep, t_symbol *mess){
+static int coll_checkint(t_pd *x, t_float f, int *valuep, t_symbol *mess){
     if((*valuep = (int)f) == f)
         return(1);
     else{

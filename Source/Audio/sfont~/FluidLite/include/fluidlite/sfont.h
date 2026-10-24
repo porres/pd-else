@@ -209,8 +209,8 @@ struct _fluid_sample_t
   int pitchadj;
   int sampletype;
   int valid;
+  int data_loaded;
   short* data;
-
   /** The amplitude, that will lower the level of the sample's loop to
       the noise floor. Needed for note turnoff optimization, will be
       filled out automatically */

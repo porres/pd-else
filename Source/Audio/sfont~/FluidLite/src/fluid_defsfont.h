@@ -477,6 +477,8 @@ int fluid_defpreset_preset_noteon(fluid_preset_t* preset, fluid_synth_t* synth, 
 struct _fluid_defsfont_t
 {
   char* filename;           /* the filename of this soundfont */
+  fluid_fileapi_t* fapi;    /* store so samples can open the file later */
+
   unsigned int samplepos;   /* the position in the file at which the sample data starts */
   unsigned int samplesize;  /* the size of the sample data */
   short* sampledata;        /* the sample data, loaded in ram */
@@ -513,12 +515,15 @@ struct _fluid_defpreset_t
   unsigned int num;                     /* the preset number */
   fluid_preset_zone_t* global_zone;        /* the global zone of the preset */
   fluid_preset_zone_t* zone;               /* the chained list of preset zones */
+  int zones_loaded;                     /* for lazy loading */
+  fluid_list_t* pending_sf_zones;
 };
 
 fluid_defpreset_t* new_fluid_defpreset(fluid_defsfont_t* sfont);
 int delete_fluid_defpreset(fluid_defpreset_t* preset);
 fluid_defpreset_t* fluid_defpreset_next(fluid_defpreset_t* preset);
 int fluid_defpreset_import_sfont(fluid_defpreset_t* preset, SFPreset* sfpreset, fluid_defsfont_t* sfont);
+int fluid_inst_ensure_loaded(fluid_inst_t* inst);
 int fluid_defpreset_set_global_zone(fluid_defpreset_t* preset, fluid_preset_zone_t* zone);
 int fluid_defpreset_add_zone(fluid_defpreset_t* preset, fluid_preset_zone_t* zone);
 fluid_preset_zone_t* fluid_defpreset_get_zone(fluid_defpreset_t* preset);
@@ -544,10 +549,18 @@ struct _fluid_preset_zone_t
   fluid_mod_t * mod; /* List of modulators */
 };
 
+typedef struct _fluid_pending_zone_t {
+  fluid_list_t* gen;
+  fluid_list_t* mod;
+  fluid_inst_t* inst;
+  char sample_name[21];
+} fluid_pending_zone_t;
+
+
 fluid_preset_zone_t* new_fluid_preset_zone(char* name);
 int delete_fluid_preset_zone(fluid_preset_zone_t* zone);
 fluid_preset_zone_t* fluid_preset_zone_next(fluid_preset_zone_t* preset);
-int fluid_preset_zone_import_sfont(fluid_preset_zone_t* zone, SFZone* sfzone, fluid_defsfont_t* sfont);
+int fluid_preset_zone_import_sfont(fluid_preset_zone_t* zone, fluid_pending_zone_t* sfzone, fluid_defsfont_t* sfont);
 int fluid_preset_zone_inside_range(fluid_preset_zone_t* zone, int key, int vel);
 fluid_inst_t* fluid_preset_zone_get_inst(fluid_preset_zone_t* zone);
 
@@ -559,6 +572,11 @@ struct _fluid_inst_t
   char name[21];
   fluid_inst_zone_t* global_zone;
   fluid_inst_zone_t* zone;
+
+   /* --- lazy load fields --- */
+   int zones_loaded;
+   fluid_pending_zone_t* pending_sf_zones;   // raw SFZone* list from the SF2 parser
+   fluid_defsfont_t* pending_sfont;      // held so we can call fluid_inst_zone_import_sfont later
 };
 
 fluid_inst_t* new_fluid_inst(void);
@@ -588,7 +606,7 @@ struct _fluid_inst_zone_t
 fluid_inst_zone_t* new_fluid_inst_zone(char* name);
 int delete_fluid_inst_zone(fluid_inst_zone_t* zone);
 fluid_inst_zone_t* fluid_inst_zone_next(fluid_inst_zone_t* zone);
-int fluid_inst_zone_import_sfont(fluid_inst_zone_t* zone, SFZone *sfzone, fluid_defsfont_t* sfont);
+int fluid_inst_zone_import_sfont(fluid_inst_zone_t* zone, fluid_pending_zone_t *sfzone, fluid_defsfont_t* sfont);
 int fluid_inst_zone_inside_range(fluid_inst_zone_t* zone, int key, int vel);
 fluid_sample_t* fluid_inst_zone_get_sample(fluid_inst_zone_t* zone);
 

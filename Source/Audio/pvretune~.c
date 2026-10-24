@@ -38,6 +38,9 @@ void pvretune_setFFT(t_pvretune *x){
         fftease_oscbank_setbins(fft, x->x_lofreq, x->x_hifreq);
         x->x_hop = fft->D;
     }
+    // fftease_init() rounds the size to one it supports, which is what the buffers are allocated for
+    if(x->x_nchs > 0)
+        x->x_size = x->x_fft[0].N;
 }
 
 void pvretune_copy_scale(t_pvretune *x){
@@ -147,6 +150,10 @@ t_int *pvretune_perform(t_int *w){
             output[i] = input[i];
         return(w+4);
     }
+    if(n > x->x_hop){ // an "fft" message made the hop smaller than the block size
+        memset(output, 0, n*x->x_nchs*sizeof(t_float));
+        return(w+4);
+    }
     for(int ch = 0; ch < x->x_nchs; ch++){
         t_fftease *fft = &x->x_fft[ch];
         t_float *in = input + ch*n;
@@ -158,12 +165,12 @@ t_int *pvretune_perform(t_int *w){
         memcpy(out, fft->internalOutputVector + op*n, n*sizeof(t_float));
         op = ((op + 1) % rep);
         if(op == 0){
-            memcpy(fft->input, fft->input + hop, (size-hop)*sizeof(t_float));
+            memmove(fft->input, fft->input + hop, (size-hop)*sizeof(t_float));
             memcpy(fft->input + (size-hop), fft->internalInputVector, hop*sizeof(t_float));
             do_pvretune(x, fft); // DO IT!!!
             for(int i = 0; i < hop; i++)
                 fft->internalOutputVector[i] = fft->output[i] * fft->mult;
-            memcpy(fft->output, fft->output + hop, (size-hop)*sizeof(t_float));
+            memmove(fft->output, fft->output + hop, (size-hop)*sizeof(t_float));
             memset(fft->output + (size-hop), 0, hop*sizeof(t_float));
         }
         fft->operationCount = op;
