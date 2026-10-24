@@ -159,7 +159,7 @@ static t_float knob_wrap(t_knob *x, t_float f){
         if(f < min){
             result = f;
             while(result < min)
-                result += range;
+                result += fabs(range);
         }
         else
             result = fmod(f - min, range) + min;
