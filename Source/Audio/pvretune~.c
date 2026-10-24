@@ -158,12 +158,12 @@ t_int *pvretune_perform(t_int *w){
         memcpy(out, fft->internalOutputVector + op*n, n*sizeof(t_float));
         op = ((op + 1) % rep);
         if(op == 0){
-            memcpy(fft->input, fft->input + hop, (size-hop)*sizeof(t_float));
+            memmove(fft->input, fft->input + hop, (size-hop)*sizeof(t_float));
             memcpy(fft->input + (size-hop), fft->internalInputVector, hop*sizeof(t_float));
             do_pvretune(x, fft); // DO IT!!!
             for(int i = 0; i < hop; i++)
                 fft->internalOutputVector[i] = fft->output[i] * fft->mult;
-            memcpy(fft->output, fft->output + hop, (size-hop)*sizeof(t_float));
+            memmove(fft->output, fft->output + hop, (size-hop)*sizeof(t_float));
             memset(fft->output + (size-hop), 0, hop*sizeof(t_float));
         }
         fft->operationCount = op;
