@@ -145,12 +145,10 @@ static void *click_new(t_floatarg f){
     t_int subpatch_mode = f != 0;;
     t_glist *glist = (t_glist *)canvas_getcurrent();
     t_canvas *canvas = (t_canvas*)glist_getcanvas(glist);
-    t_class *class = ((t_gobj*)canvas)->g_pd;
     if(!subpatch_mode){
         while(!canvas->gl_env)
             canvas = canvas->gl_owner;
     }
-    class_addmethod(class, (t_method)click_click, gensym("click"), 0);
     addObjectToCanvas((t_pd*)canvas, (t_pd*)x);
     x->x_click_bangout = outlet_new((t_object *)x, &s_bang);
     return(x);
@@ -159,4 +157,5 @@ static void *click_new(t_floatarg f){
 void click_setup(void){
     click_class = class_new(gensym("click"), (t_newmethod)click_new,
         (t_method)click_free, sizeof(t_click), CLASS_NOINLET, A_DEFFLOAT, 0);
+    class_addmethod(canvas_class, (t_method)click_click, gensym("click"), 0);
 }
