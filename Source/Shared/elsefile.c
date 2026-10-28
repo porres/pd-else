@@ -166,19 +166,19 @@ badpath:
 // Return absolute length; ospath_absolute()'s length may be shorter (no
 // superfluous slashes/dots). Both args must be unbashed (system-independent),
 // cwd must be absolute. Returns 0 in case errors.
-int ospath_length(char *path, char *cwd){
+int else_ospath_length(char *path, char *cwd){
     return(ospath_doabsolute(path, cwd, 0) + 1); // + extra guarding slash
 }
 
 // Copy absolute path to result. Args (path and cwd) are the same as in
 // ospath_length(), which must be first consulted and  allocate at least
 // ospath_length() + 1 bytes to the result buffer. A failure is a bug.
-char *ospath_absolute(char *path, char *cwd, char *result){
+char *else_ospath_absolute(char *path, char *cwd, char *result){
     ospath_doabsolute(path, cwd, result);
     return(result);
 }
 
-FILE *fileread_open(char *filename, t_canvas *cv, int textmode){
+FILE *else_fileread_open(char *filename, t_canvas *cv, int textmode){
     char path[MAXPDSTRING+2], *nameptr;
     t_symbol *dirsym = (cv ? canvas_getdir(cv) : 0);
     // path arg is returned unbashed (system-independent)
@@ -197,7 +197,7 @@ FILE *fileread_open(char *filename, t_canvas *cv, int textmode){
     return(sys_fopen(path, (textmode ? "r" : "rb")));
 }
 
-FILE *filewrite_open(char *filename, t_canvas *cv, int textmode){
+FILE *else_filewrite_open(char *filename, t_canvas *cv, int textmode){
     char path[MAXPDSTRING+2];
     if(cv) // path arg is returned unbashed (system-independent)
         canvas_makefilename(cv, filename, path, MAXPDSTRING);
@@ -219,7 +219,7 @@ struct _osdir{
 
 // returns 0 on error, a caller is then expected to call
 // loud_syserror(owner, "cannot open \"%s\"", dirname)
-t_osdir *osdir_open(char *dirname){
+t_osdir *else_osdir_open(char *dirname){
 #ifndef _WIN32
     DIR *handle = opendir(dirname);
     if(handle){
@@ -238,12 +238,12 @@ t_osdir *osdir_open(char *dirname){
 #endif
 }
 
-void osdir_setmode(t_osdir *dp, int flags){
+void else_osdir_setmode(t_osdir *dp, int flags){
     if(dp)
         dp->dir_flags = flags;
 }
 
-void osdir_close(t_osdir *dp){
+void else_osdir_close(t_osdir *dp){
     if(dp){
 #ifndef _WIN32
         closedir(dp->dir_handle);
@@ -252,7 +252,7 @@ void osdir_close(t_osdir *dp){
     }
 }
 
-void osdir_rewind(t_osdir *dp){
+void else_osdir_rewind(t_osdir *dp){
     if(dp){
 #ifndef _WIN32
         rewinddir(dp->dir_handle);
@@ -261,7 +261,7 @@ void osdir_rewind(t_osdir *dp){
     }
 }
 
-char *osdir_next(t_osdir *dp){
+char *else_osdir_next(t_osdir *dp){
 #ifndef _WIN32
     if(dp){
         while((dp->dir_entry = readdir(dp->dir_handle))){
@@ -276,7 +276,7 @@ char *osdir_next(t_osdir *dp){
     return(0);
 }
 
-int osdir_isfile(t_osdir *dp){
+int else_osdir_isfile(t_osdir *dp){
 #ifndef _WIN32
     return(dp && dp->dir_entry && dp->dir_entry->d_type == DT_REG);
 #else
@@ -284,7 +284,7 @@ int osdir_isfile(t_osdir *dp){
 #endif
 }
 
-int osdir_isdir(t_osdir *dp){
+int else_osdir_isdir(t_osdir *dp){
 #ifndef _WIN32
     return(dp && dp->dir_entry && dp->dir_entry->d_type == DT_DIR);
 #else
@@ -624,13 +624,13 @@ void elsefile_panel_click_open(t_elsefile *f){
     clock_delay(f->f_panelclock, 0);
 }
 
-void panel_setopendir(t_elsefile *f, t_symbol *dir){
+void else_panel_setopendir(t_elsefile *f, t_symbol *dir){
     if(f->f_currentdir && f->f_currentdir != &s_){
         if(dir && dir != &s_){
-            int length = ospath_length((char *)(dir->s_name), (char *)(f->f_currentdir->s_name));
+            int length = else_ospath_length((char *)(dir->s_name), (char *)(f->f_currentdir->s_name));
             if(length){
                 char *path = getbytes(length + 1);
-                if(ospath_absolute((char *)(dir->s_name), (char *)(f->f_currentdir->s_name), path))
+                if(else_ospath_absolute((char *)(dir->s_name), (char *)(f->f_currentdir->s_name), path))
                 /* LATER stat (think how to report a failure) */
                     f->f_currentdir = gensym(path);
                 freebytes(path, length + 1);
@@ -643,7 +643,7 @@ void panel_setopendir(t_elsefile *f, t_symbol *dir){
         bug("panel_setopendir");
 }
 
-t_symbol *panel_getopendir(t_elsefile *f){
+t_symbol *else_panel_getopendir(t_elsefile *f){
     return(f->f_currentdir);
 }
 
@@ -658,12 +658,12 @@ void elsefile_panel_save(t_elsefile *f, t_symbol *inidir, t_symbol *inifile){
     }
 }
 
-void panel_setsavedir(t_elsefile *f, t_symbol *dir){
+void else_panel_setsavedir(t_elsefile *f, t_symbol *dir){
     if((f = f->f_savepanel))
-        panel_setopendir(f, dir);
+        else_panel_setopendir(f, dir);
 }
 
-t_symbol *panel_getsavedir(t_elsefile *f){
+t_symbol *else_panel_getsavedir(t_elsefile *f){
     return(f->f_savepanel ? f->f_savepanel->f_currentdir : 0);
 }
 
@@ -674,7 +674,7 @@ t_symbol *panel_getsavedir(t_elsefile *f){
 //   #X obj <x> <y> <master> <args>; #C <whatever>; ...; #C restore;
 // Since the 1st message in the sequence is a valid creation message,
 // we distinguish loading from a .pd file, and other cases (editing).
-static void embed_gc(t_pd *x, t_symbol *s, int expected){
+static void else_embed_gc(t_pd *x, t_symbol *s, int expected){
     t_pd *garbage;
     int count = 0;
     while((garbage = pd_findbyclass(s, *x)))
@@ -683,11 +683,11 @@ static void embed_gc(t_pd *x, t_symbol *s, int expected){
 	bug("embed_gc (%d garbage bindings)", count);
 }
 
-static void embed_restore(t_pd *master){
-    embed_gc(master, ps__C, 1);
+static void else_embed_restore(t_pd *master){
+    else_embed_gc(master, ps__C, 1);
 }
 
-void embed_save(t_gobj *master, t_binbuf *bb){
+void else_embed_save(t_gobj *master, t_binbuf *bb){
     t_elsefile *f = elsefile_getproxy((t_pd *)master);
     t_text *t = (t_text *)master;
     binbuf_addv(bb, "ssii", &s__X, gensym("obj"), (int)t->te_xpix, (int)t->te_ypix);
@@ -726,7 +726,7 @@ void elsefile_free(t_elsefile *f){
     t_elsefile *prev, *next;
     else_editor_close(f, 0);
     if(f->f_embedfn) // in case of missing 'restore'
-        embed_gc(f->f_master, ps__C, 0);
+        else_embed_gc(f->f_master, ps__C, 0);
     if(f->f_savepanel){
         pd_unbind((t_pd *)f->f_savepanel, f->f_savepanel->f_bindname);
         pd_free((t_pd *)f->f_savepanel);
@@ -758,7 +758,7 @@ t_elsefilefn writefn, t_elsefilefn updatefn){
         return(result);
     }
     if((result->f_embedfn = embedfn)){ // embedding
-        embed_gc(master, ps__C, 0); // in case of missing 'restore'
+        else_embed_gc(master, ps__C, 0); // in case of missing 'restore'
         if(elsefile_isloading(result) || elsefile_ispasting(result))
             pd_bind(master, ps__C);
     }
@@ -798,8 +798,8 @@ t_elsefilefn writefn, t_elsefilefn updatefn){
 
 void elsefile_setup(t_class *c, int embeddable){
     if(embeddable){
-        class_setsavefn(c, embed_save);
-        class_addmethod(c, (t_method)embed_restore, gensym("restore"), 0);
+        class_setsavefn(c, else_embed_save);
+        class_addmethod(c, (t_method)else_embed_restore, gensym("restore"), 0);
     }
     if(!elsefile_class){
         ps__C = gensym("#C");

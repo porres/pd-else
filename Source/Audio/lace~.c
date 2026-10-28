@@ -15,7 +15,7 @@ typedef struct _lace{
 }t_lace;
 
 static void lace_dsp(t_lace *x, t_signal **sp){
-    int n = sp[0]->s_n, i, maxch, totchs = 0, offset = 0;
+    int n = sp[0]->s_n, i, maxch = 0, totchs = 0, offset = 0;
     if(x->x_zero){
         for(i = 0; i < x->x_n_ins; i++){
             int chs = x->x_nch[i] = sp[i]->s_nchans;

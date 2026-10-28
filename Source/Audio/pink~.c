@@ -112,7 +112,7 @@ static void *pink_new(t_symbol *s, int ac, t_atom *av){
     pink_seed(x, s, 0, NULL);
     x->x_sr = 0;
     if(ac){
-        while(av->a_type == A_SYMBOL){
+        while(ac && av->a_type == A_SYMBOL){
             if(atom_getsymbol(av) == gensym("-seed")){
                 if(ac >= 2){
                     t_atom at[1];

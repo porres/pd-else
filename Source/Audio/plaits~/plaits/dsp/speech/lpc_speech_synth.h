@@ -100,7 +100,7 @@ class LPCSpeechSynth {
   int excitation_pulse_sample_index_;
 
   float k_[kLPCOrder];
-  float s_[kLPCOrder + 1];
+  float s_s[kLPCOrder + 1];
 
   DISALLOW_COPY_AND_ASSIGN(LPCSpeechSynth);
 };

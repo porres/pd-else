@@ -3,6 +3,7 @@
 #include <m_pd.h>
 #include <else_alloca.h>
 #include <random.h>
+#include <stdlib.h>
 
 static t_class *randf_class;
 
