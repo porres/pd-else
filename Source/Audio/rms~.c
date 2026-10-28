@@ -1,6 +1,7 @@
 // based on msp's [env~] object: outputs both linear and dBFS rms
 
 #include <m_pd.h>
+#include <else_alloca.h>
 #include "math.h"
 
 #define MAXOVERLAP  32
@@ -44,7 +45,7 @@ static void rms_tilde_tick(t_sigrms *x){ // clock callback function
         outlet_float(x->x_outlet, x->x_db ? pow2db(r) : sqrtf(r));
     }
     else{
-        t_atom at[x->x_nchs];
+        t_atom* at = ALLOCA(t_atom, x->x_nchs);
         for(int j = 0; j < x->x_nchs; j++){
             float r = x->x_result[j];
             if(x->x_db)
@@ -54,6 +55,7 @@ static void rms_tilde_tick(t_sigrms *x){ // clock callback function
             SETFLOAT(at+j, r);
         }
         outlet_list(x->x_outlet, &s_list, x->x_nchs, at);
+        FREEA(at, t_atom, x->x_nchs);
     }
 }
 

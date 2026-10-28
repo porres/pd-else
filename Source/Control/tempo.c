@@ -145,7 +145,9 @@ static void tempo_set_swing_array(t_tempo *x){
         total_slack += x->x_slack[i];
     }
     for(i = 0; i < x->x_cycle; i++){
-        x->x_swing_array[i] += (diff * x->x_slack[i] / total_slack);
+        // without swing there's no slack to spread the difference over (and 0/0 is NaN)
+        if(total_slack > 0)
+            x->x_swing_array[i] += (diff * x->x_slack[i] / total_slack);
         if(x->x_swing_array[i] < min)
             x->x_swing_array[i] = min;
         if(x->x_swing_array[i] > max)

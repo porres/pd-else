@@ -114,6 +114,11 @@ static void pluck_midi(t_pluck *x, t_floatarg f){
 }
 
 static void pluck_list(t_pluck *x, t_symbol *s, int ac, t_atom *av){
+    if(ac == 1){
+        if(s) obj_list(&x->x_obj, NULL, 1, av);
+        return;
+    }
+
     x->x_ignore = s;
     if(ac == 0)
         return;

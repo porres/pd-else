@@ -4,6 +4,8 @@
 #include "random.h"
 #include "magic.h"
 #include <stdlib.h>
+
+#define _USE_MATH_DEFINES
 #include <math.h>
 
 #define POLES 4

@@ -13,7 +13,36 @@
 #include <math.h>
 
 #define t_float float
+#if _MSC_VER
+#define t_complex _Fcomplex
+#else
 #define t_complex _Complex t_float
+#endif
+
+#ifndef CMPLXF
+#define CMPLXF(re,im) (t_complex){re,im}
+#endif
+
+#if defined(_MSC_VER)
+    #include <complex.h>
+    #define COMPLEX_ADD(a, b) _FCbuild(crealf(a) + crealf(b), cimagf(a) + cimagf(b))
+    #define COMPLEX_SUB(a, b) _FCbuild(crealf(a) - crealf(b), cimagf(a) - cimagf(b))
+    #define COMPLEX_MUL(a, b) _FCmulcc(a, b)
+    #define COMPLEX_SCALE(a, b) _FCmulcr(a, b)
+    static t_complex COMPLEX_DIV(t_complex in1, t_complex in2)
+    {
+        double real = (crealf(in1) * crealf(in2) + cimagf(in1) * cimagf(in2)) / (crealf(in2) * crealf(in2) + cimagf(in2) * cimagf(in2));
+        double imag = (cimagf(in1) * crealf(in2) - crealf(in1) * cimagf(in2)) / (crealf(in2) * crealf(in2) + cimagf(in2) * cimagf(in2));
+        return CMPLXF(real,imag);
+    }
+#else
+    #include <complex.h>
+    #define COMPLEX_ADD(a, b) ((a) + (b))
+    #define COMPLEX_SUB(a, b) ((a) - (b))
+    #define COMPLEX_MUL(a, b) ((a) * (b))
+    #define COMPLEX_SCALE(a, b) ((a) * (b))
+    #define COMPLEX_DIV(a, b) ((a) / (b))
+#endif
 
 #define partial_step_count 127
 #define max_integrals 3
@@ -45,32 +74,32 @@ typedef struct
 
 static void elliptic_blep_coeffs_init (t_elliptic_blep_coeffs *coeffs)
 {
-    coeffs->complex_poles[0] = -9.999999999999968 + 17.320508075688757 * I;
-    coeffs->complex_poles[1] = -5562.019693104996 + 7721.557745942449 * I;
-    coeffs->complex_poles[2] = -3936.754373279431 + 13650.191094084097 * I;
-    coeffs->complex_poles[3] = -2348.1627071584026 + 17360.269257396852 * I;
-    coeffs->complex_poles[4] = -1177.6059328793112 + 19350.807275259638 * I;
-    coeffs->complex_poles[5] = -351.8405852427604 + 20192.24393379015 * I;
+    coeffs->complex_poles[0] = CMPLXF(-9.999999999999968, 17.320508075688757);
+    coeffs->complex_poles[1] = CMPLXF(-5562.019693104996, 7721.557745942449);
+    coeffs->complex_poles[2] = CMPLXF(-3936.754373279431, 13650.191094084097);
+    coeffs->complex_poles[3] = CMPLXF(-2348.1627071584026, 17360.269257396852);
+    coeffs->complex_poles[4] = CMPLXF(-1177.6059328793112, 19350.807275259638);
+    coeffs->complex_poles[5] = CMPLXF(-351.8405852427604, 20192.24393379015);
 
-    coeffs->real_poles[0] = -20.000000000000025;
-    coeffs->real_poles[1] = -6298.035731484052;
+    coeffs->real_poles[0] = CMPLXF(-20.000000000000025, 0);
+    coeffs->real_poles[1] = CMPLXF(-6298.035731484052, 0);
 
-    coeffs->complex_coeffs_direct[0] = -20.13756830149893 - 11.467013478535181 * I;
-    coeffs->complex_coeffs_direct[1] = -16453.812748230637 - 7298.835752208561 * I;
-    coeffs->complex_coeffs_direct[2] = 7771.069750908201 + 9555.31023870685 * I;
-    coeffs->complex_coeffs_direct[3] = -825.3820172192254 - 6790.877301990311 * I;
-    coeffs->complex_coeffs_direct[4] = -1529.6770476201002 + 2560.1909145592135 * I;
-    coeffs->complex_coeffs_direct[5] = 755.260843981231 - 310.336256340709 * I;
+    coeffs->complex_coeffs_direct[0] = CMPLXF(-20.13756830149893,  -11.467013478535181);
+    coeffs->complex_coeffs_direct[1] = CMPLXF(-16453.812748230637, -7298.835752208561);
+    coeffs->complex_coeffs_direct[2] = CMPLXF(7771.069750908201, 9555.31023870685);
+    coeffs->complex_coeffs_direct[3] = CMPLXF(-825.3820172192254, -6790.877301990311);
+    coeffs->complex_coeffs_direct[4] = CMPLXF(-1529.6770476201002, 2560.1909145592135);
+    coeffs->complex_coeffs_direct[5] = CMPLXF(755.260843981231, -310.336256340709);
 
     coeffs->real_coeffs_direct[0] = -20.138060433528526;
     coeffs->real_coeffs_direct[1] = 10325.52721970985;
 
-    coeffs->complex_coeffs_blep[0] = -0.1375683014988951 + 0.0799919052573852 * I;
-    coeffs->complex_coeffs_blep[1] = -16453.812748230637 - 7298.835752208561 * I;
-    coeffs->complex_coeffs_blep[2] = 7771.069750908201 + 9555.31023870685 * I;
-    coeffs->complex_coeffs_blep[3] = -825.3820172192254 - 6790.877301990311 * I;
-    coeffs->complex_coeffs_blep[4] = -1529.6770476201002 + 2560.1909145592135 * I;
-    coeffs->complex_coeffs_blep[5] = 755.260843981231 - 310.336256340709 * I;
+    coeffs->complex_coeffs_blep[0] = CMPLXF(-0.1375683014988951, 0.0799919052573852);
+    coeffs->complex_coeffs_blep[1] = CMPLXF(-16453.812748230637, -7298.835752208561);
+    coeffs->complex_coeffs_blep[2] = CMPLXF(7771.069750908201, 9555.31023870685);
+    coeffs->complex_coeffs_blep[3] = CMPLXF(-825.3820172192254, -6790.877301990311);
+    coeffs->complex_coeffs_blep[4] = CMPLXF(-1529.6770476201002, 2560.1909145592135);
+    coeffs->complex_coeffs_blep[5] = CMPLXF(755.260843981231, -310.336256340709);
 
     coeffs->real_coeffs_blep[0] = -0.13806043352856534;
     coeffs->real_coeffs_blep[1] = 10325.52721970985;
@@ -78,19 +107,19 @@ static void elliptic_blep_coeffs_init (t_elliptic_blep_coeffs *coeffs)
 
 static void elliptic_blep_add_pole(t_elliptic_blep *blep, size_t index, t_complex pole, t_complex coeff, t_float angular_frequency)
 {
-    blep->coeffs[index] = coeff*angular_frequency;
+    blep->coeffs[index] = COMPLEX_SCALE(coeff, angular_frequency);
 
     // Set up partial powers of the pole (so we can move forward/back by fractional samples)
     for (size_t s = 0; s <= partial_step_count; ++s) {
         t_float partial = ((t_float)s)/partial_step_count;
-        blep->partial_step_poles[s][index] = cexp(partial*pole*angular_frequency);
+        blep->partial_step_poles[s][index] = cexpf(COMPLEX_SCALE(pole, partial*angular_frequency));
     }
 
     // Set up
-    t_complex blepCoeff = 1.0;
+    t_complex blepCoeff = CMPLXF(1.0, 0.0f);
     for (size_t o = 0; o <= max_blep_order; ++o) {
         blep->blep_coeffs[o][index] = blepCoeff;
-        blepCoeff /= pole*angular_frequency; // factor from integrating
+        blepCoeff = COMPLEX_DIV(blepCoeff, COMPLEX_SCALE(pole, angular_frequency)); // factor from integrating
     }
 }
 
@@ -103,7 +132,8 @@ static void elliptic_blep_create(t_elliptic_blep *blep, int direct, t_float srat
     // For now, just cast real poles to complex ones
     const t_float *realCoeffs = (direct ? s_plane_coeffs.real_coeffs_direct : s_plane_coeffs.real_coeffs_blep);
     for (size_t i = 0; i < real_count; ++i) {
-        elliptic_blep_add_pole(blep, i, s_plane_coeffs.real_poles[i], realCoeffs[i], angular_frequency);
+        t_complex real = CMPLXF(realCoeffs[i], 0);
+        elliptic_blep_add_pole(blep, i, s_plane_coeffs.real_poles[i], real, angular_frequency);
     }
     const t_complex *complexCoeffs = (direct ? s_plane_coeffs.complex_coeffs_direct : s_plane_coeffs.complex_coeffs_blep);
     for (size_t i = 0; i < complex_count; ++i) {
@@ -114,7 +144,7 @@ static void elliptic_blep_create(t_elliptic_blep *blep, int direct, t_float srat
 static t_float elliptic_blep_get(t_elliptic_blep* blep) {
     t_float sum = 0;
     for (size_t i = 0; i < count; ++i) {
-        sum += creal(blep->state[i]*blep->coeffs[i]);
+        sum += crealf(COMPLEX_MUL(blep->state[i], blep->coeffs[i]));
     }
     return sum;
 }
@@ -122,9 +152,9 @@ static t_float elliptic_blep_get(t_elliptic_blep* blep) {
 static void elliptic_blep_add(t_elliptic_blep *blep, t_float amount, size_t blep_order) {
     if (blep_order > max_blep_order) return;
     t_complex* bc = blep->blep_coeffs[blep_order];
-
+    
     for (size_t i = 0; i < count; ++i) {
-        blep->state[i] += amount*bc[i];
+        blep->state[i] = COMPLEX_ADD(blep->state[i], COMPLEX_SCALE(bc[i], amount));
     }
 }
 
@@ -144,8 +174,8 @@ static void elliptic_blep_add_in_past(t_elliptic_blep *blep, t_float amount, siz
     t_complex *low_poles = blep->partial_step_poles[int_index];
     t_complex *high_poles = blep->partial_step_poles[int_index + 1];
     for (size_t i = 0; i < count; ++i) {
-        t_complex lerp_pole = low_poles[i] + (high_poles[i] - low_poles[i])*frac_index;
-        blep->state[i] += bc[i]*lerp_pole*amount;
+        t_complex lerp_pole = COMPLEX_ADD(low_poles[i], COMPLEX_SCALE(COMPLEX_SUB(high_poles[i], low_poles[i]), frac_index));
+        blep->state[i] = COMPLEX_ADD(blep->state[i], COMPLEX_MUL(bc[i], COMPLEX_SCALE(lerp_pole, amount)));
     }
 }
 
@@ -153,8 +183,8 @@ static void elliptic_blep_step(t_elliptic_blep *blep) {
     t_float sum = 0;
     const t_complex *poles = blep->partial_step_poles[partial_step_count-1];
     for (size_t i = 0; i < count; ++i) {
-        sum += creal(blep->state[i]*blep->coeffs[i]);
-        blep->state[i] *= poles[i];
+        sum += crealf(COMPLEX_MUL(blep->state[i], blep->coeffs[i]));
+        blep->state[i] = COMPLEX_MUL(blep->state[i], poles[i]);
     }
 }
 
@@ -171,8 +201,8 @@ static void elliptic_blep_step_samples(t_elliptic_blep *blep, t_float samples) {
     t_complex *high_poles = blep->partial_step_poles[int_index + 1];
 
     for (size_t i = 0; i < count; ++i) {
-        t_complex lerp_pole = low_poles[i] + (high_poles[i] - low_poles[i])*frac_index;
-        blep->state[i] *= lerp_pole;
+        t_complex lerp_pole = COMPLEX_ADD(low_poles[i], COMPLEX_SCALE(COMPLEX_SUB(high_poles[i], low_poles[i]), frac_index));
+        blep->state[i] = COMPLEX_MUL(blep->state[i], lerp_pole);
     }
 }
 
