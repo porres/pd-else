@@ -902,9 +902,9 @@ struct Switch : Component<N+1> {
     double fixedState = 0.0f;
     double& state; // State represents the position of the switch, 0 for not connected), 1 for connected
 
-    double geq[N+1][N+1] = {0};
+    double geq[N+1][N+1] = {{0}};
     
-    Switch(double* state, std::vector<int> pins) : state(*state), isFixed(false)
+    Switch(double* state, std::vector<int> pins) : isFixed(false), state(*state)
     {
         for(int i = 0; i < N; i++)
         {
@@ -912,7 +912,7 @@ struct Switch : Component<N+1> {
         }
     }
     
-    Switch(double s, std::vector<int> pins) : fixedState(s), state(fixedState), isFixed(true)
+    Switch(double s, std::vector<int> pins) : isFixed(true), fixedState(s), state(fixedState)
     {
         for(int i = 0; i < N; i++)
         {
@@ -983,8 +983,8 @@ struct Potentiometer final : Component<3> {
     double ing;
 
     Potentiometer(double& position, double resistance, int vIn, int vWiper, int vOut)
-        : pos(position)
-        , r(resistance)
+        : r(resistance)
+        , pos(position)
     {
         pinLoc[0] = vWiper;
         pinLoc[1] = vIn;
@@ -1027,8 +1027,8 @@ struct StaticPotentiometer final : Component<3> {
     double pos;
 
     StaticPotentiometer(double position, double resistance, int vIn, int vWiper, int vOut)
-        : pos(position)
-        , r(resistance)
+        : r(resistance)
+        , pos(position)
     {
         pinLoc[0] = vWiper;
         pinLoc[1] = vIn;
@@ -1151,7 +1151,7 @@ struct Triode : public Component<3, 3> {
     
     // Dynamic matrices for nodal analysis
     double ieq[3] = {0};
-    double geq[3][3] = {0};
+    double geq[3][3] = {{0}};
 
     Triode(int plate, int grid, int cathode, const Model& model)
     {

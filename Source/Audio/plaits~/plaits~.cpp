@@ -477,14 +477,16 @@ static void *plaits_new(t_symbol *s, int ac, t_atom *av){
             ac--, av++;
             switch(nfloats++){
                 case 0: x->x_f = f; break;
-                case 1: x->x_patch.harmonics = f; break;
-                case 2: x->x_patch.timbre = f; break;
-                case 3: x->x_patch.morph = f; break;
-                case 4: x->x_patch.lpg_colour = f; break;
-                case 5: x->x_patch.decay = f; break;
-                case 6: x->x_patch.timbre_modulation_amount = f; break;
-                case 7: x->x_patch.frequency_modulation_amount = f; break;
-                case 8: x->x_patch.morph_modulation_amount = f; break;
+                // use the setters, so arguments are clamped like the messages are
+                // (an out of range decay indexes outside of the pitch ratio tables)
+                case 1: plaits_harmonics(x, f); break;
+                case 2: plaits_timbre(x, f); break;
+                case 3: plaits_morph(x, f); break;
+                case 4: plaits_lpg_cutoff(x, f); break;
+                case 5: plaits_decay(x, f); break;
+                case 6: plaits_timbreatt(x, f); break;
+                case 7: plaits_fmatt(x, f); break;
+                case 8: plaits_morphatt(x, f); break;
                 default: goto errstate;
             }
         }
