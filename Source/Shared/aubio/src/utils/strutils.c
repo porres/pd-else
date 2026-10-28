@@ -20,7 +20,7 @@
 
 #include "aubio_priv.h"
 
-#ifdef HAVE_WIN_HACKS
+#if _MSC_VER
 #define strncasecmp _strnicmp
 #endif
 

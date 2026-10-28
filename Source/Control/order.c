@@ -1,6 +1,7 @@
 #include <m_pd.h>
 #include <else_alloca.h>
 
+#include <stdlib.h>
 static t_class *order_class;
 
 typedef struct _order{

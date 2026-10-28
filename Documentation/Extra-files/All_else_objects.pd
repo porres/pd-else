@@ -1,7 +1,6 @@
 #N canvas 629 75 529 696 10;
 #N struct \$0-cell float x float y float cellsize float color;
 #N struct \$0-point float x0 float y0 float xs float ys float fg float in float gridx float gridy;
-#N struct \$0-slot float x float y float slotsize float color float width float bordercolor;
 #N canvas 240 37 975 767 GUI 0;
 #X text 48 -899 [biplot];
 #X text 204 -962 [pic] =>;
@@ -30,7 +29,7 @@
 #X text 281 -1014 [pad] =>;
 #X obj 517 -966 else/colors;
 #X obj 516 -932 else/openfile;
-#X obj 110 -987 else/mtx.ctl;
+#X obj 110 -987 else/mtx.ctl 3 3 20 0 0 0 0 0 0 0 0 0 0 0 0;
 #X obj 345 -1030 else/pad 127 127;
 #X obj 266 -966 else/pic 0 empty empty empty 0 0;
 #X obj 656 -1018 else/function 200 100 empty empty 0 1 220 220 220 50 50 50 0 0 0 0 0 1000 0;
@@ -50,7 +49,7 @@
 #X obj 631 -54 else/setdsp~;
 #X obj 770 -86 else/messbox 150 50 235 235 235 0 0 0 0 10;
 #X obj 862 9 else/button 20 20 #FFFFFF #808080 0 1 0 0 0 empty empty;
-#X obj 840 64 else/note 51 20 helvetica empty 0 0 0 0 0 255 255 255 0 0 note;
+#X obj 840 64 else/note 51 20 helvetica empty 0 0 0 0 0 255 255 255 0 0 0 note;
 #X obj 889 111 else/display;
 #X obj 740 67 else/gain2~;
 #A saved;
@@ -70,7 +69,7 @@
 #X obj 623 -179 else/knob 50 0 127 0 0 empty empty #dfdfdf #7c7c7c black 0 0 0 0 1 320 0 0 0 empty empty 0 0 0 0 0 0 0 0 0 0 0;
 #X text 569 -171 [knob];
 #X obj 73 46 else/out.mc~;
-#X obj 95 693 else/scope~ 200 100 256 3 128 -1 1 0 0 0 0 30 30 30 190 190 190 160 160 160 0 empty;
+#X obj 95 693 else/scope~ 200 100 256 3 128 -1 1 0 0 0 0 #1e1e1e #bebebe #a0a0a0 0 empty 0 0 1;
 #X text 134 665 [scope~];
 #X text 707 739 [popmenu];
 #X text 425 639 [scope3d~];
@@ -533,7 +532,6 @@
 #X obj 70 459 else/routeall;
 #X obj 70 484 else/routetype;
 #X obj 70 508 else/selector;
-#X obj 70 532 else/stack;
 #X obj 70 612 else/sig2float~;
 #X obj 70 638 else/float2sig~;
 #X obj 191 612 else/s2f~;
@@ -551,6 +549,7 @@
 #X obj 70 712 else/robin;
 #X obj 70 737 else/listspread;
 #X obj 70 762 else/shift;
+#X obj 70 532 else/deque;
 #X restore 229 237 pd Message_management;
 #N canvas 522 132 182 91 Assorted 0;
 #X obj 73 30 else;

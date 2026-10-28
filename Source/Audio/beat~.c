@@ -158,6 +158,8 @@ static void *beat_new(t_symbol *s, int ac, t_atom *av){
     }
     x->x_t = new_aubio_tempo(modelLabels[mode], x->x_wsize,
         x->x_hopsize, (uint_t)sys_getsr());
+    if(!x->x_t)
+        goto errstate;
     aubio_tempo_set_threshold(x->x_t, thresh);
     aubio_tempo_set_silence(x->x_t, silence);
     x->x_out = (fvec_t *)new_fvec(2);
