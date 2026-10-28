@@ -159,7 +159,7 @@ static t_float knob_wrap(t_knob *x, t_float f){
         if(f < min){
             result = f;
             while(result < min)
-                result += range;
+                result += fabs(range);
         }
         else
             result = fmod(f - min, range) + min;
@@ -2725,7 +2725,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
     sprintf(x->x_tag_IO, "%pIO", x);
     sprintf(x->x_tag_number, "%pNUM", x);
     sprintf(x->x_tag_hover, "%pHOVER", x);
-    if(x->x_rcv != gensym("empty"))
+    if(x->x_rcv != gensym("empty") && x->x_rcv != &s_)
         pd_bind(&x->x_obj.ob_pd, x->x_rcv);
     pd_bind(&x->x_obj.ob_pd, gensym("#keyname")); // listen to key events
     get_cname(x, 100);

@@ -18,6 +18,10 @@
 #include <libavutil/mem.h>
 #include <libavutil/error.h>  // for av_strerror()*/
 
+#ifdef _MSC_VER
+#define ssize_t int
+#endif
+
 #include <vorbis/codec.h>
 #include <vorbis/vorbisenc.h>
 

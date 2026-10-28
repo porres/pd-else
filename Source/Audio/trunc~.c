@@ -25,7 +25,7 @@ static void trunc_dsp(t_trunc *x, t_signal **sp){
         sp[0]->s_vec, sp[1]->s_vec);
 }
 
-void *trunc_new(void){
+static void *trunc_new(void){
     t_trunc *x = (t_trunc *)pd_new(trunc_class);
     outlet_new(&x->x_obj, &s_signal);
     return(void *)x;

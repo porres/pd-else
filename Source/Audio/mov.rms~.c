@@ -35,12 +35,16 @@ static void mrms_clear(t_mrms * x){ // clear buffer and reset things to 0
 
 // set size and deal with allocation if needed
 static void mrms_size(t_mrms *x, t_float f){
-    unsigned int cursz = x->x_size;                     // current size
     unsigned int newsz = f < 1 ? 1 : (unsigned int)f;   // new requested size
     if(newsz > MRMS_MAXBUF)
         newsz = MRMS_MAXBUF;
-    x->x_buf = (double *)realloc(x->x_buf, sizeof(double) * newsz * x->x_nchans);
+    double *buf = (double *)realloc(x->x_buf, sizeof(double) * newsz * x->x_nchans);
+    if(!buf)
+        return; // keep the old buffer rather than nulling it
+    x->x_buf = buf;
     x->x_size = newsz;
+    if(x->x_n_samps > newsz) // can't average over more samples than the buffer holds
+        x->x_n_samps = newsz;
     mrms_clear(x);
 }
 
@@ -174,6 +178,8 @@ static void *mrms_new(t_symbol *s, int ac, t_atom * av){
     };
 /////////////////////////////////////////////////////////////////////////////////
     x->x_buf = NULL;
+    if(x->x_n_samps > x->x_size)
+        x->x_n_samps = x->x_size;
     mrms_size(x, (float)x->x_size);
     outlet_new((t_object *)x, &s_signal);
     return(x);

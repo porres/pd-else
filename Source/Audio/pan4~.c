@@ -114,6 +114,8 @@ static void *pan4_new(t_symbol *s, int ac, t_atom *av){
             x->x_mc = 1;
             ac--, av++;
         }
+        else // an unknown symbol would never be consumed: stop instead of looping forever
+            break;
     }
     if(ac && av->a_type == A_FLOAT){
         f1 = atom_getfloat(av);
