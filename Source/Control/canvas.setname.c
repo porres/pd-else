@@ -25,7 +25,7 @@ static void setname_name(t_setname *x, t_symbol *s){
 static void setname_setowner(t_setname *x){
     t_canvas *cv = x->x_cv;
     int depth = x->x_depth;
-    if(x->x_mode)
+    if(x->x_mode && cv->gl_owner) // a toplevel canvas has no owner to get the root for
         cv = canvas_getrootfor(cv->gl_owner);
     while(depth-- && cv->gl_owner){
         if(x->x_mode)

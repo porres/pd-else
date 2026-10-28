@@ -609,6 +609,6 @@ public:
         }
 
         assert(false);
-        return {};
+        return BJTs; // just return something to suppress the warning...
     }
 };

@@ -36,8 +36,13 @@ static void mavg_size(t_mavg *x, t_float f){
     unsigned int newsz = f < 1 ? 1 : (unsigned int)f;   // new requested size
     if(newsz > MAVG_MAXBUF)
         newsz = MAVG_MAXBUF;
-    x->x_buf = (double *)realloc(x->x_buf, sizeof(double) * newsz * x->x_nchans);
+    double *buf = (double *)realloc(x->x_buf, sizeof(double) * newsz * x->x_nchans);
+    if(!buf)
+        return; // keep the old buffer rather than nulling it
+    x->x_buf = buf;
     x->x_size = newsz;
+    if(x->x_n_samps > newsz) // can't average over more samples than the buffer holds
+        x->x_n_samps = newsz;
     mavg_clear(x);
 }
 

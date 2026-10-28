@@ -4028,10 +4028,6 @@ const int16_t* const lookup_table_i16_table[] = {
 };
 
 
-
-const int32_t* const lookup_table_i32_table[] = {
-};
-
 const int8_t lut_lpc_excitation_pulse[] = {
        0,      0,      0,      0,
        1,      1,      1,      2,
