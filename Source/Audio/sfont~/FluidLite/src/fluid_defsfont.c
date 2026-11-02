@@ -473,8 +473,10 @@ int fluid_defsfont_load(fluid_defsfont_t* sfont, const char* file, fluid_fileapi
     preset = new_fluid_defpreset(sfont);
     if (preset == NULL) goto err_exit;
 
-    if (fluid_defpreset_import_sfont(preset, sfpreset, sfont) != FLUID_OK)
+    if (fluid_defpreset_import_sfont(preset, sfpreset, sfont) != FLUID_OK) {
+      delete_fluid_defpreset(preset);
       goto err_exit;
+    }
 
     fluid_defsfont_add_preset(sfont, preset);
     if(preset_callback) preset_callback(preset->bank,preset->num,preset->name);
@@ -636,21 +638,34 @@ int fluid_defsfont_iteration_next(fluid_defsfont_t* sfont, fluid_preset_t* prese
   return 1;
 }
 
+static void
+delete_fluid_pending_zone(fluid_pending_zone_t* pz)
+{
+  fluid_list_t* p;
+
+  for (p = pz->gen; p != NULL; p = fluid_list_next(p)) {
+    FLUID_FREE(p->data);
+  }
+  delete_fluid_list(pz->gen);
+
+  for (p = pz->mod; p != NULL; p = fluid_list_next(p)) {
+    FLUID_FREE(p->data);
+  }
+  delete_fluid_list(pz->mod);
+
+  /* only set until the instrument is handed over to a preset zone */
+  if (pz->inst != NULL) {
+    delete_fluid_inst(pz->inst);
+  }
+  FLUID_FREE(pz);
+}
+
 void
 delete_fluid_pending_zones(fluid_list_t* pending)
 {
-  fluid_list_t* p = pending;
-  while (p != NULL) {
-    fluid_pending_zone_t* pz = (fluid_pending_zone_t*) p->data;
-    /* free the gen list entries */
-    fluid_list_t* g = pz->gen;
-    while (g != NULL) {
-      FLUID_FREE(g->data);
-      g = fluid_list_next(g);
-    }
-    delete_fluid_list(pz->gen);
-    FLUID_FREE(pz);
-    p = fluid_list_next(p);
+  fluid_list_t* p;
+  for (p = pending; p != NULL; p = fluid_list_next(p)) {
+    delete_fluid_pending_zone((fluid_pending_zone_t*) p->data);
   }
   delete_fluid_list(pending);
 }
@@ -679,6 +694,8 @@ new_fluid_defpreset(fluid_defsfont_t* sfont)
   preset->num = 0;
   preset->global_zone = NULL;
   preset->zone = NULL;
+  preset->zones_loaded = 0;
+  preset->pending_sf_zones = NULL;
   return preset;
 }
 
@@ -747,11 +764,13 @@ fluid_defpreset_ensure_loaded(fluid_defpreset_t* preset)
     return FLUID_OK;
   }
 
-  fluid_list_t* p = preset->pending_sf_zones;
   char zone_name[256];
   int count = 0;
 
-  while (p != NULL) {
+  /* Each pending zone is freed as soon as it is imported, so a failed load
+     leaves only the remaining ones queued and a retry doesn't add duplicates */
+  while (preset->pending_sf_zones != NULL) {
+    fluid_list_t* p = preset->pending_sf_zones;
     fluid_pending_zone_t* sfzone = (fluid_pending_zone_t*) p->data;
     FLUID_SPRINTF(zone_name, "%s/%d", preset->name, count);
 
@@ -761,21 +780,27 @@ fluid_defpreset_ensure_loaded(fluid_defpreset_t* preset)
     }
 
     if (fluid_preset_zone_import_sfont(zone, sfzone, preset->sfont) != FLUID_OK) {
+      zone->inst = NULL; /* still owned by the pending zone */
+      delete_fluid_preset_zone(zone);
       return FLUID_FAILED;
     }
 
-    if ((count == 0) && (fluid_preset_zone_get_inst(zone) == NULL)) {
+    sfzone->inst = NULL; /* now owned by the zone */
+    preset->pending_sf_zones = fluid_list_next(p);
+    delete1_fluid_list(p);
+    delete_fluid_pending_zone(sfzone);
+
+    if ((preset->global_zone == NULL) && (preset->zone == NULL) && (fluid_preset_zone_get_inst(zone) == NULL)) {
       fluid_defpreset_set_global_zone(preset, zone);
     } else if (fluid_defpreset_add_zone(preset, zone) != FLUID_OK) {
+      delete_fluid_preset_zone(zone);
       return FLUID_FAILED;
     }
 
-    p = fluid_list_next(p);
     count++;
   }
 
-  preset->zones_loaded     = 1;
-  preset->pending_sf_zones = NULL;
+  preset->zones_loaded = 1;
 
   return FLUID_OK;
 }
@@ -1165,8 +1190,6 @@ fluid_copy_sfzone(SFZone* sfzone, fluid_defsfont_t* sfont)
 {
   fluid_pending_zone_t* copy;
   fluid_list_t* r;
-  fluid_list_t* g;
-  fluid_list_t* m;
   SFGen* gen_src;
   SFGen* gen_dst;
   SFMod* mod_src;
@@ -1221,14 +1244,7 @@ fluid_copy_sfzone(SFZone* sfzone, fluid_defsfont_t* sfont)
   return copy;
 
 error:
-  g = copy->gen;
-  while (g != NULL) { FLUID_FREE(g->data); g = fluid_list_next(g); }
-  delete_fluid_list(copy->gen);
-  m = copy->mod;
-  while (m != NULL) { FLUID_FREE(m->data); m = fluid_list_next(m); }
-  delete_fluid_list(copy->mod);
-  if (copy->inst != NULL) delete_fluid_inst(copy->inst);
-  FLUID_FREE(copy);
+  delete_fluid_pending_zone(copy);
   return NULL;
 }
 
@@ -1576,6 +1592,9 @@ new_fluid_inst()
   inst->name[0] = 0;
   inst->global_zone = NULL;
   inst->zone = NULL;
+  inst->zones_loaded = 0;
+  inst->pending_sf_zones = NULL;
+  inst->pending_sfont = NULL;
   return inst;
 }
 
@@ -1657,11 +1676,12 @@ fluid_inst_ensure_loaded(fluid_inst_t* inst)
     return FLUID_OK;
   }
 
-  fluid_list_t* p = inst->pending_sf_zones;
   char zone_name[256];
   int count = 0;
 
-  while (p != NULL) {
+  /* Same as fluid_defpreset_ensure_loaded: free each pending zone once imported */
+  while (inst->pending_sf_zones != NULL) {
+    fluid_list_t* p = inst->pending_sf_zones;
     fluid_pending_zone_t* sfzone = (fluid_pending_zone_t*) p->data;
     FLUID_SPRINTF(zone_name, "%s/%d", inst->name, count);
 
@@ -1671,22 +1691,26 @@ fluid_inst_ensure_loaded(fluid_inst_t* inst)
     }
 
     if (fluid_inst_zone_import_sfont(zone, sfzone, inst->pending_sfont) != FLUID_OK) {
+      delete_fluid_inst_zone(zone);
       return FLUID_FAILED;
     }
 
-    if ((count == 0) && (fluid_inst_zone_get_sample(zone) == NULL)) {
+    inst->pending_sf_zones = fluid_list_next(p);
+    delete1_fluid_list(p);
+    delete_fluid_pending_zone(sfzone);
+
+    if ((inst->global_zone == NULL) && (inst->zone == NULL) && (fluid_inst_zone_get_sample(zone) == NULL)) {
       fluid_inst_set_global_zone(inst, zone);
     } else if (fluid_inst_add_zone(inst, zone) != FLUID_OK) {
+      delete_fluid_inst_zone(zone);
       return FLUID_FAILED;
     }
 
-    p = fluid_list_next(p);
     count++;
   }
 
-  inst->zones_loaded     = 1;
-  inst->pending_sf_zones = NULL;
-  inst->pending_sfont    = NULL;
+  inst->zones_loaded  = 1;
+  inst->pending_sfont = NULL;
 
   return FLUID_OK;
 }
@@ -2016,11 +2040,11 @@ new_fluid_sample()
 int
 delete_fluid_sample(fluid_sample_t* sample)
 {
-#if SF3_SUPPORT
-  if (sample->sampletype & FLUID_SAMPLETYPE_OGG_VORBIS_UNPACKED) {
-    if (sample->data != NULL) FLUID_FREE(sample->data);
+  /* fluid_sample_ensure_loaded gives each sample its own buffer
+     (decoded OGG or raw PCM read from the file) */
+  if (sample->data_loaded && sample->data != NULL) {
+    FLUID_FREE(sample->data);
   }
-#endif
 
   FLUID_FREE(sample);
   return FLUID_OK;

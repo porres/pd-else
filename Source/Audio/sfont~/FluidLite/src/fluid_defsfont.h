@@ -575,7 +575,7 @@ struct _fluid_inst_t
 
    /* --- lazy load fields --- */
    int zones_loaded;
-   fluid_pending_zone_t* pending_sf_zones;   // raw SFZone* list from the SF2 parser
+   fluid_list_t* pending_sf_zones;       // list of fluid_pending_zone_t* copied from the SF2 parser
    fluid_defsfont_t* pending_sfont;      // held so we can call fluid_inst_zone_import_sfont later
 };
 
