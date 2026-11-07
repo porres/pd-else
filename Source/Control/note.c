@@ -77,7 +77,6 @@ typedef struct _note{
     int             x_text_flag;
     int             x_text_n;
     int             x_text_size;
-    int             x_zoom;
     int             x_fontface;
     int             x_bold;
     int             x_italic;
@@ -94,6 +93,8 @@ typedef struct _handle{
     t_symbol   *h_bindsym;
     char        h_pathname[64];
     int         h_clicked;
+    int         h_xclick;  // drag start (canvas coords, unzoomed)
+    int         h_xmotion; // current drag position (canvas coords, unzoomed)
 }t_handle;
 
 // helper functions
@@ -144,11 +145,11 @@ static void note_draw_outline(t_note *x){
             (unsigned long)x->x_cv,
             x1,
             y1,
-            x2 + 2*x->x_zoom,
-            y2 + 2*x->x_zoom,
+            x2 + 2,
+            y2 + 2,
             (unsigned long)x, // %lx_outline
             (unsigned long)x, // all%lx
-            x->x_zoom,
+            1,
             x->x_select ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor);
     }
 }
@@ -160,18 +161,22 @@ static void note_draw_handle(t_note *x){
         int x1, y1, x2, y2;
         note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
         if(x->x_resized)
-            x2 = x1 + x->x_max_pixwidth * x->x_zoom;
+            x2 = x1 + x->x_max_pixwidth;
         sys_vgui("canvas %s -width %d -height %d -bg #%06x -cursor sb_h_double_arrow\n",
             ch->h_pathname, NOTE_HANDLE_WIDTH, x->x_height, THISGUI->i_selectcolor);
-        sys_vgui("bind %s <Button> {pdsend [concat %s _click 1 \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
-        sys_vgui("bind %s <ButtonRelease> {pdsend [concat %s _click 0 \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
-        sys_vgui("bind %s <Motion> {pdsend [concat %s _motion %%x %%y \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
+        // canvasx/canvasy make the coordinates zoom-aware (unzoomed units)
+        sys_vgui("bind %s <Button> {pdsend [concat %s _click 1 [.x%lx.c canvasx %%x] [.x%lx.c canvasy %%y] \\;]}\n",
+            ch->h_pathname, ch->h_bindsym->s_name, (unsigned long)x->x_cv, (unsigned long)x->x_cv);
+        sys_vgui("bind %s <ButtonRelease> {pdsend [concat %s _click 0 [.x%lx.c canvasx %%x] [.x%lx.c canvasy %%y] \\;]}\n",
+            ch->h_pathname, ch->h_bindsym->s_name, (unsigned long)x->x_cv, (unsigned long)x->x_cv);
+        sys_vgui("bind %s <Motion> {pdsend [concat %s _motion [.x%lx.c canvasx %%x] [.x%lx.c canvasy %%y] \\;]}\n",
+            ch->h_pathname, ch->h_bindsym->s_name, (unsigned long)x->x_cv, (unsigned long)x->x_cv);
         sys_vgui(".x%lx.c create window %d %d -anchor nw -width %d -height %d -window %s -tags [list handle%lx all%lx]\n",
             x->x_cv,
-            x2 + 2*x->x_zoom,
+            x2 + 2,
             y1,
-            NOTE_HANDLE_WIDTH + 2*x->x_zoom,
-            x->x_height + 1 + 2*x->x_zoom,
+            NOTE_HANDLE_WIDTH + 2,
+            x->x_height + 1 + 2,
             ch->h_pathname,
             (unsigned long)x,
             (unsigned long)x);
@@ -184,7 +189,7 @@ static void note_draw_inlet(t_note *x){
             t_canvas *cv = glist_getcanvas(x->x_glist);
             int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
             sys_vgui(".x%lx.c create rectangle %d %d %d %d -outline #%06x -fill #%06x -tags [list %lx_in all%lx]\n",
-                cv, xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom)-x->x_zoom,
+                cv, xpos, ypos, xpos+IOWIDTH, ypos+IHEIGHT-1,
                 THISGUI->i_foregroundcolor, THISGUI->i_foregroundcolor,
                 (unsigned long)x, (unsigned long)x);
         }
@@ -194,7 +199,7 @@ static void note_draw_inlet(t_note *x){
 static void note_adjust_justification(t_note *x){
     int move = 0;
     if(x->x_textjust && x->x_resized){
-        move = x->x_max_pixwidth - (x->x_text_width / x->x_zoom);
+        move = x->x_max_pixwidth - x->x_text_width;
         if(x->x_textjust == 1) // center
             move/=2;
     }
@@ -202,7 +207,7 @@ static void note_adjust_justification(t_note *x){
         int x1, y1, x2, y2;
         note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
         // getrect
-        sys_vgui(".x%lx.c moveto txt%lx  %d %d\n", x->x_cv, (unsigned long)x, x1+move*x->x_zoom, y1);
+        sys_vgui(".x%lx.c moveto txt%lx  %d %d\n", x->x_cv, (unsigned long)x, x1+move, y1);
     }
 }
 
@@ -218,8 +223,8 @@ static void note_draw(t_note *x){
             (unsigned long)x->x_cv,
             text_xpix((t_text *)x, x->x_glist),
             text_ypix((t_text *)x, x->x_glist),
-            x2 + 2*x->x_zoom,
-            y2 + 2*x->x_zoom,
+            x2 + 2,
+            y2 + 2,
             (unsigned long)x,
             (unsigned long)x,
             x->x_outline ? bg : x->x_bgcolor,
@@ -235,14 +240,14 @@ static void note_draw(t_note *x){
         (unsigned long)x->x_cv,          // .x%lx.c
         (unsigned long)x,                // txt%lx
         (unsigned long)x,                // all%lx
-        text_xpix((t_text *)x, x->x_glist) + x->x_zoom, // %d
-        text_ypix((t_text *)x, x->x_glist) + x->x_zoom, // %d
+        text_xpix((t_text *)x, x->x_glist) + 1, // %d
+        text_ypix((t_text *)x, x->x_glist) + 1, // %d
         x->x_fontname->s_name,           // {%s}
-        x->x_fontsize * x->x_zoom,       // -%d
+        x->x_fontsize,                   // -%d
         x->x_select ? sel : x->x_color,  // %s
         x->x_bufsize,                    // %.*
         x->x_buf,                        // *s
-        x->x_max_pixwidth * x->x_zoom,   // %d
+        x->x_max_pixwidth,              // %d
         x->x_bold ? "bold" : "normal",   // %s
         x->x_italic ? "italic" : "roman",// %s
         x->x_textjust == 0 ? "left" : x->x_textjust == 1 ? "center" : "right", // %s
@@ -268,7 +273,7 @@ static void note_update(t_note *x){
         (unsigned long)x,
         x->x_bufsize,
         x->x_buf,
-        x->x_max_pixwidth * x->x_zoom);
+        x->x_max_pixwidth);
     outp += strlen(outp);
     if(x->x_active){
         if(x->x_selend > x->x_selstart){ // <= TEXT SELECTION!!!!
@@ -324,7 +329,7 @@ static void note_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2
     x1 = text_xpix((t_text *)x, glist);
     y1 = text_ypix((t_text *)x, glist);
     if(x->x_resized)
-        x->x_width = x->x_max_pixwidth * x->x_zoom;
+        x->x_width = x->x_max_pixwidth;
     int min_size = NOTE_MINSIZE;
     if(x->x_width < min_size)
         x->x_width = min_size;
@@ -340,7 +345,6 @@ static void note_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2
 }
 
 static void note_displace(t_gobj *z, t_glist *glist, int dx, int dy){
-    glist = NULL;
     t_note *x = (t_note *)z;
     if(!x->x_active && !x->x_dragon){  // ???
         t_text *t = (t_text *)z;
@@ -348,9 +352,9 @@ static void note_displace(t_gobj *z, t_glist *glist, int dx, int dy){
         t->te_ypix += dy, x->x_y1 += dy, x->x_y2 += dy;
         sys_vgui(".x%lx.c move all%lx %d %d\n",
             x->x_cv, (unsigned long)x,
-            dx*x->x_zoom,
-            dy*x->x_zoom);
-        canvas_fixlinesfor(x->x_cv, t);
+            dx,
+            dy);
+        canvas_fixlinesfor(glist, t);
     }
 }
 
@@ -389,8 +393,8 @@ static void note_select(t_gobj *z, t_glist *glist, int state){
     if(x->x_select)
         snprintf(sel, sizeof(sel), "#%06x", THISGUI->i_selectcolor);
     sys_vgui(".x%lx.c itemconfigure txt%lx -fill %s\n", x->x_cv, (unsigned long)x, state ? sel : x->x_color);
-    sys_vgui(".x%lx.c itemconfigure %lx_outline -width %d -outline #%06x\n",
-        x->x_cv, (unsigned long)x, x->x_zoom,
+    sys_vgui(".x%lx.c itemconfigure %lx_outline -width 1 -outline #%06x\n",
+        x->x_cv, (unsigned long)x,
         state ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor);
 // A regular rtext should set 'canvas_editing' variable to its canvas, we don't do it coz
 // we get keys via global binding to "#key" (and coz 'canvas_editing' isn't exported).
@@ -423,8 +427,8 @@ t_floatarg x1, t_floatarg y1, t_floatarg x2, t_floatarg y2){
         x->x_y1 = y1;
         x->x_y2 = y2;
         if(x->x_resized){
-            x->x_width = x->x_max_pixwidth * x->x_zoom;
-            x->x_x2 = x1 + x->x_max_pixwidth * x->x_zoom;
+            x->x_width = x->x_max_pixwidth;
+            x->x_x2 = x1 + x->x_max_pixwidth;
         }
         else
             x->x_width = x2-x1, x->x_x2 = x2;
@@ -450,7 +454,7 @@ static void note__click_callback(t_note *x, t_symbol *s, int ac, t_atom *av){
         post("bug [note]: note__click_callback");
         return;
     }
-    char buf[NOTE_OUTBUFSIZE], *outp = buf;
+    char buf[NOTE_OUTBUFSIZE] = {0}, *outp = buf;
     unsigned long cv = (unsigned long)x->x_cv;
     if(x->x_glist->gl_edit){
         if(x->x_active){
@@ -469,8 +473,8 @@ static void note__click_callback(t_note *x, t_symbol *s, int ac, t_atom *av){
 //            sprintf(outp, ".x%lx.c bind txt%lx <ButtonRelease> {pdsend {%s _release %s}}\n",
 //                cv, (unsigned long)x, x->x_bindsym->s_name, x->x_bindsym->s_name);
             outp += strlen(outp);
-            sprintf(outp, ".x%lx.c bind txt%lx <Motion> {pdsend {%s _motion %s %%x %%y}}\n",
-                cv, (unsigned long)x, x->x_bindsym->s_name, x->x_bindsym->s_name);
+            sprintf(outp, ".x%lx.c bind txt%lx <Motion> {pdsend [concat %s _motion %s [.x%lx.c canvasx %%x] [.x%lx.c canvasy %%y]]}\n",
+                cv, (unsigned long)x, x->x_bindsym->s_name, x->x_bindsym->s_name, cv, cv);
             outp += strlen(outp);
             sys_gui(buf);
             x->x_newx2 = x->x_x2;
@@ -479,47 +483,52 @@ static void note__click_callback(t_note *x, t_symbol *s, int ac, t_atom *av){
     }
 }
 
-static void handle__click_callback(t_handle *ch, t_floatarg f){
+static void handle__click_callback(t_handle *ch, t_floatarg f, t_floatarg xarg, t_floatarg yarg){
+    yarg = 0; // unused
     int click = (int)f;
     t_note *x = ch->h_master;
     if(ch->h_clicked && click == 0){ // Released the handle
-        if(x->x_x2 != x->x_newx2){
+        if(ch->h_xmotion != ch->h_xclick){
+            int x1, y1, x2, y2;
+            note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+            x2 += ch->h_xmotion - ch->h_xclick; // all in unzoomed units
             x->x_resized = 1;
-            x->x_x2 = x->x_newx2;
             t_atom undo[1];
             SETFLOAT(undo+0, x->x_max_pixwidth);
-            int pixwidth = (x->x_newx2 - x->x_x1) / x->x_zoom;
+            int pixwidth = x2 - x1;
+            if(pixwidth < 8)
+                pixwidth = 8; // min width
             t_atom redo[1];
             SETFLOAT(redo+0, pixwidth);
             pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("width"), 1, undo, 1, redo);
-            if(pixwidth < 8)
-                pixwidth = 8; // min width
             x->x_changed = 1;
             x->x_max_pixwidth = pixwidth;
-            x->x_resized = 1;
+            x->x_x1 = x1;
+            x->x_x2 = x1 + pixwidth;
             canvas_dirty(x->x_glist, 1);
             note_redraw(x); // needed to call bbox callback
         }
     }
-    if(click)
+    if(click){
         x->x_bbset = 0; // arm bbox callback redraw
+        ch->h_xclick = ch->h_xmotion = (int)xarg;
+    }
     ch->h_clicked = click;
 }
 
-static void handle__motion_callback(t_handle *ch, t_floatarg f1, t_floatarg f2){
+static void handle__motion_callback(t_handle *ch, t_floatarg xarg, t_floatarg yarg){
+    yarg = 0; // unused
     if(ch->h_clicked){ // dragging handle
         t_note *x = ch->h_master;
-        int dx = (int)f1;
-        f2 = 0; // avoid warning
+        ch->h_xmotion = (int)xarg;
         int x1, y1, x2, y2;
         note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
-        x->x_x1 = x1, x->x_x2 = x2;
-        x->x_y1 = y1, x->x_y2 = y2;
-        int newx = x2 + dx;
-        if(newx > x1 + NOTE_MINSIZE){ // update outline
-            sys_vgui(".x%lx.c coords %lx_outline %d %d %d %d\n", (unsigned long)x->x_cv,
-                (unsigned long)x, x->x_x1, x->x_y1, (x->x_newx2 = newx) + 2*x->x_zoom, x->x_y2 + 2*x->x_zoom);
-        }
+        int newx2 = x2 + ch->h_xmotion - ch->h_xclick;
+        if(newx2 < x1 + NOTE_MINSIZE)
+            newx2 = x1 + NOTE_MINSIZE;
+        // update outline
+        sys_vgui(".x%lx.c coords %lx_outline %d %d %d %d\n", (unsigned long)x->x_cv,
+            (unsigned long)x, x1, y1, newx2 + 2, y2 + 2);
     }
 }
 
@@ -916,7 +925,7 @@ static void note_fontname(t_note *x, t_symbol *name){
 static void note_fontsize(t_note *x, t_floatarg f){
     int size = (int)f < 5 ? 5 : (int)f;
     if(x->x_fontsize != size){
-        x->x_fontsize = size; // * x->x_zoom;
+        x->x_fontsize = size;
         x->x_bbset = 0;
         note_redraw(x);
     }
@@ -1015,11 +1024,6 @@ static void note_just(t_note *x, t_float f){
         x->x_bbset = 0;
         note_redraw(x); // itemconfigure?
 //    }
-}
-
-static void note_zoom(t_note *x, t_floatarg zoom){
-    x->x_zoom = (int)zoom;
-    note_redraw(x);
 }
 
 //------------------- Properties --------------------------------------------------------
@@ -1163,7 +1167,7 @@ static void note_ok(t_note *x, t_symbol *s, int ac, t_atom *av){
     int outline = atom_getfloatarg(10, ac, av);
     if(x->x_outline != outline)
         note_outline(x, outline);
-    note_receive(x, atom_getsymbolarg(11, ac, av));    
+    note_receive(x, atom_getsymbolarg(11, ac, av));
     if(x->x_changed){
         canvas_dirty(x->x_glist, 1);
         note_redraw(x);
@@ -1225,7 +1229,6 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     t->te_type = T_TEXT;
     x->x_glist = canvas_getcurrent();
     x->x_cv = canvas_getcurrent();
-    x->x_zoom = x->x_glist->gl_zoom;
     x->x_fontname = gensym(sys_font);
     x->x_edit = x->x_glist->gl_edit;
     x->x_buf = 0;
@@ -1488,7 +1491,6 @@ void note_setup(void){
     class_addmethod(note_class, (t_method)note_textcolor, gensym("color"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(note_class, (t_method)note_bgcolor, gensym("bgcolor"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(note_class, (t_method)note_bg_flag, gensym("bg"), A_FLOAT, 0);
-    class_addmethod(note_class, (t_method)note_zoom, gensym("zoom"), A_CANT, 0);
     class_addmethod(note_class, (t_method)note_ok, gensym("ok"), A_GIMME, 0);
     class_addmethod(note_class, (t_method)note__bbox_callback, gensym("_bbox"), A_SYMBOL, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(note_class, (t_method)note__click_callback, gensym("_click"), A_GIMME, 0);
@@ -1508,7 +1510,7 @@ void note_setup(void){
     class_addmethod(notesink_class, (t_method)notesink__bbox_callback, gensym("_bbox"), A_SYMBOL, 0); // <= ?????
     
     handle_class = class_new(gensym("_handle"), 0, 0, sizeof(t_handle), CLASS_PD, 0);
-    class_addmethod(handle_class, (t_method)handle__click_callback, gensym("_click"), A_FLOAT, 0);
+    class_addmethod(handle_class, (t_method)handle__click_callback, gensym("_click"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(handle_class, (t_method)handle__motion_callback, gensym("_motion"), A_FLOAT, A_FLOAT, 0);
     #include "../Extra/note_dialog.h"
 }
