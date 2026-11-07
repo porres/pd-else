@@ -1,28 +1,6 @@
 // Based on dialogs from iemguis in Pd Vanilla (by Tim Schoen & Porres)
 
 static const char *knob_dialog_tcl =
-// function called on the C-Side
-"proc color2hex {name} {\n"
-"    if {[catch {winfo rgb . $name} rgb]} {\n"
-"        return \"\"\n"
-"    }\n"
-"    set r [format %02x [expr {[lindex $rgb 0] / 256}]]\n"
-"    set g [format %02x [expr {[lindex $rgb 1] / 256}]]\n"
-"    set b [format %02x [expr {[lindex $rgb 2] / 256}]]\n"
-"    return \"#$r$g$b\"\n"
-"}\n"
-"\n"
-// get symbol from Pd
-"proc get_symbol {text} {\n"
-//"    ::pdwindow::post \"RAW: <$text>\\n\"\n"
-" set sym [subst -nocommands -novariables $text]\n" // unescape backslashes
-" if {$sym eq \"empty\"} {set sym \"\"}\n" // set "empty" to literal empty
-//"    ::pdwindow::post \"Cooked: <$sym>\\n\"\n"
-" return $sym\n"
-"}\n"
-
-// ---------------------- Actual start of properties ---------------------- \\
-// 
 "namespace eval ::dialog_knob:: {\n"
 "}\n"
 // arrays to store per-dialog values
@@ -67,9 +45,6 @@ static const char *knob_dialog_tcl =
 "array set ::dialog_knob::var_color_bg {} ;\n"
 "array set ::dialog_knob::var_color_fg {} ;\n"
 "array set ::dialog_knob::var_color_arc {} ;\n"
-"array set ::dialog_knob::var_saved_bg {} ;\n"
-"array set ::dialog_knob::var_saved_arc {} ;\n"
-"array set ::dialog_knob::var_saved_fg {} ;\n"
 "array set ::dialog_knob::var_pd_bg {} ;\n"
 "array set ::dialog_knob::var_pd_fg {} ;\n"
 
@@ -139,6 +114,7 @@ static const char *knob_dialog_tcl =
 "    set ::dialog_knob::var_prm($vid) [string map {{\\ } \" \"} $prm]\n"
 "    set ::dialog_knob::var_var($vid) [string map {{\\ } \" \"} $var]\n"
 "\n" // colors
+// var_color_* ALWAYS holds the custom colors (what apply sends to C side)
 "    set ::dialog_knob::var_color_bg($vid) $bcol\n"
 "    set ::dialog_knob::var_color_fg($vid) $fcol\n"
 "    set ::dialog_knob::var_color_arc($vid) $acol\n"
@@ -150,10 +126,23 @@ static const char *knob_dialog_tcl =
 "    set ::dialog_knob::var_transp($vid) $transp \n"
 "    set ::dialog_knob::var_colorradio($vid) 0\n" // init to 'bg'
 
-"    set ::dialog_knob::var_hex_bgcolor_text($vid) [string toupper $bcol]\n"
-"    set ::dialog_knob::var_hex_arccolor_text($vid) [string toupper $acol]\n"
-"    set ::dialog_knob::var_hex_fgcolor_text($vid) [string toupper $fcol]\n"
-
+// Display: theme on shows Pd colors (knob draws arc with foregroundcolor),
+// theme off shows custom colors. var_color_* is NOT touched.
+"    if { $theme == 1 } {\n"
+"        set ::dialog_knob::var_hex_bgcolor_text($vid) [string toupper $pd_bg]\n"
+"        set ::dialog_knob::var_hex_arccolor_text($vid) [string toupper $pd_fg]\n"
+"        set ::dialog_knob::var_hex_fgcolor_text($vid) [string toupper $pd_fg]\n"
+"        set swatch_bg $pd_bg\n"
+"        set swatch_arc $pd_fg\n"
+"        set swatch_fg $pd_fg\n"
+"    } else {\n"
+"        set ::dialog_knob::var_hex_bgcolor_text($vid) [string toupper $bcol]\n"
+"        set ::dialog_knob::var_hex_arccolor_text($vid) [string toupper $acol]\n"
+"        set ::dialog_knob::var_hex_fgcolor_text($vid) [string toupper $fcol]\n"
+"        set swatch_bg $bcol\n"
+"        set swatch_arc $acol\n"
+"        set swatch_fg $fcol\n"
+"    }\n"
 "\n"
 
 // ------------------------- HELPER PROCEDURES/FUNCTIONS ------------------------- \\
@@ -227,54 +216,43 @@ static const char *knob_dialog_tcl =
 "    ::dialog_knob::applymacos $id\n"
 "}\n"
 
+// theme_check: only update DISPLAY (hex entries + swatches) and control states.
+// var_color_* ALWAYS keeps the custom colors (what apply sends to C side), so
+// toggling theme on/off never corrupts them.
 "proc ::dialog_knob::theme_check {id} {\n"
 "    set vid [string trimleft $id .]\n"
 "    if { $::dialog_knob::var_theme($vid) == 1 } {\n"
-//      Save current colors
-"       set ::dialog_knob::var_saved_bg($vid) $::dialog_knob::var_color_bg($vid)\n"
-"       set ::dialog_knob::var_saved_arc($vid) $::dialog_knob::var_color_arc($vid)\n"
-"       set ::dialog_knob::var_saved_fg($vid) $::dialog_knob::var_color_fg($vid)\n"
-"       \n"
-//      Show PD theme colors
-"       set ::dialog_knob::var_color_bg($vid) $::dialog_knob::var_pd_bg($vid)\n"
-"       set ::dialog_knob::var_color_arc($vid) $::dialog_knob::var_pd_fg($vid)\n"
-"       set ::dialog_knob::var_color_fg($vid) $::dialog_knob::var_pd_fg($vid)\n"
-"       \n"
-//      Update hex displays
-"       set ::dialog_knob::var_hex_bgcolor_text($vid) [string toupper $::dialog_knob::var_pd_bg($vid)]\n"
-"       set ::dialog_knob::var_hex_arccolor_text($vid) [string toupper $::dialog_knob::var_pd_fg($vid)]\n"
-"       set ::dialog_knob::var_hex_fgcolor_text($vid) [string toupper $::dialog_knob::var_pd_fg($vid)]\n"
-"       \n"
-//      Disable controls\n
-"       $id.colors.radio.bg configure -state disabled\n"
-"       $id.colors.radio.arc configure -state disabled\n"
-"       $id.colors.radio.fg configure -state disabled\n"
-"       $id.colors.radio.but configure -state disabled\n"
-"       $id.colors.bgrow.ent configure -state disabled\n"
-"       $id.colors.arcrow.ent configure -state disabled\n"
-"       $id.colors.fgrow.ent configure -state disabled\n"
+//      Show Pd theme colors in display only
+"        set ::dialog_knob::var_hex_bgcolor_text($vid) [string toupper $::dialog_knob::var_pd_bg($vid)]\n"
+"        set ::dialog_knob::var_hex_arccolor_text($vid) [string toupper $::dialog_knob::var_pd_fg($vid)]\n"
+"        set ::dialog_knob::var_hex_fgcolor_text($vid) [string toupper $::dialog_knob::var_pd_fg($vid)]\n"
+"        $id.colors.bgrow.swatch configure -background $::dialog_knob::var_pd_bg($vid)\n"
+"        $id.colors.arcrow.swatch configure -background $::dialog_knob::var_pd_fg($vid)\n"
+"        $id.colors.fgrow.swatch configure -background $::dialog_knob::var_pd_fg($vid)\n"
+"        $id.colors.radio.bg configure -state disabled\n"
+"        $id.colors.radio.arc configure -state disabled\n"
+"        $id.colors.radio.fg configure -state disabled\n"
+"        $id.colors.radio.but configure -state disabled\n"
+"        $id.colors.bgrow.ent configure -state disabled\n"
+"        $id.colors.arcrow.ent configure -state disabled\n"
+"        $id.colors.fgrow.ent configure -state disabled\n"
 "    } else {\n"
-//      Restore saved colors
-"       if {[info exists ::dialog_knob::var_saved_bg($vid)]} {\n"
-"           set ::dialog_knob::var_color_bg($vid) $::dialog_knob::var_saved_bg($vid)\n"
-"           set ::dialog_knob::var_color_arc($vid) $::dialog_knob::var_saved_arc($vid)\n"
-"           set ::dialog_knob::var_color_fg($vid) $::dialog_knob::var_saved_fg($vid)\n"
-"           \n"
-"           set ::dialog_knob::var_hex_bgcolor_text($vid) [string toupper $::dialog_knob::var_saved_bg($vid)]\n"
-"           set ::dialog_knob::var_hex_arccolor_text($vid) [string toupper $::dialog_knob::var_saved_arc($vid)]\n"
-"           set ::dialog_knob::var_hex_fgcolor_text($vid) [string toupper $::dialog_knob::var_saved_fg($vid)]\n"
-"       }\n"
-"       \n"
-//       Enable controls (with transparency check
-"       $id.colors.radio.bg configure -state normal\n"
-"       $id.colors.radio.arc configure -state normal\n"
-"       $id.colors.radio.fg configure -state normal\n"
-"       $id.colors.radio.but configure -state normal\n"
-"       $id.colors.arcrow.ent configure -state normal\n"
-"       $id.colors.fgrow.ent configure -state normal\n"
-"       if { $::dialog_knob::var_transp($vid) == 0 } {\n"
-"           $id.colors.bgrow.ent configure -state normal\n"
-"       }\n"
+//      Show custom colors (still stored unchanged in var_color_*)
+"        set ::dialog_knob::var_hex_bgcolor_text($vid) [string toupper $::dialog_knob::var_color_bg($vid)]\n"
+"        set ::dialog_knob::var_hex_arccolor_text($vid) [string toupper $::dialog_knob::var_color_arc($vid)]\n"
+"        set ::dialog_knob::var_hex_fgcolor_text($vid) [string toupper $::dialog_knob::var_color_fg($vid)]\n"
+"        $id.colors.bgrow.swatch configure -background $::dialog_knob::var_color_bg($vid)\n"
+"        $id.colors.arcrow.swatch configure -background $::dialog_knob::var_color_arc($vid)\n"
+"        $id.colors.fgrow.swatch configure -background $::dialog_knob::var_color_fg($vid)\n"
+"        $id.colors.radio.bg configure -state normal\n"
+"        $id.colors.radio.arc configure -state normal\n"
+"        $id.colors.radio.fg configure -state normal\n"
+"        $id.colors.radio.but configure -state normal\n"
+"        $id.colors.arcrow.ent configure -state normal\n"
+"        $id.colors.fgrow.ent configure -state normal\n"
+"        if { $::dialog_knob::var_transp($vid) == 0 } {\n"
+"            $id.colors.bgrow.ent configure -state normal\n"
+"        }\n"
 "    }\n"
 "    ::dialog_knob::applymacos $id\n"
 "}\n"
@@ -307,7 +285,7 @@ static const char *knob_dialog_tcl =
 "       $id.mouse.move.mb configure -state disabled\n"
 "    } else {\n"
 "       $id.mouse.jump.ent configure -state normal\n"
-"       $id.mouse.move.mb configure -state normal\n"   
+"       $id.mouse.move.mb configure -state normal\n"
 "    }\n"
 "}\n"
         
@@ -626,12 +604,12 @@ static const char *knob_dialog_tcl =
 "    labelframe $id.colors -borderwidth 1 -text [_ \"Colors:\"] -padx 5 -pady 8\n"
 "    pack $id.colors -fill x\n"
 "\n"
-// Background row
+// Background row (initial swatch color from $swatch_bg, chosen by theme above)
 "    frame $id.colors.bgrow\n"
 "    pack $id.colors.bgrow -side top -fill x -pady 2\n"
 "    label $id.colors.bgrow.lab -text [_ \"Background:\"] -width 12 -anchor e\n"
 "    entry $id.colors.bgrow.ent -textvariable ::dialog_knob::var_hex_bgcolor_text($vid) -width 10\n"
-"    label $id.colors.bgrow.swatch -background white -relief ridge -width 24 -height 1\n"
+"    label $id.colors.bgrow.swatch -background $swatch_bg -relief ridge -width 24 -height 1\n"
 "    pack $id.colors.bgrow.lab $id.colors.bgrow.ent $id.colors.bgrow.swatch -side left -padx 2\n"
 "\n"
 // Arc row
@@ -639,7 +617,7 @@ static const char *knob_dialog_tcl =
 "    pack $id.colors.arcrow -side top -fill x -pady 2\n"
 "    label $id.colors.arcrow.lab -text [_ \"Arc Background:\"] -width 12 -anchor e\n"
 "    entry $id.colors.arcrow.ent -textvariable ::dialog_knob::var_hex_arccolor_text($vid) -width 10\n"
-"    label $id.colors.arcrow.swatch -background white -relief ridge -width 24 -height 1\n"
+"    label $id.colors.arcrow.swatch -background $swatch_arc -relief ridge -width 24 -height 1\n"
 "    pack $id.colors.arcrow.lab $id.colors.arcrow.ent $id.colors.arcrow.swatch -side left -padx 2\n"
 "\n"
 // Front row
@@ -647,7 +625,7 @@ static const char *knob_dialog_tcl =
 "    pack $id.colors.fgrow -side top -fill x -pady 2\n"
 "    label $id.colors.fgrow.lab -text [_ \"Front:\"] -width 12 -anchor e\n"
 "    entry $id.colors.fgrow.ent -textvariable ::dialog_knob::var_hex_fgcolor_text($vid) -width 10\n"
-"    label $id.colors.fgrow.swatch -background white -relief ridge -width 24 -height 1\n"
+"    label $id.colors.fgrow.swatch -background $swatch_fg -relief ridge -width 24 -height 1\n"
 "    pack $id.colors.fgrow.lab $id.colors.fgrow.ent $id.colors.fgrow.swatch -side left -padx 2\n"
     // Add traces to update swatches when hex values change
 "    trace add variable ::dialog_knob::var_hex_bgcolor_text($vid) write \\\n"
@@ -657,10 +635,8 @@ static const char *knob_dialog_tcl =
 "    trace add variable ::dialog_knob::var_hex_fgcolor_text($vid) write \\\n"
 "        [list ::dialog_knob::update_swatch $id fg]\n"
 "\n"
-    // Initialize swatches with current colors
-"    $id.colors.bgrow.swatch configure -background $bcol\n"
-"    $id.colors.arcrow.swatch configure -background $acol\n"
-"    $id.colors.fgrow.swatch configure -background $fcol\n"
+    // (Swatches already configured at label creation via $swatch_*; no
+    //  re-configure needed here.)
 "\n"
         // When theme is selected, disable hex entries
 "    if { $::dialog_knob::var_theme($vid) == 1 } {\n"
@@ -957,6 +933,14 @@ static const char *knob_dialog_tcl =
 "        $id.colors.fgrow.ent config -validate focusin -vcmd \"::dialog_knob::unbind_return $id\"\n"
 // remove cancel button from focus list since it's not activated on Return
 "        $id.cao.cancel config -takefocus 0\n"
+"        $id.colors.radio.bg config -takefocus 0\n"
+"        $id.colors.radio.arc config -takefocus 0\n"
+"        $id.colors.radio.fg config -takefocus 0\n"
+"        $id.colors.radio.but config -takefocus 0\n"
+"        $id.colors.checkboxes.theme.ent config -takefocus 0\n"
+"        $id.colors.checkboxes.transp.ent config -takefocus 0\n"
+"        $id.mouse.move.mb config -takefocus 0\n"
+"        $id.num.show.mb config -takefocus 0\n"
 // show active focus on the ok button as it *is* activated on Return
 "        $id.cao.ok config -default normal\n"
 "        bind $id.cao.ok <FocusIn> \"$id.cao.ok config -default active\"\n"
@@ -965,6 +949,9 @@ static const char *knob_dialog_tcl =
 "        $id.cao.ok config -highlightthickness 0\n"
 "        $id.cao.cancel config -highlightthickness 0\n"
 "    }\n"
+"    $id.basic.dim.w_ent select from 0\n"
+"    $id.basic.dim.w_ent select adjust end\n"
+"    focus $id.basic.dim.w_ent\n"
 "    position_over_window $id $::focused_window\n"
 "}\n"
 "\n"

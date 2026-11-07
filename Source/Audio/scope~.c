@@ -12,6 +12,8 @@
 #define SCOPE_MINBUFSIZE    8
 #define SCOPE_MAXBUFSIZE    256
 #define SCOPE_MINDELAY      0
+#define SCOPE_MINLINEWIDTH  1
+#define SCOPE_MAXLINEWIDTH  4
 #define SCOPE_SELBDWIDTH    2
 #define HANDLE_SIZE         12
 #define SCOPE_GUICHUNK      128 // performance-related hacks, LATER investigate
@@ -29,7 +31,7 @@ typedef struct _scope{
     t_glist        *x_glist;
     t_canvas       *x_cv;
     t_edit_proxy   *x_proxy;
-    unsigned char   x_bg[3], x_fg[3], x_gg[3];
+    t_symbol       *x_bg, *x_fg, *x_gg;
     float           x_xbuffer[SCOPE_MAXBUFSIZE*4];
     float           x_ybuffer[SCOPE_MAXBUFSIZE*4];
     float           x_xbuflast[SCOPE_MAXBUFSIZE*4];
@@ -46,8 +48,10 @@ typedef struct _scope{
     int             x_period;
     int             x_bufphase, x_precount, x_phase;
     int             x_xymode, x_frozen, x_retrigger;
-    int             x_zoom;
     int             x_edit;
+    int             x_theme;
+    int             x_transparent;
+    int             x_linewidth;
     t_float        *x_signalscalar;
     int             x_rcv_set;
     int             x_flag;
@@ -57,6 +61,8 @@ typedef struct _scope{
     t_symbol       *x_bindsym;
     t_clock        *x_clock;
     t_pd           *x_handle;
+    char            x_tag_all[32], x_tag_bg[32], x_tag_fg[32], x_tag_gr[32];
+    char            x_tag_inlets[32], x_tag_in1[32], x_tag_in2[32];
 }t_scope;
 
 typedef struct _handle{
@@ -64,7 +70,7 @@ typedef struct _handle{
     t_scope        *h_master;
     t_symbol       *h_bindsym;
     char            h_pathname[64], h_outlinetag[64];
-    int             h_dragon, h_dragx, h_dragy;
+    int             h_dragon;
 }t_handle;
 
 static t_class *scope_class, *handle_class, *edit_proxy_class;
@@ -72,28 +78,103 @@ static t_widgetbehavior scope_widgetbehavior;
 
 static void scope_getrect(t_gobj *z, t_glist *gl, int *xp1, int *yp1, int *xp2, int *yp2);
 
+// ----------------- COLOR HELPERS --------------------------------------------------------
+static t_symbol *scope_color_from_int(int c){
+    char buf[16];
+    snprintf(buf, sizeof(buf), "#%06X", c & 0xFFFFFF);
+    return(gensym(buf));
+}
+
+static int scope_color_to_int(t_symbol *s){
+    if(!s || !s->s_name || s->s_name[0] != '#')
+        return(0);
+    return((int)strtol(s->s_name+1, 0, 16));
+}
+
+static t_symbol *scope_getcolor(int ac, t_atom *av){
+    if((av)->a_type == A_SYMBOL)
+        return(atom_getsymbol(av));
+    else{
+        int r = atom_getintarg(0, ac, av);
+        int g = atom_getintarg(1, ac, av);
+        int b = atom_getintarg(2, ac, av);
+        r = r < 0 ? 0 : r > 255 ? 255 : r;
+        g = g < 0 ? 0 : g > 255 ? 255 : g;
+        b = b < 0 ? 0 : b > 255 ? 255 : b;
+        char color[20];
+        sprintf(color, "#%.2x%.2x%.2x", r, g, b);
+        return(gensym(color));
+    }
+}
+
+static t_symbol *scope_get_bg(t_scope *x){
+    if(x->x_theme){
+        char buf[16];
+        snprintf(buf, sizeof(buf), "#%06X", THISGUI->i_backgroundcolor);
+        return(gensym(buf));
+    }
+    return(x->x_bg);
+}
+
+static t_symbol *scope_get_fg(t_scope *x){
+    if(x->x_theme){
+        char buf[16];
+        snprintf(buf, sizeof(buf), "#%06X", THISGUI->i_gopcolor);
+        return(gensym(buf));
+    }
+    return(x->x_fg);
+}
+
+static t_symbol *scope_get_gg(t_scope *x){
+    if(x->x_theme){
+        char buf[16];
+        snprintf(buf, sizeof(buf), "#%06X", THISGUI->i_foregroundcolor);
+        return(gensym(buf));
+    }
+    return(x->x_gg);
+}
+
 // ----------------- DRAW ----------------------------------------------------------------
 static void scope_draw_handle(t_scope *x, int state){
     t_handle *sh = (t_handle *)x->x_handle;
-// always destroy
-    sys_vgui("destroy %s\n", sh->h_pathname);
+    t_canvas *cv = x->x_cv;
+    // always destroy if pathname is set
+    if(sh->h_pathname[0])
+        pdgui_vmess(0, "rs", "destroy", sh->h_pathname);
     if(state){
-        sys_vgui("canvas %s -width %d -height %d -bg blue -highlightthickness %d -cursor bottom_right_corner\n",
-            sh->h_pathname, HANDLE_SIZE, HANDLE_SIZE, 2*x->x_zoom);
+        pdgui_vmess(0, "rs riri rkrkrk ri rr",
+            "canvas", sh->h_pathname,
+            "-width", HANDLE_SIZE, "-height", HANDLE_SIZE,
+            "-bg", THISGUI->i_gopcolor,
+            "-highlightcolor", THISGUI->i_foregroundcolor,
+            "-highlightbackground", THISGUI->i_foregroundcolor,
+            "-highlightthickness", 1,
+            "-cursor", "bottom_right_corner");
         int x1, y1, x2, y2;
         scope_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
-        sys_vgui(".x%lx.c create window %d %d -anchor nw -width %d -height %d -window %s -tags all%lx\n",
-            x->x_cv,
-            x2 - HANDLE_SIZE*x->x_zoom + 1,
-            y2 - HANDLE_SIZE*x->x_zoom + 1,
-            HANDLE_SIZE*x->x_zoom,
-            HANDLE_SIZE*x->x_zoom,
-            sh->h_pathname,
-            x);
-        sys_vgui("bind %s <Button> {pdsend [concat %s _click 1 \\;]}\n", sh->h_pathname, sh->h_bindsym->s_name);
-        sys_vgui("bind %s <ButtonRelease> {pdsend [concat %s _click 0 \\;]}\n", sh->h_pathname, sh->h_bindsym->s_name);
-        sys_vgui("bind %s <Motion> {pdsend [concat %s _motion %%x %%y \\;]}\n", sh->h_pathname, sh->h_bindsym->s_name);
-        sys_vgui("focus %s\n", sh->h_pathname); // because of a damn weird bug where it drew all over the canvas
+        pdgui_vmess(0, "crr ii rs ri ri rs rs",
+            cv, "create", "window",
+            x2 - HANDLE_SIZE + 1,
+            y2 - HANDLE_SIZE + 1,
+            "-anchor", "nw",
+            "-width", HANDLE_SIZE,
+            "-height", HANDLE_SIZE,
+            "-window", sh->h_pathname,
+            "-tags", x->x_tag_all);
+        char buf[512];
+        snprintf(buf, sizeof(buf),
+            "bind %s <Button> {pdsend [concat %s _click 1 [.x%lx.c canvasx %%x] [.x%lx.c canvasy %%y] \\;]}",
+            sh->h_pathname, sh->h_bindsym->s_name, (unsigned long)x->x_cv, (unsigned long)x->x_cv);
+        pdgui_vmess(buf, NULL);
+        snprintf(buf, sizeof(buf),
+            "bind %s <ButtonRelease> {pdsend [concat %s _click 0 [.x%lx.c canvasx %%x] [.x%lx.c canvasy %%y] \\;]}",
+            sh->h_pathname, sh->h_bindsym->s_name, (unsigned long)x->x_cv, (unsigned long)x->x_cv);
+        pdgui_vmess(buf, NULL);
+        // convert motion coordinates to canvas system, so that the zoom is taken into account
+        snprintf(buf, sizeof(buf),
+            "bind %s <Motion> {pdsend [concat %s _motion [.x%lx.c canvasx %%x] [.x%lx.c canvasy %%y] \\;]}",
+            sh->h_pathname, sh->h_bindsym->s_name, (unsigned long)x->x_cv, (unsigned long)x->x_cv);
+        pdgui_vmess(buf, NULL);
     }
 }
 
@@ -115,7 +196,8 @@ static void scope_drawfg(t_scope *x, t_canvas *cv, int x1, int y1, int x2, int y
         xsc = ((float)x->x_width - 2.) / (float)(x->x_max - x->x_min);
         ysc = ((float)x->x_height - 2.) / (float)(x->x_max - x->x_min);
     }
-    sys_vgui(".x%lx.c create line \\\n", cv);
+    char chunk[32 * SCOPE_MAXBUFSIZE], *chunkp = chunk;
+    chunk[0] = 0;
     for(int i = 0; i < bufsize; i++){
         if(x->x_xymode == 1){
             xx = oldx;
@@ -147,36 +229,66 @@ static void scope_drawfg(t_scope *x, t_canvas *cv, int x1, int y1, int x2, int y
             else if(yy < y1)
                 yy = y1;
         }
-        sys_vgui("%d %d \\\n", (int)xx, (int)yy);
+        sprintf(chunkp, "%d %d ", (int)xx, (int)yy);
+        chunkp += strlen(chunkp);
     }
-    sys_vgui("-fill #%.2x%.2x%.2x -width %d -tags {fg%lx all%lx}\n",
-        x->x_fg[0], x->x_fg[1], x->x_fg[2], x->x_zoom, x, x);
+    char *tags[] = {x->x_tag_fg, x->x_tag_all};
+    pdgui_vmess(0, "crr r rs ri rS", cv, "create", "line", chunk,
+        "-fill", scope_get_fg(x)->s_name, "-width", x->x_linewidth, "-tags", 2, tags);
 }
 
 static void scope_draw_grid(t_scope *x, t_canvas *cv, int x1, int y1, int x2, int y2){
     float dx = (x2-x1)*0.125, dy = (y2-y1)*0.25, xx, yy;
+    char *tags[] = {x->x_tag_gr, x->x_tag_all};
     int i;
     for(i = 0, xx = x1 + dx; i < 7; i++, xx += dx)
-        sys_vgui(".x%lx.c create line %f %d %f %d -width %d -tags {gr%lx all%lx} -fill #%.2x%.2x%.2x\n",
-            cv, xx, y1, xx, y2, x->x_zoom, x, x, x->x_gg[0], x->x_gg[1], x->x_gg[2]);
+        pdgui_vmess(0, "crr fifi ri rS rs",
+            cv, "create", "line", xx, y1, xx, y2,
+            "-width", 1, "-tags", 2, tags,
+            "-fill", scope_get_gg(x)->s_name);
     for(i = 0, yy = y1 + dy; i < 3; i++, yy += dy)
-        sys_vgui(".x%lx.c create line %d %f %d %f -width %d -tags {gr%lx all%lx} -fill #%.2x%.2x%.2x\n",
-            cv, x1, yy, x2, yy, x->x_zoom, x, x, x->x_gg[0], x->x_gg[1], x->x_gg[2]);
+        pdgui_vmess(0, "crr ifif ri rS rs",
+            cv, "create", "line", x1, yy, x2, yy,
+            "-width", 1, "-tags", 2, tags,
+            "-fill", scope_get_gg(x)->s_name);
 }
 
 static void scope_draw_bg(t_scope *x, t_canvas *cv, int x1, int y1, int x2, int y2){
-    sys_vgui(".x%lx.c create rectangle %d %d %d %d -outline black -fill #%.2x%.2x%.2x -width %d -tags {bg%lx all%lx}\n",
-        cv, x1, y1, x2, y2, x->x_bg[0], x->x_bg[1], x->x_bg[2], x->x_zoom, x, x);
+    char *tags[] = {x->x_tag_bg, x->x_tag_all};
+    if(x->x_transparent){
+        pdgui_vmess(0, "crr iiii rk rs ri rS",
+            cv, "create", "rectangle", x1, y1, x2, y2,
+            "-outline", THISGUI->i_foregroundcolor,
+            "-fill", "",
+            "-width", 1,
+            "-tags", 2, tags);
+    }
+    else{
+        pdgui_vmess(0, "crr iiii rk rs ri rS",
+            cv, "create", "rectangle", x1, y1, x2, y2,
+            "-outline", THISGUI->i_foregroundcolor,
+            "-fill", scope_get_bg(x)->s_name,
+            "-width", 1,
+            "-tags", 2, tags);
+    }
 }
 
 static void scope_draw_inlets(t_scope *x){
     if(x->x_edit && x->x_receive == &s_){
         t_canvas *cv = glist_getcanvas(x->x_glist);
         int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags {%lx_in1 inlets%lx all%lx}\n",
-            cv, xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom), x, x, x);
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags {%lx_in2 inlets%lx all%lx}\n",
-            cv, xpos+x->x_width, ypos, xpos+x->x_width-(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom), x, x, x);
+        char *tags1[] = {x->x_tag_in1, x->x_tag_inlets, x->x_tag_all};
+        char *tags2[] = {x->x_tag_in2, x->x_tag_inlets, x->x_tag_all};
+        pdgui_vmess(0, "crr iiii rk rk rS",
+            cv, "create", "rectangle", xpos, ypos, xpos+IOWIDTH, ypos+IHEIGHT,
+            "-fill", THISGUI->i_foregroundcolor,
+            "-outline", THISGUI->i_foregroundcolor,
+            "-tags", 3, tags1);
+        pdgui_vmess(0, "crr iiii rk rk rS",
+            cv, "create", "rectangle", xpos+x->x_width, ypos, xpos+x->x_width-IOWIDTH, ypos+IHEIGHT,
+            "-fill", THISGUI->i_foregroundcolor,
+            "-outline", THISGUI->i_foregroundcolor,
+            "-tags", 3, tags2);
     }
 }
 
@@ -191,7 +303,7 @@ static void scope_draw(t_scope *x, t_canvas *cv){
 }
 
 static void scope_redraw(t_scope *x, t_canvas *cv){
-    char chunk[32 * SCOPE_GUICHUNK];  // LATER estimate
+    char chunk[32 * SCOPE_MAXBUFSIZE];  // LATER estimate
     char *chunkp = chunk;
     int bufsize, nleft = bufsize = x->x_lastbufsize, x1, y1, x2, y2, xymode = x->x_xymode;
     scope_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
@@ -211,7 +323,7 @@ static void scope_redraw(t_scope *x, t_canvas *cv){
         xsc = ((float)x->x_width - 2.) / (float)(x->x_max - x->x_min);
         ysc = ((float)x->x_height - 2.) / (float)(x->x_max - x->x_min);
     }
-    sys_vgui(".x%lx.c coords fg%lx\\\n", cv, x);
+    chunk[0] = 0; // all points are collected and sent in a single message
     while(nleft > SCOPE_GUICHUNK){
         int i = SCOPE_GUICHUNK;
         while(i--){
@@ -248,9 +360,6 @@ static void scope_redraw(t_scope *x, t_canvas *cv){
             sprintf(chunkp, "%d %d ", (int)xx, (int)yy);
             chunkp += strlen(chunkp);
         }
-        strcpy(chunkp, "\\\n");
-        sys_gui(chunk);
-        chunkp = chunk;
         nleft -= SCOPE_GUICHUNK;
     }
     while(nleft--){
@@ -287,8 +396,7 @@ static void scope_redraw(t_scope *x, t_canvas *cv){
         sprintf(chunkp, "%d %d ", (int)xx, (int)yy);
         chunkp += strlen(chunkp);
     }
-    strcpy(chunkp, "\n");
-    sys_gui(chunk);
+    pdgui_vmess(0, "crs r", cv, "coords", x->x_tag_fg, chunk);
 }
 
 //------------------ WIDGET -----------------------------------------------------------------
@@ -305,16 +413,43 @@ static void scope_displace(t_gobj *z, t_glist *gl, int dx, int dy){
     t_scope *x = (t_scope *)z;
     x->x_obj.te_xpix += dx, x->x_obj.te_ypix += dy;
     t_canvas *cv = glist_getcanvas(gl);
-    sys_vgui(".x%lx.c move all%lx %d %d\n", cv, x, dx*x->x_zoom, dy*x->x_zoom);
-    canvas_fixlinesfor(cv, (t_text*)x);
+    pdgui_vmess(0, "crs ii", cv, "move", x->x_tag_all, dx, dy);
+    canvas_fixlinesfor(gl, (t_text*)x);
 }
 
 static void scope_select(t_gobj *z, t_glist *glist, int state){
     t_scope *x = (t_scope *)z;
+    t_handle *sh = (t_handle *)x->x_handle;
     t_canvas *cv = glist_getcanvas(glist);
     x->x_select = state;
-    sys_vgui(".x%lx.c itemconfigure bg%lx -outline %s -width %d -fill #%.2x%.2x%.2x\n",
-    cv, x, state ? "blue" : "black", x->x_zoom * state ? SCOPE_SELBDWIDTH : 1, x->x_bg[0], x->x_bg[1], x->x_bg[2]);
+    int col = state ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor;
+    if(x->x_transparent)
+        pdgui_vmess(0, "crs rk ri rs", cv, "itemconfigure", x->x_tag_bg,
+            "-outline", col,
+            "-width", state ? SCOPE_SELBDWIDTH : 1,
+            "-fill", "");
+    else
+        pdgui_vmess(0, "crs rk ri rs", cv, "itemconfigure", x->x_tag_bg,
+            "-outline", col,
+            "-width", state ? SCOPE_SELBDWIDTH : 1,
+            "-fill", scope_get_bg(x)->s_name);
+    if(x->x_edit && x->x_receive == &s_)
+        pdgui_vmess(0, "crs rk rk", cv, "itemconfigure", x->x_tag_inlets,
+            "-fill", col, "-outline", col);
+    if(x->x_edit && sh->h_pathname[0]){
+        if(state){
+            pdgui_vmess(0, "rr rk",  sh->h_pathname, "configure",
+                "-highlightbackground", THISGUI->i_selectcolor);
+            pdgui_vmess(0, "rr rk",  sh->h_pathname, "configure",
+                "-bg", THISGUI->i_selectcolor);
+        }
+        else{
+            pdgui_vmess(0, "rr rk",  sh->h_pathname, "configure",
+                "-highlightbackground", THISGUI->i_foregroundcolor);
+            pdgui_vmess(0, "rr rk",  sh->h_pathname, "configure",
+                "-bg", THISGUI->i_gopcolor);
+        }
+    }
 }
 
 static void scope_delete(t_gobj *z, t_glist *glist){
@@ -330,7 +465,11 @@ static void scope_draw_all(t_scope* x){
     x->x_cv = glist_getcanvas(x->x_glist);
     t_handle *sh = (t_handle *)x->x_handle;
     sprintf(sh->h_pathname, ".x%lx.h%lx", (unsigned long)x->x_cv, (unsigned long)sh);
-    sys_vgui(".x%lx.c bind all%lx <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", x->x_cv, x, x->x_bindsym->s_name);
+    char buf[256];
+    snprintf(buf, sizeof(buf),
+        ".x%lx.c bind %s <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}",
+        (unsigned long)x->x_cv, x->x_tag_all, x->x_bindsym->s_name);
+    pdgui_vmess(buf, NULL);
     int bufsize = x->x_bufsize;
     x->x_bufsize = x->x_lastbufsize;
     scope_draw(x, x->x_cv);
@@ -341,14 +480,18 @@ static void scope_vis(t_gobj *z, t_glist *glist, int vis){
     t_scope *x = (t_scope *)z;
     x->x_cv = glist_getcanvas(glist);
     t_handle *sh = (t_handle *)x->x_handle;
-    if(x->x_edit)// bug hack, destroying even though 'draw_handle' also destroys it
+    if(x->x_edit && sh->h_pathname[0])// bug hack, destroying even though 'draw_handle' also destroys it
     // maybe it just should be with the 'else' "delete all" message
     // we can just destroy this even if it doesn;t exist anyway,
     // this was needed to avooid some tcl erros
-        sys_vgui("destroy %s\n", sh->h_pathname);
+        pdgui_vmess(0, "rs", "destroy", sh->h_pathname);
     if(vis){
         sprintf(sh->h_pathname, ".x%lx.h%lx", (unsigned long)x->x_cv, (unsigned long)sh);
-        sys_vgui(".x%lx.c bind all%lx <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", x->x_cv, x, x->x_bindsym->s_name);
+        char buf[256];
+        snprintf(buf, sizeof(buf),
+            ".x%lx.c bind %s <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}",
+            (unsigned long)x->x_cv, x->x_tag_all, x->x_bindsym->s_name);
+        pdgui_vmess(buf, NULL);
         int bufsize = x->x_bufsize;
         x->x_bufsize = x->x_lastbufsize;
         scope_draw(x, x->x_cv);
@@ -356,7 +499,7 @@ static void scope_vis(t_gobj *z, t_glist *glist, int vis){
         scope_draw_handle(x, x->x_edit);
     }
     else
-        sys_vgui(".x%lx.c delete all%lx\n", (unsigned long)x->x_cv, x);
+        pdgui_vmess(0, "crs", x->x_cv, "delete", x->x_tag_all);
 }
 
 static int scope_click(t_gobj *z, t_glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
@@ -440,39 +583,140 @@ static void scope_triglevel(t_scope *x, t_floatarg f){
         x->x_triglevel = f;
 }
 
-static void scope_fgcolor(t_scope *x, t_float r, t_float g, t_float b){ // scale is 0-255
-    unsigned char red = (unsigned char)(r < 0 ? 0 : r > 255 ? 255 : r);
-    unsigned char green = (unsigned char)(g < 0 ? 0 : g > 255 ? 255 : g);
-    unsigned char blue = (unsigned char)(b < 0 ? 0 : b > 255 ? 255 : b);
-    if(x->x_fg[0] != red || x->x_fg[1] != green || x->x_fg[2] != blue){
-        x->x_fg[0] = red, x->x_fg[1] = green, x->x_fg[2] = blue;
+static void scope_linewidth(t_scope *x, t_floatarg f){
+    int lw = (int)f;
+    if(lw < SCOPE_MINLINEWIDTH)
+        lw = SCOPE_MINLINEWIDTH;
+    if(lw > SCOPE_MAXLINEWIDTH)
+        lw = SCOPE_MAXLINEWIDTH;
+    if(x->x_linewidth != lw){
+        x->x_linewidth = lw;
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
-            sys_vgui(".x%lx.c itemconfigure fg%lx -fill #%.2x%.2x%.2x\n",
-                glist_getcanvas(x->x_glist), x, x->x_fg[0], x->x_fg[1], x->x_fg[2]);
+            pdgui_vmess(0, "crs ri", glist_getcanvas(x->x_glist), "itemconfigure",
+                x->x_tag_fg, "-width", x->x_linewidth);
     }
 }
 
-static void scope_bgcolor(t_scope *x, t_float r, t_float g, t_float b){ // scale: 0-255
-    unsigned char red = (unsigned char)(r < 0 ? 0 : r > 255 ? 255 : r);
-    unsigned char green = (unsigned char)(g < 0 ? 0 : g > 255 ? 255 : g);
-    unsigned char blue = (unsigned char)(b < 0 ? 0 : b > 255 ? 255 : b);
-    if(x->x_bg[0] != red || x->x_bg[1] != green || x->x_bg[2] != blue){
-        x->x_bg[0] = red, x->x_bg[1] = green, x->x_bg[2] = blue;
-        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
-            sys_vgui(".x%lx.c itemconfigure bg%lx -fill #%.2x%.2x%.2x\n",
-                glist_getcanvas(x->x_glist), x, x->x_bg[0], x->x_bg[1], x->x_bg[2]);
+static void scope_validate(t_scope *x, t_floatarg v, t_symbol *color, t_floatarg t){
+    int valid = (int)v;
+    int type = (int)t;
+    switch(type){
+        case 0:
+            if(valid){
+                x->x_bg = color;
+                if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
+                    pdgui_vmess(0, "crs rs", glist_getcanvas(x->x_glist), "itemconfigure",
+                        x->x_tag_bg, "-fill", scope_get_bg(x)->s_name);
+            }
+            else
+                pd_error(0, "[scope~] invalid background color '%s'", color->s_name);
+            break;
+        case 1:
+            if(valid){
+                x->x_gg = color;
+                if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
+                    pdgui_vmess(0, "crs rs", glist_getcanvas(x->x_glist), "itemconfigure",
+                        x->x_tag_gr, "-fill", scope_get_gg(x)->s_name);
+            }
+            else
+                pd_error(0, "[scope~] invalid grid color '%s'", color->s_name);
+            break;
+        case 2:
+            if(valid){
+                x->x_fg = color;
+                if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
+                    pdgui_vmess(0, "crs rs", glist_getcanvas(x->x_glist), "itemconfigure",
+                        x->x_tag_fg, "-fill", scope_get_fg(x)->s_name);
+            }
+            else
+                pd_error(0, "[scope~] invalid foreground color '%s'", color->s_name);
+            break;
     }
 }
 
-static void scope_gridcolor(t_scope *x, t_float r, t_float g, t_float b){ // scale: 0-255
-    unsigned char red = (unsigned char)(r < 0 ? 0 : r > 255 ? 255 : r);
-    unsigned char green = (unsigned char)(g < 0 ? 0 : g > 255 ? 255 : g);
-    unsigned char blue = (unsigned char)(b < 0 ? 0 : b > 255 ? 255 : b);
-    if(x->x_gg[0] != red || x->x_gg[1] != green || x->x_gg[2] != blue){
-        x->x_gg[0] = red, x->x_gg[1] = green, x->x_gg[2] = blue;
-        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
-            sys_vgui(".x%lx.c itemconfigure gr%lx -fill #%.2x%.2x%.2x\n",
-                glist_getcanvas(x->x_glist), x, x->x_gg[0], x->x_gg[1], x->x_gg[2]);
+static void scope_send_color_validate(t_scope *x, const char *color, int which){
+    char buf[512];
+    snprintf(buf, sizeof(buf), "set color_name {%s}", color);
+    pdgui_vmess(buf, NULL);
+    pdgui_vmess("set color_escaped [string map {{ } {\\ }} $color_name]", NULL);
+    pdgui_vmess("set hex_color [color2hex $color_name]", NULL);
+    snprintf(buf, sizeof(buf),
+        "if {$hex_color eq \"\"} "
+        "{pdsend \"%s _validate 0 $color_escaped %d\"} "
+        "else {pdsend \"%s _validate 1 $hex_color %d\"}",
+        x->x_bindsym->s_name, which,
+        x->x_bindsym->s_name, which);
+    pdgui_vmess(buf, NULL);
+}
+
+static void scope_bgcolor(t_scope *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(!ac)
+        return;
+    scope_send_color_validate(x, scope_getcolor(ac, av)->s_name, 0);
+}
+
+static void scope_setbgcolor(t_scope *x, t_symbol *s, int ac, t_atom *av){
+    x->x_theme = 0;
+    scope_bgcolor(x, s, ac, av);
+}
+
+static void scope_fgcolor(t_scope *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(!ac)
+        return;
+    scope_send_color_validate(x, scope_getcolor(ac, av)->s_name, 2);
+}
+
+static void scope_setfgcolor(t_scope *x, t_symbol *s, int ac, t_atom *av){
+    x->x_theme = 0;
+    scope_fgcolor(x, s, ac, av);
+}
+
+static void scope_gridcolor(t_scope *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(!ac)
+        return;
+    scope_send_color_validate(x, scope_getcolor(ac, av)->s_name, 1);
+}
+
+static void scope_setgridcolor(t_scope *x, t_symbol *s, int ac, t_atom *av){
+    x->x_theme = 0;
+    scope_gridcolor(x, s, ac, av);
+}
+
+static void scope_colors(t_scope *x, t_symbol *bg, t_symbol *mg, t_symbol *fg){
+    x->x_theme = 0;
+    t_atom at[1];
+    SETSYMBOL(at, bg);
+    scope_bgcolor(x, NULL, 1, at);
+    SETSYMBOL(at, mg);
+    scope_gridcolor(x, NULL, 1, at);
+    SETSYMBOL(at, fg);
+    scope_fgcolor(x, NULL, 1, at);
+}
+
+static void scope_theme(t_scope *x, t_floatarg f){
+    int theme = (int)(f != 0);
+    if(x->x_theme == theme)
+        return;
+    x->x_theme = theme;
+    if(gobj_shouldvis((t_gobj *)x, x->x_glist) && glist_isvisible(x->x_glist)){
+        pdgui_vmess(0, "crs", glist_getcanvas(x->x_glist), "delete", x->x_tag_all);
+        scope_draw_all(x);
+        scope_draw_handle(x, x->x_edit);
+    }
+}
+
+static void scope_transparent(t_scope *x, t_floatarg f){
+    int transparent = (int)(f != 0);
+    if(x->x_transparent == transparent)
+        return;
+    x->x_transparent = transparent;
+    if(gobj_shouldvis((t_gobj *)x, x->x_glist) && glist_isvisible(x->x_glist)){
+        pdgui_vmess(0, "crs", glist_getcanvas(x->x_glist), "delete", x->x_tag_all);
+        scope_draw_all(x);
+        scope_draw_handle(x, x->x_edit);
     }
 }
 
@@ -487,8 +731,8 @@ static void scope_dim(t_scope *x, t_symbol *s, int ac, t_atom *av){
     if(height < SCOPE_MINSIZE)
         height = SCOPE_MINSIZE;
     if(x->x_width != width || x->x_height != height){
-        x->x_width = width*x->x_zoom, x->x_height = height*x->x_zoom;
-        sys_vgui(".x%lx.c delete all%lx\n", (unsigned long)glist_getcanvas(x->x_glist), x);
+        x->x_width = width, x->x_height = height;
+        pdgui_vmess(0, "crs", glist_getcanvas(x->x_glist), "delete", x->x_tag_all);
         if(gobj_shouldvis((t_gobj *)x, x->x_glist) && glist_isvisible(x->x_glist)){
             scope_draw_all(x);
             scope_draw_handle(x, x->x_edit);
@@ -512,7 +756,7 @@ static void scope_receive(t_scope *x, t_symbol *s){
         else{
             pd_bind(&x->x_obj.ob_pd, x->x_receive);
             if(x->x_edit && glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
-                sys_vgui(".x%lx.c delete inlets%lx\n", glist_getcanvas(x->x_glist), x);
+                pdgui_vmess(0, "crs", glist_getcanvas(x->x_glist), "delete", x->x_tag_inlets);
         }
     }
 }
@@ -537,31 +781,25 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
             if(edit)
                 scope_draw_inlets(p->p_cnv);
             else
-                sys_vgui(".x%lx.c delete inlets%lx\n", glist_getcanvas(p->p_cnv->x_glist), p->p_cnv);
+                pdgui_vmess(0, "crs", glist_getcanvas(p->p_cnv->x_glist), "delete", p->p_cnv->x_tag_inlets);
         }
     }
 }
 
-static void scope_zoom(t_scope *x, t_floatarg zoom){
-    float mul = (zoom == 1. ? 0.5 : 2.);
-    x->x_width*=mul, x->x_height*=mul;
-    x->x_zoom = (int)zoom;
-}
-
 // --------------------- handle ---------------------------------------------------
-static void handle__click_callback(t_handle *sh, t_floatarg f){
+static int xclick, yclick, xmotion, ymotion;
+
+static void handle__click_callback(t_handle *sh, t_floatarg f, t_floatarg xarg, t_floatarg yarg){
     int click = (int)f;
     t_scope *x = sh->h_master;
     if(sh->h_dragon && click == 0){
-        sys_vgui(".x%lx.c delete %s\n", x->x_cv, sh->h_outlinetag);
+        pdgui_vmess(0, "crs", x->x_cv, "delete", sh->h_outlinetag);
         t_atom undo[2];
         SETFLOAT(undo+0, x->x_width);
         SETFLOAT(undo+1, x->x_height);
         t_atom redo[2];
-        int width = (int)((x->x_width+sh->h_dragx)/x->x_zoom);
-        int height = (int)((x->x_height+sh->h_dragy)/x->x_zoom);
-        SETFLOAT(redo+0, width);
-        SETFLOAT(redo+1, height);
+        SETFLOAT(redo+0, x->x_width + xmotion - xclick);
+        SETFLOAT(redo+1, x->x_height + ymotion - yclick);
         pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dim"), 2, undo, 2, redo);
         scope_dim(x, NULL, 2, redo);
         scope_draw_handle(x, 1);
@@ -571,26 +809,31 @@ static void handle__click_callback(t_handle *sh, t_floatarg f){
     else if(!sh->h_dragon && click){
         int x1, y1, x2, y2;
         scope_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -outline blue -width %d -tags %s\n",
-            x->x_cv, x1, y1, x2, y2, SCOPE_SELBDWIDTH*x->x_zoom, sh->h_outlinetag);
-        sh->h_dragx = sh->h_dragy = 0;
+        pdgui_vmess(0, "crr iiii rk ri rs",
+            x->x_cv, "create", "rectangle", x1, y1, x2, y2,
+            "-outline", THISGUI->i_selectcolor,
+            "-width", SCOPE_SELBDWIDTH,
+            "-tags", sh->h_outlinetag);
+        xclick = xmotion = xarg;
+        yclick = ymotion = yarg;
     }
     sh->h_dragon = click;
 }
 
-static void handle__motion_callback(t_handle *sh, t_floatarg f1, t_floatarg f2){
+static void handle__motion_callback(t_handle *sh, t_floatarg xarg, t_floatarg yarg){
     if(sh->h_dragon){
         t_scope *x = sh->h_master;
-        int dx = (int)f1 - HANDLE_SIZE, dy = (int)f2 - HANDLE_SIZE;
+        xmotion = xarg;
+        ymotion = yarg;
+        int dx = xmotion - xclick, dy = ymotion - yclick;
         int x1, y1, x2, y2;
         scope_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
         int newx = x2 + dx, newy = y2 + dy;
-        if(newx < x1 + SCOPE_MINSIZE*x->x_zoom)
-            newx = x1 + SCOPE_MINSIZE*x->x_zoom;
-        if(newy < y1 + SCOPE_MINSIZE*x->x_zoom)
-            newy = y1 + SCOPE_MINSIZE*x->x_zoom;
-        sys_vgui(".x%lx.c coords %s %d %d %d %d\n", x->x_cv, sh->h_outlinetag, x1, y1, newx, newy);
-        sh->h_dragx = dx, sh->h_dragy = dy;
+        if(newx < x1 + SCOPE_MINSIZE)
+            newx = x1 + SCOPE_MINSIZE;
+        if(newy < y1 + SCOPE_MINSIZE)
+            newy = y1 + SCOPE_MINSIZE;
+        pdgui_vmess(0, "crs iiii", x->x_cv, "coords", sh->h_outlinetag, x1, y1, newx, newy);
     }
 }
 
@@ -765,7 +1008,7 @@ static void scope_dsp(t_scope *x, t_signal **sp){
             t_canvas *cv = glist_getcanvas(x->x_glist);
             int x1, y1, x2, y2;
             scope_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
-            sys_vgui(".x%lx.c delete fg%lx\n", cv, x, x);
+            pdgui_vmess(0, "crs", cv, "delete", x->x_tag_fg);
             if(x->x_xymode)
                 scope_drawfg(x, cv, x1, y1, x2, y2);
         }
@@ -816,43 +1059,40 @@ static void scope_save(t_gobj *z, t_binbuf *b){
     t_scope *x = (t_scope *)z;
     t_text *t = (t_text *)x;
     scope_get_rcv(x);
-    binbuf_addv(b, "ssiisiiiiiffiiifiiiiiiiiiis;", gensym("#X"), gensym("obj"), (int)t->te_xpix,
-        (int)t->te_ypix, atom_getsymbol(binbuf_getvec(t->te_binbuf)), x->x_width/x->x_zoom,
-        x->x_height/x->x_zoom, x->x_period, 3, x->x_bufsize, x->x_min, x->x_max, x->x_delay,
-        0, x->x_trigmode, x->x_triglevel, x->x_fg[0], x->x_fg[1], x->x_fg[2], x->x_bg[0],
-        x->x_bg[1], x->x_bg[2], x->x_gg[0], x->x_gg[1], x->x_gg[2], 0, x->x_rcv_raw);
+    binbuf_addv(b, "ssiisiiiiiffiiifsssisiii;", gensym("#X"), gensym("obj"), (int)t->te_xpix,
+        (int)t->te_ypix, atom_getsymbol(binbuf_getvec(t->te_binbuf)), x->x_width,
+        x->x_height, x->x_period, 3, x->x_bufsize, x->x_min, x->x_max, x->x_delay,
+        0, x->x_trigmode, x->x_triglevel, x->x_fg, x->x_bg, x->x_gg, 0, x->x_rcv_raw,
+        x->x_theme, x->x_transparent, x->x_linewidth);
 }
 
 static void scope_properties(t_gobj *z, t_glist *owner){
-    owner = NULL;
+    (void)owner;
     t_scope *x = (t_scope *)z;
-    int bgcol = ((int)x->x_bg[0] << 16) + ((int)x->x_bg[1] << 8) + (int)x->x_bg[2];
-    int grcol = ((int)x->x_gg[0] << 16) + ((int)x->x_gg[1] << 8) + (int)x->x_gg[2];
-    int fgcol = ((int)x->x_fg[0] << 16) + ((int)x->x_fg[1] << 8) + (int)x->x_fg[2];
     scope_get_rcv(x);
-    char buf[1000];
-    sprintf(buf, "::dialog_scope::pdtk_scope_dialog %%s \
-        dim %d width: %d height: \
-        buf %d cal: %d bfs: \
-        rng %g min: %g max: \
-        del %d del: \
-        {%s} rcv: trg %d tmd: %g tlv: \
-        dim_mins %d %d \
-        cal_min_max %d %d bfs_min_max %d %d \
-        del_mins %d \
-        #%06x #%06x #%06x\n",
-        x->x_width/x->x_zoom, x->x_height/x->x_zoom,
-        x->x_period, x->x_bufsize,
-        x->x_min, x->x_max,
-        x->x_delay,
-        x->x_rcv_raw->s_name, 
-        x->x_trigmode, x->x_triglevel,
+    char pd_bg[32];
+    snprintf(pd_bg, sizeof(pd_bg), "#%06X", THISGUI->i_backgroundcolor);
+    char pd_grid[32];
+    snprintf(pd_grid, sizeof(pd_grid), "#%06X", THISGUI->i_foregroundcolor);
+    char pd_fg[32];
+    snprintf(pd_fg, sizeof(pd_fg), "#%06X", THISGUI->i_gopcolor);
+    pdgui_stub_vnew(&x->x_obj.ob_pd, "::dialog_scope::pdtk_scope_dialog", x,
+        "iiii ff ii s i f iiiiiiiii ssssss ii",     
+        x->x_width, x->x_height,                      // iiii
+        x->x_period, x->x_bufsize,                    // ff
+        x->x_min, x->x_max,                           // ii
+        x->x_delay, x->x_linewidth,                   // s
+        x->x_rcv_raw->s_name,                         // i
+        x->x_trigmode,                                // f
+        x->x_triglevel,                               // iiiiiiiii
         SCOPE_MINSIZE, SCOPE_MINSIZE,
         SCOPE_MINPERIOD, SCOPE_MAXPERIOD,
         SCOPE_MINBUFSIZE, SCOPE_MAXBUFSIZE,
         SCOPE_MINDELAY,
-        bgcol, grcol, fgcol);
-    gfxstub_new(&x->x_obj.ob_pd, x, buf);
+        SCOPE_MINLINEWIDTH, SCOPE_MAXLINEWIDTH,       // ssssss
+        x->x_bg->s_name, x->x_gg->s_name, x->x_fg->s_name,
+        pd_bg, pd_grid, pd_fg,                        // ii
+        x->x_theme, x->x_transparent);
 }
 
 static int scope_getcolorarg(int index, int ac, t_atom *av){
@@ -865,8 +1105,8 @@ static int scope_getcolorarg(int index, int ac, t_atom *av){
 }
 
 static void scope_ok(t_scope *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
-    t_atom undo[14];
+    (void)s;
+    t_atom undo[16];
     SETFLOAT(undo+0, x->x_width);
     SETFLOAT(undo+1, x->x_height);
     SETFLOAT(undo+2, x->x_period);
@@ -874,13 +1114,16 @@ static void scope_ok(t_scope *x, t_symbol *s, int ac, t_atom *av){
     SETFLOAT(undo+4, x->x_min);
     SETFLOAT(undo+5, x->x_max);
     SETFLOAT(undo+6, x->x_delay);
-    SETFLOAT(undo+7, x->x_trigmode);
-    SETFLOAT(undo+8, x->x_triglevel);
-    SETFLOAT(undo+9, ((int)x->x_bg[0] << 16) + ((int)x->x_bg[1] << 8) + (int)x->x_bg[2]);
-    SETFLOAT(undo+10, ((int)x->x_gg[0] << 16) + ((int)x->x_gg[1] << 8) + (int)x->x_gg[2]);
-    SETFLOAT(undo+11, ((int)x->x_fg[0] << 16) + ((int)x->x_fg[1] << 8) + (int)x->x_fg[2]);
-    SETSYMBOL(undo+12, x->x_receive);
-    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 14, undo, ac, av);
+    SETFLOAT(undo+7, x->x_linewidth);
+    SETFLOAT(undo+8, x->x_trigmode);
+    SETFLOAT(undo+9, x->x_triglevel);
+    SETSYMBOL(undo+10, x->x_bg);
+    SETSYMBOL(undo+11, x->x_gg);
+    SETSYMBOL(undo+12, x->x_fg);
+    SETSYMBOL(undo+13, x->x_receive);
+    SETFLOAT(undo+14, x->x_theme);
+    SETFLOAT(undo+15, x->x_transparent);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 16, undo, ac, av);
     int width = atom_getintarg(0, ac, av);
     int height = atom_getintarg(1, ac, av);
     int period = atom_getintarg(2, ac, av);
@@ -888,31 +1131,32 @@ static void scope_ok(t_scope *x, t_symbol *s, int ac, t_atom *av){
     float minval = (float)atom_getfloatarg(4, ac, av);
     float maxval = (float)atom_getfloatarg(5, ac, av);
     int delay = atom_getintarg(6, ac, av);
-    int trigmode = atom_getintarg(7, ac, av);
-    int triglevel = atom_getintarg(8, ac, av);
-    int bgcol = (int)scope_getcolorarg(9, ac, av);
-    int grcol = (int)scope_getcolorarg(10, ac, av);
-    int fgcol = (int)scope_getcolorarg(11, ac, av);
-    t_symbol *rcv = atom_getsymbolarg(12, ac, av);
+    int linewidth = atom_getintarg(7, ac, av);
+    int trigmode = atom_getintarg(8, ac, av);
+    int triglevel = atom_getintarg(9, ac, av);
+    int bgcol = (int)scope_getcolorarg(10, ac, av);
+    int grcol = (int)scope_getcolorarg(11, ac, av);
+    int fgcol = (int)scope_getcolorarg(12, ac, av);
+    t_symbol *rcv = atom_getsymbolarg(13, ac, av);
+    int theme = atom_getintarg(14, ac, av);
+    int transparent = atom_getintarg(15, ac, av);
     scope_period(x, period);
     scope_bufsize(x, bufsize);
     scope_range(x, minval, maxval);
     scope_delay(x, delay);
+    scope_linewidth(x, linewidth);
     scope_receive(x, rcv);
     scope_trigger(x, trigmode);
     scope_triglevel(x, triglevel);
-    int bgred = (bgcol & 0xFF0000) >> 16;
-    int bggreen = (bgcol & 0x00FF00) >> 8;
-    int bgblue = (bgcol & 0x0000FF);
-    int grred = (grcol & 0xFF0000) >> 16;
-    int grgreen = (grcol & 0x00FF00) >> 8;
-    int grblue = (grcol & 0x0000FF);
-    int fgred = (fgcol & 0xFF0000) >> 16;
-    int fggreen = (fgcol & 0x00FF00) >> 8;
-    int fgblue = (fgcol & 0x0000FF);
-    scope_bgcolor(x, bgred, bggreen, bgblue);
-    scope_gridcolor(x, grred, grgreen, grblue);
-    scope_fgcolor(x, fgred, fggreen, fgblue);
+    t_atom c_at[1];
+    SETSYMBOL(c_at, scope_color_from_int(bgcol));
+    scope_bgcolor(x, NULL, 1, c_at);
+    SETSYMBOL(c_at, scope_color_from_int(grcol));
+    scope_gridcolor(x, NULL, 1, c_at);
+    SETSYMBOL(c_at, scope_color_from_int(fgcol));
+    scope_fgcolor(x, NULL, 1, c_at);
+    scope_theme(x, theme);
+    scope_transparent(x, transparent);
     t_atom dim[2];
     SETFLOAT(dim+0, width);
     SETFLOAT(dim+1, height);
@@ -945,7 +1189,7 @@ static void scope_free(t_scope *x){
         pd_free(x->x_handle);
     }
     clock_delay(x->x_proxy->p_clock, 0);
-    gfxstub_deleteforkey(x);
+    pdgui_stub_deleteforkey(x);
 }
 
 static void *scope_new(t_symbol *s, int ac, t_atom *av){
@@ -960,26 +1204,32 @@ static void *scope_new(t_symbol *s, int ac, t_atom *av){
     sprintf(sh->h_outlinetag, "h%lx", (unsigned long)sh);
     x->x_glist = (t_glist*)canvas_getcurrent();
     x->x_cv = glist_getcanvas(x->x_glist);
-    x->x_zoom = x->x_glist->gl_zoom;
     char buf[MAXPDSTRING];
     snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)x->x_cv);
     buf[MAXPDSTRING-1] = 0;
     x->x_proxy = edit_proxy_new(x, gensym(buf));
     sprintf(buf, "#%lx", (long)x);
     pd_bind(&x->x_obj.ob_pd, x->x_bindsym = gensym(buf));
+    sprintf(x->x_tag_all, "all%lx", (unsigned long)x);
+    sprintf(x->x_tag_bg, "bg%lx", (unsigned long)x);
+    sprintf(x->x_tag_fg, "fg%lx", (unsigned long)x);
+    sprintf(x->x_tag_gr, "gr%lx", (unsigned long)x);
+    sprintf(x->x_tag_inlets, "inlets%lx", (unsigned long)x);
+    sprintf(x->x_tag_in1, "%lx_in1", (unsigned long)x);
+    sprintf(x->x_tag_in2, "%lx_in2", (unsigned long)x);
     x->x_edit = x->x_cv ->gl_edit;
     t_symbol *rcv = x->x_receive = x->x_rcv_raw = &s_;
     x->x_bufsize = x->x_xymode = x->x_frozen = x->x_precount = sh->h_dragon = 0;
     x->x_flag = x->x_r_flag = x->x_rcv_set = x->x_select = 0;
+    x->x_theme = x->x_transparent = 0;
+    x->x_linewidth = 1;
     x->x_phase = x->x_bufphase = x->x_precount = 0;
     // def values
     float width = 200, height = 100, period = 8, bufsize = x->x_lastbufsize = 64;
     float minval = -1, maxval = 1, delay = 0, trigger = 0, triglevel = 0;
-    unsigned char bgred = 190, bggreen = 190, bgblue = 190;
-    unsigned char fgred = 30, fggreen = 30, fgblue = 30;
-    unsigned char grred = 160, grgreen = 160, grblue = 160;
-    float f_r = 0, f_g = 0, f_b = 0, b_r = 0, b_g = 0, b_b = 0, g_r = 0, g_g = 0, g_b = 0;
-    int fcolset = 0, bcolset = 0, gcolset = 0; // flag for colorset
+    t_symbol *bg_sym = gensym("#bebebe");
+    t_symbol *fg_sym = gensym("#1e1e1e");
+    t_symbol *gg_sym = gensym("#a0a0a0");
     if(ac){
         if(av->a_type == A_FLOAT){ // 1st Width
             width = av->a_w.w_float < SCOPE_MINSIZE ? SCOPE_MINSIZE : av->a_w.w_float;
@@ -1012,84 +1262,64 @@ static void *scope_new(t_symbol *s, int ac, t_atom *av){
                                                 if(ac && av->a_type == A_FLOAT){ // 11th triglevel
                                                     triglevel = av->a_w.w_float;
                                                     ac--; av++;
-                                                    if(ac && av->a_type == A_FLOAT){ // 12th fgred
-                                                        fgred = (unsigned char)av->a_w.w_float;
-                                                        if(fgred < 0)
-                                                            fgred = 0;
-                                                        if(fgred > 255)
-                                                            fgred = 255;
+                                                    // colors: either 3 symbols (new) or 9 floats (old)
+                                                    if(ac >= 3 && av->a_type == A_SYMBOL){
+                                                        // new format: fg, bg, gg
+                                                        fg_sym = atom_getsymbol(av); ac--; av++;
+                                                        if(ac && av->a_type == A_SYMBOL){
+                                                            bg_sym = atom_getsymbol(av); ac--; av++;
+                                                            if(ac && av->a_type == A_SYMBOL){
+                                                                gg_sym = atom_getsymbol(av); ac--; av++;
+                                                            }
+                                                        }
+                                                    }
+                                                    else if(ac >= 9 && av->a_type == A_FLOAT){
+                                                        // old format: fgRGB bgRGB ggRGB
+                                                        unsigned char fr = (unsigned char)av->a_w.w_float;
                                                         ac--; av++;
-                                                        if(ac && av->a_type == A_FLOAT){ // 13th fggreen
-                                                            fggreen = (unsigned char)av->a_w.w_float;
-                                                            if(fggreen < 0)
-                                                                fggreen = 0;
-                                                            if(fggreen > 255)
-                                                                fggreen = 255;
-                                                            ac--; av++;
-                                                            if(ac && av->a_type == A_FLOAT){ // 14th fgblue
-                                                                fgblue = (unsigned char)av->a_w.w_float;
-                                                                if(fgblue < 0)
-                                                                    fgblue = 0;
-                                                                if(fgblue > 255)
-                                                                    fgblue = 255;
-                                                                ac--; av++;
-                                                                if(ac && av->a_type == A_FLOAT){ // 15th bgred
-                                                                    bgred = (unsigned char)av->a_w.w_float;
-                                                                    if(bgred < 0)
-                                                                        bgred = 0;
-                                                                    if(bgred > 255)
-                                                                        bgred = 255;
-                                                                    ac--; av++;
-                                                                    if(ac && av->a_type == A_FLOAT){ // 16th bggreen
-                                                                        bggreen = (unsigned char)av->a_w.w_float;
-                                                                        if(bggreen < 0)
-                                                                            bggreen = 0;
-                                                                        if(bggreen > 255)
-                                                                            bggreen = 255;
-                                                                        ac--; av++;
-                                                                        if(ac && av->a_type == A_FLOAT){ // 17th bgblue
-                                                                            bgblue = (unsigned char)av->a_w.w_float;
-                                                                            if(bgblue < 0)
-                                                                                bgblue = 0;
-                                                                            if(fgblue > 255)
-                                                                                bgblue = 255;
-                                                                            ac--; av++;
-                                                                            if(ac && av->a_type == A_FLOAT){ // 18th grred
-                                                                                grred = (unsigned char)av->a_w.w_float;
-                                                                                if(grred < 0)
-                                                                                    grred = 0;
-                                                                                if(grred > 255)
-                                                                                    grred = 255;
-                                                                                ac--; av++;
-                                                                                if(ac && av->a_type == A_FLOAT){ // 19th grgreen
-                                                                                    grgreen = (unsigned char)av->a_w.w_float;
-                                                                                    if(grgreen < 0)
-                                                                                        grgreen = 0;
-                                                                                    if(grgreen > 255)
-                                                                                        grgreen = 255;
-                                                                                    ac--; av++;
-                                                                                    if(ac && av->a_type == A_FLOAT){ // 20th grblue
-                                                                                        grblue = (unsigned char)av->a_w.w_float;
-                                                                                        if(grblue < 0)
-                                                                                            grblue = 0;
-                                                                                        if(grblue > 255)
-                                                                                            grblue = 255;
-                                                                                        ac--; av++;
-                                                                                        if(ac && av->a_type == A_FLOAT){ // 21st empty
-                                                                                            ac--; av++;
-                                                                                            if(ac && av->a_type == A_SYMBOL){ // 22nd receive
-                                                                                                if(av->a_w.w_symbol == gensym("empty")) // ignore empty symbol
-                                                                                                    ac--, av++;
-                                                                                                else{
-                                                                                                    rcv = av->a_w.w_symbol;
-                                                                                                    ac--, av++;
-                                                                                                }
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
+                                                        unsigned char fg_ = (unsigned char)av->a_w.w_float;
+                                                        ac--; av++;
+                                                        unsigned char fb = (unsigned char)av->a_w.w_float;
+                                                        ac--; av++;
+                                                        unsigned char br = (unsigned char)av->a_w.w_float;
+                                                        ac--; av++;
+                                                        unsigned char bg_ = (unsigned char)av->a_w.w_float;
+                                                        ac--; av++;
+                                                        unsigned char bb = (unsigned char)av->a_w.w_float;
+                                                        ac--; av++;
+                                                        unsigned char gr = (unsigned char)av->a_w.w_float;
+                                                        ac--; av++;
+                                                        unsigned char gg_ = (unsigned char)av->a_w.w_float;
+                                                        ac--; av++;
+                                                        unsigned char gb = (unsigned char)av->a_w.w_float;
+                                                        ac--; av++;
+                                                        sprintf(buf, "#%.2x%.2x%.2x", fr, fg_, fb);
+                                                        fg_sym = gensym(buf);
+                                                        sprintf(buf, "#%.2x%.2x%.2x", br, bg_, bb);
+                                                        bg_sym = gensym(buf);
+                                                        sprintf(buf, "#%.2x%.2x%.2x", gr, gg_, gb);
+                                                        gg_sym = gensym(buf);
+                                                    }
+                                                    // continue with "empty", receive, theme...
+                                                    if(ac && av->a_type == A_FLOAT){ // 21st empty
+                                                        ac--; av++;
+                                                        if(ac && av->a_type == A_SYMBOL){ // 22nd receive
+                                                            if(av->a_w.w_symbol == gensym("empty")) // ignore empty symbol
+                                                                ac--, av++;
+                                                            else{
+                                                                rcv = av->a_w.w_symbol;
+                                                                ac--, av++;
+                                                            }
+                                                            if(ac && av->a_type == A_FLOAT){ // 23rd theme
+                                                                x->x_theme = (int)av->a_w.w_float;
+                                                                ac--, av++;
+                                                                if(ac && av->a_type == A_FLOAT){ // 24th transparent
+                                                                    x->x_transparent = (int)av->a_w.w_float;
+                                                                    ac--, av++;
+                                                                    if(ac && av->a_type == A_FLOAT){ // 25th linewidth
+                                                                        int lw = (int)av->a_w.w_float;
+                                                                        x->x_linewidth = lw < SCOPE_MINLINEWIDTH ? SCOPE_MINLINEWIDTH : lw > SCOPE_MAXLINEWIDTH ? SCOPE_MAXLINEWIDTH : lw;
+                                                                        ac--, av++;
                                                                     }
                                                                 }
                                                             }
@@ -1130,7 +1360,7 @@ static void *scope_new(t_symbol *s, int ac, t_atom *av){
                 width = atom_getfloatarg(2, ac, av);
                 ac-=3, av+=3;
             }
-            else if(sym == gensym("-delay") && ac >= 2){
+            else if(sym == gensym("-rate") && ac >= 2){
                 x->x_flag = 1;
                 delay = atom_getfloatarg(1, ac, av);
                 ac-=2, av+=2;
@@ -1145,39 +1375,49 @@ static void *scope_new(t_symbol *s, int ac, t_atom *av){
                 triglevel = atom_getfloatarg(1, ac, av);
                 ac-=2, av+=2;
             }
-            else if(sym == gensym("-fgcolor") && ac >= 4){
+            else if(sym == gensym("-fgcolor") && ac >= 2){
                 x->x_flag = 1;
-                fgred = (unsigned char)atom_getfloatarg(1, ac, av);
-                fgred = fgred < 0 ? 0 : fgred > 255 ? 255 : fgred;
-                fggreen = atom_getfloatarg(2, ac, av);
-                fggreen = fggreen < 0 ? 0 : fggreen > 255 ? 255 : fggreen;
-                fgblue = atom_getfloatarg(3, ac, av);
-                fgblue = fgblue < 0 ? 0 : fgblue > 255 ? 255 : fgblue;
-                ac-=4, av+=4;
+                if(av[1].a_type == A_SYMBOL){
+                    fg_sym = atom_getsymbol(av+1);
+                    ac-=2, av+=2;
+                }
+                else goto errstate;
             }
-            else if(sym == gensym("-bgcolor") && ac >= 4){
+            else if(sym == gensym("-bgcolor") && ac >= 2){
                 x->x_flag = 1;
-                bgred = (unsigned char)atom_getfloatarg(1, ac, av);
-                bgred = bgred < 0 ? 0 : bgred > 255 ? 255 : bgred;
-                bggreen = atom_getfloatarg(2, ac, av);
-                bggreen = bggreen < 0 ? 0 : bggreen > 255 ? 255 : bggreen;
-                bgblue = atom_getfloatarg(3, ac, av);
-                bgblue = bgblue < 0 ? 0 : bgblue > 255 ? 255 : bgblue;
-                ac-=4, av+=4;
+                if(av[1].a_type == A_SYMBOL){
+                    bg_sym = atom_getsymbol(av+1);
+                    ac-=2, av+=2;
+                }
+                else goto errstate;
             }
-            else if(sym == gensym("-gridcolor") && ac >= 4){
+            else if(sym == gensym("-gridcolor") && ac >= 2){
                 x->x_flag = 1;
-                grred = (unsigned char)atom_getfloatarg(1, ac, av);
-                grred = grred < 0 ? 0 : grred > 255 ? 255 : grred;
-                grgreen = atom_getfloatarg(2, ac, av);
-                grgreen = grgreen < 0 ? 0 : grgreen > 255 ? 255 : grgreen;
-                grblue = atom_getfloatarg(3, ac, av);
-                grblue = grblue < 0 ? 0 : grblue > 255 ? 255 : grblue;
-                ac-=4, av+=4;
+                if(av[1].a_type == A_SYMBOL){
+                    gg_sym = atom_getsymbol(av+1);
+                    ac-=2, av+=2;
+                }
+                else goto errstate;
             }
             else if(sym == gensym("-receive") && ac >= 2){
                 x->x_flag = x->x_r_flag = 1;
                 rcv = atom_getsymbolarg(1, ac, av);
+                ac-=2, av+=2;
+            }
+            else if(sym == gensym("-theme")){
+                x->x_flag = 1;
+                x->x_theme = 1;
+                ac--, av++;
+            }
+            else if(sym == gensym("-transparent")){
+                x->x_flag = 1;
+                x->x_transparent = 1;
+                ac--, av++;
+            }
+            else if(sym == gensym("-linewidth") && ac >= 2){
+                x->x_flag = 1;
+                int lw = (int)atom_getfloatarg(1, ac, av);
+                x->x_linewidth = lw < SCOPE_MINLINEWIDTH ? SCOPE_MINLINEWIDTH : lw > SCOPE_MAXLINEWIDTH ? SCOPE_MAXLINEWIDTH : lw;
                 ac-=2, av+=2;
             }
             else
@@ -1187,14 +1427,17 @@ static void *scope_new(t_symbol *s, int ac, t_atom *av){
             goto errstate;
 
     }
+    x->x_bg = bg_sym;
+    x->x_fg = fg_sym;
+    x->x_gg = gg_sym;
     x->x_receive = canvas_realizedollar(x->x_glist, x->x_rcv_raw = rcv);
     if(x->x_receive != &s_)
         pd_bind(&x->x_obj.ob_pd, x->x_receive);
     else
-    	x->x_rcv_raw = gensym("empty");
+        x->x_rcv_raw = gensym("empty");
     x->x_rightinlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     outlet_new((t_object *)x, &s_signal);
-    x->x_width = (int)width * x->x_zoom, x->x_height = (int)height * x->x_zoom;
+    x->x_width = (int)width, x->x_height = (int)height;
     x->x_period = period < 2 ? 2 : period > 8192 ? 8192 : (int)period;
     x->x_bufsize = bufsize < SCOPE_MINBUFSIZE ? SCOPE_MINBUFSIZE : bufsize > SCOPE_MAXBUFSIZE ? SCOPE_MAXBUFSIZE : (int)bufsize;
     pd_float((t_pd *)x->x_rightinlet, x->x_bufsize);
@@ -1208,18 +1451,6 @@ static void *scope_new(t_symbol *s, int ac, t_atom *av){
     x->x_trigmode = trigger < 0 ? 0 : trigger > 2 ? 2 : (int)trigger;
     if(x->x_trigmode == 0) // no trigger
         x->x_retrigger = 0;
-    if(fcolset)
-        x->x_fg[0] = f_r, x->x_fg[1] = f_g, x->x_fg[2] = f_b;
-    else
-        x->x_fg[0] = fgred, x->x_fg[1] = fggreen, x->x_fg[2] = fgblue;
-    if(bcolset)
-        x->x_bg[0] = b_r, x->x_bg[1] = b_g, x->x_bg[2] = b_b;
-    else
-        x->x_bg[0] = bgred, x->x_bg[1] = bggreen, x->x_bg[2] = bgblue;
-    if(gcolset)
-        x->x_gg[0] = g_r, x->x_gg[1] = g_g, x->x_gg[2] = g_b;
-    else
-        x->x_gg[0] = grred, x->x_gg[1] = grgreen, x->x_gg[2] = grblue;
     x->x_clock = clock_new(x, (t_method)scope_tick);
     return(x);
 errstate:
@@ -1238,25 +1469,27 @@ void scope_tilde_setup(void){
     class_addmethod(scope_class, (t_method)scope_bufsize, gensym("nlines"), A_FLOAT, 0);
     class_addmethod(scope_class, (t_method)scope_dim, gensym("dim"), A_GIMME, 0);
     class_addmethod(scope_class, (t_method)scope_range, gensym("range"), A_FLOAT, A_FLOAT, 0);
-    class_addmethod(scope_class, (t_method)scope_delay, gensym("delay"), A_FLOAT, 0);
+    class_addmethod(scope_class, (t_method)scope_delay, gensym("rate"), A_FLOAT, 0);
     class_addmethod(scope_class, (t_method)scope_trigger, gensym("trigger"), A_FLOAT, 0);
     class_addmethod(scope_class, (t_method)scope_triglevel, gensym("triglevel"), A_FLOAT, 0);
-    class_addmethod(scope_class, (t_method)scope_fgcolor, gensym("fgcolor"),
-        A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    class_addmethod(scope_class, (t_method)scope_bgcolor, gensym("bgcolor"),
-        A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    class_addmethod(scope_class, (t_method)scope_gridcolor, gensym("gridcolor"),
-        A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(scope_class, (t_method)scope_linewidth, gensym("linewidth"), A_FLOAT, 0);
+    class_addmethod(scope_class, (t_method)scope_setfgcolor, gensym("fgcolor"), A_GIMME, 0);
+    class_addmethod(scope_class, (t_method)scope_setbgcolor, gensym("bgcolor"), A_GIMME, 0);
+    class_addmethod(scope_class, (t_method)scope_setgridcolor, gensym("gridcolor"), A_GIMME, 0);
+    class_addmethod(scope_class, (t_method)scope_colors, gensym("colors"), A_SYMBOL, A_SYMBOL, A_SYMBOL, 0);
+    class_addmethod(scope_class, (t_method)scope_theme, gensym("theme"), A_FLOAT, 0);
+    class_addmethod(scope_class, (t_method)scope_transparent, gensym("transparent"), A_FLOAT, 0);
     class_addmethod(scope_class, (t_method)scope_receive, gensym("receive"), A_SYMBOL, 0);
+    class_addmethod(scope_class, (t_method)scope_validate, gensym("_validate"),
+        A_FLOAT, A_SYMBOL, A_FLOAT, 0);
     class_addmethod(scope_class, (t_method)scope_ok, gensym("dialog"), A_GIMME, 0);
     class_addmethod(scope_class, (t_method)scope_click, gensym("click"),
         A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    class_addmethod(scope_class, (t_method)scope_zoom, gensym("zoom"), A_CANT, 0);
     class_addmethod(scope_class, (t_method)scope_mouserelease, gensym("_mouserelease"), 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
     handle_class = class_new(gensym("_handle"), 0, 0, sizeof(t_handle), CLASS_PD, 0);
-    class_addmethod(handle_class, (t_method)handle__click_callback, gensym("_click"), A_FLOAT, 0);
+    class_addmethod(handle_class, (t_method)handle__click_callback, gensym("_click"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(handle_class, (t_method)handle__motion_callback, gensym("_motion"),
         A_FLOAT, A_FLOAT, 0);
     class_setsavefn(scope_class, scope_save);
@@ -1268,5 +1501,8 @@ void scope_tilde_setup(void){
     scope_widgetbehavior.w_deletefn   = scope_delete;
     scope_widgetbehavior.w_visfn      = scope_vis;
     scope_widgetbehavior.w_clickfn    = (t_clickfn)scope_click;
-    #include "../Extra/scope~_dialog.c"
+    #include "../Extra/else_tcl_utils.h"
+    pdgui_vmess(else_tcl_utils, NULL);
+    #include "../Extra/scope~_dialog.h" // properties in tcl/tk
+    pdgui_vmess(scope_dialog_tcl, NULL);
 }
