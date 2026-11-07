@@ -19,8 +19,11 @@ typedef struct _colors{
 }t_colors;
 
 static void colors_pick(t_colors *x){
-    sys_vgui("after idle [list after 10 else_colors_pick %s %s]\n",
+    char buf[MAXPDSTRING * 2];
+    snprintf(buf, sizeof(buf),
+        "after idle [list after 10 else_colors_pick %s %s]",
         x->x_id->s_name, x->x_color);
+    pdgui_vmess(buf, NULL);
 }
 
 static void colors_bang(t_colors *x){
@@ -78,11 +81,17 @@ static void colors_valid(t_colors *x, t_floatarg v, t_symbol *c){
 }
 
 static void colors_symbol(t_colors *x, t_symbol *sym){
-    sys_vgui("set color_name {%s}\n", sym->s_name);
-    sys_vgui("set color_escaped [string map {{ } {\\ }} $color_name]\n");
-    sys_vgui("set hex_color [color2hex $color_name]\n");
-    sys_vgui("if {$hex_color eq \"\"} {pdsend \"%s _valid 0 $color_escaped\"} else {pdsend \"%s _valid 1 $hex_color\"}\n",
+    char buf[MAXPDSTRING * 2];
+    snprintf(buf, sizeof(buf), "set color_name {%s}", sym->s_name);
+    pdgui_vmess(buf, NULL);
+    pdgui_vmess("set color_escaped [string map {{ } {\\ }} $color_name]", NULL);
+    pdgui_vmess("set hex_color [color2hex $color_name]", NULL);
+    snprintf(buf, sizeof(buf),
+        "if {$hex_color eq \"\"} "
+        "{pdsend \"%s _valid 0 $color_escaped\"} "
+        "else {pdsend \"%s _valid 1 $hex_color\"}",
         x->x_id->s_name, x->x_id->s_name);
+    pdgui_vmess(buf, NULL);
 }
 
 static void colors_convert_to(t_colors *x, t_symbol *s){
@@ -300,19 +309,12 @@ void colors_setup(void){
     class_addmethod(colors_class, (t_method)colors_valid, gensym("_valid"),
         A_FLOAT, A_SYMBOL, 0);
     class_addmethod(colors_class, (t_method)colors_pick, gensym("click"), 0);
-    sys_vgui("proc else_colors_pick {obj_id color} {\n");
-    sys_vgui("set color [tk_chooseColor -initialcolor $color]\n");
-    sys_vgui("  pdsend [concat $obj_id picked_color $color]\n");
-    sys_vgui("}\n");
-    sys_gui("\n"
-    "proc color2hex {name} {\n"
-    "    if {[catch {winfo rgb . $name} rgb]} {\n"
-    "        return \"\"\n"
-    "    }\n"
-    "    set r [format %02x [expr {[lindex $rgb 0] / 256}]]\n"
-    "    set g [format %02x [expr {[lindex $rgb 1] / 256}]]\n"
-    "    set b [format %02x [expr {[lindex $rgb 2] / 256}]]\n"
-    "    return \"#$r$g$b\"\n"
-    "}\n"
-    "\n");
+    #include "../Extra/else_tcl_utils.h"
+    pdgui_vmess(else_tcl_utils, NULL);
+    pdgui_vmess(
+        "proc else_colors_pick {obj_id color} {\n"
+        "set color [tk_chooseColor -initialcolor $color]\n"
+        "  pdsend [concat $obj_id picked_color $color]\n"
+        "}", NULL);
+    pdgui_vmess(else_tcl_utils, NULL);
 }
