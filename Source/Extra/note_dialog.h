@@ -38,6 +38,36 @@ static const char *note_dialog_tcl =
 "proc get_font_list {} {\n\
     return [lsort [font families]]\n}\n"
 
+// COPY / CUT / PASTE while a [note] is being edited.
+// Ctrl/Cmd+C/X/V and the Edit menu all fire the virtual events <<Edit|Copy>> etc. on the
+// focused canvas. We catch them with a bindtag placed BEFORE the canvas' own tags, and
+// 'break' so Pd's "bind all" handler (menu_send copy/cut/paste) never sees them -
+// otherwise Pd copies/cuts/pastes the note OBJECT instead of its text.
+"proc note_install_edit_bindings {cv} {\n\
+    if {[lsearch -exact [bindtags $cv] NoteEdit] < 0} {\n\
+        bindtags $cv [linsert [bindtags $cv] 0 NoteEdit]\n\
+    }\n}\n"
+
+// returns the [note]'s bind symbol if one is being edited in this canvas, else {}
+// (C side gives the text item canvas focus only while the note is active)
+"proc note_target {cv} {\n\
+    set item [$cv focus]\n\
+    if {$item eq {}} {return {}}\n\
+    foreach t [$cv gettags $item] {\n\
+        if {[string match note:* $t]} {return [string range $t 5 end]}\n\
+    }\n\
+    return {}\n}\n"
+
+// receives the selected text from C (escaped by pdgui_vmess) and puts it on the clipboard
+"proc note_clipboard {txt} {\n\
+    clipboard clear\n\
+    clipboard append [note_unescape $txt]}\n"
+
+"bind NoteEdit <<Edit|Copy>> {if {[set t [note_target %W]] ne {}} {pdsend [concat $t _copy]; break}}\n"
+"bind NoteEdit <<Edit|Cut>> {if {[set t [note_target %W]] ne {}} {pdsend [concat $t _cut]; break}}\n"
+// paste: reuse Pd's own pdtk_text "typing" proc; chars arrive via #key like normal typing
+"bind NoteEdit <<Edit|Paste>> {if {[note_target %W] ne {}} {pdtk_pastetext %W; break}}\n"
+
 // DRAW - creates text item and bind to note_click
 "proc note_draw {tgt cv tag1 tag2 x y fnm fsz clr tt wd wt sl just ul} {\n\
     set tt [note_unescape $tt]\n\
@@ -47,12 +77,13 @@ static const char *note_dialog_tcl =
         set font [list $fnm $fsz $wt $sl]\n\
     }\n\
     if {$wd > 0} {\n\
-        $cv create text $x $y -text $tt -tags [list $tag1 $tag2] \\\n\
+        $cv create text $x $y -text $tt -tags [list $tag1 $tag2 note:$tgt] \\\n\
         -font $font -justify $just -fill $clr -width $wd -anchor nw\n\
     } else {\n\
-        $cv create text $x $y -text $tt -tags [list $tag1 $tag2] \\\n\
+        $cv create text $x $y -text $tt -tags [list $tag1 $tag2 note:$tgt] \\\n\
         -font $font -justify $just -fill $clr -anchor nw\n\
     }\n\
+    note_install_edit_bindings $cv\n\
     note_bbox $tgt $cv $tag1\n\
     $cv bind $tag1 <Button> [list note_click $tgt %W %x %y $tag1]\n\
 }\n"

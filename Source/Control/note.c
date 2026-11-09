@@ -797,6 +797,23 @@ static void note_key(t_note *x){
     note_update(x);
 }
 
+// Copy/cut of the note's TEXT. Called from Tcl (see NoteEdit bindings in note_dialog.h)
+// because Pd itself would copy/cut the whole note object (we don't set e_textedfor).
+static void note__copy(t_note *x){
+    if(!x->x_active || x->x_selend <= x->x_selstart)
+        return;
+    pdgui_vmess("note_clipboard", "p", x->x_selend - x->x_selstart, x->x_buf + x->x_selstart);
+}
+
+static void note__cut(t_note *x){
+    if(!x->x_active || x->x_selend <= x->x_selstart)
+        return;
+    note__copy(x);
+    x->x_keynum = 127; // reuse the regular delete path (removes the selection)
+    note_key(x);
+    x->x_keynum = 0;
+}
+
 static void note_float(t_note *x, t_float f){
     x->x_keynum = (int)f;
 //    post("x->x_keynum = %d", x->x_keynum);
@@ -1676,6 +1693,8 @@ void note_setup(void){
     class_addmethod(note_class, (t_method)note__bbox_callback, gensym("_bbox"),
         A_SYMBOL, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(note_class, (t_method)note__click_callback, gensym("_click"), A_GIMME, 0);
+    class_addmethod(note_class, (t_method)note__copy, gensym("_copy"), 0);
+    class_addmethod(note_class, (t_method)note__cut, gensym("_cut"), 0);
     class_setwidget(note_class, &note_widgetbehavior);
     note_widgetbehavior.w_getrectfn  = note_getrect;
     note_widgetbehavior.w_displacefn = note_displace;
