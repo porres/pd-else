@@ -8,8 +8,14 @@ static const char *note_dialog_tcl =
     pdsend \"$target _click $target [$cvname canvasx $x] [$cvname canvasy $y]\
     [$cvname index $tag @$x,$y] [$cvname bbox $tag]\"}\n"
 
+// UNESCAPE: pdgui_vmess() ("s"/"p" formats) puts a backslash before \ { } [ ]
+// so the string survives Tcl parsing. Undo it here, same as Pd's own pdtk_text_set.
+"proc note_unescape {s} {\n\
+    return [subst -nocommands -novariables $s]}\n"
+
 // UPDATE the text contents and optionally wrap width
 "proc note_update {cv tag tt wd} {\n\
+    set tt [note_unescape $tt]\n\
     if {$wd > 0} {$cv itemconfig $tag -text $tt -width $wd} else {\n\
     $cv itemconfig $tag -text $tt}}\n"
 
@@ -34,6 +40,7 @@ static const char *note_dialog_tcl =
 
 // DRAW - creates text item and bind to note_click
 "proc note_draw {tgt cv tag1 tag2 x y fnm fsz clr tt wd wt sl just ul} {\n\
+    set tt [note_unescape $tt]\n\
     if {$ul} {\n\
         set font [list $fnm $fsz $wt $sl underline]\n\
     } else {\n\
