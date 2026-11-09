@@ -50,6 +50,7 @@ typedef struct _note{
     int             x_y2;
     int             x_newx2;
     int             x_dragon;
+    int             x_dragfrom;  // char index the mouse drag started from
     int             x_select;
     int             x_fontsize;
     int             x_shift;
@@ -299,22 +300,44 @@ static void note_draw(t_note *x){
         snprintf(sel, sizeof(sel), "#%06x", THISGUI->i_selectcolor);
     x->x_bbpending = 1; // bbox pending
     // Tcl proc: note_draw <bindsym> <cv> <txt tag> <all tag> <x> <y> <font> <-size> <color> <text> <width> <weight> <slant> <just> <underline>
-    pdgui_vmess("note_draw", "rcrr ii si r p i rrr i",
-        x->x_bindsym->s_name,                   // bindsym
-        x->x_cv,                                // .x%lx.c
-        x->x_tag_txt,                           // txt%lx
-        x->x_tag_all,                           // all%lx
-        text_xpix((t_text *)x, x->x_glist) + 1, // x
-        text_ypix((t_text *)x, x->x_glist) + 1, // y
-        x->x_fontname->s_name,                  // font name
-        -x->x_fontsize,                         // negative = pixels
-        x->x_select ? sel : txt,                // text color
-        x->x_bufsize, x->x_buf,                 // text (pascalstring)
-        x->x_max_pixwidth,                      // width
-        x->x_bold ? "bold" : "normal",
-        x->x_italic ? "italic" : "roman",
-        x->x_textjust == 0 ? "left" : x->x_textjust == 1 ? "center" : "right",
-        x->x_underline);                        // 0 or 1
+    // Empty buffer: pdgui_vmess "p" with size=0/NULL emits nothing, dropping the text
+    // argument entirely and leaving the previous glyph on screen. Use "s" with the
+    // empty symbol so Tcl always receives a well-formed empty string.
+    if(x->x_bufsize > 0)
+        pdgui_vmess("note_draw", "rcrr ii si r p i rrr i",
+            x->x_bindsym->s_name,                   // bindsym
+            x->x_cv,                                // .x%lx.c
+            x->x_tag_txt,                           // txt%lx
+            x->x_tag_all,                           // all%lx
+            text_xpix((t_text *)x, x->x_glist) + 1, // x
+            text_ypix((t_text *)x, x->x_glist) + 1, // y
+            x->x_fontname->s_name,                  // font name
+            -x->x_fontsize,                         // negative = pixels
+            x->x_select ? sel : txt,                // text color
+            x->x_bufsize, x->x_buf,                 // text (pascalstring)
+            x->x_max_pixwidth,                      // width
+            x->x_bold ? "bold" : "normal",
+            x->x_italic ? "italic" : "roman",
+            x->x_textjust == 0 ? "left" : x->x_textjust == 1 ? "center" : "right",
+            x->x_underline);                        // 0 or 1
+    else
+        pdgui_vmess("note_draw", "rcrr ii si r s i rrr i",
+            x->x_bindsym->s_name,
+            x->x_cv,
+            x->x_tag_txt,
+            x->x_tag_all,
+            text_xpix((t_text *)x, x->x_glist) + 1,
+            text_ypix((t_text *)x, x->x_glist) + 1,
+            x->x_fontname->s_name,
+            -x->x_fontsize,
+            x->x_select ? sel : txt,
+            s_.s_name,                            // empty string
+            x->x_max_pixwidth,
+            x->x_bold ? "bold" : "normal",
+            x->x_italic ? "italic" : "roman",
+            x->x_textjust == 0 ? "left" : x->x_textjust == 1 ? "center" : "right",
+            x->x_underline);
+    // B1-Motion binding is set inside the note_draw Tcl proc
     note_draw_handle(x); // fix weird bug????
     note_draw_inlet(x);
     note_draw_outline(x);
@@ -324,12 +347,18 @@ static void note_draw(t_note *x){
 static void note_update(t_note *x){
 //    post("update");
     t_canvas *cv = x->x_cv;
-    pdgui_vmess("note_update", "cs p i", cv, x->x_tag_txt,
-        x->x_bufsize, x->x_buf, x->x_max_pixwidth);
+    // Empty buffer: pdgui_vmess "p" with size=0/NULL emits nothing, dropping the text
+    // argument and causing Tcl to abort with "wrong # args". Use "s" with the empty
+    // symbol so note_update always receives a well-formed 4-argument message.
+    if(x->x_bufsize > 0)
+        pdgui_vmess("note_update", "cs p i", cv, x->x_tag_txt,
+            x->x_bufsize, x->x_buf, x->x_max_pixwidth);
+    else
+        pdgui_vmess("note_update", "cs s i", cv, x->x_tag_txt, s_.s_name, x->x_max_pixwidth);
     if(x->x_active){
         if(x->x_selend > x->x_selstart){ // <= TEXT SELECTION!!!!
             pdgui_vmess(0, "crrs i", cv, "select", "from", x->x_tag_txt, x->x_start_ndx);
-            pdgui_vmess(0, "crrs i", cv, "select", "to", x->x_tag_txt, x->x_selend);
+            pdgui_vmess(0, "crrs i", cv, "select", "to", x->x_tag_txt, x->x_end_ndx);
             pdgui_vmess(0, "crs", cv, "focus", "");
         }
         else{
@@ -408,8 +437,22 @@ static void note_activate(t_gobj *z, t_glist *glist, int state){
         if(x->x_active)
             return;
         pdgui_vmess(0, "crs", x->x_cv, "focus", x->x_tag_txt);
-        x->x_selstart = x->x_start_ndx = x->x_start_ndx = 0;
+        {
+            char buf[512];
+            snprintf(buf, sizeof(buf), "set ::note_editing(.x%lx.c) %s",
+                (unsigned long)x->x_cv, x->x_bindsym->s_name);
+            pdgui_vmess(buf, NULL);
+        }
+        x->x_selstart = x->x_start_ndx = 0;
         x->x_selend = x->x_bufsize;
+        {
+            int n = 0, i = 0;
+            while(i < x->x_bufsize){
+                else_u8_inc(x->x_buf, &i);
+                n++;
+            }
+            x->x_end_ndx = n;
+        }
         x->x_active = 1;
         pd_bind((t_pd *)x, gensym("#key"));
         pd_bind((t_pd *)x, gensym("#keyname"));
@@ -421,6 +464,12 @@ static void note_activate(t_gobj *z, t_glist *glist, int state){
         pd_unbind((t_pd *)x, gensym("#keyname"));
         pdgui_vmess(0, "rr c", "selection", "clear", x->x_cv);
         pdgui_vmess(0, "crs", x->x_cv, "focus", "");
+        {
+            char buf[512];
+            snprintf(buf, sizeof(buf), "unset -nocomplain ::note_editing(.x%lx.c)",
+                (unsigned long)x->x_cv);
+            pdgui_vmess(buf, NULL);
+        }
         x->x_active = 0;
     }
     note_update(x);
@@ -520,6 +569,7 @@ static void note__click_callback(t_note *x, t_symbol *s, int ac, t_atom *av){
     if(x->x_glist->gl_edit){
         if(x->x_active){
             if(ndx >= 0 && ndx <= x->x_bufsize){
+                x->x_dragfrom = ndx;
                 x->x_start_ndx = x->x_end_ndx = ndx;
                 int byte_ndx = 0;
                 for(int i = 0; i < ndx; i++)
@@ -540,6 +590,30 @@ static void note__click_callback(t_note *x, t_symbol *s, int ac, t_atom *av){
             x->x_dragon = 1;
         }
     }
+}
+
+// update range selection as user drags mouse over active note
+static void note__drag_callback(t_note *x, t_floatarg f){
+    if(!x->x_active)
+        return;
+    int ndx = (int)f;
+    if(ndx < 0)
+        ndx = 0;
+    if(ndx > x->x_bufsize)
+        ndx = x->x_bufsize;
+    int from = x->x_dragfrom;
+    int to = ndx;
+    if(from > to){ int t = from; from = to; to = t; }
+    x->x_start_ndx = from;
+    x->x_end_ndx = to;
+    int b_from = 0, b_to = 0;
+    for(int i = 0; i < from; i++)
+        else_u8_inc(x->x_buf, &b_from);
+    for(int i = 0; i < to; i++)
+        else_u8_inc(x->x_buf, &b_to);
+    x->x_selstart = b_from;
+    x->x_selend = b_to;
+    note_update(x);
 }
 
 static void handle__click_callback(t_handle *ch, t_floatarg f, t_floatarg xarg, t_floatarg yarg){
@@ -668,6 +742,16 @@ static void note_key(t_note *x){
         post("key bug");
         return;
     }
+
+    // undo: snapshot binbuf content BEFORE edit
+    int old_ac = binbuf_getnatom(x->x_binbuf);
+    t_atom *old_av = NULL;
+    if(old_ac > 0){
+        t_atom *src = binbuf_getvec(x->x_binbuf);
+        old_av = ALLOCA(t_atom, old_ac);
+        for(int k = 0; k < old_ac; k++) old_av[k] = src[k];
+    }
+
     int i, newsize, ndel, n = x->x_keynum;
     if(n){
 //        post("note_float => input character = [%c], n = %d", n, n);
@@ -779,7 +863,7 @@ static void note_key(t_note *x){
         else
             x->x_selend = x->x_selstart;
     }
-    else if(x->x_keysym == gensym("F5")){
+/*    else if(x->x_keysym == gensym("F5")){
         t_text *t = (t_text *)x;
         t_binbuf *bb = binbuf_new();
         int argc = binbuf_getnatom(x->x_binbuf);
@@ -790,10 +874,67 @@ static void note_key(t_note *x){
         canvas_unsetcurrent(x->x_glist);
         binbuf_free(bb);
         return;
-    }
+    }*/
     canvas_dirty(x->x_glist, 1);
     binbuf_text(x->x_binbuf, x->x_buf, x->x_bufsize);
-//        post("x->x_selend = x->x_selstart = %d", x->x_selend);
+
+    // undo: if binbuf content changed, register undo/redo entry.
+    // On undo, Pd calls note_set(x, NULL, old_ac, old_av).
+    // On redo, Pd calls note_set(x, NULL, new_ac, new_av).
+    int new_ac = binbuf_getnatom(x->x_binbuf);
+    int changed = (old_ac != new_ac);
+    if(!changed && old_ac > 0){
+        t_atom *src = binbuf_getvec(x->x_binbuf);
+        for(int k = 0; k < old_ac; k++){
+            if(old_av[k].a_type != src[k].a_type){ changed = 1; break; }
+            if(old_av[k].a_type == A_FLOAT &&
+                old_av[k].a_w.w_float != src[k].a_w.w_float){ changed = 1; break; }
+            if(old_av[k].a_type == A_SYMBOL &&
+                old_av[k].a_w.w_symbol != src[k].a_w.w_symbol){ changed = 1; break; }
+        }
+    }
+    if(changed){
+        t_atom *new_av = NULL;
+        if(new_ac > 0){
+            t_atom *src = binbuf_getvec(x->x_binbuf);
+            new_av = ALLOCA(t_atom, new_ac);
+            for(int k = 0; k < new_ac; k++) new_av[k] = src[k];
+        }
+        pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("set"),
+            old_ac, old_av, new_ac, new_av);
+        if(new_av) FREEA(new_av, t_atom, new_ac);
+    }
+    if(old_av) FREEA(old_av, t_atom, old_ac);
+
+    note_update(x);
+}
+
+static void note__copy(t_note *x){
+    if(!x->x_active || x->x_selend <= x->x_selstart)
+        return;
+    pdgui_vmess("note_clipboard", "p", x->x_selend - x->x_selstart, x->x_buf + x->x_selstart);
+}
+
+static void note__cut(t_note *x){
+    if(!x->x_active || x->x_selend <= x->x_selstart)
+        return;
+    note__copy(x);
+    x->x_keynum = 127;
+    note_key(x);
+    x->x_keynum = 0;
+}
+
+static void note__select_all(t_note *x){
+    if(!x->x_active)
+        return;
+    x->x_selstart = x->x_start_ndx = 0;
+    x->x_selend = x->x_bufsize;
+    int n = 0, i = 0;
+    while(i < x->x_bufsize){
+        else_u8_inc(x->x_buf, &i);
+        n++;
+    }
+    x->x_end_ndx = n;
     note_update(x);
 }
 
@@ -884,9 +1025,28 @@ static void note_set(t_note *x, t_symbol *s, int ac, t_atom * av){
         note_initialize(x);
     binbuf_clear(x->x_binbuf);
     binbuf_restore(x->x_binbuf, ac, av);
+    if(x->x_buf)
+        freebytes(x->x_buf, x->x_bufsize);
+    x->x_buf = NULL;
+    x->x_bufsize = 0;
     binbuf_gettext(x->x_binbuf, &x->x_buf, &x->x_bufsize);
     x->x_bbset = 0;
+    // clamp selection and cursor to new buffer size (undo/redo may have
+    // shrunk the text)
+    if(x->x_selstart > x->x_bufsize) x->x_selstart = x->x_bufsize;
+    if(x->x_selend   > x->x_bufsize) x->x_selend   = x->x_bufsize;
+    {
+        int nchars = 0, k = 0;
+        while(k < x->x_bufsize){
+            else_u8_inc(x->x_buf, &k);
+            nchars++;
+        }
+        if(x->x_start_ndx > nchars) x->x_start_ndx = nchars;
+        if(x->x_end_ndx   > nchars) x->x_end_ndx   = nchars;
+    }
     note_redraw(x);
+    if(x->x_active)
+        note_update(x);  // restore focus/caret after undo/redo
 }
 
 static void note_append(t_note *x, t_symbol *s, int ac, t_atom * av){
@@ -1411,6 +1571,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     x->x_bgcolor = gensym(colorbuf);
     x->x_color = gensym("#000000");
     x->x_bbset = x->x_select = x->x_dragon = x->x_shift = 0;
+    x->x_dragfrom = 0;
     t_symbol *rcv = x->x_receive = x->x_rcv_raw = &s_;
     char buf[MAXPDSTRING];
     snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)x->x_cv);
@@ -1677,6 +1838,10 @@ void note_setup(void){
     class_addmethod(note_class, (t_method)note__bbox_callback, gensym("_bbox"),
         A_SYMBOL, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(note_class, (t_method)note__click_callback, gensym("_click"), A_GIMME, 0);
+    class_addmethod(note_class, (t_method)note__drag_callback, gensym("_drag"), A_FLOAT, 0);
+    class_addmethod(note_class, (t_method)note__copy, gensym("_copy"), 0);
+    class_addmethod(note_class, (t_method)note__cut, gensym("_cut"), 0);
+    class_addmethod(note_class, (t_method)note__select_all, gensym("_select_all"), 0);
     class_setwidget(note_class, &note_widgetbehavior);
     note_widgetbehavior.w_getrectfn  = note_getrect;
     note_widgetbehavior.w_displacefn = note_displace;

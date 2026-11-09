@@ -8,8 +8,51 @@ static const char *note_dialog_tcl =
     pdsend \"$target _click $target [$cvname canvasx $x] [$cvname canvasy $y]\
     [$cvname index $tag @$x,$y] [$cvname bbox $tag]\"}\n"
 
+// NOTE DRAG / Send character index as the user drags over the text
+"proc note_drag {target cvname x y tag} {\n\
+    pdsend \"$target _drag [$cvname index $tag @$x,$y]\"}\n"
+
+// Double click
+"proc note_dblclick {target} {\n\
+    pdsend \"$target _select_all\"}\n"
+
+// COPY / CUT / PASTE while a [note] is being edited.
+// Ctrl/Cmd+C/X/V and the Edit menu all fire the virtual events <<Edit|Copy>> etc. on the
+// focused canvas. We catch them with a bindtag placed BEFORE the canvas' own tags, and
+// 'break' so Pd's "bind all" handler (menu_send copy/cut/paste) never sees them -
+// otherwise Pd copies/cuts/pastes the note OBJECT instead of its text.
+"proc note_install_edit_bindings {cv} {\n\
+    if {[lsearch -exact [bindtags $cv] NoteEdit] < 0} {\n\
+        bindtags $cv [linsert [bindtags $cv] 0 NoteEdit]\n\
+    }\n}\n"
+
+// Mapping from canvas -> active note's bindsym, so we don't depend on
+// the text item's canvas focus (which note_update clears on selection
+// in order to hide the blinking insertion caret).
+"array set ::note_editing {} ;\n"
+
+// returns the [note]'s bind symbol if one is being edited in this canvas, else {}
+"proc note_target {cv} {\n\
+    if {[info exists ::note_editing($cv)]} {return $::note_editing($cv)}\n\
+    return {}\n}\n"
+
+// receives the selected text from C (escaped by pdgui_vmess) and puts it on the clipboard
+"proc note_clipboard {txt} {\n\
+    clipboard clear\n\
+    clipboard append [note_unescape $txt]}\n"
+
+"bind NoteEdit <<Edit|Copy>> {if {[set t [note_target %W]] ne {}} {pdsend [concat $t _copy]; break}}\n"
+"bind NoteEdit <<Edit|Cut>> {if {[set t [note_target %W]] ne {}} {pdsend [concat $t _cut]; break}}\n"
+"bind NoteEdit <<Edit|Paste>> {if {[note_target %W] ne {}} {pdtk_pastetext %W; break}}\n"
+
+// UNESCAPE: pdgui_vmess() ("s"/"p" formats) puts a backslash before \ { } [ ]
+// so the string survives Tcl parsing. Undo it here, same as Pd's own pdtk_text_set.
+"proc note_unescape {s} {\n\
+    return [subst -nocommands -novariables $s]}\n"
+
 // UPDATE the text contents and optionally wrap width
 "proc note_update {cv tag tt wd} {\n\
+    set tt [note_unescape $tt]\n\
     if {$wd > 0} {$cv itemconfig $tag -text $tt -width $wd} else {\n\
     $cv itemconfig $tag -text $tt}}\n"
 
@@ -32,22 +75,26 @@ static const char *note_dialog_tcl =
 "proc get_font_list {} {\n\
     return [lsort [font families]]\n}\n"
 
-// DRAW - creates text item and bind to note_click
+// DRAW - creates text item and bind to note_click / note_drag
 "proc note_draw {tgt cv tag1 tag2 x y fnm fsz clr tt wd wt sl just ul} {\n\
+    set tt [note_unescape $tt]\n\
     if {$ul} {\n\
         set font [list $fnm $fsz $wt $sl underline]\n\
     } else {\n\
         set font [list $fnm $fsz $wt $sl]\n\
     }\n\
     if {$wd > 0} {\n\
-        $cv create text $x $y -text $tt -tags [list $tag1 $tag2] \\\n\
+        $cv create text $x $y -text $tt -tags [list $tag1 $tag2 note:$tgt] \\\n\
         -font $font -justify $just -fill $clr -width $wd -anchor nw\n\
     } else {\n\
-        $cv create text $x $y -text $tt -tags [list $tag1 $tag2] \\\n\
+        $cv create text $x $y -text $tt -tags [list $tag1 $tag2 note:$tgt] \\\n\
         -font $font -justify $just -fill $clr -anchor nw\n\
     }\n\
+    note_install_edit_bindings $cv\n\
     note_bbox $tgt $cv $tag1\n\
     $cv bind $tag1 <Button> [list note_click $tgt %W %x %y $tag1]\n\
+    $cv bind $tag1 <B1-Motion> [list note_drag $tgt %W %x %y $tag1]\n\
+    $cv bind $tag1 <Double-Button> [list note_dblclick $tgt]\n\
 }\n"
 
 // PROPERTIES
