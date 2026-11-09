@@ -299,22 +299,43 @@ static void note_draw(t_note *x){
         snprintf(sel, sizeof(sel), "#%06x", THISGUI->i_selectcolor);
     x->x_bbpending = 1; // bbox pending
     // Tcl proc: note_draw <bindsym> <cv> <txt tag> <all tag> <x> <y> <font> <-size> <color> <text> <width> <weight> <slant> <just> <underline>
-    pdgui_vmess("note_draw", "rcrr ii si r p i rrr i",
-        x->x_bindsym->s_name,                   // bindsym
-        x->x_cv,                                // .x%lx.c
-        x->x_tag_txt,                           // txt%lx
-        x->x_tag_all,                           // all%lx
-        text_xpix((t_text *)x, x->x_glist) + 1, // x
-        text_ypix((t_text *)x, x->x_glist) + 1, // y
-        x->x_fontname->s_name,                  // font name
-        -x->x_fontsize,                         // negative = pixels
-        x->x_select ? sel : txt,                // text color
-        x->x_bufsize, x->x_buf,                 // text (pascalstring)
-        x->x_max_pixwidth,                      // width
-        x->x_bold ? "bold" : "normal",
-        x->x_italic ? "italic" : "roman",
-        x->x_textjust == 0 ? "left" : x->x_textjust == 1 ? "center" : "right",
-        x->x_underline);                        // 0 or 1
+    // Empty buffer: pdgui_vmess "p" with size=0/NULL emits nothing, dropping the text
+    // argument entirely and leaving the previous glyph on screen. Use "s" with the
+    // empty symbol so Tcl always receives a well-formed empty string.
+    if(x->x_bufsize > 0)
+        pdgui_vmess("note_draw", "rcrr ii si r p i rrr i",
+            x->x_bindsym->s_name,                   // bindsym
+            x->x_cv,                                // .x%lx.c
+            x->x_tag_txt,                           // txt%lx
+            x->x_tag_all,                           // all%lx
+            text_xpix((t_text *)x, x->x_glist) + 1, // x
+            text_ypix((t_text *)x, x->x_glist) + 1, // y
+            x->x_fontname->s_name,                  // font name
+            -x->x_fontsize,                         // negative = pixels
+            x->x_select ? sel : txt,                // text color
+            x->x_bufsize, x->x_buf,                 // text (pascalstring)
+            x->x_max_pixwidth,                      // width
+            x->x_bold ? "bold" : "normal",
+            x->x_italic ? "italic" : "roman",
+            x->x_textjust == 0 ? "left" : x->x_textjust == 1 ? "center" : "right",
+            x->x_underline);                        // 0 or 1
+    else
+        pdgui_vmess("note_draw", "rcrr ii si r s i rrr i",
+            x->x_bindsym->s_name,
+            x->x_cv,
+            x->x_tag_txt,
+            x->x_tag_all,
+            text_xpix((t_text *)x, x->x_glist) + 1,
+            text_ypix((t_text *)x, x->x_glist) + 1,
+            x->x_fontname->s_name,
+            -x->x_fontsize,
+            x->x_select ? sel : txt,
+            s_.s_name,                            // empty string
+            x->x_max_pixwidth,
+            x->x_bold ? "bold" : "normal",
+            x->x_italic ? "italic" : "roman",
+            x->x_textjust == 0 ? "left" : x->x_textjust == 1 ? "center" : "right",
+            x->x_underline);
     note_draw_handle(x); // fix weird bug????
     note_draw_inlet(x);
     note_draw_outline(x);
@@ -324,8 +345,14 @@ static void note_draw(t_note *x){
 static void note_update(t_note *x){
 //    post("update");
     t_canvas *cv = x->x_cv;
-    pdgui_vmess("note_update", "cs p i", cv, x->x_tag_txt,
-        x->x_bufsize, x->x_buf, x->x_max_pixwidth);
+    // Empty buffer: pdgui_vmess "p" with size=0/NULL emits nothing, dropping the text
+    // argument and causing Tcl to abort with "wrong # args". Use "s" with the empty
+    // symbol so note_update always receives a well-formed 4-argument message.
+    if(x->x_bufsize > 0)
+        pdgui_vmess("note_update", "cs p i", cv, x->x_tag_txt,
+            x->x_bufsize, x->x_buf, x->x_max_pixwidth);
+    else
+        pdgui_vmess("note_update", "cs s i", cv, x->x_tag_txt, s_.s_name, x->x_max_pixwidth);
     if(x->x_active){
         if(x->x_selend > x->x_selstart){ // <= TEXT SELECTION!!!!
             pdgui_vmess(0, "crrs i", cv, "select", "from", x->x_tag_txt, x->x_start_ndx);
