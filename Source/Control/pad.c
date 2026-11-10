@@ -2,6 +2,8 @@
 
 #include <m_pd.h>
 #include <g_canvas.h>
+#include <string.h>
+#include <stdlib.h>
 
 #define PAD_MINSIZE     12
 #define PAD_SELBDWIDTH  2
@@ -24,6 +26,7 @@ typedef struct _pad{
     t_symbol       *x_bindname;
     t_symbol       *x_bg;
     int             x_transparent;
+    int             x_theme;
     int             x_x;
     int             x_y;
     int             x_w;
@@ -66,6 +69,27 @@ static t_symbol *pad_getcolor(t_pad* x, int ac, t_atom *av){
         sprintf(color, "#%.2x%.2x%.2x", r, g, b);
         return(gensym(color));
     }
+}
+
+/* parse "#rrggbb" back into x_color[] so save() stays RGB based */
+static void pad_parse_hex(t_pad *x, const char *hex){
+    if(hex && hex[0] == '#' && strlen(hex) == 7){
+        char pair[3] = {0};
+        pair[0] = hex[1]; pair[1] = hex[2];
+        x->x_color[0] = (unsigned char)strtol(pair, NULL, 16);
+        pair[0] = hex[3]; pair[1] = hex[4];
+        x->x_color[1] = (unsigned char)strtol(pair, NULL, 16);
+        pair[0] = hex[5]; pair[1] = hex[6];
+        x->x_color[2] = (unsigned char)strtol(pair, NULL, 16);
+    }
+}
+
+/* compute the current bg color string into buf (theme aware) */
+static void pad_getbgcolor(t_pad *x, char *buf, size_t size){
+    if(x->x_theme)
+        snprintf(buf, size, "#%06x", THISGUI->i_backgroundcolor);
+    else
+        snprintf(buf, size, "%s", x->x_bg->s_name);
 }
 
 static void pad_config_io_let(t_pad *x){
@@ -125,13 +149,15 @@ static void pad_draw(t_pad *x, t_glist *glist){
     int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
     t_canvas *cv = glist_getcanvas(glist);
     unsigned int iocolor = x->x_sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor;
+    char bg[32];
+    pad_getbgcolor(x, bg, sizeof(bg));
     // draw rectangle
     char *tags_base[] = {x->x_base_tag, x->x_all_tag};
     pdgui_vmess(0, "crr iiii ri rk rs rS", cv, "create", "rectangle",
         xpos, ypos, xpos + x->x_w, ypos + x->x_h,
         "-width", x->x_sel ? PAD_SELBDWIDTH : 1,
         "-outline", x->x_sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor,
-        "-fill", x->x_transparent ? "" : x->x_bg->s_name,
+        "-fill", x->x_transparent ? "" : bg,
         "-tags", 2, tags_base);
     // draw inlet
     char *tags_inlet[] = {x->x_IOlet_tag, x->x_all_tag};
@@ -215,12 +241,12 @@ static void pad_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2,
 
 static void pad_save(t_gobj *z, t_binbuf *b){
   t_pad *x = (t_pad *)z;
-  binbuf_addv(b, "ssiisii iii i", gensym("#X"),gensym("obj"),
+  binbuf_addv(b, "ssiisii iii ii", gensym("#X"),gensym("obj"),
     (int)x->x_obj.te_xpix, (int)x->x_obj.te_ypix,
     atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)),
     x->x_w, x->x_h,
     x->x_color[0], x->x_color[1], x->x_color[2],
-    x->x_transparent);
+    x->x_transparent, x->x_theme);
   binbuf_addv(b, ";");
 }
 
@@ -304,16 +330,57 @@ static void pad_height(t_pad *x, t_floatarg f){
 }
 
 static void pad_setbg(t_pad *x){
-    if(pad_vis_check(x))
+    if(pad_vis_check(x)){
+        char bg[32];
+        pad_getbgcolor(x, bg, sizeof(bg));
         pdgui_vmess(0, "crs rs", glist_getcanvas(x->x_glist), "itemconfigure",
-            x->x_base_tag, "-fill", x->x_transparent ? "" : x->x_bg->s_name);
+            x->x_base_tag, "-fill", x->x_transparent ? "" : bg);
+    }
+}
+
+/* ------------- color validation (mirrors [knob]) ------------- */
+
+static void pad_send_color_validate(t_pad *x, const char *color){
+    char buf[512];
+    snprintf(buf, sizeof(buf), "set color_name {%s}", color);
+    pdgui_vmess(buf, NULL);
+    pdgui_vmess(
+        "set color_escaped [string map {{ } {\\ }} $color_name]",
+        NULL);
+    pdgui_vmess(
+        "set hex_color [color2hex $color_name]",
+        NULL);
+    snprintf(buf, sizeof(buf),
+        "if {$hex_color eq \"\"} "
+        "{pdsend \"%s _validate 0 $color_escaped\"} "
+        "else {pdsend \"%s _validate 1 $hex_color\"}",
+        x->x_bindname->s_name,
+        x->x_bindname->s_name);
+    pdgui_vmess(buf, NULL);
+}
+
+static void pad_validate(t_pad *x, t_floatarg v, t_symbol *color){
+    if((int)v){
+        x->x_bg = color;
+        pad_parse_hex(x, color->s_name);
+        pad_setbg(x);
+    }
+    else
+        pd_error(0, "[pad] invalid color '%s'", color->s_name);
 }
 
 static void pad_color(t_pad *x, t_symbol *s, int ac, t_atom *av){
-    t_symbol *color = s = pad_getcolor(x, ac, av);
-    if(color == x->x_bg)
+    if(!ac)
         return;
-    x->x_bg = color;
+    x->x_theme = 0; // explicit color overrides theme (like knob's bgcolor/fgcolor/arccolor)
+    pad_send_color_validate(x, pad_getcolor(x, ac, av)->s_name);
+}
+
+static void pad_theme(t_pad *x, t_floatarg f){
+    int theme = (int)(f != 0);
+    if(theme == x->x_theme)
+        return;
+    x->x_theme = theme;
     pad_setbg(x);
 }
 
@@ -447,6 +514,7 @@ static void *pad_new(t_symbol *s, int ac, t_atom *av){
     x->x_x = x->x_y = 0;
     x->x_color[0] = x->x_color[1] = x->x_color[2] = 255;
     int w = 127, h = 127;
+    int theme = 0;
     if(ac && av->a_type == A_FLOAT){ // 1st Width
         w = av->a_w.w_float;
         ac--; av++;
@@ -465,6 +533,10 @@ static void *pad_new(t_symbol *s, int ac, t_atom *av){
                         if(ac && av->a_type == A_FLOAT){ // Transparency
                             x->x_transparent = (int)av->a_w.w_float;
                             ac--, av++;
+                            if(ac && av->a_type == A_FLOAT){ // Theme
+                                theme = (int)av->a_w.w_float;
+                                ac--, av++;
+                            }
                         }
                     }
                 }
@@ -496,8 +568,14 @@ static void *pad_new(t_symbol *s, int ac, t_atom *av){
                 }
                 else goto errstate;
             }
-            else if(s == gensym("-transparent"))
+            else if(s == gensym("-transparent")){
                 x->x_transparent = 1;
+                ac--, av++;
+            }
+            else if(s == gensym("-theme")){
+                theme = 1;
+                ac--, av++;
+            }
             else
                 goto errstate;
         }
@@ -505,11 +583,14 @@ static void *pad_new(t_symbol *s, int ac, t_atom *av){
             goto errstate;
     }
     x->x_w = w, x->x_h = h;
-    t_atom at[3];
-    SETFLOAT(&at[0], x->x_color[0]);
-    SETFLOAT(&at[1], x->x_color[1]);
-    SETFLOAT(&at[2], x->x_color[2]);
-    pad_color(x, NULL, 3, at);
+    // set x_bg directly from RGB (no round-trip validation needed at creation time)
+    {
+        char color[8];
+        sprintf(color, "#%.2x%.2x%.2x",
+            x->x_color[0], x->x_color[1], x->x_color[2]);
+        x->x_bg = gensym(color);
+    }
+    x->x_theme = theme;
     outlet_new(&x->x_obj, &s_anything);
     x->x_handle = pd_new(handle_class);
     t_handle *sh = (t_handle *)x->x_handle;
@@ -537,6 +618,8 @@ void pad_setup(void){
     class_addmethod(pad_class, (t_method)pad_width, gensym("width"), A_FLOAT, 0);
     class_addmethod(pad_class, (t_method)pad_height, gensym("height"), A_FLOAT, 0);
     class_addmethod(pad_class, (t_method)pad_color, gensym("color"), A_GIMME, 0);
+    class_addmethod(pad_class, (t_method)pad_validate, gensym("_validate"), A_FLOAT, A_SYMBOL, 0);
+    class_addmethod(pad_class, (t_method)pad_theme, gensym("theme"), A_FLOAT, 0);
     class_addmethod(pad_class, (t_method)pad_transparent, gensym("transparent"), A_FLOAT, 0);
     class_addmethod(pad_class, (t_method)pad_mouserelease, gensym("_mouserelease"), 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
@@ -553,4 +636,6 @@ void pad_setup(void){
     pad_widgetbehavior.w_clickfn    = pad_click;
     class_setsavefn(pad_class, pad_save);
     class_setwidget(pad_class, &pad_widgetbehavior);
+    #include "../Extra/else_tcl_utils.h"
+    pdgui_vmess(else_tcl_utils, NULL);
 }
