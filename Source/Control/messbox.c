@@ -86,11 +86,11 @@ static void messbox_draw(t_messbox *x, t_glist *glist){
         sys_font, x->x_font_size*x->x_zoom, x->x_font_weight->s_name, x->x_bgcolor, x->x_fgcolor);
     // catch ctl-v events from being propagated
     sys_vgui("bindtags %s {pre%s Text %s . all}\n", x->text_id, x->text_id, x->text_id);
-    sys_vgui("::pd_bindings::bind_capslock %s $::modifier-Key v \
-        {break}\n", x->text_id);
+//    sys_vgui("::pd_bindings::bind_capslock %s $::modifier-Key v \
+//        {break}\n", x->text_id);
     sys_vgui("bind pre%s <KeyPress-Return> {pdsend {%s bang}\n\
         break}\n", x->text_id, x->x_bind_sym->s_name);
-    sys_vgui("bind pre%s <Shift-KeyPress-Return> {#}\n", x->text_id);
+    sys_vgui("bind pre%s <Shift-KeyPress-Return> {#}\n", x->text_id); // dead code?
     sys_vgui("pack %s -side left -fill both -expand 1\n", x->text_id);
     sys_vgui("pack %s -side bottom -fill both -expand 1\n", x->frame_id);
 //    bind_button_events;
