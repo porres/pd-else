@@ -6,6 +6,8 @@
 #include <g_canvas.h>
 #include <buffer.h>
 #include <else_alloca.h>
+#include <string.h>
+#include <stdlib.h>
 
 #define FUNCTION_MINWIDTH    40
 #define FUNCTION_MINHEIGHT   20
@@ -64,6 +66,7 @@ typedef struct _function{
     char            x_tag_out[32];
     char            x_tag_IO[32];
     char            x_tag_handle[32];
+    t_symbol       *x_bindname; // for Tcl color validation round-trip
 // handle
     t_pd           *x_handle;
 }t_function;
@@ -787,10 +790,76 @@ static void function_receive(t_function *x, t_symbol *s){
     }
 }
 
-static void function_fgcolor(t_function *x, t_floatarg red, t_floatarg green, t_floatarg blue){
-    int r = red < 0 ? 0 : red > 255 ? 255 : (int)red;
-    int g = green < 0 ? 0 : green > 255 ? 255 : (int)green;
-    int b = blue < 0 ? 0 : blue > 255 ? 255 : (int)blue;
+/* ---- color helpers (mirror [knob]/[pad]) ---- */
+
+/* parse "#rrggbb" back into the RGB byte array so save() stays RGB based */
+static void function_parse_hex(unsigned char *color, const char *hex){
+    if(hex && hex[0] == '#' && strlen(hex) == 7){
+        char pair[3] = {0};
+        pair[0] = hex[1]; pair[1] = hex[2];
+        color[0] = (unsigned char)strtol(pair, NULL, 16);
+        pair[0] = hex[3]; pair[1] = hex[4];
+        color[1] = (unsigned char)strtol(pair, NULL, 16);
+        pair[0] = hex[5]; pair[1] = hex[6];
+        color[2] = (unsigned char)strtol(pair, NULL, 16);
+    }
+}
+
+/* send color string to Tcl; `which` = 0 for bg, 1 for fg */
+static void function_send_color_validate(t_function *x, const char *color, int which){
+    char buf[512];
+    snprintf(buf, sizeof(buf), "set color_name {%s}", color);
+    pdgui_vmess(buf, NULL);
+    pdgui_vmess("set color_escaped [string map {{ } {\\ }} $color_name]", NULL);
+    pdgui_vmess("set hex_color [color2hex $color_name]", NULL);
+    snprintf(buf, sizeof(buf),
+        "if {$hex_color eq \"\"} "
+        "{pdsend \"%s _validate 0 $color_escaped %d\"} "
+        "else {pdsend \"%s _validate 1 $hex_color %d\"}",
+        x->x_bindname->s_name, which,
+        x->x_bindname->s_name, which);
+    pdgui_vmess(buf, NULL);
+}
+
+static void function_validate(t_function *x, t_floatarg v, t_symbol *color, t_floatarg which){
+    if(!(int)v){
+        pd_error(0, "[function] invalid color '%s'", color->s_name);
+        return;
+    }
+    if((int)which == 0){ // bg
+        function_parse_hex(x->x_bgcolor, color->s_name);
+        if(function_vis_check(x)){
+            t_canvas *cv = glist_getcanvas(x->x_glist);
+            pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_rect, "-fill", color->s_name);
+            pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_dots, "-fill", color->s_name);
+        }
+    }
+    else{ // fg
+        function_parse_hex(x->x_fgcolor, color->s_name);
+        if(function_vis_check(x)){
+            t_canvas *cv = glist_getcanvas(x->x_glist);
+            pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_line, "-fill", color->s_name);
+            pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_dots, "-outline", color->s_name);
+        }
+    }
+}
+
+static void function_fgcolor(t_function *x, t_symbol *s, int ac, t_atom *av){
+    (void)s;
+    if(!ac)
+        return;
+    if(av->a_type == A_SYMBOL){
+        function_send_color_validate(x, atom_getsymbol(av)->s_name, 1);
+        return;
+    }
+    if(ac < 3)
+        return;
+    int r = (int)atom_getfloatarg(0, ac, av);
+    int g = (int)atom_getfloatarg(1, ac, av);
+    int b = (int)atom_getfloatarg(2, ac, av);
+    r = r < 0 ? 0 : r > 255 ? 255 : r;
+    g = g < 0 ? 0 : g > 255 ? 255 : g;
+    b = b < 0 ? 0 : b > 255 ? 255 : b;
     if(x->x_fgcolor[0] != r || x->x_fgcolor[1] != g || x->x_fgcolor[2] != b){
         x->x_fgcolor[0] = r;
         x->x_fgcolor[1] = g;
@@ -805,10 +874,22 @@ static void function_fgcolor(t_function *x, t_floatarg red, t_floatarg green, t_
     }
 }
 
-static void function_bgcolor(t_function *x, t_floatarg red, t_floatarg green, t_floatarg blue){
-    int r = red < 0 ? 0 : red > 255 ? 255 : (int)red;
-    int g = green < 0 ? 0 : green > 255 ? 255 : (int)green;
-    int b = blue < 0 ? 0 : blue > 255 ? 255 : (int)blue;
+static void function_bgcolor(t_function *x, t_symbol *s, int ac, t_atom *av){
+    (void)s;
+    if(!ac)
+        return;
+    if(av->a_type == A_SYMBOL){
+        function_send_color_validate(x, atom_getsymbol(av)->s_name, 0);
+        return;
+    }
+    if(ac < 3)
+        return;
+    int r = (int)atom_getfloatarg(0, ac, av);
+    int g = (int)atom_getfloatarg(1, ac, av);
+    int b = (int)atom_getfloatarg(2, ac, av);
+    r = r < 0 ? 0 : r > 255 ? 255 : r;
+    g = g < 0 ? 0 : g > 255 ? 255 : g;
+    b = b < 0 ? 0 : b > 255 ? 255 : b;
     if(x->x_bgcolor[0] != r || x->x_bgcolor[1] != g || x->x_bgcolor[2] != b){
         x->x_bgcolor[0] = r;
         x->x_bgcolor[1] = g;
@@ -821,6 +902,14 @@ static void function_bgcolor(t_function *x, t_floatarg red, t_floatarg green, t_
             pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_dots, "-fill", color);
         }
     }
+}
+
+static void function_colors(t_function *x, t_symbol *bg, t_symbol *fg){
+    t_atom at[1];
+    SETSYMBOL(at, bg);
+    function_bgcolor(x, NULL, 1, at);
+    SETSYMBOL(at, fg);
+    function_fgcolor(x, NULL, 1, at);
 }
 
 // --------------------- handle ---------------------------------------------------
@@ -931,6 +1020,7 @@ static t_edit_proxy * edit_proxy_new(t_function *x, t_symbol *s){
 static void function_free(t_function *x){
     if(x->x_receive != &s_)
          pd_unbind(&x->x_obj.ob_pd, x->x_receive);
+    pd_unbind(&x->x_obj.ob_pd, x->x_bindname);
     if(x->x_handle){
         pd_unbind(x->x_handle, ((t_handle *)x->x_handle)->h_bindsym);
         pd_free(x->x_handle);
@@ -1226,6 +1316,10 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
     sprintf(x->x_tag_out, "%pOUT", x);
     sprintf(x->x_tag_IO, "%pIO", x);
     sprintf(x->x_tag_handle, "%pHANDLE", x);
+// bindname (needed for the Tcl color validation round-trip)
+    snprintf(buf, MAXPDSTRING-1, "#%lx", (long)x);
+    buf[MAXPDSTRING-1] = 0;
+    pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
 // handle
     x->x_handle = pd_new(handle_class);
     t_handle *sh = (t_handle *)x->x_handle;
@@ -1259,8 +1353,11 @@ void function_setup(void){
     class_addmethod(function_class, (t_method)function_duration, gensym("duration"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_send, gensym("send"), A_SYMBOL, 0);
     class_addmethod(function_class, (t_method)function_receive, gensym("receive"), A_SYMBOL, 0);
-    class_addmethod(function_class, (t_method)function_bgcolor, gensym("bgcolor"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    class_addmethod(function_class, (t_method)function_fgcolor, gensym("fgcolor"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(function_class, (t_method)function_bgcolor, gensym("bgcolor"), A_GIMME, 0);
+    class_addmethod(function_class, (t_method)function_fgcolor, gensym("fgcolor"), A_GIMME, 0);
+    class_addmethod(function_class, (t_method)function_colors, gensym("colors"), A_SYMBOL, A_SYMBOL, 0);
+    class_addmethod(function_class, (t_method)function_validate, gensym("_validate"),
+        A_FLOAT, A_SYMBOL, A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_motion, gensym("motion"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_key, gensym("key"), A_FLOAT, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
@@ -1276,4 +1373,6 @@ void function_setup(void){
     function_widgetbehavior.w_deletefn   = function_delete;
     function_widgetbehavior.w_visfn      = function_vis;
     function_widgetbehavior.w_clickfn    = (t_clickfn)function_click;
+    #include "../Extra/else_tcl_utils.h"
+    pdgui_vmess(else_tcl_utils, NULL);
 }
