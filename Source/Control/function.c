@@ -968,6 +968,71 @@ static void function_transparent(t_function *x, t_floatarg f){
     }
 }
 
+static void function_properties(t_gobj *z, t_glist *owner){
+    (void)owner;
+    t_function *x = (t_function *)z;
+    char bgcolor[20], fgcolor[20];
+    snprintf(bgcolor, sizeof(bgcolor), "#%2.2x%2.2x%2.2x",
+        x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+    snprintf(fgcolor, sizeof(fgcolor), "#%2.2x%2.2x%2.2x",
+        x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
+    char pd_bg[32];
+    snprintf(pd_bg, sizeof(pd_bg), "#%06X", THISGUI->i_backgroundcolor);
+    char pd_fg[32];
+    snprintf(pd_fg, sizeof(pd_fg), "#%06X", THISGUI->i_foregroundcolor);
+    pdgui_stub_vnew(&x->x_obj.ob_pd, "function_dialog", x,
+        "ii ssss ii",
+        x->x_width, x->x_height,
+        bgcolor, fgcolor, pd_bg, pd_fg,
+        x->x_theme, x->x_transparent);
+}
+
+static void function_apply(t_function *x, t_symbol *s, int ac, t_atom *av){
+    (void)s;
+    if(ac < 6)
+        return;
+    // build undo snapshot (custom colors as hex symbols)
+    char bgstr[20], fgstr[20];
+    snprintf(bgstr, sizeof(bgstr), "#%2.2x%2.2x%2.2x",
+        x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+    snprintf(fgstr, sizeof(fgstr), "#%2.2x%2.2x%2.2x",
+        x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
+    t_atom undo[6];
+    SETFLOAT(undo+0, x->x_width);
+    SETFLOAT(undo+1, x->x_height);
+    SETSYMBOL(undo+2, gensym(bgstr));
+    SETSYMBOL(undo+3, gensym(fgstr));
+    SETFLOAT(undo+4, x->x_theme);
+    SETFLOAT(undo+5, x->x_transparent);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 6, undo, ac, av);
+    // read incoming values
+    int w = atom_getintarg(0, ac, av);
+    int h = atom_getintarg(1, ac, av);
+    t_symbol *bg = atom_getsymbolarg(2, ac, av);
+    t_symbol *fg = atom_getsymbolarg(3, ac, av);
+    int theme = atom_getintarg(4, ac, av);
+    int transp = atom_getintarg(5, ac, av);
+    // dimensions (clipped)
+    int width = w < FUNCTION_MINWIDTH ? FUNCTION_MINWIDTH : w;
+    int height = h < FUNCTION_MINHEIGHT ? FUNCTION_MINHEIGHT : h;
+    x->x_width = width;
+    x->x_height = height;
+    // theme / transparent
+    x->x_theme = (theme != 0);
+    x->x_transparent = (transp != 0);
+    // colors: parse hex directly (Tcl guarantees valid hex from var_color_*)
+    function_parse_hex(x->x_bgcolor, bg->s_name);
+    function_parse_hex(x->x_fgcolor, fg->s_name);
+    // redraw everything (draw funcs already respect theme/transparent)
+    if(function_vis_check(x)){
+        function_erase(x, x->x_glist);
+        function_draw(x, x->x_glist);
+        canvas_fixlinesfor(x->x_glist, (t_text*)x);
+        function_draw_handle(x, x->x_edit);
+    }
+    canvas_dirty(x->x_glist, 1);
+}
+
 // --------------------- handle ---------------------------------------------------
 static void handle__click_callback(t_handle *sh, t_floatarg f, t_floatarg xarg, t_floatarg yarg){
     int click = (int)f;
@@ -1433,12 +1498,14 @@ void function_setup(void){
     class_addmethod(function_class, (t_method)function_motion, gensym("motion"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_key, gensym("key"), A_FLOAT, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
+    class_addmethod(function_class, (t_method)function_apply, gensym("dialog"), A_GIMME, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
     handle_class = class_new(gensym("_handle"), 0, 0, sizeof(t_handle), CLASS_PD, 0);
     class_addmethod(handle_class, (t_method)handle__click_callback, gensym("_click"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(handle_class, (t_method)handle__motion_callback, gensym("_motion"), A_FLOAT, A_FLOAT, 0);
     class_setwidget(function_class, &function_widgetbehavior);
     class_setsavefn(function_class, function_save);
+    class_setpropertiesfn(function_class, function_properties);
     function_widgetbehavior.w_getrectfn  = function_getrect;
     function_widgetbehavior.w_displacefn = function_displace;
     function_widgetbehavior.w_selectfn   = function_select;
@@ -1447,4 +1514,6 @@ void function_setup(void){
     function_widgetbehavior.w_clickfn    = (t_clickfn)function_click;
     #include "../Extra/else_tcl_utils.h"
     pdgui_vmess(else_tcl_utils, NULL);
+    #include "../Extra/function_dialog.h"
+    pdgui_vmess(function_dialog_tcl, NULL);                              
 }
