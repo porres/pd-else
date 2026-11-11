@@ -44,6 +44,7 @@ typedef struct _function{
     int             x_rcv_set;
     int             x_edit;
     int             x_theme;
+    int             x_transparent;
     t_symbol       *x_send;
     t_symbol       *x_receive;
     t_symbol       *x_snd_raw;
@@ -189,7 +190,7 @@ static void function_draw_dots(t_function *x, t_glist *glist){
             xc - 3, ypos - yvalue - 3, xc + 3, ypos - yvalue + 3,
             "-width", 2,
             "-outline", fgcolor,
-            "-fill", bgcolor,
+            "-fill", x->x_transparent ? "" : bgcolor,
             "-tags", 2, tags_dots);
     }
 }
@@ -220,7 +221,7 @@ static void function_draw(t_function *x, t_glist *glist){
         xpos, ypos, xpos + x->x_width, ypos + x->x_height,
         "-outline", x->x_sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor,
         "-width", x->x_sel ? FUNCTION_SELBDWIDTH : 1,
-        "-fill", bgcolor,
+        "-fill", x->x_transparent ? "" : bgcolor,
         "-tags", 2, tags_rect);
     // function line
     int n = 2 * (x->x_n_states + 1);
@@ -489,9 +490,9 @@ static void function_save(t_gobj *z, t_binbuf *b){
                 (int)x->x_fgcolor[1],
                 (int)x->x_fgcolor[2],
                 x->x_savestate,
-                x->x_theme, // formerly the first placeholder
-                0, // placeholder
-                0  // placeholder
+                x->x_theme,       // formerly the first placeholder
+                x->x_transparent, // formerly the second placeholder
+                0                 // placeholder
                 );
     binbuf_addv(b, "f", (float)x->x_points[x->x_state = 0]);
                 i = 1;
@@ -846,7 +847,7 @@ static void function_validate(t_function *x, t_floatarg v, t_symbol *color, t_fl
     }
     if((int)which == 0){ // bg
         function_parse_hex(x->x_bgcolor, color->s_name);
-        if(function_vis_check(x)){
+        if(function_vis_check(x) && !x->x_transparent){
             t_canvas *cv = glist_getcanvas(x->x_glist);
             pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_rect, "-fill", color->s_name);
             pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_dots, "-fill", color->s_name);
@@ -914,7 +915,7 @@ static void function_bgcolor(t_function *x, t_symbol *s, int ac, t_atom *av){
         x->x_bgcolor[0] = r;
         x->x_bgcolor[1] = g;
         x->x_bgcolor[2] = b;
-        if(function_vis_check(x)){
+        if(function_vis_check(x) && !x->x_transparent){
             t_canvas *cv = glist_getcanvas(x->x_glist);
             char color[20];
             sprintf(color, "#%2.2x%2.2x%2.2x", r, g, b);
@@ -942,10 +943,28 @@ static void function_theme(t_function *x, t_floatarg f){
         function_get_bgcolor(x, bgcolor, sizeof(bgcolor));
         function_get_fgcolor(x, fgcolor, sizeof(fgcolor));
         t_canvas *cv = glist_getcanvas(x->x_glist);
-        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_rect, "-fill", bgcolor);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_rect, "-fill",
+            x->x_transparent ? "" : bgcolor);
         pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_line, "-fill", fgcolor);
-        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_dots, "-fill", bgcolor);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_dots, "-fill",
+            x->x_transparent ? "" : bgcolor);
         pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_dots, "-outline", fgcolor);
+    }
+}
+
+static void function_transparent(t_function *x, t_floatarg f){
+    int transp = (int)(f != 0);
+    if(transp == x->x_transparent)
+        return;
+    x->x_transparent = transp;
+    if(function_vis_check(x)){
+        char bgcolor[20];
+        function_get_bgcolor(x, bgcolor, sizeof(bgcolor));
+        t_canvas *cv = glist_getcanvas(x->x_glist);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_rect, "-fill",
+            transp ? "" : bgcolor);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_dots, "-fill",
+            transp ? "" : bgcolor);
     }
 }
 
@@ -1093,6 +1112,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
     x->x_receive = x->x_rcv_raw = x->x_send = x->x_snd_raw = &s_;
     x->x_savestate = 0;
     x->x_theme = 0;
+    x->x_transparent = 0;
     x->x_min = 0;
     x->x_max = 1;
     x->x_bgcolor[0] = x->x_bgcolor[1] = x->x_bgcolor[2] = 220;
@@ -1156,7 +1176,8 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                                                         if(ac && av->a_type == A_FLOAT){ // Theme
                                                             x->x_theme = (int)(av->a_w.w_float != 0);
                                                             ac--, av++;
-                                                            if(ac && av->a_type == A_FLOAT){ // placeholder
+                                                            if(ac && av->a_type == A_FLOAT){ // Transparent
+                                                                x->x_transparent = (int)(av->a_w.w_float != 0);
                                                                 ac--, av++;
                                                                 if(ac && av->a_type == A_FLOAT){ // placeholder
                                                                     ac--, av++;
@@ -1217,6 +1238,11 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
             else if(sym == gensym("-theme")){
                 x->x_flag = 1;
                 x->x_theme = 1;
+                ac--, av++;
+            }
+            else if(sym == gensym("-transparent")){
+                x->x_flag = 1;
+                x->x_transparent = 1;
                 ac--, av++;
             }
             else if(sym == gensym("-width")){
@@ -1401,6 +1427,7 @@ void function_setup(void){
     class_addmethod(function_class, (t_method)function_fgcolor, gensym("fgcolor"), A_GIMME, 0);
     class_addmethod(function_class, (t_method)function_colors, gensym("colors"), A_SYMBOL, A_SYMBOL, 0);
     class_addmethod(function_class, (t_method)function_theme, gensym("theme"), A_FLOAT, 0);
+    class_addmethod(function_class, (t_method)function_transparent, gensym("transparent"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_validate, gensym("_validate"),
         A_FLOAT, A_SYMBOL, A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_motion, gensym("motion"), A_FLOAT, A_FLOAT, 0);
