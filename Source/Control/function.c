@@ -43,6 +43,7 @@ typedef struct _function{
     int             x_snd_set;
     int             x_rcv_set;
     int             x_edit;
+    int             x_theme;
     t_symbol       *x_send;
     t_symbol       *x_receive;
     t_symbol       *x_snd_raw;
@@ -86,6 +87,23 @@ static void function_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int 
 
 static int function_vis_check(t_function *x){
     return(gobj_shouldvis((t_gobj *)x, x->x_glist) && glist_isvisible(x->x_glist));
+}
+
+/* effective colors (theme aware) */
+static void function_get_bgcolor(t_function *x, char *buf, size_t size){
+    if(x->x_theme)
+        snprintf(buf, size, "#%06x", THISGUI->i_backgroundcolor);
+    else
+        snprintf(buf, size, "#%2.2x%2.2x%2.2x",
+            x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+}
+
+static void function_get_fgcolor(t_function *x, char *buf, size_t size){
+    if(x->x_theme)
+        snprintf(buf, size, "#%06x", THISGUI->i_foregroundcolor);
+    else
+        snprintf(buf, size, "#%2.2x%2.2x%2.2x",
+            x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
 }
 
 //////////////////////// DRAWING ////////////////////////////////////////////////////////
@@ -160,9 +178,9 @@ static void function_draw_dots(t_function *x, t_glist *glist){
     float yscale = x->x_height;
     int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist) + x->x_height;
     char fgcolor[20];
-    sprintf(fgcolor, "#%2.2x%2.2x%2.2x", x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
+    function_get_fgcolor(x, fgcolor, sizeof(fgcolor));
     char bgcolor[20];
-    sprintf(bgcolor, "#%2.2x%2.2x%2.2x", x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+    function_get_bgcolor(x, bgcolor, sizeof(bgcolor));
     char *tags_dots[] = {x->x_tag_dots, x->x_tag_obj};
     for(int i = 0; i <= x->x_n_states; i++){
         yvalue = (int)((x->x_points[i] - min) / range * yscale);
@@ -193,9 +211,9 @@ static void function_draw(t_function *x, t_glist *glist){
     t_canvas *cv = glist_getcanvas(x->x_glist);
     int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
     char bgcolor[20];
-    sprintf(bgcolor, "#%2.2x%2.2x%2.2x", x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+    function_get_bgcolor(x, bgcolor, sizeof(bgcolor));
     char fgcolor[20];
-    sprintf(fgcolor, "#%2.2x%2.2x%2.2x", x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
+    function_get_fgcolor(x, fgcolor, sizeof(fgcolor));
     // background
     char *tags_rect[] = {x->x_tag_rect, x->x_tag_obj};
     pdgui_vmess(0, "crr iiii rk ri rs rS", cv, "create", "rectangle",
@@ -471,7 +489,7 @@ static void function_save(t_gobj *z, t_binbuf *b){
                 (int)x->x_fgcolor[1],
                 (int)x->x_fgcolor[2],
                 x->x_savestate,
-                0, // placeholder
+                x->x_theme, // formerly the first placeholder
                 0, // placeholder
                 0  // placeholder
                 );
@@ -848,6 +866,7 @@ static void function_fgcolor(t_function *x, t_symbol *s, int ac, t_atom *av){
     (void)s;
     if(!ac)
         return;
+    x->x_theme = 0; // explicit color overrides theme
     if(av->a_type == A_SYMBOL){
         function_send_color_validate(x, atom_getsymbol(av)->s_name, 1);
         return;
@@ -878,6 +897,7 @@ static void function_bgcolor(t_function *x, t_symbol *s, int ac, t_atom *av){
     (void)s;
     if(!ac)
         return;
+    x->x_theme = 0; // explicit color overrides theme
     if(av->a_type == A_SYMBOL){
         function_send_color_validate(x, atom_getsymbol(av)->s_name, 0);
         return;
@@ -910,6 +930,23 @@ static void function_colors(t_function *x, t_symbol *bg, t_symbol *fg){
     function_bgcolor(x, NULL, 1, at);
     SETSYMBOL(at, fg);
     function_fgcolor(x, NULL, 1, at);
+}
+
+static void function_theme(t_function *x, t_floatarg f){
+    int theme = (int)(f != 0);
+    if(theme == x->x_theme)
+        return;
+    x->x_theme = theme;
+    if(function_vis_check(x)){
+        char bgcolor[20], fgcolor[20];
+        function_get_bgcolor(x, bgcolor, sizeof(bgcolor));
+        function_get_fgcolor(x, fgcolor, sizeof(fgcolor));
+        t_canvas *cv = glist_getcanvas(x->x_glist);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_rect, "-fill", bgcolor);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_line, "-fill", fgcolor);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_dots, "-fill", bgcolor);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_dots, "-outline", fgcolor);
+    }
 }
 
 // --------------------- handle ---------------------------------------------------
@@ -1055,6 +1092,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
     x->x_rcv_set = x->x_snd_set = x->x_flag = x->x_s_flag = x->x_r_flag = 0;
     x->x_receive = x->x_rcv_raw = x->x_send = x->x_snd_raw = &s_;
     x->x_savestate = 0;
+    x->x_theme = 0;
     x->x_min = 0;
     x->x_max = 1;
     x->x_bgcolor[0] = x->x_bgcolor[1] = x->x_bgcolor[2] = 220;
@@ -1115,7 +1153,8 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                                                     if(ac && av->a_type == A_FLOAT){ // Init
                                                         x->x_savestate = (int)(av->a_w.w_float != 0);
                                                         ac--, av++;
-                                                        if(ac && av->a_type == A_FLOAT){ // placeholder
+                                                        if(ac && av->a_type == A_FLOAT){ // Theme
+                                                            x->x_theme = (int)(av->a_w.w_float != 0);
                                                             ac--, av++;
                                                             if(ac && av->a_type == A_FLOAT){ // placeholder
                                                                 ac--, av++;
@@ -1173,6 +1212,11 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
             else if(sym == gensym("-savestate")){
                 x->x_flag = 1;
                 x->x_savestate = 1;
+                ac--, av++;
+            }
+            else if(sym == gensym("-theme")){
+                x->x_flag = 1;
+                x->x_theme = 1;
                 ac--, av++;
             }
             else if(sym == gensym("-width")){
@@ -1356,6 +1400,7 @@ void function_setup(void){
     class_addmethod(function_class, (t_method)function_bgcolor, gensym("bgcolor"), A_GIMME, 0);
     class_addmethod(function_class, (t_method)function_fgcolor, gensym("fgcolor"), A_GIMME, 0);
     class_addmethod(function_class, (t_method)function_colors, gensym("colors"), A_SYMBOL, A_SYMBOL, 0);
+    class_addmethod(function_class, (t_method)function_theme, gensym("theme"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_validate, gensym("_validate"),
         A_FLOAT, A_SYMBOL, A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_motion, gensym("motion"), A_FLOAT, A_FLOAT, 0);
