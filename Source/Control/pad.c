@@ -338,8 +338,6 @@ static void pad_setbg(t_pad *x){
     }
 }
 
-/* ------------- color validation (mirrors [knob]) ------------- */
-
 static void pad_send_color_validate(t_pad *x, const char *color){
     char buf[512];
     snprintf(buf, sizeof(buf), "set color_name {%s}", color);
@@ -390,6 +388,39 @@ static void pad_transparent(t_pad *x, t_floatarg f){
         return;
     x->x_transparent = transp;
     pad_setbg(x);
+}
+
+static void pad_properties(t_gobj *z, t_glist *owner){
+    (void)owner;
+    t_pad *x = (t_pad *)z;
+    char pd_bg[32];
+    snprintf(pd_bg, sizeof(pd_bg), "#%06X", THISGUI->i_backgroundcolor);
+    pdgui_stub_vnew(&x->x_obj.ob_pd, "pad_dialog", x,
+        "iissii",
+        x->x_w, x->x_h,
+        x->x_bg->s_name, pd_bg,
+        x->x_theme, x->x_transparent);
+}
+
+static void pad_apply(t_pad *x, t_symbol *s, int ac, t_atom *av){
+    (void)s;
+    t_atom undo[5];
+    SETFLOAT(undo+0, x->x_w);
+    SETFLOAT(undo+1, x->x_h);
+    SETSYMBOL(undo+2, x->x_bg);
+    SETFLOAT(undo+3, x->x_theme);
+    SETFLOAT(undo+4, x->x_transparent);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 5, undo, ac, av);
+    int w = atom_getintarg(0, ac, av);
+    int h = atom_getintarg(1, ac, av);
+    t_symbol *bg = atom_getsymbolarg(2, ac, av);
+    int theme = atom_getintarg(3, ac, av);
+    int transp = atom_getintarg(4, ac, av);
+    pad_dim(x, w, h);
+    pad_theme(x, theme);
+    pad_transparent(x, transp);
+    pad_send_color_validate(x, bg->s_name);
+    canvas_dirty(x->x_glist, 1);
 }
 
 // --------------------- handle ---------------------------------------------------
@@ -622,6 +653,7 @@ void pad_setup(void){
     class_addmethod(pad_class, (t_method)pad_theme, gensym("theme"), A_FLOAT, 0);
     class_addmethod(pad_class, (t_method)pad_transparent, gensym("transparent"), A_FLOAT, 0);
     class_addmethod(pad_class, (t_method)pad_mouserelease, gensym("_mouserelease"), 0);
+    class_addmethod(pad_class, (t_method)pad_apply, gensym("dialog"), A_GIMME, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
     handle_class = class_new(gensym("_handle"), 0, 0, sizeof(t_handle), CLASS_PD, 0);
@@ -635,7 +667,10 @@ void pad_setup(void){
     pad_widgetbehavior.w_visfn      = pad_vis;
     pad_widgetbehavior.w_clickfn    = pad_click;
     class_setsavefn(pad_class, pad_save);
+    class_setpropertiesfn(pad_class, pad_properties);
     class_setwidget(pad_class, &pad_widgetbehavior);
     #include "../Extra/else_tcl_utils.h"
     pdgui_vmess(else_tcl_utils, NULL);
+    #include "../Extra/pad_dialog.h"
+    pdgui_vmess(pad_dialog_tcl, NULL);
 }

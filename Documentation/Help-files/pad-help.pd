@@ -28,7 +28,6 @@
 #X text 143 365 width <float>;
 #X text 236 455 - list of coords (x \, y);
 #X text 197 455 list;
-#X text 172 208 [else/pad] =>;
 #X msg 282 161 dim 50 75;
 #X msg 261 136 width 200;
 #X obj 261 190 else/pad 50 75;
@@ -106,9 +105,10 @@
 #X text 96 514 -transparent: sets to transparent background, f 72;
 #X text 96 529 -theme: sets to theme mode, f 72;
 #X text 96 544 -color: sets color as a RGB list, f 72;
-#X connect 26 0 28 0;
-#X connect 27 0 28 0;
-#X connect 28 0 35 0;
-#X connect 29 0 28 0;
-#X connect 35 0 34 0;
-#X connect 35 1 36 0;
+#X text 151 212 Right click ---> for properties, f 16;
+#X connect 25 0 27 0;
+#X connect 26 0 27 0;
+#X connect 27 0 34 0;
+#X connect 28 0 27 0;
+#X connect 34 0 33 0;
+#X connect 34 1 35 0;
