@@ -1,9 +1,15 @@
-// porres 2020-2025
+// porres 2020-2026
 
 #include <m_pd.h>
 #include <g_canvas.h>
+#include <string.h>
+#include <stdlib.h>
 
-static t_class *pad_class, *edit_proxy_class;
+#define PAD_MINSIZE     12
+#define PAD_SELBDWIDTH  2
+#define HANDLE_SIZE     12
+
+static t_class *pad_class, *edit_proxy_class, *handle_class;
 static t_widgetbehavior pad_widgetbehavior;
 
 typedef struct _edit_proxy{
@@ -20,19 +26,30 @@ typedef struct _pad{
     t_symbol       *x_bindname;
     t_symbol       *x_bg;
     int             x_transparent;
+    int             x_theme;
     int             x_x;
     int             x_y;
     int             x_w;
     int             x_h;
     int             x_sel;
-    int             x_zoom;
     int             x_edit;
     char            x_base_tag[32];
     char            x_all_tag[32];
     char            x_IOlet_tag[32];
     char            x_outlet_tag[32];
     unsigned char   x_color[3];
+    t_pd           *x_handle;
 }t_pad;
+
+typedef struct _handle{
+    t_pd            h_pd;
+    t_pad          *h_master;
+    t_symbol       *h_bindsym;
+    char            h_pathname[64], h_outlinetag[64];
+    int             h_dragon;
+}t_handle;
+
+static void pad_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2);
 
 static int pad_vis_check(t_pad *x){
     return(gobj_shouldvis((t_gobj *)x, x->x_glist) && glist_isvisible(x->x_glist));
@@ -54,47 +71,125 @@ static t_symbol *pad_getcolor(t_pad* x, int ac, t_atom *av){
     }
 }
 
+/* parse "#rrggbb" back into x_color[] so save() stays RGB based */
+static void pad_parse_hex(t_pad *x, const char *hex){
+    if(hex && hex[0] == '#' && strlen(hex) == 7){
+        char pair[3] = {0};
+        pair[0] = hex[1]; pair[1] = hex[2];
+        x->x_color[0] = (unsigned char)strtol(pair, NULL, 16);
+        pair[0] = hex[3]; pair[1] = hex[4];
+        x->x_color[1] = (unsigned char)strtol(pair, NULL, 16);
+        pair[0] = hex[5]; pair[1] = hex[6];
+        x->x_color[2] = (unsigned char)strtol(pair, NULL, 16);
+    }
+}
+
+/* compute the current bg color string into buf (theme aware) */
+static void pad_getbgcolor(t_pad *x, char *buf, size_t size){
+    if(x->x_theme)
+        snprintf(buf, size, "#%06x", THISGUI->i_backgroundcolor);
+    else
+        snprintf(buf, size, "%s", x->x_bg->s_name);
+}
+
 static void pad_config_io_let(t_pad *x){
     pdgui_vmess(0, "crs rs", glist_getcanvas(x->x_glist),
         "itemconfigure", x->x_IOlet_tag,
         "-state", x->x_edit ? "normal" : "hidden");
 }
 
+static void pad_draw_handle(t_pad *x, int state){
+    t_handle *sh = (t_handle *)x->x_handle;
+    if(!sh || !sh->h_pathname[0])
+        return;
+    if(sh->h_pathname[0])
+        pdgui_vmess(0, "rs", "destroy", sh->h_pathname);
+    if(state && pad_vis_check(x)){
+        char fg[32], gop[32], sel[32];
+        snprintf(fg, sizeof(fg), "#%06x", THISGUI->i_foregroundcolor);
+        snprintf(gop, sizeof(gop), "#%06x", THISGUI->i_gopcolor);
+        snprintf(sel, sizeof(sel), "#%06x", THISGUI->i_selectcolor);
+        t_canvas *cv = glist_getcanvas(x->x_glist);
+        pdgui_vmess(0, "rrririrrrrrrrirr",
+            "canvas", sh->h_pathname,
+            "-width", HANDLE_SIZE,
+            "-height", HANDLE_SIZE,
+            "-bg", x->x_sel ? sel : gop,
+            "-highlightcolor", fg,
+            "-highlightbackground", x->x_sel ? sel : fg,
+            "-highlightthickness", 1,
+            "-cursor", "bottom_right_corner");
+        int x1, y1, x2, y2;
+        pad_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+        pdgui_vmess(0, "crriirrririrrrs",
+            cv, "create", "window",
+            x2 - HANDLE_SIZE + 1, y2 - HANDLE_SIZE + 1,
+            "-anchor", "nw",
+            "-width", HANDLE_SIZE,
+            "-height", HANDLE_SIZE,
+            "-window", sh->h_pathname,
+            "-tags", x->x_all_tag);
+        char buf[256];
+        snprintf(buf, sizeof(buf),
+            "{pdsend [concat %s _click 1 [.x%lx.c canvasx %%x] [.x%lx.c canvasy %%y] \\;]}",
+            sh->h_bindsym->s_name, (unsigned long)cv, (unsigned long)cv);
+        pdgui_vmess(0, "rrrr", "bind", sh->h_pathname, "<Button>", buf);
+        snprintf(buf, sizeof(buf),
+            "{pdsend [concat %s _click 0 [.x%lx.c canvasx %%x] [.x%lx.c canvasy %%y] \\;]}",
+            sh->h_bindsym->s_name, (unsigned long)cv, (unsigned long)cv);
+        pdgui_vmess(0, "rrrr", "bind", sh->h_pathname, "<ButtonRelease>", buf);
+        snprintf(buf, sizeof(buf),
+            "{pdsend [concat %s _motion [.x%lx.c canvasx %%x] [.x%lx.c canvasy %%y] \\;]}",
+            sh->h_bindsym->s_name, (unsigned long)cv, (unsigned long)cv);
+        pdgui_vmess(0, "rrrr", "bind", sh->h_pathname, "<Motion>", buf);
+    }
+}
+
 static void pad_draw(t_pad *x, t_glist *glist){
     int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
     t_canvas *cv = glist_getcanvas(glist);
-    int z = x->x_zoom;
+    unsigned int iocolor = x->x_sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor;
+    char bg[32];
+    pad_getbgcolor(x, bg, sizeof(bg));
     // draw rectangle
     char *tags_base[] = {x->x_base_tag, x->x_all_tag};
     pdgui_vmess(0, "crr iiii ri rk rs rS", cv, "create", "rectangle",
-        xpos, ypos, xpos + x->x_w*z, ypos + x->x_h*z,
-        "-width", z,
+        xpos, ypos, xpos + x->x_w, ypos + x->x_h,
+        "-width", x->x_sel ? PAD_SELBDWIDTH : 1,
         "-outline", x->x_sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor,
-        "-fill", x->x_transparent ? "" : x->x_bg->s_name,
+        "-fill", x->x_transparent ? "" : bg,
         "-tags", 2, tags_base);
     // draw inlet
     char *tags_inlet[] = {x->x_IOlet_tag, x->x_all_tag};
-    pdgui_vmess(0, "crr iiii rs rs rS", cv, "create", "rectangle",
-        xpos, ypos, xpos+(IOWIDTH*z), ypos+(IHEIGHT*z),
-        "-fill", "black",
-        "-state", x->x_edit ? "hidden" : "normal",
+    pdgui_vmess(0, "crr iiii rk rk rs rS", cv, "create", "rectangle",
+        xpos, ypos, xpos+IOWIDTH, ypos+IHEIGHT,
+        "-fill", iocolor, "-outline", iocolor,
+        "-state", x->x_edit ? "normal" : "hidden",
         "-tags", 2, tags_inlet);
     // draw outlet
     char *tags_outlet[] = {x->x_IOlet_tag, x->x_outlet_tag, x->x_all_tag};
-    pdgui_vmess(0, "crr iiii rs rs rS", cv, "create", "rectangle",
-        xpos, ypos+x->x_h*z, xpos+IOWIDTH*z, ypos+x->x_h*z-IHEIGHT*z,
-        "-fill", "black",
-        "-state", x->x_edit ? "hidden" : "normal",
+    pdgui_vmess(0, "crr iiii rk rk rs rS", cv, "create", "rectangle",
+        xpos, ypos+x->x_h, xpos+IOWIDTH, ypos+x->x_h-IHEIGHT,
+        "-fill", iocolor, "-outline", iocolor,
+        "-state", x->x_edit ? "normal" : "hidden",
         "-tags", 3, tags_outlet);
 }
 
 static void pad_vis(t_gobj *z, t_glist *glist, int vis){
     t_pad* x = (t_pad*)z;
     t_canvas *cv = glist_getcanvas(glist);
+    t_handle *sh = (t_handle *)x->x_handle;
+    if(x->x_edit && sh->h_pathname[0])
+        pdgui_vmess(0, "rs", "destroy", sh->h_pathname);
     if(vis){
+        sprintf(sh->h_pathname, ".x%lx.h%lx", (unsigned long)cv, (unsigned long)sh);
         pad_draw(x, glist);
-        sys_vgui(".x%lx.c bind %lxPADBASE <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n",
-            cv, x, x->x_bindname->s_name);
+        char buf[256];
+        snprintf(buf, sizeof(buf),
+            "bind %lxPADBASE <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}",
+            (unsigned long)x, x->x_bindname->s_name);
+        pdgui_vmess(0, "cr", cv, buf);
+        pad_draw_handle(x, x->x_edit);
     }
     else // erase
         pdgui_vmess(0, "crs", glist_getcanvas(glist), "delete", x->x_all_tag);
@@ -107,7 +202,6 @@ static void pad_delete(t_gobj *z, t_glist *glist){
 static void pad_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     t_pad *x = (t_pad *)z;
     x->x_obj.te_xpix += dx, x->x_obj.te_ypix += dy;
-    dx *= x->x_zoom, dy *= x->x_zoom;
     pdgui_vmess(0, "crs ii", glist_getcanvas(glist), "move", x->x_all_tag, dx, dy);
     canvas_fixlinesfor(glist, (t_text*)x);
 }
@@ -115,27 +209,44 @@ static void pad_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 static void pad_select(t_gobj *z, t_glist *glist, int sel){
     t_pad *x = (t_pad *)z;
     t_canvas *cv = glist_getcanvas(glist);
+    t_handle *sh = (t_handle *)x->x_handle;
     x->x_sel = sel;
-    pdgui_vmess(0, "crs rk", cv, "itemconfigure", x->x_base_tag, "-outline",
-        sel ? THISGUI->i_selectcolor :  THISGUI->i_foregroundcolor);
+    unsigned int color = sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor;
+    // outline of the base: select color, twice as thick when selected
+    pdgui_vmess(0, "crs rk ri", cv, "itemconfigure", x->x_base_tag,
+        "-outline", color, "-width", sel ? PAD_SELBDWIDTH : 1);
+    // inlet and outlet take the select color too
+    pdgui_vmess(0, "crs rk rk", cv, "itemconfigure", x->x_IOlet_tag,
+        "-fill", color, "-outline", color);
+    // resize handle
+    if(x->x_edit && sh->h_pathname[0]){
+        char fg[32], gop[32], selc[32];
+        snprintf(fg, sizeof(fg), "#%06x", THISGUI->i_foregroundcolor);
+        snprintf(gop, sizeof(gop), "#%06x", THISGUI->i_gopcolor);
+        snprintf(selc, sizeof(selc), "#%06x", THISGUI->i_selectcolor);
+        pdgui_vmess(0, "rrrrrr",
+            sh->h_pathname, "configure",
+            "-highlightbackground", sel ? selc : fg,
+            "-bg", sel ? selc : gop);
+    }
 }
 
 static void pad_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
     t_pad *x = (t_pad *)z;
     *xp1 = text_xpix(&x->x_obj, glist);
     *yp1 = text_ypix(&x->x_obj, glist);
-    *xp2 = *xp1 + x->x_w*x->x_zoom;
-    *yp2 = *yp1 + x->x_h*x->x_zoom;
+    *xp2 = *xp1 + x->x_w;
+    *yp2 = *yp1 + x->x_h;
 }
 
 static void pad_save(t_gobj *z, t_binbuf *b){
   t_pad *x = (t_pad *)z;
-  binbuf_addv(b, "ssiisii iii i", gensym("#X"),gensym("obj"),
+  binbuf_addv(b, "ssiisii iii ii", gensym("#X"),gensym("obj"),
     (int)x->x_obj.te_xpix, (int)x->x_obj.te_ypix,
     atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)),
     x->x_w, x->x_h,
     x->x_color[0], x->x_color[1], x->x_color[2],
-    x->x_transparent);
+    x->x_transparent, x->x_theme);
   binbuf_addv(b, ";");
 }
 
@@ -148,8 +259,8 @@ static void pad_mouserelease(t_pad* x){
 }
 
 static void pad_motion(t_pad *x, t_floatarg dx, t_floatarg dy){
-    x->x_x += (int)(dx/x->x_zoom);
-    x->x_y -= (int)(dy/x->x_zoom);
+    x->x_x += (int)dx;
+    x->x_y -= (int)dy;
     t_atom at[2];
     SETFLOAT(at, (t_float)x->x_x);
     SETFLOAT(at+1, (t_float)x->x_y);
@@ -162,8 +273,8 @@ int shift, int alt, int dbl, int doit){
     t_pad* x = (t_pad *)z;
     t_atom at[3];
     int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
-    x->x_x = (xpix - xpos) / x->x_zoom;
-    x->x_y = x->x_h - (ypix - ypos) / x->x_zoom;
+    x->x_x = xpix - xpos;
+    x->x_y = x->x_h - (ypix - ypos);
     if(doit){
         SETFLOAT(at, (float)doit);
         outlet_anything(x->x_obj.ob_outlet, gensym("click"), 1, at);
@@ -180,22 +291,22 @@ int shift, int alt, int dbl, int doit){
 
 static void pad_config_size(t_pad *x){
     if(pad_vis_check(x)){
-        int z = x->x_zoom;
         int x1 = text_xpix(&x->x_obj, x->x_glist);
         int y1 = text_ypix(&x->x_obj, x->x_glist);
-        int x2 = x1 + x->x_w * z;
-        int y2 = y1 + x->x_h * z;
+        int x2 = x1 + x->x_w;
+        int y2 = y1 + x->x_h;
         t_canvas *cv = glist_getcanvas(x->x_glist);
         pdgui_vmess(0, "crs iiii", cv, "coords", x->x_base_tag,
             x1, y1, x2, y2);
         pdgui_vmess(0, "crs iiii", cv, "coords", x->x_outlet_tag,
-            x1, y2 - OHEIGHT*z, x1 + IOWIDTH*z, y2);
+            x1, y2 - OHEIGHT, x1 + IOWIDTH, y2);
+        pad_draw_handle(x, x->x_edit);
         canvas_fixlinesfor(glist_getcanvas(x->x_glist), (t_text*)x);
     }
 }
                 
 static void pad_dim(t_pad *x, t_floatarg f1, t_floatarg f2){
-    int w = f1 < 12 ? 12 : (int)f1, h = f2 < 12 ? 12 : (int)f2;
+    int w = f1 < PAD_MINSIZE ? PAD_MINSIZE : (int)f1, h = f2 < PAD_MINSIZE ? PAD_MINSIZE : (int)f2;
     if(w != x->x_w || h != x->x_h){
         x->x_w = w; x->x_h = h;
         pad_config_size(x);
@@ -203,7 +314,7 @@ static void pad_dim(t_pad *x, t_floatarg f1, t_floatarg f2){
 }
 
 static void pad_width(t_pad *x, t_floatarg f){
-    int w = f < 12 ? 12 : (int)f;
+    int w = f < PAD_MINSIZE ? PAD_MINSIZE : (int)f;
     if(w != x->x_w){
         x->x_w = w;
         pad_config_size(x);
@@ -211,7 +322,7 @@ static void pad_width(t_pad *x, t_floatarg f){
 }
 
 static void pad_height(t_pad *x, t_floatarg f){
-    int h = f < 12 ? 12 : (int)f;
+    int h = f < PAD_MINSIZE ? PAD_MINSIZE : (int)f;
     if(h != x->x_h){
         x->x_h = h;
         pad_config_size(x);
@@ -219,16 +330,55 @@ static void pad_height(t_pad *x, t_floatarg f){
 }
 
 static void pad_setbg(t_pad *x){
-    if(pad_vis_check(x))
+    if(pad_vis_check(x)){
+        char bg[32];
+        pad_getbgcolor(x, bg, sizeof(bg));
         pdgui_vmess(0, "crs rs", glist_getcanvas(x->x_glist), "itemconfigure",
-            x->x_base_tag, "-fill", x->x_transparent ? "" : x->x_bg->s_name);
+            x->x_base_tag, "-fill", x->x_transparent ? "" : bg);
+    }
+}
+
+static void pad_send_color_validate(t_pad *x, const char *color){
+    char buf[512];
+    snprintf(buf, sizeof(buf), "set color_name {%s}", color);
+    pdgui_vmess(buf, NULL);
+    pdgui_vmess(
+        "set color_escaped [string map {{ } {\\ }} $color_name]",
+        NULL);
+    pdgui_vmess(
+        "set hex_color [color2hex $color_name]",
+        NULL);
+    snprintf(buf, sizeof(buf),
+        "if {$hex_color eq \"\"} "
+        "{pdsend \"%s _validate 0 $color_escaped\"} "
+        "else {pdsend \"%s _validate 1 $hex_color\"}",
+        x->x_bindname->s_name,
+        x->x_bindname->s_name);
+    pdgui_vmess(buf, NULL);
+}
+
+static void pad_validate(t_pad *x, t_floatarg v, t_symbol *color){
+    if((int)v){
+        x->x_bg = color;
+        pad_parse_hex(x, color->s_name);
+        pad_setbg(x);
+    }
+    else
+        pd_error(0, "[pad] invalid color '%s'", color->s_name);
 }
 
 static void pad_color(t_pad *x, t_symbol *s, int ac, t_atom *av){
-    t_symbol *color = s = pad_getcolor(x, ac, av);
-    if(color == x->x_bg)
+    if(!ac)
         return;
-    x->x_bg = color;
+    x->x_theme = 0; // explicit color overrides theme (like knob's bgcolor/fgcolor/arccolor)
+    pad_send_color_validate(x, pad_getcolor(x, ac, av)->s_name);
+}
+
+static void pad_theme(t_pad *x, t_floatarg f){
+    int theme = (int)(f != 0);
+    if(theme == x->x_theme)
+        return;
+    x->x_theme = theme;
     pad_setbg(x);
 }
 
@@ -240,8 +390,98 @@ static void pad_transparent(t_pad *x, t_floatarg f){
     pad_setbg(x);
 }
 
-static void pad_zoom(t_pad *x, t_floatarg zoom){
-    x->x_zoom = (int)zoom;
+static void pad_properties(t_gobj *z, t_glist *owner){
+    (void)owner;
+    t_pad *x = (t_pad *)z;
+    char pd_bg[32];
+    snprintf(pd_bg, sizeof(pd_bg), "#%06X", THISGUI->i_backgroundcolor);
+    pdgui_stub_vnew(&x->x_obj.ob_pd, "pad_dialog", x,
+        "iissii",
+        x->x_w, x->x_h,
+        x->x_bg->s_name, pd_bg,
+        x->x_theme, x->x_transparent);
+}
+
+static void pad_apply(t_pad *x, t_symbol *s, int ac, t_atom *av){
+    (void)s;
+    t_atom undo[5];
+    SETFLOAT(undo+0, x->x_w);
+    SETFLOAT(undo+1, x->x_h);
+    SETSYMBOL(undo+2, x->x_bg);
+    SETFLOAT(undo+3, x->x_theme);
+    SETFLOAT(undo+4, x->x_transparent);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 5, undo, ac, av);
+    int w = atom_getintarg(0, ac, av);
+    int h = atom_getintarg(1, ac, av);
+    t_symbol *bg = atom_getsymbolarg(2, ac, av);
+    int theme = atom_getintarg(3, ac, av);
+    int transp = atom_getintarg(4, ac, av);
+    pad_dim(x, w, h);
+    pad_theme(x, theme);
+    pad_transparent(x, transp);
+    pad_send_color_validate(x, bg->s_name);
+    canvas_dirty(x->x_glist, 1);
+}
+
+// --------------------- handle ---------------------------------------------------
+static int xclick, yclick, xmotion, ymotion;
+
+static void handle__click_callback(t_handle *sh, t_floatarg f, t_floatarg xarg, t_floatarg yarg){
+    int click = (int)f;
+    t_pad *x = sh->h_master;
+    t_canvas *cv = glist_getcanvas(x->x_glist);
+    if(sh->h_dragon && click == 0){
+        pdgui_vmess(0, "crr", cv, "delete", sh->h_outlinetag);
+        int w = x->x_w + (xmotion - xclick);
+        int h = x->x_h + (ymotion - yclick);
+        w = w < PAD_MINSIZE ? PAD_MINSIZE : w;
+        h = h < PAD_MINSIZE ? PAD_MINSIZE : h;
+        if(w != x->x_w || h != x->x_h){
+            t_atom undo[2], redo[2];
+            SETFLOAT(undo+0, x->x_w);
+            SETFLOAT(undo+1, x->x_h);
+            SETFLOAT(redo+0, w);
+            SETFLOAT(redo+1, h);
+            pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dim"), 2, undo, 2, redo);
+            pad_dim(x, w, h);
+            canvas_dirty(x->x_glist, 1);
+        }
+    }
+    else if(!sh->h_dragon && click){
+        int x1, y1, x2, y2;
+        pad_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+        char sel[32];
+        snprintf(sel, sizeof(sel), "#%06x", THISGUI->i_selectcolor);
+        pdgui_vmess(0, "crriiiirrrirs",
+            cv, "create", "rectangle",
+            x1, y1, x2, y2,
+            "-outline", sel,
+            "-width", PAD_SELBDWIDTH,
+            "-tags", sh->h_outlinetag);
+        xclick = xmotion = xarg;
+        yclick = ymotion = yarg;
+    }
+    sh->h_dragon = click;
+}
+
+static void handle__motion_callback(t_handle *sh, t_floatarg xarg, t_floatarg yarg){
+    if(sh->h_dragon){
+        t_pad *x = sh->h_master;
+        xmotion = xarg;
+        ymotion = yarg;
+        int dx = xmotion - xclick, dy = ymotion - yclick;
+        int x1, y1, x2, y2;
+        pad_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+        int newx = x2 + dx, newy = y2 + dy;
+        if(newx < x1 + PAD_MINSIZE)
+            newx = x1 + PAD_MINSIZE;
+        if(newy < y1 + PAD_MINSIZE)
+            newy = y1 + PAD_MINSIZE;
+        pdgui_vmess(0, "crriiii",
+            glist_getcanvas(x->x_glist),
+            "coords", sh->h_outlinetag,
+            x1, y1, newx, newy);
+    }
 }
 
 static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
@@ -261,12 +501,17 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
         if(p->p_cnv->x_edit != edit){
             p->p_cnv->x_edit = edit;
             pad_config_io_let(p->p_cnv);
+            pad_draw_handle(p->p_cnv, edit);
         }
     }
 }
 
 static void pad_free(t_pad *x){
     pd_unbind(&x->x_obj.ob_pd, x->x_bindname);
+    if(x->x_handle){
+        pd_unbind(x->x_handle, ((t_handle *)x->x_handle)->h_bindsym);
+        pd_free(x->x_handle);
+    }
     x->x_proxy->p_cnv = NULL;
     clock_delay(x->x_proxy->p_clock, 0);
     pdgui_stub_deleteforkey(x);
@@ -297,10 +542,10 @@ static void *pad_new(t_symbol *s, int ac, t_atom *av){
     sprintf(buf, "#%lx", (long)x);
     pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
     x->x_edit = cv->gl_edit;
-    x->x_zoom = x->x_glist->gl_zoom;
     x->x_x = x->x_y = 0;
     x->x_color[0] = x->x_color[1] = x->x_color[2] = 255;
     int w = 127, h = 127;
+    int theme = 0;
     if(ac && av->a_type == A_FLOAT){ // 1st Width
         w = av->a_w.w_float;
         ac--; av++;
@@ -319,6 +564,10 @@ static void *pad_new(t_symbol *s, int ac, t_atom *av){
                         if(ac && av->a_type == A_FLOAT){ // Transparency
                             x->x_transparent = (int)av->a_w.w_float;
                             ac--, av++;
+                            if(ac && av->a_type == A_FLOAT){ // Theme
+                                theme = (int)av->a_w.w_float;
+                                ac--, av++;
+                            }
                         }
                     }
                 }
@@ -350,8 +599,14 @@ static void *pad_new(t_symbol *s, int ac, t_atom *av){
                 }
                 else goto errstate;
             }
-            else if(s == gensym("-transparent"))
+            else if(s == gensym("-transparent")){
                 x->x_transparent = 1;
+                ac--, av++;
+            }
+            else if(s == gensym("-theme")){
+                theme = 1;
+                ac--, av++;
+            }
             else
                 goto errstate;
         }
@@ -359,13 +614,24 @@ static void *pad_new(t_symbol *s, int ac, t_atom *av){
             goto errstate;
     }
     x->x_w = w, x->x_h = h;
-    
-    t_atom at[3];
-    SETFLOAT(&at[0], x->x_color[0]);
-    SETFLOAT(&at[1], x->x_color[1]);
-    SETFLOAT(&at[2], x->x_color[2]);
-    pad_color(x, NULL, 3, at);
+    // set x_bg directly from RGB (no round-trip validation needed at creation time)
+    {
+        char color[8];
+        sprintf(color, "#%.2x%.2x%.2x",
+            x->x_color[0], x->x_color[1], x->x_color[2]);
+        x->x_bg = gensym(color);
+    }
+    x->x_theme = theme;
     outlet_new(&x->x_obj, &s_anything);
+    x->x_handle = pd_new(handle_class);
+    t_handle *sh = (t_handle *)x->x_handle;
+    sh->h_master = x;
+    sh->h_dragon = 0;
+    sh->h_pathname[0] = 0;
+    char hbuf[64];
+    sprintf(hbuf, "_h%lx", (unsigned long)sh);
+    pd_bind(x->x_handle, sh->h_bindsym = gensym(hbuf));
+    sprintf(sh->h_outlinetag, "h%lx", (unsigned long)sh);
     sprintf(x->x_base_tag, "%pPAD_BASE", x);
     sprintf(x->x_all_tag, "%pPAD_ALL", x);
     sprintf(x->x_IOlet_tag, "%pPAD_IO", x);
@@ -383,11 +649,16 @@ void pad_setup(void){
     class_addmethod(pad_class, (t_method)pad_width, gensym("width"), A_FLOAT, 0);
     class_addmethod(pad_class, (t_method)pad_height, gensym("height"), A_FLOAT, 0);
     class_addmethod(pad_class, (t_method)pad_color, gensym("color"), A_GIMME, 0);
+    class_addmethod(pad_class, (t_method)pad_validate, gensym("_validate"), A_FLOAT, A_SYMBOL, 0);
+    class_addmethod(pad_class, (t_method)pad_theme, gensym("theme"), A_FLOAT, 0);
     class_addmethod(pad_class, (t_method)pad_transparent, gensym("transparent"), A_FLOAT, 0);
-    class_addmethod(pad_class, (t_method)pad_zoom, gensym("zoom"), A_CANT, 0);
     class_addmethod(pad_class, (t_method)pad_mouserelease, gensym("_mouserelease"), 0);
+    class_addmethod(pad_class, (t_method)pad_apply, gensym("dialog"), A_GIMME, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
+    handle_class = class_new(gensym("_handle"), 0, 0, sizeof(t_handle), CLASS_PD, 0);
+    class_addmethod(handle_class, (t_method)handle__click_callback, gensym("_click"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(handle_class, (t_method)handle__motion_callback, gensym("_motion"), A_FLOAT, A_FLOAT, 0);
     pad_widgetbehavior.w_getrectfn  = pad_getrect;
     pad_widgetbehavior.w_displacefn = pad_displace;
     pad_widgetbehavior.w_selectfn   = pad_select;
@@ -396,5 +667,10 @@ void pad_setup(void){
     pad_widgetbehavior.w_visfn      = pad_vis;
     pad_widgetbehavior.w_clickfn    = pad_click;
     class_setsavefn(pad_class, pad_save);
+    class_setpropertiesfn(pad_class, pad_properties);
     class_setwidget(pad_class, &pad_widgetbehavior);
+    #include "../Extra/else_tcl_utils.h"
+    pdgui_vmess(else_tcl_utils, NULL);
+    #include "../Extra/pad_dialog.h"
+    pdgui_vmess(pad_dialog_tcl, NULL);
 }

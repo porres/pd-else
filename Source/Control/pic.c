@@ -10,6 +10,7 @@
 #endif
 
 #include <string.h>
+#include <stdlib.h>
 #include <math.h>
 
 #ifdef _MSC_VER
@@ -56,25 +57,33 @@ typedef struct _pic{
      t_symbol      *x_send;
      t_symbol      *x_snd_raw;
      t_outlet      *x_outlet;
+     char           x_tag_in[32];
+     char           x_tag_out[32];
+     char           x_tag_picture[32];
+     char           x_tag_outline[32];
 }t_pic;
 
-// ------------------------ draw inlet --------------------------------------------------------------------
+// draw inlet/ outlet
 static void pic_draw_io_let(t_pic *x){
-    t_canvas *cv = glist_getcanvas(x->x_glist);
-    int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
-    sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
-    if(x->x_edit && x->x_receive == &s_)
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_in\n",
-            cv, xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom), x);
-    sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
-    if(x->x_edit && x->x_send == &s_)
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
-            cv, xpos, ypos+(x->x_height * x->x_zoom), xpos+IOWIDTH*x->x_zoom, ypos+(x->x_height * x->x_zoom)-(IHEIGHT*x->x_zoom), x);
+t_canvas *cv = glist_getcanvas(x->x_glist);
+int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
+int iocol = x->x_sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor;
+pdgui_vmess(0, "crs", cv, "delete", x->x_tag_in);
+if(x->x_edit && x->x_receive == &s_)
+    pdgui_vmess(0, "crs iiii rk rk rs", cv, "create", "rectangle",
+        xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom),
+        "-fill", iocol, "-outline", iocol, "-tags", x->x_tag_in);
+pdgui_vmess(0, "crs", cv, "delete", x->x_tag_out);
+if(x->x_edit && x->x_send == &s_)
+    pdgui_vmess(0, "crs iiii rk rk rs", cv, "create", "rectangle",
+        xpos, ypos+(x->x_height * x->x_zoom),
+        xpos+IOWIDTH*x->x_zoom, ypos+(x->x_height * x->x_zoom)-(IHEIGHT*x->x_zoom),
+        "-fill", iocol, "-outline", iocol, "-tags", x->x_tag_out);
 }
 
 // --------------------------------------------------------------------------------------
 // helper functions
-static const t_symbol* pic_filepath(t_pic *x, const char *filename){
+static t_symbol* pic_filepath(t_pic *x, const char *filename){
     static char fn[MAXPDSTRING];
     char *bufptr;
     int fd = canvas_open(glist_getcanvas(x->x_glist),
@@ -175,12 +184,12 @@ static void pic_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     t_pic *obj = (t_pic *)z;
     obj->x_obj.te_xpix += dx, obj->x_obj.te_ypix += dy;
     t_canvas *cv = glist_getcanvas(glist);
-    sys_vgui(".x%lx.c move %lx_outline %d %d\n", cv, obj, dx*obj->x_zoom, dy*obj->x_zoom);
-    sys_vgui(".x%lx.c move %lx_picture %d %d\n", cv, obj, dx*obj->x_zoom, dy*obj->x_zoom);
+    pdgui_vmess(0, "crs ii", cv, "move", obj->x_tag_outline, dx*obj->x_zoom, dy*obj->x_zoom);
+    pdgui_vmess(0, "crs ii", cv, "move", obj->x_tag_picture, dx*obj->x_zoom, dy*obj->x_zoom);
     if(obj->x_receive == &s_)
-        sys_vgui(".x%lx.c move %lx_in %d %d\n", cv, obj, dx*obj->x_zoom, dy*obj->x_zoom);
+        pdgui_vmess(0, "crs ii", cv, "move", obj->x_tag_in, dx*obj->x_zoom, dy*obj->x_zoom);
     if(obj->x_send == &s_)
-        sys_vgui(".x%lx.c move %lx_out %d %d\n", cv, obj, dx*obj->x_zoom, dy*obj->x_zoom);
+        pdgui_vmess(0, "crs ii", cv, "move", obj->x_tag_out, dx*obj->x_zoom, dy*obj->x_zoom);
     canvas_fixlinesfor(glist, (t_text*)obj);
 }
 
@@ -190,16 +199,29 @@ static void pic_select(t_gobj *z, t_glist *glist, int state){
     int ypos = text_ypix(&x->x_obj, glist);
     t_canvas *cv = glist_getcanvas(glist);
     x->x_sel = state;
+    int iocol = state ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor;
+    if(x->x_edit){
+        if(x->x_receive == &s_)
+            pdgui_vmess(0, "crs rk rk", cv, "itemconfigure", x->x_tag_in,
+                "-outline", iocol, "-fill", iocol);
+        if(x->x_send == &s_)
+            pdgui_vmess(0, "crs rk rk", cv, "itemconfigure", x->x_tag_out,
+                "-outline", iocol, "-fill", iocol);
+    }
     if(state){
-        sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline blue -width %d\n",
-            cv, xpos, ypos, xpos + (x->x_width*x->x_zoom), ypos + (x->x_height*x->x_zoom), x, x->x_zoom);
-     }
+        pdgui_vmess(0, "crs", cv, "delete", x->x_tag_outline);
+        pdgui_vmess(0, "crr iiii rs rk ri", cv, "create", "rectangle",
+            xpos, ypos, xpos + (x->x_width*x->x_zoom), ypos + (x->x_height*x->x_zoom),
+            "-tags", x->x_tag_outline, "-outline", THISGUI->i_selectcolor,
+            "-width", x->x_zoom);
+    }
     else{
-        sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
+        pdgui_vmess(0, "crs", cv, "delete", x->x_tag_outline);
         if(x->x_edit || x->x_outline)
-            sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
-                cv, xpos, ypos, xpos + (x->x_width*x->x_zoom), ypos + (x->x_height*x->x_zoom), x, x->x_zoom);
+            pdgui_vmess(0, "crr iiii rs rk ri", cv, "create", "rectangle",
+                xpos, ypos, xpos + (x->x_width*x->x_zoom), ypos + (x->x_height*x->x_zoom),
+                "-tags", x->x_tag_outline, "-outline", THISGUI->i_foregroundcolor,
+                "-width", x->x_zoom);
     }
 }
 
@@ -212,70 +234,90 @@ static void pic_draw(t_pic* x, struct _glist *glist, t_floatarg vis){
     int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
     int visible = (glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist));
     if(x->x_def_img && (visible || vis)){ // DEFAULT PIC
-        sys_vgui(".x%lx.c create image %d %d -anchor nw -tags %lx_picture\n",
-            cv, xpos, ypos, x);
-        sys_vgui(".x%lx.c itemconfigure %lx_picture -image %s\n",
-            cv, x, "pic_def_img");
+        pdgui_vmess(0, "crs ii rs rs", cv, "create", "image",
+            xpos, ypos, "-anchor", "nw", "-tags", x->x_tag_picture);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure",
+            x->x_tag_picture, "-image", "pic_def_img");
         if(x->x_edit || x->x_outline)
-            sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
-                cv, xpos, ypos, xpos + (x->x_width*x->x_zoom), ypos + (x->x_height*x->x_zoom), x, x->x_zoom);
+            pdgui_vmess(0, "crr iiii rs rk ri", cv, "create", "rectangle",
+                xpos, ypos, xpos + (x->x_width*x->x_zoom), ypos + (x->x_height*x->x_zoom),
+                "-tags", x->x_tag_outline,
+                "-outline", x->x_sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor,
+                "-width", x->x_zoom);
     }
     else{
         if(visible || vis){
-            int clipped_w = fmax(x->x_width - fabs(x->x_offset_x), 0.0f);
-            int clipped_h = fmax(x->x_height - fabs(x->x_offset_y), 0.0f);
-            int source_offset_x = fmax(-x->x_offset_x, 0);
-            int source_offset_y = fmax(-x->x_offset_y, 0);
-            int dest_offset_x = fmax(x->x_offset_x, 0);
-            int dest_offset_y = fmax(x->x_offset_y, 0);
+            int clipped_w = x->x_width - abs(x->x_offset_x);
+            int clipped_h = x->x_height - abs(x->x_offset_y);
+            if(clipped_w < 0) clipped_w = 0;
+            if(clipped_h < 0) clipped_h = 0;
+            int source_offset_x = -x->x_offset_x < 0 ? 0 : -x->x_offset_x;
+            int source_offset_y = -x->x_offset_y < 0 ? 0 : -x->x_offset_y;
+            int dest_offset_x = x->x_offset_x < 0 ? 0 : x->x_offset_x;
+            int dest_offset_y = x->x_offset_y < 0 ? 0 : x->x_offset_y;
 
-            sys_vgui("if { [info exists %lx_picname] == 1 } {\n"
-                     "    .x%lx.c delete %lx_picture\n"
-                     "    image create photo p%lx_piccopy\n" // Destination image
-                     "    p%lx_piccopy copy %lx_picname \\\n"
-                     "        -shrink -from %d %d %d %d \\\n" // Source region with adjusted offsets
-                     "        -to %d %d %d %d \\\n" // Destination region starts at adjusted offsets
-                     "        -zoom %d %d\n" // Zoom factors for scaling
-                     "    .x%lx.c create image %d %d -anchor nw -image p%lx_piccopy -tags %lx_picture\n"
-                     "} \n",
-                     x->x_fullname,
-                     cv, x,
-                     x,
-                     x, x->x_fullname,
-                     source_offset_x, source_offset_y, // Source region start
-                     source_offset_x + clipped_w,      // Source region end X
-                     source_offset_y + clipped_h,      // Source region end Y
-                     dest_offset_x, dest_offset_y, // Source region start
-                     dest_offset_x + clipped_w * x->x_zoom,        // Destination end X
-                     dest_offset_y + clipped_h * x->x_zoom,        // Destination end Y
-                     x->x_zoom, x->x_zoom,             // Zoom factors
-                     cv,                               // Destination canvas
-                     xpos, ypos,                       // Offset on canvas
-                     x,                    // Image name
-                     x);                   // Tags
+            char buf[1024];
+            snprintf(buf, sizeof(buf),
+                "if {[info exists %lx_picname] == 1} {\n"
+                "    .x%lx.c delete %lx_picture\n"
+                "    image create photo p%lx_piccopy\n"
+                "    p%lx_piccopy copy %lx_picname -shrink -from %d %d %d %d -to %d %d %d %d -zoom %d %d\n"
+                "    .x%lx.c create image %d %d -anchor nw -image p%lx_piccopy -tags %lx_picture\n"
+                "}",
+                (unsigned long)x->x_fullname,
+                (unsigned long)cv, (unsigned long)x,
+                (unsigned long)x,
+                (unsigned long)x, (unsigned long)x->x_fullname,
+                source_offset_x, source_offset_y,
+                source_offset_x + clipped_w, source_offset_y + clipped_h,
+                dest_offset_x, dest_offset_y,
+                dest_offset_x + clipped_w * x->x_zoom, dest_offset_y + clipped_h * x->x_zoom,
+                x->x_zoom, x->x_zoom,
+                (unsigned long)cv, xpos, ypos,
+                (unsigned long)x, (unsigned long)x);
+            pdgui_vmess(buf, NULL);
         }
         if(!x->x_init)
             x->x_init = 1;
-        else if((visible || vis) && (x->x_edit || x->x_outline))
-            sys_vgui("if { [info exists %lx_picname] == 1 } {.x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d}\n",
-                x->x_fullname, cv, xpos, ypos, xpos + (x->x_width*x->x_zoom), ypos + (x->x_height*x->x_zoom), x, x->x_zoom);
+        else if((visible || vis) && (x->x_edit || x->x_outline)){
+            char fg[32];
+            snprintf(fg, sizeof(fg), "#%06X",
+                x->x_sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor);
+            char buf[512];
+            snprintf(buf, sizeof(buf),
+                "if {[info exists %lx_picname] == 1} {.x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline %s -width %d}",
+                (unsigned long)x->x_fullname,
+                (unsigned long)cv,
+                xpos, ypos, xpos + (x->x_width*x->x_zoom), ypos + (x->x_height*x->x_zoom),
+                (unsigned long)x, fg, x->x_zoom);
+            pdgui_vmess(buf, NULL);
+        }
 
         if(x->x_width == 0 || x->x_height == 0) {
-            sys_vgui("if { [info exists %lx_picname] == 1 } {pdsend \"%s _picsize [image width %lx_picname] [image height %lx_picname]\"}\n",
-                x->x_fullname, x->x_x->s_name, x->x_fullname, x->x_fullname);
+            char buf[512];
+            snprintf(buf, sizeof(buf),
+                "if {[info exists %lx_picname] == 1} {pdsend \"%s _picsize [image width %lx_picname] [image height %lx_picname]\"}",
+                (unsigned long)x->x_fullname,
+                x->x_x->s_name,
+                (unsigned long)x->x_fullname,
+                (unsigned long)x->x_fullname);
+            pdgui_vmess(buf, NULL);
         }
     }
-    sys_vgui(".x%lx.c bind %lx_picture <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_x->s_name);
+    char buf2[512];
+    snprintf(buf2, sizeof(buf2),
+        ".x%lx.c bind %lx_picture <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}",
+        (unsigned long)cv, (unsigned long)x, x->x_x->s_name);
+    pdgui_vmess(buf2, NULL);
     pic_draw_io_let(x);
-
 }
 
 static void pic_erase(t_pic* x, struct _glist *glist){
     t_canvas *cv = glist_getcanvas(glist);
-    sys_vgui(".x%lx.c delete %lx_picture\n", cv, x); // ERASE
-    sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
-    sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
-    sys_vgui(".x%lx.c delete %lx_outline\n", cv, x); // if edit?
+    pdgui_vmess(0, "crs", cv, "delete", x->x_tag_picture);
+    pdgui_vmess(0, "crs", cv, "delete", x->x_tag_in);
+    pdgui_vmess(0, "crs", cv, "delete", x->x_tag_out);
+    pdgui_vmess(0, "crs", cv, "delete", x->x_tag_outline);
 }
 
 static void pic_vis(t_gobj *z, t_glist *glist, int vis){
@@ -304,13 +346,12 @@ static void pic_size_callback(t_pic *x, t_float w, t_float h){ // callback
         pic_draw(x, x->x_glist, 0);
         canvas_fixlinesfor(x->x_glist, (t_text*)x);
         if(x->x_edit || x->x_outline){
-            sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
-            if(x->x_sel)
-                sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline blue -width %d\n",
-                cv, xpos, ypos, xpos + (x->x_width*x->x_zoom), ypos + (x->x_height*x->x_zoom), x, x->x_zoom);
-            else
-                sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
-                cv, xpos, ypos, xpos + (x->x_width*x->x_zoom), ypos + (x->x_height*x->x_zoom), x, x->x_zoom);
+            pdgui_vmess(0, "crs", cv, "delete", x->x_tag_outline);
+            pdgui_vmess(0, "crr iiii rs rk ri", cv, "create", "rectangle",
+                xpos, ypos, xpos + (x->x_width*x->x_zoom), ypos + (x->x_height*x->x_zoom),
+                "-tags", x->x_tag_outline,
+                "-outline", x->x_sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor,
+                "-width", x->x_zoom);
             pic_draw_io_let(x);
         }
     }
@@ -332,13 +373,17 @@ void pic_open(t_pic* x, t_symbol *filename){
             const t_symbol *file_name_open = pic_filepath(x, filename->s_name); // path
             if(file_name_open){
                 x->x_filename = filename;
-                x->x_fullname = file_name_open;
+                x->x_fullname = (t_symbol *)file_name_open;
                 if(x->x_def_img)
                     x->x_def_img = 0;
                 if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
                     pic_erase(x, x->x_glist);
-                    sys_vgui("if {[info exists %lx_picname] == 0} {image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n}\n",
-                        x->x_fullname, x->x_fullname, file_name_open->s_name, x->x_fullname);
+                    char buf[1024];
+                    snprintf(buf, sizeof(buf),
+                        "if {[info exists %lx_picname] == 0} {image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n}",
+                        (unsigned long)x->x_fullname, (unsigned long)x->x_fullname,
+                        file_name_open->s_name, (unsigned long)x->x_fullname);
+                    pdgui_vmess(buf, NULL);
                     x->x_width = 0;
                     x->x_height = 0;
                     pic_draw(x, x->x_glist, 0);
@@ -363,7 +408,7 @@ static void pic_send(t_pic *x, t_symbol *s){
                 if(x->x_send == &s_)
                     pic_draw_io_let(x);
                 else
-                    sys_vgui(".x%lx.c delete %lx_out\n", glist_getcanvas(x->x_glist), x);
+                    pdgui_vmess(0, "crs", glist_getcanvas(x->x_glist), "delete", x->x_tag_out);
             }
         }
     }
@@ -385,7 +430,7 @@ static void pic_receive(t_pic *x, t_symbol *s){
             else{
                 pd_bind(&x->x_obj.ob_pd, x->x_receive);
                 if(x->x_edit && glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
-                    sys_vgui(".x%lx.c delete %lx_in\n", glist_getcanvas(x->x_glist), x);
+                    pdgui_vmess(0, "crs", glist_getcanvas(x->x_glist), "delete", x->x_tag_in);
             }
         }
     }
@@ -399,14 +444,14 @@ static void pic_outline(t_pic *x, t_float f){
             t_canvas *cv = glist_getcanvas(x->x_glist);
             if(x->x_outline){
                 int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
-                if(x->x_sel) sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline blue -width %d\n",
-                    cv, xpos, ypos, xpos + (x->x_width*x->x_zoom), ypos + (x->x_height*x->x_zoom), x, x->x_zoom);
-                else sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
-                    cv, xpos, ypos, xpos + (x->x_width*x->x_zoom), ypos + (x->x_height*x->x_zoom), x, x->x_zoom);
+                pdgui_vmess(0, "crr iiii rs rk ri", cv, "create", "rectangle",
+                    xpos, ypos, xpos + (x->x_width*x->x_zoom), ypos + (x->x_height*x->x_zoom),
+                    "-tags", x->x_tag_outline,
+                    "-outline", x->x_sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor,
+                    "-width", x->x_zoom);
             }
             else if(!x->x_edit)
-                sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
-
+                pdgui_vmess(0, "crs", cv, "delete", x->x_tag_outline);
         }
     }
 }
@@ -450,15 +495,18 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
                 int y = text_ypix(&p->p_cnv->x_obj, p->p_cnv->x_glist);
                 int w = p->p_cnv->x_width, h = p->p_cnv->x_height;
                 if(!p->p_cnv->x_outline)
-                    sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
-                             cv, x, y, x+(w * cv->gl_zoom), y+(h * cv->gl_zoom), p->p_cnv, p->p_cnv->x_zoom);
+                    pdgui_vmess(0, "crr iiii rs rk ri", cv, "create", "rectangle",
+                        x, y, x+(w * cv->gl_zoom), y+(h * cv->gl_zoom),
+                        "-tags", p->p_cnv->x_tag_outline,
+                        "-outline", p->p_cnv->x_sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor,
+                        "-width", p->p_cnv->x_zoom);
                 pic_draw_io_let(p->p_cnv);
             }
             else{
                 if(!p->p_cnv->x_outline)
-                    sys_vgui(".x%lx.c delete %lx_outline\n", cv, p->p_cnv);
-                sys_vgui(".x%lx.c delete %lx_in\n", cv, p->p_cnv);
-                sys_vgui(".x%lx.c delete %lx_out\n", cv, p->p_cnv);
+                    pdgui_vmess(0, "crs", cv, "delete", p->p_cnv->x_tag_outline);
+                pdgui_vmess(0, "crs", cv, "delete", p->p_cnv->x_tag_in);
+                pdgui_vmess(0, "crs", cv, "delete", p->p_cnv->x_tag_out);
             }
         }
     }
@@ -476,15 +524,14 @@ void pic_properties(t_gobj *z, t_glist *gl){
     if(x->x_filename ==  &s_)
         x->x_filename = gensym("empty");
     pic_get_snd_rcv(x);
-    char buffer[512];
-    sprintf(buffer, "pic_properties %%s {%s} %d %d %d {%s} {%s} \n",
+    pdgui_stub_vnew(&x->x_obj.ob_pd, "pic_properties", x,
+        "s i i i s s",
         x->x_filename->s_name,
         x->x_outline,
         x->x_size,
         x->x_latch,
         x->x_snd_raw->s_name,
         x->x_rcv_raw->s_name);
-    gfxstub_new(&x->x_obj.ob_pd, x, buffer);
 }
 
 static void pic_ok(t_pic *x, t_symbol *s, int ac, t_atom *av){
@@ -522,14 +569,18 @@ static t_edit_proxy * edit_proxy_new(t_pic *x, t_symbol *s){
 }
 
 static void pic_free(t_pic *x){ // delete if variable is unset and image is unused
-    sys_vgui("if { [info exists %lx_picname] == 1 && [image inuse %lx_picname] == 0} { image delete %lx_picname \n unset %lx_picname\n}\n",
-        x->x_fullname, x->x_fullname, x->x_fullname, x->x_fullname);
+    char buf[512];
+    snprintf(buf, sizeof(buf),
+        "if {[info exists %lx_picname] == 1 && [image inuse %lx_picname] == 0} { image delete %lx_picname\n unset %lx_picname\n}",
+        (unsigned long)x->x_fullname, (unsigned long)x->x_fullname,
+        (unsigned long)x->x_fullname, (unsigned long)x->x_fullname);
+    pdgui_vmess(buf, NULL);
     if(x->x_receive != &s_)
         pd_unbind(&x->x_obj.ob_pd, x->x_receive);
     pd_unbind(&x->x_obj.ob_pd, x->x_x);
     x->x_proxy->p_cnv = NULL;
     clock_delay(x->x_proxy->p_clock, 0);
-    gfxstub_deleteforkey(x);
+    pdgui_stub_deleteforkey(x);
 }
 
 static void *pic_new(t_symbol *s, int ac, t_atom *av){
@@ -636,12 +687,16 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
         else goto errstate;
     };
     if(x->x_filename !=  &s_){
-        const t_symbol *fn = pic_filepath(x, x->x_filename->s_name); // full path
+        t_symbol *fn = pic_filepath(x, x->x_filename->s_name); // full path
         if(fn){
             loaded = 1;
             x->x_fullname = fn;
-            sys_vgui("if { [info exists %lx_picname] == 0 } { image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n}\n",
-                    x->x_fullname, x->x_fullname, fn->s_name, x->x_fullname);
+            char buf2[1024];
+            snprintf(buf2, sizeof(buf2),
+                "if {[info exists %lx_picname] == 0} {image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n}",
+                (unsigned long)x->x_fullname, (unsigned long)x->x_fullname,
+                fn->s_name, (unsigned long)x->x_fullname);
+            pdgui_vmess(buf2, NULL);
         }
         else
             pd_error(x, "[pic]: error opening file '%s'", x->x_filename->s_name);
@@ -653,6 +708,11 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
     if(x->x_receive != &s_)
         pd_bind(&x->x_obj.ob_pd, x->x_receive);
     x->x_outlet = outlet_new(&x->x_obj, &s_bang);
+    // tags
+    snprintf(x->x_tag_in,      sizeof(x->x_tag_in),      "%lx_in",      (unsigned long)x);
+    snprintf(x->x_tag_out,     sizeof(x->x_tag_out),     "%lx_out",     (unsigned long)x);
+    snprintf(x->x_tag_picture, sizeof(x->x_tag_picture), "%lx_picture", (unsigned long)x);
+    snprintf(x->x_tag_outline, sizeof(x->x_tag_outline), "%lx_outline", (unsigned long)x);
     return(x);
     errstate:
         pd_error(x, "[pic]: improper args");
@@ -683,96 +743,6 @@ void pic_setup(void){
     class_setwidget(pic_class, &pic_widgetbehavior);
     class_setsavefn(pic_class, &pic_save);
     class_setpropertiesfn(pic_class, &pic_properties);
-    sys_vgui("image create photo pic_def_img -data {R0lGODdhJwAnAMQAAAAAAAsLCxMTExwcHCIiIisrKzw8PERERExMTFRUVF1dXWVlZW1tbXNzc3t7e4ODg42NjZOTk5qamqSkpK2trbS0tLy8vMPDw8zMzNTU1Nzc3OPj4+3t7fT09P///wAAACH5BAkKAB8ALAAAAAAnACcAAAX/oCeOJKlRTzIARwNVWinPNNYAeK4HjNXRQNLGkRsIArnAYIVbZILAjAFAYAICgmxyQMBZoDJNt1vUGc0CAAY86iioSdwgkTjIzQAEh+2hwHFpAhQbHIUZRGk5XRRsbldxazIQAFZpCz9QGjqUABM0HHZIjwMxUBgAiUh6QJOVAE9QGVRGBQCMQBJ/qGpgHUQ5l0GtOWmwUBwTCwoRe0AbZDhIBRt8Hh2YQURWKw/VfMOKvN5BHA+cObUR40EZCOc4tQzY6yUXONACXQzN9CUWV9twRJjXT4S9M/e8FJTBoVYiTgxKLSRRQdcKCAQnejDHZIUDjTNuJFphDOSICAAKUQiIZzLMpgstZWR4sKABzJgzMuLcyXMdBwsTKEjcqcFdjls4HRXgsuJmTHu1EjbYOeFdmgT8TFaEtiJYzA13UnbiWfERgAY6QdoQgGBCWiAhAAA7}\n");
-    sys_vgui("if {[catch {pd}]} {\n");
-    sys_vgui("    proc pd {args} {pdsend [join $args \" \"]}\n");
-    sys_vgui("}\n");
-    sys_vgui("proc pic_ok {id} {\n");
-    sys_vgui("    set vid [string trimleft $id .]\n");
-    sys_vgui("    set var_name [concat var_name_$vid]\n");
-    sys_vgui("    set var_outline [concat var_outline_$vid]\n");
-    sys_vgui("    set var_size [concat var_size_$vid]\n");
-    sys_vgui("    set var_latch [concat var_latch_$vid]\n");
-    sys_vgui("    set var_snd [concat var_snd_$vid]\n");
-    sys_vgui("    set var_rcv [concat var_rcv_$vid]\n");
-    sys_vgui("\n");
-    sys_vgui("    global $var_name\n");
-    sys_vgui("    global $var_outline\n");
-    sys_vgui("    global $var_size\n");
-    sys_vgui("    global $var_latch\n");
-    sys_vgui("    global $var_snd\n");
-    sys_vgui("    global $var_rcv\n");
-    sys_vgui("\n");
-    sys_vgui("    set cmd [concat $id ok \\\n");
-    sys_vgui("        [string map {\" \" {\\ } \";\" \"\" \",\" \"\" \"\\\\\" \"\" \"\\{\" \"\" \"\\}\" \"\"} [eval concat $$var_name]] \\\n");
-    sys_vgui("        [eval concat $$var_outline] \\\n");
-    sys_vgui("        [eval concat $$var_size] \\\n");
-    sys_vgui("        [eval concat $$var_latch] \\\n");
-    sys_vgui("        [string map {\"$\" {\\$} \" \" {\\ } \";\" \"\" \",\" \"\" \"\\\\\" \"\" \"\\{\" \"\" \"\\}\" \"\"} [eval concat $$var_snd]] \\\n");
-    sys_vgui("        [string map {\"$\" {\\$} \" \" {\\ } \";\" \"\" \",\" \"\" \"\\\\\" \"\" \"\\{\" \"\" \"\\}\" \"\"} [eval concat $$var_rcv]] \\;]\n");
-    sys_vgui("    pd $cmd\n");
-    sys_vgui("    pic_cancel $id\n");
-    sys_vgui("}\n");
-    sys_vgui("proc pic_cancel {id} {\n");
-    sys_vgui("    set cmd [concat $id cancel \\;]\n");
-    sys_vgui("    pd $cmd\n");
-    sys_vgui("}\n");
-    sys_vgui("proc pic_properties {id name outline size latch snd rcv} {\n");
-    sys_vgui("    set vid [string trimleft $id .]\n");
-    sys_vgui("    set var_name [concat var_name_$vid]\n");
-    sys_vgui("    set var_outline [concat var_outline_$vid]\n");
-    sys_vgui("    set var_size [concat var_size_$vid]\n");
-    sys_vgui("    set var_latch [concat var_latch_$vid]\n");
-    sys_vgui("    set var_snd [concat var_snd_$vid]\n");
-    sys_vgui("    set var_rcv [concat var_rcv_$vid]\n");
-    sys_vgui("\n");
-    sys_vgui("    global $var_name\n");
-    sys_vgui("    global $var_outline\n");
-    sys_vgui("    global $var_size\n");
-    sys_vgui("    global $var_latch\n");
-    sys_vgui("    global $var_snd\n");
-    sys_vgui("    global $var_rcv\n");
-    sys_vgui("\n");
-    sys_vgui("    set $var_name [string map {{\\ } \" \"} $name]\n"); // remove escape from space
-    sys_vgui("    set $var_outline $outline\n");
-    sys_vgui("    set $var_size $size\n");
-    sys_vgui("    set $var_latch $latch\n");
-    sys_vgui("    set $var_snd [string map {{\\ } \" \"} $snd]\n"); // remove escape from space
-    sys_vgui("    set $var_rcv [string map {{\\ } \" \"} $rcv]\n"); // remove escape from space
-    sys_vgui("\n");
-    sys_vgui("    toplevel $id\n");
-    sys_vgui("    wm title $id {[pic] Properties}\n");
-    sys_vgui("    wm protocol $id WM_DELETE_WINDOW [concat pic_cancel $id]\n");
-    sys_vgui("\n");
-    sys_vgui("    frame $id.pic\n");
-    sys_vgui("    pack $id.pic -side top\n");
-    sys_vgui("    label $id.pic.lname -text \"File Name:\"\n");
-    sys_vgui("    entry $id.pic.name -textvariable $var_name -width 30\n");
-    sys_vgui("    label $id.pic.loutline -text \"Outline:\"\n");
-    sys_vgui("    checkbutton $id.pic.outline -variable $var_outline \n");
-    sys_vgui("    pack $id.pic.lname $id.pic.name $id.pic.loutline $id.pic.outline -side left\n");
-    sys_vgui("\n");
-    sys_vgui("    frame $id.sz_latch\n");
-    sys_vgui("    pack $id.sz_latch -side top\n");
-    sys_vgui("    label $id.sz_latch.lsize -text \"Report Size:\"\n");
-    sys_vgui("    checkbutton $id.sz_latch.size -variable $var_size \n");
-    sys_vgui("    label $id.sz_latch.llatch -text \"Latch Mode:\"\n");
-    sys_vgui("    checkbutton $id.sz_latch.latch -variable $var_latch \n");
-    sys_vgui("    pack $id.sz_latch.lsize $id.sz_latch.size $id.sz_latch.llatch $id.sz_latch.latch -side left\n");
-    sys_vgui("\n");
-    sys_vgui("    frame $id.snd_rcv\n");
-    sys_vgui("    pack $id.snd_rcv -side top\n");
-    sys_vgui("    label $id.snd_rcv.lsnd -text \"Send symbol:\"\n");
-    sys_vgui("    entry $id.snd_rcv.snd -textvariable $var_snd -width 12\n");
-    sys_vgui("    label $id.snd_rcv.lrcv -text \"Receive symbol:\"\n");
-    sys_vgui("    entry $id.snd_rcv.rcv -textvariable $var_rcv -width 12\n");
-    sys_vgui("    pack $id.snd_rcv.lsnd $id.snd_rcv.snd $id.snd_rcv.lrcv $id.snd_rcv.rcv -side left\n");
-    sys_vgui("\n");
-    sys_vgui("    frame $id.buttonframe\n");
-    sys_vgui("    pack $id.buttonframe -side bottom -fill x -pady 2m\n");
-    sys_vgui("    button $id.buttonframe.cancel -text {Cancel} -command \"pic_cancel $id\"\n");
-    sys_vgui("    button $id.buttonframe.ok -text {OK} -command \"pic_ok $id\"\n");
-    sys_vgui("    pack $id.buttonframe.cancel -side left -expand 1\n");
-    sys_vgui("    pack $id.buttonframe.ok -side left -expand 1\n");
-    sys_vgui("}\n");
+    #include "../Extra/pic_dialog.h"
+    pdgui_vmess(pic_dialog_tcl, NULL);
 }

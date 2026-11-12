@@ -36,12 +36,15 @@ typedef struct _numbox{
     int       x_width, x_height;
     int       x_zoom;
     int       x_outmode;
+    int       x_theme;
+    int       x_transparent;
     char      x_buf[MAX_NUMBOX_LEN]; // number buffer
     char      x_tag_number[128];
     char      x_tag_out[128];
     char      x_tag_in[128];
     char      x_tag_base[128];
     char      x_tag_all[128];
+    t_symbol *x_bindname;
 }t_numbox;
 
 static t_class *numbox_class;
@@ -114,6 +117,73 @@ static float numbox_clip(t_numbox *x, t_floatarg val){
             return(val > x->x_lower ? x->x_lower : val < x->x_upper ? x->x_upper : val);
     }
     return(val);
+}
+
+// ---- color helpers ----
+static t_symbol *numbox_getcolor(int ac, t_atom *av){
+    if((av)->a_type == A_SYMBOL)
+        return(atom_getsymbol(av));
+    else{
+        int r = atom_getintarg(0, ac, av);
+        int g = atom_getintarg(1, ac, av);
+        int b = atom_getintarg(2, ac, av);
+        r = r < 0 ? 0 : r > 255 ? 255 : r;
+        g = g < 0 ? 0 : g > 255 ? 255 : g;
+        b = b < 0 ? 0 : b > 255 ? 255 : b;
+        char color[20];
+        sprintf(color, "#%.2x%.2x%.2x", r, g, b);
+        return(gensym(color));
+    }
+}
+
+// get the resolved bg color (respecting theme)
+static void numbox_get_bg(t_numbox *x, char *buf, size_t size){
+    if(x->x_transparent)
+        buf[0] = 0; // empty fill = transparent
+    else if(x->x_theme)
+        snprintf(buf, size, "#%06X", THISGUI->i_backgroundcolor);
+    else
+        snprintf(buf, size, "%s", x->x_bg->s_name);
+}
+
+static void numbox_get_fg(t_numbox *x, char *buf, size_t size){
+    if(x->x_theme)
+        snprintf(buf, size, "#%06X", THISGUI->i_foregroundcolor);
+    else
+        snprintf(buf, size, "%s", x->x_fg->s_name);
+}
+
+static void numbox_config_bg(t_numbox *x){
+    if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+        char bg[32];
+        numbox_get_bg(x, bg, sizeof(bg));
+        pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure", x->x_tag_base,
+            "-fill", bg);
+    }
+}
+
+static void numbox_config_fg(t_numbox *x){
+    if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+        char fg[32];
+        numbox_get_fg(x, fg, sizeof(fg));
+        pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure", x->x_tag_number,
+            "-fill", fg);
+    }
+}
+
+static void numbox_send_color_validate(t_numbox *x, const char *color, int which){
+    char buf[512];
+    snprintf(buf, sizeof(buf), "set color_name {%s}", color);
+    pdgui_vmess(buf, NULL);
+    pdgui_vmess("set color_escaped [string map {{ } {\\ }} $color_name]", NULL);
+    pdgui_vmess("set hex_color [color2hex $color_name]", NULL);
+    snprintf(buf, sizeof(buf),
+        "if {$hex_color eq \"\"} "
+        "{pdsend \"%s _validate 0 $color_escaped %d\"} "
+        "else {pdsend \"%s _validate 1 $hex_color %d\"}",
+        x->x_bindname->s_name, which,
+        x->x_bindname->s_name, which);
+    pdgui_vmess(buf, NULL);
 }
 
 // ------------------------ Methods-----------------------------
@@ -194,28 +264,76 @@ static void numbox_list(t_numbox *x, t_symbol *sym, int ac, t_atom *av){ // get 
         numbox_float(x, numbox_clip(x, x->x_out_val - x->x_inc));
 }
 
-static void numbox_bg(t_numbox *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
-    t_symbol *bg = NULL;
-    if(ac == 1 && av->a_type == A_SYMBOL)
-        bg = atom_getsymbolarg(0, ac, av);
-    if(x->x_bg != bg && bg != NULL){
-        x->x_bg = bg;
-        pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure", x->x_tag_base,
-            "-fill", x->x_bg->s_name);
+static void numbox_validate(t_numbox *x, t_floatarg v, t_symbol *color, t_floatarg which){
+    if(!(int)v){
+        pd_error(0, "[numbox~] invalid color '%s'", color->s_name);
+        return;
     }
-//    else if(ac == 3 && av->a_type == A_SYMBOL)
+    if((int)which == 0){ // bg
+        if(x->x_bg != color){
+            x->x_bg = color;
+            numbox_config_bg(x);
+        }
+    }
+    else{ // fg
+        if(x->x_fg != color){
+            x->x_fg = color;
+            numbox_config_fg(x);
+        }
+    }
+}
+
+// internal color setters (don't clear theme - used by dialog and by _validate)
+static void numbox_bgcolor(t_numbox *x, t_symbol *s, int ac, t_atom *av){
+    (void)s;
+    if(!ac)
+        return;
+    numbox_send_color_validate(x, numbox_getcolor(ac, av)->s_name, 0);
+}
+
+static void numbox_setfgcolor(t_numbox *x, t_symbol *s, int ac, t_atom *av){
+    (void)s;
+    if(!ac)
+        return;
+    numbox_send_color_validate(x, numbox_getcolor(ac, av)->s_name, 1);
+}
+
+// public message setters - clear theme since explicit color overrides it
+static void numbox_setbgcolor(t_numbox *x, t_symbol *s, int ac, t_atom *av){
+    (void)s;
+    x->x_theme = 0;
+    numbox_bgcolor(x, NULL, ac, av);
 }
 
 static void numbox_fg(t_numbox *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
-    t_symbol *fg = NULL;
-    if(ac == 1 && av->a_type == A_SYMBOL)
-        fg = atom_getsymbolarg(0, ac, av);
-    if(x->x_fg != fg && fg != NULL){
-        x->x_fg = fg;
-        pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure", x->x_tag_number,
-            "-fill", x->x_fg->s_name);
+    (void)s;
+    x->x_theme = 0;
+    numbox_setfgcolor(x, NULL, ac, av);
+}
+
+static void numbox_colors(t_numbox *x, t_symbol *bg, t_symbol *fg){
+    x->x_theme = 0;
+    t_atom at[1];
+    SETSYMBOL(at, bg);
+    numbox_bgcolor(x, NULL, 1, at);
+    SETSYMBOL(at, fg);
+    numbox_setfgcolor(x, NULL, 1, at);
+}
+
+static void numbox_theme(t_numbox *x, t_floatarg f){
+    int theme = f != 0;
+    if(x->x_theme != theme){
+        x->x_theme = theme;
+        numbox_config_bg(x);
+        numbox_config_fg(x);
+    }
+}
+
+static void numbox_transparent(t_numbox *x, t_floatarg f){
+    int transp = (int)(f != 0);
+    if(x->x_transparent != transp){
+        x->x_transparent = transp;
+        numbox_config_bg(x);
     }
 }
 
@@ -297,16 +415,26 @@ static void numbox_select(t_gobj *z, t_glist *glist, int sel){
     t_numbox *x = (t_numbox *)z;
     x->x_cv = glist_getcanvas(x->x_glist = glist);
     if(sel){
-        pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure", x->x_tag_number,
-            "-fill", "blue");
-        pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure", x->x_tag_base,
-            "-outline", "blue");
+        pdgui_vmess(0, "crs rk", x->x_cv, "itemconfigure", x->x_tag_number,
+            "-fill", THISGUI->i_selectcolor);
+        pdgui_vmess(0, "crs rk", x->x_cv, "itemconfigure", x->x_tag_base,
+            "-outline", THISGUI->i_selectcolor);
+        pdgui_vmess(0, "crs rk rk", x->x_cv, "itemconfigure", x->x_tag_in,
+            "-fill", THISGUI->i_selectcolor, "-outline", THISGUI->i_selectcolor);
+        pdgui_vmess(0, "crs rk rk", x->x_cv, "itemconfigure", x->x_tag_out,
+            "-fill", THISGUI->i_selectcolor, "-outline", THISGUI->i_selectcolor);
     }
     else{
+        char fg[32];
+        numbox_get_fg(x, fg, sizeof(fg));
         pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure", x->x_tag_number,
-            "-fill", x->x_fg->s_name);
-        pdgui_vmess(0, "crs rs", x->x_cv, "itemconfigure", x->x_tag_base,
-            "-outline", "black");
+            "-fill", fg);
+        pdgui_vmess(0, "crs rk", x->x_cv, "itemconfigure", x->x_tag_base,
+            "-outline", THISGUI->i_foregroundcolor);
+        pdgui_vmess(0, "crs rk rk", x->x_cv, "itemconfigure", x->x_tag_in,
+            "-fill", THISGUI->i_foregroundcolor, "-outline", THISGUI->i_foregroundcolor);
+        pdgui_vmess(0, "crs rk rk", x->x_cv, "itemconfigure", x->x_tag_out,
+            "-fill", THISGUI->i_foregroundcolor, "-outline", THISGUI->i_foregroundcolor);
     }
 }
 
@@ -321,29 +449,33 @@ static void numbox_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 void numbox_vis(t_gobj *z, t_glist *glist, int vis){
     t_numbox* x = (t_numbox*)z;
     if(vis){ // draw
-//        t_canvas *cv = glist_getcanvas(glist);
         x->x_cv = glist_getcanvas(x->x_glist = glist);
         int x1 = text_xpix(&x->x_obj, x->x_glist);
         int y1 = text_ypix(&x->x_obj, x->x_glist);
         int x2 = x1 + x->x_width*x->x_zoom, y2 = y1 + x->x_height*x->x_zoom;
+        char bg[32], fg[32];
+        numbox_get_bg(x, bg, sizeof(bg));
+        numbox_get_fg(x, fg, sizeof(fg));
     // draw base / background
         char *tags_base[] = {x->x_tag_base, x->x_tag_all};
-        pdgui_vmess(0, "crr iiii ri rsrs rS", x->x_cv, "create", "rectangle",
+        pdgui_vmess(0, "crr iiii ri rk rs rS", x->x_cv, "create", "rectangle",
             x1, y1, x2, y2,
             "-width", x->x_zoom,
-            "-outline", "black", "-fill", x->x_bg->s_name,
+            "-outline", THISGUI->i_foregroundcolor, "-fill", bg,
             "-tags", 2, tags_base);
     // draw inlet/outlet
         int iow = IOWIDTH*x->x_zoom, ioh = OHEIGHT*x->x_zoom;
         char *tags_in[] = {x->x_tag_in, x->x_tag_all};
-        pdgui_vmess(0, "crr iiii rs rS", x->x_cv, "create", "rectangle",
+        pdgui_vmess(0, "crr iiii rk rk rS", x->x_cv, "create", "rectangle",
             x1, y1, x1+iow, y1+ioh-x->x_zoom,
-            "-fill", "black",
+            "-fill", THISGUI->i_foregroundcolor,
+            "-outline", THISGUI->i_foregroundcolor,
             "-tags", 2, tags_in);
         char *tags_out[] = {x->x_tag_out, x->x_tag_all};
-        pdgui_vmess(0, "crr iiii rs rS", x->x_cv, "create", "rectangle",
+        pdgui_vmess(0, "crr iiii rk rk rS", x->x_cv, "create", "rectangle",
             x1, y2-ioh+x->x_zoom, x1+iow, y2,
-            "-fill", "black",
+            "-fill", THISGUI->i_foregroundcolor,
+            "-outline", THISGUI->i_foregroundcolor,
             "-tags", 2, tags_out);
     // draw number
         int size = x->x_fontsize*x->x_zoom;
@@ -358,7 +490,7 @@ void numbox_vis(t_gobj *z, t_glist *glist, int vis){
             "-text", set_x_buf(x),
             "-anchor", "w",
             "-font", 2, at,
-            "-fill", x->x_fg->s_name,
+            "-fill", fg,
             "-tags", 2, tags_number);
     }
     else // erase
@@ -366,15 +498,20 @@ void numbox_vis(t_gobj *z, t_glist *glist, int vis){
 }
 
 static void numbox_properties(t_gobj *z, t_glist *owner){
+    (void)owner;
     t_numbox *x = (t_numbox *)z;
+    char pd_bg[32];
+    snprintf(pd_bg, sizeof(pd_bg), "#%06X", THISGUI->i_backgroundcolor);
+    char pd_fg[32];
+    snprintf(pd_fg, sizeof(pd_fg), "#%06X", THISGUI->i_foregroundcolor);
     pdgui_stub_vnew(&x->x_obj.ob_pd, "::dialog_numbox::pdtk_numbox_dialog",
-        x, "iiiiii fssff", x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE,
+        x, "iiiiii fssff ssii", x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE,
         x->x_ramp_ms, x->x_rate, x->x_set_val, x->x_bg->s_name, x->x_fg->s_name,
-        x->x_lower, x->x_upper);
+        x->x_lower, x->x_upper, pd_bg, pd_fg, x->x_theme, x->x_transparent);
 }
 
 static void numbox_dialog(t_numbox *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL; // we receive this when applying changes in properties
+    (void)s;
     int width = atom_getintarg(0, ac, av);
     int size = atom_getintarg(1, ac, av);
     int ramp_ms = atom_getintarg(2, ac, av);
@@ -384,7 +521,9 @@ static void numbox_dialog(t_numbox *x, t_symbol *s, int ac, t_atom *av){
     t_symbol *fgcolor = atom_getsymbolarg(6, ac, av);
     t_float min = atom_getfloatarg(7, ac, av);
     t_float max = atom_getfloatarg(8, ac, av);
-    t_atom undo[9];
+    int theme = atom_getintarg(9, ac, av);
+    int transp = atom_getintarg(10, ac, av);
+    t_atom undo[11];
     SETFLOAT(undo+0, x->x_numwidth);
     SETFLOAT(undo+1, x->x_fontsize);
     SETFLOAT(undo+2, x->x_ramp_ms);
@@ -394,17 +533,21 @@ static void numbox_dialog(t_numbox *x, t_symbol *s, int ac, t_atom *av){
     SETSYMBOL(undo+6, x->x_fg);
     SETFLOAT(undo+7, x->x_lower);
     SETFLOAT(undo+8, x->x_upper);
-    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 9, undo, ac, av);
+    SETFLOAT(undo+9, x->x_theme);
+    SETFLOAT(undo+10, x->x_transparent);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 11, undo, ac, av);
     numbox_ramp(x, ramp_ms);
     numbox_rate(x, rate);
     numbox_range(x, min, max);
     t_atom at[1];
     SETFLOAT(at, initial);
     numbox_init(x, NULL, 1, at);
-    SETSYMBOL(at, bgcolor);
-    numbox_bg(x, NULL, 1, at);
-    SETSYMBOL(at, fgcolor);
-    numbox_fg(x, NULL, 1, at);
+    x->x_theme = theme != 0;
+    x->x_transparent = transp != 0;
+    x->x_bg = bgcolor;
+    x->x_fg = fgcolor;
+    numbox_config_bg(x);
+    numbox_config_fg(x);
     numbox_width(x, width);
     numbox_size(x, size);
     canvas_fixlinesfor(x->x_glist, (t_text*)x);
@@ -413,13 +556,14 @@ static void numbox_dialog(t_numbox *x, t_symbol *s, int ac, t_atom *av){
 
 static void numbox_save(t_gobj *z, t_binbuf *b){
     t_numbox *x = (t_numbox *)z;
-    binbuf_addv(b, "ssiisiiissifff", gensym("#X"), gensym("obj"), (int)x->x_obj.te_xpix,
+    binbuf_addv(b, "ssiisiiissifffii", gensym("#X"), gensym("obj"), (int)x->x_obj.te_xpix,
         (int)x->x_obj.te_ypix, atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)), x->x_numwidth,
-        x->x_fontsize, x->x_rate, x->x_bg, x->x_fg, x->x_ramp_ms, x->x_lower, x->x_upper, x->x_set_val);
+        x->x_fontsize, x->x_rate, x->x_bg, x->x_fg, x->x_ramp_ms, x->x_lower, x->x_upper,
+        x->x_set_val, x->x_theme, x->x_transparent);
     binbuf_addv(b, ";");
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
 static t_int *numbox_perform(t_int *w){
     t_numbox *x   = (t_numbox *)(w[1]);
     t_sample *in  = (t_sample *)(w[2]);
@@ -456,6 +600,8 @@ static void numbox_free(t_numbox *x){
     if(x->x_clicked)
         pd_unbind((t_pd *)x, gensym("#keyname"));
     clock_free(x->x_clock_update);
+    if(x->x_bindname)
+        pd_unbind(&x->x_obj.ob_pd, x->x_bindname);
     pdgui_stub_deleteforkey(x);
 }
 
@@ -468,10 +614,13 @@ static void *numbox_new(t_symbol *s, int ac, t_atom *av){
     x->x_in_val = x->x_set_val = x->x_out_val = 0.0;
     x->x_buf[0] = 0; // ??
     x->x_clicked = 0, x->x_outmode = 1;
+    x->x_theme = 0;
+    x->x_transparent = 0;
+    x->x_bindname = NULL;
     int width = 6, size = glist_getfont(x->x_glist), rate = 100, ramp_ms = 10;
     t_float minimum = 0, maximum = 0;
     x->x_bg = gensym("#C0C0C4"), x->x_fg = gensym("#440008");
-    if(ac == 9 && av->a_type == A_FLOAT){
+    if((ac >= 9 && ac <= 11) && av->a_type == A_FLOAT){
         width = atom_getintarg(0, ac, av);
         size = atom_getintarg(1, ac, av);
         rate = atom_getintarg(2, ac, av);
@@ -481,6 +630,10 @@ static void *numbox_new(t_symbol *s, int ac, t_atom *av){
         minimum = atom_getfloatarg(6, ac, av);
         maximum = atom_getfloatarg(7, ac, av);
         x->x_set_val = atom_getfloatarg(8, ac, av);
+        if(ac >= 10)
+            x->x_theme = atom_getintarg(9, ac, av) != 0;
+        if(ac == 11)
+            x->x_transparent = atom_getintarg(10, ac, av) != 0;
     }
     else while(ac > 0){
         if(av->a_type == A_SYMBOL){
@@ -548,6 +701,14 @@ static void *numbox_new(t_symbol *s, int ac, t_atom *av){
                 }
                 else goto errstate;
             }
+            else if(sym == gensym("-theme")){
+                x->x_theme = 1;
+                ac--, av++;
+            }
+            else if(sym == gensym("-transparent")){
+                x->x_transparent = 1;
+                ac--, av++;
+            }
             else goto errstate;
         }
         else goto errstate;
@@ -558,7 +719,7 @@ static void *numbox_new(t_symbol *s, int ac, t_atom *av){
     x->x_height = x->x_fontsize + 4;
     numbox_range(x, minimum, maximum);
     x->x_rate = rate < 15 ? 15 : (int)rate;
-    x->x_ramp_ms = ramp_ms < 0 ? 0 : ramp_ms;    
+    x->x_ramp_ms = ramp_ms < 0 ? 0 : ramp_ms;
     x->x_out_val = x->x_ramp_val = x->x_set_val;
     x->x_sr_khz = sys_getsr() * 0.001;
     x->x_font = gensym(sys_font);
@@ -569,6 +730,11 @@ static void *numbox_new(t_symbol *s, int ac, t_atom *av){
     sprintf(x->x_tag_in, "%pIN", x);
     sprintf(x->x_tag_all, "%pALL", x);
     sprintf(x->x_tag_base, "%pBASE", x);
+    // bindname for the Tcl color validation round-trip
+    char cbuf[MAXPDSTRING];
+    snprintf(cbuf, MAXPDSTRING-1, "#%lx", (long)x);
+    cbuf[MAXPDSTRING-1] = 0;
+    pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(cbuf));
     outlet_new(&x->x_obj, &s_signal);
     return(x);
 errstate:
@@ -588,8 +754,13 @@ void numbox_tilde_setup(void){
     class_addmethod(numbox_class, (t_method)numbox_size, gensym("size"), A_FLOAT, 0);
     class_addmethod(numbox_class, (t_method)numbox_range, gensym("range"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(numbox_class, (t_method)numbox_init, gensym("load"), A_GIMME, 0);
-    class_addmethod(numbox_class, (t_method)numbox_bg, gensym("bgcolor"), A_GIMME, 0);
+    class_addmethod(numbox_class, (t_method)numbox_setbgcolor, gensym("bgcolor"), A_GIMME, 0);
     class_addmethod(numbox_class, (t_method)numbox_fg, gensym("fgcolor"), A_GIMME, 0);
+    class_addmethod(numbox_class, (t_method)numbox_colors, gensym("colors"), A_SYMBOL, A_SYMBOL, 0);
+    class_addmethod(numbox_class, (t_method)numbox_theme, gensym("theme"), A_FLOAT, 0);
+    class_addmethod(numbox_class, (t_method)numbox_transparent, gensym("transparent"), A_FLOAT, 0);
+    class_addmethod(numbox_class, (t_method)numbox_validate, gensym("_validate"),
+        A_FLOAT, A_SYMBOL, A_FLOAT, 0);
     class_addmethod(numbox_class, (t_method)numbox_zoom, gensym("zoom"), A_CANT, 0);
     class_addmethod(numbox_class, (t_method)numbox_dialog, gensym("dialog"), A_GIMME, 0);
     numbox_widgetbehavior.w_getrectfn  = numbox_getrect;
@@ -602,5 +773,8 @@ void numbox_tilde_setup(void){
     class_setwidget(numbox_class, &numbox_widgetbehavior);
     class_setsavefn(numbox_class, numbox_save);
     class_setpropertiesfn(numbox_class, numbox_properties);
-    #include "../Extra/numbox~_dialog.c"
+    #include "../Extra/else_tcl_utils.h"
+    pdgui_vmess(else_tcl_utils, NULL);
+    #include "../Extra/numbox~_dialog.h"
+    pdgui_vmess(numbox_dialog_tcl, NULL);
 }

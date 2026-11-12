@@ -58,16 +58,18 @@ static void openfile_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     }
 }
 
-// does it make a difference?????
 static void openfile_select(t_gobj *z, t_glist *glist, int state){
     t_openfile *x = (t_openfile *)z;
     t_rtext *y = glist_getrtext(glist, (t_text *)x, 1);
+    t_canvas *cv = glist_getcanvas(glist);
     rtext_select(y, state);
     if(state)
-        sys_vgui(".x%lx.c itemconfigure %s -fill blue\n", glist, rtext_gettag(y));
+        pdgui_vmess(0, "crs rk", cv, "itemconfigure",
+            rtext_gettag(y), "-fill", THISGUI->i_selectcolor);
     else
-        sys_vgui(".x%lx.c itemconfigure %s -text {%s} -fill #0000dd -activefill #e70000\n",
-            glist, rtext_gettag(y), x->x_vistext);
+        pdgui_vmess(0, "crs rsrsrs", cv, "itemconfigure",
+            rtext_gettag(y), "-text", x->x_vistext,
+            "-fill", "#0000dd", "-activefill", "#e70000");
 }
 
 static void openfile_activate(t_gobj *z, t_glist *glist, int state){
@@ -82,8 +84,10 @@ static void openfile_vis(t_gobj *z, t_glist *glist, int vis){
     t_rtext *y = glist_getrtext(glist, (t_text *)x, 1);
     if(vis){
         rtext_draw(y);
-        sys_vgui(".x%lx.c itemconfigure %s -text {%s} -fill #0000dd -activefill #e70000\n",
-            glist_getcanvas(glist), rtext_gettag(y), x->x_vistext);
+        t_canvas *cv = glist_getcanvas(glist);
+        pdgui_vmess(0, "crs rsrsrs", cv, "itemconfigure",
+            rtext_gettag(y), "-text", x->x_vistext,
+            "-fill", "#0000dd", "-activefill", "#e70000");
     }
     else
         rtext_erase(y);
@@ -106,7 +110,7 @@ static void openfile_click(t_openfile *x, t_floatarg xpos, t_floatarg ypos, t_fl
     alt = ctrl = shift = ypos = xpos = 0;
     t_symbol *fn = openfile_doopen(x, x->x_filename);
     if(fn != NULL)
-        sys_vgui("openfile_open {%s}\n", fn->s_name);
+        pdgui_vmess(0, "rs", "openfile_open", fn->s_name);
 }
 
 static int openfile_wbclick(t_gobj *z, t_glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
@@ -268,11 +272,12 @@ void openfile_setup(void){
     class_addmethod(openfilebox_class, (t_method)openfile_click, gensym("click"),
         A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(openfilebox_class, (t_method)openfile_open, gensym("open"), A_DEFSYMBOL, 0);
-    sys_vgui("proc openfile_open {filename} {\n");
-    sys_vgui("    if {[string first \"://\" $filename] > -1} {\n");
-    sys_vgui("        menu_openfile $filename\n");
-    sys_vgui("    } elseif {[file pathtype $filename] eq \"absolute\"} {\n");
-    sys_vgui("        menu_openfile $filename\n");
-    sys_vgui("    }\n");
-    sys_vgui("}\n");
+    pdgui_vmess(
+        "proc openfile_open {filename} {\n"
+        "    if {[string first \"://\" $filename] > -1} {\n"
+        "        menu_openfile $filename\n"
+        "    } elseif {[file pathtype $filename] eq \"absolute\"} {\n"
+        "        menu_openfile $filename\n"
+        "    }\n"
+        "}", NULL);
 }

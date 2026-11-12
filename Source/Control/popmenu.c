@@ -36,14 +36,14 @@ typedef struct _menu{
     t_symbol       *x_var;
     t_symbol       *x_var_raw;
     int            x_var_set;
-    int             x_savestate;
-    int             x_keep;         // keep/save contents
-    int             x_load;         // value when loading patch
-    int             x_lb;
-    int             x_outline;
-    int             x_outmode;
-    int             x_flag;
-    int             x_pos;
+    int            x_savestate;
+    int            x_keep;         // keep/save contents
+    int            x_load;         // value when loading patch
+    int            x_lb;
+    int            x_outline;
+    int            x_outmode;
+    int            x_flag;
+    int            x_pos;
     t_symbol       *x_dir;
     t_symbol       *x_rcv;
     t_symbol       *x_rcv_raw;
@@ -58,6 +58,7 @@ typedef struct _menu{
     char            x_tag_outline[32];
     char            x_tag_in[32];
     char            x_tag_out[32];
+    char            x_tag_IO[32];
     char            x_tag_sel[32];
     char            x_tag_mb[32];
     char            x_tag_popmenu[32];
@@ -71,6 +72,7 @@ typedef struct _menu{
     t_symbol       *x_ignore;
     t_atom         *x_options;
     int             x_itemcount;
+    t_symbol       *x_bindname; // for Tcl color validation round-trip
 }t_menu;
 
 // Helper functions -----------------------------------------------------------------
@@ -248,11 +250,14 @@ static void menu_get_var(t_menu* x){
 // DRAW functions --------------------------------------------------------------
 static void create_menu(t_menu *x, t_glist *glist){
     char buf[MAXPDSTRING];
+    char cmd[2048];
     t_canvas *cv = glist_getcanvas(glist);
     sprintf(x->x_tag_mb, ".x%lx.c.s%lx", (unsigned long)cv, (unsigned long)x);
     sprintf(x->x_tag_menu, "%s.menu", x->x_tag_mb);
     sprintf(x->x_tag_menu_sel, "%s_idx", x->x_tag_menu);
-    sys_vgui("set %s {}\n", x->x_tag_menu_sel); // e.g., "menu_selectedItem"
+    // e.g., "menu_selectedItem" – set it to empty
+    snprintf(cmd, sizeof(cmd), "set %s {}", x->x_tag_menu_sel);
+    pdgui_vmess(cmd, NULL);
     t_symbol* temp_name;
     if(x->x_idx < 0)  // use default if not selected
         temp_name = x->x_label;
@@ -281,26 +286,37 @@ static void create_menu(t_menu *x, t_glist *glist){
     // Loop through menu items to add radiobuttons
     for(int i = 0; i < x->x_n_items; i++) {
         sprintf(buf, "%s", x->x_items[i]->s_name);
-        sys_vgui("%s add radiobutton -label \"%s\" -variable %s -value \"option_%d\" \
-            -command {%s configure -text \"%s\" \; %s \"%d\"} \n",
+        snprintf(cmd, sizeof(cmd),
+            "%s add radiobutton -label \"%s\" -variable %s -value \"option_%d\" "
+            "-command {%s configure -text \"%s\" ; %s \"%d\"}",
             x->x_tag_menu, buf, x->x_tag_menu_sel, i,
             x->x_tag_mb, buf, x->x_callback_proc, i);
+        pdgui_vmess(cmd, NULL);
     }
     // Set the selected index value to the variable (clear any previous selection)
-    sys_vgui("set %s \"option_%d\" \n", x->x_tag_menu_sel, x->x_idx);
+    snprintf(cmd, sizeof(cmd), "set %s \"option_%d\"", x->x_tag_menu_sel, x->x_idx);
+    pdgui_vmess(cmd, NULL);
     // Reconfigure the selected entry to match the current index
     if (x->x_idx >= 0) {
-        sys_vgui("%s entryconfigure %d -variable %s -value \"option_%d\" \n",
+        snprintf(cmd, sizeof(cmd),
+            "%s entryconfigure %d -variable %s -value \"option_%d\"",
             x->x_tag_menu, x->x_idx, x->x_tag_menu_sel, x->x_idx);
+        pdgui_vmess(cmd, NULL);
     }
     // set tk widget ids
     sprintf(buf, ".x%lx.c", (unsigned long)cv);
     x->x_cvId = getbytes(strlen(buf) + 1); // Tk ID for current canvas this object is drawn in
     strcpy(x->x_cvId, buf);
-    sys_vgui("bind %s.s%lx <Button> {pdtk_canvas_mouse %s [expr %%X - [winfo rootx %s]] \
-        [expr %%Y - [winfo rooty %s]] %%b 0}\n", x->x_cvId, x, x->x_cvId, x->x_cvId, x->x_cvId);
-    sys_vgui("bind %s.s%lx <Button-2> {pdtk_canvas_rightclick %s [expr %%X - [winfo rootx %s]] \
-        [expr %%Y - [winfo rooty %s]] %%b}\n", x->x_cvId, x, x->x_cvId, x->x_cvId, x->x_cvId);
+    snprintf(cmd, sizeof(cmd),
+        "bind %s.s%lx <Button> {pdtk_canvas_mouse %s [expr %%X - [winfo rootx %s]] "
+        "[expr %%Y - [winfo rooty %s]] %%b 0}",
+        x->x_cvId, (unsigned long)x, x->x_cvId, x->x_cvId, x->x_cvId);
+    pdgui_vmess(cmd, NULL);
+    snprintf(cmd, sizeof(cmd),
+        "bind %s.s%lx <Button-2> {pdtk_canvas_rightclick %s [expr %%X - [winfo rootx %s]] "
+        "[expr %%Y - [winfo rooty %s]] %%b}",
+        x->x_cvId, (unsigned long)x, x->x_cvId, x->x_cvId, x->x_cvId);
+    pdgui_vmess(cmd, NULL);
 }
 
 static void menu_draw(t_menu *x, t_glist *glist){
@@ -319,22 +335,28 @@ static void menu_draw(t_menu *x, t_glist *glist){
         "-anchor", "nw", "-window", x->x_tag_mb,
         "-tags", 2, tags_popmenu);
     menu_disablecheck(x);
- // Object Outline
+ // Object Outline (stroke uses Pd's foreground color, like knob)
     char *tags_outline[] = {x->x_tag_outline, x->x_tag_obj, x->x_tag_sel};
-    pdgui_vmess(0, "crr iiii rs rs rS", cv, "create", "rectangle",
-        x1, y1, x2, y2, "-fill", x->x_bg->s_name,
+    pdgui_vmess(0, "crr iiii rs rk rs rS", cv, "create", "rectangle",
+        x1, y1, x2, y2,
+        "-fill", x->x_bg->s_name,
+        "-outline", THISGUI->i_foregroundcolor,
         "-state", x->x_outline ? "normal" : "hidden",
         "-tags", 3, tags_outline);
-// inlet
-    char *tags_in[] = {x->x_tag_in, x->x_tag_obj};
-    pdgui_vmess(0, "crr iiii rs rs rS", cv, "create", "rectangle",
+// inlet - outline AND fill both set to Pd's foreground color (like knob x_tag_IO)
+    char *tags_in[] = {x->x_tag_in, x->x_tag_IO, x->x_tag_obj};
+    pdgui_vmess(0, "crr iiii rk rk rs rS", cv, "create", "rectangle",
         x1, y1, x1+IOWIDTH*z, y1+IHEIGHT*z,
-        "-fill", "black", "-state", "hidden", "-tags", 2, tags_in);
-// outlet
-    char *tags_out[] = {x->x_tag_out, x->x_tag_obj};
-    pdgui_vmess(0, "crr iiii rs rs rS", cv, "create", "rectangle",
+        "-outline", THISGUI->i_foregroundcolor,
+        "-fill", THISGUI->i_foregroundcolor,
+        "-state", "hidden", "-tags", 3, tags_in);
+// outlet - outline AND fill both set to Pd's foreground color (like knob x_tag_IO)
+    char *tags_out[] = {x->x_tag_out, x->x_tag_IO, x->x_tag_obj};
+    pdgui_vmess(0, "crr iiii rk rk rs rS", cv, "create", "rectangle",
         x1, y2-OHEIGHT*z, x1+IOWIDTH*z, y2,
-        "-fill", "black", "-state", "hidden", "-tags", 2, tags_out);
+        "-outline", THISGUI->i_foregroundcolor,
+        "-fill", THISGUI->i_foregroundcolor,
+        "-state", "hidden", "-tags", 3, tags_out);
     menu_config_io(x);
 }
 
@@ -444,11 +466,15 @@ static void menu_set(t_menu* x, t_floatarg f){
     x->x_idx = f < -1 ? -1 : f >= x->x_n_items ? x->x_n_items - 1 : (int)f;
     if(!vis(x))
         return;
-    sys_vgui("set %s \"option_%d\" \n", x->x_tag_menu_sel, x->x_idx);
+    char cmd[512];
+    snprintf(cmd, sizeof(cmd), "set %s \"option_%d\"", x->x_tag_menu_sel, x->x_idx);
+    pdgui_vmess(cmd, NULL);
     // Reconfigure the selected entry to match the current index
     if(x->x_idx >= 0){
-        sys_vgui("%s entryconfigure %d -variable %s -value \"option_%d\" \n",
+        snprintf(cmd, sizeof(cmd),
+            "%s entryconfigure %d -variable %s -value \"option_%d\"",
             x->x_tag_menu, x->x_idx, x->x_tag_menu_sel, x->x_idx);
+        pdgui_vmess(cmd, NULL);
     }
     pdgui_vmess(0, "rr rs", x->x_tag_mb, "configure",
         "-text", x->x_idx == -1 ? x->x_label->s_name : x->x_items[x->x_idx]->s_name);
@@ -479,6 +505,7 @@ static void menu_add(t_menu* x, t_symbol *s, int ac, t_atom *av){
         }
     }
     char buf[MAXPDSTRING];
+    char cmd[2048];
     for(int i = x->x_n_items; i < new_limit; i++){
         if((av+i-x->x_n_items)->a_type == A_FLOAT){
             sprintf(buf, "%g", atom_getfloat(av+i-x->x_n_items));
@@ -488,10 +515,12 @@ static void menu_add(t_menu* x, t_symbol *s, int ac, t_atom *av){
             x->x_items[i] = atom_getsymbol(av+i-x->x_n_items);
         sprintf(buf, "%s", x->x_items[i]->s_name);
         if(vis(x)){
-            sys_vgui("%s add radiobutton -label \"%s\" -variable %s -value \"%s\" \
-                -command {%s configure -text \"%s\" \; %s \"%d\"} \n",
-                     x->x_tag_menu, buf, x->x_tag_menu_sel, buf,
-                     x->x_tag_mb, buf, x->x_callback_proc, i);
+            snprintf(cmd, sizeof(cmd),
+                "%s add radiobutton -label \"%s\" -variable %s -value \"%s\" "
+                "-command {%s configure -text \"%s\" ; %s \"%d\"}",
+                x->x_tag_menu, buf, x->x_tag_menu_sel, buf,
+                x->x_tag_mb, buf, x->x_callback_proc, i);
+            pdgui_vmess(cmd, NULL);
         }
     }
     x->x_n_items = new_limit;
@@ -513,16 +542,48 @@ static void menu_clear(t_menu* x){
     }
 }
 
+// ---- color validation (knob pattern) ----
+static void menu_send_color_validate(t_menu *x, const char *color, int which){
+    char buf[512];
+    snprintf(buf, sizeof(buf), "set color_name {%s}", color);
+    pdgui_vmess(buf, NULL);
+    pdgui_vmess("set color_escaped [string map {{ } {\\ }} $color_name]", NULL);
+    pdgui_vmess("set hex_color [color2hex $color_name]", NULL);
+    snprintf(buf, sizeof(buf),
+        "if {$hex_color eq \"\"} "
+        "{pdsend \"%s _validate 0 $color_escaped %d\"} "
+        "else {pdsend \"%s _validate 1 $hex_color %d\"}",
+        x->x_bindname->s_name, which,
+        x->x_bindname->s_name, which);
+    pdgui_vmess(buf, NULL);
+}
+
+static void menu_validate(t_menu *x, t_floatarg v, t_symbol *color, t_floatarg which){
+    if(!(int)v){
+        pd_error(0, "[popmenu] invalid color '%s'", color->s_name);
+        return;
+    }
+    if((int)which == 0){ // bg
+        if(x->x_bg != color){
+            x->x_bg = color;
+            if(vis(x))
+                menu_config_bg(x);
+        }
+    }
+    else{ // fg
+        if(x->x_fg != color){
+            x->x_fg = color;
+            if(vis(x))
+                menu_config_fg(x);
+        }
+    }
+}
+
 static void menu_bg(t_menu *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(!ac)
         return;
-    t_symbol *color = getcolor(ac, av);
-    if(x->x_bg != color){
-        x->x_bg = color;
-        if(vis(x))
-            menu_config_bg(x);
-    }
+    menu_send_color_validate(x, getcolor(ac, av)->s_name, 0);
 }
 
 static void menu_label(t_menu *x, t_symbol *s){
@@ -564,12 +625,15 @@ static void menu_fg(t_menu *x, t_symbol *s, int ac, t_atom *av){
     x->x_ignore = s;
     if(!ac)
         return;
-    t_symbol *color = getcolor(ac, av);
-    if(x->x_fg != color){
-        x->x_fg = color;
-        if(vis(x))
-            menu_config_fg(x);
-    }
+    menu_send_color_validate(x, getcolor(ac, av)->s_name, 1);
+}
+
+static void menu_colors(t_menu *x, t_symbol *bg, t_symbol *fg){
+    t_atom at[1];
+    SETSYMBOL(at, bg);
+    menu_bg(x, NULL, 1, at);
+    SETSYMBOL(at, fg);
+    menu_fg(x, NULL, 1, at);
 }
 
 static void menu_load(t_menu *x, t_symbol *s, int ac, t_atom *av){
@@ -799,8 +863,13 @@ static void menu_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 static void menu_select(t_gobj *z, t_glist *glist, int sel){
     t_menu *x = (t_menu *)z;
     t_canvas *cv = glist_getcanvas(glist);
-    pdgui_vmess(0, "crs rs", cv, "itemconfigure",
-        x->x_tag_sel, "-outline", sel ? "blue" : "black");
+    // outline rectangle stroke + inlet/outlet outline/fill track Pd's select/fg color
+    pdgui_vmess(0, "crs rk", cv, "itemconfigure",
+        x->x_tag_sel, "-outline", sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor);
+    pdgui_vmess(0, "crs rk rk", cv, "itemconfigure",
+        x->x_tag_IO,
+        "-outline", sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor,
+        "-fill", sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor);
 }
 
 static void menu_delete(t_gobj *z, t_glist *glist){
@@ -850,6 +919,8 @@ static void menu_free(t_menu*x){
     pd_unbind(&x->x_obj.ob_pd, x->x_sym);
     if(x->x_rcv != gensym("empty") && x->x_rcv != &s_)
         pd_unbind(&x->x_obj.ob_pd, x->x_rcv);
+    if(x->x_bindname)
+        pd_unbind(&x->x_obj.ob_pd, x->x_bindname);
     x->x_proxy->p_cnv = NULL;
     pdgui_stub_deleteforkey(x);
     freebytes(x->x_options, MAX_ITEMS*sizeof(*(x->x_options)));
@@ -873,7 +944,7 @@ static void *menu_new(t_symbol *s, int ac, t_atom *av){
     t_menu *x = (t_menu *)pd_new(menu_class);
     x->x_options = getbytes(sizeof(*(x->x_options)) * MAX_ITEMS);
     x->x_ignore = s;
-	char buf[256];
+    char buf[256];
     t_canvas *cv = canvas_getcurrent();
     x->x_glist = (t_glist*)cv;
     x->x_maxitems = MAX_ITEMS;
@@ -1167,18 +1238,27 @@ static void *menu_new(t_symbol *s, int ac, t_atom *av){
     x->x_sym = gensym(buf);
     pd_bind(&x->x_obj.ob_pd, x->x_sym); // bind receiver to the object
     sprintf(x->x_callback_proc, "menu_callback%p", (void *)x);
-    sys_vgui("proc %s {index} {\n pdsend \"%s _callback $index \"\n }\n",
+    char cmd[512];
+    snprintf(cmd, sizeof(cmd),
+        "proc %s {index} {\n pdsend \"%s _callback $index \"\n }",
         x->x_callback_proc, buf);
+    pdgui_vmess(cmd, NULL);
     char buff[MAXPDSTRING];
     snprintf(buff, MAXPDSTRING-1, ".x%lx", (unsigned long)x->x_glist);
     buff[MAXPDSTRING-1] = 0;
     x->x_proxy = edit_proxy_new(x, gensym(buff));
+    // bindname for Tcl color validation round-trip
+    char cbuff[MAXPDSTRING];
+    snprintf(cbuff, MAXPDSTRING-1, "#%lx", (long)x);
+    cbuff[MAXPDSTRING-1] = 0;
+    pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(cbuff));
     sprintf(x->x_tag_mb, ".x%lx.c.s%lx", (unsigned long)cv, (unsigned long)x);
     sprintf(x->x_tag_obj, "%pOBJ", (void *)x);
     sprintf(x->x_tag_outline, "%pOUTLINE", (void *)x);
     sprintf(x->x_tag_popmenu, "%pMENU", (void *)x);
     sprintf(x->x_tag_in, "%pIN", (void *)x);
     sprintf(x->x_tag_out, "%pOUT", (void *)x);
+    sprintf(x->x_tag_IO, "%pIO", (void *)x);
     sprintf(x->x_tag_sel, "%pSEL", (void *)x);
     if(x->x_rcv != gensym("empty") && x->x_rcv != &s_)
         pd_bind(&x->x_obj.ob_pd, x->x_rcv);
@@ -1200,8 +1280,11 @@ void popmenu_setup(void){
     class_addmethod(menu_class, (t_method)menu_height, gensym("height"), A_FLOAT, 0);
     class_addmethod(menu_class, (t_method)menu_clear, gensym("clear"), 0);
     class_addmethod(menu_class, (t_method)menu_add, gensym("add"), A_GIMME, 0);
-    class_addmethod(menu_class, (t_method)menu_bg, gensym("bg"), A_GIMME, 0);
-    class_addmethod(menu_class, (t_method)menu_fg, gensym("fg"), A_GIMME, 0);
+    class_addmethod(menu_class, (t_method)menu_bg, gensym("bgcolor"), A_GIMME, 0);
+    class_addmethod(menu_class, (t_method)menu_fg, gensym("fgcolor"), A_GIMME, 0);
+    class_addmethod(menu_class, (t_method)menu_colors, gensym("colors"), A_SYMBOL, A_SYMBOL, 0);
+//    class_addmethod(menu_class, (t_method)menu_bg, gensym("bg"), A_GIMME, 0);
+//    class_addmethod(menu_class, (t_method)menu_fg, gensym("fg"), A_GIMME, 0);
     class_addmethod(menu_class, (t_method)menu_receive, gensym("receive"), A_DEFSYM, 0);
     class_addmethod(menu_class, (t_method)menu_send, gensym("send"), A_DEFSYM, 0);
     class_addmethod(menu_class, (t_method)menu_var, gensym("var"), A_DEFSYM, 0);
@@ -1217,6 +1300,8 @@ void popmenu_setup(void){
     class_addmethod(menu_class, (t_method)menu_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
     class_addmethod(menu_class, (t_method)menu_zoom, gensym("zoom"), A_CANT, 0);
     class_addmethod(menu_class, (t_method)menu_output, gensym("_callback"), A_DEFFLOAT, 0);
+    class_addmethod(menu_class, (t_method)menu_validate, gensym("_validate"),
+        A_FLOAT, A_SYMBOL, A_FLOAT, 0);
     class_addmethod(menu_class, (t_method)menu_apply, gensym("dialog"), A_GIMME, 0);
     class_setpropertiesfn(menu_class, menu_properties);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
@@ -1228,5 +1313,8 @@ void popmenu_setup(void){
     menu_widgetbehavior.w_deletefn   = menu_delete;
     menu_widgetbehavior.w_visfn      = menu_vis;
     class_setsavefn(menu_class, &menu_save);
-    #include "../Extra/menu_dialog.h"
+    #include "../Extra/else_tcl_utils.h"
+    pdgui_vmess(else_tcl_utils, NULL);
+    #include "../Extra/popmenu_dialog.h"
+    pdgui_vmess(popmenu_dialog_tcl, NULL);
 }
