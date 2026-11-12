@@ -2,6 +2,7 @@
 
 #include <m_pd.h>
 #include <m_imp.h>
+#include <g_canvas.h> 
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -92,6 +93,24 @@ static void colors_symbol(t_colors *x, t_symbol *sym){
         "else {pdsend \"%s _valid 1 $hex_color\"}",
         x->x_id->s_name, x->x_id->s_name);
     pdgui_vmess(buf, NULL);
+}
+
+static void colors_pd(t_colors *x, t_symbol *s){
+    unsigned int c;
+    if(s == gensym("bg"))
+        c = (unsigned int)THISGUI->i_backgroundcolor;
+    else if(s == gensym("fg"))
+        c = (unsigned int)THISGUI->i_foregroundcolor;
+    else if(s == gensym("sel"))
+        c = (unsigned int)THISGUI->i_selectcolor;
+    else if(s == gensym("gop"))
+        c = (unsigned int)THISGUI->i_gopcolor;
+    else{
+        post("[colors]: unknown key '%s' (bg, fg, sel, gop)", s->s_name);
+        return;
+    }
+    snprintf(x->x_color, MAXPDSTRING, "#%06x", c);
+    colors_bang(x);
 }
 
 static void colors_convert_to(t_colors *x, t_symbol *s){
@@ -306,6 +325,7 @@ void colors_setup(void){
     class_addmethod(colors_class, (t_method)colors_gui, gensym("iemgui"), A_DEFFLOAT, 0);
     class_addmethod(colors_class, (t_method)colors_ds, gensym("ds"), A_DEFFLOAT, 0);
     class_addmethod(colors_class, (t_method)colors_picked_color, gensym("picked_color"), A_DEFSYMBOL, 0);
+    class_addmethod(colors_class, (t_method)colors_pd, gensym("pd"), A_DEFSYM, 0);
     class_addmethod(colors_class, (t_method)colors_valid, gensym("_valid"),
         A_FLOAT, A_SYMBOL, 0);
     class_addmethod(colors_class, (t_method)colors_pick, gensym("click"), 0);

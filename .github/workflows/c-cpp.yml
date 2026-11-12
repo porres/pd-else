@@ -92,7 +92,7 @@ jobs:
           name: ${{env.LIBNAME}}-${{env.LIBVERSION}}-linux_raspberry-pd${{matrix.precision}}
           path: build/else
   linux-build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         precision: [32]
@@ -193,7 +193,7 @@ jobs:
   # publish-release:
   #   if: ${{ github.event.inputs.publish_release == 'true' }}
   #   needs: [macos, linux-build, windows-build]
-  #   runs-on: ubuntu-latest
+  #   runs-on: ubuntu-24.04
   #   steps:
   #     - name: Download all artifacts
   #       uses: actions/download-artifact@v4

@@ -6,8 +6,15 @@
 #include <g_canvas.h>
 #include <buffer.h>
 #include <else_alloca.h>
+#include <string.h>
+#include <stdlib.h>
 
-static t_class *function_class, *edit_proxy_class;
+#define FUNCTION_MINWIDTH    40
+#define FUNCTION_MINHEIGHT   20
+#define FUNCTION_SELBDWIDTH  2
+#define HANDLE_SIZE          12
+
+static t_class *function_class, *edit_proxy_class, *handle_class;
 static t_widgetbehavior function_widgetbehavior;
 
 typedef struct _edit_proxy{
@@ -21,6 +28,7 @@ typedef struct _function{
     t_object        x_obj;
     t_glist        *x_glist;
     t_edit_proxy   *x_proxy;
+    t_canvas       *x_cv;
     int             x_state;
     int             x_n_states;
     int             x_flag;
@@ -30,12 +38,14 @@ typedef struct _function{
     int             x_width;
     int             x_height;
     int             x_savestate;
+    int             x_lb;
     int             x_grabbed; // number of grabbed point, for moving it/deleting it
-    int             x_shift;       
+    int             x_shift;
     int             x_snd_set;
     int             x_rcv_set;
-    int             x_zoom;
     int             x_edit;
+    int             x_theme;
+    int             x_transparent;
     t_symbol       *x_send;
     t_symbol       *x_receive;
     t_symbol       *x_snd_raw;
@@ -51,20 +61,114 @@ typedef struct _function{
     float           x_pointer_y;
     unsigned char   x_fgcolor[3];
     unsigned char   x_bgcolor[3];
+    char            x_tag_obj[32];
+    char            x_tag_rect[32];
+    char            x_tag_line[32];
+    char            x_tag_dots[32];
+    char            x_tag_in[32];
+    char            x_tag_out[32];
+    char            x_tag_IO[32];
+    char            x_tag_handle[32];
+    t_symbol       *x_bindname; // for Tcl color validation round-trip
+// handle
+    t_pd           *x_handle;
 }t_function;
 
+typedef struct _handle{
+    t_pd            h_pd;
+    t_function     *h_master;
+    t_symbol       *h_bindsym;
+    char            h_pathname[64], h_outlinetag[64];
+    int             h_dragon;
+    int             h_dragx, h_dragy; // click position (canvas coords)
+    int             h_dx, h_dy;       // current (clamped) drag delta
+}t_handle; // resizing handle
+
 static void function_bang(t_function *x);
+static void function_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2);
+
+static int function_vis_check(t_function *x){
+    return(gobj_shouldvis((t_gobj *)x, x->x_glist) && glist_isvisible(x->x_glist));
+}
+
+static void function_get_bgcolor(t_function *x, char *buf, size_t size){
+    if(x->x_theme)
+        snprintf(buf, size, "#%06x", THISGUI->i_backgroundcolor);
+    else
+        snprintf(buf, size, "#%2.2x%2.2x%2.2x",
+            x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+}
+
+static void function_get_fgcolor(t_function *x, char *buf, size_t size){
+    if(x->x_theme)
+        snprintf(buf, size, "#%06x", THISGUI->i_foregroundcolor);
+    else
+        snprintf(buf, size, "#%2.2x%2.2x%2.2x",
+            x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
+}
 
 //////////////////////// DRAWING ////////////////////////////////////////////////////////
+static void function_draw_handle(t_function *x, int state){
+    t_handle *sh = (t_handle *)x->x_handle;
+    if(sh->h_pathname[0])
+        pdgui_vmess(0, "rs", "destroy", sh->h_pathname);
+    if(state){
+        unsigned int border = x->x_sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor;
+        unsigned int bg = x->x_sel ? THISGUI->i_selectcolor : THISGUI->i_gopcolor;
+        pdgui_vmess(0, "rs riri rkrkrk ri rr",
+            "canvas", sh->h_pathname,
+            "-width", HANDLE_SIZE, "-height", HANDLE_SIZE,
+            "-bg", bg,
+            "-highlightcolor", THISGUI->i_foregroundcolor,
+            "-highlightbackground", border,
+            "-highlightthickness", 1,
+            "-cursor", "bottom_right_corner");
+        int x1, y1, x2, y2;
+        function_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+        t_canvas *cv = x->x_cv;
+        char *tags_handle[] = {x->x_tag_handle, x->x_tag_obj};
+        pdgui_vmess(0, "crr ii rs ri ri rs rS",
+            cv, "create", "window",
+            x2 - HANDLE_SIZE + 1,
+            y2 - HANDLE_SIZE + 1,
+            "-anchor", "nw",
+            "-width", HANDLE_SIZE,
+            "-height", HANDLE_SIZE,
+            "-window", sh->h_pathname,
+            "-tags", 2, tags_handle);
+        char buf[512];
+        // canvasx/canvasy convert widget coords to canvas coords
+        snprintf(buf, sizeof(buf),
+            "bind %s <Button> {pdsend [concat %s _click 1 [.x%lx.c canvasx %%x] [.x%lx.c canvasy %%y] \\;]}",
+            sh->h_pathname, sh->h_bindsym->s_name, (unsigned long)cv, (unsigned long)cv);
+        pdgui_vmess(buf, NULL);
+        snprintf(buf, sizeof(buf),
+            "bind %s <ButtonRelease> {pdsend [concat %s _click 0 [.x%lx.c canvasx %%x] [.x%lx.c canvasy %%y] \\;]}",
+            sh->h_pathname, sh->h_bindsym->s_name, (unsigned long)cv, (unsigned long)cv);
+        pdgui_vmess(buf, NULL);
+        snprintf(buf, sizeof(buf),
+            "bind %s <Motion> {pdsend [concat %s _motion [.x%lx.c canvasx %%x] [.x%lx.c canvasy %%y] \\;]}",
+            sh->h_pathname, sh->h_bindsym->s_name, (unsigned long)cv, (unsigned long)cv);
+        pdgui_vmess(buf, NULL);
+    }
+}
+
 static void function_draw_iolet(t_function *x){
     int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
-    t_canvas *cv =  glist_getcanvas(x->x_glist);
-    if(x->x_edit && x->x_receive == &s_) // Inlet
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lx_in %lx_all]\n",
-            cv, xpos, ypos, xpos+IOWIDTH*x->x_zoom, ypos+IHEIGHT*x->x_zoom, x, x);
-    if(x->x_edit && x->x_send == &s_) // Outlet
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lx_out %lx_all]\n",
-            cv, xpos, ypos+x->x_height, xpos+IOWIDTH*x->x_zoom, ypos+x->x_height-IHEIGHT*x->x_zoom, x, x);
+    t_canvas *cv = glist_getcanvas(x->x_glist);
+    unsigned int color = x->x_sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor;
+    if(x->x_edit && x->x_receive == &s_){ // Inlet
+        char *tags_in[] = {x->x_tag_in, x->x_tag_IO, x->x_tag_obj};
+        pdgui_vmess(0, "crr iiii rk rk rS", cv, "create", "rectangle",
+            xpos, ypos, xpos + IOWIDTH, ypos + IHEIGHT,
+            "-fill", color, "-outline", color, "-tags", 3, tags_in);
+    }
+    if(x->x_edit && x->x_send == &s_){ // Outlet
+        char *tags_out[] = {x->x_tag_out, x->x_tag_IO, x->x_tag_obj};
+        pdgui_vmess(0, "crr iiii rk rk rS", cv, "create", "rectangle",
+            xpos, ypos + x->x_height - OHEIGHT, xpos + IOWIDTH, ypos + x->x_height,
+            "-fill", color, "-outline", color, "-tags", 3, tags_out);
+    }
 }
 
 static void function_draw_dots(t_function *x, t_glist *glist){
@@ -75,82 +179,81 @@ static void function_draw_dots(t_function *x, t_glist *glist){
     float yscale = x->x_height;
     int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist) + x->x_height;
     char fgcolor[20];
-    sprintf(fgcolor, "#%2.2x%2.2x%2.2x", x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
+    function_get_fgcolor(x, fgcolor, sizeof(fgcolor));
     char bgcolor[20];
-    sprintf(bgcolor, "#%2.2x%2.2x%2.2x", x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+    function_get_bgcolor(x, bgcolor, sizeof(bgcolor));
+    char *tags_dots[] = {x->x_tag_dots, x->x_tag_obj};
     for(int i = 0; i <= x->x_n_states; i++){
         yvalue = (int)((x->x_points[i] - min) / range * yscale);
-        sys_vgui(".x%lx.c create oval %d %d %d %d -width %d -tags [list %lx_dots %lx_all] -outline %s -fill %s\n",
-            glist_getcanvas(glist),
-            xpos + (int)(x->x_dur[i]*xscale) - 3*x->x_zoom,
-            ypos - yvalue - 3*x->x_zoom,
-            xpos + (int)(x->x_dur[i]*xscale) + 3*x->x_zoom,
-            ypos - yvalue + 3*x->x_zoom,
-            2*x->x_zoom,
-            x,
-            x,
-            fgcolor,
-            bgcolor);
+        int xc = xpos + (int)(x->x_dur[i]*xscale);
+        pdgui_vmess(0, "crr iiii ri rs rs rS", glist_getcanvas(glist), "create", "oval",
+            xc - 3, ypos - yvalue - 3, xc + 3, ypos - yvalue + 3,
+            "-width", 2,
+            "-outline", fgcolor,
+            "-fill", x->x_transparent ? "" : bgcolor,
+            "-tags", 2, tags_dots);
     }
 }
 
-static void function_draw(t_function *x, t_glist *glist){
+// fills 'at' with the x/y coordinates of the function line, returns the number of atoms
+static int function_line_coords(t_function *x, t_atom *at, int xpos, int ypos){
     float range = x->x_max - x->x_min;
     float min = x->x_min;
+    float xscale = x->x_width / x->x_dur[x->x_n_states];
+    float yscale = x->x_height;
+    for(int i = 0; i <= x->x_n_states; i++){
+        SETFLOAT(at + 2*i, (int)(xpos + x->x_dur[i]*xscale));
+        SETFLOAT(at + 2*i + 1, (int)(ypos + x->x_height - (x->x_points[i]-min) / range*yscale));
+    }
+    return(2 * (x->x_n_states + 1));
+}
+
+static void function_draw(t_function *x, t_glist *glist){
     t_canvas *cv = glist_getcanvas(x->x_glist);
     int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
     char bgcolor[20];
-    sprintf(bgcolor, "#%2.2x%2.2x%2.2x", x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+    function_get_bgcolor(x, bgcolor, sizeof(bgcolor));
     char fgcolor[20];
-    sprintf(fgcolor, "#%2.2x%2.2x%2.2x", x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
-    float xscale = x->x_width / x->x_dur[x->x_n_states];
-    float yscale = x->x_height;
+    function_get_fgcolor(x, fgcolor, sizeof(fgcolor));
     // background
-    sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline black -tags [list %lx_rect %lx_all] -fill %s\n",
-        cv,
-        xpos,
-        ypos,
-        xpos+x->x_width,
-        ypos+x->x_height,
-        x->x_zoom,
-        x,
-        x,
-        bgcolor);
+    char *tags_rect[] = {x->x_tag_rect, x->x_tag_obj};
+    pdgui_vmess(0, "crr iiii rk ri rs rS", cv, "create", "rectangle",
+        xpos, ypos, xpos + x->x_width, ypos + x->x_height,
+        "-outline", x->x_sel ? THISGUI->i_selectcolor : THISGUI->i_foregroundcolor,
+        "-width", x->x_sel ? FUNCTION_SELBDWIDTH : 1,
+        "-fill", x->x_transparent ? "" : bgcolor,
+        "-tags", 2, tags_rect);
     // function line
-    sys_vgui(".x%lx.c create line ", cv);
-    for(int i = 0; i <= x->x_n_states; i++)
-        sys_vgui("%d %d ", (int)(xpos + x->x_dur[i]*xscale),
-            (int)(ypos + x->x_height - (x->x_points[i]-min) / range*yscale));
-    sys_vgui("-tags [list %lx_line %lx_all] -fill %s -width %d\n", x, x, fgcolor, 2*x->x_zoom);
+    int n = 2 * (x->x_n_states + 1);
+    t_atom *at = ALLOCA(t_atom, n);
+    function_line_coords(x, at, xpos, ypos);
+    char *tags_line[] = {x->x_tag_line, x->x_tag_obj};
+    pdgui_vmess(0, "crr A rs ri rS", cv, "create", "line", n, at,
+        "-fill", fgcolor, "-width", 2, "-tags", 2, tags_line);
+    FREEA(at, t_atom, n);
     function_draw_dots(x, glist);
     function_draw_iolet(x);
-    sys_vgui(".x%lx.c itemconfigure %lx_rect -outline %s\n", cv, x, x->x_sel ? "blue" : "black");
 }
 
 static void function_erase(t_function* x, t_glist* glist){
-    sys_vgui(".x%lx.c delete %lx_all\n", glist_getcanvas(glist), x);
+    pdgui_vmess(0, "crs", glist_getcanvas(glist), "delete", x->x_tag_obj);
 }
 
 static void function_update(t_function *x, t_glist *glist){
     int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
-    float range = x->x_max - x->x_min;
-    float min =  x->x_min;
     t_canvas *cv = glist_getcanvas(glist);
-    sys_vgui(".x%lx.c coords %lx_rect %d %d %d %d\n",
-        cv, x, xpos, ypos, xpos+x->x_width, ypos+x->x_height);
-    float xscale = x->x_width / x->x_dur[x->x_n_states];
-    float yscale = x->x_height;
-    sys_vgui(".x%lx.c coords %lx_line ", cv, x);
-    for(int i = 0; i <= x->x_n_states; i++)
-        sys_vgui("%d %d ",(int)(xpos + x->x_dur[i]*xscale),
-        (int)(ypos + x->x_height - (x->x_points[i] - min) / range*yscale));
-    sys_vgui("\n");
-    sys_vgui(".x%lx.c delete %lx_dots\n", glist_getcanvas(glist), x);
+    pdgui_vmess(0, "crs iiii", cv, "coords", x->x_tag_rect,
+        xpos, ypos, xpos + x->x_width, ypos + x->x_height);
+    int n = 2 * (x->x_n_states + 1);
+    t_atom *at = ALLOCA(t_atom, n);
+    function_line_coords(x, at, xpos, ypos);
+    pdgui_vmess(0, "crs A", cv, "coords", x->x_tag_line, n, at);
+    FREEA(at, t_atom, n);
+    pdgui_vmess(0, "crs", cv, "delete", x->x_tag_dots);
     function_draw_dots(x, glist);
-    function_draw_iolet(x);
 }
 
-// ------------------------ widgetbehaviour----------------------------- 
+// ------------------------ widgetbehaviour-----------------------------
 static void function_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
     t_function* x = (t_function*)z;
     int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
@@ -161,14 +264,39 @@ static void function_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int 
 static void function_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     t_function *x = (t_function *)z;
     x->x_obj.te_xpix += dx, x->x_obj.te_ypix += dy;
-    sys_vgui(".x%lx.c move %lx_all %d %d\n", glist_getcanvas(x->x_glist), x, dx*x->x_zoom, dy*x->x_zoom);
+    pdgui_vmess(0, "crs ii", glist_getcanvas(x->x_glist), "move", x->x_tag_obj, dx, dy);
     canvas_fixlinesfor(glist, (t_text*)x);
 }
 
 static void function_select(t_gobj *z, t_glist *glist, int sel){
     t_function *x = (t_function *)z;
-    sys_vgui(".x%lx.c itemconfigure %lx_rect -outline %s\n", glist_getcanvas(glist),
-        x, (x->x_sel = sel) ? "blue" : "black");
+    t_handle *sh = (t_handle *)x->x_handle;
+    t_canvas *cv = glist_getcanvas(glist);
+    x->x_sel = sel;
+    if(sel){
+        pdgui_vmess(0, "crs rk ri", cv, "itemconfigure", x->x_tag_rect,
+            "-outline", THISGUI->i_selectcolor, "-width", FUNCTION_SELBDWIDTH);
+        pdgui_vmess(0, "crs rk rk", cv, "itemconfigure", x->x_tag_IO,
+            "-outline", THISGUI->i_selectcolor, "-fill", THISGUI->i_selectcolor);
+        if(x->x_edit && sh->h_pathname[0]){
+            pdgui_vmess(0, "rr rk", sh->h_pathname, "configure",
+                "-highlightbackground", THISGUI->i_selectcolor);
+            pdgui_vmess(0, "rr rk", sh->h_pathname, "configure",
+                "-bg", THISGUI->i_selectcolor);
+        }
+    }
+    else{
+        pdgui_vmess(0, "crs rk ri", cv, "itemconfigure", x->x_tag_rect,
+            "-outline", THISGUI->i_foregroundcolor, "-width", 1);
+        pdgui_vmess(0, "crs rk rk", cv, "itemconfigure", x->x_tag_IO,
+            "-outline", THISGUI->i_foregroundcolor, "-fill", THISGUI->i_foregroundcolor);
+        if(x->x_edit && sh->h_pathname[0]){
+            pdgui_vmess(0, "rr rk", sh->h_pathname, "configure",
+                "-highlightbackground", THISGUI->i_foregroundcolor);
+            pdgui_vmess(0, "rr rk", sh->h_pathname, "configure",
+                "-bg", THISGUI->i_gopcolor);
+        }
+    }
 }
 
 static void function_delete(t_gobj *z, t_glist *glist){
@@ -176,7 +304,18 @@ static void function_delete(t_gobj *z, t_glist *glist){
 }
 
 static void function_vis(t_gobj *z, t_glist *glist, int vis){
-    vis ? function_draw((t_function*)z, glist) : function_erase((t_function*)z, glist);
+    t_function *x = (t_function *)z;
+    t_handle *sh = (t_handle *)x->x_handle;
+    x->x_cv = glist_getcanvas(glist);
+    sprintf(sh->h_pathname, ".x%lx.h%lx", (unsigned long)x->x_cv, (unsigned long)sh);
+    if(x->x_edit && sh->h_pathname[0])
+        pdgui_vmess(0, "rs", "destroy", sh->h_pathname);
+    if(vis){
+        function_draw(x, glist);
+        function_draw_handle(x, x->x_edit);
+    }
+    else
+        function_erase(x, glist);
 }
 
 static void function_move_dot(t_function* x, t_glist* glist){
@@ -338,8 +477,8 @@ static void function_save(t_gobj *z, t_binbuf *b){
                 atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf))
                 );
     binbuf_addv(b, "iissffiiiiiiiiii",
-                x->x_width / x->x_zoom,
-                x->x_height / x->x_zoom,
+                x->x_width,
+                x->x_height,
                 x->x_snd_raw,
                 x->x_rcv_raw,
                 x->x_min,
@@ -351,10 +490,9 @@ static void function_save(t_gobj *z, t_binbuf *b){
                 (int)x->x_fgcolor[1],
                 (int)x->x_fgcolor[2],
                 x->x_savestate,
-                0, // placeholder
-                0, // placeholder
-                0  // placeholder
-                );
+                x->x_lb,
+                x->x_theme,
+                x->x_transparent);
     binbuf_addv(b, "f", (float)x->x_points[x->x_state = 0]);
                 i = 1;
                 int ac = x->x_n_states * 2 + 1;
@@ -613,26 +751,27 @@ static void function_savestate(t_function *x, t_floatarg f){
         x->x_savestate = state;
 }
 
-static void function_height(t_function *x, t_floatarg f){
-    int height = f < 20 ? 20 : (int)f;
-    if(x->x_height != height){
-        x->x_height = height * x->x_zoom;
-        function_erase(x, x->x_glist);
-        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+static void function_dim(t_function *x, t_floatarg f1, t_floatarg f2){
+    int width = f1 < FUNCTION_MINWIDTH ? FUNCTION_MINWIDTH : (int)f1;
+    int height = f2 < FUNCTION_MINHEIGHT ? FUNCTION_MINHEIGHT : (int)f2;
+    if(x->x_width != width || x->x_height != height){
+        x->x_width = width;
+        x->x_height = height;
+        if(function_vis_check(x)){
+            function_erase(x, x->x_glist);
             function_draw(x, x->x_glist);
-            canvas_fixlinesfor(x->x_glist, (t_text*) x);
+            canvas_fixlinesfor(x->x_glist, (t_text*)x);
+            function_draw_handle(x, x->x_edit);
         }
     }
 }
 
+static void function_height(t_function *x, t_floatarg f){
+    function_dim(x, x->x_width, f);
+}
+
 static void function_width(t_function *x, t_floatarg f){
-    int width = f < 40 ? 40 : (int)f;
-    if(x->x_width != width){
-        x->x_width = width * x->x_zoom;
-        function_erase(x, x->x_glist);
-        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
-            function_draw(x, x->x_glist);
-    }
+    function_dim(x, f, x->x_height);
 }
 
 static void function_send(t_function *x, t_symbol *s){
@@ -645,9 +784,8 @@ static void function_send(t_function *x, t_symbol *s){
             if(x->x_send == &s_)
                 function_draw_iolet(x);
             else
-                sys_vgui(".x%lx.c delete %lx_out\n", glist_getcanvas(x->x_glist), x);
+                pdgui_vmess(0, "crs", glist_getcanvas(x->x_glist), "delete", x->x_tag_out);
         }
-            
     }
 }
 
@@ -665,54 +803,321 @@ static void function_receive(t_function *x, t_symbol *s){
             if(x->x_receive == &s_)
                 function_draw_iolet(x);
             else
-                sys_vgui(".x%lx.c delete %lx_in\n", glist_getcanvas(x->x_glist), x);
+                pdgui_vmess(0, "crs", glist_getcanvas(x->x_glist), "delete", x->x_tag_in);
         }
     }
 }
 
-static void function_fgcolor(t_function *x, t_floatarg red, t_floatarg green, t_floatarg blue){
-    int r = red < 0 ? 0 : red > 255 ? 255 : (int)red;
-    int g = green < 0 ? 0 : green > 255 ? 255 : (int)green;
-    int b = blue < 0 ? 0 : blue > 255 ? 255 : (int)blue;
+/* ---- color helpers (mirror [knob]/[pad]) ---- */
+
+/* parse "#rrggbb" back into the RGB byte array so save() stays RGB based */
+static void function_parse_hex(unsigned char *color, const char *hex){
+    if(hex && hex[0] == '#' && strlen(hex) == 7){
+        char pair[3] = {0};
+        pair[0] = hex[1]; pair[1] = hex[2];
+        color[0] = (unsigned char)strtol(pair, NULL, 16);
+        pair[0] = hex[3]; pair[1] = hex[4];
+        color[1] = (unsigned char)strtol(pair, NULL, 16);
+        pair[0] = hex[5]; pair[1] = hex[6];
+        color[2] = (unsigned char)strtol(pair, NULL, 16);
+    }
+}
+
+/* send color string to Tcl; `which` = 0 for bg, 1 for fg */
+static void function_send_color_validate(t_function *x, const char *color, int which){
+    char buf[512];
+    snprintf(buf, sizeof(buf), "set color_name {%s}", color);
+    pdgui_vmess(buf, NULL);
+    pdgui_vmess("set color_escaped [string map {{ } {\\ }} $color_name]", NULL);
+    pdgui_vmess("set hex_color [color2hex $color_name]", NULL);
+    snprintf(buf, sizeof(buf),
+        "if {$hex_color eq \"\"} "
+        "{pdsend \"%s _validate 0 $color_escaped %d\"} "
+        "else {pdsend \"%s _validate 1 $hex_color %d\"}",
+        x->x_bindname->s_name, which,
+        x->x_bindname->s_name, which);
+    pdgui_vmess(buf, NULL);
+}
+
+static void function_validate(t_function *x, t_floatarg v, t_symbol *color, t_floatarg which){
+    if(!(int)v){
+        pd_error(0, "[function] invalid color '%s'", color->s_name);
+        return;
+    }
+    if((int)which == 0){ // bg
+        function_parse_hex(x->x_bgcolor, color->s_name);
+        if(function_vis_check(x) && !x->x_transparent){
+            t_canvas *cv = glist_getcanvas(x->x_glist);
+            pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_rect, "-fill", color->s_name);
+            pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_dots, "-fill", color->s_name);
+        }
+    }
+    else{ // fg
+        function_parse_hex(x->x_fgcolor, color->s_name);
+        if(function_vis_check(x)){
+            t_canvas *cv = glist_getcanvas(x->x_glist);
+            pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_line, "-fill", color->s_name);
+            pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_dots, "-outline", color->s_name);
+        }
+    }
+}
+
+static void function_fgcolor(t_function *x, t_symbol *s, int ac, t_atom *av){
+    (void)s;
+    if(!ac)
+        return;
+    x->x_theme = 0; // explicit color overrides theme
+    if(av->a_type == A_SYMBOL){
+        function_send_color_validate(x, atom_getsymbol(av)->s_name, 1);
+        return;
+    }
+    if(ac < 3)
+        return;
+    int r = (int)atom_getfloatarg(0, ac, av);
+    int g = (int)atom_getfloatarg(1, ac, av);
+    int b = (int)atom_getfloatarg(2, ac, av);
+    r = r < 0 ? 0 : r > 255 ? 255 : r;
+    g = g < 0 ? 0 : g > 255 ? 255 : g;
+    b = b < 0 ? 0 : b > 255 ? 255 : b;
     if(x->x_fgcolor[0] != r || x->x_fgcolor[1] != g || x->x_fgcolor[2] != b){
         x->x_fgcolor[0] = r;
         x->x_fgcolor[1] = g;
         x->x_fgcolor[2] = b;
-        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+        if(function_vis_check(x)){
             t_canvas *cv = glist_getcanvas(x->x_glist);
-            sys_vgui(".x%lx.c itemconfigure %lx_line -fill #%2.2x%2.2x%2.2x\n", cv,
-                x, x->x_fgcolor[0] = r, x->x_fgcolor[1] = g, x->x_fgcolor[2] = b);
-            sys_vgui(".x%lx.c itemconfigure %lx_dots -outline #%2.2x%2.2x%2.2x\n", cv,
-                x, x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
+            char color[20];
+            sprintf(color, "#%2.2x%2.2x%2.2x", r, g, b);
+            pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_line, "-fill", color);
+            pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_dots, "-outline", color);
         }
     }
 }
 
-static void function_bgcolor(t_function *x, t_floatarg red, t_floatarg green, t_floatarg blue){
-    int r = red < 0 ? 0 : red > 255 ? 255 : (int)red;
-    int g = green < 0 ? 0 : green > 255 ? 255 : (int)green;
-    int b = blue < 0 ? 0 : blue > 255 ? 255 : (int)blue;
+static void function_bgcolor(t_function *x, t_symbol *s, int ac, t_atom *av){
+    (void)s;
+    if(!ac)
+        return;
+    x->x_theme = 0; // explicit color overrides theme
+    if(av->a_type == A_SYMBOL){
+        function_send_color_validate(x, atom_getsymbol(av)->s_name, 0);
+        return;
+    }
+    if(ac < 3)
+        return;
+    int r = (int)atom_getfloatarg(0, ac, av);
+    int g = (int)atom_getfloatarg(1, ac, av);
+    int b = (int)atom_getfloatarg(2, ac, av);
+    r = r < 0 ? 0 : r > 255 ? 255 : r;
+    g = g < 0 ? 0 : g > 255 ? 255 : g;
+    b = b < 0 ? 0 : b > 255 ? 255 : b;
     if(x->x_bgcolor[0] != r || x->x_bgcolor[1] != g || x->x_bgcolor[2] != b){
         x->x_bgcolor[0] = r;
         x->x_bgcolor[1] = g;
         x->x_bgcolor[2] = b;
-        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+        if(function_vis_check(x) && !x->x_transparent){
             t_canvas *cv = glist_getcanvas(x->x_glist);
-            sys_vgui(".x%lx.c itemconfigure %lx_rect -fill #%2.2x%2.2x%2.2x\n", cv,
-                x, x->x_bgcolor[0] = r, x->x_bgcolor[1] = g, x->x_bgcolor[2] = b);
-            sys_vgui(".x%lx.c itemconfigure %lx_dots -fill #%2.2x%2.2x%2.2x\n", cv,
-                x, x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+            char color[20];
+            sprintf(color, "#%2.2x%2.2x%2.2x", r, g, b);
+            pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_rect, "-fill", color);
+            pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_dots, "-fill", color);
         }
     }
 }
 
-static void function_zoom(t_function *x, t_floatarg zoom){
-    float mul = zoom == 1.0 ? 0.5 : 2.0;
-    x->x_width = (int)((float)x->x_width * mul);
-    x->x_height = (int)((float)x->x_height * mul);
-    x->x_zoom = (int)zoom;
-    if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
-        function_update(x, x->x_glist);
+static void function_colors(t_function *x, t_symbol *bg, t_symbol *fg){
+    t_atom at[1];
+    SETSYMBOL(at, bg);
+    function_bgcolor(x, NULL, 1, at);
+    SETSYMBOL(at, fg);
+    function_fgcolor(x, NULL, 1, at);
+}
+
+static void function_theme(t_function *x, t_floatarg f){
+    int theme = (int)(f != 0);
+    if(theme == x->x_theme)
+        return;
+    x->x_theme = theme;
+    if(function_vis_check(x)){
+        char bgcolor[20], fgcolor[20];
+        function_get_bgcolor(x, bgcolor, sizeof(bgcolor));
+        function_get_fgcolor(x, fgcolor, sizeof(fgcolor));
+        t_canvas *cv = glist_getcanvas(x->x_glist);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_rect, "-fill",
+            x->x_transparent ? "" : bgcolor);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_line, "-fill", fgcolor);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_dots, "-fill",
+            x->x_transparent ? "" : bgcolor);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_dots, "-outline", fgcolor);
+    }
+}
+
+static void function_transparent(t_function *x, t_floatarg f){
+    int transp = (int)(f != 0);
+    if(transp == x->x_transparent)
+        return;
+    x->x_transparent = transp;
+    if(function_vis_check(x)){
+        char bgcolor[20];
+        function_get_bgcolor(x, bgcolor, sizeof(bgcolor));
+        t_canvas *cv = glist_getcanvas(x->x_glist);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_rect, "-fill",
+            transp ? "" : bgcolor);
+        pdgui_vmess(0, "crs rs", cv, "itemconfigure", x->x_tag_dots, "-fill",
+            transp ? "" : bgcolor);
+    }
+}
+
+static void function_properties(t_gobj *z, t_glist *owner){
+    (void)owner;
+    t_function *x = (t_function *)z;
+    char bgcolor[20], fgcolor[20];
+    snprintf(bgcolor, sizeof(bgcolor), "#%2.2x%2.2x%2.2x",
+        x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+    snprintf(fgcolor, sizeof(fgcolor), "#%2.2x%2.2x%2.2x",
+        x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
+    char pd_bg[32];
+    snprintf(pd_bg, sizeof(pd_bg), "#%06X", THISGUI->i_backgroundcolor);
+    char pd_fg[32];
+    snprintf(pd_fg, sizeof(pd_fg), "#%06X", THISGUI->i_foregroundcolor);
+    // display raw symbols; fall back to x_send / x_receive if raw is still
+    // unset (only set by function_save), else "empty"
+    t_symbol *snd_disp = x->x_snd_raw != &s_ ? x->x_snd_raw
+        : (x->x_send != &s_ ? x->x_send : gensym("empty"));
+    t_symbol *rcv_disp = x->x_rcv_raw != &s_ ? x->x_rcv_raw
+        : (x->x_receive != &s_ ? x->x_receive : gensym("empty"));
+    pdgui_stub_vnew(&x->x_obj.ob_pd, "function_dialog", x,
+        "ii ff ii ss ssss ii",
+        x->x_width, x->x_height,
+        x->x_min, x->x_max,
+        x->x_savestate, x->x_lb,
+        rcv_disp->s_name, snd_disp->s_name,
+        bgcolor, fgcolor, pd_bg, pd_fg,
+        x->x_theme, x->x_transparent);
+}
+
+static void function_apply(t_function *x, t_symbol *s, int ac, t_atom *av){
+    (void)s;
+    char bgstr[20], fgstr[20];
+    snprintf(bgstr, sizeof(bgstr), "#%2.2x%2.2x%2.2x",
+        x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+    snprintf(fgstr, sizeof(fgstr), "#%2.2x%2.2x%2.2x",
+        x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
+    t_symbol *undo_rcv = x->x_rcv_raw != &s_ ? x->x_rcv_raw : gensym("empty");
+    t_symbol *undo_snd = x->x_snd_raw != &s_ ? x->x_snd_raw : gensym("empty");
+    t_atom undo[12];
+    SETFLOAT(undo+0, x->x_width);
+    SETFLOAT(undo+1, x->x_height);
+    SETFLOAT(undo+2, x->x_min);
+    SETFLOAT(undo+3, x->x_max);
+    SETFLOAT(undo+4, x->x_savestate);
+    SETFLOAT(undo+5, x->x_lb);
+    SETSYMBOL(undo+6, undo_rcv);
+    SETSYMBOL(undo+7, undo_snd);
+    SETSYMBOL(undo+8, gensym(bgstr));
+    SETSYMBOL(undo+9, gensym(fgstr));
+    SETFLOAT(undo+10, x->x_theme);
+    SETFLOAT(undo+11, x->x_transparent);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 12, undo, ac, av);
+    // read incoming values
+    int w = atom_getintarg(0, ac, av);
+    int h = atom_getintarg(1, ac, av);
+    float minval = atom_getfloatarg(2, ac, av);
+    float maxval = atom_getfloatarg(3, ac, av);
+    int savestate = atom_getintarg(4, ac, av);
+    int lb = atom_getintarg(5, ac, av);
+    t_symbol *rcv = atom_getsymbolarg(6, ac, av);
+    t_symbol *snd = atom_getsymbolarg(7, ac, av);
+    t_symbol *bg = atom_getsymbolarg(8, ac, av);
+    t_symbol *fg = atom_getsymbolarg(9, ac, av);
+    int theme = atom_getintarg(10, ac, av);
+    int transp = atom_getintarg(11, ac, av);
+    // dimensions (clipped)
+    x->x_width = w < FUNCTION_MINWIDTH ? FUNCTION_MINWIDTH : w;
+    x->x_height = h < FUNCTION_MINHEIGHT ? FUNCTION_MINHEIGHT : h;
+    // range (uses existing constrain logic: min can only decrease, max can only increase)
+    function_min(x, minval);
+    function_max(x, maxval);
+    // load / savestate
+    x->x_savestate = (savestate != 0);
+    x->x_lb = (lb != 0);
+    // send / receive (these update x_snd_raw/x_rcv_raw and rebind as needed)
+    function_send(x, snd);
+    function_receive(x, rcv);
+    // theme / transparent
+    x->x_theme = (theme != 0);
+    x->x_transparent = (transp != 0);
+    // colors: parse hex directly (Tcl guarantees valid hex from var_color_*)
+    function_parse_hex(x->x_bgcolor, bg->s_name);
+    function_parse_hex(x->x_fgcolor, fg->s_name);
+    // redraw everything (draw funcs already respect theme/transparent)
+    if(function_vis_check(x)){
+        function_erase(x, x->x_glist);
+        function_draw(x, x->x_glist);
+        canvas_fixlinesfor(x->x_glist, (t_text*)x);
+        function_draw_handle(x, x->x_edit);
+    }
+    canvas_dirty(x->x_glist, 1);
+}
+
+// --------------------- handle ---------------------------------------------------
+static void handle__click_callback(t_handle *sh, t_floatarg f, t_floatarg xarg, t_floatarg yarg){
+    int click = (int)f;
+    t_function *x = sh->h_master;
+    if(sh->h_dragon && click == 0){
+        char buf[128];
+        snprintf(buf, sizeof(buf), ".x%lx.c delete %s", (unsigned long)x->x_cv, sh->h_outlinetag);
+        pdgui_vmess(buf, NULL);
+        int width = x->x_width + sh->h_dx;
+        int height = x->x_height + sh->h_dy;
+        width = width < FUNCTION_MINWIDTH ? FUNCTION_MINWIDTH : width;
+        height = height < FUNCTION_MINHEIGHT ? FUNCTION_MINHEIGHT : height;
+        if(width != x->x_width || height != x->x_height){
+            t_atom undo[2], redo[2];
+            SETFLOAT(undo+0, x->x_width);
+            SETFLOAT(undo+1, x->x_height);
+            SETFLOAT(redo+0, width);
+            SETFLOAT(redo+1, height);
+            pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dim"), 2, undo, 2, redo);
+            function_dim(x, width, height);
+            canvas_dirty(x->x_glist, 1);
+        }
+        function_draw_handle(x, 1); // also restores the handle's highlight color
+    }
+    else if(!sh->h_dragon && click){
+        int x1, y1, x2, y2;
+        function_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+        pdgui_vmess(0, "crr iiii rk ri rs",
+            x->x_cv, "create", "rectangle",
+            x1, y1, x2, y2,
+            "-outline", THISGUI->i_selectcolor,
+            "-width", FUNCTION_SELBDWIDTH,
+            "-tags", sh->h_outlinetag);
+        pdgui_vmess(0, "rr rk", sh->h_pathname, "configure",
+            "-highlightcolor", THISGUI->i_selectcolor);
+        sh->h_dragx = (int)xarg;
+        sh->h_dragy = (int)yarg;
+        sh->h_dx = sh->h_dy = 0;
+    }
+    sh->h_dragon = click;
+}
+
+static void handle__motion_callback(t_handle *sh, t_floatarg xarg, t_floatarg yarg){
+    if(sh->h_dragon){
+        t_function *x = sh->h_master;
+        int dx = (int)xarg - sh->h_dragx, dy = (int)yarg - sh->h_dragy;
+        if(x->x_width + dx < FUNCTION_MINWIDTH)
+            dx = FUNCTION_MINWIDTH - x->x_width;
+        if(x->x_height + dy < FUNCTION_MINHEIGHT)
+            dy = FUNCTION_MINHEIGHT - x->x_height;
+        int x1, y1, x2, y2;
+        function_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+        char buf[128];
+        snprintf(buf, sizeof(buf), ".x%lx.c coords %s %d %d %d %d",
+            (unsigned long)x->x_cv, sh->h_outlinetag, x1, y1, x2 + dx, y2 + dy);
+        pdgui_vmess(buf, NULL);
+        sh->h_dx = dx;
+        sh->h_dy = dy;
+    }
 }
 
 static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
@@ -725,22 +1130,29 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
         || s == gensym("toggle") || s == gensym("numbox") || s == gensym("vslider")
         || s == gensym("hslider") || s == gensym("vradio") || s == gensym("hradio")
         || s == gensym("vumeter") || s == gensym("mycnv") || s == gensym("selectall")){
-            if(av->a_w.w_float == 0)
-                edit = 1;
+            edit = 1;
         }
         else
             return;
         if(p->p_cnv->x_edit != edit){
             p->p_cnv->x_edit = edit;
-            if(edit)
-                function_draw_iolet(p->p_cnv);
-            else{
+            if(function_vis_check(p->p_cnv)){
                 t_canvas *cv = glist_getcanvas(p->p_cnv->x_glist);
-                sys_vgui(".x%lx.c delete %lx_in\n", cv, p->p_cnv);
-                sys_vgui(".x%lx.c delete %lx_out\n", cv, p->p_cnv);
+                function_draw_handle(p->p_cnv, edit);
+                if(edit)
+                    function_draw_iolet(p->p_cnv);
+                else{
+                    pdgui_vmess(0, "crs", cv, "delete", p->p_cnv->x_tag_in);
+                    pdgui_vmess(0, "crs", cv, "delete", p->p_cnv->x_tag_out);
+                }
             }
         }
     }
+}
+
+static void function_loadbang(t_function *x, t_float f){
+    if((int)f == LB_LOAD && x->x_lb)
+        function_bang(x);
 }
 
 static void edit_proxy_free(t_edit_proxy *p){
@@ -760,9 +1172,14 @@ static t_edit_proxy * edit_proxy_new(t_function *x, t_symbol *s){
 static void function_free(t_function *x){
     if(x->x_receive != &s_)
          pd_unbind(&x->x_obj.ob_pd, x->x_receive);
+    pd_unbind(&x->x_obj.ob_pd, x->x_bindname);
+    if(x->x_handle){
+        pd_unbind(x->x_handle, ((t_handle *)x->x_handle)->h_bindsym);
+        pd_free(x->x_handle);
+    }
     x->x_proxy->p_cnv = NULL;
     clock_delay(x->x_proxy->p_clock, 0);
-    gfxstub_deleteforkey(x);
+    pdgui_stub_deleteforkey(x);
 }
 
 ///////////////////// NEW / FREE / SETUP /////////////////////
@@ -779,7 +1196,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
     buf[MAXPDSTRING-1] = 0;
     x->x_proxy = edit_proxy_new(x, gensym(buf));
     x->x_edit = cv->gl_edit;
-    x->x_zoom = x->x_glist->gl_zoom;
+    x->x_cv = glist_getcanvas(x->x_glist);
     x->x_points = getbytes((MAX_SIZE+1)*sizeof(float));
     x->x_dur = getbytes((MAX_SIZE+1)*sizeof(float));
     int envset = 0;
@@ -790,6 +1207,9 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
     x->x_rcv_set = x->x_snd_set = x->x_flag = x->x_s_flag = x->x_r_flag = 0;
     x->x_receive = x->x_rcv_raw = x->x_send = x->x_snd_raw = &s_;
     x->x_savestate = 0;
+    x->x_lb = 1;
+    x->x_theme = 0;
+    x->x_transparent = 0;
     x->x_min = 0;
     x->x_max = 1;
     x->x_bgcolor[0] = x->x_bgcolor[1] = x->x_bgcolor[2] = 220;
@@ -850,11 +1270,14 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                                                     if(ac && av->a_type == A_FLOAT){ // Init
                                                         x->x_savestate = (int)(av->a_w.w_float != 0);
                                                         ac--, av++;
-                                                        if(ac && av->a_type == A_FLOAT){ // placeholder
+                                                        if(ac && av->a_type == A_FLOAT){ // LB
+                                                            x->x_lb = (int)(av->a_w.w_float != 0);
                                                             ac--, av++;
-                                                            if(ac && av->a_type == A_FLOAT){ // placeholder
+                                                            if(ac && av->a_type == A_FLOAT){ // Theme
+                                                                x->x_theme = (int)(av->a_w.w_float != 0);
                                                                 ac--, av++;
-                                                                if(ac && av->a_type == A_FLOAT){ // placeholder
+                                                                if(ac && av->a_type == A_FLOAT){ // Transparent
+                                                                    x->x_transparent = (int)(av->a_w.w_float != 0);
                                                                     ac--, av++;
                                                                     if(ac && av->a_type == A_FLOAT){ // Set Env
                                                                         int i = 0;
@@ -908,6 +1331,21 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
             else if(sym == gensym("-savestate")){
                 x->x_flag = 1;
                 x->x_savestate = 1;
+                ac--, av++;
+            }
+            else if(sym == gensym("-theme")){
+                x->x_flag = 1;
+                x->x_theme = 1;
+                ac--, av++;
+            }
+            else if(sym == gensym("-noloadbang")){
+                x->x_flag = 1;
+                x->x_lb = 0;
+                ac--, av++;
+            }
+            else if(sym == gensym("-transparent")){
+                x->x_flag = 1;
+                x->x_transparent = 1;
                 ac--, av++;
             }
             else if(sym == gensym("-width")){
@@ -1019,8 +1457,6 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
         }
         else goto errstate;
     };
-    x->x_width *= x->x_zoom;
-    x->x_height *= x->x_zoom;
     if(!envset)
         function_set_beeakpoints(x, 3, a);
 // set min/max
@@ -1044,7 +1480,30 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
     }
     if(initialDuration > 0)
         function_duration(x, initialDuration);
-     return(x);
+// tags
+    sprintf(x->x_tag_obj, "%pOBJ", x);
+    sprintf(x->x_tag_rect, "%pRECT", x);
+    sprintf(x->x_tag_line, "%pLINE", x);
+    sprintf(x->x_tag_dots, "%pDOTS", x);
+    sprintf(x->x_tag_in, "%pIN", x);
+    sprintf(x->x_tag_out, "%pOUT", x);
+    sprintf(x->x_tag_IO, "%pIO", x);
+    sprintf(x->x_tag_handle, "%pHANDLE", x);
+// bindname (needed for the Tcl color validation round-trip)
+    snprintf(buf, MAXPDSTRING-1, "#%lx", (long)x);
+    buf[MAXPDSTRING-1] = 0;
+    pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
+// handle
+    x->x_handle = pd_new(handle_class);
+    t_handle *sh = (t_handle *)x->x_handle;
+    sh->h_master = x;
+    sh->h_dragon = 0;
+    sh->h_pathname[0] = 0;
+    char hbuf[64];
+    sprintf(hbuf, "_h%lx", (unsigned long)sh);
+    pd_bind(x->x_handle, sh->h_bindsym = gensym(hbuf));
+    sprintf(sh->h_outlinetag, "h%lx", (unsigned long)sh);
+    return(x);
 errstate:
     pd_error(x, "[function]: improper args");
     return(NULL);
@@ -1054,11 +1513,11 @@ void function_setup(void){
     function_class = class_new(gensym("function"), (t_newmethod)function_new,
         (t_method)function_free, sizeof(t_function), 0, A_GIMME,0);
     class_addlist(function_class, function_list);
-//    class_addmethod(function_class, (t_method)function_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
     class_addmethod(function_class, (t_method)function_resize, gensym("resize"), 0);
     class_addmethod(function_class, (t_method)function_set, gensym("set"), A_GIMME, 0);
     class_addmethod(function_class, (t_method)function_i, gensym("i"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_savestate, gensym("savestate"), A_FLOAT, 0);
+    class_addmethod(function_class, (t_method)function_dim, gensym("dim"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_height, gensym("height"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_width, gensym("width"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_min, gensym("min"), A_FLOAT, 0);
@@ -1066,19 +1525,33 @@ void function_setup(void){
     class_addmethod(function_class, (t_method)function_duration, gensym("duration"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_send, gensym("send"), A_SYMBOL, 0);
     class_addmethod(function_class, (t_method)function_receive, gensym("receive"), A_SYMBOL, 0);
-    class_addmethod(function_class, (t_method)function_bgcolor, gensym("bgcolor"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    class_addmethod(function_class, (t_method)function_fgcolor, gensym("fgcolor"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(function_class, (t_method)function_bgcolor, gensym("bgcolor"), A_GIMME, 0);
+    class_addmethod(function_class, (t_method)function_fgcolor, gensym("fgcolor"), A_GIMME, 0);
+    class_addmethod(function_class, (t_method)function_colors, gensym("colors"), A_SYMBOL, A_SYMBOL, 0);
+    class_addmethod(function_class, (t_method)function_theme, gensym("theme"), A_FLOAT, 0);
+    class_addmethod(function_class, (t_method)function_transparent, gensym("transparent"), A_FLOAT, 0);
+    class_addmethod(function_class, (t_method)function_validate, gensym("_validate"),
+        A_FLOAT, A_SYMBOL, A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_motion, gensym("motion"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_key, gensym("key"), A_FLOAT, 0);
-    class_addmethod(function_class, (t_method)function_zoom, gensym("zoom"), A_CANT, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
+    class_addmethod(function_class, (t_method)function_apply, gensym("dialog"), A_GIMME, 0);
+    class_addmethod(function_class, (t_method)function_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
+    handle_class = class_new(gensym("_handle"), 0, 0, sizeof(t_handle), CLASS_PD, 0);
+    class_addmethod(handle_class, (t_method)handle__click_callback, gensym("_click"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(handle_class, (t_method)handle__motion_callback, gensym("_motion"), A_FLOAT, A_FLOAT, 0);
     class_setwidget(function_class, &function_widgetbehavior);
     class_setsavefn(function_class, function_save);
+    class_setpropertiesfn(function_class, function_properties);
     function_widgetbehavior.w_getrectfn  = function_getrect;
     function_widgetbehavior.w_displacefn = function_displace;
     function_widgetbehavior.w_selectfn   = function_select;
     function_widgetbehavior.w_deletefn   = function_delete;
     function_widgetbehavior.w_visfn      = function_vis;
     function_widgetbehavior.w_clickfn    = (t_clickfn)function_click;
+    #include "../Extra/else_tcl_utils.h"
+    pdgui_vmess(else_tcl_utils, NULL);
+    #include "../Extra/function_dialog.h"
+    pdgui_vmess(function_dialog_tcl, NULL);                              
 }
