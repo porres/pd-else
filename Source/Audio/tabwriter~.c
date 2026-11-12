@@ -160,7 +160,8 @@ static t_int *tabwriter_perform(t_int *w){
                 if(phase < start)
                     phase = start;
                 if(x->x_isrunning == 1){ // if we're still running after boundschecking
-                    for(j = 0; j < nch; j++){
+                    int chans = x->x_numchans > nch ? nch : x->x_numchans;
+                    for(j = 0; j < chans; j++){
                         t_word *vp = c->c_vectors[j];
                         t_float *insig = x->x_ins[j];
                         if(vp)
