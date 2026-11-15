@@ -133,6 +133,7 @@ function circle:in_1_bgcolor(atoms)
     if not c then return end
     self.bgcolor1 = c
     self.bgcolor2 = { c[1], c[2], c[3] }
+    self.usetheme = 0   -- an explicit color means: use this color
     self:save_args(); self:repaint()
 end
 
@@ -140,6 +141,7 @@ function circle:in_1_fgcolor(atoms)
     local c = color_from_atoms(atoms)
     if not c then return end
     self.fgcolor = c
+    self.usetheme = 0   -- an explicit color means: use this color
     self:save_args(); self:repaint()
 end
 
