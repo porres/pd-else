@@ -8,7 +8,7 @@ else_gui.setup(circle, {
     { "mode",           1,            "repaint",   "Mode",             "combo", {frame="General", flag="mode", items={"none", "crosshair", "line to center"}} },
     { "bgcolor1",       pd.bg_color,  "repaint",   "Background",       "color", {frame="Appearance", ncols=3, flag="bgcolor1", msg="bgcolor1", theme="bg"} },
     { "bgcolor2",       pd.bg_color,  "repaint",   "Circle",           "color", {frame="Appearance", flag="bgcolor2", msg="bgcolor2", theme="bg"} },
-    { "fgcolor",        pd.fg_color,  "repaint",   "Foreground",           "color", {frame="Appearance", flag="fgcolor", msg="fgcolor", theme="fg"} },
+    { "fgcolor",        pd.fg_color,  "repaint",   "Foreground",       "color", {frame="Appearance", flag="fgcolor", msg="fgcolor", theme="fg"} },
     { "grid",           1,            "repaint",   "Grid",             "check", {frame="General", flag="grid"}},
     { "jump",           0,            nil,         "Jump on Click",    "check", {frame="General", flag="jump"}},
     { "savestate",      0,            "record_init","Save State",      "check", {frame="General", flag="savestate"}},
@@ -39,6 +39,61 @@ else_gui.setup(circle, {
     }
     )
 
+-- Parse a hex color string that MUST start with '#'.
+-- Accepts "#RRGGBB" or "#RGB"; returns {r, g, b}, or nil if invalid.
+local function hex_to_rgb(hex)
+    if type(hex) ~= "string" then return nil end
+    if hex:sub(1, 1) ~= "#" then return nil end   -- require leading '#'
+    hex = hex:sub(2)
+    if #hex == 3 then                              -- expand shorthand: "f80" -> "ff8800"
+        hex = hex:gsub("(.)", "%1%1")
+    end
+    if #hex ~= 6 then return nil end
+    local r = tonumber(hex:sub(1, 2), 16)
+    local g = tonumber(hex:sub(3, 4), 16)
+    local b = tonumber(hex:sub(5, 6), 16)
+    if not (r and g and b) then return nil end
+    return { r, g, b }
+end
+
+-- Strict validator for a color message from the inlet.
+-- Accepts exactly one of:
+--   * a single symbol atom beginning with '#'
+--   * exactly three number atoms, each in [0, 255]
+-- Anything else returns nil.
+local function color_from_atoms(atoms)
+    if #atoms == 1 and type(atoms[1]) == "string" then
+        return hex_to_rgb(atoms[1])
+    end
+    if #atoms == 3
+       and type(atoms[1]) == "number"
+       and type(atoms[2]) == "number"
+       and type(atoms[3]) == "number" then
+        local r, g, b = atoms[1], atoms[2], atoms[3]
+        if r >= 0 and r <= 255
+           and g >= 0 and g <= 255
+           and b >= 0 and b <= 255 then
+            return { r, g, b }
+        end
+    end
+    return nil
+end
+
+-- Reject any restored color that is not a {r, g, b} of numbers 0-255.
+-- This cleans up older patches that saved e.g. {554433, 0, 0}.
+local function sanitize_color(c)
+    if type(c) == "table"
+       and type(c[1]) == "number"
+       and type(c[2]) == "number"
+       and type(c[3]) == "number"
+       and c[1] >= 0 and c[1] <= 255
+       and c[2] >= 0 and c[2] <= 255
+       and c[3] >= 0 and c[3] <= 255 then
+        return { c[1], c[2], c[3] }
+    end
+    return { 0, 0, 0 }
+end
+
 function circle:initialize(sel, atoms)
     self.inlets   = 1
     self.outlets  = 1
@@ -46,6 +101,11 @@ function circle:initialize(sel, atoms)
     self.dragging = false
 
     self:init_args(atoms)
+
+    -- drop any malformed color state inherited from older saves
+    self.bgcolor1 = sanitize_color(self.bgcolor1)
+    self.bgcolor2 = sanitize_color(self.bgcolor2)
+    self.fgcolor  = sanitize_color(self.fgcolor)
 
     if self.savestate ~= 0 then
         self.slider_position_x = self.init_x
@@ -69,8 +129,17 @@ function circle:in_1_theme(atoms)
 end
 
 function circle:in_1_bgcolor(atoms)
-    self.bgcolor1 = { tonumber(atoms[1]) or 0, tonumber(atoms[2]) or 0, tonumber(atoms[3]) or 0 }
-    self.bgcolor2 = { self.bgcolor1[1], self.bgcolor1[2], self.bgcolor1[3] }
+    local c = color_from_atoms(atoms)
+    if not c then return end
+    self.bgcolor1 = c
+    self.bgcolor2 = { c[1], c[2], c[3] }
+    self:save_args(); self:repaint()
+end
+
+function circle:in_1_fgcolor(atoms)
+    local c = color_from_atoms(atoms)
+    if not c then return end
+    self.fgcolor = c
     self:save_args(); self:repaint()
 end
 
@@ -177,7 +246,6 @@ function circle:mouse_drag(x, y)
     self.last_mouse_y = y
 end
 
-
 function circle:mouse_up()
     self.dragging = false
     self:record_init()
@@ -196,7 +264,7 @@ end
 
 function circle:in_1_set(atoms)
     self.slider_position_x = self:unscale(tonumber(atoms[1]) or 0, self.xrange[1], self.xrange[2])
-    self.slider_position_y = self:unscale(tonumber(atoms[2]) or 0, self.yrange[2],   self.yrange[1])
+    self.slider_position_y = self:unscale(tonumber(atoms[2]) or 0, self.yrange[2], self.yrange[1])
     self:clamp_position()
     self:repaint(); self:record_init()
 end
@@ -208,7 +276,7 @@ end
 function circle:paint(g)
     local w, h = self:get_size()
     local px =  self.slider_position_x * w
-    local py = self.slider_position_y * h
+    local py =  self.slider_position_y * h
 
     -- background square
     self:fill_background(g, "bgcolor1")

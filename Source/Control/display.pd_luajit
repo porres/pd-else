@@ -50,6 +50,22 @@ else_gui.setup(display, {
     end,
 })
 
+-- Reject any restored color that is not a {r, g, b} of numbers 0-255.
+-- This cleans up older patches that saved a bare number, etc.
+local function sanitize_color(c, default)
+    default = default or { 0, 0, 0 }
+    if type(c) == "table"
+       and type(c[1]) == "number"
+       and type(c[2]) == "number"
+       and type(c[3]) == "number"
+       and c[1] >= 0 and c[1] <= 255
+       and c[2] >= 0 and c[2] <= 255
+       and c[3] >= 0 and c[3] <= 255 then
+        return { c[1], c[2], c[3] }
+    end
+    return default
+end
+
 function display:initialize(sel, atoms)
     self.inlets   = 1
     self.outlets  = 1
@@ -60,6 +76,12 @@ function display:initialize(sel, atoms)
     self.clock    = pd.Clock:new():register(self, "refresh")
 
     self:init_args(atoms)
+
+    -- drop any malformed color state inherited from older saves
+    self.bgcolor    = sanitize_color(self.bgcolor,    { 224, 224, 224 })
+    self.flashcolor = sanitize_color(self.flashcolor, { 74, 79, 81 })
+    self.fgcolor    = sanitize_color(self.fgcolor,    { 64, 64, 64 })
+
     self:update_size()
     return true
 end
