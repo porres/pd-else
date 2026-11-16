@@ -140,12 +140,11 @@ void sfload_update_arrays(t_sfload* x){
     float srkhz = sys_getsr() * 0.001;
     long start = x->x_onset * srkhz; // start point in samples
     long arraysize = x->x_arr_size;
-    long filesize = x->x_nsamps - start;
+    long filesize = start < x->x_nsamps ? x->x_nsamps - start : 0;
     long readsize;
-     if(arraysize > 0){ // arraysize is given
+    if(arraysize > 0){ // arraysize is given
         arraysize *= srkhz;
-        if(filesize <= arraysize)
-            readsize = filesize <= arraysize ? filesize : arraysize;
+        readsize = filesize < arraysize ? filesize : arraysize;
     }
     else // not given, set to filesize
         readsize = arraysize = filesize;

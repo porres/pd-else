@@ -195,6 +195,10 @@ void init_fade_tables(void){
 }
 
 double read_fadetab(double phase, int tab){
+    if(!(phase > 0))
+        phase = 0;
+    else if(phase > 1)
+        phase = 1;
     double tabphase = phase * ELSE_FADE_TABSIZE;
     int i = (int)tabphase;
     int i_next = i == ELSE_FADE_TABSIZE ? i : i + 1;
