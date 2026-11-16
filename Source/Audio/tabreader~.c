@@ -74,8 +74,16 @@ static t_int *tabreader_perform(t_int *w){
     t_word *vp = buf->c_vectors[0];
     for(int j = 0; j < x->x_nchs; j++){
         for(int i = 0, n = x->x_n; i < n; i++){
-            if(buf->c_playable){ // ????
+            if(buf->c_playable && vp && buf->c_npts > 0){
                 double index = (double)(in[j*n+i]);
+                if(!isfinite(index)){
+                    out[j*n+i] = 0;
+                    continue;
+                }
+                if(buf->c_npts == 1){
+                    out[j*n+i] = vp[0].w_float;
+                    continue;
+                }
                 double xpos = x->x_idx ? index : index*npts;
                 if(xpos < 0)
                     xpos = 0;

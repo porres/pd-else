@@ -102,6 +102,9 @@ static t_class *streamout_class;
 
 typedef struct _streamout{
     t_object x_obj;
+#ifdef PDINSTANCE
+    t_pdinstance *x_pdinstance;
+#endif
     t_float x_f;
     t_float x_unused;
     t_symbol *x_ignore;
@@ -813,6 +816,9 @@ void streamout_banana( void){
 
 static void *streamout_child_main(void *zz){
     t_streamout *x = zz;
+#ifdef PDINSTANCE
+    pd_setinstance(x->x_pdinstance);
+#endif
 	time_t         now; /* to get the time */
     pute("1\n");
     pthread_mutex_lock(&x->x_mutex);
@@ -1393,6 +1399,9 @@ static void *streamout_new(t_floatarg fnchannels, t_floatarg fbufsize){
     if(!buf)
         return(0);
     x = (t_streamout *)pd_new(streamout_class);
+#ifdef PDINSTANCE
+    x->x_pdinstance = pd_this;
+#endif
     x->x_hostname = "localhost";
     x->x_port = 8000;
     for(i = 1; i < nchannels; i++)
