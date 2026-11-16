@@ -1174,11 +1174,16 @@ static void streamout_password(t_streamout *x, t_symbol *password){
 
 // set comment fields for header (reads in just anything)
 static void streamout_set(t_streamout *x, t_symbol *s, t_int ac, t_atom* av){
+    if(ac < 1)
+        return;
 	t_binbuf *b = binbuf_new();
 	char* comment;
 	int length;
 	binbuf_add(b, ac-1, av+1);
 	binbuf_gettext(b, &comment, &length);
+    // binbuf_gettext returns a byte buffer without a null terminator.
+    comment = resizebytes(comment, length, (size_t)length + 1);
+    comment[length] = '\0';
     pthread_mutex_lock(&x->x_mutex);
     
     t_symbol *info = atom_getsymbol(av);
@@ -1250,7 +1255,7 @@ static void streamout_set(t_streamout *x, t_symbol *s, t_int ac, t_atom* av){
 		streamout_cond_signal(&x->x_requestcondition);
 	}
     pthread_mutex_unlock(&x->x_mutex);
-	freebytes(comment, strlen(comment));
+	freebytes(comment, (size_t)length + 1);
 	binbuf_free(b);
 }
 
