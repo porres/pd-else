@@ -1,6 +1,24 @@
 local else_gui = require("else_gui")
 local circle   = pd.Class:new():register("circle")
 
+-- Parse a hex color string that MUST start with '#'.
+-- Accepts "#RRGGBB" or "#RGB"; returns {r, g, b}, or nil if invalid.
+-- Defined before else_gui.setup so the color-flag handlers can use it.
+local function hex_to_rgb(hex)
+    if type(hex) ~= "string" then return nil end
+    if hex:sub(1, 1) ~= "#" then return nil end   -- require leading '#'
+    hex = hex:sub(2)
+    if #hex == 3 then                              -- expand shorthand: "f80" -> "ff8800"
+        hex = hex:gsub("(.)", "%1%1")
+    end
+    if #hex ~= 6 then return nil end
+    local r = tonumber(hex:sub(1, 2), 16)
+    local g = tonumber(hex:sub(3, 4), 16)
+    local b = tonumber(hex:sub(5, 6), 16)
+    if not (r and g and b) then return nil end
+    return { r, g, b }
+end
+
 else_gui.setup(circle, {
     { "size",           127,          "on_resize", "Size",             "int",   {frame="Dimensions", ncols=1, flag="size", min=10, max=4096} },
     { "xrange",         {-1, 1},      "repaint",   "X Range",          "range", {frame="General", flag="xrange"}},
@@ -35,26 +53,44 @@ else_gui.setup(circle, {
     ["-theme"] = function(self, atoms, i)
         self.usetheme = 1
         return 0
+    end,
+    -- hex-only color flags: each takes exactly one '#RRGGBB' / '#RGB' symbol.
+    -- An invalid hex is skipped; the flag still consumes its one atom.
+    ["-bgcolor"] = function(self, atoms, i)
+        local c = hex_to_rgb(atoms[i])
+        if c then
+            self.bgcolor1 = c
+            self.bgcolor2 = { c[1], c[2], c[3] }
+            self.usetheme = 0
+        end
+        return 1
+    end,
+    ["-bgcolor1"] = function(self, atoms, i)
+        local c = hex_to_rgb(atoms[i])
+        if c then
+            self.bgcolor1 = c
+            self.usetheme = 0
+        end
+        return 1
+    end,
+    ["-bgcolor2"] = function(self, atoms, i)
+        local c = hex_to_rgb(atoms[i])
+        if c then
+            self.bgcolor2 = c
+            self.usetheme = 0
+        end
+        return 1
+    end,
+    ["-fgcolor"] = function(self, atoms, i)
+        local c = hex_to_rgb(atoms[i])
+        if c then
+            self.fgcolor = c
+            self.usetheme = 0
+        end
+        return 1
     end
     }
     )
-
--- Parse a hex color string that MUST start with '#'.
--- Accepts "#RRGGBB" or "#RGB"; returns {r, g, b}, or nil if invalid.
-local function hex_to_rgb(hex)
-    if type(hex) ~= "string" then return nil end
-    if hex:sub(1, 1) ~= "#" then return nil end   -- require leading '#'
-    hex = hex:sub(2)
-    if #hex == 3 then                              -- expand shorthand: "f80" -> "ff8800"
-        hex = hex:gsub("(.)", "%1%1")
-    end
-    if #hex ~= 6 then return nil end
-    local r = tonumber(hex:sub(1, 2), 16)
-    local g = tonumber(hex:sub(3, 4), 16)
-    local b = tonumber(hex:sub(5, 6), 16)
-    if not (r and g and b) then return nil end
-    return { r, g, b }
-end
 
 -- Strict validator for a color message from the inlet.
 -- Accepts exactly one of:
