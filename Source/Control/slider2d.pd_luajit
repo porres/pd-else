@@ -222,6 +222,22 @@ function slider2d:in_1_bgcolor(atoms)
     self:save_args(); self:repaint()
 end
 
+-- Background + foreground in one shot:
+--   colors #RRGGBB #RRGGBB
+-- First hex sets bgcolor, second hex sets fgcolor.
+-- Only two hex symbols are accepted.
+function slider2d:in_1_colors(atoms)
+    if #atoms ~= 2 then return end
+    if type(atoms[1]) ~= "string" or type(atoms[2]) ~= "string" then return end
+    local c1 = hex_to_rgb(atoms[1])
+    local c2 = hex_to_rgb(atoms[2])
+    if not c1 or not c2 then return end
+    self.bgcolor = c1
+    self.fgcolor = c2
+    self.usetheme = 0   -- an explicit color means: use this color
+    self:save_args(); self:repaint()
+end
+
 function slider2d:in_1_fgcolor(atoms)
     local c = color_from_atoms(atoms)
     if not c then return end
