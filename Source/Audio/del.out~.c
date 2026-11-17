@@ -29,7 +29,7 @@ static t_int *delout_perform(t_int *w){
         if(x->x_ms)
             samps *= sr;
         samps -= zerodel;
-        if(samps < 0.0f)
+        if(!(samps >= 0.0f))
             samps = 0.0f;
         else if(samps > limit)
             samps = limit;
