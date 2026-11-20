@@ -48,6 +48,9 @@ typedef struct _coll_q{ // element in a linked list of stored messages waiting t
 
 typedef struct _coll{
     t_object            x_obj;
+#ifdef PDINSTANCE
+    t_pdinstance       *x_pdinstance;
+#endif
     t_canvas           *x_canvas;
     t_symbol           *x_name;
     t_messcollcommon   *x_common;
@@ -78,10 +81,6 @@ typedef struct _msg{
 	int m_flag;
 	int m_line;
 }t_msg;
-
-typedef struct _threadedFunctionParams{
-	t_messcoll *x;
-}t_threadedFunctionParams;
 
 static t_class *messcoll_class;
 static t_class *messcollcommon_class;
@@ -440,7 +439,8 @@ static t_msg *collcommon_doread(t_messcollcommon *cc, t_symbol *fn, t_canvas *cv
 			// LATER consider making this more robust
             // now taken care of by coll_read for obj specificity
             // leaving here so i remember how to do this o/wise - DK
-            if(1){ // COLL_ALLBANG ???????
+            // threaded reads send this from coll_threaded_done()
+            if(!threaded){ // COLL_ALLBANG ???????
                 for(x = cc->c_refs; x; x = x->x_next)
                     outlet_anything(x->x_info_out, gensym("doneread"), 0, NULL);
             };
@@ -1112,10 +1112,32 @@ static void coll_dump(t_messcoll *x){
     }
 }
 
+static void coll_threaded_done(t_pd *obj, void *readdone){
+    t_messcoll *x = (t_messcoll *)obj;
+    if(!x)
+        return;
+    if(readdone){
+        t_messcoll *ref;
+        for(ref = x->x_common->c_refs; ref; ref = ref->x_next)
+            outlet_anything(ref->x_info_out, gensym("doneread"), 0, NULL);
+    }
+    coll_tick(x);
+}
+
+static void coll_child_done(t_messcoll *x, int readdone){
+#ifdef PDINSTANCE
+    pd_queue_mess(x->x_pdinstance, &x->x_obj.ob_pd, readdone ? (void *)1 : NULL, coll_threaded_done);
+#else
+    pd_queue_mess(pd_this, &x->x_obj.ob_pd, readdone ? (void *)1 : NULL, coll_threaded_done);
+#endif
+}
+
 static void *coll_threaded_fileio(void *ptr){
-	t_threadedFunctionParams *rPars = (t_threadedFunctionParams*)ptr;
-	t_messcoll *x = rPars->x;
+	t_messcoll *x = (t_messcoll *)ptr;
 	t_msg *m = NULL;
+#ifdef PDINSTANCE
+    pd_setinstance(x->x_pdinstance);
+#endif
 	while(x->unsafe > -1){
 		pthread_mutex_lock(&x->unsafe_mutex);
 		if(x->unsafe == 0)
@@ -1129,7 +1151,7 @@ static void *coll_threaded_fileio(void *ptr){
             if(m->m_line > 0){
                 x->x_filebang = 1;
             };
-			clock_delay(x->x_clock, 0);
+			coll_child_done(x, m->m_line > 0);
 		}
 		else if(x->unsafe == 2) { //read
 			m = collcommon_doread(x->x_common, 0, x->x_canvas, 1);
@@ -1138,17 +1160,19 @@ static void *coll_threaded_fileio(void *ptr){
             if(m->m_line > 0){
                 x->x_filebang = 1;
             };
-			clock_delay(x->x_clock, 0);
+			coll_child_done(x, m->m_line > 0);
 		}
 		else if(x->unsafe == 10) { // write
 			m = collcommon_dowrite(x->x_common, x->x_s, x->x_canvas, 1);
 			if(m->m_flag)
 				coll_enqueue_threaded_msgs(x, m);
+			coll_child_done(x, 0);
 		}
 		else if(x->unsafe == 11) { // write
 			m = collcommon_dowrite(x->x_common, 0, 0, 1);
 			if(m->m_flag)
 				coll_enqueue_threaded_msgs(x, m);
+			coll_child_done(x, 0);
 		};
 		if(m != NULL){
 			t_freebytes(m, sizeof(*m));
@@ -1163,12 +1187,11 @@ static void *coll_threaded_fileio(void *ptr){
 
 static void coll_dothread(t_messcoll *x, int create){
     if(create){
-        t_threadedFunctionParams rPars;
         x->unsafe = 0;
-        rPars.x = x;
+        x->init = 0;
         pthread_mutex_init(&x->unsafe_mutex, NULL);
         pthread_cond_init(&x->unsafe_cond, NULL);
-        pthread_create( &x->unsafe_t, NULL, (void *)&coll_threaded_fileio, (void *) &rPars);
+        pthread_create(&x->unsafe_t, NULL, coll_threaded_fileio, x);
         while(!x->init)
             sched_yield();
     }
@@ -1178,7 +1201,9 @@ static void coll_dothread(t_messcoll *x, int create){
 		pthread_cond_signal(&x->unsafe_cond);
 		pthread_mutex_unlock(&x->unsafe_mutex);
 		pthread_join(x->unsafe_t, NULL);
+		pd_queue_cancel(&x->x_obj.ob_pd);
 		pthread_mutex_destroy(&x->unsafe_mutex);
+		pthread_cond_destroy(&x->unsafe_cond);
 		if(x->x_q)
 			coll_q_free(x);
         x->unsafe = 0;
@@ -1281,6 +1306,9 @@ static void *coll_new(t_symbol *s, int ac, t_atom *av){
     x->x_filebang = 0;
 	x->unsafe = 0;
 	x->init = 0;
+#ifdef PDINSTANCE
+    x->x_pdinstance = pd_this;
+#endif
     x->x_clock = clock_new(x, (t_method)coll_tick);
 	coll_threaded(x, threaded);
     coll_init(x, name);
