@@ -60,8 +60,8 @@ static void above_dsp(t_above *x, t_signal **sp){
     signal_setmultiout(&sp[3], x->x_nchs);
     if((x->x_ch1 > 1 && x->x_ch1 != x->x_nchs)
     || (x->x_ch2 > 1 && x->x_ch2 != x->x_nchs)){
-        dsp_add_zero(sp[4]->s_vec, x->x_nchs*x->x_n);
-        dsp_add_zero(sp[5]->s_vec, x->x_nchs*x->x_n);
+        dsp_add_zero(sp[2]->s_vec, x->x_nchs*x->x_n);
+        dsp_add_zero(sp[3]->s_vec, x->x_nchs*x->x_n);
         pd_error(x, "[above~]: channel sizes mismatch");
         return;
     }
