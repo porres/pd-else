@@ -121,7 +121,7 @@ static t_int *conv_perform(t_int *w){
 static void conv_dsp(t_conv *x, t_signal **sp){
     if(sp[0]->s_n != x->x_n){
         pd_error(x, "[conv~]: block size must be 64");
-        dsp_add_zero(sp[1]->s_vec, x->x_n);
+        dsp_add_zero(sp[1]->s_vec, sp[1]->s_n);
     }
     else
         dsp_add(conv_perform, 3, x, sp[0]->s_vec, sp[1]->s_vec);
