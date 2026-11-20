@@ -106,34 +106,40 @@ static t_int *shaper_perform(t_int *w){
         double yn, xn;
         float output = 0;
         double ph = ((double)*in++ + 1) * 0.5; // get phase (0-1)
+        if(!isfinite(ph)){
+            *out++ = 0;
+            xnm1 = ynm1 = 0;
+            continue;
+        }
         if(x->x_clip){
             if(ph < 0)
                 ph = 0;
-            while(ph > 1)
+            if(ph > 1)
                 ph = 1;
         }
         else{ // wrap
-            while(ph < 0)
-                ph++;
-            while(ph >= 1)
-                ph--;
+            ph -= floor(ph);
         }
-        if(x->x_arrayset && x->x_buffer->c_playable){
-            double pos = ph * maxidx;
-            int ndx = (int)pos;
-            double frac = pos - (double)ndx;
-            int ndxm1 = (ndx == 0 ? 0 : ndx - 1), ndx1 = ndx + 1, ndx2 = ndx + 2;
-            if(ndxm1 < 0)
-                ndxm1 = x->x_clip ? 0 : maxidx - ndxm1;
-            if(ndx1 >= maxidx)
-                ndx1 = x->x_clip ? maxidx : ndx1 - maxidx;
-            if(ndx2 >= maxidx)
-                ndx2 = x->x_clip ? maxidx : ndx2 - maxidx;
-            double a = buf[ndxm1].w_float;
-            double b = buf[ndx].w_float;
-            double c = buf[ndx1].w_float;
-            double d = buf[ndx2].w_float;
-            output = interp_spline(frac, a, b, c, d);
+        if(x->x_arrayset && x->x_buffer->c_playable && buf && maxidx >= 0){
+            if(maxidx == 0)
+                output = buf[0].w_float;
+            else{
+                double pos = ph * maxidx;
+                int ndx = (int)pos;
+                double frac = pos - (double)ndx;
+                int ndxm1 = (ndx == 0 ? 0 : ndx - 1), ndx1 = ndx + 1, ndx2 = ndx + 2;
+                if(ndxm1 < 0)
+                    ndxm1 = x->x_clip ? 0 : maxidx - ndxm1;
+                if(ndx1 >= maxidx)
+                    ndx1 = x->x_clip ? maxidx : ndx1 - maxidx;
+                if(ndx2 >= maxidx)
+                    ndx2 = x->x_clip ? maxidx : ndx2 - maxidx;
+                double a = buf[ndxm1].w_float;
+                double b = buf[ndx].w_float;
+                double c = buf[ndx1].w_float;
+                double d = buf[ndx2].w_float;
+                output = interp_spline(frac, a, b, c, d);
+            }
         }
         else{
             int i = (int)(ph * (double)(FLEN - 1));

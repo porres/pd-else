@@ -12,6 +12,9 @@ static t_class *sfload_class;
 
 typedef struct _sfload{
     t_object        x_obj;
+#ifdef PDINSTANCE
+    t_pdinstance   *x_pdinstance;
+#endif
     t_outlet       *x_info_outlet;
     AVCodecContext *x_stream_ctx;
     int            x_stream_idx;
@@ -38,6 +41,9 @@ typedef struct _sfload{
 
 void* sfload_read_audio_threaded(void *arg){ // read audio into array
     t_sfload *x = (t_sfload*)arg;
+#ifdef PDINSTANCE
+    pd_setinstance(x->x_pdinstance);
+#endif
     x->x_ic = avformat_alloc_context();
     x->x_ic->probesize = 128;
     x->x_ic->max_probe_packets = 1;
@@ -140,12 +146,11 @@ void sfload_update_arrays(t_sfload* x){
     float srkhz = sys_getsr() * 0.001;
     long start = x->x_onset * srkhz; // start point in samples
     long arraysize = x->x_arr_size;
-    long filesize = x->x_nsamps - start;
+    long filesize = start < x->x_nsamps ? x->x_nsamps - start : 0;
     long readsize;
-     if(arraysize > 0){ // arraysize is given
+    if(arraysize > 0){ // arraysize is given
         arraysize *= srkhz;
-        if(filesize <= arraysize)
-            readsize = filesize <= arraysize ? filesize : arraysize;
+        readsize = filesize < arraysize ? filesize : arraysize;
     }
     else // not given, set to filesize
         readsize = arraysize = filesize;
@@ -457,6 +462,9 @@ static void sfload_free(t_sfload *x){
 
 static void *sfload_new(t_symbol *s, int ac, t_atom *av){
     t_sfload *x = (t_sfload *)pd_new(sfload_class);
+#ifdef PDINSTANCE
+    x->x_pdinstance = pd_this;
+#endif
     x->x_arr_name = NULL;
     x->x_threaded = 0;
     if(ac && atom_getsymbol(av) == gensym("-t")){

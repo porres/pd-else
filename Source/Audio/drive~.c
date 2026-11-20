@@ -100,7 +100,7 @@ static void drive_dsp(t_drive *x, t_signal **sp){
     signal_setmultiout(&sp[2], x->x_nchans);
     if((x->x_ch1 > 1 && x->x_ch1 != x->x_nchans)
     || (x->x_ch2 > 1 && x->x_ch2 != x->x_nchans)){
-        dsp_add_zero(sp[3]->s_vec, x->x_nchans*x->x_n);
+        dsp_add_zero(sp[2]->s_vec, x->x_nchans*x->x_n);
         pd_error(x, "[drive~]: channel sizes mismatch");
         return;
     }

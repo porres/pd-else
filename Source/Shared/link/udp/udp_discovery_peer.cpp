@@ -323,6 +323,8 @@ class PeerEnv : public PeerEnvInterface {
       SetSocketTimeout(binding_sock_, SO_RCVTIMEO, 1000);
     }
 
+    // one reference per worker thread
+    ref_count_ = parameters_.can_discover() ? 2 : 1;
     return true;
   }
 
@@ -349,10 +351,6 @@ class PeerEnv : public PeerEnvInterface {
   }
 
   void SendingThreadFunc() {
-    lock_.Lock();
-    ++ref_count_;
-    lock_.Unlock();
-
     long last_send_time_ms = 0;
     long last_delete_idle_ms = 0;
 
@@ -408,10 +406,6 @@ class PeerEnv : public PeerEnvInterface {
   }
 
   void ReceivingThreadFunc() {
-    lock_.Lock();
-    ++ref_count_;
-    lock_.Unlock();
-
     while (true) {
       sockaddr_in from_addr;
       AddressLenType addr_length = sizeof(sockaddr_in);

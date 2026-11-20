@@ -338,7 +338,11 @@ static t_int *pdlink_tilde_perform(t_int *w){
 }
 
 static void pdlink_tilde_dsp(t_pdlink_tilde *x, t_signal **sp) {
-    if(x->x_name == gensym("")) return;
+    if(x->x_name == gensym("")) {
+        signal_setmultiout(&sp[1], 1);
+        dsp_add_zero(sp[1]->s_vec, sp[1]->s_length);
+        return;
+    }
 
     if(x->x_compress && sp[0]->s_nchans != x->x_in_nchs)
     {

@@ -168,6 +168,8 @@ static err_t streamin_reset(void *y){
 }
 
 static err_t streamin_load(t_streamin *x, int index) {
+    x->x_open = x->x_play = 0;
+    x->x_out_buffer_index = x->x_out_buffer_size = 0;
     char url[MAXPDSTRING];
     const char *fname = x->x_plist.arr[index]->s_name;
 
@@ -232,7 +234,7 @@ static void streamin_pause(t_streamin *x){
 }
 
 static void streamin_continue(t_streamin *x){
-    x->x_play = 1;
+    x->x_play = x->x_open;
 }
 
 static void streamin_start(t_streamin *x, t_float f, t_float ms){
@@ -241,12 +243,12 @@ static void streamin_start(t_streamin *x, t_float f, t_float ms){
     if(0 < track && track <= x->x_plist.size){
         if((err_msg = streamin_load(x, track - 1)))
             pd_error(x, "[streamin~] 'base start': %s.", err_msg);
-        streamin_seek(x, ms);
         x->x_open = !err_msg;
+        streamin_seek(x, ms);
     }
     else
         streamin_seek(x, 0);
-    x->x_play = !err_msg;
+    x->x_play = x->x_open && !err_msg;
 }
 
 /*static int streamin_is_network_protocol(const char *filename) {
@@ -375,7 +377,8 @@ static t_int *streamin_perform(t_int *w){
         outs[i] = x->x_outs[i];
     int n = (int)(w[2]);
     int samples_filled = 0;
-    if(x->x_play){
+    if(x->x_play && x->x_open){
+        int restarted = 0;
         while (samples_filled < n) {
             if (x->x_out_buffer_index >= x->x_out_buffer_size) {
                 // Need to read and convert more data
@@ -405,12 +408,18 @@ static t_int *streamin_perform(t_int *w){
                         outlet_bang(x->x_o_meta);
                     }
                     if(x->x_loop){
+                        // still no audio after restarting
+                        if(restarted)
+                            goto silence;
+                        restarted = 1;
                         if(x->x_play_next){
                             streamin_open(x, gensym("open"), 1, &(t_atom){.a_type = A_SYMBOL, .a_w = { .w_symbol = x->x_play_next }});
                             x->x_play_next = NULL;
                         }
                         streamin_seek(x, 0.0f);
-                        x->x_play = 1;
+                        streamin_continue(x);
+                        if(!x->x_play)
+                            goto silence;
                     }
                     else{
                         if(x->x_play_next){
@@ -422,6 +431,8 @@ static t_int *streamin_perform(t_int *w){
                         goto silence;
                     }
                 }
+                else
+                    restarted = 0;
             }
             // Fill the output buffer
             while(samples_filled < n && x->x_out_buffer_index < x->x_out_buffer_size){
