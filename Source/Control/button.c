@@ -155,7 +155,7 @@ static void button_send_color_validate(t_button *x, const char *color, int which
     pdgui_vmess(buf, NULL);
 }
 
-static void button_validate(t_button *x, t_floatarg v, t_symbol *color, t_floatarg which){
+static void button_validate(t_button *x, t_symbol *color, t_floatarg v, t_floatarg which){
     if(!(int)v){
         pd_error(0, "[button] invalid color '%s'", color->s_name);
         return;

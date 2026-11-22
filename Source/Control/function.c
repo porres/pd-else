@@ -839,7 +839,7 @@ static void function_send_color_validate(t_function *x, const char *color, int w
     pdgui_vmess(buf, NULL);
 }
 
-static void function_validate(t_function *x, t_floatarg v, t_symbol *color, t_floatarg which){
+static void function_validate(t_function *x, t_symbol *color, t_floatarg v, t_floatarg which){
     if(!(int)v){
         pd_error(0, "[function] invalid color '%s'", color->s_name);
         return;

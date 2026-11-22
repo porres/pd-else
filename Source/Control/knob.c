@@ -1265,7 +1265,7 @@ static t_symbol *knob_getcolor(int ac, t_atom *av){
     }
 }
 
-static void knob_validate(t_knob *x, t_floatarg v, t_symbol *color, t_floatarg t){
+static void knob_validate(t_knob *x, t_symbol *color, t_floatarg v, t_floatarg t){
     int valid = (int)v;
     int type = (int)t;
     switch (type) {

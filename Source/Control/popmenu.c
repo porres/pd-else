@@ -556,7 +556,7 @@ static void menu_send_color_validate(t_menu *x, const char *color, int which){
     pdgui_vmess(buf, NULL);
 }
 
-static void menu_validate(t_menu *x, t_floatarg v, t_symbol *color, t_floatarg which){
+static void menu_validate(t_menu *x, t_symbol *color, t_floatarg v, t_floatarg which){
     if(!(int)v){
         pd_error(0, "[popmenu] invalid color '%s'", color->s_name);
         return;

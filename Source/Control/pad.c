@@ -357,7 +357,7 @@ static void pad_send_color_validate(t_pad *x, const char *color){
     pdgui_vmess(buf, NULL);
 }
 
-static void pad_validate(t_pad *x, t_floatarg v, t_symbol *color){
+static void pad_validate(t_pad *x, t_symbol *color, t_floatarg v){
     if((int)v){
         x->x_bg = color;
         pad_parse_hex(x, color->s_name);

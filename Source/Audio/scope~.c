@@ -597,7 +597,7 @@ static void scope_linewidth(t_scope *x, t_floatarg f){
     }
 }
 
-static void scope_validate(t_scope *x, t_floatarg v, t_symbol *color, t_floatarg t){
+static void scope_validate(t_scope *x, t_symbol *color, t_floatarg v, t_floatarg t){
     int valid = (int)v;
     int type = (int)t;
     switch(type){

@@ -533,7 +533,7 @@ static void messbox_send_color_validate(t_messbox *x, const char *color, int whi
     pdgui_vmess(buf, NULL);
 }
 
-static void messbox_validate(t_messbox *x, t_floatarg v, t_symbol *color, t_floatarg which){
+static void messbox_validate(t_messbox *x, t_symbol *color, t_floatarg v, t_floatarg which){
     if(!(int)v){
         pd_error(0, "[messbox] invalid color '%s'", color->s_name);
         return;
