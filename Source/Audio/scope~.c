@@ -1503,6 +1503,6 @@ void scope_tilde_setup(void){
     scope_widgetbehavior.w_clickfn    = (t_clickfn)scope_click;
     #include "../Extra/else_tcl_utils.h"
     pdgui_vmess(else_tcl_utils, NULL);
-    #include "../Extra/scope~_dialog.h" // properties in tcl/tk
+    #include "../Extra/properties/scope~_dialog.h" // properties in tcl/tk
     pdgui_vmess(scope_dialog_tcl, NULL);
 }

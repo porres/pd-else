@@ -1067,6 +1067,6 @@ void messbox_setup(void){
     messbox_widgetbehavior.w_clickfn    = (t_clickfn)messbox_click;
     #include "../Extra/else_tcl_utils.h"
     pdgui_vmess(else_tcl_utils, NULL);
-    #include "../Extra/messbox_dialog.h"
+    #include "../Extra/properties/messbox_dialog.h"
     pdgui_vmess(messbox_dialog_tcl, NULL);
 }

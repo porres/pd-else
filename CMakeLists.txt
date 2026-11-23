@@ -171,8 +171,8 @@ file(GLOB help_files "${CMAKE_CURRENT_SOURCE_DIR}/Documentation/Help-files/*")
 file(GLOB extra_files ${CMAKE_CURRENT_SOURCE_DIR}/Documentation/Extra-files/* ${CMAKE_CURRENT_SOURCE_DIR}/Documentation/Extra-files/audio/*)
 
 file(GLOB merda_files "${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Merda/Modules/*")
-file(GLOB tcl_files ${CMAKE_CURRENT_SOURCE_DIR}/Source/Extra/*.tcl ${CMAKE_CURRENT_SOURCE_DIR}/Source/Extra/tkdnd)
-file(GLOB pdlua_files ${CMAKE_CURRENT_SOURCE_DIR}/Source/Extra/*.lua ${CMAKE_CURRENT_SOURCE_DIR}/Source/Audio/*.pd_lua* ${CMAKE_CURRENT_SOURCE_DIR}/Source/Control/*.pd_lua*)
+file(GLOB tcl_files ${CMAKE_CURRENT_SOURCE_DIR}/Source/Extra/*.tcl)
+file(GLOB pdlua_files ${CMAKE_CURRENT_SOURCE_DIR}/Source/Audio/*.pd_lua* ${CMAKE_CURRENT_SOURCE_DIR}/Source/Control/*.pd_lua*)
 file(GLOB abstractions ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Audio/*.pd ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Control/*.pd ${CMAKE_CURRENT_SOURCE_DIR}/Abstractions/Extra/*)
 file(COPY ${pdf_help} ${extra_files} ${help_files} ${abstractions} ${tcl_files} ${pdlua_files} DESTINATION ${PD_OUTPUT_PATH})
 file(COPY ${merda_files} DESTINATION ${PD_OUTPUT_PATH})
@@ -181,6 +181,7 @@ file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Documentation/Live-Electronics-Tutorial" 
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE" DESTINATION ${PD_OUTPUT_PATH}/LICENSE)
 file(COPY "${pd_lua_SOURCE_DIR}/pd.lua" DESTINATION ${PD_OUTPUT_PATH}/)
 file(COPY "${pd_lua_SOURCE_DIR}/lua.pd_luajit" DESTINATION ${PD_OUTPUT_PATH}/)
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/Source/Extra/luadeps/" DESTINATION "${PD_OUTPUT_PATH}/luadeps")
 file(REMOVE_RECURSE ${PD_OUTPUT_PATH}/audio)
 
 # Log the object count

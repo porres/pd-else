@@ -768,6 +768,6 @@ void numbox_tilde_setup(void){
     class_setpropertiesfn(numbox_class, numbox_properties);
     #include "../Extra/else_tcl_utils.h"
     pdgui_vmess(else_tcl_utils, NULL);
-    #include "../Extra/numbox~_dialog.h"
+    #include "../Extra/properties/numbox~_dialog.h"
     pdgui_vmess(numbox_dialog_tcl, NULL);
 }

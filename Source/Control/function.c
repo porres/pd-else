@@ -1552,6 +1552,6 @@ void function_setup(void){
     function_widgetbehavior.w_clickfn    = (t_clickfn)function_click;
     #include "../Extra/else_tcl_utils.h"
     pdgui_vmess(else_tcl_utils, NULL);
-    #include "../Extra/function_dialog.h"
+    #include "../Extra/properties/function_dialog.h"
     pdgui_vmess(function_dialog_tcl, NULL);                              
 }

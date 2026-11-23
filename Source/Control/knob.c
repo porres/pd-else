@@ -2835,6 +2835,6 @@ void knob_setup(void){
     class_addmethod(knob_class, (t_method)knob_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
     #include "../Extra/else_tcl_utils.h"
     pdgui_vmess(else_tcl_utils, NULL);
-    #include "../Extra/knob_dialog.h" // knob properties in tcl/tk
+    #include "../Extra/properties/knob_dialog.h" // knob properties in tcl/tk
     pdgui_vmess(knob_dialog_tcl, NULL);
 }

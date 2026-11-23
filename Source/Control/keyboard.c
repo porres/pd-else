@@ -972,6 +972,6 @@ void keyboard_setup(void){
     keyboard_widgetbehavior.w_clickfn    = (t_clickfn)keyboard_click;
     class_setsavefn(keyboard_class, keyboard_save);
     class_setpropertiesfn(keyboard_class, keyboard_properties);
-    #include "../Extra/keyboard_dialog.h"
+    #include "../Extra/properties/keyboard_dialog.h"
     pdgui_vmess(keyboard_dialog_tcl, NULL);
 }

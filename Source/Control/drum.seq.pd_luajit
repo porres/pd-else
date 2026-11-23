@@ -1,3 +1,4 @@
+package.path = package.path .. ";" .. (pd._loadpath or ".") .. "/luadeps/?.lua"
 local else_gui = require("else_gui")
 local drum_seq  = pd.Class:new():register("drum.seq")
 

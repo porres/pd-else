@@ -734,6 +734,6 @@ void pic_setup(void){
     class_setwidget(pic_class, &pic_widgetbehavior);
     class_setsavefn(pic_class, &pic_save);
     class_setpropertiesfn(pic_class, &pic_properties);
-    #include "../Extra/pic_dialog.h"
+    #include "../Extra/properties/pic_dialog.h"
     pdgui_vmess(pic_dialog_tcl, NULL);
 }

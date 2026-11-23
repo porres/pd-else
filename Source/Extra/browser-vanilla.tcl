@@ -153,6 +153,9 @@ proc category_menu_vanilla::load_vanilla_menutree {} {
                         list\ length
                         list\ fromsymbol
                         list\ tosymbol
+                        list\ foreach
+                        list\ join
+                        list\ unjoin
                     }
                 }
                 {
@@ -354,6 +357,9 @@ proc category_menu_vanilla::load_vanilla_menutree {} {
                     {
                         snake~\ in
                         snake~\ out
+                        snake~\ sum
+                        snake~\ pick
+                        snake~\ split
                         adc~
                         dac~
                         sig~
@@ -366,6 +372,7 @@ proc category_menu_vanilla::load_vanilla_menutree {} {
                         bang~
                         samphold~
                         samplerate~
+                        siginfo~
                         send~
                         receive~
                         throw~

@@ -1415,6 +1415,6 @@ void bicoeff_setup(void){
     class_setpropertiesfn(bicoeff_class, bicoeff_properties);
     #include "../Extra/else_tcl_utils.h"
     pdgui_vmess(else_tcl_utils, NULL);
-    #include "../Extra/bicoeff_dialog.h"
+    #include "../Extra/properties/bicoeff_dialog.h"
     pdgui_vmess(bicoeff_dialog_tcl, NULL);
 }

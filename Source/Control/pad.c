@@ -671,6 +671,6 @@ void pad_setup(void){
     class_setwidget(pad_class, &pad_widgetbehavior);
     #include "../Extra/else_tcl_utils.h"
     pdgui_vmess(else_tcl_utils, NULL);
-    #include "../Extra/pad_dialog.h"
+    #include "../Extra/properties/pad_dialog.h"
     pdgui_vmess(pad_dialog_tcl, NULL);
 }

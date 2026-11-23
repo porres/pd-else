@@ -1242,6 +1242,6 @@ void button_setup(void){
     class_setwidget(button_class, &button_widgetbehavior);
     #include "../Extra/else_tcl_utils.h"
     pdgui_vmess(else_tcl_utils, NULL);
-    #include "../Extra/button_dialog.h"
+    #include "../Extra/properties/button_dialog.h"
     pdgui_vmess(button_dialog_tcl, NULL);
 }

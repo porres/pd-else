@@ -1,4 +1,4 @@
-
+package.path = package.path .. ";" .. (pd._loadpath or ".") .. "/luadeps/?.lua"
 local else_gui = require("else_gui")
 
 local zbiplot = pd.Class:new():register("zbiplot")

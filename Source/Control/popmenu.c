@@ -1302,6 +1302,6 @@ void popmenu_setup(void){
     class_setsavefn(menu_class, &menu_save);
     #include "../Extra/else_tcl_utils.h"
     pdgui_vmess(else_tcl_utils, NULL);
-    #include "../Extra/popmenu_dialog.h"
+    #include "../Extra/properties/popmenu_dialog.h"
     pdgui_vmess(popmenu_dialog_tcl, NULL);
 }

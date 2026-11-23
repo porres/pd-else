@@ -122,13 +122,13 @@
 #X floatatom 121 169 4 0 0 0 - - - 0;
 #X text 19 174 see also:;
 #X obj 19 235 else/sequencer;
-#X obj 19 193 else/stack;
 #X obj 19 214 else/rec;
 #X text 191 372 show;
 #X text 191 387 hide;
 #X text 163 527 clicking on the object opens [store]'s window;
 #X text 191 343 sort;
 #X text 221 343 - sort stored data alphabetically, f 42;
+#X obj 19 193 else/deque;
 #X connect 23 0 44 0;
 #X connect 25 0 44 0;
 #X connect 26 0 44 1;

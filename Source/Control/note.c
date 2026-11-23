@@ -1861,6 +1861,6 @@ void note_setup(void){
     class_addmethod(handle_class, (t_method)handle__motion_callback, gensym("_motion"), A_FLOAT, A_FLOAT, 0);
     #include "../Extra/else_tcl_utils.h"
     pdgui_vmess(else_tcl_utils, NULL);
-    #include "../Extra/note_dialog.h"
+    #include "../Extra/properties/note_dialog.h"
     pdgui_vmess(note_dialog_tcl, NULL);
 }

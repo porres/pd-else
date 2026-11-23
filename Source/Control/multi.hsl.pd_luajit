@@ -1,3 +1,4 @@
+package.path = package.path .. ";" .. (pd._loadpath or ".") .. "/luadeps/?.lua"
 local multi_slider = require("multi_slider")
 local multi_hsl    = pd.Class:new():register("multi.hsl")
 

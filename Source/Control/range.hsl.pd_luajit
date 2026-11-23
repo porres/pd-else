@@ -1,3 +1,4 @@
+package.path = package.path .. ";" .. (pd._loadpath or ".") .. "/luadeps/?.lua"
 local else_gui     = require("else_gui")
 local range_slider = require("range_slider")
 local range_hsl    = pd.Class:new():register("range.hsl")
