@@ -239,7 +239,7 @@ static void playfile_pause(t_playfile *x){
 }
 
 static void playfile_continue(t_playfile *x){
-    x->x_play = 1;
+    x->x_play = x->x_open;
 }
 
 static void playfile_start(t_playfile *x, t_float f, t_float ms){
