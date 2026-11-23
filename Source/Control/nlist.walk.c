@@ -26,36 +26,52 @@ static void nl_walk_reset(t_nl_walk *x){
     x->x_all_index = 0;
 }
 
-// Count leaves at 'target' depth that precede the exact path target_path[].
-// Honors the full prefix: at each level only follows child index
-// target_path[depth], and only descends while depth < target.
-// Returns 1 and sets *count on success, 0 if the path does not exist.
-static int nl_walk_count_before(t_nlist_node *node, int depth, int target,
-    t_atom *target_path, int *count){
-    while(node && depth < target){
-        int want = (int)atom_getfloat(target_path + depth);
-        // walk to child index 'want'
-        for(int i = 0; i < want && node; i++)
-            node = node->next;
-        if(!node || node->type != 1)
-            return(0);              // prefix doesn't exist
-        node = node->child;
-        depth++;
-    }
-    if(!node || depth != target)
-        return(0);
-    // now count leaves at this depth preceding the target index
-    int want = (int)atom_getfloat(target_path + target);
-    int index = 0;
+// The walk cursor is (level, index), where index is the number of nodes at
+// that depth, in depth-first order across the WHOLE tree, that come before
+// the current one. It lives across messages, so unlike [nlist.iter] and
+// [nlist.traverse] it is positional by design: if the list is reshaped
+// between two "next" messages, the position is simply re-applied to the new
+// tree.
+
+// Number of nodes at depth 'target' in this sibling chain (and below),
+// where 'depth' is the depth of 'node'.
+static int nl_walk_count_at(t_nlist_node *node, int depth, int target){
+    int n = 0;
     while(node){
-        if(index == want){
-            (*count) += index;      // leaves already passed at this depth
-            return(1);
-        }
-        index++;
+        if(depth == target)
+            n++;
+        else if(node->child)
+            n += nl_walk_count_at(node->child, depth + 1, target);
         node = node->next;
     }
-    return(0);                      // target index out of range at this depth
+    return(n);
+}
+
+// Counts the nodes at depth 'target' that come before the exact path
+// target_path[] in depth-first order, using the same ordering as
+// nl_walk_find_nth(). At every level, each earlier sibling contributes ALL
+// the target-depth nodes in its subtree, and only then do we descend into the
+// sibling the path points at.
+// Returns 1 and adds to *count on success, 0 if the path does not exist.
+static int nl_walk_count_before(t_nlist_node *node, int depth, int target,
+    t_atom *target_path, int *count){
+    int want = (int)atom_getfloat(target_path + depth);
+    for(int i = 0; i < want; i++){
+        if(!node)
+            return(0);
+        if(depth == target)
+            (*count)++;
+        else if(node->child)
+            *count += nl_walk_count_at(node->child, depth + 1, target);
+        node = node->next;
+    }
+    if(!node)
+        return(0);                  // index out of range at this depth
+    if(depth == target)
+        return(1);
+    if(!node->child)
+        return(0);                  // prefix is not a (non-empty) list
+    return(nl_walk_count_before(node->child, depth + 1, target, target_path, count));
 }
 
 static int nl_walk_find_nth(t_nlist_node *node, int depth, int target,
@@ -83,6 +99,7 @@ static void nl_walk_goto(t_nl_walk *x, t_symbol *s, int ac, t_atom *av){
     if(!nlist || !ac)
         return;
     int level = ac - 1;
+    int index = 0;
     t_atom at;
     SETFLOAT(&at, 0);
     if(level < 0 || level > nlist->x_depth)
@@ -92,7 +109,6 @@ static void nl_walk_goto(t_nl_walk *x, t_symbol *s, int ac, t_atom *av){
         if(av[i].a_type != A_FLOAT || f < 0 || f != (int)f)
             goto fail;
     }
-    int index = 0;
     if(!nl_walk_count_before(nlist->x_root, 0, level, av, &index))
         goto fail;
     x->x_level = level;
@@ -134,11 +150,13 @@ static void nl_walk_next(t_nl_walk *x){
             x->x_all_index = 0;
         }
     }
+    t_outlet *out = x->x_obj.ob_outlet;
+    t_outlet *end_out = x->x_end_out;
     if(found)
-        outlet_list(x->x_obj.ob_outlet, &s_list, level + 1, path);
+        outlet_list(out, &s_list, level + 1, path);
     freebytes(path, size * sizeof(t_atom));
     if(!found)
-        outlet_bang(x->x_end_out);
+        outlet_bang(end_out);
 }
 
 static void nl_walk_skip(t_nl_walk *x){
@@ -153,16 +171,18 @@ static void nl_walk_skip(t_nl_walk *x){
     t_atom *path = getbytes(size * sizeof(t_atom));
     int skip = index;
     int found = nl_walk_find_nth(nlist->x_root, 0, level, &skip, path);
+    t_outlet *info_out = x->x_info_out;
+    t_outlet *end_out = x->x_end_out;
     if(found){ // commit state BEFORE the outlet fires (re-entrancy safe)
         if(x->x_level >= 0)
             x->x_index++;
         else
             x->x_all_index++;
-        outlet_anything(x->x_info_out, gensym("skip"), level + 1, path);
+        outlet_anything(info_out, gensym("skip"), level + 1, path);
     }
     freebytes(path, size * sizeof(t_atom));
     if(!found)
-        outlet_bang(x->x_end_out);
+        outlet_bang(end_out);
 }
 
 static void nl_walk_float(t_nl_walk *x, t_floatarg f){

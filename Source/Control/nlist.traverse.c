@@ -26,72 +26,52 @@ t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
 
 // ------------ Mutation-aware traversal ------------------------------------
 //
-// Pd's message passing is synchronous: an outlet_list() call here can run
-// straight through something like [nlist.delete] and back before we return.
-// So we never hold on to a t_nlist_node pointer (or a "next" pointer) across
-// an outlet call - it might be dangling by the time we come back to use it.
+// Same approach as [nlist.iter]. Pd's message passing is synchronous, so an
+// outlet_list() here can run straight through [nlist.set], [nlist.delete],
+// [nlist.insert] etc. and back before we return.
 //
-// Instead, before every single emission we re-walk the tree from the live
-// root, skipping over however many matches at this depth we've already
-// emitted, and send out whichever match comes next. If a fresh scan can't
-// find that many matches anymore, we're done - nothing more is sent, rather
-// than fabricating an index that no longer exists. This makes the traversal
-// genuinely reflect the tree as it stands at each individual step, so it
-// stays correct even when something you're outputting to deletes, inserts,
-// or otherwise reshapes the list in response.
+//  - We never hold a node pointer across an outlet call: before every
+//    emission the list is re-resolved by name and re-scanned from the live
+//    root.
+//  - The cursor is an identity (unique node IDs), not a count. Before
+//    emitting a node at the target depth we note the ID of the next one at
+//    that depth. After the outlet returns we resume at that one if it still
+//    exists (so anything the receiver set/inserted in between is NOT
+//    visited), else right after the node we just sent if it still exists,
+//    else we stop.
+//
+// In bang mode the depth is re-read on every level, so levels that appear
+// (or disappear) while we're running are handled.
 //
 // Cost: each emission re-scans from the root, so this is roughly O(n^2) in
-// the number of matches at a given depth. Fine for interactively-sized
-// lists; if you're driving genuinely huge nlists through this object,
-// that's worth keeping in mind.
-static int nl_traverse_emit_nth(t_nlist_node *node, int depth, int target,
-    int *skip, t_atom *path, t_outlet *outlet){
-    int index = 0;
-    while(node){
-        SETFLOAT(&path[depth], index++);
-        if(depth == target){
-            if(*skip == 0){
-                outlet_list(outlet, &s_list, depth + 1, path);
-                return(1);
-            }
-            (*skip)--;
-        }
-        else if(node->child){
-            if(nl_traverse_emit_nth(node->child, depth + 1, target, skip, path, outlet))
-                return(1);
-        }
-        node = node->next;
-    }
-    return(0);
-}
-
-// Emits every currently-existing match at "target" depth, re-deriving its
-// position from the live root before each one.
-static void nl_traverse_emit_level(t_nlist *nlist, int target, t_atom *path, t_outlet *outlet){
-    int count = 0;
-    while(1){
-        int skip = count;
-        if(!nl_traverse_emit_nth(nlist->x_root, 0, target, &skip, path, outlet))
-            break;
-        count++;
+// the number of matches at a given depth. Fine for interactively-sized lists.
+static void nl_traverse_emit_level(t_symbol *sym, int target, t_outlet *outlet){
+    t_nlist_cursor c;
+    nlist_cursor_init(&c);
+    t_atom *path;
+    int cap, depth;
+    while(nlist_cursor_next(&c, sym, NLIST_SEL_LEVEL, target, &path, &cap, &depth, NULL)){
+        outlet_list(outlet, &s_list, depth + 1, path);
+        freebytes(path, cap * sizeof(t_atom));
     }
 }
 
 static void nl_traverse_bang(t_nl_traverse *x){
-    t_nlist *nlist = nlist_get(x->x_sym, gensym("traverse"));
-    if(nlist){
-        int depth = nlist->x_depth;
-        t_atom *path = getbytes((depth + 1) * sizeof(t_atom));
-        for(int lvl = 0; lvl <= depth; lvl++){
-            outlet_float(x->x_lvl_out, lvl);
-            nl_traverse_emit_level(nlist, lvl, path, x->x_obj.ob_outlet);
-        }
-        freebytes(path, (depth + 1) * sizeof(t_atom));
+    t_symbol *sym = x->x_sym;
+    if(!nlist_get(sym, gensym("traverse")))
+        return;
+    for(int lvl = 0; ; lvl++){
+        t_nlist *nlist = nlist_find(sym); // re-resolve + re-read depth each level
+        if(!nlist || lvl > nlist->x_depth)
+            break;
+        outlet_float(x->x_lvl_out, lvl);
+        nl_traverse_emit_level(sym, lvl, x->x_obj.ob_outlet);
     }
 }
 
 static void nl_traverse_float(t_nl_traverse *x, t_floatarg f){
-    t_nlist *nlist = nlist_get(x->x_sym, gensym("traverse"));
+    t_symbol *sym = x->x_sym;
+    t_nlist *nlist = nlist_get(sym, gensym("traverse"));
     if(!nlist)
         return;
     int lvl = f < 0 ? 0 : (int)f;
@@ -99,9 +79,7 @@ static void nl_traverse_float(t_nl_traverse *x, t_floatarg f){
         post("[nlist.traverse] %d depth out of range", lvl);
         return;
     }
-    t_atom *path = getbytes((nlist->x_depth + 1) * sizeof(t_atom));
-    nl_traverse_emit_level(nlist, lvl, path, x->x_obj.ob_outlet);
-    freebytes(path, (nlist->x_depth + 1) * sizeof(t_atom));
+    nl_traverse_emit_level(sym, lvl, x->x_obj.ob_outlet);
 }
 
 static void *nl_traverse_new(t_symbol *s, int ac, t_atom *av){

@@ -7,6 +7,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+// Every node gets a unique ID at creation. IDs are never reused (unlike
+// addresses, which getbytes/freebytes happily recycle), so an ID is a safe
+// way for an iterator to remember "where it was" across a mutation.
+// 0 is reserved as "none".
+static unsigned long nlist_next_id = 1;
+
 t_nlist *nlist_get(t_symbol *name, t_symbol *obj){
     if(name == NULL){
         post("[nlist.%s] no name given", obj->s_name);
@@ -23,11 +29,23 @@ t_nlist *nlist_get(t_symbol *name, t_symbol *obj){
     return(nlist);
 }
 
+// Silent lookup, used by iterators to re-resolve the list on every step
+// (the [nlist.define] could have been deleted by whatever we output to).
+t_nlist *nlist_find(t_symbol *name){
+    if(name == NULL)
+        return(NULL);
+    t_nlist *nlist = (t_nlist *)pd_findbyclassname(name, gensym("nlist"));
+    if(!nlist)
+        nlist = (t_nlist *)pd_findbyclassname(name, gensym("nlist.define"));
+    return(nlist);
+}
+
 t_nlist_node *nlist_new_list(void){
     t_nlist_node *node = (t_nlist_node *)getbytes(sizeof(*node));
     node->type = 1;
     node->child = NULL;
     node->next = NULL;
+    node->id = nlist_next_id++;
     return(node);
 }
 
@@ -45,10 +63,13 @@ static t_nlist_node *nlist_new_atom(t_atom *a){
     node->atom = *a;
     node->child = NULL;
     node->next = NULL;
+    node->id = nlist_next_id++;
     return(node);
 }
 
-t_nlist_node *nlist_parse_all(t_nlist *x, int ac, t_atom *av){
+// Parses a bracket-tagged atom stream into a tree. `owner` is only used to
+// report errors (pass the calling object). len/depth are optional outputs.
+t_nlist_node *nlist_parse(void *owner, int ac, t_atom *av, int *len_out, int *depth_out){
     int capacity = NLIST_STACK_INIT;
     t_nlist_frame *stack = (t_nlist_frame *)getbytes(sizeof(t_nlist_frame) * capacity);
     int depth = 0;
@@ -116,7 +137,7 @@ t_nlist_node *nlist_parse_all(t_nlist *x, int ac, t_atom *av){
         for(int k = 0; k < nclose; k++){
             if(depth == 0){
                 if(!warned_extra){
-                    pd_error(x, "[nlist]: unexpected ']'");
+                    pd_error(owner, "[nlist]: unexpected ']'");
                     warned_extra = 1;
                 }
                 break;
@@ -126,17 +147,24 @@ t_nlist_node *nlist_parse_all(t_nlist *x, int ac, t_atom *av){
         }
     }
     if(depth > 0){
-        pd_error(x, "[nlist]: missing ']'");
+        pd_error(owner, "[nlist]: missing ']'");
         while(depth > 0){
             stack[depth].owner->child = stack[depth].first;
             depth--;
         }
     }
     t_nlist_node *root = stack[0].first;
-    x->x_len = len;
-    x->x_depth = maxdepth;
+    if(len_out)
+        *len_out = len;
+    if(depth_out)
+        *depth_out = maxdepth;
     freebytes(stack, sizeof(t_nlist_frame) * capacity);
     return(root);
+}
+
+// Same as nlist_parse(), but stores len/depth into the given nlist.
+t_nlist_node *nlist_parse_all(t_nlist *x, int ac, t_atom *av){
+    return(nlist_parse(x, ac, av, &x->x_len, &x->x_depth));
 }
 
 // ------------ Tree / editor formatting ---------------------------------
@@ -365,6 +393,8 @@ int nlist_get_depth(t_nlist_node *node){
     return(depth);
 }
 
+// Inserts `contents` (a sibling chain) at the given path. On failure (return
+// 0) nothing is linked into the tree and the caller still owns `contents`.
 int nlist_insert_at(t_nlist *nlist, int path_ac, int *path, t_nlist_node *contents){
     int debug = 0;
     if(!nlist || !contents){
@@ -436,5 +466,185 @@ int nlist_parse_path(int ac, t_atom *av, int **path_out, int *path_ac_out){
     }
     *path_out = path;
     *path_ac_out = ac;
+    return(1);
+}
+
+// ------------ Identity-based scanning / cursor ---------------------------
+//
+// nlist_scan() does one DFS over the live tree and finds the first node that
+// matches the selector (see NLIST_SEL_*) at-or-after / strictly-after the node
+// whose ID is `anchor` (anchor 0 = from the very beginning). It also reports
+// the ID of the NEXT matching node (succ), so a caller can remember where it
+// is going next by ID before it fires an outlet.
+//
+//   anchor != 0, inclusive = 1 : start AT the anchor node
+//   anchor != 0, inclusive = 0 : start right AFTER the anchor node; the
+//                                anchor's own subtree (if it grew children
+//                                meanwhile) is skipped
+//
+// If the anchor ID no longer exists in the tree, nothing is found (returns 0).
+// The path is written as floats into `path` (up to pathcap entries) and its
+// length is depth + 1. Nothing is allocated for the caller and no outlet is
+// ever fired in here, so the returned node pointer is valid until the caller
+// next lets control leave the object.
+typedef struct _nlist_scan{
+    int mode;
+    int target;
+    unsigned long anchor;
+    int inclusive;
+    int passed;
+    int found;
+    int done;
+    t_atom *path;
+    int pathcap;
+    int *stk;
+    int cap;
+    int depth;
+    t_nlist_node *node;
+    unsigned long id;
+    unsigned long succ;
+}t_nlist_scan;
+
+static int nlist_scan_match(t_nlist_scan *s, t_nlist_node *n, int depth){
+    switch(s->mode){
+    case NLIST_SEL_LEAF:
+        return(n->child == NULL);
+    case NLIST_SEL_LEVEL:
+        return(depth == s->target);
+    case NLIST_SEL_PARENT:
+        return(depth == s->target && n->child != NULL);
+    }
+    return(0);
+}
+
+static int nlist_scan_descend(t_nlist_scan *s, int depth){
+    if(s->mode == NLIST_SEL_LEAF)
+        return(1);
+    return(depth < s->target);
+}
+
+static void nlist_scan_walk(t_nlist_scan *s, t_nlist_node *node, int depth){
+    int index = 0;
+    while(node && !s->done){
+        if(depth < s->cap)
+            s->stk[depth] = index;
+        index++;
+        int candidate = s->passed;
+        int skip_children = 0;
+        if(!s->passed && s->anchor && node->id == s->anchor){
+            s->passed = 1;
+            if(s->inclusive)
+                candidate = 1;
+            else
+                skip_children = 1;
+        }
+        if(candidate && nlist_scan_match(s, node, depth)){
+            if(!s->found){
+                s->found = 1;
+                s->node = node;
+                s->id = node->id;
+                s->depth = depth;
+                if(s->path){
+                    for(int i = 0; i <= depth && i < s->pathcap && i < s->cap; i++)
+                        SETFLOAT(&s->path[i], (t_float)s->stk[i]);
+                }
+            }
+            else{
+                s->succ = node->id;
+                s->done = 1;
+            }
+        }
+        else if(!skip_children && node->child && nlist_scan_descend(s, depth))
+            nlist_scan_walk(s, node->child, depth + 1);
+        node = node->next;
+    }
+}
+
+int nlist_scan(t_nlist_node *root, int mode, int target,
+    unsigned long anchor, int inclusive,
+    t_atom *path, int pathcap, int *depth_out, t_nlist_node **node_out,
+    unsigned long *id_out, unsigned long *succ_out){
+    t_nlist_scan s;
+    memset(&s, 0, sizeof(s));
+    s.mode = mode;
+    s.target = target;
+    s.anchor = anchor;
+    s.inclusive = inclusive;
+    s.passed = (anchor == 0);
+    s.path = path;
+    s.pathcap = pathcap;
+    s.cap = nlist_get_depth(root) + 2;
+    s.stk = (int *)getbytes(sizeof(int) * s.cap);
+    nlist_scan_walk(&s, root, 0);
+    freebytes(s.stk, sizeof(int) * s.cap);
+    if(s.found){
+        if(depth_out)
+            *depth_out = s.depth;
+        if(node_out)
+            *node_out = s.node;
+        if(id_out)
+            *id_out = s.id;
+        if(succ_out)
+            *succ_out = s.succ;
+    }
+    return(s.found);
+}
+
+void nlist_cursor_init(t_nlist_cursor *c){
+    c->started = 0;
+    c->cur = 0;
+    c->succ = 0;
+}
+
+// Advances the cursor and returns the next node to emit, or 0 when done.
+// The list is re-resolved by name and re-scanned from the live root on every
+// call, so mutations made by whatever the previous emission went through are
+// always taken into account. Resume rules:
+//   1. the node that was "next" when we last emitted still exists -> go there
+//      (anything inserted/set between us and it is skipped: it is not part
+//      of this pass)
+//   2. otherwise, if the last emitted node still exists -> go to the node
+//      after it
+//   3. otherwise stop (we've lost our place; we never guess by position)
+// If we were already on the last node when we last emitted, we stop.
+//
+// On success *path_out is allocated (cap_out entries, path length is
+// depth_out + 1) and the caller must free it with
+//   freebytes(path, cap * sizeof(t_atom))
+// using the returned cap, not a re-read depth. node_out is optional and only
+// valid until the caller fires an outlet.
+int nlist_cursor_next(t_nlist_cursor *c, t_symbol *name, int mode, int target,
+    t_atom **path_out, int *cap_out, int *depth_out, t_nlist_node **node_out){
+    t_nlist *nlist = nlist_find(name);
+    if(!nlist)
+        return(0);
+    if(c->started && !c->succ)
+        return(0);
+    t_nlist_node *root = nlist->x_root;
+    int cap = nlist_get_depth(root) + 1;
+    t_atom *path = (t_atom *)getbytes(sizeof(t_atom) * cap);
+    int depth = 0;
+    t_nlist_node *node = NULL;
+    unsigned long id = 0, succ = 0;
+    int found;
+    if(!c->started)
+        found = nlist_scan(root, mode, target, 0, 0, path, cap, &depth, &node, &id, &succ);
+    else{
+        found = nlist_scan(root, mode, target, c->succ, 1, path, cap, &depth, &node, &id, &succ);
+        if(!found)
+            found = nlist_scan(root, mode, target, c->cur, 0, path, cap, &depth, &node, &id, &succ);
+    }
+    if(!found){
+        freebytes(path, sizeof(t_atom) * cap);
+        return(0);
+    }
+    c->started = 1;
+    c->cur = id;
+    c->succ = succ;
+    *path_out = path;
+    *cap_out = cap;
+    *depth_out = depth;
+    if(node_out)
+        *node_out = node;
     return(1);
 }

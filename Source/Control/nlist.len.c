@@ -23,54 +23,46 @@ t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
         nlist_open(nlist);
 }
 
-static void nlistlen_level(t_nlist_node *node, int depth, int target,
-    t_atom *path, t_outlet *len_out, t_outlet *idx_out){
-    int index = 0;
-    while(node){
-        SETFLOAT(&path[depth], index);
-        if(depth == target){
-            int len = 0;
-            t_nlist_node *child = node->child;
-            while(child){
-                len++;
-                child = child->next;
-            }
-            if(len){
-                outlet_list(idx_out, &s_list, depth + 1, path);
-                outlet_float(len_out, len);
-            }
-        }
-        else if(node->child)
-            nlistlen_level(node->child, depth+1, target, path, len_out, idx_out);
-        index++;
-        node = node->next;
-    }
-}
-
 static void nlistlen_bang(t_nlistlen *x){
     t_nlist *nlist = nlist_get(x->x_sym, gensym("len"));
     if(nlist){
+        int len = nlist->x_len; // read BEFORE any outlet fires
         outlet_bang(x->x_idx_out);
-        outlet_float(x->x_obj.ob_outlet, nlist->x_len);
+        outlet_float(x->x_obj.ob_outlet, len);
     }
 }
 
+// With a level argument, every non-empty list at that depth is reported
+// (index path on the right outlet, its length on the left one). Both
+// outlets can re-enter the nlist, so this uses the same identity cursor as
+// [nlist.iter] / [nlist.traverse]: no node pointer is kept across an outlet
+// call, and the length is read before anything is sent.
 static void nlistlen_float(t_nlistlen *x, t_floatarg f){
     int level = (int)f;
     if(level == 0){
         nlistlen_bang(x);
         return;
     }
-    t_nlist *nlist = nlist_get(x->x_sym, gensym("len"));
-    if(nlist){
-        if(level > nlist->x_depth){
-            post("[nlist.len] %d depth level out of range", level);
-            return;
-        }
-        t_atom *path = getbytes(nlist->x_depth * sizeof(t_atom));
-        nlistlen_level(nlist->x_root, 0, level - 1, path,
-        x->x_obj.ob_outlet, x->x_idx_out);
-        freebytes(path, nlist->x_depth * sizeof(t_atom));
+    t_symbol *sym = x->x_sym;
+    t_nlist *nlist = nlist_get(sym, gensym("len"));
+    if(!nlist)
+        return;
+    if(level < 0 || level > nlist->x_depth){
+        post("[nlist.len] %d depth level out of range", level);
+        return;
+    }
+    t_outlet *len_out = x->x_obj.ob_outlet;
+    t_outlet *idx_out = x->x_idx_out;
+    t_nlist_cursor c;
+    nlist_cursor_init(&c);
+    t_atom *path;
+    t_nlist_node *node;
+    int cap, depth;
+    while(nlist_cursor_next(&c, sym, NLIST_SEL_PARENT, level - 1, &path, &cap, &depth, &node)){
+        int len = nlist_get_len(node->child); // node is only valid until the first outlet
+        outlet_list(idx_out, &s_list, depth + 1, path);
+        outlet_float(len_out, len);
+        freebytes(path, cap * sizeof(t_atom));
     }
 }
 
