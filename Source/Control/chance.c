@@ -111,7 +111,7 @@ static void *chance_new(t_symbol *s, int argc, t_atom *argv){
                 n++, argv++, argc--;
             }
             else if(argv->a_type == A_SYMBOL && !n){
-                if(atom_getsymbolarg(0, argc, argv) == gensym("-seed")){
+                if(argc >= 2 && atom_getsymbolarg(0, argc, argv) == gensym("-seed")){
                     t_atom at[1];
                     SETFLOAT(at, atom_getfloat(argv+1));
                     x->x_ac-=2, argc-=2, argv+=2;

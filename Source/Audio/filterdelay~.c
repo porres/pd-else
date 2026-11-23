@@ -215,25 +215,25 @@ static void *fdelay_new(t_symbol *s, int ac, t_atom *av){
     x->x_freeze = 0;
     x->x_sr = sys_getsr();
     if(ac){
-        while(av->a_type == A_SYMBOL){
+        while(ac > 0 && av->a_type == A_SYMBOL){
             s = atom_getsymbol(av);
             if(s == gensym("-cutoff")){
                 ac--, av++;
-                cutoff = atom_getfloat(av);
+                cutoff = atom_getfloatarg(0, ac, av);
             }
             else if(s == gensym("-reson")){
                 ac--, av++;
-                reson = atom_getfloat(av);
+                reson = atom_getfloatarg(0, ac, av);
             }
             else if(s == gensym("-wet")){
                 ac--, av++;
-                wet = atom_getfloat(av);
+                wet = atom_getfloatarg(0, ac, av);
             }
             ac--, av++;
         }
-        time = atom_getfloat(av);
+        time = atom_getfloatarg(0, ac, av);
         ac--, av++;
-        fb = atom_getfloat(av);
+        fb = atom_getfloatarg(0, ac, av);
     }
     x->x_cutoff = cutoff < 20 ? 20 : cutoff > 20000 ? 20000 : cutoff;
     x->x_reson = reson < 0 ? 0 : reson > 1 ? 1 : reson;

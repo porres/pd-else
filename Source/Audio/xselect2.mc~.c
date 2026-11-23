@@ -88,7 +88,7 @@ void *xsel2mc_new(t_symbol *s, int ac, t_atom *av){
     float spread = 1;
     x->x_index = x->x_circular = 0;
     if(ac){
-        while(av->a_type == A_SYMBOL){
+        while(ac > 0 && av->a_type == A_SYMBOL){
             if(atom_getsymbol(av) == gensym("-index")){
                 x->x_index = 1;
                 ac--, av++;

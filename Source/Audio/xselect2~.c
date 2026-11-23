@@ -85,7 +85,7 @@ static void *xselect2_new(t_symbol *s, int ac, t_atom *av){
     x->x_indexed = x->x_circular = 0;
     float spread = 1;
     if(ac){
-        while(av->a_type == A_SYMBOL){
+        while(ac > 0 && av->a_type == A_SYMBOL){
             if(atom_getsymbol(av) == gensym("-index")){
                 x->x_indexed = 1;
                 ac--, av++;

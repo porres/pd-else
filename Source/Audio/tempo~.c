@@ -530,7 +530,7 @@ static void *tempo_new(t_symbol *s, int ac, t_atom *av){
                 av++;
             }
             else if(curarg == gensym("-mul")){
-                if((av+1)->a_type == A_FLOAT){
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     mul = atom_getfloatarg(1, ac, av);
                     ac-=2;
                     av+=2;
@@ -539,7 +539,7 @@ static void *tempo_new(t_symbol *s, int ac, t_atom *av){
                     goto errstate;
             }
             else if(curarg == gensym("-seed")){
-                if((av+1)->a_type == A_FLOAT){
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     t_atom at[1];
                     SETFLOAT(at, atom_getfloat(av+1));
                     ac-=2, av+=2;

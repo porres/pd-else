@@ -2626,8 +2626,7 @@ static void *knob_new(t_symbol *s, int ac, t_atom *av){
                 else if(sym == gensym("-discrete")){
                     if(ac >= 1){
                         x->x_flag = 1, av++, ac--;
-                        if(av->a_type == A_FLOAT)
-                            discrete = 1;
+                        discrete = 1;
                     }
                     else
                         goto errstate;

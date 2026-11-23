@@ -183,11 +183,11 @@ static void *loop_new(t_symbol *s, int argc, t_atom *argv){
         else if(argv->a_type == A_SYMBOL && !argnum){
             t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
             if(curarg == gensym("-offset")){
-                offset = atom_getfloatarg(0, argc, argv+1);
+                offset = atom_getfloatarg(1, argc, argv);
                 argc-=2, argv+=2;
             }
             else if(curarg == gensym("-step")){
-                step = atom_getfloatarg(0, argc, argv+1);
+                step = atom_getfloatarg(1, argc, argv);
                 argc-=2, argv+=2;
             }
             else if(curarg == gensym("-b")){
