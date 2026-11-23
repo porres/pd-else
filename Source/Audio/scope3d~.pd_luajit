@@ -1,4 +1,53 @@
+package.path = package.path .. ";" .. (pd._loadpath or ".") .. "/luadeps/?.lua"
+local else_gui = require("else_gui")
 local scope3d = pd.Class:new():register("scope3d~")
+
+-- else_gui gives the properties window, the theme/transparent painting and the
+-- receive name handling. The arguments and messages are still handled by
+-- init_pd_methods / handle_pd_message below, so every def here has nomsg and
+-- a callback that sends the change through handle_pd_message: a change in the
+-- properties window is then saved like the same message would be.
+else_gui.setup(scope3d, {
+  { "width",       140,   "sync_dim",         "Width",            "int",   {frame="Dimensions", min=10, max=4096, nomsg=true} },
+  { "height",      140,   "sync_dim",         "Height",           "int",   {frame="Dimensions", min=10, max=4096, nomsg=true} },
+  { "zoom",        1,     "sync_zoom",        "Zoom",             "float", {frame="General", nomsg=true} },
+  { "perspective", 1,     "sync_perspective", "Perspective",      "float", {frame="General", nomsg=true} },
+  { "samples",     8,     "sync_list",        "Samples per line", "int",   {frame="General", min=2, nomsg=true} },
+  { "nlines",      256,   "sync_list",        "Number of lines",  "int",   {frame="General", min=2, max=1024, nomsg=true} },
+  { "frameDelay",  20,    "sync_rate",        "Rate (ms)",        "float", {frame="General", min=8, nomsg=true} },
+  { "receive_name", "empty", "sync_receive",  "Receive",          "text",  {frame="General", dollar=true, nomsg=true} },
+  -- the three colors share one row (ncols), the grid's follows the theme as a shade between bg and fg
+  { "bgcolor",     {190, 190, 190}, "sync_bgcolor",   "Background", "color", {frame="Appearance", ncols=3, order=1, theme="bg", nomsg=true} },
+  { "fgcolor",     {30, 30, 30},    "sync_fgcolor",   "Signal",     "color", {frame="Appearance", order=2, theme="fg", nomsg=true} },
+  { "gridcolor",   {160, 160, 160}, "sync_gridcolor", "Grid",       "color", {frame="Appearance", order=3, theme="sel", nomsg=true} },
+  { "strokeWidth", 1,     "sync_width",       "Line width",       "float", {frame="Appearance", order=7, min=1, nomsg=true} },
+  { "usetheme",    0,     "sync_theme",       "Use Theme Colors", "check", {frame="Appearance", order=4, nomsg=true} },
+  { "transparent", 0,     "sync_transparent", "Transparent",      "check", {frame="Appearance", order=5, nomsg=true} },
+  { "drag",        1,     "sync_drag",        "Mouse drag",       "check", {frame="Appearance", order=6, nomsg=true} },
+  { "grid",        1,     "sync_grid",        "Show grid",        "check", {frame="Appearance", order=8, nomsg=true} },
+}, {})
+
+-- what is saved is what handle_pd_message keeps in pd_args
+function scope3d:save_args()
+  self:set_args(self.pd_args)
+end
+
+-- a change from the properties window, sent as the message it stands for
+for _, m in ipairs({ "zoom", "perspective", "rate", "grid", "drag", "receive", "width", "theme", "transparent" }) do
+  scope3d["sync_" .. m] = function(self, v)
+    self:handle_pd_message(m, { v })
+  end
+end
+function scope3d:sync_dim()  self:handle_pd_message("dim",  { self.width, self.height }) end
+function scope3d:sync_list() self:handle_pd_message("list", { self.samples, self.nlines }) end
+-- a color picked there doesn't switch the theme off (the "Use Theme Colors" box does that)
+for _, m in ipairs({ "bgcolor", "fgcolor", "gridcolor" }) do
+  scope3d["sync_" .. m] = function(self, v)
+    self._keeptheme = true
+    self:handle_pd_message(m, v)
+    self._keeptheme = false
+  end
+end
 
 function scope3d:initialize(name, atoms)
   self.inlets = {SIGNAL, SIGNAL, SIGNAL}
@@ -36,6 +85,10 @@ function scope3d:postpostinit_task()
     { name = "bgcolor",     defaults = { 190, 190, 190 } },
     { name = "gridcolor",   defaults = { 160, 160, 160 } },
     { name = "receive",     defaults = { "empty" } },
+    -- appended so that the positional argument order above never changes
+    { name = "theme",       defaults = { 0 } },
+    { name = "transparent", defaults = { 0 } },
+    { name = "colors" },
   }
 
   self.cameraDistance = 6
@@ -170,43 +223,67 @@ end
 -- At load time (self._initializing) an invalid saved color falls back to the
 -- default. Live invalid input keeps the current state but still returns a
 -- valid triple so handle_pd_message doesn't write the bad values into pd_args.
+-- A valid color given live means: use this color, so the theme is switched off.
 function scope3d:pd_gridcolor(x)
   local c = color_from_atoms(x)
   if not c then
-    if self._initializing or not self.gridColorR then
+    if self._initializing or not self.gridcolor then
       c = { 160, 160, 160 }
     else
-      return { self.gridColorR, self.gridColorG, self.gridColorB }
+      return { self.gridcolor[1], self.gridcolor[2], self.gridcolor[3] }
     end
   end
-  self.gridColorR, self.gridColorG, self.gridColorB = c[1], c[2], c[3]
+  self.gridcolor = c
+  if not self._initializing and not self._keeptheme then self:handle_pd_message('theme', {0}) end
   return c
 end
 
 function scope3d:pd_bgcolor(x)
   local c = color_from_atoms(x)
   if not c then
-    if self._initializing or not self.bgColorR then
+    if self._initializing or not self.bgcolor then
       c = { 190, 190, 190 }
     else
-      return { self.bgColorR, self.bgColorG, self.bgColorB }
+      return { self.bgcolor[1], self.bgcolor[2], self.bgcolor[3] }
     end
   end
-  self.bgColorR, self.bgColorG, self.bgColorB = c[1], c[2], c[3]
+  self.bgcolor = c
+  if not self._initializing and not self._keeptheme then self:handle_pd_message('theme', {0}) end
   return c
 end
 
 function scope3d:pd_fgcolor(x)
   local c = color_from_atoms(x)
   if not c then
-    if self._initializing or not self.fgColorR then
+    if self._initializing or not self.fgcolor then
       c = { 30, 30, 30 }
     else
-      return { self.fgColorR, self.fgColorG, self.fgColorB }
+      return { self.fgcolor[1], self.fgcolor[2], self.fgcolor[3] }
     end
   end
-  self.fgColorR, self.fgColorG, self.fgColorB = c[1], c[2], c[3]
+  self.fgcolor = c
+  if not self._initializing and not self._keeptheme then self:handle_pd_message('theme', {0}) end
   return c
+end
+
+-- given bare (e.g. "-theme"), the flag is turned on
+function scope3d:pd_theme(x)
+  self.usetheme = (x[1] == nil or x[1] ~= 0) and 1 or 0
+  return { self.usetheme }
+end
+
+function scope3d:pd_transparent(x)
+  self.transparent = (x[1] == nil or x[1] ~= 0) and 1 or 0
+  return { self.transparent }
+end
+
+-- "colors #RRGGBB #RRGGBB [#RRGGBB]": background, foreground, grid
+function scope3d:pd_colors(x)
+  local c1, c2, c3 = hex_to_rgb(x[1]), hex_to_rgb(x[2]), hex_to_rgb(x[3])
+  if not c1 or not c2 then return end
+  self:handle_pd_message('bgcolor', c1)
+  self:handle_pd_message('fgcolor', c2)
+  if c3 then self:handle_pd_message('gridcolor', c3) end
 end
 
 function scope3d:pd_rate(x)
@@ -222,6 +299,7 @@ end
 function scope3d:pd_list(x)
   self.nsamples = (math.max(2, math.floor(x[1])) - 1) or 8
   self.nlines = math.min(1024, math.max(2, math.floor(x[2]))) or 256
+  self.samples = math.max(2, math.floor(x[1]))   -- as given, for the properties
   self:reset_buffer()
 end
 
@@ -314,12 +392,12 @@ end
 
 function scope3d:paint(g)
   if not self.initialized then return end
-  g:set_color(self.bgColorR, self.bgColorG, self.bgColorB)
-  g:fill_all()
+  self:fill_background(g, "bgcolor")
 
   -- draw ground grid
   if self.grid == 1 then
-    g:set_color(self.gridColorR, self.gridColorG, self.gridColorB)
+    local gc = self:color("gridcolor")
+    g:set_color(gc[1], gc[2], gc[3])
     for i = 1, #self.gridLines do
       local lineFromX, lineFromY, lineFromZ, lineToX, lineToY, lineToZ = table.unpack(self.gridLines[i])
 
@@ -341,7 +419,8 @@ function scope3d:paint(g)
     self.rotatedX[i], self.rotatedY[i], self.rotatedZ[i] = self:rotate_x(rotatedX, rotatedY, rotatedZ, self.rotationAngleX)
   end
 
-  g:set_color(self.fgColorR, self.fgColorG, self.fgColorB)
+  local fg = self:color("fgcolor")
+  g:set_color(fg[1], fg[2], fg[3])
   local p = Path(self:projectVertex(self.rotatedX[1], self.rotatedY[1], self.rotatedZ[1], self.zoom))
   for i = 2, self.nlines do
     p:line_to(self:projectVertex(self.rotatedX[i], self.rotatedY[i], self.rotatedZ[i], self.zoom))
@@ -380,10 +459,6 @@ function scope3d:projectVertex(x, y, z)
   return screenX, screenY
 end
 
-function scope3d:receive(sel, atoms)
-  self:handle_pd_message(sel, atoms)
-end
-
 function scope3d:in_n(n, sel, atoms)
   if n == 1 then
     self:handle_pd_message(sel, atoms, 1)
@@ -395,10 +470,8 @@ function scope3d:in_n(n, sel, atoms)
 end
 
 function scope3d:pd_receive(x)
-  if x[1] and x[1] ~= "empty" then
-    if self.recv then self.recv:destruct() end
-    self.recv = pd.Receive:new():register(self, self:canvas_realizedollar(tostring(x[1])), "receive")
-  end
+  self.receive_name = tostring(x[1] or "empty")
+  self:setup_receive(self.receive_name)   -- "empty" or "" is no receive name
 end
 
 function scope3d:init_pd_methods(args)
@@ -430,6 +503,7 @@ function scope3d:init_pd_methods(args)
       self:handle_pd_message(method.name, argValues)
     end
   end
+  self.pd_methods.usetheme = self.pd_methods.theme   -- same as slider2d's name
   for sel, atoms in pairs(kwargs) do
     self:handle_pd_message(sel, atoms)
   end
