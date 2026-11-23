@@ -739,7 +739,7 @@ static void bicoeff_send_color_validate(t_bicoeff *x, const char *color, int whi
     pdgui_vmess(buf, NULL);
 }
 
-static void bicoeff_validate(t_bicoeff *x, t_floatarg v, t_symbol *color, t_floatarg t){
+static void bicoeff_validate(t_bicoeff *x, t_symbol *color, t_floatarg v, t_floatarg t){
     int valid = (int)v;
     int type = (int)t;
     switch(type){

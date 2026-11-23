@@ -1169,7 +1169,7 @@ static void note_send_color_validate(t_note *x, const char *color, int which){
     pdgui_vmess(buf, NULL);
 }
 
-static void note_validate(t_note *x, t_floatarg v, t_symbol *color, t_floatarg t){
+static void note_validate(t_note *x, t_symbol *color, t_floatarg v, t_floatarg t){
     int valid = (int)v;
     int type = (int)t;
     if(!valid){

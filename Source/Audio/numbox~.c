@@ -263,7 +263,7 @@ static void numbox_list(t_numbox *x, t_symbol *sym, int ac, t_atom *av){ // get 
         numbox_float(x, numbox_clip(x, x->x_out_val - x->x_inc));
 }
 
-static void numbox_validate(t_numbox *x, t_floatarg v, t_symbol *color, t_floatarg which){
+static void numbox_validate(t_numbox *x, t_symbol *color, t_floatarg v, t_floatarg which){
     if(!(int)v){
         pd_error(0, "[numbox~] invalid color '%s'", color->s_name);
         return;
