@@ -40,29 +40,30 @@ t_int *xsel2mc_perform(t_int *w){
         if(!x->x_index)
             pos *= (inchs - !x->x_circular);
         if(x->x_circular){
-            while(pos < 0)
-                pos += 1;
-            while(pos > inchs)
-                pos -= inchs;
+            pos = isfinite(pos) ? fmod(pos, inchs) : 0;
+            if(pos < 0)
+                pos += inchs;
         }
         pos += spread;
         spread *= 2;
         int j;
+        t_float sum = 0;
         if(x->x_circular){
             float range = inchs / spread;
             for(j = 0; j < inchs; j++){
                 float chanpos = (pos - j) / spread;
                 chanpos = chanpos - range * floor(chanpos/range);
                 float g = chanpos >= 1 ? 0 : read_sintab(chanpos*0.5);
-                out[i] += in[j*n + i] * g;
+                sum += in[j*n + i] * g;
             }
         }
         else for(j = 0; j < inchs; j++){
             float chanpos = (pos - j) / spread;
             if(chanpos >= 1 || chanpos < 0)
                 chanpos = 0;
-            out[i] += in[j*n + i] * read_sintab(chanpos*0.5);
+            sum += in[j*n + i] * read_sintab(chanpos*0.5);
         }
+        out[i] = sum;
 	}
     return(w+6);
 }
@@ -88,7 +89,7 @@ void *xsel2mc_new(t_symbol *s, int ac, t_atom *av){
     float spread = 1;
     x->x_index = x->x_circular = 0;
     if(ac){
-        while(av->a_type == A_SYMBOL){
+        while(ac > 0 && av->a_type == A_SYMBOL){
             if(atom_getsymbol(av) == gensym("-index")){
                 x->x_index = 1;
                 ac--, av++;

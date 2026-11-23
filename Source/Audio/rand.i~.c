@@ -114,7 +114,7 @@ static void *randi_new(t_symbol *s, int ac, t_atom *av){
     float low = 0, high = 1;
     x->x_ch = 1;
     if(ac){
-        while(av->a_type == A_SYMBOL){
+        while(ac > 0 && av->a_type == A_SYMBOL){
             if(ac >= 2 && atom_getsymbol(av) == gensym("-seed")){
                 t_atom at[1];
                 SETFLOAT(at, atom_getfloat(av+1));

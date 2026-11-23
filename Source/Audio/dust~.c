@@ -120,7 +120,7 @@ static void *dust_new(t_symbol *s, int ac, t_atom *av){
     x->x_density_list[0] = 0;
     x->x_list_size = 1;
     if(ac){
-        while(av->a_type == A_SYMBOL){
+        while(ac > 0 && av->a_type == A_SYMBOL){
             t_symbol *sym = atom_getsymbol(av);
             if(sym == gensym("-seed")){
                 if(ac >= 2){

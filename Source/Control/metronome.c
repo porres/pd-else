@@ -506,7 +506,7 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
         if(av->a_type == A_SYMBOL){
             t_symbol *sym = atom_getsymbolarg(0, ac, av);
             if(sym == gensym("-name")){
-                if(argn)
+                if(argn || ac < 2)
                     goto errstate;
                 ac--, av++;
                 if(av->a_type == A_SYMBOL){
@@ -518,7 +518,7 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
                     goto errstate;
             }
             else if(sym == gensym("-beat")){
-                if(argn)
+                if(argn || ac < 2)
                     goto errstate;
                 ac--, av++;
                 metronome_beat(x, NULL, 1, av);

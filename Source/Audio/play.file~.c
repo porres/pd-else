@@ -676,7 +676,7 @@ static void *playfile_new(t_symbol *s, int ac, t_atom *av){
     AVChannelLayout layout;
     int loop = 0, mc = 0, ncharg = 0;
     t_atom at[1];
-    while(av->a_type == A_SYMBOL &&
+    while(ac > 0 && av->a_type == A_SYMBOL &&
     (av->a_w.w_symbol == gensym("-loop") ||
      av->a_w.w_symbol == gensym("-mc"))){
         s = av->a_w.w_symbol;

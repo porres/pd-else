@@ -19,7 +19,7 @@ typedef struct _xselectmc{
 }t_xselectmc;
 
 static void xselectmc_float(t_xselectmc *x, t_floatarg f){
-    x->x_ch = f < 0 ? 0 : (int)f;
+    x->x_ch = f < 0 ? 0 : f > MAXIN / x->x_n ? MAXIN / x->x_n : (int)f;
     if(x->x_ch != x->x_last_ch){
         if(x->x_ch)
             x->x_active_ch[x->x_ch*x->x_n - x->x_n] = 1;
@@ -34,7 +34,10 @@ static void xselectmc_time(t_xselectmc *x, t_floatarg f){
 }
 
 static void xselectmc_n(t_xselectmc *x, t_floatarg f){
-    x->x_n = f < 1 ? 1 : (int)f;
+    int ch = x->x_ch;
+    xselectmc_float(x, 0);
+    x->x_n = f < 1 ? 1 : f > MAXIN ? MAXIN : (int)f;
+    xselectmc_float(x, ch);
     canvas_update_dsp();
 }
 
@@ -47,14 +50,18 @@ static t_int *xselectmc_perform(t_int *w){
     float fade = x->x_fade * x->x_sr_khz;
     if(fade <= 0)
         fade = 1;
+    if(chs > MAXIN)
+        chs = MAXIN;
     for(int i = 0; i < nblock; i++){
+        for(int j = 0; j < chs; j++){
+            if(x->x_active_ch[j] && x->x_count[j] < fade)
+                x->x_count[j]++;
+            else if(!x->x_active_ch[j] && x->x_count[j] > 0)
+                x->x_count[j]--;
+        }
         for(int n = 0; n < x->x_n; n++){
             float sum = 0;
-            for(int j = 0; j < chs; j++){
-                if(x->x_active_ch[j] && x->x_count[j] < fade)
-                    x->x_count[j]++;
-                else if(!x->x_active_ch[j] && x->x_count[j] > 0)
-                    x->x_count[j]--;
+            for(int j = 0; j + n < chs; j++){
                 if(x->x_count[j]){
                     float fadeval;
                     if(x->x_count[j] < fade)
@@ -71,9 +78,10 @@ static t_int *xselectmc_perform(t_int *w){
 }
 
 static void xselectmc_dsp(t_xselectmc *x, t_signal **sp){
+    t_int chs = sp[0]->s_nchans;
     signal_setmultiout(&sp[1], x->x_n);
     x->x_sr_khz = sp[0]->s_sr * 0.001;
-    dsp_add(xselectmc_perform, 5, x, (t_int)sp[0]->s_n, (t_int)sp[0]->s_nchans, sp[0]->s_vec, sp[1]->s_vec);
+    dsp_add(xselectmc_perform, 5, x, (t_int)sp[0]->s_n, chs, sp[0]->s_vec, sp[1]->s_vec);
 }
 
 static void *xselectmc_new(t_symbol *s, int ac, t_atom *av){
@@ -87,9 +95,8 @@ static void *xselectmc_new(t_symbol *s, int ac, t_atom *av){
     if(ac >= 2 && av->a_type == A_SYMBOL){
         if(atom_getsymbol(av) == gensym("-n")){
             ac--, av++;
-            x->x_n = atom_getint(av);
-            if(x->x_n < 1)
-                x->x_n = 1;
+            int n = atom_getint(av);
+            x->x_n = n < 1 ? 1 : n > MAXIN ? MAXIN : n;
             ac--, av++;
         }
     }

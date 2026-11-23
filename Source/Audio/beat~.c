@@ -118,7 +118,7 @@ static void *beat_new(t_symbol *s, int ac, t_atom *av){
             t_symbol *sym = atom_getsymbol(av);
             ac--, av++;
             if(sym == gensym("-mode")){
-                if((av)->a_type == A_FLOAT){
+                if(ac && (av)->a_type == A_FLOAT){
                     mode = (int)atom_getfloat(av);
                     mode = mode < 0 ? 0 : mode > 9 ? 9 : (int)mode;
                     ac--, av++;
@@ -127,7 +127,7 @@ static void *beat_new(t_symbol *s, int ac, t_atom *av){
                     goto errstate;
             }
             else if(sym == gensym("-silence")){
-                if((av)->a_type == A_FLOAT){
+                if(ac && (av)->a_type == A_FLOAT){
                     silence = atom_getfloat(av);
                     ac--, av++;
                 }

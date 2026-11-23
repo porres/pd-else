@@ -213,7 +213,7 @@ static void *function_new(t_symbol *s,int ac,t_atom* av){
             else
                 goto errstate;
         }
-        if(av->a_type == A_FLOAT){
+        else if(av->a_type == A_FLOAT){
             if(ac < 3){
                 pd_error(x, "[function~]: needs at least 3 float arguments");
                 goto errstate;

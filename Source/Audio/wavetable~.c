@@ -328,7 +328,7 @@ static void *wavetable_new(t_symbol *s, int ac, t_atom *av){
             }
             else if(curarg == gensym("-n")){
                 ac--, av++;
-                if(nameset)
+                if(nameset || !ac)
                     goto errstate;
                 x->x_slices = atom_getint(av);
                 if(x->x_slices < 1)

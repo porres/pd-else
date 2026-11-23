@@ -360,7 +360,7 @@ static void *fdn_new(t_symbol *s, int ac, t_atom *av){
                     goto errstate;
             }
             else if(!strcmp(cursym->s_name, "-exp"))
-                x->x_exp = 1;
+                x->x_exp = 1, ac--, av++;
             else
                 goto errstate;
         }
@@ -402,7 +402,7 @@ static void *fdn_new(t_symbol *s, int ac, t_atom *av){
     SETFLOAT(at+5, 23.f);
     SETFLOAT(at+6, 29.f);
     SETFLOAT(at+7, 31.f);
-    fdn_list(x, &s_list, 8, at);
+    fdn_list(x, &s_list, order < 8 ? order : 8, at);
 // clear delay memory to zero
     fdn_clear(x);
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("time"));

@@ -1755,7 +1755,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
                         x->x_flag = 1, x->x_transparent = 1;
                     else if(sym == gensym("-theme"))
                         x->x_flag = 1, x->x_theme = 1;
-                    else if(sym == gensym("-note")){
+                    else if(sym == gensym("-note") && !x->x_text_flag){
                         if((ac-i) >= 2){
                             x->x_flag = x->x_text_flag = 1;
                             i++, comlen++;

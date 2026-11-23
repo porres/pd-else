@@ -39,10 +39,9 @@ static t_int *xselect2_perform(t_int *w){
         if(!x->x_indexed)
             pos *= (x->x_n_ins - !x->x_circular);
         if(x->x_circular){
-            while(pos < 0)
-                pos += 1;
-            while(pos > x->x_n_ins)
-                pos -= x->x_n_ins;
+            pos = isfinite(pos) ? fmod(pos, x->x_n_ins) : 0;
+            if(pos < 0)
+                pos += x->x_n_ins;
         }
         pos += spread;
         spread *= 2;
@@ -85,7 +84,7 @@ static void *xselect2_new(t_symbol *s, int ac, t_atom *av){
     x->x_indexed = x->x_circular = 0;
     float spread = 1;
     if(ac){
-        while(av->a_type == A_SYMBOL){
+        while(ac > 0 && av->a_type == A_SYMBOL){
             if(atom_getsymbol(av) == gensym("-index")){
                 x->x_indexed = 1;
                 ac--, av++;

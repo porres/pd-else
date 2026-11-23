@@ -69,7 +69,7 @@ static void *gray_new(t_symbol *s, int ac, t_atom *av){
     x->x_base[0] = 0;
     gray_seed(x, s, 0, NULL);
     if(ac){
-        while(av->a_type == A_SYMBOL){
+        while(ac > 0 && av->a_type == A_SYMBOL){
             if(atom_getsymbol(av) == gensym("-seed")){
                 if(ac >= 2){
                     t_atom at[1];
