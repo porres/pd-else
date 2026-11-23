@@ -24,51 +24,43 @@ t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
 
 // ------------ Mutation-aware iteration -------------------------------
 //
-// Same hazard as [nlist.traverse]: outlet_list() here can run straight
-// through something like [nlist.delete] and back before we return, so we
-// never carry a t_nlist_node pointer across an outlet call. Instead, before
-// every single emission we re-walk the tree from the live root, skipping
-// over however many leaves we've already emitted, and send out whichever
-// leaf comes next. If a fresh scan can't find that many leaves anymore,
-// we're done - nothing more is sent, rather than chasing a freed pointer
-// or emitting a leaf that no longer exists.
+// Pd's message passing is synchronous: outlet_list() here can run straight
+// through something like [nlist.set], [nlist.delete] or [nlist.insert] and
+// back before we return. Two hazards come with that:
+//
+//  1. DANGLING POINTERS: we never hold a node pointer across an outlet call.
+//     The list is re-resolved by name and re-scanned from the live root
+//     before every emission.
+//
+//  2. CURSOR DRIFT: a "skip N leaves" cursor breaks as soon as the leaf count
+//     before the cursor changes (set 1 -> many, delete, insert...). So the
+//     cursor is an IDENTITY, not a count. Every node has a unique, never
+//     reused ID. Before we emit a leaf we note the ID of the leaf that comes
+//     after it. After the outlet returns, we resume like so:
+//       - that next leaf still exists  -> continue there. Whatever the
+//         receiver put between us and it (e.g. [nlist.set] on the leaf we
+//         just sent) is NOT visited: it's not part of this pass.
+//       - else, the leaf we just sent still exists -> continue after it
+//       - else we lost our place -> stop.
+//     (If we were on the last leaf, we stop.)
+//
+// Note: content appended AFTER the cursor is still part of the pass, so a
+// receiver that appends once per element will keep the iteration going.
 //
 // Cost: each emission re-scans from the root, so this is roughly O(n^2) in
 // the number of leaves. Fine for interactively-sized lists.
-static int nl_iter_emit_nth(t_nlist_node *node, int depth, int *skip, t_atom *path, t_outlet *out){
-    int index = 0;
-    while(node){
-        SETFLOAT(&path[depth], index++);
-        if(node->child){
-            if(nl_iter_emit_nth(node->child, depth + 1, skip, path, out))
-                return(1);
-        }
-        else{
-            if(*skip == 0){
-                outlet_list(out, &s_list, depth + 1, path);
-                return(1);
-            }
-            (*skip)--;
-        }
-        node = node->next;
-    }
-    return(0);
-}
-
 static void nl_iter_bang(t_nl_iter *x){
-    t_nlist *nlist = nlist_get(x->x_sym, gensym("iter"));
-    if(!nlist)
+    t_symbol *sym = x->x_sym;
+    if(!nlist_get(sym, gensym("iter")))
         return;
-    int count = 0;
-    while(1){
-        int depth = nlist->x_depth; // re-read: mutation may have changed it since last pass
-        t_atom *path = getbytes((depth + 1) * sizeof(t_atom));
-        int skip = count;
-        int found = nl_iter_emit_nth(nlist->x_root, 0, &skip, path, x->x_obj.ob_outlet);
-        freebytes(path, (depth + 1) * sizeof(t_atom));
-        if(!found)
-            break;
-        count++;
+    t_outlet *out = x->x_obj.ob_outlet;
+    t_nlist_cursor c;
+    nlist_cursor_init(&c);
+    t_atom *path;
+    int cap, depth;
+    while(nlist_cursor_next(&c, sym, NLIST_SEL_LEAF, 0, &path, &cap, &depth, NULL)){
+        outlet_list(out, &s_list, depth + 1, path);
+        freebytes(path, cap * sizeof(t_atom)); // size from before the outlet, not a re-read depth
     }
 }
 

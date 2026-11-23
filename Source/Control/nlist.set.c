@@ -62,12 +62,8 @@ static void nlistset_list(t_nlistset *x, t_symbol *s, int ac, t_atom *av){
             link = &(*link)->child;
         }
     }
-    t_nlist temp;
-    temp.x_obj.ob_pd = x->x_obj.ob_pd;
-    temp.x_root = NULL;
-    temp.x_len = 0;
-    temp.x_depth = 0;
-    t_nlist_node *contents = nlist_parse_all(&temp, ac, av);
+    // parsed with 'x' as the error owner, no scratch t_nlist needed
+    t_nlist_node *contents = nlist_parse(x, ac, av, NULL, NULL);
     t_nlist_node *replacement;
     if(contents && contents->next){
         replacement = nlist_new_list();
@@ -77,6 +73,9 @@ static void nlistset_list(t_nlistset *x, t_symbol *s, int ac, t_atom *av){
         replacement = contents;
     if(!replacement)
         return;
+    // The replacement gets brand new node IDs, so an iterator that is
+    // currently sitting on the old node (or about to move to the node after
+    // it) never visits this new content.
     t_nlist_node *old = *link;
     replacement->next = old->next;
     *link = replacement;
@@ -84,7 +83,9 @@ static void nlistset_list(t_nlistset *x, t_symbol *s, int ac, t_atom *av){
     nlist_clear_nodes(old);
     nlist->x_len = nlist_get_len(nlist->x_root);
     nlist->x_depth = nlist_get_depth(nlist->x_root);
-    nlist_do_update(nlist);
+    nlist_dirty(nlist);
+    if(nlist->x_is_opened)
+        nlist_do_update(nlist);
 }
 
 static void *nlistset_new(t_symbol *s, int ac, t_atom *av){

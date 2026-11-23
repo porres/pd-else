@@ -29,17 +29,16 @@ static void nlistappend_list(t_nlistappend *x, t_symbol *s, int ac, t_atom *av){
     t_nlist *nlist = nlist_get(x->x_sym, gensym("append"));
     if(!nlist || !ac)
         return;
-    t_nlist temp;
-    temp.x_obj.ob_pd = x->x_obj.ob_pd;
-    temp.x_root = NULL;
-    temp.x_len = 0;
-    temp.x_depth = 0;
-    t_nlist_node *contents = nlist_parse_all(&temp, ac, av);
+    t_nlist_node *contents = nlist_parse(x, ac, av, NULL, NULL);
     if(!contents)
         return;
     int len = nlist_get_len(nlist->x_root);
     int path[1] = {len};
-    nlist_insert_at(nlist, 1, path, contents);
+    if(!nlist_insert_at(nlist, 1, path, contents)){
+        nlist_clear_nodes(contents); // not linked into the tree, so free it
+        pd_error(x, "[nlist.append] couldn't append");
+        return;
+    }
     nlist_dirty(nlist);
     if(nlist->x_is_opened)
         nlist_do_update(nlist);

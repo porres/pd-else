@@ -43,15 +43,18 @@ static void nlistinsert_list(t_nlistinsert *x, t_symbol *s, int ac, t_atom *av){
     t_nlist *nlist = nlist_get(x->x_sym, gensym("insert"));
     if(!nlist || !ac)
         return;
-    t_nlist temp;
-    temp.x_obj.ob_pd = x->x_obj.ob_pd;
-    temp.x_root = NULL;
-    temp.x_len = 0;
-    temp.x_depth = 0;
-    t_nlist_node *contents = nlist_parse_all(&temp, ac, av);
+    if(!x->x_path || x->x_path_ac < 1){ // an invalid "set" leaves the path empty
+        pd_error(x, "[nlist.insert] invalid index path");
+        return;
+    }
+    t_nlist_node *contents = nlist_parse(x, ac, av, NULL, NULL);
     if(!contents)
         return;
-    nlist_insert_at(nlist, x->x_path_ac, x->x_path, contents);
+    if(!nlist_insert_at(nlist, x->x_path_ac, x->x_path, contents)){
+        nlist_clear_nodes(contents); // not linked into the tree, so free it
+        pd_error(x, "[nlist.insert] index path out of range");
+        return;
+    }
     nlist_dirty(nlist);
     if(nlist->x_is_opened)
         nlist_do_update(nlist);

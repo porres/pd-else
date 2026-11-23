@@ -9,6 +9,11 @@
 
 #define NLIST_STACK_INIT 16
 
+// Selectors for nlist_scan() / nlist_cursor_next()
+#define NLIST_SEL_LEAF   0  // every childless node (atoms and empty lists), any depth
+#define NLIST_SEL_LEVEL  1  // every node at depth == target
+#define NLIST_SEL_PARENT 2  // every node at depth == target that has children
+
 typedef struct _nlist_node t_nlist_node;
 typedef struct _nlist t_nlist;
 
@@ -17,6 +22,7 @@ struct _nlist_node{
     t_atom atom;
     t_nlist_node *child;
     t_nlist_node *next;
+    unsigned long id;   // unique, never reused, assigned at creation
 };
 
 struct _nlist{
@@ -41,9 +47,19 @@ typedef struct _nlist_frame{
     t_nlist_node *last;
 } t_nlist_frame;
 
+// Identity-based iteration state. It holds node IDs only, never pointers,
+// so it is safe to keep across outlet calls that mutate the list.
+typedef struct _nlist_cursor{
+    int started;
+    unsigned long cur;   // ID of the node emitted last
+    unsigned long succ;  // ID of the node that was next when it was emitted (0 = none)
+} t_nlist_cursor;
+
 t_nlist_node *nlist_new_list(void);
 t_nlist_node **nlist_find_link(t_nlist_node **node, int index);
 t_nlist *nlist_get(t_symbol *name, t_symbol *obj);
+t_nlist *nlist_find(t_symbol *name);   // silent version of nlist_get
+t_nlist_node *nlist_parse(void *owner, int ac, t_atom *av, int *len_out, int *depth_out);
 t_nlist_node *nlist_parse_all(t_nlist *x, int ac, t_atom *av);
 int nlist_get_len(t_nlist_node *node);
 int nlist_get_depth(t_nlist_node *node);
@@ -62,5 +78,12 @@ void nlist_do_open(t_nlist *x);
 void nlist_open(t_nlist *x);
 void nlist_dirty(t_nlist *x);
 
+int nlist_scan(t_nlist_node *root, int mode, int target,
+    unsigned long anchor, int inclusive,
+    t_atom *path, int pathcap, int *depth_out, t_nlist_node **node_out,
+    unsigned long *id_out, unsigned long *succ_out);
+void nlist_cursor_init(t_nlist_cursor *c);
+int nlist_cursor_next(t_nlist_cursor *c, t_symbol *name, int mode, int target,
+    t_atom **path_out, int *cap_out, int *depth_out, t_nlist_node **node_out);
 
 #endif // NLIST_H
