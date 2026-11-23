@@ -39,10 +39,9 @@ static t_int *xselect2_perform(t_int *w){
         if(!x->x_indexed)
             pos *= (x->x_n_ins - !x->x_circular);
         if(x->x_circular){
-            while(pos < 0)
-                pos += 1;
-            while(pos > x->x_n_ins)
-                pos -= x->x_n_ins;
+            pos = isfinite(pos) ? fmod(pos, x->x_n_ins) : 0;
+            if(pos < 0)
+                pos += x->x_n_ins;
         }
         pos += spread;
         spread *= 2;
