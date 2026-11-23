@@ -210,6 +210,7 @@ static err_t playfile_load(t_playfile *x, int index){
         }
         x->x_stream_idx = i;
         if(i < 0){
+            avformat_close_input(&x->x_ic);
             post("play.file~: No audio stream found in '%s'", url);
             return("No audio stream found");
         }
@@ -248,8 +249,8 @@ static void playfile_start(t_playfile *x, t_float f, t_float ms){
     if(0 < track && track <= x->x_plist.size){
         if((err_msg = playfile_load(x, track - 1)))
             pd_error(x, "[play.file~] 'base start': %s.", err_msg);
-        playfile_seek(x, ms);
         x->x_open = !err_msg;
+        playfile_seek(x, ms);
     }
     else
         playfile_seek(x, 0);
@@ -461,7 +462,8 @@ static t_int *playfile_perform(t_int *w){
                             x->x_play_next = NULL;
                         }
                         playfile_seek(x, 0.0f);
-                        x->x_play = 1;
+                        if(!(x->x_play = x->x_open))
+                            goto silence;
                     }
                     else{
                         if(x->x_play_next){
@@ -546,7 +548,8 @@ static t_int *playfile_perform_mc(t_int *w){
                             x->x_play_next = NULL;
                         }
                         playfile_seek(x, 0.0f);
-                        x->x_play = 1;
+                        if(!(x->x_play = x->x_open))
+                            goto silence;
                     }
                     else{
                         if(x->x_play_next){
