@@ -578,7 +578,7 @@ int shift, int alt, int dbl, int doit){
     x->x_x = xpix - xpos;
     x->x_y = x->x_h - (ypix - ypos);
     if(doit){
-        if(x->x_mode == 0){ // latch
+        if(x->x_mode == 0){ // gate
             outlet_float(x->x_obj.ob_outlet, x->x_state = 1);
             if(x->x_snd->s_thing && !x->x_edit && x->x_snd != gensym("empty") && x->x_snd != &s_)
                 pd_float(x->x_snd->s_thing, x->x_state);
@@ -607,7 +607,7 @@ int shift, int alt, int dbl, int doit){
     return(1);
 }
 
-static void button_latch(t_button *x){
+static void button_gate(t_button *x){
     x->x_mode = 0;
 }
 
@@ -752,7 +752,7 @@ static t_symbol *button_getmode(t_button *x){
         case 1: return(gensym("Toggle"));
         case 2: return(gensym("Bang"));
         case 3: return(gensym("Click"));
-        default: return(gensym("Latch"));
+        default: return(gensym("Gate"));
     }
 }
 
@@ -813,7 +813,7 @@ static void button_apply(t_button *x, t_symbol *s, int ac, t_atom *av){
     x->x_transparent = transp < 0 ? 0 : transp > 3 ? 3 : transp;
     // apply mode (symbol → int; unknown symbol keeps current mode)
     int mode_int = x->x_mode;
-    if(mode == gensym("Latch"))       mode_int = 0;
+    if(mode == gensym("Gate"))        mode_int = 0;
     else if(mode == gensym("Toggle")) mode_int = 1;
     else if(mode == gensym("Bang"))   mode_int = 2;
     else if(mode == gensym("Click"))  mode_int = 3;
@@ -1207,7 +1207,7 @@ void button_setup(void){
     class_addmethod(button_class, (t_method)button_clickmode, gensym("click"), 0);
     class_addmethod(button_class, (t_method)button_press, gensym("toggle"), 0);
     class_addmethod(button_class, (t_method)button_tgl, gensym("tgl"), 0);
-    class_addmethod(button_class, (t_method)button_latch, gensym("latch"), 0);
+    class_addmethod(button_class, (t_method)button_gate, gensym("gate"), 0);
     class_addmethod(button_class, (t_method)button_setbgcolor, gensym("bgcolor"), A_GIMME, 0);
     class_addmethod(button_class, (t_method)button_setfgcolor, gensym("fgcolor"), A_GIMME, 0);
     class_addmethod(button_class, (t_method)button_colors, gensym("colors"), A_SYMBOL, A_SYMBOL, 0);

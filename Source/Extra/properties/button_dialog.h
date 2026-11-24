@@ -74,7 +74,7 @@ static const char *button_dialog_tcl =
 "}\n"
 "\n"
 
-// menubutton selection handler for mode (Latch / Toggle / Bang / Click).
+// menubutton selection handler for mode (Gate / Toggle / Bang / Click).
 // Updates the menubutton text, then applies on macOS.
 "proc ::dialog_button::mmodecheck {option id} {\n"
 "    $id.type.fr.mode_mb configure -text $option\n"
@@ -287,7 +287,7 @@ static const char *button_dialog_tcl =
 "        -menu $id.type.fr.mode_mb.menu -width 7\n"
 "    menu $id.type.fr.mode_mb.menu -tearoff 0\n"
 "    $id.type.fr.mode_mb configure -menu $id.type.fr.mode_mb.menu\n"
-"    foreach mode_selection {Latch Toggle Bang Click} {\n"
+"    foreach mode_selection {Gate Toggle Bang Click} {\n"
 "        $id.type.fr.mode_mb.menu add radiobutton -label $mode_selection \\\n"
 "            -variable ::dialog_button::var_mode($vid) -value $mode_selection \\\n"
 "            -command \"::dialog_button::mmodecheck $mode_selection $id\"\n"

@@ -133,6 +133,7 @@ jobs:
   windows-build:
     runs-on: windows-latest
     strategy:
+      fail-fast: false
       matrix:
         compiler: [mingw]
         arch: [amd64]
@@ -143,42 +144,69 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-      - if: matrix.compiler == 'mingw'
-        name: Set up Msys2
+      - name: Set up Msys2
         uses: msys2/setup-msys2@v2
         with:
           msystem: mingw64
-          install: make mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-cmake mingw-w64-x86_64-libogg mingw-w64-x86_64-libvorbis mingw64/mingw-w64-x86_64-ccache
+          install: >-
+            make
+            unzip
+            curl
+            diffutils
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-ninja
+            mingw-w64-x86_64-nasm
+            mingw-w64-x86_64-pkgconf
+            mingw-w64-x86_64-libogg
+            mingw-w64-x86_64-libvorbis
+            mingw-w64-x86_64-ccache
           update: false
-      - name: Restore build cache
-        uses: actions/cache/restore@v4
+      - name: Cache ccache
+        uses: actions/cache@v4
         with:
           path: D:/ccache
-          key: ccache-windows-v1-${{ github.run_id }}
+          key: ccache-windows-v2-${{ github.run_id }}
           restore-keys: |
-            ccache-windows-v1-${{ github.sha }}
-            ccache-windows-v1
+            ccache-windows-v2-
       - name: Install PureData Float 32
-        run: |
-          winget install -e --id MillerPuckette.PureData --accept-source-agreements
-      - name: Configure and build Mingw
         shell: msys2 {0}
-        if: matrix.compiler == 'mingw'
         run: |
-          cmake . -B build -DPD_FLOATSIZE=${{ matrix.precision }} -DPDLIBDIR=./ -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER_LAUNCHER="ccache" -DCMAKE_CXX_COMPILER_LAUNCHER="ccache"
-          export CCACHE_COMPRESS=1
-          export CCACHE_COMPRESSLEVEL=6
-          export CCACHE_MAXSIZE=1G
-          export CCACHE_DIR=D:/ccache
-          cmake --build build --parallel
-          ccache -s
-          rm -rf ./build/else/*.a
+          curl -L -o pure-data.zip http://msp.ucsd.edu/Software/pd-0.57-0.msw.zip
+          unzip pure-data.zip
+          rm pure-data.zip
+          mv pd-0.57-0 pure-data
+      - name: Configure
+        shell: msys2 {0}
         env:
           CCACHE_COMPRESS: "1"
           CCACHE_COMPRESSLEVEL: "6"
           CCACHE_MAXSIZE: "1G"
           CCACHE_DIR: D:/ccache
-
+        run: |
+          # pd.cmake links "${PDBINDIR}/pd.dll"; a relative path becomes "-l./pure-data/bin/pd.dll"
+          # and fails, so PDBINDIR / PD_SOURCES_PATH must be ABSOLUTE (mixed-style: D:/a/...)
+          ROOT="$(cygpath -m "$PWD")"
+          ls -l "$ROOT/pure-data/bin/pd.dll"
+          cmake . -B build -G Ninja \
+            -DPD_FLOATSIZE=${{ matrix.precision }} \
+            -DPDLIBDIR=./ \
+            -DPD_SOURCES_PATH="$ROOT/pure-data/src" \
+            -DPDBINDIR="$ROOT/pure-data/bin" \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_COMPILER_LAUNCHER="ccache" \
+            -DCMAKE_CXX_COMPILER_LAUNCHER="ccache"
+      - name: Build
+        shell: msys2 {0}
+        env:
+          CCACHE_COMPRESS: "1"
+          CCACHE_COMPRESSLEVEL: "6"
+          CCACHE_MAXSIZE: "1G"
+          CCACHE_DIR: D:/ccache
+        run: |
+          cmake --build build --parallel
+          ccache -s
+          rm -rf ./build/else/*.a
       - name: Upload
         uses: actions/upload-artifact@v4
         with:

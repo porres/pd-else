@@ -45,7 +45,7 @@ typedef struct _pic{
      int            x_r_flag;
      int            x_flag;
      int            x_size;
-     int            x_latch;
+     int            x_gate;
      int            x_offset_x;
      int            x_offset_y;
      t_symbol      *x_fullname;
@@ -97,7 +97,7 @@ static t_symbol* pic_filepath(t_pic *x, const char *filename){
 }
 
 static void pic_mouserelease(t_pic* x){
-    if(x->x_latch){
+    if(x->x_gate){
         outlet_float(x->x_outlet, 0);
         if(x->x_send != &s_ && x->x_send->s_thing)
             pd_float(x->x_send->s_thing, 0);
@@ -166,9 +166,9 @@ static void pic_get_snd_rcv(t_pic* x){
 static int pic_click(t_pic *x, struct _glist *glist, int xpos, int ypos, int shift, int alt, int dbl, int doit){
     glist = NULL, xpos = ypos = shift = alt = dbl = 0;
     if(doit){
-        x->x_latch ? outlet_float(x->x_outlet, 1) : outlet_bang(x->x_outlet) ;
+        x->x_gate ? outlet_float(x->x_outlet, 1) : outlet_bang(x->x_outlet) ;
         if(x->x_send != &s_ && x->x_send->s_thing)
-            x->x_latch ? pd_float(x->x_send->s_thing, 1) : pd_bang(x->x_send->s_thing);
+            x->x_gate ? pd_float(x->x_send->s_thing, 1) : pd_bang(x->x_send->s_thing);
     }
     return(1);
 }
@@ -330,7 +330,7 @@ static void pic_save(t_gobj *z, t_binbuf *b){
     pic_get_snd_rcv(x);
     binbuf_addv(b, "ssiisisssii", gensym("#X"), gensym("obj"), x->x_obj.te_xpix, x->x_obj.te_ypix,
         atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)), x->x_outline, x->x_filename, x->x_snd_raw,
-        x->x_rcv_raw, x->x_size, x->x_latch);
+        x->x_rcv_raw, x->x_size, x->x_gate);
     binbuf_addv(b, ";");
 }
 
@@ -467,8 +467,8 @@ static void pic_offset(t_pic *x, t_float x_offset, t_float y_offset){
     }
 }
 
-static void pic_latch(t_pic *x, t_float f){
-    x->x_latch = f != 0.0f;
+static void pic_gate(t_pic *x, t_float f){
+    x->x_gate = f != 0.0f;
 }
 
 static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
@@ -522,7 +522,7 @@ void pic_properties(t_gobj *z, t_glist *gl){
         x->x_filename->s_name,
         x->x_outline,
         x->x_size,
-        x->x_latch,
+        x->x_gate,
         x->x_snd_raw->s_name,
         x->x_rcv_raw->s_name);
 }
@@ -533,14 +533,14 @@ static void pic_ok(t_pic *x, t_symbol *s, int ac, t_atom *av){
     SETSYMBOL(undo+0, x->x_filename);
     SETFLOAT(undo+1, x->x_outline);
     SETFLOAT(undo+2, x->x_size);
-    SETFLOAT(undo+3, x->x_latch);
+    SETFLOAT(undo+3, x->x_gate);
     SETSYMBOL(undo+4, x->x_snd_raw);
     SETSYMBOL(undo+5, x->x_rcv_raw);
     pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("ok"), 6, undo, ac, av);
     pic_open(x, atom_getsymbolarg(0, ac, av));
     pic_outline(x, atom_getfloatarg(1, ac, av));
     pic_size(x, atom_getfloatarg(2, ac, av));
-    pic_latch(x, atom_getfloatarg(3, ac, av));
+    pic_gate(x, atom_getfloatarg(3, ac, av));
     pic_send(x, atom_getsymbolarg(4, ac, av));
     pic_receive(x, atom_getsymbolarg(5, ac, av));
     canvas_dirty(x->x_glist, 1);
@@ -589,7 +589,7 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
     pd_bind(&x->x_obj.ob_pd, x->x_x = gensym(buf));
     x->x_edit = cv->gl_edit;
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_filename = &s_;
-    int loaded = x->x_rcv_set = x->x_snd_set = x->x_def_img = x->x_init = x->x_latch = 0;
+    int loaded = x->x_rcv_set = x->x_snd_set = x->x_def_img = x->x_init = x->x_gate = 0;
     x->x_outline = x->x_size = x->x_offset_x = x->x_offset_y = 0;
     x->x_fullname = NULL;
     if(ac && av->a_type == A_FLOAT){ // 1ST outline
@@ -620,8 +620,8 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
                         x->x_size = (int)(av->a_w.w_float != 0);
                         ac--; av++;
                     }
-                    if(ac && av->a_type == A_FLOAT){ // 6TH latch
-                        x->x_latch = (int)(av->a_w.w_float != 0);
+                    if(ac && av->a_type == A_FLOAT){ // 6TH gate
+                        x->x_gate = (int)(av->a_w.w_float != 0);
                         ac--; av++;
                     }
                 }
@@ -640,8 +640,8 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
                 x->x_flag = x->x_size = 1;
                 ac--, av++;
             }
-            else if(cursym == gensym("-latch")){ // no arg
-                x->x_flag = x->x_latch = 1;
+            else if(cursym == gensym("-gate")){ // no arg
+                x->x_flag = x->x_gate = 1;
                 ac--, av++;
             }
             else if(cursym == gensym("-send")){
@@ -715,7 +715,7 @@ void pic_setup(void){
     pic_class = class_new(gensym("pic"), (t_newmethod)pic_new, (t_method)pic_free, sizeof(t_pic),0, A_GIMME,0);
     class_addmethod(pic_class, (t_method)pic_outline, gensym("outline"), A_DEFFLOAT, 0);
     class_addmethod(pic_class, (t_method)pic_size, gensym("size"), A_DEFFLOAT, 0);
-    class_addmethod(pic_class, (t_method)pic_latch, gensym("latch"), A_DEFFLOAT, 0);
+    class_addmethod(pic_class, (t_method)pic_gate, gensym("gate"), A_DEFFLOAT, 0);
     class_addmethod(pic_class, (t_method)pic_open, gensym("open"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_send, gensym("send"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_ok, gensym("ok"), A_GIMME, 0);
