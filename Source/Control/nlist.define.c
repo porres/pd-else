@@ -75,7 +75,7 @@ static void nlist_do_write(t_nlist *x, t_symbol *fn){
         buf[MAXPDSTRING-1] = 0;
     }
     t_binbuf *bb = binbuf_new();
-    nlist_tree_to_binbuf(x->x_root, bb);
+    nlist_tree_to_binbuf_style(x->x_root, bb, x->x_style);
     if(binbuf_write(bb, buf, "", 0))
         post("[nlist.define]: error writing text file '%s'", fn->s_name);
     else
@@ -98,11 +98,14 @@ static void nlist_keephook(t_pd *z, t_binbuf *bb, t_symbol *bindsym){
     t_nlist *x = (t_nlist *)z;
     if(x->x_keep){
         t_atom head[2];
+        if(x->x_mode != NLIST_STYLE_AUTO) // restore the forced style first
+            binbuf_addv(bb, "sss;", bindsym, gensym("style"),
+                gensym(x->x_mode == NLIST_STYLE_PARENS ? "parens" : "brackets"));
         SETSYMBOL(head, bindsym);
         SETSYMBOL(head + 1, gensym("list"));
         binbuf_add(bb, 2, head);
         if(x->x_root)
-            nlist_tree_to_binbuf(x->x_root, bb);
+            nlist_tree_to_binbuf_style(x->x_root, bb, x->x_style);
         binbuf_addsemi(bb);
         // restores the keep flag itself, same as coll_keephook's "keep 1"
         binbuf_addv(bb, "ssi;", bindsym, gensym("keep"), 1);
@@ -170,6 +173,26 @@ static void nlist_list(t_nlist *x, t_symbol *s, int ac, t_atom *av){
         nlist_do_update(x);
 }
 
+static void nlist_style(t_nlist *x, t_symbol *s){
+    int mode;
+    if(s == gensym("auto"))
+        mode = NLIST_STYLE_AUTO;
+    else if(s == gensym("brackets"))
+        mode = NLIST_STYLE_BRACKETS;
+    else if(s == gensym("parens") || s == gensym("parenthesis"))
+        mode = NLIST_STYLE_PARENS;
+    else{
+        pd_error(x, "[nlist.define]: unknown style '%s' (auto, brackets or parens)", s->s_name);
+        return;
+    }
+    x->x_mode = mode;
+    if(mode != NLIST_STYLE_AUTO)
+        x->x_style = mode;
+    if(x->x_is_opened)
+        nlist_do_update(x);
+    nlist_dirty(x);
+}
+
 static void nlist_keep(t_nlist *x, t_float f){
     if(x->x_filearg){
         post("[nlist.define]: file arg is given, so keep message is ignored");
@@ -214,6 +237,8 @@ static void *nlist_do_new(t_class *c, int ac, t_atom *av){
     t_nlist *x = (t_nlist *)pd_new(c);
     x->x_canvas = canvas_getcurrent();
     x->x_keep = 0;
+    x->x_mode = NLIST_STYLE_AUTO;
+    x->x_style = NLIST_STYLE_BRACKETS;
     x->x_is_opened = 0;
     x->x_filehandle = NULL;
     x->x_root = NULL;
@@ -233,6 +258,12 @@ static void *nlist_do_new(t_class *c, int ac, t_atom *av){
         if(av->a_type == A_SYMBOL){
             if(atom_getsymbol(av) == gensym("-k") && arg == 0)
                 x->x_keep = 1;
+            else if(atom_getsymbol(av) == gensym("-a") && arg == 0)
+                x->x_mode = NLIST_STYLE_AUTO;
+            else if(atom_getsymbol(av) == gensym("-b") && arg == 0)
+                x->x_mode = x->x_style = NLIST_STYLE_BRACKETS;
+            else if(atom_getsymbol(av) == gensym("-p") && arg == 0)
+                x->x_mode = x->x_style = NLIST_STYLE_PARENS;
             else if(name == NULL && arg == 0){
                 name = atom_getsymbol(av);
                 arg = 1;
@@ -284,6 +315,7 @@ static void nlist_class_setup(t_class *c){
         A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(c, (t_method)nlist_is_opened, gensym("_is_opened"), A_FLOAT, 0);
     class_addmethod(c, (t_method)nlist_keep, gensym("keep"), A_FLOAT, 0);
+    class_addmethod(c, (t_method)nlist_style, gensym("style"), A_SYMBOL, 0);
     class_addmethod(c, (t_method)nlist_read, gensym("read"), A_DEFSYM, 0);
     class_addmethod(c, (t_method)nlist_write, gensym("write"), A_DEFSYM, 0);
     elsefile_setup(c, 1);

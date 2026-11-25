@@ -14,6 +14,11 @@
 #define NLIST_SEL_LEVEL  1  // every node at depth == target
 #define NLIST_SEL_PARENT 2  // every node at depth == target that has children
 
+// List delimiter styles (x_mode: what is forced / auto, x_style: what is in use)
+#define NLIST_STYLE_AUTO     0  // detect from the first delimiter seen (default)
+#define NLIST_STYLE_BRACKETS 1  // [ ]
+#define NLIST_STYLE_PARENS   2  // ( )
+
 typedef struct _nlist_node t_nlist_node;
 typedef struct _nlist t_nlist;
 
@@ -38,6 +43,8 @@ struct _nlist{
     int x_filearg;
     int x_is_opened;
     int x_keep;
+    int x_mode;                // NLIST_STYLE_AUTO / BRACKETS / PARENS
+    int x_style;               // BRACKETS or PARENS, the style currently in use
     t_symbol *x_readfile;      // Last read/written filename
 };
 
@@ -60,6 +67,7 @@ t_nlist_node **nlist_find_link(t_nlist_node **node, int index);
 t_nlist *nlist_get(t_symbol *name, t_symbol *obj);
 t_nlist *nlist_find(t_symbol *name);   // silent version of nlist_get
 t_nlist_node *nlist_parse(void *owner, int ac, t_atom *av, int *len_out, int *depth_out);
+t_nlist_node *nlist_parse_style(void *owner, int ac, t_atom *av, int *len_out, int *depth_out, int style);
 t_nlist_node *nlist_parse_all(t_nlist *x, int ac, t_atom *av);
 int nlist_get_len(t_nlist_node *node);
 int nlist_get_depth(t_nlist_node *node);
@@ -68,10 +76,11 @@ int nlist_count_leaves(t_nlist_node *node);
 int nlist_parse_path(int ac, t_atom *av, int **path_out, int *path_ac_out);
 int nlist_insert_at(t_nlist *nlist, int path_ac, int *path, t_nlist_node *contents);
 void nlist_tree_to_binbuf(t_nlist_node *node, t_binbuf *bb);
+void nlist_tree_to_binbuf_style(t_nlist_node *node, t_binbuf *bb, int style);
 void nlist_clear_nodes(t_nlist_node *node);
 void nlist_post_indented(int depth, const char *content);
 void nlist_print_nodes(t_nlist_node *node, int depth);
-void nlist_editor_show_nodes(t_elsefile *fh, t_nlist_node *node, int depth);
+void nlist_editor_show_nodes(t_elsefile *fh, t_nlist_node *node, int depth, int style);
 void nlist_do_update(t_nlist *x);
 void nlist_open_window(unsigned long handle);
 void nlist_do_open(t_nlist *x);

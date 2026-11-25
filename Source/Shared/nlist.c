@@ -67,9 +67,35 @@ static t_nlist_node *nlist_new_atom(t_atom *a){
     return(node);
 }
 
-// Parses a bracket-tagged atom stream into a tree. `owner` is only used to
+// Returns the style of the first "[" or "(" found at the start of a symbol
+// atom, or 0 if there is none.
+static int nlist_detect_style(int ac, t_atom *av){
+    for(int i = 0; i < ac; i++){
+        if(av[i].a_type == A_SYMBOL){
+            char c = av[i].a_w.w_symbol->s_name[0];
+            if(c == '[')
+                return(NLIST_STYLE_BRACKETS);
+            if(c == '(')
+                return(NLIST_STYLE_PARENS);
+        }
+    }
+    return(0);
+}
+
+static const char *nlist_open_str(int style){
+    return(style == NLIST_STYLE_PARENS ? "(" : "[");
+}
+
+static const char *nlist_close_str(int style){
+    return(style == NLIST_STYLE_PARENS ? ")" : "]");
+}
+
+// Parses a delimiter-tagged atom stream into a tree. `owner` is only used to
 // report errors (pass the calling object). len/depth are optional outputs.
-t_nlist_node *nlist_parse(void *owner, int ac, t_atom *av, int *len_out, int *depth_out){
+// `style` is NLIST_STYLE_BRACKETS or NLIST_STYLE_PARENS.
+t_nlist_node *nlist_parse_style(void *owner, int ac, t_atom *av, int *len_out, int *depth_out, int style){
+    char opener = nlist_open_str(style)[0];
+    char closer = nlist_close_str(style)[0];
     int capacity = NLIST_STACK_INIT;
     t_nlist_frame *stack = (t_nlist_frame *)getbytes(sizeof(t_nlist_frame) * capacity);
     int depth = 0;
@@ -86,9 +112,9 @@ t_nlist_node *nlist_parse(void *owner, int ac, t_atom *av, int *len_out, int *de
         if(a->a_type == A_SYMBOL){
             const char *s = a->a_w.w_symbol->s_name;
             int slen = (int)strlen(s);
-            while(nopen < slen && s[nopen] == '[')
+            while(nopen < slen && s[nopen] == opener)
                 nopen++;
-            while(nclose < (slen - nopen) && s[slen - 1 - nclose] == ']')
+            while(nclose < (slen - nopen) && s[slen - 1 - nclose] == closer)
                 nclose++;
             int size = slen - nopen - nclose;
             if(size > 0){
@@ -137,7 +163,7 @@ t_nlist_node *nlist_parse(void *owner, int ac, t_atom *av, int *len_out, int *de
         for(int k = 0; k < nclose; k++){
             if(depth == 0){
                 if(!warned_extra){
-                    pd_error(owner, "[nlist]: unexpected ']'");
+                    pd_error(owner, "[nlist]: unexpected '%c'", closer);
                     warned_extra = 1;
                 }
                 break;
@@ -147,7 +173,7 @@ t_nlist_node *nlist_parse(void *owner, int ac, t_atom *av, int *len_out, int *de
         }
     }
     if(depth > 0){
-        pd_error(owner, "[nlist]: missing ']'");
+        pd_error(owner, "[nlist]: missing '%c'", closer);
         while(depth > 0){
             stack[depth].owner->child = stack[depth].first;
             depth--;
@@ -162,9 +188,22 @@ t_nlist_node *nlist_parse(void *owner, int ac, t_atom *av, int *len_out, int *de
     return(root);
 }
 
-// Same as nlist_parse(), but stores len/depth into the given nlist.
+// Detects the style from the data itself (brackets if there is none).
+t_nlist_node *nlist_parse(void *owner, int ac, t_atom *av, int *len_out, int *depth_out){
+    int style = nlist_detect_style(ac, av);
+    return(nlist_parse_style(owner, ac, av, len_out, depth_out,
+        style ? style : NLIST_STYLE_BRACKETS));
+}
+
+// Same as nlist_parse(), but stores len/depth into the given nlist and, in
+// auto mode, updates its style when the data has delimiters.
 t_nlist_node *nlist_parse_all(t_nlist *x, int ac, t_atom *av){
-    return(nlist_parse(x, ac, av, &x->x_len, &x->x_depth));
+    if(x->x_mode == NLIST_STYLE_AUTO){
+        int style = nlist_detect_style(ac, av);
+        if(style)
+            x->x_style = style;
+    }
+    return(nlist_parse_style(x, ac, av, &x->x_len, &x->x_depth, x->x_style));
 }
 
 // ------------ Tree / editor formatting ---------------------------------
@@ -198,14 +237,14 @@ static void nlist_atom_to_buf(t_atom *a, char *buf, size_t bufsize){
         buf[0] = 0;
 }
 
-static void nlist_inline_to_buf(t_nlist_node *node, char *buf, size_t bufsize, size_t *pos){
-    nlist_buf_append(buf, bufsize, pos, "[");
+static void nlist_inline_to_buf(t_nlist_node *node, char *buf, size_t bufsize, size_t *pos, int style){
+    nlist_buf_append(buf, bufsize, pos, nlist_open_str(style));
     int first = 1;
     while(node){
         if(!first)
             nlist_buf_append(buf, bufsize, pos, " ");
         if(node->type == 1)
-            nlist_inline_to_buf(node->child, buf, bufsize, pos);
+            nlist_inline_to_buf(node->child, buf, bufsize, pos, style);
         else{
             char tmp[64];
             nlist_atom_to_buf(&node->atom, tmp, sizeof(tmp));
@@ -214,7 +253,7 @@ static void nlist_inline_to_buf(t_nlist_node *node, char *buf, size_t bufsize, s
         first = 0;
         node = node->next;
     }
-    nlist_buf_append(buf, bufsize, pos, "]");
+    nlist_buf_append(buf, bufsize, pos, nlist_close_str(style));
 }
 
 static void nlist_editor_line(t_elsefile *fh, int depth, const char *content){
@@ -237,12 +276,12 @@ int nlist_has_list(t_nlist_node *node){
     return(0);
 }
 
-void nlist_editor_show_nodes(t_elsefile *fh, t_nlist_node *node, int depth){
+void nlist_editor_show_nodes(t_elsefile *fh, t_nlist_node *node, int depth, int style){
     while(node){
         if(node->type == 1 && (depth == 0 || nlist_has_list(node->child))){
-            nlist_editor_line(fh, depth, "[");
+            nlist_editor_line(fh, depth, nlist_open_str(style));
             if(nlist_has_list(node->child))
-                nlist_editor_show_nodes(fh, node->child, depth + 1);
+                nlist_editor_show_nodes(fh, node->child, depth + 1, style);
             else{ // flat top-level list: all atoms on one indented line
                 char buf[MAXPDSTRING], tmp[64];
                 size_t pos = 0;
@@ -256,14 +295,14 @@ void nlist_editor_show_nodes(t_elsefile *fh, t_nlist_node *node, int depth){
                 if(pos)
                     nlist_editor_line(fh, depth + 1, buf);
             }
-            nlist_editor_line(fh, depth, "]");
+            nlist_editor_line(fh, depth, nlist_close_str(style));
         }
         else{
             char buf[MAXPDSTRING];
             size_t pos = 0;
             buf[0] = 0;
             if(node->type == 1)
-                nlist_inline_to_buf(node->child, buf, sizeof(buf), &pos);
+                nlist_inline_to_buf(node->child, buf, sizeof(buf), &pos, style);
             else
                 nlist_atom_to_buf(&node->atom, buf, sizeof(buf));
             nlist_editor_line(fh, depth, buf);
@@ -287,7 +326,7 @@ void nlist_do_update(t_nlist *x){
             (unsigned long)x->x_filehandle);
         pdgui_vmess(buf, NULL);
         if(root)
-            nlist_editor_show_nodes(x->x_filehandle, root, 0);
+            nlist_editor_show_nodes(x->x_filehandle, root, 0, x->x_style);
         else_editor_setdirty(x->x_filehandle, 0);
     }
 }
@@ -307,7 +346,7 @@ void nlist_do_open(t_nlist *x){
         const char *title = (x->x_name ? x->x_name->s_name : "Untitled");
         elsefile_editor_open(x->x_filehandle, (char *)title, "nlist");
         if(root)
-            nlist_editor_show_nodes(x->x_filehandle, root, 0);
+            nlist_editor_show_nodes(x->x_filehandle, root, 0, x->x_style);
         else_editor_setdirty(x->x_filehandle, 0);
         x->x_is_opened = 1;
     }
@@ -335,20 +374,24 @@ void nlist_open(t_nlist *x){
 // atom. Since these bracket atoms carry no payload of their own (size == 0
 // once stripped), nlist_parse_all() opens/closes a frame without pushing an
 // extra element, so this round-trips through the "list" message exactly.
-void nlist_tree_to_binbuf(t_nlist_node *node, t_binbuf *bb){
+void nlist_tree_to_binbuf_style(t_nlist_node *node, t_binbuf *bb, int style){
     t_atom a;
     while(node){
         if(node->type == 1){
-            SETSYMBOL(&a, gensym("["));
+            SETSYMBOL(&a, gensym(nlist_open_str(style)));
             binbuf_add(bb, 1, &a);
-            nlist_tree_to_binbuf(node->child, bb);
-            SETSYMBOL(&a, gensym("]"));
+            nlist_tree_to_binbuf_style(node->child, bb, style);
+            SETSYMBOL(&a, gensym(nlist_close_str(style)));
             binbuf_add(bb, 1, &a);
         }
         else
             binbuf_add(bb, 1, &node->atom);
         node = node->next;
     }
+}
+
+void nlist_tree_to_binbuf(t_nlist_node *node, t_binbuf *bb){
+    nlist_tree_to_binbuf_style(node, bb, NLIST_STYLE_BRACKETS);
 }
 
 void nlist_clear_nodes(t_nlist_node *node){
