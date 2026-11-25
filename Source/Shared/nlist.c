@@ -278,7 +278,7 @@ int nlist_has_list(t_nlist_node *node){
 
 void nlist_editor_show_nodes(t_elsefile *fh, t_nlist_node *node, int depth, int style){
     while(node){
-        if(node->type == 1 && (depth == 0 || nlist_has_list(node->child))){
+        if(node->type == 1){
             nlist_editor_line(fh, depth, nlist_open_str(style));
             if(nlist_has_list(node->child))
                 nlist_editor_show_nodes(fh, node->child, depth + 1, style);
