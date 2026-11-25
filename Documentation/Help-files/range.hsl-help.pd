@@ -35,9 +35,9 @@
 #X text 97 372 range <float \, float>;
 #X text 145 386 mode <float>;
 #X text 227 387 - sets mode (0: shift/1: select/2: expand/3: expand);
-#X floatatom 254 267 7 0 0 0 - - - 0;
-#X floatatom 197 267 7 0 0 0 - - - 0;
-#X obj 197 241 unpack f f;
+#X floatatom 254 269 7 0 0 0 - - - 0;
+#X floatatom 197 269 7 0 0 0 - - - 0;
+#X obj 197 245 unpack f f;
 #X obj 197 125 vradio 15 1 0 4 empty empty empty 0 -8 0 10 #dcdcdc #000000 #000000 0;
 #X msg 197 193 mode \$1;
 #X text 216 124 shift (default), f 31;
@@ -48,10 +48,9 @@
 #X text 121 486 receive <symbol>;
 #X text 227 373 - sets min/max range values (default 0 127), f 52;
 #X text 227 344 - sets width size (default 127), f 52;
-#X text 227 358 - sets height size (default 127), f 52;
 #X text 227 472 - sets send symbol (default empty), f 52;
 #X text 227 487 - sets receive symbol (default empty), f 52;
-#X obj 197 216 else/range.hsl 135 17 0 127 0 255 255 255 96 96 96 empty empty 0 0 0 1 0;
+#X obj 197 216 else/range.hsl 135 20 0 127 0 255 255 255 96 96 96 empty empty 0 0 0 1 0;
 #N canvas 489 108 740 492 colors 0;
 #X obj 145 152 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 #fc0000 #fcfcfc #000000 0 0;
 #X obj 166 152 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 #00fc00 #fcfcfc #000000 0 0;
@@ -104,8 +103,9 @@
 #X text 109 415 fgcolor <anything>;
 #X text 100 548 -width <float> | -height <float> | -range <f \, f> | -mode <float> | -bgcolor <sym> | -fgcolor <sym> | -theme | -send <symbol> | -receive <symbol>, f 66;
 #X text 71 86 [range.hsl] is a range horizontal slider GUI abstraction coded in lua. It has 4 modes of operation \, see below.;
+#X text 227 358 - sets height size (default 20), f 52;
 #X connect 34 0 33 0;
 #X connect 34 1 32 0;
 #X connect 35 0 36 0;
-#X connect 36 0 48 0;
-#X connect 48 0 34 0;
+#X connect 36 0 47 0;
+#X connect 47 0 34 0;

@@ -63,9 +63,14 @@ local function sanitize_color(c)
 end
 
 function multi_slider.setup(class, name, vertical)
+    -- Default size: horizontal is 200 wide x 127 tall; vertical swaps them,
+    -- so it is 127 wide x 200 tall.
+    local default_width  = vertical and 170 or 180
+    local default_height = vertical and 180 or 170
+
     else_gui.setup(class, {
-        { "width",      200,          "resize",     "Width",      "int",   {frame="Dimensions", min=4,  flag="width"}              },
-        { "height",     127,          "resize",     "Height",     "int",   {frame="Dimensions", min=4,  flag="height"}             },
+        { "width",      default_width,  "resize",     "Width",      "int",   {frame="Dimensions", min=4,  flag="width"}              },
+        { "height",     default_height, "resize",     "Height",     "int",   {frame="Dimensions", min=4,  flag="height"}             },
         { "range",      {0, 127},     "on_range",   "Range",      "range", {frame="General",    flag="range"}                      },
         { "n",          8,            "on_n",       "Sliders",    "int",   {frame="Dimensions", min=1,  max=1024, flag="n"}        },
         { "tabname",    "internal",   "on_rename",  "Array Name", "text",  {frame="General",    flag="name", msg="rename", dollar=true}      },

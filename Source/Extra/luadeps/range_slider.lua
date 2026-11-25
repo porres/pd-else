@@ -56,9 +56,14 @@ local function sanitize_color(c)
 end
 
 function range_slider.setup(class, name, vertical)
+    -- Default size: 127 is the length of the bar, 20 is its thickness.
+    -- Horizontal: 127 wide x 20 tall. Vertical: swapped, 20 wide x 127 tall.
+    local default_width  = vertical and 20  or 127
+    local default_height = vertical and 127 or 20
+
     else_gui.setup(class, {
-        { "width",     127,           "resize",     "Width",      "int",   {frame="Dimensions", min=10, max=4096, flag="width"}   },
-        { "height",    20,            "resize",     "Height",     "int",   {frame="Dimensions", min=4,  max=256,  flag="height"}  },
+        { "width",     default_width,  "resize",     "Width",      "int",   {frame="Dimensions", min=10, max=4096, flag="width"}   },
+        { "height",    default_height, "resize",     "Height",     "int",   {frame="Dimensions", min=4,  max=256,  flag="height"}  },
         { "range",     {0, 127},      "on_range",   "Range",      "range", {frame="General",    flag="range"}                     },
         { "mode",      0,             nil,          "Base Mode",  "combo", {frame="General",    flag="mode", items={"Move","Select","Extend","Expand"}}},
         { "bgcolor",   pd.bg_color,   "repaint",    "Background", "color", {frame="Appearance", flag="bgcolor", theme="bg"}       },
