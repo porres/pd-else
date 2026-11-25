@@ -239,9 +239,23 @@ int nlist_has_list(t_nlist_node *node){
 
 void nlist_editor_show_nodes(t_elsefile *fh, t_nlist_node *node, int depth){
     while(node){
-        if(node->type == 1 && nlist_has_list(node->child)){
+        if(node->type == 1 && (depth == 0 || nlist_has_list(node->child))){
             nlist_editor_line(fh, depth, "[");
-            nlist_editor_show_nodes(fh, node->child, depth + 1);
+            if(nlist_has_list(node->child))
+                nlist_editor_show_nodes(fh, node->child, depth + 1);
+            else{ // flat top-level list: all atoms on one indented line
+                char buf[MAXPDSTRING], tmp[64];
+                size_t pos = 0;
+                buf[0] = 0;
+                for(t_nlist_node *n = node->child; n; n = n->next){
+                    if(n != node->child)
+                        nlist_buf_append(buf, sizeof(buf), &pos, " ");
+                    nlist_atom_to_buf(&n->atom, tmp, sizeof(tmp));
+                    nlist_buf_append(buf, sizeof(buf), &pos, tmp);
+                }
+                if(pos)
+                    nlist_editor_line(fh, depth + 1, buf);
+            }
             nlist_editor_line(fh, depth, "]");
         }
         else{
