@@ -186,8 +186,8 @@ static void pad_vis(t_gobj *z, t_glist *glist, int vis){
         pad_draw(x, glist);
         char buf[256];
         snprintf(buf, sizeof(buf),
-            "bind %lxPADBASE <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}",
-            (unsigned long)x, x->x_bindname->s_name);
+            "bind %s <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}",
+            x->x_base_tag, x->x_bindname->s_name);
         pdgui_vmess(0, "cr", cv, buf);
         pad_draw_handle(x, x->x_edit);
     }
