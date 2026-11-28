@@ -370,9 +370,46 @@ static void messbox_list(t_messbox* x, t_symbol *s, int ac, t_atom *av){
     (void)s;
     char cmd[1024];
     if(!ac){
+        if(!box_vis_check(x)){
+            int natom = binbuf_getnatom(x->x_content);
+            if(natom){
+                t_atom *vec = binbuf_getvec(x->x_content);
+                t_atom *tmp = getbytes(natom * sizeof(t_atom));
+                for(int i = 0; i < natom; i++){
+                    if(vec[i].a_type == A_SYMBOL){
+                        char *src = vec[i].a_w.w_symbol->s_name;
+                        if(strstr(src, "$0")){
+                            char out[MAXPDSTRING];
+                            char *dst = out, *end = out + MAXPDSTRING - 1;
+                            while(*src && dst < end){
+                                if(src[0] == '$' && src[1] == '0'){
+                                    const char *rep = x->x_dollzero->s_name;
+                                    size_t rl = strlen(rep);
+                                    if(dst + rl > end) break;
+                                    memcpy(dst, rep, rl);
+                                    dst += rl;
+                                    src += 2;
+                                }
+                                else
+                                    *dst++ = *src++;
+                            }
+                            *dst = '\0';
+                            SETSYMBOL(tmp + i, gensym(out));
+                        }
+                        else
+                            tmp[i] = vec[i];
+                    }
+                    else
+                        tmp[i] = vec[i];
+                }
+                outlet_list(x->x_obj.ob_outlet, &s_list, natom, tmp);
+                freebytes(tmp, natom * sizeof(t_atom));
+            }
+            return;
+        }
         snprintf(cmd, sizeof(cmd),
-            "pdsend \"%s [string map {\\$0 %s} [%s get 0.0 end]]\"",
-            x->x_proxy->x_bind_sym->s_name, x->x_dollzero->s_name, x->text_id);
+            "if {[winfo exists %s]} {pdsend \"%s [string map {\\$0 %s} [%s get 0.0 end]]\"}",
+            x->text_id, x->x_proxy->x_bind_sym->s_name, x->x_dollzero->s_name, x->text_id);
         pdgui_vmess(cmd, NULL);
         return;
     }
@@ -396,8 +433,8 @@ static void messbox_list(t_messbox* x, t_symbol *s, int ac, t_atom *av){
         strncat(buf, symbuf, tmplength);
     }
     snprintf(cmd, sizeof(cmd),
-        "pdsend \"%s [string map {%s} [%s get 0.0 end]]\"",
-        x->x_proxy->x_bind_sym->s_name, buf, x->text_id);
+        "if {[winfo exists %s]} {pdsend \"%s [string map {%s} [%s get 0.0 end]]\"}",
+        x->text_id, x->x_proxy->x_bind_sym->s_name, buf, x->text_id);
     pdgui_vmess(cmd, NULL);
 }
 
